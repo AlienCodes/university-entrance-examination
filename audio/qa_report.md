@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：20
+- 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：1.30%
+- 平均识别差异率：1.00%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -31,6 +31,26 @@
 | p68 | 4.52 | 0.00% |  |
 | p69 | 4.51 | 1.40% | kwong → kwang; azimi → as emi; azimi's → a zimi |
 | p70 | 4.52 | 4.43% | salk → sauk; salk → soc; sleap → sleep; sleap → sleep; phenomics busch → phomics bush; sleap → sleep; sleap → sleep; sleap → sleep; sleap → sleep; catalog → catalogue; salk → soc; salk → soc; borrowing' → borrowing |
+| p19 | 4.53 | 0.00% |  |
+| p20 | 4.51 | 0.00% |  |
+| p21 | 4.52 | 0.00% |  |
+| p22 | 4.52 | 0.31% | examined → examine |
+| p23 | 4.51 | 0.93% | jostein gaarder's → eustein garder's; reawakened → reawaken |
+| p24 | 4.51 | 0.30% | jonkel → jonkle |
+| p37 | 4.51 | 0.00% |  |
+| p38 | 4.51 | 0.56% | daru → darrow; toward → towards |
+| p39 | 4.50 | 0.00% |  |
+| p40 | 4.52 | 0.00% |  |
+| p41 | 4.51 | 5.36% | saint lukas → st lucas; saint lukas → st lucas; emile ducke → emil duca; saint lukas → st lucas; krasnoyarsk → krosnayarsk; khakassia → cacassia; doctor's → doctors'; krasnoyarsk → krosnayarsk; saint lukas → st lucas; ducke → duka |
+| p42 | 4.50 | 0.29% | writer's → writers |
+| p43 | 4.51 | 1.04% | modelling → modeling; imagined → imagine; einstein's → einstein s |
+| p44 | 4.51 | 1.60% | franz → frantz; behaviours → behaviors; moralising → moralizing; our → are; behaviour → behavior; behavioural → behavioral |
+| p45 | 4.49 | 0.24% | word's → words' |
+| p46 | 4.51 | 0.28% | includes → include |
+| p47 | 4.53 | 2.21% | hail → hale; stienwand → steenwind; stienwand → steenwen; hail → hill; krauss → kraus; krauss → krause; stienwand → steenwen |
+| p48 | 4.51 | 0.30% | poor → per |
+| p56 | 4.50 | 0.00% |  |
+| p57 | 4.52 | 0.51% | favour → favor; defence → defense |
 
 ## male
 
