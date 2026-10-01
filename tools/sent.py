@@ -168,6 +168,84 @@ POST4={
 }
 for _k,_v in POST4.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第二批 20 篇严格英文复核后的原文订正
+POST5={
+ 'p56':[
+   ('universe but understanding','universe, but understanding'),
+ ],
+ 'p57':[
+   ('When feeding a pet, however, the advice is to favour','When feeding a pet, however, owners are advised to favour'),
+   ('The eco-footprint of a cat is about 0.15 hectares, almost the same as what is needed to run a small car.','The eco-footprint of a medium-sized dog is about 0.84 hectares, and that of a cat is about 0.15 hectares, almost the same as what is needed to run a small car.'),
+   ('viewed just on their carbon footprint','judged just on their carbon footprint'),
+   ('is of sufficient quality for human consumption but more than humans need','is of sufficient quality for human consumption but surplus to human needs'),
+ ],
+ 'p37':[
+   ('When reading texts','When people read texts'),
+   ('a theory called “shallowing hypothesis (假说)”','a theory called the “shallowing hypothesis (假说)”'),
+ ],
+ 'p38':[
+   ('plants, insects, birds, and animals','plants, insects, birds, and other animals'),
+   ('most records of biodiversity are often in the form','most records of biodiversity are in the form'),
+   ('the greater likelihood of a citizen scientist to take a picture','the greater likelihood of a citizen scientist taking a picture'),
+ ],
+ 'p39':[
+   ('farmer’s markets','farmers’ markets'),
+   ('in the same building where it’s eaten','in the same building where the food is eaten'),
+   ('By connecting through the Cloud, BMF is remotely monitored.','Connected through the Cloud, BMF is remotely monitored.'),
+   ('most produce at the store went through weeks of travel and covered hundreds of miles before reaching the table','most produce at the store goes through weeks of travel and covers hundreds of miles before reaching the table'),
+ ],
+ 'p40':[
+   ('world leaders-so they','world leaders — so they'),
+   ('transform our lives we all need','transform our lives, we all need'),
+   ('achieve greatness rather than our downfall','achieve greatness rather than bring about our downfall'),
+   ('that powers AI but, thankfully,','that powers AI, but, thankfully,'),
+ ],
+ 'p42':[
+   ('my junior year of undergraduate','my junior year of college'),
+   ('heartbroken with the ending','heartbroken by the ending'),
+   ('a love romance','a romance'),
+ ],
+ 'p43':[
+   ('There is no point in arguing if the universe is','There is no point in arguing whether the universe is'),
+   ('It can be imagined that comparable to the process of building previous scientific models, developing','It can be imagined that, comparable to the process of building previous scientific models, developing'),
+ ],
+ 'p44':[
+   ('in the unforgiving Northern Canada','in unforgiving northern Canada'),
+ ],
+ 'p45':[
+   ('Our teacher, Miss Chevalier was','Our teacher, Miss Chevalier, was'),
+   ('fatty fingers','plump fingers'),
+   ('the Saturday evening’s club','the Saturday evening club'),
+   ('she said, “I want','she said. “I want'),
+   ('or they wouldn’t dare','or one wouldn’t dare'),
+   ('being impetuous for girls is improper','it is improper for girls to be impetuous'),
+ ],
+ 'p46':[
+   ('are gone from sight','disappeared from sight'),
+   ('And because these spaces are filled with solid ice, liquid water cannot readily get inside, but it can when the permafrost melts, allowing more water to get through.','Because these spaces are filled with solid ice, liquid water cannot readily get inside; when the permafrost melts, however, more water can get through.'),
+   ('Eventually, researchers made a prediction that progressive warming','Researchers also predicted that eventually progressive warming'),
+   ('(永冻层)— there','(永冻层) — there'),
+ ],
+ 'p47':[
+   ('cannot be causing drought.” Dr. Krauss says.','cannot be causing drought,” Dr. Krauss says.'),
+ ],
+ 'p20':[
+   ('If for whatever reasons, people’s','If, for whatever reasons, people’s'),
+ ],
+ 'p21':[
+   ('poses —absorbed','poses — absorbed'),
+ ],
+ 'p23':[
+   ('gradually pulls them in deeper thoughts','gradually pulls them into deeper thoughts'),
+ ],
+ 'p24':[
+   ('says James Jonkel, longtime biologist who manages','says James Jonkel, a longtime biologist who manages'),
+   ('highly effective at getting grizzlies away','highly effective at keeping grizzlies away'),
+   ('about 2,000 or more grizzly bears','about 2,000 grizzly bears'),
+ ],
+}
+for _k,_v in POST5.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
