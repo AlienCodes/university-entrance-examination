@@ -91,7 +91,8 @@ def normalize(text):
     # 日期：March 7, 1907 -> March seventh, 1907
     t = re.sub(r'\b(' + MONTHS + r')\s+(\d{1,2})\b(?!,\d)', lambda m: m.group(1) + ' ' + ordinal(int(m.group(2))), t)
     # 4. 分数 1/1000th
-    t = re.sub(r'\b1/(\d+)th\b', lambda m: 'one ' + re.sub(r'^one ', '', ordinal(int(m.group(1)))).replace(' ', '-'), t)
+    t = re.sub(r'\b1/(\d{1,3}(?:,\d{3})+|\d+)th\b',
+               lambda m: 'one ' + re.sub(r'^one ', '', ordinal(int(m.group(1).replace(',', '')))).replace(' ', '-'), t)
     # 5. 货币 £520m / $2 million / $1,000
     t = re.sub(r'£(\d[\d,]*)m\b', lambda m: number(m.group(1)) + ' million pounds', t)
     t = re.sub(r'£(\d[\d,.]*)', lambda m: number(m.group(1)) + ' pounds', t)
