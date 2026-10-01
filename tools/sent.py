@@ -375,6 +375,20 @@ POST9={
 }
 for _k,_v in POST9.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第三批复核第一轮后的原文订正
+POST10={
+ 'p28':[
+   ('the developments of AI','developments in AI'),
+ ],
+ 'p31':[
+   ('to approach the experimenter considering that','to approach the experimenter, considering that'),
+ ],
+ 'p32':[
+   ('a different perspective of the world','a different perspective on the world'),
+ ],
+}
+for _k,_v in POST10.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):

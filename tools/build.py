@@ -124,6 +124,7 @@ for o in S:
         if re.search(r'[，。；：！？、]{2,}|，。|。，',z): probs.append('重复标点')
         if re.search(r'[一-鿿] +[一-鿿]',z): probs.append('汉字间空格')
         if re.search(r'"',z): probs.append('直引号')
+        if re.search(r'([\u4e00-\u9fff，、]{4,})\1',z): probs.append('连续重复字串')
         if probs: print(f'中文排版检查未通过：{pid} {where} {probs}：{z[:60]}'); errs+=1
     allzh=''.join(x['zh'] for P in paras for x in P)
     if allzh.count('“')!=allzh.count('”'): print(f'中文排版检查未通过：{pid} 全文中文引号不配对（“ {allzh.count("“")} 个，” {allzh.count("”")} 个）'); errs+=1
