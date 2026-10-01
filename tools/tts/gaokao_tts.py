@@ -216,6 +216,8 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
 
 def gap_after(sentence, para_end, cfg):
     """句间停顿：段落结尾更长；长句、问句后稍长一点，接近真人朗读的节奏。"""
+    if cfg.get('fixed_sentence_gap'):          # 铁律：句与句之间固定停顿（0.8 秒）
+        return cfg['paragraph_pause'] if para_end else cfg['sentence_pause']
     if para_end:
         return cfg['paragraph_pause']
     words = len(sentence.split())

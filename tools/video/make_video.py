@@ -158,7 +158,12 @@ def main():
     ends = [x['end'] for x in times]
     TAIL = 2.0                                  # 读完最后一句后至少保留 2 秒静音
     total = max(tm['duration'], ends[-1] + TAIL)
-    cuts = [0.0, starts[0]] + [(ends[i] + starts[i + 1]) / 2 for i in range(len(times) - 1)] + [total]
+    # 铁律：句与句之间停顿 0.8 秒；读完后画面停留 0.5 秒再切换，切换 0.3 秒后开始读下一句
+    HOLD, LEAD, GAP = 0.5, 0.3, 0.8
+    bad = [i + 2 for i in range(len(times) - 1) if abs(starts[i + 1] - ends[i] - GAP) > 0.01]
+    if bad:
+        raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
+    cuts = [0.0, starts[0]] + [ends[i] + HOLD for i in range(len(times) - 1)] + [total]
     lst = []
     for i in range(len(slides)):
         lst += [f"file '{tmp / f'{i:03d}.png'}'", f'duration {cuts[i + 1] - cuts[i]:.3f}']
