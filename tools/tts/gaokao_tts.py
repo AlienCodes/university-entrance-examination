@@ -62,17 +62,27 @@ class Pronouncer:
         def sub(m):
             w = m.group(0)
             ph = local.get(w) or self.lexicon.get(w)
-            if ph is None:                                       # Kettle’s / students’：只替换词干
-                m2 = re.match(r"^(.+?)([’']s?)$", w)
+            if ph is None:                                       # Azimi’s：词干有修正时，按英语规则加 -s 的读音
+                m2 = re.match(r"^(.+?)[’']s$", w)
                 stem_ph = m2 and (local.get(m2.group(1)) or self.lexicon.get(m2.group(1)))
                 if stem_ph:
-                    return f'[{m2.group(1)}](/{stem_ph}/){m2.group(2)}'
+                    ph = stem_ph + possessive_suffix(stem_ph)
             return f'[{w}](/{ph}/)' if ph else w
         return self.WORD.sub(sub, text)
 
     def phonemes(self, read_text, key=None):
         ph, _ = self.g2p(self._mark(read_text, key))
         return ph
+
+
+def possessive_suffix(ph):
+    """所有格 's 的读音：咝音后 /ᵻz/，清辅音后 /s/，其余 /z/。"""
+    last = ph.rstrip('ˈˌ')[-1:]
+    if last in 'szʃʒʧʤ':
+        return 'ᵻz'
+    if last in 'ptkfθ':
+        return 's'
+    return 'z'
 
 
 # ---------------------------------------------------------------- 合成引擎

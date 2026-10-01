@@ -52,7 +52,7 @@ def decade(n):
 
 
 UNITS = {'mm': 'millimeters', 'ml': 'milliliters', 'kg': 'kilograms', 'g': 'grams', 'L': 'liters',
-         'm': 'million', 'p': 'p'}
+         'm': 'million', 'p': 'pence'}
 SINGULAR = {'millimeters': 'millimeter', 'milliliters': 'milliliter', 'kilograms': 'kilogram',
             'grams': 'gram', 'liters': 'liter'}
 
@@ -61,7 +61,7 @@ ABBR = [
     (r'\bProf\.\s', 'Professor '), (r'\bSt\.\s(?=Louis|Andrews)', 'Saint '),
     (r'\be\.\s?g\.\s?', 'for example, '), (r'\bi\.e\.\s?', 'that is, '),
     (r'\bNov\.\s(\d+)\b', lambda m: 'November ' + ordinal(int(m.group(1)))),
-    (r'\betc\.', 'et cetera.'),
+    (r'\betc\.(?=\s*$)', 'et cetera.'), (r'\betc\.', 'et cetera'),
 ]
 MONTHS = 'January|February|March|April|May|June|July|August|September|October|November|December'
 
@@ -74,6 +74,16 @@ def normalize(text):
     # 2. 缩写
     for pat, rep in ABBR:
         t = re.sub(pat, rep, t)
+    # 2b. 空格与撇号：引号前、逗号后补空格；复数所有格 students’ 用直撇号，避免被当成右引号
+    t = re.sub(r'(?<=[A-Za-z,.;:!?])“', ' “', t)
+    t = re.sub(r',(?=[A-Za-z“"])', ', ', t)
+    t = re.sub(r'(?<=s)’(?=[\s,.;:!?]|$)', "'", t)
+    # 2c. 英式日期：1 January / 23 April 2005 -> January first / April twenty-third, 2005
+    t = re.sub(r'\b(\d{1,2})\s+(' + MONTHS + r')\b(\s+(?=\d{4}))?',
+               lambda m: m.group(2) + ' ' + ordinal(int(m.group(1))) + (', ' if m.group(3) else ''), t)
+    # 2d. 带空格的单位：2.5 m long / 400 kg
+    t = re.sub(r'(\d)\s+kg\b', r'\1kg', t)
+    t = re.sub(r'(\d)\s+m\b(?=\s+(?:long|tall|high|wide|deep)\b)', r'\1 meters', t)
     # 3. 化学式、特殊写法
     t = t.replace('CO₂', 'C O two').replace('24/7', 'twenty-four seven').replace(' & ', ' and ')
     t = re.sub(r'(?<=[A-Za-z])\(', ' (', t)
