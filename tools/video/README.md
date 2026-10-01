@@ -18,7 +18,7 @@ python make_video.py p58 --voice male    # 男声
 python make_video.py p58 --scale 1       # 1920×1080
 ```
 
-输出在仓库根目录的 `video/` 下。
+成品输出到仓库根目录的 `最终视频/` 文件夹，文件名和片头一致：`年份 试卷 阅读C/D 题目.mp4`，例如 `2026 全国Ⅰ卷 阅读C 纽约大规模种树的“隐患”.mp4`。
 
 ## 依赖
 

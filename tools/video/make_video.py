@@ -10,6 +10,7 @@
 """
 import argparse
 import html
+import re
 import json
 import subprocess
 import sys
@@ -121,7 +122,7 @@ def main():
     ap.add_argument('pid')
     ap.add_argument('--voice', default='female')
     ap.add_argument('--scale', type=int, default=2, help='2 = 3840×2160（4K），1 = 1920×1080')
-    ap.add_argument('--out', default=str(ROOT / 'video'))
+    ap.add_argument('--out', default=str(ROOT / '最终视频'))
     a = ap.parse_args()
 
     data = json.loads((ROOT / 'data' / 'vocab.json').read_text('utf-8'))
@@ -163,7 +164,10 @@ def main():
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    name = audio.stem + ('' if a.voice == 'female' else '_男声') + '.mp4'
+    # 文件名与片头一致：年份 试卷 篇目 题目，例如“2026 全国Ⅰ卷 阅读C 纽约大规模种树的“隐患”.mp4”
+    paper = re.sub(r'（.*?）', '', p['paper'])
+    title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
+    name = f"{p['year']} {paper} 阅读{p['part']} {title}".strip() + ('' if a.voice == 'female' else '（男声）') + '.mp4'
     cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
            '-i', str(audio), '-map', '0:v', '-map', '1:a', '-af', f'apad=whole_dur={total:.3f}', '-t', f'{total:.3f}',
            '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-tune', 'stillimage',
