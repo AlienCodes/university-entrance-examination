@@ -118,6 +118,56 @@ POST={
         ('Because every time we surface','This is because every time we surface')],
  'p59':[('their feelings while completing','their feelings while they were completing')],
 }
+# 第四轮复核后的原文订正（同样必须恰好匹配一次）
+POST4={
+ 'p59':[
+   ('whether it’s in a more practical or abstract way','whether they do so in a more practical or abstract way'),
+ ],
+ 'p60':[
+   ('enjoying the sandy beaches of Nice','enjoying the beaches of Nice'),
+   ('the global sea rose by almost','global sea level rose by almost'),
+ ],
+ 'p62':[
+   ('goes a little bit high,','goes a little bit higher,'),
+   ('changes,” since temperature can affect the number of smell-carrying gas particles (粒子) released from substances, explains John Smith, a chemical engineer.','changes,” explains John Smith, a chemical engineer — temperature can affect the number of smell-carrying gas particles (粒子) released from substances.'),
+ ],
+ 'p64':[
+   ('their physics professor heavily pregnant doing physics experiments','their physics professor, heavily pregnant, doing physics experiments'),
+ ],
+ 'p66':[
+   ('what feels more challenging is when a task requires the brain','a task feels more challenging when it requires the brain'),
+   (', while silencing circuits',' and the silencing of circuits'),
+   ('instead of the efforts required','instead of the effort required'),
+ ],
+ 'p67':[
+   ('to be in between 110,000','to be between 110,000'),
+ ],
+ 'p68':[
+   ('the copper foil that holds the electricity','the copper foil that conducts electricity'),
+   ('the sap of the Pará rubber tree','the sap of rubber trees'),
+   ('The choice is not as green','Neither choice is as green'),
+ ],
+ 'p69':[
+   ('The fake reviews written for Azimi’s study','The fake reviews used in Azimi’s study'),
+ ],
+ 'p70':[
+   ('how deep and wide they grow, how massive their root systems become','how deep and wide the roots grow, how massive the root systems become'),
+ ],
+ 'p49':[
+   ('Most famously, a Canadian journalist','Most famously, an American-Canadian journalist'),
+ ],
+ 'p52':[
+   ('Up to 84.3% is simply thrown out.','The remaining 84.3% is simply thrown out.'),
+ ],
+ 'p54':[
+   ('there is evidence we can learn','there is evidence that we can learn'),
+ ],
+ 'p55':[
+   ('breathing, but that they are sufficiently aware','breathing, but are also sufficiently aware'),
+ ],
+}
+for _k,_v in POST4.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
