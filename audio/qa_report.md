@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：10
+- 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：1.13%
+- 平均识别差异率：1.36%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -21,6 +21,16 @@
 | p65 | 4.49 | 1.28% | facade → fa ade; douyin → doyen; kuaishou → kuishou; it's → its |
 | p66 | 4.52 | 0.21% | inzlicht → inslicht |
 | p67 | 4.53 | 1.88% | size → sized; five millimeters → ∅; thousandth → zeroth; houlihan → hoolehan; houlihan → julihan; houlihan → julihan; houlihan → hulihan |
+| p49 | 4.52 | 1.87% | verkade → verkata; te br mmelstroet → de brummelstrut; neighbourhoods → neighborhoods; recognise → recognize |
+| p50 | 4.52 | 0.93% | milligrams → mg; milligrams → mg; gauchotte → goshot |
+| p51 | 4.51 | 1.12% | sonja detrinidad → sonia de trinidad |
+| p52 | 4.51 | 0.29% | diver's → divers |
+| p53 | 4.50 | 0.51% | friends' → friend's; defence → defense |
+| p54 | 4.51 | 0.78% | organise → organize; too → two; green → grain |
+| p55 | 4.52 | 4.78% | c o two → co2; c o two → co2; c o two → co2; c o two → co2; o two → o2; c o two → co2; c o two → co2 |
+| p68 | 4.52 | 0.23% | par → para |
+| p69 | 4.50 | 0.85% | kwong → kwang; azimi → as emi |
+| p70 | 4.52 | 4.47% | salk → sauk; salk → soc; sleap → sleep; sleap → sleep; phenomics busch → phomics bush; sleap → sleep; sleap → sleep; sleap → sleep; sleap → sleep; catalog → catalogue; salk → soc; salk → soc; borrowing' → borrowing |
 
 ## male
 
