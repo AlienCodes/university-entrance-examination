@@ -131,6 +131,9 @@ def main():
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
     assert len(sents) == len(times), '音频句数与文章句数不一致，请重新生成音频'
+    empty = [i + 1 for i, s in enumerate(sents) if not s['w']]
+    if empty:                                   # 铁律：每一句至少标出一个单词
+        raise SystemExit(f'第 {empty} 句没有标注单词，不生成视频')
     audio = ROOT / 'audio' / tm['file']
 
     from playwright.sync_api import sync_playwright

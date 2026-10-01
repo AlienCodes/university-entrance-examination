@@ -104,6 +104,9 @@ for o in S:
             P.append({'en':en,'zh':a['zh'],'w':words})
         paras.append(P)
     rec['paras']=paras
+    # 铁律：每一句至少标出一个单词
+    empty=[i+1 for i,x in enumerate(s for P in paras for s in P) if not x['w']]
+    if empty: print(f'铁律检查未通过：{pid} 第 {empty} 句没有标注任何单词'); errs+=1
     rec['nv']=sum(len(s['w']) for P in paras for s in P)
     out.append(rec)
 # word bank
@@ -137,5 +140,6 @@ json.dump(data,open('../data/vocab.json','w'),ensure_ascii=False)
 tpl=open('template.html').read().replace('/*__SCRIPT__*/',open('page.js').read())
 open('../index.html','w').write(tpl.replace('/*__DATA__*/null',json.dumps(data,ensure_ascii=False).replace('</','<\\/')))
 done=[r for r in out if r.get('done')]
+if errs: raise SystemExit(f'有 {errs} 处错误，未生成网页')
 print('passages done',len(done),'vocab',sum(r['nv'] for r in done),'bank',len(bank),'errors',errs)
 for r in done: print(r['name'],r['words'],'词 标注',r['nv'])
