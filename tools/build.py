@@ -113,6 +113,20 @@ for o in S:
             P.append({'en':en,'zh':a['zh'],'w':words})
         paras.append(P)
     rec['paras']=paras
+    # 中文排版检查：半角标点夹在汉字之间、引号不配对、重复标点、汉字间多余空格
+    zhs=[('标题',rec['title']),('概要',rec['summary'])]+[(f'第{i+1}句',x['zh']) for i,x in enumerate(s for P in paras for s in P)]+ \
+        [(f'第{i+1}句释义 {w["h"]}',w['m']) for i,x in enumerate(s for P in paras for s in P) for w in x['w']]
+    for where,z in zhs:
+        probs=[]
+        if re.search(r'[一-鿿][,;:?!]|[,;:?!][一-鿿]',z): probs.append('半角标点')
+        if re.search(r'[一-鿿]\.(?!\d)|(?<![\w.])\.(?=[一-鿿])',z): probs.append('半角句点')
+        if z.count('“')!=z.count('”') and not where.startswith('第'): probs.append('引号不配对')
+        if re.search(r'[，。；：！？、]{2,}|，。|。，',z): probs.append('重复标点')
+        if re.search(r'[一-鿿] +[一-鿿]',z): probs.append('汉字间空格')
+        if re.search(r'"',z): probs.append('直引号')
+        if probs: print(f'中文排版检查未通过：{pid} {where} {probs}：{z[:60]}'); errs+=1
+    allzh=''.join(x['zh'] for P in paras for x in P)
+    if allzh.count('“')!=allzh.count('”'): print(f'中文排版检查未通过：{pid} 全文中文引号不配对（“ {allzh.count("“")} 个，” {allzh.count("”")} 个）'); errs+=1
     # 铁律：每一句至少标出一个单词
     empty=[i+1 for i,x in enumerate(s for P in paras for s in P) if not x['w']]
     if empty: print(f'铁律检查未通过：{pid} 第 {empty} 句没有标注任何单词'); errs+=1
