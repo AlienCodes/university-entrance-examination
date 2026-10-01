@@ -46,7 +46,7 @@ def check(mp4, p, tm):
     ok = lambda name, cond, detail: res.append((name, bool(cond), detail))
 
     # 1. 文件名
-    paper = re.sub(r'（.*?）', '', p['paper'])
+    paper = re.sub(r'·[^）]*', '', p['paper'])
     ok('文件名：年份 试卷 篇目 题目', mp4.name.startswith(f"{p['year']} {paper} 阅读{p['part']} {p['title']}"), mp4.name)
     # 2. 分辨率与时长
     info = json.loads(run(['ffprobe', '-v', 'error', '-show_entries', 'stream=codec_type,width,height,duration',
@@ -115,7 +115,7 @@ def main():
     allok = True
     for mp4 in sorted(FINAL.glob('*.mp4')):
         p = next((x for x in P.values() if x.get('done') and mp4.name.startswith(
-            f"{x['year']} {re.sub(r'（.*?）', '', x['paper'])} 阅读{x['part']} ")), None)
+            f"{x['year']} {re.sub(r'·[^）]*', '', x['paper'])} 阅读{x['part']} ")), None)
         if not p:
             lines += [f'## {mp4.name}', '', '- ❌ 找不到对应的文章数据', '']
             allok = False

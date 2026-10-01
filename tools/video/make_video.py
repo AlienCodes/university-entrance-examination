@@ -10,6 +10,7 @@
 """
 import argparse
 import html
+import math
 import re
 import json
 import subprocess
@@ -164,24 +165,35 @@ def main():
     if bad:
         raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
     cuts = [0.0, starts[0]] + [ends[i] + HOLD for i in range(len(times) - 1)] + [total]
+    # 每屏单独编码成一段（一张图循环，内存恒定），按累计时间换算帧数，再无损拼接
+    FPS = 30
+    frames = [round(c * FPS) for c in cuts[:-1]] + [math.ceil(cuts[-1] * FPS)]   # 结尾向上取整，保证静音不少于 2 秒
     lst = []
     for i in range(len(slides)):
-        lst += [f"file '{tmp / f'{i:03d}.png'}'", f'duration {cuts[i + 1] - cuts[i]:.3f}']
-    lst.append(f"file '{tmp / f'{len(slides) - 1:03d}.png'}'")
+        n = frames[i + 1] - frames[i]
+        segf = tmp / f'seg{i:03d}.mp4'
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-loop', '1', '-framerate', str(FPS),
+                        '-i', str(tmp / f'{i:03d}.png'), '-frames:v', str(n), '-vf', 'format=yuv420p',
+                        '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-tune', 'stillimage',
+                        '-pix_fmt', 'yuv420p', '-g', str(FPS * 10), str(segf)], check=True)
+        lst.append(f"file '{segf}'")
     (tmp / 'list.txt').write_text('\n'.join(lst))
+    total = frames[-1] / FPS
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     # 文件名与片头一致：年份 试卷 篇目 题目，例如“2026 全国Ⅰ卷 阅读C 纽约大规模种树的“隐患”.mp4”
-    paper = re.sub(r'（.*?）', '', p['paper'])
+    paper = re.sub(r'·[^）]*', '', p['paper'])
     title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
     name = f"{p['year']} {paper} 阅读{p['part']} {title}".strip() + ('' if a.voice == 'female' else '（男声）') + '.mp4'
-    cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
-           '-i', str(audio), '-map', '0:v', '-map', '1:a', '-af', f'apad=whole_dur={total:.3f}', '-t', f'{total:.3f}',
-           '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-tune', 'stillimage',
-           '-pix_fmt', 'yuv420p', '-vf', 'fps=30,tpad=stop_mode=clone:stop_duration=10,format=yuv420p',
-           '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', str(out / name)]
-    subprocess.run(cmd, check=True)
+    # 分两步：先只编码画面，再合入声音（同一步编码 4K 画面和声音时内存会暴涨）
+    silent = tmp / 'video.mp4'
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
+                    '-c', 'copy', str(silent)], check=True)
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(silent), '-i', str(audio),
+                    '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-af', f'apad=whole_dur={total:.3f}',
+                    '-t', f'{total:.3f}', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart',
+                    str(out / name)], check=True)
     # 检查：成品视频在最后一句读完后的静音不少于 2 秒
     durs = [float(x) for x in subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'stream=duration', '-of', 'csv=p=0',
                                 str(out / name)], capture_output=True, text=True).stdout.split()]
