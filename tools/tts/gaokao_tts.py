@@ -124,6 +124,32 @@ def trim(a, db=-48, pad=0.04):
     return a[max(0, loud[0] * frame - p): min(len(a), (loud[-1] + 1) * frame + p)]
 
 
+CLAUSE = re.compile(r'(?:(?<=[,;:—])|(?<=[,;:—]["”’)]))\s+(?=\S)')
+
+
+def synth_sentence(read, key, engine, pron, style, speed, cfg):
+    """按逗号、分号、冒号、破折号分段合成，段间加停顿（clause_pause 秒；为 0 时整句合成）。"""
+    cp = cfg.get('clause_pause', 0)
+    parts = [x for x in CLAUSE.split(read) if x.strip()] if cp else [read]
+    # 太短的片段（单个词）并入后一段，避免一字一顿
+    merged = []
+    for x in parts:
+        if merged and len(merged[-1].split()) < 2:
+            merged[-1] += ' ' + x
+        else:
+            merged.append(x)
+    # 每段都以标点结尾，否则模型会把最后一个词收得太急
+    merged = [x if i == len(merged) - 1 or re.search(r'[,;:—.!?]["”’)]*$', x) else x + ','
+              for i, x in enumerate(merged)]
+    out = []
+    for i, x in enumerate(merged):
+        out.append(engine.synth(pron.phonemes(x, key), style, speed))
+        if i < len(merged) - 1:
+            pause = cp * (1.4 if x.rstrip('”"’ ').endswith((';', ':')) else 1.0)
+            out.append(np.zeros(int(pause * SR), np.float32))
+    return np.concatenate(out)
+
+
 def gap_after(sentence, para_end, cfg):
     """句间停顿：段落结尾更长；长句、问句后稍长一点，接近真人朗读的节奏。"""
     if para_end:
@@ -227,7 +253,7 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
             k += 1
             key = f"{p['id']}:{k}"
             read = pron.read_text(s, key)
-            audio = engine.synth(pron.phonemes(read, key), style, speed)
+            audio = synth_sentence(read, key, engine, pron, style, speed, vcfg)
             dur = len(audio) / SR
             items.append({'k': k, 'para': pi + 1, 'start': round(t, 3), 'end': round(t + dur, 3),
                           'text': s, 'read': read})

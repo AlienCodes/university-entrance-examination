@@ -6,11 +6,11 @@
 
 - 文章数：1
 - 平均自然度：4.51（最低 4.51）
-- 平均识别差异率：2.86%
+- 平均识别差异率：2.54%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
-| p58 | 4.51 | 2.86% | coauthor r is n commane → co author rosheen khamain; novem auyeung → novum aoyoun; auyeung → ao yang |
+| p58 | 4.51 | 2.54% | coauthor r is n commane → co author rosheen khamaine; novem auyeung → novum aoyoun; auyeung → aoyung |
 
 ## male
 
