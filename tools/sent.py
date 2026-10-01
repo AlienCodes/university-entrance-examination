@@ -290,6 +290,10 @@ POST7={
 }
 for _k,_v in POST7.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第二批终检后的原文订正
+POST8={'p41':[('for a two-week trip','on a two-week trip')]}
+for _k,_v in POST8.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
