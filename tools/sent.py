@@ -382,6 +382,7 @@ POST10={
  ],
  'p31':[
    ('to approach the experimenter considering that','to approach the experimenter, considering that'),
+   ('96 dogs were involved','Ninety-six dogs were involved'),
  ],
  'p32':[
    ('a different perspective of the world','a different perspective on the world'),
