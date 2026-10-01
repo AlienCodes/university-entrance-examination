@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：40
+- 文章数：60
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：1.00%
+- 平均识别差异率：0.97%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -35,7 +35,7 @@
 | p20 | 4.51 | 0.00% |  |
 | p21 | 4.52 | 0.00% |  |
 | p22 | 4.52 | 0.31% | examined → examine |
-| p23 | 4.51 | 0.93% | jostein gaarder's → eustein garder's; reawakened → reawaken |
+| p23 | 4.51 | 0.62% | jostein gaarder's → eustein garder's |
 | p24 | 4.51 | 0.30% | jonkel → jonkle |
 | p37 | 4.51 | 0.00% |  |
 | p38 | 4.51 | 0.56% | daru → darrow; toward → towards |
@@ -51,6 +51,26 @@
 | p48 | 4.51 | 0.30% | poor → per |
 | p56 | 4.50 | 0.00% |  |
 | p57 | 4.52 | 0.51% | favour → favor; defence → defense |
+| p01 | 4.51 | 0.00% |  |
+| p02 | 4.52 | 1.47% | dami n → damian; changed → change; steven moran → stephen morin |
+| p03 | 4.53 | 2.09% | problem → problems; textalyzer → textilizer; textalyzer → textilizer; f lix → felix; textalyzer → textilizer |
+| p04 | 4.50 | 0.56% | fill → feel; nieca → nieka |
+| p05 | 4.51 | 2.63% | ginni bazlinton → ginny baslinton; ginni → ginny; ginni → ginny; ginni → ginny; ginni → ginny; ginni → ginny; ginni → ginny |
+| p06 | 4.49 | 0.89% | ferryboats → farrellboats; mean → means; ferries → fairies |
+| p07 | 4.52 | 0.96% | kilometres → kilometers; crews' → crew's; travelling → traveling |
+| p08 | 4.52 | 1.21% | ∅ → pounds; pounds → ∅; litre → liter; litres → liters |
+| p25 | 4.52 | 2.05% | meat → me; two → to; tv programmes → t v programs; programmes → programs |
+| p26 | 4.53 | 0.00% |  |
+| p27 | 4.51 | 0.55% | industrialised → industrialized; characterised → characterized |
+| p28 | 4.50 | 0.48% | ' → ∅; ' → ∅ |
+| p29 | 4.50 | 1.20% | colours → colors; you are → you're; transcranial → transgranial; and → in |
+| p30 | 4.52 | 1.46% | derring → daring; erring → error; derring → daring; derring → daring; a → ∅; derring → daring |
+| p31 | 4.53 | 1.20% | judgement → judgment; ∅ → a; behaviour → behavior; round → around; behaviour → behavior |
+| p32 | 4.50 | 0.00% |  |
+| p33 | 4.51 | 0.24% | brongniart → brauniard |
+| p34 | 4.53 | 0.68% | riess → rees; riess → rees; refined → refine |
+| p35 | 4.51 | 0.96% | noa → noah; kristian → christian; in → and |
+| p36 | 4.52 | 0.31% | macknick → mcnick |
 
 ## male
 

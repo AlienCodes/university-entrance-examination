@@ -225,7 +225,10 @@ NEG = {'not', 'no', 'never', 'nor', 'cannot', 'none', 'nothing', 'neither'}
 
 def critical_ops(a, b):
     """语音识别差异里会改变意思的几类：否定词、词尾（-ed/-s/-ing/n't）、漏读、多读。"""
-    A, B = a.lower().split(), b.lower().split()
+    A = [w for w in a.lower().split() if re.search('[a-z]', w)]     # 引号等纯符号不算词
+    B = [w for w in b.lower().split() if re.search('[a-z]', w)]
+    if not A and not B:
+        return []
     why = []
     if {w for w in A if w in NEG or w.endswith("n't")} != {w for w in B if w in NEG or w.endswith("n't")}:
         why.append('否定词')
@@ -234,6 +237,11 @@ def critical_ops(a, b):
     strip = lambda w: re.sub(r"(es|s|ed|d|ing|n't)$", '', w)
     why += [f'词尾 {x}/{y}' for x in A for y in B if x != y and len(x) > 2 and strip(x) == strip(y)]
     return why
+
+
+def apo(t):
+    """撇号写法（’ 与 '）不影响朗读内容；早期音频的朗读文本保留了弯撇号。"""
+    return t.replace('’', "'")
 
 
 def check_audio(R, pids, voice='female'):
@@ -258,7 +266,7 @@ def check_audio(R, pids, voice='female'):
         # #20 #13 朗读内容与当前英文、当前朗读修正一致（改了英文或修正却没重新生成音频，会在这里暴露）
         S = sents(p)
         stale = [k for k, (s, t) in enumerate(zip(S, tm['sentences']), 1)
-                 if s['en'] != t.get('text') or pron.read_text(s['en'], f'{pid}:{k}') != t.get('read')]
+                 if s['en'] != t.get('text') or apo(pron.read_text(s['en'], f'{pid}:{k}')) != apo(t.get('read', ''))]
         ok = len(S) == len(tm['sentences']) and not stale
         R.add(20, pid, ok, f'{len(S)} 句全部一致' if ok else f'句数 {len(tm["sentences"])}/{len(S)}，不一致：第 {stale} 句（需重新生成音频）')
         # 铁律 3、4：开头 1.5 秒，句间 0.8 秒，结尾 ≥ 2 秒
@@ -272,9 +280,13 @@ def check_audio(R, pids, voice='female'):
         fresh = bool(q) and (q.get('mp3_sha256') == sha(mp3) if q.get('mp3_sha256') else q.get('loudness') == rep)
         R.add(4, pid, fresh, '语音识别自检针对的是当前音频' if fresh else '没有针对当前音频的语音识别自检：请运行 gaokao_tts.py qa')
         if fresh:
-            crit = [f"第{s['k']}句 {a!r}→{b!r}（{'、'.join(critical_ops(a, b))}）"
-                    for s in q['sentences'] for a, b in s['ops']
-                    if critical_ops(a, b) and f"{pid}:{s['k']}:{a}→{b}" not in qaok]
+            crit = []
+            for s in q['sentences']:
+                ops = s['ops']
+                # 同一个词在一处“漏读”、另一处“多读”，是识别结果改了写法或语序（如 £240 million），不是漏读
+                moved = {a for a, b in ops if not b.strip()} & {b for a, b in ops if not a.strip()}
+                crit += [f"第{s['k']}句 {a!r}→{b!r}（{'、'.join(critical_ops(a, b))}）" for a, b in ops
+                         if critical_ops(a, b) and (a or b) not in moved and f"{pid}:{s['k']}:{a}→{b}" not in qaok]
             R.add(23, pid, not crit, '；'.join(crit) + '（逐条听辨/修正读音，确认无误后登记到 识别差异已核.json）' if crit else '无否定词、词尾、漏读、多读差异')
             low = [f"第{s['k']}句 {s['mos']}" for s in q['sentences'] if s['mos'] < 4.0]
             R.add(4, pid, not low, f'自然度低于 4.0：{low}' if low else f"自然度 {q['mos']:.2f}，每句都 ≥ 4.0")
