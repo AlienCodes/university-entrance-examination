@@ -294,6 +294,87 @@ for _k,_v in POST7.items(): POST.setdefault(_k,[]).extend(_v)
 POST8={'p41':[('for a two-week trip','on a two-week trip')]}
 for _k,_v in POST8.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第三批 20 篇严格英文复核后的原文订正
+POST9={
+ 'p25':[
+   ('It is recently reported that','It has recently been reported that'),
+   ('top class chefs','top-class chefs'),
+   ('best seller lists','bestseller lists'),
+   ('is reflected through television scheduling','is reflected in television scheduling'),
+ ],
+ 'p26':[
+   ('example of this between literate','example of this imbalance between literate'),
+ ],
+ 'p27':[
+   ('that insect population has dropped','that the insect population has dropped'),
+ ],
+ 'p28':[
+   ('repurpose old ideas and generated novelty','repurpose old ideas and generate novelty'),
+   ('Many of these practitioners','Many of its practitioners'),
+   ('anything.” Alan says.','anything,” Alan says.'),
+   ('enamored by a concept','enamored with a concept'),
+   ('a diverse line of projects','a diverse range of projects'),
+ ],
+ 'p29':[
+   ('brain imaging technique','brain imaging techniques'),
+   ('you feel like going through a similar experience','you feel as if you are going through a similar experience'),
+   ('our perception can create','their perceptions can create'),
+ ],
+ 'p31':[
+   ('have a preference to people','have a preference for people'),
+   ('challenged that the food','argued that the food'),
+   ('“unwilling” or “unable” to give them a treat','“unwilling” and those who are “unable” to give them a treat'),
+   ('“theory of mind” which was once thought','“theory of mind”, which was once thought'),
+   ('pull it out of its reach','pull it out of the dog’s reach'),
+   ('looked at the experimenter less often, sat,','looked at the experimenter less often and sat,'),
+ ],
+ 'p32':[
+   ('And unlike what we suppose,','And contrary to what we may suppose,'),
+   ('a form that the wisdom and knowledge of the people were passed down','a form through which the wisdom and knowledge of the people were passed down'),
+ ],
+ 'p33':[
+   ('Mesozoic Period','Mesozoic Era'),
+ ],
+ 'p34':[
+   ('compared to what was expected based on observations of the universe more than 13 billion years ago by the European Space Agency’s Planck satellite','than was expected based on the European Space Agency’s Planck satellite observations of the universe as it was more than 13 billion years ago'),
+   ('progressively distant galaxies','progressively more distant galaxies'),
+   ('which maps the cosmic microwave background','which mapped the cosmic microwave background'),
+ ],
+ 'p35':[
+   ('not only beat you at chess, it can also outperform you in debate','not only beat you at chess but also outperform you in debate'),
+ ],
+ 'p36':[
+   ('Solar Energy Industry Association','Solar Energy Industries Association'),
+ ],
+ 'p01':[
+   ('patients suffering dementia','patients suffering from dementia'),
+ ],
+ 'p04':[
+   ('30-or 35-year-old','30- or 35-year-old'),
+ ],
+ 'p05':[
+   ('from the islands off Tierra del Fuego, the southernmost tip of the South American mainland','from the islands off Tierra del Fuego, the southernmost tip of South America'),
+ ],
+ 'p06':[
+   ('with a drive and dynamism of a young country','with the drive and dynamism of a young country'),
+   ('shuttling back and forth across the harbor.','shuttling back and forth across the harbor with him.'),
+ ],
+ 'p07':[
+   ('and AI and travelling ahead of the train could','and AI, travelling ahead of the train, could'),
+   ('The more regularly they can be inspected','The more regularly the lines can be inspected'),
+   ('better protection of railway personnel safety','better protection of railway personnel'),
+ ],
+ 'p08':[
+   ('the tax which applies','the tax, which applies'),
+   ('data of the first six months','data from the first six months'),
+   ('Since April drinks companies','Since April, drinks companies'),
+   ('some high sugar brands, like Classic Coca Cola,','some high-sugar brands, like Classic Coca-Cola,'),
+   ('First announced in April, 2016','First announced in March 2016'),
+   ('fewer than 1m litres','less than 1m litres'),
+ ],
+}
+for _k,_v in POST9.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
