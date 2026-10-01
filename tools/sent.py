@@ -246,6 +246,33 @@ POST5={
 }
 for _k,_v in POST5.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第二批复核第一轮后的原文订正
+POST6={
+ 'p45':[
+   ('should also be wise to take up challenges','should also be wise enough to take up challenges'),
+ ],
+ 'p48':[
+   ('We’re not tempted (诱惑) by sugary treats, but by','We’re tempted (诱惑) not by sugary treats but by'),
+   ('Each child was told if they waited','Each child was told that if they waited'),
+ ],
+ 'p20':[
+   ('The experiment of estimation he conducted','The estimation experiment he conducted'),
+ ],
+ 'p23':[
+   ('an invitation to think and experience philosophy','an invitation to think about and experience philosophy'),
+ ],
+ 'p24':[
+   ('in the U.S.','in the lower 48 states.'),
+ ],
+ 'p57':[
+   ('require more than some people?','require more than some people do?'),
+ ],
+ 'p38':[
+   ('the primary data that comes from','the primary data that come from'),
+ ],
+}
+for _k,_v in POST6.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
