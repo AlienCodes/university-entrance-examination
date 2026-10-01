@@ -7,7 +7,7 @@
 - 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：1.36%
+- 平均识别差异率：1.33%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -20,7 +20,7 @@
 | p64 | 4.49 | 0.55% | five → fives; sight → site |
 | p65 | 4.49 | 1.28% | facade → fa ade; douyin → doyen; kuaishou → kuishou; it's → its |
 | p66 | 4.52 | 0.21% | inzlicht → inslicht |
-| p67 | 4.53 | 1.88% | size → sized; five millimeters → ∅; thousandth → zeroth; houlihan → hoolehan; houlihan → julihan; houlihan → julihan; houlihan → hulihan |
+| p67 | 4.53 | 1.41% | five millimeters → ∅; thousandth → zeroth; houlihan → julihan; houlihan → julihan; houlihan → hulihan |
 | p49 | 4.52 | 1.87% | verkade → verkata; te br mmelstroet → de brummelstrut; neighbourhoods → neighborhoods; recognise → recognize |
 | p50 | 4.52 | 0.93% | milligrams → mg; milligrams → mg; gauchotte → goshot |
 | p51 | 4.51 | 1.12% | sonja detrinidad → sonia de trinidad |
