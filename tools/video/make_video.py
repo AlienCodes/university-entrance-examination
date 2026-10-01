@@ -144,13 +144,19 @@ def main():
         exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
         pg = br.new_page(viewport={'width': W, 'height': H}, device_scale_factor=a.scale)
+        font_sizes = []
         for i, h in enumerate(slides):
             f = tmp / f'{i:03d}.html'
             f.write_text(h, 'utf-8')
             pg.goto(f.as_uri())
             pg.evaluate('document.fonts.ready')
             if i:
-                pg.evaluate(FIT)
+                fs = pg.evaluate(FIT)
+                # 踩坑预防：字号缩到最小仍放不下时，文字会被裁掉——直接报错
+                fits = pg.evaluate("() => document.getElementById('box').scrollHeight <= document.querySelector('.stage').clientHeight")
+                if not fits:
+                    raise SystemExit(f'第 {i} 句内容太多，字号缩到 {fs}px 仍放不下，画面会被裁切')
+                font_sizes.append(fs)
             pg.screenshot(path=str(tmp / f'{i:03d}.png'))
         br.close()
 
@@ -206,6 +212,7 @@ def main():
     if fails:
         (out / name).unlink()
         raise SystemExit('核查未通过，已删除成品：\n  ' + '\n  '.join(fails))
+    print(f'  英文字号：最大 {max(font_sizes)}px，最小 {min(font_sizes)}px（第 {font_sizes.index(min(font_sizes)) + 1} 句）')
     print(f'已生成并核查通过 {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
 
 
