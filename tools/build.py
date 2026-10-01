@@ -82,7 +82,10 @@ for o in S:
     rec['name']=f"{o['year']} {o['paper']} 阅读{o['part']}"
     flat=[s for para in o['sents'] for s in para]
     if not os.path.exists(p):
-        rec['done']=False; out.append(rec); continue
+        rec['done']=False
+        rec['paras']=[[{'en':en,'zh':'','w':[]} for en in para] for para in o['sents']]
+        rec['nv']=0
+        out.append(rec); continue
     meta,ann=parse(p)
     rec.update(done=True,title=meta.get('T',''),genre=meta.get('G',''),summary=meta.get('S',''))
     if len(ann)!=len(flat): print(pid,'sentence count mismatch',len(ann),len(flat)); errs+=1
@@ -120,9 +123,18 @@ for key,b in bank.items():
     pat=r'.{0,60}?'.join(seqre(x.strip()) for x in b['h'].split('…'))
     rx=re.compile(pat,re.I)
     b['freq']=[pid for pid,ss in allsent.items() if any(rx.search(x) for x in ss)]
+# 音频（tools/tts 生成）：audio/timings.json -> 每篇的文件路径和逐句起止时间
+tp='../audio/timings.json'
+if os.path.exists(tp):
+    T=json.load(open(tp))
+    for r in out:
+        for v,ps in T.items():
+            if r['id'] in ps:
+                a=ps[r['id']]
+                r.setdefault('audio',{})[v]={'file':'audio/'+a['file'],'dur':a['duration'],'s':[[x['k'],x['start'],x['end']] for x in a['sentences']]}
 data={'passages':out,'bank':sorted(bank.values(),key=lambda b:(-len(b['freq']),b['h'].lower()))}
 json.dump(data,open('../data/vocab.json','w'),ensure_ascii=False)
-tpl=open('template.html').read()
+tpl=open('template.html').read().replace('/*__SCRIPT__*/',open('page.js').read())
 open('../index.html','w').write(tpl.replace('/*__DATA__*/null',json.dumps(data,ensure_ascii=False).replace('</','<\\/')))
 done=[r for r in out if r.get('done')]
 print('passages done',len(done),'vocab',sum(r['nv'] for r in done),'bank',len(bank),'errors',errs)
