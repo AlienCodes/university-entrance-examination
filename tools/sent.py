@@ -390,6 +390,47 @@ POST10={
 }
 for _k,_v in POST10.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第四批（2022 其余 10 篇）英文订正：严格英文复核，双人核验
+POST11={
+ 'p10':[
+   ('Chris Johnson who I see','Chris Johnson, who I see'),
+   ('“by a wide margin”','“by a very large margin”'),
+ ],
+ 'p11':[
+   ('The question, “What do elephants and fish have in common?” may sound strange but','The question “What do elephants and fish have in common?” may sound strange, but'),
+   ('A team at Georgia Institute of Technology','A team at the Georgia Institute of Technology'),
+   ('to quickly generate air pressure that can draw','to quickly generate low pressure that can draw'),
+   ('both on ground and in water','both on land and in water'),
+   ('and that we are not the only creatures','and a reminder that we are not the only creatures'),
+ ],
+ 'p13':[
+   ('subjects’ fingertip temperatures were measured after being“included” in or “rejected” from a group task','subjects had their fingertip temperatures measured after being “included” in or “rejected” from a group task'),
+   ('one with a soft heart and someone who','one with a soft heart, and someone who'),
+ ],
+ 'p14':[
+   ('Ralph Emerson','Ralph Waldo Emerson'),
+   ('What then, is','What, then, is'),
+   ('To achieve desired outcome','To achieve the desired outcome'),
+   ('a road accident probably occurs','a road accident will probably occur'),
+   ('with love in heart','with love in our hearts'),
+   ('on the world we give','on the world, we give'),
+ ],
+ 'p15':[
+   ('looked at data carefully from the U.S.','looked carefully at data from the U.S.'),
+ ],
+ 'p16':[
+   ('or applying new technology to an existing product','or the application of new technology to an existing product'),
+ ],
+ 'p17':[
+   ('New researchers found','New research found'),
+   ('and as they did, it came on','and if they did, it came on'),
+   ('a decade later than less sporty women','a decade later than in less sporty women'),
+   ('developing dementia. “','developing dementia.”'),
+   ('between cardiovascular fitness and dementia, it only shows an association.','between cardiovascular fitness and dementia; it only shows an association.'),
+ ],
+}
+for _k,_v in POST11.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
