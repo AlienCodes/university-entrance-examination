@@ -61,6 +61,9 @@ def check(mp4, p, tm):
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
     ok('音频句数 = 文章句数', len(sents) == len(times), f'{len(times)} / {len(sents)}')
+    # 踩坑：英文订正后如果没重新生成音频，画面上的英文和朗读的内容会不一致
+    stale = [i + 1 for i, (s, t) in enumerate(zip(sents, times)) if s['en'] != t.get('text')]
+    ok('朗读内容与画面英文逐句一致', not stale, f'不一致：第 {stale} 句' if stale else f'{len(sents)} 句全部一致')
     # 3. 每句至少一个生词
     empty = [i + 1 for i, s in enumerate(sents) if not s['w']]
     ok('每句至少标注一个单词', not empty, f'空句 {empty}' if empty else f'{len(sents)} 句全部有标注')

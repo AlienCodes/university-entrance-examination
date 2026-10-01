@@ -7,7 +7,7 @@
 - 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：1.26%
+- 平均识别差异率：1.30%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -20,17 +20,17 @@
 | p64 | 4.49 | 0.81% | versus → vs; five → fives; sight → site |
 | p65 | 4.49 | 0.77% | douyin → doyen; kuaishou → kuishou; it's → its |
 | p66 | 4.52 | 0.21% | inzlicht → inslecht |
-| p67 | 4.53 | 0.69% | thousandth → zeroth; houlihan → julihan; houlihan → hulihan |
+| p67 | 4.53 | 1.15% | size → sized; thousandth → zeroth; houlihan → julihan; houlihan → julihan; houlihan → hulihan |
 | p49 | 4.52 | 1.90% | verkade → verkata; te br mmelstroet → de brummelstrut; neighbourhoods → neighborhoods; recognise → recognize |
 | p50 | 4.52 | 0.62% | milligrams → mg; gauchotte → goshot |
 | p51 | 4.51 | 1.12% | sonja detrinidad → sonia de trinidad |
-| p52 | 4.51 | 0.00% |  |
+| p52 | 4.52 | 0.00% |  |
 | p53 | 4.50 | 0.51% | friends' → friend's; defence → defense |
-| p54 | 4.51 | 0.78% | organise → organize; too → two; green → grain |
-| p55 | 4.52 | 4.75% | c o two → co2; c o two → co2; c o two → co2; c o two → co2; o two → o2; c o two → co2; c o two → co2 |
-| p68 | 4.52 | 0.23% | par → para |
-| p69 | 4.50 | 1.12% | kwong → kwang; azimi → as emi; azimi's → azimi |
-| p70 | 4.52 | 4.13% | salk → sauk; salk → soc; sleap → sleep; sleap → sleep; phenomics busch → phomics bush; sleap → sleep; sleap → sleep; sleap → sleep; sleap → sleep; salk → soc; salk → soc; borrowing' → borrowing |
+| p54 | 4.51 | 0.77% | organise → organize; too → two; green → grain |
+| p55 | 4.52 | 4.76% | c o two → co2; c o two → co2; c o two → co2; c o two → co2; o two → o2; c o two → co2; c o two → co2 |
+| p68 | 4.52 | 0.00% |  |
+| p69 | 4.51 | 1.40% | kwong → kwang; azimi → as emi; azimi's → a zimi |
+| p70 | 4.52 | 4.43% | salk → sauk; salk → soc; sleap → sleep; sleap → sleep; phenomics busch → phomics bush; sleap → sleep; sleap → sleep; sleap → sleep; sleap → sleep; catalog → catalogue; salk → soc; salk → soc; borrowing' → borrowing |
 
 ## male
 
