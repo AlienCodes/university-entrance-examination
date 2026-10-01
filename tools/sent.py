@@ -431,6 +431,31 @@ POST11={
 }
 for _k,_v in POST11.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第四批译文复核第一轮发现的英文问题（双人核验）
+POST12={
+ 'p09':[
+   ('What would the world be if','What would the world be like if'),
+   ('they must work out how they relate to each other','they must work out how the players relate to each other'),
+ ],
+ 'p10':[
+   ('comparing what we are doing with others','comparing what we are doing with what others are doing'),
+ ],
+ 'p11':[
+   ('an elephant could do the same','an elephant can do the same'),
+   ('perform suction feeding that requires','perform suction feeding, which requires'),
+ ],
+ 'p15':[
+   ('poultry cultivation','poultry farming'),
+ ],
+ 'p16':[
+   ('but the term is broader in scope','but the term “innovation” is broader in scope'),
+ ],
+ 'p17':[
+   ('could delay or even prevent them from developing dementia','could delay dementia or even prevent them from developing it'),
+ ],
+}
+for _k,_v in POST12.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
