@@ -57,6 +57,16 @@ def check(mp4, p, tm):
     ok('分辨率 ≥ 2K 且 16:9', w >= 2560 and w * 9 == h * 16, f'{w}×{h}')
     vd, ad = float(v['duration']), float(a['duration'])
     ok('画面与声音等长', abs(vd - ad) < 0.1, f'画面 {vd:.2f}s，声音 {ad:.2f}s')
+    # 流畅：逐帧检查时间戳，帧间隔必须恒定（无卡顿、无跳帧、无重复帧时间）
+    pts = sorted(float(x) for x in run(['ffprobe', '-v', 'error', '-select_streams', 'v', '-show_entries', 'packet=pts_time',
+                                        '-of', 'csv=p=0', str(mp4)]).split() if x and x != 'N/A')
+    gaps = np.diff(pts)
+    ok('画面流畅（帧间隔恒定 1/30 秒）', len(gaps) and np.allclose(gaps, gaps[0], atol=1e-3) and abs(gaps[0] - 1 / 30) < 1e-3,
+       f'{len(pts)} 帧，帧间隔 {gaps.min():.4f}–{gaps.max():.4f} 秒')
+    apts = sorted(float(x) for x in run(['ffprobe', '-v', 'error', '-select_streams', 'a', '-show_entries', 'packet=pts_time,duration_time',
+                                         '-of', 'csv=p=0', str(mp4)]).replace(',', ' ').split()[0::2] if x != 'N/A')
+    ag = np.diff(apts)
+    ok('声音连续（无断档）', len(ag) and ag.max() < 0.05, f'音频包间隔最大 {ag.max() * 1000:.1f} 毫秒')
 
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
