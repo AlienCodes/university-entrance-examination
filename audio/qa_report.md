@@ -4,15 +4,16 @@
 
 ## female
 
-- 文章数：2
+- 文章数：3
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.52（最低 4.51）
-- 平均识别差异率：1.27%
+- 平均识别差异率：1.52%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | p58 | 4.51 | 2.54% | coauthor r is n commane → co author rosheen khamaine; novem auyeung → novum aoyung; auyeung → aoyung |
 | p59 | 4.53 | 0.00% |  |
+| p60 | 4.51 | 2.03% | qomolangma → chomalangma; chimborazo → chimborazzo; mont → mon; pradidali → pratidali; menton → monton; pradidali → prati dali |
 
 ## male
 
