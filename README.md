@@ -1,2 +1,12 @@
 # university-entrance-examination
-university entrance examination reading
+
+高考英语阅读 C·D 篇词汇精读（2022–2026 全国及各省市真题）。
+
+- `index.html`：网页，直接用浏览器打开。按年份排序，每年全国卷在前；逐句英文 + 中文翻译，生词按三档高亮（★ 高中核心 / ☆ 超纲拓展 / ◆ 短语搭配），带“逐句模式”（适合录视频）和去重后的总词库。
+- `data/vocab.json`：全部数据（文章、逐句翻译、标注、总词库），可供视频制作等程序使用。
+- `tools/`：生成脚本。
+  - `sents.json`：70 篇文章原文，已切分为句子。
+  - `ann/pXX.txt`：每篇的逐句翻译和标词（`词=释义`；`*` 开头为超纲拓展，`~` 开头为短语；`词{原文形式}=释义` 指定原文写法）。
+  - 运行 `cd tools && python3 build.py` 重新生成 `index.html` 和 `data/vocab.json`。
+
+进度：2026 全国Ⅰ卷 C、D，全国Ⅱ卷 C 已完成（样例），其余制作中。

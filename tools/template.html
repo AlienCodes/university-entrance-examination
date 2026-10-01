@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>高考阅读词汇精读</title>
+<style>
+:root{
+  --bg:#f7f6f2; --panel:#ffffff; --ink:#1d1d1b; --ink2:#5b5a55; --ink3:#8a8984; --line:#e4e2db;
+  --accent:#2f5d8a; --accent-bg:#e8eff6;
+  --core:#b45309; --core-bg:#fdf0dc;
+  --ext:#7c3aed; --ext-bg:#efe7fd;
+  --phr:#0f766e; --phr-bg:#dcf3ef;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161614; --panel:#1f1f1c; --ink:#ecebe6; --ink2:#b3b1aa; --ink3:#85837d; --line:#33322e;
+    --accent:#8db8e6; --accent-bg:#22303d;
+    --core:#f2a54a; --core-bg:#3a2a14;
+    --ext:#b99bf7; --ext-bg:#2e2443;
+    --phr:#4fd1c0; --phr-bg:#13332f;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161614; --panel:#1f1f1c; --ink:#ecebe6; --ink2:#b3b1aa; --ink3:#85837d; --line:#33322e;
+  --accent:#8db8e6; --accent-bg:#22303d;
+  --core:#f2a54a; --core-bg:#3a2a14;
+  --ext:#b99bf7; --ext-bg:#2e2443;
+  --phr:#4fd1c0; --phr-bg:#13332f;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:17px;letter-spacing:.02em;margin-right:auto}
+.brand small{display:block;font-weight:400;font-size:12px;color:var(--ink3);letter-spacing:0}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px}
+.tabs button{border:0;background:none;padding:6px 14px;border-radius:7px;font-size:14px;color:var(--ink2)}
+.tabs button.on{background:var(--accent-bg);color:var(--accent);font-weight:600}
+.wrap{max-width:1180px;margin:0 auto;padding:16px;display:grid;grid-template-columns:270px minmax(0,1fr);gap:20px;align-items:start}
+nav.cat{position:sticky;top:70px;max-height:calc(100vh - 86px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 0;box-shadow:var(--shadow)}
+.yr{padding:10px 14px 4px;font-weight:700;font-size:13px;color:var(--ink3);letter-spacing:.06em}
+.it{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:none;padding:6px 14px;font-size:14px;line-height:1.35;color:var(--ink)}
+.it:hover:not([disabled]){background:var(--accent-bg)}
+.it.on{background:var(--accent-bg);color:var(--accent);font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
+.it[disabled]{color:var(--ink3);cursor:default}
+.it .n{margin-left:auto;font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.it .todo{margin-left:auto;font-size:11px;color:var(--ink3)}
+.catsel{display:none}
+main{min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.ph{padding:20px 22px 16px;border-bottom:1px solid var(--line)}
+.ph .nm{font-size:13px;color:var(--accent);font-weight:600;letter-spacing:.03em}
+.ph h1{font-size:24px;line-height:1.3;margin:4px 0 8px;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--ink2)}
+.meta b{color:var(--ink);font-variant-numeric:tabular-nums}
+.sum{margin:12px 0 0;font-size:14.5px;color:var(--ink2);background:var(--bg);border-radius:10px;padding:10px 12px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 22px;border-bottom:1px solid var(--line)}
+.tg{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--ink2)}
+.tg.on{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.tg.pri{background:var(--accent);border-color:var(--accent);color:var(--panel);font-weight:600}
+.legend{margin-left:auto;display:flex;gap:10px;font-size:12px;color:var(--ink2);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:4px}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.dot.core{background:var(--core)}.dot.ext{background:var(--ext)}.dot.phr{background:var(--phr)}
+.body{padding:8px 22px 22px}
+.para{padding:6px 0;border-bottom:1px dashed var(--line)}
+.para:last-child{border-bottom:0}
+.s{display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 8px;padding:10px 0}
+.s .k{font-size:12px;color:var(--ink3);padding-top:4px;font-variant-numeric:tabular-nums;text-align:right}
+.en{font-size:17.5px;line-height:1.75;font-family:Georgia,"Times New Roman","Songti SC",serif}
+.zh{font-size:15px;color:var(--ink2);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:13px;line-height:1.3;border-radius:7px;padding:3px 8px;border:1px solid transparent}
+.chip b{font-weight:600;margin-right:4px}
+.chip.core{background:var(--core-bg);color:var(--ink)}.chip.core b{color:var(--core)}
+.chip.ext{background:var(--ext-bg);color:var(--ink)}.chip.ext b{color:var(--ext)}
+.chip.phr{background:var(--phr-bg);color:var(--ink)}.chip.phr b{color:var(--phr)}
+mark.w{background:none;color:inherit;border-radius:3px;padding:0 1px;cursor:pointer;border-bottom:2px solid}
+mark.w.core{color:var(--core);border-color:var(--core);background:var(--core-bg)}
+mark.w.ext{color:var(--ext);border-color:var(--ext);background:var(--ext-bg)}
+mark.w.phr{color:var(--phr);border-color:var(--phr);background:var(--phr-bg)}
+.nohl mark.w{color:inherit;background:none;border-color:transparent}
+.nozh .zh{display:none}
+.nochip .chips{display:none}
+.pop{position:fixed;z-index:50;max-width:300px;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.18);padding:12px 14px;font-size:14px;display:none}
+.pop h4{margin:0 0 2px;font-size:18px;font-family:Georgia,serif}
+.pop .tier{font-size:11px;font-weight:600;letter-spacing:.04em}
+.pop .m{margin:6px 0}
+.pop .f{font-size:12px;color:var(--ink3)}
+.pop button{margin-top:8px}
+/* bank */
+.bk-h{padding:18px 22px 12px;border-bottom:1px solid var(--line)}
+.bk-h h1{font-size:22px;margin:0 0 4px}
+.bk-h p{margin:0;color:var(--ink2);font-size:14px}
+.bk-c{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 22px;border-bottom:1px solid var(--line)}
+.bk-c input[type=search]{flex:1 1 200px;min-width:0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:9px;padding:7px 10px;font-size:14px}
+.bk-c select{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:9px;padding:6px 8px;font-size:13px}
+.rows{padding:4px 0}
+.row{display:grid;grid-template-columns:28px minmax(120px,220px) minmax(0,1fr) auto;gap:6px 12px;align-items:start;padding:10px 22px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .hw{font-family:Georgia,serif;font-size:17px;font-weight:600}
+.row .hw.core{color:var(--core)}.row .hw.ext{color:var(--ext)}.row .hw.phr{color:var(--phr)}
+.row .mm{font-size:14px}
+.row .src{grid-column:3/5;display:flex;flex-wrap:wrap;gap:4px}
+.row .src button{border:1px solid var(--line);background:var(--bg);border-radius:6px;font-size:12px;padding:1px 6px;color:var(--ink2)}
+.row .src button[disabled]{opacity:.55;cursor:default}
+.row .fq{font-size:12px;color:var(--ink3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.row.known{opacity:.45}
+.row input{margin-top:6px;width:16px;height:16px}
+.empty{padding:30px 22px;color:var(--ink3);text-align:center}
+/* reader mode */
+.rd{position:fixed;inset:0;z-index:40;background:var(--bg);display:none;flex-direction:column}
+.rd.on{display:flex}
+.rd-top{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.rd-top .t{font-weight:600;font-size:14px;margin-right:auto}
+.rd-main{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.rd-in{max-width:980px;width:100%}
+.rd .en{font-size:clamp(22px,3.4vw,40px);line-height:1.6}
+.rd .zh{font-size:clamp(17px,2.2vw,26px);margin-top:18px}
+.rd .chips{margin-top:26px;gap:10px}
+.rd .chip{font-size:clamp(14px,1.6vw,19px);padding:6px 12px}
+.rd-bot{display:flex;align-items:center;justify-content:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.rd-bot .pg{font-variant-numeric:tabular-nums;color:var(--ink2);min-width:70px;text-align:center}
+.rd-bot button{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 18px}
+.prog{height:3px;background:var(--line)}.prog i{display:block;height:100%;background:var(--accent);transition:width .2s}
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr;padding:12px}
+  nav.cat{display:none}
+  .catsel{display:block;width:100%;margin-bottom:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:9px 10px;font-size:15px}
+  .ph,.bar,.body,.bk-h,.bk-c{padding-left:16px;padding-right:16px}
+  .row{grid-template-columns:24px minmax(0,1fr) auto;padding:10px 16px}
+  .row .mm{grid-column:2/4}
+  .row .src{grid-column:2/4}
+  .legend{margin-left:0;width:100%}
+  .en{font-size:16.5px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="brand">高考英语阅读 C·D 篇 · 词汇精读<small>2022–2026 全国及各省市真题 · 逐句翻译 · 生词标注</small></div>
+  <div class="tabs" role="tablist"><button id="tabP" class="on">文章精读</button><button id="tabB">总词库</button></div>
+</div></header>
+<div class="wrap">
+  <nav class="cat" id="cat"></nav>
+  <main id="main"></main>
+</div>
+<div class="pop" id="pop"></div>
+<div class="rd" id="rd">
+  <div class="rd-top"><span class="t" id="rdT"></span>
+    <button class="tg" id="rdZh">中文</button><button class="tg" id="rdCh">词表</button><button class="tg" id="rdX">退出 Esc</button></div>
+  <div class="prog"><i id="rdP"></i></div>
+  <div class="rd-main"><div class="rd-in" id="rdIn"></div></div>
+  <div class="rd-bot"><button id="rdPrev">← 上一句</button><span class="pg" id="rdPg"></span><button id="rdNext">下一句 →</button></div>
+</div>
+<script>
+const DATA=/*__DATA__*/null;
+const TIER={core:'★ 高中核心',ext:'☆ 超纲拓展',phr:'◆ 短语搭配'};
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem('gk_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('gk_'+k,JSON.stringify(v))}catch(e){}}};
+const P=DATA.passages, byId={}; P.forEach(p=>byId[p.id]=p);
+const bankBy={}; DATA.bank.forEach(b=>bankBy[b.h.toLowerCase()]=b);
+let known=new Set(store.get('known',[]));
+let opt=Object.assign({zh:true,chip:true,hl:true},store.get('opt',{}));
+let view='p', cur=store.get('cur',null);
+if(!cur||!byId[cur]||!byId[cur].done){const f=P.find(p=>p.done);cur=f?f.id:null}
+const short=p=>(String(p.year).slice(2)+' '+p.paper.replace(/（.*?）/g,m=>m.replace(/[（）]/g,'').replace(/·.*$/,''))+' '+p.part).replace('全国','全国').replace('卷 ','卷');
+function catHTML(){
+  let h='',sel='<select class="catsel" id="catsel">';
+  const years=[...new Set(P.map(p=>p.year))];
+  years.forEach(y=>{
+    h+=`<div class="yr">${y} 年</div>`; sel+=`<optgroup label="${y} 年">`;
+    P.filter(p=>p.year===y).forEach(p=>{
+      const lbl=`${p.paper} 阅读${p.part}`;
+      h+=`<button class="it${p.id===cur&&view==='p'?' on':''}" data-id="${p.id}" ${p.done?'':'disabled'}>${esc(lbl)}${p.done?`<span class="n">${p.words}词·${p.nv}标</span>`:'<span class="todo">制作中</span>'}</button>`;
+      sel+=`<option value="${p.id}" ${p.done?'':'disabled'} ${p.id===cur?'selected':''}>${esc(y+' '+lbl)}${p.done?'':'（制作中）'}</option>`;
+    });
+    sel+='</optgroup>';
+  });
+  $('#cat').innerHTML=h;
+  const on=$('#cat .it.on'); if(on){const c=$('#cat');c.scrollTop=on.offsetTop-c.clientHeight/2}
+  return sel+'</select>';
+}
+function sentHTML(s){
+  const sp=[];s.w.forEach((w,i)=>w.sp.forEach(([a,b])=>sp.push([a,b,w.t,i])));
+  sp.sort((x,y)=>x[0]-y[0]);
+  let o='',pos=0;
+  sp.forEach(([a,b,t,i])=>{if(a<pos)return;o+=esc(s.en.slice(pos,a))+`<mark class="w ${t}" data-h="${esc(s.w[i].h)}" data-m="${esc(s.w[i].m)}" data-t="${t}">${esc(s.en.slice(a,b))}</mark>`;pos=b});
+  return o+esc(s.en.slice(pos));
+}
+function chipsHTML(s){
+  return [...s.w].sort((a,b)=>a.sp[0][0]-b.sp[0][0]).map(w=>`<span class="chip ${w.t}"><b>${esc(w.h)}</b>${esc(w.m)}</span>`).join('');
+}
+function renderPassage(){
+  const p=byId[cur]; const sel=catHTML();
+  if(!p){$('#main').innerHTML=sel+'<div class="card empty">暂无已完成的文章</div>';bindSel();return}
+  let k=0,body='';
+  p.paras.forEach(para=>{body+='<div class="para">';para.forEach(s=>{k++;body+=`<div class="s" data-k="${k}"><div class="k">${k}</div><div><div class="en">${sentHTML(s)}</div><div class="zh">${esc(s.zh)}</div>${s.w.length?`<div class="chips">${chipsHTML(s)}</div>`:''}</div></div>`});body+='</div>'});
+  const cnt={core:0,ext:0,phr:0};p.paras.flat().forEach(s=>s.w.forEach(w=>cnt[w.t]++));
+  $('#main').innerHTML=sel+`<article class="card">
+  <div class="ph"><div class="nm">${esc(p.name)}</div><h1>${esc(p.title)}</h1>
+   <div class="meta"><span>${esc(p.genre)}</span><span>全文 <b>${p.words}</b> 词</span><span>${k} 句</span><span>标注 <b>${p.nv}</b> 处（核心 ${cnt.core} · 超纲 ${cnt.ext} · 短语 ${cnt.phr}）</span></div>
+   <p class="sum">${esc(p.summary)}</p></div>
+  <div class="bar"><button class="tg pri" id="go">▶ 逐句模式</button>
+   <button class="tg ${opt.zh?'on':''}" data-o="zh">中文翻译</button><button class="tg ${opt.chip?'on':''}" data-o="chip">句下词表</button><button class="tg ${opt.hl?'on':''}" data-o="hl">高亮</button>
+   <span class="legend"><span><i class="dot core"></i>高中核心</span><span><i class="dot ext"></i>超纲拓展</span><span><i class="dot phr"></i>短语搭配</span></span></div>
+  <div class="body ${opt.zh?'':'nozh'} ${opt.chip?'':'nochip'} ${opt.hl?'':'nohl'}" id="pb">${body}</div></article>`;
+  document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{opt[b.dataset.o]=!opt[b.dataset.o];store.set('opt',opt);renderPassage()});
+  $('#go').onclick=()=>openReader(0);
+  bindSel();
+}
+function bindSel(){
+  document.querySelectorAll('.it[data-id]').forEach(b=>b.onclick=()=>openP(b.dataset.id));
+  const s=$('#catsel'); if(s) s.onchange=()=>openP(s.value);
+}
+function openP(id,flash){
+  if(!byId[id]||!byId[id].done)return;
+  cur=id;store.set('cur',id);setView('p');window.scrollTo(0,0);
+  if(flash){const m=[...document.querySelectorAll('mark.w')].find(x=>x.dataset.h.toLowerCase()===flash);if(m){m.scrollIntoView({block:'center'});m.animate([{outline:'3px solid var(--accent)'},{outline:'3px solid transparent'}],{duration:1600})}}
+}
+// bank
+let bq=store.get('bq',{q:'',t:'all',sort:'freq',hide:false});
+function renderBank(){
+  const sel=catHTML();
+  const doneN=P.filter(p=>p.done).length;
+  $('#main').innerHTML=sel+`<section class="card">
+   <div class="bk-h"><h1>总词库（去重）</h1><p>来自已完成的 ${doneN} / ${P.length} 篇文章，共 <b>${DATA.bank.length}</b> 个词条。“出现篇数”统计该词在全部 ${P.length} 篇文章中出现的次数——次数越多越该优先背。勾选表示已掌握。</p></div>
+   <div class="bk-c"><input type="search" id="bqq" placeholder="搜索英文或中文…" value="${esc(bq.q)}">
+    <select id="bqt"><option value="all">全部类型</option><option value="core">★ 高中核心</option><option value="ext">☆ 超纲拓展</option><option value="phr">◆ 短语搭配</option></select>
+    <select id="bqs"><option value="freq">按出现篇数</option><option value="az">按字母 A–Z</option></select>
+    <button class="tg ${bq.hide?'on':''}" id="bqh">隐藏已掌握</button><span class="fq" id="bqn"></span></div>
+   <div class="rows" id="rows"></div></section>`;
+  $('#bqt').value=bq.t;$('#bqs').value=bq.sort;
+  const upd=()=>{bq={q:$('#bqq').value,t:$('#bqt').value,sort:$('#bqs').value,hide:bq.hide};store.set('bq',bq);rows()};
+  $('#bqq').oninput=upd;$('#bqt').onchange=upd;$('#bqs').onchange=upd;
+  $('#bqh').onclick=()=>{bq.hide=!bq.hide;store.set('bq',bq);renderBank()};
+  bindSel();rows();
+}
+function rows(){
+  const q=bq.q.trim().toLowerCase();
+  let L=DATA.bank.filter(b=>(bq.t==='all'||b.t===bq.t)&&(!q||b.h.toLowerCase().includes(q)||b.m.join('；').includes(q))&&!(bq.hide&&known.has(b.h.toLowerCase())));
+  if(bq.sort==='az')L=[...L].sort((a,b)=>a.h.toLowerCase().localeCompare(b.h.toLowerCase()));
+  $('#bqn').textContent=L.length+' 条';
+  $('#rows').innerHTML=L.length?L.map(b=>{const key=b.h.toLowerCase();return `<div class="row ${known.has(key)?'known':''}"><input type="checkbox" data-k="${esc(key)}" ${known.has(key)?'checked':''} aria-label="已掌握"><div class="hw ${b.t}">${esc(b.h)}</div><div class="mm">${esc(b.m.join('；'))}</div><div class="fq">${b.freq.length} 篇</div><div class="src">${b.freq.slice(0,12).map(id=>`<button data-go="${id}" data-w="${esc(key)}" ${byId[id].done?'':'disabled'} title="${esc(byId[id].name)}">${esc(short(byId[id]))}</button>`).join('')}${b.freq.length>12?`<span class="fq">等 ${b.freq.length} 篇</span>`:''}</div></div>`}).join(''):'<div class="empty">没有匹配的词条</div>';
+  document.querySelectorAll('.row input').forEach(c=>c.onchange=()=>{c.checked?known.add(c.dataset.k):known.delete(c.dataset.k);store.set('known',[...known]);c.closest('.row').classList.toggle('known',c.checked)});
+  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>openP(b.dataset.go,b.dataset.w));
+}
+function setView(v){view=v;$('#tabP').classList.toggle('on',v==='p');$('#tabB').classList.toggle('on',v==='b');v==='p'?renderPassage():renderBank()}
+$('#tabP').onclick=()=>setView('p');$('#tabB').onclick=()=>setView('b');
+// popover
+const pop=$('#pop');
+document.addEventListener('click',e=>{
+  const m=e.target.closest('mark.w');
+  if(m){const key=m.dataset.h.toLowerCase(),b=bankBy[key];
+    pop.innerHTML=`<div class="tier" style="color:var(--${m.dataset.t})">${TIER[m.dataset.t]}</div><h4>${esc(m.dataset.h)}</h4><div class="m">${esc(m.dataset.m)}</div>${b?`<div class="f">在全部 ${P.length} 篇中出现 ${b.freq.length} 篇${b.m.length>1?'；其他释义：'+esc(b.m.filter(x=>x!==m.dataset.m).join('；')):''}</div>`:''}<button class="tg ${known.has(key)?'on':''}" id="pk">${known.has(key)?'✓ 已掌握':'标记为已掌握'}</button>`;
+    pop.style.display='block';const r=m.getBoundingClientRect(),w=pop.offsetWidth,h=pop.offsetHeight;
+    let x=Math.min(Math.max(8,r.left),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=r.top-h-8;pop.style.left=x+'px';pop.style.top=y+'px';
+    $('#pk').onclick=ev=>{ev.stopPropagation();known.has(key)?known.delete(key):known.add(key);store.set('known',[...known]);pop.style.display='none'};
+    e.stopPropagation();return}
+  if(!e.target.closest('#pop'))pop.style.display='none';
+});
+// reader
+let rdI=0,rdS=[],rdO=Object.assign({zh:true,ch:true},store.get('rdo',{}));
+function openReader(i){const p=byId[cur];rdS=p.paras.flat();rdI=i;$('#rdT').textContent=p.name+' · '+p.title;$('#rd').classList.add('on');document.body.style.overflow='hidden';drawR()}
+function drawR(){const s=rdS[rdI];
+  $('#rdIn').innerHTML=`<div class="en">${sentHTML(s)}</div>${rdO.zh?`<div class="zh">${esc(s.zh)}</div>`:''}${rdO.ch&&s.w.length?`<div class="chips">${chipsHTML(s)}</div>`:''}`;
+  $('#rdPg').textContent=(rdI+1)+' / '+rdS.length;$('#rdP').style.width=((rdI+1)/rdS.length*100)+'%';
+  $('#rdZh').classList.toggle('on',rdO.zh);$('#rdCh').classList.toggle('on',rdO.ch)}
+const closeR=()=>{$('#rd').classList.remove('on');document.body.style.overflow=''};
+$('#rdPrev').onclick=()=>{if(rdI>0){rdI--;drawR()}};$('#rdNext').onclick=()=>{if(rdI<rdS.length-1){rdI++;drawR()}};
+$('#rdX').onclick=closeR;
+$('#rdZh').onclick=()=>{rdO.zh=!rdO.zh;store.set('rdo',rdO);drawR()};$('#rdCh').onclick=()=>{rdO.ch=!rdO.ch;store.set('rdo',rdO);drawR()};
+document.addEventListener('keydown',e=>{if(!$('#rd').classList.contains('on'))return;if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();$('#rdNext').click()}else if(e.key==='ArrowLeft')$('#rdPrev').click();else if(e.key==='Escape')closeR()});
+setView('p');
+</script>
+</body>
+</html>
