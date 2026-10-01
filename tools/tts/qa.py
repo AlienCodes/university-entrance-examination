@@ -11,7 +11,7 @@ from pathlib import Path
 
 import numpy as np
 
-from gaokao_tts import HERE, OUT
+from gaokao_tts import HERE, OUT, verify_loudness
 from textnorm import normalize
 
 
@@ -70,6 +70,9 @@ def run(args):
         for pid, r in timings[v].items():
             if args.only and pid not in args.only:
                 continue
+            # 第一项检查：响度一致性（对 MP3 成品独立测量）
+            loud, lerr = verify_loudness((OUT / r['file']).read_bytes(), r['sentences'], -16.0)
+            print(f"[{v}] {pid}  响度：{'通过' if not lerr else '未通过 ' + '；'.join(lerr)}  {loud}", flush=True)
             a, sr = sf.read(str(OUT / r['file']), dtype='float32')
             a16 = soxr.resample(a, sr, 16000).astype(np.float32)
             rows = []
@@ -79,6 +82,7 @@ def run(args):
                 e, n, ops = diff(it['read'], text)
                 rows.append({'k': it['k'], 'mos': round(mos, 3), 'err': e, 'n': n, 'asr': text, 'ops': ops})
             report.setdefault(v, {})[pid] = {
+                'loudness': loud, 'loudness_ok': not lerr,
                 'mos': round(float(np.mean([x['mos'] for x in rows])), 3),
                 'wer': round(sum(x['err'] for x in rows) / max(1, sum(x['n'] for x in rows)), 4),
                 'sentences': rows}
@@ -94,7 +98,9 @@ def write_md(report):
     for v, ps in report.items():
         ms = [p['mos'] for p in ps.values()]
         ws = [p['wer'] for p in ps.values()]
+        bad = [pid for pid, p in ps.items() if not p.get('loudness_ok', True)]
         lines += [f'## {v}', '', f'- 文章数：{len(ps)}',
+                  f'- **响度一致性（第一项检查）**：{"全部通过" if not bad else "未通过：" + "、".join(bad)}',
                   f'- 平均自然度：{np.mean(ms):.2f}（最低 {min(ms):.2f}）',
                   f'- 平均识别差异率：{np.mean(ws):.2%}', '', '| 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |', '|---|---|---|---|']
         for pid, p in ps.items():

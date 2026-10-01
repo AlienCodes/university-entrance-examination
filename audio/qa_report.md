@@ -5,19 +5,21 @@
 ## female
 
 - 文章数：1
+- **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.51）
 - 平均识别差异率：2.54%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
-| p58 | 4.51 | 2.54% | coauthor r is n commane → co author rosheen khamaine; novem auyeung → novum aoyoun; auyeung → aoyung |
+| p58 | 4.51 | 2.54% | coauthor r is n commane → co author rosheen khamaine; novem auyeung → novum aoyung; auyeung → aoyung |
 
 ## male
 
 - 文章数：1
-- 平均自然度：4.46（最低 4.46）
-- 平均识别差异率：2.86%
+- **响度一致性（第一项检查）**：全部通过
+- 平均自然度：4.44（最低 4.44）
+- 平均识别差异率：3.17%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
-| p58 | 4.46 | 2.86% | coauthor r is n commane → co author rosheen khmain; novem auyeung → novam aoyung; auyeung → ao young |
+| p58 | 4.44 | 3.17% | a → ∅; in → and; coauthor r is n commane → co author roshin khamain; novem auyeung → novum aoyung; auyeung → aoyung |

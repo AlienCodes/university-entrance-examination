@@ -124,6 +124,66 @@ def trim(a, db=-48, pad=0.04):
     return a[max(0, loud[0] * frame - p): min(len(a), (loud[-1] + 1) * frame + p)]
 
 
+TARGET_DB = -20.0      # 每段语音的“有声部分”统一到这个电平（之后整篇再统一到 LUFS）
+MAX_DEV_DB = 1.5       # 响度一致性检查：任何一段与整篇中位数的偏差不得超过这个值
+
+
+def active_db(x, sr=SR):
+    """有声部分的平均电平（dB）：只统计比最响帧低 30 dB 以内的 20ms 帧，忽略停顿和气声。"""
+    n = int(0.02 * sr)
+    f = x[:len(x) // n * n].reshape(-1, n)
+    if not len(f):
+        return -120.0
+    e = np.sqrt(np.mean(f ** 2, axis=1) + 1e-12)
+    act = e[20 * np.log10(e / e.max()) > -30]
+    return float(20 * np.log10(np.sqrt(np.mean(act ** 2)) + 1e-12))
+
+
+def level(x, target=TARGET_DB):
+    g = np.clip(target - active_db(x), -12, 12)
+    return (x * 10 ** (g / 20)).astype(np.float32)
+
+
+LIMITS = {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0}
+
+
+def verify_loudness(mp3_bytes, items, target_lufs):
+    """第一项检查：对编码后的 MP3 成品做独立测量（ITU-R BS.1770 K 加权响度）。
+    整体响度、每句响度偏差、3 秒短时响度波动、峰值，任何一项超标都返回失败原因。"""
+    import io
+    import pyloudnorm as pyln
+    import soundfile as sf
+    a, sr = sf.read(io.BytesIO(mp3_bytes), dtype='float64')
+    m = pyln.Meter(sr)
+    il = m.integrated_loudness(a)
+    sent = []
+    for it in items:
+        seg = a[int(it['start'] * sr):int(it['end'] * sr)]
+        if len(seg) > 0.5 * sr:
+            sent.append(m.integrated_loudness(seg))
+    med = float(np.median(sent))
+    dev = max(abs(x - med) for x in sent)
+    f = a.copy()
+    for flt in m._filters.values():
+        f = flt.apply_filter(f)
+    W, H = 3 * sr, sr // 2
+    st = np.array([-0.691 + 10 * np.log10(np.mean(f[i:i + W] ** 2) + 1e-12) for i in range(0, len(f) - W, H)])
+    st = st[st > il - 10]
+    peak = 20 * np.log10(np.max(np.abs(a)) + 1e-12)
+    rep = {'integrated_lufs': round(float(il), 2), 'sentence_max_dev_lu': round(float(dev), 2),
+           'short_term_std_lu': round(float(st.std()), 2), 'peak_dbfs': round(float(peak), 2)}
+    errs = []
+    if abs(il - target_lufs) > LIMITS['integrated']:
+        errs.append(f'整体响度 {il:.2f} LUFS（目标 {target_lufs}）')
+    if dev > LIMITS['sentence_dev']:
+        errs.append(f'句间响度偏差 {dev:.2f} LU（上限 {LIMITS["sentence_dev"]}）')
+    if st.std() > LIMITS['short_term_std']:
+        errs.append(f'短时响度波动 {st.std():.2f} LU（上限 {LIMITS["short_term_std"]}）')
+    if peak > LIMITS['peak_db']:
+        errs.append(f'峰值 {peak:.2f} dBFS（上限 {LIMITS["peak_db"]}）')
+    return rep, errs
+
+
 CLAUSE = re.compile(r'(?:(?<=[,;:—])|(?<=[,;:—]["”’)]))\s+(?=\S)')
 
 
@@ -141,13 +201,17 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
     # 每段都以标点结尾，否则模型会把最后一个词收得太急
     merged = [x if i == len(merged) - 1 or re.search(r'[,;:—.!?]["”’)]*$', x) else x + ','
               for i, x in enumerate(merged)]
-    out = []
+    out, parts, t = [], [], 0.0
     for i, x in enumerate(merged):
-        out.append(engine.synth(pron.phonemes(x, key), style, speed))
+        seg = fade(level(engine.synth(pron.phonemes(x, key), style, speed)))   # 每段先统一响度，边缘淡入淡出
+        parts.append((t, t + len(seg) / SR))
+        out.append(seg)
+        t += len(seg) / SR
         if i < len(merged) - 1:
             pause = cp * (1.4 if x.rstrip('”"’ ').endswith((';', ':')) else 1.0)
             out.append(np.zeros(int(pause * SR), np.float32))
-    return np.concatenate(out)
+            t += int(pause * SR) / SR
+    return np.concatenate(out), parts
 
 
 def gap_after(sentence, para_end, cfg):
@@ -162,22 +226,83 @@ def gap_after(sentence, para_end, cfg):
 
 
 # ---------------------------------------------------------------- 后期处理
-def master(a, target_lufs=-16.0, peak_db=-1.0):
-    """24k -> 48k 重采样，响度统一到 target_lufs，限制峰值。"""
+def _smooth_gain(g_db, block_s, attack, release):
+    """逐块平滑增益（dB）：增益下降用 attack，回升用 release。"""
+    a, r = np.exp(-block_s / attack), np.exp(-block_s / release)
+    out = np.empty_like(g_db)
+    cur = 0.0
+    for i, g in enumerate(g_db):
+        c = a if g < cur else r
+        cur = c * cur + (1 - c) * g
+        out[i] = cur
+    return out
+
+
+def _apply_block_gain(x, g_db, block):
+    g = 10 ** (np.repeat(g_db, block)[:len(x)] / 20)
+    if len(g) < len(x):
+        g = np.concatenate([g, np.full(len(x) - len(g), g[-1] if len(g) else 1.0)])
+    return (x * g).astype(np.float32)
+
+
+def compress(x, sr, ratio=3.0, knee=6.0, above=4.0, attack=0.010, release=0.150):
+    """语音压缩器：阈值设在有声部分平均电平以上 above dB，超过部分按 ratio 压缩（软拐点）。"""
+    block = int(0.002 * sr)
+    n = len(x) // block
+    f = x[:n * block].reshape(n, block)
+    lvl = 10 * np.log10(np.mean(f ** 2, axis=1) + 1e-12)
+    thr = active_db(x, sr) + above
+    over = lvl - thr
+    gr = np.where(over <= -knee / 2, 0.0,
+                  np.where(over >= knee / 2, over * (1 / ratio - 1),
+                           (1 / ratio - 1) * (over + knee / 2) ** 2 / (2 * knee)))
+    return _apply_block_gain(x, _smooth_gain(gr, block / sr, attack, release), block)
+
+
+def limit(x, sr, ceiling_db=-1.5, lookahead=0.005, release=0.060):
+    """前瞻限幅器：保证采样峰值不超过 ceiling。"""
+    ceil = 10 ** (ceiling_db / 20)
+    block = int(0.001 * sr)
+    n = -(-len(x) // block)
+    pad = np.concatenate([np.abs(x), np.zeros(n * block - len(x), np.float32)])
+    pk = pad.reshape(n, block).max(axis=1)
+    la = int(lookahead / 0.001)
+    pk = np.array([pk[i:i + la + 1].max() for i in range(n)])      # 提前看 lookahead
+    need = np.minimum(0.0, 20 * np.log10(ceil / np.maximum(pk, 1e-9)))
+    g = _smooth_gain(need, 0.001, 1e-4, release)
+    g = np.minimum(g, need)                                           # 绝不放过超限的块
+    y = _apply_block_gain(x, g, block)
+    return np.clip(y, -ceil, ceil)
+
+
+def master(a, target_lufs=-16.0, peak_db=-1.5):
+    """母带处理：重采样到 48k → 压缩 → 统一响度到 target_lufs → 前瞻限幅。"""
     import soxr
     import pyloudnorm as pyln
     a = soxr.resample(a, SR, OUT_SR, quality='VHQ').astype(np.float32)
+    a = compress(a, OUT_SR)
     meter = pyln.Meter(OUT_SR)
-    loud = meter.integrated_loudness(a)
-    gain = 10 ** ((target_lufs - loud) / 20)
-    peak = np.max(np.abs(a)) * gain
-    limit = 10 ** (peak_db / 20)
-    if peak > limit:                      # 宁可略轻一点也不削波
-        gain *= limit / peak
-    return (a * gain).astype(np.float32)
+    for _ in range(2):                    # 限幅会让响度略降，迭代一次补偿
+        a = a * 10 ** ((target_lufs - meter.integrated_loudness(a)) / 20)
+        a = limit(a.astype(np.float32), OUT_SR, peak_db)
+    return a.astype(np.float32)
+
+
+def fade(x, ms=5):
+    n = min(len(x) // 2, int(ms / 1000 * SR))
+    if n:
+        r = np.linspace(0, 1, n, dtype=np.float32)
+        x = x.copy()
+        x[:n] *= r
+        x[-n:] *= r[::-1]
+    return x
 
 
 def write_mp3(path, a, sr=OUT_SR, kbps=128):
+    Path(path).write_bytes(encode_mp3(a, sr, kbps))
+
+
+def encode_mp3(a, sr=OUT_SR, kbps=128):
     import lameenc
     enc = lameenc.Encoder()
     enc.set_bit_rate(kbps)
@@ -185,7 +310,7 @@ def write_mp3(path, a, sr=OUT_SR, kbps=128):
     enc.set_channels(1)
     enc.set_quality(2)
     pcm = (np.clip(a, -1, 1) * 32767).astype('<i2').tobytes()
-    Path(path).write_bytes(enc.encode(pcm) + enc.flush())
+    return enc.encode(pcm) + enc.flush()
 
 
 def write_wav(path, a, sr=OUT_SR):
@@ -253,9 +378,10 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
             k += 1
             key = f"{p['id']}:{k}"
             read = pron.read_text(s, key)
-            audio = synth_sentence(read, key, engine, pron, style, speed, vcfg)
+            audio, parts = synth_sentence(read, key, engine, pron, style, speed, vcfg)
             dur = len(audio) / SR
             items.append({'k': k, 'para': pi + 1, 'start': round(t, 3), 'end': round(t + dur, 3),
+                          'parts': [[round(t + a, 3), round(t + b, 3)] for a, b in parts],
                           'text': s, 'read': read})
             pieces.append(audio)
             t += dur
@@ -263,14 +389,22 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
                 else gap_after(s, si == len(para) - 1, vcfg)
             pieces.append(np.zeros(int(round(g * SR)), np.float32))
             t += int(round(g * SR)) / SR
-    a = master(np.concatenate(pieces), vcfg.get('lufs', -16.0))
+    lufs = vcfg.get('lufs', -16.0)
+    a = master(np.concatenate(pieces), lufs)
+    mp3 = encode_mp3(a, kbps=vcfg.get('kbps', 128))
+    rep, errs = verify_loudness(mp3, items, lufs)              # 第一项检查：成品响度一致
+    if errs:
+        raise RuntimeError(f"{p['id']} {voice_name} 响度检查未通过，未输出文件：" + '；'.join(errs))
+    log(f"  响度检查通过：整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
+        f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS")
     out_dir.mkdir(parents=True, exist_ok=True)
     base = out_dir / file_stem(p)
-    write_mp3(str(base) + '.mp3', a, kbps=vcfg.get('kbps', 128))
+    Path(str(base) + '.mp3').write_bytes(mp3)
     if wav:
         write_wav(str(base) + '.wav', a)
     write_subs(base, items, load_zh(p['id']))
-    return {'file': f"{out_dir.name}/{base.name}.mp3", 'duration': round(len(a) / OUT_SR, 3), 'sentences': items}
+    return {'file': f"{out_dir.name}/{base.name}.mp3", 'duration': round(len(a) / OUT_SR, 3),
+            'loudness': rep, 'sentences': items}
 
 
 def cmd_passages(args):
@@ -303,7 +437,7 @@ def cmd_say(args):
     sents = re.split(r'(?<=[.!?])["”’)]*\s+(?=["“‘(]?[A-Z0-9])', text.strip())
     pieces = [np.zeros(int(0.3 * SR), np.float32)]
     for i, s in enumerate(sents):
-        pieces.append(engine.synth(pron.phonemes(pron.read_text(s)), style, args.speed or vcfg.get('speed', 1.0)))
+        pieces.append(synth_sentence(pron.read_text(s), None, engine, pron, style, args.speed or vcfg.get('speed', 1.0), vcfg)[0])
         pieces.append(np.zeros(int((vcfg['tail'] if i == len(sents) - 1 else gap_after(s, False, vcfg)) * SR), np.float32))
     a = master(np.concatenate(pieces), vcfg.get('lufs', -16.0))
     out = Path(args.output)
