@@ -76,6 +76,15 @@ def parse(path):
                 sents[cur]['w'].append({'t':tier,'h':mm.group(2).strip(),'surf':mm.group(3),'m':mm.group(4).strip()})
     return meta,sents
 out=[];errs=0
+# 踩坑记录：原文排版问题（直引号、引号内侧空格、标点后缺空格、括号前缺空格、在人名缩写处断句）
+TYPO=[(r'"','直引号'),(r'“\s|\s”','引号内侧空格'),(r'(?<=[A-Za-z])[,;:](?=[A-Za-z“])','标点后缺空格'),
+      (r'(?<=[A-Za-z])\((?=[A-Za-z])','括号前缺空格'),(r'(?:^|\s)[A-HJ-Z]\.$','在人名缩写处断句'),(r'\b(\w+) \1\b','重复单词')]
+for o in S:
+    for k,s_ in enumerate([x for p in o['sents'] for x in p],1):
+        for pat,name in TYPO:
+            m=re.search(pat,s_)
+            if m and not (name=='重复单词' and m.group(1).lower() in ('that','had','is')):
+                print(f'排版检查未通过：{o["id"]} 第{k}句 {name}：{s_[:80]}'); errs+=1
 for o in S:
     pid=o['id'];p=f'ann/{pid}.txt'
     rec={k:o[k] for k in ('id','year','paper','part','words','file')}

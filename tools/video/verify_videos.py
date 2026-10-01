@@ -71,7 +71,7 @@ def check(mp4, p, tm):
     ok('开头静音 1.5 秒', abs(times[0]['start'] - 1.5) < 0.01 and peak_db(seg(0, 1.45)) < -60,
        f"第一句从 {times[0]['start']:.2f}s 开始，前 1.45s 峰值 {peak_db(seg(0, 1.45)):.0f} dB")
     tail = ad - times[-1]['end']
-    ok('结尾静音 2 秒', tail >= 1.95 and peak_db(seg(times[-1]['end'] + 0.1, ad)) < -60,
+    ok('结尾静音 2 秒', tail >= 1.999 and peak_db(seg(times[-1]['end'] + 0.1, ad)) < -60,
        f'读完后 {tail:.2f}s，峰值 {peak_db(seg(times[-1]["end"] + 0.1, ad)):.0f} dB')
     # 5. 句间停顿 0.8 秒，且确实静音
     gaps = [times[i + 1]['start'] - times[i]['end'] for i in range(len(times) - 1)]
@@ -113,7 +113,14 @@ def main():
     T = json.loads((ROOT / 'audio' / 'timings.json').read_text('utf-8'))['female']
     lines = ['# 最终视频核查报告', '', '对每个 MP4 成品实测（解码音轨、抽取画面），逐项核对 CLAUDE.md 里的铁律。', '']
     allok = True
-    for mp4 in sorted(FINAL.glob('*.mp4')):
+    files = sorted(FINAL.glob('*.mp4'))
+    # 踩坑记录：同一年同一试卷有两次考试（天津、上海、浙江），文件名必须能区分
+    keys = [re.sub(r'\s\S+$', '', f.stem) for f in files]
+    dup = {k for k in keys if keys.count(k) > 1}
+    if dup:
+        print('❌ 文件名重复：', dup)
+        allok = False
+    for mp4 in files:
         p = next((x for x in P.values() if x.get('done') and mp4.name.startswith(
             f"{x['year']} {re.sub(r'·[^）]*', '', x['paper'])} 阅读{x['part']} ")), None)
         if not p:

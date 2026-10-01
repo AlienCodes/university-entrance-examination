@@ -53,7 +53,10 @@ class Pronouncer:
             if target in t:
                 t = t.replace(target, rep, 1)
             else:
-                print(f'  ! 文本修正未匹配 {key}: {target!r}', file=sys.stderr)
+                raise RuntimeError(f'文本修正未匹配 {key}: {target!r}')
+        # 踩坑记录：括号内容会被模型跳过；数字、符号会读错。朗读文本里一律不许残留
+        if key and re.search(r'[()\d£$%&/\u4e00-\u9fff]', t):
+            raise RuntimeError(f'{key} 朗读文本残留括号/数字/符号/中文：{t}')
         return t
 
     def _mark(self, text, key):

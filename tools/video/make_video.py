@@ -200,7 +200,13 @@ def main():
     dur = min(durs)                              # 画面和声音都必须撑到结尾
     if dur - ends[-1] < TAIL - 0.05:
         raise SystemExit(f'结尾静音只有 {dur - ends[-1]:.2f} 秒，不足 {TAIL} 秒')
-    print(f'已生成 {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
+    # 踩坑记录：所有问题都要在交付前自动拦下——生成后立即对成品做完整核查，不合格就删除
+    from verify_videos import check
+    fails = [f'{n}：{d}' for n, c, d in check(out / name, p, tm) if not c]
+    if fails:
+        (out / name).unlink()
+        raise SystemExit('核查未通过，已删除成品：\n  ' + '\n  '.join(fails))
+    print(f'已生成并核查通过 {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
 
 
 if __name__ == '__main__':
