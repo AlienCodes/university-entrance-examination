@@ -81,7 +81,10 @@ def run(args):
                 text, mos = ck.check(seg)
                 e, n, ops = diff(it['read'], text)
                 rows.append({'k': it['k'], 'mos': round(mos, 3), 'err': e, 'n': n, 'asr': text, 'ops': ops})
+            # 记下所查 MP3 的指纹：音频重新生成后，check_pitfalls.py 会发现自检结果已过期
+            import hashlib
             report.setdefault(v, {})[pid] = {
+                'mp3_sha256': hashlib.sha256((OUT / r['file']).read_bytes()).hexdigest(),
                 'loudness': loud, 'loudness_ok': not lerr,
                 'mos': round(float(np.mean([x['mos'] for x in rows])), 3),
                 'wer': round(sum(x['err'] for x in rows) / max(1, sum(x['n'] for x in rows)), 4),

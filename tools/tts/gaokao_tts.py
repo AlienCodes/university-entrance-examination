@@ -57,7 +57,8 @@ class Pronouncer:
         # 踩坑记录：词内弯撇号会让发音词典丢音（isn’t. 被读成 is），一律换成直撇号
         t = re.sub(r"(?<=[A-Za-z])’(?=[A-Za-z])", "'", t)
         # 踩坑记录：括号内容会被模型跳过；数字、符号会读错。朗读文本里一律不许残留
-        if key and re.search(r'[()\d£$%&/\u4e00-\u9fff]', t):
+        # 只允许字母、空白和常规标点；其余任何字符（# @ * + = ₂ 中文等）都可能被读错或跳过
+        if key and re.search(r"[^A-Za-zÀ-ÖØ-öø-ÿ\s.,;:!?'\"“”‘’—–\-]", t):
             raise RuntimeError(f'{key} 朗读文本残留括号/数字/符号/中文：{t}')
         return t
 
