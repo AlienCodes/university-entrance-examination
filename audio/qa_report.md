@@ -7,30 +7,30 @@
 - 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：1.33%
+- 平均识别差异率：1.26%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
-| p58 | 4.51 | 2.54% | coauthor r is n commane → co author rosheen khamaine; novem auyeung → novum aoyoun; auyeung → aoyung |
+| p58 | 4.51 | 2.54% | coauthor r is n commane → co author rosheen khamain; novem auyeung → novum aoyoun; auyeung → aoyung |
 | p59 | 4.53 | 0.00% |  |
 | p60 | 4.51 | 2.03% | qomolangma → chomalangma; chimborazo → chimborazzo; mont → mon; pradidali → pratidali; menton → monton; pradidali → prati dali |
 | p61 | 4.51 | 0.66% | trains' → trains; trains' → train's |
-| p62 | 4.50 | 1.46% | scents → sense; scentscape → sandscape; scents → sense; desensitised → desensitized; scentscape → sensecape |
-| p63 | 4.50 | 0.72% | recognisable → recognizable; identified → ∅; realise → realize |
-| p64 | 4.49 | 0.55% | five → fives; sight → site |
-| p65 | 4.49 | 1.28% | facade → fa ade; douyin → doyen; kuaishou → kuishou; it's → its |
-| p66 | 4.52 | 0.21% | inzlicht → inslicht |
-| p67 | 4.53 | 1.41% | five millimeters → ∅; thousandth → zeroth; houlihan → julihan; houlihan → julihan; houlihan → hulihan |
-| p49 | 4.52 | 1.87% | verkade → verkata; te br mmelstroet → de brummelstrut; neighbourhoods → neighborhoods; recognise → recognize |
-| p50 | 4.52 | 0.93% | milligrams → mg; milligrams → mg; gauchotte → goshot |
+| p62 | 4.50 | 1.75% | scents → sense; scentscape → sandscape; scents → sense; desensitised → desensitized; scentscape → sense scape |
+| p63 | 4.50 | 0.48% | recognisable → recognizable; realise → realize |
+| p64 | 4.49 | 0.81% | versus → vs; five → fives; sight → site |
+| p65 | 4.49 | 0.77% | douyin → doyen; kuaishou → kuishou; it's → its |
+| p66 | 4.52 | 0.21% | inzlicht → inslecht |
+| p67 | 4.53 | 0.69% | thousandth → zeroth; houlihan → julihan; houlihan → hulihan |
+| p49 | 4.52 | 1.90% | verkade → verkata; te br mmelstroet → de brummelstrut; neighbourhoods → neighborhoods; recognise → recognize |
+| p50 | 4.52 | 0.62% | milligrams → mg; gauchotte → goshot |
 | p51 | 4.51 | 1.12% | sonja detrinidad → sonia de trinidad |
-| p52 | 4.51 | 0.29% | diver's → divers |
+| p52 | 4.51 | 0.00% |  |
 | p53 | 4.50 | 0.51% | friends' → friend's; defence → defense |
 | p54 | 4.51 | 0.78% | organise → organize; too → two; green → grain |
-| p55 | 4.52 | 4.78% | c o two → co2; c o two → co2; c o two → co2; c o two → co2; o two → o2; c o two → co2; c o two → co2 |
+| p55 | 4.52 | 4.75% | c o two → co2; c o two → co2; c o two → co2; c o two → co2; o two → o2; c o two → co2; c o two → co2 |
 | p68 | 4.52 | 0.23% | par → para |
-| p69 | 4.50 | 0.85% | kwong → kwang; azimi → as emi |
-| p70 | 4.52 | 4.47% | salk → sauk; salk → soc; sleap → sleep; sleap → sleep; phenomics busch → phomics bush; sleap → sleep; sleap → sleep; sleap → sleep; sleap → sleep; catalog → catalogue; salk → soc; salk → soc; borrowing' → borrowing |
+| p69 | 4.50 | 1.12% | kwong → kwang; azimi → as emi; azimi's → azimi |
+| p70 | 4.52 | 4.13% | salk → sauk; salk → soc; sleap → sleep; sleap → sleep; phenomics busch → phomics bush; sleap → sleep; sleap → sleep; sleap → sleep; sleap → sleep; salk → soc; salk → soc; borrowing' → borrowing |
 
 ## male
 
