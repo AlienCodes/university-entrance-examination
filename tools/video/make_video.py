@@ -152,7 +152,9 @@ def main():
     # 每屏的显示时长：片头到第一句开口；之后在两句之间的静音中点切换
     starts = [x['start'] for x in times]
     ends = [x['end'] for x in times]
-    cuts = [0.0, starts[0]] + [(ends[i] + starts[i + 1]) / 2 for i in range(len(times) - 1)] + [tm['duration']]
+    TAIL = 2.0                                  # 读完最后一句后至少保留 2 秒静音
+    total = max(tm['duration'], ends[-1] + TAIL)
+    cuts = [0.0, starts[0]] + [(ends[i] + starts[i + 1]) / 2 for i in range(len(times) - 1)] + [total]
     lst = []
     for i in range(len(slides)):
         lst += [f"file '{tmp / f'{i:03d}.png'}'", f'duration {cuts[i + 1] - cuts[i]:.3f}']
@@ -163,12 +165,18 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     name = audio.stem + ('' if a.voice == 'female' else '_男声') + '.mp4'
     cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
-           '-i', str(audio), '-map', '0:v', '-map', '1:a',
-           '-c:v', 'libx264', '-preset', 'slow', '-crf', '16', '-tune', 'stillimage', '-r', '30',
-           '-pix_fmt', 'yuv420p', '-vf', 'format=yuv420p',
-           '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', str(out / name)]
+           '-i', str(audio), '-map', '0:v', '-map', '1:a', '-af', f'apad=whole_dur={total:.3f}', '-t', f'{total:.3f}',
+           '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-tune', 'stillimage',
+           '-pix_fmt', 'yuv420p', '-vf', 'fps=30,tpad=stop_mode=clone:stop_duration=10,format=yuv420p',
+           '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart', str(out / name)]
     subprocess.run(cmd, check=True)
-    print('已生成', out / name)
+    # 检查：成品视频在最后一句读完后的静音不少于 2 秒
+    durs = [float(x) for x in subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'stream=duration', '-of', 'csv=p=0',
+                                str(out / name)], capture_output=True, text=True).stdout.split()]
+    dur = min(durs)                              # 画面和声音都必须撑到结尾
+    if dur - ends[-1] < TAIL - 0.05:
+        raise SystemExit(f'结尾静音只有 {dur - ends[-1]:.2f} 秒，不足 {TAIL} 秒')
+    print(f'已生成 {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
 
 
 if __name__ == '__main__':
