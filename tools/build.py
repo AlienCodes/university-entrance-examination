@@ -41,8 +41,8 @@ def seqre(phrase):
 def find(entry,sent,taken):
     I=re.I
     if entry.get('surf'):
-        pats=[r'(?<![\w-])'+re.escape(entry['surf']).replace('’',"['’]")+r'(?![\w-])']
-        parts=pats
+        # 原文写法可用“…”表示中间隔开的词，如 pay attention to{pay…attention to}
+        parts=[r'(?<![\w-])'+re.escape(x.strip()).replace('’',"['’]")+r'(?![\w-])' for x in entry['surf'].split('…')]
     else:
         parts=[seqre(p.strip()) for p in entry['h'].split('…')]
     spans=[];pos=0
