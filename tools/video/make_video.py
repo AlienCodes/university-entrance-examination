@@ -136,6 +136,14 @@ def main():
     if empty:                                   # 铁律：每一句至少标出一个单词
         raise SystemExit(f'第 {empty} 句没有标注单词，不生成视频')
     audio = ROOT / 'audio' / tm['file']
+    # 踩坑总检查：文字（复核指纹、排版、朗读文本、词性）和音频（响度、朗读一致、语音识别关键差异）必须全部通过
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import check_pitfalls
+    R = check_pitfalls.Result()
+    check_pitfalls.check_text(R, [a.pid])
+    check_pitfalls.check_audio(R, [a.pid], a.voice)
+    if R.fails:
+        raise SystemExit('踩坑检查未通过，不生成视频：\n  ' + '\n  '.join(f'踩坑 {n} {w}：{d}' for n, w, ok, d in R.fails))
 
     from playwright.sync_api import sync_playwright
     tmp = Path(tempfile.mkdtemp())
@@ -212,6 +220,10 @@ def main():
     if fails:
         (out / name).unlink()
         raise SystemExit('核查未通过，已删除成品：\n  ' + '\n  '.join(fails))
+    # 记录内容指纹：之后文字或音频一改，check_pitfalls.py 就会报“视频必须重做”
+    fp = check_pitfalls.load(check_pitfalls.VIDFP, {})
+    fp[name] = check_pitfalls.video_fp(p, tm)
+    check_pitfalls.VIDFP.write_text(json.dumps(dict(sorted(fp.items())), ensure_ascii=False, indent=1), 'utf-8')
     print(f'  英文字号：最大 {max(font_sizes)}px，最小 {min(font_sizes)}px（第 {font_sizes.index(min(font_sizes)) + 1} 句）')
     print(f'已生成并核查通过 {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
 
