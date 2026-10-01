@@ -273,6 +273,23 @@ POST6={
 }
 for _k,_v in POST6.items(): POST.setdefault(_k,[]).extend(_v)
 
+# 第二批复核第二轮后的原文订正
+POST7={
+ 'p57':[
+   ('says the director','says the PFMA’s director'),
+ ],
+ 'p45':[
+   ('read its definition aloud','read the word’s definition aloud'),
+ ],
+ 'p46':[
+   ('Soon after that, around 192 lakes','In one case, soon after the permafrost beneath them melted, around 192 lakes'),
+ ],
+ 'p20':[
+   ('these arguments and reasoning','these arguments and this reasoning'),
+ ],
+}
+for _k,_v in POST7.items(): POST.setdefault(_k,[]).extend(_v)
+
 res=[]
 used=set()
 for n,o in enumerate(P,1):
