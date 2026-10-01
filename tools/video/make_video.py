@@ -36,7 +36,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:
 .top b{color:var(--accent);font-weight:700;letter-spacing:.04em}
 .bot{position:absolute;left:96px;right:96px;bottom:48px;display:flex;align-items:center;gap:24px;font-size:24px;color:var(--ink3);font-variant-numeric:tabular-nums}
 .bar{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}
-.stage{position:absolute;left:96px;right:96px;top:130px;bottom:120px;display:flex;align-items:center}
+.stage{position:absolute;left:80px;right:80px;top:110px;bottom:100px;display:flex;align-items:center}
 .box{display:grid;grid-template-columns:70px 1fr;column-gap:22px;width:100%}
 .k{font-family:'Serif';font-size:34px;color:var(--ink3);text-align:right;padding-top:.35em}
 .en{font-family:'Serif',serif;font-size:var(--fs);line-height:1.62;letter-spacing:.003em}
@@ -44,9 +44,9 @@ mark{background:none;color:inherit;border-radius:6px;padding:0 3px;border-bottom
 mark.core{color:var(--core);background:var(--core-bg);border-color:var(--core)}
 mark.ext{color:var(--ext);background:var(--ext-bg);border-color:var(--ext)}
 mark.phr{color:var(--phr);background:var(--phr-bg);border-color:var(--phr)}
-.zh{font-size:calc(var(--fs)*.62);color:var(--ink2);line-height:1.6;margin-top:calc(var(--fs)*.42)}
-.chips{display:flex;flex-wrap:wrap;gap:14px 16px;margin-top:calc(var(--fs)*.6)}
-.chip{font-size:calc(var(--fs)*.46);line-height:1.3;border-radius:12px;padding:.32em .7em}
+.zh{font-size:calc(var(--fs)*.82);color:#3d3b36;line-height:1.5;margin-top:calc(var(--fs)*.4);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:calc(var(--fs)*.26) calc(var(--fs)*.3);margin-top:calc(var(--fs)*.55)}
+.chip{font-size:calc(var(--fs)*.72);line-height:1.3;border-radius:14px;padding:.22em .6em;font-weight:500}
 .chip b{font-family:'Serif';font-weight:600;margin-right:.45em}
 .chip.core{background:var(--core-bg)}.chip.core b{color:var(--core)}
 .chip.ext{background:var(--ext-bg)}.chip.ext b{color:var(--ext)}
@@ -111,8 +111,8 @@ def sentence_slide(p, s, k, n):
 
 
 FIT = """() => { const st=document.querySelector('.stage'), box=document.getElementById('box');
-  let fs=60; document.documentElement.style.setProperty('--fs', fs+'px');
-  while (box.scrollHeight > st.clientHeight && fs > 30) { fs -= 2; document.documentElement.style.setProperty('--fs', fs+'px'); }
+  let fs=64; document.documentElement.style.setProperty('--fs', fs+'px');
+  while (box.scrollHeight > st.clientHeight && fs > 26) { fs -= 2; document.documentElement.style.setProperty('--fs', fs+'px'); }
   return fs; }"""
 
 
