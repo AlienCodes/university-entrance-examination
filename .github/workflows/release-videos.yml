@@ -1,8 +1,9 @@
-# 推送 videos-* 标签时，把该提交里 最终视频/ 的全部 MP4 打包成 zip，生成 GitHub Release
+# 修改 .github/release-request.txt（第一行写标签名，如 videos-60）并推送时，
+# 把该提交里 最终视频/ 的全部 MP4 打包成 zip，用这个标签生成 GitHub Release
 name: 发布视频压缩包
 on:
   push:
-    tags: ['videos-*']
+    paths: ['.github/release-request.txt']
 permissions:
   contents: write
 jobs:
@@ -31,8 +32,11 @@ jobs:
           } > notes.md
           echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
           echo "N=${n}" >> "$GITHUB_ENV"
+          echo "TAG=$(head -1 .github/release-request.txt | tr -d '[:space:]')" >> "$GITHUB_ENV"
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
           name: 高考英语阅读精读视频（${{ env.N }} 个）
           body_path: notes.md
           files: ${{ env.ZIPNAME }}
