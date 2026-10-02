@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：60
+- 文章数：70
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.51（最低 4.49）
-- 平均识别差异率：0.96%
+- 平均识别差异率：0.88%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -71,6 +71,16 @@
 | p34 | 4.53 | 0.68% | riess → rees; riess → rees; refined → refine |
 | p35 | 4.51 | 0.96% | noa → noah; kristian → christian; in → and |
 | p36 | 4.52 | 0.31% | macknick → mcnick |
+| p09 | 4.50 | 0.24% | systems → system's |
+| p10 | 4.49 | 0.25% | quantum' → quantum |
+| p11 | 4.51 | 0.52% | specialised → specialized; elephant's → elephant |
+| p12 | 4.49 | 0.00% |  |
+| p13 | 4.50 | 1.00% | mothers' → mother's; centre → center; theorises → theorizes; proof → proofs |
+| p14 | 4.51 | 0.00% |  |
+| p15 | 4.52 | 1.29% | shellenberger → schellenberger; iddo → ida; greenwire → greenoyer; ausubel → osubal; ausubel → asubal; peaks → pixel |
+| p16 | 4.52 | 0.20% | sights → sites |
+| p17 | 4.52 | 0.29% | horder → hoer |
+| p18 | 4.52 | 0.00% |  |
 
 ## male
 
