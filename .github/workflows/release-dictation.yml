@@ -1,5 +1,5 @@
 # 修改 .github/dictation-release.txt（第一行写标签名，如 dictation-70）并推送时：
-# 把 听写卡/ 下每篇一个文件夹（三份 PDF）加上该篇的朗读音频，打包成 zip，生成 GitHub Release
+# 把 听写卡/ 下每篇一个文件夹（逐句精读 + 三份听写卡 PDF）加上该篇的朗读音频，打包成 zip，生成 GitHub Release
 name: 发布听写卡压缩包
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
           for i, (f, p) in enumerate(zip(folders, order), 1):
               assert f.name.startswith(f'{i:02d} '), f.name
               pdfs = sorted(f.glob('*.pdf'))
-              assert len(pdfs) == 3, f
+              assert len(pdfs) == 4, f
               dst = out / f.name
               shutil.copytree(f, dst)
               base = f.name[3:]
@@ -37,8 +37,8 @@ jobs:
               rows.append(f"| {i} | {f.name[3:]} |")
           Path('notes.md').write_text(
               f"高考英语阅读 C/D 篇听写卡，共 {len(order)} 篇，每篇一个文件夹：\n\n"
-              "- 汉译英.pdf：看中文写英文\n- 英译汉.pdf：看英文写中文\n- 文章填空.pdf：原文挖空，附整句翻译和每空释义\n- 朗读音频.mp3：美音女声逐句朗读\n\n"
-              "每份 PDF 最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
+              "- 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词）\n- 汉译英.pdf：看中文写英文\n- 英译汉.pdf：看英文写中文\n- 文章填空.pdf：原文挖空，附整句翻译和每空释义\n- 朗读音频.mp3：美音女声逐句朗读\n\n"
+              "三份听写卡 PDF 的最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
           PY
           zipname="gaokao-english-reading-CD-${tag}.zip"
           (cd dist && zip -r -q "../${zipname}" .)
