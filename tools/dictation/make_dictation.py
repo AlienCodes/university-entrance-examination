@@ -1,11 +1,14 @@
-"""生成听写卡 PDF（每篇三份）：汉译英、英译汉、挖空文章。
+"""生成听写卡 PDF（每篇三份）：汉译英、英译汉、文章填空。
 
+    /opt/ttsenv/bin/python tools/dictation/make_dictation.py all          # 全部 70 篇
     /opt/ttsenv/bin/python tools/dictation/make_dictation.py p01 [p02 …]
 
-输出到 听写卡/：
-  pXX 年份 试卷 阅读C 题目 - 1 汉译英.pdf   左边中文释义，右边横线默写英文
-  pXX … - 2 英译汉.pdf                     左边英文，右边横线写中文
-  pXX … - 3 挖空文章.pdf                   原文中标注的词换成带编号的空框，下面是整句翻译和每个空的释义
+每篇一个文件夹：听写卡/序号 年份 试卷 阅读C 题目/，里面三份 PDF：
+  … - 1 汉译英.pdf     左边中文释义，右边横线默写英文
+  … - 2 英译汉.pdf     左边英文，右边横线写中文
+  … - 3 文章填空.pdf   原文中标注的词换成带编号的空框，下面是整句翻译和每个空的释义
+序号按网页与视频的顺序（年份，每年全国卷在前）。朗读音频不重复入库，
+由 .github/workflows/release-dictation.yml 打包时复制进各文件夹。
 每份最后一页是答案。词条来自 data/vocab.json（与网页、视频同一份定稿数据）。
 """
 import html
@@ -121,8 +124,16 @@ def cloze(p):
             ans.append(f"<tr><td class='n'>{num[id(w)]}</td><td class='en'>{esc(' … '.join(en[x:y] for x, y in w['sp']))}</td><td>{esc(w['m'])}</td></tr>")
         body.append(f"<div class='sent'><div class='en'><span class='k'>{k}</span>{''.join(parts)}</div>"
                     f"<div class='zh'>{esc(s['zh'])}</div><div class='hints'>{''.join(hints)}</div></div>")
-    return (header(p, '挖空文章', f'按中文提示填写原文中的单词或短语（注意词形变化），共 {n} 空') + ''.join(body) +
+    return (header(p, '文章填空', f'按中文提示填写原文中的单词或短语（注意词形变化），共 {n} 空') + ''.join(body) +
             f"<div class='ans'><h2>答案</h2><table>{''.join(ans)}</table></div>")
+
+
+def folder_name(p, n=None):
+    """“序号 年份 试卷 阅读C 题目”，与视频文件名一致（不含序号时用于文件名）。"""
+    paper = re.sub(r'·[^）]*', '', p['paper'])
+    title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
+    name = f"{p['year']} {paper} 阅读{p['part']} {title}"
+    return f'{n:02d} {name}' if n else name
 
 
 def main():
@@ -134,14 +145,17 @@ def main():
         exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
         pg = br.new_page()
-        for pid in sys.argv[1:]:
+        order = [p['id'] for p in data['passages'] if p.get('done')]
+        pids = order if sys.argv[1:] == ['all'] else sys.argv[1:]
+        for pid in pids:
             p = P[pid]
-            paper = re.sub(r'·[^）]*', '', p['paper'])
-            base = f"{pid} {p['year']} {paper} 阅读{p['part']} {p['title']}"
-            for name, body in (('1 汉译英', word_list(p, 'zh2en')), ('2 英译汉', word_list(p, 'en2zh')), ('3 挖空文章', cloze(p))):
+            folder = OUT / folder_name(p, order.index(pid) + 1)
+            folder.mkdir(exist_ok=True)
+            base = folder_name(p)
+            for name, body in (('1 汉译英', word_list(p, 'zh2en')), ('2 英译汉', word_list(p, 'en2zh')), ('3 文章填空', cloze(p))):
                 pg.set_content(f"<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'><style>{CSS}</style></head><body>{body}</body></html>")
                 pg.evaluate('document.fonts.ready')
-                f = OUT / f'{base} - {name}.pdf'
+                f = folder / f'{base} - {name}.pdf'
                 pg.pdf(path=str(f), format='A4', print_background=True,
                        display_header_footer=True, header_template='<span></span>',
                        footer_template="<div style='font-size:8px;width:100%;text-align:center;color:#999'>"

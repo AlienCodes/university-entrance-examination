@@ -1,0 +1,54 @@
+# 修改 .github/dictation-release.txt（第一行写标签名，如 dictation-70）并推送时：
+# 把 听写卡/ 下每篇一个文件夹（三份 PDF）加上该篇的朗读音频，打包成 zip，生成 GitHub Release
+name: 发布听写卡压缩包
+on:
+  push:
+    paths: ['.github/dictation-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 组装文件夹并打包
+        run: |
+          set -e
+          tag=$(head -1 .github/dictation-release.txt | tr -d '[:space:]')
+          python3 - <<'PY'
+          import json, re, shutil
+          from pathlib import Path
+          D = json.load(open('data/vocab.json'))['passages']
+          T = json.load(open('audio/timings.json'))['female']
+          order = [p for p in D if p.get('done')]
+          out = Path('dist/高考英语阅读CD篇听写卡（70篇）')
+          out.mkdir(parents=True)
+          folders = sorted(Path('听写卡').iterdir())
+          assert len(folders) == len(order), (len(folders), len(order))
+          rows = []
+          for i, (f, p) in enumerate(zip(folders, order), 1):
+              assert f.name.startswith(f'{i:02d} '), f.name
+              pdfs = sorted(f.glob('*.pdf'))
+              assert len(pdfs) == 3, f
+              dst = out / f.name
+              shutil.copytree(f, dst)
+              base = f.name[3:]
+              shutil.copy(Path('audio') / T[p['id']]['file'], dst / f'{base} - 朗读音频.mp3')
+              rows.append(f"| {i} | {f.name[3:]} |")
+          Path('notes.md').write_text(
+              f"高考英语阅读 C/D 篇听写卡，共 {len(order)} 篇，每篇一个文件夹：\n\n"
+              "- 汉译英.pdf：看中文写英文\n- 英译汉.pdf：看英文写中文\n- 文章填空.pdf：原文挖空，附整句翻译和每空释义\n- 朗读音频.mp3：美音女声逐句朗读\n\n"
+              "每份 PDF 最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
+          PY
+          zipname="gaokao-english-reading-CD-${tag}.zip"
+          (cd dist && zip -r -q "../${zipname}" .)
+          unzip -l "${zipname}" | tail -1
+          echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: 高考英语阅读CD篇听写卡（70篇，含朗读音频）
+          body_path: notes.md
+          files: ${{ env.ZIPNAME }}
