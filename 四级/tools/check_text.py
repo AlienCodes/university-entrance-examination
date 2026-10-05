@@ -50,7 +50,7 @@ def check(p):
             if re.match(r'[?!]["”’)]', bare[m.start():]):      # “… work?” said Dr Matous / (on fashion!) is：引语或括号内的问号叹号，后面接小写是对的
                 continue
             before = bare[:m.start() + 1]
-            if not re.search(rf'\b{ABBR}\.$', before):
+            if not re.search(rf'\b{ABBR}\.$', before) and not bare[m.start() - 1:m.end() + 3].startswith('E. coli'):     # 学名缩写 E. coli
                 probs.append(f'第{k}段 句号后小写开头：…{bare[max(0, m.start() - 25):m.end() + 15]}…')
         if not re.search(r'[.!?]["”’)]*$|[.!?]’”$', bare):
             probs.append(f'第{k}段 段尾没有句末标点：…{bare[-40:]}')

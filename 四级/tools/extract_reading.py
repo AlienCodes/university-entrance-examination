@@ -48,7 +48,26 @@ def blocks(txt):
     return out
 
 
-def paragraphs(raw):
+def gap_starts(pdf):
+    """段首不缩进、靠段间距分段的试卷（如 2026 年 6 月第 1 套）：用 pdftotext -bbox-layout 的行坐标，
+    行距明显大于正常行距（> 1.4 倍）的行是段首。返回 {去空白的行文字: 是否段首}。"""
+    import html
+    xml = subprocess.run(['pdftotext', '-bbox-layout', str(pdf), '-'], capture_output=True, text=True, check=True).stdout
+    out = {}
+    for page in xml.split('<page ')[1:]:
+        prev = None
+        lines = re.findall(r'<line xMin="[\d.]+" yMin="([\d.]+)"[^>]*>(.*?)</line>', page, re.S)
+        steps = sorted(float(b[0]) - float(a[0]) for a, b in zip(lines, lines[1:]) if float(b[0]) > float(a[0]))
+        normal = steps[len(steps) // 4] if steps else 0
+        for y, body in lines:
+            words = html.unescape(' '.join(re.findall(r'<word[^>]*>(.*?)</word>', body)))
+            y = float(y)
+            out[re.sub(r'\s', '', words)] = prev is not None and y - prev > 1.4 * normal
+            prev = y
+    return out
+
+
+def paragraphs(raw, starts=None):
     """按缩进分段：段首比正文多缩进。去掉页眉（含中文、不在括号注释里）、页码、换页符和空行。"""
     rows = []
     for l in raw:
@@ -60,9 +79,10 @@ def paragraphs(raw):
             continue
         rows.append((len(l) - len(l.lstrip(' ')), s))
     base = min(ind for ind, _ in rows)
+    flat = starts is not None and all(ind <= base + 1 for ind, _ in rows)
     paras = []
     for ind, s in rows:
-        if ind > base + 1 or not paras:
+        if not paras or (starts.get(re.sub(r'\s', '', s), False) if flat else ind > base + 1):
             paras.append(s)
         else:
             prev = paras[-1]
@@ -102,7 +122,7 @@ def main():
             continue
         for name, raw in bs:
             tag = f'{y}年{m}月 第{n}套 {name}'
-            paras = [tidy(p) for p in (FIX.pop(tag) if tag in FIX else paragraphs(raw))]
+            paras = [tidy(p) for p in (FIX.pop(tag) if tag in FIX else paragraphs(raw, gap_starts(f)))]
             text = '\n'.join(paras)
             for e in EDIT.get(tag, []):
                 c = text.count(e['old'])

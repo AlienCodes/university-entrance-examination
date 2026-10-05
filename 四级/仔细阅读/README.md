@@ -1,6 +1,6 @@
 # 四级仔细阅读文章（Section C）
 
-共 62 篇：每套真题的 Passage One 和 Passage Two，只有文章，不含题目。每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。
+共 64 篇：每套真题的 Passage One 和 Passage Two，只有文章，不含题目。每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。
 
 
 生成方法：`python3 四级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。2021 年 6 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 check-kissing → cheek-kissing、Janiero → Janeiro）。
@@ -65,7 +65,9 @@
 | c56 | 2025 | 12 月 | 第 2 套 | Passage Two | 348 | 8 | Adults dream during REM (rapid eye movement) sleep and … |
 | c57 | 2025 | 12 月 | 第 3 套 | Passage One | 353 | 9 | New York’s Eleven Madison Park has become the first vegan … |
 | c58 | 2025 | 12 月 | 第 3 套 | Passage Two | 352 | 7 | With genetic testing becoming increasingly popular, many … |
-| c59 | 2026 | 6 月 | 第 2 套 | Passage One | 351 | 5 | People who systematically underestimate themselves and … |
-| c60 | 2026 | 6 月 | 第 2 套 | Passage Two | 350 | 4 | Music is a universal language. In every culture and … |
-| c61 | 2026 | 6 月 | 第 3 套 | Passage One | 352 | 8 | Disgust is a universal human emotion. One type of disgust … |
-| c62 | 2026 | 6 月 | 第 3 套 | Passage Two | 352 | 5 | After finding out details about a stranger, we mistakenly … |
+| c59 | 2026 | 6 月 | 第 1 套 | Passage One | 350 | 12 | Is organic food worth the higher price? It’s the classic … |
+| c60 | 2026 | 6 月 | 第 1 套 | Passage Two | 352 | 7 | It is still controversial whether we are fundamentally … |
+| c61 | 2026 | 6 月 | 第 2 套 | Passage One | 351 | 5 | People who systematically underestimate themselves and … |
+| c62 | 2026 | 6 月 | 第 2 套 | Passage Two | 350 | 4 | Music is a universal language. In every culture and … |
+| c63 | 2026 | 6 月 | 第 3 套 | Passage One | 352 | 8 | Disgust is a universal human emotion. One type of disgust … |
+| c64 | 2026 | 6 月 | 第 3 套 | Passage Two | 352 | 5 | After finding out details about a stranger, we mistakenly … |
