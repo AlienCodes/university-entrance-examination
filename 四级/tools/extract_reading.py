@@ -21,8 +21,12 @@ OUT = ROOT / '仔细阅读'
 CJK = re.compile(r'[一-鿿]')
 # 2021 年的几套是扫描件，文字层识别错误很多（丢 f/g、混入汉字），已对照页面图片逐字校对，
 # 以 “年份年月 第n套 Passage One” 为键整篇替换。校对时也顺手订正了试卷本身的排版/拼写错误（如 check-kissing）。
-TYPO = {'Rio de Janiero': 'Rio de Janeiro'}   # 试卷原文的拼写错误
-FIX = json.loads((Path(__file__).resolve().parent / '人工校对.json').read_text('utf-8'))
+HERE = Path(__file__).resolve().parent
+FIX = json.loads((HERE / '人工校对.json').read_text('utf-8'))
+# 原文订正：试卷本身的错误（拼写、语法、标点、括号不配对等）和提取错误，逐条写明类型和理由。
+# 每条的原文片段必须在该篇恰好出现一次，否则报错（与高考 tools/sent.py 的 POST 规则相同）。
+# 订正记录 仔细阅读/原文订正记录.md 由本文件自动生成，二者永远一致。
+EDIT = json.loads((HERE / '原文订正.json').read_text('utf-8'))
 
 
 def key(f):
@@ -72,14 +76,15 @@ def tidy(p):
     p = re.sub(r'\s*[（(]\s*([^（）()]*[一-鿿][^（）()]*?)\s*[）)]\s*', r' (\1) ', p)
     p = re.sub(r' \) ', ') ', p)
     p = re.sub(r'\) ([.,;:!?’”])', r')\1', p)
+    p = re.sub(r'(?<=[一-鿿])\s+(?=[一-鿿])', '', p)          # 中文注释里字与字之间的空格，如 (感 知 的)
     p = re.sub(r'(?<=[A-Za-z])\s*[一—–]{1,2}\s*(?=[A-Za-z“‘])', '—', p)
+    p = re.sub(r'\s*—\s*', '—', p)                              # 破折号两侧不留空格（全书统一）
+    p = re.sub(r'(?<=\d) [-–] (?=\d)', '–', p)                   # 数字范围用短横线：1935–1936
     # 直引号统一为弯引号：词内撇号 ’；双引号按前后位置分左右
     p = re.sub(r"(?<=\w)'(?=\w)|(?<=s)'(?=\s)", '’', p)
     p = re.sub(r'(^|(?<=[\s(—]))"', '“', p).replace('"', '”')
     p = re.sub(r"(^|(?<=[\s(—“]))'", '‘', p).replace("'", '’')
     p = re.sub(r'(?<=\w)“(?=[\s.,;:!?]|$)', '”', p)      # 试卷里错用的左引号，如 “transform“
-    for a, b in TYPO.items():
-        p = p.replace(a, b)
     return re.sub(r'\s{2,}', ' ', p).strip()
 
 
@@ -98,6 +103,13 @@ def main():
         for name, raw in bs:
             tag = f'{y}年{m}月 第{n}套 {name}'
             paras = [tidy(p) for p in (FIX.pop(tag) if tag in FIX else paragraphs(raw))]
+            text = '\n'.join(paras)
+            for e in EDIT.get(tag, []):
+                c = text.count(e['old'])
+                if c != 1:
+                    errs.append(f'{tag}：订正 “{e["old"]}” 匹配到 {c} 处（必须恰好 1 处）')
+                text = text.replace(e['old'], e['new'])
+            paras = text.split('\n')
             words = len(' '.join(paras).split())
             if any(re.search(r'[一-鿿]', re.sub(r'\([^()]*\)', '', p)) for p in paras):
                 errs.append(f'{tag}：括号注释以外还有汉字，疑似识别错误')
@@ -115,6 +127,12 @@ def main():
     dups = [v for v in seen.values() if len(v) > 1]
     if FIX:
         errs.append(f'人工校对.json 里有未用上的条目：{list(FIX)}')
+    tags = {f"{r['paper']} {r['passage']}" for r in res}
+    if set(EDIT) - tags:
+        errs.append(f'原文订正.json 里有对不上篇目的条目：{sorted(set(EDIT) - tags)}')
+    import check_text
+    for r in res:
+        errs += [f"{r['paper']} {r['passage']} {x}" for x in check_text.check(r)]
     if errs:
         sys.exit('提取有问题，未输出：\n  ' + '\n  '.join(errs))
     (OUT / 'passages.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
@@ -134,7 +152,21 @@ def main():
         "2021 年 6 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；"
         "中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 check-kissing → cheek-kissing、Janiero → Janeiro）。\n\n"
         "| 编号 | 年份 | 月份 | 套次 | 篇目 | 词数 | 段数 | 开头 |\n|---|---|---|---|---|---|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
-    print(f'{len(res)} 篇，{len(dups)} 组重复')
+    rec = ['# 四级仔细阅读原文订正记录\n',
+           '由 `四级/tools/extract_reading.py` 根据 `四级/tools/原文订正.json` 自动生成。'
+           '标准与高考部分相同：认真的英语老师或专业编辑会判错的就改，“试卷原文就是这样写的”不是保留错误的理由；'
+           '英式拼写和合法的新闻文体不算错。\n',
+           '类型：**原文错误**＝试卷本身的拼写、语法、标点错误；**提取错误**＝PDF 文字层或扫描识别造成、与试卷印刷不一致。\n']
+    total = 0
+    for r in res:
+        es = EDIT.get(f"{r['paper']} {r['passage']}", [])
+        if es:
+            rec.append(f"\n## {r['id']} {r['paper']} {r['passage']}\n\n| 类型 | 原文 | 订正 | 理由 |\n|---|---|---|---|")
+            rec += [f"| {e['type']} | {e['old']} | {e['new']} | {e['why']} |" for e in es]
+            total += len(es)
+    rec.insert(3, f'\n共 {total} 处。\n')
+    (OUT / '原文订正记录.md').write_text('\n'.join(rec) + '\n', 'utf-8')
+    print(f'{len(res)} 篇，{len(dups)} 组重复，原文订正 {total} 处，排版检查通过')
     for v in dups:
         print('  重复：', ' ＝ '.join(v))
 
