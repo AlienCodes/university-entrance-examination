@@ -47,7 +47,7 @@
 
 ## 仔细阅读文章（已整理）
 
-[`仔细阅读/`](仔细阅读/README.md)：每套 Section C 的 Passage One、Passage Two，共 64 篇，只有文章不含题目，每篇一个 txt，另有 `passages.json`。
+[`仔细阅读/`](仔细阅读/README.md)：每套 Section C 的 Passage One、Passage Two，共 60 篇（定题：2021 年 6 月只用第 1 套，第 2、3 套的原卷仍在真题存档里），只有文章不含题目，每篇一个 txt，另有 `passages.json`。
 
 ## 后续加工（尚未开始）
 

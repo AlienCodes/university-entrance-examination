@@ -22,6 +22,9 @@ CJK = re.compile(r'[一-鿿]')
 # 2021 年的几套是扫描件，文字层识别错误很多（丢 f/g、混入汉字），已对照页面图片逐字校对，
 # 以 “年份年月 第n套 Passage One” 为键整篇替换。校对时也顺手订正了试卷本身的排版/拼写错误（如 check-kissing）。
 HERE = Path(__file__).resolve().parent
+# 用户定题：2021 年 6 月只用第 1 套，第 2、3 套不收（真题存档里仍保留原卷），文章总数定为 60 篇
+SKIP = {(2021, 6, 2), (2021, 6, 3)}
+TOTAL = 60
 FIX = json.loads((HERE / '人工校对.json').read_text('utf-8'))
 # 原文订正：试卷本身的错误（拼写、语法、标点、括号不配对等）和提取错误，逐条写明类型和理由。
 # 每条的原文片段必须在该篇恰好出现一次，否则报错（与高考 tools/sent.py 的 POST 规则相同）。
@@ -114,6 +117,8 @@ def main():
     files = sorted(SRC.glob('*/*/*.pdf'), key=key)
     for f in files:
         y, m, n = key(f)
+        if (y, m, n) in SKIP:
+            continue
         txt = subprocess.run(['pdftotext', '-layout', str(f), '-'], capture_output=True, text=True, check=True).stdout
         try:
             bs = blocks(txt)
@@ -145,6 +150,8 @@ def main():
     for r in res:
         seen.setdefault(' '.join(r['paras']), []).append(f"{r['paper']} {r['passage']}")
     dups = [v for v in seen.values() if len(v) > 1]
+    if len(res) != TOTAL:
+        errs.append(f'文章总数 {len(res)} 篇，定题是 {TOTAL} 篇')
     if FIX:
         errs.append(f'人工校对.json 里有未用上的条目：{list(FIX)}')
     tags = {f"{r['paper']} {r['passage']}" for r in res}
@@ -166,10 +173,10 @@ def main():
     if dups:
         note = '\n> 以下文章在不同套题中完全相同（试卷本身如此），后续加工时只需做一次：\n' + ''.join(f'> - {" ＝ ".join(v)}\n' for v in dups)
     (OUT / 'README.md').write_text(
-        f"# 四级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two，只有文章，不含题目。"
+        f"# 四级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two（定题：2021 年 6 月只用第 1 套），只有文章，不含题目。"
         f"每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。\n{note}\n"
         "\n生成方法：`python3 四级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。"
-        "2021 年 6 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；"
+        "2021 年的 4 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；"
         "中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 check-kissing → cheek-kissing、Janiero → Janeiro）。\n\n"
         "| 编号 | 年份 | 月份 | 套次 | 篇目 | 词数 | 段数 | 开头 |\n|---|---|---|---|---|---|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
     rec = ['# 四级仔细阅读原文订正记录\n',
