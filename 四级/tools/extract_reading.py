@@ -1,0 +1,143 @@
+"""从每套四级真题中提取 Section C 仔细阅读的两篇文章（Passage One、Passage Two），只要文章，不要题目。
+
+    python3 四级/tools/extract_reading.py
+
+输入：四级/真题/年份/年份年月份/*.pdf（用 pdftotext -layout 重新提取，靠缩进判断分段）
+输出：
+  四级/仔细阅读/passages.json        与高考 tools/passages.json 同一格式，后续可走同一套流程
+  四级/仔细阅读/年份年月 第n套 Passage One.txt 等   每篇一个文本文件，段落之间空一行
+  四级/仔细阅读/README.md            目录
+任何一篇提取异常（找不到起止、段落为空、字数异常、残留页眉页码）都会报错，不输出。
+"""
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+SRC = ROOT / '真题'
+OUT = ROOT / '仔细阅读'
+CJK = re.compile(r'[一-鿿]')
+# 2021 年的几套是扫描件，文字层识别错误很多（丢 f/g、混入汉字），已对照页面图片逐字校对，
+# 以 “年份年月 第n套 Passage One” 为键整篇替换。校对时也顺手订正了试卷本身的排版/拼写错误（如 check-kissing）。
+TYPO = {'Rio de Janiero': 'Rio de Janeiro'}   # 试卷原文的拼写错误
+FIX = json.loads((Path(__file__).resolve().parent / '人工校对.json').read_text('utf-8'))
+
+
+def key(f):
+    y, m, n = re.search(r'(\d{4})年(\d+)月 英语四级真题 第(\d)套', f.stem).groups()
+    return int(y), int(m), int(n)
+
+
+def blocks(txt):
+    """返回 [(篇名, 原始行列表)]：从 “Questions x to y are based on the following passage.” 下一行到第一题之前。"""
+    lines = txt.split('\n')
+    out = []
+    for name in ('Passage One', 'Passage Two'):
+        i = next(k for k, l in enumerate(lines) if l.strip() == name)
+        # 扫描件的文字层可能有识别错误（如 “46 to SO”“ollowing”），起止标记放宽匹配
+        j = next(k for k in range(i, i + 4) if re.search(r'Questions \S+ to \S+ are based on the \S*ollowing passage', lines[k]))
+        q = 46 if name == 'Passage One' else 51
+        end = next(k for k in range(j + 1, len(lines)) if re.match(rf'\s*{q}\s*[.,，。]', lines[k]))
+        out.append((name, lines[j + 1:end]))
+    return out
+
+
+def paragraphs(raw):
+    """按缩进分段：段首比正文多缩进。去掉页眉（含中文、不在括号注释里）、页码、换页符和空行。"""
+    rows = []
+    for l in raw:
+        l = l.replace('\f', '')
+        s = l.strip()
+        if not s or re.fullmatch(r'\d+', s):
+            continue
+        if re.search(r'四级|大学英语|真题|第\s*\d+\s*页|https?:|burningvocabulary|zhenti', s):      # 页眉页脚，如“2023 年 6 月大学英语四级考试真题（第 1 套）”
+            continue
+        rows.append((len(l) - len(l.lstrip(' ')), s))
+    base = min(ind for ind, _ in rows)
+    paras = []
+    for ind, s in rows:
+        if ind > base + 1 or not paras:
+            paras.append(s)
+        else:
+            prev = paras[-1]
+            # 行尾连字符：复合词（self-doubt）保留连字符直接相连
+            paras[-1] = prev + s if prev.endswith('-') else prev + ' ' + s
+    return [re.sub(r'\s{2,}', ' ', p) for p in paras]
+
+
+def tidy(p):
+    """统一排版：中文注释用半角括号、前后各一个空格，如 “stigma (耻辱) and”；破折号统一为 “—”。"""
+    p = re.sub(r'\s*[（(]\s*([^（）()]*[一-鿿][^（）()]*?)\s*[）)]\s*', r' (\1) ', p)
+    p = re.sub(r' \) ', ') ', p)
+    p = re.sub(r'\) ([.,;:!?’”])', r')\1', p)
+    p = re.sub(r'(?<=[A-Za-z])\s*[一—–]{1,2}\s*(?=[A-Za-z“‘])', '—', p)
+    # 直引号统一为弯引号：词内撇号 ’；双引号按前后位置分左右
+    p = re.sub(r"(?<=\w)'(?=\w)|(?<=s)'(?=\s)", '’', p)
+    p = re.sub(r'(^|(?<=[\s(—]))"', '“', p).replace('"', '”')
+    p = re.sub(r"(^|(?<=[\s(—“]))'", '‘', p).replace("'", '’')
+    p = re.sub(r'(?<=\w)“(?=[\s.,;:!?]|$)', '”', p)      # 试卷里错用的左引号，如 “transform“
+    for a, b in TYPO.items():
+        p = p.replace(a, b)
+    return re.sub(r'\s{2,}', ' ', p).strip()
+
+
+def main():
+    OUT.mkdir(exist_ok=True)
+    res, rows, errs = [], [], []
+    files = sorted(SRC.glob('*/*/*.pdf'), key=key)
+    for f in files:
+        y, m, n = key(f)
+        txt = subprocess.run(['pdftotext', '-layout', str(f), '-'], capture_output=True, text=True, check=True).stdout
+        try:
+            bs = blocks(txt)
+        except StopIteration:
+            errs.append(f'{f.name}：找不到 Passage One/Two 的起止')
+            continue
+        for name, raw in bs:
+            tag = f'{y}年{m}月 第{n}套 {name}'
+            paras = [tidy(p) for p in (FIX.pop(tag) if tag in FIX else paragraphs(raw))]
+            words = len(' '.join(paras).split())
+            if any(re.search(r'[一-鿿]', re.sub(r'\([^()]*\)', '', p)) for p in paras):
+                errs.append(f'{tag}：括号注释以外还有汉字，疑似识别错误')
+            if not (300 <= words <= 600) or len(paras) < 3:
+                errs.append(f'{tag}：{len(paras)} 段、{words} 词，疑似提取异常')
+            if any(re.search(r'Questions \d|^\d+\.|Section [ABC]|Directions', p) for p in paras):
+                errs.append(f'{tag}：混入了题目或说明')
+            res.append({'id': f'c{len(res) + 1:02d}', 'year': y, 'month': m, 'set': n, 'passage': name,
+                        'paper': f'{y}年{m}月 第{n}套', 'part': 'One' if name.endswith('One') else 'Two',
+                        'paras': paras, 'words': words, 'source': str(f.relative_to(ROOT))})
+    # 同一次考试不同套题偶尔共用文章：标出完全相同的
+    seen = {}
+    for r in res:
+        seen.setdefault(' '.join(r['paras']), []).append(f"{r['paper']} {r['passage']}")
+    dups = [v for v in seen.values() if len(v) > 1]
+    if FIX:
+        errs.append(f'人工校对.json 里有未用上的条目：{list(FIX)}')
+    if errs:
+        sys.exit('提取有问题，未输出：\n  ' + '\n  '.join(errs))
+    (OUT / 'passages.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
+    for old in OUT.glob('*.txt'):
+        old.unlink()
+    for r in res:
+        (OUT / f"{r['id']} {r['paper']} {r['passage']}.txt").write_text('\n\n'.join(r['paras']) + '\n', 'utf-8')
+        first = r['paras'][0][:60].rsplit(' ', 1)[0] + ' …'
+        rows.append(f"| {r['id']} | {r['year']} | {r['month']} 月 | 第 {r['set']} 套 | {r['passage']} | {r['words']} | {len(r['paras'])} | {first} |")
+    note = ''
+    if dups:
+        note = '\n> 以下文章在不同套题中完全相同（试卷本身如此），后续加工时只需做一次：\n' + ''.join(f'> - {" ＝ ".join(v)}\n' for v in dups)
+    (OUT / 'README.md').write_text(
+        f"# 四级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two，只有文章，不含题目。"
+        f"每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。\n{note}\n"
+        "\n生成方法：`python3 四级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。"
+        "2021 年 6 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；"
+        "中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 check-kissing → cheek-kissing、Janiero → Janeiro）。\n\n"
+        "| 编号 | 年份 | 月份 | 套次 | 篇目 | 词数 | 段数 | 开头 |\n|---|---|---|---|---|---|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
+    print(f'{len(res)} 篇，{len(dups)} 组重复')
+    for v in dups:
+        print('  重复：', ' ＝ '.join(v))
+
+
+if __name__ == '__main__':
+    main()
