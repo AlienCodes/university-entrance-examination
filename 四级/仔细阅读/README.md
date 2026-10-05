@@ -1,20 +1,20 @@
 # 四级仔细阅读文章（Section C）
 
-共 60 篇：每套真题的 Passage One 和 Passage Two（定题：2021 年 6 月只用第 1 套），只有文章，不含题目。每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。
+共 60 篇：每套真题的 Passage One 和 Passage Two（定题：2021 年 12 月只用第 1 套），只有文章，不含题目。每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。
 
 
-生成方法：`python3 四级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。2021 年的 4 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 check-kissing → cheek-kissing、Janiero → Janeiro）。
+生成方法：`python3 四级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。2021 年的 4 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 Janiero → Janeiro，详见 原文订正记录.md）。
 
 | 编号 | 年份 | 月份 | 套次 | 篇目 | 词数 | 段数 | 开头 |
 |---|---|---|---|---|---|---|---|
 | c01 | 2021 | 6 月 | 第 1 套 | Passage One | 351 | 5 | Educators and business leaders have more in common than it … |
 | c02 | 2021 | 6 月 | 第 1 套 | Passage Two | 342 | 5 | Being an information technology, or IT, worker is not a job … |
-| c03 | 2021 | 12 月 | 第 1 套 | Passage One | 341 | 9 | As many office workers adapt to remote work, cities may … |
-| c04 | 2021 | 12 月 | 第 1 套 | Passage Two | 336 | 8 | The human thirst for knowledge is the driving force behind … |
-| c05 | 2021 | 12 月 | 第 2 套 | Passage One | 350 | 4 | With obesity now affecting 29% of the population in … |
-| c06 | 2021 | 12 月 | 第 2 套 | Passage Two | 346 | 6 | Nationwide, only about three percent of early childhood … |
-| c07 | 2021 | 12 月 | 第 3 套 | Passage One | 346 | 7 | Have you ever wondered how acceptable it is to hug or touch … |
-| c08 | 2021 | 12 月 | 第 3 套 | Passage Two | 354 | 5 | From climate change to the ongoing pandemic (大流行病) and … |
+| c03 | 2021 | 6 月 | 第 2 套 | Passage One | 343 | 7 | Sugar shocked. That describes the reaction of many … |
+| c04 | 2021 | 6 月 | 第 2 套 | Passage Two | 351 | 6 | Success was once defined as being able to stay at a company … |
+| c05 | 2021 | 6 月 | 第 3 套 | Passage One | 348 | 5 | Boredom has become trendy. Studies point to how boredom is … |
+| c06 | 2021 | 6 月 | 第 3 套 | Passage Two | 345 | 7 | Can you remember what you ate yesterday? If asked, most … |
+| c07 | 2021 | 12 月 | 第 1 套 | Passage One | 341 | 9 | As many office workers adapt to remote work, cities may … |
+| c08 | 2021 | 12 月 | 第 1 套 | Passage Two | 336 | 8 | The human thirst for knowledge is the driving force behind … |
 | c09 | 2022 | 6 月 | 第 1 套 | Passage One | 346 | 8 | Online classes began to be popularized just a few decades … |
 | c10 | 2022 | 6 月 | 第 1 套 | Passage Two | 348 | 4 | In the age of the internet, there’s no such thing as a … |
 | c11 | 2022 | 6 月 | 第 2 套 | Passage One | 351 | 6 | Social media can be a powerful communication tool for … |

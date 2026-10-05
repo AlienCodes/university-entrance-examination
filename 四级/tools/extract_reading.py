@@ -22,8 +22,8 @@ CJK = re.compile(r'[一-鿿]')
 # 2021 年的几套是扫描件，文字层识别错误很多（丢 f/g、混入汉字），已对照页面图片逐字校对，
 # 以 “年份年月 第n套 Passage One” 为键整篇替换。校对时也顺手订正了试卷本身的排版/拼写错误（如 check-kissing）。
 HERE = Path(__file__).resolve().parent
-# 用户定题：2021 年 6 月只用第 1 套，第 2、3 套不收（真题存档里仍保留原卷），文章总数定为 60 篇
-SKIP = {(2021, 6, 2), (2021, 6, 3)}
+# 用户定题：2021 年 12 月只用第 1 套，第 2、3 套不收（真题存档和人工校对稿都保留），文章总数定为 60 篇
+SKIP = {(2021, 12, 2), (2021, 12, 3)}
 TOTAL = 60
 FIX = json.loads((HERE / '人工校对.json').read_text('utf-8'))
 # 原文订正：试卷本身的错误（拼写、语法、标点、括号不配对等）和提取错误，逐条写明类型和理由。
@@ -49,6 +49,11 @@ def blocks(txt):
         end = next(k for k in range(j + 1, len(lines)) if re.match(rf'\s*{q}\s*[.,，。]', lines[k]))
         out.append((name, lines[j + 1:end]))
     return out
+
+
+def key_of(tag):
+    y, m, n = re.match(r'(\d{4})年(\d+)月 第(\d)套', tag).groups()
+    return int(y), int(m), int(n)
 
 
 def gap_starts(pdf):
@@ -152,6 +157,12 @@ def main():
     dups = [v for v in seen.values() if len(v) > 1]
     if len(res) != TOTAL:
         errs.append(f'文章总数 {len(res)} 篇，定题是 {TOTAL} 篇')
+    for k in list(FIX):
+        if key_of(k) in SKIP:
+            del FIX[k]
+    for k in list(EDIT):
+        if key_of(k) in SKIP:
+            del EDIT[k]
     if FIX:
         errs.append(f'人工校对.json 里有未用上的条目：{list(FIX)}')
     tags = {f"{r['paper']} {r['passage']}" for r in res}
@@ -173,11 +184,11 @@ def main():
     if dups:
         note = '\n> 以下文章在不同套题中完全相同（试卷本身如此），后续加工时只需做一次：\n' + ''.join(f'> - {" ＝ ".join(v)}\n' for v in dups)
     (OUT / 'README.md').write_text(
-        f"# 四级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two（定题：2021 年 6 月只用第 1 套），只有文章，不含题目。"
+        f"# 四级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two（定题：2021 年 12 月只用第 1 套），只有文章，不含题目。"
         f"每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。\n{note}\n"
         "\n生成方法：`python3 四级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。"
         "2021 年的 4 套是扫描件，文字层识别错误多，已对照试卷页面逐字校对（`四级/tools/人工校对.json`）；"
-        "中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 check-kissing → cheek-kissing、Janiero → Janeiro）。\n\n"
+        "中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的明显拼写错误已订正（如 Janiero → Janeiro，详见 原文订正记录.md）。\n\n"
         "| 编号 | 年份 | 月份 | 套次 | 篇目 | 词数 | 段数 | 开头 |\n|---|---|---|---|---|---|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
     rec = ['# 四级仔细阅读原文订正记录\n',
            '由 `四级/tools/extract_reading.py` 根据 `四级/tools/原文订正.json` 自动生成。'
