@@ -1,0 +1,39 @@
+# 修改 .github/papers-release.txt（第一行写标签名，如 papers-1）并推送时：
+# 把 四级/真题/ 里的全部 PDF 原卷、高考真题/ 里的全部原卷各打成一个 zip，生成 GitHub Release，方便随时一键下载
+name: 发布真题原卷压缩包
+on:
+  push:
+    paths: ['.github/papers-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 打包原卷
+        run: |
+          set -e
+          tag=$(head -1 .github/papers-release.txt | tr -d '[:space:]')
+          n4=$(find 四级/真题 -name '*.pdf' | wc -l)
+          ng=$(find 高考真题 -type f \( -name '*.doc' -o -name '*.docx' \) | wc -l)
+          (cd 四级 && find 真题 -name '*.pdf' | sort | zip -q "../CET4-papers-${tag}.zip" -@)
+          zip -q -r "gaokao-english-papers-${tag}.zip" 高考真题 -i '*.doc' '*.docx'
+          unzip -l "CET4-papers-${tag}.zip" | tail -1
+          unzip -l "gaokao-english-papers-${tag}.zip" | tail -1
+          {
+            echo "真题原卷合集，解压即可使用："
+            echo
+            echo "- \`CET4-papers-${tag}.zip\`：大学英语四级真题 PDF 原卷 ${n4} 套（2021 年 6 月 — 2026 年 6 月），按 年份/年份年月份/ 分文件夹"
+            echo "- \`gaokao-english-papers-${tag}.zip\`：高考英语真题原卷 ${ng} 份（2022 — 2026 年，Word 格式），按年份分文件夹"
+          } > notes.md
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: 真题原卷合集（四级 PDF + 高考英语）
+          body_path: notes.md
+          files: |
+            CET4-papers-${{ env.TAG }}.zip
+            gaokao-english-papers-${{ env.TAG }}.zip
