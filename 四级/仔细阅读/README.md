@@ -37,7 +37,7 @@
 | c28 | 2023 | 12 月 | 第 2 套 | Passage Two | 340 | 5 | A multitasker is one who can perform two or more tasks … |
 | c29 | 2023 | 12 月 | 第 3 套 | Passage One | 352 | 6 | In the history of horse racing, few horses have captured … |
 | c30 | 2023 | 12 月 | 第 3 套 | Passage Two | 338 | 7 | People in business often make decisions based on their own … |
-| c31 | 2024 | 6 月 | 第 1 套 | Passage One | 349 | 6 | People often wonder why some entrepreneurs have greater … |
+| c31 | 2024 | 6 月 | 第 1 套 | Passage One | 352 | 6 | People often wonder why some entrepreneurs have greater … |
 | c32 | 2024 | 6 月 | 第 1 套 | Passage Two | 351 | 4 | Today, most scientific research is funded by government … |
 | c33 | 2024 | 6 月 | 第 2 套 | Passage One | 351 | 6 | Lao Zi once said, “Care about what other people think and … |
 | c34 | 2024 | 6 月 | 第 2 套 | Passage Two | 347 | 6 | Some people have said aging is more a slide into … |
@@ -48,7 +48,7 @@
 | c39 | 2024 | 12 月 | 第 2 套 | Passage One | 346 | 5 | The weakening of the human connection to nature might be … |
 | c40 | 2024 | 12 月 | 第 2 套 | Passage Two | 347 | 9 | Engineering in the U.S. has long been a male-dominated … |
 | c41 | 2024 | 12 月 | 第 3 套 | Passage One | 350 | 5 | Research in human-vehicle interaction has shown even … |
-| c42 | 2024 | 12 月 | 第 3 套 | Passage Two | 349 | 10 | Do you ever blend up a protein drink for breakfast, or grab … |
+| c42 | 2024 | 12 月 | 第 3 套 | Passage Two | 350 | 10 | Do you ever blend up a protein drink for breakfast, or grab … |
 | c43 | 2025 | 6 月 | 第 1 套 | Passage One | 343 | 9 | New research suggests that pandas may be at risk of dying … |
 | c44 | 2025 | 6 月 | 第 1 套 | Passage Two | 347 | 5 | With those born with natural talents, it feels as if they … |
 | c45 | 2025 | 6 月 | 第 2 套 | Passage One | 348 | 6 | We all make a little extra effort to look nice for special … |
