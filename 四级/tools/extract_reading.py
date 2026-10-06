@@ -1,6 +1,7 @@
 """从每套四级真题中提取 Section C 仔细阅读的两篇文章（Passage One、Passage Two），只要文章，不要题目。
 
-    python3 四级/tools/extract_reading.py
+    python3 四级/tools/extract_reading.py            # 重新生成（文字与封版不一致会报错）
+    python3 四级/tools/extract_reading.py --reseal   # 重新精校完成后重新封版
 
 输入：四级/真题/年份/年份年月份/*.pdf（用 pdftotext -layout 重新提取，靠缩进判断分段）
 输出：
@@ -173,6 +174,20 @@ def main():
         errs += [f"{r['paper']} {r['passage']} {x}" for x in check_text.check(r)]
     if errs:
         sys.exit('提取有问题，未输出：\n  ' + '\n  '.join(errs))
+    # 封版：精校完成后记录每篇文字指纹（仔细阅读/封版.json）。之后文字有任何变化都报错，
+    # 必须重新精校并用 --reseal 重新封版，防止未经复核的改动混进定稿。
+    import hashlib
+    seal_f = OUT / '封版.json'
+    fp = {f"{r['id']} {r['paper']} {r['passage']}": hashlib.sha256('\n'.join(r['paras']).encode()).hexdigest()[:16] for r in res}
+    if '--reseal' in sys.argv:
+        seal_f.write_text(json.dumps({'说明': '四级仔细阅读 60 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。',
+                                      '指纹': fp}, ensure_ascii=False, indent=1), 'utf-8')
+    elif seal_f.exists():
+        old = json.loads(seal_f.read_text('utf-8'))['指纹']
+        diff = sorted(set(old.items()) ^ set(fp.items()))
+        if diff:
+            sys.exit('文字与封版不一致（改动未经精校）：\n  ' + '\n  '.join(sorted({k for k, _ in diff})) +
+                     '\n确认已重新精校后，用 --reseal 重新封版。')
     (OUT / 'passages.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
     for old in OUT.glob('*.txt'):
         old.unlink()
