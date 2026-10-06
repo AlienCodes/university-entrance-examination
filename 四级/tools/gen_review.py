@@ -1,30 +1,27 @@
-import json,re,sys
+"""从 四级/data/vocab.json 生成复核用的文本文件（每篇一个）。  python3 四级/tools/gen_review.py <输出目录>"""
+import json
+import sys
 from pathlib import Path
-SP=Path('/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad')
-ABBR=r'(?:Mr|Mrs|Ms|Dr|Prof|St|Jr|Sr|vs|etc|e\.g|i\.e|U\.S|U\.K|Ph\.D|a\.m|p\.m|No|Inc|Co|Ltd)'
-def split(p):
-    q=re.sub(r'\b('+ABBR+r')\.',lambda m:m.group(1).replace('.','<D>')+'<D>',p)
-    q=re.sub(r'(?<![A-Za-z])([A-HJ-Z])\.(?=\s+[A-Z])',r'\1<D>',q)
-    parts=re.split(r'(?:(?<=[.!?])|(?<=[.!?][”’)]))\s+(?=[“‘(]?[A-Z0-9])',q)
-    return [x.replace('<D>','.') for x in parts if x.strip()]
-def gen(P,outdir,pages):
-    outdir.mkdir(exist_ok=True,parents=True)
-    for p in P:
-        imgs=[str(SP/'cet4img'/f"{p['img']}_p{i}.png") for i in pages[p['img']]]
-        L=[f"# {p['id']} CET-4 (College English Test Band 4) {p['year']}-{p['month']:02d} Set {p['set']} Reading Section C {p['passage']}",
-           f"Printed exam page image(s) — the source of truth for transcription: {' , '.join(imgs)}",
-           *([f"NOTE: the PDF text layer of this scanned paper was unusable, so this text was re-typed by hand from the page image — transcription mistakes are possible; compare with special care."] if p['year']==2021 else []),
-           *([f"Already corrected on purpose (obvious errors in the printed paper; do NOT report these differences from the print): " + ' ; '.join(f"'{e['old']}' → '{e['new']}'" for e in p.get('edits',[]))] if p.get('edits') else []),
-           "House style applied on purpose (do NOT report as differences from the print): curly quotes/apostrophes; em dashes without spaces; en dash in number ranges; Chinese footnotes written as 'word (中文)'; spacing fixes.",
-           "Each paragraph is ¶n; each sentence is [n.m] (paragraph n, sentence m). Chinese in parentheses after a word is the exam's own footnote gloss.",""]
-        for i,para in enumerate(p['paras'],1):
-            L.append(f"¶{i}")
-            for j,s in enumerate(split(para),1): L.append(f"[{i}.{j}] {s}")
-            L.append("")
-        (outdir/f"{p['id']}.txt").write_text('\n'.join(L),'utf-8')
-if __name__=='__main__':
-    P=json.load(open('四级/仔细阅读/passages.json'))
-    E=json.load(open('四级/tools/原文订正.json'))
-    for p in P: p['img']=p['id']; p['edits']=E.get(f"{p['paper']} {p['passage']}",[])
-    pages=json.load(open(SP/'cet4img'/'pages.json'))
-    gen(P,SP/sys.argv[1],pages)
+
+OUT = Path(sys.argv[1])
+OUT.mkdir(parents=True, exist_ok=True)
+D = json.loads((Path(__file__).resolve().parents[1] / 'data' / 'vocab.json').read_text('utf-8'))
+TIER = {'core': '单词', 'ext': '单词', 'phr': '短语'}
+n = 0
+for p in D['passages']:
+    if not p.get('done'):
+        continue
+    L = [f"# {p['id']} 大学英语四级 {p['name']}", f"标题: {p['title']}", f"体裁: {p['genre']}", f"概要: {p['summary']}", '']
+    k = 0
+    for para in p['paras']:
+        for s in para:
+            k += 1
+            L.append(f"[{k}] EN: {s['en']}")
+            L.append(f"    ZH: {s['zh']}")
+            for w in s['w']:
+                surf = ' … '.join(s['en'][a:b] for a, b in w['sp'])
+                L.append(f"    - {w['h']}  ({TIER[w['t']]})  {w['m']}   ← 高亮原文: \"{surf}\"")
+        L.append('')
+    (OUT / f"{p['id']}.txt").write_text('\n'.join(L), 'utf-8')
+    n += 1
+print('written', n)

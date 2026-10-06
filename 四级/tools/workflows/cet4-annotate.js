@@ -24,10 +24,9 @@ n <Chinese translation>
 = entry | entry | entry …
 
 ENTRY SYNTAX (the program matches the highlight automatically against the sentence):
-- CET-4 word (in the CET-4 scope list: junior + senior high + CET-4 words):  headword=pos. 释义      e.g. tackle=v. 应对；处理
-- beyond-CET-4 word (超纲):                                                 *headword=pos. 释义     e.g. *obesity=n. 肥胖（症）
-- phrase / collocation / fixed pattern (NO pos, at least two words):        ~phrase=释义           e.g. ~go about=忙于；做（日常事务）
-- The checker decides CET-4 vs beyond from the word list (${REPO}/四级/tools/词表/, regular derivations such as -ly/-ness/-ing/-er and British spellings count as in-list). Follow what the checker says: if it reports a tier mismatch, change the * prefix accordingly.
+- single word:                                          headword=pos. 释义      e.g. tackle=v. 应对；处理 ; obesity=n. 肥胖（症）
+- phrase / collocation / fixed pattern (NO pos, at least two words):  ~phrase=释义   e.g. ~go about=忙于；做（日常事务）
+- The user does NOT want any distinction between CET-4 words and beyond-syllabus (超纲) words: NEVER use the * prefix (the example files use * — ignore that; in this project every single word is written without a prefix).
 - headword = dictionary form (verb base form, singular noun); inflected forms in the sentence (planting, studies, went, better…) are matched automatically.
 - When the text differs from the headword in a way the matcher cannot derive (pronoun slots, irregular or contracted forms, possessives, parts that must be highlighted exactly), add the exact original text in braces: ~do one's part{doing its part}=尽自己的一份力 ; ~be committed to{committed to}=致力于 ; ~what's more{What’s more}=此外 (copy curly quotes exactly).
 - Split phrases: use … in the headword for a gap: ~tear…down=拆除 ; ~not only…but also=不仅……而且 ; and for braces use … between the exact pieces: ~pay attention to{pay…attention to}=关注.
@@ -35,13 +34,15 @@ ENTRY SYNTAX (the program matches the highlight automatically against the senten
 - pos labels: n. v. adj. adv. prep. conj. pron. num. det.
 - No headword may overlap another entry's highlight in the same sentence. No duplicate headwords within one sentence.
 
-CONTENT RULES (what to annotate):
-- Target learner: a Chinese university student preparing for CET-4 who wants to learn EVERY word they might not know from this passage. Density: about one entry per 4–5 words of running text (≈70–100 entries for a 400-word passage). EVERY sentence must have at least one entry (iron rule), even short ones.
-- Annotate: all CET-4/senior-high words that are not elementary (skip a/the/is/very/go/good/school etc. unless used in an unusual sense), every beyond-CET-4 word worth knowing, and useful phrases/collocations/fixed patterns (including grammar patterns: not only…but also, so…that, inversion like Gone are the days…).
+CONTENT RULES (what to annotate — the user's explicit instruction: "不要考虑超纲词汇，把每一句话里面有必要记住的生词全部做出来"):
+- Target learner: a Chinese university student preparing for CET-4 who wants to memorise EVERY word and phrase in each sentence that is worth remembering. In EVERY sentence, annotate ALL such words and phrases — be exhaustive, sentence by sentence. Whether a word is inside or beyond the CET-4 syllabus does not matter at all: if a learner needs to remember it to understand and recite this sentence (including technical terms, names of things, and words the exam footnotes), annotate it.
+- Skip only truly elementary words that every CET-4 candidate already knows (a/the/is/have/do/go/good/very/many/people/school/time/day/like/want and similar junior-high basics), unless such a word is used in an unusual sense or inside a fixed phrase. When in doubt, annotate.
+- Also annotate useful phrases/collocations/fixed patterns (verb + preposition, noun + preposition, idioms, grammar patterns such as not only…but also, so…that, inversion like Gone are the days…).
+- EVERY sentence must have at least one entry (iron rule), even short ones.
 - Gloss = the sense used in THIS sentence first (you may add one closely related common sense after ；). Part of speech must match the use in this sentence. Do not list irrelevant senses.
 - A highlighted word/phrase must be the exact word in this sentence that carries the glossed sense (do not highlight noun "matters" with the verb sense "要紧").
 - Do NOT mark free combinations as phrases (e.g. "around them", "across languages", "matter more"); phrases are fixed collocations/idioms/patterns.
-- The exam's Chinese footnotes in parentheses like "(权衡)" are part of the printed English; do not translate them separately and do not annotate them, but DO annotate the English word they gloss (usually beyond CET-4, with your own precise gloss).
+- The exam's Chinese footnotes in parentheses like "(权衡)" are part of the printed English; do not translate them separately and do not annotate them, but DO annotate the English word they gloss (with your own precise gloss).
 
 TRANSLATION RULES (lessons from many review rounds — follow ALL):
 - Translate every clause: no omissions, no additions, no embellishment. Keep hedges and modality (may/might/could → 可能/或许; should → 应该), degree words (only/just/even/almost/most/some/slightly), tense and aspect (is becoming → 正变得; has done → 一直/已经…), negation scope (all…not / not all), comparatives (less likely → 可能性更小, NOT 不太可能; much less often → 少得多), superlatives (no 最 unless the English has most/-est), quantifiers, who does what to whom, pronoun referents, quotation boundaries (only the speaker's words inside “ ”; words added by the translator go outside).
@@ -52,7 +53,7 @@ TRANSLATION RULES (lessons from many review rounds — follow ALL):
 - Title and summary must be accurate and not overstate.
 
 PROCESS:
-1. Read the input and both examples. 2. Write the full file. 3. Run: /opt/ttsenv/bin/python ${REPO}/四级/tools/check_ann.py ${id} ${OUT}/${id}.txt — it reports every highlight that cannot be found, sentences without entries, missing/extra pos, one-word "phrases", tier mismatches against the CET-4 list, Chinese punctuation problems, wrong sentence count. Fix and re-run until it prints OK.
+1. Read the input and both examples. 2. Write the full file. 3. Run: /opt/ttsenv/bin/python ${REPO}/四级/tools/check_ann.py ${id} ${OUT}/${id}.txt — it reports every highlight that cannot be found, sentences without entries, missing/extra pos, one-word "phrases", any * prefix, Chinese punctuation problems, wrong sentence count. Fix and re-run until it prints OK.
 4. Then re-read your whole file once more as a strict reviewer: compare each Chinese line with its English clause by clause (meaning, modality, degree, tense, negation, numbers, names) and each gloss with its sentence; then read the Chinese alone, as one article, and smooth anything that does not read naturally — without losing or adding any meaning. Re-run the check until OK.
 Return a one-line summary: the OK line from the checker.`
 }

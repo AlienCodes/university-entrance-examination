@@ -1,7 +1,7 @@
-"""四级翻译与生词标注的公共函数：读句子、解析标注文件、匹配高亮、判断词级、中文排版检查。
+"""四级翻译与生词标注的公共函数：读句子、解析标注文件、匹配高亮、中文排版检查。
 
 标注文件格式与高考 tools/ann/pXX.txt 完全相同（T:/G:/S: 三行，然后每句“n 中文”与“= 词条 | 词条”）。
-词条前缀：无前缀＝四级词（在 词表/ 的初中+高中+四级并集里），*＝超纲词，~＝短语。
+词条前缀：无前缀＝单词，~＝短语。按用户要求不区分四级词和超纲词，每句里需要记住的生词全部标注，不加 * 前缀。
 匹配高亮的规则直接复用高考 tools/build.py 里的 parse/find，保证两边一致。
 """
 import json
@@ -17,41 +17,6 @@ _src = (REPO / 'tools' / 'build.py').read_text('utf-8')
 _ns = {'re': re, 'json': json}
 exec(_src[_src.index('IRR={'):_src.index('out=[];errs=0')], _ns)
 parse, find = _ns['parse'], _ns['find']
-
-SCOPE = set()
-for _f in ('初中', '高中', '四级'):
-    SCOPE |= set((HERE / '词表' / f'{_f}.txt').read_text('utf-8').split())
-_ov = HERE / '词级已核.json'
-TIER_OK = json.loads(_ov.read_text('utf-8')) if _ov.exists() else {}   # 词头 -> 'core'/'ext'，人工裁定
-
-BRIT = [('isation', 'ization'), ('ise', 'ize'), ('our', 'or'), ('tre', 'ter'), ('ence', 'ense'), ('lled', 'led'), ('lling', 'ling'), ('ogue', 'og')]
-SUF = [('ly', ''), ('ly', 'le'), ('ily', 'y'), ('ally', ''), ('ness', ''), ('iness', 'y'), ('ment', ''), ('er', ''), ('er', 'e'), ('or', ''), ('or', 'e'),
-       ('ing', ''), ('ing', 'e'), ('ed', ''), ('ed', 'e'), ('ied', 'y'), ('s', ''), ('es', ''), ('ies', 'y'), ('ful', ''), ('less', ''), ('al', ''), ('ally', 'al')]
-
-
-def in_scope(h):
-    """词头是否在四级范围：本身在表里，或是表中词的规则派生（-ly/-ness/-ment/-er/-ing/-ed/-ful/-less/-al）或英式拼写。"""
-    w = h.lower().strip()
-    if w in TIER_OK:
-        return TIER_OK[w] == 'core'
-    cands = {w}
-    for a, b in BRIT:
-        if a in w:
-            cands.add(w.replace(a, b))
-    for c in list(cands):
-        if c in SCOPE:
-            return True
-        for s, r in SUF:
-            if c.endswith(s) and len(c) - len(s) >= 3:
-                base = c[:-len(s)] + r
-                if base in SCOPE:
-                    return True
-                if len(base) > 3 and base[-1] == base[-2] and base[:-1] in SCOPE:     # running -> run
-                    return True
-    if '-' in w:                                    # 复合词：每一部分都在范围内才算四级词
-        return all(in_scope(x) for x in w.split('-') if x)
-    return False
-
 
 def load_sents():
     R = json.loads((ROOT / '仔细阅读' / 'sents.json').read_text('utf-8'))
@@ -82,7 +47,7 @@ def zh_problems(z, whole=False):
 
 
 def check(pid, path, R=None):
-    """返回 (错误列表, 词级不符列表, 词条数)。错误必须为零；词级不符要么改前缀，要么人工裁定写进 词级已核.json。"""
+    """返回 (错误列表, 备用列表, 词条数)。错误必须为零。"""
     R = R or load_sents()
     sents = flat(R[pid])
     meta, ann = parse(str(path))
@@ -135,10 +100,8 @@ def check(pid, path, R=None):
             if e['h'].lower() in seen:
                 errs.append(f'第{k}句 重复词条：{e["h"]}')
             seen.add(e['h'].lower())
-            if e['t'] in ('core', 'ext'):
-                want = 'core' if in_scope(e['h']) else 'ext'
-                if want != e['t']:
-                    tiers.append(f'第{k}句 {e["h"]} 标为{"四级词" if e["t"] == "core" else "超纲词"}，按词表应为{"四级词" if want == "core" else "超纲词（加 *）"}')
+            if e['t'] == 'ext':
+                errs.append(f'第{k}句 {e["h"]} 加了 * 前缀：不区分超纲词，单词一律不加前缀')
     if allzh.count('“') != allzh.count('”'):
         errs.append(f'全文中文引号不配对（“ {allzh.count("“")} 个，” {allzh.count("”")} 个）')
     n = sum(len(a['w']) for a in ann.values())
