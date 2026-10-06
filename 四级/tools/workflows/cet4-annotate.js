@@ -1,0 +1,62 @@
+export const meta = {
+  name: 'cet4-annotate',
+  description: 'Draft precise, idiomatic Chinese translation + vocabulary annotation for 60 CET-4 Section C passages, each self-validated with check_ann.py',
+  phases: [{ title: 'Draft', detail: 'one annotator per passage writes the annotation file and validates it to OK' }],
+}
+const REPO = args.repo
+const SP = args.scratch
+const OUT = args.out
+const IDS = args.ids
+
+function prompt(id) {
+  return `You are translating and annotating a reading passage from China's College English Test Band 4 (CET-4, 大学英语四级, Section C 仔细阅读) for Chinese university students preparing for CET-4. The output drives a study webpage and a video: each sentence is shown in English, with an exact Chinese translation below it and the highlighted vocabulary with glosses. The user demands ABSOLUTE precision AND idiomatic Chinese: every translation must say exactly what the English says, and read like natural Chinese written by a skilled translator; every gloss must give the exact sense used in that sentence.
+
+INPUT: ${SP}/c4en/${id}.txt — the passage, one numbered English sentence per line ("[n] EN: …"), with paragraph markers. The English is final (already proofread and sealed); do NOT change it.
+STYLE EXAMPLES (read both fully first — same file format, from the gaokao part of this project): ${REPO}/tools/ann/p61.txt and ${REPO}/tools/ann/p58.txt
+OUTPUT: write the file ${OUT}/${id}.txt (create the directory if needed). Do not modify any other file.
+
+FILE FORMAT (exactly as in the examples):
+T: <Chinese title, concise and specific, 6–20 characters, reflecting the main idea>
+G: <体裁 · 主题, e.g. 说明文 · 科技与健康 / 议论文 · 社会与文化 / 记叙文 · 人物与经历>
+S: <Chinese summary, 2–4 sentences, strictly faithful: no claims, causes or certainty the passage does not state>
+then for every sentence n (1..N, same numbering and count as the input; paragraph markers are NOT written):
+n <Chinese translation>
+= entry | entry | entry …
+
+ENTRY SYNTAX (the program matches the highlight automatically against the sentence):
+- CET-4 word (in the CET-4 scope list: junior + senior high + CET-4 words):  headword=pos. 释义      e.g. tackle=v. 应对；处理
+- beyond-CET-4 word (超纲):                                                 *headword=pos. 释义     e.g. *obesity=n. 肥胖（症）
+- phrase / collocation / fixed pattern (NO pos, at least two words):        ~phrase=释义           e.g. ~go about=忙于；做（日常事务）
+- The checker decides CET-4 vs beyond from the word list (${REPO}/四级/tools/词表/, regular derivations such as -ly/-ness/-ing/-er and British spellings count as in-list). Follow what the checker says: if it reports a tier mismatch, change the * prefix accordingly.
+- headword = dictionary form (verb base form, singular noun); inflected forms in the sentence (planting, studies, went, better…) are matched automatically.
+- When the text differs from the headword in a way the matcher cannot derive (pronoun slots, irregular or contracted forms, possessives, parts that must be highlighted exactly), add the exact original text in braces: ~do one's part{doing its part}=尽自己的一份力 ; ~be committed to{committed to}=致力于 ; ~what's more{What’s more}=此外 (copy curly quotes exactly).
+- Split phrases: use … in the headword for a gap: ~tear…down=拆除 ; ~not only…but also=不仅……而且 ; and for braces use … between the exact pieces: ~pay attention to{pay…attention to}=关注.
+- Participles used as adjectives before a noun take the participle as headword with adj.: existing=adj. 现有的 ; processed=adj. 加工过的.
+- pos labels: n. v. adj. adv. prep. conj. pron. num. det.
+- No headword may overlap another entry's highlight in the same sentence. No duplicate headwords within one sentence.
+
+CONTENT RULES (what to annotate):
+- Target learner: a Chinese university student preparing for CET-4 who wants to learn EVERY word they might not know from this passage. Density: about one entry per 4–5 words of running text (≈70–100 entries for a 400-word passage). EVERY sentence must have at least one entry (iron rule), even short ones.
+- Annotate: all CET-4/senior-high words that are not elementary (skip a/the/is/very/go/good/school etc. unless used in an unusual sense), every beyond-CET-4 word worth knowing, and useful phrases/collocations/fixed patterns (including grammar patterns: not only…but also, so…that, inversion like Gone are the days…).
+- Gloss = the sense used in THIS sentence first (you may add one closely related common sense after ；). Part of speech must match the use in this sentence. Do not list irrelevant senses.
+- A highlighted word/phrase must be the exact word in this sentence that carries the glossed sense (do not highlight noun "matters" with the verb sense "要紧").
+- Do NOT mark free combinations as phrases (e.g. "around them", "across languages", "matter more"); phrases are fixed collocations/idioms/patterns.
+- The exam's Chinese footnotes in parentheses like "(权衡)" are part of the printed English; do not translate them separately and do not annotate them, but DO annotate the English word they gloss (usually beyond CET-4, with your own precise gloss).
+
+TRANSLATION RULES (lessons from many review rounds — follow ALL):
+- Translate every clause: no omissions, no additions, no embellishment. Keep hedges and modality (may/might/could → 可能/或许; should → 应该), degree words (only/just/even/almost/most/some/slightly), tense and aspect (is becoming → 正变得; has done → 一直/已经…), negation scope (all…not / not all), comparatives (less likely → 可能性更小, NOT 不太可能; much less often → 少得多), superlatives (no 最 unless the English has most/-est), quantifiers, who does what to whom, pronoun referents, quotation boundaries (only the speaker's words inside “ ”; words added by the translator go outside).
+- Multiples: "N times more/as many as X" → 是X的N倍 (NOT 比X多N倍). "as much as 30%" → 多达30%. at best → 往好里说也…… (not 充其量).
+- Natural Chinese (地道), not translationese. Avoid: English word order copied into Chinese; overlong 的-chains and two 的 in a row; 被/被…所… passives where Chinese uses active or 存现句; 进行+动词; nominalisations (……的推出); dangling 当……时 frames; redundant 他/她/它/我们/他们 that Chinese omits; literal idioms (when it comes to ≠ 当它来到); wrong connectors (instead = 而是/转而, not 反而 unless contrary to expectation); unidiomatic collocations; dashes copied from English that split a verb from its object. But never paraphrase away meaning.
+- Use full-width Chinese punctuation (，。；：？！、“”‘’（）——); consistent transliteration of each name throughout (常用通行译名 for well-known people, places, organisations; keep brand/app names like LinkedIn, YouTube in English); numbers as in the English. Keep one consistent term for each concept across the whole passage (title and summary included), and make cross-sentence references (这/那/其/他们) point to the right thing.
+- A highlighted and glossed phrase should be recognisable in the translation (the student matches the gloss to the Chinese).
+- Title and summary must be accurate and not overstate.
+
+PROCESS:
+1. Read the input and both examples. 2. Write the full file. 3. Run: /opt/ttsenv/bin/python ${REPO}/四级/tools/check_ann.py ${id} ${OUT}/${id}.txt — it reports every highlight that cannot be found, sentences without entries, missing/extra pos, one-word "phrases", tier mismatches against the CET-4 list, Chinese punctuation problems, wrong sentence count. Fix and re-run until it prints OK.
+4. Then re-read your whole file once more as a strict reviewer: compare each Chinese line with its English clause by clause (meaning, modality, degree, tense, negation, numbers, names) and each gloss with its sentence; then read the Chinese alone, as one article, and smooth anything that does not read naturally — without losing or adding any meaning. Re-run the check until OK.
+Return a one-line summary: the OK line from the checker.`
+}
+
+phase('Draft')
+const results = await parallel(IDS.map(id => () => agent(prompt(id), { label: `annotate:${id}`, phase: 'Draft' })))
+return IDS.map((id, i) => ({ id, result: results[i] }))
