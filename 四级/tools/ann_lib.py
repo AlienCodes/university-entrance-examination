@@ -18,6 +18,48 @@ _ns = {'re': re, 'json': json}
 exec(_src[_src.index('IRR={'):_src.index('out=[];errs=0')], _ns)
 parse, find = _ns['parse'], _ns['find']
 
+# 覆盖检查：句子里不属于基础词（初中词表 基础词.txt 及其规则变形）的词都必须被标注（用户要求：如 participant、interact 这类词一个都不能漏）。
+# 专有名词（句中大写）、数字、缩写不算。
+BASIC = set((HERE / '基础词.txt').read_text('utf-8').split())
+_BV = set()
+for _w in BASIC:
+    _BV |= _ns['variants'](_w)
+SUF = [('ly', ''), ('ly', 'le'), ('ily', 'y'), ('ness', ''), ('er', ''), ('er', 'e'), ('ing', ''), ('ing', 'e'), ('ed', ''), ('ed', 'e'), ('ied', 'y'),
+       ('s', ''), ('es', ''), ('ies', 'y'), ('est', ''), ('ier', 'y'), ('iest', 'y'), ('n', ''), ('ful', '')]
+
+
+def is_basic(tok):
+    w = tok.lower().replace('’', "'")
+    if w in _BV or w.split("'")[0] in _BV:
+        return True
+    for x, y in SUF:
+        if w.endswith(x) and len(w) - len(x) >= 2:
+            b = w[:-len(x)] + y
+            if b in BASIC or (len(b) > 3 and b[-1] == b[-2] and b[:-1] in BASIC):
+                return True
+    return False
+
+
+def uncovered(en, spans):
+    """返回句中没有被任何高亮覆盖、又不是基础词的词。"""
+    out = []
+    for m in re.finditer(r"[A-Za-z]+(?:['’][a-z]+)?", en):
+        a, b = m.span()
+        if any(x <= a and b <= y for x, y in spans):
+            continue
+        tok = m.group(0)
+        if is_basic(tok):
+            continue
+        if tok[0].isupper() and a > 0 and not re.search(r'[.!?“"‘(]\s*$', en[:a]):     # 句中大写：专有名词
+            continue
+        if tok.isupper() and len(tok) <= 5:            # 缩写 DNA、AI、IT
+            continue
+        if re.fullmatch(r"[A-Za-z]{1,2}", tok):        # s、t 等残片
+            continue
+        out.append(tok)
+    return out
+
+
 def load_sents():
     R = json.loads((ROOT / '仔细阅读' / 'sents.json').read_text('utf-8'))
     return {r['id']: r for r in R}
@@ -87,6 +129,9 @@ def check(pid, path, R=None):
                 errs.append(f'第{k}句 找不到：{e["h"]}' + (f'{{{e["surf"]}}}' if e.get('surf') else '') + f'  ||  {en}')
                 continue
             taken += sp
+        miss = uncovered(en, taken)
+        if miss:
+            errs.append(f'第{k}句 漏标（不是基础词，必须标注）：{", ".join(dict.fromkeys(miss))}')
         seen = set()
         for e in a['w']:
             if e['t'] != 'phr' and not re.match(r'^(n|v|adj|adv|prep|conj|pron|num|det|int|abbr)\.', e['m']):
