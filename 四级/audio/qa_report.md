@@ -4,13 +4,14 @@
 
 ## cet4_male
 
-- 文章数：3
+- 文章数：4
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.46）
-- 平均识别差异率：0.37%
+- 平均识别差异率：0.97%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | c60 | 4.48 | 0.56% | anuj → anud; favourite → favorite |
 | c59 | 4.46 | 0.56% | ∅ → point; ok → okay |
 | c58 | 4.47 | 0.00% |  |
+| c57 | 4.47 | 2.78% | impostor → imposter; or → o; internalised → internalized; halle wittenberg → hallowittenberg; impostor → imposter; impostor → imposter; impostor → imposter; imes → imez; impostor → imposter |
