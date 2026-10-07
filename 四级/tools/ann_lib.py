@@ -43,9 +43,11 @@ def is_basic(tok):
 def uncovered(en, spans):
     """返回句中没有被任何高亮覆盖、又不是基础词的词。"""
     out = []
-    for m in re.finditer(r"[A-Za-z]+(?:['’][a-z]+)?", en):
+    toks = list(re.finditer(r"[A-Za-z]+(?:['’][a-z]+)?", en))
+    done = {m.group(0).lower() for m in toks if any(x <= m.start() and m.end() <= y for x, y in spans)}
+    for m in toks:
         a, b = m.span()
-        if any(x <= a and b <= y for x, y in spans):
+        if any(x <= a and b <= y for x, y in spans) or m.group(0).lower() in done:     # 同一句里重复出现的词，标一次即可
             continue
         tok = m.group(0)
         if is_basic(tok):
