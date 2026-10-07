@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：11
+- 文章数：12
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.46）
-- 平均识别差异率：0.74%
+- 平均识别差异率：0.72%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -22,3 +22,4 @@
 | c52 | 4.47 | 1.44% | foulkes → falk; foulkes' → falk's; foulkes → falks; foulkes' → falk's; stressed → stress |
 | c51 | 4.48 | 0.00% |  |
 | c50 | 4.49 | 0.83% | neil baily → neal bailey; baily → bailey |
+| c49 | 4.49 | 0.56% | too → two; midazolam → midazalem |
