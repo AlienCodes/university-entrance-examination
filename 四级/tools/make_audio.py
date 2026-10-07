@@ -59,10 +59,13 @@ def leveler(x, sr, win=1.0, rng=4.0, smooth=0.4):
     B = int(0.05 * sr)
     n = len(x) // B
     e = np.mean(f[:n * B].reshape(n, B) ** 2, axis=1)
+    eb = 10 * np.log10(e + 1e-12)
+    on = (eb > np.percentile(eb, 99) - 30).astype(float)       # 只统计有声的 50ms 块，窗口里的停顿不拉低电平
     w = int(win / 0.05)
-    k = np.convolve(e, np.ones(w) / w, mode='same')
-    lv = 10 * np.log10(k + 1e-12)
-    act = lv > lv.max() - 20
+    num = np.convolve(e * on, np.ones(w), mode='same')
+    den = np.convolve(on, np.ones(w), mode='same')
+    lv = 10 * np.log10(num / np.maximum(den, 1) + 1e-12)
+    act = den >= 0.3 * w                                       # 窗口内有声部分不足 30% 时不调整，保持前值
     ref = np.median(lv[act])
     g = np.zeros(n)
     last = 0.0
@@ -89,14 +92,22 @@ def main(ids):
     tpath = out / 'timings.json'
     timings = json.loads(tpath.read_text('utf-8')) if tpath.exists() else {}
     engine, pron = G.Engine(), G.Pronouncer()
+    fails = []
     for i, p in enumerate(P, 1):
         t0 = time.time()
-        r = G.render_passage(p, VOICE, vcfg, engine, pron, out / VOICE)
+        try:
+            r = G.render_passage(p, VOICE, vcfg, engine, pron, out / VOICE)
+        except RuntimeError as e:                 # 检查不通过的不输出文件，记下来最后统一处理
+            fails.append(str(e))
+            print('未通过：', e, flush=True)
+            continue
         r.update(name=f"{p['paper']} {p['passage']}")
         timings.setdefault(VOICE, {})[p['id']] = r
         out.mkdir(parents=True, exist_ok=True)
         tpath.write_text(json.dumps(timings, ensure_ascii=False, indent=1), 'utf-8')
         print(f'[{i}/{len(P)}] {r["file"]}  {r["duration"]:.1f}s，用时 {time.time() - t0:.0f}s', flush=True)
+    if fails:
+        sys.exit(f'{len(fails)} 篇未通过检查：\n' + '\n'.join(fails))
 
 
 if __name__ == '__main__':
