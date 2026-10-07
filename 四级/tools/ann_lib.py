@@ -40,16 +40,30 @@ def is_basic(tok):
     return False
 
 
-def uncovered(en, spans):
-    """返回句中没有被任何高亮覆盖、又不是基础词的词。"""
+def _stems(w):
+    w = re.sub(r"['’]s$", '', w.lower())
+    out = {w}
+    for x, y in (('ies', 'y'), ('es', ''), ('es', 'e'), ('s', ''), ('ed', ''), ('ed', 'e'), ('ing', ''), ('ing', 'e')):
+        if w.endswith(x) and len(w) - len(x) >= 3:
+            out.add(w[:-len(x)] + y)
+    return out
+
+
+def uncovered(en, spans, names=()):
+    """返回句中没有被任何高亮覆盖、又不是基础词的词。names：本篇在句中位置出现过的大写词（专有名词），句首出现也不算漏标。"""
     out = []
     toks = list(re.finditer(r"[A-Za-z]+(?:['’][a-z]+)?", en))
-    done = {m.group(0).lower() for m in toks if any(x <= m.start() and m.end() <= y for x, y in spans)}
+    done = set()
+    for m in toks:
+        if any(x <= m.start() and m.end() <= y for x, y in spans):
+            done |= _stems(m.group(0))
     for m in toks:
         a, b = m.span()
-        if any(x <= a and b <= y for x, y in spans) or m.group(0).lower() in done:     # 同一句里重复出现的词，标一次即可
+        if any(x <= a and b <= y for x, y in spans) or _stems(m.group(0)) & done:     # 同一句里重复出现的词（含单复数等变形），标一次即可
             continue
         tok = m.group(0)
+        if re.sub(r"['’]s$", '', tok) in names:
+            continue
         if is_basic(tok):
             continue
         if tok[0].isupper() and a > 0 and not re.search(r'[.!?“"‘(]\s*$', en[:a]):     # 句中大写：专有名词
@@ -95,6 +109,10 @@ def check(pid, path, R=None):
     R = R or load_sents()
     sents = flat(R[pid])
     meta, ann = parse(str(path))
+    names = set()
+    for en in sents:
+        for m in re.finditer(r"(?<=[a-z,;:] )[A-Z][a-z]+", en):
+            names.add(m.group(0))
     errs, tiers = [], []
     for line in Path(path).read_text('utf-8').split('\n'):
         if line.startswith('='):
@@ -131,12 +149,12 @@ def check(pid, path, R=None):
                 errs.append(f'第{k}句 找不到：{e["h"]}' + (f'{{{e["surf"]}}}' if e.get('surf') else '') + f'  ||  {en}')
                 continue
             taken += sp
-        miss = uncovered(en, taken)
+        miss = uncovered(en, taken, names)
         if miss:
             errs.append(f'第{k}句 漏标（不是基础词，必须标注）：{", ".join(dict.fromkeys(miss))}')
         seen = set()
         for e in a['w']:
-            if e['t'] != 'phr' and not re.match(r'^(n|v|adj|adv|prep|conj|pron|num|det|int|abbr)\.', e['m']):
+            if e['t'] != 'phr' and not re.match(r'^(n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.', e['m']):
                 errs.append(f'第{k}句 单词 {e["h"]} 的释义缺少词性：{e["m"]}')
             if e['t'] == 'phr' and re.match(r'^(n|v|adj|adv|prep|conj)\. ', e['m']):
                 errs.append(f'第{k}句 短语 {e["h"]} 的释义不应带词性：{e["m"]}')
@@ -144,9 +162,9 @@ def check(pid, path, R=None):
                 errs.append(f'第{k}句 短语 {e["h"]} 只有一个词，应作单词标注')
             if zh_problems(e['m']):
                 errs.append(f'第{k}句 释义 {e["h"]} 中文排版：{zh_problems(e["m"])}')
-            if e['h'].lower() in seen:
+            if (e['h'].lower(), e['m']) in seen:
                 errs.append(f'第{k}句 重复词条：{e["h"]}')
-            seen.add(e['h'].lower())
+            seen.add((e['h'].lower(), e['m']))
             if e['t'] == 'ext':
                 errs.append(f'第{k}句 {e["h"]} 加了 * 前缀：不区分超纲词，单词一律不加前缀')
     if allzh.count('“') != allzh.count('”'):
