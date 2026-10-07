@@ -131,7 +131,7 @@ FIT = """() => { const r=document.documentElement.style, main=document.querySele
 
 def video_name(p):
     title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
-    return f"四级 {p['paper']} {p['passage']} {title}.mp4"
+    return f"{p['paper']} {p['passage']} {title}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
 
 
 def main():
@@ -216,7 +216,7 @@ def main():
     sys.path[:0] = [str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
     from verify_videos import check
     fails = [f'{n}：{d}' for n, c, d in check(out / name, p, tm) if not c and not n.startswith('文件名')]
-    if not name.startswith(f"四级 {p['paper']} {p['passage']} {p['title']}"):
+    if not re.fullmatch(r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', name) or name != video_name(p):
         fails.append(f'文件名：{name}')
     if fails:
         (out / name).unlink()

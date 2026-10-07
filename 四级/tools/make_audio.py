@@ -115,7 +115,8 @@ def main(ids):
     vcfg = json.loads((G.HERE / 'voices.json').read_text('utf-8'))[VOICE]
     P = json.loads((C4 / '仔细阅读' / 'sents.json').read_text('utf-8'))
     if ids:
-        P = [p for p in P if p['id'] in set(ids)]
+        byid = {p['id']: p for p in P}
+        P = [byid[i] for i in ids]                 # 按给定顺序生成（用户要求从 2026 年往前做）
     out = C4 / 'audio'
     tpath = out / 'timings.json'
     timings = json.loads(tpath.read_text('utf-8')) if tpath.exists() else {}
