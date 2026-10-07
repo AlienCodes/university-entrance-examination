@@ -12,7 +12,7 @@ HERE = Path(__file__).resolve().parent
 C4 = HERE.parent
 ROOT = C4.parent
 sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
-from make_video import video_name, VOICE        # noqa: E402
+from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time        # noqa: E402
 from verify_videos import check                  # noqa: E402
 
 FINAL = C4 / '最终视频'
@@ -32,7 +32,13 @@ def main():
             allok = False
             print('❌', mp4.name, flush=True)
             continue
-        res = [r for r in check(mp4, p, T[p['id']]) if not r[0].startswith('文件名')]
+        tm = T[p['id']]
+        sents = [s for para in p['paras'] for s in para]
+        sw = {int(k) - 1: switch_time(C4 / 'audio' / tm['file'], tm['sentences'][int(k) - 1], sents[int(k) - 1]['en'],
+                                      split_parts(p['id'], int(k), sents[int(k) - 1])[1][0]) for k in SPLIT.get(p['id'], {})}
+        res = [r for r in check(mp4, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))]
+        if sw:
+            res.append(switch_check(mp4, tm['sentences'], sw))
         res.insert(0, ('文件名：年份月份 第几套 第几篇 题目', bool(re.fullmatch(r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', mp4.name)), mp4.name))
         good = all(r[1] for r in res)
         allok &= good

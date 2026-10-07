@@ -204,6 +204,29 @@ def switch_time(audio, it, en, cut):
     return s0 + (lo + int(np.argmin(e[lo:hi]))) / 16000
 
 
+def switch_check(mp4, times, sw):
+    """换屏核查（四级版）：高考的同名检查假定一句一屏；有分屏时改用这一项。
+    每句读完后 0.45 秒仍是本句最后一屏、0.55 秒已是下一句第一屏；分屏的句子在换屏时刻前 0.1 秒是第一屏、后 0.1 秒是第二屏，且两屏确实不同。"""
+    import numpy as np
+    from verify_videos import frame
+    same = lambda a, b: np.abs(a - b).mean() <= 1
+    bad = []
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        for i, it in enumerate(times):
+            first = frame(mp4, it['start'] + 0.2, td)
+            last = frame(mp4, sw[i] + 0.2, td) if i in sw else first
+            if i in sw and not (same(frame(mp4, sw[i] - 0.1, td), first) and same(frame(mp4, sw[i] + 0.1, td), last)
+                                and not same(first, last)):
+                bad.append(f'第 {i + 1} 句分屏')
+            if i + 1 < len(times):
+                if not (same(frame(mp4, it['end'] + 0.45, td), last)
+                        and same(frame(mp4, it['end'] + 0.55, td), frame(mp4, times[i + 1]['start'] + 0.2, td))):
+                    bad.append(f'第 {i + 1} 句')
+    return ('读完停留 0.5 秒再切屏，0.3 秒后开读（含分屏）', not bad,
+            f'不符合：{bad}' if bad else f'{len(times) - 1} 处切换全部正确' + (f'，另有 {len(sw)} 处分屏换屏正确' if sw else ''))
+
+
 def video_name(p):
     title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
     return f"{p['paper']} {p['passage']} {title}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
@@ -263,7 +286,7 @@ def main():
     bad = [i + 2 for i in range(len(times) - 1) if abs(starts[i + 1] - ends[i] - GAP) > 0.01]
     if bad:
         raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
-    cuts = [0.0]
+    cuts, sw = [0.0], {}
     for i, j, part in owner[1:]:
         if j == 0:
             cuts.append(starts[0] if i == 0 else ends[i - 1] + HOLD)
@@ -273,6 +296,7 @@ def main():
                 raise SystemExit(f'第 {i + 1} 句分屏时刻 {t:.2f}s 不在句子朗读范围内')
             print(f'  第 {i + 1} 句分两屏，{t - starts[i]:.2f}s 处换屏（第二屏从 “{sents[i]["en"][part[0]:part[0] + 24]}…” 开始）')
             cuts.append(t)
+            sw[i] = t
     cuts.append(total)
     assert len(cuts) == len(slides) + 1
     FPS = 30
@@ -307,7 +331,10 @@ def main():
     # 成品核查：复用高考 verify_videos.check（分辨率、流畅度、声画等长、朗读与画面逐句一致、静音、停顿、响度……）
     sys.path[:0] = [str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
     from verify_videos import check
-    fails = [f'{n}：{d}' for n, c, d in check(out / name, p, tm) if not c and not n.startswith('文件名')]
+    res = [r for r in check(out / name, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))]
+    if sw:
+        res.append(switch_check(out / name, times, sw))
+    fails = [f'{n}：{d}' for n, c, d in res if not c]
     if not re.fullmatch(r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', name) or name != video_name(p):
         fails.append(f'文件名：{name}')
     if fails:
