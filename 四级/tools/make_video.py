@@ -7,6 +7,9 @@
 时间轴、编码和成品核查与高考 tools/video/make_video.py 完全相同（片头静音 1.5 秒、句间 0.8 秒、
 读完后画面停留 0.5 秒再切换、结尾静音 ≥ 2 秒、恒定 30 帧逐屏编码后无损拼接），
 生成后立即运行高考同一套 verify_videos.check 核查，任何一项不通过就删除成品。
+字号：英文不小于 48px、词汇栏不小于 22px（1080p 基准，4K 下翻倍），保证手机上看得清；
+一句话生词太多、一屏放不下时，按 分屏.json 在合适的分句处拆成两屏（用户要求：不硬挤），
+换屏时刻用语音识别的词时间戳找到第二屏第一个词，再落在它前面的能量最低点（词与词之间的空隙）。
 输入：四级/data/vocab.json（复核定稿）、四级/audio/timings.json（cet4_male）。输出：四级/最终视频/。
 """
 import argparse
@@ -24,6 +27,8 @@ C4 = HERE.parent
 ROOT = C4.parent
 VOICE = 'cet4_male'
 W, H = 1920, 1080
+MIN_FS, MIN_VS = 48, 22          # 可读性下限：放不下就必须分屏
+SPLIT = {k: v for k, v in json.loads((HERE / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -49,6 +54,7 @@ sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff
 .v.ph b{color:#a14a2a}
 .v i{font-style:italic;font-family:'EB Garamond';color:#6b746f;margin-left:8px}
 .v span{color:#3c4642;margin-left:10px}
+.cont{color:#9aa39e;font-weight:400}
 .bot{position:absolute;left:110px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter';font-size:22px;color:#6b746f;letter-spacing:.1em}
 .bar{flex:1;height:3px;background:#dcd8cc;margin:0 30px}.bar i{display:block;height:100%;background:#1f5c4a}
 .ttl{position:absolute;left:150px;right:150px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
@@ -77,24 +83,32 @@ def ordered(s):
     return sorted(s['w'], key=lambda w: w['sp'][0][0])
 
 
-def sentence_html(s):
+def sentence_html(s, lo=0, hi=None):
+    """只排 en[lo:hi]（分屏时每屏一段）；编号按整句统一，第二屏接着第一屏编号。"""
+    hi = len(s['en']) if hi is None else hi
     ws = ordered(s)
     num = {id(w): i + 1 for i, w in enumerate(ws)}
-    spans = sorted((a, b, w, j) for w in s['w'] for j, (a, b) in enumerate(w['sp']))
-    out, pos = '', 0
+    spans = sorted((a, b, w, j) for w in s['w'] for j, (a, b) in enumerate(w['sp']) if lo <= a and b <= hi)
+    last = {}
+    for a, b, w, j in spans:
+        last[id(w)] = j
+    out, pos = '', lo
     for a, b, w, j in spans:
         if a < pos:
             continue
         cls = 'ph' if w['t'] == 'phr' else 'w'
-        sup = f'<sup>{num[id(w)]}</sup>' if j == len(w['sp']) - 1 else ''     # 分开的短语，编号标在最后一段
+        sup = f'<sup>{num[id(w)]}</sup>' if j == last[id(w)] else ''     # 分开的短语，编号标在本屏最后一段
         out += esc(s['en'][pos:a]) + f'<span class="{cls}">{esc(s["en"][a:b])}{sup}</span>'
         pos = b
-    return out + esc(s['en'][pos:])
+    return out + esc(s['en'][pos:hi])
 
 
-def vocab_html(s):
+def vocab_html(s, lo=0, hi=None):
+    hi = len(s['en']) if hi is None else hi
     out = []
     for i, w in enumerate(ordered(s), 1):
+        if not any(lo <= a and b <= hi for a, b in w['sp']):
+            continue
         m = POS.match(w['m'])
         pos, mean = (m.group(1), m.group(2)) if m else ('', w['m'])
         out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{esc(w["h"])}</b>'
@@ -113,11 +127,35 @@ def title_slide(p):
       <div class="legend"><span><em style="background:#1f5c4a"></em>单词</span><span><em style="background:#a14a2a"></em>短语</span></div>''')
 
 
-def sentence_slide(p, s, k, n):
+def split_parts(pid, k, s):
+    """分屏：返回 [(lo, hi, 中文, 标签), …]；不分屏返回一屏。中文必须是定稿译文的原样片段（逐个分句核对），合起来不多不少。"""
+    c = SPLIT.get(pid, {}).get(str(k))
+    if not c:
+        return [(0, len(s['en']), s['zh'], '')]
+    en, zh = s['en'], s['zh']
+    if en.count(c['at']) != 1:
+        raise SystemExit(f'分屏.json：{pid} 第 {k} 句找不到或不唯一：{c["at"]}')
+    cut = en.index(c['at'])
+    if not re.search(r'[ —]$', en[:cut]):
+        raise SystemExit(f'分屏.json：{pid} 第 {k} 句的分屏点不在词边界：{c["at"]}')
+    if sorted(''.join(c['zh'])) != sorted(zh) or any(x not in zh for z in c['zh'] for x in re.split(r'(?<=[，；：、])', z) if x):
+        raise SystemExit(f'分屏.json：{pid} 第 {k} 句的中文不是定稿译文的原样片段')
+    if any(a < cut < b for w in s['w'] for a, b in w['sp']):
+        raise SystemExit(f'分屏.json：{pid} 第 {k} 句的分屏点切断了一个生词')
+    return [(0, cut, c['zh'][0], ' · PART 1/2'), (cut, len(en), c['zh'][1], ' · PART 2/2')]
+
+
+def sentence_slide(p, s, k, n, part=None):
+    lo, hi, zh, tag = part or (0, len(s['en']), s['zh'], '')
+    en = sentence_html(s, lo, hi).rstrip()
+    if lo > 0:
+        en = '<span class="cont">… </span>' + en
+    if hi < len(s['en']):
+        en += '<span class="cont"> …</span>'
     return page(f'''<div class="top"><b>CET-4 READING</b><span>{head(p)}　{esc(p.get("title") or "")}</span></div>
-      <div class="main"><div id="box"><div class="en">{sentence_html(s)}</div><div class="zh">{esc(s["zh"])}</div></div></div>
-      <div class="side" id="side"><h3>VOCABULARY</h3><div id="list">{vocab_html(s)}</div></div>
-      <div class="bot"><span>SENTENCE {k} / {n}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
+      <div class="main"><div id="box"><div class="en">{en}</div><div class="zh">{esc(zh)}</div></div></div>
+      <div class="side" id="side"><h3>VOCABULARY</h3><div id="list">{vocab_html(s, lo, hi)}</div></div>
+      <div class="bot"><span>SENTENCE {k} / {n}{tag}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
 
 
 # 左侧句子区与右侧词汇栏分别缩放字号，直到都放得下
@@ -127,6 +165,43 @@ FIT = """() => { const r=document.documentElement.style, main=document.querySele
   while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); }
   while (side.scrollHeight > side.clientHeight && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
   return [fs, vs, box.scrollHeight <= main.clientHeight && side.scrollHeight <= side.clientHeight]; }"""
+
+
+def switch_time(audio, it, en, cut):
+    """分屏换屏时刻：语音识别得到第二屏第一个词的开口时间，再在它之前 0.45 秒内找能量最低的 60 毫秒（词间空隙）的中点。"""
+    import glob
+    import numpy as np
+    import sherpa_onnx
+    import soundfile as sf
+    import soxr
+    a, sr = sf.read(str(audio), dtype='float32')
+    a16 = soxr.resample(a, sr, 16000).astype(np.float32)
+    s0 = it['start']
+    seg = a16[int(s0 * 16000): int(it['end'] * 16000)]
+    d = Path(glob.glob(str(ROOT / 'tools' / 'tts' / 'models' / 'sherpa-onnx-nemo-parakeet*'))[0])
+    asr = sherpa_onnx.OfflineRecognizer.from_transducer(
+        encoder=str(d / 'encoder.int8.onnx'), decoder=str(d / 'decoder.int8.onnx'), joiner=str(d / 'joiner.int8.onnx'),
+        tokens=str(d / 'tokens.txt'), model_type='nemo_transducer', num_threads=4)
+    st = asr.create_stream()
+    st.accept_waveform(16000, seg)
+    asr.decode_stream(st)
+    words = []                                       # (词, 开口时间)
+    for tok, t in zip(st.result.tokens, st.result.timestamps):
+        if tok.startswith(' ') or not words:
+            words.append([tok.strip(), t])
+        else:
+            words[-1][0] += tok
+    first = re.sub(r'[^a-z]', '', en[cut:].split()[0].lower())
+    expect = (it['end'] - s0) * cut / len(en)
+    cand = [t for w, t in words if re.sub(r'[^a-z]', '', w.lower()) == first]
+    if not cand:
+        raise SystemExit(f'分屏：语音识别里找不到第二屏第一个词 “{first}”')
+    wt = min(cand, key=lambda t: abs(t - expect))
+    if abs(wt - expect) > 3:
+        raise SystemExit(f'分屏：“{first}” 的识别位置 {wt:.2f}s 与估计位置 {expect:.2f}s 相差太远')
+    e = np.convolve(seg.astype(np.float64) ** 2, np.ones(960) / 960, mode='same')      # 60 毫秒滑动能量
+    lo, hi = int(max(0, wt - 0.45) * 16000), int(min(len(seg) / 16000, wt + 0.05) * 16000)
+    return s0 + (lo + int(np.argmin(e[lo:hi]))) / 16000
 
 
 def video_name(p):
@@ -154,7 +229,11 @@ def main():
 
     from playwright.sync_api import sync_playwright
     tmp = Path(tempfile.mkdtemp())
-    slides = [title_slide(p)] + [sentence_slide(p, s, i + 1, len(sents)) for i, s in enumerate(sents)]
+    slides, owner = [title_slide(p)], [None]      # owner：每屏属于第几句、第几屏
+    for i, s in enumerate(sents):
+        for j, part in enumerate(split_parts(p['id'], i + 1, s)):
+            slides.append(sentence_slide(p, s, i + 1, len(sents), part))
+            owner.append((i, j, part))
     sizes = []
     with sync_playwright() as pw:
         exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
@@ -168,8 +247,10 @@ def main():
             pg.wait_for_timeout(150)
             if i:
                 fs, vs, fits = pg.evaluate(FIT)
-                if not fits:                    # 缩到最小仍放不下会被裁切——直接报错
-                    raise SystemExit(f'第 {i} 句内容太多，英文 {fs}px、词汇 {vs}px 仍放不下')
+                k = owner[i][0] + 1
+                if not fits or fs < MIN_FS or vs < MIN_VS:     # 放不下或字太小：必须分屏，不硬挤
+                    raise SystemExit(f'第 {k} 句一屏放不下（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：'
+                                     f'请在 四级/tools/分屏.json 里为 {p["id"]} 第 {k} 句选一个合适的分句处拆成两屏')
                 sizes.append((fs, vs))
             pg.screenshot(path=str(tmp / f'{i:03d}.png'))
         br.close()
@@ -182,7 +263,18 @@ def main():
     bad = [i + 2 for i in range(len(times) - 1) if abs(starts[i + 1] - ends[i] - GAP) > 0.01]
     if bad:
         raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
-    cuts = [0.0, starts[0]] + [ends[i] + HOLD for i in range(len(times) - 1)] + [total]
+    cuts = [0.0]
+    for i, j, part in owner[1:]:
+        if j == 0:
+            cuts.append(starts[0] if i == 0 else ends[i - 1] + HOLD)
+        else:                                       # 分屏的第二屏：在第二屏第一个词开口之前切换
+            t = switch_time(audio, times[i], sents[i]['en'], part[0])
+            if not starts[i] + 0.3 < t < ends[i] - 0.3:
+                raise SystemExit(f'第 {i + 1} 句分屏时刻 {t:.2f}s 不在句子朗读范围内')
+            print(f'  第 {i + 1} 句分两屏，{t - starts[i]:.2f}s 处换屏（第二屏从 “{sents[i]["en"][part[0]:part[0] + 24]}…” 开始）')
+            cuts.append(t)
+    cuts.append(total)
+    assert len(cuts) == len(slides) + 1
     FPS = 30
     frames = [round(c * FPS) for c in cuts[:-1]] + [math.ceil(cuts[-1] * FPS)]
     lst = []
