@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：10
+- 文章数：11
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.47（最低 4.46）
-- 平均识别差异率：0.73%
+- 平均自然度：4.48（最低 4.46）
+- 平均识别差异率：0.74%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -21,3 +21,4 @@
 | c53 | 4.49 | 1.37% | humm → hum; humm → hum; humm → hum; humm → hum; humm → hum |
 | c52 | 4.47 | 1.44% | foulkes → falk; foulkes' → falk's; foulkes → falks; foulkes' → falk's; stressed → stress |
 | c51 | 4.48 | 0.00% |  |
+| c50 | 4.49 | 0.83% | neil baily → neal bailey; baily → bailey |
