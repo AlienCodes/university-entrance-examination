@@ -28,6 +28,33 @@ def stem(p):
 G.file_stem = stem
 
 
+# 用户要求（2026-10-07）：冒号、分号、破折号处的停顿与逗号完全一样（高考版分号、冒号是逗号的 1.4 倍）。
+# 复制高考 synth_sentence，只去掉 1.4 倍，其余（分段、补标点、淡入淡出）不变。
+def synth_sentence(read, key, engine, pron, style, speed, cfg):
+    cp = cfg.get('clause_pause', 0)
+    # 原文破折号两侧不留空格（pesticides—in fact），高考的切分规则要求标点后有空格，会漏掉这里的停顿；先补一个空格再切
+    read = G.re.sub(r'—(?=\S)', '— ', read)
+    parts = [x for x in G.CLAUSE.split(read) if x.strip()] if cp else [read]
+    merged = []
+    for x in parts:
+        if merged and len(merged[-1].split()) < 2:
+            merged[-1] += ' ' + x
+        else:
+            merged.append(x)
+    merged = [x if i == len(merged) - 1 or G.re.search(r'[,;:—.!?]["”’)]*$', x) else x + ','
+              for i, x in enumerate(merged)]
+    out, spans, t = [], [], 0.0
+    for i, x in enumerate(merged):
+        seg = G.fade(G.level(engine.synth(pron.phonemes(x, key), style, speed)))
+        spans.append((t, t + len(seg) / G.SR))
+        out.append(seg)
+        t += len(seg) / G.SR
+        if i < len(merged) - 1:
+            out.append(np.zeros(int(cp * G.SR), np.float32))          # 逗号、分号、冒号、破折号一律同样长
+            t += int(cp * G.SR) / G.SR
+    return np.concatenate(out), spans
+
+
 # 低沉男声的能量集中在低频，按普通电平（RMS）统一各段时，人耳听到的响度（K 加权）仍有起伏，
 # 首篇试做短时响度波动 1.17 LU，超过铁律上限 1.0。改为按 K 加权后的有声电平统一每段（只用于四级，
 # 不影响已定稿的高考音频），检查标准一项不放宽。
@@ -46,6 +73,7 @@ def level_k(x, target=None):
 
 
 G.level = level_k
+G.synth_sentence = synth_sentence
 _comp = G.compress
 _meter48 = pyln.Meter(G.OUT_SR)
 
