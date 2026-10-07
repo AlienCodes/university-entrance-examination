@@ -160,6 +160,8 @@ def check(pid, path, R=None):
                 errs.append(f'第{k}句 短语 {e["h"]} 的释义不应带词性：{e["m"]}')
             if e['t'] == 'phr' and ' ' not in e['h'].strip() and '…' not in e['h']:
                 errs.append(f'第{k}句 短语 {e["h"]} 只有一个词，应作单词标注')
+            if re.search(r'高亮|←|原文|应为|改为|释义|（', e['h'] + (e.get('surf') or '')) or re.search(r'高亮|←|原文改|释义保持', e['m']):
+                errs.append(f'第{k}句 词条里混入了编辑批注：{e["h"]}={e["m"]}')
             if zh_problems(e['m']):
                 errs.append(f'第{k}句 释义 {e["h"]} 中文排版：{zh_problems(e["m"])}')
             if (e['h'].lower(), e['m']) in seen:
