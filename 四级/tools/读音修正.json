@@ -1,0 +1,25 @@
+{
+ "_说明": "四级专用读音修正（高考的 tools/tts/pronunciations.json 不动）。make_audio.py 加载时叠加在高考词典之上。global：词 → 音素；sentence：\"cNN:句号\" → {词: 音素}；text：\"cNN:句号\" → [[朗读文本片段, 替换]]（每条必须恰好匹配）。每条都来自语音识别回转比对的人工核对，记录在 四级/audio/识别差异已核.md。",
+ "global": {
+  "Los": "lɔs",
+  "Angeles": "ˈænʤələs",
+  "Lao": "lˈW",
+  "Zi": "ʣˈʌ",
+  "Reynoldstown": "ɹˈɛnəldztˌWn",
+  "Raisman": "ɹˈAzmən"
+ },
+ "sentence": {
+  "c38:9": {
+   "Côte": "kˌOt",
+   "d'Ivoire": "divwˈɑɹ"
+  }
+ },
+ "text": {
+  "c23:10": [
+   [
+    "Elizabeth II",
+    "Elizabeth the Second"
+   ]
+  ]
+ }
+}

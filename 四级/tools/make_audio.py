@@ -51,6 +51,22 @@ def read_text(self, original, key=None):
 
 G.Pronouncer.read_text = read_text
 
+# 四级专用读音修正（叠加在高考词典之上，高考文件不动）
+_pron_init = G.Pronouncer.__init__
+
+
+def pron_init(self, *a, **k):
+    _pron_init(self, *a, **k)
+    d = json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8'))
+    self.lexicon = {**self.lexicon, **d.get('global', {})}
+    for key, v in d.get('sentence', {}).items():
+        self.sentence[key] = {**self.sentence.get(key, {}), **v}
+    for key, v in d.get('text', {}).items():
+        self.text[key] = self.text.get(key, []) + v
+
+
+G.Pronouncer.__init__ = pron_init
+
 
 # 用户要求（2026-10-08）：不该停顿的逗号不要停顿——这些逗号不切分合成、不插入静音，整段一口气合成，由模型按自然语调读：
 #   1. 并列成分之间的逗号（含牛津逗号）：A, B, and C；VP, VP, and VP —— 用依存句法判定逗号后的成分是前一成分的并列项（conj），
