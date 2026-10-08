@@ -33,7 +33,7 @@
 | c41 | 4.48 | 0.28% | eulas → eula's |
 | c40 | 4.42 | 0.55% | ' → ∅; engineer' → engineer |
 | c39 | 4.42 | 0.28% | defence → defense |
-| c38 | 4.49 | 0.84% | channelling → channeling; farms' → farms; chocolates → chocolate |
+| c38 | 4.42 | 0.84% | channelling → channeling; and → in; farms' → farms |
 | c37 | 4.48 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
 | c36 | 4.45 | 0.28% | judgement → judgment |
 | c35 | 4.48 | 0.28% | happen → happened |
