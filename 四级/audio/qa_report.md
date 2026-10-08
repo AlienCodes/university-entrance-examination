@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：33
+- 文章数：34
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.44）
-- 平均识别差异率：0.55%
+- 平均识别差异率：0.54%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -44,3 +44,4 @@
 | c30 | 4.47 | 0.58% | reduce → reduced; increase → increased |
 | c29 | 4.48 | 0.55% | mare → maire; reynoldstown → reynoldsdown |
 | c28 | 4.49 | 0.59% | organisations → organizations; favour → favor |
+| c27 | 4.47 | 0.00% |  |
