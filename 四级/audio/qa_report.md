@@ -7,14 +7,14 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.44）
-- 平均识别差异率：0.50%
+- 平均识别差异率：0.49%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | c60 | 4.48 | 0.56% | anuj → anud; favourite → favorite |
 | c59 | 4.46 | 0.28% | ok → okay |
 | c58 | 4.47 | 0.00% |  |
-| c57 | 4.47 | 2.78% | impostor → imposter; or → o; internalised → internalized; halle wittenberg → hallowittenberg; impostor → imposter; impostor → imposter; impostor → imposter; imes → imez; impostor → imposter |
+| c57 | 4.47 | 2.50% | impostor → imposter; or → o; internalised → internalized; halle wittenberg → hallowittenberg; impostor → imposter; impostor → imposter; impostor → imposter; impostor → imposter |
 | c56 | 4.47 | 0.00% |  |
 | c55 | 4.48 | 0.28% | massow → masso |
 | c54 | 4.48 | 0.28% | others' → others |
