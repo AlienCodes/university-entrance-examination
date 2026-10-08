@@ -7,7 +7,7 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.44）
-- 平均识别差异率：0.60%
+- 平均识别差异率：0.51%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -49,5 +49,5 @@
 | c25 | 4.46 | 0.00% |  |
 | c24 | 4.46 | 0.00% |  |
 | c23 | 4.48 | 0.27% | kullen → cullen |
-| c22 | 4.48 | 3.93% | los angeles → lowe's angels; los angeles → lowe's angels; los angeles → lowe's angels; did → do; los angeles → lowe's angels; addicted → added; los angeles → lowe's angels; los angeles → lowe's angels |
+| c22 | 4.47 | 0.56% | did → do; addicted → added |
 | c21 | 4.49 | 2.57% | organisational → organizational; dr → doctor; matous → mattis; dr matous → doctor mattis; matous → mattis; organisations → organizations; dr matous → doctor mattis |
