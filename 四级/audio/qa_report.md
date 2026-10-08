@@ -37,7 +37,7 @@
 | c37 | 4.48 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
 | c36 | 4.45 | 0.28% | judgement → judgment |
 | c35 | 4.48 | 0.28% | happen → happened |
-| c34 | 4.48 | 0.84% | geoffrey raisman → jeffrey raceman; ∅ → that |
+| c34 | 4.48 | 0.56% | geoffrey → jeffrey; ∅ → that |
 | c33 | 4.48 | 0.56% | lao zi → laozai |
 | c32 | 4.46 | 0.00% |  |
 | c31 | 4.49 | 0.00% |  |
