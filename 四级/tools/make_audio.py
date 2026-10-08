@@ -296,6 +296,34 @@ def verify_loudness(mp3_bytes, items, target_lufs):
 G.verify_loudness = verify_loudness
 
 
+def render_with_fallback(p, vcfg, engine, pron, out_dir):
+    """短时响度波动刚好超过 1.0 LU 时（c14：1.01），只对这一篇把慢速电平的调节范围从 ±4 dB 依次放宽到 ±5、±6 dB 再试；
+    检查标准一项不放宽，通过的篇目完全不受影响。用了哪一档记在 timings 的 leveler_rng 里。"""
+    try:
+        r = G.render_passage(p, VOICE, vcfg, engine, pron, out_dir)
+        r['leveler_rng'] = 4.0
+        return r
+    except RuntimeError as e:
+        if '短时响度波动' not in str(e) or any(k in str(e) for k in ('整体响度', '句间', '峰值', '电磁音')):
+            raise
+        first = e
+    base = G.compress
+    try:
+        for rng in (5.0, 6.0):
+            G.compress = lambda x, sr, rng=rng: leveler(_comp(D.debuzz(x, sr), sr), sr, rng=rng)
+            try:
+                r = G.render_passage(p, VOICE, vcfg, engine, pron, out_dir)
+                r['leveler_rng'] = rng
+                print(f"  {p['id']}：慢速电平放宽到 ±{rng:g} dB 后通过", flush=True)
+                return r
+            except RuntimeError as e2:
+                if '短时响度波动' not in str(e2):
+                    raise
+        raise first
+    finally:
+        G.compress = base
+
+
 def main(ids):
     vcfg = json.loads((G.HERE / 'voices.json').read_text('utf-8'))[VOICE]
     P = json.loads((C4 / '仔细阅读' / 'sents.json').read_text('utf-8'))
@@ -310,7 +338,7 @@ def main(ids):
     for i, p in enumerate(P, 1):
         t0 = time.time()
         try:
-            r = G.render_passage(p, VOICE, vcfg, engine, pron, out / VOICE)
+            r = render_with_fallback(p, vcfg, engine, pron, out / VOICE)
         except RuntimeError as e:                 # 检查不通过的不输出文件，记下来最后统一处理
             fails.append(str(e))
             print('未通过：', e, flush=True)
