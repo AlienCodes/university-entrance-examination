@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：27
+- 文章数：28
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.44）
 - 平均识别差异率：0.59%
@@ -38,3 +38,4 @@
 | c36 | 4.45 | 0.28% | judgement → judgment |
 | c35 | 4.48 | 0.28% | happen → happened |
 | c34 | 4.48 | 0.84% | geoffrey raisman → jeffrey raceman; ∅ → that |
+| c33 | 4.48 | 0.56% | lao zi → laozai |
