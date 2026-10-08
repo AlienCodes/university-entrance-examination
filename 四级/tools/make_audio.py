@@ -175,12 +175,21 @@ def pause_free(read, parts, original=''):
     return out
 
 
+# 用户要求（2026-10-08，踩坑 28）：单引号、双引号都不要有任何停顿。语音模型把引号当作停顿符号，
+# “right to grow” 前后会拖慢、像停了一下。合成时去掉所有引号（画面文字照旧）；词内撇号（don't、world's）保留。
+def strip_quotes(t):
+    t = re.sub(r'[“”"]', '', t)
+    t = re.sub(r"(?<![A-Za-z])[‘’']|[‘’'](?![A-Za-z])", '', t)
+    return re.sub(r' {2,}', ' ', t).strip()
+
+
 # 用户要求（2026-10-07）：冒号、分号、破折号处的停顿与逗号完全一样（高考版分号、冒号是逗号的 1.4 倍）。
 # 复制高考 synth_sentence，只去掉 1.4 倍，其余（分段、补标点、淡入淡出）不变。
 def synth_sentence(read, key, engine, pron, style, speed, cfg):
     cp = cfg.get('clause_pause', 0)
     # 原文破折号两侧不留空格（pesticides—in fact），高考的切分规则要求标点后有空格，会漏掉这里的停顿；先补一个空格再切
     read = G.re.sub(r'—(?=\S)', '— ', read)
+    read = strip_quotes(read)                       # 引号一律不停顿（踩坑 28）
     parts = [x for x in G.CLAUSE.split(read) if x.strip()] if cp else [read]
     free = pause_free(read, parts, ORIG.get(key, '')) if len(parts) > 1 else []
     merged = []
@@ -195,6 +204,8 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
               for i, x in enumerate(merged)]
     out, spans, t = [], [], 0.0
     for i, x in enumerate(merged):
+        if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
+            raise RuntimeError(f'{key} 合成文字残留引号：{x}')
         seg = G.fade(G.level(engine.synth(pron.phonemes(x, key), style, speed)))
         spans.append((t, t + len(seg) / G.SR))
         out.append(seg)
