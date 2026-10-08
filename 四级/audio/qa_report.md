@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：26
+- 文章数：27
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.44）
-- 平均识别差异率：0.58%
+- 平均识别差异率：0.59%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -37,3 +37,4 @@
 | c37 | 4.48 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
 | c36 | 4.45 | 0.28% | judgement → judgment |
 | c35 | 4.48 | 0.28% | happen → happened |
+| c34 | 4.48 | 0.84% | geoffrey raisman → jeffrey raceman; ∅ → that |
