@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：38
+- 文章数：39
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.44）
-- 平均识别差异率：0.49%
+- 平均识别差异率：0.58%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -49,3 +49,4 @@
 | c25 | 4.46 | 0.00% |  |
 | c24 | 4.46 | 0.00% |  |
 | c23 | 4.48 | 0.27% | kullen → cullen |
+| c22 | 4.48 | 3.93% | los angeles → lowe's angels; los angeles → lowe's angels; los angeles → lowe's angels; did → do; los angeles → lowe's angels; addicted → added; los angeles → lowe's angels; los angeles → lowe's angels |
