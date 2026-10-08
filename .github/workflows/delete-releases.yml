@@ -1,0 +1,30 @@
+# 修改 .github/delete-releases.txt（每行一个要删除的 Release 标签）并推送时，删除这些 Release 及其标签。
+# 只删列出的标签；列表里出现 007、papers-* 或高考视频标签会直接报错，防止误删。
+name: 删除旧 Release
+on:
+  push:
+    paths: ['.github/delete-releases.txt']
+permissions:
+  contents: write
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 删除列出的 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          mapfile -t tags < <(sed '/^[[:space:]]*$/d' .github/delete-releases.txt)
+          for t in "${tags[@]}"; do
+            case "$t" in
+              007|papers-*|videos-*) echo "拒绝删除受保护的标签：$t"; exit 1 ;;
+            esac
+          done
+          for t in "${tags[@]}"; do
+            echo "删除 $t"
+            gh release delete "$t" --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag
+          done
+          echo "剩余的 Release："
+          gh release list --repo "$GITHUB_REPOSITORY" --limit 50
