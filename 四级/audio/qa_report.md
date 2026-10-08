@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：57
+- 文章数：58
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
-- 平均识别差异率：0.40%
+- 平均识别差异率：0.46%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -68,3 +68,4 @@
 | c05 | 4.46 | 0.00% |  |
 | c04 | 4.46 | 0.00% |  |
 | c03 | 4.47 | 1.40% | nestle → nessel; concord → conquered; who've → who have; nestle → nessel |
+| c02 | 4.45 | 3.75% | it → iet; it → iat; it → iat; it → iet; it → iat; it → iat; it → iet; it → iet; it → iet; it → iat; it → iat; it → iat; it → iat |
