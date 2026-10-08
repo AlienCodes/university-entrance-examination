@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：24
+- 文章数：25
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.44）
-- 平均识别差异率：0.61%
+- 平均识别差异率：0.59%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -35,3 +35,4 @@
 | c39 | 4.46 | 0.28% | defence → defense |
 | c38 | 4.49 | 1.96% | channelling → channeling; c te d'ivoire and → cote divorcing; farms' → farms; chocolates → chocolate |
 | c37 | 4.48 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
+| c36 | 4.45 | 0.28% | judgement → judgment |
