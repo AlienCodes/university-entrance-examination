@@ -1,4 +1,4 @@
-"""去电磁音（候选方案，用户看样片确认前不得用于成品）。
+"""去电磁音（铁律第 10 条；用户 2026-10-08 看 c40 样片确认：“完完全全就没有任何的电磁音”）。
 
 电磁音来源：语音模型声码器在朗读时叠加的固定频率细音。统计 46 篇成品：下列 10 个频点在每一篇都出现，
 且高出周围 5 dB 以上（最强 9600 Hz，约 +12 dB）。
@@ -22,3 +22,26 @@ def debuzz(x, sr):
     y = y.astype(np.float32)
     y[x == 0] = 0
     return y
+
+
+# ---------------------------------------------------------------- 检查（独立测量）
+# 处理前最强的频点高出周围 +11～+12 dB（9600 Hz）。用户确认“完完全全没有电磁音”的 c40 样片：最强 +0.9 dB（10420 Hz）。
+# 上限取 +3 dB：样片有余量，旧音频（+11 以上）一定查出。成品 MP3 和视频音轨的有声部分里，任何一个频点超过就报错。
+MAX_DB = 3.0
+
+
+def measure(x, sr, items):
+    from scipy.ndimage import median_filter
+    from scipy.signal import welch
+    sp = np.concatenate([x[int(s['start'] * sr): int(s['end'] * sr)] for s in items]).astype(np.float64)
+    f, P = welch(sp, sr, nperseg=65536)
+    r = 10 * np.log10(P + 1e-20)
+    r = r - median_filter(r, 61)
+    return {f0: float(max(r[(f > f0 - 8) & (f < f0 + 8)])) for f0 in TONES}
+
+
+def check(x, sr, items):
+    m = measure(x, sr, items)
+    f0 = max(m, key=m.get)
+    errs = [f'电磁音：{f0} Hz 高出周围 {m[f0]:.1f} dB（上限 {MAX_DB} dB）'] if m[f0] > MAX_DB else []
+    return f0, m[f0], errs

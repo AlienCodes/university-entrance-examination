@@ -12,7 +12,7 @@
 - 不该停顿的逗号不停顿（2026-10-08，从第二批 c40–c21 起）：并列列举（含牛津逗号）、并列形容词、句末附加语（too、either、for example）、
   句末简短引述（says X），见 pause_free；进出括号处照常停顿。逐条判定结果见 四级/停顿对比/不停顿的逗号清单.txt
 - °F/°C 读作 degrees Fahrenheit/Celsius
-- 电磁音：陷波去除法已撤销（会加重电磁音），来源排查中
+- 铁律：去除电磁音（debuzz.py，用户试听确认），成品 MP3 独立检查
 """
 import json
 import re
@@ -260,7 +260,25 @@ def leveler(x, sr, win=1.0, rng=4.0, smooth=0.4):
 
 # 2026-10-08 曾尝试用极窄陷波去掉声码器窄带音（audio_clean.py），用户试听：处理后电磁音反而明显更大
 # （高 Q 陷波在每个辅音、字头处“余振”出 65 个频点的细音）。已撤销，恢复原处理链。电磁音的真正来源仍在排查（四级/电磁音排查/）。
-G.compress = lambda x, sr: leveler(_comp(x, sr), sr)
+# 铁律第 10 条：坚决不能有电磁音（用户 2026-10-08 看 c40 样片确认有效）。
+# 压缩之前只在声码器的 9 个固定频点做 60 Hz 带宽的单向陷波（debuzz.py）；成品 MP3 再独立测量，任何频点高出周围就报错、不输出。
+import debuzz as D  # noqa: E402
+
+G.compress = lambda x, sr: leveler(_comp(D.debuzz(x, sr), sr), sr)
+_verify = G.verify_loudness
+
+
+def verify_loudness(mp3_bytes, items, target_lufs):
+    import io
+    import soundfile as sf
+    rep, errs = _verify(mp3_bytes, items, target_lufs)
+    a, sr = sf.read(io.BytesIO(mp3_bytes), dtype='float32')
+    f0, r, e = D.check(a if a.ndim == 1 else a.mean(1), sr, items)
+    rep['buzz_hz'], rep['buzz_db'] = f0, round(r, 1)
+    return rep, errs + e
+
+
+G.verify_loudness = verify_loudness
 
 
 def main(ids):

@@ -227,6 +227,16 @@ def switch_check(mp4, times, sw):
             f'不符合：{bad}' if bad else f'{len(times) - 1} 处切换全部正确' + (f'，另有 {len(sw)} 处分屏换屏正确' if sw else ''))
 
 
+def buzz_check(mp4, times):
+    """铁律第 10 条：视频音轨不得有电磁音（独立解码测量声码器的 9 个固定频点）。"""
+    import numpy as np
+    import debuzz as D
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(mp4), '-vn', '-ac', '1', '-ar', '48000', '-f', 'f32le', '-'],
+                         capture_output=True, check=True).stdout
+    f0, r, e = D.check(np.frombuffer(raw, np.float32), 48000, times)
+    return ('无电磁音', not e, f'最强 {f0} Hz {r:+.1f} dB（上限 {D.MAX_DB:+.1f}）')
+
+
 def video_name(p):
     title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
     return f"{p['paper']} {p['passage']} {title}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
@@ -335,6 +345,7 @@ def main():
     res = [r for r in check(out / name, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))]
     if sw:
         res.append(switch_check(out / name, times, sw))
+    res.append(buzz_check(out / name, times))
     fails = [f'{n}：{d}' for n, c, d in res if not c]
     if not re.fullmatch(r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', name) or name != video_name(p):
         fails.append(f'文件名：{name}')
