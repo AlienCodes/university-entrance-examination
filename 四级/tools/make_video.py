@@ -262,7 +262,14 @@ def main():
     audio = Path(a.audio_root) / tm['file']
 
     from playwright.sync_api import sync_playwright
-    tmp = Path(tempfile.mkdtemp())
+    # 踩坑 29：临时目录（每个视频约 35 MB 的截图和分段）以前从不删除，积累到磁盘写满，浏览器截图崩溃（Page crashed）
+    import atexit
+    import shutil
+    free = shutil.disk_usage(C4).free / 2**30
+    if free < 3:
+        raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')
+    tmp = Path(tempfile.mkdtemp(prefix='cet4video_'))
+    atexit.register(shutil.rmtree, tmp, True)          # 无论成功、核查失败还是出错，退出时都删除
     slides, owner = [title_slide(p)], [None]      # owner：每屏属于第几句、第几屏
     for i, s in enumerate(sents):
         for j, part in enumerate(split_parts(p['id'], i + 1, s)):

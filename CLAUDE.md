@@ -58,6 +58,7 @@
 | 26 | 用错 Python（缺 numpy），核查没跑起来，却读到旧报告里的“全部通过” | 检查程序出错一律算不通过；报告必须比所有视频新、覆盖全部视频 | `check_pitfalls.py`（核查报告时效） |
 | 27 | 词尾辅音被吞：“reawakened my” 被读成 “reawaken my”（p23），已上传的视频有瑕疵 | 语音识别的关键差异（否定词、词尾、漏读、多读）必须人工核对；读音修正后重新识别确认 | `check_pitfalls.py`（识别差异 + `tools/tts/识别差异已核.json`） |
 | 28 | 引号造成停顿：“right to grow” 前后被拖慢、像停了一下（模型把引号当停顿符号），用户听出不自然 | 单引号、双引号一律不停顿：合成时去掉所有引号，画面文字照旧 | `四级/tools/make_audio.py`：送进模型的文字残留引号就报错 |
+| 29 | 视频临时目录（截图、分段，每个约 35 MB）从不删除，加上测试文件，磁盘写满，浏览器截图崩溃（Page crashed / Unable to capture screenshot），c01–c04 生成失败 | 每个视频退出时自动删除临时目录；开工前检查剩余空间 | `四级/tools/make_video.py`：剩余空间不足 3 GB 直接报错 |
 
 **总检查**：`tools/check_pitfalls.py` 把上面每一条踩坑都写成程序检查（`text` 文字 → `audio` 音频 → `video` 视频 → `all` 全部）。生成音频前必须通过 text，生成视频前必须通过 text + audio，`make_video.py` 会自动调用；复核通过的篇目用 `approve` 登记文字指纹，之后文字一改就必须重新复核。`tools/test_check_pitfalls.py` 给检查程序本身埋雷，必须全部查出。
 
