@@ -1,0 +1,56 @@
+# 修改 .github/cet4-dictation-release.txt（第一行写标签名，如 cet4-materials-60）并推送时：
+# 把 四级/听写卡/ 下每篇一个文件夹（逐句精读 + 三份听写卡 PDF）加上该篇的朗读音频，打包成 zip，生成 GitHub Release
+# 与高考的 release-dictation.yml 分开（高考内容不再改动）；顺序与 Release 007、B 站合集一致：c60 → c01
+name: 发布四级学习资料压缩包
+on:
+  push:
+    paths: ['.github/cet4-dictation-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 组装文件夹并打包
+        run: |
+          set -e
+          tag=$(head -1 .github/cet4-dictation-release.txt | tr -d '[:space:]')
+          python3 - <<'PY'
+          import json, shutil
+          from pathlib import Path
+          D = json.load(open('四级/data/vocab.json'))['passages']
+          T = json.load(open('四级/audio/timings.json'))['cet4_male']
+          order = sorted((p for p in D if p.get('done')), key=lambda p: p['id'], reverse=True)
+          out = Path('dist/四级阅读真题60篇学习资料')
+          out.mkdir(parents=True)
+          folders = sorted(Path('四级/听写卡').iterdir())
+          assert len(folders) == len(order) == 60, (len(folders), len(order))
+          rows = []
+          for i, (f, p) in enumerate(zip(folders, order), 1):
+              assert f.name.startswith(f'{i:02d} {p["paper"]} {p["passage"]} '), (f.name, p['id'])
+              pdfs = sorted(f.glob('*.pdf'))
+              assert [x.name.split(' - ')[-1] for x in pdfs] == ['0 逐句精读.pdf', '1 汉译英.pdf', '2 英译汉.pdf', '3 文章填空.pdf'], f
+              dst = out / f.name
+              shutil.copytree(f, dst)
+              shutil.copy(Path('四级/audio') / T[p['id']]['file'], dst / f'{f.name[3:]} - 朗读音频.mp3')
+              rows.append(f'| {i} | {f.name[3:]} |')
+          Path('notes.md').write_text(
+              f'大学英语四级阅读真题（仔细阅读 Section C）学习资料，共 {len(order)} 篇，与 Release 007 的 60 个视频一一对应、顺序相同。每篇一个文件夹：\n\n'
+              '- 0 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
+              '- 1 汉译英.pdf：看中文写英文\n- 2 英译汉.pdf：看英文写中文\n- 3 文章填空.pdf：原文挖空，附整句翻译和每空释义\n'
+              '- 朗读音频.mp3：男声逐句朗读（与视频是同一份朗读，已去除电磁音）\n\n'
+              '三份听写卡 PDF 的最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
+          PY
+          zipname="CET4-reading-materials-${tag}.zip"
+          (cd dist && zip -r -q "../${zipname}" .)
+          unzip -l "${zipname}" | tail -1
+          echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: 四级阅读真题60篇 学习资料（逐句精读 + 听写卡 + 朗读音频）
+          body_path: notes.md
+          files: ${{ env.ZIPNAME }}
