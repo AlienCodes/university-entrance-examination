@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：42
+- 文章数：43
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.47（最低 4.43）
-- 平均识别差异率：0.46%
+- 平均自然度：4.48（最低 4.43）
+- 平均识别差异率：0.45%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -53,3 +53,4 @@
 | c21 | 4.49 | 2.57% | organisational → organizational; dr → doctor; matous → mattis; dr matous → doctor mattis; matous → mattis; organisations → organizations; dr matous → doctor mattis |
 | c20 | 4.48 | 0.00% |  |
 | c19 | 4.49 | 0.27% | once → ones |
+| c18 | 4.48 | 0.00% |  |
