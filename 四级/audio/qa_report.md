@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：59
+- 文章数：60
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
-- 平均识别差异率：0.46%
+- 平均识别差异率：0.49%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -70,3 +70,4 @@
 | c03 | 4.47 | 1.40% | nestle → nessel; concord → conquered; who've → who have; nestle → nessel |
 | c02 | 4.45 | 3.75% | it → iet; it → iat; it → iat; it → iet; it → iat; it → iat; it → iet; it → iet; it → iet; it → iat; it → iat; it → iat; it → iat |
 | c01 | 4.47 | 0.81% | stem → ste; stem → ste; shows → ∅ |
+| c14 | 4.48 | 1.99% | myriam bechtoldt → miriam bechtelt; students' → student's; bechtoldt → bechtolt; others' → others; bechtoldt → bechtolt; bechtoldt → bechtolt |
