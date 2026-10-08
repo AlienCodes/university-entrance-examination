@@ -34,7 +34,7 @@
 | c40 | 4.42 | 0.55% | ' → ∅; engineer' → engineer |
 | c39 | 4.42 | 0.28% | defence → defense |
 | c38 | 4.42 | 0.84% | channelling → channeling; and → in; farms' → farms |
-| c37 | 4.48 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
+| c37 | 4.44 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
 | c36 | 4.45 | 0.28% | judgement → judgment |
 | c35 | 4.48 | 0.28% | happen → happened |
 | c34 | 4.48 | 0.56% | geoffrey → jeffrey; ∅ → that |
