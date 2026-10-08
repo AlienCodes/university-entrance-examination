@@ -19,7 +19,7 @@
 | c55 | 4.48 | 0.28% | massow → masso |
 | c54 | 4.48 | 0.28% | others' → others |
 | c53 | 4.49 | 1.65% | humm → hum; humm → hum; humm → hum; humm → hum; foods' → foods; humm → hum |
-| c52 | 4.47 | 1.44% | foulkes → falk; foulkes' → falk's; foulkes → falks; foulkes' → falk's; stressed → stress |
+| c52 | 4.47 | 1.44% | foulkes → folk; foulkes' → folks'; foulkes → folks; foulkes' → folk; stressed → stress |
 | c51 | 4.48 | 0.00% |  |
 | c50 | 4.49 | 0.83% | neil baily → neal bailey; baily → bailey |
 | c49 | 4.49 | 0.56% | too → two; midazolam → midazalem |
