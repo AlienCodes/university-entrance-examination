@@ -237,18 +237,19 @@ def main():
     ap.add_argument('pid')
     ap.add_argument('--scale', type=int, default=2, help='2 = 3840×2160（4K）')
     ap.add_argument('--out', default=str(C4 / '最终视频'))
+    ap.add_argument('--audio-root', default=str(C4 / 'audio'), help='音频目录（含 timings.json），试听样片用')
     a = ap.parse_args()
 
     data = json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))
     p = next(x for x in data['passages'] if x['id'] == a.pid)
-    tm = json.loads((C4 / 'audio' / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
+    tm = json.loads((Path(a.audio_root) / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
     assert len(sents) == len(times), '音频句数与文章句数不一致，请重新生成音频'
     empty = [i + 1 for i, s in enumerate(sents) if not s['w']]
     if empty:                                   # 铁律：每一句至少标出一个单词
         raise SystemExit(f'第 {empty} 句没有标注单词，不生成视频')
-    audio = C4 / 'audio' / tm['file']
+    audio = Path(a.audio_root) / tm['file']
 
     from playwright.sync_api import sync_playwright
     tmp = Path(tempfile.mkdtemp())
