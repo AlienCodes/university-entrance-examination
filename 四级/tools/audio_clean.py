@@ -30,6 +30,8 @@ def dehum(x, sr):
     for f0, _ in tones(x, sr):
         b, a = iirnotch(f0, f0 / BW, sr)
         y = filtfilt(b, a, y)
+    # 陷波器有很长的余振，会把一点点信号（约 −58 dB）带进原本完全无声的片头和句间停顿；原来是 0 的地方恢复为 0（铁律：停顿必须无声）
+    y[x == 0] = 0
     return y.astype(np.float32)
 
 
