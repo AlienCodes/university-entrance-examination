@@ -108,9 +108,13 @@ def pause_free(read, parts, original=''):
     out = [(False, '')] * n
     comma = [bool(re.search(r',["”’)]*$', x)) for x in parts]
     starts_cc = [bool(re.match(r'(and|or|nor|but) ', x)) for x in parts]
-    heads = {re.sub(r'[^a-z]', '', c.split()[0].lower()) for c in re.findall(r'\(([^)]*[A-Za-z][^)]*)\)', original)}
-    paren = [m > 0 and re.sub(r'[^a-z]', '', parts[m].split()[0].lower()) in heads for m in range(n)]
-    locked = {m for m in range(1, n) if paren[m] or paren[m - 1]}      # 进括号、出括号
+    inside = [c for c in re.findall(r'\(([^)]*[A-Za-z][^)]*)\)', original)]
+    heads = {re.sub(r'[^a-z]', '', c.split()[0].lower()) for c in inside}
+    tails = {re.findall(r'[A-Za-z]+', c)[-1].lower() for c in inside}
+    first = lambda m: re.sub(r'[^a-z]', '', parts[m].split()[0].lower())
+    last = lambda m: (re.findall(r'[A-Za-z]+', parts[m]) or [''])[-1].lower()
+    # 进括号处（括号内容开头那一段之前）和出括号处（括号内容最后一段之后）照常停顿；括号里面的列举照常按规则判断
+    locked = {m for m in range(1, n) if first(m) in heads or last(m - 1) in tails}
 
     def item(m):
         """第 m 段（去掉开头的 and/or/but）的核心词、词数、词类组、是否为带主语的分句或全句主干。"""
