@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：20
+- 文章数：21
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.44）
 - 平均识别差异率：0.53%
@@ -31,3 +31,4 @@
 | c43 | 4.44 | 0.86% | sillero → salero; sillero → solero; endeavour → endeavor |
 | c42 | 4.48 | 0.00% |  |
 | c41 | 4.48 | 0.28% | eulas → eula's |
+| c40 | 4.47 | 0.55% | ' → ∅; engineer' → engineer |
