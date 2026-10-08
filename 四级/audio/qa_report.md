@@ -6,7 +6,7 @@
 
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.47（最低 4.42）
+- 平均自然度：4.47（最低 4.38）
 - 平均识别差异率：0.51%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
@@ -35,7 +35,7 @@
 | c39 | 4.42 | 0.28% | defence → defense |
 | c38 | 4.42 | 0.84% | channelling → channeling; and → in; farms' → farms |
 | c37 | 4.44 | 1.14% | realise → realize; realisation → realization; realised → realized; up' → up |
-| c36 | 4.45 | 0.28% | judgement → judgment |
+| c36 | 4.38 | 0.28% | judgement → judgment |
 | c35 | 4.48 | 0.28% | happen → happened |
 | c34 | 4.48 | 0.56% | geoffrey → jeffrey; ∅ → that |
 | c33 | 4.48 | 0.56% | lao zi → laozhou |
