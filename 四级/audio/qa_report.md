@@ -43,7 +43,7 @@
 | c31 | 4.49 | 0.00% |  |
 | c30 | 4.47 | 0.58% | reduce → reduced; increase → increased |
 | c29 | 4.47 | 0.27% | mare → maire |
-| c28 | 4.49 | 0.59% | organisations → organizations; favour → favor |
+| c28 | 4.48 | 0.59% | organisations → organizations; favour → favor |
 | c27 | 4.47 | 0.00% |  |
 | c26 | 4.45 | 0.00% |  |
 | c25 | 4.46 | 0.00% |  |
