@@ -7,7 +7,7 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.44）
-- 平均识别差异率：0.50%
+- 平均识别差异率：0.49%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -22,7 +22,7 @@
 | c52 | 4.47 | 1.44% | foulkes → folk; foulkes' → folks'; foulkes → folks; foulkes' → folk; stressed → stress |
 | c51 | 4.48 | 0.00% |  |
 | c50 | 4.50 | 0.83% | neil baily → neal bailey; baily → bailey |
-| c49 | 4.49 | 0.56% | too → two; midazolam → midazalem |
+| c49 | 4.49 | 0.28% | midazolam → midazalem |
 | c48 | 4.48 | 0.83% | solsman → salsman; they're → they are |
 | c47 | 4.49 | 0.00% |  |
 | c46 | 4.49 | 0.00% |  |
