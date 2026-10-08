@@ -12,6 +12,7 @@
 - 不该停顿的逗号不停顿（2026-10-08，从第二批 c40–c21 起）：并列列举（含牛津逗号）、并列形容词、句末附加语（too、either、for example）、
   句末简短引述（says X），见 pause_free；进出括号处照常停顿。逐条判定结果见 四级/停顿对比/不停顿的逗号清单.txt
 - °F/°C 读作 degrees Fahrenheit/Celsius
+- 铁律：去除电磁音（声码器窄带音），成品 MP3 任何窄峰不得高出周围 6 dB（audio_clean.py）
 """
 import json
 import re
@@ -21,6 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools' / 'tts'))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gaokao_tts as G  # noqa: E402
 
 C4 = ROOT / '四级'
@@ -256,7 +258,24 @@ def leveler(x, sr, win=1.0, rng=4.0, smooth=0.4):
     return (x * gs).astype(np.float32)
 
 
-G.compress = lambda x, sr: leveler(_comp(x, sr), sr)
+# 铁律（用户 2026-10-08）：去除电磁音——整篇压缩之前先陷掉声码器的窄带音，成品 MP3 再独立检查（见 audio_clean.py）
+import audio_clean as C  # noqa: E402
+
+G.compress = lambda x, sr: leveler(_comp(C.dehum(x, sr), sr), sr)
+_verify = G.verify_loudness
+
+
+def verify_loudness(mp3_bytes, items, target_lufs):
+    import io
+    import soundfile as sf
+    rep, errs = _verify(mp3_bytes, items, target_lufs)
+    a, sr = sf.read(io.BytesIO(mp3_bytes), dtype='float32')
+    f0, r, e = C.check(a if a.ndim == 1 else a.mean(1), sr, items)
+    rep['tone_hz'], rep['tone_db'] = round(f0), round(r, 2)
+    return rep, errs + e
+
+
+G.verify_loudness = verify_loudness
 
 
 def main(ids):
