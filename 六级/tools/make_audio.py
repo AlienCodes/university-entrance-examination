@@ -50,6 +50,9 @@ def read_text(self, original, key=None):
     ORIG[key] = original
     original = G.re.sub(r'\s*°F\b', ' degrees Fahrenheit', original)
     original = G.re.sub(r'\s*°C\b', ' degrees Celsius', original)
+    # 六级：数值范围的短横线读作 to（高考共用程序会把它读成破折号停顿，意思就丢了：25–54 → twenty-five—fifty-four）
+    original = G.re.sub(r'\$(\d[\d,.]*)–\$(\d[\d,.]*)\s*(billion|million|trillion)', r'\1 to \2 \3 dollars', original)
+    original = G.re.sub(r'(?<=\d)–(?=\$?\d)', ' to ', original)
     return _read_text(self, original, key)
 
 
