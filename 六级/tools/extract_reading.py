@@ -25,7 +25,7 @@ CJK = re.compile(r'[一-鿿]')
 HERE = Path(__file__).resolve().parent
 # 六级：收到的 29 套全部收录（2026-10-09 用户：Section C Passage One、Passage Two 按四级同一套流程做）
 SKIP = set()
-TOTAL = 58
+TOTAL = 62
 FIX = json.loads((HERE / '人工校对.json').read_text('utf-8'))
 # 原文订正：试卷本身的错误（拼写、语法、标点、括号不配对等）和提取错误，逐条写明类型和理由。
 # 每条的原文片段必须在该篇恰好出现一次，否则报错（与高考 tools/sent.py 的 POST 规则相同）。
