@@ -7,7 +7,7 @@
 - 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.48%
+- 平均识别差异率：0.52%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -21,7 +21,7 @@
 | s08 | 4.48 | 0.00% |  |
 | s09 | 4.48 | 0.22% | defused → diffused |
 | s10 | 4.47 | 0.22% | solidarity → solarity |
-| s11 | 4.47 | 0.22% | citi → cedi |
+| s11 | 4.47 | 1.09% | city → citi; incomes ninety to one → incomesninety dollars toone |
 | s12 | 4.46 | 0.67% | spend too much → speoch |
 | s13 | 4.46 | 0.44% | fast → vastness; counterparts' → counterparts |
 | s14 | 4.48 | 0.44% | and → an; behaviour → behavior |
