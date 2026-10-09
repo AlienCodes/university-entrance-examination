@@ -11,7 +11,7 @@
 | s02 | 2026 | 6 月 | 第 3 套 | Passage One | 443 | 9 | Three artists have brought a lawsuit against Stability AI, … |
 | s03 | 2026 | 6 月 | 第 2 套 | Passage Two | 446 | 8 | Smartphones have always posed challenges for parents of … |
 | s04 | 2026 | 6 月 | 第 2 套 | Passage One | 448 | 7 | What does self-discipline look like at work? Sometimes, … |
-| s05 | 2026 | 6 月 | 第 1 套 | Passage Two | 448 | 9 | About a decade ago, the G-20, a forum of the world’s … |
+| s05 | 2026 | 6 月 | 第 1 套 | Passage Two | 450 | 9 | About a decade ago, the G-20, a forum of the world’s … |
 | s06 | 2026 | 6 月 | 第 1 套 | Passage One | 447 | 5 | Children’s use of social media is a problem. That doesn’t … |
 | s07 | 2025 | 12 月 | 第 3 套 | Passage Two | 448 | 7 | The other day I had to log into a service I hadn’t used … |
 | s08 | 2025 | 12 月 | 第 3 套 | Passage One | 451 | 9 | Mindfulness has been shown to have a number of meaningful … |
@@ -34,12 +34,12 @@
 | s25 | 2024 | 6 月 | 第 3 套 | Passage Two | 448 | 4 | When someone asks us “What do you do?” we nearly always … |
 | s26 | 2024 | 6 月 | 第 3 套 | Passage One | 446 | 9 | The “American Dream” promises that in the Land of … |
 | s27 | 2024 | 6 月 | 第 2 套 | Passage Two | 446 | 9 | The term “environmentalist” can mean different things. It … |
-| s28 | 2024 | 6 月 | 第 2 套 | Passage One | 446 | 9 | It is irrefutable that employees know the difference … |
+| s28 | 2024 | 6 月 | 第 2 套 | Passage One | 445 | 9 | It is irrefutable that employees know the difference … |
 | s29 | 2024 | 6 月 | 第 1 套 | Passage Two | 444 | 11 | Variability is crucially important for learning new skills. … |
 | s30 | 2024 | 6 月 | 第 1 套 | Passage One | 439 | 9 | Sarcasm and jazz have something surprisingly in common: You … |
 | s31 | 2023 | 12 月 | 第 3 套 | Passage Two | 448 | 6 | Spiders make their presence felt in late August and through … |
 | s32 | 2023 | 12 月 | 第 3 套 | Passage One | 450 | 12 | Research is meant to benefit society by raising public … |
-| s33 | 2023 | 12 月 | 第 2 套 | Passage Two | 447 | 4 | Psychologists have long been in disagreement as to whether … |
+| s33 | 2023 | 12 月 | 第 2 套 | Passage Two | 445 | 4 | Psychologists have long been in disagreement as to whether … |
 | s34 | 2023 | 12 月 | 第 2 套 | Passage One | 450 | 8 | Could you get by without using the internet for four and a … |
 | s35 | 2023 | 12 月 | 第 1 套 | Passage Two | 446 | 8 | Journal editors decide what gets published and what … |
 | s36 | 2023 | 12 月 | 第 1 套 | Passage One | 450 | 13 | One of the great successes of the Republican Party in … |
