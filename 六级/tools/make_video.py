@@ -26,6 +26,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 C4 = HERE.parent
 ROOT = C4.parent
+sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音检查）与四级共用
 VOICE = 'cet4_male'
 W, H = 1920, 1080
 MIN_FS, MIN_VS = 48, 22          # 可读性下限：放不下就必须分屏

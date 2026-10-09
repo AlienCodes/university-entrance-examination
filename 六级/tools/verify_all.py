@@ -11,6 +11,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 C4 = HERE.parent
 ROOT = C4.parent
+sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音检查）与四级共用
 sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
 from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
 from verify_videos import check                  # noqa: E402
