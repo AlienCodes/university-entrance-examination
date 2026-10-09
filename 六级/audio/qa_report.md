@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：19
+- 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
 - 平均识别差异率：0.49%
@@ -30,3 +30,4 @@
 | s17 | 4.47 | 0.00% |  |
 | s18 | 4.48 | 0.66% | and → an; out of → outhove |
 | s19 | 4.47 | 0.66% | hoped → hope; andi fourlis → andy forles |
+| s20 | 4.47 | 0.44% | brained → brain; brained → brain |
