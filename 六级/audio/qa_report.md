@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：8
+- 文章数：9
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.64%
+- 平均识别差异率：0.60%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -19,3 +19,4 @@
 | s06 | 4.48 | 0.22% | organise → organize |
 | s07 | 4.42 | 1.10% | realised → realized; neat eh → need i; turing → touring; frischmann → frischman |
 | s08 | 4.48 | 0.00% |  |
+| s09 | 4.48 | 0.22% | defused → diffused |
