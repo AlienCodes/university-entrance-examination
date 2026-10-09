@@ -175,6 +175,7 @@ def main():
     ap.add_argument('--audio-root', default=str(ES / 'audio'))
     ap.add_argument('--name', help='输出文件名（默认「西班牙语 每日一练 标题.mp4」）')
     ap.add_argument('--stills', action='store_true', help='只截图（写到 --out），不编码视频')
+    ap.add_argument('--draft', action='store_true', help='草稿：核查不通过也保留成品（只打印问题）')
     a = ap.parse_args()
 
     p = load(a.pid)
@@ -246,13 +247,15 @@ def main():
     fails = [f'{n}：{d}' for n, c, d in res if not c]
     for n, c, d in res:
         print(f"  {'✅' if c else '❌'} {n}：{d}")
-    if fails:
+    if fails and a.draft:
+        print('  草稿：以下核查未通过，成品保留：\n  ' + '\n  '.join(fails))
+    elif fails:
         (out / name).unlink()
         raise SystemExit('核查未通过，已删除成品：\n  ' + '\n  '.join(fails))
     (out / (Path(name).stem + '_核查.json')).write_text(json.dumps(
         {'video': name, 'voice': voice, 'duration': round(dur, 3), 'checks': [{'item': n, 'ok': c, 'detail': d} for n, c, d in res]},
         ensure_ascii=False, indent=1), 'utf-8')
-    print(f'已生成并核查通过 {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
+    print(f'已生成{"（草稿，有未通过的核查项）" if fails else "并核查通过"} {out / name}（时长 {dur:.2f} 秒，读完后静音 {dur - ends[-1]:.2f} 秒）')
 
 
 if __name__ == '__main__':

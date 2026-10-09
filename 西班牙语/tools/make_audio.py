@@ -194,6 +194,7 @@ def main():
     ap.add_argument('--voice')
     ap.add_argument('--sample', help='只做试听样片，写到这个 MP3（不写 timings.json）')
     ap.add_argument('--sents', help='试听用的句子，如 1-3 或 1,4,7')
+    ap.add_argument('--draft', action='store_true', help='草稿：检查不通过也输出（问题写进 timings.json 的 draft_issues）')
     a = ap.parse_args()
     p = c4.load('es_make_video', '西班牙语/tools/make_video.py').load(a.pid)
     name = a.voice or VOICES['_final']
@@ -214,8 +215,10 @@ def main():
         Path(a.sample).write_bytes(mp3)
         print(('  检查：' + '；'.join(errs)) if errs else '  检查全部通过', f'\n已保存试听样片 {a.sample}')
         return
-    if errs:
+    if errs and not a.draft:
         raise SystemExit(f'{p["id"]} {name} 检查未通过，未输出文件：' + '；'.join(errs))
+    if errs:
+        print('  草稿：以下检查未通过，仍然输出：' + '；'.join(errs))
     out = ES / 'audio' / name
     out.mkdir(parents=True, exist_ok=True)
     base = out / stem(p)
@@ -224,10 +227,11 @@ def main():
     tpath = ES / 'audio' / 'timings.json'
     T = json.loads(tpath.read_text('utf-8')) if tpath.exists() else {}
     T.setdefault(name, {})[p['id']] = {'file': f'{name}/{base.name}.mp3', 'duration': round(len(a48) / OUT_SR, 3),
-                                       'loudness': rep, 'voice_cfg': cfg, 'sentences': items}
+                                       'loudness': rep, 'voice_cfg': cfg, 'sentences': items,
+                                       'draft_issues': errs}
     T['_final'] = VOICES['_final']
     tpath.write_text(json.dumps(T, ensure_ascii=False, indent=1), 'utf-8')
-    print(f'已生成 {base}.mp3（{len(a48) / OUT_SR:.1f} 秒），检查全部通过')
+    print(f'已生成 {base}.mp3（{len(a48) / OUT_SR:.1f} 秒）' + ('，检查全部通过' if not errs else '（草稿）'))
 
 
 if __name__ == '__main__':
