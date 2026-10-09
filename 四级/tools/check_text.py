@@ -42,6 +42,9 @@ def check(p):
         bare = re.sub(r' \([^()]*[一-鿿][^()]*\)', '', s)      # 去掉中文注释后再查
         for pat, name in RULES:
             m = re.search(pat, bare)
+            if name == '重复或叠加标点':      # 缩写后接逗号是对的：e.g., / etc., / Jr., / U.K.,（六级 2026-10-09 加）
+                m = next((x for x in re.finditer(pat, bare)
+                          if not (x.group() == '.,' and re.search(rf'\b{ABBR}$', bare[:x.start()]))), None)
             if m and not (name == '重复单词' and m.group(1).lower() in ('that', 'had', 'is')):
                 probs.append(f'第{k}段 {name}：…{bare[max(0, m.start() - 25):m.end() + 25]}…')
         if re.search(r'[一-鿿]', bare):
