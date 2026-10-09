@@ -28,8 +28,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ES = HERE.parent
 ROOT = ES.parent
-sys.path[:0] = [str(ROOT / '四级' / 'tools'), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts'), str(HERE)]
-import make_video as C4V  # noqa: E402  四级的设计 C（CSS、字体、自动缩放字号）
+sys.path.insert(0, str(HERE))
+import c4  # noqa: E402
+C4V = c4.load('cet4_make_video', '四级/tools/make_video.py')      # 四级的设计 C（CSS、字体、自动缩放字号）
 
 W, H = C4V.W, C4V.H
 MIN_FS, MIN_VS = C4V.MIN_FS, C4V.MIN_VS
@@ -151,37 +152,14 @@ def render_slides(slides, outdir, scale):
     return sizes
 
 
-# ---------------------------------------------------------------- 电磁音（全频段扫描）
-BUZZ_MAX_DB = 3.0          # 与四级相同：任何频点高出周围超过 +3 dB 就报错
-
-
-def buzz_scan(x, sr, items, lo=2000, hi=16000):
-    """在有声部分的长时频谱里找窄带峰：每个频点减去周围 ±22 Hz 的中位数。返回 [(频率, 高出 dB)]，从强到弱。"""
-    import numpy as np
-    from scipy.ndimage import median_filter
-    from scipy.signal import welch
-    sp = np.concatenate([x[int(s['start'] * sr): int(s['end'] * sr)] for s in items]).astype(np.float64)
-    f, P = welch(sp, sr, nperseg=65536)
-    r = 10 * np.log10(P + 1e-20)
-    r = r - median_filter(r, 61)
-    m = (f >= lo) & (f <= hi)
-    fm, rm = f[m], r[m]
-    peaks = []
-    for i in np.argsort(rm)[::-1]:
-        if rm[i] < 1.5 or len(peaks) >= 12:
-            break
-        if all(abs(fm[i] - q) > 30 for q, _ in peaks):
-            peaks.append((float(fm[i]), float(rm[i])))
-    return peaks
-
-
+# ---------------------------------------------------------------- 电磁音（全频段扫描，见 buzz.py）
 def buzz_check(mp4, times):
     import numpy as np
+    import buzz
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(mp4), '-vn', '-ac', '1', '-ar', '48000', '-f', 'f32le', '-'],
                          capture_output=True, check=True).stdout
-    pk = buzz_scan(np.frombuffer(raw, np.float32), 48000, times)
-    top = pk[0] if pk else (0.0, 0.0)
-    return ('无电磁音（2–16 kHz 全频段）', top[1] <= BUZZ_MAX_DB, f'最强 {top[0]:.0f} Hz {top[1]:+.1f} dB（上限 {BUZZ_MAX_DB:+.1f}）')
+    f0, r, e = buzz.check(np.frombuffer(raw, np.float32), 48000, times)
+    return ('无电磁音（2–16 kHz 全频段）', not e, f'最强 {f0:.0f} Hz {r:+.1f} dB（上限 {buzz.MAX_DB:+.1f}）')
 
 
 def video_name(p):
