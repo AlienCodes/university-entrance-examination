@@ -1,0 +1,48 @@
+{
+ "_说明": "西班牙语音色。engine=kokoro：本进程用 Kokoro-82M（tools/tts/models）；engine=worker：用 python 指定的环境运行 engines/ 里的 script。debuzz：这个声音实测的声码器固定频点（去电磁音），由 buzz.scan 在原始合成上测出。_final：成品用的音色。",
+ "_final": "supertonic3_M1",
+ "kokoro_em_alex": {
+  "label": "Kokoro em_alex（西语男声，基线）",
+  "engine": "kokoro",
+  "voice": {
+   "em_alex": 1.0
+  },
+  "speed": 1.0,
+  "lead_in": 1.5,
+  "sentence_pause": 0.8,
+  "tail": 2.0,
+  "clause_pause": 0.28,
+  "lufs": -16.0,
+  "kbps": 128,
+  "debuzz": [
+   4800,
+   5900,
+   7670,
+   8260,
+   8960,
+   9600,
+   10420,
+   10760,
+   10980
+  ]
+ },
+ "supertonic3_M1": {
+  "label": "Supertonic 3 M1（西语男声，草稿用）",
+  "engine": "worker",
+  "python": "/opt/es_tts_envs/sherpa/bin/python",
+  "script": "sherpa.py",
+  "kind": "supertonic",
+  "model_dir": "/opt/es_tts_models/supertonic3",
+  "sid": 5,
+  "lang": "es",
+  "num_steps": 32,
+  "speed": 1.0,
+  "lead_in": 1.5,
+  "sentence_pause": 0.8,
+  "tail": 2.0,
+  "clause_pause": 0.28,
+  "lufs": -16.0,
+  "kbps": 128,
+  "debuzz": []
+ }
+}
