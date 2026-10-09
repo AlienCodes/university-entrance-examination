@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：6
+- 文章数：7
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.48（最低 4.47）
-- 平均识别差异率：0.68%
+- 平均自然度：4.47（最低 4.42）
+- 平均识别差异率：0.74%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -17,3 +17,4 @@
 | s04 | 4.47 | 0.43% | breaks → brakes; depletable → depletible |
 | s05 | 4.49 | 1.21% | g twenty → g20; reining → reigning; eu u k → iu uk |
 | s06 | 4.48 | 0.22% | organise → organize |
+| s07 | 4.42 | 1.10% | realised → realized; neat eh → need i; turing → touring; frischmann → frischman |
