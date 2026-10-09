@@ -12,7 +12,7 @@ function prompt(id) {
   return `You are translating and annotating a reading passage from China's College English Test Band 4 (CET-6, 大学英语六级, Section C 仔细阅读) for Chinese university students preparing for CET-6. The output drives a study webpage and a video: each sentence is shown in English, with an exact Chinese translation below it and the highlighted vocabulary with glosses. The user demands ABSOLUTE precision AND idiomatic Chinese: every translation must say exactly what the English says, and read like natural Chinese written by a skilled translator; every gloss must give the exact sense used in that sentence.
 
 INPUT: ${SP}/c6en/${id}.txt — the passage, one numbered English sentence per line ("[n] EN: …"), with paragraph markers. The English is final (already proofread and sealed); do NOT change it.
-STYLE EXAMPLES (read both fully first — same file format, from the gaokao part of this project): ${REPO}/tools/ann/p61.txt and ${REPO}/tools/ann/p58.txt
+STYLE EXAMPLES (read both fully first — same file format; these are the final, multi-round-reviewed CET-4 files of this project, so follow their translation quality, gloss style and density): ${REPO}/四级/ann/c60.txt and ${REPO}/四级/ann/c52.txt
 OUTPUT: write the file ${OUT}/${id}.txt (create the directory if needed). Do not modify any other file.
 
 FILE FORMAT (exactly as in the examples):
@@ -26,7 +26,7 @@ n <Chinese translation>
 ENTRY SYNTAX (the program matches the highlight automatically against the sentence):
 - single word:                                          headword=pos. 释义      e.g. tackle=v. 应对；处理 ; obesity=n. 肥胖（症）
 - phrase / collocation / fixed pattern (NO pos, at least two words):  ~phrase=释义   e.g. ~go about=忙于；做（日常事务）
-- The user does NOT want any distinction between CET-6 words and beyond-syllabus (超纲) words: NEVER use the * prefix (the example files use * — ignore that; in this project every single word is written without a prefix).
+- The user does NOT want any distinction between CET-6 words and beyond-syllabus (超纲) words: NEVER use the * prefix (every single word is written without a prefix).
 - headword = dictionary form (verb base form, singular noun); inflected forms in the sentence (planting, studies, went, better…) are matched automatically.
 - When the text differs from the headword in a way the matcher cannot derive (pronoun slots, irregular or contracted forms, possessives, parts that must be highlighted exactly), add the exact original text in braces: ~do one's part{doing its part}=尽自己的一份力 ; ~be committed to{committed to}=致力于 ; ~what's more{What’s more}=此外 (copy curly quotes exactly).
 - Split phrases: use … in the headword for a gap: ~tear…down=拆除 ; ~not only…but also=不仅……而且 ; and for braces use … between the exact pieces: ~pay attention to{pay…attention to}=关注.
