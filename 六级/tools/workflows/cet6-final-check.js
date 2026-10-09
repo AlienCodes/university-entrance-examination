@@ -1,6 +1,6 @@
 export const meta = {
   name: 'cet6-final-check',
-  description: 'CET-6 Section C round 2: final check of the corrected 58 passages (+2 canaries), 2 finders + 2 verifiers per passage',
+  description: 'CET-6 Section C round 2: final check of the corrected 60 passages (+2 canaries), 2 finders + 2 verifiers per passage',
   phases: [
     { title: 'Find', detail: '2 independent final-check reviewers per passage' },
     { title: 'Verify', detail: '2 independent verifiers per passage with findings' },

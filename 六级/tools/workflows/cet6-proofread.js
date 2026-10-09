@@ -1,6 +1,6 @@
 export const meta = {
   name: 'cet6-proofread',
-  description: 'Strict proofreading of 58 CET-6 Section C passages (+2 canaries): fidelity vs page images, mechanics, grammar, logic; each finding double-verified',
+  description: 'Strict proofreading of 60 CET-6 Section C passages (+2 canaries): fidelity vs page images, mechanics, grammar, logic; each finding double-verified',
   phases: [
     { title: 'Find', detail: '4 independent reviewers per passage: fidelity to printed page, spelling/punctuation/typography, grammar/usage, word choice/logic/facts' },
     { title: 'Verify', detail: '2 independent verifiers per passage on merged findings: accuracy (checks page image), strict editor' },

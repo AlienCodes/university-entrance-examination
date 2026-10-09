@@ -52,7 +52,7 @@ import hashlib  # noqa: E402
 seal = A.ANN / '复核通过.json'
 fp = {p: hashlib.sha256((A.ANN / f'{p}.txt').read_bytes()).hexdigest()[:16] for p in R if (A.ANN / f'{p}.txt').exists()}
 if '--reseal' in sys.argv:
-    seal.write_text(json.dumps({'说明': '六级 58 篇翻译与标注经多轮多人复核（埋雷全部查出）后的定稿指纹；改动后须重新复核再 --reseal。', '指纹': fp},
+    seal.write_text(json.dumps({'说明': '六级 60 篇翻译与标注经多轮多人复核（埋雷全部查出）后的定稿指纹；改动后须重新复核再 --reseal。', '指纹': fp},
                                ensure_ascii=False, indent=1), 'utf-8')
 elif seal.exists():
     old = json.loads(seal.read_text('utf-8'))['指纹']

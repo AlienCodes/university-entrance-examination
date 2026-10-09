@@ -23,9 +23,10 @@ CJK = re.compile(r'[一-鿿]')
 # 2021 年 12 月、2022 年 6 月的几套是扫描件，文字层可能有识别错误，对照页面图片逐字校对后
 # 以 “年份年月 第n套 Passage One” 为键整篇替换（六级/tools/人工校对.json）。
 HERE = Path(__file__).resolve().parent
-# 六级：收到的 29 套全部收录（2026-10-09 用户：Section C Passage One、Passage Two 按四级同一套流程做）
-SKIP = set()
-TOTAL = 62
+# 六级（2026-10-09 用户）：Section C Passage One、Passage Two 按四级同一套流程做；只要 60 篇，从 2026 年开始往下排，
+# 最后两篇（2021 年 6 月第 1 套的两篇）不要（真题存档和人工校对稿都保留）。编号 s01 = 2026 年 6 月第 3 套 Passage Two，依次往下。
+SKIP = {(2021, 6, 1)}
+TOTAL = 60
 FIX = json.loads((HERE / '人工校对.json').read_text('utf-8'))
 # 原文订正：试卷本身的错误（拼写、语法、标点、括号不配对等）和提取错误，逐条写明类型和理由。
 # 每条的原文片段必须在该篇恰好出现一次，否则报错（与高考 tools/sent.py 的 POST 规则相同）。
@@ -121,7 +122,7 @@ def tidy(p):
 def main():
     OUT.mkdir(exist_ok=True)
     res, rows, errs = [], [], []
-    files = sorted(SRC.glob('*/*/*.pdf'), key=key)
+    files = sorted(SRC.glob('*/*/*.pdf'), key=key, reverse=True)       # 从新到旧
     for f in files:
         y, m, n = key(f)
         if (y, m, n) in SKIP:
@@ -132,7 +133,7 @@ def main():
         except StopIteration:
             errs.append(f'{f.name}：找不到 Passage One/Two 的起止')
             continue
-        for name, raw in bs:
+        for name, raw in reversed(bs):                                  # 同一套里 Passage Two 在前（与四级合集顺序一致）
             tag = f'{y}年{m}月 第{n}套 {name}'
             paras = [tidy(p) for p in (FIX.pop(tag) if tag in FIX else paragraphs(raw, gap_starts(f)))]
             text = '\n'.join(paras)
@@ -182,7 +183,7 @@ def main():
     seal_f = OUT / '封版.json'
     fp = {f"{r['id']} {r['paper']} {r['passage']}": hashlib.sha256('\n'.join(r['paras']).encode()).hexdigest()[:16] for r in res}
     if '--reseal' in sys.argv:
-        seal_f.write_text(json.dumps({'说明': '六级仔细阅读 58 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。',
+        seal_f.write_text(json.dumps({'说明': '六级仔细阅读 60 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。',
                                       '指纹': fp}, ensure_ascii=False, indent=1), 'utf-8')
     elif seal_f.exists():
         old = json.loads(seal_f.read_text('utf-8'))['指纹']
@@ -201,10 +202,10 @@ def main():
     if dups:
         note = '\n> 以下文章在不同套题中完全相同（试卷本身如此），后续加工时只需做一次：\n' + ''.join(f'> - {" ＝ ".join(v)}\n' for v in dups)
     (OUT / 'README.md').write_text(
-        f"# 六级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two（29 套全部收录），只有文章，不含题目。"
+        f"# 六级仔细阅读文章（Section C）\n\n共 {len(res)} 篇：每套真题的 Passage One 和 Passage Two（只要 60 篇：从 2026 年 6 月往下排，不收 2021 年 6 月第 1 套），只有文章，不含题目。"
         f"每篇一个 `.txt`（段落之间空一行）；`passages.json` 与高考项目 `tools/passages.json` 格式相同，可直接走后续流程。\n{note}\n"
         "\n生成方法：`python3 六级/tools/extract_reading.py`（从 PDF 提取，按缩进分段，去页眉页脚）。"
-        "2021 年 12 月、2022 年 6 月的 5 套是扫描件，对照试卷页面逐字校对（`六级/tools/人工校对.json`）；"
+        "2021 年 6 月、12 月和 2022 年 6 月的 6 套是扫描件，对照试卷页面逐字校对（`六级/tools/人工校对.json`）；"
         "中文注释统一为 “word (中文)”，引号撇号统一为弯引号，试卷本身的错误订正见 原文订正记录.md。\n\n"
         "| 编号 | 年份 | 月份 | 套次 | 篇目 | 词数 | 段数 | 开头 |\n|---|---|---|---|---|---|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
     rec = ['# 六级仔细阅读原文订正记录\n',
