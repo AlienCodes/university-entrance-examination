@@ -53,7 +53,7 @@
 | s40 | 4.48 | 0.44% | companies' → companies; cueing → queuing |
 | s41 | 4.48 | 0.43% | phonics → phonic; tenette → tenet |
 | s42 | 4.49 | 0.00% |  |
-| s43 | 4.48 | 1.12% | mcgeehan → majihan; mcgeehan → majihen; mcgeehan → majihen; fibres → fibers; mcgeehan → majihen |
+| s43 | 4.48 | 1.12% | mcgeehan → mcgean; mcgeehan → mcgeon; mcgeehan → mcgeon; fibres → fibers; mcgeehan → mcgeon |
 | s44 | 4.48 | 0.22% | extent → extend |
 | s45 | 4.47 | 0.22% | outweighs → outweigh |
 | s46 | 4.48 | 0.43% | distressed' → distressed; ∅ → point |
