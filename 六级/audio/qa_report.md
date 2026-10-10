@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：33
+- 文章数：34
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.48（最低 4.42）
-- 平均识别差异率：0.77%
+- 平均自然度：4.47（最低 4.42）
+- 平均识别差异率：0.76%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -44,3 +44,4 @@
 | s31 | 4.48 | 0.44% | splendour → splendor; recognised → recognized |
 | s32 | 4.48 | 0.66% | prioritised → prioritized; organisations → organizations; recognise → recognize |
 | s33 | 4.50 | 0.00% |  |
+| s34 | 4.47 | 0.44% | digitisation → digitization; publicise → publicize |
