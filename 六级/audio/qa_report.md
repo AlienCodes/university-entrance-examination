@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：25
+- 文章数：26
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.57%
+- 平均识别差异率：0.78%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -36,3 +36,4 @@
 | s23 | 4.49 | 0.00% |  |
 | s24 | 4.47 | 1.10% | behaviour → behavior; theatre → theater; evolved → evolve; behaviour → behavior; defence → defense |
 | s25 | 4.47 | 1.11% | recognise → recognize; recognise → recognize; recognise → recognize; behaviours → behaviors; lead → light |
+| s26 | 4.48 | 6.02% | unfavourably → unfavorably; industrialised → industrialized; eunji → yunji; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; rags to riches → ragsterich's; rags to riches → ragsterich's; programmes → programs;  |
