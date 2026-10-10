@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：52
+- 文章数：53
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
-- 平均识别差异率：0.58%
+- 平均识别差异率：0.59%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -63,3 +63,4 @@
 | s50 | 4.49 | 0.67% | taryn → tarin; taryn's → tarin's; taryn's → tarin's |
 | s51 | 4.49 | 0.22% | internalised → internalized |
 | s52 | 4.49 | 0.00% |  |
+| s53 | 4.48 | 0.66% | hofstede's → hofstedta's; hofstede's → hofstedta's; vas → vast |
