@@ -1,0 +1,18 @@
+{
+ "_说明": "专八画面核查的埋雷（检查指令由六级改成专八，按踩坑 21 重新埋雷）：用与成品相同的渲染程序把指定屏做成带缺陷的屏，混入两套截图（q8 取自 t09，q9 取自 t05），必须全部查出。sent=句号（0 为片头），part=该句第几屏。",
+ "q8": {"from": "t09", "defects": [
+  {"sent": 3, "part": 2, "op": "en", "args": [" and books", ""], "desc": "第 3 句第 2 屏英文少了 and books（三屏拆分的中间一屏）"},
+  {"sent": 14, "part": 3, "op": "footer", "args": ["PART 3/3", "PART 2/3"], "desc": "第 14 句第 3 屏页脚写成 PART 2/3（应为 3/3）"},
+  {"sent": 1, "part": 2, "op": "zh_part", "args": [0], "desc": "第 1 句第 2 屏的中文显示成第 1 屏的中文"},
+  {"sent": 20, "op": "zh", "args": ["余光", "佘光"], "desc": "第 20 句中文形近错字：余光 → 佘光"},
+  {"sent": 40, "op": "gloss", "args": ["惋惜地", "婉惜地"], "desc": "第 40 句词汇栏释义形近错字：惋惜地 → 婉惜地"},
+  {"sent": 10, "op": "swapnum", "args": [2, 3], "desc": "第 10 句词汇栏编号 2、3 对调（1,3,2,…）"},
+  {"sent": 2, "part": 2, "op": "drop", "desc": "第 2 句第 2 屏整屏缺失（屏数少 1）"}]},
+ "q9": {"from": "t05", "defects": [
+  {"sent": 0, "op": "title", "args": ["Passage Two", "Passage Three"], "desc": "片头篇目写成 Passage Three（应为 Passage Two）"},
+  {"sent": 5, "op": "dropsup", "args": [3], "desc": "第 5 句英文里 murky 后的编号圆圈 3 缺失"},
+  {"sent": 12, "op": "color", "args": ["copper sheathing"], "desc": "第 12 句短语 copper sheathing 的高亮用了单词的绿色"},
+  {"sent": 27, "part": 2, "op": "zh_trunc", "desc": "第 27 句第 2 屏中文截掉最后一个分句"},
+  {"sent": 35, "part": 1, "op": "en", "args": ["the ship", "this ship"], "desc": "第 35 句第 1 屏英文 the ship → this ship"},
+  {"sent": 20, "op": "en", "args": ["few minutes", "few minute"], "desc": "第 20 句英文复数丢了 s：a few minutes → a few minute"}]}
+}
