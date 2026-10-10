@@ -67,7 +67,12 @@ sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff
 .ttl .meta{margin-top:50px;padding-top:26px;border-top:2px solid #1c2421;font-size:30px;color:#6b746f;display:flex;justify-content:space-between}
 .legend{position:absolute;right:120px;bottom:60px;display:flex;gap:30px;font-size:24px;color:#3c4642}
 .legend em{display:inline-block;width:22px;height:22px;border-radius:50%;margin-right:8px;vertical-align:-3px}
+.legend .lw{background:#1f5c4a}.legend .lp{background:#a14a2a}
 """
+# 专八专用样式（用户 2026-10-10：四六级一直同一种样子，会审美疲劳，专八换新样子）：样式.css 追加在上面的通用样式之后覆盖它，
+# 只改颜色、字体、装饰和封面，不改版面尺寸（字号由 FIT 自动适配，样式定稿前对全部句子屏重新适配，任何一屏字号都不得变小）。
+THEME = HERE / '样式.css'
+THEME_FONTS = HERE / 'fonts' / 'fonts.css'
 POS = re.compile(r'^((?:n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.)\s*(.*)$')
 
 
@@ -77,7 +82,10 @@ def esc(s):
 
 def page(body):
     fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()      # 字体与四级共用
-    return f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}"><style>{CSS}</style></head><body><div class="band"></div>{body}</body></html>'
+    extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">' if THEME_FONTS.exists() else ''
+    theme = f'<style>{THEME.read_text("utf-8")}</style>' if THEME.exists() else ''
+    return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}</head>'
+            f'<body><div class="band"></div>{body}</body></html>')
 
 
 def ordered(s):
@@ -127,7 +135,7 @@ def title_slide(p):
     return page(f'''<div class="ttl"><div class="tag">TEM-8 · READING · SECTION A</div><h1>{esc(p.get("title") or "")}</h1>
       <div class="sub">英语专业八级 {esc(p["paper"])} · <i>{esc(p["passage"])}</i></div>
       <div class="meta"><span>{esc(p.get("genre") or "")}</span><span>全文 {p["words"]} 词 · 逐句精读</span></div></div>
-      <div class="legend"><span><em style="background:#1f5c4a"></em>单词</span><span><em style="background:#a14a2a"></em>短语</span></div>''')
+      <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>''')
 
 
 def split_parts(pid, k, s):
