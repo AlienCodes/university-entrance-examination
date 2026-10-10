@@ -4,9 +4,9 @@
 
 ## cet4_male
 
-- 文章数：36
+- 文章数：37
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.48（最低 4.42）
+- 平均自然度：4.47（最低 4.42）
 - 平均识别差异率：0.72%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
@@ -47,3 +47,4 @@
 | s34 | 4.47 | 0.44% | digitisation → digitization; publicise → publicize |
 | s35 | 4.48 | 0.00% |  |
 | s36 | 4.48 | 0.00% |  |
+| s37 | 4.46 | 0.65% | dollarsm → dollars; anonymised → anonymized; sceptical → skeptical |
