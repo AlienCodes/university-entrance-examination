@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：57
+- 文章数：58
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
-- 平均识别差异率：0.58%
+- 平均识别差异率：0.57%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -68,3 +68,4 @@
 | s55 | 4.47 | 0.43% | researchers → rice archers |
 | s56 | 4.47 | 0.67% | like' → like; know' → know; ' → ∅ |
 | s57 | 4.48 | 0.87% | gmo' → gmo; sugar' → sugar; carbohydrates' → carbohydrates; hunt's → hunts |
+| s58 | 4.48 | 0.22% | scrutinising → scrutinizing |
