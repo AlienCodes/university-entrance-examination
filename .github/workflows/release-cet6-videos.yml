@@ -1,5 +1,5 @@
 # 修改 .github/cet6-videos-release.txt 并推送时生成 GitHub Release（六级视频专用，与高考、四级的发布流程分开）：
-# 第一行写标签名（cet6-01、cet6-02 …，用户要求 20 个视频一组发一个包）；第 2 行起逐行列出 六级/最终视频/ 下要发布的 MP4 文件名
+# 第一行写标签名（cet6-01、cet6-02 …，用户要求 20 个视频一组发一个包；cet6-full = 60 个全部一次性打包）；第 2 行起逐行列出 六级/最终视频/ 下要发布的 MP4 文件名
 # 发布内容：一个打包好的 zip（GitHub 会把附件名里的中文和空格改掉，所以只发 zip，压缩包里保留完整中文文件名）
 name: 发布六级视频
 on:
@@ -41,7 +41,8 @@ jobs:
           echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
           echo "N=${n}" >> "$GITHUB_ENV"
           echo "TAG=${tag}" >> "$GITHUB_ENV"
-          echo "NO=${tag#cet6-}" >> "$GITHUB_ENV"
+          no=${tag#cet6-}; [ "$no" = full ] && no=全部     # cet6-full：60 个视频一次性打包（用户 2026-10-10）
+          echo "NO=${no}" >> "$GITHUB_ENV"
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAG }}
