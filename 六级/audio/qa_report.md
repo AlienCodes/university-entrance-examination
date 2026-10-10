@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：38
+- 文章数：39
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.74%
+- 平均识别差异率：0.72%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -49,3 +49,4 @@
 | s36 | 4.48 | 0.00% |  |
 | s37 | 4.46 | 0.65% | dollarsm → dollars; anonymised → anonymized; sceptical → skeptical |
 | s38 | 4.47 | 1.53% | there're → they're a; poundsbn a year → pound spinnier; there'll → there will |
+| s39 | 4.48 | 0.00% |  |
