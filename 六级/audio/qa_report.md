@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：40
+- 文章数：41
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.67%
+- 平均识别差异率：0.66%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -51,3 +51,4 @@
 | s38 | 4.46 | 1.30% | there're → there are; ∅ → pounds; pound → ∅; there'll → there will |
 | s39 | 4.48 | 0.00% |  |
 | s40 | 4.48 | 0.44% | companies' → companies; cueing → queuing |
+| s41 | 4.48 | 0.43% | phonics → phonic; tenette → tenet |
