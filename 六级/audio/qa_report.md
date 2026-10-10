@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：31
+- 文章数：32
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
 - 平均识别差异率：0.80%
@@ -42,3 +42,4 @@
 | s29 | 4.48 | 3.36% | practise → practice; practising → practicing; generalisation → generalization; limor raviv → limmer ravive; generalise → generalize; raviv → ravov; generalisation → generalization; categorisation → categorization; raviv → ravive; practising → practicing; generalisation → generalization; generalisati |
 | s30 | 4.46 | 0.23% | sarkazein → sarcasine |
 | s31 | 4.48 | 0.44% | splendour → splendor; recognised → recognized |
+| s32 | 4.48 | 0.66% | prioritised → prioritized; organisations → organizations; recognise → recognize |
