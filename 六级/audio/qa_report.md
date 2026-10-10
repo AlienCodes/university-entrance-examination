@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：46
+- 文章数：47
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
 - 平均识别差异率：0.63%
@@ -57,3 +57,4 @@
 | s44 | 4.48 | 0.22% | extent → extend |
 | s45 | 4.47 | 0.22% | outweighs → outweigh |
 | s46 | 4.48 | 0.43% | distressed' → distressed; ∅ → point |
+| s47 | 4.50 | 0.45% | urbanisation → urbanization; fertilisers → fertilizers |
