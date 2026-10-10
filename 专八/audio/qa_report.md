@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：7
+- 文章数：8
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.44）
-- 平均识别差异率：1.27%
+- 平均识别差异率：1.19%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -18,3 +18,4 @@
 | t05 | 4.48 | 1.72% | lined → line; marc → mark; aulavik → alivik; investigator's → investigators'; investigator's → investigators'; investigator's → investigators'; essence → athens; parks → park's; pored → poured; sachs harbour → saks harbor; cary → carey; cary → kerry; bernier cary → bernie or kerry; wreck's → wrecks |
 | t06 | 4.46 | 0.27% | grey → gray; griggs's → griggs'; pullethood → pulletthood |
 | t07 | 4.48 | 2.11% | bands → bans; milliliters → ml; labelling → labeling; labor → labour; a tax → attacks; di natale → dynatil; boden → bowden; organisation → organization; a tax → attacks; a tax → attacks; aacs → ∅; a tax → attacks; recognise → recognize; modelling → modeling |
+| t08 | 4.48 | 0.64% | studios → studio; there → their; ltd → limited; ltd → limited; breakdown's → breakdown; agent → agents; actors' → actor's |
