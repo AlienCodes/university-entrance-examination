@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：9
+- 文章数：10
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.10%
+- 平均识别差异率：1.13%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -20,3 +20,4 @@
 | t07 | 4.48 | 2.11% | bands → bans; milliliters → ml; labelling → labeling; labor → labour; a tax → attacks; di natale → dynatil; boden → bowden; organisation → organization; a tax → attacks; a tax → attacks; aacs → ∅; a tax → attacks; recognise → recognize; modelling → modeling |
 | t08 | 4.48 | 0.64% | studios → studio; there → their; ltd → limited; ltd → limited; breakdown's → breakdown; agent → agents; actors' → actor's |
 | t09 | 4.42 | 0.36% | you've → you; she'll be → she's; see → say |
+| t10 | 4.47 | 1.42% | gravelled → graveled; demesne → domain; ysabel → usable; ysabel → usable; mollie → molly; ysabel → usable; a huge st → ahugsint; and → ∅; and → ∅ |
