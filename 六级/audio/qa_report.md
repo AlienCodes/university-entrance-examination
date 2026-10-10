@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：43
+- 文章数：44
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
-- 平均识别差异率：0.65%
+- 平均识别差异率：0.64%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -54,3 +54,4 @@
 | s41 | 4.48 | 0.43% | phonics → phonic; tenette → tenet |
 | s42 | 4.49 | 0.00% |  |
 | s43 | 4.48 | 1.12% | mcgeehan → majihan; mcgeehan → majihen; mcgeehan → majihen; fibres → fibers; mcgeehan → majihen |
+| s44 | 4.48 | 0.22% | extent → extend |
