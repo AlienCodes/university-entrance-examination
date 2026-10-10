@@ -106,6 +106,7 @@ def sentence_html(s, lo=0, hi=None):
 
 
 def vocab_html(s, lo=0, hi=None):
+    """释义标 lang="zh-CN"：释义以“……”开头时（……的关键），前面紧挨着英文词条，浏览器会按拉丁文排成底线六点，标了中文才是居中的省略号（画面核查发现，2026-10-10）。"""
     hi = len(s['en']) if hi is None else hi
     out = []
     for i, w in enumerate(ordered(s), 1):
@@ -114,7 +115,7 @@ def vocab_html(s, lo=0, hi=None):
         m = POS.match(w['m'])
         pos, mean = (m.group(1), m.group(2)) if m else ('', w['m'])
         out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{esc(w["h"])}</b>'
-                   f'{f"<i>{pos}</i>" if pos else ""}<span>{esc(mean)}</span></div></div>')
+                   f'{f"<i>{pos}</i>" if pos else ""}<span lang="zh-CN">{esc(mean)}</span></div></div>')
     return ''.join(out)
 
 
