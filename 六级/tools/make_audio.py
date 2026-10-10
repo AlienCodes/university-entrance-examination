@@ -13,6 +13,7 @@
 - 不该停顿的逗号不停顿（2026-10-08，从第二批 c40–c21 起）：并列列举（含牛津逗号）、并列形容词、句末附加语（too、either、for example）、
   句末简短引述（says X），见 pause_free；进出括号处照常停顿。逐条判定结果见 四级/停顿对比/不停顿的逗号清单.txt
 - °F/°C 读作 degrees Fahrenheit/Celsius
+- 金额缩写 $750m、£12bn 读作 750 million dollars、12 billion pounds
 - 铁律：去除电磁音（debuzz.py，用户试听确认），成品 MP3 独立检查
 """
 import json
@@ -44,6 +45,7 @@ _read_text = G.Pronouncer.read_text
 
 
 ORIG = {}          # 句子编号 → 原文（判断哪些逗号原本是括号）
+CUR = {'$': ('dollars', 'dollar'), '£': ('pounds', 'pound'), '€': ('euros', 'euro')}
 
 
 def read_text(self, original, key=None):
@@ -53,6 +55,10 @@ def read_text(self, original, key=None):
     # 六级：数值范围的短横线读作 to（高考共用程序会把它读成破折号停顿，意思就丢了：25–54 → twenty-five—fifty-four）
     original = G.re.sub(r'\$(\d[\d,.]*)–\$(\d[\d,.]*)\s*(billion|million|trillion)', r'\1 to \2 \3 dollars', original)
     original = G.re.sub(r'(?<=\d)–(?=\$?\d)', ' to ', original)
+    # 六级：金额缩写 $750m / £12bn 读作 750 million dollars / 12 billion pounds（高考共用程序会读成 dollarsm、poundsbn）；
+    # 作复合定语时用单数：a £12bn-a-year industry → twelve billion pound-a-year
+    original = G.re.sub(r'([$£€])(\d[\d,.]*)(m|bn)\b(-?)', lambda m: f"{m.group(2)} {'million' if m.group(3) == 'm' else 'billion'} "
+                        f"{CUR[m.group(1)][bool(m.group(4))]}{m.group(4)}", original)
     return _read_text(self, original, key)
 
 
