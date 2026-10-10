@@ -17,6 +17,23 @@ _src = (REPO / 'tools' / 'build.py').read_text('utf-8')
 _ns = {'re': re, 'json': json}
 exec(_src[_src.index('IRR={'):_src.index('out=[];errs=0')], _ns)
 parse, find = _ns['parse'], _ns['find']
+_find = find
+
+
+def find(entry, sent, taken):
+    """在高考 find 之上加一种原文写法：用 [ ] 标出真正高亮的词，其余只用来定位。
+    同一句里一个词出现多次、而要标的不是第一处时使用，如 ideal{the [ideal] filter}（六级 s23 第 14 句）。"""
+    s = entry.get('surf') or ''
+    if '[' not in s:
+        return _find(entry, sent, taken)
+    pre, rest = s.split('[', 1)
+    word, post = rest.split(']', 1)
+    pat = r'(?<![\w-])' + re.escape(pre) + '(' + re.escape(word) + ')' + re.escape(post) + r'(?![\w-])'
+    for m in re.finditer(pat, sent, re.I):
+        a, b = m.span(1)
+        if not any(not (b <= x or a >= y) for x, y in taken):
+            return [(a, b)]
+    return None
 
 # 覆盖检查：句子里不属于基础词（初中词表 基础词.txt 及其规则变形）的词都必须被标注（用户要求：如 participant、interact 这类词一个都不能漏）。
 # 专有名词（句中大写）、数字、缩写不算。
