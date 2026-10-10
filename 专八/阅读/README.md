@@ -5,16 +5,16 @@
 
 | 编号 | 年份 | 篇目 | 词数 | 段数 | 开头 |
 |---|---|---|---|---|---|
-| t01 | 2025 | Passage One | 974 | 15 | A new study from researchers uncovers the kinds of … |
+| t01 | 2025 | Passage One | 973 | 15 | A new study from researchers uncovers the kinds of … |
 | t02 | 2025 | Passage Two | 984 | 8 | I had been hanging around for a few years with a very … |
 | t03 | 2025 | Passage Three | 947 | 8 | The storm came on slowly one afternoon. The clouds looked … |
 | t04 | 2024 | Passage One | 891 | 6 | If the properties of human language make it such a unique … |
 | t05 | 2024 | Passage Two | 944 | 8 | It was well past midnight this past July and the … |
 | t06 | 2024 | Passage Three | 1093 | 9 | My father was, I am sure, intended by nature to be a … |
-| t07 | 2023 | Passage One | 856 | 14 | New calls for Australia to introduce a sugar-sweetened … |
-| t08 | 2023 | Passage Two | 1064 | 8 | I’d been living in Los Angeles just under a year when, in … |
+| t07 | 2023 | Passage One | 857 | 14 | New calls for Australia to introduce a sugar-sweetened … |
+| t08 | 2023 | Passage Two | 1066 | 8 | I’d been living in Los Angeles just under a year when, in … |
 | t09 | 2023 | Passage Three | 1079 | 17 | It was delightful to be in such a place, after long weeks … |
-| t10 | 2022 | Passage One | 761 | 6 | Buck did not read the newspapers, or he would have known … |
+| t10 | 2022 | Passage One | 762 | 6 | Buck did not read the newspapers, or he would have known … |
 | t11 | 2022 | Passage Two | 1047 | 11 | Early this winter, the hundreds of climbers making plans … |
 | t12 | 2022 | Passage Three | 1188 | 10 | Vast stretches of central Asia feel eerily uninhabited. Fly … |
 | t13 | 2021 | Passage One | 722 | 6 | The gorilla is something of a paradox on the African scene. … |
