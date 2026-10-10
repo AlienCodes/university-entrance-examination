@@ -7,7 +7,7 @@
 - 文章数：10
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.01%
+- 平均识别差异率：1.00%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -19,5 +19,5 @@
 | t06 | 4.46 | 0.27% | grey → gray; griggs's → griggs'; pullethood → pulletthood |
 | t07 | 4.48 | 1.89% | bands → bans; milliliters → ml; labelling → labeling; a tax → attacks; boden → bowden; gill → gil; organisation → organization; a tax → attacks; a tax → attacks; aacs → ∅; a tax → attacks; recognise → recognize; modelling → modeling |
 | t08 | 4.48 | 0.64% | studios → studio; there → their; ltd → limited; ltd → limited; breakdown's → breakdown; agent → agents; actors' → actor's |
-| t09 | 4.42 | 0.36% | you've → you; she'll be → she's; see → say |
+| t09 | 4.42 | 0.27% | she'll be → she's; see → say |
 | t10 | 4.47 | 1.42% | gravelled → graveled; demesne → domain; ysabel → usable; ysabel → usable; mollie → molly; ysabel → usable; a huge st → ahugsint; and → ∅; and → ∅ |
