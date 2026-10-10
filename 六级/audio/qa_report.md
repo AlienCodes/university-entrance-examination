@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：23
+- 文章数：24
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.52%
+- 平均识别差异率：0.55%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -34,3 +34,4 @@
 | s21 | 4.48 | 0.44% | i am → i'm |
 | s22 | 4.48 | 1.54% | urbanisation → urbanization; whilst → while; idealised → idealized; industrialisation → industrialization; labour → labor; urbanisation → urbanization; urbanise → urbanize |
 | s23 | 4.49 | 0.00% |  |
+| s24 | 4.47 | 1.10% | behaviour → behavior; theatre → theater; evolved → evolve; behaviour → behavior; defence → defense |
