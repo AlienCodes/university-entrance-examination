@@ -48,6 +48,6 @@
 | s35 | 4.48 | 0.00% |  |
 | s36 | 4.48 | 0.00% |  |
 | s37 | 4.46 | 0.43% | anonymised → anonymized; sceptical → skeptical |
-| s38 | 4.47 | 1.53% | there're → they're a; poundsbn a year → pound spinnier; there'll → there will |
+| s38 | 4.46 | 1.30% | there're → there are; ∅ → pounds; pound → ∅; there'll → there will |
 | s39 | 4.48 | 0.00% |  |
 | s40 | 4.48 | 0.44% | companies' → companies; cueing → queuing |
