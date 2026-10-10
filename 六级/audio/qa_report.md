@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：29
+- 文章数：30
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.84%
+- 平均识别差异率：0.81%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -40,3 +40,4 @@
 | s27 | 4.49 | 0.64% | clarke → clark; energiewende → energy end |
 | s28 | 4.46 | 0.00% |  |
 | s29 | 4.48 | 3.36% | practise → practice; practising → practicing; generalisation → generalization; limor raviv → limmer ravive; generalise → generalize; raviv → ravov; generalisation → generalization; categorisation → categorization; raviv → ravive; practising → practicing; generalisation → generalization; generalisati |
+| s30 | 4.46 | 0.23% | sarkazein → sarcasine |
