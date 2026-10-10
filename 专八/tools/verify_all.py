@@ -1,7 +1,7 @@
 """专八成品视频总核查（由六级 verify_all.py 复制）。四级原说明：四级成品视频总核查：对 四级/最终视频/ 里的每个 MP4 重新实测，复用高考 verify_videos.check 的全部项目
 （分辨率 ≥ 2K、16:9、30 帧恒定、声画等长、片头静音 1.5 秒、句间 0.8 秒、结尾静音 ≥ 2 秒、响度、朗读与画面逐句一致……），
 再加上四级自己的文件名规则（年份月份 第几套 Passage One/Two 题目）、文件名不重复、视频与音频是同一版本。
-结果写到 四级/核查报告.md；任何一项不通过，退出码非 0。可指定篇目：verify_all.py c40 c39 …
+结果写到 专八/核查报告.md（原四级说明：四级/核查报告.md）；任何一项不通过，退出码非 0。可指定篇目：verify_all.py t01 t02 …
 """
 import json
 import re
@@ -42,8 +42,11 @@ def main():
             continue
         tm = T[p['id']]
         sents = [s for para in p['paras'] for s in para]
-        sw = {int(k) - 1: switch_time(C4 / 'audio' / tm['file'], tm['sentences'][int(k) - 1], sents[int(k) - 1]['en'],
-                                      split_parts(p['id'], int(k), sents[int(k) - 1])[1][0]) for k in SPLIT.get(p['id'], {})}
+        sw = {}                                        # 专八一句可分多屏：每个换屏点都独立重新测（第 2、3…屏第一个词的开口时刻）
+        for k in SPLIT.get(p['id'], {}):
+            i = int(k) - 1
+            sw[i] = [switch_time(C4 / 'audio' / tm['file'], tm['sentences'][i], sents[i]['en'], part[0])
+                     for part in split_parts(p['id'], int(k), sents[i])[1:]]
         res = [r for r in check(mp4, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))]
         if sw:
             res.append(switch_check(mp4, tm['sentences'], sw))
