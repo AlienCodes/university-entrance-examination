@@ -46,6 +46,7 @@ _read_text = G.Pronouncer.read_text
 
 ORIG = {}          # 句子编号 → 原文（判断哪些逗号原本是括号）
 CUR = {'$': ('dollars', 'dollar'), '£': ('pounds', 'pound'), '€': ('euros', 'euro')}
+UNIT1 = {'ml': 'milliliter', 'km': 'kilometer', 'kg': 'kilogram', 'mg': 'milligram', 'cm': 'centimeter', 'mm': 'millimeter', 'g': 'gram'}
 
 
 def read_text(self, original, key=None):
@@ -61,6 +62,12 @@ def read_text(self, original, key=None):
                         f"{CUR[m.group(1)][bool(m.group(4))]}{m.group(4)}", original)
     # 句末金额 $125,000. 的句号会被高考共用程序当成小数点（读成 thousand point dollars）：先把这种金额读出来，句号留在后面
     original = G.re.sub(r'([$£€])(\d[\d,]*)\.(?=\s|$|["”’])', lambda m: f"{m.group(2)} {CUR[m.group(1)][0]}.", original)
+    # 专八：数字＋单位作定语时单位用单数：A 330ml bottle → a 330 milliliter bottle（高考共用程序读成 milliliters bottle）
+    original = G.re.sub(r'\b([Aa]n?) (\d[\d,.]*)\s?(ml|km|kg|mg|cm|mm|g)\b(?= [a-z])',
+                        lambda m: f"{m.group(1)} {m.group(2)} {UNIT1[m.group(3)]}", original)
+    # 专八：km、kg、mg、cm、mm 高考共用程序不认识（100km 读成 one hundredkm），读作复数单位（1 读单数）
+    original = G.re.sub(r'(?<![\w.])(\d[\d,.]*)\s?(km|kg|mg|cm|mm)\b',
+                        lambda m: f"{m.group(1)} {UNIT1[m.group(2)]}{'' if m.group(1) == '1' else 's'}", original)
     # and/or 读作 and or（斜杠不许留在朗读文本里）
     original = G.re.sub(r'\band/or\b', 'and or', original)
     return _read_text(self, original, key)
