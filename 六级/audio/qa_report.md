@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：55
+- 文章数：56
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
 - 平均识别差异率：0.57%
@@ -66,3 +66,4 @@
 | s53 | 4.48 | 0.66% | hofstede's → hofstedta's; hofstede's → hofstedta's; vas → vast |
 | s54 | 4.48 | 0.00% |  |
 | s55 | 4.47 | 0.43% | researchers → rice archers |
+| s56 | 4.47 | 0.67% | like' → like; know' → know; ' → ∅ |
