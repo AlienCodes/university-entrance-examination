@@ -13,7 +13,7 @@
 - 不该停顿的逗号不停顿（2026-10-08，从第二批 c40–c21 起）：并列列举（含牛津逗号）、并列形容词、句末附加语（too、either、for example）、
   句末简短引述（says X），见 pause_free；进出括号处照常停顿。逐条判定结果见 四级/停顿对比/不停顿的逗号清单.txt
 - °F/°C 读作 degrees Fahrenheit/Celsius
-- 金额缩写 $750m、£12bn 读作 750 million dollars、12 billion pounds
+- 金额缩写 $750m、£12bn 读作 750 million dollars、12 billion pounds；句末金额 $125,000. 的句号不当小数点；and/or 读作 and or
 - 铁律：去除电磁音（debuzz.py，用户试听确认），成品 MP3 独立检查
 """
 import json
@@ -59,6 +59,10 @@ def read_text(self, original, key=None):
     # 作复合定语时用单数：a £12bn-a-year industry → twelve billion pound-a-year
     original = G.re.sub(r'([$£€])(\d[\d,.]*)(m|bn)\b(-?)', lambda m: f"{m.group(2)} {'million' if m.group(3) == 'm' else 'billion'} "
                         f"{CUR[m.group(1)][bool(m.group(4))]}{m.group(4)}", original)
+    # 句末金额 $125,000. 的句号会被高考共用程序当成小数点（读成 thousand point dollars）：先把这种金额读出来，句号留在后面
+    original = G.re.sub(r'([$£€])(\d[\d,]*)\.(?=\s|$|["”’])', lambda m: f"{m.group(2)} {CUR[m.group(1)][0]}.", original)
+    # and/or 读作 and or（斜杠不许留在朗读文本里）
+    original = G.re.sub(r'\band/or\b', 'and or', original)
     return _read_text(self, original, key)
 
 
