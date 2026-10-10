@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：59
+- 文章数：60
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
-- 平均识别差异率：0.58%
+- 平均识别差异率：0.57%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -70,3 +70,4 @@
 | s57 | 4.48 | 0.87% | gmo' → gmo; sugar' → sugar; carbohydrates' → carbohydrates; hunt's → hunts |
 | s58 | 4.48 | 0.22% | scrutinising → scrutinizing |
 | s59 | 4.47 | 1.10% | round → around; realised → realized; organisation → organization; organisation → organization; characterises → characterizes |
+| s60 | 4.49 | 0.00% |  |
