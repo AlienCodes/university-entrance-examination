@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：49
+- 文章数：50
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
 - 平均识别差异率：0.60%
@@ -60,3 +60,4 @@
 | s47 | 4.50 | 0.45% | urbanisation → urbanization; fertilisers → fertilizers |
 | s48 | 4.48 | 0.00% |  |
 | s49 | 4.48 | 0.00% |  |
+| s50 | 4.49 | 0.67% | taryn → tarin; taryn's → tarin's; taryn's → tarin's |
