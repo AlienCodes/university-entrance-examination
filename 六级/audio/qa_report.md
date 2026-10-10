@@ -37,7 +37,7 @@
 | s24 | 4.47 | 0.88% | behaviour → behavior; theatre → theater; behaviour → behavior; defence → defense |
 | s25 | 4.47 | 0.89% | recognise → recognize; recognise → recognize; recognise → recognize; behaviours → behaviors |
 | s26 | 4.49 | 6.02% | unfavourably → unfavorably; industrialised → industrialized; eunji → ungi; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; rags to riches → ragsterich's; rags to riches → ragsterich's; programmes → programs; r |
-| s27 | 4.49 | 0.64% | clarke → clark; energiewende → energy end |
+| s27 | 4.49 | 0.64% | clarke → clark; energiewende → energie venda |
 | s28 | 4.46 | 0.00% |  |
 | s29 | 4.48 | 3.36% | practise → practice; practising → practicing; generalisation → generalization; limor raviv → limmer ravive; generalise → generalize; raviv → ravov; generalisation → generalization; categorisation → categorization; raviv → ravive; practising → practicing; generalisation → generalization; generalisati |
 | s30 | 4.46 | 0.23% | sarkazein → sarcasine |
