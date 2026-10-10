@@ -1,0 +1,51 @@
+# 修改 .github/cet4-videos-release.txt 并推送时生成 GitHub Release（四级视频专用，与高考的发布流程分开）：
+# 第一行写标签名（cet4-01、cet4-02 …，用户要求每 5 个视频一组发一个包）；第 2 行起逐行列出 四级/最终视频/ 下要发布的 MP4 文件名
+# 发布内容：一个打包好的 zip（GitHub 会把附件名里的中文和空格改掉，所以只发 zip，压缩包里保留完整中文文件名）
+name: 发布四级视频
+on:
+  push:
+    paths: ['.github/cet4-videos-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 打包视频
+        run: |
+          set -e
+          tag=$(head -1 .github/cet4-videos-release.txt | tr -d '[:space:]')
+          mapfile -t files < <(tail -n +2 .github/cet4-videos-release.txt | sed '/^[[:space:]]*$/d')
+          [ ${#files[@]} -gt 0 ] || { echo "没有列出视频"; exit 1; }
+          for f in "${files[@]}"; do
+            [ -f "四级/最终视频/$f" ] || { echo "找不到：$f"; exit 1; }
+          done
+          n=${#files[@]}
+          zipname="CET4-reading-videos-${tag}.zip"
+          (cd 四级/最终视频 && zip -0 -q "../../${zipname}" "${files[@]}")
+          unzip -l "${zipname}" | tail -1
+          {
+            echo "大学英语四级 仔细阅读（Section C）逐句精读视频，本次共 ${n} 个。"
+            echo
+            echo "4K（3840×2160）、30 帧/秒，男声播音腔朗读（已去除电磁音），中文翻译 + 生词编号注释；句与句之间停顿 0.8 秒。"
+            echo
+            echo "下载下面的 \`${zipname}\`，解压即可。"
+            echo
+            echo "每个视频都通过了全部核查（无电磁音、分辨率、流畅度、声画等长、片头/结尾静音、句间停顿、响度一致、朗读与画面逐句一致），核查报告见仓库 \`四级/核查报告_全部60篇.md\`（四级 60 篇合集）或 \`四级/核查报告.md\`。"
+            echo
+            echo "| # | 文件名 |"
+            echo "|---|---|"
+            i=0; for f in "${files[@]}"; do i=$((i+1)); echo "| $i | $f |"; done
+          } > notes.md
+          echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
+          echo "N=${n}" >> "$GITHUB_ENV"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          echo "NO=${tag#cet4-}" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: 四级仔细阅读精读视频 ${{ env.NO }}（${{ env.N }} 个）
+          body_path: notes.md
+          files: ${{ env.ZIPNAME }}

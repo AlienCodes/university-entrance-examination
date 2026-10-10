@@ -1,0 +1,33 @@
+# 修改 .github/delete-releases.txt 并推送时删除其中列出的 GitHub Release（每行一个标签名）。
+# 用户 2026-10-10：四级、六级的 Release 都已下载、视频也都保存在仓库里，全部删掉。只删 Release（附件），git 标签保留。
+# 为防误删，只允许删四级、六级的 Release（cet4-*、cet6-*、007）；列出其他标签直接报错、一个都不删。
+name: 删除 Release
+on:
+  push:
+    paths: ['.github/delete-releases.txt']
+permissions:
+  contents: write
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 删除
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          mapfile -t tags < <(sed -e 's/#.*//' -e 's/[[:space:]]//g' .github/delete-releases.txt | sed '/^$/d')
+          [ ${#tags[@]} -gt 0 ] || { echo "没有列出标签"; exit 1; }
+          for t in "${tags[@]}"; do
+            [[ "$t" =~ ^(cet4-.+|cet6-.+|007)$ ]] || { echo "不允许删除：$t"; exit 1; }
+          done
+          for t in "${tags[@]}"; do
+            if gh release view "$t" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+              gh release delete "$t" --yes --repo "$GITHUB_REPOSITORY" && echo "已删除：$t"
+            else
+              echo "不存在（已删过）：$t"
+            fi
+          done
+          echo "剩余 Release："
+          gh release list --repo "$GITHUB_REPOSITORY" --limit 100

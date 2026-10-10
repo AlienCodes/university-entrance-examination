@@ -1,0 +1,51 @@
+# 修改 .github/release-request.txt 并推送时生成 GitHub Release：
+# 第一行写标签名（如 videos-60）；第 2 行起可逐行列出要打包的视频文件名，不写则打包 最终视频/ 里的全部 MP4
+name: 发布视频压缩包
+on:
+  push:
+    paths: ['.github/release-request.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 打包视频
+        run: |
+          set -e
+          tag=$(head -1 .github/release-request.txt | tr -d '[:space:]')
+          # 第 2 行起若列出文件名（最终视频/ 下的 MP4），只打包这些；否则打包全部
+          mapfile -t want < <(tail -n +2 .github/release-request.txt | sed '/^[[:space:]]*$/d')
+          files=()
+          if [ ${#want[@]} -gt 0 ]; then
+            for f in "${want[@]}"; do
+              [ -f "最终视频/$f" ] || { echo "找不到：$f"; exit 1; }
+              files+=("$f")
+            done
+          else
+            while IFS= read -r f; do files+=("$(basename "$f")"); done < <(ls 最终视频/*.mp4)
+          fi
+          n=${#files[@]}
+          zipname="gaokao-english-reading-CD-${tag}.zip"
+          (cd 最终视频 && zip -0 -q "../${zipname}" "${files[@]}")
+          unzip -l "${zipname}" | tail -1
+          {
+            echo "高考英语阅读 C/D 逐句精读视频，本次共 ${n} 个（4K，女声朗读，中文翻译 + 生词表）。"
+            echo
+            echo "下载下面的 \`${zipname}\`，解压即可。每个视频都通过了全部核查（响度、停顿、静音、流畅度、朗读与画面一致）。"
+            echo
+            echo "| # | 文件名 |"
+            echo "|---|---|"
+            i=0; for f in "${files[@]}"; do i=$((i+1)); echo "| $i | $f |"; done
+          } > notes.md
+          echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
+          echo "N=${n}" >> "$GITHUB_ENV"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: 高考英语阅读精读视频（${{ env.TAG }}，${{ env.N }} 个）
+          body_path: notes.md
+          files: ${{ env.ZIPNAME }}

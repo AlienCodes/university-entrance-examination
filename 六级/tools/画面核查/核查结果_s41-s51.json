@@ -1,0 +1,748 @@
+{
+ "results": [
+  {
+   "id": "s41",
+   "findings": [
+    {
+     "screen": 19,
+     "sentence": 18,
+     "kind": "layout",
+     "description": "The hooked top of the rust 'f' in the highlighted phrase 'out of' touches the number-3 circle that follows it, so the letter and the circle run together. The '3' is still readable, but the badge should sit clear of the glyph (a template spacing issue: the circle's margin-left of .12em is narrower than the f's overhang).",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 22,
+     "sentence": 21,
+     "kind": "layout",
+     "description": "Same collision as on screen 19: the hooked top of the 'f' in the highlighted phrase 'a body of' runs into the number-5 circle. The '5' is still readable.",
+     "severity": "low",
+     "lens": "english"
+    }
+   ],
+   "opened": [
+    29,
+    29,
+    29
+   ],
+   "notes": [
+    "s41 (CET-6 2023年6月 第1套 Passage Two, 自然拼读法). I opened all 29 screens in order: the title card plus 28 sentence screens. No sentence is split, so the count matches N=28. The reference file has no closing \"expected structure\" section, so I took the structure from the 28 [k] entries.\n\nTitle card: the title, \"大学英语六级 2023年6月 第1套 · Passage Two\" and the genre \"议论文 · 教育与阅读\" all match the reference. \"全文 453 词\" equals the reference EN word count if the three Chinese glosses in brackets are counted (450 without them).\n\nNumbering, written down for each screen as circles left→right / panel top→bottom / footer:\n- s02: 1,2,3,4 / 1-4 / 1/28\n- s03: 1,2 / 1-2 / 2\n- s04: 1,2,4,5,3 / 1-5 / 3 (sneak…into: number only on \"into\")\n- s05: 1,2 / 1-2 / 4\n- s06: 1,2 / 1-2 / 5\n- s07: 1-4 / 1-4 / 6\n- s08: 1-4 / 1-4 / 7\n- s09: 1-4 / 1-4 / 8\n- s10: 1-5 / 1-5 / 9\n- s11: 1-5 / 1-5 / 10\n- s12: 1-5 / 1-5 / 11\n- s13: 1-3 / 1-3 / 12\n- s14: 1-5 / 1-5 / 13\n- s15: 1-3 / 1-3 / 14\n- s16: 1-4 / 1-4 / 15\n- s17: 1-7 / 1-7 / 16\n- s18: 1-4 / 1-4 / 17\n- s19: 1-6 / 1-6 / 18\n- s20: 1,2,3 / 1-3 / 19 (the only…to: number only on \"to\")\n- s21: 1-7 / 1-7 / 20\n- s22: 1-7 / 1-7 / 21\n- s23: 1-7 / 1-7 / 22\n- s24: 1-10 / 1-10 / 23\n- s25: 1-4 / 1-4 / 24\n- s26: 1-5 / 1-5 / 25\n- s27: 1-13 / 1-13 / 26\n- s28: 1,2 / 1-2 / 27\n- s29: 1-3 / 1-3 / 28\n\nOn every screen the panel numbers run consecutively, the circle set equals the panel set, and k goes up by 1 each screen. The progress bar matches k/N where I measured it (1/28 ≈ 0.03, 14/28 ≈ 0.50, 26/28 ≈ 0.93, 28/28 full).\n\nHighlight colours: every one matches its 单词/短语 type. Headwords, POS labels and meanings agree with the reference.\n\nLayout:\n- Nothing overlaps the header rule, footer or panel. The English lines that come closest to the panel end at x≈1166 (s10, s20, s27), and the panel starts at 1230.\n- s27 has the densest panel (13 entries). The panel font is slightly smaller there (auto-fit), and the last entry fits inside the panel bottom with a small margin. I checked this by zooming in.\n- No tofu, replacement characters or garbled glyphs.\n- The Chinese ellipsis …… is drawn the same way (mid-height dots) on every screen where it appears (s02, s04, s05, s12, s16, s17, s25, s26, s27).\n\nNot reported as a defect: where two full-width punctuation marks sit next to each other (s12 \"（体）；\", s22 \"”。\", s23 \"战争”，\"), a visible gap appears between them. This is ordinary full-width CJK spacing without punctuation squeezing, and it looks the same throughout the video.\n\nOn the user's question: this video, which had already passed the automated checks, showed no visual or numbering defects when every screen was inspected by hand.",
+    "I checked all 29 screens of s41 (the 2023年6月 第1套 Passage Two passage, 自然拼读法：教孩子阅读的最佳方法) against ref/s41.txt and found no text or structure defects. The two findings are small cosmetic overlaps.\n\n**Structure:** there are 29 screens: the title card plus sentences 1 to 28, one screen each, in order. None is missing, duplicated or swapped, and none is split. The footers read SENTENCE 1/28 through 28/28. The title card shows the correct title, the paper (大学英语六级 2023年6月 第1套 · Passage Two) and the genre (议论文 · 教育与阅读). Its word count of 453 matches the reference English. Every header shows \"2023年6月 第1套 · Passage Two\" and the correct title.\n\n**English text:** I compared every sentence word by word with the reference, including the trickier spots. All are identical:\n- endings: involves, sounding, had to, graders, moved, gains, scores, guessing, emphasized, disproved\n- curly quotes and apostrophes: can’t, Mississippi’s, “whole language”, “balanced literacy”, “reading wars”\n- the Chinese glosses in the English line: (音节), (音位的), (潜移默化)\n- numbers and brackets: 49th (out of 50 states) to 29th, 2017, 2019, 2013, 1997, the k/c/ck/ch bracket\n- the names: Tenette Smith, EdWeek Research Center, the Progress in International Reading Literacy Study, the National Assessment of Educational Progress, the National Institute of Child Health and Human Development\n\n**Vocabulary:** every panel headword and part-of-speech label matches its reference entry, and phrases carry no part-of-speech label. Every highlight covers exactly its 高亮原文, including:\n- capitalised highlights: International, Assessment, Institute, Congress\n- split phrases with the number only on the last piece: syllable … by syllable, sneak … into, the only … to\n\nPanel numbering follows first appearance in the sentence (on sentence 2, classroom is 1 and dirty word is 2), as designed. The 13-entry panel on sentence 26 fits inside its box.\n\n**One thing that is not a per-screen defect:** in the vocabulary panel, single-word headwords are drawn in the near-black body colour (#1c2421). Only their number circle is green; phrase headwords are rust. This is set for all videos in 六级/tools/make_video.py (`.v b` has no green colour, while `.v.ph b` is #a14a2a). If single-word headwords are meant to match their green highlight, the fix is one line of CSS.\n\n**On your question:** the earlier automated checks compare the narration with the screen text and measure loudness, pauses and frame timing. They do not read the rendered pictures. A visual pass like this one is what catches a missing word on screen, a wrong highlight or overlapping text. For this video it found only the two small overlaps above, so this already-released video needs no re-render.",
+    "I opened all 29 screens: the title card plus sentences 1–28. The reference expects 28 sentences with no splits, and that is what the video has. For every sentence screen I enlarged the Chinese translation and the vocabulary panel 2x (crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/s41zoom/) and compared them character by character with /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/cet6/frames/ref/s41.txt. Every translation and every vocabulary meaning matches the reference. No translation stops early or belongs to another sentence.\n\nI also enlarged the characters most likely to be confused:\n- 已 on screens 10 and 19, and 己 in 自己 on screen 28: all correct.\n- 全 in 全语言 on screens 11 and 26: correct, not 仝.\n\nThe Chinese title on the title card and in the header of every screen reads 自然拼读法：教孩子阅读的最佳方法, as in the reference.\n\nOne thing looks different but is not an error. On screen 14 (sentence 13), the comma in 自然拼读法，” looks half-width. The source subtitle file has the correct full-width comma, U+FF0C. The narrow look comes from the normal Chinese typesetting rule that squeezes two punctuation marks placed side by side.\n\nNothing is cut off or overlapping. Numbering in the vocabulary panel follows the order of first appearance. On screen 3 the order is classroom, then dirty word.\n\nOn the user's question: the screens of this published video (s41) contain no errors, so the earlier checks were right about it."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 19 (sentence 18), enlarged crop: the hooked top of the rust 'f' in 'out of' runs straight into the rust number-3 circle with no gap. Both are the same colour, so the glyph and the badge merge into one shape. The '3' is still readable. This is a real, minor spacing defect, as described."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 22 (sentence 21), enlarged crop: the hooked top of the rust 'f' in 'a body of' touches and merges into the rust number-5 circle. The '5' is still readable. It is the same collision as on screen 19, as described."
+    }
+   ]
+  },
+  {
+   "id": "s42",
+   "findings": [
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In the English sentence, the inline Chinese gloss \"(算法的)\" after \"algorithmic②\" breaks across two lines in the middle of the word: line 1 ends with \"(算\" and line 2 starts with \"法的)\". The gloss should stay together on one line, for example by moving all of \"(算法的)\" to line 2. Nothing is cut off or overlapping, and numbering is correct (circles 1–10 match panel 1–10).",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    23,
+    23,
+    23
+   ],
+   "notes": [
+    "The check was read-only; no files were modified. There are 23 screens: the title card plus sentences 1–22. The reference lists no split sentences, so 23 is the expected count, and all screens are in order.\n\nTitle card: title 人工智能代人判断，正在改变人类, subtitle 大学英语六级 2023年6月 第1套 · Passage One and genre 议论文 · 科技与社会 all match the reference.\n\nPer-screen notes (circle numbers in the English / panel numbers / footer):\n- s02: 1-6 / 1-6 / 1/22\n- s03: 1-5 / 1-5 / 2/22\n- s04: 1-4 / 1-4 / 3/22\n- s05: 1-11 / 1-11 / 4/22\n- s06: 1-5 / 1-5 / 5/22\n- s07: 1-7 / 1-7 / 6/22\n- s08: 1-9 / 1-9 / 7/22. \"depends / on\" breaks across lines and carries its circle only on the last piece.\n- s09: see(no circle),2,3,as①,4-12 / 1-12 / 8/22\n- s10: 1-9 / 1-9 / 9/22\n- s11: 1-10 / 1-10 / 10/22\n- s12: 1-12 / 1-12 / 11/22\n- s13: presenting(no circle),2,with①,3-7,replacing(no circle),9,10,with⑧,11 / 1-11 / 12/22\n- s14: 1-2 / 1-2 / 13/22\n- s15: 1-8 / 1-8 / 14/22\n- s16: 1-8 / 1-8 / 15/22\n- s17: 1-4 / 1-4 / 16/22\n- s18: 1-10 / 1-10 / 17/22\n- s19: 1-7 / 1-7 / 18/22\n- s20: 1-6 / 1-6 / 19/22\n- s21: 1-6 / 1-6 / 20/22\n- s22: 1-5 / 1-5 / 21/22. \"in the / process of\" breaks across lines with its circle on the last piece.\n- s23: 1-7 / 1-7 / 22/22\n\nProgress bars: I measured the fill on every screen and it matches k/22 within 0.002.\n\nHighlight colours: every phrase is rust and every single word is green, both in the text and in the panel. Every panel entry has a highlight on its screen. The English, Chinese and glosses on every screen match the reference.\n\nOther visual checks:\n- Font sizes are the same on every screen (English line pitch 96 px, Chinese 72 px).\n- Chinese lines end at or before x=1136. The one exception is s20 line 2 at x=1165, because 目、 had to move down to the next line; it is still inside the column and does not touch the panel.\n- No text is cut off or overlapping, and no garbled characters, tofu or missing glyphs were found.\n- The Chinese ellipsis …… is drawn the same way, centred, everywhere (s07, s09, s10, s12, s13, s16, s18, s22).\n- The ？ in s06's Chinese line is the full-width character in the source data; it just looks narrow in this font.\n\nNot counted as defects because they match the reference: the panel headwords \"on one's own\" (s15) and \"if they don't already\" (s20) use a straight apostrophe while the English text uses a curly one. The usual extra space next to full-width punctuation (for example ）； on s13) is normal CJK typesetting.\n\nAbout the user's question (were videos that are already published not already checked?): the automatic checks in verify_videos.py and check_pitfalls.py cover audio, timing, frame rate, file names and text consistency. They do not look at the rendered screens. This visual pass found only one small layout issue in this video.",
+    "s42 (2023年6月 第1套 Passage One, 人工智能代人判断，正在改变人类) has no defects in English text, headwords or structure. I opened all 23 screens in order: screen01 is the title card and screen02–23 are sentences 1–22. No sentence is split, missing, duplicated or out of order.\n\n- **Title card and headers:** every one shows the reference title, the paper \"2023年6月 第1套\" and \"Passage One\".\n- **English text:** I read each sentence's English word by word against the reference EN and found no differences in words, word forms, punctuation (curly apostrophes, em dashes, \"(算法的)\" in s10, \"?\" in s5) or order.\n- **Vocabulary panels:** every headword and part of speech matches the reference (phrases correctly have no POS). Entries are numbered by first appearance, so \"while\" is 1 in s4, and \"see…as\" (s8) and \"present sb with sth\" (s12) are 1. Split phrases (\"see … as\", \"presenting … with\", \"replacing … with\") carry their number only on the last piece.\n- **Highlights:** every highlighted span equals its 高亮原文. Only the first \"taste\" in s12 is highlighted, and \"make these decisions\" in s20 is highlighted as a whole.\n- **Zoom checks:** I enlarged the \"see…as\" and \"replace…with\" headwords and the end of s5's Chinese line; they are fine.\n\nNot reported, because they come from the template rather than this video:\n- Single-word headwords in the panel are near-black (#192320), not the green of the English highlight (#1C5B49). The template in 六级/tools/make_video.py styles only phrase headwords rust (.v.ph b) and leaves single words in the default ink.\n- The question mark ending s5's Chinese (screen06) looks narrow. Checking the Chinese is outside this English/structure task.\n\nOn the user's question about whether this re-check is still needed: this read-only pass found nothing in s42, which agrees with the earlier automated checks.",
+    "s42 (2023年6月 第1套 Passage One) has 23 screens: the title card plus sentences 1 to 22. No sentence is split. Every screen image was requested in order. I enlarged each screen's Chinese translation band 2x (found by locating its grey bar) and its vocabulary panel 2x, then read them character by character against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/cet6/frames/ref/s42.txt.\n\n- **Translations:** All 22 Chinese translations match the reference exactly, including punctuation (the quotes around 人工智能 in sentence 4, the colon in 16, the em dash in 19, the question mark in 5). I found no look-alike wrong characters, missing or extra characters, cut-off text, or translations belonging to another sentence.\n- **Vocabulary panel:** Every Chinese meaning matches the reference, including the parenthetical notes: （此处为倒装）, （古希腊哲学家）, （可能产生的）影响, （音视频）, （提供）, （预测）越来越准, （将来）某一天, （此处指人）. Entries are numbered in order of first appearance; for example, while is #1 on screen 5 and consumer is #2 on screen 13. That ordering is intended.\n- **Title:** The title card reads 人工智能代人判断，正在改变人类 / 大学英语六级 2023年6月 第1套 · Passage One / 议论文 · 科技与社会, which matches the reference. The header on screen 2 shows the same title. Headers on screens 3 to 23 are pixel-identical to screen 2.\n\nOne small thing outside the Chinese check: in EB Garamond, the \"…\" in the headwords see…as and replace…with displays as three low dots. The source data really does contain U+2026, so this is only how the font draws it, not a text error.\n\nThe screen images showed only as \"[media removed: request limit]\" when first opened. The enlarged crops displayed and are what I read from. No files were modified; the crops are under /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/s42zoom/."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen11 (sentence 10/22). Line 1 of the English sentence ends with \"algorithmic② (算\" and line 2 starts with \"法的) prescription③\", so the three-character gloss is split in the middle of the word 算法. The text itself matches the reference: EN reads \"algorithmic (算法的) prescription\", circles 1–10 match panel entries 1–10, and nothing is cut off or overlapping. This is a minor line-break flaw rather than a content error, but it is not part of the stated design, and an inline gloss broken across two lines reads awkwardly."
+    }
+   ]
+  },
+  {
+   "id": "s43",
+   "findings": [
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "glyph",
+     "description": "Vocabulary entry 6 'the amount of ……的数量': the Chinese ellipsis at the start of the meaning is drawn as six low, baseline dots (Latin-style '......'). On every other screen the same '……' is drawn centred, e.g. screen 08 far '（修饰比较级）……得多', screen 09 '使……变回', screen 12 '耐……的', screen 14 '把……变成', screen 16 '如此……以至于' and screen 18 '以……为代价'. The data uses the same U+2026 character everywhere. The low dots appear only when the meaning begins with the ellipsis, so the leading '……' falls back to the Latin serif font.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "glyph",
+     "description": "Vocabulary entry 2 'the fact that ……这一事实': same defect as screen 10. The leading Chinese ellipsis is drawn as six low baseline dots, not centred like the '……' on the other screens.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 16,
+     "sentence": 15,
+     "kind": "layout",
+     "description": "In the English line 2, 'stuff' has its number circle ③ placed so tight that the top-right hook of the 'ff' ligature touches and runs into the circle (visible at x≈505–515, y≈265–285 when enlarged). Every other circle has a small clear gap from its word.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 17,
+     "sentence": 16,
+     "kind": "layout",
+     "description": "In the Chinese translation line 2, '但补充说：“需要做…' has an unusually wide blank gap of about 1.5 characters between the full-width colon '：' and the opening quote '“'. Both punctuation glyphs keep their own half-width blank and are not compressed together, so a visible hole appears in the middle of the line.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 7,
+     "sentence": 6,
+     "kind": "layout",
+     "description": "Vocabulary entry 2 'turn out 结果是；（最终）证明是' has a wide blank gap of about 1 character between '；' and '（'. The full-width semicolon and the full-width left parenthesis each keep their own blank and are not compressed, so the gloss looks broken in the middle.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 18,
+     "sentence": 16,
+     "kind": "layout",
+     "description": "The English line 3 begins with an em dash: '—waste⑬—at the expense of⑭ others,'. The line break was placed between 'problem' and '—waste'. Starting a line with an em dash is a typesetting flaw; the break should come after the dash, or 'problem—' should stay together.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "glyph",
+     "description": "Vocabulary item 6 'the amount of': the meaning is stored correctly as '……的数量' (U+2026 U+2026), but on screen the ellipsis appears as six low dots on the baseline ('......的数量'). It is drawn in the Latin serif font rather than as a centred Chinese ellipsis. Glosses that have '……' in the middle render it centred, e.g. screen08 '……得多', screen09 '使……变回', screen12 '耐……的', screen18 '以……为代价'. The problem only appears when '……' is the first character of the meaning.",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "glyph",
+     "description": "Same rendering problem on vocabulary item 2 'the fact that': the reference meaning '……这一事实' (stored as U+2026 U+2026) shows as baseline dots '......这一事实' in the Latin font instead of the centred Chinese ellipsis.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "opened": [
+    18,
+    18,
+    18
+   ],
+   "notes": [
+    "I opened all 18 screens (01 title card, 02–18 sentences) and the reference s43.txt, and zoomed in on panel edges, the ellipsis glosses, the 'stuff' circle, the dash line break and the Chinese punctuation gaps.\n\nTitle card: the title '科学家意外造出能分解塑料瓶的酶', '大学英语六级 2022年12月 第3套 · Passage Two' and the genre '说明文 · 科技与环境' all match the reference.\n\nNumbering, every screen as (circles in English, left to right / panel numbers / footer). Every panel run is consecutive with no gap, repeat or swap, and the circle set always equals the panel set.\n- s02: 1–6 / 1–6 / 1/16\n- s03: 1–10 / 1–10 / 2/16\n- s04: 1–8 / 1–8 / 3/16\n- s05: 1–8 / 1–8 / 4/16\n- s06: 1–12 / 1–12 / 5/16\n- s07: 1–9 / 1–9 / 6/16 ('a bit / of' wraps across lines; the circle is on 'of' only)\n- s08: 1–14 / 1–14 / 7/16\n- s09: 1,3,2 / 1,2,3 / 8/16 (split phrase 'turn … back into' carries ② on 'back into', so this order is correct)\n- s10: 1–8 / 1–8 / 9/16\n- s11: 1–11 / 1–11 / 10/16\n- s12: 1–4 / 1–4 / 11/16\n- s13: 1–3 / 1–3 / 12/16\n- s14: 1–9,11,12,10 / 1–12 / 13/16 (split phrase 'recycle … back into' has ⑩ on its last piece only; correct)\n- s15: 1–5 / 1–5 / 14/16\n- s16: 1–10 / 1–10 / 15/16\n- s17: 1–8 / 1–8 / 16/16 PART 1/2\n- s18: 9–18 / 9–18 / 16/16 PART 2/2\n\nAll progress bars match k/16 within a few pixels. Highlight colours match the entry types throughout (green for 单词, rust for 短语). Nothing is cut off and nothing overlaps the header rule, footer or panel; the tight panels on s06, s08 and s14 still fit inside. I found no tofu, no replacement characters and no garbled text. Font sizes vary between screens only by the normal auto-fit.\n\nStructure: the reference file has no expected-structure section at its end; it stops after sentence 16's vocabulary. The screens show 18 = title + 15 single-screen sentences + sentence 16 split over 2 screens (cut at 'needed … / … to ensure'; Chinese cut at '生命周期评估，/ 以确保…'). That is consistent with the text, but I could not check it against a stated structure.\n\nAll 6 findings are small cosmetic issues; none affect numbering or content.\n- The low-dot ellipsis (s10, s15) comes from one cause: the renderer picks the font for a leading '……' from the Latin text before it. Every gloss whose meaning starts with '……' will show it, in other passages too ('the fact that' and 'the amount of' recur elsewhere).\n- The punctuation gaps (s07, s17) are uncompressed adjacent full-width punctuation marks.\n\nThe relayed user question asks whether re-checking already-published videos is necessary. This check was read-only and changed nothing. Whether these low-severity cosmetic issues justify re-rendering a published video is for the parent session to answer with the user.",
+    "I opened all 18 screens in order and found no defects in s43 (CET-6 2022年12月 第3套 Passage Two, 科学家意外造出能分解塑料瓶的酶). This was a read-only check and no files were modified.\n\nStructure: screen01 is the title card. Screens 02–16 show sentences 1–15, one per screen, in order. Screens 17–18 show sentence 16 split in two: part 1 ends \"would be needed …\" and part 2 starts \"… to ensure\". Joined, the two parts give the reference sentence exactly, with nothing missing or repeated. Every sentence appears exactly once and the footers read SENTENCE k / 16. The title card and every header show the reference title, 2022年12月 第3套 and Passage Two.\n\nThe reference file has no closing section for expected screen count or split points; it ends after the sentence 16 vocabulary. I worked it out instead: 16 sentences plus the title card is 17, and the folder has 18 screens, which matches only sentence 16 being split.\n\nEnglish: I read every sentence word by word against the reference, including word forms, punctuation and spelling. Spot checks that match: \"speeded up\", \"fibres\" (British spelling), \"remotest\", \"14%\", no comma after \"Currently\" in sentence 13, \"won't\", \"(酶)\", and \"problem—waste—at\" in sentence 16.\n\nVocabulary: every headword and POS matches the reference, all 18 entries for sentence 16 included, and every highlight covers exactly its 高亮原文. Split phrases are highlighted correctly: \"turn … back into\", \"recycle … back into\", \"so much that\", \"better at\", \"up against\", \"resistant to\".\n\nThings that look odd but are not defects:\n- \"Adisa Azapagic\" is entry 2 on the panel but last in the reference list. The panel numbers entries by first appearance, so this is intended.\n- The ellipsis \"…\" in phrase headwords looks like three dots in the serif font; zoomed in, it is just how the font draws it.\n- On screen 18 the line breaks before the em dash (\"problem / —waste—\"). The text itself is identical to the reference.\n\nI zoomed in on the bottoms of the crowded vocabulary panels (screens 06, 08, 14) and the dash area on screen 18: nothing is cut off or overlapping.\n\nOn the user's question (if the published videos already passed the automated checks, is this manual review still needed?): for this video, the screens match the approved reference completely and this pass found nothing new.",
+    "I checked all 18 screens (title card, sentences 1–15, and sentence 16 split across screens 17 and 18) character by character against ref/s43.txt, zooming in on every Chinese translation block and on the wrapped or dense vocabulary entries. The Chinese text matches the reference exactly everywhere: the title on the title card and in every header, all 16 Chinese translations, and every Chinese meaning in the vocabulary panels (1–6, 1–10, 1–8, 1–8, 1–12, 1–9, 1–14, 1–7, 1–8, 1–11, 1–4, 1–3, 1–12, 1–5, 1–10, 1–18). That includes checking look-alike characters (已经 not 己经, 日本, 朴茨茅斯, 麦吉汉, 曼彻斯特, 阿迪萨·阿扎帕吉克), the numbers (2016年, 100万, 14%) and all punctuation and quotation marks. Nothing is cut off and nothing overlaps. Joined together, the two halves of sentence 16 equal the reference ZH exactly; the first half ends at '生命周期评估，' and the second starts '以确保…'. The Chinese halves carry no '…' marks; only the English does.\n\nThe only defect is a rendering problem, not a text error. A gloss whose meaning starts with '……' (s43 has two: 'the amount of' and 'the fact that') shows the ellipsis as low baseline dots. The data is correct (verified in 六级/data/vocab.json: U+2026 ×2), so automated character checks pass it; only looking at the screen shows it. It probably comes from how the browser picks a font for a run that starts with punctuation.\n\nTwo observations outside the Chinese-text scope, both consistent with the stated design and not reported: (1) the reference file ends after [16] with no closing section on expected screen count or split points, so I could not compare those against it; 18 screens is consistent with one split sentence (16), which is marked 'PART 1/2' and 'PART 2/2'. (2) Vocabulary numbers follow order of first appearance in the sentence, so on screens 09, 14 and 17 the panel order differs from the order of entries in the reference list (e.g. 'Adisa Azapagic' is 2 on screen 17 but last in the reference).\n\nFor the parent agent, about the user's question (whether already-published videos need re-checking): in this video the visual check found no Chinese text errors. It found only the small ellipsis glyph issue above, which the program checks cannot see because the underlying characters are correct."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen10, panel entry 6 'the amount of'. When zoomed, the gloss shows six low dots on the baseline ('......的数量'). The mid-line ellipses elsewhere are drawn centred: screen08 '……得多', screen09 '使……变回', screen12 '耐……的', screen14 '把……变成', screen16 '如此……以至于', screen18 '以……为代价'. The reference has '……的数量'. make_video.py's vocab_html now carries a 2026-10-10 fix (lang=\"zh-CN\") for this exact case, which supports the diagnosis, but these screens still show the old rendering."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen15, panel entry 2 'the fact that'. When zoomed, the gloss reads '......这一事实' with low baseline dots instead of the centred Chinese ellipsis that the reference '……这一事实' should give. It is the same leading-ellipsis fallback as screen10."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed on screen16 line 2. Raw pixels at x≈503–522, y≈269–273 show the terminal of the 'ff' ligature's top hook running straight into the edge of circle ③. The values stay dark across the join (e.g. 64→77→121→69), with no background-coloured gap. On the same screen 'generate②' has a clear gap. The overlap is small, but the ink really touches."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Confirmed on screen17, Chinese line 2. The colon ink is at x=580–585 and the opening quote ink at x=641–656, a blank of about 56 px. Character pitch is about 43.5 px, so that is about 1.3 characters, against about 36 px after a normal comma ('用，但'). The cause is as described: '：' and '“' each keep their half-width blank and are not compressed. It is a minor typesetting flaw that follows from the renderer having no CJK punctuation compression, so any '：“' pair in other videos will look the same. It is not a content error."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Confirmed on screen07, panel entry 2 'turn out'. The '；' ink is at x≈1557–1561 and the '（' ink at x≈1601–1609, a blank of about 40 px. Gloss character pitch is about 30 px, so that is about 1.3 characters, as described. The semicolon and the left parenthesis are not compressed, which leaves a visible hole in '结果是；（最终）证明是'. Like item 3, this is a minor flaw that comes from the renderer as a whole, not a content error."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Confirmed on screen18. Line 2 ends 'one environmental⑫ problem' and line 3 begins '—waste⑬—at the expense of⑭ others,', so the line break falls between 'problem' and the em dash, which then starts the line. The words are correct, but this break is a typesetting flaw. The same kind of break was judged a real minor defect in the earlier canary run (the 'age②' / '—there are…' case)."
+    },
+    {
+     "index": 6,
+     "real": true,
+     "why": "Duplicate of index 0, and confirmed the same way. On screen10, '……的数量' is drawn as low Latin baseline dots, while the ellipses inside glosses on screens 08, 09, 12 and 18 are centred."
+    },
+    {
+     "index": 7,
+     "real": true,
+     "why": "Duplicate of index 1, and confirmed. On screen15 the gloss '……这一事实' is drawn as baseline dots '......这一事实' instead of a centred Chinese ellipsis."
+    }
+   ]
+  },
+  {
+   "id": "s44",
+   "findings": [
+    {
+     "screen": 22,
+     "sentence": 21,
+     "kind": "glyph",
+     "severity": "medium",
+     "description": "Vocabulary panel entry 3 'the amount of': the meaning '……的量' starts with the Chinese ellipsis, and it is drawn as six low, bold Latin baseline dots ('......的量'). On the same screen, entry 1 '对……的反应' and entry 12 '在……层面' draw the ellipsis as centred CJK dots. It should be centred like the others. The likely cause is that an ellipsis at the very start of the meaning, right after the Latin headword, falls back to the Latin font.",
+     "lens": "visual"
+    },
+    {
+     "screen": 23,
+     "sentence": 22,
+     "kind": "glyph",
+     "severity": "medium",
+     "description": "Vocabulary panel entry 1 'key to': the meaning '……的关键' is drawn with six low, bold Latin baseline dots ('......的关键') instead of the centred CJK ellipsis. This is the same defect as screen 22, entry 3. Every other '……' in this video (screens 06, 07, 10, 13, 15, 17, 22) is centred.",
+     "lens": "visual"
+    },
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "layout",
+     "severity": "low",
+     "description": "The English line breaks between 'age²' and the em dash, so line 2 begins with the dash ('—there are other stresses on³ cells we'). Standard typesetting keeps the dash on the previous line; here it sits orphaned at the left margin of the new line.",
+     "lens": "visual"
+    },
+    {
+     "screen": 14,
+     "sentence": 13,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In the Chinese translation, consecutive full-width punctuation is not compressed, which leaves visible blank gaps inside the line. Line 3 shows '位置！ ” ——然后', with about half an em of blank after ！ and again after ” before the dash. Line 1 shows '排长队” ， 而是', with a gap after ” and after ，. The text is correct; only the spacing looks odd.",
+     "lens": "visual"
+    },
+    {
+     "screen": 22,
+     "sentence": 21,
+     "kind": "glyph",
+     "description": "Vocabulary entry 3 'the amount of': the meaning starts with an ellipsis, and it renders as six low baseline dots in the Latin serif font ('......的量'), not the centred Chinese ellipsis '……的量' that the reference has and that every mid-gloss ellipsis uses (e.g. entry 1 '对……的反应', entry 12 '在……层面' on the same screen). The text is right but the glyph is wrong (font fallback on a leading ellipsis).",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 23,
+     "sentence": 22,
+     "kind": "glyph",
+     "description": "Vocabulary entry 1 'key to': same leading-ellipsis problem. The meaning shows as '......的关键' with low Latin baseline dots instead of the centred Chinese ellipsis '……的关键' given in the reference.",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 22,
+     "sentence": 21,
+     "kind": "chinese",
+     "severity": "low",
+     "description": "In the vocabulary panel, entry 3 \"the amount of\" should read \"……的量\" as in the reference, but the screen shows \"......的量\": six dots sitting on the baseline, like ASCII periods or a Latin ellipsis, instead of the vertically centred Chinese 省略号. Entries on the same screen render correctly, such as \"对……的反应\" (1) and \"在……层面\" (12). The data in 六级/data/vocab.json is correct (U+2026 U+2026), so the fault is in rendering. When a meaning starts with the ellipsis right after the English headword, it is shaped with the Latin glyph.",
+     "lens": "chinese"
+    },
+    {
+     "screen": 23,
+     "sentence": 22,
+     "kind": "chinese",
+     "severity": "low",
+     "description": "Same rendering fault in the vocabulary panel, entry 1 \"key to\". The reference has \"……的关键\" but the screen shows \"......的关键\" with dots on the baseline, not the centred Chinese 省略号. The underlying data is correct (U+2026 x2). This is likely to affect every gloss in every video whose meaning begins with \"……\".",
+     "lens": "chinese"
+    }
+   ],
+   "opened": [
+    23,
+    23,
+    23
+   ],
+   "notes": [
+    "I opened all 23 screens in order (screen01 title card, screen02–screen23 = sentences 1–22) and read the reference file. The reference ends after sentence 22 and has no section giving the expected number of screens or the splits. Since there are 22 sentences and no screen shows a '…' split, I took the expected structure to be 1 + 22 = 23 screens, and that is what the video has.\n\nTitle card: title '端粒在“倾听”：生活方式与衰老', '大学英语六级 2022年12月 第3套 · Passage One' and genre '说明文 · 科学与健康' all match the reference. '全文 445 词' matches a word count of the reference English (445).\n\nNumbering, recorded per screen as English circles left to right / panel top to bottom / footer:\n- s1: 1,2 / 1–2 / 1/22\n- s2: 1–16 / 1–16 / 2/22\n- s3: 1,2,4,3,5,6,7, where 3 is 'a … set of' with the circle on its last piece / 1–7 / 3/22\n- s4: 1,2,4,3,5, where 'turn … on' and 'shut … off' carry circles only on 'on' and 'off' / 1–5 / 4/22\n- s5: 1–13, with 'or' at position 6 / 1–13 / 5/22\n- s6: 1,2,3,4,6,7,5 ('keep … together') / 1–7 / 6/22\n- s7: 1–5 / 1–5 / 7/22\n- s8: 1–3 / 1–3 / 8/22\n- s9: 1–7 / 1–7 / 9/22\n- s10: 2,1,3–8 ('devoted … to') / 1–8 / 10/22\n- s11: 1–8 / 1–8 / 11/22\n- s12: 1–7 / 1–7 / 12/22\n- s13: 1–11 ('stand in … lines', where 'lines' was confirmed rust) / 1–11 / 13/22\n- s14: 1–7 / 1–7 / 14/22\n- s15: 1 / 1 / 15/22\n- s16: 1–8 / 1–8 / 16/22\n- s17: 1–3 / 1–3 / 17/22\n- s18: 1–8 / 1–8 / 18/22\n- s19: 1–10 / 1–10 / 19/22\n- s20: 1–2 / 1–2 / 20/22\n- s21: 1–11,13,12 ('at the … level') / 1–13 / 21/22\n- s22: 1–8 / 1–8 / 22/22\n\nOn every screen the panel numbers are consecutive, the circle set equals the panel set, highlight colours match the entry types, and the progress bar matches k/22 (checked by pixel position).\n\nI found no cut-off text, no overlap with the header rule, footer or panel, no tofu or replacement characters, and no abnormal font size. Long panel meanings wrap cleanly inside the panel (s1, s3, s6, s10, s11, s12, s13, s22). The Chinese '——' dashes render as continuous double dashes. One borderline item: the Chinese dash at the start of a line on s18 is allowed in Chinese typesetting, so I did not report it.\n\nThe two medium findings (the leading '……' drawn as low Latin dots on screens 22 and 23) are rendering defects that a text-level or audio-level automated check would not catch. They bear on the user's question about whether videos that already passed the automated checks need this visual pass. The ellipsis problem would likely show up in any vocabulary meaning that begins with '……' in other videos too. I had to crop with ImageMagick because PIL is not installed; the crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/crops44/. No project files were modified.",
+    "I opened all 23 screens in order (screen01 is the title card, screen02–23 are sentences 1–22, none split) plus the reference. The reference file has no closing 'expected screens / splits' section. The screen count of 23 = 1 title + 22 sentences, every footer reads 'SENTENCE k / 22', and nothing is split, which is consistent with that. The title card and all headers show '端粒在“倾听”：生活方式与衰老', '2022年12月 第3套 · Passage One' (the title card's paper line is '大学英语六级 2022年12月 第3套') and '说明文 · 科学与健康'. I compared the English of all 22 sentences word by word against the reference EN: word forms, articles, apostrophes, dashes, quotes, the '(染色体)' parenthesis and the '30%' all match exactly. Every sentence appears exactly once, in order. I also checked every vocabulary panel entry: headword, single word vs phrase colour, POS (none on phrases) and numbering in order of first appearance. All match the reference entries. Every highlight span matches its 高亮原文, including the discontinuous ones: 'a … set of' (I zoomed in to confirm 'a' is rust), 'turn … on', 'shut … off', 'keep … together', 'devoted … to', 'stand in … lines' and 'at the … level'. On each, the number sits only on the last piece. The only defects are the two low-severity ellipsis glyph problems above, where a gloss starting with '……' falls back to the Latin font. I saw no English, headword or structure errors. All crops were made read-only into scratchpad/s44zoom/.",
+    "I opened all 23 screens in order (title card plus sentences 1–22), as the reference expects, with no split sentences. I zoomed into every Chinese translation and every vocabulary panel and compared them character by character with ref/s44.txt.\n\nResult: on every screen, all 22 Chinese translations match the reference exactly, with no look-alike characters (未/末 in 未老先衰/末端 are correct), nothing missing or extra, and correct punctuation. Every vocabulary meaning matches too. The Chinese title on the title card and in every header reads correctly: 端粒在“倾听”：生活方式与衰老.\n\nThe only real problem is a rendering quirk. A gloss that starts with “……” is drawn with baseline dots (screens 22 and 23). Glosses with the ellipsis between Chinese characters are drawn centred. The data itself is correct, so the project's text checks cannot catch this; only looking at the rendered screens shows it.\n\nOther things I checked and am not reporting as defects:\n- Screen 2: the final “？” looks narrow, but the data has the full-width U+FF1F and this is just how Noto Serif SC draws it.\n- Screen 14: “排长队”，” and “位置！”——” show visible gaps. These come from consecutive full-width punctuation not being squeezed; the data contains no stray spaces.\n- Screen 19: the Chinese 破折号 wraps to the start of line 2.\n\nOn the user's question about re-checking published videos: for s44, the frame-by-frame check confirmed the Chinese text is 100% correct. Its only extra finding is the cosmetic ellipsis issue, which the automated checks miss because they read the data rather than the pixels.\n\nFiles: reference /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/cet6/frames/ref/s44.txt; crops in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/s44crop/ (for example s22ell.png shows the ellipsis contrast). No project files were modified."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 22, vocab entry 3 'the amount of' shows '......的量' as low, bold baseline dots. On the same screen, entry 1 '对……的反应' and entry 12 '在……层面' have centred CJK ellipses, and the reference has '……的量'."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 23, vocab entry 1 'key to' shows '......的关键' with low baseline dots, not the centred CJK ellipsis '……的关键' given in the reference. This is the same defect as screen 22."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "On screen 10, line 1 ends with 'can age²' and line 2 starts with '—there are other stresses on³ cells we'. The em dash is left at the start of the new line. Later in the same sentence, 'well—but' stays on one line. The text is correct, but this is a real (minor) line-break defect."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Screen 14's Chinese translation has visible blank gaps around consecutive full-width punctuation: line 1 reads '排长队” ， 而是' and line 3 reads '位置！ ” ——然后'. Normal compressed CJK punctuation would not leave these gaps."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Duplicate of item 0. I confirmed on screen 22 that the leading ellipsis in entry 3 is drawn as baseline Latin-style dots, while entries 1 and 12 are centred."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Duplicate of item 1. I confirmed on screen 23 that entry 1 'key to' shows '......的关键' with baseline dots."
+    },
+    {
+     "index": 6,
+     "real": true,
+     "why": "Same defect as item 0, which I confirmed on screen 22: entry 3 shows '......的量' with dots on the baseline instead of the centred 省略号. The other mid-gloss ellipses on that screen are centred."
+    },
+    {
+     "index": 7,
+     "real": true,
+     "why": "Same defect as item 1, which I confirmed on screen 23: entry 1 'key to' shows '......的关键' with baseline dots instead of the reference's centred '……的关键'."
+    }
+   ]
+  },
+  {
+   "id": "s45",
+   "findings": [],
+   "opened": [
+    19,
+    19,
+    19
+   ],
+   "notes": [
+    "s45 (CET-6 2022年12月 第2套 Passage Two, 美国儿科学会修订儿童屏幕使用指南): I found no defects. I opened all 19 screens and checked them against the reference. The reference has no structure section at the end; with 18 sentences and 19 screens, the expected layout is a title card plus one screen per sentence, with no splits, and that is what the video has.\n\nTitle card: the title, \"大学英语六级 2022年12月 第2套 · Passage Two\" and the genre \"说明文 · 育儿与媒体\" all match the reference.\n\nEach sentence screen, in the order checked: circle numbers in the English, panel numbers, then the footer.\n- S1: 1–5 / 1–5 / 1/18\n- S2: 1,2 / 1,2 / 2/18\n- S3: 1–13 / 1–13 / 3/18\n- S4: circles 1,2,4,3 / panel 1–4 / 4/18\n- S5: 1–5 / 1–5 / 5/18\n- S6: 1–6 / 1–6 / 6/18\n- S7: 1–15 / 1–15 / 7/18 (\"exposing … to\": circle 13 only on \"to\")\n- S8: 1–11 / 1–11 / 8/18\n- S9: 1–9 / 1–9 / 9/18\n- S10: 1–13 / 1–13 / 10/18\n- S11: circles 1,3,2,4,5 / panel 1–5 / 11/18\n- S12: 1–8 / 1–8 / 12/18\n- S13: 1,2 / 1,2 / 13/18\n- S14: 1–4 / 1–4 / 14/18\n- S15: 1–7 / 1–7 / 15/18\n- S16: 1–10 / 1–10 / 16/18\n- S17: 1–4 / 1–4 / 17/18\n- S18: 1–6 / 1–6 / 18/18\n\nThe out-of-order circles in S4 and S11 are correct by design. In S4, \"shift the focus from … to\" is numbered 3 but its circle sits on \"to\", which comes after \"screen\" (4). In S11, \"treating … like\" is numbered 2 but its circle sits on \"like\", which comes after \"app\" (3).\n\nOn every screen the panel runs 1..n with no gap, repeat or swap, and the set of circle numbers equals the set of panel numbers. Every highlight has a matching panel entry, and its colour matches the entry type (green for 单词, rust for 短语). Each progress bar, measured in pixels, agrees with k/18.\n\nI zoomed in to check:\n- the bottom of the Chinese text against the footer on S7, S10 and S18;\n- the top and bottom of the panel on S3;\n- the \"(躲猫猫游戏)\" gloss inside the English on S9;\n- every Chinese ellipsis \"……\" (S2, S4, S7, S8, S10, S11, S12, S14, S18).\n\nNothing is cut off or overlapping. The ellipses are all drawn the same way, centred. There are no tofu boxes, replacement characters or missing glyphs.\n\nThe wider gaps before 。 or ， after a closing ” (S1, S4, S15), and before the opening （ in some panel entries, come from full-width punctuation and look the same on every screen, so I did not report them.\n\nOn the user's question about whether this re-check is necessary: the automatic checks on published videos (verify_videos.py and the others) test audio, timing, frame rate and whether the spoken text matches the English on screen. They do not look at the rendered layout or the vocabulary numbering. This visual pass covers that gap, and for s45 it confirms the published video is clean. This was a read-only check, and I did not modify any files.",
+    "I found no defects. I opened all 19 screens in order: the title card plus sentences 1–18. Screen k+1 shows sentence k. No sentence is split; the reference has no split section, and 18 sentences plus the title card makes 19 screens. Each sentence appears exactly once and in order, with the footer reading SENTENCE k / 18.\n\n- **Title card and headers:** Every one shows 大学英语六级 2022年12月 第2套 · Passage Two and the title 美国儿科学会修订儿童屏幕使用指南, matching the reference.\n- **English text:** I read every sentence word by word against the reference EN. Word forms, articles, punctuation, curly apostrophes and quotes, the em dash in sentence 6, and the bracketed Chinese in sentences 9 and 10 (躲猫猫游戏, 学步儿童) all match.\n- **Vocabulary panels:** Every headword, its POS (and no POS on phrases), the numbering order and the green/rust colour match the reference. Every highlight covers exactly its 高亮原文, including split phrases with the number on the last piece: shift the focus from … to (s4), exposing … to (s7), treating … like (s11), apply … to (s18).\n- **Layout:** I zoomed into the lowest Chinese text on screens 11 and 19. It ends just above the footer, with no overlap or clipping.\n\nOn the user's question: this was a read-only re-check. For this video (s45) it agrees with the earlier automated checks, so re-checking found nothing new here.",
+    "I found no defects. I opened all 19 screens in order: the title card plus sentences 1–18. That matches the reference's 18 sentences, and no sentence is split across two screens. For every sentence screen I cropped the Chinese translation block and the whole vocabulary panel, enlarged them 2x, and compared them character by character with the reference. Every translation matches the reference ZH exactly, punctuation included: full-width commas and colons, 、, curly quotes, the ”， in sentence 7, 和/或 in sentence 10, and the closing 。” in sentence 18. All 136 vocabulary meanings match the reference. That count includes the parenthesised parts, such as （观念、规则等）, （用于否定）, （苹果公司的）, （事情的）, （过去某时） and （做）, and every ……. I zoomed in on the look-alike characters: 未来 in sentence 5 is 未 (top stroke shorter), and 已 in sentences 3, 7, 12 and 15 is 已, not 己. The Chinese title 美国儿科学会修订儿童屏幕使用指南 is correct on the title card and in the header. The header area is pixel-identical on screens 02–19. The Chinese glosses inside the English text, (躲猫猫游戏) and (学步儿童), also match the reference EN. Nothing is cut off or overlapping in the Chinese or vocabulary areas. On the user's question: the generation-time checks (verify_videos.py and others) test audio, timing, the spoken text against the on-screen English, and the source text. As far as the project docs describe them, they do not compare the Chinese characters actually drawn on screen. For this video the screen-level check found nothing new, which supports the earlier pass. Read-only: no project files were modified. The only files written were crops in the scratchpad."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "s46",
+   "findings": [
+    {
+     "screen": 13,
+     "sentence": 12,
+     "kind": "glyph",
+     "severity": "medium",
+     "description": "In the vocabulary panel, entry 3 'the fact that' has the meaning '……这一事实'. Its leading Chinese ellipsis (two U+2026 characters) is drawn as six low dots on the baseline, like a Latin '......'. Every other Chinese ellipsis in this video is drawn as centred dots: screen 2 '向……提供帮助', screen 4 '竟然到……的地步' and '与……相关', screen 7 '百分之……', screen 8 '多种……的结合', screen 10 '给……完全的自由；放手让……', screen 18 '给……讲课', screen 20 '就……而言；在……的情况下' and screen 21 '为……付钱'. This entry should also use centred dots.",
+     "lens": "visual"
+    },
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In the vocabulary panel, entry 6 'a step in the wrong direction' fills the first line, so the meaning wraps to the next line. That line starts with a stray leading indent of about 10 px: '朝' starts at x≈1327, while the headword above and the continuation '措' below both start at x≈1317. The wrapped meaning should be flush-left with the rest of the entry.",
+     "lens": "visual"
+    },
+    {
+     "screen": 13,
+     "sentence": 12,
+     "kind": "glyph",
+     "description": "Vocabulary entry 3, 'the fact that': the meaning is shown as '......这一事实', with six low periods sitting on the baseline (Latin-font fallback). The reference has the Chinese ellipsis '……这一事实', and every other gloss in this video renders it as a centred '……' (screen 02 '向……提供帮助', screen 18 '给……讲课', screen 20 '就……而言', screen 21 '为……付钱'). It is only a visual inconsistency; the wording is correct.",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 13,
+     "sentence": 12,
+     "kind": "glyph",
+     "description": "In the vocabulary panel, entry 3 'the fact that' should read '……这一事实' with a Chinese ellipsis (dots centred at mid-height), as the reference has it. On screen it shows as '......这一事实': six Latin-style dots sitting on the baseline. The source characters are correct (two U+2026). This is the only gloss that starts with an ellipsis right after the English headword, so the ellipsis seems to be drawn from the Latin font. Every other ellipsis in the video is drawn centred, e.g. '向……提供帮助' on screen 2, '百分之……' on screen 7 and '为……付钱' on screen 21. On this screen it looks like English periods, not Chinese punctuation.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "opened": [
+    22,
+    22,
+    22
+   ],
+   "notes": [
+    "I opened all 22 screens in order: the title card plus screens 02–22 for sentences 1–20, with sentence 12 split across screens 13–14 ('PART 1/2' and '2/2', split after 'the wealthy, …', Chinese split after '富人；'). The reference file has no closing 'expected structure' section, so I worked the structure out from the sentence list. Both halves of the split rejoin exactly into the reference EN and ZH for sentence 12.\n\nNumbering check, per screen (circles in English / panel / footer):\n- 02: 1–8 / 1–8 / 1/20\n- 03: 1–6 / 1–6 / 2/20\n- 04: 1–12 / 1–12 / 3/20\n- 05: 1 / 1 / 4/20\n- 06: 1–5 / 1–5 / 5/20 ('giving … away' carries 2 only on 'away')\n- 07: 1–11 / 1–11 / 6/20\n- 08: 1–12 / 1–12 / 7/20\n- 09: 1–10 / 1–10 / 8/20\n- 10: 1–6 / 1–6 / 9/20\n- 11: 1–6 / 1–6 / 10/20\n- 12: 1–6 / 1–6 / 11/20\n- 13: 1–10 / 1–10 / 12/20\n- 14: 11–18 / 11–18 / 12/20\n- 15: 1–7 / 1–7 / 13/20\n- 16: circles read 1,3,2,5,4,6–11 left to right, because the split phrases 'making … decision' (2) and 'go … in debt' (4) carry their numbers on their last piece. The panel reads 1–11 and the sets match. Footer 14/20.\n- 17: 1–9 / 1–9 / 15/20\n- 18: 1–4 / 1–4 / 16/20 (order: tens of thousands of, per, lecture, Internet — by first appearance)\n- 19: 1–7 / 1–7 / 17/20\n- 20: 1–8 / 1–8 / 18/20\n- 21: 1–5 / 1–5 / 19/20\n- 22: 1–8 / 1–8 / 20/20\n\nI measured the progress bar on every screen and it matches k/20, including both halves of sentence 12 at 60%. Panel entries match the reference headwords, POS and meanings. Highlight colours match entry types: phrases are rust, single words green.\n\nThe title card matches the reference: title '免除学生贷款债务未必能帮到穷人', '大学英语六级 2022年12月 第2套 · Passage One' and genre '议论文 · 教育与经济'.\n\nI found no cut-off or overlapping text, tofu, replacement characters or abnormal font sizes. These look odd but are normal and not reported:\n- Chinese question marks '吗?' on screens 4, 19 and 22 render the same way everywhere.\n- A few panel meanings wrap a single character onto the next line (for example '帮/助', '的地/步', '富/人'). This is ordinary Chinese line breaking.\n- The gap in '挣（钱）；赚' on screen 12 is ordinary full-width punctuation spacing.\n- '(大流行病)' inside the English line on screen 17 is original text.\n\nThe read-only check did find the ellipsis inconsistency on screen 13. The automated checks look at text, audio and timing, not how a glyph is drawn, so they would not catch it.",
+    "I opened all 22 screens: the title card plus 21 sentence screens. I also opened the reference s46.txt. The reference file has no section at the end giving the expected screen count or split points. From the screens: 20 sentences, each shown once and in order. Only sentence 12 is split, across screens 13 and 14 ('PART 1/2' and 'PART 2/2'). The split falls after 'the wealthy, …'. Vocabulary numbering runs on correctly across the two screens (1–10, then 11–18), and together the two halves give the full sentence with nothing missing or repeated. The title card and every header show the reference title, the paper (2022年12月 第2套) and 'Passage One'.\n\nI read each screen's English word by word against the reference EN, zooming in on the quote marks in sentence 2, 'Congress’' in sentence 12 and the split highlights in sentence 14. All 20 sentences match exactly: wording, word forms, numbers ($10,000 / $50,000 / $125,000), the curly quotes and apostrophes, '(大流行病)', and punctuation. Line breaks at the hyphens in 'long-term' and 'below-average' are just wrapping. Every vocabulary headword and part of speech matches the reference, phrases carry no part of speech, and the highlighted words for each entry match its 高亮原文. That includes the split phrases 'giving … away', 'making … decision' and 'go … in debt', each with its number on the last piece only.\n\nIn sentences 16 and 19 the panel order differs from the reference list (per comes before lecture; retail before pay for). The screens order entries by first appearance in the sentence, as the design specifies, so this is not a defect.\n\nThe only finding is one low-severity ellipsis glyph on screen 13. On the user's question: for this already-published passage, the screen check found no text, highlighting or structure errors. That is consistent with it having passed the automated checks; the one item is cosmetic.",
+    "I opened and checked all 22 screens: the title card, then sentences 1–20, with sentence 12 split across screens 13 and 14. I compared every Chinese translation and every Chinese meaning in the vocabulary panels with /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/cet6/frames/ref/s46.txt one character at a time, enlarging the parts that were hard to read. ImageMagick did the cropping because this machine's Python has no PIL.\n\nResults:\n- **Title:** '免除学生贷款债务未必能帮到穷人' is correct on the title card and in the header. I zoomed in to confirm it is 未, not 末.\n- **Look-alike characters:** I zoomed in on 未偿 (s6), 自己 (s13 and s14) and 已使 (s15). All are correct.\n- **Translations:** all 20 match the reference exactly, with no missing or extra characters.\n- **Sentence 12 split:** screen 13 shows '这一设想试图解决这样一个问题：前文提到的国会学生贷款免除计划主要帮助的是富人；' and screen 14 shows '但这一设想却是一种不良激励，会促使大学不断提高学费，也会促使学生选择主修毕业后收入低的专业。'. Together they equal the reference.\n- **Vocabulary meanings:** all match. On screens 18 and 21 the entries are listed in a different order from the reference, but that order follows first appearance in the sentence, which is the intended design.\n- **Question marks:** in 吗？ on screens 4, 19 and 22 the mark looks narrow, so I checked the source file /home/user/university-entrance-examination/六级/ann/s46.txt. It contains the full-width ？ (U+FF1F), so this is just how the font draws it, not a wrong character.\n- **Semicolon gap:** in '挣（钱）；赚' (s12) there is a visible gap between ） and ；. The source has the full-width ；, so this is spacing only.\n\nThe reference file has no closing section giving the expected screen count or split points; it stops after sentence [20]. The 22 screens still fit: the title card, 20 sentences, and one extra screen for the split of sentence 12.\n\nThe user asked whether videos that already passed the checks and were published need checking again like this. For this video (s46), the character-by-character pass found no wrong, missing or extra characters and no mismatched translations. The only issue is the one low-severity way the ellipsis is drawn on screen 13, which the earlier automated text checks would not see, because the underlying characters are correct."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 13, vocab entry 3 'the fact that' shows '......这一事实' with six low dots on the baseline. The other ellipses I checked are all drawn with centred dots: screen 7 '百分之……', screen 10 '给……完全的自由；放手让……' and screen 21 '为……付钱'. So this one entry is inconsistent, as described."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 10, entry 6: I measured where the dark pixels start on each line. The headword 'a step in the wrong direction' starts at x=1318, the wrapped meaning line '朝错误方向迈出的一步；错误的举' at x=1328, and its continuation '措' at x=1318. The wrapped meaning line has a stray indent of about 10 px."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "This is the same defect as index 0, confirmed on screen 13. Entry 3 shows '......这一事实' with baseline dots, while the other glosses (screens 7, 10 and 21) use centred '……'."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Confirmed on screen 13. The reference has '……这一事实', but the screen shows six Latin-style dots on the baseline. The ellipses on screens 7, 10 and 21 are drawn centred at mid-height."
+    }
+   ]
+  },
+  {
+   "id": "s47",
+   "findings": [
+    {
+     "screen": 5,
+     "sentence": 4,
+     "kind": "glyph",
+     "severity": "medium",
+     "description": "In the VOCABULARY panel, entry 2 'prospect of' has two ellipses drawn in different styles. Its gloss should read '……的可能性；……的希望' with both ellipses centred. The first one (just after the headword, before 的可能性) is drawn as six low baseline dots '......', in the Latin-font style. The second one, before 的希望, is drawn centred, which is correct and matches every other gloss in this video (比……快, 受到……的威胁, 对……的损害, 就……达成的协议, 既……又……). The first ellipsis should also be the centred CJK …….",
+     "lens": "visual"
+    },
+    {
+     "screen": 6,
+     "sentence": 5,
+     "kind": "layout",
+     "severity": "low",
+     "description": "The Chinese note '(补充)' inside the English sentence breaks across a line: '(补' ends line 6 after 'replenishment⑯' and '充)' starts line 7. A two-character word in parentheses should not be split across lines. The whole '(补充)' should move to the next line together.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "glyph",
+     "severity": "low",
+     "description": "When a highlighted item ends in 'f', its number circle touches the top hook of the bold 'f'. Because the circle is the same colour as the letter, the badge looks fused to the letter instead of standing just after it. Seen most clearly in 'millions of⑪' on screen 4 (zoomed). The same contact appears in 'millions of⑥' (screen 3), 'prospect of②' (screen 5), 'millions of④' and 'in danger of⑦' (screen 9), 'hundreds of millions of⑬' (screen 11), 'millions of⑨' (screen 16) and 'at the expense of⑧' (screen 17). A small gap is needed between the glyph and the circle.",
+     "lens": "visual"
+    },
+    {
+     "screen": 6,
+     "sentence": 5,
+     "kind": "layout",
+     "description": "The Chinese gloss inside the English sentence, \"(补充)\", breaks across two lines: \"(补\" ends line 6 and \"充)\" starts line 7. The gloss should stay on one line, either all at the end of line 6 or all wrapped to line 7.",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 5,
+     "sentence": 4,
+     "kind": "glyph",
+     "description": "In the VOCABULARY entry for \"prospect of\", the meaning should be \"……的可能性；……的希望\". The first \"……\" (right after the English headword) is drawn as six baseline Latin dots \"......\", but the second \"……\" is the centred Chinese ellipsis. Both are the same character in the reference, so both should look like the centred Chinese \"……\". The first one appears to have picked up the English font.",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 5,
+     "sentence": 4,
+     "kind": "glyph",
+     "description": "Vocabulary entry 2 'prospect of': the reference meaning is '……的可能性；……的希望'. On screen the second ellipsis is the normal centred Chinese '……', but the leading one sits on the baseline like six full stops ('......的可能性'). The source data uses U+2026 U+2026 for both ellipses, so the characters are correct; only the rendering is wrong. Because the gloss begins with an ellipsis right after the Latin headword, that first ellipsis picks up the Latin serif font instead of the CJK font. It is purely cosmetic: no character is wrong or missing.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "opened": [
+    20,
+    20,
+    20
+   ],
+   "notes": [
+    "I opened all 20 screens in order, plus the reference file, and zoomed in with ImageMagick where needed (PIL is not installed). The structure matches the reference: 20 screens are the title card, 17 sentence screens, and the second halves of sentences 10 and 17. Sentence 10 splits at '… and to curb the degradation' and sentence 17 at '… which has encouraged international'. On both splits the Chinese halves match the reference, and the numbering continues correctly (14–22 and 6–18). The title card matches: title 自然资源退化正超出地球承受能力, '大学英语六级 2022年12月 第1套 · Passage Two', genre 说明文 · 环境与发展.\n\nNumbering check for each sentence screen (English circles / panel / footer):\n- S1: 1–12 / 1–12 / 1/17\n- S2: 1–11 / 1–11 / 2/17\n- S3: 1–11 / 1–11 / 3/17\n- S4: 1–7 / 1–7 / 4/17\n- S5: 1,3,2,4…17 / 1–17 / 5/17\n- S6: 1–15 / 1–15 / 6/17\n- S7: 1–13 / 1–13 / 7/17\n- S8: 1–7 / 1–7 / 8/17\n- S9: 1,2,4,5,6,7,8,3 / 1–8 / 9/17\n- S10 part 1: 1–8,10,9,11,13,12 / 1–13 / 10/17 PART 1/2\n- S10 part 2: 14–22 / 14–22 / 10/17 PART 2/2\n- S11: 1–10 / 1–10 / 11/17\n- S12: 2,1,3,4,5 / 1–5 / 12/17\n- S13: 1–10 / 1–10 / 13/17\n- S14: 1–13 / 1–13 / 14/17\n- S15: 1–9 / 1–9 / 15/17\n- S16: 1–7 / 1–7 / 16/17\n- S17 part 1: 1–5 / 1–5 / 17/17 PART 1/2\n- S17 part 2: 6–12,13,15,16,14,17,18 / 6–18 / 17/17 PART 2/2\n\nEvery circle set equals its panel set. Split phrases carry their circle only on the last piece (action…taken, under…threat from, measures…taken, have a…effect on, on which…depend, put a…strain on, are supposed…to, both…and). Highlight colours match the entry types, and the progress bar matches k/17 on every screen. No text is cut off, there are no replacement characters or tofu, and no text overlaps the header, footer or panel.\n\nTwo things I saw but did not count as defects, because they are normal full-width CJK spacing: the gap in '警告说：“' (screen 8) and in '（成功等）；遭遇' (screen 18).\n\nOn the user's question (whether videos that already passed the checks need checking again): the automated checks (verify_videos.py / check_pitfalls.py) test audio, timing, frame pacing, and whether the spoken text matches the on-screen text. They do not look at how glyphs are drawn. The ellipsis-style error on screen 5 passes all of those checks and only shows up when someone looks at the frame. So this visual pass found one real, if small, defect that the existing checks could not catch.",
+    "I opened all 20 screens and the reference s47.txt, and zoomed in on screens 5, 6, 11 and 20 to check details. Structure matches the reference: screen 1 is the title card (自然资源退化正超出地球承受能力, 大学英语六级 2022年12月 第1套 · Passage Two, 说明文 · 环境与发展), followed by 17 sentences on 19 screens, 20 screens in total. Sentence 10 is split across screens 11/12 at \"… and to curb the degradation\", and sentence 17 across screens 19/20 at \"… which has encouraged international\", both as expected. Every header shows the same paper, Passage Two and title. No sentence is missing, repeated or out of order, and the footers read SENTENCE k / 17 (with PART 1/2 and 2/2 on the split sentences). I compared the English of all 17 sentences with the reference word by word and found no differences, including curly apostrophes (world’s, planet’s), British spellings (urbanisation, fertilisers), the hyphens in longer-term and long-term, the quotation marks in s7, the semicolons in s10, and the numbers 2000/2010 in s13. Every vocabulary headword and part of speech matches the reference, phrases carry no part of speech, and the highlighted words match each 高亮原文, including the broken-up phrases (under … threat from, action … taken, measures … taken, have a … effect on, on which … depend, put a … strain on, are supposed … to, both … and). Panel numbering follows first appearance and continues across the split screens (1–13 then 14–22 for s10; 1–5 then 6–18 for s17). The only defects are the two minor visual ones above, and neither affects the English text. On the user's question: this read-only check of the published s47 video found no English text or vocabulary mismatch, so it agrees with the earlier automated checks for this passage.",
+    "I opened all 20 screens in order: screen01 is the title card, screens 02–20 are sentences 1–17. Sentence 10 is split across screens 11/12 and sentence 17 across 19/20, both at the reference split points. I enlarged every Chinese translation and every vocabulary panel and compared them with ref/s47.txt character by character. All 17 Chinese translations match, including both halves of each split sentence. Every vocabulary meaning matches. I found no wrong look-alike characters (I checked 未/末 in 未能 and 仍未, 己 in 自己, 协 in 协力/协议/协同, 遏, 顾, 萎缩 and others), nothing missing or extra, and no wrong punctuation. The Chinese title 自然资源退化正超出地球承受能力 is correct on the title card and in every header. Vocabulary numbering follows order of first appearance, which differs from the reference list order in places (sentences 3 and 5); that matches the stated design. The only issue is the cosmetic ellipsis rendering on screen 5. Its cause (an ellipsis right after the Latin headword at the start of a gloss) may show up in any gloss that begins with '……' in other videos. In 'meet with 取得（成功等）；遭遇' on screen 18 the '；' after '）' is spaced slightly differently, but the character is correct, so I did not report it. For the user's question: in this published video the Chinese text is correct, and a recheck at this depth found only this cosmetic glyph issue."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Zoomed screen 5: in vocab entry 2 'prospect of', the first ellipsis is drawn as six low baseline dots ('......的可能性'). The second ellipsis, at the end of the line before 的希望, is the centred CJK form, the same as 比……快 and 受到……的威胁 on other screens."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "On screen 6 line 6 ends 'replenishment⑯ (补' and line 7 starts '充) of water resources⑰.', so the note '(补充)' is split across two lines."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Zoomed screens 3, 4, 5, 9 and 17: the number circle touches the top hook of the bold 'f' in 'of', in the same colour, so badge and letter look fused. All the listed instances exist on the screens given."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Same defect as item 1. On screen 6, '(补' ends line 6 and '充)' starts line 7."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Confirmed on zoomed screen 5. The first ellipsis after the headword sits on the baseline like Latin dots. The second is the centred Chinese ellipsis. Both should look the same."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Confirmed on zoomed screen 5: the leading ellipsis renders as baseline dots and the later one is centred. This is a rendering defect only. The text matches the reference '……的可能性；……的希望'."
+    }
+   ]
+  },
+  {
+   "id": "s48",
+   "findings": [
+    {
+     "screen": 20,
+     "sentence": 19,
+     "kind": "glyph",
+     "description": "Vocabulary entry 3 'both...and' has the meaning '……和……都', and its two ellipses are drawn in different styles. The leading '……' shows as six low baseline dots (looks like Latin-font '......' and appears darker), while the second '……' between 和 and 都 is drawn as centred CJK dots '······'. Both should be the centred Chinese ellipsis, as on every other screen (e.g. screen 2 '把……与……', screen 3 '越……就越……'). It looks like the fault happens when a meaning starts with '……'.",
+     "severity": "medium",
+     "lens": "visual"
+    },
+    {
+     "screen": 27,
+     "sentence": 26,
+     "kind": "glyph",
+     "description": "Vocabulary entry 7 'the fact that' has the meaning '……这一事实', and its leading ellipsis is drawn as six low baseline dots '......这一事实'. On the same panel, entries 2 '对……感觉（如何）' and 3 '与……有关' show the ellipsis as centred CJK dots. The leading ellipsis should match them. It is the same fault as on screen 20, again on a meaning that starts with '……'.",
+     "severity": "medium",
+     "lens": "visual"
+    },
+    {
+     "screen": 20,
+     "sentence": 19,
+     "kind": "glyph",
+     "description": "Vocabulary entry 3 'both…and': its meaning should read '……和……都'. The leading ellipsis renders as Latin baseline dots ('......和……都'), but the second ellipsis renders as the centred CJK '……'. So the two ellipses in one gloss look different. The English, the headword and the highlights (both … and, number on 'and') are correct.",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 27,
+     "sentence": 26,
+     "kind": "glyph",
+     "description": "Vocabulary entry 7 'the fact that': its meaning should read '……这一事实'. The leading ellipsis renders as Latin baseline dots ('......这一事实') instead of the centred CJK '……' used in every other gloss. This is the same font-fallback problem as on screen 20: an ellipsis at the start of a meaning falls back to the Latin font.",
+     "severity": "low",
+     "lens": "english"
+    },
+    {
+     "screen": 20,
+     "sentence": 19,
+     "kind": "chinese",
+     "severity": "low",
+     "description": "In the vocabulary panel, entry 3 'both…and' should read '……和……都', with both ellipses as centred Chinese '……'. On screen the leading ellipsis is drawn as six dots on the baseline, Latin style ('......和……都'), while the middle one is centred correctly. The characters are right but the punctuation renders wrong.",
+     "lens": "chinese"
+    },
+    {
+     "screen": 27,
+     "sentence": 26,
+     "kind": "chinese",
+     "severity": "low",
+     "description": "In the vocabulary panel, entry 7 'the fact that' should read '……这一事实' with a centred Chinese ellipsis. On screen the leading '……' is drawn as six dots on the baseline ('......这一事实'), so it looks like Latin punctuation and not the Chinese ellipsis.",
+     "lens": "chinese"
+    }
+   ],
+   "opened": [
+    27,
+    27,
+    27
+   ],
+   "notes": [
+    "I opened all 27 screens in order: the title card plus sentences 1–26. There are no split sentences, which matches the reference (27 screens expected). Title card: the title 追求与工作相关的自尊有利有弊, '大学英语六级 2022年12月 第1套 · Passage One' and the genre '说明文 · 心理与职场' all match the reference. Numbering on every sentence screen (circles left to right / panel top to bottom / footer): S1 2,1 / 1-2 / 1/26; S2 2,3,1,4 / 1-4; S3 1-7; S4 1; S5 1-9; S6 1-5; S7 1-5; S8 1-8; S9 1-9; S10 1,2,4,3,5,6 / 1-6 ('is … regarded as' carries its number on the last piece; correct by first appearance); S11 1-10; S12 1-7; S13 1-6; S14 1-12; S15 1-6; S16 1-7; S17 1-9; S18 1-9; S19 1,2,4,3,5 / 1-5 ('both … and' carries its number on 'and'; correct); S20 1-8; S21 1-7; S22 1-11; S23 1-9; S24 1-5; S25 1-12; S26 1-8. In every screen the circle set equals the panel set with no gaps or repeats, every highlight has its entry, phrases are rust and single words green, footer k runs 1..26 / 26, and the progress bar matches k/N (checked at k=1, 10, 13, 20, 26). No text is cut off or overlapping. The densest panels (S14 and S25, 12 entries each) still fit inside the panel. I found no tofu, no replacement characters and no abnormal font sizes. The only defects are the two leading-ellipsis glyph faults above, both on meanings that start with '……'. The '）；' spacing in 'end up 最终（落得）；结果' on screens 19 and 20 is normal full-width punctuation and is not reported. On the user's question of whether this re-check is still needed for videos that already passed: this kind of visual fault (punctuation drawn in the wrong glyph style) is not covered by the automated checks in verify_videos.py and check_pitfalls.py, which test audio, timing, text equality and numbering logic. Real defects like these two can therefore pass the automated checks; that bears on the user's question.",
+    "I opened all 27 screens in order (title card plus sentences 1–26, no split sentences; 27 matches the expected count) and compared each with ref/s48.txt. I also zoomed in on the vocabulary panels of screens 2, 20 and 27.\n\nEnglish: all 26 sentences match the reference word for word, including punctuation, curly apostrophes and word forms. No sentence is missing, repeated or out of order. Footers run SENTENCE 1/26 to 26/26.\n\nHeaders and title card: every screen shows the reference title 追求与工作相关的自尊有利有弊, the paper 2022年12月 第1套 and Passage One. The title card also shows the genre 说明文 · 心理与职场.\n\nVocabulary: every entry's headword, POS and highlighted words match the reference, and phrases correctly carry no POS. That includes the split phrases: associate … with, The more … the better, is … regarded as, both … and, are … seen as and has … to do with. Each carries its number on its last piece. The panel numbers follow the order of first appearance in the English: for example, 'be regarded as' is no. 3 because its first piece 'is' comes before 'widely'. Text is never cut off and nothing overlaps. Screen 15 (12 entries) and screen 26 (12 entries) are close to the bottom of the panel but still fit.\n\nOnly defect: a leading '……' in a Chinese gloss renders as Latin baseline dots, on screens 20 and 27. This is cosmetic; the content is correct.\n\nOn the user's question about re-checking videos that were already published: this check was read-only. For this passage it found no content errors, only the low-severity ellipsis glyph issue above. The existing automated checks (verify_videos.py and the others) do not look at how glyphs render on screen.",
+    "I opened all 27 screens: the title card plus 26 sentence screens, with no split sentences, which matches the 27 screens the reference expects. For every screen I zoomed into the Chinese translation and the vocabulary panel and compared them with /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/cet6/frames/ref/s48.txt.\n\nWhat matches:\n- The title card ('追求与工作相关的自尊有利有弊', '说明文 · 心理与职场') and the header title match the reference on every screen.\n- All 26 Chinese translations match character for character, including punctuation. I found no look-alike wrong characters, nothing missing or extra, and no translation placed on the wrong sentence.\n- Every Chinese meaning in the vocabulary panels matches, apart from how the leading ellipsis renders on screens 20 and 27.\n- Nothing is cut off or overlapping.\n\nWhy the ellipsis renders wrong: the video file (最终视频/2022年12月 第1套 Passage One 追求与工作相关的自尊有利有弊.mp4) was made at 07:10. The fix that marks meanings as Chinese (commit 2ba370a in 六级/tools/make_video.py, at 07:19) came after it. That fix exists exactly to stop meanings that start with '……' being drawn as six dots on the baseline, and its commit message says 35 passages are affected. This published video predates the fix and still has the problem. Re-making it with the current make_video.py should clear both findings.\n\nOne thing I checked and am not reporting: on screen 4 (sentence 3), '对吧？' ends in a narrow-looking question mark. The source text holds the correct full-width character (U+FF1F), and the narrow look is just how the font draws it, so it is not a defect.\n\nOn the user's question (is it worth re-checking videos that are already published and passed the automated checks?): yes. The automated check (verify_videos) confirms the audio, timing, and that the narration matches each sentence's text. It never looks at how the Chinese is actually drawn on screen. That is why this already-published video passed and still has two visible punctuation defects. The cheaper option is to skip a full re-check of every video. Instead, re-make only the videos produced before 07:19 whose meanings start with '……', since the fix commit already lists them."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 20, vocab entry 3: 'both...and' is followed by '......和······都'. The leading ellipsis sits as low baseline dots in a darker Latin style, while the one between 和 and 都 is centred CJK dots. The reference has '……和……都'."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 27, vocab entry 7: 'the fact that' shows '......这一事实' with low baseline dots. Entries 2 (对······感觉) and 3 (与······有关) on the same panel use centred CJK dots. The reference has '……这一事实'."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Same fault as index 0, and seen the same way on screen 20. The leading ellipsis in entry 3 is baseline Latin dots and the middle one is centred CJK. The English, headword and highlights are otherwise correct."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Same fault as index 1, and seen the same way on screen 27. The leading ellipsis in entry 7 'the fact that' is drawn as baseline Latin dots, not the centred CJK ellipsis."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Screen 20, entry 3: the characters 和 and 都 are correct. The leading ellipsis is drawn as baseline dots and the middle one is centred, matching the description."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Screen 27, entry 7: the leading ellipsis before 这一事实 is drawn as six baseline dots and looks like Latin punctuation, not the centred Chinese ellipsis. Verified visually."
+    }
+   ]
+  },
+  {
+   "id": "s49",
+   "findings": [
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "description": "The single-word vocabulary item 'well-informed' (entry 14) breaks across two lines at its hyphen: 'make well-' ends line 5 at about x=930 and 'informed⑭' starts line 6. So 'well-' sits alone at the end of a short line, cut off from its number circle and from the rest of the word. Learners could read the end-of-line 'well-' as ordinary hyphenation. The headword should stay on one line, e.g. with a non-breaking hyphen.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "glyph",
+     "description": "Panel entry 5 'offer v. 开设（课程）；提供': the full-width closing parenthesis and the full-width semicolon each keep their own blank half-em, so a visible gap appears between '）' and '；' ('（课程）  ；  提供'). Standard Chinese typesetting squeezes consecutive punctuation; elsewhere in the panel a single '；' has no such gap. Cosmetic only.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 21,
+     "sentence": 20,
+     "kind": "glyph",
+     "description": "Panel entry 1 'assume v. 想当然地认为（自己具有）；假定': the same unsqueezed '）；' pair leaves a wide blank gap at the start of the wrapped second line ('有）  ；  假定'). Cosmetic only.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    22,
+    22,
+    22
+   ],
+   "notes": [
+    "I opened all 22 screens and the reference. The structure is correct: the title card plus 21 sentence screens, as expected, with no splits. The title card matches the reference: title 科学传播本身就是一门科学, '大学英语六级 2022年6月 第2套 · Passage Two', genre '议论文 · 科学与传播'. The '全文 444 词' count matches the whitespace word count of the reference English.\n\nPer screen I wrote down three things: the circle numbers in the English from left to right, the panel numbers from top to bottom, and the footer.\n- s02: 1-12 / 1-12 / 1/21\n- s03: 1-4 / 1-4 / 2/21\n- s04: 1-12, 14, 15, 13 (13 on 'decisions', last piece of 'make … decisions') / 1-15 / 3/21\n- s05: 1-8 / 1-8 / 4/21\n- s06: 1-3 / 1-3 / 5/21\n- s07: 2, 3, 4, 1, 5-9 ('not' carries no number; 1 sits on 'but rather') / 1-9 / 6/21\n- s08: 1-14 / 1-14 / 7/21\n- s09: 1-10 / 1-10 / 8/21\n- s10: 1-8 / 1-8 / 9/21\n- s11: 1-9 / 1-9 / 10/21\n- s12: 1-8 / 1-8 / 11/21. Discourse is panel entry 1 because it appears first in the sentence; the reference lists it last, but the order on screen follows the first-appearance design.\n- s13: 1-11 / 1-11 / 12/21\n- s14: 1-8 / 1-8 / 13/21\n- s15: 1-5 ('in' then 'the way of④') / 1-5 / 14/21\n- s16: 1-11 / 1-11 / 15/21\n- s17: 1-10 / 1-10 / 16/21\n- s18: 1, 2 ('in' then 'and of itself②') / 1, 2 / 17/21\n- s19: 1-4 / 1-4 / 18/21\n- s20: 1, 3, 2, 4-12 ('take' carries no number; 2 sits on 'courses') / 1-12 / 19/21\n- s21: 1-10 / 1-10 / 20/21\n- s22: 1-9 / 1-9 / 21/21\n\nOn every screen the panel is consecutive with no gap or repeat, and the circle set equals the panel set. Every highlight has a panel entry and every entry has a highlight. Every highlight colour matches its type (单词 green, 短语 rust). I measured each progress bar against k/21 and all match.\n\nThe English and Chinese text matches the reference on every screen. All Chinese ellipses (……) are drawn the same way, centred, everywhere. The dash in s21 renders correctly in both the English and the Chinese. I found no clipped text, overlap, tofu or replacement characters. I zoomed into the bottom edge of the fullest panels (s04, s08, s20): text stays inside the panel. The second Chinese line on s21 is about 30px wider than the others, but still within the column width that other screens use.\n\nThe three findings are cosmetic only; there are no numbering, structure or content errors. One related minor point I did not list: after 'n.', a full-width opening bracket（ leaves a slightly wider gap (s04 bubble, s16 ingredient, s17 key). That is ordinary full-width rendering.\n\nOn the user's question: for this already-published video, the visual check confirms that the automated checks did not miss any substantive defect.",
+    "s49 (CET-6, 2022年6月 第2套, Passage Two, 科学传播本身就是一门科学) has no defects. I opened all 22 screens in order and compared each one with ref/s49.txt.\n\nStructure: screen 1 is the title card and screens 2–22 are sentences 1–21, one screen each. That matches the expected 22 screens with no split sentences. No sentence is missing, repeated or out of order. Every footer shows SENTENCE k / 21. The title card and every header show 2022年6月 第2套 · Passage Two and the reference title.\n\nEnglish: I read every sentence word by word against the reference EN. Every word, inflection (viruses, criticized, augmenting, craves, phenomena, credentials, analogies and so on), article, punctuation mark and the em dash in sentence 20 matches. Sentence 3 breaks across lines at the hyphen in \"well-informed\". I zoomed in and the hyphen is intact.\n\nVocabulary: every headword, part of speech and colour matches the reference, with no POS on phrases. Every highlight matches its 高亮原文, including the split phrases:\n- make … decisions (s3)\n- not … but rather (s6)\n- take … courses (s19)\n\nIn each of these the number appears only on the last piece. Only the first \"scientific\" in sentence 11 is highlighted, which matches the reference. In sentence 6 the headword shows as \"not...but rather\": the reference has the single ellipsis character (…), and in this font it simply looks like three dots, so it is not a defect.\n\nOne thing that looks like a mismatch but isn't: in sentence 11 the reference lists \"discourse\" last, but on screen it is entry 1. That follows the design rule of numbering entries by first appearance, and \"discourse\" is the first highlighted word in the sentence.\n\nNo text is cut off or overlapping on any screen. To zoom in I had to use /opt/ttsenv/bin/python, because the default python3 has no PIL. I modified no files.",
+    "s49 (CET-6 2022年6月 第2套 Passage Two, 科学传播本身就是一门科学) has no Chinese-text defects. There are 22 screens, which is what the reference expects: the title card plus 21 sentences, none of them split.\n\nI opened every screen and also enlarged the Chinese translation and the vocabulary panel of each sentence screen 2x. Then I read each Chinese line character by character against s49.txt. I checked the title card, the header title on every screen, all 21 translations and every Chinese meaning in the vocabulary panels.\n\nAll characters and punctuation match. Look-alike characters I specifically confirmed:\n- 已经 on screen 11 is 已, not 己 (checked at 5x).\n- 自己 on screens 5, 7, 21 and 22 is 己.\n- 所必需的 on screen 4 is 需, not 须.\n- 必须 on screens 4 and 5 is 须.\n- 鸿沟 on screen 22 is correct.\n- 撰文 on screen 7 and 剔除 on screen 20 are correct.\n\nPunctuation is all full-width: Chinese commas, semicolons, the em dash ——, ellipses …… and brackets （）. The narrow-looking semicolon after 声明 at the end of a line on screen 3 is a full-width ； with its trailing space trimmed at the line end; checked at 5x.\n\nNo translation stops early or belongs to another sentence, and no text is cut off or overlapping. The vocabulary meanings that wrap to a second line, such as 善/意的, 对……是必要的；是……所/必需的 and 背景（知识、经/历）, wrap cleanly inside the panel.\n\nOn the user's question about re-checking videos that were already released: the automated checks confirm that the source text and the spoken text match. They do not read the rendered pixels. A visual check like this one is the only thing that catches a wrong glyph or text cut off in the image. For s49 it found nothing, which agrees with the earlier automated pass."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen04 (sentence 3). Line 5 ends 'helping individuals⑫ make well-' with the hyphen at about x=930. Line 6 starts 'informed⑭ personal⑮ decisions⑬.' So the single-word headword 'well-informed' (entry 14) is broken at its hyphen, and 'well-' is separated from its number circle. Nothing is cut off or overlapping, and breaking at a hard hyphen is normal English line-breaking, so this is a minor layout flaw rather than a content error. It does exist exactly as described. The other hyphenated headwords ('well-meaning' on screen02, 'public-aimed' on screen14) stay on one line."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen10 (sentence 9) in a zoomed crop. Entry 5 reads 'offer v. 开设（课程）；提供', and the full-width '）' keeps its right half-em blank before '；'. That leaves a visible gap ('课程）  ；  提供') about as wide as the one before '（'. The text matches the reference. The only issue is that adjacent full-width punctuation is not squeezed (the usual 标点挤压). This is purely cosmetic and comes from the renderer, not from the content."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed on screen21 (sentence 20) in a zoomed crop. Entry 1 'assume v. 想当然地认为（自己具' wraps to a second line that reads '有）  ；  假定', with the same unsqueezed blank between '）' and '；'. 'At the start of the wrapped second line' is slightly loose: the gap is just after '有）', not at the very start of the line. The quoted rendering is accurate, though. The text matches the reference, so this is cosmetic only, with the same cause as item 1."
+    }
+   ]
+  },
+  {
+   "id": "s50",
+   "findings": [
+    {
+     "screen": 7,
+     "sentence": 6,
+     "kind": "glyph",
+     "description": "In the English sentence, the Chinese gloss \"(文思枯竭).\" is drawn entirely in the CJK sans font. The ASCII parentheses and the period after them are sans, while the rest of the sentence is in the serif English font. The CJK characters are also visibly taller than the English text. Screen 11 shows the intended style: its English parentheses \"(and human touch)\" are drawn in the serif font. Zoomed crop confirms this. Expected: the parentheses and period match the serif English text.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "glyph",
+     "description": "Same font mix as screen 7. The gloss \"(亵渎神圣的).\" sits alone on the last English line. Its parentheses and final period are drawn in the CJK sans font, not the serif font used for the sentence and for the parentheses on screen 11. The oversized sans CJK characters make that line look like a different style.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 2,
+     "sentence": 1,
+     "kind": "layout",
+     "description": "Vocabulary panel, entry 2 (compose v.): the whole meaning \"作（曲）；创作（音乐）\" wraps to the second line, and that line starts about 9 px to the right of the other wrapped lines. It begins at x≈1328, while \"响；后果\" (entry 7) and \"言；在……方面\" (entry 10) on the same screen begin at x≈1318–1322. The same glyph \"作\" starts at x≈1319 when it begins a wrapped line on screen 5, so the gap is not part of the glyph. It looks like a leading margin or space carried onto the new line. This is cosmetic only.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    21,
+    21,
+    21
+   ],
+   "notes": [
+    "I opened all 21 screens in order and checked them against ref/s50.txt. I zoomed in on panel ellipses (screens 2, 3, 13, 18), the gloss parentheses (screens 7, 11, 15) and the wrapped meaning lines. I also measured the progress bar on every screen with a script.\n\nStructure: the screen count and order match the reference. Screen 1 is the title card, screens 2–19 are sentences 1–18, and sentences 19 is split across screens 20 and 21. Screen 20 ends with \\\", …\\\" and screen 21 starts with \\\"… and considering the rapid\\\". Both Chinese halves match the reference exactly. Both footers read \\\"SENTENCE 19 / 19 · PART 1/2\\\" and \\\"PART 2/2\\\".\n\nTitle card: the title 人工智能音乐制作：争议与前景, the line \\\"大学英语六级 2022年6月 第2套 · Passage One\\\" and the genre 议论文 · 科技与艺术 are correct. The word count of 444 matches a count of the reference English.\n\nNumbering: on every screen, the circle numbers in the English and the panel numbers are the same set. The panel numbers are consecutive in first-appearance order. Three cases look out of order but are correct:\n- Screen 2: \\\"where\\\" comes before \\\"production\\\", so where…be concerned is 10 and production is 11.\n- Screen 13: \\\"from\\\" comes before societal and ethics, so from…to is 8.\n- Screen 14: \\\"too\\\" comes before precious, so too…to is 6.\nSplit phrases carry their number only on the last piece. Screen 21 continues the numbering at 9–18.\n\nFooter and progress bar: k runs 1–19 in order. The measured bar fill matches k/19 on every screen (for example 0.0524 for 1/19 and 0.9477 for 18/19), and the bar is full on both halves of sentence 19.\n\nContent: every English sentence, Chinese translation and panel entry (headword, part of speech, meaning, colour) matches the reference. Single-word and phrase colours are correct throughout.\n\nRendering: no text is cut off or overlapping, there are no garbled characters or empty boxes, and Chinese ellipses are drawn centred everywhere. The three findings are all minor visual issues.\n\nOn the user's question: for this already-published video, the screen check found no numbering, content or structure errors.",
+    "I opened all 21 screens in order, plus the reference file s50.txt, and found no defects.\n- Title card (screen 1) matches the reference: 人工智能音乐制作：争议与前景, 大学英语六级 2022年6月 第2套 · Passage One, 议论文 · 科技与艺术.\n- Every sentence-screen header shows \"2022年6月 第2套 · Passage One\" and the same Chinese title.\n- Screens 2–21 cover sentences 1–19 exactly once and in order. The footers count SENTENCE 1/19 to 19/19.\n- Sentence 19 is split as the reference says. Screen 20 (PART 1/2) ends \"…of such technology, …\" and screen 21 (PART 2/2) starts \"… and considering the rapid\". Nothing is missing or repeated between them, vocabulary numbering continues 9–18 on the second screen, and the two Chinese halves match the reference.\n- I read the English on every screen word by word against the reference EN. Word forms, articles, apostrophes, quotes, the parenthesised Chinese glosses (文思枯竭)/(亵渎神圣的), \"3,400\" and punctuation are all identical.\n- For every vocabulary entry, the headword and part of speech match the reference: none for phrases, should = v., considering = prep., while = conj.\n- Every highlight covers exactly its 高亮原文 in the right colour, including the split phrases: where…is concerned, perceived…as, seeing…as, consider…to be, from…to, see…as, too…to, is…seen as, consider…as. Each split phrase carries its number only on its last piece, and numbering follows first appearance.\n- No text is cut off or overlapping on any screen.\n\nOn the user's question: this passage confirms the earlier automated checks. It has no screen-level text, vocabulary or structure defects.",
+    "I checked s50 against ref/s50.txt and found no Chinese-text defects on any of the 21 screens. 21 screens were expected (title card, sentences 1–18, and sentence 19 split over two screens) and 21 are present.\n\nHow I looked: screens 01, 02, 20 and 21 were opened in full. For every sentence screen (02–21) I opened a 1.5x crop of the English and Chinese column and a 2x crop of the vocabulary panel. I also opened two strips showing the headers of all screens and one strip showing all footers. Together these cover each screen's whole content area.\n\n- **Chinese translations:** I transcribed each one character by character. All 19 sentences match the reference exactly, including the punctuation (full-width ，；：、。, the 《》 book-title marks, the curly quotes, the （） brackets and the · in 塔琳·萨瑟恩). Sentence 19 is split exactly where the reference says: screen 20 ends at 「……发展和成果感兴趣，」 and screen 21 begins with 「再考虑到近年来……只是时间问题。」.\n- **Look-alike characters:** I zoomed in at 4–10x on the ones most easily confused. These were 自己 on screens 04 and 11, 已知 on screen 12 in both the translation and the panel, 尚未/未必 on screen 09, and 未来 on screen 18. All are correct.\n- **Vocabulary meanings:** every Chinese meaning in every panel matches the reference, including the parenthetical glosses such as （可能产生的）, （用于倒装条件句）, （加强语气） and （迟早的）. On screen 20 the panel numbers 1–8 and on screen 21 it continues 9–18, as the design requires.\n- **Title:** 人工智能音乐制作：争议与前景 is correct on the title card and in the header of all 20 sentence screens. 2022年6月 第2套 · Passage One is also correct.\n- **Footers:** SENTENCE 1/19 through 19/19 run in order, with PART 1/2 and 2/2 on the two halves of sentence 19.\n\nOne thing I looked at and did not count as a defect: on screen 15, the 煞费苦心地； entry wraps with the semicolon at the end of the line, so it sits closer to 地. Zoomed in, it is the same full-width ； glyph used in every other entry.\n\nOn your question about whether this is still worth re-checking: for this video, the visual check agreed completely with the checks it had already passed."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "I checked a zoomed crop of screen 7. The '(' and ')' around 文思枯竭 have an even, thin stroke like a sans font. The parentheses in '(and human touch)' on screen 11 are clearly serif, thick in the middle and thin at the ends. The final period on screen 7 is also smaller than the serif periods elsewhere (for example 'scene.' on screen 8). The CJK glyphs measure about 61 px tall, against 46 px for 'with' on the same line. The font mix is there exactly as described."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 15 has the same problem. '(亵渎神圣的).' sits alone on the last English line. In the zoom its parentheses have the even sans stroke and the period is the small sans dot, not the serif forms used on screen 11. The large sans CJK glyphs make that line look like a different style from the rest of the sentence."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "I measured where the ink starts on each wrapped line in the panel. On screen 2, the wrapped meaning of entry 2, '作（曲）；创作（音乐）', starts at x=1327. On the same screen, '响；后果' (entry 7) starts at x=1318 and '言；在……方面' (entry 10) at x=1322. The same glyph 作 starts at x=1318 when it begins a wrapped line on screen 5 ('作品'). So the line is indented about 9 px more than the others, as described. It is only cosmetic."
+    }
+   ]
+  },
+  {
+   "id": "s51",
+   "findings": [
+    {
+     "screen": 17,
+     "sentence": 16,
+     "kind": "glyph",
+     "description": "Vocabulary entry 3 shows the headword as \"on one's own\" with a straight typewriter apostrophe. Everywhere else in the video, apostrophes are curly (can’t on screen 18, it’s on screen 5, that’s on screen 20), so this one is drawn in the wrong style and should be \"on one’s own\". The reference headword also has the straight apostrophe, so the source entry needs fixing too. This is cosmetic only: the text and numbering are correct.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    20,
+    20,
+    20
+   ],
+   "notes": [
+    "I opened all 20 screens: the title card plus one screen for each of the 19 sentences. No sentence is split, which matches the reference (20 screens expected). On the title card, the title, the line \\\"大学英语六级 2022年6月 第1套 · Passage Two\\\" and the genre \\\"议论文 · 思维与科学\\\" all match the reference.\n\nOn every sentence screen I compared three things: the circle numbers in the English, the panel numbers, and the footer.\n- S1: 1-5 / 1-5, 1/19\n- S2: 1-8 / 1-8, 2/19\n- S3: 1-3, 3/19\n- S4: 1-7, 4/19\n- S5: 1-5, 5/19\n- S6: 1-7, 6/19\n- S7: 1-2, 7/19\n- S8: 1-4, 8/19\n- S9: English order 2,3,4,5,6,1,7,8,9,11,10, panel 1-11, 9/19. mistake…for has its circle only on \\\"for\\\", and more about…than only on \\\"than\\\".\n- S10: 1-7, 10/19\n- S11: 1-3, 11/19\n- S12: 1-11, 12/19\n- S13: 1-12, 13/19. not just…but has its circle only on \\\"but\\\".\n- S14: 1-4, 14/19\n- S15: 1-5, 15/19\n- S16: 1-9, 16/19\n- S17: 1, 17/19\n- S18: English order 1,2,4,3,5…15, panel 1-15, 18/19. value…over has its circle only on \\\"over\\\".\n- S19: 1-5, 19/19\n\nThe progress bars match k/19 to within about 0.1%. Every highlight's colour matches its type (单词 green, 短语 rust) and its panel entry. The highlighted words, English, Chinese and glosses all match the reference.\n\nZoomed checks:\n- Screen 4, \\\"呢？\\\": this is the standard Simplified Chinese full-width question mark, which sits on the left of its box. Not a defect.\n- All Chinese ellipses (……) in the panels are drawn as centred dots, consistently.\n- The \\\"...\\\" in English headwords is normal English ellipsis.\n- The panel bottoms on screens 13 and 14 are close to the edge but nothing is clipped.\n- On screen 18 (sentence 18) the panel and English font are smaller, because it has 15 entries. This is the intended auto-fit and stays readable.\n\nNo cut-off text, overlap, tofu boxes or garbled characters. The only finding is the straight apostrophe on screen 17. This was a read-only check and no files were modified.",
+    "s51 (CET-6 2022年6月 第1套 Passage Two, 常识未必可靠，我们在一起更聪明): I found no defects. I opened all 20 screens in order. Screen 01 is the title card and screens 02–20 are sentences 1–19, each shown exactly once. That matches the 20 screens the reference expects, with no split sentences. The title card and every header show the reference title, paper and Passage Two.\n\nI read every English sentence word by word against the reference. Word forms, punctuation and order all match, including internalised, Organisation, Kahneman, Thinking, Fast and Slow, more free and the curly apostrophes in it’s, can’t and that’s. I zoomed in on screens 04, 07, 10, 11, 17 and 19 to confirm.\n\nEvery vocabulary entry matches its reference headword and part of speech, and the words highlighted for it are exactly its 高亮原文. That includes the split phrases mistake…for (s9), more about…than (s9), not just…but (s13) and value…over (s18). Each of these carries its number only on its last piece, as designed.\n\nOne small thing I noticed and am not reporting as a defect: the Chinese question mark at the end of sentence 3 (screen 04) looks narrow. The reference uses the full-width ？ (U+FF1F), so this is just how the font draws that character.\n\nAll checks were read-only and I modified no files. The user's question (whether published videos that already passed the automated checks need checking again) was not answered here; it is for the main session to answer.",
+    "s51 (2022年6月 第1套 Passage Two) has no Chinese defects. There are 20 screens: a title card plus 19 sentence screens. None are split, which matches the reference.\n\nI opened every screen at full size. For screens 2–20 I also cropped and enlarged each translation (1.6x) and each vocabulary panel (1.5x, and 2x for the small-font panel on screen 19). I then compared every Chinese translation and every gloss with the reference character by character.\n\n- **Title:** the Chinese title is correct on the title card and in every header: 常识未必可靠，我们在一起更聪明. The character is 未, not 末.\n- **Translations:** all 19 match the reference exactly. I checked look-alike characters specifically: 已/己 (已经, 已有, 自己), 未 (未必), 入/人 (融入, 个人), 斥, 缚, 谨, 诸. Punctuation also matches, including “常识”, 《思考，快与慢》, the middle dot in 丹尼尔·卡尼曼, the 、 in 严谨、系统, and the ； in s18.\n- **Vocabulary meanings:** all match the reference, including ……, the full-width brackets （做……）, and the wrapped lines.\n- **Nothing is cut off or overlapping.** The tightest screen is screen 14 (s13, four Chinese lines plus 12 entries), and both columns still fit above the footer.\n\nOne thing looks wrong but isn't. On screen 4 (s3), the final 呢？ looks like a narrow half-width \"?\". I checked `/home/user/university-entrance-examination/六级/data/vocab.json`, and the character there is the full-width ？ (U+FF1F). Noto Serif SC places this mark on the left of its box, which is why it looks narrow. It is not an error.\n\nI didn't modify any files. My crops are in `/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/s51crops/`.\n\nOn the user's question: in this already-published video, a character-by-character re-check found nothing wrong. That fits with the existing automated checks having caught any problems. It only covers this one passage, though."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": false,
+     "why": "I enlarged screen 17. Vocab entry 3 does show 'on one's own' with a straight apostrophe, while 'can’t' on screen 18 is curly, so the observation itself is accurate. But the screen matches the approved reference exactly: s51.txt line 139 has 'on one's own' with U+0027, and the text, colour (phrase), number 3 and meaning 独立地；靠自己 are all correct. Straight apostrophes in headwords are also the convention across the whole published data, not a one-off rendering slip. Other CET-6 headwords use it ('do one's part', 'reach one's potential', 'old before one's time', 'cross one's path'), and so do CET-4 ('of one's own') and gaokao ('change one's mind', 'play one's part'). The project's straight-apostrophe typography checks (build.py, 四级/tools/check_text.py) apply to the English passage text, not to dictionary headwords. Nothing is cut off, overlapping or misnumbered. This is a cosmetic style point that matches the reference, not a screen defect."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}
