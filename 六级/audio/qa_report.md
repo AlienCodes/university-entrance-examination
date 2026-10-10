@@ -7,7 +7,7 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.70%
+- 平均识别差异率：0.68%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -39,7 +39,7 @@
 | s26 | 4.49 | 6.02% | unfavourably → unfavorably; industrialised → industrialized; eunji → ungi; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; rags to riches → ragsterich's; rags to riches → ragsterich's; programmes → programs; r |
 | s27 | 4.49 | 0.64% | clarke → clark; energiewende → energie venda |
 | s28 | 4.46 | 0.00% |  |
-| s29 | 4.48 | 3.36% | practise → practice; practising → practicing; generalisation → generalization; limor raviv → limmer ravive; generalise → generalize; raviv → ravov; generalisation → generalization; categorisation → categorization; raviv → ravive; practising → practicing; generalisation → generalization; generalisati |
+| s29 | 4.48 | 2.24% | practise → practice; practising → practicing; generalisation → generalization; limor → lemour; generalise → generalize; generalisation → generalization; categorisation → categorization; practising → practicing; generalisation → generalization; generalisations → generalizations |
 | s30 | 4.46 | 0.23% | sarkazein → sarcasine |
 | s31 | 4.48 | 0.44% | splendour → splendor; recognised → recognized |
 | s32 | 4.48 | 0.66% | prioritised → prioritized; organisations → organizations; recognise → recognize |
