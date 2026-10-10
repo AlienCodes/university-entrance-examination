@@ -76,3 +76,8 @@ body:has(.ttl) .band::before{opacity:1;
 /* 定稿补充：封面标题按字数排成一行（--n 由 title_slide 给出），不在词中间断行；中文译文避免末行只剩一两个字 */
 .ttl h1{font-size:clamp(64px, calc(1240px / var(--n) / 1.03), 100px)}
 .zh{text-wrap:pretty}
+
+/* 用户 2026-10-10：中文翻译太小，放大约 15%（.68 → .78 倍英文字号）；为不挤小英文，中文行距 1.65 → 1.55、英中间距 .5 → .4、英文行距 1.5 → 1.45。
+   481 屏重新适配：450 屏英文字号不变，31 屏长句英文小 2—4px；t09 第 18 句低于下限，加了分屏。 */
+.zh{font-size:calc(var(--fs)*.78);line-height:1.55;margin-top:calc(var(--fs)*.4)}
+.en{line-height:1.45}
