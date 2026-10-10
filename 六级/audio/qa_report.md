@@ -7,7 +7,7 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：0.71%
+- 平均识别差异率：0.70%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -35,7 +35,7 @@
 | s22 | 4.48 | 1.54% | urbanisation → urbanization; whilst → while; idealised → idealized; industrialisation → industrialization; labour → labor; urbanisation → urbanization; urbanise → urbanize |
 | s23 | 4.49 | 0.00% |  |
 | s24 | 4.47 | 0.88% | behaviour → behavior; theatre → theater; behaviour → behavior; defence → defense |
-| s25 | 4.47 | 1.11% | recognise → recognize; recognise → recognize; recognise → recognize; behaviours → behaviors; lead → light |
+| s25 | 4.47 | 0.89% | recognise → recognize; recognise → recognize; recognise → recognize; behaviours → behaviors |
 | s26 | 4.48 | 6.02% | unfavourably → unfavorably; industrialised → industrialized; eunji → yunji; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; programmes → programs; rags to riches → ragsterich's; rags to riches → ragsterich's; rags to riches → ragsterich's; programmes → programs;  |
 | s27 | 4.49 | 0.64% | clarke → clark; energiewende → energy end |
 | s28 | 4.46 | 0.00% |  |
