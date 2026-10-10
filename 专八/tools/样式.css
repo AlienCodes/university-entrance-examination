@@ -1,0 +1,78 @@
+/* 专八专用样式「书卷水墨」（用户 2026-10-10 从多种设计中选定）：追加在 make_video.py 通用样式之后覆盖它。
+   只改颜色、字体、装饰与封面，不改版面尺寸；定稿前对 t01—t10 全部 481 屏重新适配字号：全部放得下，没有任何一屏字号变小；
+   对比度：英文 14.8、中文 11.3、单词高亮 8.3、短语高亮 5.2（WCAG）。靛青 = 单词，朱砂 = 短语（方角编号）。 */
+:root{
+  --paper:#f4eee2; --paper2:#ece4d4; --ink:#1e1b17; --ink2:#34302a; --mute:#6a6255; --faint:#a39a8a; --rule:#d3c8b2;
+  --dian:#1f4677;   /* 靛青 indigo  : single words */
+  --zhu:#b03c2a;    /* 朱砂 cinnabar: phrases, seals */
+  --cloth:#1c3150; --thread:#e9dfc9;
+}
+html,body{background:var(--paper);color:var(--ink)}
+
+/* spine: indigo cloth strip with the white thread of a stitched (线装) binding */
+.band{background:var(--dian)}
+.band::before{content:'';position:absolute;inset:0;opacity:.55;
+  background:linear-gradient(var(--thread),var(--thread)) 13px 0/1px 100% no-repeat,
+  linear-gradient(var(--thread),var(--thread)) 0 128px/14px 1px no-repeat,linear-gradient(var(--thread),var(--thread)) 0 404px/14px 1px no-repeat,
+  linear-gradient(var(--thread),var(--thread)) 0 676px/14px 1px no-repeat,linear-gradient(var(--thread),var(--thread)) 0 950px/14px 1px no-repeat}
+
+/* header: 文武线 (thick + thin rule, as on a woodblock page frame) */
+.top{border-bottom:3px solid var(--ink)}
+.top::after{content:'';position:absolute;left:0;right:0;bottom:-8px;height:1px;background:var(--ink)}
+.top b{font-family:'Inter';font-weight:700;letter-spacing:.18em;color:var(--ink)}
+.top b::before{content:'';display:inline-block;width:14px;height:14px;background:var(--zhu);margin-right:16px;vertical-align:1px}
+.top span{font-family:'EB Garamond','LXGW WenKai';font-size:27px;color:var(--mute)}
+
+/* English: the hero */
+.en{color:var(--ink)}
+.w{color:var(--dian)}
+.ph{color:var(--zhu)}
+sup{color:var(--paper);background:var(--dian)}
+.ph sup{background:var(--zhu);border-radius:.16em}
+
+/* Chinese translation */
+.zh{font-family:'LXGW WenKai';color:var(--ink2);border-left:4px solid var(--rule)}
+
+/* vocabulary panel */
+.side{background:var(--paper2);border-radius:0;box-shadow:inset 0 0 0 1px #cfc3ab}
+.side h3{color:var(--zhu);font-weight:700}
+.v em{background:var(--dian);color:var(--paper)}
+.v.ph em{background:var(--zhu);border-radius:4px}
+.v b{color:var(--ink)}
+.v.ph b{color:var(--zhu)}
+.v i{color:var(--mute)}
+.v span{color:var(--ink2)}
+.cont{color:var(--faint)}
+
+/* footer */
+.bot{color:var(--mute)}
+.bot span:last-child{font-family:'LXGW WenKai';font-size:26px;letter-spacing:.2em}
+.bar{background:var(--rule);height:2px}
+.bar i{background:var(--dian);position:relative}
+.bar i::after{content:'';position:absolute;right:-6px;top:-5px;width:12px;height:12px;background:var(--zhu)}
+
+/* ---------- cover: indigo book cloth (书衣) + rice-paper title slip (题签) + cinnabar seal ---------- */
+body:has(.ttl){background:var(--cloth)}
+body:has(.ttl) .band{width:96px;background:#16273f}
+body:has(.ttl) .band::before{opacity:1;
+  background:linear-gradient(var(--thread),var(--thread)) 60px 0/2px 100% no-repeat,
+  linear-gradient(var(--thread),var(--thread)) 0 128px/62px 2px no-repeat,linear-gradient(var(--thread),var(--thread)) 0 404px/62px 2px no-repeat,
+  linear-gradient(var(--thread),var(--thread)) 0 676px/62px 2px no-repeat,linear-gradient(var(--thread),var(--thread)) 0 950px/62px 2px no-repeat}
+.ttl{left:230px;right:150px;top:130px;bottom:130px;background:var(--paper);padding:0 120px;
+  box-shadow:inset 0 0 0 20px var(--paper),inset 0 0 0 23px var(--ink),inset 0 0 0 29px var(--paper),inset 0 0 0 30px var(--ink)}
+.ttl .tag{font-family:'Inter';font-weight:700;font-size:26px;letter-spacing:.32em;color:var(--zhu);position:relative}
+.ttl .tag::after{content:'专八精读';position:absolute;right:0;bottom:-6px;writing-mode:vertical-rl;width:128px;height:128px;
+  font-family:'LXGW WenKai';font-weight:700;font-size:46px;line-height:52px;letter-spacing:0;color:#fbf6ec;background:var(--zhu);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 12px;
+  box-shadow:inset 0 0 0 5px var(--zhu),inset 0 0 0 7px #fbf6ec}
+.ttl h1{font-family:'LXGW WenKai';font-weight:700;font-size:100px;line-height:1.22;color:var(--ink);margin:34px 0 30px;letter-spacing:.03em;text-wrap:balance}
+.ttl .sub{font-family:'EB Garamond','LXGW WenKai';font-size:44px;color:var(--ink2)}
+.ttl .sub i{color:var(--dian)}
+.ttl .meta{font-family:'EB Garamond','LXGW WenKai';font-size:30px;border-top:2px solid var(--ink);color:var(--mute);margin-top:44px;padding-top:24px}
+.legend{font-family:'LXGW WenKai';color:var(--ink2);right:300px;bottom:190px;font-size:26px}
+.legend .lw{background:var(--dian)}
+.legend .lp{background:var(--zhu);border-radius:4px}
+
+/* 定稿补充：封面标题按字数排成一行（--n 由 title_slide 给出），不在词中间断行；中文译文避免末行只剩一两个字 */
+.ttl h1{font-size:clamp(64px, calc(1240px / var(--n) / 1.03), 100px)}
+.zh{text-wrap:pretty}

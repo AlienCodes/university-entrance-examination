@@ -132,7 +132,8 @@ def head(p):
 
 
 def title_slide(p):
-    return page(f'''<div class="ttl"><div class="tag">TEM-8 · READING · SECTION A</div><h1>{esc(p.get("title") or "")}</h1>
+    """--n = 标题字数：专八样式据此把标题排成一行（字号 64—100px），避免在词中间断行（如“使用语|言”“调查|者”）。"""
+    return page(f'''<div class="ttl"><div class="tag">TEM-8 · READING · SECTION A</div><h1 style="--n:{max(len(p.get("title") or ""), 1)}">{esc(p.get("title") or "")}</h1>
       <div class="sub">英语专业八级 {esc(p["paper"])} · <i>{esc(p["passage"])}</i></div>
       <div class="meta"><span>{esc(p.get("genre") or "")}</span><span>全文 {p["words"]} 词 · 逐句精读</span></div></div>
       <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>''')
