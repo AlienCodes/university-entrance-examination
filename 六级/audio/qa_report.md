@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：44
+- 文章数：45
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.42）
 - 平均识别差异率：0.64%
@@ -55,3 +55,4 @@
 | s42 | 4.49 | 0.00% |  |
 | s43 | 4.48 | 1.12% | mcgeehan → majihan; mcgeehan → majihen; mcgeehan → majihen; fibres → fibers; mcgeehan → majihen |
 | s44 | 4.48 | 0.22% | extent → extend |
+| s45 | 4.47 | 0.22% | outweighs → outweigh |
