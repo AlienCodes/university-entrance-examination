@@ -20,4 +20,4 @@
 | t07 | 4.48 | 1.89% | bands → bans; milliliters → ml; labelling → labeling; a tax → attacks; boden → bowden; gill → gil; organisation → organization; a tax → attacks; a tax → attacks; aacs → ∅; a tax → attacks; recognise → recognize; modelling → modeling |
 | t08 | 4.48 | 0.64% | studios → studio; there → their; ltd → limited; ltd → limited; breakdown's → breakdown; agent → agents; actors' → actor's |
 | t09 | 4.42 | 0.27% | she'll be → she's; see → say |
-| t10 | 4.47 | 1.42% | gravelled → graveled; demesne → domain; ysabel → usable; ysabel → usable; mollie → molly; ysabel → usable; a huge st → ahugsint; and → ∅; and → ∅ |
+| t10 | 4.47 | 1.42% | gravelled → graveled; demesne → domain; ysabel → isabel; ysabel → isabel; mollie → molly; ysabel → isabel; a huge st → ahugsint; and → ∅; and → ∅ |
