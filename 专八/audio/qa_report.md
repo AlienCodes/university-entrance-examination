@@ -4,12 +4,13 @@
 
 ## cet4_male
 
-- 文章数：2
+- 文章数：3
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.47（最低 4.46）
-- 平均识别差异率：0.90%
+- 平均自然度：4.46（最低 4.44）
+- 平均识别差异率：0.85%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | t01 | 4.49 | 1.01% | jessika trancik → jessica trancic; used → use; trancik → transik; we're → we were; wei → way; trancik → transic; trancik → transic; trancik → transic |
 | t02 | 4.46 | 0.80% | brakemen → brakeman; brakemen → breakmen; a two dollar → atwo dollars; brakemen → brakeman; joined → join; and → in |
+| t03 | 4.44 | 0.73% | ∅ → a; net → nets; two → to; pummelled → pummeled; down → downs; down → downs; down → downs |
