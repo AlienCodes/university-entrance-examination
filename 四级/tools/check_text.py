@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ABBR = r'(?:Mr|Mrs|Ms|Dr|Prof|St|Jr|Sr|vs|etc|e\.g|i\.e|U\.S|U\.K|Ph\.D|a\.m|p\.m|No|Inc|Co|Ltd|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec)'
+ABBR = r'(?:Mr|Mrs|Ms|Dr|Prof|St|Jr|Sr|vs|etc|e\.g|i\.e|U\.S|U\.K|Ph\.D|a\.m|p\.m|No|Inc|Co|Ltd|Jan|Feb|Mar|Apr|Aug|Sept|Oct|Nov|Dec|B\.C|A\.D)'      # B.C./A.D.：专八 2026-10-10 加
 RULES = [
     (r'["\']', '直引号或直撇号'),
     (r'[“‘]\s|\s[”]', '引号内侧空格'),
@@ -30,7 +30,7 @@ RULES = [
     (r'\b[A-Z]\. [A-Z]\.(?= |$)(?! [A-Z][a-z])', '拆开的缩写（如 U. S.；人名首字母 H. G. Wells 除外）'),
     (r'[，。；：？！（）、]', '全角标点'),
     (r'\s{2,}', '多余空格'),
-    (r'(?<=[A-Za-z])0|0(?=[A-Za-z]{2})|(?<=\d)[Oo](?=\d)|(?<=\d)[lI](?=\d)', '数字与字母混淆（0/O、1/l）'),
+    (r'(?<=[A-Za-z])0|0(?!(?:ml|km|kg|mg|cm|mm)\b)(?=[A-Za-z]{2})|(?<=\d)[Oo](?=\d)|(?<=\d)[lI](?=\d)', '数字与字母混淆（0/O、1/l；100ml、100km 这类单位除外）'),
     (r'\s’(?=[A-Za-z])', '单引号开头用了右引号'),
 ]
 
@@ -45,6 +45,8 @@ def check(p):
             if name == '重复或叠加标点':      # 缩写后接逗号是对的：e.g., / etc., / Jr., / U.K.,（六级 2026-10-09 加）
                 m = next((x for x in re.finditer(pat, bare)
                           if not (x.group() == '.,' and re.search(rf'\b{ABBR}$', bare[:x.start()]))), None)
+            if m and name == '重复单词' and m.group(1)[0].isupper() and m.group(1).lower() not in ('the', 'a', 'an', 'and', 'of', 'to', 'in', 'it', 'is'):
+                m = None          # 大写的重复是人名（专八 2025 年 Wei Wei），不是重复单词
             if m and not (name == '重复单词' and m.group(1).lower() in ('that', 'had', 'is')):
                 probs.append(f'第{k}段 {name}：…{bare[max(0, m.start() - 25):m.end() + 25]}…')
         if re.search(r'[一-鿿]', bare):
