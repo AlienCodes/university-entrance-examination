@@ -1,0 +1,1045 @@
+{
+  "summary": "TEM-8 finished-video screen QA: every screen of every video inspected by 3 reviewers (layout/numbering, English, Chinese), each finding adversarially verified",
+  "agentCount": 20,
+  "logs": [
+    "done 5; findings 39"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "q8",
+        "findings": [
+          {
+            "screen": 0,
+            "sentence": 2,
+            "kind": "structure",
+            "severity": "high",
+            "description": "A screen is missing. The folder has 61 screens but the reference expects 62. Sentence 2 is split into 2 parts, but only PART 1/2 exists: screen04 shows 'SENTENCE 2 / 54 · PART 1/2' and ends at \"one's nature⑧ …\", then screen05 jumps to 'SENTENCE 3 / 54 · PART 1/3'. The second half never appears. That half is the English from \"which, after long fasting, recognizes, when confronted by the belongings of art … has found nourishment.\", its Chinese 「这种东西在长久的断食之后……如今终于找到了滋养。」 and vocabulary entries 9–17 (fasting, recognize, be confronted by, belongings, howsoever, modest, unconsciously, famish, nourishment).",
+            "lens": "visual"
+          },
+          {
+            "screen": 3,
+            "sentence": 1,
+            "kind": "chinese",
+            "severity": "high",
+            "description": "Wrong Chinese on PART 2/2. Screen03's English is part 2 (\"… bacon and beans and black coffee … to the log walls.\"), but its Chinese repeats part 1: 「在漫长的几个星期里，我日日夜夜与矿工的小木屋为伍，对它们熟悉透了——这就意味着泥土地面、从不整理的床铺、铁皮盘子和铁皮杯子，」. It should show 「咸肉、豆子和黑咖啡，除了原木墙上钉着的、东部画报里的战争图片，再没有别的装饰；此后能置身于这样一个地方，真是令人愉快。」 As a result, the end of sentence 1's translation is never shown.",
+            "lens": "visual"
+          },
+          {
+            "screen": 6,
+            "sentence": 3,
+            "kind": "english",
+            "severity": "high",
+            "description": "English text is missing words. The screen shows \"with sea-shells⑮ and china⑯ vases⑰ on them, …\". The reference reads \"with sea-shells and books and china vases on them,\", so \"and books\" has been dropped. The Chinese on the same screen still says 摆着贝壳、书籍和瓷花瓶.",
+            "lens": "visual"
+          },
+          {
+            "screen": 14,
+            "sentence": 10,
+            "kind": "numbering",
+            "severity": "high",
+            "description": "Two vocabulary numbers are swapped. The English reads finishing① pats② combed③ brushed④ reckon⑤. The panel, top to bottom, reads ① finishing, ③ pat, ② comb, ④ brush, ⑤ reckon, so the order is 1,3,2,4,5. Pat should be 2 and comb should be 3; as shown, the numbers do not match the badges in the sentence.",
+            "lens": "visual"
+          },
+          {
+            "screen": 20,
+            "sentence": 14,
+            "kind": "numbering",
+            "severity": "medium",
+            "description": "Wrong part label on the third part of sentence 14. Screen20 is part 3 (\"… towels too clean and white … profanation.\", vocabulary 22–26), but its footer reads 'SENTENCE 14 / 54 · PART 2/3'. Screen19 is already PART 2/3, so screen20 should read PART 3/3.",
+            "lens": "visual"
+          },
+          {
+            "screen": 47,
+            "sentence": 40,
+            "kind": "vocab",
+            "severity": "medium",
+            "description": "Wrong character in a vocabulary meaning. The panel entry reads 'regretfully adv. 遗憾地；婉惜地', using 婉 (女 radical). The reference meaning is 遗憾地；惋惜地, with 惋 (忄 radical). The Chinese translation on the same screen correctly has 惋惜.",
+            "lens": "visual"
+          },
+          {
+            "screen": 19,
+            "sentence": 14,
+            "kind": "layout",
+            "severity": "low",
+            "description": "Orphaned continuation mark. On this split screen (PART 2/3), the trailing '…' does not fit after \"towels㉑—\" and wraps onto a line by itself, leaving an almost empty extra line above the Chinese. On every other split screen the '…' stays at the end of the last text line.",
+            "lens": "visual"
+          },
+          {
+            "screen": 9,
+            "sentence": 5,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "Chinese closing quotation marks look detached in the 楷体 translation. When ” follows a full-width comma or full stop, it is drawn as a narrow Western glyph after the full-width punctuation's blank half. This leaves a gap after the punctuation and pushes the quote against the next character, so it reads like an opening quote: 「全是她的手艺，  ”他温存地说」 and 「都是。  ”说着」. The same thing happens on screen35 (十九岁，  ”他), screen47 (走了，  ”我), and at sentence ends such as screen17, 23, 31 and 42 (。  ”).",
+            "lens": "visual"
+          },
+          {
+            "screen": 46,
+            "sentence": 39,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The overhanging hook of a highlighted 'f' runs into the phrase badge that follows it. In 'sense of②' the top of the red f merges into the red square badge. The same collision appears on screen25 ('for myself⑬') and screen55 ('said to myself①').",
+            "lens": "visual"
+          },
+          {
+            "screen": 4,
+            "sentence": 2,
+            "kind": "structure",
+            "severity": "high",
+            "description": "Sentence 2 is cut in half. Screen 4 shows SENTENCE 2 / 54 · PART 1/2, ending at \"…that something in one's nature …\", but no PART 2/2 screen follows: screen 5 is already SENTENCE 3 · PART 1/3. Nothing from part 2 appears anywhere. That means the English \"which, after long fasting, recognizes, when confronted by the belongings of art, howsoever cheap and modest they may be, that it has unconsciously been famishing and now has found nourishment.\", its Chinese 「这种东西在长久的断食之后……如今终于找到了滋养。」, and vocabulary entries 9–17 (fasting, recognize, be confronted by, belongings, howsoever, modest, unconsciously, famish, nourishment). The video has 61 screens; the reference expects 62.",
+            "lens": "english"
+          },
+          {
+            "screen": 3,
+            "sentence": 1,
+            "kind": "chinese",
+            "severity": "high",
+            "description": "Sentence 1 PART 2/2 shows the wrong Chinese. The English (\"… bacon and beans and black coffee, … tacked to the log walls.\") and vocabulary 12–20 are correct, but the Chinese repeats part 1: 「在漫长的几个星期里，我日日夜夜与矿工的小木屋为伍，对它们熟悉透了——这就意味着泥土地面、从不整理的床铺、铁皮盘子和铁皮杯子，」. It should be 「咸肉、豆子和黑咖啡，除了原木墙上钉着的、东部画报里的战争图片，再没有别的装饰；此后能置身于这样一个地方，真是令人愉快。」. As a result, the second half of sentence 1's translation never appears in the video.",
+            "lens": "english"
+          },
+          {
+            "screen": 14,
+            "sentence": 10,
+            "kind": "numbering",
+            "severity": "medium",
+            "description": "The vocabulary badges do not match the highlights. In the English, \"pats\" carries badge 2 and \"combed\" carries badge 3. The panel lists the entries in the right order, but the badges read 1 finishing, 3 pat, 2 comb, 4 brush, 5 reckon. pat should be 2 and comb should be 3 (confirmed by zooming in).",
+            "lens": "english"
+          },
+          {
+            "screen": 20,
+            "sentence": 14,
+            "kind": "numbering",
+            "severity": "medium",
+            "description": "Wrong part label. The footer reads \"SENTENCE 14 / 54 · PART 2/3\", the same as screen 19. The screen actually shows the last part (\"… towels too clean and white for one out of practice to use without some vague sense of profanation.\", vocabulary 22–26, Chinese 「这些毛巾太干净……亵渎之感。」), so it should read PART 3/3. No screen is labelled PART 3/3 for sentence 14.",
+            "lens": "english"
+          },
+          {
+            "screen": 0,
+            "sentence": 2,
+            "kind": "structure",
+            "description": "The video has 61 screens, but the reference expects 62. The second part of sentence 2 is missing: screen04 is 'SENTENCE 2 / 54 · PART 1/2' and screen05 jumps straight to 'SENTENCE 3 / 54 · PART 1/3'. As a result the English from 'which, after long fasting…', the Chinese 「这种东西在长久的断食之后，一旦面对带有艺术气息的物件，无论它们多么廉价、多么朴素，便会意识到自己一直在不知不觉地忍饥挨饿，如今终于找到了滋养。」 and vocabulary entries 9–17 (fasting, recognize, be confronted by, belongings, howsoever, modest, unconsciously, famish, nourishment) never appear on any screen.",
+            "severity": "high",
+            "lens": "chinese"
+          },
+          {
+            "screen": 3,
+            "sentence": 1,
+            "kind": "chinese",
+            "description": "Wrong Chinese on sentence 1 PART 2/2. The screen repeats the part-1 text 「在漫长的几个星期里，我日日夜夜与矿工的小木屋为伍，对它们熟悉透了——这就意味着泥土地面、从不整理的床铺、铁皮盘子和铁皮杯子，」. It should show the part-2 text 「咸肉、豆子和黑咖啡，除了原木墙上钉着的、东部画报里的战争图片，再没有别的装饰；此后能置身于这样一个地方，真是令人愉快。」. The English (… bacon and beans … log walls.) and vocabulary 12–20 on this screen are correct.",
+            "severity": "high",
+            "lens": "chinese"
+          },
+          {
+            "screen": 27,
+            "sentence": 20,
+            "kind": "chinese",
+            "description": "Look-alike wrong character in the translation. The start of line 2 reads 「佘光就看得出来」 instead of 「余光就看得出来」 (reference: 我用眼角的余光就看得出来). A pixel check confirms it: the glyph has no vertical stroke between its two horizontal strokes, which makes it 佘, not 余. The vocabulary entry on the same screen (用眼角余光) correctly shows 余.",
+            "severity": "high",
+            "lens": "chinese"
+          },
+          {
+            "screen": 47,
+            "sentence": 40,
+            "kind": "vocab",
+            "description": "Look-alike wrong character in the vocabulary meaning. The regretfully entry reads 'adv. 遗憾地；婉惜地' with 婉 (女 radical). The reference is 遗憾地；惋惜地 with 惋 (忄 radical). The translation line on the same screen (我惋惜地说) correctly uses 惋.",
+            "severity": "medium",
+            "lens": "chinese"
+          },
+          {
+            "screen": 14,
+            "sentence": 10,
+            "kind": "numbering",
+            "description": "Vocabulary badge numbers are swapped. The English shows finishing¹ pats² combed³ brushed⁴ reckon⁵, but the panel lists 1 finishing, 3 pat, 2 comb, 4 brush, 5 reckon. It should read 2 pat and 3 comb, so the numbers in the panel are no longer 1, 2, 3 … in order and do not match their highlights.",
+            "severity": "medium",
+            "lens": "chinese"
+          },
+          {
+            "screen": 20,
+            "sentence": 14,
+            "kind": "numbering",
+            "description": "Footer reads 'SENTENCE 14 / 54 · PART 2/3' on the third and last part of sentence 14 (the '… towels too clean …' screen). It should read 'PART 3/3'. Screen19 also says 'PART 2/3', so two screens carry the same part label.",
+            "severity": "medium",
+            "lens": "chinese"
+          },
+          {
+            "screen": 6,
+            "sentence": 3,
+            "kind": "english",
+            "description": "English text is missing two words. The screen shows 'with sea-shells¹⁵ and china¹⁶ vases¹⁷ on them, …' but the reference reads 'with sea-shells and books and china vases on them'. The words 'and books' were dropped. The Chinese (…贝壳、书籍和瓷花瓶的陈设架，) and vocabulary 9–17 on this screen are correct.",
+            "severity": "medium",
+            "lens": "chinese"
+          }
+        ],
+        "opened": [
+          61,
+          61,
+          61
+        ],
+        "notes": [
+          "I opened all 61 screens in order (1 title card + 60 sentence screens) and read the reference /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/q8.txt. Zoomed crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/q8crops/.\n\nTitle card matches the reference: 温馨之家与主人的爱妻; 英语专业八级 2023年 · Passage Three; TEM-8 · READING · SECTION A; 记叙文 · 人物与情感; 全文 1079 词, which equals a whitespace word count of the reference English after removing the Chinese glosses in parentheses.\n\nScreen-to-sentence mapping: 02–03 = S1 (1/2, 2/2); 04 = S2 PART 1/2 (PART 2/2 is missing); 05–07 = S3 (1/3–3/3); 08–17 = S4–S13; 18–20 = S14; 21–23 = S15–S17; 24–25 = S18 (1/2, 2/2); 26–61 = S19–S54.\n\nApart from the findings listed, on every screen the badge numbers in the English and in the panel match, are consecutive and continue correctly across splits. Every sentence number k is right, and the progress marker sits at k/54 (measured from pixels on all screens). Highlight colours and badge shapes (round blue for words, square red for phrases, split phrases numbered on their last piece) match the panel. English and Chinese otherwise match the reference.\n\nSix screens (03, 06, 14, 20, 27, 47) have a slightly different background tint and a slightly different rendering of the same layout. Five of them contain the defects above; on screen 27 (S20) I found nothing wrong after zooming into every region. Its English is about 8% smaller than on screen 13, which is consistent with auto-fitting a longer sentence.",
+          "I opened all 61 screens in order (screen01–screen61), plus zoomed crops of the footers, the screen 14 vocabulary panel and the f/badge joins, and compared them with /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/q8.txt. Apart from the four findings, the screens match the reference. Title card: title, 2023年 · Passage Three, genre 记叙文 · 人物与情感 and the 1079-word count, which matches a whitespace word count of the reference English without the Chinese glosses in parentheses. Every header shows 2023年 · Passage Three and the same title. Except for the missing sentence 2 part 2, the English on every screen matches the reference word for word, including punctuation, curly apostrophes and quotes, and the split points for sentences 1, 3, 14 and 18. Every vocabulary headword, POS and badge shape (round for words, square for phrases) matches its reference entry, and every highlight matches its 高亮原文 (split phrases carry their number on the last piece). Sentences 3 through 54 each appear exactly once, in order. Minor cosmetic points I did not report: the hook of a bold red \\\"f\\\" just touches the following badge (\\\"myself\\\" on screen 55, \\\"sense of\\\" on screen 46, \\\"full of\\\" on screen 9). An em dash starts a line on screens 13 (\\\"—you\\\") and 45 (\\\"—about\\\"). On screen 19 the trailing \\\"…\\\" wraps onto a line of its own.",
+          "I opened all 61 screens and the reference q8.txt. For every screen I compared the Chinese translation and every vocabulary meaning character by character, using enlarged grayscale crops and, for doubtful characters (余/佘, 惋/婉, 己/已, 未/末), pixel maps. Apart from the issues listed, all Chinese translations, vocabulary meanings, the cover title (温馨之家与主人的爱妻, 英语专业八级 2023年 · Passage Three, 记叙文 · 人物与情感) and the header title on every screen match the reference. The question marks in sentences 30, 31, 36, 41 and 42 are the same full-width glyph on every screen. Screen-to-sentence map: 01 cover; 02–03 s1; 04 s2 part 1 only; 05–07 s3; 08–17 s4–s13; 18–20 s14; 21–23 s15–s17; 24–25 s18; 26–61 s19–s54. Six screens (03, 06, 14, 20, 27, 47) have a slightly different background colour (#F4EEE2 instead of #F2EDE1) and colour-fringed text, which suggests they were rendered separately. Every listed defect except the missing screen is on one of these six screens. Working crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/q8crops and .../scratchpad/g. No project files were modified."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "The folder has 61 screens, one short of the 62 the reference expects. screen04 is SENTENCE 2 PART 1/2 and ends at \"one's nature⑧ …\". screen05 is already SENTENCE 3 PART 1/3. None of the 61 screens shows \"which, after long fasting…\", its Chinese or vocab entries 9–17."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "screen03 (SENTENCE 1 PART 2/2) has the correct English (bacon … log walls) and vocab 12–20. Its Chinese, however, repeats part 1: 在漫长的几个星期里…铁皮盘子和铁皮杯子，. The part-2 Chinese 咸肉、豆子和黑咖啡…真是令人愉快。 appears nowhere."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "screen06 reads \"with sea-shells⑮ and china⑯ vases⑰ on them, …\", but the reference has \"sea-shells and books and china vases\". The Chinese on the same screen still has 贝壳、书籍和瓷花瓶."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "On screen14 the English badges run finishing① pats② combed③ brushed④ reckon⑤. The panel badges read ① finishing, ③ pat, ② comb, ④ brush, ⑤ reckon, so pat and comb have swapped numbers."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "screen20 shows the last part (\"… towels too clean … profanation.\", vocab 22–26), but its footer says SENTENCE 14 / 54 · PART 2/3. That is the same label as screen19, and no screen is labelled PART 3/3."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Zoomed in, the screen47 panel entry reads 遗憾地；婉惜地: the first character has the 女 radical, clearly different from the 忄 of the 惜 beside it. The reference has 惋惜地, and the translation line on the same screen correctly shows 惋."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "On screen19 the trailing \"…\" does not stay after \"towels㉑—\". It wraps to a line of its own, leaving an extra almost-empty line above the Chinese. On every other split screen (02, 04, 05, 06, 18, 24) the \"…\" ends the last text line."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Zoomed in on screen09, a half-em gap follows the full-width ，/。, and the narrow ” then sits right against the next character (\"手艺，  ”他\", \"都是。  ”说着\"). The same spacing appears on screens 35 and 47 and at sentence ends on screens 17, 23, 31 and 42."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Zoomed in, the top hook of the red 'f' in \"sense of②\" (screen46) runs into the square red badge. The same happens with \"myself⑬\" on screen25 and \"said to myself①\" on screen55. Screen20's \"sense of㉕\" shows it too."
+          },
+          {
+            "index": 9,
+            "real": true,
+            "why": "Same finding as index 0, and correct: sentence 2 has only PART 1/2 (screen04), and screen05 jumps to sentence 3. Part 2's English, Chinese and vocab 9–17 never appear, so the video has 61 screens instead of 62."
+          },
+          {
+            "index": 10,
+            "real": true,
+            "why": "Confirmed on screen03: the English and vocab 12–20 are correct, but the Chinese is the part-1 text. The second half of sentence 1's translation never appears."
+          },
+          {
+            "index": 11,
+            "real": true,
+            "why": "Confirmed on screen14: the panel order is finishing, pat, comb, brush, reckon, but the badges read 1, 3, 2, 4, 5. The English badges are pats② and combed③."
+          },
+          {
+            "index": 12,
+            "real": true,
+            "why": "Confirmed: screen20 is the final part (\"towels too clean … profanation\", vocab 22–26, Chinese 这些毛巾太干净…亵渎之感。) yet reads PART 2/3, and no screen is labelled PART 3/3 for sentence 14."
+          },
+          {
+            "index": 13,
+            "real": true,
+            "why": "Confirmed by going through all 61 screens: sentence 2's second half (English, Chinese 这种东西在长久的断食之后…找到了滋养。 and vocab 9–17) is missing. screen04 PART 1/2 is followed directly by sentence 3."
+          },
+          {
+            "index": 14,
+            "real": true,
+            "why": "Confirmed: the screen03 Chinese repeats the part-1 text instead of 咸肉、豆子和黑咖啡…真是令人愉快。. The English and vocab 12–20 are correct."
+          },
+          {
+            "index": 15,
+            "real": true,
+            "why": "Zoomed in on screen27, the first character of line 2 has 人 over two horizontals, with the vertical hook starting only at the lower horizontal and nothing between them. That is 佘. The vocab entry 用眼角余光 on the same screen shows 余, with the vertical running through both horizontals."
+          },
+          {
+            "index": 16,
+            "real": true,
+            "why": "Same as index 5: the screen47 vocab meaning shows 婉惜地 with the 女 radical, while the reference and the translation line on the same screen use 惋."
+          },
+          {
+            "index": 17,
+            "real": true,
+            "why": "Same as index 3: the screen14 panel badges read 1 finishing, 3 pat, 2 comb, 4 brush, 5 reckon, which does not match pats② and combed③ in the sentence."
+          },
+          {
+            "index": 18,
+            "real": true,
+            "why": "Same as index 4: screen20 is the final part of sentence 14 but its footer reads PART 2/3, duplicating screen19's label."
+          },
+          {
+            "index": 19,
+            "real": true,
+            "why": "Same as index 2: screen06 drops \"and books\" (\"sea-shells⑮ and china⑯ vases⑰ on them\"). The Chinese 贝壳、书籍和瓷花瓶 and vocab 9–17 on that screen are as described."
+          }
+        ]
+      },
+      {
+        "id": "t06",
+        "findings": [
+          {
+            "screen": 8,
+            "sentence": 7,
+            "kind": "highlight",
+            "severity": "medium",
+            "description": "In \"He had at that time² no notion of¹\", \"had\" is the first piece of phrase 1 (have no notion of) and \"at that time\" is phrase 2. Both are red with no space or mark between them, so the screen shows \"had at that time²\" as one phrase numbered 2 and \"no notion of¹\" as a separate phrase. A viewer would link \"had\" to entry 2 (at that time) instead of entry 1 (have no notion of), and the badges read 2, 1, 3 from left to right. Checked at 2x zoom: the two pieces are drawn as one continuous red run.",
+            "lens": "visual"
+          },
+          {
+            "screen": 41,
+            "sentence": 39,
+            "kind": "highlight",
+            "severity": "medium",
+            "description": "In \"had been borrowed for the day⁵ from⁴ Mr. Albert Griggs⁶\", \"borrowed\" is the first piece of phrase 4 (borrow…from) and \"for the day\" is phrase 5. Both are red and run together, so the screen shows \"borrowed for the day⁵\" as one phrase numbered 5 and a lone \"from⁴\". A viewer cannot tell that \"borrowed\" belongs to entry 4 (borrow…from) rather than entry 5 (for the day). Confirmed at 2x zoom: there is no separation between the two pieces.",
+            "lens": "visual"
+          },
+          {
+            "screen": 25,
+            "sentence": 24,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The vocabulary panel (16 entries) is packed to its edges. The red VOCABULARY label starts about 5 px below the panel's top outline (y≈145, outline at y=140). The descender of \"p\" in the last entry \"stupid\" reaches y=982 and touches the bottom outline at y=983. Most screens have about 20 px or more of padding, and even screens 15, 23 and 52 keep about 15 px. Nothing is cut off yet, but the text touches the frame and has no margin.",
+            "lens": "visual"
+          },
+          {
+            "screen": 8,
+            "sentence": 7,
+            "kind": "highlight",
+            "severity": "low",
+            "description": "The highlighted words match the reference, but the way they are drawn is misleading. The phrase 'have no notion of' (entry 1, highlighted words 'had … no notion of') has its unnumbered first piece 'had' sitting directly next to entry 2 'at that time'. Both are the same red bold with no gap between them, so the line reads as one run, 'had at that time[2] no notion of[1]'. A viewer would take entry 2 to be 'had at that time' and would not link 'had' to entry 1. Nothing on screen marks 'had' as belonging to entry 1.",
+            "lens": "english"
+          },
+          {
+            "screen": 41,
+            "sentence": 39,
+            "kind": "highlight",
+            "severity": "low",
+            "description": "Same problem as screen 8. The highlighted words match the reference ('borrowed … from' for entry 4 and 'for the day' for entry 5), but the unnumbered piece 'borrowed' of 'borrow…from' (entry 4) runs straight into 'for the day' (entry 5) in the same red bold. The screen therefore reads 'borrowed for the day[5] from[4]', so 'borrowed' looks like part of entry 5 rather than entry 4.",
+            "lens": "english"
+          }
+        ],
+        "opened": [
+          54,
+          54,
+          54
+        ],
+        "notes": [
+          "I opened all 54 screens and the reference file. The video has 54 screens: the title card, 51 single-screen sentences, and sentence 36 split over two screens (screens 37–38). The reference file has no \"expected structure\" section, so I could not check the split points or the Chinese text of each part against it. I could only check that the split was internally consistent.\n\nTitle card (screen 1): it matches the reference. Title 想出人头地的父母与失败的养鸡场, \"英语专业八级 2024年 · Passage Three\", \"TEM-8 · READING · SECTION A\", genre 记叙文 · 家庭与人生. The word count \"全文 1093 词\" matches the reference English counted by splitting on spaces (1093). The seal reads 专八/精读 and the legend is present.\n\nNumbering: for every sentence screen I wrote down the badges in the English, the panel numbers and the footer. On every screen the panel is numbered 1..n with no gaps, repeats or swaps. The badge numbers in the English match the panel numbers as a set. Every highlighted item has a badge (split phrases carry it only on their last piece). Every panel entry has a highlighted item on its screen. Colours and badge shapes match the entry type throughout.\n\nSentence 36 split: screen 37 has entries 1–11 and screen 38 continues with 12–21. The English has a \"…\" at the cut on both screens. The footers read \"36 / 52 · PART 1/2\" and \"PART 2/2\". The Chinese part 1 ends with \"，\" and part 2 starts with \"我们把…\" without a \"…\"; the reference has no split data to check this against.\n\nFooters: they run from SENTENCE 1 / 52 to SENTENCE 52 / 52 without skips. The progress marker matches k/52 on every screen I measured (for example 1/52, 34/52, 36/52 and 52/52 at the far end).\n\nNo tofu boxes, replacement characters or garbled text anywhere. Chinese ellipses (……) are drawn as centred dots everywhere I zoomed in (screens 4, 5 and 7). Nothing overlaps the header rule or the footer.\n\nPossibly worth a look: on screen 42 (sentence 40) the panel is also tight, about 10 px at the top and 7 px at the bottom, but nothing touches the outline. Several other sentences put a split-phrase piece directly after another phrase's badge, or next to a different-coloured highlight (screens 9, 20, 26, 27, 35, 45, 52). These are still readable because the badge or the colour change separates them. Only screens 8 and 41 have two same-coloured pieces from different entries running together with nothing between them.",
+          "I opened all 54 screens in order and zoomed in on the dense ones (sentences 7, 24, 36 part 1, 36 part 2 and 39). There is a title card plus 53 sentence screens. Sentences 1 to 52 each appear exactly once and in order. Only sentence 36 is split: screen 37 is PART 1/2 and ends 'henhood, …'; screen 38 is PART 2/2, starts '… we threw all aside', and continues the vocabulary from 12 to 21. The reference file has no expected-screens or split section, so I could not check the split point against it. Together the two parts give the whole sentence with nothing missing or repeated.\n\nThe English on every sentence screen matches the reference word for word, including curly apostrophes, em dashes, word forms and punctuation. Every vocabulary entry matches the reference in headword, POS and whether it is a single word or a phrase. Every highlight covers exactly its 高亮原文 (highlighted words). Numbering follows the order of first appearance, and badge shapes and colours are correct.\n\nThe title card shows the right title, 英语专业八级 2024年 · Passage Three, 记叙文 · 家庭与人生 and 全文 1093 词. The 1093 matches a whitespace word count of the reference English. Every header shows 2024年 · Passage Three and the right Chinese title. The footers run SENTENCE 1/52 to 52/52, with PART 1/2 and 2/2 on sentence 36.\n\nNothing is cut off. The vocabulary panels on screens 25 (16 entries), 15, 23, 42 and 52 are close to the panel edges but fit inside. The only findings are the two low-severity cases above, where the highlighted words are correct but read as one phrase because they touch another phrase in the same colour.",
+          "I opened all 54 screens and checked them against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t06.txt. I found no Chinese defects.\n\n- **Screen count:** screen 1 is the title card. Screens 2–54 show sentences 1–52, with sentence 36 split into two parts on screens 37 and 38. The split points are marked with \"…\" on both screens and the footers read \"PART 1/2\" and \"PART 2/2\".\n- **Split Chinese:** the reference file has no split-point section at the end, so I joined the Chinese of the two parts. Part 1 ends at \"为这些操了十年心之后，\" and part 2 starts at \"我们把一切都抛到一边…\". Together they match the reference ZH for sentence 36 exactly.\n- **Translations:** I read every translation character by character, using zoomed crops for the dense lines. Every one matches its reference ZH, including punctuation (；：——、·). There are no look-alike wrong characters. For example, 已 in 已经 and 他已变得 is correct, and 未 in 未知 and 未长全 is correct. Each translation belongs to its own sentence and none is cut short.\n- **Vocabulary meanings:** every Chinese meaning in every vocabulary panel matches the reference, including the long ones on screens 37 (semi-naked, pullethood), 25 (pip, by the sweat of one's brow) and 23 (should have done). Each panel has the same number of entries as the reference.\n- **Titles:** the title card shows 想出人头地的父母与失败的养鸡场, the genre 记叙文 · 家庭与人生 and 全文 1093 词. Every screen header carries the same title.\n- **Layout:** the most crowded panel is screen 25, with 16 entries. Zoomed crops of its top and bottom edges show \"VOCABULARY\" and the last entry (stupid 呆滞的；愚蠢的) both fully inside the panel. I saw no clipped or overlapping text on any screen."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed on screen08 at 2x zoom. 'had at that time' is one red bold run with only a normal word space between 'had' and 'at', and the square badge 2 comes after 'time'. 'no notion of' then follows with badge 1, so the badges read 2, 1, 3 from left to right. 'had' looks like part of entry 2 and nothing ties it to entry 1 (have no notion of). The highlighted words match the reference, but the drawing is misleading. This happens because the last-piece numbering rule gives a split phrase's first piece no number, and here that unnumbered piece sits right before another red phrase."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Confirmed on screen41 at 2x zoom. 'borrowed for the day' is one continuous red bold run ending in badge 5, followed by 'from' with badge 4. Nothing separates 'borrowed' (the unnumbered first piece of entry 4, borrow…from) from entry 5, 'for the day', so 'borrowed' reads as part of entry 5. The words match the reference (borrowed … from; for the day), but a viewer would group them wrongly."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Pixel measurement of screen25 confirms it. The panel's top outline is at y=140 and the first dark pixel of the red VOCABULARY label is at y=144, a gap of about 3–4 px. The bottom outline is at y=983 and the last dark row is y=982 (the descender of 'p' in 'stupid', x≈1346–1352), a gap of 0–1 px. Most screens have far more padding. The tightest others are 42 (about 9/7 px), 52 (about 12/11 px), 23 (16/21 px) and 15 (17/22 px). So screen 25 is the only one where the text touches the frame. Nothing is cut off. The '~15 px' quoted for 52 is slightly generous, but the claim is otherwise accurate."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Same defect as index 0, verified the same way on screen08. 'had' (unnumbered piece of entry 1) and 'at that time' (entry 2) share the same red bold with no gap, so they read as one phrase numbered 2. The highlights match the reference, but the rendering is misleading as described."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Same defect as index 1, verified the same way on screen41. 'borrowed' (unnumbered piece of entry 4) runs directly into 'for the day⁵' in the same red bold, so the line reads 'borrowed for the day⁵ from⁴'. The highlights match the reference, but the rendering misattributes 'borrowed' to entry 5."
+          }
+        ]
+      },
+      {
+        "id": "t07",
+        "findings": [
+          {
+            "screen": 11,
+            "sentence": 10,
+            "kind": "layout",
+            "description": "The red phrase \"stopped short of\" ends in \"f\", and the top hook of that \"f\" runs into the top-left corner of square badge 3. Both are the same red, so when zoomed in the letter and the badge look fused instead of separated by the usual small gap seen at every other badge.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 15,
+            "sentence": 14,
+            "kind": "layout",
+            "description": "Same problem as screen 11: the hook of the final \"f\" in the red phrase \"a limited number of\" touches square badge 1, so the letter and the badge merge.",
+            "severity": "low",
+            "lens": "visual"
+          }
+        ],
+        "opened": [
+          43,
+          43,
+          43
+        ],
+        "notes": [
+          "I opened all 43 screens in order and checked each against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t07.txt.\n\nStructure: the reference file has no expected-structure section at the end. It stops after sentence [41]. From the content, the structure works out as 43 screens: 1 title card, 41 sentences, and sentence 36 split into PART 1/2 (screen 37) and PART 2/2 (screen 38). Split points:\n- English: \"...the food and beverage industry …\" / \"… has an unfair and non-transparent...\"\n- Chinese: part 1 ends \"…政治影响力，\", part 2 starts \"对消费者…\".\nSentence numbers k run 1 to 41 in order with no gaps. The PART label appears only on screens 37 and 38. The progress bar matches k/41 on every screen I measured (for example 1/41, 19/41, 35/41, 36/41, 40/41, 41/41).\n\nNumbering: for every screen I recorded the badge numbers in the English, the panel numbers and the footer.\n- The panel always runs 1..n with no gap, repeat or swap. On screen 38 it continues 9..18 from screen 37's 1..8.\n- The badge set always equals the panel set.\n- Split phrases carry their number only on the last piece: urged…to, If…were to, used…as, similar…to, it will take…to, impact of…on, described…as, hold…to account. Where these make the badges read out of order left to right (for example 1,3,2,4,5), that follows the first-appearance numbering and is correct.\n- Every highlight colour and badge shape matches its panel entry type.\n\nText: the English, Chinese and vocabulary entries (headword, part of speech, meaning) match the reference on every screen.\n\nTitle card: title, \"TEM-8 · READING · SECTION A\", \"英语专业八级 2023年 · Passage One\", \"说明文 · 健康与公共政策\" and the seal are all correct. \"全文 857 词\" matches my count of 857 words in the reference English.\n\nRendering: I found no garbled characters, empty boxes or clipping. Text closest to the right edge (screens 10, 19, 23, 25, 41) and the fullest panels (screens 13 and 33) all stay inside their areas. Every Chinese \"……\" in the panels is drawn the same way, as six centred dots (montage of all occurrences checked).\n\nScreen 41 (sentence 39, unsplit) is auto-fitted about 10% smaller than other dense screens. That is within normal range, not abnormal.\n\nNormal full-width Chinese punctuation spacing, not reported as defects:\n- \"。”\" with the half-em blank after 。 (screens 14, 17, 19, 26)\n- \"）；\" in a few panel meanings\n- the full-width \"（\" starting line 2 on screen 3",
+          "I opened all 43 screens of t07 in order and found no defects, so the list is empty. Screen 1 is the title card, screens 2–37 are sentences 1–35, screens 37–38 are sentence 36 (PART 1/2 and PART 2/2), and screens 39–43 are sentences 37–41.\n\nThe reference file (/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t07.txt) is 387 lines long and stops after sentence 41. It does not have the section on the expected screen count and split points that the task describes. I worked out the expected total from 41 sentences plus the title card plus one extra part for sentence 36, which gives 43.\n\n- **Coverage and order:** every sentence appears exactly once and in order. Footers run from SENTENCE 1/41 to 41/41.\n- **Headers and title card:** every header reads \"2023年 · Passage One 澳大利亚的含糖饮料税之争\". The title card shows the same title on one line, \"英语专业八级 2023年 · Passage One\" and the genre 说明文 · 健康与公共政策. I did not check the \"全文 857 词\" count because the reference does not give one.\n- **Sentence 36 split:** part 1 ends \"…the food and beverage industry …\" and part 2 starts \"… has an unfair and non-transparent influence…\". Together they give the whole sentence with nothing missing or repeated. The vocabulary numbers run 1–8 on the first part and 9–18 on the second.\n- **English text:** I compared every sentence word by word with the reference, including:\n  - word forms (-s, -ed, -ing) and curly apostrophes (It’s, doesn’t, industry’s, Australia’s, Melbourne’s);\n  - quote marks in sentences 8, 13, 16, 18, 25 and 32;\n  - dashes in sentences 5, 27 and 40;\n  - parentheses: (SSB), (AMA), (AACS);\n  - numbers, which I zoomed in to check: 5g, 8g, 100ml, 330ml, 27.6%, 17-week, 5.5%, 9.7%, 20%, $30, $5.\n\n  All match.\n- **Vocabulary panels:** every entry matches the reference in headword, POS (phrases have none), colour and badge shape.\n- **Highlights:** each highlight covers exactly the words given as its 高亮原文. That includes the split phrases urged…to, If…were to, used…as, similar…to, it will take…to, impact of…on, described…as and hold…to account, each with its number on the last piece only.\n- **Layout:** I zoomed in on the fullest vocabulary panels (screens 13 and 33) and nothing is cut off or overlapping.\n- **Line breaks:** \"soft-/drink-consuming\" (screen 20) and \"17-/week\" (screen 23) break at real hyphens, which is normal, so I did not report them.",
+          "I opened all 43 screens at full resolution: the title card, 41 sentence screens, and one extra part because sentence 36 is split over screens 37 and 38 (PART 1/2 and 2/2, with vocabulary numbering running on as 9–18 on the second part). The reference file ends at sentence 41 and has no section listing the expected screen count or split points. So for sentence 36 I could only check that the Chinese on the two parts joins up exactly to the reference text, and it does.\n\nFor every sentence I read the Chinese translation character by character against the reference ZH, including punctuation (，：；——“”《》（）？), the numbers and percentages, and the parenthesised abbreviations (SSB), (AMA) and (AACS). I did the same for every Chinese meaning in the vocabulary panels. Everything matches: I found no wrong characters, nothing missing or added, no translation cut short, and none attached to the wrong sentence.\n\nWhere characters look alike I zoomed in or traced the glyph shapes in text:\n- 全 (not 仝) in sentence 3.\n- 已 in sentence 9 (twice) and sentence 33, and 己 in 自己 in sentence 38.\n- 吁 in 呼吁, in sentence 2 and the vocabulary panels of sentences 1 and 2.\n- 协 (not 胁) in every 协会 (sentences 6, 27, 32, 33 and their vocabulary panels).\n- 入 against 人 in 加入, 摄入 (twice), 收入, 植入 and 成年人.\n- 士 (not 土) in 政界人士, plus 准 in 准则 and 治 in 政治.\n\nThe Chinese title 澳大利亚的含糖饮料税之争 is correct on the title card, on one line. The header strip is pixel-identical on all 42 sentence screens and shows the same title. The genre line 说明文 · 健康与公共政策 also matches. No text is cut off or overlapping; the vocabulary panels on screens 13 and 33 are the fullest, but they still fit inside the panel.\n\nThe question marks ending sentences 2 and 34 are drawn in this font's narrow style. Both are drawn with the same glyph, so I treated them as the full-width ？ the reference uses rather than as a defect. Neither half of the split sentence 36 has a \"…\" in its Chinese line; only the English is marked. The Chinese still joins exactly, so I did not report it."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed on screen11 (sentence 10). At 8x zoom, the top hook of the final 'f' in the red 'stopped short of' runs straight into the top-left corner of square badge 3, so the letter and badge read as one red shape. A flood-fill of red pixels started inside the badge spreads left through the hook and into the f stem (x=1027 to 1085), so they are one connected region. Control badges ('for' badge 3 on screen03, 'for example' badge 4 on screen17) fill only their own badge and show the usual gap."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Confirmed on screen15 (sentence 14). At 8x zoom, the hook of the final 'f' in the red 'a limited number of' merges into the top-left of square badge 1, with no background gap between them. A flood-fill from inside the badge spreads into the f glyph (x=878 to 931), while the control badges on other screens stay separate from their letters. The defect is the same as on screen11."
+          }
+        ]
+      },
+      {
+        "id": "t08",
+        "findings": [
+          {
+            "screen": 34,
+            "sentence": 33,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In the vocabulary panel, entry 1 'have nothing to do with' fills its line, so the meaning '与……毫无关系' wraps onto a second line. That second line starts about 14 px further right (x≈1333) than the headword (x≈1318) and than wrapped lines in other entries (e.g. '方法论' in entry 3 at x≈1319). The gap that normally sits between headword and meaning has been carried to the start of the new line. The wrapped line should start at the same x as the other wrapped lines.",
+            "lens": "visual"
+          },
+          {
+            "screen": 39,
+            "sentence": 38,
+            "kind": "layout",
+            "severity": "low",
+            "description": "This 14-entry panel was auto-fitted with almost no bottom padding. The descender of 'y' in the last entry '14 summary n. 摘要；概要' reaches y=981, while the panel's bottom border is at y=983. The text is not cut off, but it looks as if it sits on the frame line. Other screens leave clear space below the last entry. Screen 21 (S20, last entry 'type up', descender to y=980) is almost as tight.",
+            "lens": "visual"
+          },
+          {
+            "screen": 5,
+            "sentence": 4,
+            "kind": "layout",
+            "description": "The square red badge on a phrase that ends in 'f' touches the letter: the hook at the top of the last 'f' runs into the top-left corner of the badge. In 'get off¹' the second 'f' merges into the red badge, which is the same colour (zoomed crop confirms it). The same small collision appears on every phrase ending in 'of': screen04 'distance of²', screen07 'the rest of⁴', screen10 'a part of³', screen11 'in terms of⁵', screen12 'in the form of⁶' and 'number of¹¹', screen13 'hundreds of⁴', screen14 'by way of⁴', screen18 'a way of⁵', screen24 'the ranks of⁶', screen25 'a bit of¹', screen44 'as part of⁵', screen48 'an assortment of²'. The text is still readable, but the badge should sit a few pixels further right so it does not touch the glyph.",
+            "severity": "low",
+            "lens": "english"
+          }
+        ],
+        "opened": [
+          49,
+          49,
+          49
+        ],
+        "notes": [
+          "I opened all 49 screens in order and zoomed in on anything uncertain (Pillow from /opt/ttsenv/bin/python). The reference file has no structure section at the end. It lists 48 sentences, so with the title card I expected 49 screens and no splits. That is what the video has: one title card, then one screen per sentence for S1–S48, with no PART labels anywhere.\n\nTitle card: matches the reference.\n- Title '我在好莱坞剧本分解公司的半年' is on one line.\n- Tag 'TEM-8 · READING · SECTION A' is present.\n- '英语专业八级 2023年 · Passage Two' is correct.\n- Genre '记叙文 · 职场与娱乐业' is correct.\n- '全文 1066 词' matches a word count of the 48 English sentences (1066).\n- The seal reads right column 专八, left column 精读.\n\nNumbering, per screen (circle numbers in English, left to right / panel numbers, top to bottom / footer):\n- scr2 S1: 1-5 / 1-5 / 1/48\n- scr3 S2: 1-5 / 1-5 / 2/48\n- scr4 S3: 1,3,2,4 / 1-4 / 3/48 (split phrase within…distance of; its first piece 'within' comes before 'bicycling')\n- scr5 S4: 1-4 / 1-4 / 4/48\n- scr6 S5: 1 / 1 / 5/48\n- scr7 S6: 1-6 / 1-6 / 6/48\n- scr8 S7: 1-6 / 1-6 / 7/48\n- scr9 S8: 1-6 / 1-6 / 8/48 (getting…done)\n- scr10 S9: 1-6 / 1-6 / 9/48\n- scr11 S10: 1-10 / 1-10 / 10/48\n- scr12 S11: 1-15 / 1-15 / 11/48\n- scr13 S12: 1-12 / 1-12 / 12/48\n- scr14 S13: 1-12 / 1-12 / 13/48\n- scr15 S14: 1 / 1 / 14/48\n- scr16 S15: 1-5 / 1-5 / 15/48\n- scr17 S16: 1-7,9,10,8,11,12 / 1-12 / 16/48 (match…with)\n- scr18 S17: 1-7 / 1-7 / 17/48\n- scr19 S18: 1-7 / 1-7 / 18/48\n- scr20 S19: 1-5 / 1-5 / 19/48\n- scr21 S20: 1-8,10,11,9,12-14 / 1-14 / 20/48 (fill…with)\n- scr22 S21: 1 / 1 / 21/48\n- scr23 S22: 1-6,8,9,10,7,11,12 / 1-12 / 22/48 (ranging from…to; 'Gambler' is numbered 4 by where it first appears)\n- scr24 S23: 1-9 / 1-9 / 23/48\n- scr25 S24: 1-7 / 1-7 / 24/48\n- scr26 S25: 1 / 1 / 25/48\n- scr27 S26: 1-3 / 1-3 / 26/48\n- scr28 S27: 1-5 / 1-5 / 27/48\n- scr29 S28: 1-6 / 1-6 / 28/48\n- scr30 S29: 1-7 / 1-7 / 29/48\n- scr31 S30: 1-8 / 1-8 / 30/48\n- scr32 S31: 1-10 / 1-10 / 31/48\n- scr33 S32: 1-6 / 1-6 / 32/48\n- scr34 S33: 1-6 / 1-6 / 33/48\n- scr35 S34: 1-17 / 1-17 / 34/48\n- scr36 S35: 1-4,6,7,8,5,9-13 / 1-13 / 35/48 (not only…but, wants…done)\n- scr37 S36: 1-5 / 1-5 / 36/48\n- scr38 S37: 1-5 / 1-5 / 37/48\n- scr39 S38: 1-14 / 1-14 / 38/48\n- scr40 S39: 1-2 / 1-2 / 39/48\n- scr41 S40: 1-3 / 1-3 / 40/48\n- scr42 S41: 1-7,9,8,10-15 / 1-15 / 41/48 (are…bad at)\n- scr43 S42: 1-5 / 1-5 / 42/48\n- scr44 S43: 1-6 / 1-6 / 43/48\n- scr45 S44: 1-13 / 1-13 / 44/48\n- scr46 S45: 1-3 / 1-3 / 45/48\n- scr47 S46: 1-5 / 1-5 / 46/48\n- scr48 S47: 1-8 / 1-8 / 47/48\n- scr49 S48: 1-14 / 1-14 / 48/48\n\nEvery panel is consecutive with no gaps, and on every screen the circle numbers and panel numbers are the same set. Each split phrase has its badge only on its last piece. Highlight colours and badge shapes match the entry types throughout.\n\nProgress bar: I measured the red marker on every screen. It moves 27.5 px per sentence, from x≈380 at k=1 to x≈1675 at k=48, which is linear in k/48.\n\nText placement: I measured ink extents by script. No English or Chinese text goes past x≈1178 or below y≈965, and no text is cut off or overlapping.\n\nText against the reference: the headwords, part-of-speech labels and meanings I compared match the reference, and so do the EN and ZH lines.\n\nObserved but not reported as defects:\n- Chinese ellipses '……' in the panels are drawn the same way everywhere (centred dots).\n- Gaps such as '）。' and '》，' are normal full-width CJK punctuation spacing.\n- The name '加里·马什' on screen 15 breaks across lines after '·'. This is a legal line break, not a rendering fault.\n- The round badge sits between 'actors' and its possessive ’ on screens 13 and 49, because the reference highlights only 'actors'.\n- The straight apostrophe in the headword \"try one's hand at\" matches the reference.",
+          "I opened all 49 screens in order and compared each one with ref/t08.txt; I zoomed into screens 5, 10, 11 and 36 to check details. The video has the title card (screen01) plus one screen per sentence for all 48 sentences (screen02–screen49), with no splits, no gaps, no repeats and no swaps. Every footer reads SENTENCE k / 48 and matches its screen.\n\n- **Title card and headers:** The cover shows 我在好莱坞剧本分解公司的半年, 英语专业八级 2023年 · Passage Two and the genre 记叙文 · 职场与娱乐业. Every header shows 2023年 · Passage Two and the title. All match the reference.\n- **English text:** I read all 48 sentences word by word against the reference EN, and every one matches exactly. That includes the curly apostrophes and quotes, the em-dashes, '(still thriving)', '(回流)', 'Ltd.' / 'Ltd., was', 'BreakThrough', '1 p.m.,', '$500' and 'phrase’s'.\n- **Vocabulary entries:** Every headword and part of speech matches the reference, including Ltd abbr., xerox v., subscribing adj., moonlighting adj., operating adj. and involved adj. Phrases show no part of speech.\n- **Highlights:** Every highlight covers exactly its 高亮原文. Split phrases carry the badge only on the last piece: getting…done, fill…with, match…with, range from…to, not only…but, wants…done and are…bad at.\n\nTwo things look different from the reference but are not defects. On screen23 (sentence 22), 'gambler' is entry 4 on screen, while the reference lists it last; the screen numbers entries by first appearance ('Gambler' comes before 'lists'), as the design says. Panels with many entries (screens 21, 35, 36, 39, 42) come close to the bottom border but nothing is cut off. The only defect I found is the small badge-touching-'f' collision reported above.",
+          "No defects found on any of the 49 screens. That is 1 cover plus 48 sentence screens, and the reference lists 48 sentences with no splits.\n\nHow the check was done: I opened every full screen, plus an enlarged crop of each sentence screen (Chinese translation and vocabulary panel at 125–150%). I copied out each Chinese translation character by character and compared it with the reference ZH, then did the same for each vocabulary meaning. I made extra close-ups where look-alike characters or the panel edges were in question: 一抒己见 on screen 32 (己, not 已), 他已经 on screen 34 (已, not 己), the middle dot in 加里·马什 on screen 15, and the bottom of the vocabulary panel on screens 11, 12, 13, 14, 17, 21, 23, 35, 36, 39, 42, 45 and 49 (the last entry is inside the panel border every time; none is cut off).\n\nHeader title: a pixel comparison of the header area (year, Passage Two, Chinese title) found it identical on all 48 sentence screens. The text reads 2023年 · Passage Two 我在好莱坞剧本分解公司的半年, which matches the reference.\n\nCover: the title 我在好莱坞剧本分解公司的半年 is on one line, and the genre 记叙文 · 职场与娱乐业 matches.\n\nFooter counters run SENTENCE 1/48 through 48/48 in order. Vocabulary meanings, badge shapes and colours, and numbering by first appearance all match the reference. Only the last piece of a split phrase carries its number, as designed (get…done, match…with, regarded…with, fill…with, ranging from…to, not only…but, wants…done, are…bad at).\n\nPunctuation also matches: the curly quotes and the ——, ：, ；, 、 and （） marks in the Chinese all agree with the reference.\n\nOne caveat: during the session, screens 1–27 and their crops were dropped from my context after I had checked them, and reopening them did not bring them back. My verdict on those screens comes from the comparison I made when they were first open; only screens 28–49 were still visible at the end."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed on screen34. In entry 1 the headword 'have nothing to do with' fills the line, so the meaning '与……毫无关系' wraps whole onto line 2. That line's ink starts at x=1328, while the headword and the wrapped '方法论' of entry 3 both start at x=1318. The offset is about 10 px, not the ~14 px (x≈1333) the reviewer gave, but the misalignment is real and visible when zoomed. Cause: in 样式.css/make_video.py the meaning <span> has margin-left:10px, and when the whole span moves to a new line that margin moves with it to the start of the line."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Confirmed on screen39. The descender of 'y' in '14 summary' reaches y=981 and the panel's bottom outline is at y=983, so only about 1 px of paper shows between them. At the top, 'VOCABULARY' starts at y=146 against the border at y=141. The 14-entry content has used up the panel padding. Measured over all screens: screen39 has the smallest bottom gap (2 px) and screen21 ('type up', descender at y=980) is next (3 px). Most other screens leave 7 px or more, many far more. The text is not cut off but sits visibly on the frame line, as described."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Confirmed. Zoomed crops of screen05 show the hook of the final 'f' in 'get off' and in 'plenty of' joining the top-left corner of the square red badge. Connected-component analysis finds the f and the badge as one red shape. The same merge shows on every cited instance: screen04 distance of², screen07 rest of⁴, screen10 part of³, screen11 terms of⁵, screen12 form of⁶ and number of¹¹, screen13 hundreds of⁴, screen14 way of⁴, screen18 of⁵, screen24 ranks of⁶, screen25 bit of¹, screen44 part of⁵, screen48 assortment of². Three more phrase badges that touch an 'f' were not in the list: screen10 'myself²', screen24 'because of¹' and screen28 'one of⁴'."
+          }
+        ]
+      },
+      {
+        "id": "t09",
+        "findings": [
+          {
+            "screen": 20,
+            "sentence": 14,
+            "kind": "layout",
+            "description": "On PART 2/3 the continuation mark '…' does not fit after 'towels²¹—', so it drops onto a line of its own (x≈110, y≈635). The result is a nearly empty fifth English line with only the grey dots, which wastes space and looks broken. The '…' should stay on the line with 'towels—'.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 14,
+            "sentence": 9,
+            "kind": "layout",
+            "description": "The em dash is cut off from the word before it at a line break. Line 2 ends with 'until you’ve done that' and line 3 starts with '—you can see it yourself…'. A line that begins with an em dash looks like a typesetting error; the dash should stay at the end of the line with 'that'.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 46,
+            "sentence": 38,
+            "kind": "layout",
+            "description": "Same dash problem as screen 14: line 1 ends with 'in the evening' and line 2 starts with '—about nine o’clock'. The em dash begins the line instead of staying with 'evening'.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 56,
+            "sentence": 48,
+            "kind": "layout",
+            "description": "A square phrase badge runs into the overhanging top of the letter f. In 'said to myself¹' the top-left of the red badge covers the curl of the 'f' (zoomed crop), and because both are the same red the letter blends into the badge. The same tight contact or slight overlap of an f with a square badge appears on screen 9 ('as if⁷'), screen 10 ('full of⁵'), screen 21 ('sense of²⁵'), screen 26 ('myself¹³') and screen 47 ('sense of²'). These badges need a little more space after a final f.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 7,
+            "sentence": 3,
+            "kind": "glyph",
+            "description": "The Chinese glosses inside the English sentence, '(陈设架)' here and '(平版印刷画)' on screen 6, fall back to a sans-serif (hei-style) CJK font. They look heavier and stylistically out of place in the serif English line. The serif/song font used for Chinese in the panel would match.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 14,
+            "sentence": 9,
+            "kind": "glyph",
+            "description": "The panel headword 'can't tell' uses a straight typewriter apostrophe ('), while the highlighted text shows the curly apostrophe in 'can’t tell'. Panel headwords on screen 28 ('out of the corner of one's eye'), screen 29 ('that's it') and screen 62 ('to one's face') do the same, while screen 46 shows 'o’clock' with a curly apostrophe. The screens match the reference here (the reference headwords themselves are straight), so the fix belongs in the data. On screen the panel and the sentence do not match.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 20,
+            "sentence": 14,
+            "kind": "layout",
+            "description": "Sentence 14 part 2/3: the English line ends with \"towels²¹—\" and the continuation mark \"…\" has wrapped onto a fourth line by itself (around y≈635). The words match the reference, but the orphaned ellipsis looks like a stray blank line. It should stay on the same line as \"towels—\", or the line should be refitted.",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 14,
+            "sentence": 9,
+            "kind": "layout",
+            "description": "The line break falls before the closed em dash, so the third English line begins with the dash: \"…until you’ve done that / —you can see it yourself…\". The reference has \"that—you\" with no space. The text is correct, but an em dash should not start a line; it should stay attached to \"that\". Screen 46 (sentence 38) has the same problem: \"…in the evening / —about nine o’clock…\".",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 56,
+            "sentence": 48,
+            "kind": "layout",
+            "description": "The square red phrase badge sits on top of the overhanging terminal of a final \"f\". In \"myself¹\" the hook of the f runs under badge 1 (most visible here). Because the badge is the same red as the phrase, the badge and the letter merge. The same small overlap appears on screen 10 (\"full of⁵\"), screen 21 (\"sense of²⁵\"), screen 26 (\"for myself¹³\") and screen 47 (\"sense of²\"). It needs a little more spacing before badges that follow an \"f\".",
+            "severity": "low",
+            "lens": "english"
+          }
+        ],
+        "opened": [
+          62,
+          62,
+          62
+        ],
+        "notes": [
+          "I opened all 62 screens in order (screen01 is the title card, screen02–62 are the sentence screens) and the reference file. The reference has no expected-structure section at the end, so I worked the structure out myself: 54 sentences, with S1 split in 2 (screens 2–3), S2 in 2 (4–5), S3 in 3 (6–8), S14 in 3 (19–21) and S18 in 2 (25–26). That gives 1 + 54 + 7 = 62 screens, which matches the folder.\n\nTitle card: everything matches the reference. It shows the title 温馨之家与主人的爱妻 on one line, '英语专业八级 2023年 · Passage Three', the tag 'TEM-8 · READING · SECTION A', the genre 记叙文 · 人物与情感, the seal and the legend.\n\nNumbering and footers: on every sentence screen I wrote down the circle numbers in the English, the panel numbers and the footer.\n- Panel numbers are consecutive everywhere, and they continue correctly across splits (S1 1–11 / 12–20; S2 1–8 / 9–17; S3 1–8 / 9–17 / 18–25; S14 1–11 / 12–21 / 22–26; S18 1–8 / 9–13).\n- The circle numbers in the English always equal the panel numbers.\n- Split phrases carry their badge only on the last piece: nothing…but, so…that ×2, took…in, such…as, too…for…to, rub…together, put…back, expect…back and for…sake.\n- Highlight colours and badge shapes always match the entry type.\n- Every footer shows the right k/54, and the PART labels are correct on all split screens and absent elsewhere.\n- I measured the progress-bar marker on every screen; it is within about 0.002 of k/54 every time, including 1.0 on the last screen.\n\nText: the English and Chinese on each screen match the reference, and the Chinese of the split parts joins up to exactly the reference translation. I found no tofu boxes, replacement characters or cut-off text, and no screen with an abnormal font size. The Chinese ellipsis …… is drawn centred everywhere I zoomed in (screens 2, 3, 16, 36 and 50).\n\nThe six findings are all cosmetic and low severity: three line-break issues (an orphaned '…', two lines starting with an em dash), square badges touching a final f, a sans-serif fallback font for Chinese inside the English, and straight apostrophes in some panel headwords.\n\nZoomed crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/t09crops/.",
+          "I opened all 62 screens in order and read them against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t09.txt. Screen 01 is the cover and screens 02–62 are the sentences. The reference file has no list of expected screens or split points, so I worked out the structure from the screens themselves. 54 sentences and 7 extra parts make 61 sentence screens, plus the cover gives 62.\n\nSplits:\n- Sentence 1: screens 02–03 (1/2, 2/2)\n- Sentence 2: screens 04–05\n- Sentence 3: screens 06–08 (1/3 to 3/3)\n- Sentence 14: screens 19–21\n- Sentence 18: screens 25–26\n\nEvery other sentence has one screen, in order, from sentence 4 on screen 09 to sentence 54 on screen 62. No sentence is missing, repeated or out of order.\n\nAt every split the parts join cleanly against the reference. Sentence 14 contains \"towels\" twice (\"towels—towels too clean…\"). Part 2 ends with the first and part 3 begins with \"… towels\", so both are present and nothing is duplicated.\n\nI checked the English word by word on every screen, including word forms, articles, apostrophes, quotes, dashes and the bracketed glosses (平版印刷画) and (陈设架). All of it matches the reference.\n\nAll vocabulary entries match the reference in headword, POS (none on phrases) and badge type: round blue for words, square red for phrases. Each highlight covers exactly the words given in the reference, with split phrases numbered on their last piece. Examples: nothing … but, so … that, took … in, such … as, too … for … to, rubbed … together, put … back, expect … back and for … sake. The whole-word highlights also match: \"is apt to\", \"being eager to\", \"was so deep in\", \"held it open\", \"peace of mind’s\" and \"out of the corner of my eye\".\n\nNumbering follows the order in which each item first appears in the sentence. In a few sentences this differs from the order of the reference list (sentences 1, 3 and 18), which is consistent and intended.\n\nThe cover and every header show the reference title 温馨之家与主人的爱妻, the year 2023年 and Passage Three. The cover genre 记叙文 · 人物与情感 matches. The cover word count of 1079 matches the whitespace word count of the reference English.\n\nThe only findings are three minor layout points.",
+          "I opened all 62 screens of t09 in order: screen01 is the cover, and screens 02–62 cover sentences 1–54. The splits are consistent: s1 is on screens 02–03 (2 parts), s2 on 04–05 (2), s3 on 06–08 (3), s14 on 19–21 (3) and s18 on 25–26 (2), which gives 61 sentence screens. I read every Chinese translation line by line against the reference ZH, including each part of the split sentences. They match character for character, with no missing, extra or wrong characters and no translation belonging to another sentence. Punctuation matches too, including the curly quotes, the ——, ……, ！ and ？.\n\nI also checked every vocabulary meaning against the reference, including the ones with parenthetical notes, such as （作定语）, （口）, （the score of）, （否定） and （表示惊讶等）. They all match.\n\nI zoomed in on the look-alike characters. Each one is correct:\n- 鬼鬼祟祟 on screen 27: the top part is 出, so it is 祟 and not 崇. Screen 10's 崇拜 is the right 崇.\n- 未调整好 on screen 11 is 未, not 末.\n- 已 on screens 19, 43 and 48 is 已, and 自己 on screen 14 is 己.\n- 哎呀 on screen 58 is 口+艾.\n\nThe ？ after 儿 and 呢 on screens 38 and 50 sits closer to the character than on screens 39, 44 and 49. This is only because those characters fill the right side of their space; it is not a half-width ?. The Chinese title 温馨之家与主人的爱妻 is correct on the cover, on one line, and in the header of every sentence screen. The cover's genre, 记叙文 · 人物与情感, also matches the reference. I found no defects."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed on screen20 (S14 PART 2/3): line 4 ends 'towels²¹—' and the grey continuation '…' sits alone on a fifth line at about x≈110–150, y≈635. The line is otherwise empty and wastes space before the Chinese block."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Confirmed on screen14 (S9): line 2 ends 'until you’ve done that' and line 3 begins '—you can see it yourself…'. The closed em dash was broken away from 'that' and starts the line."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Confirmed on screen46 (S38): line 1 ends 'in the evening' and line 2 begins '—about nine o’clock³, likely⁴.”'. The em dash starts the line instead of staying with 'evening'."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Zoomed crops confirm it. On screen56 the overhanging hook of the f in 'myself' runs into the top-left corner of red square badge 1, and the two merge because they share the same red. The f also touches or merges into the square badge in 'as if⁷' (screen9), 'full of⁵' (screen10), 'sense of²⁵' (screen21), 'myself¹³' (screen26) and 'sense of²' (screen47)."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Zoomed crops confirm it. The inline glosses '(平版印刷画)' on screen6 and '(陈设架)' on screen7 use a sans-serif hei face with even stroke widths and no stroke-end serifs. They look heavier than, and different from, the serif/song face the panel uses for the same Chinese (e.g. '平版印刷画' in panel entry 8). The design does not call for this; it is a font fallback."
+          },
+          {
+            "index": 5,
+            "real": false,
+            "why": "The straight apostrophe in the panel headwords is really there: 'can't tell' on screen14, 'out of the corner of one's eye' on screen28, 'that's it' on screen29 and 'to one's face' on screen62, while the highlighted sentence text has curly ones. However, the reference headwords are written with straight apostrophes ('can't tell', 'that's it', 'out of the corner of one's eye', 'to one's face'), so the screens match the approved reference exactly. Under the verification rules this is not a screen defect. It is a data-level typography issue (similar to project pitfall #18), to be fixed in the source if wanted."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "This is the same defect as index 0 on screen20, and it is confirmed: after 'towels²¹—' the '…' sits alone at y≈635. The only inaccuracy is that it is the fifth line (four English lines come before it), not the fourth. The orphaned ellipsis and the wasted line are exactly as described."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Confirmed on both screens. On screen14 line 3 begins '—you can see it yourself' after 'until you’ve done that'. On screen46 line 2 begins '—about nine o’clock' after 'in the evening'. The words match the reference, but the closed em dash is pushed to the start of the line."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Same defect as index 3, confirmed by zoom. The f's terminal in 'myself¹' (screen56) runs under and merges into the same-red square badge. The f in 'full of⁵' (screen10), 'sense of²⁵' (screen21), 'for myself¹³' (screen26) and 'sense of²' (screen47) touches or overlaps the badge in the same way."
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Inspect"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "visual:q8",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a52f11ae48e4855cb",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914526842,
+      "lastProgressAt": 1791914526842,
+      "cached": true,
+      "resultPreview": "{\"screens_opened\":61,\"findings\":[{\"screen\":0,\"sentence\":2,\"kind\":\"structure\",\"severity\":\"high\",\"description\":\"A screen is missing. The folder has 61 screens but the reference expects 62. Sentence 2 is split into 2 parts, but only PART 1/2 exists: screen04 shows 'SENTENCE 2 / 54 · PART 1/2' and ends at \\\"one's nature⑧ …\\\", then screen05 jumps to 'SENTENCE 3 / 54 · PART 1/3'. The second half never a…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q8/screen01.png is the title card, screen02.png is sen…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "english:q8",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a52662b1fc0e8175c",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914526844,
+      "lastProgressAt": 1791914526844,
+      "cached": true,
+      "resultPreview": "{\"findings\":[{\"screen\":4,\"sentence\":2,\"kind\":\"structure\",\"severity\":\"high\",\"description\":\"Sentence 2 is cut in half. Screen 4 shows SENTENCE 2 / 54 · PART 1/2, ending at \\\"…that something in one's nature …\\\", but no PART 2/2 screen follows: screen 5 is already SENTENCE 3 · PART 1/3. Nothing from part 2 appears anywhere. That means the English \\\"which, after long fasting, recognizes, when confronte…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q8/screen01.png is the title card, screen02.png is sen…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "chinese:q8",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "afe18ddb97a740c67",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914526911,
+      "queuedAt": 1791914526845,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 61 screens and the reference q8.txt. For every…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q8/screen01.png is the title card, screen02.png is sen…",
+      "promptFramed": true,
+      "lastProgressAt": 1791916882051,
+      "tokens": 430124,
+      "toolCalls": 643,
+      "durationMs": 2355139,
+      "resultPreview": "{\"screens_opened\":61,\"findings\":[{\"screen\":0,\"sentence\":2,\"kind\":\"structure\",\"description\":\"The video has 61 screens, but the reference expects 62. The second part of sentence 2 is missing: screen04 is 'SENTENCE 2 / 54 · PART 1/2' and screen05 jumps straight to 'SENTENCE 3 / 54 · PART 1/3'. As a result the English from 'which, after long fasting…', the Chinese 「这种东西在长久的断食之后，一旦面对带有艺术气息的物件，无论它们多么廉价、…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "visual:t06",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a16c4303b163446cc",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914526969,
+      "queuedAt": 1791914526965,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 54 screens and the reference file. The video h…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t06/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791914855264,
+      "tokens": 263049,
+      "toolCalls": 81,
+      "durationMs": 327463,
+      "resultPreview": "{\"screens_opened\":54,\"findings\":[{\"screen\":8,\"sentence\":7,\"kind\":\"highlight\",\"severity\":\"medium\",\"description\":\"In \\\"He had at that time² no notion of¹\\\", \\\"had\\\" is the first piece of phrase 1 (have no notion of) and \\\"at that time\\\" is phrase 2. Both are red with no space or mark between them, so the screen shows \\\"had at that time²\\\" as one phrase numbered 2 and \\\"no notion of¹\\\" as a separate …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "english:t06",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "af194c11a27694ffd",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914856582,
+      "queuedAt": 1791914526966,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 54 screens in order and zoomed in on the dense…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t06/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791915188476,
+      "tokens": 261087,
+      "toolCalls": 74,
+      "durationMs": 331893,
+      "resultPreview": "{\"screens_opened\":54,\"findings\":[{\"screen\":8,\"sentence\":7,\"kind\":\"highlight\",\"severity\":\"low\",\"description\":\"The highlighted words match the reference, but the way they are drawn is misleading. The phrase 'have no notion of' (entry 1, highlighted words 'had … no notion of') has its unnumbered first piece 'had' sitting directly next to entry 2 'at that time'. Both are the same red bold with no gap …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "chinese:t06",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a85abaf87a412d4b4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791915189566,
+      "queuedAt": 1791914526966,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 54 screens and checked them against /tmp/claud…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t06/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791916629606,
+      "tokens": 389094,
+      "toolCalls": 674,
+      "durationMs": 1440039,
+      "resultPreview": "{\"screens_opened\":54,\"findings\":[],\"notes\":\"I opened all 54 screens and checked them against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t06.txt. I found no Chinese defects.\\n\\n- **Screen count:** screen 1 is the title card. Screens 2–54 show sentences 1–52, with sentence 36 split into two parts on screens 37 and 38. The split points are marked with \\\"……"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "visual:t07",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "ad894c0acf5d15fea",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791916630702,
+      "queuedAt": 1791914526970,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 43 screens in order and checked each against /…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t07/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791916904928,
+      "tokens": 233374,
+      "toolCalls": 67,
+      "durationMs": 274225,
+      "resultPreview": "{\"screens_opened\":43,\"findings\":[{\"screen\":11,\"sentence\":10,\"kind\":\"layout\",\"description\":\"The red phrase \\\"stopped short of\\\" ends in \\\"f\\\", and the top hook of that \\\"f\\\" runs into the top-left corner of square badge 3. Both are the same red, so when zoomed in the letter and the badge look fused instead of separated by the usual small gap seen at every other badge.\",\"severity\":\"low\"},{\"screen\":1…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "english:t07",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a38757f7988596cbe",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791916883036,
+      "queuedAt": 1791914526970,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 43 screens of t07 in order and found no defect…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t07/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791917008566,
+      "tokens": 213609,
+      "toolCalls": 58,
+      "durationMs": 125530,
+      "resultPreview": "{\"screens_opened\":43,\"findings\":[],\"notes\":\"I opened all 43 screens of t07 in order and found no defects, so the list is empty. Screen 1 is the title card, screens 2–37 are sentences 1–35, screens 37–38 are sentence 36 (PART 1/2 and PART 2/2), and screens 39–43 are sentences 37–41.\\n\\nThe reference file (/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t07.t…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "chinese:t07",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "ad9faf1fe33c07065",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791916905889,
+      "queuedAt": 1791914526970,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 43 screens at full resolution: the title card,…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t07/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791917827966,
+      "tokens": 287818,
+      "toolCalls": 274,
+      "durationMs": 922076,
+      "resultPreview": "{\"screens_opened\":43,\"findings\":[],\"notes\":\"I opened all 43 screens at full resolution: the title card, 41 sentence screens, and one extra part because sentence 36 is split over screens 37 and 38 (PART 1/2 and 2/2, with vocabulary numbering running on as 9–18 on the second part). The reference file ends at sentence 41 and has no section listing the expected screen count or split points. So for sen…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "visual:t08",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a64a644d348b7207e",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791917009631,
+      "queuedAt": 1791914526971,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 49 screens in order and zoomed in on anything …",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t08/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791917354125,
+      "tokens": 264612,
+      "toolCalls": 93,
+      "durationMs": 344492,
+      "resultPreview": "{\"findings\":[{\"screen\":34,\"sentence\":33,\"kind\":\"layout\",\"severity\":\"low\",\"description\":\"In the vocabulary panel, entry 1 'have nothing to do with' fills its line, so the meaning '与……毫无关系' wraps onto a second line. That second line starts about 14 px further right (x≈1333) than the headword (x≈1318) and than wrapped lines in other entries (e.g. '方法论' in entry 3 at x≈1319). The gap that normally sit…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "english:t08",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a3c1d3c4e5ae3a9ce",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791917355194,
+      "queuedAt": 1791914526971,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 49 screens in order and compared each one with…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t08/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791917531883,
+      "tokens": 237761,
+      "toolCalls": 65,
+      "durationMs": 176689,
+      "resultPreview": "{\"findings\":[{\"screen\":5,\"sentence\":4,\"kind\":\"layout\",\"description\":\"The square red badge on a phrase that ends in 'f' touches the letter: the hook at the top of the last 'f' runs into the top-left corner of the badge. In 'get off¹' the second 'f' merges into the red badge, which is the same colour (zoomed crop confirms it). The same small collision appears on every phrase ending in 'of': screen04…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "chinese:t08",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a1aa6c2ddf90de056",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791917532822,
+      "queuedAt": 1791914526971,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "No defects found on any of the 49 screens. That is 1 cover …",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t08/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918200741,
+      "tokens": 244846,
+      "toolCalls": 229,
+      "durationMs": 667918,
+      "resultPreview": "{\"screens_opened\":49,\"findings\":[],\"notes\":\"No defects found on any of the 49 screens. That is 1 cover plus 48 sentence screens, and the reference lists 48 sentences with no splits.\\n\\nHow the check was done: I opened every full screen, plus an enlarged crop of each sentence screen (Chinese translation and vocabulary panel at 125–150%). I copied out each Chinese translation character by character …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "visual:t09",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "acb7ce355e8c9571c",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791917828962,
+      "queuedAt": 1791914526972,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 62 screens in order (screen01 is the title car…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t09/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918135603,
+      "tokens": 291741,
+      "toolCalls": 101,
+      "durationMs": 306640,
+      "resultPreview": "{\"findings\":[{\"screen\":20,\"sentence\":14,\"kind\":\"layout\",\"description\":\"On PART 2/3 the continuation mark '…' does not fit after 'towels²¹—', so it drops onto a line of its own (x≈110, y≈635). The result is a nearly empty fifth English line with only the grey dots, which wastes space and looks broken. The '…' should stay on the line with 'towels—'.\",\"severity\":\"low\"},{\"screen\":14,\"sentence\":9,\"kind…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "english:t09",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "aa2aa06dd3f26a355",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791918136467,
+      "queuedAt": 1791914526972,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 62 screens in order and read them against /tmp…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t09/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918344843,
+      "tokens": 271079,
+      "toolCalls": 79,
+      "durationMs": 208376,
+      "resultPreview": "{\"findings\":[{\"screen\":20,\"sentence\":14,\"kind\":\"layout\",\"description\":\"Sentence 14 part 2/3: the English line ends with \\\"towels²¹—\\\" and the continuation mark \\\"…\\\" has wrapped onto a fourth line by itself (around y≈635). The words match the reference, but the orphaned ellipsis looks like a stray blank line. It should stay on the same line as \\\"towels—\\\", or the line should be refitted.\",\"severit…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 15,
+      "label": "chinese:t09",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a93b954c0c1e8d195",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791918201575,
+      "queuedAt": 1791914526973,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 62 screens of t09 in order: screen01 is the co…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t09/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791920036187,
+      "tokens": 383163,
+      "toolCalls": 502,
+      "durationMs": 1834610,
+      "resultPreview": "{\"screens_opened\":62,\"findings\":[],\"notes\":\"I opened all 62 screens of t09 in order: screen01 is the cover, and screens 02–62 cover sentences 1–54. The splits are consistent: s1 is on screens 02–03 (2 parts), s2 on 04–05 (2), s3 on 06–08 (3), s14 on 19–21 (3) and s18 on 25–26 (2), which gives 61 sentence screens. I read every Chinese translation line by line against the reference ZH, including eac…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 16,
+      "label": "verify:t06",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a9116d7c2721b63b3",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791918345770,
+      "queuedAt": 1791916630742,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t06/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918441877,
+      "tokens": 84882,
+      "toolCalls": 15,
+      "durationMs": 96106,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed on screen08 at 2x zoom. 'had at that time' is one red bold run with only a normal word space between 'had' and 'at', and the square badge 2 comes after 'time'. 'no notion of' then follows with badge 1, so the badges read 2, 1, 3 from left to right. 'had' looks like part of entry 2 and nothing ties it to entry 1 (have no notion of). The highlight…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 17,
+      "label": "verify:q8",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a9fe1f22e7fa2e809",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791918443357,
+      "queuedAt": 1791916883074,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q8/screen01.png is the title card, screen02.png is sen…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918637900,
+      "tokens": 274194,
+      "toolCalls": 83,
+      "durationMs": 194542,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"The folder has 61 screens, one short of the 62 the reference expects. screen04 is SENTENCE 2 PART 1/2 and ends at \\\"one's nature⑧ …\\\". screen05 is already SENTENCE 3 PART 1/3. None of the 61 screens shows \\\"which, after long fasting…\\\", its Chinese or vocab entries 9–17.\"},{\"index\":1,\"real\":true,\"why\":\"screen03 (SENTENCE 1 PART 2/2) has the correct Englis…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 18,
+      "label": "verify:t07",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ab3afed152567e33f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791918638853,
+      "queuedAt": 1791917828999,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t07/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918727299,
+      "tokens": 207012,
+      "toolCalls": 52,
+      "durationMs": 88445,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed on screen11 (sentence 10). At 8x zoom, the top hook of the final 'f' in the red 'stopped short of' runs straight into the top-left corner of square badge 3, so the letter and badge read as one red shape. A flood-fill of red pixels started inside the badge spreads left through the hook and into the f stem (x=1027 to 1085), so they are one connect…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 19,
+      "label": "verify:t08",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a47aa30f489ee01cb",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791918728376,
+      "queuedAt": 1791918201608,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t08/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791918916186,
+      "tokens": 110333,
+      "toolCalls": 34,
+      "durationMs": 187809,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed on screen34. In entry 1 the headword 'have nothing to do with' fills the line, so the meaning '与……毫无关系' wraps whole onto line 2. That line's ink starts at x=1328, while the headword and the wrapped '方法论' of entry 3 both start at x=1318. The offset is about 10 px, not the ~14 px (x≈1333) the reviewer gave, but the misalignment is real and visible…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 20,
+      "label": "verify:t09",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a61057602ee6f40e4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791920037078,
+      "queuedAt": 1791920037071,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t09/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791920188933,
+      "tokens": 270933,
+      "toolCalls": 80,
+      "durationMs": 151855,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed on screen20 (S14 PART 2/3): line 4 ends 'towels²¹—' and the grey continuation '…' sits alone on a fifth line at about x≈110–150, y≈635. The line is otherwise empty and wastes space before the Chinese block.\"},{\"index\":1,\"real\":true,\"why\":\"Confirmed on screen14 (S9): line 2 ends 'until you’ve done that' and line 3 begins '—you can see it yourself…"
+    }
+  ],
+  "totalTokens": 4718711,
+  "totalToolCalls": 3204
+}
