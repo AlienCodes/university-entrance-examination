@@ -247,7 +247,8 @@ def sentence_slide(p, s, k, n, part=None):
 
 
 # 左侧句子区与右侧词汇栏分别缩放字号，直到都放得下；词汇栏的内容必须在卡片内边距以内（第 1 批画面核查：内容挤进底部留白，离边框只剩 7 像素）；
-# 之后把落在行首的左半空白标点（zh_html 标的 .po）去掉左半空白，与上下行的字对齐
+# 之后把落在行首的左半空白标点（zh_html 标的 .po）去掉左半空白，与上下行的字对齐，并在它前面固定换行
+# （样片 z10 画面核查：去掉半字后括号变窄，整块被挤回上一行行末，成了行中的“花（时间）”过度挤压）
 FIT = """() => { const r=document.documentElement.style, main=document.querySelector('.main'), box=document.getElementById('box'),
   side=document.getElementById('side'), list=document.getElementById('list');
   const sideFits = () => { const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
@@ -256,7 +257,7 @@ FIT = """() => { const r=document.documentElement.style, main=document.querySele
   while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); }
   while (!sideFits() && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
   for (const e of document.querySelectorAll('.po')) { const k=e.closest('.zh, .v > div'), b=k.getBoundingClientRect();
-    if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) e.className = 'pl'; }
+    if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl'; e.before(document.createElement('br')); } }
   return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""
 
 

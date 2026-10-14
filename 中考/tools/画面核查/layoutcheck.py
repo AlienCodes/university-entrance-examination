@@ -39,9 +39,8 @@ CHECK = r"""([minFs, minVs]) => {
     const L = lines(chars(k)), x0 = leftOf(k);
     L.forEach((ln, i) => {
       const f = ln[0];
-      if (isGloss && i === 0) return;                        // 词汇栏第一行从词条开始
       const want = ZO.includes(f.c) && name !== '英文' ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形，不按全角半字计
-      if (Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
+      if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
       if (i > 0) { const a = L[i - 1][L[i - 1].length - 1];
         const g = f.el.closest('span[lang]');
         if (isGloss && a.el.closest('span[lang]') && g && !PUN.includes(a.c) && !ZO.includes(f.c))      // 交给 Python 判断是否落在分词边界
@@ -51,7 +50,12 @@ CHECK = r"""([minFs, minVs]) => {
         if (a.c === '-' && /[A-Za-z]/.test(f.c)) out.push(`连字符：${name}「${txt(L[i - 1]).slice(-12)}／${txt(ln).slice(0, 8)}」`); }
       for (let j = 1; j < ln.length; j++) { const a = ln[j - 1], b = ln[j];
         if (ZC.includes(a.c) && (ZC + ZO).includes(b.c) && b.l - a.l > em(a.el) * 0.75)
-          out.push(`标点挤压：${name}「${a.c}${b.c}」间距 ${(((b.l - a.l) / em(a.el))).toFixed(2)} 字`); }
+          out.push(`标点挤压：${name}「${a.c}${b.c}」间距 ${(((b.l - a.l) / em(a.el))).toFixed(2)} 字`);
+        // 过度挤压（样片 z10 画面核查：行中的“花（时间）”左括号被去掉了半字空白）：只有相邻两个标点、或行首的左标点才可以挤
+        if (name !== '英文' && ZO.includes(b.c) && !(ZC + ZO).includes(a.c) && b.l < a.r - 2 && !(isGloss && !a.el.closest('span[lang]')))   // 释义开头紧跟词条、词性的左括号，按设计去半字
+          out.push(`过度挤压：${name}「${a.c}${b.c}」左括号或左引号在行中被去掉了半字空白`);
+        if (name !== '英文' && ZC.includes(a.c) && !(ZC + ZO).includes(b.c) && cjk(b.c) && b.l - a.l < em(a.el) * 0.95)
+          out.push(`过度挤压：${name}「${a.c}${b.c}」标点后面被去掉了半字空白`); }
     });
     if (name === '译文' && L.length > 1) { const last = L[L.length - 1].filter(x => cjk(x.c));
       if (last.length <= 1) out.push(`孤字：${name}最后一行只有「${txt(L[L.length - 1])}」`); }
@@ -134,7 +138,7 @@ def main():
     bad = {}
     with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
-        pg = br.new_page(viewport={'width': M.W, 'height': M.H})
+        pg = br.new_page(viewport={'width': M.W, 'height': M.H}, device_scale_factor=2)      # 与 make_video.py 生成 4K 视频时相同：倍率不同，字宽有细微差别，换行可能不同
         f = Path(td) / 'x.html'
         for pid in (argv or sorted(P)):
             probs = []
