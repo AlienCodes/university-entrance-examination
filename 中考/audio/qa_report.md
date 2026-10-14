@@ -7,7 +7,7 @@
 - 文章数：20
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.50（最低 4.47）
-- 平均识别差异率：1.16%
+- 平均识别差异率：1.15%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -28,6 +28,6 @@
 | z15 | 4.50 | 0.70% | heipieper → heypeper; program → programme |
 | z16 | 4.47 | 1.05% | thirty → point three zero |
 | z17 | 4.50 | 1.85% | tang → tong; said li ran → sedley ron; li → lee |
-| z18 | 4.50 | 0.33% | stretched → stretch |
+| z18 | 4.50 | 0.00% |  |
 | z19 | 4.47 | 0.92% | litres → liters; sextillion → sixtillion; green → greens |
 | z20 | 4.50 | 0.00% |  |
