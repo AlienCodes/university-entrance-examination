@@ -54,10 +54,10 @@
 
 ## cet4_male
 
-- 文章数：13
+- 文章数：14
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.45）
-- 平均识别差异率：0.89%
+- 平均识别差异率：1.28%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -74,3 +74,4 @@
 | z11 | 4.48 | 0.00% |  |
 | z12 | 4.46 | 0.92% | drewett → druitt; drewett → druitt; drewett → druitt |
 | z13 | 4.49 | 0.00% |  |
+| z14 | 4.46 | 6.33% | minqin → minchin; minqin's → min chin's; minqin → min chin; gen zers → gensurs; xi'an → xian; minqin → minchin; xiuniang → xionyang; minqin → min chin; lee ting hsuan → li teng h sun; minqin → minchin; macao → macau; ma junhe → majunha |
