@@ -56,6 +56,9 @@ CHECK = r"""([minFs, minVs]) => {
     L.forEach((ln, i) => {
       const f = ln[0];
       const want = ZO.includes(f.c) && name !== '英文' ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形，不按全角半字计
+      if (name === '英文' && '—–'.includes(f.c)) out.push(`行首破折号：英文第 ${i + 1} 行「${txt(ln).slice(0, 12)}」以破折号开头`);   // z19 “comes in¹ / —giving”
+      if (name === '译文' && i > 0) { const a = L[i - 1][L[i - 1].length - 1], an = /[A-Za-z0-9]/, h = cjk;            // z14 “所说的Z / 世代。”
+        if ((an.test(a.c) && h(f.c)) || (h(a.c) && an.test(f.c))) out.push(`中英断开：译文「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」英文与紧挨的汉字分在两行`); }
       if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
       if (i > 0) { const a = L[i - 1][L[i - 1].length - 1];
         const g = f.el.closest('span[lang]');
@@ -85,6 +88,14 @@ CHECK = r"""([minFs, minVs]) => {
     if (rs.length > 1) for (const e of [d.querySelector('i'), g].filter(Boolean)) { const r = e.getClientRects()[0];
       if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
+  // 徽章贴字（z16 cricket¹、breakfast² 等：f、t、r 的笔画伸出字身碰到徽章）：前一个字母的笔画右边缘到徽章至少 1.2 像素（审阅员认可 1.2 像素以上的间距）
+  const cv = document.createElement('canvas').getContext('2d');
+  for (const s of en.querySelectorAll('sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
+    if (!n || !n.data || !n.data.trim()) continue; const i = n.data.trimEnd().length - 1, rg = document.createRange(); rg.setStart(n, i); rg.setEnd(n, i + 1);
+    const rr = rg.getClientRects(); if (!rr.length) continue; const cs = getComputedStyle(n.parentElement), px = parseFloat(cs.fontSize);
+    cv.font = `${cs.fontWeight} 100px ${cs.fontFamily}`; const ink = rr[rr.length - 1].left + cv.measureText(n.data[i]).actualBoundingBoxRight / 100 * px;
+    const gap = s.getBoundingClientRect().left - ink;
+    if (gap < 1.2) out.push(`徽章贴字：英文「${n.data.slice(Math.max(0, i - 8), i + 1)}」与徽章 ${s.textContent} 只隔 ${gap.toFixed(1)} 像素`); }
   const main = document.querySelector('.main'), box = document.getElementById('box'), side = document.getElementById('side'), list = document.getElementById('list');
   if (box.scrollHeight > main.clientHeight) out.push('留白：句子区溢出');
   const s = side.getBoundingClientRect(), c = getComputedStyle(side), l = list.getBoundingClientRect(), top = s.top + side.clientTop;

@@ -102,9 +102,14 @@ def nobr(h):
     return re.sub(r'(<[^>]*>)|(?<![\w’])([A-Za-z0-9’]+(?:-[A-Za-z0-9’]+)+)', lambda m: m.group(1) or f'<nobr>{m.group(2)}</nobr>', h)
 
 
+def dash(h):
+    """破折号与前一个词不断开（第 2 批截图核查：z19 “comes in¹ / —giving”一行以破折号开头）。h 是已转义的 HTML，标签里的字不动。"""
+    return re.sub(r'(<[^>]*>)|(?<![\w’-])([A-Za-z0-9’]+[—–])', lambda m: m.group(1) or f'<nobr>{m.group(2)}</nobr>', h)
+
+
 def esc_en(s):
     """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。"""
-    return nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s)))
+    return dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
 
 
 GLOSS_CHUNK = 9      # 词汇栏一行最多约 9.6 个字（字号最大 40px 时）：9 个字以内的释义块整体不断行（原定 10，z20 “下面就是……的方法；”溢出 16 像素）
@@ -147,11 +152,26 @@ def zh_html(s, gloss=False):
     if gloss:
         cuts = [0] + [i for i in range(1, len(s)) if (s[i - 1] in ZCLOSE and s[i] not in ZCLOSE) or (s[i] in ZOPEN and s[i - 1] not in ZOPEN)] + [len(s)]
         return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[a:b], out[a:b])) for a, b in zip(cuts, cuts[1:]) if b > a)
-    han = [i for i, c in enumerate(s) if '\u4e00' <= c <= '\u9fff']
+    ish = lambda c: '\u4e00' <= c <= '\u9fff'
+    groups = [(m.start() - (m.start() > 0 and ish(s[m.start() - 1])), m.end() + (m.end() < len(s) and ish(s[m.end()])))
+              for m in re.finditer(r'[A-Za-z0-9]+', s)]          # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与紧挨的汉字绑在一起
+    han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
         k = han[-2]
-        return ''.join(out[:k]) + f'<nobr>{"".join(out[k:])}</nobr>'
-    return ''.join(out)
+        while k > 0 and re.match(r'[A-Za-z0-9]', s[k - 1]):
+            k -= 1
+        groups.append((k, len(s)))
+    merged = []
+    for a, b in sorted(g for g in groups if g[1] - g[0] > 1):
+        if merged and a < merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(b, merged[-1][1]))
+        else:
+            merged.append((a, b))
+    res, pos = [], 0
+    for a, b in merged:
+        res += out[pos:a] + [f'<nobr>{"".join(out[a:b])}</nobr>']
+        pos = b
+    return ''.join(res + out[pos:])
 
 
 def page(body):
@@ -190,7 +210,9 @@ def sentence_html(s, lo=0, hi=None):
     out = re.sub(rf'(?<![\w’])([A-Za-z0-9’]+-)({hl})', r'<nobr>\1\2</nobr>', out)
     out = re.sub(rf'({hl})(-[A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
     out = re.sub(rf'(<span class="(?:w|ph)">(?:(?!</span>).)*-(?:<sup>\d+</sup>)?</span>)([A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
-    return cap_i(re.sub(r'<sup>(\d+</sup></span>(?:</nobr>)?[—–])', r'<sup class="sd">\1', out))      # 大写 I 最后统一加，免得上面按 </span> 配对的规则配错     # 编号徽章后紧跟破折号时留空（z06 “idea²—let”徽章贴着破折号）
+    out = re.sub(r'<sup>(\d+</sup></span>(?:</nobr>)?[—–])', r'<sup class="sd">\1', out)
+    out = re.sub(rf'({hl}|<nobr>(?:(?!</nobr>).)*</nobr>)([—–])', r'<nobr>\1\2</nobr>', out)      # 高亮词（及其所在的不断行块）与后面的破折号不断开
+    return cap_i(out)      # 大写 I 最后统一加，免得上面按 </span> 配对的规则配错     # 编号徽章后紧跟破折号时留空（z06 “idea²—let”徽章贴着破折号）
 
 
 def vocab_html(s, lo=0, hi=None):
@@ -262,6 +284,7 @@ def sentence_slide(p, s, k, n, part=None):
       <div class="bot"><span>SENTENCE {k} / {n}{tag}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
 
 
+# 编号徽章与前一个字母至少留 0.03 字的空隙（字号 64px 时约 1.9 像素）：按该字母的字形实测（f、t、r 等笔画伸出字身，第 2 批截图核查 z16 cricket¹ 等徽章贴字）；
 # 左侧句子区与右侧词汇栏分别缩放字号，直到都放得下；词汇栏的内容必须在卡片内边距以内（第 1 批画面核查：内容挤进底部留白，离边框只剩 7 像素）；
 # 之后把落在行首的左半空白标点（zh_html 标的 .po）去掉左半空白，与上下行的字对齐，并在它前面固定换行
 # （样片 z10 画面核查：去掉半字后括号变窄，整块被挤回上一行行末，成了行中的“花（时间）”过度挤压）；
@@ -277,6 +300,12 @@ FIT = """() => { const r=document.documentElement.style, main=document.querySele
       b.innerHTML = best ? best[1] : b.dataset.h; const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
   const sideFits = () => { hw(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
+  const cv = document.createElement('canvas').getContext('2d');
+  for (const s of document.querySelectorAll('.en sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
+    if (!n || !n.data) continue; const c = n.data.trim().slice(-1); if (!c) continue; const cs = getComputedStyle(n.parentElement);
+    cv.font = `${cs.fontWeight} 100px ${cs.fontFamily}`; const m = cv.measureText(c), rsb = (m.width - m.actualBoundingBoxRight) / 100;
+    const ls = (parseFloat(cs.letterSpacing) || 0) / parseFloat(cs.fontSize);      // 英文有 -0.012 字的字间距，会把空隙吃掉一部分
+    const ml = Math.max(0.04, (0.03 - rsb - ls) / 0.42); s.style.marginLeft = ml.toFixed(3) + 'em'; }
   let fs=64, vs=40; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px');
   while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); }
   while (!sideFits() && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
