@@ -4,7 +4,7 @@
 
 ## female
 
-- 文章数：33
+- 文章数：34
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.50（最低 4.47）
 - 平均识别差异率：1.04%
@@ -44,3 +44,4 @@
 | z31 | 4.51 | 0.00% |  |
 | z32 | 4.50 | 2.34% | natumi → notomie; orphaned → orphan; natumi → natomi; natumi → natomi; natumi → natami |
 | z33 | 4.51 | 0.00% |  |
+| z34 | 4.49 | 1.27% | ok → okay; dr → doctor; dr → doctor; ok → okay |
