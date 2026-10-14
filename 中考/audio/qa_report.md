@@ -66,7 +66,7 @@
 | z03 | 4.46 | 0.00% |  |
 | z04 | 4.48 | 0.00% |  |
 | z05 | 4.48 | 0.40% | ok → okay |
-| z06 | 4.45 | 1.46% | ieoh ming pei → io mingpei; modern → moderns |
+| z06 | 4.46 | 1.09% | ieoh ming → yoming; pei's → pay's |
 | z07 | 4.47 | 1.52% | kunming → konmeng; heng → hung; guo yongjie → guoyungjia; qomolangma → chomolongma |
 | z08 | 4.48 | 3.72% | ayi → ai; programme → program; programme → program; ayi → i; ayi → ai; programme → program; ayi → ai; ayi's → ai's; kashgar → kashgore; tcm → tacm; ayi → ie |
 | z09 | 4.46 | 0.67% | fibre → fiber; colour → color |
