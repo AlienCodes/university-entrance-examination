@@ -32,7 +32,7 @@ FIT_THEN = lambda js: f'() => {{ ({M.FIT})(); {js} }}'
 MINES = [
     (1, 0, '片头标题字号过大，超出白色卡片', lambda h: h.replace('</head>', '<style>.ttl h1{font-size:230px!important;white-space:nowrap}</style></head>'), None),
     (4, 3, '英文字号过大，溢出句子区、压到中文和页脚', None, FIT_THEN("document.documentElement.style.setProperty('--fs','112px')")),
-    (8, 7, '中文译文第 3 个字变成乱码“\uFFFD”（缺字形的字在本机显示为空白，所以用乱码符号）', lambda h: (lambda i: h[:i + 2] + '\uFFFD' + h[i + 3:])(h.index('<div class="zh">') + len('<div class="zh">')), None),
+    (8, 7, '中文译文第 3 个字变成乱码“\uFFFD”（缺字形的字在本机显示为空白，所以用乱码符号）', 'ZH3', None),
     (12, 11, '英文行首有一大段异常空白', lambda h: h.replace('<div class="en">', '<div class="en"><span style="display:inline-block;width:520px"></span>', 1), None),
     (15, 14, '词汇栏字号过大，词条超出卡片底边、压到页脚', None, FIT_THEN("document.documentElement.style.setProperty('--vs','62px')")),
 ]
@@ -41,7 +41,10 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
     pg = br.new_page(viewport={'width': M.W, 'height': M.H})
     f = Path(td) / 'x.html'
     for scr, k, what, edit, js in MINES:
-        h = M.title_slide(p) if k == 0 else M.sentence_slide(p, sents[k - 1], k, len(sents))
+        s = sents[k - 1] if k else None
+        if edit == 'ZH3':                         # 改数据再渲染（译文由 zh_html 逐字排版，不能直接改 HTML）
+            s, edit = dict(s, zh=s['zh'][:2] + '\uFFFD' + s['zh'][3:]), None
+        h = M.title_slide(p) if k == 0 else M.sentence_slide(p, s, k, len(sents))
         if edit:
             h2 = edit(h)
             assert h2 != h, f'雷没有埋进去：{what}'
