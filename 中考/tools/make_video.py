@@ -374,6 +374,8 @@ def main():
     p = next(x for x in data['passages'] if x['id'] == a.pid)
     if not p.get('reviewed'):                     # 踩坑 14：复核通过前不生成视频
         raise SystemExit(f'{a.pid} 的翻译与标注还没有通过复核（build_vocab.py --reseal {a.pid}），不生成视频')
+    # 踩坑 36：先审截图，后生成视频——程序或数据改过、截图还没审阅通过，就不生成视频
+    subprocess.run([sys.executable, str(HERE / '画面核查' / 'screens_fp.py'), 'check', a.pid], check=True)
     tm = json.loads((Path(a.audio_root) / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
