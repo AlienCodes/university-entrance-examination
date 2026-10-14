@@ -54,7 +54,7 @@
 
 ## cet4_male
 
-- 文章数：20
+- 文章数：21
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
 - 平均识别差异率：1.10%
@@ -81,3 +81,4 @@
 | z18 | 4.47 | 0.00% |  |
 | z19 | 4.43 | 0.92% | litres → liters; sextillion → sixillion; green → greene |
 | z20 | 4.43 | 0.00% |  |
+| z21 | 4.47 | 1.09% | hanau → hanno; steinau → steinow; folk → fogue |
