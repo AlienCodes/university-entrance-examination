@@ -17,7 +17,7 @@
 | z04 | 4.51 | 0.00% |  |
 | z05 | 4.50 | 0.40% | ok → okay |
 | z06 | 4.49 | 1.82% | ieoh ming pei → io mingpei; pei's → pay's; modern → moderned |
-| z07 | 4.50 | 1.52% | kunming → kunmang; heng → hangs; guo yongjie → gyo yanji; qomolangma → chomolangma |
+| z07 | 4.50 | 1.52% | heng → hung; guo yongjie → guoyongjia; qomolangma → chomo langma |
 | z08 | 4.50 | 4.05% | ayi → ai; kashgar → kashkir; programme → program; programme → program; ayi → i; ayi → ai; programme → program; ayi → i; ayi → ai; ayi → ie; ayi's → ai's; ayi → ie |
 | z09 | 4.49 | 1.01% | fibre → fiber; colour → color; riders → writers |
 | z10 | 4.50 | 1.97% | classmates' → classmates; programmes → programs; programmes → programs; us says maya → a sesmaya |
