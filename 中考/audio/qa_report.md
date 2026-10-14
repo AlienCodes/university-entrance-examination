@@ -54,7 +54,7 @@
 
 ## cet4_male
 
-- 文章数：23
+- 文章数：24
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
 - 平均识别差异率：1.05%
@@ -84,3 +84,4 @@
 | z21 | 4.47 | 1.09% | hanau → hanno; steinau → steinow; folk → fogue |
 | z22 | 4.46 | 1.04% | voluntourism → voluntarism; voluntourists → volunturists; voluntourist → volunturist |
 | z23 | 4.48 | 0.00% |  |
+| z24 | 4.47 | 1.05% | dapeng → dapung; shenzhen's → shen's; apec → apac |
