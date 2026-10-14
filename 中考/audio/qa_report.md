@@ -24,7 +24,7 @@
 | z11 | 4.50 | 0.00% |  |
 | z12 | 4.49 | 0.92% | drewett → druitt; drewett → druitt; drewett → druit |
 | z13 | 4.51 | 0.00% |  |
-| z14 | 4.51 | 5.70% | minqin → minkin; in → and; junhe → jun; minqin's → minkin's; minqin → minkin; suosuo → suicio; zers → zurs; liwen → luan; suosuo → suisio; minqin → minkin; xiuniang → xianyang; minqin → minkin; lee → li; minqin → minkin; macao → macau; ma junhe → majuna; zers → zurs |
+| z14 | 4.51 | 5.70% | minqin → minchin; in → and; ma junhe → majin he; minqin's → min chin's; minqin → min chin; zers → zurs; liwen → liwan; minqin → minchin; xiuniang → xionyang; minqin → minchin; lee → li; minqin → minchin; macao → macau; ma junhe → majin ha |
 | z15 | 4.50 | 0.70% | heipieper → hyper; program → programme |
 | z16 | 4.47 | 1.05% | thirty → point three zero |
 | z17 | 4.50 | 1.85% | tang → tong; said li ran → sedley ron; li → lee |
