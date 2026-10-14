@@ -6,7 +6,7 @@ export const meta = {
     { title: 'Verify', detail: '1 skeptical verifier per video re-opens each cited screen' },
   ],
 }
-// args: {frames: dir with <id>/screenNN.png, ref: dir with <id>.txt, ids: [...]}
+// args: {frames: dir with <id>/screenNN.png, ref: dir with <id>.txt, ids: [...], lenses?: ['visual'|'english'|'chinese', ...]}
 const FR = args.frames, REF = args.ref, IDS = args.ids
 
 const FINDING = {
@@ -43,7 +43,7 @@ const LENS = {
 const inspectPrompt = (id, lens) => `${CONTEXT(id)}\n\n${LENS[lens]}\n\nReport every real defect you find with its screen number; if there are none, return an empty list. Do not report the intended design described above.`
 const verifyPrompt = (id, fs) => `${CONTEXT(id)}\n\nOther reviewers reported these problems (index: JSON):\n${fs.map((f, i) => `${i}: ${JSON.stringify({ screen: f.screen, sentence: f.sentence, kind: f.kind, description: f.description })}`).join('\n')}\n\nYou are a skeptical verifier. For EACH item, open the cited screen(s) yourself (and neighbouring screens or the reference when needed) and decide whether the problem really exists exactly as described. real=false if you cannot see it, if it is the intended design described above, or if the screen actually matches the reference. Return one verdict per index.`
 
-const LN = ['visual', 'english', 'chinese']
+const LN = args.lenses || ['visual', 'english', 'chinese']     // args.lenses：只跑部分检查（如只重查中文）
 const key = f => `${f.screen}|${f.kind}|${f.description.slice(0, 50)}`
 const results = await pipeline(
   IDS,
