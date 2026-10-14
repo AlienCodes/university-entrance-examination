@@ -96,6 +96,22 @@ def pron_init(self, *a, **k):
 
 
 G.Pronouncer.__init__ = pron_init
+TAIL_TRIM = json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8')).get('tail_trim', {})
+
+
+def trim_tail(a):
+    """剪掉句末最后一个浊音之后的气声（读音修正.json 的 tail_trim 登记的句子才用；正常以 s、t 结尾的词不受影响，因为只对人工确认过的句子使用）：
+    按 10 毫秒一帧算 100—1500 Hz 的能量，最后一帧高于最强帧 −30 dB 的位置之后留 30 毫秒，其余剪掉。"""
+    import numpy as np
+    w = int(0.01 * G.SR)
+    e = []
+    for i in range(0, len(a) - w, w):
+        X = np.abs(np.fft.rfft(a[i:i + w] * np.hanning(w)))
+        f = np.fft.rfftfreq(w, 1 / G.SR)
+        e.append(20 * np.log10(X[(f > 100) & (f < 1500)].mean() + 1e-9))
+    e = np.array(e)
+    last = np.where(e > e.max() - 30)[0][-1]
+    return a[:min(len(a), (last + 1) * w + int(0.03 * G.SR))]
 
 
 # 用户要求（2026-10-08）：不该停顿的逗号不要停顿——这些逗号不切分合成、不插入静音，整段一口气合成，由模型按自然语调读：
@@ -238,7 +254,10 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
     for i, x in enumerate(merged):
         if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
             raise RuntimeError(f'{key} 合成文字残留引号：{x}')
-        seg = G.fade(G.level(engine.synth(pron.phonemes(x, key), style, speed)))
+        raw = engine.synth(pron.phonemes(x, key), style, speed)
+        if key in TAIL_TRIM and i == len(merged) - 1:
+            raw = trim_tail(raw)
+        seg = G.fade(G.level(raw))
         spans.append((t, t + len(seg) / G.SR))
         out.append(seg)
         t += len(seg) / G.SR

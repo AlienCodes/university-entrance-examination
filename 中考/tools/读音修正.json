@@ -1,5 +1,5 @@
 {
- "_说明": "中考专用读音修正（叠加在高考词典之上）。global 沿用六级、专八的通用条目（专名、易读错的词）；中考新出现的专名、读错的词在语音识别核查后补充，记录在 中考/audio/识别差异已核.md。sentence 按 “zNN:句号” 指定单句的读法，text 替换朗读文本。 中国人名、地名（汉语拼音）按普通话读音写成英语音标（2026-10-14：语音合成按英语拼读规则读拼音，Zhang 读成 zhaang、Minqin 读成 ming-kin、Ayi 读成 eye-ee 等）。",
+ "_说明": "中考专用读音修正（叠加在高考词典之上）。global 沿用六级、专八的通用条目（专名、易读错的词）；中考新出现的专名、读错的词在语音识别核查后补充，记录在 中考/audio/识别差异已核.md。sentence 按 “zNN:句号” 指定单句的读法，text 替换朗读文本。 中国人名、地名（汉语拼音）按普通话读音写成英语音标（2026-10-14：语音合成按英语拼读规则读拼音，Zhang 读成 zhaang、Minqin 读成 ming-kin、Ayi 读成 eye-ee 等）。 男声 cet4_male（2026-10-14）语音识别核查后补充：better 改清晰 t（弹舌 t 被听成 bet her）、Merzenich、Kunming、TCM；tail_trim 列出句末有模型多发气声的句子（只剪登记过的句子）。",
  "global": {
   "Los": "lɔs",
   "Angeles": "ˈænʤələs",
@@ -46,7 +46,11 @@
   "Fabao": "fˌɑbˈW",
   "Yongdong": "jˌʊŋdˈʊŋ",
   "suosuo": "swˈOswˌO",
-  "Heipieper": "hˈIpˌipəɹ"
+  "Heipieper": "hˈIpˌipəɹ",
+  "Merzenich": "mˈɜɹzənɪk",
+  "Kunming": "kˌunmˈɪŋ",
+  "TCM": "tˈi sˈi ˈɛm",
+  "better": "bˈɛtəɹ"
  },
  "sentence": {
   "z17:16": {
@@ -60,5 +64,8 @@
    "orphaned": "ˈɔɹfəndd"
   }
  },
- "text": {}
+ "text": {},
+ "tail_trim": {
+  "z06:23": "句末 modern 之后模型多发出约 0.1 秒的高频气声，语音识别听成 moderns（男声 cet4_male，2026-10-14）：剪掉最后一个浊音之后的气声"
+ }
 }
