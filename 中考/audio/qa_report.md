@@ -62,7 +62,7 @@
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | z01 | 4.48 | 0.56% | metres → meters; earle → earl |
-| z02 | 4.48 | 0.50% | practise → practice; merzenich → merzenish |
+| z02 | 4.48 | 0.50% | practise → practice; merzenich → merzenik |
 | z03 | 4.46 | 0.00% |  |
 | z04 | 4.48 | 0.85% | better → bet her |
 | z05 | 4.48 | 0.40% | ok → okay |
