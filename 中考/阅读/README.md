@@ -32,7 +32,7 @@
 | z25 | 2026 | 广西 | 阅读 | 290 | 4 |  | Researchers from the Massachusetts Institute of Technology … |
 | z26 | 2026 | 广西 | 任务型阅读 | 270 | 4 |  | Climate change is often talked about, yet the change in the … |
 | z27 | 2026 | 重庆 | 阅读D | 291 | 6 | 1 | By 2030, the world’s data (数据) centers are expected to use … |
-| z28 | 2026 | 成都 | 阅读C | 247 | 4 |  | Scientists tell how healthy rainforests are by listening to … |
+| z28 | 2026 | 成都 | 阅读C | 249 | 4 |  | Scientists tell how healthy rainforests are by listening to … |
 | z29 | 2026 | 成都 | 任务型阅读 | 321 | 4 |  | Everyone sleeps. Good sleep helps you get enough rest and … |
 | z30 | 2026 | 云南 | 阅读C | 257 | 4 |  | Do you know the Ali Plateau? It is a very cold area which … |
 | z31 | 2026 | 云南 | 阅读D | 274 | 5 | 1 | Desertification (荒漠化) is a difficult problem for the whole … |
