@@ -15,11 +15,11 @@
 | z08 | 2026 | 浙江 | 阅读C | 292 | 5 |  | Ayi is a 22-year-old girl from Kashgar, Xinjiang. She … |
 | z09 | 2026 | 浙江 | 阅读D | 290 | 4 | 1 | Motorcycle helmets are important. They protect riders from … |
 | z10 | 2026 | 山东 | 阅读C | 305 | 5 |  | Ms. Beryl and Layla are great friends. It doesn’t matter … |
-| z11 | 2026 | 山东 | 阅读D | 322 | 5 |  | Every time you send an email, a message, a photo or post … |
-| z12 | 2026 | 济南 | 阅读C | 329 | 6 |  | Do you like DIY? Have you ever tried magazine collaging … |
-| z13 | 2026 | 济南 | 阅读D | 327 | 6 |  | On a hot summer afternoon, cities and towns are usually … |
-| z14 | 2026 | 烟台 | 阅读C | 296 | 5 |  | Minqin, lying in the city of Wuwei in Gansu, is sandwiched … |
-| z15 | 2026 | 烟台 | 阅读D | 283 | 7 |  | Recently, researchers have discovered a new bacterium (细菌) … |
+| z11 | 2026 | 山东 | 阅读D | 324 | 5 |  | Every time you send an email, a message or a photo, or post … |
+| z12 | 2026 | 济南 | 阅读C | 328 | 6 |  | Do you like DIY? Have you ever tried magazine collaging … |
+| z13 | 2026 | 济南 | 阅读D | 324 | 6 |  | On a hot summer afternoon, cities and towns are usually … |
+| z14 | 2026 | 烟台 | 阅读C | 298 | 5 |  | Minqin, lying in the city of Wuwei in Gansu, is sandwiched … |
+| z15 | 2026 | 烟台 | 阅读D | 282 | 7 |  | Recently, researchers have discovered a new bacterium (细菌) … |
 | z16 | 2026 | 河南 | 阅读D | 285 | 6 | 1 | Did you notice how nature sometimes repeats itself? … |
 | z17 | 2026 | 湖北 | 阅读B | 274 | 5 |  | For most foreign teenagers, learning Chinese poems could be … |
 | z18 | 2026 | 湖北 | 阅读C | 293 | 5 |  | In ancient China, letters were sent by pigeons and packages … |

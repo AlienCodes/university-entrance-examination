@@ -1,0 +1,2082 @@
+{
+  "summary": "Strict proofreading of 中考 reading passages in groups (+canaries): fidelity vs original Word pages, mechanics, grammar, logic; each finding double-verified",
+  "agentCount": 12,
+  "logs": [
+    "kept 58, dropped 8"
+  ],
+  "result": {
+    "kept": [
+      {
+        "pid": "z33",
+        "loc": "[1.4]",
+        "current": "tool-a robotic fish",
+        "proposed": "tool—a robotic fish",
+        "category": "punctuation",
+        "printed": "scientists created a bionic (仿生) tool-a robotic fish.",
+        "reason": "Error in the paper itself. The docx has a plain hyphen (U+002D) where an em dash is needed to introduce the appositive. The program's dash normalisation did not catch it because there are no spaces around it. As printed, \"tool-a\" reads as a hyphenated compound, so learners would memorise wrong punctuation and TTS would read \"tool-a\" as one word.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page image and the dump both show a plain hyphen with no spaces, so the transcription is faithful. But it is an error in the paper: an appositive needs a dash, and the house style is an em dash with no spaces. As printed, \"tool-a\" reads as one compound word.",
+          "The page image and the docx text both show a plain hyphen in \"tool-a robotic fish\". That joins two separate words into a false compound. The appositive needs an em dash, with no spaces under house style."
+        ],
+        "printed_v": "scientists created a bionic (仿生) tool-a robotic fish.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[2.2]",
+        "current": "Until November 2024, China built a long wall of trees",
+        "proposed": "By November 2024, China had built a long wall of trees",
+        "category": "grammar",
+        "printed": "Until November 2024, China built a long wall of trees, which caught the world’s attention.",
+        "reason": "Error in the paper itself. \"Until + time\" with a one-off completed action in the simple past is ungrammatical, and it suggests China built the belt only up to that date. What is meant is that by November 2024 the 3,046 km green belt around the Taklimakan was finished. Xinhua/China Daily report it was closed on 28 Nov 2024. Correct form: \"By November 2024, China had built…\" (or \"In November 2024, China completed…\").",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Real error: affirmative \"until\" cannot go with a single completed (telic) action. It is the 截至 calque. The 3,046 km Taklimakan belt was closed in November 2024, so \"By November 2024, China had built\" is the correct minimal fix. Index 6 makes the same fix, so apply it only once.",
+          "\"Until\" needs a continuing action, so \"Until November 2024, China built\" with a one-off completed action is ungrammatical. The meaning is that the belt was finished by that date, so \"By … had built\" is the correct minimal fix. The belt was completed on 28 Nov 2024, so the facts stay right."
+        ],
+        "printed_v": "Until November 2024, China built a long wall of trees, which caught the world’s attention.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z33",
+        "loc": "[2.7]",
+        "current": "the way of trout moving",
+        "proposed": "the way trout move",
+        "category": "grammar",
+        "printed": "By “learning” the way of trout moving, robotic fish can work for ten hours after they get full power.",
+        "reason": "Error in the paper itself. \"The way of trout moving\" is not grammatical English (it is Chinglish for 鳟鱼游动的方式). The standard construction is \"the way trout move\" (or \"how trout move\"). An English teacher would mark it wrong.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "\"The way of trout moving\" is not English (a calque of 鳟鱼游动的方式). \"The way trout move\" is the standard minimal form. The transcription matches the page.",
+          "\"The way of trout moving\" is a calque of 鳟鱼游动的方式 and a teacher would mark it. The idiomatic minimal fix is \"the way trout move\". It fits with fix 3 in the same sentence."
+        ],
+        "printed_v": "By “learning” the way of trout moving, robotic fish can work for ten hours after they get full power.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z33",
+        "loc": "[2.7]",
+        "current": "after they get full power",
+        "proposed": "after they are fully charged",
+        "category": "word-choice",
+        "printed": "…robotic fish can work for ten hours after they get full power.",
+        "reason": "Error in the paper itself, lower confidence. \"Get full power\" is not an English collocation for a battery-powered device. The natural forms are \"after they are fully charged\" or \"on a full charge\". Question 20③ (\"every ten hours\") does not depend on this wording.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "\"Get full power\" is a calque of 充满电. In English \"full power\" means maximum output, not a full battery. \"After they are fully charged\" is correct, minimal and keeps the meaning. No question (Q20③, Q21B) depends on this wording.",
+          "\"Get full power\" is not an English collocation for a battery being charged. It can also be misread as reaching full speed or output. \"After they are fully charged\" is the standard minimal fix and keeps the meaning. Q20③ (\"every ten hours\") is unaffected."
+        ],
+        "printed_v": "…robotic fish can work for ten hours after they get full power.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[4.2]",
+        "current": "the park was an empty land swept by wind and sand",
+        "proposed": "the park was empty land swept by wind and sand",
+        "category": "grammar",
+        "printed": "In 2024, the park was an empty land swept by wind and sand.",
+        "reason": "Error in the paper itself, lower confidence. Countable \"a land\" means a country or realm (\"a distant land\"). For a plot of ground, \"land\" is uncountable, so the correct form is \"empty land\" (or \"an empty piece of land\").",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Ground or a plot is uncountable \"land\". Countable \"a land\" means a country or realm, so \"empty land\" is the minimal fix. Indexes 7 and 18 make the identical fix, so apply it only once.",
+          "Countable \"a land\" means a country or realm. For a plot of ground (the site of the park), \"land\" is uncountable, so \"empty land\" is correct. This is the same fix as 7 and 18."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[2.1]",
+        "current": "born into a common family",
+        "proposed": "born into an ordinary family",
+        "category": "word-choice",
+        "printed": "Qi Fabao was born into a common family in Wuwei City, Gansu Province.",
+        "reason": "Error in the paper itself, lower confidence. \"Common family\" is a calque of 普通家庭. Applied to people, \"common\" can mean low-class or vulgar, which is unsuitable for a hero profile. The idiomatic phrase is \"born into an ordinary family\".",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "\"Common family\" is a calque of 普通家庭. Used of people, \"common\" can mean low-class or vulgar, which is unsuitable for a hero profile. \"An ordinary family\" is the idiomatic phrase, and the fix changes a→an correctly. Index 13 makes the same fix, so apply it only once.",
+          "\"Common family\" is a calque of 普通家庭. Applied to people, \"common\" can mean low-class or vulgar, which is wrong for a hero profile. \"Born into an ordinary family\" is the standard phrase. This is the same fix as 13."
+        ],
+        "printed_v": "Qi Fabao was born into a common family in Wuwei City, Gansu Province.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[2.2]",
+        "current": "Until November 2024, China built",
+        "proposed": "By November 2024, China had built",
+        "category": "grammar",
+        "printed": "Until November 2024, China built a long wall of trees, which caught the world’s attention.",
+        "reason": "Outside my lens but a definite error. 'Until' cannot go with a single completed action in the simple past ('Until X, China built…' means China kept building up to X and then stopped). The meaning is completion by a deadline, so 'By November 2024, China had built'. The 3,046 km green belt around the Taklimakan was completed in November 2024, so this fix keeps the facts right.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same valid error and the same result as index 1. Duplicate: apply only once, because after index 1 is applied this substring no longer exists.",
+          "This duplicates 1 with a shorter span. \"Until\" with a completed one-off action in the simple past is wrong, and \"By November 2024, China had built\" is correct."
+        ],
+        "printed_v": "Until November 2024, China built a long wall of trees, which caught the world’s attention.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[4.2]",
+        "current": "was an empty land",
+        "proposed": "was empty land",
+        "category": "grammar",
+        "printed": "In 2024, the park was an empty land swept by wind and sand.",
+        "reason": "Countability error. 'Land' meaning ground or an area of earth is uncountable. 'A land' means a country or realm ('a land of plenty'). The intended meaning (一片空地) is 'empty land' with no article, or 'a piece of empty land'.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same valid countability fix as index 4, with an identical resulting text. Duplicate: apply only once.",
+          "This duplicates 4: in the sense of ground or an area, \"land\" is uncountable, so \"was empty land\" is correct."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[3.5]",
+        "current": "He and the horse fell into the river from the cliff (悬崖).",
+        "proposed": "His horse fell from the cliff (悬崖) into the river, and he was thrown onto the edge of the cliff.",
+        "category": "fact",
+        "printed": "He and the horse fell into the river from the cliff (悬崖).",
+        "reason": "Factual error (outside my grammar lens, but definite). Chinese media reports of the July 2005 patrol by the Xiangquan River say his horse slipped off a narrow trail, fell from the cliff and was swept away by the river. Qi Fabao was thrown onto the edge of the cliff, passed out, and woke with six or seven cuts on his back. He did not fall into the river. The next sentence ('His back was badly hurt') still fits the fix. The current order 'into the river from the cliff' is also back-to-front; the fix uses 'from the cliff into the river'.",
+        "severity": "medium",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "I checked this factual slip about a real person. Two The Paper (澎湃) reports and other Chinese reports of the July 2005 patrol by the 象泉河 say the horse slipped off a path less than 50 cm wide, fell from the cliff and was swallowed by the river. Qi Fabao was thrown onto the edge of the cliff, passed out, and woke with six or seven cuts on his back. He did not fall into the river. The proposed sentence is accurate, simple enough for 14-15-year-olds, keeps the (悬崖) gloss, and fits the next sentence (\"His back was badly hurt\").",
+          "This is a factual slip about a real, living person. Chinese media accounts of the July 2005 patrol by the Xiangquan River agree on what happened. On a trail under 50 cm wide the horse lost its footing, fell off the cliff and was swallowed by the river. Qi Fabao was thrown onto the edge of the cliff, passed out, and woke with 6–7 cuts on his back. He did not fall into the river. The fix is accurate, simple, and keeps the next sentence (\"His back was badly hurt\") coherent. No question depends on the current wording."
+        ],
+        "printed_v": "He and the horse fell into the river from the cliff (悬崖).",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[3.7]",
+        "current": "his promise of defending the border",
+        "proposed": "his promise to defend the border",
+        "category": "grammar",
+        "printed": "More than 1,000 patrols (巡逻) saw his promise of defending the border of our land.",
+        "reason": "Wrong complement. A promise as a commitment takes a to-infinitive ('promise to do'). 'Promise of + -ing' reads as 'the prospect of defending'. 'Saw' (= witnessed, was the occasion of) is fine.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "A commitment takes \"promise to do\". \"Promise of + -ing\" reads as a prospect. \"Saw\" with an event as its subject (patrols saw…) is acceptable, so it can stay. The fix is minimal.",
+          "A commitment takes a to-infinitive (\"promise to defend\"). \"Promise of defending\" reads as a prospect or likelihood, so a teacher would mark it. The fix is minimal."
+        ],
+        "printed_v": "More than 1,000 patrols (巡逻) saw his promise of defending the border of our land.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[2.1]",
+        "current": "seriously influenced by desertification",
+        "proposed": "seriously affected by desertification",
+        "category": "word-choice",
+        "printed": "China has made great progress through hard work, though it is seriously influenced by desertification.",
+        "reason": "'Influence' means to change how someone thinks or behaves. Physical damage to land by desertification needs 'affected' (受…影响 → affected). A careful teacher would mark 'influenced' here.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Damage from desertification needs \"affected\". \"Influenced\" is the classic 影响 mistranslation, and a careful teacher would mark it. The fix is minimal. Index 16 makes the same fix, so apply it only once.",
+          "\"Influenced\" means shaped in thinking or behaviour. A country whose land is damaged by desertification is \"affected\" by it. This is the classic mistranslation of 影响, and a careful editor would correct it. This is the same fix as 16."
+        ],
+        "printed_v": "China has made great progress through hard work, though it is seriously influenced by desertification.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[2.1]",
+        "current": "a common family",
+        "proposed": "an ordinary family",
+        "category": "word-choice",
+        "printed": "Qi Fabao was born into a common family in Wuwei City, Gansu Province.",
+        "reason": "Calque of 普通家庭. 'Common' applied to people or families can mean vulgar or low-class (especially in British English), which is an unintended slur. The idiomatic and neutral phrase is 'an ordinary family'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same valid fix as index 5 (a common → an ordinary), with the same result. Duplicate: apply only once.",
+          "This duplicates 5 with a shorter span. \"A common family\" is a pejorative-sounding calque, and \"an ordinary family\" is the idiomatic phrase."
+        ],
+        "printed_v": "Qi Fabao was born into a common family in Wuwei City, Gansu Province.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z33",
+        "loc": "[3.6]",
+        "current": "Now more and more robotic fish are widely used",
+        "proposed": "Now more and more robotic fish are being used",
+        "category": "logic",
+        "printed": "Now more and more robotic fish are widely used in rivers, lakes and oceans all over the world.",
+        "reason": "'More and more' describes a growing number, while 'are widely used' says use is already widespread, so the sentence contradicts itself. It also overstates the facts: robotic fish are still mostly prototypes and trials. Dropping 'widely' and using the progressive fixes the clash with the smallest change. Another option is 'robotic fish are more and more widely used'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "\"More and more\" counts a growing number, while \"widely used\" says use is already widespread, so the two clash. This is the common Chinglish \"more and more … widely\" pile-up. \"Are being used\" removes the clash with the smallest change and also tones down the overstatement.",
+          "\"More and more … are widely used … all over the world\" pairs a growing number with use that is already widespread. It also repeats itself (\"widely\" plus \"all over the world\") and overstates the facts. Dropping \"widely\" and using the progressive is the minimal fix an editor would make, and the meaning stays the same."
+        ],
+        "printed_v": "Now more and more robotic fish are widely used in rivers, lakes and oceans all over the world.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[2.1]",
+        "current": "though it is seriously influenced by desertification",
+        "proposed": "though it is seriously affected by desertification",
+        "category": "word-choice",
+        "printed": "though it is seriously influenced by desertification.",
+        "reason": "This is a classic mistranslation of 影响: 'influence' means to shape opinions or behaviour, while a country suffering damage from desertification is 'affected' by it. A careful editor would change this.",
+        "severity": "medium",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same valid influenced→affected fix as index 11, with the same result. Duplicate: apply only once.",
+          "This duplicates 11: the country is \"affected\" by desertification, not \"influenced\" by it."
+        ],
+        "printed_v": "though it is seriously influenced by desertification.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z31",
+        "loc": "[4.2]",
+        "current": "the park was an empty land",
+        "proposed": "the park was empty land",
+        "category": "grammar",
+        "printed": "In 2024, the park was an empty land swept by wind and sand.",
+        "reason": "Countable 'a land' means a country or realm ('a distant land'). For a building site, 'land' is uncountable: 'empty land' or 'a piece of empty land'. Minor, low severity.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same valid fix as indexes 4 and 7, with an identical resulting text. Duplicate: apply only once.",
+          "This duplicates 4 and 7. \"Land\" as ground is uncountable, so \"the park was empty land\" is correct."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "[1.3]",
+        "current": "or something helpless,",
+        "proposed": "or something unhelpful,",
+        "category": "word-choice",
+        "printed": "Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.",
+        "reason": "This is an error in the paper itself. 'Helpless' means 'unable to help oneself' and cannot describe a remark. The intended meaning is a remark that does not help, which is 'unhelpful'. Students will memorise this sentence.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image p3 matches. 'Helpless' describes a person who cannot help themselves, not a remark. The intended word is 'unhelpful'. This is an error in the paper.",
+          "'Helpless' describes a person who cannot help themselves, so it cannot describe a remark. A teacher would mark it wrong; 'unhelpful' is the correct word."
+        ],
+        "printed_v": "Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[2.4]",
+        "current": "they got a sweet drink below a terrible one.",
+        "proposed": "they got a sweet drink; below, a terrible one.",
+        "category": "punctuation",
+        "printed": "If they landed above, they got a sweet drink below a terrible one.",
+        "reason": "This is an error in the paper itself. As printed, the sentence says the sweet drink was physically below a terrible one, which makes no sense. The intended contrast is 'above → sweet drink; below → terrible (bitter) drink'. In Perry's experiment, a correct choice gave sugar water and a wrong one gave bitter quinine. Restoring the elided second clause with a semicolon and comma fixes it. A fuller alternative is '; if they landed below, they got a terrible one.'",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image 2024 p2 matches. As printed, the sentence says the drink was physically below another one, which makes no sense. The experiment rewarded a correct landing with sweet nectar and a wrong one with a bitter solution (Perry & Barron). The gapped '; below, a terrible one' is grammatical and the smallest fix.",
+          "As printed, the sentence says the sweet drink was physically below a terrible one, which is nonsense; a clause is clearly missing. The fix '; below, a terrible one' is standard gapping that mirrors 'If they landed above', and it matches Q17 ('sweet drinks … terrible ones'). It is grammatical and minimal."
+        ],
+        "printed_v": "If they landed above, they got a sweet drink below a terrible one.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[4.2]",
+        "current": "A smile can mean differently in different cultures.",
+        "proposed": "A smile can mean different things in different cultures.",
+        "category": "grammar",
+        "printed": "A smile can mean differently in different cultures.",
+        "reason": "This is an error in the paper itself. 'Mean' is transitive and needs an object. 'Mean differently' is a common Chinglish error that any English teacher would mark wrong.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. 'Mean' needs an object here. 'Mean differently' is a typical Chinglish error, and 'mean different things' is the correct minimal fix.",
+          "'Mean' needs an object here, and 'mean differently' is a typical Chinglish error. 'Mean different things' is the correct minimal fix."
+        ],
+        "printed_v": "A smile can mean differently in different cultures.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[2.1]",
+        "current": "a real smile is featured by two",
+        "proposed": "a real smile is marked by two",
+        "category": "word-choice",
+        "printed": "Scientists have found that a real smile is featured by two main muscle (肌肉) movements.",
+        "reason": "This is an error in the paper itself. Passive 'X is featured by Y' means 'Y features X', which is the opposite of what is meant. The intended meaning is 'is characterized/marked by' (or 'a real smile features two main muscle movements'). This is the Chinglish 'be featured by = 以…为特征'.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The error is real: 'be featured by' is not English for 以…为特征. Use the standard idiom 'is characterized by', matching #28 and #39, so that one replacement is applied. The text already uses -ize spelling ('specialized' in z35).",
+          "'Is featured by' is wrong (it is a calque of 以…为特征). Use 'characterized by', the standard idiom, so the wording matches the duplicate proposals 28 and 39."
+        ],
+        "printed_v": "Scientists have found that a real smile is featured by two main muscle (肌肉) movements.",
+        "amended": [
+          "a real smile is characterized by two",
+          "a real smile is characterized by two"
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "[3.3]",
+        "current": "feel better all by themselves.",
+        "proposed": "feel better all by itself.",
+        "category": "grammar",
+        "printed": "F．Talking may make people feel better all by themselves.（答案 F，填入第 23 空）",
+        "reason": "This is an error in the paper's option sentence. The point is that talking alone, without advice, helps. The paper's own explanation says “倾诉本身就能让人感觉更好” ('talking itself'). The reflexive must therefore refer to 'talking' and should be 'by itself'. 'By themselves' points to 'people' and gives the wrong sense ('people feel better on their own'). The fill itself matches the answer key F exactly.",
+        "severity": "medium",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page p4 matches. The paper's own explanation glosses it as 倾诉本身就能让人感觉更好, so the reflexive must refer to 'Talking' and be 'by itself'. 'By themselves' wrongly attaches to the people, who are in fact talking to a friend.",
+          "The point is that talking alone helps, and the paper's own explanation says 倾诉本身. 'By themselves' wrongly attaches to 'people' and blurs that meaning; 'all by itself' is correct. The fill matches answer key F."
+        ],
+        "printed_v": "F．Talking may make people feel better all by themselves.（answer 23 F）",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[1.2]",
+        "current": "where to find food showing an advanced",
+        "proposed": "where to find food, showing an advanced",
+        "category": "punctuation",
+        "printed": "They dance to communicate where to find food showing an advanced form of communication.",
+        "reason": "This is an error in the paper itself. Without the comma, 'food showing an advanced form of communication' reads as if the food shows communication. The participle clause comments on the whole dancing behaviour, so it must be set off with a comma.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. Without a comma, the participle attaches to 'food' ('food showing … communication'). The comma makes it comment on the dancing. This is a real punctuation error.",
+          "Without a comma, the participle phrase attaches to 'food' (food showing communication). A comma is needed so that it comments on the dancing."
+        ],
+        "printed_v": "They dance to communicate where to find food showing an advanced form of communication.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[3.1]",
+        "current": "chances of success before is similar",
+        "proposed": "chances of success beforehand is similar",
+        "category": "grammar",
+        "printed": "This ability to make decisions according to their chances of success before is similar to how humans choose whether to take a test.",
+        "reason": "This is an error in the paper itself. Clause-final 'before' with no reference point is ungrammatical here: before what? The meaning is 'in advance' (judging chances before trying), so the word should be 'beforehand' or 'in advance'.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. Clause-final 'before' reads as 'previously' (their earlier chances). The meaning is 'in advance', which is 'beforehand'. The one-word fix is minimal.",
+          "A dangling clause-final 'before' reads as 'previously'. 'Beforehand' is the minimal one-word fix that gives 'in advance'. Preferred over 33's larger rewording."
+        ],
+        "printed_v": "This ability to make decisions according to their chances of success before is similar to how humans choose whether to take a test.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[4.3]",
+        "current": "may appear fake and dishonest.",
+        "proposed": "may appear fake and dishonest to others.",
+        "category": "logic",
+        "printed": "For example, a wide smile that seems welcoming to some may appear fake and dishonest.",
+        "reason": "This is an error in the paper itself. 'Welcoming to some' sets up a contrast with other people, and the point of the paragraph is cultural difference, but the contrast is never completed. As printed, the sentence says the same smile seems welcoming and also looks fake, with no indication of to whom. The 'to some … to others' pairing needs 'to others'.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. 'Welcoming to some' needs its counterpart. Without 'to others', the cultural contrast is left unfinished, and the sentence implies the same viewers see the smile both ways. Adding 'to others' is minimal.",
+          "'Welcoming to some' sets up a contrast that is never completed, and the paragraph is about cultural difference. A careful editor would add 'to others'. This is a minimal fix."
+        ],
+        "printed_v": "For example, a wide smile that seems welcoming to some may appear fake and dishonest.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[5.3]",
+        "current": "story you read...that should work!",
+        "proposed": "story you read… that should work!",
+        "category": "typography",
+        "printed": "Maybe recall a joyful moment or just think back to a funny story you read...that should work!",
+        "reason": "This is a house-style issue. The header's 版式约定 says that three periods marking a pause are unified to the single character …, and z37 received exactly this correction ('yes...' → 'yes…'). The z38 text still has the three raw periods glued to 'that'. These should be unified, with a space so that 'read' and 'that' are not run together; a lower-case word after '...' also risks a wrong sentence split. This is the only remaining instance in z34–z39.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The house style unifies three periods to …. z37's 'yes... if' was corrected that way (原文订正.json), but this one was missed, and '...' followed by a lower-case word mis-splits the sentence. Adding a space after … matches z37's 'yes… if'.",
+          "The house style (版式约定) turns three periods into …, and z37 got exactly this fix. Here the raw '...' was left, glued to a lowercase word, which is also a known sentence-split risk. 'read… that' is the correct form."
+        ],
+        "printed_v": "Maybe recall a joyful moment or just think back to a funny story you read...that should work!",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[1.1]",
+        "current": "Karl Von Frisch",
+        "proposed": "Karl von Frisch",
+        "category": "spelling",
+        "printed": "In the early 1900s, Austrian scientist Karl Von Frisch discovered the “waggle dance” of honey bees.",
+        "reason": "This is an error in the paper itself. The Nobel laureate's name is written 'Karl von Frisch', with the nobiliary particle in lower case after the first name (Nobel Prize site, Britannica). Students will memorise the name as printed.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. The scientist's name is standardly written 'Karl von Frisch', with a lower-case particle after the given name. Students will memorise it.",
+          "The scientist's name is Karl von Frisch, with the particle in lower case after the first name. Students should not learn a misspelt proper name."
+        ],
+        "printed_v": "In the early 1900s, Austrian scientist Karl Von Frisch discovered the “waggle dance” of honey bees.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[2.6]",
+        "current": "and tried when it was easy,",
+        "proposed": "and tried easy ones,",
+        "category": "grammar",
+        "printed": "Perry found that bees avoided difficult tests and tried when it was easy, suggesting they can judge (判断) their chances of “passing”.",
+        "reason": "This is an error in the paper itself. The pronoun 'it' has no antecedent: the preceding noun is the plural 'difficult tests'. A careful editor would make the two halves parallel ('avoided difficult tests and tried easy ones').",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. The singular 'it' does not agree with the plural 'difficult tests', and 'avoided [NP]' is not parallel with 'tried when [clause]'. 'tried easy ones' fixes both and keeps the meaning.",
+          "'It' has no antecedent after the plural 'difficult tests', and 'avoided [NP] and tried when [clause]' is not parallel. 'Tried easy ones' is the minimal parallel fix."
+        ],
+        "printed_v": "Perry found that bees avoided difficult tests and tried when it was easy, suggesting they can judge (判断) their chances of “passing”.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "[3.1]",
+        "current": "for sustainable construction, “In recent years",
+        "proposed": "for sustainable construction: “In recent years",
+        "category": "punctuation",
+        "printed": "In a professional article, AI is praised as a tool for sustainable construction, “In recent years, AI has become a promising tool for construction. …”",
+        "reason": "This is an error in the paper itself. The quotation is two full sentences introduced by a complete independent clause that has no verb of saying. Standard punctuation in that case is a colon, not a comma.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page 2025 p2 matches. A complete clause with no verb of saying introduces a two-sentence quotation, so the standard mark is a colon. The comma is an error.",
+          "The quotation is two full sentences, introduced by a complete independent clause with no verb of saying. That needs a colon; the comma makes a splice."
+        ],
+        "printed_v": "In a professional article, AI is praised as a tool for sustainable construction, “In recent years, AI has become a promising tool for construction. …”",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "[2.4]",
+        "current": "to create our better buildings",
+        "proposed": "to create better buildings",
+        "category": "word-choice",
+        "printed": "Besides, AI helps architects (建筑师) work with new tools and sustainable materials to create our better buildings and cities of the future.",
+        "reason": "This is an error in the paper itself. 'Our better buildings' implies a selection among our buildings ('the better ones of ours'), which is not meant. The intended meaning is 'better buildings and cities of the future'. Deleting 'our' is the minimal fix.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. 'Our better buildings' reads as 'the better ones among our buildings'. Deleting 'our' is the minimal fix and gives 'better buildings and cities of the future'.",
+          "'Create our better buildings' is unidiomatic: it reads as 'the better ones among our buildings'. Deleting 'our' is minimal and keeps the meaning."
+        ],
+        "printed_v": "Besides, AI helps architects (建筑师) work with new tools and sustainable materials to create our better buildings and cities of the future.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "[4.2]",
+        "current": "Like any other computer, AI",
+        "proposed": "Like any other computer program, AI",
+        "category": "logic",
+        "printed": "Like any other computer, AI is a tool that is particularly good at studying data sets, …",
+        "reason": "This is an error in the paper itself. 'Any other computer' classifies AI as a computer, which it is not; AI is software or technology running on computers. The comparison should be with another program or technology. This is a low-priority logic slip.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. 'Any other computer' classifies AI as a computer, which is a category error. 'Computer program' keeps the comparison and the point about being good with data.",
+          "'Like any other computer' classifies AI as a computer, which is a category error. 'Computer program' is a minimal and accurate fix."
+        ],
+        "printed_v": "Like any other computer, AI is a tool that is particularly good at studying data sets, …",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "[2.2]",
+        "current": "simply saying that “Everything",
+        "proposed": "simply saying “Everything",
+        "category": "punctuation",
+        "printed": "It’s also easy to fall into the trap of simply saying that “Everything will be OK”.",
+        "reason": "This is an error in the paper itself. 'That' introduces reported (indirect) speech, but the words that follow are a capitalised direct quotation. Mixing the two is marked wrong by copy editors. Use either the direct quote without 'that', or 'saying that everything will be OK' without quotation marks.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page p3 matches. 'That' introduces indirect speech, but the capitalised quotation is direct speech. Dropping 'that' gives a clean direct quotation. The next sentence's 'we often say that' still refers back correctly.",
+          "This mixes constructions: 'that' introduces indirect speech, but a capitalised direct quotation follows. By standard rules (e.g. CMOS), a quotation after 'that' is not capitalised. Dropping 'that' gives a clean direct quotation."
+        ],
+        "printed_v": "It’s also easy to fall into the trap of simply saying that “Everything will be OK”.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "[4.5]",
+        "current": "You can ask yourself “What",
+        "proposed": "You can ask yourself, “What",
+        "category": "punctuation",
+        "printed": "You can ask yourself “What would I do if I were to experience the same thing?”",
+        "reason": "This is an error in the paper itself. A full direct question introduced by a verb of saying ('ask yourself') is normally preceded by a comma. This is a minor punctuation point.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page p3 matches. A full direct question after a verb of asking takes an introductory comma under standard punctuation. The fix is minimal.",
+          "A full direct question quoted after 'ask yourself' is introduced with a comma in standard punctuation, and a teacher would add it."
+        ],
+        "printed_v": "You can ask yourself “What would I do if I were to experience the same thing?”",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "¶1 s2",
+        "current": "where to find food showing",
+        "proposed": "where to find food, showing",
+        "category": "punctuation",
+        "printed": "They dance to communicate where to find food showing an advanced form of communication.",
+        "reason": "A comma is missing before the participle phrase. Without it, \"food showing an advanced form of communication\" reads as if the food shows the communication. The phrase describes the dancing, so it needs a comma. Mistake in the paper itself.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #5 with the same fix, a comma before 'showing'. The error is real.",
+          "Same as 5. The comma before 'showing' is required."
+        ],
+        "printed_v": "They dance to communicate where to find food showing an advanced form of communication.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶3",
+        "current": "sustainable construction, “In recent years",
+        "proposed": "sustainable construction: “In recent years",
+        "category": "punctuation",
+        "printed": "AI is praised as a tool for sustainable construction, “In recent years, AI has become a promising tool…",
+        "reason": "A complete independent clause with no verb of saying (\"AI is praised as a tool…\") introduces a full-sentence quotation. That needs a colon, not a comma; the comma creates a splice-like run-on. Mistake in the paper itself.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #11 (comma to colon before a full-sentence quotation that follows an independent clause). Correct.",
+          "Same as 11. A colon is needed before a full-sentence quotation introduced by an independent clause."
+        ],
+        "printed_v": "AI is praised as a tool for sustainable construction, “In recent years, …",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶4 s1",
+        "current": "sustainable construction to set standards for the industry, and make",
+        "proposed": "sustainable construction, set standards for the industry, and make",
+        "category": "punctuation",
+        "printed": "AI can be used to speed up the future of sustainable construction to set standards for the industry, and make construction more efficient and affordable.",
+        "reason": "This is a series of three uses (speed up …, set standards …, and make …), as the comma before \"and make\" shows. With no comma after \"construction\" and with the extra \"to\", it reads as \"speed up construction in order to set standards\", which garbles the meaning. Mistake in the paper itself.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. The comma before 'and make' marks a three-item series, but the missing comma and the extra 'to' make it read 'speed up … in order to set standards'. 'construction, set standards …, and make' restores the parallel series with minimal change.",
+          "The comma before 'and make' shows that this is a three-item series (speed up …, set standards …, and make …). The extra 'to' and the missing comma garble it into a purpose clause. The fix restores the parallel list."
+        ],
+        "printed_v": "AI can be used to speed up the future of sustainable construction to set standards for the industry, and make construction more efficient and affordable.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "¶3 s3 (filled gap 23, option F)",
+        "current": "Talking may make people feel better all by themselves.",
+        "proposed": "Talking may make people feel better all by itself.",
+        "category": "grammar",
+        "printed": "F．Talking may make people feel better all by themselves.",
+        "reason": "The paper's own explanation glosses this as 倾诉本身就能让人感觉更好 (\"talking itself makes people feel better\"). That needs \"all by itself\", referring to the subject \"Talking\". \"By themselves\" wrongly attaches to \"people\" (people alone, unaided). Mistake in the paper's answer option, now part of the text.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #4. The paper's explanation 倾诉本身就能让人感觉更好 requires 'all by itself'.",
+          "Same as 4. 'All by itself' refers to 'Talking', which matches the paper's own explanation 倾诉本身."
+        ],
+        "printed_v": "F．Talking may make people feel better all by themselves.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "¶4 s5",
+        "current": "You can ask yourself “What would",
+        "proposed": "You can ask yourself, “What would",
+        "category": "punctuation",
+        "printed": "You can ask yourself “What would I do if I were to experience the same thing?”",
+        "reason": "A direct quotation after a verb of saying or asking (\"ask yourself\") is introduced with a comma. A copy editor would add it. Mistake in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #15, adding a comma before the quoted direct question.",
+          "Same as 15. The comma before the direct question is standard."
+        ],
+        "printed_v": "You can ask yourself “What would I do if I were to experience the same thing?”",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "¶2 s2",
+        "current": "simply saying that “Everything will be OK”",
+        "proposed": "simply saying “Everything will be OK”",
+        "category": "typography",
+        "printed": "It’s also easy to fall into the trap of simply saying that “Everything will be OK”.",
+        "reason": "Mixed construction: \"that\" makes this indirect speech, but the quotation starts with a capital as if it were direct speech. Dropping \"that\" makes it a clean direct quotation. The other option is lowercase \"everything\" inside the quote. Mistake in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #14. Drop 'that' to remove the mixed indirect/direct construction.",
+          "Same as 14. Dropping 'that' removes the mixed direct/indirect construction."
+        ],
+        "printed_v": "It’s also easy to fall into the trap of simply saying that “Everything will be OK”.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "¶2 last sentence",
+        "current": "and tried when it was easy",
+        "proposed": "and tried easy ones",
+        "category": "grammar",
+        "printed": "Perry found that bees avoided difficult tests and tried when it was easy, suggesting…",
+        "reason": "Pronoun–antecedent mismatch: \"it\" has no singular antecedent after the plural \"difficult tests\". The minimal parallel fix is \"avoided difficult tests and tried easy ones\". Mistake in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #10 with the same replacement, 'tried easy ones'.",
+          "Same as 10. 'Tried easy ones' fixes the pronoun with no antecedent and the faulty parallelism."
+        ],
+        "printed_v": "Perry found that bees avoided difficult tests and tried when it was easy, …",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "¶3 s1",
+        "current": "chances of success before is",
+        "proposed": "chances of success beforehand is",
+        "category": "word-choice",
+        "printed": "This ability to make decisions according to their chances of success before is similar to how humans choose whether to take a test.",
+        "reason": "\"Before\" left dangling at the end of the phrase reads as \"previously\". The intended meaning is \"in advance, before acting\", which is \"beforehand\". Mistake in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #6. 'Beforehand' is the correct word for 'in advance'.",
+          "Same as 6. 'Beforehand' is the minimal correct word."
+        ],
+        "printed_v": "…according to their chances of success before is similar…",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶4 s2",
+        "current": "Like any other computer, AI is a tool",
+        "proposed": "Like any other computer program, AI is a tool",
+        "category": "logic",
+        "printed": "Like any other computer, AI is a tool that is particularly good at studying data sets…",
+        "reason": "\"Like any other computer\" assumes AI is a computer, which it is not; it is software or a technology. A careful editor would correct the comparison. Mistake in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #13 with the same fix, 'computer program'.",
+          "Same as 13. AI is not a computer."
+        ],
+        "printed_v": "Like any other computer, AI is a tool that is particularly good at studying data sets…",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "¶2 s1",
+        "current": "aged from 2 to 8 years old",
+        "proposed": "aged from 2 to 8",
+        "category": "word-choice",
+        "printed": "The orangutans aged from 2 to 8 years old are divided into five groups according to their skills.",
+        "reason": "Redundant: \"aged … years old\". A teacher would mark this; use either \"aged (from) 2 to 8\" or \"from 2 to 8 years old\". Mistake in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page 2025 p1 matches. 'Aged … years old' is a redundancy that English teachers mark as wrong (aged X = X years old). Deleting 'years old' is minimal.",
+          "'Aged … years old' is redundant: 'aged' already means 'of the age of'. A demanding teacher would mark it. 'Aged from 2 to 8' is the minimal fix. Low priority."
+        ],
+        "printed_v": "The orangutans aged from 2 to 8 years old are divided into five groups according to their skills.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "[1.3]",
+        "current": "or something helpless, and",
+        "proposed": "or something unhelpful, and",
+        "category": "word-choice",
+        "printed": "Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.",
+        "reason": "Wrong word. 'helpless' means unable to help yourself (a helpless baby). It cannot describe a remark that gives no help. The meaning is 'unhelpful'.",
+        "severity": "high",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #0 with the same fix, 'unhelpful'.",
+          "Same as 0. 'Helpless' → 'unhelpful'."
+        ],
+        "printed_v": "Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[2.1]",
+        "current": "a real smile is featured by two main muscle",
+        "proposed": "a real smile is characterized by two main muscle",
+        "category": "word-choice",
+        "printed": "Scientists have found that a real smile is featured by two main muscle (肌肉) movements.",
+        "reason": "'be featured by' is not English for 'have as its typical feature' (a common Chinglish slip). The standard form is 'be characterized by'. 'is marked by' is a simpler alternative. Students will memorise this sentence.",
+        "severity": "high",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'Be featured by' is Chinglish for 以…为特征. 'Is characterized by' is the correct idiom. This is the chosen replacement (see #3 and #39).",
+          "'Is featured by' is not English for 'has as its typical features'. 'Is characterized by' is the standard idiom and is the preferred wording among 3, 28 and 39."
+        ],
+        "printed_v": "Scientists have found that a real smile is featured by two main muscle (肌肉) movements.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[4.3]",
+        "current": "seems welcoming to some may appear fake and dishonest.",
+        "proposed": "seems welcoming to some may appear fake and dishonest to others.",
+        "category": "logic",
+        "printed": "For example, a wide smile that seems welcoming to some may appear fake and dishonest.",
+        "reason": "The contrast 'welcoming to some … fake to others' is left unfinished. Without 'to others' the sentence says the same smile may look fake to the same people who find it welcoming, which is not the point about cultures.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #7. Add 'to others' to complete the 'to some … to others' contrast.",
+          "Same as 7. The 'to some … to others' contrast needs completing."
+        ],
+        "printed_v": "For example, a wide smile that seems welcoming to some may appear fake and dishonest.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[5.3]",
+        "current": "you read...that should work!",
+        "proposed": "you read… that should work!",
+        "category": "typography",
+        "printed": "Maybe recall a joyful moment or just think back to a funny story you read...that should work!",
+        "reason": "The header says three periods marking a pause are normalised to '…', but here the three periods were left as they are. The header also notes that three periods followed by a lowercase word are treated as a sentence end, so the sentence will be split wrongly. Change them to the house ellipsis. A space after it matches z37's 'yes… if'; 'read…that' would also be acceptable if the original spacing must stay.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #8. The house ellipsis … was not applied here. Use 'read… that' as in z37.",
+          "Same as 8. The unnormalised '...' should become the house ellipsis, with a space before 'that'."
+        ],
+        "printed_v": "…a funny story you read...that should work!",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[2.6]",
+        "current": "avoided difficult tests and tried when it was easy",
+        "proposed": "avoided difficult tests and tried the easy ones",
+        "category": "grammar",
+        "printed": "Perry found that bees avoided difficult tests and tried when it was easy, suggesting they can judge (判断) their chances of “passing”.",
+        "reason": "The pronoun does not agree with its antecedent and the two halves are not parallel. 'it' has no singular antecedent ('difficult tests' is plural), and 'avoided [noun phrase]' is paired with 'tried when [clause]'. 'tried the easy ones' fixes both. 'took the easy ones' would also work.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The error is real, but 'easy ones' without the article is parallel with the bare plural 'difficult tests' and matches #10 and #23, so that one replacement is used.",
+          "The error is real (see 10 and 23). 'Easy ones' without the article is used to match the article-less 'difficult tests' and the wording of 10 and 23."
+        ],
+        "printed_v": "Perry found that bees avoided difficult tests and tried when it was easy, …",
+        "amended": [
+          "avoided difficult tests and tried easy ones",
+          "avoided difficult tests and tried easy ones"
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[3.1]",
+        "current": "to make decisions according to their chances of success before is similar",
+        "proposed": "to make decisions in advance according to their chances of success is similar",
+        "category": "grammar",
+        "printed": "This ability to make decisions according to their chances of success before is similar to how humans choose whether to take a test.",
+        "reason": "'before' cannot stand alone at the end of the phrase to mean 'in advance'. Alone it means 'previously', which gives the wrong meaning ('their earlier chances of success'). The idea is that bees decide before attempting the task, so 'in advance' (or 'beforehand') belongs with 'make decisions'.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The error is real. The minimal one-word fix 'before' → 'beforehand' (as in #6 and #24) is preferable to moving words, and keeps all three proposals consistent.",
+          "The error is real. Use the minimal one-word fix 'before' → 'beforehand' to match 6 and 24, rather than moving words around."
+        ],
+        "printed_v": "This ability to make decisions according to their chances of success before is similar to how humans choose whether to take a test.",
+        "amended": [
+          "to make decisions according to their chances of success beforehand is similar",
+          "to make decisions according to their chances of success beforehand is similar"
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "[1.5]",
+        "current": "This amazing ability they have is similar",
+        "proposed": "They also have an amazing ability similar",
+        "category": "logic",
+        "printed": "This amazing ability they have is similar to that of a few mammals (like dolphins, rats, and some monkeys)—metacognition (元认知).",
+        "reason": "'This' points back to counting and transferring knowledge, but the ability named after the dash is metacognition, which is something else (judging one's own knowledge, as ¶2–3 show). Introducing it as a further ability removes the false identification. The rest of the sentence ('…that of a few mammals (…)—metacognition') stays as it is.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The logic error is real: 'This' equates counting and knowledge transfer with metacognition. Changing one word ('This' → 'Another', as in #43) fixes it with less rewriting than the proposed restructure.",
+          "The logic error is real: 'This' equates counting and knowledge transfer with metacognition, which ¶4 itself treats as separate ('skills such as simple math'). The minimal fix is the one-word change 'This' → 'Another', as in 43."
+        ],
+        "printed_v": "This amazing ability they have is similar to that of a few mammals (like dolphins, rats, and some monkeys)—metacognition (元认知).",
+        "amended": [
+          "Another amazing ability they have is similar",
+          "Another amazing ability they have is similar"
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "[1.3]",
+        "current": "The building part alone takes up almost 55%",
+        "proposed": "The building part alone accounts for almost 55%",
+        "category": "word-choice",
+        "printed": "The building part alone takes up almost 55% of final energy use and 33% of greenhouse gases.",
+        "reason": "'takes up' (occupies or uses up) does not fit the second object. Buildings do not 'take up' 33% of greenhouse gases; they produce or account for them. 'accounts for', which is the source's verb (Inhabitat, citing AI Magazine), works with both objects. Optionally, 'greenhouse gases' → 'greenhouse gas emissions'.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. 'Takes up 33% of greenhouse gases' is wrong, and it even suggests absorbing gases. 'Accounts for' fits both objects and keeps the meaning.",
+          "'Take up' (occupy) cannot take '33% of greenhouse gases' as an object; that is a zeugma and a wrong collocation. 'Accounts for' fits both objects and is the standard verb for shares."
+        ],
+        "printed_v": "The building part alone takes up almost 55% of final energy use and 33% of greenhouse gases.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "[2.4]",
+        "current": "to create our better buildings and cities of the future",
+        "proposed": "to create better buildings and cities of the future",
+        "category": "grammar",
+        "printed": "Besides, AI helps architects (建筑师) work with new tools and sustainable materials to create our better buildings and cities of the future.",
+        "reason": "The possessive 'our' does not go with the comparative 'better' here: 'create our better buildings' is not idiomatic. The source has 'our sustainable buildings'. The adapter replaced the adjective with 'better' and left 'our', which no longer fits.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #12. Delete 'our'.",
+          "Same as 12. Delete 'our'."
+        ],
+        "printed_v": "…to create our better buildings and cities of the future.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[4.1]",
+        "current": "In one of the lessons, the trainers teach young orangutans",
+        "proposed": "In one of the lessons, the trainers taught young orangutans",
+        "category": "grammar",
+        "printed": "In one of the lessons, the trainers teach young orangutans to climb trees. … Some of the orangutans in particular were really scared.",
+        "reason": "The tense shifts without a time marker. The paragraph tells about one particular lesson ('In one of the lessons'), and the following sentences are in the past ('were really scared … took … finally did … were so satisfied'; Q13 also asks 'How did … feel'). The opening narrative verb should be past too, as in ¶2 ('there was a lesson'). 'This is an important skill' stays present as a general comment.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Page image matches. 'In one of the lessons' introduces a specific occasion (like ¶2's 'there was a lesson'), and the narration continues in the past ('were scared', 'took', 'did'), so the present 'teach' is an unmarked tense shift. 'This is an important skill' correctly stays present as a general comment.",
+          "The paragraph narrates a specific lesson ('In one of the lessons'), and the following verbs are past ('were really scared … took … did … were so satisfied'; Q13 'How did … feel'). The present 'teach' is an unmarked tense shift. 'This is an important skill' rightly stays present."
+        ],
+        "printed_v": "In one of the lessons, the trainers teach young orangutans to climb trees. This is an important skill they need to learn. Some of the orangutans in particular were really scared.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "¶1 s3",
+        "current": "something helpless",
+        "proposed": "something unhelpful",
+        "category": "word-choice",
+        "printed": "Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.",
+        "reason": "Error in the paper: 'helpless' means 'unable to help oneself' and is used of people; a remark that does not help is 'unhelpful'. The adviser is worried about saying something that does not help the friend.",
+        "severity": "high",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #0 with the same fix, 'unhelpful'.",
+          "Same as 0. 'Unhelpful' is the correct word."
+        ],
+        "printed_v": "…or something helpless, and you might feel you’ve disappointed her.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "¶2 s1",
+        "current": "is featured by",
+        "proposed": "is characterized by",
+        "category": "word-choice",
+        "printed": "Scientists have found that a real smile is featured by two main muscle (肌肉) movements.",
+        "reason": "Error in the paper: the passive 'be featured by' does not mean 'have as its typical features' (以…为特征). The correct idiom is 'is characterized by' (or 'a real smile features two main muscle movements').",
+        "severity": "high",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #28. 'Is characterized by' is the correct idiom and the chosen replacement.",
+          "Same as 28. 'Is characterized by'."
+        ],
+        "printed_v": "…a real smile is featured by two main muscle (肌肉) movements.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "¶5 s3",
+        "current": "read...that should work!",
+        "proposed": "read… that should work!",
+        "category": "typography",
+        "printed": "Maybe recall a joyful moment or just think back to a funny story you read...that should work!",
+        "reason": "Under the house style (版式约定) three periods become …, and z37 got the same normalisation ('yes... if' → 'yes… if'), but here the raw '...' was left. The header for z37 notes that three periods followed by a lowercase word are taken as a sentence end and split wrongly. This spot has that pattern ('read...that'). Normalise it and add a space after the ellipsis, as in z37 ('yes… if').",
+        "severity": "medium",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #8. Use 'read… that'.",
+          "Same as 8 and 30. House ellipsis plus a space."
+        ],
+        "printed_v": "…you read...that should work!",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶4 s2",
+        "current": "Like any other computer",
+        "proposed": "Like any other computer program",
+        "category": "logic",
+        "printed": "Like any other computer, AI is a tool that is particularly good at studying data sets…",
+        "reason": "Category error: 'any other computer' classifies AI as a computer, but AI is software or technology, not a computer. 'Like any other computer program' (or simply 'Like any computer') keeps the meaning without the false classification.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #13 with the same fix, 'computer program'.",
+          "Same as 13. 'Computer program'."
+        ],
+        "printed_v": "Like any other computer, AI is a tool…",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z39",
+        "loc": "¶1 s5",
+        "current": "This amazing ability they have",
+        "proposed": "Another amazing ability they have",
+        "category": "logic",
+        "printed": "This amazing ability they have is similar to that of a few mammals (like dolphins, rats, and some monkeys)—metacognition (元认知).",
+        "reason": "'This' points back to counting up to four and transferring knowledge, so the sentence calls those abilities 'metacognition'. That is false: metacognition (knowing what you know) is a separate ability, and the one ¶2–¶4 actually describe through Perry's experiment. 'Another' presents metacognition as a new ability shared with a few mammals.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'This' points back to counting and knowledge transfer, while the appositive names metacognition, a different ability, which ¶2–4 then describe. The one-word change 'Another' removes the false identification.",
+          "'This' wrongly identifies counting and knowledge transfer as metacognition, which ¶4 distinguishes from 'simple math'. 'Another' is the minimal one-word fix that presents metacognition as a further ability."
+        ],
+        "printed_v": "Bees can count up to four and even use knowledge learned in one situation in new ones. This amazing ability they have is similar to that of a few mammals (like dolphins, rats, and some monkeys)—metacognition (元认知).",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶2 s4",
+        "current": "create our better buildings",
+        "proposed": "create better buildings",
+        "category": "word-choice",
+        "printed": "…to create our better buildings and cities of the future.",
+        "reason": "A possessive with a bare comparative ('our better buildings') is unidiomatic and reads as 'the better ones among our buildings'. The meaning is 'better buildings and cities of the future'.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #12. Delete 'our'.",
+          "Same as 12. Delete 'our'."
+        ],
+        "printed_v": "…to create our better buildings and cities of the future.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z37",
+        "loc": "¶4 s5",
+        "current": "You can ask yourself “What would I do",
+        "proposed": "You can ask yourself, “What would I do",
+        "category": "punctuation",
+        "printed": "You can ask yourself “What would I do if I were to experience the same thing?”",
+        "reason": "A direct question quoted after a verb of saying or asking is introduced with a comma.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #15. Add an introductory comma before the quoted direct question.",
+          "Same as 15. Add the comma before the quoted direct question."
+        ],
+        "printed_v": "You can ask yourself “What would I do if I were to experience the same thing?”",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "dropped": [
+      {
+        "pid": "z31",
+        "loc": "[5.3]",
+        "current": "make bigger efforts",
+        "proposed": "make greater efforts",
+        "category": "word-choice",
+        "printed": "China promises to keep working and make bigger efforts.",
+        "reason": "Wrong collocation (做出更大努力). 'Effort' collocates with 'great/greater', not 'big/bigger'. 'Make greater efforts' is the standard phrase.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "reject"
+        ],
+        "why": [
+          "Style preference only. \"Make a big/bigger effort\" is a standard collocation (big/great/huge effort). \"Greater\" is more formal but \"bigger\" is not wrong.",
+          "This is a style preference. Collocation dictionaries list \"big\" alongside \"great\" for \"effort\" (\"make a big/bigger effort\"). \"Greater\" is more formal but \"bigger\" is not an error, and the plain register suits a 中考 text."
+        ],
+        "printed_v": "China promises to keep working and make bigger efforts.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[3.4]",
+        "current": "in the snow mountains",
+        "proposed": "in the snowy mountains",
+        "category": "word-choice",
+        "printed": "Once in 2005, he rode a horse in the snow mountains to carry out a task.",
+        "reason": "Calque of 雪山. As a common noun the English is 'snowy' or 'snow-covered' mountains. 'Snow Mountain' appears only in proper names.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "reject"
+        ],
+        "why": [
+          "\"Snow\" as an attributive noun (snow peaks, snow fields, snow mountains) is attested English and is understood correctly. \"Snowy\" is a stylistic preference, not a definite error.",
+          "\"Snow mountains\" works as a noun-plus-noun compound like \"snow line\" or \"snow peak\", and it appears in native writing about the Himalaya and Tibet. \"Snowy\" is a stylistic preference, not a correction."
+        ],
+        "printed_v": "Once in 2005, he rode a horse in the snow mountains to carry out a task.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[3.3]",
+        "current": "When facing the falling stones",
+        "proposed": "When facing falling stones",
+        "category": "grammar",
+        "printed": "When facing the falling stones, he even used his body to stop them.",
+        "reason": "Article error. This is a general, repeated situation ('when facing …'), and the stones have not been mentioned before. The generic zero article is required; 'the' presupposes particular, known stones.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Not a definite error. The writer uses the situational definite article throughout (\"the communication lines\", \"the cold water\"), and \"the falling stones\" refers to the stones falling in those mountains. The zero article is only a stylistic option.",
+          "The \"When facing …\" clause describes a general, repeated hazard, and the stones have not been mentioned before. The generic zero article (\"falling stones\") is required. \"The falling stones\" wrongly suggests particular, known stones."
+        ],
+        "printed_v": "When facing the falling stones, he even used his body to stop them.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z30",
+        "loc": "[3.7]",
+        "current": "saw his promise of defending",
+        "proposed": "witnessed his promise to defend",
+        "category": "word-choice",
+        "printed": "More than 1,000 patrols (巡逻) saw his promise of defending the border of our land.",
+        "reason": "This translates 见证了他…的承诺. With 'patrols' as the subject, 'saw' reads literally, as if the patrols looked at his promise. 'Witnessed' is the verb for this personification. 'Promise of defending' means a likelihood of something, whereas a commitment is a 'promise to defend'. Borderline, low severity: some readers would accept 'saw' in the 'the 1990s saw…' sense.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "reject"
+        ],
+        "why": [
+          "The real error (promise of defending → promise to defend) is already covered by index 9. Changing saw→witnessed is optional style: \"saw\" with an event as its subject (\"the 1990s saw…\") is idiomatic. Applying this as well would conflict with index 9.",
+          "The real error here (\"promise of defending\" should be \"promise to defend\") is already fixed by 9. \"Saw\" with an event as subject, meaning \"was the occasion of\" (as in \"the tournament saw…\"), is acceptable English. Changing it to \"witnessed\" is a style choice, and this proposal would also clash with 9."
+        ],
+        "printed_v": "More than 1,000 patrols (巡逻) saw his promise of defending the border of our land.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "¶2 last sentence",
+        "current": "That’s why though trying",
+        "proposed": "That’s why, though trying",
+        "category": "punctuation",
+        "printed": "That’s why though trying to fake a real smile can be hard, discovering it on someone else is a piece of cake.",
+        "reason": "Unpaired comma. The concessive clause \"though … can be hard\" interrupts the clause after \"That’s why\", so it needs a comma on both sides. Only the closing comma is there. Mistake in the paper itself.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "reject"
+        ],
+        "why": [
+          "This is not an error. When a subordinate clause directly follows a conjunction or 'why'/'that' ('He said that if it rained, we would stay'), a comma after the conjunction is optional. The single closing comma is standard.",
+          "Not an error. When a complementiser or subordinator ('that', 'why') is followed by a fronted dependent clause, standard usage (CMOS) allows no comma after it: 'He said that if it rains, …'. 'That’s why though …, discovering …' follows this accepted pattern. Adding a comma is optional style."
+        ],
+        "printed_v": "That’s why though trying to fake a real smile can be hard, discovering it on someone else is a piece of cake.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z38",
+        "loc": "[2.5]",
+        "current": "discovering it on someone else",
+        "proposed": "discovering a fake one on someone else",
+        "category": "grammar",
+        "printed": "That’s why though trying to fake a real smile can be hard, discovering it on someone else is a piece of cake.",
+        "reason": "Unclear pronoun reference. The only noun 'it' can grammatically refer to is 'a real smile', but what is easy to spot on someone else is a fake smile (see [1.2] 'easily discover a fake smile').",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "reject"
+        ],
+        "why": [
+          "The only noun antecedent for 'it' is 'a real smile', but the intended object is a fake smile (cf. ¶1 'easily discover a fake smile'). This vague reference would be marked. 'A fake one' is a clear minimal fix.",
+          "Not a definite error. 'It' naturally refers to the faking just mentioned ('trying to fake a real smile'), and in context it is understood as the faked smile, as ¶1 ('easily discover a fake smile') confirms. The rewording is a stylistic clarification, not a correction."
+        ],
+        "printed_v": "That’s why though trying to fake a real smile can be hard, discovering it on someone else is a piece of cake.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶1 s3",
+        "current": "almost 55% of final energy use",
+        "proposed": "almost 55% of electricity use",
+        "category": "fact",
+        "printed": "The building part alone takes up almost 55% of final energy use and 33% of greenhouse gases.",
+        "reason": "The numbers contradict each other: construction as a whole uses 38% of world energy, yet 'the building part alone' (a subset) supposedly takes almost 55% of final energy use. A part cannot exceed the whole. The 55% figure is the buildings' share of global ELECTRICITY use (IEA: buildings ≈30% of final energy and >55% of electricity). The source article (AI Magazine/Inhabitat) mixed this up, and the exam copied it. Questions 16–20 are not affected.",
+        "severity": "medium",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "reject"
+        ],
+        "why": [
+          "There is an internal contradiction: a part ('the building part alone') cannot use 55% when the whole (construction) uses 38% of world energy. The 55% figure is the widely cited buildings share of global electricity (IEA/UNEP), not of final energy (about 30%). Changing 'final energy use' to 'electricity use' fixes it without affecting Q16–20. I could not open the Inhabitat or AI Magazine source to confirm (fetch blocked).",
+          "Not a definite internal contradiction. 'The building part alone takes up almost 55% of final energy use' can be read as a share of construction's own energy use. Replacing it with 'electricity use' inserts an outside statistic that cannot be verified here (web search unavailable this turn). This changes content rather than correcting the English."
+        ],
+        "printed_v": "According to AI Magazine, construction is responsible for using 38% of world energy. The building part alone takes up almost 55% of final energy use and 33% of greenhouse gases.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z36",
+        "loc": "¶3 s3",
+        "current": "water protection",
+        "proposed": "water conservation",
+        "category": "word-choice",
+        "printed": "…help to make full use of building systems for energy efficiency, water protection and other goals.",
+        "reason": "The source (Inhabitat, quoting a LinkedIn article) says 'energy efficiency, water conservation'. Building systems are optimised to SAVE water (conservation, 节水). 'Water protection' means protecting water bodies from pollution, which is the wrong term next to 'energy efficiency'.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "reject"
+        ],
+        "why": [
+          "The source probably had 'water conservation', but 'water protection' (protecting water resources) is a recognised English term and not an error. This looks like a deliberate simplification of vocabulary for 中考 readers. It is a word-choice preference, not a definite mistake.",
+          "'Water protection' (protecting water resources) is a legitimate goal and is grammatical. Changing it to the source's 'water conservation' is a wording preference, not the correction of a definite error."
+        ],
+        "printed_v": "…help to make full use of building systems for energy efficiency, water protection and other goals.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "failed": [],
+    "agentFail": [],
+    "notes": [
+      {
+        "g": [
+          "z30",
+          "z31",
+          "z32",
+          "z33"
+        ],
+        "notes": {
+          "fidelity": "I checked all four passages against the page images, the full-text dumps, and the original .docx files (unzipped; document.xml paragraph text compared character by character).\n\nTRANSCRIPTION / PARAGRAPHING: No transcription or paragraphing errors in any of the four passages. Every paragraph matches the docx exactly. The only difference is the deliberate asterisk removal listed for z32.\n\nz30 (云南 C): The original has 4 paragraphs and I compared all 4. Start: \\\"Do you know the Ali Plateau?\\\" directly after \\\"C篇\\\". End: \\\"…but real actions.\\\" directly before Q31. No question text is mixed in. The glosses 卫国戍边英雄团长 / 悬崖 / 巡逻 / 忠诚 match the page. The numbers 5,000, 18, 20, 2005 and 1,000 match.\nSentences checked most closely and kept:\n- \\\"At the age of 18\\\": Q32's answer depends on it. Qi Fabao enlisted in 1997, which is consistent.\n- \\\"Once in 2005 … fell into the river from the cliff\\\": matches news reports from July 2005 (象泉河). Strictly only the horse fell into the river, but the exam wording is not definitely wrong.\n- \\\"in the snow mountains\\\": a Chinglish-leaning but understandable phrase. Kept.\n- \\\"More than 1,000 patrols saw his promise\\\": figurative, grammatical.\n- \\\"loving our country is not empty words, but real actions\\\": acceptable.\nOne low-confidence word-choice item is reported (\\\"common family\\\").\n\nz31 (云南 D): The original has 5 paragraphs and I compared all 5. The figure (straw checkerboards / solar panels / drone) sits between ¶1 and ¶2 and is only an illustration. Start: \\\"Desertification (荒漠化)…\\\" directly after \\\"D篇\\\". End: \\\"…show this spirit.\\\" which is the end of the document. The numbers 2024, 3,046 km, 32 million, 45 and 120 match. The glosses 荒漠化 / 公顷 / 阻沙系统 / 部长 match.\nReported: \\\"Until November 2024, China built\\\" (grammar; high) and \\\"an empty land\\\" (low).\nKept:\n- 'a “very important partner”.' (period outside the quote, an accepted British style)\n- \\\"make bigger efforts\\\"\n- \\\"have had rich experience\\\"\n- \\\"there were grasses, fruits and vegetables\\\"\n\nz32 (陕西 C): The original has 2 paragraphs and I compared both. The docx contains only this passage: an elephant photo, then text, with no questions. Start: \\\"This is a true story…\\\". End: \\\"…who made it possible.\\\"\nI checked the deliberate correction \\\"orphanage*\\\" → \\\"orphanage\\\". It is correct and was applied exactly once. The docx has no gloss for the asterisk: footnotes.xml and endnotes.xml are empty, the headers are empty, and the only other image is a blank 33×20 placeholder. Removing the bare marker is therefore right.\nThe glosses 盗猎袭击 / 外伤；损伤 (full-width semicolon, as printed) / 周边的荒野 match, and both em dashes match.\nKept:\n- \\\"a poacher attack\\\" (an acceptable noun adjunct)\n- \\\"the elephants had soon formed\\\" (past perfect is acceptable before \\\"In the end\\\")\n- \\\"the seven other elephants\\\"\n- \\\"an elephant orphanage where…\\\" (restrictive clause, acceptable)\n\nz33 (宁夏 C): The original has 4 paragraphs, numbered ①–④ (the numbers were removed per house style). I compared all 4. Start: \\\"Water pollution is…\\\" after the illustration. End: \\\"…learning from nature.”\\\" directly before Q19. The glosses 传感器 / 仿生 / 鳟鱼 match. The quoted words “learning” “body” “taste” “eat” match the page.\nReported:\n- \\\"tool-a\\\": a hyphen for a dash. The docx has U+002D.\n- \\\"the way of trout moving\\\"\n- \\\"get full power\\\" (low)\nKept:\n- \\\"when it gets broken\\\"\n- \\\"more and more robotic fish are widely used\\\"\n- 'its “body”, it can' (comma outside the quote)\n\nSources checked:\n- Taklimakan belt completion, Nov 2024: https://english.www.gov.cn/news/202411/29/content_WS67491a4dc6d0868f4e8ed836.html and https://chinadailyhk.com/article/598979\n- Qi Fabao 2005 fall and 1997 enlistment: https://www.12371.cn/2021/12/07/ARTI1638879384758626.shtml and https://www.thepaper.cn/newsDetail_forward_11390211\n\nWorking copies of the docx files were unzipped only into the scratchpad (sx/, nx/, yn/). No project files were modified.",
+          "mechanics": "I read all four files completely, headers included, and compared each against its page image and the full-text dump. Paragraph counts and the start and end of each passage match the paper (z30: 4 paragraphs, z31: 5, z32: 2, z33: 4 = ①–④). I found no transcription errors: the letters, numbers, names and Chinese glosses all match the print.\n\nz30 (Yunnan C): nothing in my lens. Sentences I checked most closely:\n- The appositive “hero regiment commander for defending the border” (卫国戍边英雄团长) is correctly enclosed by paired commas. A lowercase quoted translation of an honorary title is acceptable.\n- 'life-and-death moments' has the correct compound-adjective hyphens.\n- '5,000', '1,000', 'Wuwei City, Gansu Province', 'Xizang' and 'Ali Plateau' are all correctly formatted and consistent.\n- 'is not empty words, but real actions': the comma in 'not X, but Y' is acceptable.\n- Outside my lens, so I left these to the word-choice reviewers: 'common family' (more idiomatic: 'ordinary family') and 'snow mountains' ('snowy mountains'). Both are common in Chinese-English texts and I don't consider either a definite error.\n\nz31 (Yunnan D): nothing in my lens.\n- 'China-Africa Green Technology Park': a hyphen instead of an en dash is acceptable.\n- 'sand-blocking systems' is hyphenated correctly. '3,046 km' and '32 million hectares' are formatted correctly.\n- 'Northwest China' is acceptable capitalisation for a region name.\n- 'a “very important partner”.' has the full stop outside a quoted fragment, which is acceptable British/logical style. No serial comma follows the house style.\n- I reported two grammar/wording issues outside my lens, 'Until … built' and 'an empty land'.\n- Also outside my lens: 'make bigger efforts' (the more usual collocation is 'make greater efforts'). It is attested, so I didn't report it.\n\nz32 (Shaanxi C): nothing in my lens.\n- The header correction (orphanage* → orphanage) is correct. The page has no footnote for the asterisk, and the resulting 'an elephant orphanage where she was named Natumi' is a grammatical restrictive clause.\n- 'Nairobi, Kenya—a country in East Africa' and 'return to the wild—but the workers' use em dashes per house style.\n- 'four-legged' is hyphenated correctly. 'David Sheldrick Wildlife Trust' is spelled correctly (Sheldrick).\n- 'keeper’s' and 'everyone’s' have correct apostrophes.\n- The full-width ； inside the Chinese gloss (外伤；损伤) is correct Chinese punctuation.\n- 'was safe, but very scared and shy': a contrastive comma is acceptable.\n- 'a little elephant named Natumi who made it possible': fine as is.\n\nz33 (Ningxia C): in my lens, one definite error, the hyphen used as a dash in 'tool-a robotic fish'. I also reported 'the way of trout moving' (grammar) and 'get full power' (wording), both outside my lens. Kept:\n- Commas outside the quotes in 'its “body”,' (acceptable style).\n- 'under water' as an adverb (acceptable).\n- 'rivers, lakes or oceans' with no serial comma.\n- 'people’s' with the correct apostrophe.",
+          "grammar": "I read all four files completely, including headers, and checked each text against its page image and the full-paper dump. Transcription matches in all four (z32's orphanage* asterisk removed as recorded; z33's ①–④ markers removed per house style). Every finding is an error in the paper itself, except the z30 [3.5] fact error, which may come from the paper's adaptation. Sources checked: Chinese news reports via web search (thepaper.cn, 12371.cn search snippets; the pages themselves could not be fetched).\n\nz30 – checked and kept:\n- [1.3] 'has guarded our land with his life there': present perfect is OK.\n- [2.4] 'began his career of defending the border': acceptable complement.\n- [3.2] 'stood in the cold water for hours': the definite article works here as 'the water at the repair site', and Q34 repeats the wording. A stricter editor could drop 'the'.\n- [3.6] 'the great pain never broke him': refers back to the injury.\n- [4.2] 'loving our country is not empty words, but real actions': a singular gerund subject with a plural complement after 'is' is grammatical.\n- Facts confirmed: Qi Fabao is from Tianzhu, Wuwei; he joined the army in 1997 at 18; over 1,000 patrols.\n\nz31 – checked and kept:\n- [1.2] 'For many years … have had rich experience': grammatical; 'rich experience' is plain but understood.\n- [3.1] 'shared the technologies': reads as the desertification-control technologies used in China.\n- [4.3] 'grasses, fruits and vegetables': plurals are acceptable for different kinds of plants.\n- [4.4] 'not only to protect … but also to help': the parallel structure is correct.\n- [4.5] 'trained 45 skilled workers': common journalistic phrasing.\n- [5.1] Period outside the quoted fragment ”.: logical punctuation, acceptable.\n- [5.3] 'As a key member fighting against desertification in the world': slightly loose (member of what?) but understandable; not flagged.\n- Facts confirmed: the 3,046 km Taklimakan green belt was completed in November 2024.\n\nz32 – no errors found. Sentences I checked most closely:\n- [2.1] 'When she was just a few weeks old, a small elephant …': 'she' before its noun in an opening clause is allowed.\n- [2.2] 'an elephant orphanage where she was named Natumi': restrictive 'where' after 'an' is acceptable.\n- [2.7] 'stepped up to the task': 'step up' plus 'to the task' is in current native use, so it is not a broken idiom.\n- [2.8] 'the seven other elephants, keeping them calm and playing with them': both participles attach correctly to 'she'.\n- [2.9] 'Guided by Natumi, the elephants had soon formed …': the participle attaches correctly. 'Had soon formed' is an accepted narrative past perfect, meaning 'before long they had formed'.\n- [2.10] 'the new family of elephants was': singular verb with the collective 'family' is correct. 'Would never forget a little elephant named Natumi who made it possible': the indefinite article is a deliberate storytelling choice, and simple past is acceptable for 'made'.\n- The story matches the book Natumi Takes the Lead (David Sheldrick Wildlife Trust, eight orphans playing in the bush).\n\nz33 – checked and kept:\n- [1.3] 'they cannot cover large water bodies like rivers, lakes or oceans': fine.\n- [2.4] Wright brothers studying the flight of birds: correct.\n- [2.6] 'moving fast in water with very little energy': acceptable.\n- [3.1] 'under water': acceptable spelling as an adverb.\n- [3.5] 'repair itself when it gets broken': acceptable.\n- [4.1] 'offered lots of possibilities': acceptable.",
+          "logic": "I read all four files in full, headers included, and compared each one word by word with its page image and the full-text dump. I found no transcription differences: the words, numbers, glosses, paragraph breaks and start/end boundaries all match. Every finding above is an error in the paper itself.\n\nz30 (Yunnan C): the facts were checked against Chinese reports. Qi Fabao was born around 1979 in Wuwei, Gansu, and enlisted in December 1997, so 'at the age of 18' matches Q32 closely enough and was kept. 'For over 20 years' was kept because he has served since 1997. 'Over 1,000 patrols' is his own figure from 2015. Also kept: 'nearly 5,000 meters' (Ngari averages about 4,500 m or more), 'Ali Plateau in Xizang', 'the snow mountains' (acceptable English), 'When facing the falling stones' and 'stood in the cold water' (definite articles that refer to the scene, which is acceptable), and 'loving our country is not empty words, but real actions'. The fall sentence is reported as a factual slip: the sources say only the horse went into the river. The 'saw his promise' finding is low-confidence.\n\nz31 (Yunnan D): the facts were checked. The 3,046-km Taklimakan green belt was completed on 28 Nov 2024. The China-Africa Green Technology Park was built in 2024. Wang Yongdong is a senior engineer at the Xinjiang Institute of Ecology and Geography (XIEG). The figures of 45 trained technicians and 120 jobs and the 'not only… but also' goal quote all match China Daily/Xinhua. Kept: 'have had rich experience' (a common collocation, not a definite error), 'shared the technologies' ('their' would be better, but the reference to China's own methods can be inferred), 'grasses, fruits and vegetables', 'make bigger efforts' ('greater' is more usual, but 'bigger' is not wrong), British-style punctuation outside the quote in 'partner”.', and '32 million hectares of new forest' (plausible; I could not open the source page because WebFetch could not resolve the host).\n\nz32 (Shaanxi C): no errors found. The page image confirms that 'orphanage*' has no footnote anywhere on the page or in the dump, so removing the asterisk is correct and the correction was applied as described. Sentences I looked at closely and kept: 'lost her mother to a poacher attack' (acceptable); 'stepped up to the task' (a correct idiom); 'Guided by Natumi, the elephants had soon formed their own loving family' (the past perfect with 'soon' is acceptable narrative usage, not a definite error); 'the seven other elephants'; the em dash plus 'but' in the last sentence (the contrast between returning to the wild and never forgetting her is logical); 'a little elephant named Natumi who made it possible' ('it' is underlined for a question, so leave it); 'Nairobi, Kenya—a country in East Africa' (the Sheldrick nursery is in Nairobi National Park). The book source, Natumi Takes the Lead (National Geographic Kids), confirms the David Sheldrick Wildlife Trust and her role as leader of the group.\n\nz33 (Ningxia C): the paper prints a hyphen in 'tool-a'. Kept: 'The Wright brothers created their first plane by studying the flight of birds' (historically defensible); 'Now more and more robotic fish are widely used… all over the world' (overstated, but a common textbook phrasing and not a definite error); 'repair itself when it gets broken'; 'Because of the small sensors inside its “body”'; the quoted 'learning', 'taste', 'eat' and 'body' (deliberate personification); and the scientist's quote in ¶4."
+        }
+      },
+      {
+        "g": [
+          "z34",
+          "z35",
+          "z36",
+          "z37",
+          "z38",
+          "z39"
+        ],
+        "notes": {
+          "fidelity": "FIDELITY RESULT: no transcription or paragraphing differences in any of the six passages. For each passage I opened every listed page image and compared the text word by word and sentence by sentence. I also checked each ¶ programmatically against the full-text dump: every paragraph of z34, z35, z36, z38 and z39 is byte-identical to one dump line. For z37 I rebuilt the text from the dump by putting the answer-key sentences into the gaps (21 B, 22 C, 23 F, 24 G, 25 E) and applying 'yes...'→'yes…'; the result is identical to the current text. Starts and ends match the original, no question text is mixed in, and nothing is missing or duplicated. All Chinese gloss characters match. The only page-vs-house-style issue is z38's surviving 'read...that' (reported as low typography). Every other finding is an error in the printed paper itself.\n\nPER PASSAGE:\n- z34 (宁夏 2026 D, anger): the original has 4 paragraphs across p2–p3; all 4 compared. The 4th paragraph continues onto p3 and ends at 'calmer way.' I found no errors. Sentences I looked at closely and kept: 'a normal feeling … these feelings' (number shift, but inside a spoken quotation); 'First, … Second, …'; 'Your anger is not always caused by your own stress or other people being unkind'; 'Dr Nathwani' (British style, no full stop after Dr).\n- z35 (济南 2025 C, orangutans): the original has 6 paragraphs; all 6 compared. I found no errors. Kept: 'aged from 2 to 8 years old' (common, not wrong); 'the team who feed' (British collective plural); ¶4 'the trainers teach … Some … were really scared' (generic present followed by a past anecdote, acceptable); 'making it one of the most unusual schools'.\n- z36 (济南 2025 D, AI construction): the original has 4 paragraphs; all 4 compared. The 38% / 'almost 55% of final energy use' figures look inconsistent, but they come from the cited AI Magazine source, so I kept them. Also kept, as clumsy but not definitely wrong: 'steel produces too much material waste', 'the future of sustainable construction could progress much faster than in the past', and 'AI can be used to speed up … construction to set standards for the industry, and make …'. The last one can be read as a purpose infinitive; if the orchestrator prefers a list, the fix would be 'construction, set standards'.\n- z37 (济南 2025 七选五): the original has 5 paragraphs on p3–p4, with gap 25 at the start of ¶5; all 5 compared. All five fills are exactly the answer-key sentences and sit in the right places. Each fits its context and is grammatical, except F, which has the 'by themselves' → 'by itself' problem (reported). The 'yes… if' correction was applied as described. 'your friends' problem' (generic plural) was kept.\n- z38 (济南 2024 C, fake smile): the original has 5 paragraphs; all 5 compared. Kept: 'That’s why though trying to fake a real smile can be hard, discovering it on someone else is a piece of cake' ('it' = the faking; comma placement acceptable); 'lift our mouth upwards'; 'before the camera'.\n- z39 (济南 2024 D, bees): the original has 5 paragraphs; all 5 compared. Kept: 'In the early 1900s'. Von Frisch described the bee dances in the 1920s; the full decoding came in the 1940s. That is loose dating, not definitely wrong. I also kept 'This amazing ability … —metacognition'. The link from counting to metacognition is loose, but no minimal fix exists and it is not definitely wrong. 'can’t be sure if … or …' was kept as well.\n\nWeb checks: the AI Magazine statistics are confirmed in the source (aimagazine.com, 'Leveraging AI for sustainability in construction'). The Perry/Barron bee experiment is confirmed: targets above or below a bar, a reward for the correct choice, and an opt-out on difficult trials.",
+          "mechanics": "I read all six files in full: headers, body, the page images (z34 p2–p3; Jinan 2025 p1–p4; Jinan 2024 p1–p2) and the dumps. In every passage the body matches the printed paper word for word, paragraph breaks included. I found no transcription errors (type A); every finding above is an error in the paper itself, except one house-style normalisation that was not applied (z38 \\\"read...that\\\" still has three periods). A script check found no double spaces, straight quotes, stray spaces around punctuation, unpaired quotes or brackets, or doubled words, and every word in the six passages is a real English word.\n\nz34 (Ningxia D): nothing to report. Checked closely and kept: \\\"Dr Nathwani\\\" (British style without a full stop, spelled the same both times); \\\"mid-20s\\\"; \\\"the “angry energy”.\\\" (full stop outside the quote, consistent house style); \\\"Sometimes anger can be good, because…\\\" (comma before \\\"because\\\" is acceptable); the two quotations with \\\"says Dr Nathwani\\\" are punctuated correctly.\n\nz35 (Jinan 2025 C): the only finding is the redundant \\\"aged … years old\\\". Kept: \\\"the team who feed\\\" (British collective plural); \\\"specialized\\\" (American spelling); \\\"again—where they belong\\\" (dash). Outside my lens, for the grammar reviewer: the tense shifts from present to past in ¶2 (\\\"there was a lesson\\\") and ¶4 (\\\"Some of the orangutans … were really scared\\\").\n\nz36 (Jinan 2025 D): \\\"AI Magazine\\\" is a publication title (italics cannot be shown), so kept. The 38%/55% figures come from the source as printed (Inhabitat, citing AI Magazine: construction 38% of global energy consumption; the building sector almost 55% of final energy use), so I did not flag them. For other reviewers: \\\"33% of greenhouse gases\\\" (better \\\"greenhouse gas emissions\\\") and \\\"create our better buildings\\\" are word choice, outside my lens.\n\nz37 (Jinan 2025 七选五): all five fills (21 B, 22 C, 23 F, 24 G, 25 E) are the paper's own answers, are placed correctly, and fit the context. The ellipsis normalisation \\\"yes… if\\\" was applied correctly. Kept: \\\"your friends’ problem\\\" (the plural matches the plural \\\"friends\\\" used throughout ¶4–5); \\\"whether they’re actually asking for advice, or simply wanting…\\\" (the comma is optional, not wrong); \\\"“talk it out”, though.\\\" The \\\"all by themselves\\\" fix applies to answer option F as it now stands in the text. A reading where people feel better on their own is possible, but the paper's own explanation (倾诉本身) shows \\\"by itself\\\" is meant.\n\nz38 (Jinan 2024 C): \\\"faking (假笑)\\\" is the exam's gloss and is kept. The Oxford comma in \\\"posture, hair, and makeup\\\" is fine. \\\"So,\\\" after \\\"However\\\" is acceptable.\n\nz39 (Jinan 2024 D): \\\"honey bees\\\", \\\"further from or closer to\\\", \\\"Queen Mary University of London\\\" and \\\"simple math\\\" are fine. \\\"an awful lot of\\\" is standard informal English. For the logic and fact reviewers, not reported by me: (1) \\\"This amazing ability … —metacognition\\\" names counting and knowledge transfer as metacognition (thinking about one's own thinking), which is a loose adaptation. (2) \\\"In the early 1900s\\\": von Frisch described the dances in the 1920s and decoded them in the 1940s, a loose dating.\n\nSources checked: Perry & Barron 2013 PNAS summary (https://lighthouse.mq.edu.au/media-releases/honey-bees-demonstrate-decision-making-process-to-avoid-difficult-choices, https://pmc.ncbi.nlm.nih.gov/articles/PMC3839751); AI Magazine figures (https://aimagazine.com/ai-applications/leveraging-ai-for-sustainability-in-construction, https://inhabitat.com/tag/artificial-intelligence/). I did not find the source articles for z36 ¶4 or z37. No files were modified.",
+          "grammar": "I read all six files completely, including the headers. I checked the passage text in each file against the paper dumps (identical, with the same paragraph breaks) and looked at the 2024 Jinan p2 page image for z39. I found no transcription differences; every finding above is an error in the paper itself.\n\nLogic/fact points I left out of the findings for the fact lens to decide:\n- z36 [1.2]/[1.3]: construction uses '38% of world energy' but 'the building part alone' uses '55% of final energy use', so the part is larger than the whole. The secondary source (Inhabitat, citing AI Magazine) gives the same figures. IEA puts buildings at about 55% of global electricity and about 30% of final energy, so the original probably meant electricity.\n- z36 [1.4]: 'steel produces too much material waste' is odd (it is the use of steel, or construction, that produces waste). I could not reach the source to confirm.\n- z36 [2.3]/[4.1]: 'the future of sustainable construction could progress' and 'speed up the future of' are awkward collocations but understandable, so I kept them.\n- z38 [2.3]: 'These muscle movements are usually absent in a forced smile' is not quite right, because the mouth does lift in a forced smile; it is the eye movement that is missing. It is a simplification, so I kept it.\n- z39 [1.1]: 'In the early 1900s' is loose (von Frisch described the dance from about 1919 to 1923 and decoded it in the 1940s). I kept it.\n\nSentences I looked at closely and kept:\n- z34: 'Anger is a normal feeling and it’s OK to have these feelings' (spoken quotation; 'these feelings' = angry feelings); 'You might act in a negative way and it can make you hurt others' (it = anger); 'do simple exercise' (uncountable, fine); the switch from 'teenagers' to generic 'you' (acceptable).\n- z35: 'the team who feed' (British collective plural); 'making it one of the most unusual schools' (participle comments on the whole clause); 'get the courage', 'so satisfied with themselves', 'there is no more connection' (all acceptable).\n- z36: 'lie with AI' (idiom is correct); '38% of world energy' (acceptable); 'water protection' (understandable).\n- z37: all five gap fills are correct and fit logically (21 B, 22 C, 23 F, 24 G, 25 E). The only problem is the reflexive in F, reported above. 'your friends’ problem' (generic plural, fine); 'building up courage' (fine); the header's correction to 'yes… if' is correctly applied.\n- z38: 'yourself or somebody faking' (acceptable); 'before the camera' (acceptable); the 'we' → 'you' shift in ¶5 (acceptable).\n- z39: 'There are an awful lot of small insects' (plural agreement is correct); 'further from or closer to' (order matches 'easier or harder'); 'can’t be sure if … or …' (acceptable); 'aren’t as smart as mammals in memory and language' (fine).\n\nWeb sources consulted (search snippets only; direct fetches were blocked): Macquarie University press release on Perry & Barron (sweet nectar for a correct choice, bitter solution for a wrong one); Inhabitat summary of AI Magazine ('accounts for', 'our sustainable buildings and cities of the future'); ScienceABC smile article (eye-fold movement).",
+          "logic": "I read all six files completely, including headers. I checked every passage against its page images and the dump text, and found no transcription differences (passage boundaries, paragraph breaks and glosses all match). Web search confirmed the z36 source: Inhabitat's 'Will AI be important to the future of eco construction?', citing AI Magazine. That source has the 38%/55% mismatch itself and uses 'water conservation'. I could not open the full source pages (the network blocked inhabitat.com and aimagazine.com), so I worked from search snippets. I could not find the original sources for z34, z35, z37, z38 or z39. Perry's bee experiment was checked against the PNAS 2013 abstract (sucrose reward vs bitter quinine).\n\nz34 (Ningxia D, anger): nothing to report. Sentences I looked at most closely:\n- '“Anger is a normal feeling and it’s OK to have these feelings sometimes”': singular 'a feeling' with plural 'these feelings' is acceptable inside spoken quotation.\n- 'doesn’t fully develop until you’re in your mid-20s': factually right (the prefrontal cortex matures around 25).\n- 'You might act in a negative way and it can make you hurt others or yourself': 'it' = anger, from the previous clause.\n- 'Your anger is not always caused by your own stress or other people being unkind': logic is consistent with the next sentence.\n- 'It gives you a break from feeling unhappy all alone': fine.\n\nz35 (Jinan 2025 C, orangutans): one low-severity item only. Kept:\n- ¶4 tense shift ('the trainers teach' … 'were really scared'): the present describes the routine and the past tells a specific episode, which is acceptable. ¶2 does the same with 'there was a lesson'.\n- 'whose parents have gone missing' and the dangling-looking 'making it one of the most unusual schools': both acceptable.\n- 'the team who feed': British collective plural.\n- 'Some of the orangutans in particular': unusual but correct.\n\nz36 (Jinan 2025 D, AI construction): the most heavily adapted text. Also noticed but kept:\n- 'It’s also well known that steel produces too much material waste': loose metonymy; the source says 'concrete and steel are well known for their excessive … material waste'.\n- 'the future of sustainable construction could progress much faster than in the past': muddled, but source-style wording.\n- '33% of greenhouse gases': common shorthand for emissions.\n\nz37 (Jinan 2025 七选五): all five fills (B, C, F, G, E) match the paper's answer key. Each fits its context logically: B after the 'trap' sentence, C before 'The answer is yes…', F in the listening paragraph, G between 'put yourself in their shoes' and 'You can ask yourself', E at the start of ¶5. The only problem is the grammar of option F, reported above. The ellipsis correction 'yes… if' is right. Note that the dump explanation quotes 'saying that ‘Everything will be OK’', so 'that' is in the printed text. Kept:\n- the switch from singular 'your friend' (¶1–2) to generic plural 'friends' (¶3–5)\n- 'your friends’ problem'\n- 'building up courage'\n- 'going round in their head'\n\nz38 (Jinan 2024 C, smiles): kept:\n- 'faking (假笑)': the gloss belongs to the exam.\n- 'These muscle movements are usually absent in the case of a forced smile, especially when the smile is small': loosely put, since a forced smile still lifts the mouth, but it is not definitely wrong.\n- 'discovering it on someone else': 'it' = the faking.\n- 'before the camera'.\n\nz39 (Jinan 2024 D, bees): kept:\n- 'In the early 1900s': von Frisch described the dances in the 1920s.\n- 'Bees can count up to four': correct.\n- 'Perry made the test easier or harder by moving the landing spots further from or closer to the black bar': the order of easier/further and harder/closer is consistent.\n- 'avoided difficult tests and tried when it was easy': 'it' = the test.\n- 'There are an awful lot of': notional agreement.\n- Perry at Queen Mary: he moved there after Macquarie, so it is acceptable."
+        }
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "fidelity:Gz30",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a32f3225f6e4dcbf3",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942312163,
+      "queuedAt": 1791942312142,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked all four passages against the page images, the fu…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942484856,
+      "tokens": 96573,
+      "toolCalls": 23,
+      "durationMs": 172311,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z33\",\"loc\":\"[1.4]\",\"current\":\"tool-a robotic fish\",\"proposed\":\"tool—a robotic fish\",\"category\":\"punctuation\",\"printed\":\"scientists created a bionic (仿生) tool-a robotic fish.\",\"reason\":\"Error in the paper itself. The docx has a plain hyphen (U+002D) where an em dash is needed to introduce the appositive. The program's dash normalisation did not catch it because there are no spa…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "mechanics:Gz30",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a60391b79f61393f4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942312163,
+      "queuedAt": 1791942312143,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files completely, headers included, and com…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942423593,
+      "tokens": 78356,
+      "toolCalls": 10,
+      "durationMs": 111046,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z33\",\"loc\":\"[1.4]\",\"current\":\"tool-a robotic fish\",\"proposed\":\"tool—a robotic fish\",\"category\":\"typography\",\"printed\":\"a bionic (仿生) tool-a robotic fish.\",\"reason\":\"The paper uses a hyphen where a dash is needed to introduce the explanatory phrase. 'tool-a' reads as a non-existent hyphenated word, and the TTS may read it as one word. The program's dash normalisation did not ca…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "grammar:Gz30",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a588c4a398ddb1fb2",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942424765,
+      "queuedAt": 1791942312143,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files completely, including headers, and ch…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942647690,
+      "tokens": 100078,
+      "toolCalls": 20,
+      "durationMs": 222923,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z31\",\"loc\":\"[2.2]\",\"current\":\"Until November 2024, China built\",\"proposed\":\"By November 2024, China had built\",\"category\":\"grammar\",\"printed\":\"Until November 2024, China built a long wall of trees, which caught the world’s attention.\",\"reason\":\"This is a Chinglish rendering of 截至 ('as of'). 'Until' needs an action that continues up to that time. Building 'a long wall of trees'…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "logic:Gz30",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a91a1ae6f00026b66",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942485649,
+      "queuedAt": 1791942312143,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full, headers included, and compar…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942737568,
+      "tokens": 106147,
+      "toolCalls": 27,
+      "durationMs": 251919,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z31\",\"loc\":\"[2.2]\",\"current\":\"Until November 2024, China built a long wall of trees\",\"proposed\":\"By November 2024, China had built a long wall of trees\",\"category\":\"grammar\",\"printed\":\"Until November 2024, China built a long wall of trees, which caught the world’s attention.\",\"reason\":\"'Until + date' cannot go with a one-time finished action in the simple past. 'Until November…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "fidelity:Gz34",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "aeb8dfbbd568f4c93",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942648635,
+      "queuedAt": 1791942312163,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "FIDELITY RESULT: no transcription or paragraphing differenc…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942937039,
+      "tokens": 125483,
+      "toolCalls": 33,
+      "durationMs": 288404,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z37\",\"loc\":\"[1.3]\",\"current\":\"or something helpless,\",\"proposed\":\"or something unhelpful,\",\"category\":\"word-choice\",\"printed\":\"Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.\",\"reason\":\"This is an error in the paper itself. 'Helpless' means 'unable to help oneself' and cannot describe a remark. The intended meaning is…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "mechanics:Gz34",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "aaee63fbba61d54c2",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942738440,
+      "queuedAt": 1791942312164,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all six files in full: headers, body, the page image…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943028869,
+      "tokens": 129707,
+      "toolCalls": 35,
+      "durationMs": 290429,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z39\",\"loc\":\"¶2 s4\",\"current\":\"they got a sweet drink below a terrible one.\",\"proposed\":\"they got a sweet drink; if below, a terrible one.\",\"category\":\"punctuation\",\"printed\":\"If they landed above, they got a sweet drink below a terrible one.\",\"reason\":\"As written, the sentence makes no sense: it says a sweet drink sat \\\"below a terrible one\\\". The intended contrast is above → …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "grammar:Gz34",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a730f5a3ead9ca487",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942939082,
+      "queuedAt": 1791942312164,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all six files completely, including the headers. I c…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943263435,
+      "tokens": 111945,
+      "toolCalls": 27,
+      "durationMs": 324352,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z37\",\"loc\":\"[1.3]\",\"current\":\"or something helpless, and\",\"proposed\":\"or something unhelpful, and\",\"category\":\"word-choice\",\"printed\":\"Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.\",\"reason\":\"Wrong word. 'helpless' means unable to help yourself (a helpless baby). It cannot describe a remark that gives no help. The m…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "logic:Gz34",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a962414f245db02b8",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943031001,
+      "queuedAt": 1791942312164,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all six files completely, including headers. I check…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943512719,
+      "tokens": 148427,
+      "toolCalls": 43,
+      "durationMs": 481717,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z37\",\"loc\":\"¶1 s3\",\"current\":\"something helpless\",\"proposed\":\"something unhelpful\",\"category\":\"word-choice\",\"printed\":\"Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.\",\"reason\":\"Error in the paper: 'helpless' means 'unable to help oneself' and is used of people; a remark that does not help is 'unhelpful'. The adviser …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "verify-acc:Gz30",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a67df1add92f6ba99",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943268665,
+      "queuedAt": 1791942738485,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943425611,
+      "tokens": 89168,
+      "toolCalls": 16,
+      "durationMs": 156945,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"scientists created a bionic (仿生) tool-a robotic fish.\",\"why\":\"The page image and the dump both show a plain hyphen with no spaces, so the transcription is faithful. But it is an error in the paper: an appositive needs a dash, and the house style is an em dash with no spaces. As printed, \\\"tool-a\\\" reads as one compound word.\"},{\"index\":1,\"verdi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "verify-strict:Gz30",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a84af107771dea77e",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943427694,
+      "queuedAt": 1791942738486,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943549768,
+      "tokens": 80775,
+      "toolCalls": 11,
+      "durationMs": 122073,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The page image and the docx text both show a plain hyphen in \\\"tool-a robotic fish\\\". That joins two separate words into a false compound. The appositive needs an em dash, with no spaces under house style.\",\"printed\":\"scientists created a bionic (仿生) tool-a robotic fish.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"\\\"Until\\\" needs a continuing action, so…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "verify-acc:Gz34",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ab585371b799fb32f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943514492,
+      "queuedAt": 1791943514487,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943805598,
+      "tokens": 110505,
+      "toolCalls": 27,
+      "durationMs": 291105,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.\",\"why\":\"Page image p3 matches. 'Helpless' describes a person who cannot help themselves, not a remark. The intended word is 'unhelpful'. This is an error in the paper.\"},{\"index\":1,\"verdict\":\"accept\",\"printed\":\"If they landed above, they …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "verify-strict:Gz34",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a1b7022e3775bbd03",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943551648,
+      "queuedAt": 1791943514488,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943762019,
+      "tokens": 105414,
+      "toolCalls": 14,
+      "durationMs": 210370,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"'Helpless' describes a person who cannot help themselves, so it cannot describe a remark. A teacher would mark it wrong; 'unhelpful' is the correct word.\",\"printed\":\"Say something your friend disagrees with or something helpless, and you might feel you’ve disappointed her.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"As printed, the sentence says the swe…"
+    }
+  ],
+  "totalTokens": 1282578,
+  "totalToolCalls": 286
+}

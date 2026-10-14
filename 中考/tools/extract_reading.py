@@ -110,6 +110,8 @@ def blocks(lines, secs):
 def clean(p):
     p = re.sub(r'^[①②③④⑤⑥⑦⑧⑨⑩]\s*', '', p.strip())          # 段首段号
     p = p.replace('　', ' ').replace('\xa0', ' ')
+    # 中文排版的度数和范围改成英文排版（第一轮精校 z13）：℃ → °C；数字之间的 ~ → 短横线 –（1 ~ 3℃ → 1–3°C，朗读为 1 to 3 degrees Celsius）
+    p = re.sub(r'(?<=\d)\s*~\s*(?=\d)', '–', p.replace('℃', '°C'))
     return re.sub(r'\s{2,}', ' ', p).strip()
 
 
