@@ -80,6 +80,11 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
+def esc_en(s):
+    """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。"""
+    return re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))
+
+
 def page(body):
     fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()      # 字体与四级共用
     extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">' if THEME_FONTS.exists() else ''
@@ -108,9 +113,9 @@ def sentence_html(s, lo=0, hi=None):
             continue
         cls = 'ph' if w['t'] == 'phr' else 'w'
         sup = f'<sup>{num[id(w)]}</sup>' if j == last[id(w)] else ''     # 分开的短语，编号标在本屏最后一段
-        out += esc(s['en'][pos:a]) + f'<span class="{cls}">{esc(s["en"][a:b])}{sup}</span>'
+        out += esc_en(s['en'][pos:a]) + f'<span class="{cls}">{esc(s["en"][a:b])}{sup}</span>'
         pos = b
-    return out + esc(s['en'][pos:hi])
+    return out + esc_en(s['en'][pos:hi])
 
 
 def vocab_html(s, lo=0, hi=None):
