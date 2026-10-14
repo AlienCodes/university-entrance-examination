@@ -54,10 +54,10 @@
 
 ## cet4_male
 
-- 文章数：8
+- 文章数：9
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.45）
-- 平均识别差异率：1.13%
+- 平均识别差异率：1.08%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -69,3 +69,4 @@
 | z06 | 4.45 | 1.46% | ieoh ming pei → io mingpei; modern → moderns |
 | z07 | 4.47 | 1.52% | kunming → konmeng; heng → hung; guo yongjie → guoyungjia; qomolangma → chomolongma |
 | z08 | 4.48 | 3.72% | ayi → ai; programme → program; programme → program; ayi → i; ayi → ai; programme → program; ayi → ai; ayi's → ai's; kashgar → kashgore; tcm → tacm; ayi → ie |
+| z09 | 4.46 | 0.67% | fibre → fiber; colour → color |
