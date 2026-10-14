@@ -55,7 +55,7 @@ sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff
 .v b{font-family:'EB Garamond';font-weight:600;font-size:calc(var(--vs)*1.3)}
 .v.ph b{color:#a14a2a}
 .v i{font-style:italic;font-family:'EB Garamond';color:#6b746f;margin-right:10px}
-.v b{margin-right:10px}.v b:has(+ i){margin-right:8px}
+.v b{margin-right:10px}
 .v span{color:#3c4642}
 .zh,.v .g{text-spacing-trim:space-all}
 .cI{position:relative}.cI::before,.cI::after{content:'';position:absolute;left:50%;width:.23em;margin-left:-.115em;height:.075em;background:currentColor;border-radius:.03em}
