@@ -81,7 +81,7 @@
 | z18 | 4.47 | 0.00% |  |
 | z19 | 4.43 | 0.31% | litres → liters |
 | z20 | 4.43 | 0.00% |  |
-| z21 | 4.47 | 1.09% | hanau → hanno; steinau → steinow; folk → fogue |
+| z21 | 4.47 | 1.09% | hanau → hano; steinau → steinow; folk → fog |
 | z22 | 4.46 | 1.04% | voluntourism → voluntarism; voluntourists → volunturists; voluntourist → volunturist |
 | z23 | 4.48 | 0.00% |  |
 | z24 | 4.47 | 1.05% | dapeng → dapung; shenzhen's → shen's; apec → apac |
