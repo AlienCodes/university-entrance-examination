@@ -57,14 +57,14 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
-- 平均识别差异率：0.84%
+- 平均识别差异率：0.81%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | z01 | 4.48 | 0.56% | metres → meters; earle → earl |
 | z02 | 4.48 | 0.50% | practise → practice; merzenich → merzenik |
 | z03 | 4.46 | 0.00% |  |
-| z04 | 4.48 | 0.85% | better → bet her |
+| z04 | 4.48 | 0.00% |  |
 | z05 | 4.48 | 0.40% | ok → okay |
 | z06 | 4.45 | 1.46% | ieoh ming pei → io mingpei; modern → moderns |
 | z07 | 4.47 | 1.52% | kunming → konmeng; heng → hung; guo yongjie → guoyungjia; qomolangma → chomolongma |
