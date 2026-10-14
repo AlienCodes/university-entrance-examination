@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：16
+- 文章数：17
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.50（最低 4.47）
-- 平均识别差异率：1.26%
+- 平均识别差异率：1.30%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -27,3 +27,4 @@
 | z14 | 4.51 | 5.70% | minqin → minkin; in → and; junhe → jun; minqin's → minkin's; minqin → minkin; suosuo → suicio; zers → zurs; liwen → luan; suosuo → suisio; minqin → minkin; xiuniang → xianyang; minqin → minkin; lee → li; minqin → minkin; macao → macau; ma junhe → majuna; zers → zurs |
 | z15 | 4.50 | 0.70% | heipieper → hyper; program → programme |
 | z16 | 4.47 | 1.05% | thirty → point three zero |
+| z17 | 4.50 | 1.85% | tang → tong; said li ran → sedley ron; li → lee |
