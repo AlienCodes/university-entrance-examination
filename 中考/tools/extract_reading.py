@@ -141,7 +141,8 @@ def main():
                     errs.append(f'{tag}：订正 “{e["old"]}” 匹配到 {c} 处（必须恰好 1 处）')
                 text = text.replace(e['old'], e['new'])
             paras = text.split('\n')
-            words = len(' '.join(paras).split())
+            # 词数不算试卷的中文注释（画面核查发现片头“全文 N 词”把 (包裹) 这类注释也算成词，40 篇都多 1—7 个）
+            words = len(re.sub(r'\s*\([^()]*[\u4e00-\u9fff][^()]*\)', '', ' '.join(paras)).split())
             if any(re.search(r'[一-鿿]', re.sub(r'\([^()]*\)', '', p).replace(ALLOW_ZH.get(tag, '\0'), '')) for p in paras):
                 errs.append(f'{tag}：括号注释以外还有汉字')
             if re.search(r'[▲★_＿]', text) or (label == '七选五' and re.search(r'(?<![\w.,$])2[1-5](?![\w.,%])', text)):
