@@ -54,10 +54,10 @@
 
 ## cet4_male
 
-- 文章数：6
+- 文章数：7
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.45）
-- 平均识别差异率：0.63%
+- 平均识别差异率：0.76%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -67,3 +67,4 @@
 | z04 | 4.48 | 0.85% | better → bet her |
 | z05 | 4.48 | 0.40% | ok → okay |
 | z06 | 4.45 | 1.46% | ieoh ming pei → io mingpei; modern → moderns |
+| z07 | 4.47 | 1.52% | kunming → konmeng; heng → hung; guo yongjie → guoyungjia; qomolangma → chomolongma |
