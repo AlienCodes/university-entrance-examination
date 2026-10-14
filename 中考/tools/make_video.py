@@ -11,7 +11,7 @@
 字号：英文不小于 48px、词汇栏不小于 22px（1080p 基准，4K 下翻倍），保证手机上看得清；
 一句话生词太多、一屏放不下时，按 分屏.json 在合适的分句处拆成两屏（用户要求：不硬挤），
 换屏时刻用语音识别的词时间戳找到第二屏第一个词，再落在它前面的能量最低点（词与词之间的空隙）。
-输入：中考/data/vocab.json（复核定稿）、中考/audio/timings.json（female）。输出：中考/最终视频/。
+输入：中考/data/vocab.json（复核定稿）、中考/audio/timings.json（cet4_male）。输出：中考/最终视频/。
 """
 import argparse
 import html
@@ -27,7 +27,7 @@ HERE = Path(__file__).resolve().parent
 C4 = HERE.parent
 ROOT = C4.parent
 sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音检查）与四级共用
-VOICE = 'female'                  # 中考用女声（CLAUDE.md 铁律 8）
+VOICE = 'cet4_male'               # 中考用四六级男声（用户 2026-10-14；CLAUDE.md 铁律 8）
 W, H = 1920, 1080
 MIN_FS, MIN_VS = 48, 22          # 可读性下限：放不下就必须分屏
 SPLIT = {k: v for k, v in json.loads((HERE / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}

@@ -30,7 +30,7 @@ import gaokao_tts as G  # noqa: E402
 
 C4 = ROOT / '中考'                  # 变量名沿用四级程序
 G.ANN = C4 / 'ann'
-VOICE = __import__('os').environ.get('ZK_VOICE', 'female')   # 中考配音；ZK_VOICE=cet4_male 先生成男声样音给用户试听（用户 2026-10-14 想改用四六级男声）
+VOICE = __import__('os').environ.get('ZK_VOICE', 'cet4_male')   # 中考配音：四六级男声（用户 2026-10-14 试听两段样音后选定语速 0.95，与四六级完全一样；CLAUDE.md 铁律 8）
 
 
 def stem(p):

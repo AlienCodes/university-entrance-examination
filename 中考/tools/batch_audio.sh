@@ -6,7 +6,7 @@ PY=/opt/ttsenv/bin/python
 for id in "$@"; do
   $PY 中考/tools/make_audio.py "$id" || { echo "音频未通过：$id"; continue; }
   $PY 中考/tools/qa_audio.py "$id" || echo "自检出错：$id"
-  git add 中考/audio && git commit -q -m "中考音频：$id（新停顿规则）及自检
+  git add 中考/audio && git commit -q -m "中考男声音频（cet4_male）：$id 及语音识别自检
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01Bo2nvX3EdvyJhDdDqVayNH" && git push -q -u origin claude/epic-edison-4gkcfb
