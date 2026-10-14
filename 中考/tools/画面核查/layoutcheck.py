@@ -36,7 +36,15 @@ CHECK = r"""([minFs, minVs]) => {
   const em = el => parseFloat(getComputedStyle(el).fontSize);
   const txt = L => L.map(x => x.c).join('');
   const block = (k, name, isGloss) => {
-    const L = lines(chars(k)), x0 = leftOf(k);
+    const L = lines(chars(k)), x0 = leftOf(k), sd = document.getElementById('side'), sr = sd.getBoundingClientRect();
+    const x1 = isGloss ? sr.left + sd.clientLeft + sd.clientWidth - parseFloat(getComputedStyle(sd).paddingRight)    // 词条撑宽格子时格子本身也变宽，按词汇栏卡片的内边界量
+                       : x0 + k.clientWidth - parseFloat(getComputedStyle(k).paddingLeft) - parseFloat(getComputedStyle(k).paddingRight);
+    for (const x of L.flat()) if (x.r > x1 + 1) { out.push(`横向溢出：${name}「${x.c}」超出右边界 ${Math.round(x.r - x1)} 像素`); break; }   // z09 词条伸进右边留白
+    if (name === '英文') L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];             // z06 编号徽章贴着破折号
+      if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
+        out.push(`徽章贴破折号：${name}徽章 ${s.textContent} 与「${y.c}」只隔 ${(y.l - s.getBoundingClientRect().right).toFixed(1)} 像素`); });
+    // 大写 I 只查圆体（思源黑体的 I 比 l 矮，分得清）
+    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('.cI') && getComputedStyle(x.el).fontFamily.startsWith('Nunito')) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }
     L.forEach((ln, i) => {
       const f = ln[0];
       const want = ZO.includes(f.c) && name !== '英文' ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形，不按全角半字计
@@ -64,7 +72,10 @@ CHECK = r"""([minFs, minVs]) => {
   if (ttl) { if (ttl.scrollWidth > ttl.clientWidth + 1) out.push(`标题：一行放不下（${ttl.scrollWidth} > ${ttl.clientWidth}）`); return out; }
   const en = document.querySelector('.en'), zh = document.querySelector('.zh');
   block(en, '英文', false); block(zh, '译文', false);
-  document.querySelectorAll('.v > div').forEach((d, i) => block(d, `词条 ${i + 1} `, true));
+  document.querySelectorAll('.v > div').forEach((d, i) => { block(d, `词条 ${i + 1} `, true);
+    const b = d.querySelector('b'), rs = b.getClientRects(), g = d.querySelector('span[lang]'), last = rs[rs.length - 1];   // z03 词条折行后释义紧接在词条尾巴后面
+    if (rs.length > 1) for (const e of [d.querySelector('i'), g].filter(Boolean)) { const r = e.getClientRects()[0];
+      if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
   const main = document.querySelector('.main'), box = document.getElementById('box'), side = document.getElementById('side'), list = document.getElementById('list');
   if (box.scrollHeight > main.clientHeight) out.push('留白：句子区溢出');
@@ -90,7 +101,7 @@ def ok_break(g, k):
         print('  [调试] 断点不在任何块内部：', g, k, flush=True)
         return False
     a, b = seg[0]
-    if b - a <= 10:
+    if b - a <= 9:                                         # 与 make_video.GLOSS_CHUNK 相同
         return False
     pos, i = set(), a
     for w in jieba.cut(g[a:b]):
@@ -103,7 +114,7 @@ def problems(pg, min_fs, min_vs):
     """当前页面（已排版）的排版问题列表；make_video.py 每屏截图前调用，有问题就不生成视频。"""
     res = []
     for x in pg.evaluate(CHECK, [min_fs, min_vs]):
-        if isinstance(x, list):          # 释义在标点以外的地方断行：只有超过 10 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
+        if isinstance(x, list):          # 释义在标点以外的地方断行：只有超过 9 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
             _, name, g, k = x
             if not ok_break(g, k):
                 res.append(f'释义断词：{name}「{g[max(0, k - 6):k]}／{g[k:k + 6]}」')

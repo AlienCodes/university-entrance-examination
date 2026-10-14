@@ -58,6 +58,11 @@ sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff
 .v b{margin-right:10px}.v b:has(+ i){margin-right:8px}
 .v span{color:#3c4642}
 .zh,.v .g{text-spacing-trim:space-all}
+.cI{position:relative}.cI::before,.cI::after{content:'';position:absolute;left:50%;width:.23em;margin-left:-.115em;height:.075em;background:currentColor;border-radius:.03em}
+.cI::before{top:.3em}.cI::after{top:.945em}
+.en .w .cI::before,.en .ph .cI::before,.en .w .cI::after,.en .ph .cI::after,.v b .cI::before,.v b .cI::after{width:.29em;margin-left:-.145em;height:.13em}
+.en .w .cI::after,.en .ph .cI::after,.v b .cI::after{top:.885em}
+sup.sd{margin-right:.2em}
 .pr{margin-right:-.5em}.pl{margin-left:-.5em}
 .cont{color:#9aa39e;font-weight:400}
 .bot{position:absolute;left:110px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter';font-size:22px;color:#6b746f;letter-spacing:.1em}
@@ -83,6 +88,12 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
+def cap_i(h):
+    """英文大写 I 加上下衬线（z06 画面核查：圆体 Nunito 的大写 I 与小写 l 一模一样，人名 Ieoh 读成 leoh；字体没有带衬线的替换字形，
+    用 .cI 的 ::before/::after 画两道短横，位置按 Nunito 实测：常规体竖笔宽 0.085 字、顶 0.30 字、底 1.02 字，粗体竖笔宽 0.155 字）。h 是已转义的 HTML，标签里的字不动。"""
+    return re.sub(r'(<[^>]*>)|I', lambda m: m.group(1) or '<span class="cI">I</span>', h)
+
+
 def nobr(h):
     """带连字符的英文词整体不断行（画面核查发现词条 southward-/moving、高亮词 wind-/driven 被拆到两行）。h 是已转义的 HTML，标签里的字不动。"""
     return re.sub(r'(<[^>]*>)|(?<![\w’])([A-Za-z0-9’]+(?:-[A-Za-z0-9’]+)+)', lambda m: m.group(1) or f'<nobr>{m.group(2)}</nobr>', h)
@@ -93,11 +104,12 @@ def esc_en(s):
     return nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s)))
 
 
+GLOSS_CHUNK = 9      # 词汇栏一行最多约 9.6 个字（字号最大 40px 时）：9 个字以内的释义块整体不断行（原定 10，z20 “下面就是……的方法；”溢出 16 像素）
 ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》'), set('（“‘【「《')   # 思源黑体实测：前一组字形在左半（右半空白），后一组在右半（左半空白）
 
 
 def words(s, out):
-    """超过 10 个字的释义块（如“（代替前面提到的复数名词）”）一行放不下，只允许在词与词之间断行：用 jieba 分词，每个多字词整体不断行
+    """超过 GLOSS_CHUNK 个字的释义块（如“（代替前面提到的复数名词）”）一行放不下，只允许在词与词之间断行：用 jieba 分词，每个多字词整体不断行
     （依赖：/opt/ttsenv/bin/pip install jieba）。"""
     import logging
     import jieba
@@ -116,7 +128,7 @@ def zh_html(s, gloss=False):
     右半空白的标点后面紧跟标点 → 去掉它的右半空白（.pr）；左半空白的标点在开头或紧跟在左半空白的标点后 → 去掉左半空白（.pl）；
     其余左半空白的标点标 .po，排版后落在行首的由 FIT 去掉左半空白。
     断行（同一次画面核查：释义“可/能”“泳/衣”被拆开，译文最后一行只剩“念。”一个字）：
-    gloss=True（词汇栏释义）按标点切块（右半空白的标点之后、左半空白的标点之前），10 个字以内的块整体不断行，更长的块只在词与词之间断行（words）；
+    gloss=True（词汇栏释义）按标点切块（右半空白的标点之后、左半空白的标点之前），GLOSS_CHUNK（9）个字以内的块整体不断行，更长的块只在词与词之间断行（words）；
     gloss=False（译文）最后两个字连同后面的标点绑在一起，最后一行至少两个字。"""
     out = []
     for i, c in enumerate(s):
@@ -131,7 +143,7 @@ def zh_html(s, gloss=False):
             out.append(esc(c))
     if gloss:
         cuts = [0] + [i for i in range(1, len(s)) if (s[i - 1] in ZCLOSE and s[i] not in ZCLOSE) or (s[i] in ZOPEN and s[i - 1] not in ZOPEN)] + [len(s)]
-        return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= 10 else words(s[a:b], out[a:b])) for a, b in zip(cuts, cuts[1:]) if b > a)
+        return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[a:b], out[a:b])) for a, b in zip(cuts, cuts[1:]) if b > a)
     han = [i for i, c in enumerate(s) if '\u4e00' <= c <= '\u9fff']
     if len(han) >= 3:
         k = han[-2]
@@ -174,7 +186,8 @@ def sentence_html(s, lo=0, hi=None):
     hl = r'<span class="(?:w|ph)">(?:(?!</span>).)*</span>'
     out = re.sub(rf'(?<![\w’])([A-Za-z0-9’]+-)({hl})', r'<nobr>\1\2</nobr>', out)
     out = re.sub(rf'({hl})(-[A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
-    return re.sub(rf'(<span class="(?:w|ph)">(?:(?!</span>).)*-(?:<sup>\d+</sup>)?</span>)([A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
+    out = re.sub(rf'(<span class="(?:w|ph)">(?:(?!</span>).)*-(?:<sup>\d+</sup>)?</span>)([A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
+    return cap_i(re.sub(r'<sup>(\d+</sup></span>(?:</nobr>)?[—–])', r'<sup class="sd">\1', out))      # 大写 I 最后统一加，免得上面按 </span> 配对的规则配错     # 编号徽章后紧跟破折号时留空（z06 “idea²—let”徽章贴着破折号）
 
 
 def vocab_html(s, lo=0, hi=None):
@@ -186,9 +199,9 @@ def vocab_html(s, lo=0, hi=None):
             continue
         m = POS.match(w['m'])
         pos, mean = (m.group(1), m.group(2)) if m else ('', w['m'])
-        # 词条的直撇号改弯撇号（与句子一致，踩坑 18）；<wbr>：释义前一定能换行（释义不在词中间断行，keep-all 下拉丁字母与汉字之间不一定有断行点）
-        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{nobr(esc(w["h"].replace(chr(39), "’")))}</b>'
-                   f'{f"<i>{pos}</i>" if pos else ""}<wbr><span class="g" lang="zh-CN">{zh_html(mean, gloss=True)}</span></div></div>')
+        # 词条的直撇号改弯撇号（与句子一致，踩坑 18）；<wbr>：词性、释义前一定能换行（z09 “Bluetooth-connected adj.”整体不断行，伸进了词汇栏右边留白）
+        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{cap_i(nobr(esc(w["h"].replace(chr(39), "’"))))}</b>'
+                   f'{f"<wbr><i>{pos}</i>" if pos else ""}<wbr><span class="g" lang="zh-CN">{zh_html(mean, gloss=True)}</span></div></div>')
     return ''.join(out)
 
 
@@ -248,10 +261,18 @@ def sentence_slide(p, s, k, n, part=None):
 
 # 左侧句子区与右侧词汇栏分别缩放字号，直到都放得下；词汇栏的内容必须在卡片内边距以内（第 1 批画面核查：内容挤进底部留白，离边框只剩 7 像素）；
 # 之后把落在行首的左半空白标点（zh_html 标的 .po）去掉左半空白，与上下行的字对齐，并在它前面固定换行
-# （样片 z10 画面核查：去掉半字后括号变窄，整块被挤回上一行行末，成了行中的“花（时间）”过度挤压）
+# （样片 z10 画面核查：去掉半字后括号变窄，整块被挤回上一行行末，成了行中的“花（时间）”过度挤压）；
+# 词条一行放不下时（z03 “with the development of”被拆成“…development / of 随着……”），在最均衡的词间断开，释义另起一行（hw，每次量词汇栏前重排）
 FIT = """() => { const r=document.documentElement.style, main=document.querySelector('.main'), box=document.getElementById('box'),
   side=document.getElementById('side'), list=document.getElementById('list');
-  const sideFits = () => { const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
+  const hw = () => { for (const x of document.querySelectorAll('br.hw')) x.remove();
+    for (const b of document.querySelectorAll('.v b')) { if (b.dataset.h === undefined) b.dataset.h = b.innerHTML; else b.innerHTML = b.dataset.h;
+      if (b.getClientRects().length < 2) continue;
+      const ps = b.dataset.h.split(/ (?![^<>]*>)/); let best = null;
+      for (let k = 1; k < ps.length; k++) { b.innerHTML = ps.slice(0, k).join(' ') + '<br>' + ps.slice(k).join(' ');
+        const rs = b.getClientRects(); if (rs.length !== 2) continue; const w = Math.max(rs[0].width, rs[1].width); if (!best || w < best[0]) best = [w, b.innerHTML]; }
+      b.innerHTML = best ? best[1] : b.dataset.h; const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
+  const sideFits = () => { hw(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
   let fs=64, vs=40; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px');
   while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); }
