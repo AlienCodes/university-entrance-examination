@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：23
+- 文章数：24
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.50（最低 4.47）
-- 平均识别差异率：1.12%
+- 平均识别差异率：1.15%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -34,3 +34,4 @@
 | z21 | 4.50 | 1.46% | hanau → hanno; steinau → steinow; alsfeld → ausfeld; route → root |
 | z22 | 4.49 | 1.38% | voluntourists → volunturists; voluntourism → voluntarism; voluntourists → voluntarists; voluntourist → volunturist |
 | z23 | 4.50 | 0.00% |  |
+| z24 | 4.51 | 1.74% | admired → admire; dapeng → dapung; nanshan → nonshan; shenzhen's → shenzhen; shenzhen's → shen's |
