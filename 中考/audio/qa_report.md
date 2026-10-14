@@ -4,10 +4,10 @@
 
 ## female
 
-- 文章数：13
+- 文章数：14
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.50（最低 4.49）
-- 平均识别差异率：0.98%
+- 平均识别差异率：1.32%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -24,3 +24,4 @@
 | z11 | 4.50 | 0.00% |  |
 | z12 | 4.49 | 0.92% | drewett → druitt; drewett → druitt; drewett → druit |
 | z13 | 4.51 | 0.00% |  |
+| z14 | 4.51 | 5.70% | minqin → minkin; in → and; junhe → jun; minqin's → minkin's; minqin → minkin; suosuo → suicio; zers → zurs; liwen → luan; suosuo → suisio; minqin → minkin; xiuniang → xianyang; minqin → minkin; lee → li; minqin → minkin; macao → macau; ma junhe → majuna; zers → zurs |
