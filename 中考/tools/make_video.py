@@ -54,8 +54,11 @@ sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff
 .v.ph em{background:#a14a2a}
 .v b{font-family:'EB Garamond';font-weight:600;font-size:calc(var(--vs)*1.3)}
 .v.ph b{color:#a14a2a}
-.v i{font-style:italic;font-family:'EB Garamond';color:#6b746f;margin-left:8px}
-.v span{color:#3c4642;margin-left:10px}
+.v i{font-style:italic;font-family:'EB Garamond';color:#6b746f;margin-right:10px}
+.v b{margin-right:10px}.v b:has(+ i){margin-right:8px}
+.v span{color:#3c4642}
+.zh,.v .g{text-spacing-trim:space-all}
+.pr{margin-right:-.5em}.pl{margin-left:-.5em}
 .cont{color:#9aa39e;font-weight:400}
 .bot{position:absolute;left:110px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter';font-size:22px;color:#6b746f;letter-spacing:.1em}
 .bar{flex:1;height:3px;background:#dcd8cc;margin:0 30px}.bar i{display:block;height:100%;background:#1f5c4a}
@@ -80,9 +83,60 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
+def nobr(h):
+    """带连字符的英文词整体不断行（画面核查发现词条 southward-/moving、高亮词 wind-/driven 被拆到两行）。h 是已转义的 HTML，标签里的字不动。"""
+    return re.sub(r'(<[^>]*>)|(?<![\w’])([A-Za-z0-9’]+(?:-[A-Za-z0-9’]+)+)', lambda m: m.group(1) or f'<nobr>{m.group(2)}</nobr>', h)
+
+
 def esc_en(s):
     """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。"""
-    return re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))
+    return nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s)))
+
+
+ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》'), set('（“‘【「《')   # 思源黑体实测：前一组字形在左半（右半空白），后一组在右半（左半空白）
+
+
+def words(s, out):
+    """超过 10 个字的释义块（如“（代替前面提到的复数名词）”）一行放不下，只允许在词与词之间断行：用 jieba 分词，每个多字词整体不断行
+    （依赖：/opt/ttsenv/bin/pip install jieba）。"""
+    import logging
+    import jieba
+    jieba.setLogLevel(logging.WARNING)
+    res, i = [], 0
+    for w in jieba.cut(s):
+        piece = ''.join(out[i:i + len(w)])
+        res.append(f'<nobr>{piece}</nobr>' if len(w) > 1 else piece)
+        i += len(w)
+    return ''.join(res)
+
+
+def zh_html(s, gloss=False):
+    """中文标点挤压（第 1 批画面核查：“说：  “我们”“看法）  ；”“母亲养育” 。”中间空出半个到一个字，段首“记忆…”比下一行缩进半个字；
+    字体的 halt 对冒号、引号不生效，所以关掉浏览器自带的挤压（text-spacing-trim: space-all），由这里统一决定）：
+    右半空白的标点后面紧跟标点 → 去掉它的右半空白（.pr）；左半空白的标点在开头或紧跟在左半空白的标点后 → 去掉左半空白（.pl）；
+    其余左半空白的标点标 .po，排版后落在行首的由 FIT 去掉左半空白。
+    断行（同一次画面核查：释义“可/能”“泳/衣”被拆开，译文最后一行只剩“念。”一个字）：
+    gloss=True（词汇栏释义）按标点切块（右半空白的标点之后、左半空白的标点之前），10 个字以内的块整体不断行，更长的块只在词与词之间断行（words）；
+    gloss=False（译文）最后两个字连同后面的标点绑在一起，最后一行至少两个字。"""
+    out = []
+    for i, c in enumerate(s):
+        nxt, prv = s[i + 1:i + 2], s[i - 1:i]
+        if c in ZCLOSE and nxt and (nxt in ZCLOSE or nxt in ZOPEN):
+            out.append(f'<span class="pr">{esc(c)}</span>')
+        elif c in ZOPEN and (not prv or prv in ZOPEN):
+            out.append(f'<span class="pl">{esc(c)}</span>')
+        elif c in ZOPEN:
+            out.append(f'<span class="po">{esc(c)}</span>')
+        else:
+            out.append(esc(c))
+    if gloss:
+        cuts = [0] + [i for i in range(1, len(s)) if (s[i - 1] in ZCLOSE and s[i] not in ZCLOSE) or (s[i] in ZOPEN and s[i - 1] not in ZOPEN)] + [len(s)]
+        return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= 10 else words(s[a:b], out[a:b])) for a, b in zip(cuts, cuts[1:]) if b > a)
+    han = [i for i, c in enumerate(s) if '\u4e00' <= c <= '\u9fff']
+    if len(han) >= 3:
+        k = han[-2]
+        return ''.join(out[:k]) + f'<nobr>{"".join(out[k:])}</nobr>'
+    return ''.join(out)
 
 
 def page(body):
@@ -113,9 +167,14 @@ def sentence_html(s, lo=0, hi=None):
             continue
         cls = 'ph' if w['t'] == 'phr' else 'w'
         sup = f'<sup>{num[id(w)]}</sup>' if j == last[id(w)] else ''     # 分开的短语，编号标在本屏最后一段
-        out += esc_en(s['en'][pos:a]) + f'<span class="{cls}">{esc(s["en"][a:b])}{sup}</span>'
+        out += esc_en(s['en'][pos:a]) + f'<span class="{cls}">{nobr(esc(s["en"][a:b]))}{sup}</span>'
         pos = b
-    return out + esc_en(s['en'][pos:hi])
+    out += esc_en(s['en'][pos:hi])
+    # 连字符复合词跨在普通文字和高亮词之间（z21 “a 600-” + 高亮 kilometer），两段合起来不断行
+    hl = r'<span class="(?:w|ph)">(?:(?!</span>).)*</span>'
+    out = re.sub(rf'(?<![\w’])([A-Za-z0-9’]+-)({hl})', r'<nobr>\1\2</nobr>', out)
+    out = re.sub(rf'({hl})(-[A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
+    return re.sub(rf'(<span class="(?:w|ph)">(?:(?!</span>).)*-(?:<sup>\d+</sup>)?</span>)([A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
 
 
 def vocab_html(s, lo=0, hi=None):
@@ -127,8 +186,9 @@ def vocab_html(s, lo=0, hi=None):
             continue
         m = POS.match(w['m'])
         pos, mean = (m.group(1), m.group(2)) if m else ('', w['m'])
-        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{esc(w["h"])}</b>'
-                   f'{f"<i>{pos}</i>" if pos else ""}<span lang="zh-CN">{esc(mean)}</span></div></div>')
+        # 词条的直撇号改弯撇号（与句子一致，踩坑 18）；<wbr>：释义前一定能换行（释义不在词中间断行，keep-all 下拉丁字母与汉字之间不一定有断行点）
+        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{nobr(esc(w["h"].replace(chr(39), "’")))}</b>'
+                   f'{f"<i>{pos}</i>" if pos else ""}<wbr><span class="g" lang="zh-CN">{zh_html(mean, gloss=True)}</span></div></div>')
     return ''.join(out)
 
 
@@ -181,18 +241,23 @@ def sentence_slide(p, s, k, n, part=None):
     if hi < len(s['en']):
         en += '<span class="cont"> …</span>'
     return page(f'''<div class="top"><b>中考英语 READING</b><span>{head(p)}　{esc(p.get("title") or "")}</span></div>
-      <div class="main"><div id="box"><div class="en">{en}</div><div class="zh">{esc(zh)}</div></div></div>
+      <div class="main"><div id="box"><div class="en">{en}</div><div class="zh" lang="zh-CN">{zh_html(zh)}</div></div></div>
       <div class="side" id="side"><h3>VOCABULARY</h3><div id="list">{vocab_html(s, lo, hi)}</div></div>
       <div class="bot"><span>SENTENCE {k} / {n}{tag}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
 
 
-# 左侧句子区与右侧词汇栏分别缩放字号，直到都放得下
+# 左侧句子区与右侧词汇栏分别缩放字号，直到都放得下；词汇栏的内容必须在卡片内边距以内（第 1 批画面核查：内容挤进底部留白，离边框只剩 7 像素）；
+# 之后把落在行首的左半空白标点（zh_html 标的 .po）去掉左半空白，与上下行的字对齐
 FIT = """() => { const r=document.documentElement.style, main=document.querySelector('.main'), box=document.getElementById('box'),
   side=document.getElementById('side'), list=document.getElementById('list');
+  const sideFits = () => { const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
+    return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
   let fs=64, vs=40; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px');
   while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); }
-  while (side.scrollHeight > side.clientHeight && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
-  return [fs, vs, box.scrollHeight <= main.clientHeight && side.scrollHeight <= side.clientHeight]; }"""
+  while (!sideFits() && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
+  for (const e of document.querySelectorAll('.po')) { const k=e.closest('.zh, .v > div'), b=k.getBoundingClientRect();
+    if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) e.className = 'pl'; }
+  return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""
 
 
 def switch_time(audio, it, en, cut):
@@ -308,6 +373,7 @@ def main():
             slides.append(sentence_slide(p, s, i + 1, len(sents), part))
             owner.append((i, j, part))
     sizes = []
+    from 画面核查.layoutcheck import problems as layout_problems
     with sync_playwright() as pw:
         exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
@@ -325,6 +391,9 @@ def main():
                     raise SystemExit(f'第 {k} 句一屏放不下（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：'
                                      f'请在 中考/tools/分屏.json 里为 {p["id"]} 第 {k} 句选合适的分句处拆成两屏或多屏')
                 sizes.append((fs, vs))
+            bad = layout_problems(pg, MIN_FS, MIN_VS)          # 排版机械检查（第 1 批画面核查报出的各类排版毛病，踩坑 33）
+            if bad:
+                raise SystemExit(f'{p["id"]} 第 {i + 1} 屏排版不合格（中考/tools/画面核查/layoutcheck.py）：\n  ' + '\n  '.join(bad))
             pg.screenshot(path=str(tmp / f'{i:03d}.png'))
         br.close()
 
