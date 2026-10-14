@@ -36,6 +36,9 @@ def page(body):
 
 
 M.page = page
+VS = next((int(a.split('=')[1]) for a in sys.argv if a.startswith('--vs=')), 30)   # 词汇栏起始字号（自动缩小到放得下为止）
+assert M.FIT.count('vs=30;') == 1
+M.FIT = M.FIT.replace('vs=30;', f'vs={VS};')
 
 
 def zk(h):
