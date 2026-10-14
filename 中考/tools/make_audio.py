@@ -51,6 +51,12 @@ UNIT1 = {'ml': 'milliliter', 'km': 'kilometer', 'kg': 'kilogram', 'mg': 'milligr
 
 def read_text(self, original, key=None):
     ORIG[key] = original
+    # 中考：摄氏度符号 ℃（一个字符）与 °C 同读；数值范围的 ~ 读作 to（1 ~ 3℃ → 1 to 3 degrees Celsius）
+    original = original.replace('℃', '°C')
+    original = G.re.sub(r'(?<=\d)\s*~\s*(?=\d)', ' to ', original)
+    # 中考：钟点 7:30 读作 seven thirty（7:05 → seven oh five，7:00 → seven o’clock）；高考共用程序会留下冒号（seven:thirty）
+    original = G.re.sub(r'\b(\d{1,2}):(\d{2})\b', lambda m: f"{m.group(1)} o'clock" if m.group(2) == '00' else
+                        (f"{m.group(1)} oh {int(m.group(2))}" if m.group(2)[0] == '0' else f"{m.group(1)} {m.group(2)}"), original)
     original = G.re.sub(r'\s*°F\b', ' degrees Fahrenheit', original)
     original = G.re.sub(r'\s*°C\b', ' degrees Celsius', original)
     # 六级：数值范围的短横线读作 to（高考共用程序会把它读成破折号停顿，意思就丢了：25–54 → twenty-five—fifty-four）

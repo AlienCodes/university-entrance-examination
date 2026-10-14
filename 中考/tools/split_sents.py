@@ -33,7 +33,11 @@ def split(p):
             buf = ''
     if buf:
         out.append(buf)
-    return [s.replace('<DOT>', '.').replace('<SP>', ' ').strip() for s in out if s.strip()]
+    res = [s.replace('<DOT>', '.').replace('<SP>', ' ').strip() for s in out if s.strip()]
+    # 中考：a.m./p.m. 在句末时一个句点同时结束句子（“…breakfast at 7:30 a.m. If you repeat…”），后面跟常见的句首词就切开
+    START = r'(?:If|When|Then|After|Before|But|And|So|You|We|They|He|She|It|I|The|This|That|There|Now|Every)\b'
+    res = [x for s in res for x in re.split(r'(?<=\b[ap]\.m\.)\s+(?=' + START + ')', s)]
+    return res
 
 
 def main():
@@ -45,7 +49,7 @@ def main():
             ss = split(para)
             assert ' '.join(ss) == para, (p['id'], para[:80])
             sents.append(ss)
-        res.append({k: p[k] for k in ('id', 'year', 'month', 'set', 'passage', 'paper', 'part', 'words')} | {'sents': sents})
+        res.append({k: p[k] for k in ('id', 'year', 'region', 'passage', 'paper', 'part', 'words')} | {'sents': sents})
     (ROOT / '阅读' / 'sents.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
     n = sum(len(s) for r in res for s in r['sents'])
     print(f'{len(res)} 篇，{n} 句')
