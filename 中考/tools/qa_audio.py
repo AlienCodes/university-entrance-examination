@@ -10,4 +10,4 @@ sys.path.insert(0, str(C4.parent / 'tools' / 'tts'))
 import qa  # noqa: E402
 
 qa.OUT = C4 / 'audio'
-qa.run(SimpleNamespace(voices=['female'], only=sys.argv[1:] or None))
+qa.run(SimpleNamespace(voices=[__import__('os').environ.get('ZK_VOICE', 'female')], only=sys.argv[1:] or None))
