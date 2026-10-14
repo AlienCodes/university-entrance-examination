@@ -57,7 +57,7 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
-- 平均识别差异率：0.79%
+- 平均识别差异率：0.77%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -74,7 +74,7 @@
 | z11 | 4.48 | 0.00% |  |
 | z12 | 4.46 | 0.92% | drewett → druitt; drewett → druitt; drewett → druitt |
 | z13 | 4.49 | 0.00% |  |
-| z14 | 4.46 | 6.33% | minqin → minchin; minqin's → min chin's; minqin → min chin; gen zers → gensurs; xi'an → xian; minqin → minchin; xiuniang → xionyang; minqin → min chin; lee ting hsuan → li teng h sun; minqin → minchin; macao → macau; ma junhe → majunha |
+| z14 | 4.47 | 5.38% | minqin → minchin; minqin's → min chin's; minqin → min chin; gen zers → gensiers; minqin → minchin; xiuniang → xionyang; minqin → min chin; lee → li; hsuan → shuen; minqin → minchin; macao → macau; ma junhe → majunha |
 | z15 | 4.47 | 0.70% | heipieper → heypeper; program → programme |
 | z16 | 4.45 | 1.05% | thirty → point three zero |
 | z17 | 4.46 | 1.48% | tang → tong; shui → sui; ran → ron; li → lee |
