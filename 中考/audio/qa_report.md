@@ -54,10 +54,10 @@
 
 ## cet4_male
 
-- 文章数：12
+- 文章数：13
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.45）
-- 平均识别差异率：0.97%
+- 平均识别差异率：0.89%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -73,3 +73,4 @@
 | z10 | 4.47 | 0.99% | classmates' → classmates; programmes → programs; programmes → programs |
 | z11 | 4.48 | 0.00% |  |
 | z12 | 4.46 | 0.92% | drewett → druitt; drewett → druitt; drewett → druitt |
+| z13 | 4.49 | 0.00% |  |
