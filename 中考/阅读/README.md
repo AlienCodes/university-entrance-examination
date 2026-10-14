@@ -6,13 +6,13 @@
 | 编号 | 年份 | 地区 | 篇目 | 词数 | 段数 | 配图 | 开头 |
 |---|---|---|---|---|---|---|---|
 | z01 | 2026 | 北京 | 阅读C | 353 | 5 |  | While the size of Arctic sea ice has dropped by about 40 … |
-| z02 | 2026 | 北京 | 阅读D | 396 | 6 |  | The internet has provided us with unmatched ways to get … |
+| z02 | 2026 | 北京 | 阅读D | 397 | 6 |  | The internet has provided us with unmatched ways to get … |
 | z03 | 2026 | 河北 | 阅读C | 248 | 4 |  | A Chinese robot became the unexpected star in an … |
-| z04 | 2026 | 河北 | 阅读D | 238 | 5 |  | Scientists have studied animals’ feelings for hundreds of … |
+| z04 | 2026 | 河北 | 阅读D | 237 | 5 |  | Scientists have studied animals’ feelings for hundreds of … |
 | z05 | 2026 | 河北 | 任务型阅读 | 256 | 5 |  | Packing for a family holiday often feels like a rush to … |
-| z06 | 2026 | 山西 | 阅读 | 263 | 4 |  | Ieoh Ming Pei was known as the master of modern … |
+| z06 | 2026 | 山西 | 阅读 | 262 | 4 |  | Ieoh Ming Pei was known as the master of modern … |
 | z07 | 2026 | 辽宁 | 阅读D | 321 | 5 |  | Last summer, we visited a bank in Kunming, but this bank … |
-| z08 | 2026 | 浙江 | 阅读C | 290 | 5 |  | Ayi is a 22-year-old girl from Kashgar, Xinjiang. She … |
+| z08 | 2026 | 浙江 | 阅读C | 292 | 5 |  | Ayi is a 22-year-old girl from Kashgar, Xinjiang. She … |
 | z09 | 2026 | 浙江 | 阅读D | 290 | 4 | 1 | Motorcycle helmets are important. They protect riders from … |
 | z10 | 2026 | 山东 | 阅读C | 305 | 5 |  | Ms. Beryl and Layla are great friends. It doesn’t matter … |
 | z11 | 2026 | 山东 | 阅读D | 322 | 5 |  | Every time you send an email, a message, a photo or post … |

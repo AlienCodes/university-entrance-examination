@@ -1,0 +1,1849 @@
+{
+  "summary": "Strict proofreading of 中考 reading passages in groups (+canaries): fidelity vs original Word pages, mechanics, grammar, logic; each finding double-verified",
+  "agentCount": 12,
+  "logs": [
+    "kept 51, dropped 6"
+  ],
+  "result": {
+    "kept": [
+      {
+        "pid": "z05",
+        "loc": "[2.4]",
+        "current": "count the days about the trip",
+        "proposed": "count the days of the trip",
+        "category": "word-choice",
+        "printed": "Then they will count the days about the trip and how many things they will take.",
+        "reason": "This is an error in the paper itself, not a transcription error: the text matches the page and the dump exactly. 'The days about the trip' is the wrong preposition, and a teacher would mark it. The days belong to the trip, so it should be 'the days of the trip'.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page (Hebei p3) and the dump match the current text, so this is an error in the paper. 'the days about the trip' uses the wrong preposition; 'the days of the trip' is correct and minimal.",
+          "The page matches the current text, so this error is in the paper. 'The days about the trip' uses the wrong preposition, and a teacher would mark it. 'The days of the trip' is the minimal idiomatic fix."
+        ],
+        "printed_v": "Then they will count the days about the trip and how many things they will take.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[3.2]",
+        "current": "both short-and long-term memories",
+        "proposed": "both short- and long-term memories",
+        "category": "typography",
+        "printed": "we are weakening our ability to form both short-and long-term memories, experts say.",
+        "reason": "This is a typesetting error in the paper itself. The page and the dump both show 'short-and'. With a suspended (shared) compound, the hyphen stays on 'short-' and is followed by a space: 'short- and long-term'. As printed, 'short-and' looks like one hyphenated word. Note: the fix_typography step that collapses spaces around hyphens must leave this 'short- and' alone, and the TTS read text should say 'short and long-term'.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page (Beijing p3) and the dump both show 'short-and'. That is a typesetting error: a suspended hyphen needs a space after it ('short- and long-term'). Same fix as #4 and #7; apply it once.",
+          "This suspended compound needs 'short- and long-term'. As printed, 'short-and' reads as a nonexistent hyphenated word. It is a mechanical error in the paper. Make sure typography normalisation does not collapse the space, and make sure TTS reads it as 'short and long term'."
+        ],
+        "printed_v": "we are weakening our ability to form both short-and long-term memories, experts say.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z04",
+        "loc": "[2.5]",
+        "current": "just guessing animals’ mind,",
+        "proposed": "just guessing animals’ minds,",
+        "category": "grammar",
+        "printed": "The scientists want to make sure that the final result is not from just guessing animals’ mind, but from scientific research.",
+        "reason": "This is an error in the paper itself, and the text matches the page. 'Animals’' is a plural possessive, and each animal has its own mind, so the noun should be plural too ('animals’ minds'), just as we write 'children’s minds'. The singular 'animals’ mind' is a number-agreement slip.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Matches the page (Hebei p2). The plural possessor 'animals’' needs the plural 'minds', as in 'animals’ feelings' elsewhere in the passage. Same fix as #5; apply it once.",
+          "With a plural generic possessor, the possessed count noun is distributive, so it should be 'animals’ minds', as in 'children’s minds'. The singular is a number slip in the paper."
+        ],
+        "printed_v": "The scientists want to make sure that the final result is not from just guessing animals’ mind, but from scientific research.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z04",
+        "loc": "[5.2]",
+        "current": "can also help better understand humans’ happiness",
+        "proposed": "can also help us better understand humans’ happiness",
+        "category": "grammar",
+        "printed": "And the new study about animals’ happiness can also help better understand humans’ happiness.",
+        "reason": "This is an error in the paper itself, and the text matches the page. 'Help (to) do' with no object is fine when anyone can do the action, as in the paper's own 'help reduce animals’ suffering'. 'Understand', however, needs a person to do the understanding, and the grammatical subject here is 'the new study'. A copy editor would add the person: 'help us better understand'. This is a low-severity, borderline item; reviewers may decide to keep the original.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Matches the page (Hebei p2). 'help better understand' has no one doing the understanding. Here the subject is the study itself, which cannot understand anything, and an editor would add the person. 'help us better understand' is minimal and keeps the meaning. 'help reduce animals’ suffering' in ¶1 is fine and stays.",
+          "With no object, 'help + infinitive' makes the subject (the study) take part in the understanding, which a study cannot do. 'help reduce suffering' in ¶1 works, but 'help better understand' needs someone to understand. An editor would add 'us', and the fix is minimal."
+        ],
+        "printed_v": "And the new study about animals’ happiness can also help better understand humans’ happiness.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[3.2]",
+        "current": "short-and long-term memories",
+        "proposed": "short- and long-term memories",
+        "category": "typography",
+        "printed": "short-and long-term memories",
+        "reason": "A suspended (hanging) hyphen must be followed by a space: 'short- and long-term'. As printed, 'short-and' looks like one hyphenated word, 'short-and', which does not exist. This is an error in the paper itself (page image p3 shows the same thing), so the current text copies it. Make sure the reading text sent to TTS still reads 'short and long term' after the fix.",
+        "severity": "high",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Confirmed on the page. This is the suspended-hyphen fix 'short- and long-term', a duplicate of #1 and #7; apply it once. The spacing normaliser must not collapse the space back, and the TTS text must still read 'short and long-term'.",
+          "This duplicates index 1. 'short- and long-term' (hyphen followed by a space) is the correct form, and the page confirms the error is in the paper."
+        ],
+        "printed_v": "short-and long-term memories",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z04",
+        "loc": "[2.5]",
+        "current": "guessing animals’ mind",
+        "proposed": "guessing animals’ minds",
+        "category": "grammar",
+        "printed": "guessing animals’ mind",
+        "reason": "The possessor is plural and generic ('animals’', many animals), so the possessed noun must be plural too: each animal has its own mind. Compare 'animals’ feelings' and 'animals’ negative feelings' in ¶1. A teacher would mark the singular 'mind' wrong. This error is in the paper.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #2. Confirmed on the page: the plural generic possessor needs the plural noun, so 'animals’ minds'. Apply it once.",
+          "This duplicates index 2. 'animals’ minds' agrees with the plural possessor, matching 'animals’ feelings' in ¶1."
+        ],
+        "printed_v": "guessing animals’ mind",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[1.1]",
+        "current": "ways to get information but it is also sounding alarms",
+        "proposed": "ways to get information, but it is also sounding alarms",
+        "category": "punctuation",
+        "printed": "ways to get information but it is also sounding alarms",
+        "reason": "Two independent clauses are joined by the contrastive 'but', and the first clause is long (11 words). Standard style (Chicago 6.22, AP) puts a comma before the conjunction, and a copy editor would add it. Every other compound sentence in this passage has that comma ('...on society, but Sparrow...', '...for the brain, but today...', '...is changing, but is it...'). This error is in the paper.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Confirmed on the page (Beijing p2) and in the dump. Two independent clauses with different subjects are joined by 'but', and the first clause is long, so standard punctuation puts a comma before 'but'. The passage does this everywhere else. Same fix as #11 and #15; apply it once.",
+          "The sentence joins two long independent clauses with different subjects using 'but', and CMOS 6.22 calls for a comma there. Every other 'but' compound in the passage has one, so a copy editor would add it. This is not just a style preference here."
+        ],
+        "printed_v": "The internet has provided us with unmatched ways to get information but it is also sounding alarms.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[3.2]",
+        "current": "short-and long-term",
+        "proposed": "short- and long-term",
+        "category": "typography",
+        "printed": "we are weakening our ability to form both short-and long-term memories, experts say.",
+        "reason": "Suspended hyphen. When the shared element is left out, the first compound keeps its hyphen followed by a space: 'short- and long-term'. 'short-and' joins two words that do not belong together.",
+        "severity": "medium",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #1 and #4: the suspended hyphen should read 'short- and long-term'. Apply it once.",
+          "This duplicates index 1. It is a suspended-hyphen fix: 'short- and long-term'."
+        ],
+        "printed_v": "we are weakening our ability to form both short-and long-term memories, experts say.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z03",
+        "loc": "[3.6]",
+        "current": "whether there is any tomato hidden behind leaves",
+        "proposed": "whether there are any tomatoes hidden behind leaves",
+        "category": "grammar",
+        "printed": "The information is about whether there the tomatoes are ripe (成熟的) or not and whether there is any tomato hidden behind leaves.",
+        "reason": "In a question or 'whether' clause, 'any' takes a plural or uncountable noun. With a singular countable noun, standard English uses 'a', not 'any' (Swan, Practical English Usage). The natural form is 'whether there are any tomatoes hidden', which also matches the plural 'the tomatoes' earlier in the sentence.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page reads 'whether the tomatoes are ripe'; the 'whether there the tomatoes' quoted in the proposal is a misquote. The page does show 'there is any tomato hidden'. In a question or 'whether' clause, 'any' with a singular countable noun is a learner error. 'whether there are any tomatoes hidden behind leaves' is correct and matches the plural 'the tomatoes' earlier in the sentence.",
+          "In a question or 'whether' clause, 'any' takes a plural or uncountable noun. 'any tomato' is the classic error, like 'any brother'. 'whether there are any tomatoes hidden' is correct and matches 'the tomatoes' earlier in the sentence. Note that the proposal's 'printed' field misquotes the page: there is no 'there' before 'the tomatoes'. The current text matches the page."
+        ],
+        "printed_v": "The information is about whether the tomatoes are ripe (成熟的) or not and whether there is any tomato hidden behind leaves.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[3.3]",
+        "current": "The flooding of information",
+        "proposed": "The flood of information",
+        "category": "word-choice",
+        "printed": "The flooding of information influences our ability to remember, too.",
+        "reason": "Wrong noun form. 'the flooding of X' means that X is flooded (the flooding of the town). The idiom for too much incoming information is 'the flood of information'.",
+        "severity": "low",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Matches the page. 'the flooding of X' means that X itself is flooded (the flooding of the town). The idiom for an overwhelming amount of incoming information is 'the flood of information'. This is a wrong word form that a copy editor would change, and the fix is minimal.",
+          "'The flooding of X' means X is flooded (the flooding of the town). For an overload of information, the idiom is 'the flood of information', and the current phrase is a wrong word form."
+        ],
+        "printed_v": "The flooding of information influences our ability to remember, too.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[1.1]",
+        "current": "unmatched ways to get information but it is also sounding alarms",
+        "proposed": "unmatched ways to get information, but it is also sounding alarms",
+        "category": "punctuation",
+        "printed": "The internet has provided us with unmatched ways to get information but it is also sounding alarms.",
+        "reason": "Two independent clauses, each with its own subject (The internet … / it …), are joined by 'but'. A comma is required before the conjunction, especially when the first clause is this long. Elsewhere the passage always uses the comma ('…, but Sparrow suggests…', '…, but today we are…').",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #6: add a comma before 'but' joining two long independent clauses. Apply it once.",
+          "This duplicates index 6. It needs a comma before 'but', which joins two long independent clauses."
+        ],
+        "printed_v": "The internet has provided us with unmatched ways to get information but it is also sounding alarms.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z04",
+        "loc": "[1.2]",
+        "current": "such as expressions of pain and fear",
+        "proposed": "such as pain and fear",
+        "category": "logic",
+        "printed": "However, the past research mainly focused on animals’ negative feelings, such as expressions of pain and fear.",
+        "reason": "Category mismatch. 'such as' must give examples of 'negative feelings', but 'expressions of pain and fear' are outward signs, not feelings. Pain and fear are the feelings. The minimal fix removes 'expressions of'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Matches the page (Hebei p2). The examples after 'such as' must be negative feelings, but 'expressions of pain and fear' are outward signs, not feelings. Deleting 'expressions of' fixes the category mismatch, keeps the meaning, and does not affect question 67.",
+          "The examples after 'such as' must belong to 'negative feelings'. Expressions of pain are outward signs, not feelings, so the category is mismatched. Removing 'expressions of' is the minimal fix that keeps the meaning."
+        ],
+        "printed_v": "However, the past research mainly focused on animals’ negative feelings, such as expressions of pain and fear.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z02",
+        "loc": "[1.1]",
+        "current": "to get information but it is also",
+        "proposed": "to get information, but it is also",
+        "category": "punctuation",
+        "printed": "The internet has provided us with unmatched ways to get information but it is also sounding alarms.",
+        "reason": "'but' joins two long independent clauses with different subjects ('The internet has provided…' / 'it is also sounding alarms'), so standard punctuation needs a comma before it. It is a minor copy-editing fix.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #6 and #11: add a comma before 'but'. Apply it once.",
+          "This duplicates index 6. Add a comma before 'but' between the two long independent clauses, as the rest of the passage does."
+        ],
+        "printed_v": "The internet has provided us with unmatched ways to get information but it is also sounding alarms.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[1.3]",
+        "current": "turn there sandy areas",
+        "proposed": "turn their sandy areas",
+        "category": "transcription",
+        "printed": "Now they are working to help African countries turn their sandy areas into green ones.",
+        "reason": "The page image and the Word text both print the possessive \"their\". \"there\" is a transcription error and is also ungrammatical.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error. The page image and the dump both print 'their'. 'there' is wrong.",
+          "Transcription error, confirmed in both the page image and the dump. \"there\" is also ungrammatical."
+        ],
+        "printed_v": "Now they are working to help African countries turn their sandy areas into green ones.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[2.3]",
+        "current": "It is 3,064 km long!",
+        "proposed": "It is 3,046 km long!",
+        "category": "transcription",
+        "printed": "It is 3,046 km long!",
+        "reason": "The digits are transposed. The paper prints 3,046, which is also the real length of the Taklimakan green belt completed in Nov 2024.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transposed digits. The image and the dump both print 3,046, which matches the real length of the Taklimakan belt.",
+          "Transposed digits. The page image and the dump both print 3,046. Same fix as #15."
+        ],
+        "printed_v": "It is 3,046 km long!",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[2.4]",
+        "current": "32 millions hectares",
+        "proposed": "32 million hectares",
+        "category": "transcription",
+        "printed": "And China has created 32 million hectares (公顷) of new forest.",
+        "reason": "The paper prints \"million\". \"millions\" after a numeral is also ungrammatical.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error. The paper prints 'million', and 'millions' after a numeral is ungrammatical.",
+          "Transcription error, confirmed in the image and the dump. \"32 millions hectares\" is also ungrammatical."
+        ],
+        "printed_v": "And China has created 32 million hectares (公顷) of new forest.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[3.2]",
+        "current": "different kind of plants",
+        "proposed": "different kinds of plants",
+        "category": "transcription",
+        "printed": "They introduced different kinds of plants from China and used straw checkerboards to stop sand from moving.",
+        "reason": "The paper prints \"kinds\". \"different kind of plants\" is ungrammatical.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error. The paper prints 'kinds'.",
+          "Transcription error, confirmed. The paper prints \"kinds\"."
+        ],
+        "printed_v": "They introduced different kinds of plants from China and used straw checkerboards to stop sand from moving.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[4.2]",
+        "current": "In 2014, the park was an empty land",
+        "proposed": "In 2024, the park was an empty land",
+        "category": "transcription",
+        "printed": "In 2024, the park was an empty land swept by wind and sand.",
+        "reason": "Wrong year. Both the page image and the Word text print 2024.",
+        "severity": "high",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Wrong year. The image and the dump both print 2024.",
+          "Wrong year, confirmed: the image and the dump print 2024. Same fix as #16. This span also overlaps #31/#35 (\"an empty land\"), so the two fixes must be merged and applied together."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[5.2]",
+        "current": "have overcame many difficulties",
+        "proposed": "have overcome many difficulties",
+        "category": "transcription",
+        "printed": "To help African countries, Chinese scientists have overcome many difficulties.",
+        "reason": "The paper prints the past participle \"overcome\". \"have overcame\" is a transcription error and is ungrammatical.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error. The paper prints 'overcome', and 'have overcame' is ungrammatical.",
+          "Transcription error, confirmed. The paper prints \"overcome\". \"have overcame\" is ungrammatical."
+        ],
+        "printed_v": "To help African countries, Chinese scientists have overcome many difficulties.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[2.2]",
+        "current": "Until November 2024, China built a long wall of trees",
+        "proposed": "By November 2024, China had built a long wall of trees",
+        "category": "grammar",
+        "printed": "Until November 2024, China built a long wall of trees, which caught the world’s attention.",
+        "reason": "Error in the paper itself. \"Until\" cannot go with a simple-past completed action: \"until X, China built\" says the building lasted up to X. The meaning is completion by that date (the Taklimakan belt was closed in Nov 2024), which needs \"By … had built\".",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The paper itself is wrong. 'Until X' cannot go with a completed simple-past action. The meaning is completion by Nov 2024 (the belt was closed on 28 Nov 2024), so 'By November 2024, China had built' is the minimal correct fix.",
+          "Error in the paper. Affirmative \"Until X\" with a completed accomplishment (\"built a long wall\") is a calque of 截至. Completion by a date needs \"By … had built\". Same fix as #22."
+        ],
+        "printed_v": "Until November 2024, China built a long wall of trees, which caught the world’s attention.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[3.6]",
+        "current": "strong light from cars and trucks hit riders’ faces",
+        "proposed": "strong light from cars and trucks hits riders’ faces",
+        "category": "grammar",
+        "printed": "They become dark when the sun shines too brightly or when strong light from cars and trucks hit riders’ faces.",
+        "reason": "Error in the paper itself. The subject is singular \"strong light\", and \"from cars and trucks\" is only a modifier, so the present-tense verb must be \"hits\". It is parallel with \"the sun shines\".",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Agreement error in the paper. The subject is the singular 'strong light' ('from cars and trucks' only modifies it), so the verb is 'hits', parallel to 'shines'.",
+          "Agreement error in the paper. The head of the subject is the singular uncountable \"strong light\", so the verb is \"hits\", parallel with \"the sun shines\". Same fix as #18/#37."
+        ],
+        "printed_v": "They become dark when the sun shines too brightly or when strong light from cars and trucks hit riders’ faces.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z06",
+        "loc": "[3.1]",
+        "current": "which was designed in 1989",
+        "proposed": "which was completed in 1989",
+        "category": "fact",
+        "printed": "One of Pei’s most famous works is the glass pyramid in front of the Louvre Museum (卢浮宫) in Paris, which was designed in 1989.",
+        "reason": "Factual error in the paper. Pei designed the Louvre pyramid in 1983–84 (presented in early 1984; Britannica and Wikipedia) and it was completed and opened in 1989. Only the date of completion is 1989.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Factual error in the paper. Pei was appointed in 1983 and presented the design in 1984. The pyramid was completed and inaugurated in 1989 (Britannica: 'completed in 1989'). Changing one word fixes it.",
+          "Factual error in the paper. Pei designed the pyramid in 1983–84 (presented early 1984), and it was completed and opened in 1989 (Wikipedia, Britannica). \"completed\" is the minimal fix that keeps the sentence. Prefer this over #23."
+        ],
+        "printed_v": "One of Pei’s most famous works is the glass pyramid in front of the Louvre Museum (卢浮宫) in Paris, which was designed in 1989.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z10",
+        "loc": "[2.1]",
+        "current": "says director, Penny Livingston.",
+        "proposed": "says director Penny Livingston.",
+        "category": "punctuation",
+        "printed": "…to really listen to them,” says director, Penny Livingston.",
+        "reason": "Error in the paper itself. A title used without an article directly before a name (\"says director Penny Livingston\") takes no comma. The comma would only be right with an article: \"says the director, Penny Livingston\".",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "An article-less title placed right before a name ('says director Penny Livingston') takes no comma. The comma is an error in the paper.",
+          "Error in the paper. An article-less title before a name (\"says director Penny Livingston\") takes no comma. The comma is only right with \"the director, Penny Livingston\". Same fix as #25."
+        ],
+        "printed_v": "…to really listen to them,” says director, Penny Livingston.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z06",
+        "loc": "[4.2]",
+        "current": "regarded as the gifts to the world",
+        "proposed": "regarded as gifts to the world",
+        "category": "grammar",
+        "printed": "His designs are regarded as the gifts to the world.",
+        "reason": "Error in the paper itself. This is a generic plural complement after \"regarded as\", so it takes no article. \"the gifts\" wrongly points to specific gifts already mentioned.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The article is wrong. 'the gifts' has no referent, and a generic plural complement after 'regarded as' takes no article.",
+          "Article error in the paper. The complement after \"regarded as\" is generic (\"gifts to the world\"). \"the gifts\" has no referent, and an editor would delete \"the\"."
+        ],
+        "printed_v": "His designs are regarded as the gifts to the world.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[3.2]",
+        "current": "Through Bluetooth connected speakers",
+        "proposed": "Through Bluetooth-connected speakers",
+        "category": "punctuation",
+        "printed": "Through Bluetooth connected speakers, riders can make telephone calls as they travel along the road.",
+        "reason": "Error in the paper itself. A compound modifier (noun + past participle) before a noun is hyphenated, so \"Bluetooth-connected speakers\".",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "A noun + participle compound modifier before a noun is hyphenated, so it should be 'Bluetooth-connected speakers'.",
+          "A noun + participle compound modifier before a noun is hyphenated (\"Bluetooth-connected speakers\"). Without the hyphen it can be misread as \"Through Bluetooth, connected speakers\"."
+        ],
+        "printed_v": "Through Bluetooth connected speakers, riders can make telephone calls as they travel along the road.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[2.2]",
+        "current": "made of carbon-fibre (碳纤维)",
+        "proposed": "made of carbon fibre (碳纤维)",
+        "category": "punctuation",
+        "printed": "Today, they are made of carbon-fibre (碳纤维), much lighter and stronger than before.",
+        "reason": "Error in the paper itself. As a noun, \"carbon fibre\" is two open words (Oxford, Collins). The hyphen belongs only before a noun, as in \"a carbon-fibre helmet\".",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Here 'carbon fibre' is a noun (made of ___), and the noun is written as two open words (Oxford, Collins). The hyphen is only used before a noun.",
+          "Used as a noun, \"carbon fibre\" is open (Oxford, Collins). The hyphen is only for attributive use. Same fix as #38."
+        ],
+        "printed_v": "Today, they are made of carbon-fibre (碳纤维), much lighter and stronger than before.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[2.4]",
+        "current": "good doctors are needed in this place",
+        "proposed": "good doctors were needed in that place",
+        "category": "grammar",
+        "printed": "When her grandmother died of illness, she realized good doctors are needed in this place.",
+        "reason": "Error in the paper itself, but borderline. The past third-person narrative has already said \"In that place\" (and next \"the people there\"), so \"this place\" breaks the narrative point of view and \"are needed\" breaks tense agreement with \"realized\". A minimal fix restores \"were … that place\".",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The narrator is outside the scene: the text has already said 'In that place', and next comes 'the people there'. So 'this place' breaks the point of view. 'realized … are needed' is not a general truth, so the tense should go back to the past. 'were … that place' is minimal.",
+          "This is past-tense, third-person narration set away from Kashgar (\"In that place\" just before, \"the people there\" just after). \"this place\" breaks the point of view, and \"realized … are\" breaks the sequence of tenses. A strict teacher would mark both. Same fix as #40."
+        ],
+        "printed_v": "When her grandmother died of illness, she realized good doctors are needed in this place.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[3.1]",
+        "current": "an education program for Xinjiang",
+        "proposed": "an education programme for Xinjiang",
+        "category": "spelling",
+        "printed": "In 2018, thanks to an education program for Xinjiang middle school students, Ayi had a chance to study in a Shenzhen high school.",
+        "reason": "Spelling inconsistency in the paper itself. The passage spells \"programme\" three times (¶1) in British style. British usage also writes \"programme\" for an education programme (\"program\" is only for computers), so this single American \"program\" is inconsistent. Low priority.",
+        "severity": "low",
+        "lens": [
+          "fidelity"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The passage is British in style ('the TV programme', 'The programme followed', 'in hospital'), and British English uses 'programme' for an education scheme too. The single 'program' is inconsistent, and a copy editor would standardise it.",
+          "Inconsistent spelling within one passage. ¶1 writes British \"programme\" twice, and in British usage an education scheme is a \"programme\" too. An editor would make it consistent. Same fix as #20."
+        ],
+        "printed_v": "In 2018, thanks to an education program for Xinjiang middle school students, Ayi had a chance to study in a Shenzhen high school.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[2.3]",
+        "current": "3,064 km",
+        "proposed": "3,046 km",
+        "category": "transcription",
+        "printed": "It is 3,046 km long!",
+        "reason": "The digits are transposed. The paper prints 3,046, which is also the real length of the Taklimakan green belt completed in Nov 2024.",
+        "severity": "high",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #1, confirmed. The image prints 3,046.",
+          "Duplicate of #1 (narrower span). The paper prints 3,046."
+        ],
+        "printed_v": "It is 3,046 km long!",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[4.2]",
+        "current": "In 2014, the park",
+        "proposed": "In 2024, the park",
+        "category": "transcription",
+        "printed": "In 2024, the park was an empty land swept by wind and sand.",
+        "reason": "Wrong year. The paper prints 2024, and the year matters to the story: one year after an empty site, crops are growing.",
+        "severity": "high",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #4, confirmed. The image prints 2024.",
+          "Duplicate of #4 (narrower span). The paper prints 2024."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[5.2]",
+        "current": "have overcame",
+        "proposed": "have overcome",
+        "category": "transcription",
+        "printed": "Chinese scientists have overcome many difficulties.",
+        "reason": "The present perfect needs the past participle 'overcome'. The paper prints 'overcome'.",
+        "severity": "high",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #5, confirmed. The paper prints 'have overcome'.",
+          "Duplicate of #5. The paper prints \"have overcome\"."
+        ],
+        "printed_v": "To help African countries, Chinese scientists have overcome many difficulties.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[3.6]",
+        "current": "trucks hit riders’ faces",
+        "proposed": "trucks hits riders’ faces",
+        "category": "grammar",
+        "printed": "when strong light from cars and trucks hit riders’ faces",
+        "reason": "Error in the paper: subject-verb agreement. The subject is 'strong light' (singular, uncountable), so the verb must be 'hits'. 'cars and trucks' sits inside the prepositional phrase. (Outside my lens, but a definite error.)",
+        "severity": "medium",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #7. The singular subject 'strong light' needs 'hits'.",
+          "Duplicate of #7. The singular subject \"strong light\" needs \"hits\"."
+        ],
+        "printed_v": "…or when strong light from cars and trucks hit riders’ faces.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[3.1]",
+        "current": "an education program for",
+        "proposed": "an education programme for",
+        "category": "spelling",
+        "printed": "thanks to an education program for Xinjiang middle school students",
+        "reason": "The same word is spelled two ways in one passage. ¶1 uses British 'programme' twice ('the TV programme', 'The programme followed'), and in British English 'programme' covers education schemes too ('program' is only for computers). Make it consistent: 'programme'.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #14. The passage uses British 'programme' twice, so 'program' should be made consistent.",
+          "Duplicate of #14. Spell it \"programme\" to match ¶1."
+        ],
+        "printed_v": "thanks to an education program for Xinjiang middle school students",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[1.2]",
+        "current": "the TV programme, which",
+        "proposed": "a TV programme, which",
+        "category": "grammar",
+        "printed": "She became well-known in a new season of the TV programme, which tells people",
+        "reason": "Error in the paper, probably left over from adaptation (the show's name was dropped). The programme has not been introduced and the comma makes the clause non-identifying, so 'the' has no referent. A first mention needs 'a TV programme'.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This is the first mention of the programme, and the non-defining 'which' clause does not identify it, so 'the' has no referent. The likely cause is an adaptation slip where the show's name was dropped. 'a TV programme' is minimal.",
+          "Duplicate of #27/#39. This is the first mention, and the non-defining \"which\" clause does not identify the programme, so it needs \"a\". The programme's name was dropped in adaptation."
+        ],
+        "printed_v": "She became well-known in a new season of the TV programme, which tells people how young people build their careers after leaving school.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[2.2]",
+        "current": "Until November 2024, China built",
+        "proposed": "By November 2024, China had built",
+        "category": "grammar",
+        "printed": "Until November 2024, China built a long wall of trees",
+        "reason": "Error in the paper. 'Until' needs a durative or negative verb ('didn't finish until'). It cannot go with a simple past of a completed action. A deadline for a completed result needs 'By … had built'.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #6. 'Until … built' is wrong, and 'By November 2024, China had built' is the minimal fix.",
+          "Duplicate of #6. Affirmative \"Until\" with a completed action is wrong; it needs \"By November 2024, China had built\"."
+        ],
+        "printed_v": "Until November 2024, China built a long wall of trees",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z06",
+        "loc": "[3.1]",
+        "current": "in Paris, which was designed in 1989.",
+        "proposed": "in Paris. It was completed in 1989.",
+        "category": "fact",
+        "printed": "in front of the Louvre Museum (卢浮宫) in Paris, which was designed in 1989.",
+        "reason": "Two problems in the paper. (1) Fact: Pei designed the pyramid in 1983–84; it was completed and opened in 1989 (Britannica, Wikipedia). (2) The 'which' clause comes right after 'the Louvre Museum in Paris', so it reads as if the Louvre or Paris was designed in 1989. Splitting the sentence fixes both. Smaller alternative: 'which was completed in 1989'.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The factual error (designed → completed) is real. Splitting the sentence is more than a minimal fix, though: the non-restrictive 'which' referring back to 'the glass pyramid' is acceptable, and no reader thinks the Louvre or Paris dates from 1989. Use the same one-word fix as #8.",
+          "The factual error is real (designed 1983–84, completed 1989). Splitting the sentence is not needed: a non-defining \"which\" after the long noun phrase is naturally read as the pyramid, since no one reads the Louvre or Paris as completed in 1989. Use the minimal fix from #8."
+        ],
+        "printed_v": "in front of the Louvre Museum (卢浮宫) in Paris, which was designed in 1989.",
+        "amended": [
+          "in Paris, which was completed in 1989.",
+          "in Paris, which was completed in 1989."
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[5.2]",
+        "current": "which is simple, cheap and works well",
+        "proposed": "which is simple and cheap and works well",
+        "category": "grammar",
+        "printed": "to use TCM, which is simple, cheap and works well,",
+        "reason": "Faulty parallelism in the paper. The series 'simple, cheap and works well' joins two adjectives that depend on 'is' with a verb phrase, so it reads as 'is … works well'. The fix keeps the words and joins the predicates properly. Alternative: 'which is simple, cheap and effective'.",
+        "severity": "medium",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Faulty parallelism: 'is simple, cheap and works well' puts a verb phrase in a series under 'is'. Even inside a quotation, students will memorise it. The proposed fix keeps all the words and is grammatical. ('simple, cheap and effective' would also work.)",
+          "Faulty parallelism in the paper: \"is simple, cheap and works well\" puts a verb phrase in a series of adjectives under \"is\". The proposed fix keeps the wording and is grammatical."
+        ],
+        "printed_v": "…to use TCM, which is simple, cheap and works well,” Ayi said.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z10",
+        "loc": "[2.1]",
+        "current": "says director, Penny Livingston",
+        "proposed": "says director Penny Livingston",
+        "category": "punctuation",
+        "printed": "says director, Penny Livingston.",
+        "reason": "Error in the paper. 'director' here is an article-less title (a 'false title') directly before the name, so no comma can separate them. The other option is 'says Penny Livingston, the director'.",
+        "severity": "medium",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #9. Do not put a comma between an article-less title and the name.",
+          "Duplicate of #9. No comma between the article-less title and the name."
+        ],
+        "printed_v": "says director, Penny Livingston.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[4.2]",
+        "current": "For her, it’s especially difficult",
+        "proposed": "For her, it was especially difficult",
+        "category": "grammar",
+        "printed": "For her, it’s especially difficult to understand ancient Chinese medical books.",
+        "reason": "Tense shift in the paper. The paragraph tells her past struggle in the past tense: 'was never easy', 'were totally…', 'I was always half a step behind', 'put in', 'developed', 'got'. This one sentence jumps to the present.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Unmotivated tense shift. The whole paragraph is past narration ('was never easy', 'were totally…', 'I was always half a step behind', 'To catch up, she put in…'), so the difficulty is presented as past, which makes 'it’s' inconsistent.",
+          "Unmotivated tense shift. The surrounding narration is past (\"was never easy\", \"were totally new\", \"I was always … behind\", \"put in\", \"developed\"), and this sentence explains that past struggle, so it should be \"it was\"."
+        ],
+        "printed_v": "For her, it’s especially difficult to understand ancient Chinese medical books.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[1.2]",
+        "current": "a new season of the TV programme, which",
+        "proposed": "a new season of a TV programme, which",
+        "category": "grammar",
+        "printed": "She became well-known in a new season of the TV programme, which tells people…",
+        "reason": "Article error in the paper; the programme's name was probably dropped in adaptation. This is the first mention, and a non-defining 'which' clause does not identify the programme, so 'the' has nothing to refer to.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same fix as #21: a first mention with a non-defining clause needs 'a'.",
+          "First mention with a non-defining clause, so the indefinite article is needed. Same fix as #21/#39."
+        ],
+        "printed_v": "She became well-known in a new season of the TV programme, which tells people…",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[4.3]",
+        "current": "were totally a new way of thinking",
+        "proposed": "were a totally new way of thinking",
+        "category": "grammar",
+        "printed": "“Terms (术语), like yin and yang, were totally a new way of thinking.",
+        "reason": "Error in the paper: the adverb is misplaced. 'totally' modifies 'new', so it belongs inside the noun phrase ('a totally new way'). Students will memorise this sentence, so the standard order should be used even inside a quotation.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'totally' modifies 'new' (全新的), so standard order is 'a totally new way of thinking'. 'totally a new way' is a Chinglish word order that a teacher would mark, even inside a quotation.",
+          "Misplaced intensifier. The meaning is 完全新的, so \"a totally new way\". The quote is translated from Chinese, so there is no authentic colloquial wording to keep, and students will memorise the standard order."
+        ],
+        "printed_v": "“Terms (术语), like yin and yang, were totally a new way of thinking.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[3.4]",
+        "current": "easy to control through voice",
+        "proposed": "easy to control by voice",
+        "category": "word-choice",
+        "printed": "they are easy to control through voice.",
+        "reason": "Preposition error in the paper. The idiom is 'controlled by voice' (or 'through voice commands'); 'through voice' on its own is not idiomatic.",
+        "severity": "low",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The idiomatic phrase is 'control by voice'. 'through voice' without a noun like 'commands' is unidiomatic. The change is one word and keeps the meaning.",
+          "\"control through voice\" is unidiomatic. The standard phrase is \"control by voice\" (or \"through voice commands\")."
+        ],
+        "printed_v": "They can record what is happening ahead like the cameras in cars and they are easy to control through voice.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[3.4]",
+        "current": "cameras in cars and they are",
+        "proposed": "cameras in cars, and they are",
+        "category": "punctuation",
+        "printed": "like the cameras in cars and they are easy to control",
+        "reason": "Two independent clauses joined by 'and' need a comma here. Without it, 'they' can attach to 'the cameras in cars' and not to the helmet cameras.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The sentence joins two fairly long independent clauses with 'and', and without a comma 'the cameras in cars and they' can be misparsed. The comma is standard here and does not conflict with #29.",
+          "Two independent clauses that are not short are joined by \"and\" after an intervening \"like\" phrase. Standard practice (Chicago 6.22) wants a comma, which also blocks the misreading \"like the cameras in cars and they\". This span does not overlap #29."
+        ],
+        "printed_v": "like the cameras in cars and they are easy to control through voice.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[4.2]",
+        "current": "was an empty land swept",
+        "proposed": "was empty land swept",
+        "category": "grammar",
+        "printed": "the park was an empty land swept by wind and sand",
+        "reason": "Error in the paper. 'land' meaning ground or terrain is uncountable. 'a land' means a country or realm, which a park site is not. Alternative: 'a piece of empty land'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'land' in the sense of ground or area is uncountable, while 'a land' means a country or realm. 'an empty land' is a typical article error (一片空地), and 'empty land' is minimal.",
+          "\"land\" meaning ground is uncountable. \"an empty land\" is the typical Chinglish article error, and \"was empty land swept by wind and sand\" is correct. Same fix as #35. It overlaps #4/#16, so merge the fixes so that 2014→2024 is also applied."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[2.1]",
+        "current": "seriously influenced by desertification",
+        "proposed": "seriously affected by desertification",
+        "category": "word-choice",
+        "printed": "though it is seriously influenced by desertification.",
+        "reason": "Wrong collocation in the paper, from a Chinese '影响' calque. Harmful physical damage is 'affected'; 'influenced' means a shaping, usually abstract effect.",
+        "severity": "low",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This is a calque of 受…影响. Physical damage from desertification needs 'affected'; 'influenced' means shaping, usually abstract. A copy editor would change it.",
+          "Collocation calque of 影响. Physical damage from desertification is \"affected\"; \"influenced\" means an abstract shaping effect and sounds non-native here."
+        ],
+        "printed_v": "China has made great progress through hard work, though it is seriously influenced by desertification.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z06",
+        "loc": "[3.6]",
+        "current": "a must-go place",
+        "proposed": "a must-see place",
+        "category": "word-choice",
+        "printed": "It opened in 2006 and became a must-go place later.",
+        "reason": "'must-go' is not a standard compound; dictionaries list 'must-see' and 'must-visit'. It is a non-standard collocation that students would memorise.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'must-go' is not a standard compound (dictionaries list must-see and must-visit), and in native use it suggests 'must be got rid of'. 'must-see place' is standard and keeps the meaning.",
+          "\"must-go\" is not a standard dictionary compound (the standard ones are must-see and must-visit). \"a must-see place\" is the established collocation students should memorise."
+        ],
+        "printed_v": "It opened in 2006 and became a must-go place later.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z41",
+        "loc": "[4.2]",
+        "current": "the park was an empty land",
+        "proposed": "the park was empty land",
+        "category": "grammar",
+        "printed": "In 2024, the park was an empty land swept by wind and sand.",
+        "reason": "This is an error in the paper. 'Land' meaning ground or an area of earth is uncountable, so 'an empty land' is a typical article error. Use 'empty land' (or 'an empty piece of land').",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #31. 'an empty land' → 'empty land'.",
+          "Duplicate of #31. \"land\" meaning ground is uncountable, so \"was empty land\"."
+        ],
+        "printed_v": "In 2024, the park was an empty land swept by wind and sand.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[3.6]",
+        "current": "when strong light from cars and trucks hit riders’ faces",
+        "proposed": "when strong light from cars and trucks hits riders’ faces",
+        "category": "grammar",
+        "printed": "or when strong light from cars and trucks hit riders’ faces.",
+        "reason": "This is an error in the paper. The subject is uncountable singular 'strong light'; 'cars and trucks' sit inside the prepositional phrase. The verb must be 'hits', parallel to 'the sun shines' in the same sentence.",
+        "severity": "medium",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #7. The verb must be 'hits'.",
+          "Duplicate of #7/#18. The singular uncountable subject \"strong light\" needs \"hits\"."
+        ],
+        "printed_v": "or when strong light from cars and trucks hit riders’ faces.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[2.2]",
+        "current": "made of carbon-fibre",
+        "proposed": "made of carbon fibre",
+        "category": "punctuation",
+        "printed": "Today, they are made of carbon-fibre (碳纤维), much lighter and stronger than before.",
+        "reason": "This is an error in the paper. The noun is 'carbon fibre' (Oxford/Collins). The hyphenated form is used only attributively ('a carbon-fibre helmet'), and here it is a noun.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #12. As a noun, 'carbon fibre' is written open.",
+          "Duplicate of #12. \"carbon fibre\" is open as a noun."
+        ],
+        "printed_v": "Today, they are made of carbon-fibre (碳纤维), much lighter and stronger than before.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[1.2]",
+        "current": "a new season of the TV programme",
+        "proposed": "a new season of a TV programme",
+        "category": "grammar",
+        "printed": "She became well-known in a new season of the TV programme, which tells people how young people build their careers after leaving school.",
+        "reason": "This is an adaptation slip: the programme's name was removed but 'the' was kept. The programme has not been mentioned before and the non-defining 'which' clause does not identify it, so the indefinite article is needed.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #21/#27. A first mention needs 'a TV programme'.",
+          "Duplicate of #21/#27. This is the first mention, so the indefinite article is needed."
+        ],
+        "printed_v": "She became well-known in a new season of the TV programme, which tells people how young people build their careers after leaving school.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z08",
+        "loc": "[2.4]",
+        "current": "she realized good doctors are needed in this place",
+        "proposed": "she realized good doctors were needed in that place",
+        "category": "grammar",
+        "printed": "When her grandmother died of illness, she realized good doctors are needed in this place.",
+        "reason": "The narration is past-tense, third-person and set away from Kashgar ('In that place' two sentences earlier, 'the people there' next). 'This place' breaks the reference, and 'realized … are' breaks the sequence of tenses. A careful teacher would mark both.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #13. Restore the past tense and the narrator's 'that place'.",
+          "Duplicate of #13. Restore past tense and distal reference: \"were needed in that place\"."
+        ],
+        "printed_v": "When her grandmother died of illness, she realized good doctors are needed in this place.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "dropped": [
+      {
+        "pid": "z05",
+        "loc": "[4.2]",
+        "current": "when the mother sees her child put milk and clothes together",
+        "proposed": "when a mother sees her child put milk and clothes together",
+        "category": "grammar",
+        "printed": "For example, when the mother sees her child put milk and clothes together, she may ask her child if it is OK to do so.",
+        "reason": "Article. 'For example' introduces a hypothetical case, and no particular mother has been mentioned, so the noun is new and indefinite: 'a mother … her child'. 'the mother' has no antecedent.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Matches the page. A family has already been set up ('Packing for a family holiday', 'questions from adults'), so 'the mother' refers to the mother in that family. That use of 'the' is acceptable in an example scenario, just as the next sentence uses 'The child'. 'a mother' is a style preference, not a correction.",
+          "'For example' sets up a hypothetical case. The nearest antecedent is the generic plural 'adults', and no mother has been introduced, so the article should be indefinite: 'a mother … her child'. This is a small article error that a careful editor would fix. 'The child' in the next sentence still works, because it refers back to 'her child'."
+        ],
+        "printed_v": "For example, when the mother sees her child put milk and clothes together, she may ask her child if it is OK to do so.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z04",
+        "loc": "[4.2]",
+        "current": "Horses seem to be happily playing, but",
+        "proposed": "Sometimes horses seem to be happily playing, but",
+        "category": "logic",
+        "printed": "Horses seem to be happily playing, but they may actually have the opposite feeling: they are downcast.",
+        "reason": "Without a qualifier, the bare generic claims that horses in general always look as if they are happily playing, which overstates the point. The point is that in some cases what looks like happy play hides a low mood, which is why 'may' appears in the second clause. Adding 'Sometimes' (or 'may seem') makes the contrast logical. This one is borderline; accept it only if the logic reviewers agree.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Matches the page. A bare plural with a progressive verb ('Horses seem to be happily playing') describes a scene: some horses look as if they are playing. It is not a sweeping claim about all horses, and 'may' already marks it as possible. The sentence is grammatical and logically clear, so adding 'Sometimes' is only a stylistic improvement.",
+          "The bare generic claims that horses in general always appear to be playing happily, which is a false overgeneralisation. The point is that apparent play can hide low mood in some cases. 'Sometimes horses seem…' fixes the logic with minimal change and keeps 'downcast' for Q69."
+        ],
+        "printed_v": "Horses seem to be happily playing, but they may actually have the opposite feeling: they are downcast.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z04",
+        "loc": "[4.2]",
+        "current": "Horses seem to be happily playing",
+        "proposed": "Sometimes horses seem to be happily playing",
+        "category": "logic",
+        "printed": "Horses seem to be happily playing, but they may actually have the opposite feeling: they are downcast.",
+        "reason": "As written, this is a general statement that all horses appear to be playing happily, which the passage does not mean. The point is that play which looks happy can hide a negative feeling; the source says adult horses that play are often stressed or restrained. Adding 'Sometimes' limits the claim and keeps 'downcast' (question 69) unchanged.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of #13. The sentence is grammatical and reads as an illustrative case, so 'Sometimes' is a style improvement, not a correction.",
+          "This duplicates index 13. Adding 'Sometimes' limits the over-general claim, and the rest stays unchanged."
+        ],
+        "printed_v": "Horses seem to be happily playing, but they may actually have the opposite feeling: they are downcast.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z09",
+        "loc": "[1.3]",
+        "current": "about 1872 riders",
+        "proposed": "about 1,872 riders",
+        "category": "typography",
+        "printed": "Last year, about 1872 riders in the US were saved",
+        "reason": "Number formatting. Without a thousands comma, 'about 1872' reads first as a year ('around 1872'). The other passages in this set write 6,212, 11,000 and 3,046. Note that question 12 quotes the number as “1872”, but the question is not part of the video text.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Not an error. Many styles (including British style, and this passage is British: colour, fibre) allow four-digit numbers without a comma. The figure stands right before 'riders', so it cannot be read as a year, and question 12 prints “1872” too. Separate pipeline note: make sure the TTS reads it as a quantity and not as a year.",
+          "Without the thousands comma, \"about 1872\" reads (and would be voiced by TTS) as a year, \"eighteen seventy-two\". AP and Chicago use a comma in counts of 1,000 or more, and the other passages write 3,046 and 6,212. The question quoting \"1872\" is not video text."
+        ],
+        "printed_v": "Last year, about 1872 riders in the US were saved because of helmet use.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z06",
+        "loc": "[3.5]",
+        "current": "Suzhou Museum is another work of his.",
+        "proposed": "The Suzhou Museum is another work of his.",
+        "category": "grammar",
+        "printed": "Suzhou Museum is another work of his.",
+        "reason": "Article error in the paper. Museum names of the form '[Place] Museum' take 'the' in running English ('the Shanghai Museum', 'the Palace Museum'). The same paragraph writes 'the Louvre Museum'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Not definitely wrong. The museum's own English name is 'Suzhou Museum', and article-less use of '[Place] Museum' institution names is established (Shanghai Museum and Suzhou Museum both write it this way in running text). Adding 'The' is a style preference.",
+          "In running English, \"[Place] Museum\" names take \"the\" (the Suzhou Museum, the Palace Museum, the Shanghai Museum). Wikipedia writes \"The Suzhou Museum\", and the same paragraph writes \"the Louvre Museum\"."
+        ],
+        "printed_v": "Suzhou Museum is another work of his.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z06",
+        "loc": "[3.8]",
+        "current": "He left over 50 designs during his life.",
+        "proposed": "He created over 50 designs during his life.",
+        "category": "word-choice",
+        "printed": "He left over 50 designs during his life.",
+        "reason": "This is a calque of 一生留下了50多件作品. 'Leave' in this sense means leaving something behind after death, so it clashes with 'during his life'. Use 'created' (or 'He left over 50 designs to the world').",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "'left' in the legacy sense (he left over 50 designs = they remain as his legacy) is idiomatic, and 'during his life' reads naturally as when the designs were made. The meaning is clear and not wrong, so the change is only a style improvement.",
+          "\"left\" in the legacy sense (留下) refers to what remains after death, which clashes with \"during his life\". \"left over 50\" can also garden-path as the phrasal \"left over\". \"created\" fixes both and keeps the meaning."
+        ],
+        "printed_v": "He left over 50 designs during his life.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "failed": [],
+    "agentFail": [],
+    "notes": [
+      {
+        "g": [
+          "z01",
+          "z02",
+          "z03",
+          "z04",
+          "z05"
+        ],
+        "notes": {
+          "fidelity": "How I checked: for all five passages I opened every page image in the header and the full-text dump. I also ran a script that compares each ¶ of the current text with the dump lines character by character. Every paragraph in z01–z05 matches its dump line exactly: same words, numbers, punctuation, curly quotes and apostrophes, and Chinese footnote glosses. There are no hidden or unusual characters and no double spaces. I also compared each passage with the page images. Starts and ends are correct: each passage begins right after the 'C篇/D篇' or task-reading instruction line and ends right before question 27/30/63/67, or at the end of the paper for z05. No question text is mixed in, and nothing is missing or duplicated. None of the headers lists any corrections already made. There are NO transcription or paragraphing errors in any of the five passages. The four findings are errors in the printed paper itself.\n\nz01 (2026 Beijing C): the original has 5 paragraphs, all compared. The image page 1 shows a globe picture next to the end of ¶1; it is correctly left out. Kept on purpose: 'its 2014 record high' (Antarctic sea ice did reach its record maximum in September 2014, which fits 'after 2015 … fell from a record high'); 'get the upper hand against' (an attested variant of 'over'); 'metres' next to 'percent' (both standard); 'Antarctic ice extent (范围)'; 'saltiness'; 'input' as the past tense.\n\nz02 (2026 Beijing D, pages 2–3): the original has 6 paragraphs, all compared. ¶2 continues across the page break into p3 without an indent, and it is correctly kept as one paragraph. Kept: 'practise' (British spelling); 'The flooding of information' (awkward, but read like 'the flooding of the river', it is not definitely wrong); 'Another problem: the effortless way…' (a journalistic fragment); 'outside hard drive' (a deliberate simplification of 'external'); the em dash in ¶2; the quotation punctuation in ¶6.\n\nz03 (2026 Hebei C): the original has 4 paragraphs, all compared. Kept: 'the unexpected star in an international kite festival'; 'drew crowds of visitors to take photos'; 'any tomato hidden behind leaves'; the robot half-marathon and 100-meter record claims (the paper's own 2026 news content).\n\nz04 (2026 Hebei D): the original has 5 paragraphs, all compared. Kept: 'the past research' (it can refer back to the research just mentioned); 'doesn’t tell what brings them happiness'; 'Horses seem to be happily playing, but they may actually have the opposite feeling: they are downcast' (plain-style generalisation, logic acceptable; 'downcast' is the underlined target word). I reported 'animals’ mind' and 'help better understand'.\n\nz05 (2026 Hebei task reading, page 3): the original has 5 paragraphs, all compared. The passage starts after '阅读下面短文，简略回答问题。' and ends at 'if possible.'. Kept: 'in the holiday'; 'swimming clothes'; 'how many clothes'; 'practice' as an American verb, consistent with 'math'; 'the mother sees her child' (a generic example; 'a mother' would read slightly better, but it is not wrong). I reported 'count the days about the trip'.",
+          "mechanics": "I compared all 5 passages character by character with the Word dump and the page images (Beijing p1-p3, Hebei p1-p3). Transcription is exact in every passage: no missing or extra words, the same paragraph breaks (z01 5 paragraphs, z02 6, z03 4, z04 5, z05 5), the same Chinese glosses, and every passage starts and ends in the right place. The Hebei 任务型阅读 page shows only the passage, with no questions, so the end of z05 is correct. All 4 findings above are errors in the paper itself, not transcription errors.\n\nSentences I looked at closely and kept:\n- z01 [1.1] 'until recently,' is a correct parenthetical comma pair. 'southward-moving storm belt' and 'wind-driven rising' are correctly hyphenated. 'sea ice area', 'warm deep saltwater' and '2014 record high' are correctly unhyphenated and need no commas (open compound noun; cumulative adjectives). Mixing 'metres'/'towards' with '40 percent' is acceptable. 'input' as a past tense is fine.\n- z02: 'practise' (British verb) is consistent within the passage. The em dash in [2.1] is house style. Semicolon in [2.3] is correct. The fragment 'Another problem: the effortless way…' is a deliberate journalistic fragment. The false title 'Columbia University psychologist (心理学家) Betsy Sparrow' correctly has no comma. Quote punctuation in ¶6 is correct (comma inside the closing quote, two pairs of quotes properly closed).\n- z03: 'up-and-down movements', 'human-like', 'half-marathon' (an accepted variant) and '100-meter world record' are all correctly hyphenated. 'men’s' apostrophes are correct.\n- z04: 'laugh-like' is correct. The colon before 'they are downcast' is correctly followed by lowercase. 'not from…, but from…' with a comma is acceptable. 'favorite' and American spelling are consistent.\n- z05: American 'math', 'practice' (verb) and 'toward' are consistent. 'OK' is fine. 'swimming clothes' and 'how many clothes' are acceptable at this level.\n\nPossible issues outside my lens, which I did not report, for the grammar/word-choice/logic reviewers:\n- z02 [1.1] 'sounding alarms': with 'the internet' as subject, 'raising alarms' (causing concern) is the clearer idiom, but the journalistic 'X is sounding alarm bells' sense exists, so I did not treat it as definite.\n- z02 [3.3] 'The flooding of information': 'The flood of information' is more idiomatic.\n- z04 [5.2] 'can also help better understand humans’ happiness': 'help us better understand' would be more natural.\n- z04 [1.2] 'the past research': the article is unnecessary but not clearly wrong.\n- z01: [1.2] says ice fell 'after 2015', but [3.3]/[4.1] give the record high as 2014 and say melting began 'Between 2014 and 2016'. This is roughly consistent. [3.5] 'blow surface water and ice forward' is vague (the source has the winds pushing water northward), but I did not judge it wrong.\n- z03 [1.1]/[2.1] 'star in an international kite festival' / 'The robot in the international festival': 'at' is more idiomatic, but 'in' is not clearly wrong.\n\nSources checked (the original z02 article was not located):\n- [Wilson Quarterly: The Internet hasn't so much diminished our memory as tweaked it](https://www.wilsonquarterly.com/quarterly/fall-2013-americas-schools-4-big-questions/internet-hasnt-so-much-diminished-our-memory-as-tweaked-it) (could not be fetched)\n- [BPS Research Digest: Has the internet become an external hard drive for the brain?](https://www.bps.org.uk/research-digest/has-internet-become-external-hard-drive-brain)\n- [UCSC News: Study finds that the more you Google, the more likely you are to keep Googling](https://news.ucsc.edu/2016/10/storm-memory.html)",
+          "grammar": "I checked all five passages against the page images (北京 p1–p3, 河北 p1–p3). The current text matches the printed text word for word in every passage, so there are no transcription differences. Every finding above is an error in the paper itself. Correction to my z03 'printed' field: the printed sentence is 'The information is about whether the tomatoes are ripe (成熟的) or not and whether there is any tomato hidden behind leaves.' (I accidentally added a stray 'there' when copying it).\n\nz01 (北京 C): no grammar errors found. Sentences I looked at most closely and kept:\n- [1.1] 'has dropped … over 40 years' with 'until recently … was slowly increasing': the tenses are consistent.\n- [3.3] 'The rain and snow create a layer … allowing it to grow to its 2014 record high': present tense for a general process, with a non-finite result clause. Acceptable, though 'created/protected' would be tidier.\n- [3.5] 'blow surface water and ice forward': vague (really 'northward'), but Question 28 ③ repeats 'blown forward', so it must stay.\n- [4.1] 'get the upper hand against': 'over' is more common, but 'against' is attested and not wrong.\n- [4.2] 'it projected … as it did': two different referents (model, then sea ice), but clear in context.\n- [5.1] 'which also likely play roles': correct.\n\nz02 (北京 D): 3 findings. Kept:\n- 'sounding alarms' with the internet as subject: 'X is sounding alarm bells' meaning 'X is causing concern' is established journalistic usage.\n- 'our doubtful experts': 'doubtful' here means 'having doubts', which is acceptable.\n- 'every brain … our lives … how we use it': acceptable.\n- 'too much of it': uncountable 'data', correct.\n- 'Another problem: the effortless way…': a deliberate fragment with a colon, normal journalistic style.\n- 'an outside hard drive': simplified for 'external', not a grammar error.\n- 'As is shown in a 2008 study': correct. The study is Gary Small's 2008 UCLA study.\n- Storm's quote: I confirmed it in sources.\n\nz03 (河北 C): 1 finding. Kept:\n- 'the unexpected star in an international kite festival' and 'The robot in the international festival': 'at' would be more idiomatic, but 'in' (taking part in an event) is acceptable.\n- 'drew crowds of visitors to take photos': an infinitive of purpose, acceptable.\n- [2.3] half-marathon record: confirmed. Honor's robot 'Flash' ran 50:26 at the Beijing E-Town race on 19 April 2026, beating the men's world record.\n\nz04 (河北 D): 4 findings (mind/minds is the definite one). Kept:\n- 'the past research': 'the' can be read as pointing back to sentence 1.\n- 'it doesn't tell what brings them happiness': 'tell' meaning 'reveal' with a wh-clause is acceptable, though 'tell us' is more natural.\n- 'such as seeing a friend or a favorite food': parallel, since 'seeing' governs both.\n- 'to help tell if': the understood subject is 'the scientists'.\n\nz05 (河北 任务型阅读): 2 findings (days about the trip is definite). Kept:\n- 'the activities in the holiday': British 'in the holiday(s)' is acceptable under the British-usage rule ('during' would be neutral).\n- 'should first think … Then they will count': acceptable modal shift.\n- 'how many clothes': common and accepted.\n- 'practice' as a verb: American, consistent with 'math'.\n- 'the questions from adults': acceptable.\n\nI found the probable z02 source thread (the 2011 Sparrow/Wegner 'Google effect' study and Storm's quote) and confirmed the robot half-marathon fact by web search. I could not fetch an original article for z01 or z02 to compare 'forward' or 'flooding' against.",
+          "logic": "I checked transcription for all five passages. Every paragraph of z01–z05 matches the Word-file dump character for character (checked by script), and the page images show the same paragraph breaks and start/end points. No question text is mixed in, and nothing is missing at the start or end. So every finding above is an error in the paper itself, not a transcription error.\n\nz01 (北京 C, Antarctic sea ice): no errors found. The source is the 2026 PNAS paper by Wilson et al. (Stanford) plus the 2026 Gothenburg study, which is where 'two new studies' comes from.\n- Checked: the 2014 record high (correct: the maximum was in Sept 2014), 'after 2015 … fell … to several record lows' and 'Between 2014 and 2016' (consistent with the paper's 2014–2016 rise in upwelling), 'an area as large as Greenland' (also used in coverage of the Southampton study), and the Arctic figure of about 40% over 40 years (plausible for September extent).\n- Kept: 'These winds blow surface water and ice forward'. The source says the water is pushed away from Antarctica (northward). 'forward' is a vague simplification, not a false statement, and question 28 reuses it.\n- Kept: 'get the upper hand against'. 'over' is more usual, but 'against' is attested. Also kept 'saltiness' (simplified 'salinity') and 'projected … as it did in the real world'.\n\nz02 (北京 D, internet and memory): besides the three findings, I looked closely at four places and kept them.\n- 'it is also sounding alarms': journalistic use with a thing as subject is acceptable.\n- 'our doubtful experts': 'doubtful' can mean 'sceptical'.\n- 'an outside hard drive': the standard term is 'external hard drive' (the Scientific American headline). I did not flag it because it is a deliberate simplification of vocabulary, not a grammar error. Upgrade it if you want strict terminology.\n- The Storm quote: the original is 'costs associated with our increased reliance…', adapted to 'caused by … dependence'. That is fine, and it is consistent with question 32 ('Positive but still uncertain').\n- Facts: the 2008 UCLA study (older adults, internet search vs reading) and 'two Harvard psychologists' (Wegner and Ward) are consistent with the record.\n\nz03 (河北 C, robots): no errors found.\n- 'the unexpected star in an international kite festival' / 'The robot in the international festival': 'at' would be more idiomatic, but 'in' (a participant in a festival) is acceptable and is used consistently, including in question 63. Not flagged.\n- Facts: 'broke the men's record for the half-marathon' fits the April 2026 Beijing E-Town robot half marathon, where the winning time was faster than the human world record. 'came close to the men's 100-meter world record' was true before the exam; the August 2026 robot runs that beat 9.58 s came later. Question 64 depends on the difference between 'broke' and 'came close to'.\n- Kept as fine: 'whether there is any tomato hidden behind leaves' and 'drew crowds of visitors to take photos'.\n\nz04 (河北 D, animal joy): two low findings above.\n- Considered but did not flag: 'Scientists have studied animals' feelings for hundreds of years.' The Science News source (Amber Dance, 2026) speaks of 'decades of research into negative ones'. Darwin's 1872 book is about 150 years ago, so 'hundreds of years' is loose but not provably false. If you want it strictly accurate, 'for more than a hundred years' would do.\n- Kept: 'the past research', 'it doesn't tell what brings them happiness', 'can also help better understand humans' happiness' and 'a favorite food'. All are grammatical.\n\nz05 (河北 任务型, packing): one finding above ('the days about the trip').\n- Kept: 'activities in the holiday' (British 'in the holiday(s)' is acceptable), 'how many clothes', 'swimming clothes', 'the mother' (the mother of the family in the example) and the closing 'Therefore …' sentence (the logic holds, since packing is housework).\n\nI made no file changes. My attempts to open the source pages directly failed (the hosts could not be reached from here), so the source checks above are based on search-result summaries only."
+        }
+      },
+      {
+        "g": [
+          "z06",
+          "z07",
+          "z41",
+          "z08",
+          "z09",
+          "z10"
+        ],
+        "notes": {
+          "fidelity": "Method. For each passage I read the whole file including the header, opened every page image listed in it, and read the full Word-text dump of the paper. I compared word by word against the image and also ran a script that diffs each paragraph against its line in the dump. The diff was exact at character level, including curly quotes and apostrophes, dashes, hyphens, digits and capitals. I checked the Chinese glosses against the images, and checked the text for stray non-ASCII characters, double spaces and spaces before punctuation (none found). The header lists no intentional corrections for any of the six passages, so none needed verifying.\n\nz06 (Shanxi): the original has 4 paragraphs and I compared all 4. The Word file contains only this passage (page 1 of 1). Text, paragraph breaks, start and end, and glosses (建筑)(设计)(卢浮宫) are identical to the page: no transcription differences. Paper errors reported: \"designed in 1989\" (the pyramid was designed in 1983–84 and completed in 1989) and \"the gifts\". Kept: \"known as the master of modern architecture\" (a common epithet); \"let light design the buildings\"; \"He left over 50 designs during his life\"; \"When he was 38\" (I. M. Pei & Associates was founded in 1955, so this is correct); \"At the age of ten … Shanghai\", \"1935\", \"1983 Pritzker\" and \"2019 at 102\" all fact-check.\n\nz07 (Liaoning D): the original has 5 paragraphs and I compared all 5, from \"Last summer…\" to \"…on the earth.\" No question text is mixed in. Fully identical to the page, including 100,000, 11,000, 20, 61, 6,212, 200, the em dashes around \"even after the age of 61\", and glosses (中国西南野生生物种质资源库)(种子)(基因)(庄稼). The underline on \"a race against time\" is formatting only. No errors found. Sentences I examined closely and kept: \"Such seed banks are not only found in China.\" (acceptable placement of \"not only\" without \"but also\"); \"we had a deeper respect for the scientists who have spent their lives…\" (the present perfect is fine because the scientists are still working); \"made hard journeys to fill this bank\"; \"a shared hope in the far future\".\n\nz41 (Yunnan D): the original has 5 paragraphs and I compared all 5. Breaks, start and end are correct, and the illustration (straw checkerboards / solar panels / drone) is correctly not extracted. Glosses (荒漠化)(公顷)(阻沙系统)(部长) are correct. I found SIX transcription differences from the page, all reported as high: there/their, 3,064/3,046, millions/million, kind/kinds, 2014/2024, overcame/overcome. They look like planted canaries, and all six must be reverted to the printed text. Paper error reported: \"Until November 2024, China built\" → \"By November 2024, China had built\". Considered and kept, so not reported: \"make bigger efforts\" (the standard collocation is \"make greater efforts\", but \"bigger\" is not ungrammatical; optional), \"an empty land\", and the period outside the quote after “very important partner” (British style).\n\nz08 (Zhejiang C): the original has 5 paragraphs and I compared all 5. Identical to the page and the dump, including 22-year-old, 12, 2018, 13, and gloss (术语). Low-priority paper issues reported: \"are needed in this place\" and inconsistent \"program\" vs \"programme\". Kept: \"were totally a new way of thinking\" and \"which is simple, cheap and works well\" (both inside a spoken quotation, so informal spoken style is acceptable); \"it's especially difficult\" (she is presumably still studying); \"in hospital\" (British); \"her old town\".\n\nz09 (Zhejiang D): the original has 4 paragraphs and I compared all 4. Identical to the page, including \"1872\" without a comma (the question quotes \"1872\" the same way), \"iC-R\", and gloss (碳纤维). The illustration labels are not extracted, which is correct; note that the picture itself misprints \"helment\", which does not affect the text. Paper errors reported: \"light … hit\" → \"hits\" (definite), \"Bluetooth connected\" (needs a hyphen) and \"carbon-fibre\" as a noun (low). Kept: \"easy to control through voice\", \"like when a motorcycle gets too close\", \"The riders don't need…\".\n\nz10 (Shandong C): the original has 5 paragraphs and I compared all 5. Identical to the page, including the single quotes ‘classmates’, 87, four, \"three years\", and glosses (有益的)(共情). The underlined \"them\" is formatting only. Paper error reported: \"says director, Penny Livingston\" (the comma is wrong). Kept: \"Ms. Beryl\" (the usual way US preschools say Ms. + first name), \"The pair have\" (British notional agreement), \"We kind of get stuck…\" (spoken), \"The programmes work and even the kids' parents benefit.\"\n\nSources: [Louvre Pyramid – Wikipedia](https://en.wikipedia.org/wiki/Louvre_Pyramid), [Louvre Pyramid – Britannica](https://www.britannica.com:443/topic/Louvre-Pyramid).",
+          "mechanics": "I read all six passages in full, sentence by sentence. I compared each one with its dump paragraph by paragraph (checked by program: every paragraph of z06, z07, z08, z09 and z10 appears word for word in the dump) and checked each against its page image.\n\nz41: the text has six word or number changes that are not in the printed paper (their→there, 3,046→3,064, million→millions, kinds→kind, 2024→2014, overcome→overcame). The page image p2 and the dump agree with each other. All six are reported as high-severity transcription errors. Paragraph boundaries are correct: the passage starts with 'Desertification' and ends with '…this spirit.'\n\nz41 items I kept: 'described China as a “very important partner”.' (full stop outside the quote around a quoted fragment is acceptable logical/British style); 'an empty land' (literary but acceptable); the hyphen in 'China-Africa' (the usual form in names).\n\nz06: transcription matches. Spelling, punctuation and typography are clean: 'Ieoh Ming Pei', 'Pritzker Prize', 'must-go', the dash in 'idea—let', and the quotation punctuation are all correct. Pei's dates (born 1917, abroad 1935, firm at 38 = 1955, Pritzker 1983, died 2019 aged 102) are correct. Only the fact and article items above are reported.\n\nz07: transcription matches. Nothing in my lens. I checked 6,212 / 100,000 / 11,000, the paired dashes around 'even after the age of 61', 'Mount Qomolangma', the semicolon in ¶3 and the quotation punctuation. The serial comma is used inconsistently ('patience, courage and love' versus 'Norway, the UK, and …' and 'life, hope, and …'), but both styles are acceptable, so I did not report it.\n\nz08: transcription matches. Kept: predicative 'well-known' (dictionaries hyphenate it); 'realized' (-ize is valid Oxford British spelling); 'middle school students' (an established open compound); the 'like yin and yang' commas. Possible grammar items for the grammar lens, not reported by me: 'she realized good doctors are needed in this place' (tense, and 'this' against 'that place'); 'simple, cheap and works well' (not parallel, but inside a spoken quote).\n\nz09: transcription matches. Kept: 'the US'; 'colour' (consistent British spelling); 'iC-R' (consistent). The missing comma in 'ahead like the cameras in cars and they are easy to control' is optional, so I did not report it.\n\nz10: transcription matches. Kept: 'Ms. Beryl' (first name with Ms. is a legitimate way to address a preschool adult); '87' alongside 'four' (follows the rule of spelling out one to nine); 'The pair have' (British plural); the nested ‘classmates’ inside double quotes (correct); 'The programmes work and even the kids’ parents benefit' (short clauses, so the comma is optional).\n\nNothing was modified.",
+          "grammar": "I read all 6 files completely, including the headers, and compared each with its page image. I also ran a script that diffs every paragraph against the full-paper dump.\n\nTRANSCRIPTION: z06, z07, z08, z09 and z10 match the Word dump exactly, paragraph for paragraph; boundaries and paragraph breaks are correct. z41 has 6 differences from the Word file and the page image (likely canaries): there/their, 3,064/3,046, millions/million, kind/kinds, 2014/2024, overcame/overcome. All 6 are reported above. Beyond those, it also has real errors in the paper itself (Until…built, an empty land, influenced).\n\nz07 (Liaoning, seed bank): NO errors found. Sentences I looked at most closely, and why I kept them:\n- 'We learned that many scientists made hard journeys': the simple past is acceptable after 'learned'.\n- 'led more than 20 trips … —even after the age of 61— and got badly hurt … during her work': Li Heng is female, so 'her' is correct.\n- '“A seed is hope,” one scientist shared': intransitive 'share' as a reporting verb is accepted current usage.\n- 'Such seed banks are not only found in China': idiomatic for 'not found only in China'.\n- 'turn these treasures into a shared hope in the far future': 'for the far future' would be more natural, but 'a hope in the far future' can be read coherently, so I did not report it.\n- 'the scientists who have spent their lives on…' after 'we had': the present perfect suits lifelong work that is still going on.\n\nz10: only the 'director, Penny Livingston' comma.\n- I kept 'Ms. Beryl' (normal for addressing a preschool adult).\n- I kept 'The pair have' (British collective plural).\n- I kept 'the chance … pleases parents' (agreement is correct).\n- I kept 'because they move more' (context makes the referent clear).\n- I kept 'We kind of get stuck…' (informal speech inside a quotation).\n\nz41: I kept these but noted them:\n- 'For many years, Chinese scientists have had rich experience' is awkward but grammatical.\n- 'make bigger efforts' ('greater' is more idiomatic, but it is not an error).\n- 'shared the technologies' (context gives the antecedent).\n- 'a “very important partner”.' (period outside the quotation marks is acceptable).\n\nz06: facts checked, all correct apart from 'designed in 1989': born Guangzhou 1917; moved to Shanghai 1927 at age 10; went abroad 1935; founded his firm in New York in 1955 at age 38; Pritzker 1983; Suzhou Museum 2006; died 2019 at 102.\n- I kept 'It showed his idea—let light design the buildings' (an acceptable paraphrase of 让光线来做设计).\n- I kept 'He left over 50 designs during his life'.\n\nz09: I considered but did not report:\n- 'the helmet shows different ways to get there on the inside of the visor': a mild misplaced modifier, but the meaning is clear.\n- 'like when a motorcycle gets too close' (informal but standard).\n- 'The riders don’t need to…'.\n\nz08: I kept 'Ayi at first was unnoticed', 'surprised all', 'her old town', 'mutton soup cured illness faster than seeing doctors in hospital' (British 'in hospital') and 'more than 13 volunteer activities'.\n\nSource used for the z06 fact check: https://www.britannica.com/topic/Louvre-Pyramid and https://en.wikipedia.org/wiki/Louvre_Pyramid (designed 1983–84, completed 1989).",
+          "logic": "I compared every passage word by word against its paper dump (script diff) and checked each against its page image. z06, z07, z08, z09 and z10 match the printed paper exactly, with the same paragraph breaks and start/end points. z41 has six transcription errors that are not on the printed page (there/their, 3,064/3,046, millions/million, kind/kinds, 2014/2024, overcame/overcome); they look like planted test errors, and all six are reported above. Facts I checked on the web: I. M. Pei born 1917 in Guangzhou, moved to Shanghai 1927, went abroad 1935, firm founded 1955 (age 38), Pritzker 1983, Suzhou Museum opened 2006, died 2019 aged 102 — all correct; the only factual slip is the Louvre pyramid being 'designed' in 1989 (designed 1983–84, completed 1989). Taklimakan belt 3,046 km, Nov 2024: correct. Mauritania figures of 45 trained and 120 jobs match Xinhua (June 2025). Guo Yongjie's 6,212 m at Qomolangma (2021): correct, and People's Daily calls it the highest-altitude plant seeds collected and stored worldwide, so I kept 'highest place ever'. Seed bank of 'nearly 100,000 collections, over 11,000 kinds' agrees with 2021–2024 reports (87,863 to 90,000+ collections, 10,900+ species). Helmet figure 1,872 is NHTSA's 2017 estimate; I kept 'Last year' because the passage gives no year and question 12 quotes '1872'. z07 (Liaoning D): I found no errors. The sentences I looked at most closely and kept: 'Li Heng … even after the age of 61' (Li Heng, born 1929, led the 1990 Dulongjiang expedition at 61); 'Such seed banks are not only found in China' (acceptable placement of 'not only'); 'a shared hope in the far future' (unusual but not wrong); 'Therefore, collecting valuable seeds is a race against time' (the connector is logical); '“A seed is hope,” one scientist shared' (accepted modern reporting verb). Other sentences I kept on purpose: z41 'For many years, Chinese scientists have had rich experience' and 'make bigger efforts' (grammatical); z08 'her old town' (= her former town, legitimate), 'were totally a new way of thinking' (informal speech inside a quotation), 'more than 13 volunteer activities' (odd but possible); z10 'Ms. Beryl' (preschool title + first name), 'benefit from staying with the children because they move more' (pronoun slightly ambiguous but both readings make sense), 'The pair have' (British). The z09 helmet name 'iC-R' is a real product (Intelligent Cranium). Spelling within each passage is consistent except z08 programme/program (reported)."
+        }
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "fidelity:Gz01",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a166f07bf9e59668f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942311879,
+      "queuedAt": 1791942311838,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "How I checked: for all five passages I opened every page im…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942501870,
+      "tokens": 107305,
+      "toolCalls": 25,
+      "durationMs": 189989,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z05\",\"loc\":\"[2.4]\",\"current\":\"count the days about the trip\",\"proposed\":\"count the days of the trip\",\"category\":\"word-choice\",\"printed\":\"Then they will count the days about the trip and how many things they will take.\",\"reason\":\"This is an error in the paper itself, not a transcription error: the text matches the page and the dump exactly. 'The days about the trip' is the wron…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "mechanics:Gz01",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a6dcffc24da1dcc1e",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942311880,
+      "queuedAt": 1791942311839,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared all 5 passages character by character with the W…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942495131,
+      "tokens": 105522,
+      "toolCalls": 25,
+      "durationMs": 182632,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z02\",\"loc\":\"[3.2]\",\"current\":\"short-and long-term memories\",\"proposed\":\"short- and long-term memories\",\"category\":\"typography\",\"printed\":\"short-and long-term memories\",\"reason\":\"A suspended (hanging) hyphen must be followed by a space: 'short- and long-term'. As printed, 'short-and' looks like one hyphenated word, 'short-and', which does not exist. This is an error in the pape…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "grammar:Gz01",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a2ffe755b00cb6108",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942496716,
+      "queuedAt": 1791942311839,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked all five passages against the page images (北京 p…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942727897,
+      "tokens": 105556,
+      "toolCalls": 21,
+      "durationMs": 231179,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z04\",\"loc\":\"[2.5]\",\"current\":\"guessing animals’ mind\",\"proposed\":\"guessing animals’ minds\",\"category\":\"grammar\",\"printed\":\"The scientists want to make sure that the final result is not from just guessing animals’ mind, but from scientific research.\",\"reason\":\"Number agreement: the possessor is plural (many animals) and each has its own mind, so the noun must be plural, 'animal…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "logic:Gz01",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a7a928760ba408759",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942503255,
+      "queuedAt": 1791942311839,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked transcription for all five passages. Every paragr…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942837855,
+      "tokens": 128269,
+      "toolCalls": 36,
+      "durationMs": 334600,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z05\",\"loc\":\"[2.4]\",\"current\":\"count the days about the trip\",\"proposed\":\"count the days of the trip\",\"category\":\"word-choice\",\"printed\":\"Then they will count the days about the trip and how many things they will take.\",\"reason\":\"Wrong preposition. You count the days of a trip; 'the days about the trip' makes no sense, and any English teacher would mark it wrong. The verbatim m…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "fidelity:Gz06",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a64340c5c89293732",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942729053,
+      "queuedAt": 1791942311923,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Method. For each passage I read the whole file including th…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942932104,
+      "tokens": 105787,
+      "toolCalls": 24,
+      "durationMs": 203050,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z41\",\"loc\":\"[1.3]\",\"current\":\"turn there sandy areas\",\"proposed\":\"turn their sandy areas\",\"category\":\"transcription\",\"printed\":\"Now they are working to help African countries turn their sandy areas into green ones.\",\"reason\":\"The page image and the Word text both print the possessive \\\"their\\\". \\\"there\\\" is a transcription error and is also ungrammatical.\",\"severity\":\"high\"},{…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "mechanics:Gz06",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a16a2d4bddd56c0fa",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942838977,
+      "queuedAt": 1791942311924,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all six passages in full, sentence by sentence. I co…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943013302,
+      "tokens": 99533,
+      "toolCalls": 22,
+      "durationMs": 174324,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z41\",\"loc\":\"[1.3]\",\"current\":\"turn there sandy areas\",\"proposed\":\"turn their sandy areas\",\"category\":\"transcription\",\"printed\":\"countries turn their sandy areas into green ones.\",\"reason\":\"Wrong homophone (there for possessive their). The page image and the dump both read 'their', so the current text has drifted from the paper.\",\"severity\":\"high\"},{\"pid\":\"z41\",\"loc\":\"[2.3]\",\"c…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "grammar:Gz06",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a772f5a9e77432e81",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942934647,
+      "queuedAt": 1791942311924,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all 6 files completely, including the headers, and c…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943226973,
+      "tokens": 110758,
+      "toolCalls": 19,
+      "durationMs": 292325,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z41\",\"loc\":\"[1.3]\",\"current\":\"turn there sandy areas\",\"proposed\":\"turn their sandy areas\",\"category\":\"transcription\",\"printed\":\"turn their sandy areas into green ones\",\"reason\":\"The text differs from the Word file and the page image. 'there' is an adverb; the sentence needs the possessive determiner 'their'.\",\"severity\":\"high\"},{\"pid\":\"z41\",\"loc\":\"[2.3]\",\"current\":\"It is 3,064…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "logic:Gz06",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "abb9f3a5030cde7ab",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943015791,
+      "queuedAt": 1791942311924,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared every passage word by word against its paper dum…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943311093,
+      "tokens": 126178,
+      "toolCalls": 33,
+      "durationMs": 295302,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z41\",\"loc\":\"[1.3]\",\"current\":\"turn there sandy areas\",\"proposed\":\"turn their sandy areas\",\"category\":\"transcription\",\"printed\":\"countries turn their sandy areas into green ones.\",\"reason\":\"The printed page and the dump both have 'their'. 'there' is a transcription error, and it also makes the sentence ungrammatical.\",\"severity\":\"high\"},{\"pid\":\"z41\",\"loc\":\"[2.3]\",\"current\":\"It …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "verify-acc:Gz01",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a616d1b9c66d8faa4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943229235,
+      "queuedAt": 1791942839028,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943354520,
+      "tokens": 92160,
+      "toolCalls": 16,
+      "durationMs": 125283,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"Then they will count the days about the trip and how many things they will take.\",\"why\":\"The page (Hebei p3) and the dump match the current text, so this is an error in the paper. 'the days about the trip' uses the wrong preposition; 'the days of the trip' is correct and minimal.\"},{\"index\":1,\"verdict\":\"accept\",\"printed\":\"we are weakening our a…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "verify-strict:Gz01",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a975a7877b6ccc1a8",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943316087,
+      "queuedAt": 1791942839028,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943395971,
+      "tokens": 82712,
+      "toolCalls": 10,
+      "durationMs": 79883,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"Then they will count the days about the trip and how many things they will take.\",\"why\":\"The page matches the current text, so this error is in the paper. 'The days about the trip' uses the wrong preposition, and a teacher would mark it. 'The days of the trip' is the minimal idiomatic fix.\"},{\"index\":1,\"verdict\":\"accept\",\"printed\":\"we are weake…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "verify-acc:Gz06",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a41c5328304a6921b",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943356700,
+      "queuedAt": 1791943316138,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943554614,
+      "tokens": 102861,
+      "toolCalls": 17,
+      "durationMs": 197913,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"Transcription error. The page image and the dump both print 'their'. 'there' is wrong.\",\"printed\":\"Now they are working to help African countries turn their sandy areas into green ones.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"Transposed digits. The image and the dump both print 3,046, which matches the real length of the Taklimakan belt.\",\"printed\":…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "verify-strict:Gz06",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a7b6718c36c5fe8af",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943398117,
+      "queuedAt": 1791943316139,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943559360,
+      "tokens": 92911,
+      "toolCalls": 10,
+      "durationMs": 161241,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"Transcription error, confirmed in both the page image and the dump. \\\"there\\\" is also ungrammatical.\",\"printed\":\"turn their sandy areas into green ones\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"Transposed digits. The page image and the dump both print 3,046. Same fix as #15.\",\"printed\":\"It is 3,046 km long!\"},{\"index\":2,\"verdict\":\"accept\",\"why\":\"Trans…"
+    }
+  ],
+  "totalTokens": 1259552,
+  "totalToolCalls": 258
+}

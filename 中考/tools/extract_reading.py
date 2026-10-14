@@ -162,15 +162,23 @@ def main():
     if errs:
         sys.exit('提取有问题，未输出：\n  ' + '\n  '.join(errs))
     seal_f = OUT / '封版.json'
-    fp = {f"{r['id']} {r['paper']} {r['passage']}": hashlib.sha256('\n'.join(r['paras']).encode()).hexdigest()[:16] for r in res}
+    # 按篇封版（用户 2026-10-14：先把前 20 篇做出来）：--reseal 后面列出编号只登记这些篇，不列就登记全部；
+    # 已封版的篇目文字一变就报错；未封版的篇目照常输出，但还不能进入翻译标注（split_sents 只输出已封版的篇目给下游时会核对）
+    fp = {f"{r['paper']} {r['passage']}": hashlib.sha256('\n'.join(r['paras']).encode()).hexdigest()[:16] for r in res}
+    old = json.loads(seal_f.read_text('utf-8'))['指纹'] if seal_f.exists() else {}
     if '--reseal' in sys.argv:
-        seal_f.write_text(json.dumps({'说明': '中考阅读 40 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。', '指纹': fp},
+        ids = [a for a in sys.argv[sys.argv.index('--reseal') + 1:] if re.fullmatch(r'z\d\d', a)]
+        tags = {f"{r['paper']} {r['passage']}" for r in res if not ids or r['id'] in ids}
+        old.update({t: fp[t] for t in tags})
+        seal_f.write_text(json.dumps({'说明': '中考阅读精校定稿的文字指纹（按篇登记）。文字一改就必须重新精校、重新封版（--reseal 编号…）。', '指纹': old},
                                      ensure_ascii=False, indent=1), 'utf-8')
-    elif seal_f.exists():
-        old = json.loads(seal_f.read_text('utf-8'))['指纹']
-        diff = sorted(set(old.items()) ^ set(fp.items()))
+        print(f'封版 {len(tags)} 篇，已封版共 {len(old)} 篇')
+    else:
+        diff = sorted(t for t in old if old[t] != fp.get(t))
         if diff:
-            sys.exit('文字与封版不一致（改动未经精校）：\n  ' + '\n  '.join(sorted({k for k, _ in diff})) + '\n确认已重新精校后，用 --reseal 重新封版。')
+            sys.exit('文字与封版不一致（改动未经精校）：\n  ' + '\n  '.join(diff) + '\n确认已重新精校后，用 --reseal 编号… 重新封版。')
+    for r in res:
+        r['sealed'] = f"{r['paper']} {r['passage']}" in old and '--reseal' not in sys.argv or f"{r['paper']} {r['passage']}" in (json.loads(seal_f.read_text('utf-8'))['指纹'] if seal_f.exists() else {})
     (OUT / 'passages.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
     for old in OUT.glob('z*.txt'):
         old.unlink()
