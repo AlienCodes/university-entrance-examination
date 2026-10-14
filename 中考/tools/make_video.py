@@ -58,10 +58,10 @@ sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff
 .v b{margin-right:10px}
 .v span{color:#3c4642}
 .zh,.v .g{text-spacing-trim:space-all}
-.cI{position:relative}.cI::before,.cI::after{content:'';position:absolute;left:50%;width:.23em;margin-left:-.115em;height:.075em;background:currentColor;border-radius:.03em}
-.cI::before{top:.3em}.cI::after{top:.945em}
-.en .w .cI::before,.en .ph .cI::before,.en .w .cI::after,.en .ph .cI::after,.v b .cI::before,.v b .cI::after{width:.29em;margin-left:-.145em;height:.13em}
-.en .w .cI::after,.en .ph .cI::after,.v b .cI::after{top:.885em}
+x-i{position:relative;margin:0 .03em}x-i::before,x-i::after{content:'';position:absolute;left:50%;width:.2em;margin-left:-.1em;height:.08em;background:currentColor;border-radius:.03em}
+x-i::before{top:.295em}x-i::after{top:.945em}
+.en .w x-i::before,.en .ph x-i::before,.en .w x-i::after,.en .ph x-i::after,.v b x-i::before,.v b x-i::after{width:.25em;margin-left:-.125em;height:.135em}
+.en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.29em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.89em}
 sup.sd{margin-right:.2em}
 .pr{margin-right:-.5em}.pl{margin-left:-.5em}
 .cont{color:#9aa39e;font-weight:400}
@@ -90,8 +90,11 @@ def esc(s):
 
 def cap_i(h):
     """英文大写 I 加上下衬线（z06 画面核查：圆体 Nunito 的大写 I 与小写 l 一模一样，人名 Ieoh 读成 leoh；字体没有带衬线的替换字形，
-    用 .cI 的 ::before/::after 画两道短横，位置按 Nunito 实测：常规体竖笔宽 0.085 字、顶 0.30 字、底 1.02 字，粗体竖笔宽 0.155 字）。h 是已转义的 HTML，标签里的字不动。"""
-    return re.sub(r'(<[^>]*>)|I', lambda m: m.group(1) or '<span class="cI">I</span>', h)
+    用 x-i 的 ::before/::after 画两道短横，位置按 Nunito 实测：常规体竖笔宽 0.085 字、顶 0.30 字、底 1.02 字，粗体竖笔宽 0.155 字、顶 0.295、底 1.015；
+    短横比竖笔每边宽约 0.05 字、底横盖住竖笔圆头，I 左右各留 0.03 字，不碰相邻字母和徽章。
+    用自定义元素 x-i 而不用 span：词汇栏的 .v span 样式（中文字体、灰色）会套到 span 上，第 1 批第三次画面核查发现词条里的 I 变成灰色细体、像“‡”）。
+    h 是已转义的 HTML，标签里的字不动。"""
+    return re.sub(r'(<[^>]*>)|I', lambda m: m.group(1) or '<x-i>I</x-i>', h)
 
 
 def nobr(h):

@@ -44,7 +44,15 @@ CHECK = r"""([minFs, minVs]) => {
       if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
         out.push(`徽章贴破折号：${name}徽章 ${s.textContent} 与「${y.c}」只隔 ${(y.l - s.getBoundingClientRect().right).toFixed(1)} 像素`); });
     // 大写 I 只查圆体（思源黑体的 I 比 l 矮，分得清）
-    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('.cI') && getComputedStyle(x.el).fontFamily.startsWith('Nunito')) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }
+    // 加了衬线的大写 I：颜色、字体、粗细必须与所在的词一致（第三次画面核查：词条里的 I 被 .v span 样式套成灰色细体），短横不能碰相邻字母和徽章（“AI”粘连）
+    L.forEach(ln => ln.forEach((x, j) => { const e = x.el.closest('x-i'); if (!e) return;
+      const a = getComputedStyle(e), b = getComputedStyle(e.parentElement), bar = parseFloat(getComputedStyle(e, '::after').width), r = e.getBoundingClientRect(), c = (r.left + r.right) / 2;
+      if (a.color !== b.color || a.fontFamily !== b.fontFamily || a.fontWeight !== b.fontWeight || a.fontSize !== b.fontSize)
+        out.push(`衬线I：${name}「${txt(ln).slice(Math.max(0, j - 4), j + 5)}」的 I 与所在的词样式不同（${a.color} ${a.fontWeight} / ${b.color} ${b.fontWeight}）`);
+      const p = ln[j - 1], n = ln[j + 1], nr = n && (n.el.closest('sup') || n.el).getBoundingClientRect();
+      if ((p && c - bar / 2 < p.r + 1) || (n && c + bar / 2 > (n.el.closest('sup') ? nr.left : n.l) - 1))
+        out.push(`衬线I：${name}「${txt(ln).slice(Math.max(0, j - 4), j + 5)}」的 I 短横碰到相邻的字`); }));
+    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && getComputedStyle(x.el).fontFamily.startsWith('Nunito')) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }
     L.forEach((ln, i) => {
       const f = ln[0];
       const want = ZO.includes(f.c) && name !== '英文' ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形，不按全角半字计
