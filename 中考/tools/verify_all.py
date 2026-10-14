@@ -51,7 +51,7 @@ def main():
         if sw:
             res.append(switch_check(mp4, tm['sentences'], sw))
         res.append(buzz_check(mp4, tm['sentences']))
-        res.insert(0, ('文件名：年份 省市 阅读X 题目', bool(re.fullmatch(r'20\d\d年 \S+ \S*阅读\S* \S.*\.mp4', mp4.name)), mp4.name))
+        res.insert(0, ('文件名：年份 省市 篇目 题目', bool(re.fullmatch(r'20\d\d年 \S+ (?:\S*阅读\S*|七选五) \S.*\.mp4', mp4.name)), mp4.name))
         good = all(r[1] for r in res)
         allok &= good
         print(('✅ ' if good else '❌ ') + mp4.name, flush=True)

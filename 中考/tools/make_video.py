@@ -277,6 +277,8 @@ def main():
 
     data = json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))
     p = next(x for x in data['passages'] if x['id'] == a.pid)
+    if not p.get('reviewed'):                     # 踩坑 14：复核通过前不生成视频
+        raise SystemExit(f'{a.pid} 的翻译与标注还没有通过复核（build_vocab.py --reseal {a.pid}），不生成视频')
     tm = json.loads((Path(a.audio_root) / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
@@ -379,7 +381,7 @@ def main():
         res.append(switch_check(out / name, times, sw))
     res.append(buzz_check(out / name, times))
     fails = [f'{n}：{d}' for n, c, d in res if not c]
-    if not re.fullmatch(r'20\d\d年 \S+ \S*阅读\S* \S.*\.mp4', name) or name != video_name(p):
+    if not re.fullmatch(r'20\d\d年 \S+ (?:\S*阅读\S*|七选五) \S.*\.mp4', name) or name != video_name(p):
         fails.append(f'文件名：{name}')
     if fails:
         (out / name).unlink()
