@@ -38,9 +38,13 @@ def norm(s):
 def pages(pdf, paras):
     """该篇所在的页：第一段开头和最后一段结尾所在的页之间（含）。"""
     T = [norm(t) for t in page_texts(pdf)]
-    head, tail = norm(' '.join(paras[0].split()[:8])), norm(' '.join(paras[-1].split()[-8:]))
-    a = next((i for i, t in enumerate(T) if head[:40] in t), 0)
-    b = next((i for i in range(len(T) - 1, -1, -1) if tail[-40:] in T[i]), len(T) - 1)
+    T = T[:-1] if T and not T[-1] else T
+    # 订正过的句子在原件里找不到：开头取前几个 6 词窗口、结尾取后几个 6 词窗口，用第一个能在原件里找到的
+    ws, we = paras[0].split(), paras[-1].split()
+    heads = [norm(' '.join(ws[i:i + 6])) for i in range(0, max(1, len(ws) - 5), 3)]
+    tails = [norm(' '.join(we[max(0, len(we) - 6 - i):len(we) - i])) for i in range(0, max(1, len(we) - 5), 3)]
+    a = next((i for h in heads for i, t in enumerate(T) if h in t), 0)
+    b = next((i for x in tails for i in range(len(T) - 1, -1, -1) if x in T[i]), len(T) - 1)
     return list(range(a + 1, max(a, b) + 2))
 
 
