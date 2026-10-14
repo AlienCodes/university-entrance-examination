@@ -1,5 +1,6 @@
 """For each finished 中考 video: extract screens, write reference file, check screen count = 1 + sentences + extra screens of splits.
-/opt/ttsenv/bin/python 中考/tools/画面核查/prep.py <frames dir> t01 t02 ..."""
+/opt/ttsenv/bin/python 中考/tools/画面核查/prep.py <frames dir> t01 t02 ... [--ref-only]
+注意：每次运行都会重写 ref/ 下全部参考文件，只给本次列出的篇目追加屏幕结构说明，所以要一次列出本批全部篇目；--ref-only 只重写参考文件、按已截好的屏计数，不重新截屏。"""
 import json, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
@@ -12,14 +13,15 @@ REF = S / 'ref'
 REF.mkdir(parents=True, exist_ok=True)
 subprocess.run(['/opt/ttsenv/bin/python', str(R / '中考' / 'tools' / 'gen_review.py'), str(REF)], check=True, capture_output=True)
 bad = []
-for pid in sys.argv[2:]:
+ONLY = '--ref-only' in sys.argv
+for pid in [a for a in sys.argv[2:] if a != '--ref-only']:
     p = P[pid]
     mp4 = R / '中考' / '最终视频' / M.video_name(p)
     sents = [s for pa in p['paras'] for s in pa]
     splits = M.SPLIT.get(pid, {})
     ats = {k: (c['at'] if isinstance(c['at'], list) else [c['at']]) for k, c in splits.items()}
     want = 1 + len(sents) + sum(len(a) for a in ats.values())
-    got = int(subprocess.run(['/opt/ttsenv/bin/python', str(HERE / 'extract.py'), str(mp4), str(S / pid)], check=True, capture_output=True, text=True).stdout)
+    got = len(list((S / pid).glob('screen*.png'))) if ONLY else int(subprocess.run(['/opt/ttsenv/bin/python', str(HERE / 'extract.py'), str(mp4), str(S / pid)], check=True, capture_output=True, text=True).stdout)
     ref = REF / f'{pid}.txt'
     extra = [f'\n# 视频画面结构：第 1 屏是片头（标题、试卷、篇目、体裁、词数），之后每句一屏，共 {len(sents)} 句；长句拆成多屏；预期屏数 {want}。']
     for k, a in sorted(ats.items(), key=lambda x: int(x[0])):
