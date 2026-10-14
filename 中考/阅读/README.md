@@ -19,7 +19,7 @@
 | z12 | 2026 | 济南 | 阅读C | 328 | 6 |  | Do you like DIY? Have you ever tried magazine collaging … |
 | z13 | 2026 | 济南 | 阅读D | 324 | 6 |  | On a hot summer afternoon, cities and towns are usually … |
 | z14 | 2026 | 烟台 | 阅读C | 298 | 5 |  | Minqin, lying in the city of Wuwei in Gansu, is sandwiched … |
-| z15 | 2026 | 烟台 | 阅读D | 282 | 7 |  | Recently, researchers have discovered a new bacterium (细菌) … |
+| z15 | 2026 | 烟台 | 阅读D | 283 | 7 |  | Recently, researchers have discovered a new bacterium (细菌) … |
 | z16 | 2026 | 河南 | 阅读D | 285 | 6 | 1 | Did you notice how nature sometimes repeats itself? … |
 | z17 | 2026 | 湖北 | 阅读B | 274 | 5 |  | For most foreign teenagers, learning Chinese poems could be … |
 | z18 | 2026 | 湖北 | 阅读C | 293 | 5 |  | In ancient China, letters were sent by pigeons and packages … |
