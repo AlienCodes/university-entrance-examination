@@ -7,7 +7,7 @@
 - 文章数：40
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.50（最低 4.47）
-- 平均识别差异率：0.92%
+- 平均识别差异率：0.91%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -42,7 +42,7 @@
 | z29 | 4.50 | 0.00% |  |
 | z30 | 4.50 | 3.47% | qi fabao → chifabao; qi fabao → chi fa bao; wuwei → wue; xizang → shizong; qi fabao → chifa bao |
 | z31 | 4.51 | 0.00% |  |
-| z32 | 4.50 | 2.34% | natumi → notomie; orphaned → orphan; natumi → natomi; natumi → natomi; natumi → natami |
+| z32 | 4.50 | 1.87% | natumi → natomi; natumi → natomi; natumi → natomi; natumi → natami |
 | z33 | 4.51 | 0.00% |  |
 | z34 | 4.49 | 1.27% | ok → okay; dr → doctor; dr → doctor; ok → okay |
 | z35 | 4.50 | 0.00% |  |
