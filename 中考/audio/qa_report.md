@@ -54,7 +54,7 @@
 
 ## cet4_male
 
-- 文章数：31
+- 文章数：32
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.43）
 - 平均识别差异率：0.94%
@@ -92,3 +92,4 @@
 | z29 | 4.47 | 0.00% |  |
 | z30 | 4.47 | 3.09% | qi fabao → jifa bao; qi fabao → chifabao; xizang → shizong; qi fabao → chi fa bao |
 | z31 | 4.47 | 0.00% |  |
+| z32 | 4.47 | 0.93% | natumi → natomi; natumi → natomi |
