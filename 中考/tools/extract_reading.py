@@ -1,4 +1,4 @@
-"""从用户上传的 22 份中考英语试题（Word）中提取阅读文章（只要文章，不要题目），共 39 篇。
+"""从用户上传的 23 份中考英语试题（Word）中提取阅读文章（只要文章，不要题目），共 40 篇（用户：“凑个整数”）。
 
     python3 中考/tools/extract_reading.py            # 重新生成（封版后文字有变化会报错）
     python3 中考/tools/extract_reading.py --reseal   # 精校完成后封版
@@ -7,7 +7,7 @@
 输入：中考/真题/*.docx（文件里主要是阅读理解 C、D 篇，个别是 B 篇、任务型阅读、七选五）。直接读 Word 的 document.xml（没有文本框、表格、修订）。
 每份试卷有哪几篇写死在 PAPERS 里，任何一篇找不到起止都报错。文章里的插图（示意图、照片）只是配图，不是文字，视频不用。
 排序：从新到旧；2026 年按省级行政区划代码（北京、河北、山西、辽宁、浙江、山东、河南、湖北、湖南、广东、广西、重庆、四川、云南、陕西、宁夏），
-同一省先省卷后市卷；同一份试卷按 B、C、D、任务型阅读、七选五。编号 z01—z39。
+同一省先省卷后市卷；同一份试卷按 B、C、D、任务型阅读、七选五。编号 z01—z40（2025 年北京 D 篇为用户补充上传，按年份排在 2025 年济南之前）。
 段首的 ①②… 段号去掉；选句填空的空格（▲、★、七选五的 21—25）按答案补全（原文订正.json，写明依据），补全后的文章才能朗读。
 输出：中考/阅读/passages.json（与专八同一格式）、每篇一个文本文件、README.md 目录。
 """
@@ -57,6 +57,7 @@ PAPERS = [
     (2026, '云南', '2026年云南省中考英语试题.docx', [('C篇', '阅读C'), ('D篇', '阅读D')]),
     (2026, '陕西', '2026年陕西省中考英语试题.docx', [('C篇', '阅读C')]),
     (2026, '宁夏', '2026年宁夏回族自治区中考英语试题.docx', [('C篇', '阅读C'), ('D篇', '阅读D')]),
+    (2025, '北京', '2025年北京市中考英语真题.docx', [(None, '阅读D')]),          # 用户 2026-10-14 补充上传（文件里只有 D 篇文章）
     (2025, '济南', '2025年山东省济南市中考英语真题.docx', [('C篇', '阅读C'), ('D篇', '阅读D'), ('七选五', '七选五')]),
     (2024, '济南', '2024年山东省济南市中考英语真题.docx', [('C篇', '阅读C'), ('D篇', '阅读D')]),
 ]
@@ -147,8 +148,8 @@ def main():
                 errs.append(f'{tag}：{len(paras)} 段、{words} 词，疑似提取异常')
             res.append({'id': f'z{len(res) + 1:02d}', 'year': year, 'region': region, 'passage': label, 'paper': f'{year}年 {region}',
                         'part': label, 'paras': paras, 'words': words, 'images': imgs, 'source': str(f.relative_to(ROOT))})
-    if len(res) != 39:
-        errs.append(f'文章总数 {len(res)} 篇，应为 39 篇')
+    if len(res) != 40:
+        errs.append(f'文章总数 {len(res)} 篇，应为 40 篇')
     tags = {f"{r['paper']} {r['passage']}" for r in res}
     if len(tags) != len(res):
         errs.append('篇目名有重复')
@@ -163,7 +164,7 @@ def main():
     seal_f = OUT / '封版.json'
     fp = {f"{r['id']} {r['paper']} {r['passage']}": hashlib.sha256('\n'.join(r['paras']).encode()).hexdigest()[:16] for r in res}
     if '--reseal' in sys.argv:
-        seal_f.write_text(json.dumps({'说明': '中考阅读 39 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。', '指纹': fp},
+        seal_f.write_text(json.dumps({'说明': '中考阅读 40 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。', '指纹': fp},
                                      ensure_ascii=False, indent=1), 'utf-8')
     elif seal_f.exists():
         old = json.loads(seal_f.read_text('utf-8'))['指纹']
@@ -179,7 +180,7 @@ def main():
         first = r['paras'][0][:60].rsplit(' ', 1)[0] + ' …'
         rows.append(f"| {r['id']} | {r['year']} | {r['region']} | {r['passage']} | {r['words']} | {len(r['paras'])} | {r['images'] or ''} | {first} |")
     (OUT / 'README.md').write_text(
-        '# 中考英语阅读（22 份试卷，共 39 篇）\n\n'
+        '# 中考英语阅读（23 份试卷，共 40 篇）\n\n'
         '用户 2026-10-13 上传；2026-10-14 要求全部做成适合初中生背单词的逐句精读视频。从新到旧，2026 年按省级行政区划代码排列，同一省先省卷后市卷。\n'
         '段首 ①②… 段号已去掉；选句填空的空格已按答案补全（`../tools/原文订正.json`）。“配图”是文章中的插图数（示意图、照片），只是配图，视频不用。\n\n'
         '| 编号 | 年份 | 地区 | 篇目 | 词数 | 段数 | 配图 | 开头 |\n|---|---|---|---|---|---|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')

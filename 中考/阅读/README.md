@@ -1,4 +1,4 @@
-# 中考英语阅读（22 份试卷，共 39 篇）
+# 中考英语阅读（23 份试卷，共 40 篇）
 
 用户 2026-10-13 上传；2026-10-14 要求全部做成适合初中生背单词的逐句精读视频。从新到旧，2026 年按省级行政区划代码排列，同一省先省卷后市卷。
 段首 ①②… 段号已去掉；选句填空的空格已按答案补全（`../tools/原文订正.json`）。“配图”是文章中的插图数（示意图、照片），只是配图，视频不用。
@@ -39,8 +39,9 @@
 | z32 | 2026 | 陕西 | 阅读C | 214 | 2 | 1 | This is a true story of a four-legged hero as well as … |
 | z33 | 2026 | 宁夏 | 阅读C | 289 | 4 | 1 | Water pollution is a serious problem around the world, and … |
 | z34 | 2026 | 宁夏 | 阅读D | 317 | 4 |  | Do you sometimes get angry? Perhaps your answer is yes. … |
-| z35 | 2025 | 济南 | 阅读C | 346 | 6 |  | Every morning, a big riverside school in the forest of … |
-| z36 | 2025 | 济南 | 阅读D | 295 | 4 |  | Construction (建筑) is one of the biggest users of energy and … |
-| z37 | 2025 | 济南 | 七选五 | 362 | 5 |  | “What do you think I should do?” asks your friend, as she … |
-| z38 | 2024 | 济南 | 阅读C | 305 | 5 |  | In many cases, you may find yourself or somebody faking … |
-| z39 | 2024 | 济南 | 阅读D | 328 | 5 |  | In the early 1900s, Austrian scientist Karl Von Frisch … |
+| z35 | 2025 | 北京 | 阅读D | 414 | 5 |  | People are talking a lot about artificial intelligence … |
+| z36 | 2025 | 济南 | 阅读C | 346 | 6 |  | Every morning, a big riverside school in the forest of … |
+| z37 | 2025 | 济南 | 阅读D | 295 | 4 |  | Construction (建筑) is one of the biggest users of energy and … |
+| z38 | 2025 | 济南 | 七选五 | 362 | 5 |  | “What do you think I should do?” asks your friend, as she … |
+| z39 | 2024 | 济南 | 阅读C | 305 | 5 |  | In many cases, you may find yourself or somebody faking … |
+| z40 | 2024 | 济南 | 阅读D | 328 | 5 |  | In the early 1900s, Austrian scientist Karl Von Frisch … |
