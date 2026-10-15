@@ -25,9 +25,9 @@ def release_order(P):
     return sorted(P, key=lambda p: (-p['year'], FIRST.index(p['region']) if p['region'] in FIRST else len(FIRST), idx[p['id']]))
 
 
-def file_name(k, p):
-    """合集下载包里的文件名：两位序号（文件管理器里按序号排）+ 年份地区中考英语 + 篇目 + 题目。"""
-    return f"{k:02d} {p['year']}{p['region']}中考英语 {p['passage']} {p.get('title') or ''}.mp4"
+def file_name(p):
+    """合集下载包里的文件名：年份地区中考英语 + 篇目 + 题目（用户 2026-10-15：文件名前面不加序号；包里的先后顺序按 release_order）。"""
+    return f"{p['year']}{p['region']}中考英语 {p['passage']} {p.get('title') or ''}.mp4"
 
 
 def main():
@@ -78,7 +78,7 @@ def main():
 
 {'　'.join(tags)}
 
-## 分 P 标题（按 P1—P{n} 顺序上传，与合集下载包里文件的序号一一对应）
+## 分 P 标题（按 P1—P{n} 顺序上传，与合集下载包里的先后顺序一致）
 
 """ + '\n'.join(parts) + '\n'
     out = C4 / '封面' / 'B站投稿文案.md'
