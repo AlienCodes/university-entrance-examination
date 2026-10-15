@@ -5,6 +5,7 @@
 标题的两个任务：①搜得到——尽量覆盖学生搜“中考英语”时会用的关键词（中考英语、阅读理解、真题、单词/词汇、精读、初中英语、
 备考年份……），地区名放不进标题的放进简介、标签和分 P 标题；②想点进来——数字承诺（40 篇、N 个词汇）、合集、C/D 压轴篇、中英对照。
 """
+import collections
 import json
 import re
 import sys
@@ -44,13 +45,44 @@ def main():
     alt = f'中考英语阅读真题{n}篇逐句精读，背完{heads}个中考单词短语！{y0}-{y1}全国{len(st["regions"])}省市C/D篇｜中英对照｜{y1 + 1}中考必看'
     regions = '、'.join(st['regions'])
     by_year = '，'.join(f'{y} 年 {c} 篇' for y, c in sorted(st['years'].items(), reverse=True))
-    desc = f"""{n} 篇中考英语阅读真题逐句精读，专门用来背中考单词：一句一屏，英文朗读 + 中文翻译 + 生词编号注释，看完 {n} 篇 = 过一遍 {heads} 个中考词汇（{st['single']} 个单词 + {st['phr']} 个短语）。
-📌 真题来源：{len(st['regions'])} 个省市的 {y0}—{y1} 年中考英语试卷（{by_year}），以阅读 C/D 压轴篇为主（{st['cd']} 篇）。
-📌 覆盖地区：{regions}——找找你所在城市的真题（分 P 标题里有地区和篇目）。
-📌 怎么用：每天 1 篇，先听一遍、对照翻译记生词，再跟着朗读读一遍；{n} 天背完全部 {heads} 个词汇。
-📌 视频：4K 高清、男声朗读、每句之间停顿方便跟读；每个生词都在句子里高亮并编号，右栏给出词性和释义。
-适合：初三 / 初二学生中考英语复习，{y1 + 1} 中考备考，中考英语阅读理解、中考英语单词、中考词汇、初中英语阅读、英语精读。
-🔍 {'、'.join(r + '中考英语' for r in st['regions'])}"""
+    order = release_order(P)
+    papers = len({(p['year'], p['region']) for p in P})
+    sents = sum(len(pa) for p in P for pa in p['paras'])
+    kinds = collections.Counter(p.get('genre', '').split(' ')[0] for p in P)
+    import subprocess
+    sys.path.insert(0, str(C4 / 'tools'))
+    import make_video as MV
+    durs = [float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0',
+                                  str(C4 / '最终视频' / MV.video_name(p))], capture_output=True, text=True).stdout) for p in P]
+    avg_min, total_min = round(sum(durs) / len(durs) / 60), round(sum(durs) / 60)
+    plist = '\n'.join(f"P{k} {file_name(p)[:-4]}" for k, p in enumerate(order, 1))
+    regions_kw = '、'.join(r + '中考英语' for r in st['regions'])
+    # 用户 2026-10-15：简介要特别详细，尽量让需要的人都能搜到——写清是什么、视频里有什么、适合谁、怎么用、40P 目录（地区 + 题目）、题材、覆盖试卷和搜索词
+    desc = f"""【这是什么】{y0}—{y1} 年 {n} 篇中考英语阅读真题（{len(st['regions'])} 个省市、{papers} 份试卷，阅读 C/D 压轴篇 {st['cd']} 篇），一句一屏逐句精读，专门用来记忆中考重点单词：看完 {n} 篇 = 过一遍 {heads} 个中考词汇（{st['single']} 个单词 + {st['phr']} 个短语），{n} 篇共 {st['words']} 词、{sents} 句。
+
+【视频里有什么】
+① 英文原句：要背的单词、短语都在句子里高亮并编号（单词紫色，短语黄底）；
+② 生词栏：同屏右侧按编号给出词性和中文释义，在真题句子里记单词，记得牢；
+③ 中文翻译：每一句都有准确的中文翻译，读懂每一句；
+④ 男声朗读（四六级同款声音），句与句之间有停顿，方便跟读、磨耳朵；
+⑤ 4K 高清，手机上也看得清。
+
+【适合谁】初一、初二、初三学生；{y1 + 1} 中考备考、中考英语一轮/二轮复习、考前冲刺；想扩大词汇量、提高阅读理解速度的同学；老师课堂投屏、家长陪孩子背单词。
+
+【怎么用最有效】
+1. 每天 1 篇（每篇约 {avg_min} 分钟，{n} 篇共约 {total_min} 分钟），{n} 天刷完全部 {heads} 个词汇；
+2. 第一遍看翻译、认生词；第二遍只看英文、跟着朗读读；第三遍遮住右侧生词栏，看编号回忆意思；
+3. 记不住的词写下来，隔几天再看一遍对应的那一 P。
+
+【分P目录】按年份从新到旧，每年北京、山东、济南、烟台在前，其余按省份：
+{plist}
+
+【文章题材】说明文 {kinds['说明文']} 篇、记叙文 {kinds['记叙文']} 篇、议论文 {kinds['议论文']} 篇，话题有人工智能、机器人、海洋、气候变化、环保、动物、中医、中国诗歌、贝聿铭、志愿服务、睡眠健康、情绪管理、人际交往等。
+
+🔍 中考英语｜中考英语阅读理解｜中考英语真题｜中考英语单词｜中考词汇｜中考重点单词｜中考核心词汇｜中考英语复习｜中考英语冲刺｜中考阅读C篇｜中考阅读D篇｜初中英语阅读｜初三英语｜初二英语｜英语逐句精读｜中英对照｜背单词｜记单词｜英语跟读｜{y1}中考真题｜{y1 + 1}中考
+🔍 {regions_kw}
+
+觉得有用请点赞、投币、收藏支持一下！评论区说说你在哪个城市，{y1 + 1} 中考加油！"""
     tags = ['中考英语', '中考英语阅读', '中考阅读理解', '中考单词', '中考词汇', '中考真题', '初中英语', f'{y1 + 1}中考', '英语阅读精读', '背单词']
     parts = [f"P{k} {p['year']}{p['region']}中考英语 {p['passage']}｜{p.get('title') or ''}" for k, p in enumerate(release_order(P), 1)]
     errs = []
