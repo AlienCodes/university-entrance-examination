@@ -16,9 +16,10 @@
      上次生成时一样（指纹记在 最终视频/批量生成记录.json）。
 3. 音频检查没通过（响度、电磁音）时自动重做：设了随机种子的音色（Qwen3）整篇换下一个种子（1234 → 1235 → 1236，整篇只用一个种子），
    Supertonic 直接重新合成（每次合成都带随机性：2026-10-15 工具包实测 es01 三次的梳状线 1.07、2.29、0.72 dB，第三次通过；
-   新写的短文每次通过的机会更小——2 句的 es02 约 3/8、6 句的 es03 约 1/6，主要卡在梳状线残留和短时响度波动）；
-   最多 --tries 次（默认 Qwen3 3 次、Supertonic 10 次）。“朗读部分太短、测不了”这类重做也没用的，不重试。
-   视频的检查没通过不重试（画面、时间轴的问题重做也一样）。
+   新写的短文每次通过的机会更小：2 句、句中还有逗号停顿的 es02 约 1/4（卡在短时响度波动），6 句的 es03 约 1/4（卡在梳状线残留），
+   2 句的模板文章约 2/3）；最多 --tries 次（默认 Qwen3 3 次、Supertonic 15 次）。“朗读部分太短、测不了”这类重做也没用的，不重试。
+   视频核查只在响度 / 电磁音（视频音轨重新测量）上没过时，当作音频没过：换种子 / 重新合成，音频和视频一起重做（共用 --tries）；
+   视频别的核查项没过不重试（画面、时间轴的问题重做也一样）。
 4. 任何一步失败就停下，说清楚是哪一篇、哪一步、怎么处理；最后打印汇总表。成品在 西班牙语/最终视频/。
 
 所有检查都在 make_audio.py / make_video.py 里（响度四项、电磁音两项、片头 1.5 秒、句间 0.8 秒、结尾 2 秒、4K、30 帧、画面与朗读逐句一致……），
@@ -30,6 +31,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -336,7 +338,7 @@ def main():
                     help='背景样式：' + '，'.join(f'{k} {v["name"]}' for k, v in MV.STYLES.items()) + '（默认 C；预览见 西班牙语/背景样式/）')
     ap.add_argument('--scale', type=int, help='画面倍数：2 = 3840×2160（4K，视频默认）；--stills 默认 1（1920×1080）')
     ap.add_argument('--force', action='store_true', help='已是最新也重新生成')
-    ap.add_argument('--tries', type=int, help='音频检查没通过时最多做几次：默认 Qwen3（换种子，每次十几分钟）3 次，Supertonic（重新合成，短文每次不到 1 分钟、es01 约 2 分钟）10 次')
+    ap.add_argument('--tries', type=int, help='音频检查没通过时最多做几次：默认 Qwen3（换种子，每次十几分钟）3 次，Supertonic（重新合成，短文每次不到 1 分钟、es01 约 2 分钟）15 次')
     ap.add_argument('--stills', action='store_true', help='只出截图（不生成音频和视频），写到 西班牙语/截图/<篇目>_<背景>/')
     ap.add_argument('--list', action='store_true', help='列出音色、背景、篇目和生成情况')
     ap.add_argument('--check', action='store_true', help='安装自检')
@@ -383,46 +385,60 @@ def main():
             rows.append((pid, '—', f'截图 {out.relative_to(ES)}', time.time() - t0))
             continue
 
-        # 2. 音频
+        # 2. 音频 → 3. 视频。视频核查只在“响度 / 电磁音”（对视频音轨重新测量）上没过时，说明这次合成正好在边缘
+        #    （音频检查刚好过，视频里 AAC 重新编码后差一点，实测梳状线 0.88 → 1.01 dB）：当作音频没过，
+        #    换下一个种子 / 重新合成，音频和视频一起重做（和音频共用 --tries 次数）。别的核查项没过不重试。
+        cfg = VOICES[voice]
+        tries = max(1, a.tries or (3 if 'seed' in cfg else 15))
+        seeds = [None] + ([cfg['seed'] + i for i in range(1, tries)] if 'seed' in cfg else [None] * (tries - 1))
+        i = 0
         ok, why = (False, '--force') if a.force else audio_state(p, voice, MA)
+        need_audio = not ok
         if ok:
             astat = '已是最新，跳过'
             say(f'\n{head}：音频{why}，跳过')
         else:
             say(f'\n{head}：生成音频（{why}）')
-            cfg = VOICES[voice]
-            tries = max(1, a.tries or (3 if 'seed' in cfg else 10))
-            seeds = [None] + ([cfg['seed'] + i for i in range(1, tries)] if 'seed' in cfg else [None] * (tries - 1))
-            for i, seed in enumerate(seeds):
-                args = [tools / 'make_audio.py', pid, '--voice', voice] + (['--seed', seed] if seed is not None else [])
-                rc, tail = run(args)
-                if not rc:
-                    break
-                retry = ('检查未通过' in tail or '都不正常' in tail) and '测不了' not in tail      # 太短测不了：重做也一样
-                if not retry or i == len(seeds) - 1:
-                    rows.append((pid, '失败', '—', time.time() - t0))
-                    what = '朗读音频检查没通过' + (f'（已试 {i + 1} 次）' if retry else '')
-                    more = ('' if not retry else
-                            '可以加大次数再运行同一条命令（如 --tries 20）；' + ('或换 Qwen3 音色（检查几乎一次就过，但慢）。' if 'seed' not in cfg
-                                                                         else '或换一个音色。'))
-                    return stop(rows, f'{pid} {what}，看上面的输出。{more}{HELP}')
-                nxt = seeds[i + 1]
-                say(f'  检查没通过，{"换种子 " + str(nxt) if nxt is not None else "重新合成"}再做一次（第 {i + 2}/{len(seeds)} 次）')
-            astat = '新生成' + (f'（种子 {seed}）' if seed is not None else '')
-
-        # 3. 视频
-        ok, why, name = (False, '--force', video_name(p, a.style, MV)) if a.force else video_state(p, voice, a.style, scale, MV)
-        if ok:
-            say(f'  视频{why}，跳过：{name}')
-            rows.append((pid, astat, '已是最新，跳过', time.time() - t0))
-            continue
-        say(f'  生成视频（{why}）')
-        rc, tail = run([tools / 'make_video.py', pid, '--voice', voice, '--style', a.style, '--scale', scale])
-        if rc:
+        while True:
+            if need_audio:
+                while True:
+                    seed = seeds[i]
+                    args = [tools / 'make_audio.py', pid, '--voice', voice] + (['--seed', seed] if seed is not None else [])
+                    rc, tail = run(args)
+                    if not rc:
+                        break
+                    retry = ('检查未通过' in tail or '都不正常' in tail) and '测不了' not in tail      # 太短测不了：重做也一样
+                    if not retry or i == len(seeds) - 1:
+                        rows.append((pid, '失败', '—', time.time() - t0))
+                        what = '朗读音频检查没通过' + (f'（已试 {i + 1} 次）' if retry else '')
+                        more = ('' if not retry else
+                                '可以加大次数再运行同一条命令（如 --tries 30）；' + ('或换 Qwen3 音色（检查一般一次就过，但慢）。' if 'seed' not in cfg
+                                                                             else '或换一个音色。'))
+                        return stop(rows, f'{pid} {what}，看上面的输出。{more}{HELP}')
+                    i += 1
+                    say(f'  检查没通过，{"换种子 " + str(seeds[i]) if seeds[i] is not None else "重新合成"}再做一次（第 {i + 1}/{len(seeds)} 次）')
+                astat = '新生成' + (f'（种子 {seed}）' if seed is not None else '') + (f'，第 {i + 1} 次' if i else '')
+                need_audio = False
+            ok, why, name = (False, '--force', video_name(p, a.style, MV)) if a.force else video_state(p, voice, a.style, scale, MV)
+            if ok:
+                say(f'  视频{why}，跳过：{name}')
+                rows.append((pid, astat, '已是最新，跳过', time.time() - t0))
+                break
+            say(f'  生成视频（{why}）')
+            rc, tail = run([tools / 'make_video.py', pid, '--voice', voice, '--style', a.style, '--scale', scale])
+            if not rc:
+                remember(name, video_key(p, voice, a.style, scale, MV), voice, a.style, scale)
+                rows.append((pid, astat, '新生成，核查通过', time.time() - t0))
+                break
+            bad = [x for x in tail.splitlines() if '❌' in x]
+            if bad and all(re.search(r'❌ (响度一致|无电磁音)', x) for x in bad) and i < len(seeds) - 1:
+                i += 1
+                need_audio = True
+                say(f'  视频音轨复测的响度 / 电磁音没过（这次合成正好在边缘），当作音频没过：'
+                    f'{"换种子 " + str(seeds[i]) if seeds[i] is not None else "重新合成"}，音频和视频一起重做（第 {i + 1}/{len(seeds)} 次）')
+                continue
             rows.append((pid, astat, '失败', time.time() - t0))
             return stop(rows, f'{pid} 视频生成或核查没通过（没通过的成品已删除），看上面的输出。{HELP}')
-        remember(name, video_key(p, voice, a.style, scale, MV), voice, a.style, scale)
-        rows.append((pid, astat, '新生成，核查通过', time.time() - t0))
     summary(rows)
     say(f'\n全部完成（{len(ids)} 篇，用时 {fmt(time.time() - t_all)}）。' +
         (f'截图在 {SHOTS}' if a.stills else f'成品在 {OUT}'))
