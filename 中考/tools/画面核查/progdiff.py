@@ -65,7 +65,10 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
             res[pid] = list(range(1, len(b) + 1))
             continue
         diff = (lambda x, y: x != y) if lines else (lambda x, y: np.abs(x - y).max() > 40)
-        ch = [i for i, ((_, ha, fa), (_, hb, fb)) in enumerate(zip(a, b), 1) if diff(shot(OLD, ha, fa, css), shot(NEW, hb, fb))]
+        # HTML 完全相同（路径统一后）且没有追加 CSS 的屏，画面必然相同，不必渲染（2026-10-15：190/857 屏 HTML 不同，只渲染这些，结果相同、快 4 倍多）
+        norm = lambda h: h.replace(Path(OLD.__file__).resolve().parents[2].as_uri(), R.as_uri()).replace(str(Path(OLD.__file__).resolve().parents[2]), str(R))
+        same = lambda x, y: not css and (norm(x[1]), x[2]) == (y[1], y[2])
+        ch = [i for i, (x, y) in enumerate(zip(a, b), 1) if not same(x, y) and diff(shot(OLD, x[1], x[2], css), shot(NEW, y[1], y[2]))]
         res[pid] = ch
         print(pid, f'{len(ch)}/{len(b)} 屏有{"换行" if lines else "实质"}变化：', ch, file=sys.stderr, flush=True)
     br.close()
