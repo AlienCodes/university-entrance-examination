@@ -53,10 +53,16 @@ jobs:
           if [[ "$tag" == zk-m* ]]; then no="（男声）${tag#zk-m}"; fi
           if [[ "$tag" == zk-m-all ]]; then no="（男声）40 篇合集"; fi
           echo "NO=${no}" >> "$GITHUB_ENV"
-      - uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.TAG }}
-          target_commitish: ${{ github.sha }}
-          name: 中考英语阅读精读视频 ${{ env.NO }}（${{ env.N }} 个）
-          body_path: notes.md
-          files: ${{ env.ZIPNAME }}
+      - name: 发布（gh 命令行；2026-10-15 第三方 softprops/action-gh-release 在 zk-m04 连续两次 403，改用 GitHub 自带的 gh）
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -e
+          title="中考英语阅读精读视频 ${NO}（${N} 个）"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIPNAME" --clobber
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" "$ZIPNAME" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md
+          fi
