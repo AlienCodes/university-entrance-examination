@@ -6,6 +6,7 @@
 备考年份……），地区名放不进标题的放进简介、标签和分 P 标题；②想点进来——数字承诺（40 篇、N 个词汇）、合集、C/D 压轴篇、中英对照。
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -26,8 +27,10 @@ def release_order(P):
 
 
 def file_name(p):
-    """合集下载包里的文件名：年份地区中考英语 + 篇目 + 题目（用户 2026-10-15：文件名前面不加序号；包里的先后顺序按 release_order）。"""
-    return f"{p['year']}{p['region']}中考英语 {p['passage']} {p.get('title') or ''}.mp4"
+    """合集下载包里的文件名，用户 2026-10-15 指定格式“26北京 C篇 海洋变暖与南极海冰骤减”：两位年份+地区、篇目、题目，前面不加序号
+    （包里的先后顺序按 release_order）。阅读B/C/D 写成 B/C/D篇；任务型阅读、七选五、没有字母编号的“阅读”照原样。"""
+    part = re.sub(r'^阅读([A-E])$', r'\1篇', p['passage'])
+    return f"{p['year'] % 100:02d}{p['region']} {part} {p.get('title') or ''}.mp4"
 
 
 def main():
