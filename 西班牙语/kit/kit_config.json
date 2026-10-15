@@ -1,0 +1,46 @@
+{
+ "_说明": "build_kit.py 读取的工具包配置。shared_files / shared_dirs：西语程序在运行时用到的仓库共用文件（2026-10-15 用 strace 跟踪 make_audio.py --sample（Supertonic）和 make_video.py 整片生成 + 核查实测得到，不是猜的）；改了程序、多用了别的文件，要重新跟踪并补在这里（工具包里缺文件，CI 冒烟测试会直接报错）。models：本机模型路径（voices.json 里的绝对路径）→ 工具包里的相对路径（按 西班牙语/ 解析）。",
+ "kit_name": "西班牙语逐句精读视频工具包",
+ "spanish_dirs": ["tools", "文章", "图片", "配音选型", "背景样式", "kit"],
+ "spanish_files": ["README.md"],
+ "exclude_names": ["__pycache__", ".DS_Store"],
+ "exclude_suffixes": [".pyc", ".pyo"],
+ "exclude_paths": ["西班牙语/tools/test_buzz.py", "西班牙语/tools/build_kit.py"],
+ "exclude_paths_说明": "test_buzz.py 要用仓库里中考 40 篇的音频做标定，工具包里没有，不能运行；build_kit.py 是在仓库里组装工具包用的",
+ "shared_files": [
+  "tools/tts/gaokao_tts.py",
+  "tools/tts/textnorm.py",
+  "tools/video/verify_videos.py",
+  "四级/tools/make_audio.py",
+  "四级/tools/make_video.py",
+  "四级/tools/debuzz.py",
+  "四级/tools/分屏.json"
+ ],
+ "shared_dirs": ["四级/tools/fonts"],
+ "root_files": {
+  "使用说明.md": "西班牙语/kit/使用说明.md",
+  "install.sh": "西班牙语/kit/install.sh",
+  "install_windows.ps1": "西班牙语/kit/install_windows.ps1",
+  "install_windows.bat": "西班牙语/kit/install_windows.bat",
+  "生成视频.sh": "西班牙语/kit/生成视频.sh",
+  "生成视频.bat": "西班牙语/kit/生成视频.bat"
+ },
+ "executable": ["install.sh", "生成视频.sh"],
+ "models": {
+  "supertonic3": {
+   "local": "/opt/es_tts_models/supertonic3",
+   "kit": "models/supertonic3",
+   "in_kit": true,
+   "url": "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/sherpa-onnx-supertonic-3-tts-int8-2026-05-11.tar.bz2",
+   "files": ["duration_predictor.int8.onnx", "text_encoder.int8.onnx", "vector_estimator.int8.onnx", "vocoder.int8.onnx", "tts.json", "unicode_indexer.bin", "voice.bin"]
+  },
+  "qwen3-base": {
+   "local": "/opt/es_tts_models/qwen3/app/models/qwen3-base",
+   "kit": "models/qwen3-base",
+   "in_kit": false,
+   "hf_repo": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "parts_prefix": "qwen3-tts-1.7b-base.zip",
+   "files": ["model.safetensors", "config.json", "speech_tokenizer/config.json"]
+  }
+ }
+}

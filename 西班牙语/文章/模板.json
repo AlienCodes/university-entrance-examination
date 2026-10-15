@@ -1,0 +1,39 @@
+{
+ "_说明": "新文章模板：复制一份，改名为 篇目编号.json（如 es02.json），把 id 改成同样的编号，再填内容。批量生成的 all 不包括 模板.json。字段：id 篇目编号（必须和文件名一样）；title_es 西语标题；title_zh 中文标题；series 系列名（显示在片头，可不写）；paras 段落列表，每段是句子列表；每句 es 西语原文、zh 中文翻译、w 生词栏（每句至少一个词条，铁律 1）。词条：h 词头（原形，多个词就算短语、显示砖红色）、pos 词性（m. f. adj. adv. tr. intr. prnl. loc. 等，短语写 loc. 不显示）、zh 释义、surface 在句中高亮的原样文字（必须在这一句里恰好出现一次，大小写、重音都要一样；同一句的词条不能重叠）、source 来源备注（可不写）。原文里不能有阿拉伯数字（写成西语单词）、引号、括号等特殊符号（可以用 ¿ ¡ . , ; : ! ? —）。列举的逗号（A, B y C）默认会停顿 0.28 秒，不想停的登记在 tools/逗号停顿.json（见 使用说明.md）。插图可选：图片/篇目编号_插图.jpg。",
+ "id": "模板",
+ "title_es": "Mi día",
+ "title_zh": "我的一天",
+ "series": "每日一练",
+ "pos_legend": {
+  "m.": "阳性名词",
+  "f.": "阴性名词",
+  "adj.": "形容词",
+  "adv.": "副词",
+  "tr.": "及物动词",
+  "intr.": "不及物动词",
+  "prnl.": "自复动词",
+  "loc.": "短语，固定搭配"
+ },
+ "paras": [
+  [
+   {
+    "es": "Me llamo Ana y vivo en Madrid.",
+    "zh": "我叫安娜，住在马德里。",
+    "w": [
+     {"h": "llamarse", "pos": "prnl.", "zh": "名叫", "surface": "Me llamo"},
+     {"h": "vivir", "pos": "intr.", "zh": "居住，生活", "surface": "vivo"}
+    ]
+   },
+   {
+    "es": "Todos los días voy al colegio en autobús.",
+    "zh": "我每天坐公共汽车去学校。",
+    "w": [
+     {"h": "todos los días", "pos": "loc.", "zh": "每天", "surface": "Todos los días"},
+     {"h": "ir", "pos": "intr.", "zh": "去", "surface": "voy"},
+     {"h": "colegio", "pos": "m.", "zh": "学校（中小学）", "surface": "colegio"},
+     {"h": "autobús", "pos": "m.", "zh": "公共汽车", "surface": "autobús"}
+    ]
+   }
+  ]
+ ]
+}

@@ -1,0 +1,234 @@
+# 修改 .github/es-kit-release.txt 并推送时：发布「西班牙语逐句精读视频工具包」完整版（清单第一行 = 标签名，如 es-kit）。
+# 1. 组装：西班牙语/tools/build_kit.py --ci（程序、资料、示例、安装脚本、说明；没有核查全部通过的示例视频就报错，不发布）
+# 2. 放进 Supertonic 3 模型（sherpa-onnx 发布的 int8 版，拉平到 西班牙语/models/supertonic3），build_kit.py --manifest 核对并重写清单
+# 3. Qwen3-TTS 1.7B Base 从 Hugging Face 下载（含 speech_tokenizer/），打 zip 后从尾部开始切成 < 1.9 GB 的分卷（边切边截短，磁盘只多占一个分卷）
+# 4. 模拟老师从头用一遍（在工具包的副本里，原件不动）：分卷和 SHA256SUMS.txt 放进工具包文件夹 → bash install.sh --qwen3
+#    （建 .venv、按工具包自己的依赖清单安装、下载浏览器、join_parts.py 核对校验值并解压 Qwen3 模型、自检）→ 试听 Supertonic 2 句、
+#    Qwen3 1 句 → 截图（背景 C、5、模板文章）→ 用示例音频生成一个 4K 视频并通过全部核查。任何一步失败就不发布。
+# 5. 打 zip（Python zipfile，中文文件名不乱码），再用 zipfile 逐个核对 CRC、文件数和关键文件（踩坑 43）
+# 6. SHA256SUMS.txt（每个文件 + 合并后的整包）；用 gh 发布（踩坑 42：第三方 softprops/action-gh-release 曾连续 403），删掉上次多余的旧分卷
+name: 发布西班牙语逐句精读视频工具包
+on:
+  push:
+    paths: ['.github/es-kit-release.txt']
+permissions:
+  contents: write
+concurrency:
+  group: release-es-kit
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      KITZIP: spanish-reading-video-kit.zip
+      QZIP: qwen3-tts-1.7b-base.zip
+    steps:
+      - name: 腾出磁盘空间（运行器自带、用不到的工具链）
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL /usr/share/swift
+          df -h /
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 组装工具包
+        run: |
+          set -e
+          tag=$(head -1 .github/es-kit-release.txt | tr -d '[:space:]')
+          test -n "$tag"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          python3 西班牙语/tools/build_kit.py --out dist --ci
+          name=$(python3 -c "import json; print(json.load(open('西班牙语/kit/kit_config.json', encoding='utf-8'))['kit_name'])")
+          echo "TOP=${name}" >> "$GITHUB_ENV"
+          echo "KIT=${GITHUB_WORKSPACE}/dist/${name}" >> "$GITHUB_ENV"
+      - name: 放进 Supertonic 3 模型
+        run: |
+          set -e
+          url=$(python3 -c "import json; print(json.load(open('西班牙语/kit/kit_config.json', encoding='utf-8'))['models']['supertonic3']['url'])")
+          m="$KIT/西班牙语/models/supertonic3"
+          mkdir -p "$m" tmp_st
+          curl -sSfL --retry 3 -o st.tar.bz2 "$url"
+          tar xjf st.tar.bz2 -C tmp_st && rm st.tar.bz2
+          src=$(dirname "$(find tmp_st -name voice.bin | head -1)")     # 压缩包里的文件夹，拉平放进 models/supertonic3
+          cp "$src"/* "$m/" && rm -rf tmp_st
+          ls -la "$m"
+          python3 西班牙语/tools/build_kit.py --manifest "$KIT"
+      - name: 下载 Qwen3-TTS 1.7B Base，打 zip 并切成分卷
+        run: |
+          set -e
+          mkdir -p release && cd release
+          pip install -q "huggingface_hub>=0.30,<1.0"
+          python3 - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download('Qwen/Qwen3-TTS-12Hz-1.7B-Base', local_dir='qwen3-base')
+          PY
+          rm -rf qwen3-base/.cache
+          for f in model.safetensors config.json speech_tokenizer/config.json speech_tokenizer/model.safetensors; do test -f "qwen3-base/$f"; done
+          du -sh qwen3-base
+          python3 - <<'PY'
+          import hashlib, os, shutil, zipfile
+          q = os.environ['QZIP']
+          with zipfile.ZipFile(q, 'w', zipfile.ZIP_STORED, allowZip64=True) as z:
+              for root, dirs, files in os.walk('qwen3-base'):
+                  dirs.sort()
+                  for f in sorted(files):
+                      p = os.path.join(root, f)
+                      z.write(p, os.path.relpath(p, '.'))
+          shutil.rmtree('qwen3-base')
+          h = hashlib.sha256()
+          with open(q, 'rb') as f:
+              for b in iter(lambda: f.read(1 << 24), b''):
+                  h.update(b)
+          whole = h.hexdigest()
+          size, part = os.path.getsize(q), 1900 * 2**20
+          n = -(-size // part)
+          with open(q, 'r+b') as f:                       # 从尾部开始切：每切出一个分卷就把整包截短，磁盘只多占一个分卷
+              for i in range(n, 0, -1):
+                  off = (i - 1) * part
+                  f.seek(off)
+                  with open(f'{q}.{i:03d}', 'wb') as g:
+                      for b in iter(lambda: f.read(1 << 24), b''):
+                          g.write(b)
+                  f.truncate(off)
+          os.remove(q)
+          lines = []
+          for i in range(1, n + 1):
+              h = hashlib.sha256()
+              with open(f'{q}.{i:03d}', 'rb') as g:
+                  for b in iter(lambda: g.read(1 << 24), b''):
+                      h.update(b)
+              lines.append(f'{h.hexdigest()}  {q}.{i:03d}')
+          lines.append(f'{whole}  {q}')
+          open('SHA256SUMS.txt', 'w').write('\n'.join(lines) + '\n')
+          print('zip', size // 2**20, 'MB ->', n, 'parts')
+          PY
+          ls -la
+      - name: 模拟老师从头用一遍（工具包副本：安装含 Qwen3 → 试听 → 截图 → 4K 视频）
+        run: |
+          set -eo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          U="$RUNNER_TEMP/user" && rm -rf "$U" && mkdir -p "$U"                   # 和 release/ 在同一个磁盘上，硬链接才行
+          cp -a "$KIT" "$U/"
+          K="$U/$TOP"
+          ln release/${QZIP}.[0-9][0-9][0-9] release/SHA256SUMS.txt "$K/"         # 硬链接：不多占磁盘
+          cd "$K"
+          bash install.sh --qwen3 --python "$pythonLocation/bin/python" || {
+            echo "第一次安装没通过，按使用说明补浏览器的系统库后重试"
+            sudo .venv/bin/python -m playwright install-deps chromium > /dev/null
+            bash install.sh --qwen3 --python "$pythonLocation/bin/python"
+          }
+          rm -f ${QZIP}.[0-9][0-9][0-9] SHA256SUMS.txt
+          ./生成视频.sh --check | tee /tmp/check.txt
+          test "$(grep -c '❌' /tmp/check.txt)" -eq 0                         # 含 Qwen3 在内全部就绪
+          V=.venv/bin/python
+          $V 西班牙语/tools/make_audio.py es01 --voice supertonic3_M1F5_25 --sample /tmp/smoke_st.mp3 --sents 1-2
+          $V 西班牙语/tools/make_audio.py es01 --voice qwen3_M1F5_25 --sample /tmp/smoke_qwen3.mp3 --sents 1
+          test "$(stat -c %s /tmp/smoke_st.mp3)" -gt 20000 && test "$(stat -c %s /tmp/smoke_qwen3.mp3)" -gt 20000
+          n=$(python3 -c "import json; p=json.load(open('西班牙语/文章/es01.json', encoding='utf-8')); print(1 + sum(len(x) for x in p['paras']))")
+          for s in C 5; do
+            $V 西班牙语/tools/make_video.py es01 --stills --scale 1 --style $s --out /tmp/stills_$s
+            test "$(ls /tmp/stills_$s/*.png | wc -l)" -eq "$n"
+          done
+          ./生成视频.sh 模板 --stills --style 3
+          test "$(ls 西班牙语/截图/模板_3/*.png | wc -l)" -eq 3
+          $V 西班牙语/tools/make_video.py es01 --voice qwen3_M1F5_25 --style 5 --out /tmp/vid5   # 用示例的 Qwen3 音频生成 4K 视频，全部核查通过才算过
+          ls -la /tmp/vid5
+          cd / && rm -rf "$U" /tmp/stills_* /tmp/smoke_*.mp3 /tmp/vid5
+          df -h /
+      - name: 打成 zip 并核对（Python zipfile，中文文件名不乱码）
+        run: |
+          set -e
+          cd release
+          python3 - "$KIT" <<'PY'
+          import os, sys, zipfile
+          kit, out = sys.argv[1], os.environ['KITZIP']
+          base, top = os.path.split(kit)
+          n = 0
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+              for root, dirs, files in os.walk(kit):
+                  dirs.sort()
+                  for f in sorted(files):
+                      p = os.path.join(root, f)
+                      z.write(p, os.path.relpath(p, base))
+                      n += 1
+          with zipfile.ZipFile(out) as z:
+              bad = z.testzip()
+              names = z.namelist()
+          assert bad is None, f'CRC 不对：{bad}'
+          assert len(names) == n, (len(names), n)
+          rows = open(os.path.join(kit, '文件清单.txt'), encoding='utf-8').read().splitlines()[1:]
+          assert len(rows) == n - 1, ('文件清单与压缩包文件数不一致（原件被改动过？）', len(rows), n - 1)
+          assert not [x for x in names if '__pycache__' in x or '/.venv/' in x], '压缩包里有缓存或虚拟环境'
+          need = ['使用说明.md', 'install.sh', 'install_windows.ps1', 'install_windows.bat', '生成视频.sh', '生成视频.bat',
+                  '西班牙语/tools/batch.py', '西班牙语/tools/make_audio.py', '西班牙语/tools/make_video.py', '西班牙语/tools/join_parts.py',
+                  '西班牙语/tools/voices.json', '西班牙语/models/supertonic3/voice.bin', '西班牙语/文章/es01.json', '西班牙语/文章/模板.json',
+                  '四级/tools/make_video.py', 'tools/tts/gaokao_tts.py', 'tools/video/verify_videos.py']
+          miss = [x for x in need if f'{top}/{x}' not in names]
+          assert not miss, miss
+          assert any(x.startswith(f'{top}/西班牙语/最终视频/') and x.endswith('.mp4') for x in names), '没有示例视频'
+          print('files', n, 'zip', os.path.getsize(out) // 2**20, 'MB；CRC 全部正确，中文文件名正常')
+          PY
+          rm -rf "$GITHUB_WORKSPACE/dist"
+          python3 - <<'PY'
+          import hashlib, os
+          kz = os.environ['KITZIP']
+          h = hashlib.sha256()
+          with open(kz, 'rb') as g:
+              for b in iter(lambda: g.read(1 << 24), b''):
+                  h.update(b)
+          lines = open('SHA256SUMS.txt').read().splitlines()
+          open('SHA256SUMS.txt', 'w').write('\n'.join([f'{h.hexdigest()}  {kz}'] + lines) + '\n')
+          print(open('SHA256SUMS.txt').read())
+          PY
+      - name: 发布
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -e
+          cd release
+          title="西班牙语逐句精读视频工具包（程序 + 模型 + 示例 + 一键安装）"
+          parts=$(ls ${QZIP}.[0-9][0-9][0-9] | tr '\n' ' ')
+          nparts=$(ls ${QZIP}.[0-9][0-9][0-9] | wc -l)
+          last=$(printf '%03d' "$nparts")
+          cat > notes.md <<EOF
+          用西班牙语短文生成 **4K 逐句精读视频** 的完整工具包：每句一屏（西语原文 + 生词编号高亮 + 中文翻译 + 生词栏），逐句朗读，句间固定停顿；
+          生成后自动核查（响度、电磁音、停顿、画面与朗读逐句一致……），不合格不出成品。单篇、多篇、全部批量生成；7 种背景、5 种西语男声可选。
+
+          **下载哪些文件**
+
+          | 文件 | 说明 |
+          |---|---|
+          | \`${KITZIP}\` | **必下**。工具包：程序、Supertonic 3 配音模型（已放好）、示例文章和示例视频、样音、7 种背景预览、一键安装脚本。解压后先看 \`使用说明.md\` |
+          | \`${QZIP}.001\` … \`.${last}\`（共 ${nparts} 个） | 推荐音色 \`qwen3_M1F5_25\`（最像真人）用的 Qwen3-TTS 1.7B 模型，合起来约 4.3 GB。只用 Supertonic 音色可以不下 |
+          | \`SHA256SUMS.txt\` | 所有文件（和合并后整包）的校验值；和分卷放在一起，解压时自动核对 |
+
+          **安装**（详见 \`使用说明.md\`）
+
+          1. 装 Python 3.12 和 ffmpeg；
+          2. 解压工具包，Windows 双击 \`install_windows.bat\`，macOS / Linux 运行 \`bash install.sh\`；
+          3. 要用 Qwen3：把分卷和 \`SHA256SUMS.txt\` 放进工具包文件夹，安装时加 \`--qwen3\`（Windows：\`install_windows.bat -Qwen3\`），
+             自动合并、校验、解压到 \`西班牙语/models/qwen3-base/\`（直接把分卷串起来读，不需要先拼出整包）。
+             也可以单独运行 \`python 西班牙语/tools/join_parts.py 分卷所在文件夹\`；或手动合并：Windows \`copy /b ${QZIP}.001+${QZIP}.002+… ${QZIP}\`，
+             macOS / Linux \`cat ${QZIP}.0* > ${QZIP}\`，再解压到 \`西班牙语/models/\`。
+
+          **生成**：\`./生成视频.sh es01\`（Windows：\`生成视频.bat es01\`）；\`--voice supertonic3_M1F5_25\` 用快速音色，\`--style 1\`–\`6\` 换背景，
+          \`all\` 生成全部文章，\`--stills\` 只出截图。新文章照 \`西班牙语/文章/模板.json\` 写。
+
+          电脑要求：Supertonic 普通电脑即可；Qwen3 慢（4 核 CPU 约为实时的 10–20 倍），需要 16 GB 内存，Intel 芯片的 Mac 不支持。
+          发布前已在干净的 Ubuntu 上按这套步骤从头装好、生成过一遍（含 Qwen3 和 4K 视频核查）。
+          EOF
+          files=("$KITZIP" ${parts} SHA256SUMS.txt)
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "${files[@]}" --clobber
+            for a in $(gh release view "$TAG" --json assets -q '.assets[].name'); do
+              keep=0; for f in "${files[@]}"; do [ "$a" = "$f" ] && keep=1; done
+              if [ "$keep" = 0 ]; then gh release delete-asset "$TAG" "$a" -y; fi
+            done
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" "${files[@]}" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md
+          fi
+          gh release view "$TAG" --json assets -q '.assets[] | "\(.name) \(.size)"'

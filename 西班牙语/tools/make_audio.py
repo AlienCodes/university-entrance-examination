@@ -219,10 +219,17 @@ def main():
     ap.add_argument('--sample', help='只做试听样片，写到这个 MP3（不写 timings.json）')
     ap.add_argument('--sents', help='试听用的句子，如 1-3 或 1,4,7')
     ap.add_argument('--draft', action='store_true', help='草稿：检查不通过也输出（问题写进 timings.json 的 draft_issues）')
+    ap.add_argument('--seed', type=int, help='换随机种子（只对设了 seed 的音色有效，如 Qwen3）：检查没通过时整篇换下一个种子重做（batch.py 自动做）')
     a = ap.parse_args()
     p = c4.load('es_make_video', '西班牙语/tools/make_video.py').load(a.pid)
     name = a.voice or VOICES['_final']
+    if name not in VOICES or name.startswith('_'):
+        raise SystemExit(f'voices.json 里没有音色 {name}（可选：{", ".join(k for k in VOICES if not k.startswith("_"))}）')
     cfg = VOICES[name]
+    if a.seed is not None:
+        if 'seed' not in cfg:
+            raise SystemExit(f'音色 {name} 没有随机种子设置，--seed 无效')
+        cfg = {**cfg, 'seed': a.seed}
     sents = None
     if a.sents:
         sents = set()
