@@ -2,7 +2,8 @@
 
   行首缩进   中文译文、词汇栏释义的每一行，第一个字必须顶格（行首的左括号、左引号要去掉左半空白）
   标点挤压   相邻两个全角标点（如“：“”“）；”“”。”）之间不能空出半个字以上
-  孤字       中文译文最后一行只剩一个字
+  孤字       中文译文最后一行只剩一个字；词汇栏释义折行后的一行只有一个字（z35 截图审阅：“用心 / （做）”“节日；（文化） / 节”）
+  数字单位   英文的数字与后面的单位不能拆到两行（z25 截图审阅：“only about 6 / kg”）
   释义断词   词汇栏释义只能在标点处、或在词条与释义之间换行，不能把“可/能”“泳/衣”拆开
   连字符     带连字符的英文词（southward-moving、wind-driven）不能在连字符处断行
   直引号     英文和词条里不能有直撇号、直引号（踩坑 18）
@@ -78,6 +79,12 @@ CHECK = r"""([minFs, minVs]) => {
     });
     if (name === '译文' && L.length > 1) { const last = L[L.length - 1].filter(x => cjk(x.c));
       if (last.length <= 1) out.push(`孤字：${name}最后一行只有「${txt(L[L.length - 1])}」`); }
+    if (isGloss) for (let j = 1; j < L.length; j++) { const g = x => x.el.closest('.g');
+      if (L[j].every(g) && L[j - 1].some(g) && L[j].filter(x => cjk(x.c) || /[A-Za-z0-9]/.test(x.c)).length <= 1)
+        out.push(`孤字：${name}释义折行后一行只有「${txt(L[j])}」`); }
+    if (name === '英文') for (let j = 1; j < L.length; j++)
+      if (/\d$/.test(txt(L[j - 1].filter(x => !x.el.closest('sup')))) && /^(kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(gram|metre|meter)s?|(centi|milli)?(metre|meter)s?|grams?|tonnes?|tons?|miles?|feet|foot|inch(es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?)(?![A-Za-z])/.test(txt(L[j])))
+        out.push(`数字单位：英文「${txt(L[j - 1]).slice(-8)} / ${txt(L[j]).slice(0, 8)}」数字与单位被拆到两行`);
   };
   const ttl = document.querySelector('.ttl h1');
   if (ttl) { if (ttl.scrollWidth > ttl.clientWidth + 1) out.push(`标题：一行放不下（${ttl.scrollWidth} > ${ttl.clientWidth}）`); return out; }
@@ -115,7 +122,17 @@ def ok_break(g, k):
     jieba.setLogLevel(logging.WARNING)
     zc, zo = '，。、：；！？）”’】」》', '（“‘【「《'
     cuts = [0] + [i for i in range(1, len(g)) if (g[i - 1] in zc and g[i] not in zc) or (g[i] in zo and g[i - 1] not in zo)] + [len(g)]
-    seg = [(a, b) for a, b in zip(cuts, cuts[1:]) if a < k < b]
+    ch = [[a, b] for a, b in zip(cuts, cuts[1:]) if b > a]
+    solo = lambda j: sum(c.isalnum() for c in g[ch[j][0]:ch[j][1]]) <= 1
+    while True:                                            # 与 make_video.gloss_chunks 相同：单字块并到前一块；并完超过 9 个字且后面还有块时并到后一块；第一块单字并到后一块（不超过 9 个字时）
+        j = next((j for j in range(len(ch)) if solo(j) and (j or len(ch) > 1 and ch[1][1] - ch[0][0] <= 9)), None)
+        if j is None:
+            break
+        if j == 0 or ch[j][1] - ch[j - 1][0] > 9 and j + 1 < len(ch) and ch[j + 1][1] - ch[j][0] <= 9:
+            ch[j:j + 2] = [[ch[j][0], ch[j + 1][1]]]
+        else:
+            ch[j - 1:j + 1] = [[ch[j - 1][0], ch[j][1]]]
+    seg = [(a, b) for a, b in ch if a < k < b]
     if not seg:
         print('  [调试] 断点不在任何块内部：', g, k, flush=True)
         return False

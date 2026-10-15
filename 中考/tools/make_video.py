@@ -107,8 +107,14 @@ def dash(h):
     return re.sub(r'(<[^>]*>)|(?<![\w’-])([A-Za-z0-9’]+[—–])', lambda m: m.group(1) or f'<nobr>{m.group(2)}</nobr>', h)
 
 
+UNITS = (r'kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(?:gram|metre|meter)s?|(?:centi|milli)?(?:metre|meter)s?|grams?|tonnes?|tons?'
+         r'|miles?|feet|foot|inch(?:es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?')
+
+
 def esc_en(s):
-    """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。"""
+    """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。
+    数字与后面的单位之间用不换行空格（z25 截图审阅：“only about 6 / kg”“1,800 / kg”数字与单位被拆到两行）。"""
+    s = re.sub(rf'(\d)\s+(?=(?:{UNITS})(?![A-Za-z]))', '\\1\u00a0', s)
     return dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
 
 
@@ -122,12 +128,34 @@ def words(s, out):
     import logging
     import jieba
     jieba.setLogLevel(logging.WARNING)
+    toks = list(jieba.cut(s))
+    t = len(toks)                                    # 末尾至少两个字（不算标点）整体不断行，免得最后一行只剩一个字（z35 截图审阅）
+    while t > 0 and sum(c.isalnum() for c in ''.join(toks[t:])) < 2:
+        t -= 1
     res, i = [], 0
-    for w in jieba.cut(s):
+    for w in toks[:t]:
         piece = ''.join(out[i:i + len(w)])
         res.append(f'<nobr>{piece}</nobr>' if len(w) > 1 else piece)
         i += len(w)
-    return ''.join(res)
+    return ''.join(res) + (f'<nobr>{"".join(out[i:])}</nobr>' if i < len(s) else '')
+
+
+def gloss_chunks(s):
+    """释义切块：右半空白的标点之后、左半空白的标点之前切开。只有一个字（不算标点）的块（第一块除外）不能单独成块（z35 截图审阅：“注意（做）；用心（做）”的
+    “（做）”、“节日；（文化）节”的“节”单独落到一行，程序检查在 40 篇里查出 15 处）：并到前一块（“用心（做）”，意思上它属于前面）；并完超过 GLOSS_CHUNK 个字
+    （就得在前一块中间断行，如“（表示过去的 / 习惯）会；”）而后面还有块时，改为和后一块绑在一起（“（表示过去的习惯） / 会；总是会”）；
+    第一块是单字时，并完不超过 GLOSS_CHUNK 个字就和后一块绑在一起（“教 / （某人）做……”→“教（某人）做……”）。layoutcheck.ok_break 用同样的切法。"""
+    cuts = [0] + [i for i in range(1, len(s)) if (s[i - 1] in ZCLOSE and s[i] not in ZCLOSE) or (s[i] in ZOPEN and s[i - 1] not in ZOPEN)] + [len(s)]
+    ch = [[a, b] for a, b in zip(cuts, cuts[1:]) if b > a]
+    solo = lambda k: sum(c.isalnum() for c in s[ch[k][0]:ch[k][1]]) <= 1
+    while True:
+        k = next((k for k in range(len(ch)) if solo(k) and (k or len(ch) > 1 and ch[1][1] - ch[0][0] <= GLOSS_CHUNK)), None)
+        if k is None:
+            return ch
+        if k == 0 or ch[k][1] - ch[k - 1][0] > GLOSS_CHUNK and k + 1 < len(ch) and ch[k + 1][1] - ch[k][0] <= GLOSS_CHUNK:
+            ch[k:k + 2] = [[ch[k][0], ch[k + 1][1]]]
+        else:
+            ch[k - 1:k + 1] = [[ch[k - 1][0], ch[k][1]]]
 
 
 def zh_html(s, gloss=False):
@@ -150,8 +178,7 @@ def zh_html(s, gloss=False):
         else:
             out.append(esc(c))
     if gloss:
-        cuts = [0] + [i for i in range(1, len(s)) if (s[i - 1] in ZCLOSE and s[i] not in ZCLOSE) or (s[i] in ZOPEN and s[i - 1] not in ZOPEN)] + [len(s)]
-        return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[a:b], out[a:b])) for a, b in zip(cuts, cuts[1:]) if b > a)
+        return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[a:b], out[a:b])) for a, b in gloss_chunks(s))
     ish = lambda c: '\u4e00' <= c <= '\u9fff'
     groups = [(m.start() - (m.start() > 0 and ish(s[m.start() - 1])), m.end() + (m.end() < len(s) and ish(s[m.end()])))
               for m in re.finditer(r'[A-Za-z0-9]+', s)]          # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与紧挨的汉字绑在一起

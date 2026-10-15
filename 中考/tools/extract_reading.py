@@ -142,7 +142,7 @@ def main():
                 text = text.replace(e['old'], e['new'])
             paras = text.split('\n')
             # 词数不算试卷的中文注释（画面核查发现片头“全文 N 词”把 (包裹) 这类注释也算成词，40 篇都多 1—7 个）
-            words = len(re.sub(r'\s*\([^()]*[\u4e00-\u9fff][^()]*\)', '', ' '.join(paras)).split())
+            words = len([w for w in re.split(r'[\s—]+', re.sub(r'\s*\([^()]*[\u4e00-\u9fff][^()]*\)', '', ' '.join(paras))) if re.search(r'[A-Za-z0-9\u4e00-\u9fff]', w)])   # 破折号两边算两个词（z21 截图审阅：villages—just）
             if any(re.search(r'[一-鿿]', re.sub(r'\([^()]*\)', '', p).replace(ALLOW_ZH.get(tag, '\0'), '')) for p in paras):
                 errs.append(f'{tag}：括号注释以外还有汉字')
             if re.search(r'[▲★_＿]', text) or (label == '七选五' and re.search(r'(?<![\w.,$])2[1-5](?![\w.,%])', text)):
