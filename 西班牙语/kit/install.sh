@@ -15,7 +15,7 @@ while [ $# -gt 0 ]; do
     --mirror) MIRROR=1 ;;
     --python) shift; PY="${1:-}" ;;
     --python=*) PY="${1#--python=}" ;;
-    -h|--help) sed -n '2,8p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,7p' "$0"; exit 0 ;;
     *) echo "不认识的选项：$1（可用：--qwen3 --mirror --python 路径）"; exit 1 ;;
   esac
   shift
@@ -51,7 +51,11 @@ step "3/6 安装 Python 包（西班牙语/kit/requirements.txt）"
 "$VPY" -m pip install -r "$KIT/西班牙语/kit/requirements.txt" ${PIPX[@]+"${PIPX[@]}"} || die "安装 Python 包失败（网络？在国内可加 --mirror）"
 
 step "4/6 安装截图用的浏览器（Chromium，约 150 MB）"
-"$VPY" -m playwright install chromium || die "浏览器下载失败（网络？在国内可加 --mirror；加了 --mirror 仍失败就去掉它再试）"
+BROWSER_OK=1
+"$VPY" -m playwright install chromium || {
+  BROWSER_OK=0
+  echo "浏览器下载失败（网络？在国内可加 --mirror；加了 --mirror 仍失败就去掉它再试）。先把其余部分装完、做完自检，最后再说怎么补。"
+}
 if [ "$(uname -s)" = Linux ]; then
   echo "Linux：如果后面自检提示浏览器打不开，运行：sudo $VPY -m playwright install-deps chromium"
 fi
@@ -88,7 +92,12 @@ if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; 
   echo "装好后重新运行 bash install.sh 自检。"
 fi
 chmod +x "$KIT/生成视频.sh" 2>/dev/null || true
-"$VPY" "$KIT/西班牙语/tools/batch.py" --check || { echo; echo "自检没有全部通过：按上面的提示处理后，重新运行 bash install.sh（已装好的会跳过）。"; exit 1; }
+"$VPY" "$KIT/西班牙语/tools/batch.py" --check || {
+  echo
+  [ "$BROWSER_OK" = 1 ] || echo "截图用的浏览器没下载下来：换个网络（或加 / 去掉 --mirror）后重新运行 bash install.sh。"
+  echo "自检没有全部通过：按上面的提示处理后，重新运行 bash install.sh（已装好的会跳过）。"
+  exit 1
+}
 echo
 echo "安装完成。生成示例视频：./生成视频.sh es01 --voice supertonic3_M1F5_25"
 echo "详细用法见 使用说明.md"

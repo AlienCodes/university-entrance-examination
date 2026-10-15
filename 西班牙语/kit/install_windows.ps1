@@ -50,7 +50,12 @@ $req = Join-Path $Kit '西班牙语\kit\requirements.txt'
 Run $vpy (@('-m', 'pip', 'install', '-r', $req) + $pipx) '安装 Python 包失败（网络？在国内可加 -Mirror）'
 
 Step '4/6 安装截图用的浏览器（Chromium，约 150 MB）'
-Run $vpy @('-m', 'playwright', 'install', 'chromium') '浏览器下载失败（网络？在国内可加 -Mirror；加了 -Mirror 仍失败就去掉它再试）'
+$browserOk = $true
+& $vpy -m playwright install chromium
+if ($LASTEXITCODE -ne 0) {
+  $browserOk = $false
+  Write-Host '浏览器下载失败（网络？在国内可加 -Mirror；加了 -Mirror 仍失败就去掉它再试）。先把其余部分装完、做完自检，最后再说怎么补。' -ForegroundColor Yellow
+}
 
 if ($Qwen3) {
   Step '5/6 安装 Qwen3 配音要的 PyTorch 等（约 2 GB）'
@@ -79,6 +84,7 @@ if (-not (Get-Command ffmpeg -ErrorAction SilentlyContinue) -or -not (Get-Comman
 & $vpy -X utf8 (Join-Path $Kit '西班牙语\tools\batch.py') --check
 if ($LASTEXITCODE -ne 0) {
   Write-Host ''
+  if (-not $browserOk) { Write-Host '截图用的浏览器没下载下来：换个网络（或加 / 去掉 -Mirror）后重新运行安装。' -ForegroundColor Yellow }
   Write-Host '自检没有全部通过：按上面的提示处理后，重新运行安装（已装好的会跳过）。' -ForegroundColor Yellow
   exit 1
 }

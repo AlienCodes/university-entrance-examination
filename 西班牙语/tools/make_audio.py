@@ -8,7 +8,8 @@
 分段合成 → 去首尾空白 → 每段按 K 加权有声电平统一 → 5 毫秒淡入淡出 → 段间、句间插入精确的数字静音
 → 48 kHz → 去电磁音（Kokoro：固定频点 60 Hz 单向陷波；Supertonic：每段原始合成先减掉声码器帧频梳状线，见 buzz.py）→ 压缩 3:1 → 慢速电平
 → −16 LUFS → 前瞻限幅 → MP3 128k。
-成品 MP3 独立测量：响度四项（铁律 2）+ 电磁音两项（梳状线自校准 + 全频段兜底，铁律 10，见 buzz.py），任何一项不合格就不输出。
+成品 MP3 独立测量：响度四项（铁律 2，见 loudness.py：3 秒短时波动只测朗读部分，不含片头片尾的规定静音）
++ 电磁音两项（梳状线自校准 + 全频段兜底，铁律 10，见 buzz.py），任何一项不合格就不输出。
 时间：片头 1.5 秒、句间固定 0.8 秒、结尾 2 秒（铁律 3、4）。
 标点：逗号、分号、冒号、破折号停顿 0.28 秒；列举的逗号不停顿（逐条判定写在 逗号停顿.json，铁律 11）。
 
@@ -34,6 +35,7 @@ ROOT = ES.parent
 sys.path.insert(0, str(HERE))
 import c4  # noqa: E402
 import buzz  # noqa: E402
+import loudness  # noqa: E402
 G = c4.load('gaokao_tts', 'tools/tts/gaokao_tts.py')
 C4A = c4.load('cet4_make_audio', '四级/tools/make_audio.py')   # 四级的 K 加权电平、慢速电平（导入时会改 G 的几个函数，下面全部明确重设）
 sys.path.insert(0, str(HERE))                                    # 四级 make_audio 会把 四级/tools 插到最前面，这里恢复
@@ -148,11 +150,15 @@ def chain(cfg):
 def verify(mp3, items, lufs):
     import io
     import soundfile as sf
-    rep, errs = C4A._verify(mp3, items, lufs)               # 高考原版的响度四项（独立测量，ITU-R BS.1770）
     a, sr = sf.read(io.BytesIO(mp3), dtype='float32')
-    f0, r, c, e = buzz.check(a if a.ndim == 1 else a.mean(1), sr, items)
-    rep['buzz_hz'], rep['buzz_db'], rep['comb_db'] = f0, round(r, 1), round(c, 2)
-    return rep, errs + e
+    a = a if a.ndim == 1 else a.mean(1)
+    rep, errs = loudness.measure(a, sr, items, lufs)         # 高考原版的响度四项（独立测量，ITU-R BS.1770）；短时波动只测朗读部分，见 loudness.py
+    rp = buzz.report(a, sr, items)
+    rep['buzz_hz'], rep['buzz_db'], rep['comb_db'] = rp['f0'], round(rp['r'], 1), round(rp['c'], 2)
+    if rp['pr'] is not None:                                 # 全频段超过 7.5 dB 时的“前后两半都在”确认
+        rep['buzz_persist_hz'], rep['buzz_persist_db'] = rp['pf'], round(rp['pr'], 1)
+    rep['buzz_detail'] = buzz.detail(rp)
+    return rep, errs + rp['errs']
 
 
 def build(p, cfg, eng, sents=None, log=print):
@@ -241,11 +247,12 @@ def main():
     mp3 = G.encode_mp3(a48, kbps=cfg.get('kbps', 128))
     rep, errs = verify(mp3, items, cfg.get('lufs', -16.0))
     print(f"  响度：整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，短时波动 "
-          f"{rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS；电磁音：梳状线 {rep['comb_db']:+.2f} dB，全频段最强 {rep['buzz_hz']:.0f} Hz {rep['buzz_db']:+.1f} dB")
+          f"{rep['short_term_std_lu']} LU（朗读部分），峰值 {rep['peak_dbfs']} dBFS；电磁音：{rep['buzz_detail']}")
     if a.sample:                                   # 试听样片也是给人听的音频：检查不通过就不写（铁律 10），--draft 才写（文件名加 _未通过）
         if errs and not a.draft:
-            raise SystemExit(f'试听样片检查未通过，未输出文件：' + '；'.join(errs) +
-                             '\n（Supertonic 每次合成略有不同，直接再运行一次即可；Qwen3 用 --seed 换一个种子）')
+            raise SystemExit(f'试听样片检查未通过，未输出文件：' + '；'.join(errs) + (
+                '\n（选的句子太短：--sents 多选几句）' if any('测不了' in e for e in errs) else
+                '\n（Supertonic 每次合成略有不同，直接再运行一次即可；Qwen3 用 --seed 换一个种子）'))
         dst = Path(a.sample)
         if errs:
             dst = dst.with_name(dst.stem + '_未通过' + dst.suffix)

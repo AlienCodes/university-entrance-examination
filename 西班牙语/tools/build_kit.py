@@ -43,7 +43,7 @@ def skip(p):
     return p.name in CONF['exclude_names'] or p.suffix in CONF['exclude_suffixes']
 
 
-ROOT_SRC = set(CONF['root_files'].values())       # 放到工具包根目录的文件（安装脚本、说明），不在 西班牙语/kit/ 里再放一份（免得运行错的那份）
+ROOT_SRC = set(CONF['root_files'].values()) | set(CONF.get('kit_files', {}).values())   # 放到别处的文件（安装脚本、说明），不在 西班牙语/kit/ 里再放一份（免得运行错的那份）
 
 
 def copy_tree(src, dst):
@@ -277,6 +277,9 @@ def build(a, kit):
     for d in CONF['shared_dirs']:
         copy_tree(ROOT / d, kit / d)
     for name, rel in CONF['root_files'].items():
+        shutil.copy2(ROOT / rel, kit / name)
+    for name, rel in CONF.get('kit_files', {}).items():          # 工具包版的说明（替换仓库里的开发记录）
+        (kit / name).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / rel, kit / name)
     for name in CONF['executable']:
         p = kit / name

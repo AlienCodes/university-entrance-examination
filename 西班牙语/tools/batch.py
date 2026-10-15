@@ -15,8 +15,10 @@
    - 视频“最新”= 成品和 _核查.json 都在、核查全部通过、用的是同一个音色，并且 文章、插图、音频、背景样式、--scale 都和
      上次生成时一样（指纹记在 最终视频/批量生成记录.json）。
 3. 音频检查没通过（响度、电磁音）时自动重做：设了随机种子的音色（Qwen3）整篇换下一个种子（1234 → 1235 → 1236，整篇只用一个种子），
-   Supertonic 直接重新合成（每次合成都带随机性：2026-10-15 工具包实测 es01 三次的梳状线 1.07、2.29、0.72 dB，第三次通过）；
-   最多 --tries 次（默认 Qwen3 3 次、Supertonic 6 次）。视频的检查没通过不重试（画面、时间轴的问题重做也一样）。
+   Supertonic 直接重新合成（每次合成都带随机性：2026-10-15 工具包实测 es01 三次的梳状线 1.07、2.29、0.72 dB，第三次通过；
+   新写的短文每次通过的机会更小——2 句的 es02 约 3/8、6 句的 es03 约 1/6，主要卡在梳状线残留和短时响度波动）；
+   最多 --tries 次（默认 Qwen3 3 次、Supertonic 10 次）。“朗读部分太短、测不了”这类重做也没用的，不重试。
+   视频的检查没通过不重试（画面、时间轴的问题重做也一样）。
 4. 任何一步失败就停下，说清楚是哪一篇、哪一步、怎么处理；最后打印汇总表。成品在 西班牙语/最终视频/。
 
 所有检查都在 make_audio.py / make_video.py 里（响度四项、电磁音两项、片头 1.5 秒、句间 0.8 秒、结尾 2 秒、4K、30 帧、画面与朗读逐句一致……），
@@ -309,9 +311,17 @@ def self_check():
         for x in pr:
             say(f'       {x}')
     bad = probs or b or not ok_any
-    if voice_problems(VOICES['_final']):
+    default_ok = not voice_problems(VOICES['_final'])
+    if not default_ok:
         say(f'提示：默认音色 {VOICES["_final"]} 还不能用。{fix_hint(VOICES["_final"])}')
-    say('自检通过，可以生成视频。' if not bad else '自检没有通过，请按上面的提示处理。')
+    if bad:
+        say('自检没有通过，请按上面的提示处理。')
+    elif default_ok:
+        say('自检通过，可以生成视频。')
+    else:
+        ready = sorted((k for k in VOICES if not k.startswith('_') and not voice_problems(k)), key=lambda k: k != 'supertonic3_M1F5_25')
+        say(f'自检通过，但默认音色还不能用：现在生成视频要在命令里加 --voice {ready[0]}'
+            f'（例如 ./生成视频.sh es01 --voice {ready[0]}；Windows 用 生成视频.bat）。')
     return 0 if not bad else 1
 
 
@@ -326,7 +336,7 @@ def main():
                     help='背景样式：' + '，'.join(f'{k} {v["name"]}' for k, v in MV.STYLES.items()) + '（默认 C；预览见 西班牙语/背景样式/）')
     ap.add_argument('--scale', type=int, help='画面倍数：2 = 3840×2160（4K，视频默认）；--stills 默认 1（1920×1080）')
     ap.add_argument('--force', action='store_true', help='已是最新也重新生成')
-    ap.add_argument('--tries', type=int, help='音频检查没通过时最多做几次：默认 Qwen3（换种子，每次十几分钟）3 次，Supertonic（重新合成，每次两三分钟）6 次')
+    ap.add_argument('--tries', type=int, help='音频检查没通过时最多做几次：默认 Qwen3（换种子，每次十几分钟）3 次，Supertonic（重新合成，短文每次不到 1 分钟、es01 约 2 分钟）10 次')
     ap.add_argument('--stills', action='store_true', help='只出截图（不生成音频和视频），写到 西班牙语/截图/<篇目>_<背景>/')
     ap.add_argument('--list', action='store_true', help='列出音色、背景、篇目和生成情况')
     ap.add_argument('--check', action='store_true', help='安装自检')
@@ -381,18 +391,21 @@ def main():
         else:
             say(f'\n{head}：生成音频（{why}）')
             cfg = VOICES[voice]
-            tries = max(1, a.tries or (3 if 'seed' in cfg else 6))
+            tries = max(1, a.tries or (3 if 'seed' in cfg else 10))
             seeds = [None] + ([cfg['seed'] + i for i in range(1, tries)] if 'seed' in cfg else [None] * (tries - 1))
             for i, seed in enumerate(seeds):
                 args = [tools / 'make_audio.py', pid, '--voice', voice] + (['--seed', seed] if seed is not None else [])
                 rc, tail = run(args)
                 if not rc:
                     break
-                retry = '检查未通过' in tail or '都不正常' in tail
+                retry = ('检查未通过' in tail or '都不正常' in tail) and '测不了' not in tail      # 太短测不了：重做也一样
                 if not retry or i == len(seeds) - 1:
                     rows.append((pid, '失败', '—', time.time() - t0))
                     what = '朗读音频检查没通过' + (f'（已试 {i + 1} 次）' if retry else '')
-                    return stop(rows, f'{pid} {what}，看上面的输出。{HELP}')
+                    more = ('' if not retry else
+                            '可以加大次数再运行同一条命令（如 --tries 20）；' + ('或换 Qwen3 音色（检查几乎一次就过，但慢）。' if 'seed' not in cfg
+                                                                         else '或换一个音色。'))
+                    return stop(rows, f'{pid} {what}，看上面的输出。{more}{HELP}')
                 nxt = seeds[i + 1]
                 say(f'  检查没通过，{"换种子 " + str(nxt) if nxt is not None else "重新合成"}再做一次（第 {i + 2}/{len(seeds)} 次）')
             astat = '新生成' + (f'（种子 {seed}）' if seed is not None else '')

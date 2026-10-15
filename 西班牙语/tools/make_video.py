@@ -17,10 +17,11 @@
 - 片头静音 1.5 秒；句间 0.8 秒（读完后画面停留 0.5 秒再切换，0.3 秒后开读）；结尾静音 ≥ 2 秒
 - 3840×2160，恒定 30 帧逐屏编码后无损拼接；生成后立即运行高考同一套 verify_videos.check 核查，任何一项不通过就删除成品
 西班牙语不同的地方：
-- 词条数据来自 西班牙语/文章/<id>.json（w：h 词头、pos 词性、zh 释义、surface 句中原形），词性按《现代西班牙语》习惯（m. f. adj. adv. tr. loc.）
+- 词条数据来自 西班牙语/文章/<id>.json（w：h 词头、pos 词性、zh 释义、surface 句中要高亮的原样文字），词性按《现代西班牙语》习惯（m. f. adj. adv. tr. loc.）
 - 多词词条（comida típica、cada vez que……）算短语（砖红色）；短语不显示 loc.，名词短语保留阴阳性（f. / m.）
 - 片头：西语标题 + 中文标题 + 文档里的插图；页眉「SPANISH READING」
 - 电磁音检查：在 2–16 kHz 全频段找窄带峰（新的语音模型声码器频点和 Kokoro 不同，不能只查四级那 9 个频点）
+- 响度四项、限值同高考，但 3 秒短时波动只测朗读部分（片头片尾的规定静音不进 3 秒窗，见 loudness.py）；另查逗号、分号、冒号、破折号处停顿 0.28 秒且无声
 输入：西班牙语/文章/<id>.json、西班牙语/audio/timings.json（make_audio.py 生成）。输出：西班牙语/最终视频/。
 """
 import argparse
@@ -174,12 +175,13 @@ def load(pid):
     p = json.loads((ES / '文章' / f'{pid}.json').read_text('utf-8'))
     for k, s in enumerate((s for para in p['paras'] for s in para), 1):
         if not s['w']:
-            raise SystemExit(f'第 {k} 句没有标注单词（铁律 1）')
+            raise SystemExit(f'第 {k} 句没有标生词：每一句至少要标一个（"w" 里至少一个词条）')
         taken = []
         for w in s['w']:
             n = s['es'].count(w['surface'])
             if n != 1:
-                raise SystemExit(f'第 {k} 句：词条「{w["h"]}」的原形「{w["surface"]}」在句中出现 {n} 次（必须恰好 1 次）')
+                raise SystemExit(f'第 {k} 句：词条「{w["h"]}」的 surface（句中要高亮的原样文字）「{w["surface"]}」在这一句里出现 {n} 次'
+                                 '（必须恰好 1 次，大小写、重音都要和原文一模一样；出现多次就多写几个字，让它只匹配一处）')
             a = s['es'].index(w['surface'])
             b = a + len(w['surface'])
             if any(a < y and x < b for x, y in taken):
@@ -280,15 +282,39 @@ def render_slides(slides, outdir, scale):
     return sizes
 
 
-# ---------------------------------------------------------------- 电磁音（梳状线自校准 + 全频段兜底，见 buzz.py）
-def buzz_check(mp4, times):
-    import numpy as np
+# ---------------------------------------------------------------- 西语自己的几项（对视频音轨独立测量）
+def spanish_checks(mp4, tm, res):
+    """在高考 / 四级同一套核查结果 res 上：
+    ① 响度一致：同样四项、同样限值，3 秒短时波动只测朗读部分（片头片尾的规定静音另有两项检查），见 loudness.py；
+    ② 逗号、分号、冒号、破折号处的停顿：每处正好 clause_pause（0.28 秒）且确实无声（和句间停顿同一标准：两头各让 0.08 秒，峰值 < −50 dB）；
+    ③ 电磁音：梳状线自校准 + 全频段兜底，见 buzz.py。返回新的结果列表。"""
     import buzz
-    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(mp4), '-vn', '-ac', '1', '-ar', '48000', '-f', 'f32le', '-'],
-                         capture_output=True, check=True).stdout
-    f0, r, c, e = buzz.check(np.frombuffer(raw, np.float32), 48000, times)
-    return ('无电磁音（视频音轨独立测量）', not e,
-            f'梳状线 {c:+.2f} dB（上限 {buzz.COMB_MAX_DB:+.1f}）；全频段最强 {f0:.0f} Hz {r:+.1f} dB（上限 {buzz.FULL_MAX_DB:+.1f}）')
+    import loudness
+    from verify_videos import audio_of, peak_db
+    x, sr = audio_of(mp4)
+    times = tm['sentences']
+    rep, errs = loudness.measure(x, sr, times, tm.get('voice_cfg', {}).get('lufs', -16.0))
+    res = [(loudness.NAME, not errs, loudness.detail(rep, errs)) if n == loudness.NAME else (n, c, d) for n, c, d in res]
+    cp = tm.get('voice_cfg', {}).get('clause_pause')
+    gaps, bad, loud = [], [], []
+    for k, t in enumerate(times, 1):
+        ps = t.get('parts')
+        if not ps or (t.get('segments') and len(ps) != len(t['segments'])):
+            bad.append(k)
+            continue
+        for (a0, a1), (b0, b1) in zip(ps, ps[1:]):
+            gaps.append(b0 - a1)
+            if cp is None or abs(b0 - a1 - cp) > 0.01:
+                bad.append(k)
+            if peak_db(x[int((a1 + 0.08) * sr):int((b0 - 0.08) * sr)]) > -50:
+                loud.append(k)
+    res.append(('逗号、分号、冒号、破折号处停顿 0.28 秒且无声', cp == 0.28 and not bad and not loud,
+                (f'{len(gaps)} 处，{min(gaps):.3f}–{max(gaps):.3f} 秒，全部无声' if gaps else '这篇没有句中停顿')
+                + (f'；时长不对或没有分段记录：第 {sorted(set(bad))} 句' if bad else '')
+                + (f'；有声音：第 {sorted(set(loud))} 句' if loud else '') + ('' if cp == 0.28 else f'；音色设置的停顿是 {cp} 秒')))
+    rp = buzz.report(x, sr, times)
+    res.append(('无电磁音（视频音轨独立测量）', not rp['errs'], buzz.detail(rp)))
+    return res
 
 
 def video_name(p):
@@ -377,8 +403,8 @@ def main():
     pv = {'year': '', 'paper': '', 'part': '', 'title': '',
           'paras': [[{'en': s['es'], 'w': s['w']} for s in para] for para in p['paras']]}
     tmv = {**tm, 'sentences': [{**t, 'text': t['text']} for t in times]}
-    res = [r for r in check(out / name, pv, tmv) if not r[0].startswith('文件名')]
-    res.append(buzz_check(out / name, times))
+    res = [(n.replace('画面英文', '画面西语原文'), c, d) for n, c, d in check(out / name, pv, tmv) if not n.startswith('文件名')]
+    res = spanish_checks(out / name, tm, res)
     fails = [f'{n}：{d}' for n, c, d in res if not c]
     for n, c, d in res:
         print(f"  {'✅' if c else '❌'} {n}：{d}")
