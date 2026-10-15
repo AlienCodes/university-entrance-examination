@@ -20,6 +20,17 @@ TITLE_MAX, DESC_MAX, TAG_MAX, TAG_LEN, DYN_MAX = 80, 2000, 10, 20, 233     # 粉
 FIRST = ['北京', '山东', '济南', '烟台']      # 用户 2026-10-15：每年北京卷第一，山东卷第二，济南卷第三（烟台同为山东的市卷，接在济南后面）
 
 
+# B 站 40P 的实际顺序（用户 2026-10-15 在投稿页自己排好后截图给出；与合集下载包的顺序不同，以此为准生成分 P 目录和分 P 标题）
+BILIBILI = ['z01', 'z02', 'z10', 'z11', 'z12', 'z13', 'z03', 'z04', 'z05', 'z14', 'z15', 'z08', 'z09', 'z23', 'z24', 'z28', 'z29', 'z07', 'z27', 'z21',
+            'z22', 'z32', 'z30', 'z31', 'z33', 'z34', 'z06', 'z26', 'z25', 'z19', 'z16', 'z17', 'z18', 'z20', 'z35', 'z36', 'z37', 'z38', 'z39', 'z40']
+
+
+def bilibili_order(P):
+    by = {p['id']: p for p in P}
+    assert sorted(BILIBILI) == sorted(by), 'B 站顺序必须恰好包含全部篇目、不重复'
+    return [by[i] for i in BILIBILI]
+
+
 def release_order(P):
     """合集顺序（B 站 40P、合集下载包共用）：先按年份从新到旧；同一年里北京、山东、济南、烟台在前，其余按原来的省份顺序（行政区划代码，
     省卷在前、市卷在后）；同一地区按原来的篇目顺序。"""
@@ -55,7 +66,7 @@ def main():
     durs = [float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0',
                                   str(C4 / '最终视频' / MV.video_name(p))], capture_output=True, text=True).stdout) for p in P]
     avg_min, total_min = round(sum(durs) / len(durs) / 60), round(sum(durs) / 60)
-    plist = '\n'.join(f"P{k} {file_name(p)[:-4]}" for k, p in enumerate(order, 1))
+    plist = '\n'.join(f"P{k} {file_name(p)[:-4]}" for k, p in enumerate(bilibili_order(P), 1))
     regions_kw = '、'.join(r + '中考英语' for r in st['regions'])
     # 用户 2026-10-15：简介要特别详细，尽量让需要的人都能搜到——写清是什么、视频里有什么、适合谁、怎么用、40P 目录（地区 + 题目）、题材、覆盖试卷和搜索词
     desc = f"""【这是什么】{y0}—{y1} 年 {n} 篇中考英语阅读真题（{len(st['regions'])} 个省市、{papers} 份试卷，阅读 C/D 压轴篇 {st['cd']} 篇），一句一屏逐句精读，专门用来记忆中考重点单词：看完 {n} 篇 = 过一遍 {heads} 个中考词汇（{st['single']} 个单词 + {st['phr']} 个短语），{n} 篇共 {st['words']} 词、{sents} 句。
@@ -74,7 +85,7 @@ def main():
 2. 第一遍看翻译、认生词；第二遍只看英文、跟着朗读读；第三遍遮住右侧生词栏，看编号回忆意思；
 3. 记不住的词写下来，隔几天再看一遍对应的那一 P。
 
-【分P目录】按年份从新到旧，每年北京、山东、济南、烟台在前，其余按省份：
+【分P目录】按年份从新到旧，北京、山东卷在前：
 {plist}
 
 【文章题材】说明文 {kinds['说明文']} 篇、记叙文 {kinds['记叙文']} 篇、议论文 {kinds['议论文']} 篇，话题有人工智能、机器人、海洋、气候变化、环保、动物、中医、中国诗歌、贝聿铭、志愿服务、睡眠健康、情绪管理、人际交往等。
@@ -89,7 +100,7 @@ def main():
            f"每天1篇、每篇约{avg_min}分钟，{n}天刷完！北京、山东、济南、深圳、成都……你的城市在不在里面？评论区告诉我～"
            f"{y1 + 1}中考的同学先收藏，备考一定用得上！#中考英语# #中考单词# #英语阅读理解#")
     tags = ['中考英语', '中考英语阅读', '中考阅读理解', '中考单词', '中考词汇', '中考真题', '初中英语', f'{y1 + 1}中考', '英语阅读精读', '背单词']
-    parts = [f"P{k} {p['year']}{p['region']}中考英语 {p['passage']}｜{p.get('title') or ''}" for k, p in enumerate(release_order(P), 1)]
+    parts = [f"P{k} {file_name(p)[:-4]}" for k, p in enumerate(bilibili_order(P), 1)]      # 与投稿页上的分 P 标题相同
     errs = []
     for name, t in (('标题', title), ('备选标题', alt)):
         if len(t) > TITLE_MAX:
@@ -125,7 +136,7 @@ def main():
 
 {'　'.join(tags)}
 
-## 分 P 标题（按 P1—P{n} 顺序上传，与合集下载包里的先后顺序一致）
+## 分 P 标题（B 站投稿页上的实际顺序，用户 2026-10-15 排定）
 
 """ + '\n'.join(parts) + '\n'
     out = C4 / '封面' / 'B站投稿文案.md'
