@@ -1,6 +1,11 @@
 """生成西班牙语逐句精读视频（沿用四级设计方案 C「杂志编号注释」，用户给的参考图就是四级视频的一帧）。
 
-    /opt/ttsenv/bin/python 西班牙语/tools/make_video.py es01 [--voice 音色名] [--scale 2]
+    /opt/ttsenv/bin/python 西班牙语/tools/make_video.py es01 [--voice 音色名] [--scale 2] [--style C|1|2|3|4|5|6]
+
+背景样式（--style，默认 C）：C = 四级设计方案 C（下面描述的默认画面）；1–6 = 中考设计的 6 种背景（晴空校园、手账笔记本、教室黑板、
+活页单词卡、紫黄撞色、柔彩插画），CSS 在 西班牙语/tools/样式/（索引 styles.json），字体在 西班牙语/tools/fonts/。
+样式只换颜色、字体、装饰和片头，不改版面尺寸、时间轴、编码和核查；选了 1–6 时成品文件名末尾加「（背景 N 名称）」。
+预览图和每种样式的命令见 西班牙语/背景样式/README.md。
 
 画面、时间轴、编码、成品核查都沿用 四级/tools/make_video.py（不改四级程序，在这里覆盖西班牙语需要不同的部分）：
 - 米白底、左侧墨绿竖带；西语原文 EB Garamond，生词右上角带编号，单词墨绿、短语砖红；中文思源宋体；右侧词汇栏按编号一一对应
@@ -35,6 +40,9 @@ C4V = c4.load('cet4_make_video', '四级/tools/make_video.py')      # 四级的�
 W, H = C4V.W, C4V.H
 MIN_FS, MIN_VS = C4V.MIN_FS, C4V.MIN_VS
 LETTERS = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+")
+STYLE_DIR = HERE / '样式'
+STYLES = {s['key']: s for s in json.loads((STYLE_DIR / 'styles.json').read_text('utf-8'))['styles']}
+STYLE = 'C'                     # 当前背景样式（main() 按 --style 设置）
 
 CSS_ES = """
 .ttl{right:110px}
@@ -45,7 +53,8 @@ CSS_ES = """
 .ttl .sub{font-size:52px;color:#3c4642}
 .ttl figure{width:640px;flex:none;background:#fff;padding:14px;border-radius:6px;box-shadow:0 2px 0 #e6e1d4,0 18px 40px rgba(31,92,74,.10)}
 .ttl figure img{display:block;width:100%;border-radius:3px}
-.v .pos{font-style:italic;font-family:'EB Garamond';color:#6b746f;margin-left:8px}
+.legend .lw{background:#1f5c4a}.legend .lp{background:#a14a2a}
+.t-es{font-family:'EB Garamond'}
 """
 
 
@@ -55,8 +64,12 @@ def esc(s):
 
 def page(body):
     fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()
-    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">'
-            f'<style>{C4V.CSS}{CSS_ES}</style></head><body><div class="band"></div>{body}</body></html>')
+    extra = theme = ''
+    if STYLE != 'C':            # 背景样式 1–6：样式字体 + 样式 CSS（追加在通用样式之后覆盖颜色、字体、装饰）
+        extra = f'<link rel="stylesheet" href="{(HERE / "fonts" / "fonts.css").as_uri()}">'
+        theme = f'<style>{(STYLE_DIR / STYLES[STYLE]["file"]).read_text("utf-8")}</style>'
+    return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}'
+            f'<style>{C4V.CSS}{CSS_ES}</style>{theme}</head><body><div class="band"></div>{body}</body></html>')
 
 
 def load(pid):
@@ -101,7 +114,7 @@ def vocab_html(s):
 
 
 def head(p):
-    return f'每日一练 · <i lang="es" style="font-family:\'EB Garamond\'">{esc(p["title_es"])}</i>　{esc(p["title_zh"])}'
+    return f'每日一练 · <i lang="es" class="t-es">{esc(p["title_es"])}</i>　{esc(p["title_zh"])}'
 
 
 def words(p):
@@ -115,7 +128,7 @@ def title_slide(p):
     return page(f'''<div class="ttl"><div class="tag">SPANISH · READING · 西班牙语阅读</div>
       <div class="row"><div class="txt"><h1 lang="es">{esc(p["title_es"])}</h1><div class="sub">{esc(p["title_zh"])}</div></div>{fig}</div>
       <div class="meta"><span>{esc(p.get("series") or "")}</span><span>全文 {words(p)} 词 · {n} 句 · 逐句精读</span></div></div>
-      <div class="legend"><span><em style="background:#1f5c4a"></em>单词</span><span><em style="background:#a14a2a"></em>短语</span></div>''')
+      <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>''')
 
 
 def sentence_slide(p, s, k, n):
@@ -128,6 +141,9 @@ def sentence_slide(p, s, k, n):
 def render_slides(slides, outdir, scale):
     """逐屏截图；句子屏自动缩放字号，放不下或字太小就报错（不硬挤）。返回每屏的 (英文字号, 词汇字号)。"""
     from playwright.sync_api import sync_playwright
+    vs0 = STYLES[STYLE].get('vs_start', 30)          # 词汇栏起始字号（放不下自动缩小）；C 与四级相同 30px
+    assert C4V.FIT.count('vs=30;') == 1
+    fit = C4V.FIT.replace('vs=30;', f'vs={vs0};')
     sizes = []
     with sync_playwright() as pw:
         exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
@@ -143,7 +159,7 @@ def render_slides(slides, outdir, scale):
             if missing:
                 raise SystemExit(f'第 {i} 屏字体加载失败：{missing}')
             if i:
-                fs, vs, fits = pg.evaluate(C4V.FIT)
+                fs, vs, fits = pg.evaluate(fit)
                 if not fits or fs < MIN_FS or vs < MIN_VS:
                     raise SystemExit(f'第 {i} 句一屏放不下（原文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）')
                 sizes.append((fs, vs))
@@ -164,7 +180,8 @@ def buzz_check(mp4, times):
 
 
 def video_name(p):
-    return f'西班牙语 每日一练 {p["title_es"]} {p["title_zh"]}.mp4'
+    tag = '' if STYLE == 'C' else f'（背景 {STYLE} {STYLES[STYLE]["name"]}）'
+    return f'西班牙语 每日一练 {p["title_es"]} {p["title_zh"]}{tag}.mp4'
 
 
 def main():
@@ -177,13 +194,18 @@ def main():
     ap.add_argument('--name', help='输出文件名（默认「西班牙语 每日一练 标题.mp4」）')
     ap.add_argument('--stills', action='store_true', help='只截图（写到 --out），不编码视频')
     ap.add_argument('--draft', action='store_true', help='草稿：核查不通过也保留成品（只打印问题）')
+    ap.add_argument('--style', default='C', choices=list(STYLES),
+                    help='背景样式：' + '，'.join(f'{k} {v["name"]}' for k, v in STYLES.items()) + '（默认 C；预览见 西班牙语/背景样式/）')
     a = ap.parse_args()
+    global STYLE
+    STYLE = a.style
 
     p = load(a.pid)
     sents = [s for para in p['paras'] for s in para]
     free = shutil.disk_usage(ES).free / 2**30
-    if free < 3:                                    # 踩坑 29
-        raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')
+    need = 0.5 if a.stills else 3                   # 踩坑 29（只截图时只写十几张 PNG）
+    if free < need:
+        raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 {need} GB），先清理临时文件再生成视频')
     tmp = Path(tempfile.mkdtemp(prefix='esvideo_'))
     atexit.register(shutil.rmtree, tmp, True)
     slides = [title_slide(p)] + [sentence_slide(p, s, k, len(sents)) for k, s in enumerate(sents, 1)]
