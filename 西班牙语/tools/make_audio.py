@@ -1,8 +1,9 @@
 """生成西班牙语朗读音频（和四级同一条处理链、同一套检查）。
 
-    /opt/ttsenv/bin/python 西班牙语/tools/make_audio.py es01                       # 用 voices.json 里 _final 指定的音色
-    /opt/ttsenv/bin/python 西班牙语/tools/make_audio.py es01 --voice 名字
-    /opt/ttsenv/bin/python 西班牙语/tools/make_audio.py es01 --voice 名字 --sample 试听.mp3 --sents 1-3   # 试听样片
+    python 西班牙语/tools/make_audio.py es01                       # 用 voices.json 里 _final 指定的音色
+    python 西班牙语/tools/make_audio.py es01 --voice 名字
+    python 西班牙语/tools/make_audio.py es01 --voice 名字 --sample 试听.mp3 --sents 1-3   # 试听样片
+（python = 工具包 .venv 里的 Python；开发机上是装好处理链依赖的那个环境。）
 
 处理链沿用高考 tools/tts/gaokao_tts.py + 四级/tools/make_audio.py（不改它们，在这里组合）：
 分段合成 → 去首尾空白 → 每段按 K 加权有声电平统一 → 5 毫秒淡入淡出 → 段间、句间插入精确的数字静音
@@ -17,6 +18,8 @@
 worker 的 python 省略或写 "auto" = 用运行本程序的同一个 Python（工具包只有一个环境）；model_dir、ref_audio 写相对路径时
 按 西班牙语/ 文件夹解析（工具包里写 models/supertonic3 这样的相对路径，换电脑、换文件夹都不用改）。绝对路径照旧可用。
 列举的逗号按篇目登记在 逗号停顿.json：{"es01": {"2": [{"after": "lugares nuevos,", "why": …}]}, …}（键 = 篇目 id → 第几句）。
+开始合成前先查音色能不能用（模型文件、参考录音、Python 包，voice_check.py，和 batch.py 同一份）：不能用就用中文说清楚缺什么、
+怎么装，退出码 1，不会合成到一半才冒出一大段英文报错。
 """
 import argparse
 import json
@@ -34,6 +37,7 @@ ES = HERE.parent
 ROOT = ES.parent
 sys.path.insert(0, str(HERE))
 import c4  # noqa: E402
+import voice_check  # noqa: E402
 import buzz  # noqa: E402
 import loudness  # noqa: E402
 G = c4.load('gaokao_tts', 'tools/tts/gaokao_tts.py')
@@ -122,7 +126,10 @@ class Worker:
             td = Path(td)
             (td / 'in.json').write_text(json.dumps({'texts': texts, 'cfg': self.cfg}, ensure_ascii=False), 'utf-8')
             cmd = [self.cfg['python'], str(HERE / 'engines' / self.cfg['script']), str(td / 'in.json'), str(td)]
-            subprocess.run(cmd, check=True)
+            rc = subprocess.run(cmd).returncode
+            if rc:                                # 引擎自己的报错已经显示在上面；这里只用中文说一句，不再叠一层 Python 报错
+                raise SystemExit(f'配音引擎 {self.cfg["script"]} 运行出错（退出码 {rc}），原因看上面的输出。'
+                                 + voice_check.fix_hint(self.cfg))
             out = []
             for i in range(len(texts)):
                 a, sr = sf.read(str(td / f'{i:03d}.wav'), dtype='float32')
@@ -227,11 +234,16 @@ def main():
     ap.add_argument('--draft', action='store_true', help='草稿：检查不通过也输出（问题写进 timings.json 的 draft_issues）')
     ap.add_argument('--seed', type=int, help='换随机种子（只对设了 seed 的音色有效，如 Qwen3）：检查没通过时整篇换下一个种子重做（batch.py 自动做）')
     a = ap.parse_args()
-    p = c4.load('es_make_video', '西班牙语/tools/make_video.py').load(a.pid)
     name = a.voice or VOICES['_final']
     if name not in VOICES or name.startswith('_'):
         raise SystemExit(f'voices.json 里没有音色 {name}（可选：{", ".join(k for k in VOICES if not k.startswith("_"))}）')
     cfg = VOICES[name]
+    probs = voice_check.voice_problems(cfg)
+    if probs:
+        ready = [k for k in VOICES if not k.startswith('_') and k != name and not voice_check.voice_problems(VOICES[k])]
+        raise SystemExit(f'音色 {name} 还不能用：\n  ' + '\n  '.join(probs) + '\n' + voice_check.fix_hint(cfg)
+                         + (f'\n现在能用的音色：{"、".join(ready)}（加 --voice 音色名）' if ready else ''))
+    p = c4.load('es_make_video', '西班牙语/tools/make_video.py').load(a.pid)
     if a.seed is not None:
         if 'seed' not in cfg:
             raise SystemExit(f'音色 {name} 没有随机种子设置，--seed 无效')

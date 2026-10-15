@@ -7,8 +7,8 @@
  "kit_files_说明": "工具包里换成给老师看的版本（仓库的 西班牙语/README.md 是开发记录，提到仓库里的 CLAUDE.md 等，工具包里没有）。键 = 工具包里的位置，值 = 仓库里的来源",
  "exclude_names": ["__pycache__", ".DS_Store"],
  "exclude_suffixes": [".pyc", ".pyo"],
- "exclude_paths": ["西班牙语/tools/test_buzz.py", "西班牙语/tools/build_kit.py"],
- "exclude_paths_说明": "test_buzz.py 要用仓库里中考 40 篇的音频做标定，工具包里没有，不能运行；build_kit.py 是在仓库里组装工具包用的",
+ "exclude_paths": ["西班牙语/tools/test_buzz.py", "西班牙语/tools/build_kit.py", "西班牙语/kit/kit_config.json"],
+ "exclude_paths_说明": "test_buzz.py 要用仓库里中考 40 篇的音频做标定，工具包里没有，不能运行；build_kit.py 和本文件 kit_config.json 是在仓库里组装工具包用的（本文件里有开发机的模型路径 models.*.local，不放进工具包）。另外 build_kit.py 自动去掉没有音色用到的引擎脚本（engines/kokoro_worker.py）",
  "shared_files": [
   "tools/tts/gaokao_tts.py",
   "tools/tts/textnorm.py",

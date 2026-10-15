@@ -1,6 +1,6 @@
 """语音识别回转比对（内容核查）：成品 MP3 逐句送进语音识别，和原文逐词比较，找出漏读、多读、读错的词。
 
-    /opt/es_tts_envs/sherpa/bin/python 西班牙语/tools/qa_asr.py --model 识别模型文件夹 es01 成品.mp3 [--sents 1-9] [--out 结果.md] [--json 结果.json]
+    python 西班牙语/tools/qa_asr.py --model 识别模型文件夹 es01 成品.mp3 [--sents 1-9] [--out 结果.md] [--json 结果.json]
 
 为什么要做：Qwen3-TTS 是大语言模型式的合成，偶尔会跳词、重复、读错；Supertonic 也可能吞音。画面英文/西语和朗读不一致
 就是错误视频（踩坑 20、27），所以每个成品都要识别一遍，每一处差异都要人工判定是“识别器听错”还是“合成真读错”。
@@ -8,7 +8,7 @@
 识别模型：sherpa-onnx 的 NeMo Parakeet TDT 0.6B v3（多语种，含西班牙语，int8）：
     https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8.tar.bz2
     （约 490 MB，解压后传 --model 解压出来的文件夹；用完可以删掉）
-运行环境：sherpa-onnx 1.13.8 的 Python（/opt/es_tts_envs/sherpa/bin/python），另需系统里有 ffmpeg（解码 MP3）。
+运行环境：装了 sherpa-onnx（≥ 1.13.8）的 Python（工具包 .venv 里的 Python 已经装好），另需系统里有 ffmpeg（解码 MP3）。
 
 切句：成品里句与句之间是 0.8 秒数字静音、句内停顿只有 0.28 秒，所以按“≥ 0.6 秒的静音”切开，
 切出来的句数必须等于原文句数（--sents 指定时等于指定的句数），对不上就报错（不猜）。

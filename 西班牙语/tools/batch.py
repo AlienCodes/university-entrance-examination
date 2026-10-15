@@ -9,7 +9,8 @@
 
 做法（一次启动、自动做到底）：
 1. 开工前先把要做的每一篇全部检查一遍（文章格式、每句都有生词、生词在句中恰好出现一次、朗读文本没有数字和符号、
-   逗号停顿.json 能匹配上），还有音色模型、ffmpeg 是否就绪。有一处不对就在开工前报错，不会做到一半才发现。
+   逗号停顿.json 能匹配上），还有音色模型、ffmpeg 是否就绪。有问题就在开工前把所有篇目的所有问题一次列出来（哪一篇、第几句）再停下，
+   不会做到一半才发现，也不用改一处、跑一次。
 2. 逐篇：音频 → 视频。已经是最新的就跳过（--force 强制重做）：
    - 音频“最新”= timings.json 里有这一篇、检查全部通过、每句原文和停顿切分与现在的文章一致、音色设置没改过（种子、路径不算）；
    - 视频“最新”= 成品和 _核查.json 都在、核查全部通过、用的是同一个音色，并且 文章、插图、音频、背景样式、--scale 都和
@@ -42,6 +43,7 @@ HERE = Path(__file__).resolve().parent
 ES = HERE.parent
 sys.path.insert(0, str(HERE))
 import c4  # noqa: E402
+import voice_check as VC  # noqa: E402
 
 ART = ES / '文章'
 AUD = ES / 'audio'
@@ -64,48 +66,91 @@ def article_ids(names):
         if not ids:
             raise SystemExit(f'{ART} 里没有文章（*.json）')
         return ids
-    ids = []
+    ids, miss = [], []
     for n in names:
         n = Path(n).stem if n.endswith('.json') else n
         if not (ART / f'{n}.json').is_file():
-            raise SystemExit(f'找不到文章 {ART / (n + ".json")}（篇目名就是文件名，不带 .json）')
-        if n not in ids:
+            miss.append(str(ART / f'{n}.json'))
+        elif n not in ids:
             ids.append(n)
+    if miss:
+        raise SystemExit('找不到文章：' + '、'.join(miss) + '（篇目名就是文件名，不带 .json）')
     return ids
 
 
+def tag(pid, msg):
+    """问题前面加上篇目名；原话里已经有篇目名的（make_audio.py 的报错）不再重复。"""
+    msg = str(msg).strip()
+    return msg if re.search(rf'(?<![\w-]){re.escape(pid)}(?![\w-])', msg) else f'{pid} {msg}'
+
+
 def validate(pid, MA, MV):
-    """开工前检查一篇：格式、生词（make_video.load）、朗读文本与逗号停顿（make_audio.segments）。返回文章。"""
+    """开工前检查一篇，把能查到的问题全部找出来（不是查到第一处就停）：格式、每句的原文 / 翻译 / 生词
+    （生词的检查和 make_video.load 一样，最后再用 make_video.load 本身核对一遍）、朗读文本与逗号停顿（make_audio.segments）。
+    返回 (文章, 问题列表)；有问题时文章是 None。每条问题都以篇目名开头，如“es03 第 1 句没有标生词……”。"""
+    probs = []
     try:
         raw = json.loads((ART / f'{pid}.json').read_text('utf-8'))
+    except UnicodeDecodeError:
+        return None, [f'{pid}.json 不是 UTF-8 编码：用文本编辑器“另存为”，编码选 UTF-8']
     except json.JSONDecodeError as e:
-        raise SystemExit(f'{pid}.json 不是合法的 JSON：第 {e.lineno} 行第 {e.colno} 列 {e.msg}（常见原因：少了逗号、引号是中文引号、最后一项后面多了逗号）')
+        return None, [f'{pid}.json 不是合法的 JSON：第 {e.lineno} 行第 {e.colno} 列 {e.msg}'
+                      '（常见原因：少了逗号、引号是中文引号、最后一项后面多了逗号）']
+    if not isinstance(raw, dict):
+        return None, [f'{pid}.json 最外层必须是 {{ … }}']
     miss = [k for k in ('id', 'title_es', 'title_zh', 'paras') if not raw.get(k)]
     if miss:
-        raise SystemExit(f'{pid}.json 缺少 {miss}')
-    if raw['id'] != pid:
-        raise SystemExit(f'{pid}.json 里的 "id" 是 {raw["id"]!r}，必须和文件名 {pid} 一样')
-    try:
-        p = MV.load(pid)
-    except SystemExit as e:
-        raise SystemExit(f'{pid}：{e}')
-    sents = [s for para in p['paras'] for s in para]
+        probs.append(f'{pid}.json 缺少 {miss}')
+    if raw.get('id') and raw['id'] != pid:
+        probs.append(f'{pid}.json 里的 "id" 是 {raw["id"]!r}，必须和文件名 {pid} 一样')
+    paras = raw.get('paras')
+    if paras and not (isinstance(paras, list) and all(isinstance(x, list) and x and all(isinstance(s, dict) for s in x) for x in paras)):
+        return None, probs + [f'{pid}.json 的 "paras" 格式不对：应该是段落列表，每段是句子列表 [ {{"es": …, "zh": …, "w": [ … ]}}, … ]（照 模板.json 写）']
+    sents = [s for para in (paras or []) for s in para]
     for k, s in enumerate(sents, 1):
         for key in ('es', 'zh'):
-            if not str(s.get(key, '')).strip():
-                raise SystemExit(f'{pid} 第 {k} 句缺少 "{key}"')
-        for w in s['w']:
+            if not isinstance(s.get(key), str) or not s[key].strip():
+                probs.append(f'{pid} 第 {k} 句缺少 "{key}"')
+        es = s.get('es') if isinstance(s.get('es'), str) else ''
+        ws = s.get('w')
+        if not isinstance(ws, list) or not ws:
+            probs.append(f'{pid} 第 {k} 句没有标生词：每一句至少要标一个（"w" 里至少一个词条）')
+            ws = []
+        taken = []
+        for w in ws:
+            if not isinstance(w, dict):
+                probs.append(f'{pid} 第 {k} 句的 "w" 里有一项不是 {{"h": …, "pos": …, "zh": …, "surface": …}}')
+                continue
+            name = w.get('h') or w.get('surface')
             bad = [x for x in ('h', 'pos', 'zh', 'surface') if not str(w.get(x, '')).strip() and not (x == 'pos' and 'pos' in w)]
             if bad:
-                raise SystemExit(f'{pid} 第 {k} 句的词条 {w.get("h") or w.get("surface")} 缺少 {bad}')
-        try:
-            MA.segments(s['es'], k, pid)
-        except RuntimeError as e:
-            raise SystemExit(f'{pid}：{e}')
+                probs.append(f'{pid} 第 {k} 句的词条 {name} 缺少 {bad}')
+            sf = w.get('surface')
+            if not isinstance(sf, str) or not sf or not es:
+                continue
+            n = es.count(sf)
+            if n != 1:
+                probs.append(f'{pid} 第 {k} 句：词条「{name}」的 surface（句中要高亮的原样文字）「{sf}」在这一句里出现 {n} 次'
+                             '（必须恰好 1 次，大小写、重音都要和原文一模一样；出现多次就多写几个字，让它只匹配一处）')
+                continue
+            a = es.index(sf)
+            if any(a < y and x < a + len(sf) for x, y in taken):
+                probs.append(f'{pid} 第 {k} 句：词条「{name}」与别的词条重叠')
+            taken.append((a, a + len(sf)))
+        if es:
+            try:
+                MA.segments(es, k, pid)
+            except RuntimeError as e:
+                probs.append(tag(pid, e))
     extra = [k for k in MA.PAUSES.get(pid, {}) if not k.startswith('_') and not (k.isdigit() and 1 <= int(k) <= len(sents))]
     if extra:
-        raise SystemExit(f'逗号停顿.json：{pid} 只有 {len(sents)} 句，却登记了第 {extra} 句')
-    return p
+        probs.append(f'逗号停顿.json：{pid} 只有 {len(sents)} 句，却登记了第 {extra} 句')
+    if probs:
+        return None, probs
+    try:                                    # 上面没查出问题：再用生成视频时的同一个函数核对一遍（以它为准）
+        return MV.load(pid), []
+    except SystemExit as e:
+        return None, [tag(pid, e)]
 
 
 # ---------------------------------------------------------------- 是否已是最新
@@ -223,46 +268,12 @@ def run(args):
 
 # ---------------------------------------------------------------- 安装与模型自检
 def voice_problems(name):
-    """这个音色能不能用：模型文件、参考录音、Python 包。返回问题列表（空 = 能用）。"""
-    cfg = VOICES[name]
-    probs = []
-    if cfg.get('engine') == 'worker':
-        md = Path(cfg.get('model_dir', ''))
-        md = md if md.is_absolute() else ES / md
-        script = cfg.get('script')
-        need = {'sherpa.py': ['tts.json', 'voice.bin', 'vocoder.int8.onnx'] if cfg.get('kind') == 'supertonic' else [],
-                'qwen3tts.py': ['model.safetensors', 'speech_tokenizer/config.json']}.get(script, [])
-        miss = [f for f in need if not (md / f).is_file()]
-        if not md.is_dir() or miss:
-            probs.append(f'模型没装好：{md}' + (f' 缺 {miss}' if md.is_dir() else ' 不存在'))
-        if cfg.get('ref_audio'):
-            ra = Path(cfg['ref_audio'])
-            ra = ra if ra.is_absolute() else ES / ra
-            if not ra.is_file():
-                probs.append(f'找不到参考录音 {ra}')
-        if cfg.get('python') in (None, '', 'auto'):
-            mods = {'sherpa.py': ['sherpa_onnx'], 'qwen3tts.py': ['torch', 'transformers', 'qwen_tts', 'librosa'],
-                    'kokoro_worker.py': ['kokoro_onnx']}.get(script, [])
-            lack = [m for m in mods if importlib.util.find_spec(m) is None]
-            if lack:
-                probs.append(f'缺少 Python 包 {lack}')
-        elif not Path(cfg['python']).exists() and not shutil.which(cfg['python']):
-            probs.append(f'找不到 Python {cfg["python"]}')
-    elif cfg.get('engine') == 'kokoro':
-        if importlib.util.find_spec('kokoro_onnx') is None:
-            probs.append('缺少 Python 包 kokoro_onnx')
-        if not (ES.parent / 'tools' / 'tts' / 'models' / 'kokoro-v1.0.onnx').is_file():
-            probs.append('缺少 Kokoro 模型 tools/tts/models/kokoro-v1.0.onnx')
-    return probs
+    """这个音色能不能用（检查写在 voice_check.py，make_audio.py 也用同一份）。返回问题列表（空 = 能用）。"""
+    return VC.voice_problems(VOICES[name])
 
 
 def fix_hint(name):
-    cfg = VOICES[name]
-    if cfg.get('script') == 'qwen3tts.py':
-        return ('Qwen3 配音需要另外安装：①运行安装脚本时加 --qwen3（Windows：install_windows.bat -Qwen3）装 PyTorch 等；'
-                '②下载 Release 里的 qwen3-tts-1.7b-base.zip.001、.002 … 放进工具包文件夹，运行 python 西班牙语/tools/join_parts.py 解压模型。'
-                '或者先用快速的 Supertonic 音色：--voice supertonic3_M1F5_25')
-    return '请重新运行安装脚本（install.sh / install_windows.bat），看 使用说明.md「安装」'
+    return VC.fix_hint(VOICES[name])
 
 
 def env_problems(stills=False):
@@ -279,12 +290,16 @@ def env_problems(stills=False):
     return probs
 
 
-def browser_ok():
+def browser_ok(MV):
+    """真的打开一次截图用的浏览器、画一页。用的就是 make_video.py 的 launch_browser（同一个规则：环境变量 ES_CHROMIUM →
+    Playwright 自带的 Chromium → 都打不开才试开发机上的），所以这里通过 = 生成视频时也打得开。
+    返回空字符串 = 正常，否则是出错原因（第一行）。"""
+    if importlib.util.find_spec('playwright') is None:
+        return '缺少 Python 包 playwright'
     try:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
-            exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
-            br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
+            br = MV.launch_browser(pw)
             pg = br.new_page()
             pg.set_content('<p>ok</p>')
             br.close()
@@ -293,27 +308,49 @@ def browser_ok():
         return str(e).strip().splitlines()[0] if str(e).strip() else type(e).__name__
 
 
-def self_check():
+def py_cmd():
+    """给老师看的“用这个 Python 运行”的写法：工具包的 .venv 写相对路径（在工具包文件夹里运行），别的写完整路径。"""
+    try:
+        if Path(sys.prefix).resolve() == (ES.parent / '.venv').resolve():
+            return '.venv\\Scripts\\python' if os.name == 'nt' else '.venv/bin/python'
+    except OSError:
+        pass
+    return f'"{sys.executable}"' if ' ' in sys.executable else sys.executable
+
+
+def browser_fix(err):
+    """浏览器打不开时的处理办法（可以直接复制运行的命令）。"""
+    if err == '缺少 Python 包 playwright':
+        return '先按上面的提示装好 Python 包（重新运行安装脚本），再运行一次自检'
+    exe = os.environ.get('ES_CHROMIUM', '').strip()
+    if exe and Path(exe).exists():
+        return (f'环境变量 ES_CHROMIUM 指定的浏览器 {exe} 打不开：把它改成能用的 Chromium / Chrome 程序的完整路径，'
+                '或者去掉这个环境变量（改用安装脚本装的浏览器）')
+    where = '在工具包文件夹里' if py_cmd().startswith('.venv') else ''
+    fix = f'请{where}运行：{py_cmd()} -m playwright install chromium（国内网络慢：重新运行安装脚本，加 --mirror / -Mirror）'
+    if sys.platform.startswith('linux'):
+        fix += f'\n     装好后还打不开（Linux 缺系统库）：sudo {py_cmd()} -m playwright install-deps chromium'
+    return fix
+
+
+def self_check(MV):
     say(f'Python：{sys.executable}（{sys.version.split()[0]}）')
     probs = env_problems()
     for p in probs:
         say('  ❌ ' + p)
     if not probs:
         say('  ✅ Python 包、ffmpeg、磁盘空间')
-    b = browser_ok()
-    say('  ✅ 浏览器（截图用的 Chromium）' if not b else f'  ❌ 浏览器打不开：{b}\n     请运行：{sys.executable} -m playwright install chromium'
-        + ('（Linux 还可能要：sudo ' + sys.executable + ' -m playwright install-deps chromium）' if sys.platform.startswith('linux') else ''))
+    b = browser_ok(MV)
+    say('  ✅ 浏览器（截图用的 Chromium，已实际打开一次）' if not b else f'  ❌ 浏览器打不开：{b}\n     {browser_fix(b)}')
     say('音色：')
-    ok_any = False
-    for name in (k for k in VOICES if not k.startswith('_')):
-        pr = voice_problems(name)
-        ok_any |= not pr
-        mark = '✅' if not pr else '❌'
-        say(f'  {mark} {name}{"（默认）" if name == VOICES["_final"] else ""}：{VOICES[name].get("label", "")}')
+    vp = {k: voice_problems(k) for k in VOICES if not k.startswith('_')}
+    for name, pr in vp.items():
+        say(f'  {"✅" if not pr else "❌"} {name}{"（默认）" if name == VOICES["_final"] else ""}：{VOICES[name].get("label", "")}')
         for x in pr:
             say(f'       {x}')
-    bad = probs or b or not ok_any
-    default_ok = not voice_problems(VOICES['_final'])
+    ready = sorted((k for k, pr in vp.items() if not pr), key=lambda k: k != 'supertonic3_M1F5_25')
+    bad = probs or b or not ready
+    default_ok = not vp[VOICES['_final']]
     if not default_ok:
         say(f'提示：默认音色 {VOICES["_final"]} 还不能用。{fix_hint(VOICES["_final"])}')
     if bad:
@@ -321,7 +358,6 @@ def self_check():
     elif default_ok:
         say('自检通过，可以生成视频。')
     else:
-        ready = sorted((k for k in VOICES if not k.startswith('_') and not voice_problems(k)), key=lambda k: k != 'supertonic3_M1F5_25')
         say(f'自检通过，但默认音色还不能用：现在生成视频要在命令里加 --voice {ready[0]}'
             f'（例如 ./生成视频.sh es01 --voice {ready[0]}；Windows 用 生成视频.bat）。')
     return 0 if not bad else 1
@@ -344,7 +380,7 @@ def main():
     ap.add_argument('--check', action='store_true', help='安装自检')
     a = ap.parse_args()
     if a.check:
-        return self_check()
+        return self_check(MV)
     try:
         MA = c4.load('es_make_audio', '西班牙语/tools/make_audio.py')
     except ImportError as e:
@@ -360,13 +396,20 @@ def main():
         raise SystemExit('--scale 至少 2（成品要求 4K：3840×2160）' if not a.stills else '--scale 至少 1')
 
     # 1. 开工前全部检查
+    #    所有篇目的所有问题、环境和音色的问题一次全部列出来再停（改完一处再跑才发现下一处，太费时间）
     ids = article_ids(a.articles)
-    arts = {pid: validate(pid, MA, MV) for pid in ids}
-    need_audio = not a.stills and (a.force or any(not audio_state(arts[pid], voice, MA)[0] for pid in ids))
+    arts, aprobs = {}, []
+    for pid in ids:
+        arts[pid], pr = validate(pid, MA, MV)
+        aprobs += pr
+    need_audio = not a.stills and (a.force or any(arts[pid] is None or not audio_state(arts[pid], voice, MA)[0] for pid in ids))
     vprobs = [f'音色 {voice}：{x}' for x in voice_problems(voice)] if need_audio else []    # 音频都已是最新时不需要配音模型
-    probs = env_problems(a.stills) + vprobs
+    probs = aprobs + env_problems(a.stills) + vprobs
     if probs:
-        raise SystemExit('开工前检查没通过：\n  ' + '\n  '.join(probs) + ('\n' + fix_hint(voice) if vprobs else ''))
+        bad = [pid for pid in ids if arts[pid] is None]
+        raise SystemExit(f'开工前检查没通过，共 {len(probs)} 处' + (f'（文章有问题的：{"、".join(bad)}）' if bad else '') + '：\n  '
+                         + '\n  '.join(probs) + ('\n' + fix_hint(voice) if vprobs else '')
+                         + ('\n文章的问题改好后，再运行同一条命令。' if bad else ''))
     say(f'共 {len(ids)} 篇：{" ".join(ids)}；音色 {voice}；背景 {a.style} {MV.STYLES[a.style]["name"]}；'
         f'{"只出截图" if a.stills else f"{1920 * scale}×{1080 * scale}"}。开工前检查全部通过。')
 
@@ -473,10 +516,9 @@ def show_list(voice, style, scale, MA, MV):
         say(f'  {k} {v["name"]}：{v.get("feature", "")}')
     say(f'篇目（文章/，按音色 {voice}、背景 {style}、{1920 * scale}×{1080 * scale} 判断）：')
     for pid in article_ids(['all']):
-        try:
-            p = validate(pid, MA, MV)
-        except SystemExit as e:
-            say(f'  {pid}：❌ 文章有问题：{e}')
+        p, pr = validate(pid, MA, MV)
+        if pr:
+            say(f'  {pid}：❌ 文章有 {len(pr)} 处问题：\n      ' + '\n      '.join(pr))
             continue
         n = sum(len(x) for x in p['paras'])
         au = audio_state(p, voice, MA)

@@ -1,12 +1,12 @@
 """Kokoro-82M v1.0（kokoro-onnx）西班牙语合成 worker（make_audio.py 的 Worker 调用）。
 
-    /opt/ttsenv/bin/python kokoro_worker.py in.json 输出目录
+    python 西班牙语/tools/engines/kokoro_worker.py in.json 输出目录
 
 in.json = {"texts": [片段文字, ...], "cfg": {voices.json 里这个音色的设置}}
 输出：输出目录/000.wav、001.wav …（每段一个，单声道 float32，24000 Hz）。模型只加载一次。
 
 cfg 里用到的键（都有默认值）：
-  model_dir   模型文件夹，默认依次找 /opt/es_tts_models/kokoro-v1.0、西班牙语/models/kokoro-v1.0、仓库 tools/tts/models；
+  model_dir   模型文件夹，默认依次找开发机的模型文件夹（DEFAULT_DIRS 第一项）、西班牙语/models/kokoro-v1.0、仓库 tools/tts/models；
               相对路径按 西班牙语/ 文件夹解析
   model       默认 kokoro-v1.0.onnx        voices  默认 voices-v1.0.bin
   voice       {"em_alex": 0.6, "em_santa": 0.4}（按权重混合）或单个名字 "em_alex"

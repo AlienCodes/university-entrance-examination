@@ -1,19 +1,19 @@
 """sherpa-onnx 西班牙语合成 worker（make_audio.py 的 Worker 调用）：Supertonic 2/3 和 Piper（VITS）两类模型。
 
-    /opt/es_tts_envs/sherpa/bin/python sherpa.py in.json 输出目录
+    python 西班牙语/tools/engines/sherpa.py in.json 输出目录
 
 in.json = {"texts": [片段文字, ...], "cfg": {voices.json 里这个音色的设置}}
 输出：输出目录/000.wav、001.wav …（每段一个，单声道 float32，模型自己的采样率：Supertonic 44100 Hz，Piper 22050 Hz）。
 模型只加载一次。另写 输出目录/worker_stats.json（加载用时、每段合成用时），make_audio.py 不读它。
 
-环境：uv venv -p 3.12 /opt/es_tts_envs/sherpa && uv pip install -p /opt/es_tts_envs/sherpa/bin/python sherpa-onnx soundfile numpy
-（实测 sherpa-onnx 1.13.8）。模型放在仓库外（/opt/es_tts_models/<名字>/），从 sherpa-onnx 的 GitHub 发布页下载：
+环境：装了 sherpa-onnx soundfile numpy 的 Python（实测 sherpa-onnx 1.13.8；工具包的安装脚本已经装好，开发机可以单独建一个环境，
+在 voices.json 的 python 里写它的路径）。模型从 sherpa-onnx 的 GitHub 发布页下载（工具包里放在 西班牙语/models/<名字>/）：
 https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/<模型>.tar.bz2
 
 cfg 里用到的键：
   kind         "supertonic" 或 "vits"（必填）
-  model_dir    模型文件夹（必填），如 /opt/es_tts_models/supertonic3、/opt/es_tts_models/piper-es_ES-davefx-medium；
-               相对路径按 西班牙语/ 文件夹解析（工具包里是 models/supertonic3）
+  model_dir    模型文件夹（必填），如 models/supertonic3、models/piper-es_ES-davefx-medium；
+               相对路径按 西班牙语/ 文件夹解析（工具包里是 models/supertonic3），也可以写绝对路径
   sid          说话人编号，默认 0（Supertonic 3：0–4 = F1–F5 女声，5–9 = M1–M5 男声；sharvard：0 男、1 女）
   speed        语速（越大越快），默认 1.0
   num_threads  onnxruntime 线程数，默认 4

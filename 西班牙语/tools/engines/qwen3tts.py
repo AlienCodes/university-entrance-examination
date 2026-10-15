@@ -1,6 +1,6 @@
 """Qwen3-TTS-12Hz 1.7B 西班牙语合成 worker（make_audio.py 的 Worker 调用）：克隆（Base）和文字设计声音（VoiceDesign）两种用法。
 
-    /opt/es_tts_envs/qwen3tts/bin/python qwen3tts.py in.json 输出目录
+    python 西班牙语/tools/engines/qwen3tts.py in.json 输出目录
 
 in.json = {"texts": [片段文字, ...], "cfg": {voices.json 里这个音色的设置}}
 输出：输出目录/000.wav、001.wav …（每段一个，单声道 float32，24000 Hz，模型原样输出，不裁剪、不归一化）。
@@ -8,15 +8,16 @@ in.json = {"texts": [片段文字, ...], "cfg": {voices.json 里这个音色的�
 make_audio.py 不读它。
 
 模型：Qwen3-TTS-12Hz-1.7B-Base / -VoiceDesign（Apache-2.0）。代码 PyPI qwen-tts 0.1.1；权重放在仓库外
-（/opt/es_tts_models/…，Hugging Face 打不开，从 Docker Hub 镜像层取，下载方法见 research 记录）。
-环境（CPU 版 PyTorch，约 2.5 GB，和评测环境共用 conda 缓存）：
-  micromamba create -p /opt/es_tts_envs/qwen3tts -c conda-forge python=3.11 "pytorch=2.13.0=cpu_mkl*" torchaudio=2.11.0 numpy
-  uv pip install -p /opt/es_tts_envs/qwen3tts/bin/python transformers==4.57.3 accelerate==1.12.0 librosa soundfile onnxruntime einops sox
-  uv pip install -p /opt/es_tts_envs/qwen3tts/bin/python --no-deps qwen-tts==0.1.1
+（工具包里解压到 西班牙语/models/qwen3-base/，见 join_parts.py；开发时 Hugging Face 打不开，从 Docker Hub 镜像层取，下载方法见 research 记录）。
+环境（CPU 版 PyTorch，约 2.5 GB；工具包的安装脚本加 --qwen3 就装好，依赖清单 西班牙语/kit/requirements-qwen3.txt）。单独建环境时：
+  先装 CPU 版 PyTorch 2.x 和 torchaudio（实测 pytorch 2.13.0、torchaudio 2.11.0），再
+  pip install transformers==4.57.3 accelerate==1.12.0 librosa soundfile onnxruntime einops sox
+  pip install --no-deps qwen-tts==0.1.1
+  然后在 voices.json 的 python 里写这个环境的 Python 路径（省略或写 "auto" = 用运行 make_audio.py 的同一个 Python）
 
 cfg 里用到的键：
   mode          "clone"（Base 模型 + 参考录音）或 "design"（VoiceDesign 模型 + 文字描述）（必填）
-  model_dir     模型文件夹（必填），如 /opt/es_tts_models/qwen3-tts-base/models/Qwen3-TTS-12Hz-1.7B-Base；
+  model_dir     模型文件夹（必填），如 models/qwen3-base（也可以写绝对路径）；
                 相对路径按 西班牙语/ 文件夹解析（工具包里是 models/qwen3-base）。ref_audio 同样
   language      默认 "spanish"
   seed          随机种子，默认 1234。每一段合成前都重新设成这个种子：同一段文字 + 同样设置 → 每次结果完全一样

@@ -18,7 +18,13 @@
 工具包里的 voices.json 由仓库的 voices.json 转换：python 一律 "auto"（用安装好的同一个环境），model_dir、ref_audio 改成相对 西班牙语/ 的路径；
 模型不在工具包里的音色（Kokoro）去掉。timings.json 里示例音频的 voice_cfg 换成工具包里的设置（batch.py 判断“已是最新”时一致）。
 
-组装完自动检查：所有 .py 能编译；voices.json 里没有绝对路径；程序里没有指向本机仓库（/home/user/…）的路径；
+所有文本文件（.py .md .json .sh .ps1 .bat .txt .css）里开发机的 Python 路径（如 /opt/ttsenv/bin/python）换成 python；
+没有哪个音色用到的引擎脚本（engines/kokoro_worker.py：Kokoro 音色不进工具包）不放进去；kit_config.json 是组装用的配置
+（里面有开发机的模型路径），不放进去。
+
+组装完自动检查：所有 .py 能编译；voices.json 里没有绝对路径、每个音色的引擎脚本都在；所有文本文件里没有开发机的路径
+（/home/user/…、本机仓库路径、/opt/…）——唯一例外是开发机浏览器的位置 /opt/pw-browsers/chromium（DEV_OK）：
+make_video.py、batch.py 只在 Playwright 默认的浏览器打不开时才试它，老师的电脑上没有这个路径，不会用到；
 随包模型文件齐全（--ci 时由工作流下载后用 --manifest 再查）。任何一项不合格就报错。
 """
 import argparse
@@ -69,20 +75,42 @@ def copy_file(rel, kit):
 
 
 DEV_PY = ('/opt/ttsenv/bin/python ', '/opt/es_tts_envs/sherpa/bin/python ', '/opt/es_tts_envs/qwen3tts/bin/python ')
+TEXT = {'.py', '.md', '.json', '.sh', '.ps1', '.bat', '.txt', '.css', '.html', '.yml', '.yaml', '.cfg', '.toml'}
+DEV_OK = ('/opt/pw-browsers/chromium',)      # 唯一允许出现的开发机路径（见开头说明：浏览器的最后一个备选，老师电脑上用不到）
+
+
+def text_files(kit):
+    return sorted(p for p in kit.rglob('*') if p.is_file() and not p.is_symlink() and p.suffix.lower() in TEXT)
 
 
 def doc_paths(kit):
-    """工具包里的说明文档（.md）：开发机的 Python 路径换成 python（工具包里是 .venv 的 Python，见 使用说明.md）。"""
+    """工具包里的所有文本文件（说明文档、程序开头的用法说明，包括共用的 四级/、tools/ 程序）：开发机的 Python 路径换成 python
+    （工具包里是 .venv 的 Python，见 使用说明.md）。不是 UTF-8 的文件不改（之后的检查照样会查出里面的开发机路径）。"""
     n = 0
-    for f in kit.rglob('*.md'):
-        t = f.read_text('utf-8')
+    for f in text_files(kit):
+        try:
+            t = f.read_text('utf-8')
+        except UnicodeDecodeError:
+            continue
         u = t
         for x in DEV_PY:
             u = u.replace(x, 'python ')
         if u != t:
-            f.write_text(u, 'utf-8')
+            f.write_bytes(u.encode('utf-8'))           # 原样写回（不改换行符；.ps1 的 BOM 在文字里，照样保留）
             n += 1
     return n
+
+
+def drop_unused_engines(kit, voices):
+    """只放工具包里的音色用得到的引擎脚本（Kokoro 音色不进工具包，engines/kokoro_worker.py 就不放）。返回去掉的文件名。"""
+    used = {v.get('script') for v in voices.values() if isinstance(v, dict) and v.get('engine') == 'worker'}
+    d = kit / '西班牙语' / 'tools' / 'engines'
+    gone = []
+    for f in sorted(d.glob('*.py')):
+        if f.name not in used:
+            f.unlink()
+            gone.append(f.name)
+    return gone
 
 
 def kit_voices():
@@ -208,12 +236,17 @@ def sanity(kit, voices):
             for k in ('python', 'model_dir', 'ref_audio'):
                 if v.get(k) and (Path(v[k]).is_absolute() or v[k].startswith('/')) and not (k == 'python' and v[k] == 'auto'):
                     bad.append(f'voices.json：{name}.{k} 是绝对路径 {v[k]}')
-    repos = {str(ROOT), '/home/user/university-entrance-examination'}        # 本机仓库 + 开发机仓库
-    for p in list(kit.rglob('*.py')) + list(kit.rglob('*.json')) + list(kit.rglob('*.css')) + list(kit.rglob('*.md')):
-        t = p.read_text('utf-8', errors='replace')
-        for repo in repos:
-            if repo in t:
-                bad.append(f'{p.relative_to(kit)} 里有仓库的绝对路径 {repo}')
+        if isinstance(v, dict) and v.get('engine') == 'worker' and not (kit / '西班牙语' / 'tools' / 'engines' / str(v.get('script'))).is_file():
+            bad.append(f'voices.json：{name} 的引擎脚本 engines/{v.get("script")} 不在工具包里')
+    devs = {str(ROOT), '/home/user', '/opt/'}           # 本机仓库、开发机的家目录和 /opt（模型、Python 环境、浏览器）
+    for p in text_files(kit):
+        for i, line in enumerate(p.read_text('utf-8', errors='replace').splitlines(), 1):
+            rest = line
+            for ok in DEV_OK:
+                rest = rest.replace(ok, '')
+            hit = sorted(x for x in devs if x in rest)
+            if hit:
+                bad.append(f'{p.relative_to(kit)} 第 {i} 行有开发机的路径 {hit}：{line.strip()[:120]}')
     return bad
 
 
@@ -288,6 +321,7 @@ def build(a, kit):
     ndoc = doc_paths(kit)
     voices, dropped = kit_voices()
     (kit / '西班牙语' / 'tools' / 'voices.json').write_text(json.dumps(voices, ensure_ascii=False, indent=1) + '\n', 'utf-8')
+    gone = drop_unused_engines(kit, voices)
     auds = example_audio(kit, voices)
     vids, why = example_videos(kit, voices)
     (kit / '西班牙语' / 'models').mkdir(exist_ok=True)
@@ -297,7 +331,8 @@ def build(a, kit):
     print(f'工具包：{kit}')
     print(f'  音色 {len([k for k in voices if not k.startswith("_")])} 个（默认 {voices["_final"]}）；去掉：' +
           ('；'.join(f'{k}（{v}）' for k, v in dropped.items()) or '无'))
-    print(f'  说明文档里开发机的 Python 路径改成 python：{ndoc} 个文件')
+    print(f'  文本文件里开发机的 Python 路径改成 python：{ndoc} 个文件')
+    print(f'  没有音色用到、不放进来的引擎脚本：{", ".join(gone) or "无"}')
     print(f'  示例音频：{", ".join(auds) or "无"}')
     print(f'  示例视频：{", ".join(vids) or "无"}' + (f'；没放进来的：{"；".join(why)}' if why else ''))
     bad = sanity(kit, voices) + check_models(kit, not a.ci)

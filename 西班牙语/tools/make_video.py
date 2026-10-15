@@ -1,6 +1,10 @@
 """生成西班牙语逐句精读视频（沿用四级设计方案 C「杂志编号注释」，用户给的参考图就是四级视频的一帧）。
 
-    /opt/ttsenv/bin/python 西班牙语/tools/make_video.py es01 [--voice 音色名] [--scale 2] [--style C|1|2|3|4|5|6]
+    python 西班牙语/tools/make_video.py es01 [--voice 音色名] [--scale 2] [--style C|1|2|3|4|5|6]
+    python 西班牙语/tools/make_video.py es01 --stills [--style 5]     # 只出截图：默认写到 西班牙语/截图/es01_5/，1920×1080
+
+截图用的浏览器：默认用 Playwright 自带的 Chromium（老师电脑上 `python -m playwright install chromium` 装的那个）；
+环境变量 ES_CHROMIUM 可以指定另一个 Chromium 程序。每次运行都会打印一行，说明用的是哪个浏览器。
 
 背景样式（--style，默认 C）：C = 四级设计方案 C（下面描述的默认画面）；1–6 = 中考设计的 6 种背景（晴空校园、手账笔记本、教室黑板、
 活页单词卡、紫黄撞色、柔彩插画），CSS 在 西班牙语/tools/样式/（索引 styles.json），字体在 西班牙语/tools/fonts/。
@@ -29,6 +33,7 @@ import atexit
 import html
 import json
 import math
+import os
 import re
 import shutil
 import subprocess
@@ -239,6 +244,34 @@ def sentence_slide(p, s, k, n):
       <div class="bot"><span>SENTENCE {k} / {n}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
 
 
+DEV_CHROMIUM = Path('/opt/pw-browsers/chromium')   # 开发容器里的 Chromium：只在 Playwright 自带的打不开时才用
+
+
+def launch_browser(pw):
+    """打开截图用的 Chromium，并打印一行说明用的是哪个：
+    ① 环境变量 ES_CHROMIUM 指定的程序（存在才用）；② 否则用 Playwright 自带的 Chromium（老师电脑上 playwright install chromium 装的就是它）；
+    ③ 只有②打不开、并且有开发容器里的 /opt/pw-browsers/chromium 时，才改用它。"""
+    env = os.environ.get('ES_CHROMIUM', '').strip()
+    note = ''
+    if env:
+        if Path(env).exists():
+            br = pw.chromium.launch(executable_path=env)
+            print(f'  浏览器：环境变量 ES_CHROMIUM 指定的 {env}（Chromium {br.version}）')
+            return br
+        note = f'（环境变量 ES_CHROMIUM 指定的 {env} 不存在，没有用它）'
+    try:
+        br = pw.chromium.launch()
+        print(f'  浏览器：Playwright 自带的 Chromium {br.version}{note}')
+        return br
+    except Exception as e:      # noqa: BLE001  自带的打不开：只有开发容器里有备用的才改用，否则照常报错
+        if not DEV_CHROMIUM.exists():
+            raise
+        why = (str(e).strip().splitlines() or [type(e).__name__])[0]
+        br = pw.chromium.launch(executable_path=str(DEV_CHROMIUM))
+        print(f'  浏览器：Playwright 自带的 Chromium 打不开（{why}），改用 {DEV_CHROMIUM}（Chromium {br.version}）{note}')
+        return br
+
+
 def render_slides(slides, outdir, scale):
     """逐屏截图；句子屏自动缩放字号，放不下或字太小就报错（不硬挤）。返回每屏的 (英文字号, 词汇字号)。"""
     from playwright.sync_api import sync_playwright
@@ -247,8 +280,7 @@ def render_slides(slides, outdir, scale):
     fit = C4V.FIT.replace('vs=30;', f'vs={vs0};')
     sizes = []
     with sync_playwright() as pw:
-        exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
-        br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
+        br = launch_browser(pw)
         pg = br.new_page(viewport={'width': W, 'height': H}, device_scale_factor=scale)
         for i, h in enumerate(slides):
             f = outdir / f'{i:03d}.html'
@@ -326,17 +358,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('pid')
     ap.add_argument('--voice', help='timings.json 里的音色名（默认用 timings.json 的 "_final"）')
-    ap.add_argument('--scale', type=int, default=2, help='2 = 3840×2160（4K）')
-    ap.add_argument('--out', default=str(ES / '最终视频'))
+    ap.add_argument('--scale', type=int, help='画面倍数：2 = 3840×2160（4K，视频默认）；--stills 默认 1（1920×1080）')
+    ap.add_argument('--out', help='输出文件夹（视频默认 西班牙语/最终视频/；--stills 默认 西班牙语/截图/<篇目>_<背景>/）')
     ap.add_argument('--audio-root', default=str(ES / 'audio'))
     ap.add_argument('--name', help='输出文件名（默认「西班牙语 每日一练 标题.mp4」）')
-    ap.add_argument('--stills', action='store_true', help='只截图（写到 --out），不编码视频')
+    ap.add_argument('--stills', action='store_true', help='只截图，不编码视频（默认写到 西班牙语/截图/<篇目>_<背景>/）')
     ap.add_argument('--draft', action='store_true', help='草稿：核查不通过也保留成品（只打印问题）')
     ap.add_argument('--style', default='C', choices=list(STYLES),
                     help='背景样式：' + '，'.join(f'{k} {v["name"]}' for k, v in STYLES.items()) + '（默认 C；预览见 西班牙语/背景样式/）')
     a = ap.parse_args()
     global STYLE
     STYLE = a.style
+    scale = a.scale if a.scale is not None else (1 if a.stills else 2)
+    final = ES / '最终视频'
+    out = Path(a.out) if a.out else (ES / '截图' / f'{a.pid}_{a.style}' if a.stills else final)   # 截图文件夹与 batch.py 相同
+    if a.stills and (out.resolve() == final.resolve() or final.resolve() in out.resolve().parents):
+        raise SystemExit('截图不能放进 最终视频/（那里只放成品视频）。不写 --out 就会放到 西班牙语/截图/，或用 --out 指定别的文件夹')
 
     p = load(a.pid)
     sents = [s for para in p['paras'] for s in para]
@@ -347,10 +384,9 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix='esvideo_'))
     atexit.register(shutil.rmtree, tmp, True)
     slides = [title_slide(p)] + [sentence_slide(p, s, k, len(sents)) for k, s in enumerate(sents, 1)]
-    sizes = render_slides(slides, tmp, a.scale)
+    sizes = render_slides(slides, tmp, scale)
     print(f'  原文字号 {min(x[0] for x in sizes)}–{max(x[0] for x in sizes)}px，词汇栏字号 {min(x[1] for x in sizes)}–{max(x[1] for x in sizes)}px')
     if a.stills:
-        out = Path(a.out)
         out.mkdir(parents=True, exist_ok=True)
         for f in sorted(tmp.glob('*.png')):
             shutil.copy(f, out / f.name)
@@ -385,7 +421,6 @@ def main():
         lst.append(f"file '{segf}'")
     (tmp / 'list.txt').write_text('\n'.join(lst))
     total = frames[-1] / FPS
-    out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     name = a.name or video_name(p)
     silent = tmp / 'video.mp4'
