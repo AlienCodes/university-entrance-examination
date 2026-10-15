@@ -15,6 +15,19 @@ sys.path.insert(0, str(HERE))
 from make_cover import stats  # noqa: E402
 
 TITLE_MAX, DESC_MAX, TAG_MAX, TAG_LEN = 80, 2000, 10, 20
+FIRST = ['北京', '山东', '济南', '烟台']      # 用户 2026-10-15：每年北京卷第一，山东卷第二，济南卷第三（烟台同为山东的市卷，接在济南后面）
+
+
+def release_order(P):
+    """合集顺序（B 站 40P、合集下载包共用）：先按年份从新到旧；同一年里北京、山东、济南、烟台在前，其余按原来的省份顺序（行政区划代码，
+    省卷在前、市卷在后）；同一地区按原来的篇目顺序。"""
+    idx = {p['id']: i for i, p in enumerate(P)}
+    return sorted(P, key=lambda p: (-p['year'], FIRST.index(p['region']) if p['region'] in FIRST else len(FIRST), idx[p['id']]))
+
+
+def file_name(k, p):
+    """合集下载包里的文件名：两位序号（文件管理器里按序号排）+ 年份地区中考英语 + 篇目 + 题目。"""
+    return f"{k:02d} {p['year']}{p['region']}中考英语 {p['passage']} {p.get('title') or ''}.mp4"
 
 
 def main():
@@ -35,7 +48,7 @@ def main():
 适合：初三 / 初二学生中考英语复习，{y1 + 1} 中考备考，中考英语阅读理解、中考英语单词、中考词汇、初中英语阅读、英语精读。
 🔍 {'、'.join(r + '中考英语' for r in st['regions'])}"""
     tags = ['中考英语', '中考英语阅读', '中考阅读理解', '中考单词', '中考词汇', '中考真题', '初中英语', f'{y1 + 1}中考', '英语阅读精读', '背单词']
-    parts = [f"P{k} {p['year']}{p['region']}中考英语 {p['passage']}｜{p.get('title') or ''}" for k, p in enumerate(P, 1)]
+    parts = [f"P{k} {p['year']}{p['region']}中考英语 {p['passage']}｜{p.get('title') or ''}" for k, p in enumerate(release_order(P), 1)]
     errs = []
     for name, t in (('标题', title), ('备选标题', alt)):
         if len(t) > TITLE_MAX:
@@ -65,7 +78,7 @@ def main():
 
 {'　'.join(tags)}
 
-## 分 P 标题（按 P1—P{n} 顺序上传对应视频）
+## 分 P 标题（按 P1—P{n} 顺序上传，与合集下载包里文件的序号一一对应）
 
 """ + '\n'.join(parts) + '\n'
     out = C4 / '封面' / 'B站投稿文案.md'
