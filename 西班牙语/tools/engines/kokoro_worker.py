@@ -6,7 +6,8 @@ in.json = {"texts": [片段文字, ...], "cfg": {voices.json 里这个音色的�
 输出：输出目录/000.wav、001.wav …（每段一个，单声道 float32，24000 Hz）。模型只加载一次。
 
 cfg 里用到的键（都有默认值）：
-  model_dir   模型文件夹，默认 /opt/es_tts_models/kokoro-v1.0；不存在时用仓库 tools/tts/models
+  model_dir   模型文件夹，默认依次找 /opt/es_tts_models/kokoro-v1.0、西班牙语/models/kokoro-v1.0、仓库 tools/tts/models；
+              相对路径按 西班牙语/ 文件夹解析
   model       默认 kokoro-v1.0.onnx        voices  默认 voices-v1.0.bin
   voice       {"em_alex": 0.6, "em_santa": 0.4}（按权重混合）或单个名字 "em_alex"
   timbre      可选，同样的写法：只用来替换音色（声码器那一半），节奏和语调仍由 voice 决定
@@ -26,12 +27,13 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
-DEFAULT_DIRS = [Path('/opt/es_tts_models/kokoro-v1.0'),
-                Path(__file__).resolve().parents[3] / 'tools' / 'tts' / 'models']
+ES = Path(__file__).resolve().parents[2]          # 西班牙语/
+DEFAULT_DIRS = [Path('/opt/es_tts_models/kokoro-v1.0'), ES / 'models' / 'kokoro-v1.0',
+                ES.parent / 'tools' / 'tts' / 'models']
 
 
 def model_paths(cfg):
-    dirs = [Path(cfg['model_dir'])] if cfg.get('model_dir') else DEFAULT_DIRS
+    dirs = [ES / cfg['model_dir']] if cfg.get('model_dir') else DEFAULT_DIRS     # 绝对路径时 ES / 绝对路径 = 绝对路径本身
     model, voices = cfg.get('model', 'kokoro-v1.0.onnx'), cfg.get('voices', 'voices-v1.0.bin')
     for d in dirs:
         if (d / model).exists() and (d / voices).exists():

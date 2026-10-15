@@ -86,3 +86,19 @@ body:has(.ttl){background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://
 .legend{right:170px;bottom:88px;font-family:'Noto Sans SC';font-size:27px;color:var(--chalk2);gap:44px}
 .legend em{width:46px;height:14px;border-radius:7px;vertical-align:3px;margin-right:12px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18),inset 0 2px 0 rgba(255,255,255,.4)}
 .legend .lw{background:var(--yel)}.legend .lp{background:var(--pnk)}
+
+/* ===== 西班牙语版调整（西班牙语/tools/make_video.py --style 3；版式骨架见 make_video.py 的 CSS_STYLED）=====
+   封面：西语标题用 Baloo 2 粗体粉笔字（保留粉笔质感），下面一小段黄色粉笔划线；左边中文标题（霞鹜文楷）+ 图例，
+   右边插图像一张用磁贴吸在黑板上的照片。右侧「今日目标」小黑板不变。 */
+.top .t-es{font-family:'Baloo 2','LXGW WenKai';font-style:normal;font-weight:600}
+.ttl .row{column-gap:60px}
+.ttl h1{font-family:'Baloo 2','Noto Sans SC';font-weight:700;font-size:100px;line-height:1.08;margin:36px 0 50px;align-self:start}
+.ttl h1::after{left:-.06em;right:auto;width:340px;bottom:-.34em}
+.ttl .sub{font-family:'LXGW WenKai';font-weight:700;font-size:50px;color:var(--chalk)}
+.ttl .legend{margin-top:30px}
+.ttl figure{width:530px;padding:10px;background:#f7f4ea;border-radius:4px;transform:rotate(-1.4deg);position:relative;
+  box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.ttl figure::before{content:'';position:absolute;left:50%;top:-14px;width:30px;height:30px;margin-left:-15px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#ffb3d9,#e0558f 70%);box-shadow:0 3px 6px rgba(0,0,0,.4)}
+.ttl figure img{border-radius:2px}
+.ttl .meta{margin-top:40px}

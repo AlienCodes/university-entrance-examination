@@ -1,27 +1,31 @@
 {
- "supertonic3_M1": {
+ "_final": "qwen3_M1F5_25",
+ "qwen3_M1F5_25": {
   "es01": {
-   "file": "supertonic3_M1/es01_Mi_pasion_por_los_viajes.mp3",
-   "duration": 51.31,
+   "file": "qwen3_M1F5_25/es01_Mi_pasion_por_los_viajes.mp3",
+   "duration": 49.42,
    "loudness": {
-    "integrated_lufs": -16.58,
-    "sentence_max_dev_lu": 0.73,
-    "short_term_std_lu": 0.96,
-    "peak_dbfs": -1.66,
-    "buzz_hz": 9474.6,
-    "buzz_db": 7.9
+    "integrated_lufs": -16.48,
+    "sentence_max_dev_lu": 0.43,
+    "short_term_std_lu": 0.75,
+    "peak_dbfs": -1.69,
+    "buzz_hz": 8778.8,
+    "buzz_db": 5.3,
+    "comb_db": -0.73
    },
    "voice_cfg": {
-    "label": "Supertonic 3 M1（西语男声，草稿用）",
+    "label": "Qwen3-TTS 1.7B（克隆合成音色 Supertonic 3 M1+F5 0.25：更细、稍高的西语男声；真人感最强，2026-10-15 自然度机测 4.26，Supertonic 约 3.4）",
     "engine": "worker",
-    "python": "/opt/es_tts_envs/sherpa/bin/python",
-    "script": "sherpa.py",
-    "kind": "supertonic",
-    "model_dir": "/opt/es_tts_models/supertonic3",
-    "sid": 5,
-    "lang": "es",
-    "num_steps": 32,
-    "speed": 1.0,
+    "python": "/opt/es_tts_envs/qwen3tts/bin/python",
+    "script": "qwen3tts.py",
+    "mode": "clone",
+    "model_dir": "/opt/es_tts_models/qwen3/app/models/qwen3-base",
+    "language": "spanish",
+    "seed": 1234,
+    "num_threads": 4,
+    "dtype": "float32",
+    "ref_audio": "/home/user/university-entrance-examination/西班牙语/配音选型/参考音色/M1F5_25.wav",
+    "ref_text": "Tengo una gran pasión por los viajes. Me encanta conocer lugares nuevos, culturas diferentes y probar comidas típicas de cada región.",
     "lead_in": 1.5,
     "sentence_pause": 0.8,
     "tail": 2.0,
@@ -35,11 +39,11 @@
      "k": 1,
      "para": 1,
      "start": 1.5,
-     "end": 3.65,
+     "end": 3.67,
      "parts": [
       [
        1.5,
-       3.65
+       3.67
       ]
      ],
      "segments": [
@@ -51,12 +55,12 @@
     {
      "k": 2,
      "para": 1,
-     "start": 4.45,
-     "end": 10.52,
+     "start": 4.47,
+     "end": 10.21,
      "parts": [
       [
-       4.45,
-       10.52
+       4.47,
+       10.21
       ]
      ],
      "segments": [
@@ -68,16 +72,16 @@
     {
      "k": 3,
      "para": 1,
-     "start": 11.32,
-     "end": 17.15,
+     "start": 11.01,
+     "end": 16.66,
      "parts": [
       [
-       11.32,
-       13.6
+       11.01,
+       13.47
       ],
       [
-       13.88,
-       17.15
+       13.75,
+       16.66
       ]
      ],
      "segments": [
@@ -90,16 +94,16 @@
     {
      "k": 4,
      "para": 2,
-     "start": 17.95,
-     "end": 22.73,
+     "start": 17.46,
+     "end": 22.87,
      "parts": [
       [
-       17.95,
-       19.61
+       17.46,
+       19.34
       ],
       [
-       19.89,
-       22.73
+       19.62,
+       22.87
       ]
      ],
      "segments": [
@@ -112,12 +116,12 @@
     {
      "k": 5,
      "para": 2,
-     "start": 23.53,
-     "end": 27.3,
+     "start": 23.67,
+     "end": 27.0,
      "parts": [
       [
-       23.53,
-       27.3
+       23.67,
+       27.0
       ]
      ],
      "segments": [
@@ -129,12 +133,12 @@
     {
      "k": 6,
      "para": 2,
-     "start": 28.1,
-     "end": 32.15,
+     "start": 27.8,
+     "end": 31.34,
      "parts": [
       [
-       28.1,
-       32.15
+       27.8,
+       31.34
       ]
      ],
      "segments": [
@@ -146,20 +150,20 @@
     {
      "k": 7,
      "para": 2,
-     "start": 32.95,
-     "end": 39.53,
+     "start": 32.14,
+     "end": 38.55,
      "parts": [
       [
-       32.95,
-       34.67
+       32.14,
+       33.7
       ],
       [
-       34.95,
-       35.93
+       33.98,
+       34.97
       ],
       [
-       36.21,
-       39.53
+       35.25,
+       38.55
       ]
      ],
      "segments": [
@@ -173,12 +177,12 @@
     {
      "k": 8,
      "para": 2,
-     "start": 40.33,
-     "end": 45.62,
+     "start": 39.35,
+     "end": 44.16,
      "parts": [
       [
-       40.33,
-       45.62
+       39.35,
+       44.16
       ]
      ],
      "segments": [
@@ -190,12 +194,12 @@
     {
      "k": 9,
      "para": 2,
-     "start": 46.42,
-     "end": 49.31,
+     "start": 44.96,
+     "end": 47.42,
      "parts": [
       [
-       46.42,
-       49.31
+       44.96,
+       47.42
       ]
      ],
      "segments": [
@@ -205,10 +209,7 @@
      "read": "Es una experiencia que nunca quiero dejar de vivir."
     }
    ],
-   "draft_issues": [
-    "电磁音：9475 Hz 高出周围 7.9 dB（上限 3.0 dB）"
-   ]
+   "draft_issues": []
   }
- },
- "_final": "supertonic3_M1"
+ }
 }

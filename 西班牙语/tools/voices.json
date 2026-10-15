@@ -1,6 +1,6 @@
 {
  "_说明": "西班牙语音色。engine=kokoro：本进程用 Kokoro-82M（tools/tts/models）；engine=worker：用 python 指定的环境运行 engines/ 里的 script。debuzz：Kokoro 声码器的固定频点（60 Hz 单向陷波）；deline：Supertonic 声码器的帧频梳状线清单（每段原始合成上减掉），见 buzz.py。mix：Supertonic 预置音色按权重混合（见 engines/sherpa.py）。_final：成品用的音色。",
- "_final": "supertonic3_M1",
+ "_final": "qwen3_M1F5_25",
  "kokoro_em_alex": {
   "label": "Kokoro em_alex（西语男声，基线）",
   "engine": "kokoro",
@@ -124,6 +124,7 @@
   "model_dir": "/opt/es_tts_models/qwen3/app/models/qwen3-base",
   "language": "spanish",
   "seed": 1234,
+  "seed_说明": "2026-10-15：es01 整篇用种子 1234 一次通过（响度四项、电磁音两项；语音识别回转比对 9 句 2 处差异，逐处核对都是识别器听错，合成 0 处读错，见 配音选型/qwen3_识别比对.md）。每段合成前都重设这个种子，结果可复现。哪项检查没通过就整篇换下一个种子（1235、1236 …）重做，整篇只用一个种子。",
   "num_threads": 4,
   "dtype": "float32",
   "ref_audio": "/home/user/university-entrance-examination/西班牙语/配音选型/参考音色/M1F5_25.wav",

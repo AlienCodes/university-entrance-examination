@@ -13,6 +13,9 @@
 标点：逗号、分号、冒号、破折号停顿 0.28 秒；列举的逗号不停顿（逐条判定写在 逗号停顿.json，铁律 11）。
 
 音色在 voices.json：engine = kokoro（本进程）或 worker（用别的 Python 环境运行 engines/ 里的脚本，一次合成全部片段）。
+worker 的 python 省略或写 "auto" = 用运行本程序的同一个 Python（工具包只有一个环境）；model_dir、ref_audio 写相对路径时
+按 西班牙语/ 文件夹解析（工具包里写 models/supertonic3 这样的相对路径，换电脑、换文件夹都不用改）。绝对路径照旧可用。
+列举的逗号按篇目登记在 逗号停顿.json：{"es01": {"2": [{"after": "lugares nuevos,", "why": …}]}, …}（键 = 篇目 id → 第几句）。
 """
 import argparse
 import json
@@ -37,18 +40,20 @@ sys.path.insert(0, str(HERE))                                    # 四级 make_a
 
 VOICES = json.loads((HERE / 'voices.json').read_text('utf-8'))
 PAUSES = {k: v for k, v in json.loads((HERE / '逗号停顿.json').read_text('utf-8')).items() if not k.startswith('_')}
+if any(k.isdigit() for k in PAUSES):                              # 旧格式（句号直接放在最外层）会套到每一篇上，不许静默失效
+    raise SystemExit('逗号停顿.json 是旧格式：请按篇目分组，写成 {"es01": {"2": [...]}, ...}')
 SR, OUT_SR = G.SR, G.OUT_SR
 CLAUSE = re.compile(r'(?<=[,;:—])\s+(?=\S)')
 ALLOWED = re.compile(r"[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ¿¡\s.,;:!?—\-]")
 
 
 # ---------------------------------------------------------------- 文本 → 合成片段
-def segments(text, k):
-    """按逗号、分号、冒号、破折号切成片段；逗号停顿.json 里登记为“不停顿”的逗号不切（整段一口气合成）。
+def segments(text, k, pid=None):
+    """按逗号、分号、冒号、破折号切成片段；逗号停顿.json 里这一篇（pid）登记为“不停顿”的逗号不切（整段一口气合成）。
     返回 [片段文字]，片段之间停顿 clause_pause 秒。"""
     if ALLOWED.search(text):
-        raise RuntimeError(f'第 {k} 句朗读文本残留数字/符号/引号/括号：{text}')
-    free = PAUSES.get(str(k), [])
+        raise RuntimeError(f'{pid or ""} 第 {k} 句朗读文本残留数字/符号/引号/括号：{text}')
+    free = PAUSES.get(pid, {}).get(str(k), []) if pid else []
     parts = [x for x in CLAUSE.split(text) if x.strip()]
     used = set()
     merged = []
@@ -64,7 +69,7 @@ def segments(text, k):
             merged.append(x)
     miss = [f['after'] for f in free if f['after'] not in used]
     if miss:                                                     # 踩坑 17：修正匹配不到不能静默失效
-        raise RuntimeError(f'逗号停顿.json：第 {k} 句的 {miss} 匹配不到')
+        raise RuntimeError(f'逗号停顿.json：{pid} 第 {k} 句的 {miss} 匹配不到')
     return [x if i == len(merged) - 1 or re.search(r'[,;:—.!?]$', x) else x + ',' for i, x in enumerate(merged)]
 
 
@@ -88,11 +93,26 @@ class KokoroES:
         return out
 
 
+PATH_KEYS = ('model_dir', 'ref_audio')
+
+
+def resolve_cfg(cfg):
+    """worker 设置里的 python 和路径：python 省略或 "auto" → 当前 Python；model_dir、ref_audio 是相对路径 → 按 西班牙语/ 解析。
+    返回新的 dict（voices.json 原样不动，timings.json 里记的也是原样设置）。"""
+    cfg = dict(cfg)
+    if cfg.get('python') in (None, '', 'auto'):
+        cfg['python'] = sys.executable
+    for k in PATH_KEYS:
+        if cfg.get(k) and not Path(cfg[k]).is_absolute():
+            cfg[k] = str(ES / cfg[k])
+    return cfg
+
+
 class Worker:
     """在别的 Python 环境里运行 engines/<script>：输入 JSON（片段文字 + 设置），每段输出一个 wav。"""
 
     def __init__(self, cfg):
-        self.cfg = cfg
+        self.cfg = resolve_cfg(cfg)
 
     def synth_all(self, texts):
         import soundfile as sf
@@ -143,7 +163,7 @@ def build(p, cfg, eng, sents=None, log=print):
     plan = []
     for pi, si, s in pick:
         k = allsent.index((pi, si, s)) + 1
-        plan.append((k, pi, si, s, segments(s['es'], k)))
+        plan.append((k, pi, si, s, segments(s['es'], k, p['id'])))
     texts = [t for *_, segs in plan for t in segs]
     t0 = time.time()
     raw = eng.synth_all(texts)

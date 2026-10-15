@@ -12,13 +12,15 @@ https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/<模型>.tar.
 
 cfg 里用到的键：
   kind         "supertonic" 或 "vits"（必填）
-  model_dir    模型文件夹（必填），如 /opt/es_tts_models/supertonic3、/opt/es_tts_models/piper-es_ES-davefx-medium
+  model_dir    模型文件夹（必填），如 /opt/es_tts_models/supertonic3、/opt/es_tts_models/piper-es_ES-davefx-medium；
+               相对路径按 西班牙语/ 文件夹解析（工具包里是 models/supertonic3）
   sid          说话人编号，默认 0（Supertonic 3：0–4 = F1–F5 女声，5–9 = M1–M5 男声；sharvard：0 男、1 女）
   speed        语速（越大越快），默认 1.0
   num_threads  onnxruntime 线程数，默认 4
   Supertonic： lang 语言，默认 "es"；num_steps 去噪步数，默认 32（越大越细，见 research 记录）
                mix 混合音色（用了 mix 就不看 sid）：如 {"M1": 0.75, "F5": 0.25}，按权重把这几个预置音色的风格向量
-               （voice.bin 里的 style_ttl、style_dp）加权平均成一个新音色，模型原生合成、不做任何变调处理
+               （voice.bin 里的 style_ttl、style_dp）加权平均成一个新音色（写成临时文件夹里的 voice.bin，其余模型文件
+               直接用 model_dir 里的，不建软链接，Windows 也能用），模型原生合成、不做任何变调处理
                （用户 2026-10-15 要男声“更细一些、音调稍高、听不出是机器”：变调处理自然度掉到 1.3 分，混合反而升高，见 README）。
                名字 F1–F5、M1–M5 对应 sid 0–9（voice.bin 按文件名排序合并）
   VITS：       model 文件夹里的 .onnx 文件名（默认唯一那个）；noise_scale / noise_scale_w / length_scale
@@ -33,6 +35,8 @@ from pathlib import Path
 
 import numpy as np
 import soundfile as sf
+
+ES = Path(__file__).resolve().parents[2]          # 西班牙语/（相对的 model_dir 按它解析）
 
 
 def need(cfg, key):
@@ -50,8 +54,8 @@ def exists(p):
 NAMES = ['F1', 'F2', 'F3', 'F4', 'F5', 'M1', 'M2', 'M3', 'M4', 'M5']
 
 
-def mixed_dir(cfg, d):
-    """cfg 有 mix 时：在临时文件夹里建一个只有这一个混合音色的模型（模型文件用软链接，只新写 voice.bin），返回文件夹。"""
+def mixed_voice(cfg, d):
+    """cfg 有 mix 时：把混合后的这一个音色写成临时文件夹里的 voice.bin（退出时删除），返回它的路径。"""
     import tempfile
     b = Path(exists(d / 'voice.bin')).read_bytes()
     n, a, c, n2, e, f = np.frombuffer(b[:48], np.int64)
@@ -71,18 +75,14 @@ def mixed_dir(cfg, d):
     import shutil
     md = Path(tempfile.mkdtemp(prefix='supertonic_mix_'))
     atexit.register(shutil.rmtree, md, True)
-    for x in d.iterdir():
-        if x.name != 'voice.bin':
-            (md / x.name).symlink_to(x.resolve())
     (md / 'voice.bin').write_bytes(np.array(T.shape, np.int64).tobytes() + np.array(D.shape, np.int64).tobytes()
                                    + T.tobytes() + D.tobytes())
-    return md
+    return md / 'voice.bin'
 
 
 def supertonic_model(cfg, d):
     import sherpa_onnx as so
-    if cfg.get('mix'):
-        d = mixed_dir(cfg, d)
+    voice = mixed_voice(cfg, d) if cfg.get('mix') else d / 'voice.bin'
     return so.OfflineTtsModelConfig(
         supertonic=so.OfflineTtsSupertonicModelConfig(
             duration_predictor=exists(d / 'duration_predictor.int8.onnx'),
@@ -91,7 +91,7 @@ def supertonic_model(cfg, d):
             vocoder=exists(d / 'vocoder.int8.onnx'),
             tts_json=exists(d / 'tts.json'),
             unicode_indexer=exists(d / 'unicode_indexer.bin'),
-            voice_style=exists(d / 'voice.bin'),
+            voice_style=exists(voice),
         ),
         num_threads=int(cfg.get('num_threads', 4)), debug=False, provider='cpu')
 
@@ -126,6 +126,8 @@ class SherpaWorker:
         import sherpa_onnx as so
         kind = need(cfg, 'kind')
         d = Path(need(cfg, 'model_dir'))
+        if not d.is_absolute():
+            d = ES / d
         if kind == 'supertonic':
             model = supertonic_model(cfg, d)
         elif kind == 'vits':

@@ -145,11 +145,11 @@ def main():
     md = [f'### {a.title or Path(a.mp3).name}', '',
           f'识别模型：{Path(a.model).name}；共 {len(rows)} 句 {nw} 词，逐词差异 {nd} 处'
           f'（{sum(1 for r in rows if not r["diffs"])} 句完全一致），只差重音符号 {sum(len(r["accents"]) for r in rows)} 处。', '',
-          '| 句 | 原文 | 识别结果 | 差异 |', '|---|---|---|---|']
+          '| 句 | 原文 | 识别结果 | 差异 | 判定 |', '|---|---|---|---|---|']
     for r in rows:
         ds = '；'.join(f'{t}：{x or "—"} → {y or "—"}' for t, x, y in r['diffs'])
         ds += ('；' if ds and r['accents'] else '') + '；'.join(f'重音：{x} → {y}' for x, y in r['accents'])
-        md.append(f"| {r['k']} | {r['ref']} | {r['hyp']} | {ds or '无'} |")
+        md.append(f"| {r['k']} | {r['ref']} | {r['hyp']} | {ds or '无'} | {'一致' if not ds else '（待人工判定）'} |")
     text = '\n'.join(md) + '\n'
     if a.out:
         Path(a.out).write_text(text, 'utf-8')

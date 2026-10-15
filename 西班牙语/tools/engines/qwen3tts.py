@@ -16,7 +16,8 @@ make_audio.py 不读它。
 
 cfg 里用到的键：
   mode          "clone"（Base 模型 + 参考录音）或 "design"（VoiceDesign 模型 + 文字描述）（必填）
-  model_dir     模型文件夹（必填），如 /opt/es_tts_models/qwen3-tts-base/models/Qwen3-TTS-12Hz-1.7B-Base
+  model_dir     模型文件夹（必填），如 /opt/es_tts_models/qwen3-tts-base/models/Qwen3-TTS-12Hz-1.7B-Base；
+                相对路径按 西班牙语/ 文件夹解析（工具包里是 models/qwen3-base）。ref_audio 同样
   language      默认 "spanish"
   seed          随机种子，默认 1234。每一段合成前都重新设成这个种子：同一段文字 + 同样设置 → 每次结果完全一样
                 （和段落的先后顺序无关；只在同一台机器、同样线程数下保证逐位一致）
@@ -44,11 +45,18 @@ from pathlib import Path
 import numpy as np
 import soundfile as sf
 
+ES = Path(__file__).resolve().parents[2]          # 西班牙语/（相对的 model_dir、ref_audio 按它解析）
+
 
 def need(cfg, key):
     if key not in cfg or cfg[key] in (None, ''):
         raise SystemExit(f'qwen3tts.py：cfg 缺少 "{key}"')
     return cfg[key]
+
+
+def path(cfg, key):
+    p = Path(need(cfg, key))
+    return p if p.is_absolute() else ES / p
 
 
 GEN_KEYS = ('do_sample', 'temperature', 'top_k', 'top_p', 'repetition_penalty',
@@ -71,7 +79,7 @@ class QwenWorker:
         self.mode = need(cfg, 'mode')
         if self.mode not in ('clone', 'design'):
             raise SystemExit(f'qwen3tts.py：不认识的 mode "{self.mode}"（只支持 clone、design）')
-        d = Path(need(cfg, 'model_dir'))
+        d = path(cfg, 'model_dir')
         if not (d / 'model.safetensors').exists() or not (d / 'speech_tokenizer' / 'config.json').exists():
             raise SystemExit(f'qwen3tts.py：{d} 里没有完整的模型（要有 model.safetensors 和 speech_tokenizer/），请先下载解压')
         dtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16}[cfg.get('dtype', 'float32')]
@@ -85,7 +93,7 @@ class QwenWorker:
         self.gen = {k: cfg[k] for k in GEN_KEYS if k in cfg}
         self.prompt = None
         if self.mode == 'clone':
-            ref = Path(need(cfg, 'ref_audio'))
+            ref = path(cfg, 'ref_audio')
             if not ref.exists():
                 raise SystemExit(f'qwen3tts.py：找不到参考录音 {ref}')
             xvec = bool(cfg.get('x_vector_only', False))

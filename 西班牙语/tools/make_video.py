@@ -5,7 +5,12 @@
 背景样式（--style，默认 C）：C = 四级设计方案 C（下面描述的默认画面）；1–6 = 中考设计的 6 种背景（晴空校园、手账笔记本、教室黑板、
 活页单词卡、紫黄撞色、柔彩插画），CSS 在 西班牙语/tools/样式/（索引 styles.json），字体在 西班牙语/tools/fonts/。
 样式只换颜色、字体、装饰和片头，不改版面尺寸、时间轴、编码和核查；选了 1–6 时成品文件名末尾加「（背景 N 名称）」。
-预览图和每种样式的命令见 西班牙语/背景样式/README.md。
+预览图和每种样式的命令见 西班牙语/背景样式/README.md。样式 1–6 另有（C 的画面一个像素都不变）：
+- 封面：西语标题用样式自己的西文字体占整行（最多两行，放不下自动缩小，不小于 56px），下面左边中文标题 + 图例、右边插图
+- 词汇栏起始字号 40px（放不下自动缩小）；释义按逗号切块、块内不断行，中文最后两个字不拆开（不留孤字）
+- 生词编号徽章与前一个字母按字形实测留出空隙（不贴字）
+- 截图前逐屏程序检查：字形（每个字都由样式字体画出，西语 á é í ó ú ü ñ ¿ ¡ 不落到系统字体）、横向出界、页眉拥挤、
+  封面各块出界 / 重叠 / 插图未加载；任何一处不合格就报错、不生成。
 
 画面、时间轴、编码、成品核查都沿用 四级/tools/make_video.py（不改四级程序，在这里覆盖西班牙语需要不同的部分）：
 - 米白底、左侧墨绿竖带；西语原文 EB Garamond，生词右上角带编号，单词墨绿、短语砖红；中文思源宋体；右侧词汇栏按编号一一对应
@@ -56,6 +61,74 @@ CSS_ES = """
 .legend .lw{background:#1f5c4a}.legend .lp{background:#a14a2a}
 .t-es{font-family:'EB Garamond'}
 """
+# 只用于背景样式 1–6（C 的画面一个像素都不变），放在样式 CSS 之后：西语封面的版式骨架。中考样式的封面是一行中文标题，
+# 西语封面是「西语标题 + 中文标题 + 插图」：西语标题占整行（最多两行，COVER 自动缩小字号），下面左边中文标题和图例、右边插图。
+# 字体、字号、颜色、插图边框由每个样式 CSS 末尾的「西班牙语版调整」决定。
+CSS_STYLED = """
+x-nb{white-space:nowrap}
+.ttl .row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto auto;align-items:center}
+.ttl .txt{display:contents}
+.ttl h1{grid-column:1/-1;grid-row:1;white-space:normal;text-wrap:balance;height:auto;width:auto;max-width:100%;display:block;align-self:start}
+.ttl .sub{grid-column:1;grid-row:2;align-self:end;min-width:0}
+.ttl .legend{grid-column:1;grid-row:3;align-self:start;justify-self:start;position:static;transform:none;inset:auto}
+.ttl figure{grid-column:2;grid-row:2/4;align-self:center}
+.v b{margin-right:10px}.v i{margin-left:0!important;margin-right:10px}.v span{margin-left:0!important}
+"""   # 词条间距放在左边元素的右侧：释义折到第二行时行首不会多出一截缩进（踩坑 33）
+
+# 背景样式 1–6 截图前的三步（C 不跑）：徽章间距、封面标题字号、字形检查。
+GAP = 0.04       # 生词编号徽章与前一个字母笔画之间至少留 0.04 个字号的空隙（按字形实测右边距，踩坑 39：徽章贴字）
+BADGE = """(gap) => { document.documentElement.style.setProperty('--fs', '64px'); const cv = document.createElement('canvas').getContext('2d');
+  for (const s of document.querySelectorAll('.en sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
+    if (!n || !n.data) continue; const c = n.data.trim().slice(-1); if (!c) continue;
+    const cs = getComputedStyle(n.parentElement), fs = parseFloat(cs.fontSize), ss = parseFloat(getComputedStyle(s).fontSize) / fs;
+    cv.font = `${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`; const m = cv.measureText(c), rsb = (m.width - m.actualBoundingBoxRight) / 100;
+    const ls = (parseFloat(cs.letterSpacing) || 0) / fs;
+    s.style.marginLeft = Math.max(0.04, (gap - rsb - ls) / ss).toFixed(3) + 'em'; } }"""
+# 封面：样式 1–6 的西语标题最多两行，放不下就逐步缩小字号（不小于 56px）；所有样式都核对封面各块不出界、不互相重叠、插图已加载
+COVER = """(shrink) => { const q = s => document.querySelector(s), t = q('.ttl'), h = q('.ttl h1');
+  const lh = () => { const c = getComputedStyle(h); return parseFloat(c.lineHeight) || parseFloat(c.fontSize) * 1.2; };
+  const lines = () => Math.round(h.getBoundingClientRect().height / lh());
+  const over = () => { const r = document.createRange(); r.selectNodeContents(h.querySelector('x-t') || h);      // 只量文字本身（荧光笔衬底可以略出边）
+    const a = r.getBoundingClientRect(), b = h.getBoundingClientRect();
+    return t.scrollHeight > t.clientHeight + 1 || a.right > b.right + 1 || a.left < b.left - 1; };
+  let fs = parseFloat(getComputedStyle(h).fontSize);
+  while (shrink && (lines() > 2 || over()) && fs > 56) { fs -= 2; h.style.fontSize = fs + 'px'; }
+  const names = ['.tag', 'h1', '.sub', 'figure', '.meta', '.legend'], bad = [];
+  const R = names.map(s => q(s) && q(s).getBoundingClientRect());
+  R.forEach((r, i) => { if (r && (r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight)) bad.push(names[i] + ' 出界'); });
+  for (let i = 0; i < R.length; i++) for (let j = i + 1; j < R.length; j++) { const a = R[i], b = R[j];
+    if (a && b && a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) bad.push(names[i] + ' 与 ' + names[j] + ' 重叠'); }
+  const img = q('.ttl figure img'); if (img && !(img.complete && img.naturalWidth)) bad.push('插图没有加载');
+  if (over()) bad.push('标题或封面内容溢出');
+  return [fs, lines(), bad]; }"""
+# 横向不出界：整块不断行（x-nb）以后，词条、释义、原文、译文的每一段都必须在所在栏的内边距以内
+HBOX = """() => { const bad = [];
+  for (const [box, sel] of [['#side', '#list'], ['.main', '#box']]) { const b = document.querySelector(box), c = getComputedStyle(b), r = b.getBoundingClientRect();
+    const L = r.left + b.clientLeft + parseFloat(c.paddingLeft) - 1, R = r.left + b.clientLeft + b.clientWidth - parseFloat(c.paddingRight) + 1;
+    const w = document.createTreeWalker(document.querySelector(sel), NodeFilter.SHOW_TEXT), g = document.createRange();
+    for (let n; (n = w.nextNode());) { g.selectNodeContents(n);      // 只量文字本身（荧光笔、徽章的衬底可以略出边）
+      for (const q of g.getClientRects()) if (q.width && (q.left < L || q.right > R)) { bad.push(n.data.slice(0, 20)); break; } } }
+  const a = document.querySelector('.top b').getBoundingClientRect(), t = document.querySelector('.top span').getBoundingClientRect();
+  if (a.right > t.left - 20 || t.right > innerWidth) bad.push('页眉标题太长，和 SPANISH READING 挤在一起或出界');
+  return bad; }"""
+# 字形检查：画面上每个字都必须由该元素 font-family 里列出的网页字体之一画出（不许落到系统字体，如西语重音字母、¿ ¡ 或生僻汉字）。
+# 方法：分别用两种字形明显不同的备用字体垫底画同一个字，像素完全相同 = 列出的字体自己有这个字。
+GLYPH = """async () => { const GEN = new Set(['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui']);
+  const LAT = ['EB Garamond', 'Inter', 'Noto Serif SC'], CJK = ['Noto Serif SC', 'Noto Sans SC', 'LXGW WenKai'];
+  const cv = document.createElement('canvas'); cv.width = cv.height = 160; const g = cv.getContext('2d', {willReadFrequently: true});
+  const draw = (font, ch) => { g.clearRect(0, 0, 160, 160); g.font = font; g.fillText(ch, 20, 120); return g.getImageData(0, 0, 160, 160).data; };
+  const same = (a, b) => { for (let i = 3; i < a.length; i += 4) if (a[i] !== b[i]) return false; return true; };
+  const bad = new Set(), seen = new Set(), w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n; (n = w.nextNode());) { const txt = n.data.replace(/\s/g, ''); if (!txt) continue;
+    const cs = getComputedStyle(n.parentElement), fams = cs.fontFamily.split(',').map(f => f.trim().replace(/^["']|["']$/g, '')).filter(f => !GEN.has(f));
+    const pre = `${cs.fontStyle} ${cs.fontWeight} 100px `;
+    for (const ch of new Set(txt)) { const key = pre + fams.join('|') + ch; if (seen.has(key)) continue; seen.add(key);
+      const cjk = /[\u2e80-\u9fff\uf900-\ufaff\uff00-\uffef\u3000-\u303f]/.test(ch); let ok = false;
+      for (const f of fams) { const fb = (cjk ? CJK : LAT).filter(x => x !== f).slice(0, 2);
+        await Promise.all([f, ...fb].map(x => document.fonts.load(`${pre}"${x}"`, ch)));
+        if (same(draw(`${pre}"${f}", "${fb[0]}"`, ch), draw(`${pre}"${f}", "${fb[1]}"`, ch))) { ok = true; break; } }
+      if (!ok) bad.add(`${ch}（${fams.join(', ')}）`); } }
+  return [...bad]; }"""
 
 
 def esc(s):
@@ -69,7 +142,28 @@ def page(body):
         extra = f'<link rel="stylesheet" href="{(HERE / "fonts" / "fonts.css").as_uri()}">'
         theme = f'<style>{(STYLE_DIR / STYLES[STYLE]["file"]).read_text("utf-8")}</style>'
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}'
-            f'<style>{C4V.CSS}{CSS_ES}</style>{theme}</head><body><div class="band"></div>{body}</body></html>')
+            f'<style>{C4V.CSS}{CSS_ES}</style>{theme}{f"<style>{CSS_STYLED}</style>" if STYLE != "C" else ""}</head><body><div class="band"></div>{body}</body></html>')
+
+
+def nb_tail(s):
+    """样式 1–6：中文最后两个字（连同句末标点）不拆开，避免最后一行只剩一个字（踩坑 33、41）。C 原样输出。"""
+    k = len(s)
+    while k and s[k - 1] in '。！？；：，、”’）》…—.!?;:,)':
+        k -= 1
+    if STYLE == 'C' or k < 3:
+        return esc(s)
+    return f'{esc(s[:k - 2])}<x-nb>{esc(s[k - 2:])}</x-nb>'
+
+
+def gloss_html(s):
+    """样式 1–6 的词汇释义：按逗号、分号、顿号切成小块，每块（≤ 8 字）整体不断行，只在标点后换行，
+    避免「巨 / 大的」「可 / 能」这种在词中间断开（踩坑 33）；长块只绑定末两字。C 原样输出。"""
+    if STYLE == 'C':
+        return esc(s)
+    out = []
+    for c in re.findall(r'[^，；、,;]+[，；、,;]?|[，；、,;]', s):
+        out.append(f'<x-nb>{esc(c)}</x-nb>' if len(c) <= 8 else nb_tail(c))
+    return ''.join(out)
 
 
 def load(pid):
@@ -109,7 +203,7 @@ def vocab_html(s):
     for i, w in enumerate(s['w'], 1):
         pos = '' if w['pos'] == 'loc.' else w['pos']          # 短语不写 loc.（颜色已经表示短语），名词短语保留阴阳性
         out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b lang="es">{esc(w["h"])}</b>'
-                   f'{f"<i class=pos>{esc(pos)}</i>" if pos else ""}<span>{esc(w["zh"])}</span></div></div>')
+                   f'{f"<i class=pos>{esc(pos)}</i>" if pos else ""}<span>{gloss_html(w["zh"])}</span></div></div>')
     return ''.join(out)
 
 
@@ -125,15 +219,17 @@ def title_slide(p):
     img = (ES / '图片' / f'{p["id"]}_插图.jpg')
     fig = f'<figure><img src="{img.as_uri()}"></figure>' if img.exists() else ''
     n = sum(len(x) for x in p['paras'])
+    legend = '<div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>'
+    inner, outer = (legend, '') if STYLE != 'C' else ('', legend)      # 样式 1–6：图例放在中文标题下面（随内容排，不会和插图重叠）
     return page(f'''<div class="ttl"><div class="tag">SPANISH · READING · 西班牙语阅读</div>
-      <div class="row"><div class="txt"><h1 lang="es">{esc(p["title_es"])}</h1><div class="sub">{esc(p["title_zh"])}</div></div>{fig}</div>
+      <div class="row"><div class="txt"><h1 lang="es"><x-t>{esc(p["title_es"])}</x-t></h1><div class="sub">{esc(p["title_zh"])}</div>{inner}</div>{fig}</div>
       <div class="meta"><span>{esc(p.get("series") or "")}</span><span>全文 {words(p)} 词 · {n} 句 · 逐句精读</span></div></div>
-      <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>''')
+      {outer}''')
 
 
 def sentence_slide(p, s, k, n):
     return page(f'''<div class="top"><b>SPANISH READING</b><span>{head(p)}</span></div>
-      <div class="main"><div id="box"><div class="en" lang="es">{sentence_html(s).rstrip()}</div><div class="zh">{esc(s["zh"])}</div></div></div>
+      <div class="main"><div id="box"><div class="en" lang="es">{sentence_html(s).rstrip()}</div><div class="zh">{nb_tail(s["zh"])}</div></div></div>
       <div class="side" id="side"><h3>VOCABULARY</h3><div id="list">{vocab_html(s)}</div></div>
       <div class="bot"><span>SENTENCE {k} / {n}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
 
@@ -158,8 +254,21 @@ def render_slides(slides, outdir, scale):
             missing = pg.evaluate("""() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family)""")
             if missing:
                 raise SystemExit(f'第 {i} 屏字体加载失败：{missing}')
-            if i:
+            if STYLE != 'C':
+                bad = pg.evaluate(GLYPH)
+                if bad:
+                    raise SystemExit(f'第 {i} 屏有字落到了系统字体（样式 {STYLE} 的字体缺字）：{bad}')
+            if not i:
+                cfs, lines, bad = pg.evaluate(COVER, STYLE != 'C')
+                if bad:
+                    raise SystemExit(f'封面排版有问题（标题 {cfs:.0f}px、{lines} 行）：{bad}')
+                print(f'  封面标题 {cfs:.0f}px，{lines} 行')
+            else:
+                if STYLE != 'C':
+                    pg.evaluate(BADGE, GAP)
                 fs, vs, fits = pg.evaluate(fit)
+                if STYLE != 'C' and (bad := pg.evaluate(HBOX)):
+                    raise SystemExit(f'第 {i} 句有内容横向出界（样式 {STYLE}）：{bad}')
                 if not fits or fs < MIN_FS or vs < MIN_VS:
                     raise SystemExit(f'第 {i} 句一屏放不下（原文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）')
                 sizes.append((fs, vs))
