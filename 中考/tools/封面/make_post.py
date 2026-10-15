@@ -38,8 +38,9 @@ def main():
     st = stats(P)
     y0, y1 = min(st['years']), max(st['years'])
     n, heads = st['n'], st['heads']
-    title = (f'【{n}P合集】{y0}-{y1}中考英语阅读真题逐句精读｜背完{heads}个中考单词短语｜C/D篇+中英对照｜'
-             f'备战{y1 + 1}中考复习 初中英语阅读理解')
+    # 用户 2026-10-15：开头先说最重要的——几年、几篇中考英语阅读真题、用来记忆中考重点单词；后面再放其他关键词
+    title = (f'{y0}-{y1}年{n}篇中考英语阅读真题记忆中考重点单词｜逐句精读 背完{heads}个单词短语｜C/D篇中英对照｜'
+             f'{n}P合集 {y1 + 1}中考复习 初中英语阅读理解')
     alt = f'中考英语阅读真题{n}篇逐句精读，背完{heads}个中考单词短语！{y0}-{y1}全国{len(st["regions"])}省市C/D篇｜中英对照｜{y1 + 1}中考必看'
     regions = '、'.join(st['regions'])
     by_year = '，'.join(f'{y} 年 {c} 篇' for y, c in sorted(st['years'].items(), reverse=True))
