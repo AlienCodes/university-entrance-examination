@@ -242,9 +242,15 @@ def main():
     rep, errs = verify(mp3, items, cfg.get('lufs', -16.0))
     print(f"  响度：整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，短时波动 "
           f"{rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS；电磁音：梳状线 {rep['comb_db']:+.2f} dB，全频段最强 {rep['buzz_hz']:.0f} Hz {rep['buzz_db']:+.1f} dB")
-    if a.sample:
-        Path(a.sample).write_bytes(mp3)
-        print(('  检查：' + '；'.join(errs)) if errs else '  检查全部通过', f'\n已保存试听样片 {a.sample}')
+    if a.sample:                                   # 试听样片也是给人听的音频：检查不通过就不写（铁律 10），--draft 才写（文件名加 _未通过）
+        if errs and not a.draft:
+            raise SystemExit(f'试听样片检查未通过，未输出文件：' + '；'.join(errs) +
+                             '\n（Supertonic 每次合成略有不同，直接再运行一次即可；Qwen3 用 --seed 换一个种子）')
+        dst = Path(a.sample)
+        if errs:
+            dst = dst.with_name(dst.stem + '_未通过' + dst.suffix)
+        dst.write_bytes(mp3)
+        print(('  草稿：以下检查未通过：' + '；'.join(errs)) if errs else '  检查全部通过', f'\n已保存试听样片 {dst}')
         return
     if errs and not a.draft:
         raise SystemExit(f'{p["id"]} {name} 检查未通过，未输出文件：' + '；'.join(errs))

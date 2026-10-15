@@ -50,6 +50,10 @@ STYLES = {s['key']: s for s in json.loads((STYLE_DIR / 'styles.json').read_text(
 STYLE = 'C'                     # 当前背景样式（main() 按 --style 设置）
 
 CSS_ES = """
+x-nb{white-space:nowrap}
+/* 词条、词性与释义的间距放在左边元素的右侧（不放在释义左侧）：单行时位置完全不变（词条→词性 8px、→释义 10px），
+   释义折到下一行时不再缩进（踩坑 33“折行释义多缩进”；C 的示例视频第 8 句曾出现） */
+.v b{margin-right:10px}.v i{margin-left:-2px;margin-right:10px}.v span{margin-left:0}
 .ttl{right:110px}
 .ttl .tag{font-size:26px}
 .ttl .row{display:flex;align-items:center;gap:70px}
@@ -113,7 +117,7 @@ HBOX = """() => { const bad = [];
   return bad; }"""
 # 字形检查：画面上每个字都必须由该元素 font-family 里列出的网页字体之一画出（不许落到系统字体，如西语重音字母、¿ ¡ 或生僻汉字）。
 # 方法：分别用两种字形明显不同的备用字体垫底画同一个字，像素完全相同 = 列出的字体自己有这个字。
-GLYPH = """async () => { const GEN = new Set(['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui']);
+GLYPH = r"""async () => { const GEN = new Set(['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui']);
   const LAT = ['EB Garamond', 'Inter', 'Noto Serif SC'], CJK = ['Noto Serif SC', 'Noto Sans SC', 'LXGW WenKai'];
   const cv = document.createElement('canvas'); cv.width = cv.height = 160; const g = cv.getContext('2d', {willReadFrequently: true});
   const draw = (font, ch) => { g.clearRect(0, 0, 160, 160); g.font = font; g.fillText(ch, 20, 120); return g.getImageData(0, 0, 160, 160).data; };
@@ -146,20 +150,19 @@ def page(body):
 
 
 def nb_tail(s):
-    """样式 1–6：中文最后两个字（连同句末标点）不拆开，避免最后一行只剩一个字（踩坑 33、41）。C 原样输出。"""
+    """中文最后两个字（连同句末标点）不拆开，避免最后一行只剩一个字（踩坑 33、41；所有样式，C 也一样：
+    C 的示例视频曾出现「海滩和山 / 脉。」「多样 / 性。」，2026-10-15 改为与 1–6 相同）。"""
     k = len(s)
     while k and s[k - 1] in '。！？；：，、”’）》…—.!?;:,)':
         k -= 1
-    if STYLE == 'C' or k < 3:
+    if k < 3:
         return esc(s)
     return f'{esc(s[:k - 2])}<x-nb>{esc(s[k - 2:])}</x-nb>'
 
 
 def gloss_html(s):
-    """样式 1–6 的词汇释义：按逗号、分号、顿号切成小块，每块（≤ 8 字）整体不断行，只在标点后换行，
-    避免「巨 / 大的」「可 / 能」这种在词中间断开（踩坑 33）；长块只绑定末两字。C 原样输出。"""
-    if STYLE == 'C':
-        return esc(s)
+    """词汇释义（所有样式）：按逗号、分号、顿号切成小块，每块（≤ 8 字）整体不断行，只在标点后换行，
+    避免「巨 / 大的」「可 / 能」这种在词中间断开（踩坑 33）；长块只绑定末两字（C 曾出现「做某 / 事」）。"""
     out = []
     for c in re.findall(r'[^，；、,;]+[，；、,;]?|[，；、,;]', s):
         out.append(f'<x-nb>{esc(c)}</x-nb>' if len(c) <= 8 else nb_tail(c))
