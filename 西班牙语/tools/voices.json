@@ -114,5 +114,26 @@
    "F5": 0.3
   },
   "deline": "supertonic3_comb.json"
+ },
+ "qwen3_M1F5_25": {
+  "label": "Qwen3-TTS 1.7B（克隆合成音色 Supertonic 3 M1+F5 0.25：更细、稍高的西语男声；真人感最强，2026-10-15 自然度机测 4.26，Supertonic 约 3.4）",
+  "engine": "worker",
+  "python": "/opt/es_tts_envs/qwen3tts/bin/python",
+  "script": "qwen3tts.py",
+  "mode": "clone",
+  "model_dir": "/opt/es_tts_models/qwen3/app/models/qwen3-base",
+  "language": "spanish",
+  "seed": 1234,
+  "num_threads": 4,
+  "dtype": "float32",
+  "ref_audio": "/home/user/university-entrance-examination/西班牙语/配音选型/参考音色/M1F5_25.wav",
+  "ref_text": "Tengo una gran pasión por los viajes. Me encanta conocer lugares nuevos, culturas diferentes y probar comidas típicas de cada región.",
+  "lead_in": 1.5,
+  "sentence_pause": 0.8,
+  "tail": 2.0,
+  "clause_pause": 0.28,
+  "lufs": -16.0,
+  "kbps": 128,
+  "debuzz": []
  }
 }
