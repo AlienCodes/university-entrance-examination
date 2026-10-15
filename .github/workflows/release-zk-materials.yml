@@ -37,6 +37,13 @@ jobs:
               rows.append(f'| {i} | {name} |')
               order.append(f'{top}/{i} {name}')
           assert len(lines) == 40, len(lines)
+          papers = sorted(Path('中考/真题').glob('*.docx'))                      # 附送：中考英语真题原卷（用户上传的 Word 原卷）
+          assert len(papers) == 23, len(papers)
+          pname = f'中考英语真题原卷（{len(papers)}份）'
+          (out / pname).mkdir()
+          for f in papers:
+              shutil.copy(f, out / pname / f.name)
+          order.append(f'{top}/{pname}')
           Path('order.txt').write_text('\n'.join(order) + '\n', 'utf-8')
           Path('notes.md').write_text(
               f'中考英语阅读真题学习资料，共 {len(lines)} 篇，与 B 站 40P 合集一一对应：文件夹前的序号就是 P 号（1—40）。每篇一个文件夹，5 个文件：\n\n'
@@ -44,6 +51,7 @@ jobs:
               '- 1 汉译英.pdf：看中文写英文\n- 2 英译汉.pdf：看英文写中文\n'
               '- 3 文章填空.pdf：原文挖空（试卷的中文注释已去掉），附整句翻译和每空释义\n'
               '- 朗读音频.mp3：男声逐句朗读（四六级同款声音，与视频是同一份朗读，已去除电磁音）\n\n'
+              f'另附 {pname}：{len(papers)} 份中考英语试卷原卷（Word），与 40 篇阅读的出处对应。\n\n'
               '三份听写卡 PDF 的最后一页是答案；A4 纸，可直接打印。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
           PY
           zipname="ZHONGKAO-reading-materials-${tag}.zip"
