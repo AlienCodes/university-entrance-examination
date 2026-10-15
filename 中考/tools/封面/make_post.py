@@ -16,7 +16,7 @@ C4 = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 from make_cover import stats  # noqa: E402
 
-TITLE_MAX, DESC_MAX, TAG_MAX, TAG_LEN = 80, 2000, 10, 20
+TITLE_MAX, DESC_MAX, TAG_MAX, TAG_LEN, DYN_MAX = 80, 2000, 10, 20, 233     # 粉丝动态（投稿时推给粉丝的那段话）最多 233 字
 FIRST = ['北京', '山东', '济南', '烟台']      # 用户 2026-10-15：每年北京卷第一，山东卷第二，济南卷第三（烟台同为山东的市卷，接在济南后面）
 
 
@@ -83,12 +83,19 @@ def main():
 🔍 {regions_kw}
 
 觉得有用请点赞、投币、收藏支持一下！评论区说说你在哪个城市，{y1 + 1} 中考加油！"""
+    # 粉丝动态（用户 2026-10-15）：粉丝刷到的第一句话——先说是什么、能得到什么，再给每天怎么刷，最后点名城市引评论，结尾带话题
+    dyn = (f"🎉 {n}篇中考英语阅读真题逐句精读合集来啦！{y0}—{y1}年{len(st['regions'])}个省市真题，C/D压轴篇为主，"
+           f"每句英文高亮生词+编号释义+中文翻译+男声朗读，看完就过一遍{heads}个中考词汇（{st['single']}单词+{st['phr']}短语）。"
+           f"每天1篇、每篇约{avg_min}分钟，{n}天刷完！北京、山东、济南、深圳、成都……你的城市在不在里面？评论区告诉我～"
+           f"{y1 + 1}中考的同学先收藏，备考一定用得上！#中考英语# #中考单词# #英语阅读理解#")
     tags = ['中考英语', '中考英语阅读', '中考阅读理解', '中考单词', '中考词汇', '中考真题', '初中英语', f'{y1 + 1}中考', '英语阅读精读', '背单词']
     parts = [f"P{k} {p['year']}{p['region']}中考英语 {p['passage']}｜{p.get('title') or ''}" for k, p in enumerate(release_order(P), 1)]
     errs = []
     for name, t in (('标题', title), ('备选标题', alt)):
         if len(t) > TITLE_MAX:
             errs.append(f'{name} {len(t)} 字，超过 {TITLE_MAX}')
+    if len(dyn) > DYN_MAX:
+        errs.append(f'粉丝动态 {len(dyn)} 字，超过 {DYN_MAX}')
     if len(desc) > DESC_MAX:
         errs.append(f'简介 {len(desc)} 字，超过 {DESC_MAX}')
     if len(tags) > TAG_MAX or any(len(t) > TAG_LEN for t in tags):
@@ -109,6 +116,10 @@ def main():
 ## 简介
 
 {desc}
+
+## 粉丝动态（{len(dyn)} 字，限 {DYN_MAX} 字）
+
+{dyn}
 
 ## 标签（{len(tags)} 个）
 
