@@ -2,6 +2,8 @@
 
 **流程：先审截图，后生成视频（CLAUDE.md 踩坑 36）。**
 
+专八大字版（2026-10-16 起）与中考共用 `layoutcheck.py`、`screens_fp.py`、`canary_layout.py`、`prep.py`，加 `--project 专八`（默认 中考，中考的用法和结果不变：40 篇 layoutcheck 改动前后输出完全相同）。
+
 | 工具 | 查什么 | 花不花 token |
 |---|---|---|
 | `screens_fp.py shots/approve/check` | 画出全部屏的截图交给审阅员；审阅通过后登记程序指纹；`make_video.py` 生成前检查指纹，没登记就拒绝生成 | 不花 |

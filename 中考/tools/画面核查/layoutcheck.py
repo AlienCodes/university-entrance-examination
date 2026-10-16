@@ -9,10 +9,16 @@
   直引号     英文和词条里不能有直撇号、直引号（踩坑 18）
   留白       词汇栏内容必须在卡片内边距以内；句子区不能溢出；字号不低于下限
   标题       片头标题必须在卡片内一行放下
+  人名断开   中文人名的间隔号“·”前后不能断行（专八旧版画面核查：理查德·帕克 在 · 处断行）
+  续接号     分屏的续接号“…”不能落到英文行首（专八旧版画面核查）
+  徽章撇号   编号不能把高亮词和后面的所有格撇号隔开（专八旧版画面核查：drivers⑫’）。只对专八开（--project 专八、专八 make_video.py）：
+             中考程序还没有这项修正，打开后中考已发布的 z04、z09、z10、z28 共 5 屏会报出（2026-10-16 实测），中考下次重做时移植 x-ps 再打开
 
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py z01 z02 …     （不写篇目 = 全部）
+    /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --project 专八 t03 …     （专八；默认 中考）
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --module <旧版 make_video.py> z01 …   （用旧版程序排版，检验本检查能查出旧版的毛病）
 有问题退出码非 0。
+半宽字形：专八译文字体霞鹜文楷的弯引号“”‘’是半宽（0.44/0.33 字），没有半字空白可去；行首缩进、过度挤压只对全角字形（宽 > 0.75 字）按半字计。
 """
 import importlib.util
 import json
@@ -23,7 +29,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 R = HERE.parents[2]
 
-CHECK = r"""([minFs, minVs]) => {
+CHECK = r"""([minFs, minVs, poss]) => {
   const ZC='，。、：；！？）”’】」》', ZO='（“‘【「《', PUN=ZC+ZO+'…—·', out=[];
   const cjk = c => /[一-鿿]/.test(c);
   const chars = el => { const res=[], w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
@@ -40,7 +46,13 @@ CHECK = r"""([minFs, minVs]) => {
     const L = lines(chars(k)), x0 = leftOf(k), sd = document.getElementById('side'), sr = sd.getBoundingClientRect();
     const x1 = isGloss ? sr.left + sd.clientLeft + sd.clientWidth - parseFloat(getComputedStyle(sd).paddingRight)    // 词条撑宽格子时格子本身也变宽，按词汇栏卡片的内边界量
                        : x0 + k.clientWidth - parseFloat(getComputedStyle(k).paddingLeft) - parseFloat(getComputedStyle(k).paddingRight);
-    for (const x of L.flat()) if (x.r > x1 + 1) { out.push(`横向溢出：${name}「${x.c}」超出右边界 ${Math.round(x.r - x1)} 像素`); break; }   // z09 词条伸进右边留白
+    for (const x of L.flat()) { const xr = x.el.classList.contains('pr') ? x.r - em(x.el) / 2 : x.r;      // 挤压过的标点（.pr，右半空白被去掉）只占左半个字
+      if (xr > x1 + 1) { out.push(`横向溢出：${name}「${x.c}」超出右边界 ${Math.round(xr - x1)} 像素`); break; } }   // z09 词条伸进右边留白
+    if (name === '英文' && poss) L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];      // 专八旧版 drivers⑫’：所有格（’s，或 -s 词后的 ’ 且本句没有左单引号）不能被编号隔开
+      if (!s || !y || y.el.closest('sup') || y.c !== '’') return;
+      const after = y.n.data.slice(y.i), word = s.parentElement.textContent.slice(0, -s.textContent.length);
+      if (/^’s(?![A-Za-z])/.test(after) || (/^’(?![A-Za-z])/.test(after) && /s$/.test(word) && !k.textContent.includes('‘')))
+        out.push(`徽章撇号：${name}「${word.slice(-12)}」的编号 ${s.textContent} 把词和后面的所有格撇号隔开`); });
     if (name === '英文') L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];             // z06 编号徽章贴着破折号
       if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
         out.push(`徽章贴破折号：${name}徽章 ${s.textContent} 与「${y.c}」只隔 ${(y.l - s.getBoundingClientRect().right).toFixed(1)} 像素`); });
@@ -56,8 +68,11 @@ CHECK = r"""([minFs, minVs]) => {
     for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && getComputedStyle(x.el).fontFamily.startsWith('Nunito')) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }
     L.forEach((ln, i) => {
       const f = ln[0];
-      const want = ZO.includes(f.c) && name !== '英文' ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形，不按全角半字计
+      const want = ZO.includes(f.c) && name !== '英文' && f.r - f.l > em(f.el) * 0.75 ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形、霞鹜文楷的弯引号是半宽，不按全角半字计
       if (name === '英文' && '—–'.includes(f.c)) out.push(`行首破折号：英文第 ${i + 1} 行「${txt(ln).slice(0, 12)}」以破折号开头`);   // z19 “comes in¹ / —giving”
+      if (name === '英文' && i > 0 && f.c === '…') out.push(`续接号：英文第 ${i + 1} 行以续接号「…」开头`);
+      if (name !== '英文' && i > 0 && (f.c === '·' || L[i - 1][L[i - 1].length - 1].c === '·'))
+        out.push(`人名断开：${name}「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」在间隔号处断行`);
       if (name === '译文' && i > 0) { const a = L[i - 1][L[i - 1].length - 1], an = /[A-Za-z0-9]/, h = cjk;            // z14 “所说的Z / 世代。”
         if ((an.test(a.c) && h(f.c)) || (h(a.c) && an.test(f.c))) out.push(`中英断开：译文「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」英文与紧挨的汉字分在两行`); }
       if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
@@ -74,7 +89,7 @@ CHECK = r"""([minFs, minVs]) => {
         // 过度挤压（样片 z10 画面核查：行中的“花（时间）”左括号被去掉了半字空白）：只有相邻两个标点、或行首的左标点才可以挤
         if (name !== '英文' && ZO.includes(b.c) && !(ZC + ZO).includes(a.c) && b.l < a.r - 2 && !(isGloss && !a.el.closest('span[lang]')))   // 释义开头紧跟词条、词性的左括号，按设计去半字
           out.push(`过度挤压：${name}「${a.c}${b.c}」左括号或左引号在行中被去掉了半字空白`);
-        if (name !== '英文' && ZC.includes(a.c) && !(ZC + ZO).includes(b.c) && cjk(b.c) && b.l - a.l < em(a.el) * 0.95)
+        if (name !== '英文' && ZC.includes(a.c) && a.r - a.l > em(a.el) * 0.75 && !(ZC + ZO).includes(b.c) && cjk(b.c) && b.l - a.l < em(a.el) * 0.95)
           out.push(`过度挤压：${name}「${a.c}${b.c}」标点后面被去掉了半字空白`); }
     });
     if (name === '译文' && L.length > 1) { const last = L[L.length - 1].filter(x => cjk(x.c));
@@ -96,11 +111,15 @@ CHECK = r"""([minFs, minVs]) => {
       if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
   // 徽章贴字（z16 cricket¹、breakfast² 等：f、t、r 的笔画伸出字身碰到徽章）：前一个字母的笔画右边缘到徽章至少 1.2 像素（审阅员认可 1.2 像素以上的间距）
+  // 按词尾整个词量（专八 EB Garamond 的 ff 是连字，连字里第二个 f 的位置浏览器按平分估算，单按最后一个字母量会多算 1.7 像素，off、staff 误报只隔 0.1 像素）：
+  // 墨迹右边缘 = 这个词的排版右边缘 − 字间距 − 这个词（含连字、字偶距）的右侧空白；没有连字时与只量最后一个字母完全相同
   const cv = document.createElement('canvas').getContext('2d');
   for (const s of en.querySelectorAll('sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
-    if (!n || !n.data || !n.data.trim()) continue; const i = n.data.trimEnd().length - 1, rg = document.createRange(); rg.setStart(n, i); rg.setEnd(n, i + 1);
+    if (!n || !n.data || !n.data.trim()) continue; const i = n.data.trimEnd().length - 1; let i0 = i; while (i0 > 0 && /[A-Za-z]/.test(n.data[i0 - 1]) && /[A-Za-z]/.test(n.data[i])) i0--;
+    const rg = document.createRange(); rg.setStart(n, i0); rg.setEnd(n, i + 1);
     const rr = rg.getClientRects(); if (!rr.length) continue; const cs = getComputedStyle(n.parentElement), px = parseFloat(cs.fontSize);
-    cv.font = `${cs.fontWeight} 100px ${cs.fontFamily}`; const ink = rr[rr.length - 1].left + cv.measureText(n.data[i]).actualBoundingBoxRight / 100 * px;
+    cv.font = `${cs.fontWeight} 100px ${cs.fontFamily}`; const mw = cv.measureText(n.data.slice(i0, i + 1)), ls = parseFloat(cs.letterSpacing) || 0;
+    const ink = rr[rr.length - 1].right - ls - (mw.width - mw.actualBoundingBoxRight) / 100 * px;
     const gap = s.getBoundingClientRect().left - ink;
     if (gap < 1.2) out.push(`徽章贴字：英文「${n.data.slice(Math.max(0, i - 8), i + 1)}」与徽章 ${s.textContent} 只隔 ${gap.toFixed(1)} 像素`); }
   const main = document.querySelector('.main'), box = document.getElementById('box'), side = document.getElementById('side'), list = document.getElementById('list');
@@ -146,10 +165,10 @@ def ok_break(g, k):
     return k in pos
 
 
-def problems(pg, min_fs, min_vs):
-    """当前页面（已排版）的排版问题列表；make_video.py 每屏截图前调用，有问题就不生成视频。"""
+def problems(pg, min_fs, min_vs, poss=False):
+    """当前页面（已排版）的排版问题列表；make_video.py 每屏截图前调用，有问题就不生成视频。poss：是否查“徽章撇号”（专八 True）。"""
     res = []
-    for x in pg.evaluate(CHECK, [min_fs, min_vs]):
+    for x in pg.evaluate(CHECK, [min_fs, min_vs, poss]):
         if isinstance(x, list):          # 释义在标点以外的地方断行：只有超过 9 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
             _, name, g, k = x
             if not ok_break(g, k):
@@ -169,9 +188,20 @@ def screens(M, p):
     return out
 
 
+def project(argv):
+    """--project 中考|专八（默认 中考）：layoutcheck、screens_fp、canary_layout、prep 由两个项目共用。返回 (项目名, 项目 tools 目录, 其余参数)。"""
+    name = '中考'
+    if '--project' in argv:
+        j = argv.index('--project')
+        name, argv = argv[j + 1], argv[:j] + argv[j + 2:]
+    if name not in ('中考', '专八'):
+        raise SystemExit(f'--project 只能是 中考 或 专八：{name}')
+    return name, R / name / 'tools', argv
+
+
 def main():
-    sys.path.insert(0, str(R / '中考' / 'tools'))
-    argv = sys.argv[1:]
+    proj, T, argv = project(sys.argv[1:])
+    sys.path.insert(0, str(T))
     if '--module' in argv:
         j = argv.index('--module')
         spec = importlib.util.spec_from_file_location('make_video', argv[j + 1])
@@ -181,7 +211,7 @@ def main():
     else:
         import make_video as M
     from playwright.sync_api import sync_playwright
-    P = {p['id']: p for p in json.loads((R / '中考' / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
+    P = {p['id']: p for p in json.loads((R / proj / 'data' / 'vocab.json').read_text('utf-8'))['passages'] if p.get('done', True)}
     bad = {}
     with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
@@ -195,7 +225,7 @@ def main():
                 pg.evaluate('document.fonts.ready')
                 if fit:
                     pg.evaluate(M.FIT)
-                probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS)]
+                probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS, poss=proj == '专八')]
             bad[pid] = probs
             print(pid, 'OK' if not probs else f'{len(probs)} 处：\n  ' + '\n  '.join(probs), flush=True)
         br.close()

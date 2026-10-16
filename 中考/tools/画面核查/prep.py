@@ -1,22 +1,25 @@
 """For each finished 中考 video: extract screens, write reference file, check screen count = 1 + sentences + extra screens of splits.
 /opt/ttsenv/bin/python 中考/tools/画面核查/prep.py <frames dir> t01 t02 ... [--ref-only]
+专八：加 --project 专八（screens_fp.py --project 专八 shots 会自动带上）。
 注意：每次运行都会重写 ref/ 下全部参考文件，只给本次列出的篇目追加屏幕结构说明，所以要一次列出本批全部篇目；--ref-only 只重写参考文件、按已截好的屏计数，不重新截屏。"""
 import json, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
 R = HERE.parents[2]
-S = Path(sys.argv[1])
-sys.path.insert(0, str(R / '中考' / 'tools'))
+from layoutcheck import project
+PROJ, T, ARGV = project(sys.argv[1:])
+S = Path(ARGV[0])
+sys.path.insert(0, str(T))
 import make_video as M
-P = {p['id']: p for p in json.loads((R / '中考' / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
+P = {p['id']: p for p in json.loads((R / PROJ / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
 REF = S / 'ref'
 REF.mkdir(parents=True, exist_ok=True)
-subprocess.run(['/opt/ttsenv/bin/python', str(R / '中考' / 'tools' / 'gen_review.py'), str(REF)], check=True, capture_output=True)
+subprocess.run(['/opt/ttsenv/bin/python', str(T / 'gen_review.py'), str(REF)], check=True, capture_output=True)
 bad = []
-ONLY = '--ref-only' in sys.argv
-for pid in [a for a in sys.argv[2:] if a != '--ref-only']:
+ONLY = '--ref-only' in ARGV
+for pid in [a for a in ARGV[1:] if a != '--ref-only']:
     p = P[pid]
-    mp4 = R / '中考' / '最终视频' / M.video_name(p)
+    mp4 = R / PROJ / '最终视频' / M.video_name(p)
     sents = [s for pa in p['paras'] for s in pa]
     splits = M.SPLIT.get(pid, {})
     ats = {k: (c['at'] if isinstance(c['at'], list) else [c['at']]) for k, c in splits.items()}
