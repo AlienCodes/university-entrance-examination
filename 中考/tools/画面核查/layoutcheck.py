@@ -102,7 +102,10 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
           { let k = 0; const w = document.createTreeWalker(g, NodeFilter.SHOW_TEXT); let n;      // 在含空格的原文里的位置
             while ((n = w.nextNode()) && n !== f.n) k += n.data.length;
             out.push(['GLOSS', name, g.textContent, k + f.i]); }
-        if (a.c === '-' && /[A-Za-z]/.test(f.c)) out.push(`连字符：${name}「${txt(L[i - 1]).slice(-12)}／${txt(ln).slice(0, 8)}」`); }
+        // 例外：这个连字符词本身比整行还宽（六级 s10 词条 you-and-me-against-the-world），只能在连字符处断开——按词的总宽实测，不看排版程序怎么标
+        const nb = a.el.closest('nobr'), box = nb && nb.parentElement.closest('.v > div, .en, .zh, h1');
+        const wide = nb && box && [...nb.getClientRects()].reduce((s, r) => s + r.width, 0) > box.clientWidth + 0.5;
+        if (a.c === '-' && /[A-Za-z]/.test(f.c) && !wide) out.push(`连字符：${name}「${txt(L[i - 1]).slice(-12)}／${txt(ln).slice(0, 8)}」`); }
       for (let j = 1; j < ln.length; j++) { const a = ln[j - 1], b = ln[j];
         if (ZC.includes(a.c) && (ZC + ZO).includes(b.c) && b.l - a.l > em(a.el) * 0.75)
           out.push(`标点挤压：${name}「${a.c}${b.c}」间距 ${(((b.l - a.l) / em(a.el))).toFixed(2)} 字`);
@@ -151,7 +154,8 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       card = document.querySelector('.ttl'), c = card.getBoundingClientRect(), cs = getComputedStyle(card), rows = new Set([...g.getClientRects()].filter(r => r.width).map(r => Math.round(r.top)));
     const L = c.left + card.clientLeft + parseFloat(cs.paddingLeft), R = c.left + card.clientLeft + card.clientWidth - parseFloat(cs.paddingRight);
     // 量标题文字本身（专八共用背景 3 的粉笔下划线是 h1 的绝对定位伪元素，向右多出 0.25 字，撑大了 scrollWidth，文字其实放得下）
-    if (a.right > b.right + 1 || a.left < b.left - 1 || a.left < L - 1 || a.right > R + 1 || rows.size > 1)
+    // 只许在引擎加的 br.tb（第一个冒号后面）分成两行（专八 make_video.TITLE_JS；六级 s06 的长标题），别的地方换行、伸出卡片都不行
+    if (a.right > b.right + 1 || a.left < b.left - 1 || a.left < L - 1 || a.right > R + 1 || rows.size > (ttl.querySelector('br.tb') ? 2 : 1))
       out.push(`标题：一行放不下（文字 ${Math.round(a.left)}–${Math.round(a.right)}，标题框 ${Math.round(b.left)}–${Math.round(b.right)}，卡片 ${Math.round(L)}–${Math.round(R)}，${rows.size} 行）`);
     return out; }
   const en = document.querySelector('.en'), zh = document.querySelector('.zh');

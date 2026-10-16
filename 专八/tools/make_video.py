@@ -172,7 +172,9 @@ def esc_en(s):
     """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。
     数字与后面的单位之间用不换行空格（z25 截图审阅：“only about 6 / kg”“1,800 / kg”数字与单位被拆到两行）。"""
     s = re.sub(rf'(\d)\s+(?=(?:{UNITS})(?![A-Za-z]))', '\\1\u00a0', s)
-    return dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
+    h = dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
+    # 悬空连字符与后面的 or/and 整体不断行（六级 s20 “right- / or left-brained”，行末是连字符；不换行空格不管用：浏览器允许在连字符后、不换行空格前断行）
+    return re.sub(r'(?<![\w’-])([A-Za-z]+-) ((?:or|and|nor|to)\b)', r'<nobr>\1 \2</nobr>', h)
 
 
 GLOSS_CHUNK = 9      # 词汇栏一行最多约 9.6 个字（字号最大 40px 时）：9 个字以内的释义块整体不断行（原定 10，z20 “下面就是……的方法；”溢出 16 像素）
@@ -329,7 +331,10 @@ def zh_html(s, gloss=False):
         for k in range(m.start() + 1, m.end()):
             out[k] = ''
     if gloss:
-        chunks = lambda lo, hi: ''.join((f'<nobr>{"".join(out[lo + a:lo + b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[lo + a:lo + b], out[lo + a:lo + b]))
+        # 以省略号、破折号开头的块前面加 <wbr>：浏览器不许在“…”“—”前面断行（UAX 14），“……没有什么不对；……无可厚非”两块粘成一整块，
+        # 一行放不下就伸出词汇栏（六级 s04 第 17 句、s05 第 9 句，横向溢出 16 像素）
+        chunks = lambda lo, hi: ''.join(('<wbr>' if a and s[lo + a] in '…—' else '') +
+                                        (f'<nobr>{"".join(out[lo + a:lo + b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[lo + a:lo + b], out[lo + a:lo + b]))
                                         for a, b in gloss_chunks(s[lo:hi]))
         res, pos = [], 0
         for a, b in long_notes(s):                   # \u957f\u62ec\u6ce8\u5355\u72ec\u6392\uff08note_html\uff09\uff0c\u5176\u4f59\u7167\u65e7\u6309\u6807\u70b9\u5207\u5757
@@ -461,6 +466,8 @@ def sentence_html(s, lo=0, hi=None):
     out = re.sub(rf'({hl})(-[A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
     out = re.sub(rf'(<span class="(?:w|ph)">(?:(?!</span>).)*-(?:<sup>\d+</sup>)?</span>)([A-Za-z0-9’]+)', r'<nobr>\1\2</nobr>', out)
     out = re.sub(r'<sup>(\d+</sup></span>(?:</nobr>)?[—–])', r'<sup class="sd">\1', out)
+    # 单位本身是高亮词时（六级 s11 第 16 句 “77 percent”，percent 是生词），esc_en 看不到后面的单位，数字后的空格要在这里换成不换行空格
+    out = re.sub(rf'(\d) (<span class="(?:w|ph)">(?:<nobr>)?(?:{UNITS})(?![A-Za-z]))', '\\1\u00a0\\2', out)
     out = re.sub(rf'({hl}|<nobr>(?:(?!</nobr>).)*</nobr>)([—–])', r'<nobr>\1\2</nobr>', out)      # 高亮词（及其所在的不断行块）与后面的破折号不断开
     return cap_i(out)      # 大写 I 最后统一加，免得上面按 </span> 配对的规则配错     # 编号徽章后紧跟破折号时留空（z06 “idea²—let”徽章贴着破折号）
 
@@ -552,11 +559,15 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
   side=document.getElementById('side'), list=document.getElementById('list');
   const hw = () => { for (const x of document.querySelectorAll('br.hw')) x.remove();
     for (const b of document.querySelectorAll('.v b')) { if (b.dataset.h === undefined) b.dataset.h = b.innerHTML; else b.innerHTML = b.dataset.h;
+      const wide = () => { const sc = getComputedStyle(side), R = side.getBoundingClientRect().left + side.clientLeft + side.clientWidth - parseFloat(sc.paddingRight);
+        // 比一整行还宽的连字符长词（六级 s10 you-and-me-against-the-world）只好在连字符处断开；按词汇栏内边距量（网格列会被不断行的词撑宽，量列宽量不出来）
+        for (const n of b.querySelectorAll('nobr')) if (n.getBoundingClientRect().right > R + 0.5) n.style.whiteSpace = 'normal'; };
+      wide();
       if (b.getClientRects().length < 2) continue;
       const ps = b.dataset.h.split(/ (?![^<>]*>)/); let best = null;
       for (let k = 1; k < ps.length; k++) { b.innerHTML = ps.slice(0, k).join(' ') + '<br>' + ps.slice(k).join(' ');
         const rs = b.getClientRects(); if (rs.length !== 2) continue; const w = Math.max(rs[0].width, rs[1].width); if (!best || w < best[0]) best = [w, b.innerHTML]; }
-      b.innerHTML = best ? best[1] : b.dataset.h; const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
+      b.innerHTML = best ? best[1] : b.dataset.h; wide(); const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
   const notes = () => { for (const e of document.querySelectorAll('x-n nobr.lr')) { e.style.whiteSpace = '';
       if (e.getBoundingClientRect().width > e.closest('.v > div').clientWidth + 0.5) e.style.whiteSpace = 'normal'; }
     for (const x of document.querySelectorAll('x-n')) { x.style.display = '';
@@ -584,6 +595,16 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       (x && g.toString() === '' ? x : e).before(document.createElement('br')); } }   // 括注开头的左括号：换行放在括注外面（括注是行内块，放在里面会空出一行）
   return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""      # st = [英文, 词汇栏] 起始字号（分屏的句子统一字号用，见 layout）；不给就从 FS0/VS0 开始
 FIT = None          # set_style() 按画面填入起始字号
+# 片头标题一行放不下时（六级 s06 “儿童使用社交媒体：不应禁止，但数字媒体巨头须受监管” 25 个字，教室黑板的标题一行只放得下约 21 个字，伸出卡片 200 像素），
+# 在第一个冒号后面换行（br.tb），分成意思完整的两行；放得下就什么都不做（专八的标题都放得下，画面不变）。layoutcheck 的“标题”检查认 br.tb：只许在这里分成两行
+TITLE_JS = """() => { const h = document.querySelector('.ttl h1'), card = document.querySelector('.ttl'); if (!h || !card) return 0;
+  const g = document.createRange(); g.selectNodeContents(h); const a = g.getBoundingClientRect(), c = card.getBoundingClientRect(), cs = getComputedStyle(card);
+  const R = c.left + card.clientLeft + card.clientWidth - parseFloat(cs.paddingRight);
+  if (a.right <= R + 1 && new Set([...g.getClientRects()].filter(r => r.width).map(r => Math.round(r.top))).size <= 1) return 0;
+  const w = document.createTreeWalker(h, NodeFilter.SHOW_TEXT);
+  for (let n; (n = w.nextNode());) { const i = n.data.indexOf('：'); if (i >= 0 && i < n.data.length - 1) {
+    const br = document.createElement('br'); br.className = 'tb'; n.splitText(i + 1).before(br); return 1; } }
+  return -1; }"""
 set_style('C')      # 默认画面 C（书卷水墨）
 
 
@@ -631,6 +652,7 @@ def layout(pg, p, f):
             pg.goto(f.as_uri())
             pg.evaluate('document.fonts.ready')
             pg.wait_for_timeout(150)
+            pg.evaluate(TITLE_JS)
             yield i, label, False, None
             continue
         r = load(h, start.get(i))

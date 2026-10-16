@@ -197,6 +197,8 @@ def stills(ids, force):
                 sizes.append(list(res[:2]) if fit else None)
                 labels.append(label)
             pngs = M.still_files(d)
+            if M.fingerprint(pid, LOOK) != fp:          # 截图期间程序、样式或数据改过：这一篇不算数（指纹记开工时的，下次一定重画）
+                probs.append('截图期间程序、样式或数据改过（重新 --stills）')
             fs = [x[0] for x in sizes if x]
             vs = [x[1] for x in sizes if x]
             sents = [s for pa in p['paras'] for s in pa]
