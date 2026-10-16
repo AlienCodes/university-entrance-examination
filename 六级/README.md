@@ -83,3 +83,19 @@
 - “扫描件”：原 PDF 是扫描后做了文字识别的，提取的文本可能有识别错误（如 2021 年 12 月三套的翻译部分识别成了乱码），以 PDF 为准。
 - 文本是从 PDF 自动提取的，排版、页眉页脚、断行可能不规整。
 - 目录结构：`真题/年份/年份年月份/`，与 `四级/真题/` 相同。
+
+## 逐句精读视频：大字版（教室黑板，2026-10-16 起）
+
+用户 2026-10-16：六级 60 篇全部改成专八样片选定的「教室黑板」画面（英文 Inter 加粗、中文思源黑体常规体、字号与专八教室黑板相同）。
+引擎与专八共用一个程序：`六级/tools/make_video.py` 只是入口，等于 `专八/tools/make_video.py --project 六级`；旧版（米白底杂志版）原样保存在
+`六级/tools/make_video_旧版.py`（配 `分屏_旧版.json`），回退：`cp 六级/tools/make_video_旧版.py 六级/tools/make_video.py && cp 六级/tools/分屏_旧版.json 六级/tools/分屏.json`。
+
+| 一步 | 命令 |
+|---|---|
+| ① 截图 + 全部程序检查（可分篇目并行、可续跑） | `/opt/ttsenv/bin/python 六级/tools/大字版.py --stills [s01 …]` |
+| ② 审阅通过后登记 | `/opt/ttsenv/bin/python 六级/tools/大字版.py --approve [s01 …]` |
+| ③ 生成 4K 视频（只做已登记的篇目，做好的跳过，可续跑） | `/opt/ttsenv/bin/python 六级/tools/大字版.py --video [s01 …]` |
+| ④ 总核查 | `/opt/ttsenv/bin/python 六级/tools/verify_all.py` |
+
+截图在 `六级/样片/截图/<篇目>/screenNN.webp`（无损 WebP，不入库），每篇一张总览图 `总览.jpg`，参考文字 `ref/<篇目>.txt`，结果 `汇总.json`。
+分屏方案 `六级/tools/分屏.json`（337 句，`分屏建议.py --project 六级` 出候选、逐句按意思核对）；人名 `六级/tools/人名.json`；定稿登记 `六级/ann/复核通过.json`。

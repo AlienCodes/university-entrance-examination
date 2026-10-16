@@ -6,9 +6,10 @@
     /opt/ttsenv/bin/python 六级/tools/大字版.py --video [s01 …]      # ③ 生成 4K 视频 + 全部成品核查（只做已登记的篇目；做好的跳过，可续跑）
 
 ① --stills：每篇把全部屏（片头 + 每句，含分屏）按生成视频的同一排版（make_video.layout，4K 排版）画出来，缩成 1920×1080 存到
-   六级/样片/截图/<篇目>/screenNN.png（不入库），逐屏跑全部程序检查（make_video.screen_checks：字号下限与放得下、分屏各屏字号相同、
+   六级/样片/截图/<篇目>/screenNN.webp（无损 WebP：像素与 PNG 完全相同、存完读回核对，体积约 PNG 的 0.63 倍，见 save_still；不入库），逐屏跑全部程序检查（make_video.screen_checks：字号下限与放得下、分屏各屏字号相同、
    layoutcheck 排版机械检查〔含整名不断行、字体回退、徽章撇号、文字重叠、括注、短语断开、译文断词〕、字体加载、字形、横向出界、封面），另查：
-   字号.json 与实测一致（字号标定.py --check）、中文人名都已登记（人名.json）、分屏方案合法（split_parts）、每个换屏时刻（语音识别）落在音频的句中停顿里。
+   字号.json 与实测一致（字号标定.py --check）、中文人名都已登记（人名.json）、分屏方案合法（split_parts）、每个换屏时刻（语音识别）落在音频的句中停顿里
+   （分屏.json 标了“无停顿”的，核对原因与音频相符：句中没有停顿 ↔ 音频里这句确实没有停顿，并在汇总里逐条列出，留给审阅员看）。
    每篇写总览图 <篇目>/总览.jpg、参考文字 ref/<篇目>.txt（每屏应有的英文、中文、生词；canary_layout.py --project 六级 --style 3 也用它）；
    全部结果写 六级/样片/截图/汇总.json（每篇：屏数、字号、问题、指纹、每张截图的哈希）。有任何问题退出码非 0。
    磁盘剩余不足 1 GB 就停下（踩坑 29；教室黑板的截图每张约 1.5 MB），腾出空间后重跑同一条命令接着做。
@@ -100,6 +101,16 @@ def split_pauses(p):
     return out, bad
 
 
+def save_still(im, f):
+    """截图存成无损 WebP（method 0）：像素与 PNG 完全相同（存完读回逐像素核对，不同就报错），体积约 PNG 的 0.63 倍——
+    教室黑板的粉笔颗粒每张 PNG 约 2.1 MB，60 篇 1783 屏要 3.8 GB，本机磁盘只剩 4.8 GB（踩坑 29）；WebP 约 2.4 GB。"""
+    import numpy as np
+    from PIL import Image
+    im.save(f, 'WEBP', lossless=True, method=0)
+    if not np.array_equal(np.asarray(Image.open(f).convert('RGB')), np.asarray(im.convert('RGB'))):
+        raise SystemExit(f'{f} 存成 WebP 后像素变了（应为无损）')
+
+
 def ref_text(p):
     """参考文字：每屏应有的内容（审阅员对照用；与 样片.py 相同的写法）。"""
     sents = [s for pa in p['paras'] for s in pa]
@@ -153,7 +164,7 @@ def stills(ids, force):
             p, d = P[pid], SHOTS / pid
             fp = M.fingerprint(pid, LOOK)
             old = report.get(pid)
-            if not force and old and old['指纹'] == fp and old['截图'] == {x.name: M.file_hash(x) for x in sorted(d.glob('screen*.png'))}:
+            if not force and old and old['指纹'] == fp and old['截图'] == {x.name: M.file_hash(x) for x in M.still_files(d)}:
                 print(f'{pid}：截图已是当前程序和数据画的，跳过（问题 {len(old["问题"])} 处）', flush=True)
                 continue
             free = shutil.disk_usage(C6).free / 2**30
@@ -175,17 +186,17 @@ def stills(ids, force):
                 probs.append(str(e))
             (SHOTS / 'ref' / f'{pid}.txt').write_text(ref_text(p), 'utf-8')
             d.mkdir(parents=True, exist_ok=True)
-            for x in list(d.glob('screen*.png')) + list(d.glob('总览.jpg')):
+            for x in M.still_files(d) + list(d.glob('总览.jpg')):
                 x.unlink()
             sizes, labels = [], []
             M._SPLIT_SIZES.clear()
             for i, label, fit, res in M.layout(pg, p, td / 'x.html'):
                 probs += M.screen_checks(pg, label, fit, res)
                 pg.screenshot(path=str(td / 'big.png'))
-                M.small(td / 'big.png').save(d / f'screen{i + 1:02d}.png')
+                save_still(M.small(td / 'big.png'), d / f'screen{i + 1:02d}.webp')
                 sizes.append(list(res[:2]) if fit else None)
                 labels.append(label)
-            pngs = sorted(d.glob('screen*.png'))
+            pngs = M.still_files(d)
             fs = [x[0] for x in sizes if x]
             vs = [x[1] for x in sizes if x]
             sents = [s for pa in p['paras'] for s in pa]
@@ -217,7 +228,7 @@ def approve(ids):
     bad = []
     for pid in ids:
         r = rep.get(pid)
-        got = {x.name: M.file_hash(x) for x in sorted((SHOTS / pid).glob('screen*.png'))}
+        got = {x.name: M.file_hash(x) for x in M.still_files(SHOTS / pid)}
         why = ('没有截图' if not r else '程序检查有问题' if r['问题'] or rep['_共同']['问题'] else
                '截图之后程序、样式或数据改过（重新 --stills）' if r['指纹'] != M.fingerprint(pid, LOOK) else
                '截图文件和截图时记录的不一致' if got != r['截图'] else '')

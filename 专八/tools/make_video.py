@@ -310,7 +310,9 @@ def zh_html(s, gloss=False):
     译文的多字词（jieba）整体不断行（“蹦/跳”“相/同”“霎时/间”）。layoutcheck 的“括注拆开 / 括注断开 / 译文断词”逐屏核对。
     专八：译文用霞鹜文楷，它的弯引号“”‘’是半宽字形（实测宽 0.44/0.33 字，没有半字空白可去），不挤压、不去半字（ZPROP）；
     释义用思源宋体，引号是全角，照常处理。人名间隔号“·”前后不断行（旧版画面核查：理查德·帕克 在 · 处断行）。"""
-    fc, fo = (ZCLOSE, ZOPEN) if gloss else (ZCLOSE - ZPROP, ZOPEN - ZPROP)
+    # 只有画面 C 的译文是霞鹜文楷（弯引号半宽）；1–6 的译文是思源黑体 / Noto Sans SC，弯引号是全角（各画面实测宽 1.00 字），照常挤压
+    # （六级 s01 第 10 句：教室黑板的译文「”。」之间空出 1.00 字，layoutcheck 标点挤压查出）
+    fc, fo = (ZCLOSE, ZOPEN) if gloss or STYLE != 'C' else (ZCLOSE - ZPROP, ZOPEN - ZPROP)
     out = []
     for i, c in enumerate(s):
         nxt, prv = s[i + 1:i + 2], s[i - 1:i]
@@ -495,7 +497,9 @@ def split_parts(pid, k, s):
     """分屏：返回 [(lo, hi, 中文, 标签), …]；不分屏返回一屏。专八长句多，可拆成多屏：at 写一个分屏点或按顺序的多个分屏点，
     zh 是各屏中文（比分屏点多一段），必须是定稿译文的原样片段（逐个分句核对），合起来不多不少。
     六级大字版：中文语序与英文对不上、在句中标点处切不出与各屏英文对应的几段时（如英文“部署……至关重要，以取代……”，译文是“要用……取代……，部署……至关重要”），
-    zh 写 "整句"：各屏都放整句译文（不切，免得某一屏的中文对应的是另一屏的英文）。
+    zh 写 "整句"：各屏都放整句译文（不切，免得某一屏的中文对应的是另一屏的英文）；
+    相邻几屏的英文合起来才对应译文的一个分句时（如英文一个长分句拆成两屏，译文是一个分句、切不开），这几屏写同一段中文（连着重复），
+    去掉相邻重复后仍须正好拼成定稿译文。
     "无停顿": 原因（句中没有停顿 / 停顿处切不开）：换屏点不在朗读的停顿处（分屏建议.py 只在停顿处切不开时才这样选），截图检查据此放行并逐条列出。"""
     c = SPLIT.get(pid, {}).get(str(k))
     if not c:
@@ -503,6 +507,8 @@ def split_parts(pid, k, s):
     en, zh = s['en'], s['zh']
     ats = c['at'] if isinstance(c['at'], list) else [c['at']]
     full = c['zh'] == '整句'
+    zs = [s['zh']] * (len(ats) + 1) if full else c['zh']
+    ded = [z for i, z in enumerate(zs) if i == 0 or z != zs[i - 1]]        # 相邻几屏可以放同一段中文
     if not full and len(c['zh']) != len(ats) + 1:
         raise SystemExit(f'分屏.json：{pid} 第 {k} 句有 {len(ats)} 个分屏点，中文应分 {len(ats) + 1} 段')
     cuts = []
@@ -517,11 +523,11 @@ def split_parts(pid, k, s):
         cuts.append(cut)
     if cuts != sorted(cuts):
         raise SystemExit(f'分屏.json：{pid} 第 {k} 句的分屏点没有按顺序排列')
-    if not full and (sorted(''.join(c['zh'])) != sorted(zh) or ''.join(c['zh']) != zh or any(x not in zh for z in c['zh'] for x in re.split(r'(?<=[，；：、])', z) if x)):
+    if not full and (sorted(''.join(ded)) != sorted(zh) or ''.join(ded) != zh or any(x not in zh for z in ded for x in re.split(r'(?<=[，；：、])', z) if x)):
         raise SystemExit(f'分屏.json：{pid} 第 {k} 句的中文不是定稿译文的原样片段')
     b = [0] + cuts + [len(en)]
     n = len(b) - 1
-    return [(b[x], b[x + 1], zh if full else c['zh'][x], f' · PART {x + 1}/{n}') for x in range(n)]
+    return [(b[x], b[x + 1], zs[x], f' · PART {x + 1}/{n}') for x in range(n)]
 
 
 def sentence_slide(p, s, k, n, part=None):
@@ -743,6 +749,20 @@ def fingerprint(pid, look):
     return h.hexdigest()[:16]
 
 
+def still_files(d):
+    """审阅截图目录里的逐屏截图（screenNN.png；六级是无损 WebP screenNN.webp，像素与 PNG 完全相同、体积约 0.63 倍：
+    教室黑板的粉笔颗粒每张 PNG 约 2.1 MB，六级 60 篇 1783 屏要 3.8 GB，磁盘放不下）。"""
+    return sorted([*Path(d).glob('screen*.png'), *Path(d).glob('screen*.webp')])
+
+
+def still_file(d, i):
+    """第 i 屏（从 0 数）的审阅截图。"""
+    got = [p for p in (Path(d) / f'screen{i + 1:02d}.png', Path(d) / f'screen{i + 1:02d}.webp') if p.exists()]
+    if len(got) != 1:
+        raise SystemExit(f'{d} 第 {i + 1} 屏的截图{"不存在" if not got else "同时有 PNG 和 WebP"}')
+    return got[0]
+
+
 def file_hash(f):
     import hashlib
     return hashlib.sha256(Path(f).read_bytes()).hexdigest()[:16]
@@ -868,7 +888,7 @@ def main():
         reg = json.loads(SAMPLE_REG.read_text('utf-8')).get(key) if SAMPLE_REG.exists() else None
         if not reg or reg['指纹'] != fingerprint(a.pid, a.style):
             raise SystemExit(f'{key} 的样片截图还没有审阅通过，或审阅之后程序、样式、数据改过（{tool} --stills → 审阅 → {tool} --approve）')
-        got = {x.name: file_hash(x) for x in sorted(stills.glob('screen*.png'))}
+        got = {x.name: file_hash(x) for x in still_files(stills)}
         if got != reg['截图']:
             raise SystemExit(f'{stills} 里的截图不是审阅登记的那一份（重新截过图）：先审阅再 {tool} --approve')
     elif a.style != 'C':
@@ -908,14 +928,14 @@ def main():
                 sizes.append(r[:2])
             pg.screenshot(path=str(tmp / f'{i:03d}.png'))
             if stills:
-                ok, n, m = same_still(small(tmp / f'{i:03d}.png'), small(stills / f'screen{i + 1:02d}.png'))
+                ok, n, m = same_still(small(tmp / f'{i:03d}.png'), small(still_file(stills, i)))
                 if not ok:
                     diff.append(f'第 {i + 1} 屏（{label}）与审阅过的截图不同：{n} 个像素不同，最大差 {m}')
         br.close()
     if probs:
         raise SystemExit(f'{p["id"]} 排版或画面检查不合格（不生成视频）：\n  ' + '\n  '.join(probs))
-    if stills and (diff or len(list(stills.glob('screen*.png'))) != len(scr)):
-        raise SystemExit('画面与审阅过的截图不一致（不生成视频）：\n  ' + '\n  '.join(diff or [f'屏数 {len(scr)} ≠ 截图 {len(list(stills.glob("screen*.png")))}']))
+    if stills and (diff or len(still_files(stills)) != len(scr)):
+        raise SystemExit('画面与审阅过的截图不一致（不生成视频）：\n  ' + '\n  '.join(diff or [f'屏数 {len(scr)} ≠ 截图 {len(still_files(stills))}']))
 
     starts = [x['start'] for x in times]
     ends = [x['end'] for x in times]

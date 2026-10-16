@@ -4,7 +4,8 @@
 
     /opt/ttsenv/bin/python 中考/tools/画面核查/canary_layout.py <frames dir> z01 y4   → <frames dir>/y4/ 与 ref/y4.txt，并打印埋了哪几屏
 之后用 pixelcheck.py <frames dir> --as y4=z01 确认恰好这几屏不同（雷确实埋进去了）。
-专八：加 --project 专八（如 canary_layout.py --project 专八 <frames dir> t03 q3）。专八样片某种画面：再加 --style 2（截图方式与 样片.py --stills 相同）。屏号按分屏实际计算（第 k 句之前每个分屏多出的屏都算上），
+专八：加 --project 专八（如 canary_layout.py --project 专八 <frames dir> t03 q3）。六级大字版：canary_layout.py --project 六级 --style 3 六级/样片/截图 s07 k7
+（截图是无损 WebP，雷也存成 WebP；参考文字在 六级/样片/截图/ref/）。专八样片某种画面：再加 --style 2（截图方式与 样片.py --stills 相同）。屏号按分屏实际计算（第 k 句之前每个分屏多出的屏都算上），
 埋雷的句子选不分屏的句子（分屏的句子顺延到下一个不分屏的句子），专八与中考都适用。
 """
 import json
@@ -78,7 +79,11 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         pg.evaluate(js or (M.FIT if k else '() => 0'))
         if STYLE:
             pg.screenshot(path=str(Path(td) / 'big.png'))
-            M.small(Path(td) / 'big.png').save(S / dst / f'screen{scr:02d}.png')
+            out = S / dst / f'screen{scr:02d}.webp'          # 六级的截图是无损 WebP（大字版.py）：雷也存成同一格式、同一文件名，不多出一张 PNG
+            if out.exists():
+                M.small(Path(td) / 'big.png').save(out, 'WEBP', lossless=True, method=0)
+            else:
+                M.small(Path(td) / 'big.png').save(S / dst / f'screen{scr:02d}.png')
         else:
             pg.screenshot(path=str(S / dst / f'screen{scr:02d}.png'))
         print(f'screen{scr:02d}', f'第 {k} 句' if k else '片头', what, flush=True)
