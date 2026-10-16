@@ -16,6 +16,13 @@
   字体回退   画面上每一段文字都只能用网页字体（设计字体）画，不许落到系统字体（t03 审阅：英文里的中文注释“(防水布)”落到了系统黑体
              WenQuanYi Zen Hei）：用 Chrome 开发者协议 CSS.getPlatformFontsForNode 问浏览器每个元素实际用了哪些字体，非网页字体就报。只对专八开
   续接号     分屏的续接号“…”不能落到英文行首（专八旧版画面核查）
+  文字重叠   英文、译文、页眉、页脚、词汇栏标题、每个词条的文字框互不相交（专八 t03 第二轮审阅：埋雷“译文压住英文”只有人看出来）。两个项目都查
+  括注拆开   释义里放得下一行的括注不能拆到两行（专八 t03 第二轮审阅：（同 / gunwale）、（风暴、/ 夜晚等））。只对专八开（breaks）
+  括注断开   放不下一行的括注只能在空格、中英交界、逗号顿号分号冒号之后、或长中文片段的词间断开（（down the length of 顺着…… / 一路））。只对专八开
+  短语断开   英文高亮短语放得下一行就不能拆到两行（rough / treatment、at the / expense of）。只对专八开
+  译文断词   译文不能在一个词（jieba）的中间断行（蹦 / 跳、相 / 同、霎时 / 间）。只对专八开
+             这四项在审阅前的专八程序（59b1562）上 t03 七种画面查出 26—47 处，修正后 0 处；埋雷测试：专八/tools/画面核查/埋雷_排版检查.py
+  分屏字号   一句分成几屏时，各屏英文、译文、词汇栏、词条、释义的实测字号必须相同（sizes / size_diff；不看排版程序自己的返回值）
   徽章撇号   编号不能把高亮词和后面的所有格撇号隔开（专八旧版画面核查：drivers⑫’）。只对专八开（--project 专八、专八 make_video.py）：
              中考程序还没有这项修正，打开后中考已发布的 z04、z09、z10、z28 共 5 屏会报出（2026-10-16 实测），中考下次重做时移植 x-ps 再打开
 
@@ -40,10 +47,11 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
   const chars = el => { const res=[], w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
     while ((n=w.nextNode())) for (let i=0;i<n.data.length;i++) { if (/\s/.test(n.data[i])) continue;
       const rg=document.createRange(); rg.setStart(n,i); rg.setEnd(n,i+1); const rs=rg.getClientRects(); if (!rs.length) continue;
-      const r=rs[rs.length-1]; res.push({c:n.data[i], l:r.left, r:r.right, t:r.top, el:n.parentElement, n, i}); }
+      const r=rs[rs.length-1]; res.push({c:n.data[i], l:r.left, r:r.right, t:r.top, b:r.bottom, el:n.parentElement, n, i}); }
     return res; };
+  // 换行：下一个字在前一个字左边，或明显低于前一个字（字身高度的 0.6 以上：一行只有一个字时，下一行的第一个字并不在它左边，专八埋雷测试发现）
   const lines = cs => { const L=[]; for (const x of cs) { const p=L.length && L[L.length-1][L[L.length-1].length-1];
-      if (!p || x.l < p.l - 2) L.push([x]); else L[L.length-1].push(x); } return L; };
+      if (!p || x.l < p.l - 2 || x.t > p.t + 0.6 * (p.b - p.t)) L.push([x]); else L[L.length-1].push(x); } return L; };
   const leftOf = k => k.getBoundingClientRect().left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft);
   const em = el => parseFloat(getComputedStyle(el).fontSize);
   const txt = L => L.map(x => x.c).join('');
