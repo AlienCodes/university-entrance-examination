@@ -40,6 +40,8 @@ def main():
     global PROJ, T, REG
     from layoutcheck import project
     PROJ, T, argv = project(sys.argv[1:])
+    if PROJ == '六级':                 # 六级（与专八同一个引擎）的截图、审阅登记、生成前核对用 六级/tools/大字版.py（逐屏截图哈希 + 指纹），不用本程序
+        raise SystemExit('六级用 六级/tools/大字版.py --stills / --approve（make_video.py 生成前自动核对），不用 screens_fp.py')
     REG = T / '画面核查' / '截图审阅通过.json'
     cmd, args = argv[0], argv[1:]
     reg = json.loads(REG.read_text('utf-8')) if REG.exists() else {}

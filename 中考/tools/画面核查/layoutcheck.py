@@ -29,6 +29,7 @@
 
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py z01 z02 …     （不写篇目 = 全部）
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --project 专八 [--style 1] t03 …     （专八；默认 中考；--style 选画面 C、1–6，默认 C）
+    /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --project 六级 [--style 3] s01 …     （六级：与专八同一个引擎，凡是“只对专八开”的检查六级同样开；默认画面 3 教室黑板）
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --module <旧版 make_video.py> z01 …   （用旧版程序排版，检验本检查能查出旧版的毛病）
 有问题退出码非 0。
 半宽字形：专八译文字体霞鹜文楷的弯引号“”‘’是半宽（0.44/0.33 字），没有半字空白可去；行首缩进、过度挤压只对全角字形（宽 > 0.75 字）按半字计。
@@ -373,13 +374,13 @@ def laid_out(M, pg, p, f):
 
 
 def project(argv):
-    """--project 中考|专八（默认 中考）：layoutcheck、screens_fp、canary_layout、prep 由两个项目共用。返回 (项目名, 项目 tools 目录, 其余参数)。"""
+    """--project 中考|专八|六级（默认 中考）：layoutcheck、screens_fp、canary_layout、prep 由几个项目共用（六级与专八用同一个引擎）。返回 (项目名, 项目 tools 目录, 其余参数)。"""
     name = '中考'
     if '--project' in argv:
         j = argv.index('--project')
         name, argv = argv[j + 1], argv[:j] + argv[j + 2:]
-    if name not in ('中考', '专八'):
-        raise SystemExit(f'--project 只能是 中考 或 专八：{name}')
+    if name not in ('中考', '专八', '六级'):
+        raise SystemExit(f'--project 只能是 中考、专八 或 六级：{name}')
     return name, R / name / 'tools', argv
 
 
@@ -399,7 +400,7 @@ def main():
         M.set_style(argv[j + 1])
         argv = argv[:j] + argv[j + 2:]
     elif hasattr(M, 'set_style'):
-        M.set_style('C')
+        M.set_style(M.PJ['look'] if getattr(M, 'PJ', None) else 'C')      # 项目的默认画面（专八 C、六级 3）
     NAMES = json.loads((T / '人名.json').read_text('utf-8'))['names'] if (T / '人名.json').exists() else []      # 专八登记的中文整名（中考没有）
     from playwright.sync_api import sync_playwright
     P = {p['id']: p for p in json.loads((R / proj / 'data' / 'vocab.json').read_text('utf-8'))['passages'] if p.get('done', True)}
@@ -413,10 +414,10 @@ def main():
             for label, fit, r in laid_out(M, pg, P[pid], f):
                 if ' 第 ' in label[2:]:          # 分屏的句子（“第 k 句 第 n 屏”）：各屏实测字号必须相同（专八 t03 审阅：s20 两屏词汇栏 40/35px）
                     got, first = sizes(pg), size.setdefault(label.split(' 第 ')[0], [])
-                    if first and proj == '专八':
+                    if first and proj in ('专八', '六级'):
                         probs += [f'{label}：{x}' for x in size_diff(first[0], got)]
                     first.append(got)
-                z8 = proj == '专八'
+                z8 = proj in ('专八', '六级')          # 六级与专八同一个引擎：专八的检查全部打开
                 probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS, poss=z8, names=NAMES, fonts=z8, gaps=z8, breaks=z8)]
             bad[pid] = probs
             print(pid, 'OK' if not probs else f'{len(probs)} 处：\n  ' + '\n  '.join(probs), flush=True)

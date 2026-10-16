@@ -16,6 +16,14 @@
 恒定 30 帧逐屏编码后无损拼接），生成后运行高考 verify_videos.check 全部核查，任何一项不通过就删除成品。
 排版机械检查（layoutcheck）与“先审截图后生成视频”的登记（screens_fp）和中考共用 中考/tools/画面核查/，加 --project 专八。
 输入：专八/data/vocab.json（复核定稿）、专八/audio/timings.json（cet4_male）。输出：专八/最终视频/。
+
+项目（--project，默认 专八；用户 2026-10-16：六级 60 篇全部改成教室黑板大字版）：本程序同时是六级的引擎（一个引擎、两个项目，不再复制一份）。
+    /opt/ttsenv/bin/python 六级/tools/make_video.py s01        # 六级（六级/tools/make_video.py 只是入口，等于本程序 --project 六级；默认画面 3 教室黑板）
+两个项目只有这些不同（PROJECTS）：数据、音频、定稿登记、输出在 <项目>/；分屏表、人名表、截图审阅登记在 <项目>/tools/；标题文字、文件名规则、默认画面。
+样式、字体、字号表（字号.json）两个项目共用本目录同一份：六级的教室黑板与专八的教室黑板完全一样（同样的 Inter / 思源黑体常规体、同样的字号）。
+六级生成视频一律先审截图：六级/tools/大字版.py --stills → 审阅 → --approve 登记（指纹 + 每张截图的哈希）→ 本程序核对登记，并逐屏与审过的截图比对，
+不一致就不编码；成品文件名与旧版六级相同（2021年12月 第1套 Passage One 题目.mp4），核查结果写 六级/样片/成品核查/。
+旧版六级引擎原样保存在 六级/tools/make_video_旧版.py（配 六级/tools/分屏_旧版.json），可随时回退。
 """
 import argparse
 import html
@@ -42,8 +50,33 @@ STYLE = 'C'
 # 旧版（已发布的 t01—t10）：起点 64/30，下限 48/22；中考：起点 64/40，40 篇 817 屏英文全部 64px、词汇栏中位数 40px、95% 的屏 ≥ 34px。
 SIZES = json.loads((HERE / '字号.json').read_text('utf-8'))['looks']
 FS0 = VS0 = MIN_FS = MIN_VS = None          # set_style() 按 字号.json 设置
-SPLIT = {k: v for k, v in json.loads((HERE / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}
-NAMES = json.loads((HERE / '人名.json').read_text('utf-8'))['names']        # 中文音译人名（整名不断行，见 name_spans）
+# 项目（--project）：同一个引擎生成专八和六级，只有下面这些不同（见文件开头说明）。
+# look = 默认画面；stills = 生成视频前必须核对的审阅截图目录（{pid} 换成篇目；专八没有，用 screens_fp / 样片.py --stills）；
+# reg = 截图审阅登记（<项目>/tools/画面核查/ 下）；name_re = 成品文件名规则（与各项目旧版相同）；tmp = 临时目录前缀
+PROJECTS = {
+    '专八': {'tag': 'TEM-8 · READING · SECTION A', 'top': 'TEM-8 READING', 'exam': '英语专业八级', 'look': 'C', 'stills': None,
+             'reg': '样片审阅通过.json', 'name_re': r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', 'tmp': 'tem8video_'},
+    '六级': {'tag': 'CET-6 · READING · SECTION C', 'top': 'CET-6 READING', 'exam': '大学英语六级', 'look': '3', 'stills': '样片/截图/{pid}',
+             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
+}
+PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = None      # set_project() 设置
+
+
+def set_project(name, look=True):
+    """切换项目：数据、音频、定稿登记、输出在 <项目>/（C4），分屏表、人名表、截图审阅登记在 <项目>/tools/（T）；look=True 时画面切到该项目的默认画面。"""
+    global PROJ, PJ, C4, T, SPLIT, NAMES, SAMPLE_REG
+    if name not in PROJECTS:
+        raise SystemExit(f'--project 只能是 {"、".join(PROJECTS)}：{name}')
+    PROJ, PJ, C4 = name, PROJECTS[name], ROOT / name
+    T = C4 / 'tools'
+    SPLIT = {k: v for k, v in json.loads((T / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}
+    NAMES = json.loads((T / '人名.json').read_text('utf-8'))['names']        # 中文音译人名（整名不断行，见 name_spans）
+    SAMPLE_REG = T / '画面核查' / PJ['reg']      # 截图审阅登记（专八：样片.py --approve；六级：大字版.py --approve 写入）
+    if look:
+        set_style(PJ['look'])
+
+
+set_project('专八', look=False)      # 默认项目专八（画面在下面 set_style('C')）
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -388,7 +421,7 @@ def check_names(p):
                 if not any(a <= m.start() < b for a, b in cov):
                     bad.append(f'第 {k} 句「{txt[max(0, m.start() - 5):m.start() + 6]}」')
     if bad:
-        raise SystemExit(f'{p["id"]} 有没登记的中文人名（专八/tools/人名.json 登记整名后再生成）：' + '；'.join(bad))
+        raise SystemExit(f'{p["id"]} 有没登记的中文人名（{PROJ}/tools/人名.json 登记整名后再生成）：' + '；'.join(bad))
 
 
 def ordered(s):
@@ -452,8 +485,8 @@ def head(p):
 
 def title_slide(p):
     """--n = 标题字数：专八样式据此把标题排成一行（字号 64—100px），避免在词中间断行（如“使用语|言”“调查|者”）。"""
-    return page(f'''<div class="ttl"><div class="tag">TEM-8 · READING · SECTION A</div><h1 style="--n:{max(len(p.get("title") or ""), 1)}">{esc(p.get("title") or "")}</h1>
-      <div class="sub">英语专业八级 {esc(p["paper"])} · <i>{esc(p["passage"])}</i></div>
+    return page(f'''<div class="ttl"><div class="tag">{PJ["tag"]}</div><h1 style="--n:{max(len(p.get("title") or ""), 1)}">{esc(p.get("title") or "")}</h1>
+      <div class="sub">{PJ["exam"]} {esc(p["paper"])} · <i>{esc(p["passage"])}</i></div>
       <div class="meta"><span>{esc(p.get("genre") or "")}</span><span>全文 {p["words"]} 词 · 逐句精读</span></div></div>
       <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>''')
 
@@ -494,7 +527,7 @@ def sentence_slide(p, s, k, n, part=None):
         en = '<span class="cont">… </span>' + en
     if hi < len(s['en']):
         en += '<span class="cont"> …</span>'      # 不换行空格：续接号不落到行首（旧版画面核查：续接号 … 换到行首）
-    return page(f'''<div class="top"><b>TEM-8 READING</b><span>{head(p)}　{esc(p.get("title") or "")}</span></div>
+    return page(f'''<div class="top"><b>{PJ["top"]}</b><span>{head(p)}　{esc(p.get("title") or "")}</span></div>
       <div class="main"><div id="box"><div class="en">{en}</div><div class="zh" lang="zh-CN">{zh_html(zh)}</div></div></div>
       <div class="side" id="side"><h3>VOCABULARY</h3><div id="list">{vocab_html(s, lo, hi)}</div></div>
       <div class="bot"><span>SENTENCE {k} / {n}{tag}</span><div class="bar"><i style="width:{k / n * 100:.2f}%"></i></div><span>逐句精读</span></div>''')
@@ -596,21 +629,30 @@ def layout(pg, p, f):
         yield i, label, True, r
 
 
-def switch_time(audio, it, en, cut):
-    """分屏换屏时刻：语音识别得到第二屏第一个词的开口时间，再在它之前 0.45 秒内找能量最低的 60 毫秒（词间空隙）的中点。"""
+_ASR, _A16, _WORDS = [], {}, {}      # 语音识别模型、16 kHz 音频、每句的识别结果只算一次（六级分屏建议、截图检查一次要测上百个换屏点；结果与每次重算完全相同）
+
+
+def asr_words(audio, it):
+    """一句的音频（16 kHz）和语音识别出的 [[词, 开口时间（句内秒）], …]。"""
     import glob
     import numpy as np
     import sherpa_onnx
     import soundfile as sf
     import soxr
-    a, sr = sf.read(str(audio), dtype='float32')
-    a16 = soxr.resample(a, sr, 16000).astype(np.float32)
-    s0 = it['start']
-    seg = a16[int(s0 * 16000): int(it['end'] * 16000)]
-    d = Path(glob.glob(str(ROOT / 'tools' / 'tts' / 'models' / 'sherpa-onnx-nemo-parakeet*'))[0])
-    asr = sherpa_onnx.OfflineRecognizer.from_transducer(
-        encoder=str(d / 'encoder.int8.onnx'), decoder=str(d / 'decoder.int8.onnx'), joiner=str(d / 'joiner.int8.onnx'),
-        tokens=str(d / 'tokens.txt'), model_type='nemo_transducer', num_threads=4)
+    key = (str(audio), it['start'], it['end'])
+    if key in _WORDS:
+        return _WORDS[key]
+    if str(audio) not in _A16:
+        a, sr = sf.read(str(audio), dtype='float32')
+        _A16[str(audio)] = soxr.resample(a, sr, 16000).astype(np.float32)
+    a16 = _A16[str(audio)]
+    seg = a16[int(it['start'] * 16000): int(it['end'] * 16000)]
+    if not _ASR:
+        d = Path(glob.glob(str(ROOT / 'tools' / 'tts' / 'models' / 'sherpa-onnx-nemo-parakeet*'))[0])
+        _ASR.append(sherpa_onnx.OfflineRecognizer.from_transducer(
+            encoder=str(d / 'encoder.int8.onnx'), decoder=str(d / 'decoder.int8.onnx'), joiner=str(d / 'joiner.int8.onnx'),
+            tokens=str(d / 'tokens.txt'), model_type='nemo_transducer', num_threads=4))
+    asr = _ASR[0]
     st = asr.create_stream()
     st.accept_waveform(16000, seg)
     asr.decode_stream(st)
@@ -620,6 +662,15 @@ def switch_time(audio, it, en, cut):
             words.append([tok.strip(), t])
         else:
             words[-1][0] += tok
+    _WORDS[key] = (seg, words)
+    return _WORDS[key]
+
+
+def switch_time(audio, it, en, cut):
+    """分屏换屏时刻：语音识别得到第二屏第一个词的开口时间，再在它之前 0.45 秒内找能量最低的 60 毫秒（词间空隙）的中点。"""
+    import numpy as np
+    s0 = it['start']
+    seg, words = asr_words(audio, it)
     first = re.sub(r'[^a-z]', '', en[cut:].split()[0].lower())
     expect = (it['end'] - s0) * cut / len(en)
     cand = [t for w, t in words if re.sub(r'[^a-z]', '', w.lower()) == first]
@@ -675,14 +726,11 @@ def video_name(p, look=None):
     return f"{p['paper']} {p['passage']} {title}{tag}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
 
 
-SAMPLE_REG = HERE / '画面核查' / '样片审阅通过.json'      # 样片截图审阅登记（样片.py --approve 写入）
-
-
 def fingerprint(pid, look):
-    """样片截图审阅的指纹：生成程序、排版检查程序、这种画面的样式与字体、字号表、人名表、该篇分屏方案与定稿数据；任何一样改了，截图就要重审。"""
+    """截图审阅的指纹（专八样片、六级）：生成程序、排版检查程序、这种画面的样式与字体、字号表、本项目人名表、该篇分屏方案与定稿数据；任何一样改了，截图就要重审。"""
     import hashlib
     h = hashlib.sha256()
-    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', HERE / '字号.json', HERE / '人名.json',
+    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', HERE / '字号.json', T / '人名.json',
               ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css', *look_files(look)]:
         h.update(str(Path(x).relative_to(ROOT)).encode())
         h.update(Path(x).read_bytes())
@@ -726,7 +774,7 @@ def screen_checks(pg, label, fit, r):
     if fit:
         fs, vs, fits = r
         if not fits or fs < MIN_FS or vs < MIN_VS:     # 放不下或字太小：必须分屏，不硬挤
-            out.append(f'一屏放不下或字太小（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：在 专八/tools/分屏.json 里拆屏')
+            out.append(f'一屏放不下或字太小（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：在 {PROJ}/tools/分屏.json 里拆屏')
         # 分屏字号（实测，不看 FIT 自己的返回值；t03 第二轮审阅：只有 layout 自己的断言把关，样式改动让某一屏字号变了不会报）：
         # 同一句的各屏，英文、译文、词汇栏、词条、释义的实际字号必须完全相同。按屏的顺序调用，第 1 屏记下、后面各屏比对
         m = re.fullmatch(r'(第 \d+ 句) 第 (\d+) 屏', label)
@@ -785,13 +833,19 @@ def frame_check(mp4, frames, pngs):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('pid')
+    ap.add_argument('--project', default=PROJ, choices=list(PROJECTS), help=f'项目（本次默认 {PROJ}；六级/tools/make_video.py 默认 六级）')
     ap.add_argument('--scale', type=int, default=2, help='2 = 3840×2160（4K）')
-    ap.add_argument('--out', default=str(C4 / '最终视频'))
-    ap.add_argument('--audio-root', default=str(C4 / 'audio'), help='音频目录（含 timings.json），试听样片用')
-    ap.add_argument('--style', default='C', choices=list(LOOKS), help='画面：' + '，'.join(f'{k} {v}' for k, v in LOOKS.items()))
+    ap.add_argument('--out', help='输出目录（默认 <项目>/最终视频）')
+    ap.add_argument('--audio-root', help='音频目录（含 timings.json；默认 <项目>/audio），试听样片用')
+    ap.add_argument('--style', choices=list(LOOKS), help='画面（默认：专八 C，六级 3）：' + '，'.join(f'{k} {v}' for k, v in LOOKS.items()))
     ap.add_argument('--stills', help='样片：审阅通过的截图目录（专八/样片/截图/<画面>/）。代替 screens_fp 登记：核对审阅登记和截图文件，'
-                                     '生成时逐屏与截图比对，不一致就不编码；成品旁写 <文件名>_核查.json')
+                                     '生成时逐屏与截图比对，不一致就不编码；成品旁写 <文件名>_核查.json。'
+                                     '六级不用写：一律核对 六级/样片/截图/<篇目>/（大字版.py --approve 登记），成品文件名不带画面名称')
     a = ap.parse_args()
+    set_project(a.project, look=False)
+    a.style = a.style or PJ['look']
+    a.out = a.out or str(C4 / '最终视频')
+    a.audio_root = a.audio_root or str(C4 / 'audio')
     set_style(a.style)
 
     data = json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))
@@ -802,19 +856,21 @@ def main():
         raise SystemExit(f'{a.pid} 的翻译与标注与复核定稿不一致（build_vocab.py --reseal），不生成视频')
     check_names(p)
     # 踩坑 36：先审截图，后生成视频——程序或数据改过、截图还没审阅通过，就不生成视频
-    stills = Path(a.stills) if a.stills else None
-    if stills:                                    # 样片：样片.py --approve 登记的指纹与截图文件
+    sample = bool(a.stills)                       # 专八样片：成品文件名带画面名称、核查结果写在成品旁边
+    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] else None)
+    tool = '样片.py' if PROJ == '专八' else '六级/tools/大字版.py'
+    if stills:                                    # 样片.py / 大字版.py --approve 登记的指纹与截图文件
         key = f'{a.pid}@{a.style}'
         reg = json.loads(SAMPLE_REG.read_text('utf-8')).get(key) if SAMPLE_REG.exists() else None
         if not reg or reg['指纹'] != fingerprint(a.pid, a.style):
-            raise SystemExit(f'{key} 的样片截图还没有审阅通过，或审阅之后程序、样式、数据改过（样片.py --stills → 审阅 → 样片.py --approve）')
+            raise SystemExit(f'{key} 的样片截图还没有审阅通过，或审阅之后程序、样式、数据改过（{tool} --stills → 审阅 → {tool} --approve）')
         got = {x.name: file_hash(x) for x in sorted(stills.glob('screen*.png'))}
         if got != reg['截图']:
-            raise SystemExit(f'{stills} 里的截图不是审阅登记的那一份（重新截过图）：先审阅再 样片.py --approve')
+            raise SystemExit(f'{stills} 里的截图不是审阅登记的那一份（重新截过图）：先审阅再 {tool} --approve')
     elif a.style != 'C':
         raise SystemExit('共用背景（--style 1–6）目前只做样片：用 专八/tools/样片.py')
     else:
-        subprocess.run([sys.executable, str(QA / 'screens_fp.py'), '--project', '专八', 'check', a.pid], check=True)
+        subprocess.run([sys.executable, str(QA / 'screens_fp.py'), '--project', PROJ, 'check', a.pid], check=True)
     tm = json.loads((Path(a.audio_root) / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
@@ -831,7 +887,7 @@ def main():
     free = shutil.disk_usage(C4).free / 2**30
     if free < 3:
         raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')
-    tmp = Path(tempfile.mkdtemp(prefix='tem8video_'))
+    tmp = Path(tempfile.mkdtemp(prefix=PJ['tmp']))
     atexit.register(shutil.rmtree, tmp, True)          # 无论成功、核查失败还是出错，退出时都删除
     scr = screens(p)
     owner = [None] + [(k - 1, n, part) for k in range(1, len(sents) + 1)
@@ -893,7 +949,7 @@ def main():
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    name = video_name(p, a.style if stills else None)
+    name = video_name(p, a.style if sample else None)
     silent = tmp / 'video.mp4'
     # 整片一次压缩（用户 2026-10-16：“尽可能把每一个视频压缩一下，不用这么大”）：原来每屏单独编码（crf 12），每屏开头一张完整画面，
     # 教室黑板的粉笔颗粒每张 4.4 MB，78 屏 431 MB；现在每屏先无损、拼好后整片压一次，换屏时背景沿用前一帧，只存变了的字。
@@ -922,13 +978,15 @@ def main():
     res.append(frame_check(out / name, frames, [tmp / f'{i:03d}.png' for i in range(len(scr))]))
     size = (out / name).stat().st_size          # GitHub 单个文件上限 100 MB（教室黑板旧版 431 MB 推不上去，也超过发送上限）
     res.append(('成品体积 ≤ 95 MB', size <= 95 * 2**20, f'{size / 2**20:.1f} MB'))
-    ok_name = re.fullmatch(r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', name) and name == video_name(p, a.style if stills else None)
+    ok_name = re.fullmatch(PJ['name_re'], name) and name == video_name(p, a.style if sample else None)
     res.append(('文件名', bool(ok_name), name))
     for n_, c, d in res:
         print(f"  {'通过' if c else '不通过'} {n_}：{d}")
     fails = [f'{n_}：{d}' for n_, c, d in res if not c]
-    if stills:                                    # 样片：核查结果写在成品旁边（样片.py 据此判断这一种画面已经做好、可以跳过）
-        (out / (Path(name).stem + '_核查.json')).write_text(json.dumps(
+    if stills:                                    # 核查结果（样片.py / 大字版.py 据此判断这一篇、这种画面已经做好、可以跳过）：样片写在成品旁边，六级写 六级/样片/成品核查/
+        rep_dir = out if sample else C4 / '样片' / '成品核查'
+        rep_dir.mkdir(parents=True, exist_ok=True)
+        (rep_dir / (Path(name).stem + '_核查.json')).write_text(json.dumps(
             {'video': name, 'style': a.style, '指纹': fingerprint(a.pid, a.style), 'ok': not fails, 'duration': round(dur, 3),
              'size': (out / name).stat().st_size, 'checks': [{'item': n_, 'ok': c, 'detail': d} for n_, c, d in res]},
             ensure_ascii=False, indent=1), 'utf-8')
