@@ -4,7 +4,7 @@
 
     /opt/ttsenv/bin/python 中考/tools/画面核查/canary_layout.py <frames dir> z01 y4   → <frames dir>/y4/ 与 ref/y4.txt，并打印埋了哪几屏
 之后用 pixelcheck.py <frames dir> --as y4=z01 确认恰好这几屏不同（雷确实埋进去了）。
-专八：加 --project 专八（如 canary_layout.py --project 专八 <frames dir> t03 q3）。屏号按分屏实际计算（第 k 句之前每个分屏多出的屏都算上），
+专八：加 --project 专八（如 canary_layout.py --project 专八 <frames dir> t03 q3）。专八样片某种画面：再加 --style 2（截图方式与 样片.py --stills 相同）。屏号按分屏实际计算（第 k 句之前每个分屏多出的屏都算上），
 埋雷的句子选不分屏的句子（分屏的句子顺延到下一个不分屏的句子），专八与中考都适用。
 """
 import json
@@ -19,6 +19,11 @@ from layoutcheck import project  # noqa: E402
 PROJ, T, ARGV = project(sys.argv[1:])
 sys.path.insert(0, str(T))
 import make_video as M  # noqa: E402
+STYLE = None
+if '--style' in ARGV:                             # 专八样片：按某种画面埋雷（C、1–6），截图方式与 样片.py --stills 相同（按 4K 排版画，再缩成 1080p）
+    j = ARGV.index('--style')
+    STYLE, ARGV = ARGV[j + 1], ARGV[:j] + ARGV[j + 2:]
+    M.set_style(STYLE)
 from playwright.sync_api import sync_playwright  # noqa: E402
 
 S, src, dst = Path(ARGV[0]), ARGV[1], ARGV[2]
@@ -56,7 +61,7 @@ MINES = [
 MINES = [(1, 0, *m[2:]) if m[1] == 0 else (screen_of(plain(m[1])), plain(m[1]), *m[2:]) for m in MINES]      # 中考无分屏的篇目：屏号与原表相同
 with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
     br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
-    pg = br.new_page(viewport={'width': M.W, 'height': M.H})
+    pg = br.new_page(viewport={'width': M.W, 'height': M.H}, device_scale_factor=2 if STYLE else 1)
     f = Path(td) / 'x.html'
     for scr, k, what, edit, js in MINES:
         s = sents[k - 1] if k else None
@@ -71,6 +76,10 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         pg.goto(f.as_uri())
         pg.evaluate('document.fonts.ready')
         pg.evaluate(js or (M.FIT if k else '() => 0'))
-        pg.screenshot(path=str(S / dst / f'screen{scr:02d}.png'))
+        if STYLE:
+            pg.screenshot(path=str(Path(td) / 'big.png'))
+            M.small(Path(td) / 'big.png').save(S / dst / f'screen{scr:02d}.png')
+        else:
+            pg.screenshot(path=str(S / dst / f'screen{scr:02d}.png'))
         print(f'screen{scr:02d}', f'第 {k} 句' if k else '片头', what, flush=True)
     br.close()

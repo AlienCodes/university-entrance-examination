@@ -96,6 +96,7 @@ x-n{display:inline-block}     /* 释义里的长括注：放得下一行就整�
 # 专八专用样式「书卷水墨」（用户 2026-10-10 选定）：样式.css 追加在上面的通用样式之后覆盖它，只改颜色、字体、装饰和封面，不改版面尺寸。
 THEME = HERE / '样式.css'
 THEME_FONTS = HERE / 'fonts' / 'fonts.css'
+ZH_BOLD = HERE / 'fonts' / 'zh-bold.css'          # 中文粗体黑体（思源黑体 Bold 起名 'ZH Bold'，代替用户要的微软雅黑；哪种画面用它由 样式/*.css 决定）
 POS = re.compile(r'^((?:n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.)\s*(.*)$')
 
 
@@ -323,7 +324,7 @@ def look_files(look=None):
     look = look or STYLE
     if look == 'C':
         return [THEME, *sorted(p for p in (HERE / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css')]
-    return [*TH.files(look), HERE / '样式' / TH.THEMES[look]['file']]
+    return [*TH.files(look), HERE / '样式' / TH.THEMES[look]['file'], ZH_BOLD]
 
 
 def size_css(look=None):
@@ -345,7 +346,7 @@ def page(body):
         extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">'
         theme = f'<style>{THEME.read_text("utf-8")}</style>'
     else:                       # 共用背景：共用字体 + 共用基础样式 + 共用版式骨架（词条间距）+ 专八调整（追加在后面覆盖）
-        extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}">'
+        extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}"><link rel="stylesheet" href="{ZH_BOLD.as_uri()}">'
         theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
     return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}{size_css()}</head>'
             f'<body><div class="band"></div>{body}</body></html>')
