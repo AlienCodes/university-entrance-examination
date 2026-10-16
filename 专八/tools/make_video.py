@@ -77,6 +77,8 @@ x-i::before{top:.295em}x-i::after{top:.945em}
 .en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.29em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.89em}
 sup.sd{margin-right:calc(var(--fs)*.084)}   /* 编号后紧跟破折号时留空：专八编号是英文字号的 0.36 倍（中考 0.42），按英文字号定，等于中考的 0.2 × 0.42（t08 “¹¹—”原来只隔 3.7 像素） */
 .pr{margin-right:-.5em}.pl{margin-left:-.5em}
+.en .ph{white-space:nowrap}   /* 高亮短语整体不断行（t03 第二轮审阅：rough / treatment、at the / expense of），比一行还长的由 FIT 放开（phr） */
+x-n{display:inline-block}     /* 释义里的长括注：放得下一行就整体换到下一行（t03 第二轮审阅：（同 / gunwale）），放不下由 FIT 改成行内、只在指定处断开（notes） */
 .cont{color:#9aa39e;font-weight:400}
 .en x-ps{font-weight:400;color:var(--ink,#1c2421)}
 .bot{position:absolute;left:110px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter';font-size:22px;color:#6b746f;letter-spacing:.1em}
@@ -184,6 +186,75 @@ def gloss_chunks(s):
             ch[k - 1:k + 1] = [[ch[k - 1][0], ch[k][1]]]
 
 
+def jieba_words(s):
+    """jieba 分词的位置 [(起, 止)]（覆盖整个 s）。译文按词绑定、layoutcheck 的“译文断词”都对整段文字分词，结果一致。"""
+    import logging
+    import jieba
+    jieba.setLogLevel(logging.WARNING)
+    out, pos = [], 0
+    for w in jieba.cut(s):
+        out.append((pos, pos + len(w)))
+        pos += len(w)
+    return out
+
+
+def notes(s):
+    """释义里最外层的括注（（…）或 (…)，可以套括号）的位置 [(起, 止)]。"""
+    out, st = [], []
+    for i, c in enumerate(s):
+        if c in '（(':
+            st.append(i)
+        elif c in '）)' and st:
+            a = st.pop()
+            if not st:
+                out.append((a, i + 1))
+    return out
+
+
+def long_notes(s):
+    """长括注：超过 GLOSS_CHUNK 个字、或里面还有会切块的标点（括号、逗号等）的括注（t03 第二轮审阅：（同 / gunwale）、（with 复合 / 结构）、
+    （so… / (that) 结构，此处省略 / that）、（down the length of 顺着…… / 一路）都是旧切块把括注拆开）。短括注照旧是一个不断行的块。"""
+    return [(a, b) for a, b in notes(s) if b - a > GLOSS_CHUNK or any(c in ZCLOSE or c in ZOPEN for c in s[a + 1:b - 1])]
+
+
+def note_breaks(t):
+    """长括注 t（含两头括号）里可以换行的位置 i（在 t[i] 之前断开）：空格处、中英文交界、括注里的逗号顿号分号冒号之后；
+    除此以外不断开（中文片段整体不断行，比 GLOSS_CHUNK 还长的中文片段由 words 在词间断开）。标点归属：右括号、省略号等跟前一个字，左括号跟后一个字。"""
+    kind = ['S' if c.isspace() else 'H' if '一' <= c <= '鿿' else 'L' if c.isascii() and c.isalnum() else '' for c in t]
+    for i in range(len(t)):                          # 标点归属：左括号看后面，其余看前面；找不到就看另一边
+        if not kind[i]:
+            fwd = t[i] in ZOPEN or t[i] == '('
+            for j in (list(range(i + 1, len(t))) + list(range(i - 1, -1, -1))) if fwd else (list(range(i - 1, -1, -1)) + list(range(i + 1, len(t)))):
+                if kind[j] in ('H', 'L'):
+                    kind[i] = kind[j]
+                    break
+    out = set()
+    for i in range(1, len(t)):
+        if kind[i] == 'S' or kind[i - 1] == 'S':
+            if kind[i] != 'S':
+                out.add(i)
+        elif kind[i] != kind[i - 1] or (t[i - 1] in '，；：、' and t[i] not in ZCLOSE):
+            out.add(i)
+    return sorted(out)
+
+
+def note_html(t, out):
+    """长括注的 HTML（包在行内块 x-n 里）：只在 note_breaks 的位置可以换行（空格照旧，没有空格的地方加 <wbr>），每段整体不断行；
+    比 GLOSS_CHUNK 还长的中文段在词间断开（words）。放得下一行时 x-n 是行内块，整体换到下一行；放不下时 FIT 改成行内，在这些位置断开。"""
+    cuts = [0] + note_breaks(t) + [len(t)]
+    res = []
+    for a, b in zip(cuts, cuts[1:]):
+        e = b
+        while e > a and t[e - 1].isspace():
+            e -= 1
+        body = ''.join(out[a:e])
+        han = sum('一' <= c <= '鿿' for c in t[a:e])
+        res.append((words(t[a:e], out[a:e]) if han > GLOSS_CHUNK else f'<nobr>{body}</nobr>') + ''.join(out[e:b]))
+        if b < len(t) and e == b:
+            res.append('<wbr>')
+    return ''.join(res)
+
+
 def zh_html(s, gloss=False):
     """中文标点挤压（第 1 批画面核查：“说：  “我们”“看法）  ；”“母亲养育” 。”中间空出半个到一个字，段首“记忆…”比下一行缩进半个字；
     字体的 halt 对冒号、引号不生效，所以关掉浏览器自带的挤压（text-spacing-trim: space-all），由这里统一决定）：
@@ -192,6 +263,8 @@ def zh_html(s, gloss=False):
     断行（同一次画面核查：释义“可/能”“泳/衣”被拆开，译文最后一行只剩“念。”一个字）：
     gloss=True（词汇栏释义）按标点切块（右半空白的标点之后、左半空白的标点之前），GLOSS_CHUNK（9）个字以内的块整体不断行，更长的块只在词与词之间断行（words）；
     gloss=False（译文）最后两个字连同后面的标点绑在一起，最后一行至少两个字。
+    专八（t03 第二轮审阅）：释义里的长括注单独排（long_notes / note_html：放得下一行就整体换行，放不下只在空格、中英交界、逗号等处断开）；
+    译文的多字词（jieba）整体不断行（“蹦/跳”“相/同”“霎时/间”）。layoutcheck 的“括注拆开 / 括注断开 / 译文断词”逐屏核对。
     专八：译文用霞鹜文楷，它的弯引号“”‘’是半宽字形（实测宽 0.44/0.33 字，没有半字空白可去），不挤压、不去半字（ZPROP）；
     释义用思源宋体，引号是全角，照常处理。人名间隔号“·”前后不断行（旧版画面核查：理查德·帕克 在 · 处断行）。"""
     fc, fo = (ZCLOSE, ZOPEN) if gloss else (ZCLOSE - ZPROP, ZOPEN - ZPROP)
@@ -207,12 +280,19 @@ def zh_html(s, gloss=False):
         else:
             out.append(esc(c))
     if gloss:
-        return ''.join((f'<nobr>{"".join(out[a:b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[a:b], out[a:b])) for a, b in gloss_chunks(s))
+        chunks = lambda lo, hi: ''.join((f'<nobr>{"".join(out[lo + a:lo + b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[lo + a:lo + b], out[lo + a:lo + b]))
+                                        for a, b in gloss_chunks(s[lo:hi]))
+        res, pos = [], 0
+        for a, b in long_notes(s):                   # \u957f\u62ec\u6ce8\u5355\u72ec\u6392\uff08note_html\uff09\uff0c\u5176\u4f59\u7167\u65e7\u6309\u6807\u70b9\u5207\u5757
+            res += [chunks(pos, a) if a > pos else '', f'<x-n>{note_html(s[a:b], out[a:b])}</x-n>']
+            pos = b
+        return ''.join(res) + (chunks(pos, len(s)) if pos < len(s) else '')
     ish = lambda c: '\u4e00' <= c <= '\u9fff'
     groups = [(m.start() - (m.start() > 0 and ish(s[m.start() - 1])), m.end() + (m.end() < len(s) and ish(s[m.end()])))
               for m in re.finditer(r'[A-Za-z0-9]+', s)]          # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与紧挨的汉字绑在一起
     groups += [(i - 1, i + 2) for i, c in enumerate(s) if c == '·' and 0 < i < len(s) - 1]      # 人名间隔号与前后各一个字不断开
     groups += name_spans(s)                                         # 登记的整名不断开（t03 审阅：“理查 / 德·帕克”）
+    groups += [(a, b) for a, b in jieba_words(s) if b - a > 1 and all(ish(c) for c in s[a:b])]   # 词不拆开（t03 第二轮审阅：“蹦/跳”“相/同”“霎时/间”）
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
         k = han[-2]
@@ -420,9 +500,14 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       for (let k = 1; k < ps.length; k++) { b.innerHTML = ps.slice(0, k).join(' ') + '<br>' + ps.slice(k).join(' ');
         const rs = b.getClientRects(); if (rs.length !== 2) continue; const w = Math.max(rs[0].width, rs[1].width); if (!best || w < best[0]) best = [w, b.innerHTML]; }
       b.innerHTML = best ? best[1] : b.dataset.h; const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
-  const sideFits = () => { hw(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
+  const notes = () => { for (const x of document.querySelectorAll('x-n')) { x.style.display = '';
+      if (x.getBoundingClientRect().height > parseFloat(getComputedStyle(x).lineHeight) * 1.5) x.style.display = 'inline'; } };
+  const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
-  let fs=st ? st[0] : FS0, vs=st ? st[1] : VS0; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px');
+  const en = document.querySelector('.en');
+  const phr = () => { const lim = en.clientWidth; for (const e of en.querySelectorAll('.ph')) { e.style.whiteSpace = '';
+      if (e.getBoundingClientRect().width > lim + 0.5) e.style.whiteSpace = 'normal'; } };
+  let fs=st ? st[0] : FS0, vs=st ? st[1] : VS0; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px'); phr();
   const cv = document.createElement('canvas').getContext('2d');
   for (const s of document.querySelectorAll('.en sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
     if (!n || !n.data) continue; const c = n.data.trim().slice(-1); if (!c) continue; const cs = getComputedStyle(n.parentElement);
@@ -432,10 +517,12 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     const ss = getComputedStyle(s), sr = parseFloat(ss.fontSize) / parseFloat(cs.fontSize);
     if (s.dataset.ml0 === undefined) s.dataset.ml0 = parseFloat(ss.marginLeft) / parseFloat(ss.fontSize);
     const ml = Math.max(+s.dataset.ml0, (0.03 - rsb - ls) / sr); s.style.marginLeft = ml.toFixed(3) + 'em'; }
-  while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); }
+  while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); phr(); }
   while (!sideFits() && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
   for (const e of document.querySelectorAll('.po')) { const k=e.closest('.zh, .v > div'), b=k.getBoundingClientRect();
-    if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl'; e.before(document.createElement('br')); } }
+    if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl';
+      const x = e.closest('x-n'), g = x && document.createRange(); if (g) { g.setStart(x, 0); g.setEndBefore(e); }
+      (x && g.toString() === '' ? x : e).before(document.createElement('br')); } }   // 括注开头的左括号：换行放在括注外面（括注是行内块，放在里面会空出一行）
   return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""      # st = [英文, 词汇栏] 起始字号（分屏的句子统一字号用，见 layout）；不给就从 FS0/VS0 开始
 FIT = None          # set_style() 按画面填入起始字号
 set_style('C')      # 默认画面 C（书卷水墨）
@@ -612,6 +699,9 @@ def same_still(a, b):
     return n <= 64 and m <= 24, n, m
 
 
+_SPLIT_SIZES = {}      # 分屏的句子：第 1 屏的实测字号（screen_checks 用）
+
+
 def screen_checks(pg, label, fit, r):
     """一屏排好之后的全部程序检查（生成视频和 样片.py 截图用同一套）：字号下限与放得下、排版机械检查（含整名、字体回退、徽章撇号、词条间距）、
     字体加载失败、字形（每个字都由样式字体画出）、句子屏横向不出界、封面各块不出界不重叠。返回问题列表。"""
@@ -620,7 +710,18 @@ def screen_checks(pg, label, fit, r):
         fs, vs, fits = r
         if not fits or fs < MIN_FS or vs < MIN_VS:     # 放不下或字太小：必须分屏，不硬挤
             out.append(f'一屏放不下或字太小（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：在 专八/tools/分屏.json 里拆屏')
-    out += LC.problems(pg, MIN_FS, MIN_VS, poss=True, names=NAMES, fonts=True, gaps=True)
+        # 分屏字号（实测，不看 FIT 自己的返回值；t03 第二轮审阅：只有 layout 自己的断言把关，样式改动让某一屏字号变了不会报）：
+        # 同一句的各屏，英文、译文、词汇栏、词条、释义的实际字号必须完全相同。按屏的顺序调用，第 1 屏记下、后面各屏比对
+        m = re.fullmatch(r'(第 \d+ 句) 第 (\d+) 屏', label)
+        if m:
+            got = LC.sizes(pg)
+            if m.group(2) == '1':
+                _SPLIT_SIZES[m.group(1)] = got
+            elif _SPLIT_SIZES.get(m.group(1)) is None:
+                out.append('分屏字号：没有先检查同一句的第 1 屏，无法比对')
+            else:
+                out += LC.size_diff(_SPLIT_SIZES[m.group(1)], got)
+    out += LC.problems(pg, MIN_FS, MIN_VS, poss=True, names=NAMES, fonts=True, gaps=True, breaks=True)
     out += [f'字体加载失败：{x}' for x in pg.evaluate("() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family)")]
     out += [f'字形：{x} 不在样式字体里' for x in pg.evaluate(TH.GLYPH)]
     if fit:
