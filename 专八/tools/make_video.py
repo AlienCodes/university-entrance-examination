@@ -896,11 +896,14 @@ def main():
     name = video_name(p, a.style if stills else None)
     silent = tmp / 'video.mp4'
     # 整片一次压缩（用户 2026-10-16：“尽可能把每一个视频压缩一下，不用这么大”）：原来每屏单独编码（crf 12），每屏开头一张完整画面，
-    # 教室黑板的粉笔颗粒每张 4.4 MB，78 屏 431 MB；现在每屏先无损、拼好后整片按 GOP 10 秒压一次，换屏时背景沿用前一帧，只存变了的字。
+    # 教室黑板的粉笔颗粒每张 4.4 MB，78 屏 431 MB；现在每屏先无损、拼好后整片压一次，换屏时背景沿用前一帧，只存变了的字。
+    # 完整画面（关键帧）占体积的八成（黑板静止 20 秒实测：2 张 6.9 MB，其余 598 帧 1.6 MB），所以每 30 秒才放一张（-g 900，不按画面变化另插 scenecut=0）；
+    # 用户 2026-10-16：“质量效果不能变、必须 4K，只把体积压下去”——画面（含粉笔颗粒）一点不改，只靠编码：crf 18（公认的“看不出损失”档，
+    # 黑板实测与无损比 PSNR 51.5 dB），省下的体积全部来自少放完整画面（同一 crf 下每一帧的画质不变）
     # crf 见 CRF（字的边缘在 4K 下看不出差别；逐屏画面与截图一致、成品体积 ≤ 95 MB 都在下面核查）
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
                     '-c:v', 'libx264', '-preset', 'slow', '-crf', str(CRF.get(STYLE, CRF['*'])), '-tune', 'stillimage',
-                    '-pix_fmt', 'yuv420p', '-g', str(FPS * 10), str(silent)], check=True)
+                    '-pix_fmt', 'yuv420p', '-g', str(FPS * 30), '-x264-params', 'scenecut=0', str(silent)], check=True)
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(silent), '-i', str(audio),
                     '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-af', f'apad=whole_dur={total:.3f}',
                     '-t', f'{total:.3f}', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart',
