@@ -26,3 +26,5 @@ x-i::before{top:.241em}x-i::after{top:.859em}
    字形本身透明，横线画在汉字中线（粗体“一”实测中心 0.770 字），常规体粗 0.075 字，两头各留 0.05 字 */
 x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transparent}
 x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.733em;height:.075em;background:currentColor;border-radius:.02em}
+/* 粉色短语不要下划线（用户 2026-10-16：“标亮这个字体不要有下划线”）：去掉正文短语和词条短语下面的粉笔下划线，只留粉色字 */
+.en .ph,.v.ph b{background:none}
