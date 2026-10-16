@@ -97,6 +97,8 @@ x-n{display:inline-block}     /* 释义里的长括注：放得下一行就整�
 THEME = HERE / '样式.css'
 THEME_FONTS = HERE / 'fonts' / 'fonts.css'
 ZH_BOLD = HERE / 'fonts' / 'zh-bold.css'          # 中文粗体黑体（思源黑体 Bold 起名 'ZH Bold'，代替用户要的微软雅黑；哪种画面用它由 样式/*.css 决定）
+INTER = HERE / 'fonts' / 'inter' / 'inter.css'      # 英文 Inter（用户要 Aptos，官方下载被网络拦住，用非常相似的 Inter 代替；哪种画面用它由 样式/*.css 决定）
+ZH_REGULAR = HERE / 'fonts' / 'zh-regular.css'    # 中文常规体黑体（'ZH Regular'，代替微软雅黑；教室黑板用：英文加粗、中文不加粗）
 POS = re.compile(r'^((?:n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.)\s*(.*)$')
 
 
@@ -286,6 +288,10 @@ def zh_html(s, gloss=False):
             out.append(f'<span class="po">{esc(c)}</span>')
         else:
             out.append(esc(c))
+    for m in re.finditer('—+', s):                  # 中文破折号整段包成 x-dash（样式 2、3 画成全角居中粗横；其余画面不加样式，与原来一样）
+        out[m.start()] = f'<x-dash>{"".join(out[m.start():m.end()])}</x-dash>'
+        for k in range(m.start() + 1, m.end()):
+            out[k] = ''
     if gloss:
         chunks = lambda lo, hi: ''.join((f'<nobr>{"".join(out[lo + a:lo + b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[lo + a:lo + b], out[lo + a:lo + b]))
                                         for a, b in gloss_chunks(s[lo:hi]))
@@ -324,7 +330,7 @@ def look_files(look=None):
     look = look or STYLE
     if look == 'C':
         return [THEME, *sorted(p for p in (HERE / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css')]
-    return [*TH.files(look), HERE / '样式' / TH.THEMES[look]['file'], ZH_BOLD]
+    return [*TH.files(look), HERE / '样式' / TH.THEMES[look]['file'], ZH_BOLD, ZH_REGULAR, INTER, *sorted((HERE / 'fonts' / 'inter' / 'files').glob('*'))]
 
 
 def size_css(look=None):
@@ -346,7 +352,7 @@ def page(body):
         extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">'
         theme = f'<style>{THEME.read_text("utf-8")}</style>'
     else:                       # 共用背景：共用字体 + 共用基础样式 + 共用版式骨架（词条间距）+ 专八调整（追加在后面覆盖）
-        extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}"><link rel="stylesheet" href="{ZH_BOLD.as_uri()}">'
+        extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}"><link rel="stylesheet" href="{ZH_BOLD.as_uri()}"><link rel="stylesheet" href="{INTER.as_uri()}"><link rel="stylesheet" href="{ZH_REGULAR.as_uri()}">'
         theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
     return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}{size_css()}</head>'
             f'<body><div class="band"></div>{body}</body></html>')

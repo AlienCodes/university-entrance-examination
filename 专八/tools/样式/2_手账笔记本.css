@@ -7,3 +7,6 @@ html,body{font-family:'Nunito','ZH Bold',sans-serif}
 .top span,.ttl .tag,.ttl .sub,.ttl .meta{font-family:'Nunito','ZH Bold'}
 .en{font-family:'Nunito','ZH Bold',sans-serif}
 .zh,.v span,.bot span:last-child,.ttl::after,.ttl h1,.legend{font-family:'ZH Bold'}
+/* 中文破折号“——”画成全角居中粗横（原因和数值见 3_教室黑板.css 的 x-dash） */
+x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transparent}
+x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.715em;height:.11em;background:currentColor;border-radius:.02em}

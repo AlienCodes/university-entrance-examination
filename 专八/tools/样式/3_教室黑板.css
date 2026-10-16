@@ -1,5 +1,28 @@
 /* ===== 专八版调整（专八/tools/make_video.py --style 3；追加在共用基础样式 tools/video/themes/css/3_教室黑板.css 之后）===== */
-/* 大写 I 的上下短横（make_video.cap_i，x-i）：引擎里的位置按 Nunito 实测，Baloo 2 的字身更高、I 更矮，按 Baloo 2 实测重给（1000px 量：
-   I 顶 0.453 字、底（基线）1.078 字，竖笔宽 常规 0.094 / 粗 0.156—0.172 字；Nunito 是 0.292 / 1.011）：短横与 I 的顶、底对齐，与 Nunito 的相对位置相同 */
-x-i::before{top:.456em}x-i::after{top:1.012em}
-.en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.451em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.957em}
+/* 用户 2026-10-16（看了教室黑板样片）：“英文字体统一换成 Aptos (Body)，中文字体统一换成微软雅黑”，又说“英文加粗一下，看得更清楚”。
+   Aptos 是微软字体，官方下载地址被本环境网络拦住，用户同意用非常相似的替代：英文 = Inter（专八/tools/fonts/inter/）；
+   微软雅黑不能下载打包：中文 = 思源黑体常规体（'ZH Regular'，专八/tools/fonts/zh-regular.css；用户：“中文不需要加粗”）。
+   英文正文 600（原 400，加粗），高亮词 / 短语 800（原 700，与正文拉开），词条 800，编号 800。 */
+html,body{font-family:'Inter','ZH Regular',sans-serif}
+.top b,.side h3,.ttl .sub i{font-family:'Inter';font-weight:700}
+.top span{font-family:'Inter','ZH Regular'}
+.en{font-family:'Inter','ZH Regular',sans-serif;font-weight:600}
+.en .w,.en .ph{font-weight:800}
+sup,.v em{font-family:'Inter';font-weight:800}
+.v b{font-family:'Inter';font-weight:800}
+.v i{font-family:'Inter';font-style:italic;font-weight:500}
+.bot{font-family:'Inter';font-weight:600}
+.zh,.v span,.bot span:last-child,.ttl::after,.ttl .tag,.ttl h1,.ttl .sub,.ttl .meta,.legend{font-family:'Inter','ZH Regular'}
+.zh,.v span,.bot span:last-child,.ttl::after,.ttl h1,.legend{font-family:'ZH Regular'}
+/* 大写 I 的上下短横（make_video.cap_i，x-i）：Inter 的大写 I 与小写 l 一样高、一样粗（1000px 实测都是顶 0.241 字、底 0.969 字），
+   fontsource 的子集里没有带衬线的 I（cv08 不生效），照样画短横：短横顶与 I 顶齐、底与基线齐；
+   正文 600 竖笔 0.131 字 → 短横高 0.11、宽 0.24；高亮词 / 词条 800 竖笔 0.172 字 → 短横高 0.14、宽 0.28 */
+x-i::before,x-i::after{width:.24em;margin-left:-.12em;height:.11em}
+x-i::before{top:.241em}x-i::after{top:.859em}
+.en .w x-i::before,.en .ph x-i::before,.en .w x-i::after,.en .ph x-i::after,.v b x-i::before,.v b x-i::after{width:.28em;margin-left:-.14em;height:.14em}
+.en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.241em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.829em}
+/* 中文破折号“——”（make_video.zh_html 包成 x-dash）：思源黑体的“—”是西文窄破折号（每个 0.908 字宽、偏下、只有 0.094 字粗），
+   在粗体汉字旁边显得又细又低（t03 审阅：“很好——事实上”）。改画成和微软雅黑一样的全角居中粗横：每个“—”占满一个字（字距补 0.092 字），
+   字形本身透明，横线画在汉字中线（粗体“一”实测中心 0.770 字），常规体粗 0.075 字，两头各留 0.05 字 */
+x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transparent}
+x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.733em;height:.075em;background:currentColor;border-radius:.02em}
