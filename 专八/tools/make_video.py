@@ -493,13 +493,17 @@ def title_slide(p):
 
 def split_parts(pid, k, s):
     """分屏：返回 [(lo, hi, 中文, 标签), …]；不分屏返回一屏。专八长句多，可拆成多屏：at 写一个分屏点或按顺序的多个分屏点，
-    zh 是各屏中文（比分屏点多一段），必须是定稿译文的原样片段（逐个分句核对），合起来不多不少。"""
+    zh 是各屏中文（比分屏点多一段），必须是定稿译文的原样片段（逐个分句核对），合起来不多不少。
+    六级大字版：中文语序与英文对不上、在句中标点处切不出与各屏英文对应的几段时（如英文“部署……至关重要，以取代……”，译文是“要用……取代……，部署……至关重要”），
+    zh 写 "整句"：各屏都放整句译文（不切，免得某一屏的中文对应的是另一屏的英文）。
+    "无停顿": 原因（句中没有停顿 / 停顿处切不开）：换屏点不在朗读的停顿处（分屏建议.py 只在停顿处切不开时才这样选），截图检查据此放行并逐条列出。"""
     c = SPLIT.get(pid, {}).get(str(k))
     if not c:
         return [(0, len(s['en']), s['zh'], '')]
     en, zh = s['en'], s['zh']
     ats = c['at'] if isinstance(c['at'], list) else [c['at']]
-    if len(c['zh']) != len(ats) + 1:
+    full = c['zh'] == '整句'
+    if not full and len(c['zh']) != len(ats) + 1:
         raise SystemExit(f'分屏.json：{pid} 第 {k} 句有 {len(ats)} 个分屏点，中文应分 {len(ats) + 1} 段')
     cuts = []
     for at in ats:
@@ -513,11 +517,11 @@ def split_parts(pid, k, s):
         cuts.append(cut)
     if cuts != sorted(cuts):
         raise SystemExit(f'分屏.json：{pid} 第 {k} 句的分屏点没有按顺序排列')
-    if sorted(''.join(c['zh'])) != sorted(zh) or ''.join(c['zh']) != zh or any(x not in zh for z in c['zh'] for x in re.split(r'(?<=[，；：、])', z) if x):
+    if not full and (sorted(''.join(c['zh'])) != sorted(zh) or ''.join(c['zh']) != zh or any(x not in zh for z in c['zh'] for x in re.split(r'(?<=[，；：、])', z) if x)):
         raise SystemExit(f'分屏.json：{pid} 第 {k} 句的中文不是定稿译文的原样片段')
     b = [0] + cuts + [len(en)]
     n = len(b) - 1
-    return [(b[x], b[x + 1], c['zh'][x], f' · PART {x + 1}/{n}') for x in range(n)]
+    return [(b[x], b[x + 1], zh if full else c['zh'][x], f' · PART {x + 1}/{n}') for x in range(n)]
 
 
 def sentence_slide(p, s, k, n, part=None):

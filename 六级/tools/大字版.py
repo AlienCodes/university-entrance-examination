@@ -12,6 +12,7 @@
    每篇写总览图 <篇目>/总览.jpg、参考文字 ref/<篇目>.txt（每屏应有的英文、中文、生词；canary_layout.py --project 六级 --style 3 也用它）；
    全部结果写 六级/样片/截图/汇总.json（每篇：屏数、字号、问题、指纹、每张截图的哈希）。有任何问题退出码非 0。
    磁盘剩余不足 1 GB 就停下（踩坑 29；教室黑板的截图每张约 1.5 MB），腾出空间后重跑同一条命令接着做。
+   可以分篇目开几个进程同时截（如 s01—s20、s21—s40、s41—s60），汇总.json 加锁合并，互不覆盖。
 ② --approve：只登记“截图是用现在的程序和数据画的（指纹一致）、程序检查全部通过、截图文件没动过”的篇目，写进
    六级/tools/画面核查/截图审阅通过.json（键 <篇目>@3，指纹 + 每张截图的哈希）。
 ③ --video：只做已登记、且登记之后程序、样式、数据都没改过的篇目（make_video.py 再核对一遍，并逐屏与审过的截图比对，不一致就不编码）；
@@ -22,6 +23,7 @@
 """
 import argparse
 import json
+import os
 import shutil
 import statistics
 import subprocess
@@ -49,9 +51,21 @@ def passages():
 
 def write_json(f, d):
     f.parent.mkdir(parents=True, exist_ok=True)
-    tmp = f.with_suffix('.tmp')
+    tmp = f.with_suffix(f'.{os.getpid()}.tmp')
     tmp.write_text(json.dumps(d, ensure_ascii=False, indent=1) + '\n', 'utf-8')
     tmp.replace(f)
+
+
+def merge_json(f, upd):
+    """加锁读出、并入 upd、写回：几个进程分篇目同时截图（--stills s01 … 与 --stills s21 … 并行）时汇总不互相覆盖。返回合并后的内容。"""
+    import fcntl
+    f.parent.mkdir(parents=True, exist_ok=True)
+    with open(f.with_suffix('.lock'), 'w') as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        d = json.loads(f.read_text('utf-8')) if f.exists() else {}
+        d.update(upd)
+        write_json(f, dict(sorted(d.items())))
+        return d
 
 
 def split_pauses(p):
@@ -68,9 +82,19 @@ def split_pauses(p):
             t = M.switch_time(audio, it, s['en'], lo)
             gaps = list(zip([x[1] for x in it['parts']], [x[0] for x in it['parts'][1:]]))
             gap = next(((a, b) for a, b in gaps if a - 0.02 <= t <= b + 0.02), None)
+            c = M.SPLIT[p['id']][str(k)]
+            why = c.get('无停顿')                    # 分屏建议.py 只在停顿处切不开时才选没有停顿的词间（标明原因）；原因与音频不符就不放行
+            inside = it['start'] + 0.3 < t < it['end'] - 0.3
             out.append({'句': k, '屏': n + 1, '起': ' '.join(s['en'][lo:].split()[:4]), '换屏（句内秒）': round(t - it['start'], 2),
-                        '停顿': [round(gap[0] - it['start'], 2), round(gap[1] - it['start'], 2)] if gap else None})
-            if not gap or not it['start'] + 0.3 < t < it['end'] - 0.3:
+                        '停顿': [round(gap[0] - it['start'], 2), round(gap[1] - it['start'], 2)] if gap else None,
+                        **({'无停顿': why} if why else {}), **({'中文': '整句'} if c['zh'] == '整句' else {})})
+            if why and why not in ('句中没有停顿', '停顿处切不开'):
+                bad.append(f'第 {k} 句：分屏.json 的“无停顿”原因只能是 句中没有停顿 / 停顿处切不开：{why}')
+            elif why == '句中没有停顿' and len(it['parts']) > 1:
+                bad.append(f'第 {k} 句：分屏.json 写“句中没有停顿”，音频里其实有 {len(it["parts"]) - 1} 处停顿')
+            elif why == '停顿处切不开' and len(it['parts']) == 1:
+                bad.append(f'第 {k} 句：分屏.json 写“停顿处切不开”，音频里句中没有停顿（应写 句中没有停顿）')
+            elif not inside or not gap and not why:
                 bad.append(f'第 {k} 句第 {n + 1} 屏的换屏时刻 {t - it["start"]:.2f}s 不在音频的句中停顿里（停顿：'
                            + '，'.join(f'{a - it["start"]:.2f}–{b - it["start"]:.2f}s' for a, b in gaps) + '）')
     return out, bad
@@ -119,7 +143,7 @@ def stills(ids, force):
     report['_共同'] = {'画面': f'{LOOK} {M.LOOKS[LOOK]}', '字号设置': {k: M.SIZES[LOOK][k] for k in ('fs0', 'vs0', 'min_fs', 'min_vs', 'zh_k', 'hw_k')},
                      '问题': common, '时间': time.strftime('%Y-%m-%d %H:%M:%S')}
     (SHOTS / 'ref').mkdir(parents=True, exist_ok=True)
-    write_json(SHOTS / '汇总.json', report)
+    report = merge_json(SHOTS / '汇总.json', {'_共同': report['_共同']})
     stopped = None
     with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
@@ -173,7 +197,7 @@ def stills(ids, force):
                            '分屏换屏': pauses, '问题': probs, '指纹': fp, '截图': {x.name: M.file_hash(x) for x in pngs},
                            '总览': str(contact(d, pngs, [x and f'{x[0]}/{x[1]}' for x in sizes]).relative_to(ROOT)),
                            '用时（秒）': round(time.time() - t0), '时间': time.strftime('%Y-%m-%d %H:%M:%S')}
-            write_json(SHOTS / '汇总.json', report)
+            report = merge_json(SHOTS / '汇总.json', {pid: report[pid]})
             print(f'{pid}：{len(pngs)} 屏（分屏 {report[pid]["分屏"]}），英文 {min(fs)}–{max(fs)}px，词汇栏 {min(vs)}–{max(vs)}px，'
                   f'问题 {len(probs)} 处（{time.time() - t0:.0f} 秒）', flush=True)
             for x in probs:

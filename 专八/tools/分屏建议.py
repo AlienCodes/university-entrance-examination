@@ -13,11 +13,15 @@
    至少两个字）、英文里的数字和大写缩写，在译文里落在哪一屏，与英文那一屏一致的算对、不一致的算错；错得最少、其次对得最多、
    再其次中英文切分比例最接近的中文切法入选（正式方案仍要人按意思核对，split_parts 逐字核对是定稿译文的原样片段）。
    全部画面放得下、字号不低于下限的才算可行；候选按 刀数少 → 对齐错得少 → 各屏英文长度最均衡 排序。
+4. 停顿处一刀到三刀都切不开（句中根本没有停顿，或停顿处切开仍放不下）时才退一步：在没有停顿的词间切（与旧版六级相同，换屏落在下一屏第一个词之前的词间空隙），
+   只选句法上干净的地方（spaCy 依存分析：跨过切点的依存弧不超过 2 条，且都是主谓、介词短语、从句、并列等“松”的关系；冠词、修饰语、
+   复合名词、介词宾语等“紧”的关系一条也不许跨），方案里标 "无停顿": 原因（句中没有停顿 / 停顿处切不开），截图检查据此放行并逐条列出，留给审阅员看。
 输出：每句的候选（第二屏从哪几个词开始、中文切分、对齐、各画面字号、换屏时刻落在哪个停顿）。
 --out：把每句排第一的候选按 分屏.json 的格式写出（并保留现有方案里本来就合格的句子），人按意思核对后再并入 分屏.json，
 最后跑 样片.py / 大字版.py --stills 全查。
 """
 import bisect
+import itertools
 import json
 import re
 import sys
@@ -133,6 +137,29 @@ def pause_ok(audio, it, en, cut):
     return ok, round(t - it['start'], 2), gap and [round(gap[0] - it['start'], 2), round(gap[1] - it['start'], 2)]
 
 
+_NLP = []
+LOOSE = {'nsubj', 'nsubjpass', 'csubj', 'csubjpass', 'expl', 'prep', 'relcl', 'advcl', 'conj', 'cc', 'ccomp', 'acl', 'appos', 'mark',
+         'advmod', 'punct', 'dative', 'agent', 'xcomp', 'npadvmod', 'oprd', 'parataxis', 'dep', 'preconj', 'meta'}
+
+
+def word_cuts(en, s):
+    """没有停顿时退一步用的词间切点 {位置: 代价}：跨过切点的依存弧不超过 2 条，且都是“松”的关系（LOOSE，每条代价 1）；
+    冠词、修饰语、复合名词、介词与宾语、动词与宾语等“紧”的关系一条也不许跨。不切断生词，两头各留 12 个字符以上，下一屏从字母开头。"""
+    if not _NLP:
+        import spacy
+        _NLP.append(spacy.load('en_core_web_sm'))
+    doc = _NLP[0](en)
+    out = {}
+    for t in doc:
+        c = t.idx
+        if not (12 < c < len(en) - 12 and en[c - 1] == ' ' and en[c].isalpha()) or any(a < c < b for w in s['w'] for a, b in w['sp']):
+            continue
+        arcs = [x.dep_ for x in doc if x.head is not x and min(x.idx, x.head.idx) < c <= max(x.idx, x.head.idx)]
+        if len(arcs) <= 2 and all(d in LOOSE for d in arcs):
+            out[c] = len(arcs)
+    return out
+
+
 def at_of(en, c):
     """分屏点文字：从切点起的前几个词，在整句里唯一。"""
     ws = en[c:].split(' ')
@@ -184,41 +211,74 @@ def main():
                 cs = en_cuts(en, s)
                 pz = {c: pause_ok(audio, it, en, c) for c in cs}
                 cs = [c for c in cs if pz[c][0]]
-                good = []
-                for m in (1, 2, 3):
-                    if good:
-                        break                                        # 少刀可行就不试多刀
-                    trials = [list(x) for x in __import__('itertools').combinations(cs, m)]
-                    for cuts in trials:
-                        if any(b - a < 12 for a, b in zip([0] + cuts, cuts + [len(en)])):
-                            continue
-                        z = best_zh(s, cuts)
-                        if not z:
-                            continue
-                        zb = [0] + z[1] + [len(zh)]
-                        b = [0] + cuts + [len(en)]
-                        parts = [(b[x], b[x + 1], zh[zb[x]:zb[x + 1]], f' · PART {x + 1}/{len(b) - 1}') for x in range(len(b) - 1)]
-                        sizes, ok = {}, True
-                        for look in looks:
-                            M.set_style(look)
-                            st, o = fit_parts(pg, f, p, k, s, n, parts)
-                            sizes[look] = st
-                            ok = ok and o
-                            if not ok:
-                                break
-                        if ok:
-                            good.append({'cuts': cuts, 'at': [at_of(en, c) for c in cuts], 'zh': [x[2] for x in parts],
-                                         '对齐（错/对）': [z[0][0], -z[0][1]], '字号': sizes, '换屏（句内秒）': [pz[c][1] for c in cuts],
-                                         '停顿': [pz[c][2] for c in cuts], '_key': (z[0][0], max(y - x for x, y in zip(b, b[1:])), z[0][1])})
+
+                def search(pool, cost, need, zfull=False):
+                    """pool 里一刀到三刀的组合（need：组合里至少要有一刀属于它），按 对齐错 → 代价 → 最长一屏 → 对齐对 排序，逐个排版，最多试 12 个、找到 3 个可行的就停。"""
+                    found = []
+                    for m in (1, 2, 3):
+                        combos = []
+                        for cuts in itertools.combinations(sorted(pool), m):
+                            cuts = list(cuts)
+                            b = [0] + cuts + [len(en)]
+                            if any(y - x < 12 for x, y in zip(b, b[1:])) or (need and not set(cuts) & need):
+                                continue
+                            z = ((0, 0, 0), None) if zfull else best_zh(s, cuts)       # zfull：各屏都放整句译文（中文语序与英文对不上时）
+                            if z:
+                                combos.append(((z[0][0], sum(cost.get(c, 0) for c in cuts), max(y - x for x, y in zip(b, b[1:])), z[0][1]), cuts, z))
+                        combos.sort(key=lambda x: x[0])
+                        for key, cuts, z in combos[:12]:
+                            b = [0] + cuts + [len(en)]
+                            zb = [0] * len(b) if zfull else [0] + z[1] + [len(zh)]
+                            parts = [(b[x], b[x + 1], zh if zfull else zh[zb[x]:zb[x + 1]], f' · PART {x + 1}/{len(b) - 1}') for x in range(len(b) - 1)]
+                            sizes, ok = {}, True
+                            for look in looks:
+                                M.set_style(look)
+                                st, o = fit_parts(pg, f, p, k, s, n, parts)
+                                sizes[look] = st
+                                ok = ok and o
+                                if not ok:
+                                    break
+                            if ok:
+                                found.append({'cuts': cuts, 'at': [at_of(en, c) for c in cuts], 'zh': '整句' if zfull else [x[2] for x in parts],
+                                              '对齐（错/对）': [key[0], -z[0][1]], '字号': sizes, '换屏（句内秒）': [pz[c][1] for c in cuts],
+                                              '停顿': [pz[c][2] for c in cuts], '无停顿': [c for c in cuts if c not in cs] and why, '_key': key})
+                                if len(found) >= 3:
+                                    break
+                        if found:
+                            return found
+                    return found
+                why = '句中没有停顿' if len(it['parts']) == 1 else '停顿处切不开'
+                good = search(cs, {}, None)
+                if not good:                                 # 停顿处切不开：退一步在句法干净的词间切（标“无停顿”）
+                    wc = {c: v for c, v in word_cuts(en, s).items() if c not in cs}
+                    for c in wc:
+                        pz[c] = pause_ok(audio, it, en, c)
+                    wc = {c: v for c, v in wc.items() if pz[c][1] is not None and it['start'] + 0.3 < it['start'] + pz[c][1] < it['end'] - 0.3}
+                    good = search(set(cs) | set(wc), wc, set(wc))
+                full = []
+                if not good or good[0]['_key'][0] > 0:       # 中文语序与英文对不上（对齐有错）：另给“各屏放整句译文”的方案，供人选
+                    full = search(cs, {}, None, True)
+                    if not full:
+                        wc = {c: v for c, v in word_cuts(en, s).items() if c not in cs}
+                        for c in wc:
+                            pz.setdefault(c, pause_ok(audio, it, en, c))
+                        wc = {c: v for c, v in wc.items() if pz[c][1] is not None and it['start'] + 0.3 < it['start'] + pz[c][1] < it['end'] - 0.3}
+                        full = search(set(cs) | set(wc), wc, set(wc), True)
                 good.sort(key=lambda g: g['_key'])
                 res[f'{pid}:{k}'] = {'不合格': bad[k], '现在': cur[k], '英文': en, '中文': zh, '停顿处切点': len(cs),
-                                     '候选': [{x: y for x, y in g.items() if not x.startswith('_') and x != 'cuts'} for g in good[:4]]}
+                                     '候选': [{x: y for x, y in g.items() if not x.startswith('_') and x != 'cuts'} for g in good[:4]],
+                                     '整句译文候选': [{x: y for x, y in g.items() if not x.startswith('_') and x != 'cuts'} for g in full[:2]]}
+                for g in full[:2]:
+                    print('    整句译文：第二屏起', ' | '.join(f'“{a}”' for a in g['at']), ' 字号', g['字号'], f' 无停顿（{g["无停顿"]}）' if g['无停顿'] else '', flush=True)
                 print(f'  第 {k} 句（{len(en)} 字符）不合格：{bad[k]}；停顿处可切 {len(cs)} 处', flush=True)
                 for g in good[:4]:
                     print('    第二屏起：', ' | '.join(f'“{a}”' for a in g['at']), ' 对齐（错/对）', g['对齐（错/对）'], ' 字号', g['字号'],
+                          f' 无停顿（{g["无停顿"]}）' if g['无停顿'] else '',
                           ' 中文：', ' ‖ '.join(g['zh']), flush=True)
                 if good:
                     keep[str(k)] = {'at': good[0]['at'] if len(good[0]['at']) > 1 else good[0]['at'][0], 'zh': good[0]['zh']}
+                    if good[0]['无停顿']:
+                        keep[str(k)]['无停顿'] = good[0]['无停顿']
                 else:
                     print('    没有找到可行的切法（试过一刀到三刀）', flush=True)
             if keep:
