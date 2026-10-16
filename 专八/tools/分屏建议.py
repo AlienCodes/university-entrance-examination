@@ -1,7 +1,8 @@
 """分屏建议（不花 token 的那一半）：找出在任何一种画面里一屏放不下或字号低于下限的句子，并给出分屏点候选。
 
     /opt/ttsenv/bin/python 专八/tools/分屏建议.py t03 [--styles C,1,2,3,4,5,6]
-    /opt/ttsenv/bin/python 专八/tools/分屏建议.py --project 六级 [s01 s02 …] [--out 方案.json]     （六级：默认只看画面 3；不写篇目 = 全部）
+    /opt/ttsenv/bin/python 专八/tools/分屏建议.py --project 六级 [s01 s02 …] [--out 方案.json [--resume]]     （六级：默认只看画面 3；不写篇目 = 全部；
+                                                                                   每做完一篇写出一次，--resume 跳过已做完的篇目）
 
 做法：
 1. 按 分屏.json 现有方案，用生成视频的同一排版（各屏统一取最小字号，与 make_video.layout 相同）把每种画面的每一屏排一遍，
@@ -115,7 +116,11 @@ def load(pg, f, h, st=None):
 
 def fit_parts(pg, f, p, k, s, n, parts):
     """一种画面下，这句按 parts 分屏后的统一字号（取各屏最小，与 make_video.layout 相同）和是否都放得下、不低于下限。"""
-    got = [load(pg, f, M.sentence_slide(p, s, k, n, part)) for part in parts]
+    got = []
+    for part in parts:
+        got.append(load(pg, f, M.sentence_slide(p, s, k, n, part)))
+        if not got[-1][2] or got[-1][0] < M.MIN_FS or got[-1][1] < M.MIN_VS:      # 有一屏单独排都放不下：统一字号后只会更小，不用再排
+            return [min(g[0] for g in got), min(g[1] for g in got)], False
     st = [min(g[0] for g in got), min(g[1] for g in got)]
     ok = True
     if len(parts) > 1:
@@ -163,7 +168,7 @@ def word_cuts(en, s):
 def at_of(en, c):
     """分屏点文字：从切点起的前几个词，在整句里唯一。"""
     ws = en[c:].split(' ')
-    for n in range(4, len(ws) + 1):
+    for n in range(min(4, len(ws)), len(ws) + 1):
         at = ' '.join(ws[:n])
         if en.count(at) == 1:
             return at
@@ -184,7 +189,11 @@ def main():
     ids = ids or sorted(P)
     tms = json.loads((M.C4 / 'audio' / 'timings.json').read_text('utf-8'))[M.VOICE]
     from playwright.sync_api import sync_playwright
-    res, plan = {}, {}
+    res, plan, done = {}, {}, []
+    if out and '--resume' in argv and out.exists():
+        old = json.loads(out.read_text('utf-8'))
+        res, plan, done = old['results'], old['plan'], old.get('done', [])
+        ids = [x for x in ids if x not in done]
     with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
         pg = br.new_page(viewport={'width': M.W, 'height': M.H}, device_scale_factor=2)
@@ -203,6 +212,11 @@ def main():
                     cur.setdefault(k, {})[look] = st
                     if not ok:
                         bad.setdefault(k, []).append(f'{look}:{st[0]}/{st[1]}')
+            for k, c in M.SPLIT.get(pid, {}).items():        # 现有分屏的换屏点也必须在停顿处（或标了“无停顿”）：旧版六级有 6 处不在停顿处
+                parts = M.split_parts(pid, int(k), sents[int(k) - 1])
+                if int(k) not in bad and not c.get('无停顿') and not all(
+                        pause_ok(audio, tm['sentences'][int(k) - 1], sents[int(k) - 1]['en'], q[0])[0] for q in parts[1:]):
+                    bad[int(k)] = ['换屏不在停顿处']
             keep = {k: v for k, v in M.SPLIT.get(pid, {}).items() if int(k) not in bad}
             print(f'{pid}（画面 {",".join(looks)}，下限 {M.MIN_FS}/{M.MIN_VS}）：不合格 {sorted(bad)}；现有分屏合格 {sorted(keep, key=int)}', flush=True)
             for k in sorted(bad):
@@ -283,9 +297,12 @@ def main():
                     print('    没有找到可行的切法（试过一刀到三刀）', flush=True)
             if keep:
                 plan[pid] = dict(sorted(keep.items(), key=lambda x: int(x[0])))
+            done.append(pid)
+            if out:                                          # 每做完一篇就写出（中断后加 --resume 从断处接着做）
+                out.write_text(json.dumps({'results': res, 'plan': plan, 'done': done}, ensure_ascii=False, indent=1) + '\n', 'utf-8')
         br.close()
     if out:
-        out.write_text(json.dumps({'results': res, 'plan': plan}, ensure_ascii=False, indent=1) + '\n', 'utf-8')
+        out.write_text(json.dumps({'results': res, 'plan': plan, 'done': done}, ensure_ascii=False, indent=1) + '\n', 'utf-8')
         print('写出', out)
     else:
         print('\n详细结果（JSON）：')
