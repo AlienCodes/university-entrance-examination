@@ -7,7 +7,8 @@
 环境变量 ES_CHROMIUM 可以指定另一个 Chromium 程序。每次运行都会打印一行，说明用的是哪个浏览器。
 
 背景样式（--style，默认 C）：C = 四级设计方案 C（下面描述的默认画面）；1–6 = 中考设计的 6 种背景（晴空校园、手账笔记本、教室黑板、
-活页单词卡、紫黄撞色、柔彩插画），CSS 在 西班牙语/tools/样式/（索引 styles.json），字体在 西班牙语/tools/fonts/。
+活页单词卡、紫黄撞色、柔彩插画），由各项目共用的样式库 tools/video/themes/ 提供（基础样式 css/、字体 fonts/、截图前的检查 themes.py），
+西班牙语自己的调整在 西班牙语/tools/样式/（每种背景一份「西班牙语版调整」，追加在基础样式之后；索引 styles.json）。
 样式只换颜色、字体、装饰和片头，不改版面尺寸、时间轴、编码和核查；选了 1–6 时成品文件名末尾加「（背景 N 名称）」。
 预览图和每种样式的命令见 西班牙语/背景样式/README.md。样式 1–6 另有（C 的画面一个像素都不变）：
 - 封面：西语标题用样式自己的西文字体占整行（最多两行，放不下自动缩小，不小于 56px），下面左边中文标题 + 图例、右边插图
@@ -47,12 +48,14 @@ ROOT = ES.parent
 sys.path.insert(0, str(HERE))
 import c4  # noqa: E402
 C4V = c4.load('cet4_make_video', '四级/tools/make_video.py')      # 四级的设计 C（CSS、字体、自动缩放字号）
+TH = c4.load('themes', 'tools/video/themes/themes.py')            # 共用背景样式库 1–6（基础样式、字体、字形 / 出界 / 封面检查）
 
 W, H = C4V.W, C4V.H
 MIN_FS, MIN_VS = C4V.MIN_FS, C4V.MIN_VS
 LETTERS = re.compile(r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+")
 STYLE_DIR = HERE / '样式'
 STYLES = {s['key']: s for s in json.loads((STYLE_DIR / 'styles.json').read_text('utf-8'))['styles']}
+assert all(STYLES[k]['name'] == v['name'] for k, v in TH.THEMES.items()), '西班牙语 styles.json 与共用样式库 themes.json 的名称不一致'
 STYLE = 'C'                     # 当前背景样式（main() 按 --style 设置）
 
 CSS_ES = """
@@ -82,8 +85,7 @@ x-nb{white-space:nowrap}
 .ttl .sub{grid-column:1;grid-row:2;align-self:end;min-width:0}
 .ttl .legend{grid-column:1;grid-row:3;align-self:start;justify-self:start;position:static;transform:none;inset:auto}
 .ttl figure{grid-column:2;grid-row:2/4;align-self:center}
-.v b{margin-right:10px}.v i{margin-left:0!important;margin-right:10px}.v span{margin-left:0!important}
-"""   # 词条间距放在左边元素的右侧：释义折到第二行时行首不会多出一截缩进（踩坑 33）
+""" + TH.VOCAB_GAPS + '\n'   # 词条间距放在左边元素的右侧：释义折到第二行时行首不会多出一截缩进（踩坑 33；共用样式库的版式骨架）
 
 # 背景样式 1–6 截图前的三步（C 不跑）：徽章间距、封面标题字号、字形检查。
 GAP = 0.04       # 生词编号徽章与前一个字母笔画之间至少留 0.04 个字号的空隙（按字形实测右边距，踩坑 39：徽章贴字）
@@ -94,51 +96,8 @@ BADGE = """(gap) => { document.documentElement.style.setProperty('--fs', '64px')
     cv.font = `${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`; const m = cv.measureText(c), rsb = (m.width - m.actualBoundingBoxRight) / 100;
     const ls = (parseFloat(cs.letterSpacing) || 0) / fs;
     s.style.marginLeft = Math.max(0.04, (gap - rsb - ls) / ss).toFixed(3) + 'em'; } }"""
-# 封面：样式 1–6 的西语标题最多两行，放不下就逐步缩小字号（不小于 56px）；所有样式都核对封面各块不出界、不互相重叠、插图已加载
-COVER = """(shrink) => { const q = s => document.querySelector(s), t = q('.ttl'), h = q('.ttl h1');
-  const lh = () => { const c = getComputedStyle(h); return parseFloat(c.lineHeight) || parseFloat(c.fontSize) * 1.2; };
-  const lines = () => Math.round(h.getBoundingClientRect().height / lh());
-  const over = () => { const r = document.createRange(); r.selectNodeContents(h.querySelector('x-t') || h);      // 只量文字本身（荧光笔衬底可以略出边）
-    const a = r.getBoundingClientRect(), b = h.getBoundingClientRect();
-    return t.scrollHeight > t.clientHeight + 1 || a.right > b.right + 1 || a.left < b.left - 1; };
-  let fs = parseFloat(getComputedStyle(h).fontSize);
-  while (shrink && (lines() > 2 || over()) && fs > 56) { fs -= 2; h.style.fontSize = fs + 'px'; }
-  const names = ['.tag', 'h1', '.sub', 'figure', '.meta', '.legend'], bad = [];
-  const R = names.map(s => q(s) && q(s).getBoundingClientRect());
-  R.forEach((r, i) => { if (r && (r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight)) bad.push(names[i] + ' 出界'); });
-  for (let i = 0; i < R.length; i++) for (let j = i + 1; j < R.length; j++) { const a = R[i], b = R[j];
-    if (a && b && a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) bad.push(names[i] + ' 与 ' + names[j] + ' 重叠'); }
-  const img = q('.ttl figure img'); if (img && !(img.complete && img.naturalWidth)) bad.push('插图没有加载');
-  if (over()) bad.push('标题或封面内容溢出');
-  return [fs, lines(), bad]; }"""
-# 横向不出界：整块不断行（x-nb）以后，词条、释义、原文、译文的每一段都必须在所在栏的内边距以内
-HBOX = """() => { const bad = [];
-  for (const [box, sel] of [['#side', '#list'], ['.main', '#box']]) { const b = document.querySelector(box), c = getComputedStyle(b), r = b.getBoundingClientRect();
-    const L = r.left + b.clientLeft + parseFloat(c.paddingLeft) - 1, R = r.left + b.clientLeft + b.clientWidth - parseFloat(c.paddingRight) + 1;
-    const w = document.createTreeWalker(document.querySelector(sel), NodeFilter.SHOW_TEXT), g = document.createRange();
-    for (let n; (n = w.nextNode());) { g.selectNodeContents(n);      // 只量文字本身（荧光笔、徽章的衬底可以略出边）
-      for (const q of g.getClientRects()) if (q.width && (q.left < L || q.right > R)) { bad.push(n.data.slice(0, 20)); break; } } }
-  const a = document.querySelector('.top b').getBoundingClientRect(), t = document.querySelector('.top span').getBoundingClientRect();
-  if (a.right > t.left - 20 || t.right > innerWidth) bad.push('页眉标题太长，和 SPANISH READING 挤在一起或出界');
-  return bad; }"""
-# 字形检查：画面上每个字都必须由该元素 font-family 里列出的网页字体之一画出（不许落到系统字体，如西语重音字母、¿ ¡ 或生僻汉字）。
-# 方法：分别用两种字形明显不同的备用字体垫底画同一个字，像素完全相同 = 列出的字体自己有这个字。
-GLYPH = r"""async () => { const GEN = new Set(['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui']);
-  const LAT = ['EB Garamond', 'Inter', 'Noto Serif SC'], CJK = ['Noto Serif SC', 'Noto Sans SC', 'LXGW WenKai'];
-  const cv = document.createElement('canvas'); cv.width = cv.height = 160; const g = cv.getContext('2d', {willReadFrequently: true});
-  const draw = (font, ch) => { g.clearRect(0, 0, 160, 160); g.font = font; g.fillText(ch, 20, 120); return g.getImageData(0, 0, 160, 160).data; };
-  const same = (a, b) => { for (let i = 3; i < a.length; i += 4) if (a[i] !== b[i]) return false; return true; };
-  const bad = new Set(), seen = new Set(), w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  for (let n; (n = w.nextNode());) { const txt = n.data.replace(/\s/g, ''); if (!txt) continue;
-    const cs = getComputedStyle(n.parentElement), fams = cs.fontFamily.split(',').map(f => f.trim().replace(/^["']|["']$/g, '')).filter(f => !GEN.has(f));
-    const pre = `${cs.fontStyle} ${cs.fontWeight} 100px `;
-    for (const ch of new Set(txt)) { const key = pre + fams.join('|') + ch; if (seen.has(key)) continue; seen.add(key);
-      const cjk = /[\u2e80-\u9fff\uf900-\ufaff\uff00-\uffef\u3000-\u303f]/.test(ch); let ok = false;
-      for (const f of fams) { const fb = (cjk ? CJK : LAT).filter(x => x !== f).slice(0, 2);
-        await Promise.all([f, ...fb].map(x => document.fonts.load(`${pre}"${x}"`, ch)));
-        if (same(draw(`${pre}"${f}", "${fb[0]}"`, ch), draw(`${pre}"${f}", "${fb[1]}"`, ch))) { ok = true; break; } }
-      if (!ok) bad.add(`${ch}（${fams.join(', ')}）`); } }
-  return [...bad]; }"""
+# 封面（样式 1–6 缩小西语标题；所有样式都核对封面各块）、横向出界、字形检查：共用样式库 tools/video/themes/themes.py
+COVER, HBOX, GLYPH = TH.COVER, TH.HBOX, TH.GLYPH
 
 
 def esc(s):
@@ -149,8 +108,8 @@ def page(body):
     fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()
     extra = theme = ''
     if STYLE != 'C':            # 背景样式 1–6：样式字体 + 样式 CSS（追加在通用样式之后覆盖颜色、字体、装饰）
-        extra = f'<link rel="stylesheet" href="{(HERE / "fonts" / "fonts.css").as_uri()}">'
-        theme = f'<style>{(STYLE_DIR / STYLES[STYLE]["file"]).read_text("utf-8")}</style>'
+        extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}">'
+        theme = f'<style>{TH.css(STYLE, STYLE_DIR / STYLES[STYLE]["file"])}</style>'      # 共用基础样式 + 西班牙语版调整
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}'
             f'<style>{C4V.CSS}{CSS_ES}</style>{theme}{f"<style>{CSS_STYLED}</style>" if STYLE != "C" else ""}</head><body><div class="band"></div>{body}</body></html>')
 

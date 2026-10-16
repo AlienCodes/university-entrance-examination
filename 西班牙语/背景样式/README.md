@@ -53,9 +53,10 @@
 | 内容 | 位置 |
 |---|---|
 | 生成程序 | `西班牙语/tools/make_video.py`（`--style`） |
-| 样式表（每份末尾有「西班牙语版调整」） | `西班牙语/tools/样式/1_晴空校园.css` … `6_柔彩插画.css` |
+| 共用基础样式（各项目共用，原样来自中考设计库） | `tools/video/themes/css/1_晴空校园.css` … `6_柔彩插画.css`（索引 `themes.json`，截图前检查 `themes.py`） |
+| 西班牙语版调整（追加在基础样式之后） | `西班牙语/tools/样式/1_晴空校园.css` … `6_柔彩插画.css` |
 | 样式索引（编号、名称、字体、词汇栏字号） | `西班牙语/tools/样式/styles.json` |
-| 1–6 用到的网页字体（约 24 MB，均为 SIL Open Font License 1.1，许可证在各字体目录的 LICENSE） | `西班牙语/tools/fonts/`：Nunito、Fredoka、Baloo 2、思源黑体 Noto Sans SC、站酷快乐体 ZCOOL KuaiLe、霞鹜文楷 LXGW WenKai |
+| 1–6 用到的网页字体（约 24 MB，均为 SIL Open Font License 1.1，许可证在各字体目录的 LICENSE） | `tools/video/themes/fonts/`（各项目共用）：Nunito、Fredoka、Baloo 2、思源黑体 Noto Sans SC、站酷快乐体 ZCOOL KuaiLe、霞鹜文楷 LXGW WenKai |
 | C 用到的字体（EB Garamond、Inter、思源宋体） | `四级/tools/fonts/` |
 
 ## 文件大小

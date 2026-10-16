@@ -9,13 +9,17 @@
   直引号     英文和词条里不能有直撇号、直引号（踩坑 18）
   留白       词汇栏内容必须在卡片内边距以内；句子区不能溢出；字号不低于下限
   标题       片头标题必须在卡片内一行放下
-  人名断开   中文人名的间隔号“·”前后不能断行（专八旧版画面核查：理查德·帕克 在 · 处断行）
+  人名断开   中文人名的间隔号“·”前后不能断行（专八旧版画面核查：理查德·帕克 在 · 处断行）；专八另查登记的整名（专八/tools/人名.json）
+             不能拆到两行（t03 审阅：“理查 / 德·帕克”断在名字中间，只查间隔号两边漏掉了）
+  词条间距   词汇栏同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍（专八共用背景 2 的“backn.”）。只对专八开
+  字体回退   画面上每一段文字都只能用网页字体（设计字体）画，不许落到系统字体（t03 审阅：英文里的中文注释“(防水布)”落到了系统黑体
+             WenQuanYi Zen Hei）：用 Chrome 开发者协议 CSS.getPlatformFontsForNode 问浏览器每个元素实际用了哪些字体，非网页字体就报。只对专八开
   续接号     分屏的续接号“…”不能落到英文行首（专八旧版画面核查）
   徽章撇号   编号不能把高亮词和后面的所有格撇号隔开（专八旧版画面核查：drivers⑫’）。只对专八开（--project 专八、专八 make_video.py）：
              中考程序还没有这项修正，打开后中考已发布的 z04、z09、z10、z28 共 5 屏会报出（2026-10-16 实测），中考下次重做时移植 x-ps 再打开
 
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py z01 z02 …     （不写篇目 = 全部）
-    /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --project 专八 t03 …     （专八；默认 中考）
+    /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --project 专八 [--style 1] t03 …     （专八；默认 中考；--style 选画面 C、1–6，默认 C）
     /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --module <旧版 make_video.py> z01 …   （用旧版程序排版，检验本检查能查出旧版的毛病）
 有问题退出码非 0。
 半宽字形：专八译文字体霞鹜文楷的弯引号“”‘’是半宽（0.44/0.33 字），没有半字空白可去；行首缩进、过度挤压只对全角字形（宽 > 0.75 字）按半字计。
@@ -29,7 +33,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 R = HERE.parents[2]
 
-CHECK = r"""([minFs, minVs, poss]) => {
+CHECK = r"""([minFs, minVs, poss, names, gaps]) => { names = names || [];
   const ZC='，。、：；！？）”’】」》', ZO='（“‘【「《', PUN=ZC+ZO+'…—·', out=[];
   const cjk = c => /[一-鿿]/.test(c);
   const chars = el => { const res=[], w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
@@ -73,6 +77,9 @@ CHECK = r"""([minFs, minVs, poss]) => {
       if (name === '英文' && i > 0 && f.c === '…') out.push(`续接号：英文第 ${i + 1} 行以续接号「…」开头`);
       if (name !== '英文' && i > 0 && (f.c === '·' || L[i - 1][L[i - 1].length - 1].c === '·'))
         out.push(`人名断开：${name}「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」在间隔号处断行`);
+      if (name !== '英文' && i > 0) { const s = txt(L[i - 1]) + txt(ln), cut = txt(L[i - 1]).length;      // 登记的整名跨两行（理查 / 德·帕克）
+        for (const nm of names) for (let j = s.indexOf(nm); j >= 0; j = s.indexOf(nm, j + 1))
+          if (j < cut && j + nm.length > cut) out.push(`人名断开：${name}「${nm}」被拆到两行（${s.slice(j, cut)}／${s.slice(cut, j + nm.length)}）`); }
       if (name === '译文' && i > 0) { const a = L[i - 1][L[i - 1].length - 1], an = /[A-Za-z0-9]/, h = cjk;            // z14 “所说的Z / 世代。”
         if ((an.test(a.c) && h(f.c)) || (h(a.c) && an.test(f.c))) out.push(`中英断开：译文「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」英文与紧挨的汉字分在两行`); }
       if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
@@ -110,6 +117,16 @@ CHECK = r"""([minFs, minVs, poss]) => {
     if (rs.length > 1) for (const e of [d.querySelector('i'), g].filter(Boolean)) { const r = e.getClientRects()[0];
       if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
+  // 词条间距（专八共用背景 2：样式里的 .v b{margin:0 -.08em} 把词条与词性之间的间距吃掉，成了“backn.”）：同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍
+  if (gaps) { const vs0 = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vs'));
+    const end = (el, last) => { const cs = chars(el).filter(x => x.c.trim()); return cs.length ? cs[last ? cs.length - 1 : 0] : null; };
+    const box = x => { const g = document.createRange(); g.setStart(x.n, x.i); g.setEnd(x.n, x.i + 1); const rs = g.getClientRects(); return rs[rs.length - 1]; };
+    document.querySelectorAll('.v > div').forEach((d, i) => { const els = [d.querySelector('b'), d.querySelector('i'), d.querySelector('span[lang]')].filter(Boolean);
+      for (let j = 1; j < els.length; j++) { const p = end(els[j - 1], true), q = end(els[j], false); if (!p || !q) continue;
+        const a = box(p), b = box(q), same = Math.abs((a.top + a.bottom) / 2 - (b.top + b.bottom) / 2) < 0.4 * Math.max(a.height, b.height);
+        const gap = b.left + (ZO.includes(q.c) ? em(q.el) / 2 : 0) - a.right;      // 释义开头的左括号按设计去掉了左半字空白（墨迹在右半），从墨迹量
+        if (same && gap < vs0 * 0.15)
+          out.push(`词条间距：词条 ${i + 1}「${els[j - 1].textContent.slice(-10)}」与「${els[j].textContent.slice(0, 6)}」只隔 ${gap.toFixed(1)} 像素`); } }); }
   // 徽章贴字（z16 cricket¹、breakfast² 等：f、t、r 的笔画伸出字身碰到徽章）：前一个字母的笔画右边缘到徽章至少 1.2 像素（审阅员认可 1.2 像素以上的间距）
   // 按词尾整个词量（专八 EB Garamond 的 ff 是连字，连字里第二个 f 的位置浏览器按平分估算，单按最后一个字母量会多算 1.7 像素，off、staff 误报只隔 0.1 像素）：
   // 墨迹右边缘 = 这个词的排版右边缘 − 字间距 − 这个词（含连字、字偶距）的右侧空白；没有连字时与只量最后一个字母完全相同
@@ -165,10 +182,38 @@ def ok_break(g, k):
     return k in pos
 
 
-def problems(pg, min_fs, min_vs, poss=False):
-    """当前页面（已排版）的排版问题列表；make_video.py 每屏截图前调用，有问题就不生成视频。poss：是否查“徽章撇号”（专八 True）。"""
-    res = []
-    for x in pg.evaluate(CHECK, [min_fs, min_vs, poss]):
+def font_fallback(pg):
+    """字体回退：问浏览器（Chrome 开发者协议 CSS.getPlatformFontsForNode）页面上每个直接含文字的元素、每个带文字的伪元素实际用了哪些字体，
+    只要有一个不是网页字体（isCustomFont 为假，即系统字体），就报出字体名和那段文字。"""
+    cdp = pg.context.new_cdp_session(pg)
+    try:
+        cdp.send('DOM.enable')
+        cdp.send('CSS.enable')
+        doc = cdp.send('DOM.getDocument', {'depth': -1, 'pierce': True})
+        bad, todo = {}, [doc['root']]
+        while todo:
+            n = todo.pop()
+            kids = n.get('children', [])
+            txt = ''.join(c.get('nodeValue', '') for c in kids if c['nodeType'] == 3).strip()
+            for x in ([n] if n['nodeType'] == 1 and txt else []) + n.get('pseudoElements', []):
+                try:
+                    fs = cdp.send('CSS.getPlatformFontsForNode', {'nodeId': x['nodeId']})['fonts']
+                except Exception:      # noqa: BLE001  没有排版框的节点（如 ::marker）
+                    continue
+                for ft in fs:
+                    if not ft.get('isCustomFont'):
+                        bad.setdefault(ft['familyName'], txt[:16] if x is n else f'::{x.get("pseudoType")}')
+            todo += kids
+    finally:
+        cdp.detach()
+    return [f'字体回退：「{t}」用了系统字体 {fam}（只能用网页字体）' for fam, t in bad.items()]
+
+
+def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False):
+    """当前页面（已排版）的排版问题列表；make_video.py 每屏截图前调用，有问题就不生成视频。
+    poss：是否查“徽章撇号”；names：登记的中文整名（查是否被拆到两行）；fonts：是否查字体回退；gaps：是否查词条间距（这几项专八开，中考不变）。"""
+    res = font_fallback(pg) if fonts else []
+    for x in pg.evaluate(CHECK, [min_fs, min_vs, poss, list(names), gaps]):
         if isinstance(x, list):          # 释义在标点以外的地方断行：只有超过 9 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
             _, name, g, k = x
             if not ok_break(g, k):
@@ -186,6 +231,21 @@ def screens(M, p):
         for n, part in enumerate(parts, 1):
             out.append((f'第 {k} 句' + (f' 第 {n} 屏' if len(parts) > 1 else ''), M.sentence_slide(p, s, k, len(sents), part), True))
     return out
+
+
+def laid_out(M, pg, p, f):
+    """逐屏排版（与生成视频完全相同），每排好一屏 yield (标签, 是否句子屏)：程序有 layout（专八：分屏的句子各屏统一字号）就用它，否则逐屏 FIT（中考，不变）。"""
+    if hasattr(M, 'layout'):
+        for _, label, fit, _ in M.layout(pg, p, f):
+            yield label, fit
+        return
+    for label, h, fit in screens(M, p):
+        f.write_text(h, 'utf-8')
+        pg.goto(f.as_uri())
+        pg.evaluate('document.fonts.ready')
+        if fit:
+            pg.evaluate(M.FIT)
+        yield label, fit
 
 
 def project(argv):
@@ -210,6 +270,13 @@ def main():
         argv = argv[:j] + argv[j + 2:]
     else:
         import make_video as M
+    if '--style' in argv:                 # 专八：画面 C、1–6
+        j = argv.index('--style')
+        M.set_style(argv[j + 1])
+        argv = argv[:j] + argv[j + 2:]
+    elif hasattr(M, 'set_style'):
+        M.set_style('C')
+    NAMES = json.loads((T / '人名.json').read_text('utf-8'))['names'] if (T / '人名.json').exists() else []      # 专八登记的中文整名（中考没有）
     from playwright.sync_api import sync_playwright
     P = {p['id']: p for p in json.loads((R / proj / 'data' / 'vocab.json').read_text('utf-8'))['passages'] if p.get('done', True)}
     bad = {}
@@ -219,13 +286,8 @@ def main():
         f = Path(td) / 'x.html'
         for pid in (argv or sorted(P)):
             probs = []
-            for label, h, fit in screens(M, P[pid]):
-                f.write_text(h, 'utf-8')
-                pg.goto(f.as_uri())
-                pg.evaluate('document.fonts.ready')
-                if fit:
-                    pg.evaluate(M.FIT)
-                probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS, poss=proj == '专八')]
+            for label, fit in laid_out(M, pg, P[pid], f):
+                probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS, poss=proj == '专八', names=NAMES, fonts=proj == '专八', gaps=proj == '专八')]
             bad[pid] = probs
             print(pid, 'OK' if not probs else f'{len(probs)} 处：\n  ' + '\n  '.join(probs), flush=True)
         br.close()

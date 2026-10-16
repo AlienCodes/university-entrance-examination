@@ -2,11 +2,16 @@
 由中考 make_video.py（最新、含踩坑 33—41 全部排版修正）复制，只改专八的路径、标题文字、文件名和样式；
 旧版（2026-10-10 起用来生成已发布的 t01—t10）原样保存在 make_video_旧版.py，可随时回退。
 
-    /opt/ttsenv/bin/python 专八/tools/make_video.py t03 [--scale 2]
+    /opt/ttsenv/bin/python 专八/tools/make_video.py t03 [--scale 2] [--style C|1–6]
+    样片（7 种画面）一律用 专八/tools/样片.py（先截图、程序全查、审阅登记，再生成视频）。
 
-画面：专八「书卷水墨」样式（样式.css + fonts/，英文 EB Garamond、译文霞鹜文楷、释义思源宋体），版面尺寸与旧版相同，
-字号起点与中考相同（英文 64px、词汇栏 40px，放不下自动缩小），下限 MIN_FS/MIN_VS 按中考 40 篇实测定（见下）：
-一屏放不下或字号低于下限就必须在 分屏.json 里拆屏（用户要求：不硬挤），换屏时刻落在第二屏第一个词之前的词间空隙。
+画面（--style，默认 C）：C = 专八「书卷水墨」（样式.css + fonts/，英文 EB Garamond、译文霞鹜文楷、释义思源宋体）；
+1–6 = 共用背景样式库 tools/video/themes/ 的 6 种背景（晴空校园、手账笔记本、教室黑板、活页单词卡、紫黄撞色、柔彩插画），
+专八自己的调整在 样式/<同名>.css。版面尺寸与旧版相同。
+字号（用户 2026-10-16：专八的字要放大到“跟中考差不多大”）：每种画面的起始字号与下限在 字号.json（字号标定.py 实测生成）：
+按实际用的字体量 x 高度（英文、词条）和中文字面大小，使每类文字在视觉上不小于中考的典型屏（英文 Nunito 64px、译文思源黑体 43.5px、
+词汇栏 40px），也不小于这种画面原来的设计大小；放不下自动缩小，低于下限就必须在 分屏.json 里拆屏（用户要求：不硬挤），
+换屏时刻落在第二屏第一个词之前的词间空隙；分屏的句子各屏统一用其中最小的字号（layout）。
 时间轴、编码和成品核查与中考完全相同（片头静音 1.5 秒、句间 0.8 秒、读完后停留 0.5 秒再切换、结尾静音 ≥ 2 秒、
 恒定 30 帧逐屏编码后无损拼接），生成后运行高考 verify_videos.check 全部核查，任何一项不通过就删除成品。
 排版机械检查（layoutcheck）与“先审截图后生成视频”的登记（screens_fp）和中考共用 中考/tools/画面核查/，加 --project 专八。
@@ -29,12 +34,16 @@ sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音�
 QA = ROOT / '中考' / 'tools' / '画面核查'          # 排版机械检查、截图审阅登记与中考共用（--project 专八）
 VOICE = 'cet4_male'               # 四六级男声（与旧版专八相同；CLAUDE.md 铁律 8）
 W, H = 1920, 1080
-# 字号（1080p 基准，4K 下翻倍）：起点与中考相同（英文 64px、词汇栏 40px），放不下自动缩小；低于下限就必须分屏，不硬挤。
-# 下限按中考 40 篇 817 屏实测（2026-10-16）：英文 817 屏全部 64px；词汇栏中位数 40px，95% 的屏 ≥ 34px。
-# 专八取英文 64px（一屏放不下就分屏，英文从不缩小）、词汇栏 34px。旧版下限是 48/22，起点 64/30。
-FS0, VS0 = 64, 40
-MIN_FS, MIN_VS = 64, 34
+sys.path.insert(1, str(ROOT / 'tools' / 'video' / 'themes'))
+import themes as TH  # noqa: E402  共用背景样式库 1–6（基础样式、字体、字形 / 出界 / 封面检查），与西班牙语共用
+LOOKS = {'C': '书卷水墨', **{k: v['name'] for k, v in TH.THEMES.items()}}      # 画面：C = 专八自己的样式，1–6 = 共用背景
+STYLE = 'C'
+# 字号（1080p 基准，4K 下翻倍）：每种画面的起始字号、下限、译文与词条相对字号都在 字号.json（字号标定.py 按实际字体实测生成，见文件开头说明）。
+# 旧版（已发布的 t01—t10）：起点 64/30，下限 48/22；中考：起点 64/40，40 篇 817 屏英文全部 64px、词汇栏中位数 40px、95% 的屏 ≥ 34px。
+SIZES = json.loads((HERE / '字号.json').read_text('utf-8'))['looks']
+FS0 = VS0 = MIN_FS = MIN_VS = None          # set_style() 按 字号.json 设置
 SPLIT = {k: v for k, v in json.loads((HERE / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}
+NAMES = json.loads((HERE / '人名.json').read_text('utf-8'))['names']        # 中文音译人名（整名不断行，见 name_spans）
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -45,7 +54,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#fbf9f4;color:#1
 .top span{color:#6b746f;font-size:24px}
 .main{position:absolute;left:110px;top:140px;bottom:96px;width:1070px;display:flex;align-items:center}
 #box{width:100%}
-.en{font-family:'EB Garamond',serif;font-size:var(--fs);line-height:1.5}
+.en{font-family:'EB Garamond','Noto Serif SC',serif;font-size:var(--fs);line-height:1.5}
 .w{font-weight:600;color:#1f5c4a}.ph{font-weight:600;color:#a14a2a}
 sup{font-family:'Inter';font-size:calc(var(--fs)*.36);font-weight:700;color:#fff;background:#1f5c4a;border-radius:1em;padding:.05em .45em;margin-left:.12em;vertical-align:.95em;line-height:1}
 .ph sup{background:#a14a2a}
@@ -134,12 +143,14 @@ def words(s, out):
     import logging
     import jieba
     jieba.setLogLevel(logging.WARNING)
-    toks = []
+    toks, names, pos = [], name_spans(s), 0
     for w in jieba.cut(s):                           # 专八：人名间隔号与前后的词合成一块（t04 “温思罗普· / 凯洛格”在间隔号处断行）
-        if toks and (w.startswith('·') or toks[-1].endswith('·')):
+        inside = any(a < pos < b for a, b in names)  # 登记的整名（人名.json）不在名字中间断开：分词切在名字里面时并到前一块
+        if toks and (w.startswith('·') or toks[-1].endswith('·') or inside):
             toks[-1] += w
         else:
             toks.append(w)
+        pos += len(w)
     t = len(toks)                                    # 末尾至少两个字（不算标点）整体不断行，免得最后一行只剩一个字（z35 截图审阅）
     while t > 0 and sum(c.isalnum() for c in ''.join(toks[t:])) < 2:
         t -= 1
@@ -197,6 +208,7 @@ def zh_html(s, gloss=False):
     groups = [(m.start() - (m.start() > 0 and ish(s[m.start() - 1])), m.end() + (m.end() < len(s) and ish(s[m.end()])))
               for m in re.finditer(r'[A-Za-z0-9]+', s)]          # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与紧挨的汉字绑在一起
     groups += [(i - 1, i + 2) for i, c in enumerate(s) if c == '·' and 0 < i < len(s) - 1]      # 人名间隔号与前后各一个字不断开
+    groups += name_spans(s)                                         # 登记的整名不断开（t03 审阅：“理查 / 德·帕克”）
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
         k = han[-2]
@@ -216,12 +228,69 @@ def zh_html(s, gloss=False):
     return ''.join(res + out[pos:])
 
 
+def look_files(look=None):
+    """决定这种画面样子的样式文件（指纹用）：C = 样式.css + 专八字体；1–6 = 共用基础样式 + 专八调整 + 共用字体。"""
+    look = look or STYLE
+    if look == 'C':
+        return [THEME, *sorted(p for p in (HERE / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css')]
+    return [*TH.files(look), HERE / '样式' / TH.THEMES[look]['file']]
+
+
+def size_css(look=None):
+    """字号.json 里这种画面的译文、词条相对字号（追加在所有样式之后；字号标定.py 量字体时先去掉这一段 #sizes）。"""
+    z = SIZES[look or STYLE]
+    return f'<style id="sizes">.zh{{font-size:calc(var(--fs)*{z["zh_k"]})}}.v b{{font-size:calc(var(--vs)*{z["hw_k"]})}}</style>'
+
+
+# 共用背景的 .v span{margin-left:8px/10px}（样式 4、6）也会套到释义里标点挤压用的 span 上，行首左括号的去半字（.pl）被顶掉，
+# 释义行首“（航海用语）”比上下行多缩进（layoutcheck 行首缩进）：释义里套着的 span 外边距归零，.pl 恢复去左半字
+GLOSS_PUNCT = '.v div>span span{margin-left:0}.v div>span .pl{margin-left:-.5em}'
+
+
 def page(body):
-    fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()      # 字体与四级共用
-    extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">' if THEME_FONTS.exists() else ''
-    theme = f'<style>{THEME.read_text("utf-8")}</style>' if THEME.exists() else ''
-    return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}</head>'
+    """英文里试卷的中文注释（如 “(防水布)”）用样式自己的中文字体画（C：.en 字体表里的思源宋体；1–6：各样式 .en 的中文字体，4 由 样式/4_活页单词卡.css 补上）：
+    t03 审阅发现 “(防水布)(用压条固定)(船舷边缘)(反复猛击)” 落到了系统黑体（WenQuanYi Zen Hei），layoutcheck 的“字体回退”逐屏查。"""
+    fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()      # 字体与四级共用（EB Garamond、Inter、思源宋体）
+    if STYLE == 'C':
+        extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">'
+        theme = f'<style>{THEME.read_text("utf-8")}</style>'
+    else:                       # 共用背景：共用字体 + 共用基础样式 + 共用版式骨架（词条间距）+ 专八调整（追加在后面覆盖）
+        extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}">'
+        theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
+    return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}{size_css()}</head>'
             f'<body><div class="band"></div>{body}</body></html>')
+
+
+def set_style(look):
+    """切换画面（C、1–6）：起始字号、下限、FIT 都按 字号.json 里这种画面的设置。"""
+    global STYLE, FS0, VS0, MIN_FS, MIN_VS, FIT
+    if look not in LOOKS:
+        raise SystemExit(f'--style 只能是 {"、".join(LOOKS)}：{look}')
+    STYLE = look
+    z = SIZES[look]
+    FS0, VS0, MIN_FS, MIN_VS = z['fs0'], z['vs0'], z['min_fs'], z['min_vs']
+    FIT = FIT_JS.replace('FS0', str(FS0)).replace('VS0', str(VS0))
+
+
+def name_spans(s):
+    """中文音译人名（人名.json）在 s 里的位置：整名不断行（t03 审阅：“理查 / 德·帕克”在名字中间断行，旧检查只管间隔号两边）。"""
+    out = []
+    for n in NAMES:
+        out += [(m.start(), m.end()) for m in re.finditer(re.escape(n), s)]
+    return out
+
+
+def check_names(p):
+    """中文里每个人名间隔号“·”都必须属于 人名.json 里登记的整名（新篇目出现新人名就报错，登记后才生成：不静默漏掉）。"""
+    bad = []
+    for k, s in enumerate((s for pa in p['paras'] for s in pa), 1):
+        for txt in [s['zh']] + [w['m'] for w in s['w']]:
+            cov = name_spans(txt)
+            for m in re.finditer(r'(?<=[\u4e00-\u9fff])·(?=[\u4e00-\u9fff])', txt):
+                if not any(a <= m.start() < b for a, b in cov):
+                    bad.append(f'第 {k} 句「{txt[max(0, m.start() - 5):m.start() + 6]}」')
+    if bad:
+        raise SystemExit(f'{p["id"]} 有没登记的中文人名（专八/tools/人名.json 登记整名后再生成）：' + '；'.join(bad))
 
 
 def ordered(s):
@@ -273,7 +342,8 @@ def vocab_html(s, lo=0, hi=None):
         m = POS.match(w['m'])
         pos, mean = (m.group(1), m.group(2)) if m else ('', w['m'])
         # 词条的直撇号改弯撇号（与句子一致，踩坑 18）；<wbr>：词性、释义前一定能换行（z09 “Bluetooth-connected adj.”整体不断行，伸进了词汇栏右边留白）
-        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{cap_i(nobr(esc(w["h"].replace(chr(39), "’"))))}</b>'
+        # 分开的短语词条里的三个点（pull...through）显示成省略号“…”（t03 审阅；只改显示，数据不动）
+        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{cap_i(nobr(esc(w["h"].replace(chr(39), "’").replace("...", "…"))))}</b>'
                    f'{f"<wbr><i>{pos}</i>" if pos else ""}<wbr><span class="g" lang="zh-CN">{zh_html(mean, gloss=True)}</span></div></div>')
     return ''.join(out)
 
@@ -337,7 +407,7 @@ def sentence_slide(p, s, k, n, part=None):
 # 之后把落在行首的左半空白标点（zh_html 标的 .po）去掉左半空白，与上下行的字对齐，并在它前面固定换行
 # （样片 z10 画面核查：去掉半字后括号变窄，整块被挤回上一行行末，成了行中的“花（时间）”过度挤压）；
 # 词条一行放不下时（z03 “with the development of”被拆成“…development / of 随着……”），在最均衡的词间断开，释义另起一行（hw，每次量词汇栏前重排）
-FIT = """() => { const r=document.documentElement.style, main=document.querySelector('.main'), box=document.getElementById('box'),
+FIT_JS = """(st) => { const r=document.documentElement.style, main=document.querySelector('.main'), box=document.getElementById('box'),
   side=document.getElementById('side'), list=document.getElementById('list');
   const hw = () => { for (const x of document.querySelectorAll('br.hw')) x.remove();
     for (const b of document.querySelectorAll('.v b')) { if (b.dataset.h === undefined) b.dataset.h = b.innerHTML; else b.innerHTML = b.dataset.h;
@@ -348,7 +418,7 @@ FIT = """() => { const r=document.documentElement.style, main=document.querySele
       b.innerHTML = best ? best[1] : b.dataset.h; const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
   const sideFits = () => { hw(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
-  let fs=FS0, vs=VS0; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px');
+  let fs=st ? st[0] : FS0, vs=st ? st[1] : VS0; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px');
   const cv = document.createElement('canvas').getContext('2d');
   for (const s of document.querySelectorAll('.en sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
     if (!n || !n.data) continue; const c = n.data.trim().slice(-1); if (!c) continue; const cs = getComputedStyle(n.parentElement);
@@ -362,7 +432,61 @@ FIT = """() => { const r=document.documentElement.style, main=document.querySele
   while (!sideFits() && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
   for (const e of document.querySelectorAll('.po')) { const k=e.closest('.zh, .v > div'), b=k.getBoundingClientRect();
     if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl'; e.before(document.createElement('br')); } }
-  return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }""".replace('FS0', str(FS0)).replace('VS0', str(VS0))
+  return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""      # st = [英文, 词汇栏] 起始字号（分屏的句子统一字号用，见 layout）；不给就从 FS0/VS0 开始
+FIT = None          # set_style() 按画面填入起始字号
+set_style('C')      # 默认画面 C（书卷水墨）
+
+
+def screens(p):
+    """全部屏：[(标签, HTML, 是否句子屏, 句号 k 或 0)]（片头 k = 0）。"""
+    sents = [s for pa in p['paras'] for s in pa]
+    out = [('片头', title_slide(p), False, 0)]
+    for k, s in enumerate(sents, 1):
+        parts = split_parts(p['id'], k, s)
+        for n, part in enumerate(parts, 1):
+            out.append((f'第 {k} 句' + (f' 第 {n} 屏' if len(parts) > 1 else ''), sentence_slide(p, s, k, len(sents), part), True, k))
+    return out
+
+
+def layout(pg, p, f):
+    """逐屏排版（生成视频、截图、排版检查都用这一个函数，保证三者完全相同）：依次 yield (屏号, 标签, 是否句子屏, (英文, 词汇栏, 放得下))，
+    yield 时页面已排好、可以检查和截图。分屏的句子（t03 审阅：s20 第一屏词汇 40px、第二屏 35px，字号忽大忽小）各屏统一用其中最小的
+    英文字号和词汇栏字号：先各自适配，取最小值，再全部从这个字号开始重排，直到各屏一致。f = 临时 HTML 文件。"""
+    scr = screens(p)
+
+    def load(h, st=None):
+        f.write_text(h, 'utf-8')
+        pg.goto(f.as_uri())
+        pg.evaluate('document.fonts.ready')
+        pg.wait_for_timeout(150)
+        return tuple(pg.evaluate(FIT, st))
+
+    start = {}
+    for k in sorted({x[3] for x in scr if x[3] and sum(y[3] == x[3] for y in scr) > 1}):
+        idx = [i for i, x in enumerate(scr) if x[3] == k]
+        st = None
+        for _ in range(4):
+            got = [load(scr[i][1], st) for i in idx]
+            want = [min(g[0] for g in got), min(g[1] for g in got)]
+            if all(g[:2] == tuple(want) for g in got):
+                break
+            st = want
+        else:
+            raise SystemExit(f'{p["id"]} 第 {k} 句各屏的字号统一不了：{got}')
+        for i in idx:
+            start[i] = list(got[0][:2])
+    for i, (label, h, fit, k) in enumerate(scr):
+        if not fit:
+            f.write_text(h, 'utf-8')
+            pg.goto(f.as_uri())
+            pg.evaluate('document.fonts.ready')
+            pg.wait_for_timeout(150)
+            yield i, label, False, None
+            continue
+        r = load(h, start.get(i))
+        if i in start and list(r[:2]) != start[i]:
+            raise SystemExit(f'{p["id"]} {label} 字号 {r[:2]} 与同一句其他屏 {start[i]} 不一致')
+        yield i, label, True, r
 
 
 def switch_time(audio, it, en, cut):
@@ -437,9 +561,103 @@ def buzz_check(mp4, times):
     return ('无电磁音', not e, f'最强 {f0} Hz {r:+.1f} dB（上限 {D.MAX_DB:+.1f}）')
 
 
-def video_name(p):
+def video_name(p, look=None):
+    """成品文件名；look（样片）在末尾加「（画面名称）」，如 2025年 Passage Three 与虎同舟熬过海上风暴（晴空校园）.mp4。"""
     title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
-    return f"{p['paper']} {p['passage']} {title}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
+    tag = f'（{LOOKS[look]}）' if look else ''
+    return f"{p['paper']} {p['passage']} {title}{tag}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
+
+
+SAMPLE_REG = HERE / '画面核查' / '样片审阅通过.json'      # 样片截图审阅登记（样片.py --approve 写入）
+
+
+def fingerprint(pid, look):
+    """样片截图审阅的指纹：生成程序、排版检查程序、这种画面的样式与字体、字号表、人名表、该篇分屏方案与定稿数据；任何一样改了，截图就要重审。"""
+    import hashlib
+    h = hashlib.sha256()
+    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', HERE / '字号.json', HERE / '人名.json',
+              ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css', *look_files(look)]:
+        h.update(str(Path(x).relative_to(ROOT)).encode())
+        h.update(Path(x).read_bytes())
+    P = {p['id']: p for p in json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
+    h.update(json.dumps([look, P[pid], SPLIT.get(pid, {})], ensure_ascii=False, sort_keys=True).encode())
+    return h.hexdigest()[:16]
+
+
+def file_hash(f):
+    import hashlib
+    return hashlib.sha256(Path(f).read_bytes()).hexdigest()[:16]
+
+
+def small(png):
+    """4K 截图缩成 1920×1080（2×2 平均）：样片审阅用的截图和生成视频时的比对用同一种缩法。"""
+    from PIL import Image
+    im = Image.open(png).convert('RGB')
+    return im.resize((W, H), Image.BOX) if im.size != (W, H) else im
+
+
+def same_still(a, b):
+    """两张 1920×1080 截图是否同一画面：浏览器光栅化有随机抖动（同一页面重复截图，个别像素差 6—9 级，西班牙语 es01 实测），
+    所以允许最多 64 个像素、每个最多差 24 级；换行、换字、字号变化都远超这个范围。返回 (是否相同, 差异像素数, 最大差)。"""
+    import numpy as np
+    x, y = np.asarray(a, np.int16), np.asarray(b, np.int16)
+    if x.shape != y.shape:
+        return False, -1, -1
+    d = np.abs(x - y).max(axis=2)
+    n, m = int((d > 0).sum()), int(d.max())
+    return n <= 64 and m <= 24, n, m
+
+
+def screen_checks(pg, label, fit, r):
+    """一屏排好之后的全部程序检查（生成视频和 样片.py 截图用同一套）：字号下限与放得下、排版机械检查（含整名、字体回退、徽章撇号、词条间距）、
+    字体加载失败、字形（每个字都由样式字体画出）、句子屏横向不出界、封面各块不出界不重叠。返回问题列表。"""
+    out = []
+    if fit:
+        fs, vs, fits = r
+        if not fits or fs < MIN_FS or vs < MIN_VS:     # 放不下或字太小：必须分屏，不硬挤
+            out.append(f'一屏放不下或字太小（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：在 专八/tools/分屏.json 里拆屏')
+    out += LC.problems(pg, MIN_FS, MIN_VS, poss=True, names=NAMES, fonts=True, gaps=True)
+    out += [f'字体加载失败：{x}' for x in pg.evaluate("() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family)")]
+    out += [f'字形：{x} 不在样式字体里' for x in pg.evaluate(TH.GLYPH)]
+    if fit:
+        out += [f'横向出界：{x}' for x in pg.evaluate(TH.HBOX)]
+    else:
+        out += [f'封面：{x}' for x in pg.evaluate(TH.COVER, False)[2]]
+    return [f'{label}：{x}' for x in out]
+
+
+def load_lc():
+    import importlib.util                         # 排版机械检查与中考共用同一个程序
+    spec = importlib.util.spec_from_file_location('layoutcheck', QA / 'layoutcheck.py')
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+LC = load_lc()
+
+
+def frame_check(mp4, frames, pngs):
+    """成品逐屏画面核查：每屏中间取一帧（4K），与这一屏的 4K 截图比较（编码有轻微损失，按平均差和 99.9% 分位差判断），确认每屏放的是对的画面。"""
+    import numpy as np
+    from PIL import Image
+    bad, worst = [], (0.0, 0)
+    with tempfile.TemporaryDirectory() as td:
+        for i, png in enumerate(pngs):
+            t = (frames[i] + frames[i + 1]) / 2 / 30
+            out = Path(td) / 'f.png'
+            subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{t:.3f}', '-i', str(mp4), '-frames:v', '1', str(out)], check=True)
+            a = np.asarray(Image.open(out).convert('L'), np.int16)
+            b = np.asarray(Image.open(png).convert('L'), np.int16)
+            if a.shape != b.shape:
+                bad.append(f'第 {i + 1} 屏尺寸 {a.shape}≠{b.shape}')
+                continue
+            d = np.abs(a - b)
+            mean, p999 = float(d.mean()), int(np.percentile(d, 99.9))
+            worst = max(worst, (mean, p999))
+            if mean > 3.0 or p999 > 24:      # 实测（t03 第 32 句，C、2、3 三种画面，4K 编码后取帧）：平均差 0.2—1.2（yuv420 色彩换算的整体偏差），99.9% 分位差 4
+                bad.append(f'第 {i + 1} 屏（平均差 {mean:.2f}、99.9% 分位差 {p999}）')
+    return ('逐屏画面与截图一致（每屏中间一帧）', not bad, f'不一致：{bad}' if bad else f'{len(pngs)} 屏全部一致（最大平均差 {worst[0]:.2f}，99.9% 分位差 {worst[1]}）')
 
 
 def main():
@@ -448,7 +666,11 @@ def main():
     ap.add_argument('--scale', type=int, default=2, help='2 = 3840×2160（4K）')
     ap.add_argument('--out', default=str(C4 / '最终视频'))
     ap.add_argument('--audio-root', default=str(C4 / 'audio'), help='音频目录（含 timings.json），试听样片用')
+    ap.add_argument('--style', default='C', choices=list(LOOKS), help='画面：' + '，'.join(f'{k} {v}' for k, v in LOOKS.items()))
+    ap.add_argument('--stills', help='样片：审阅通过的截图目录（专八/样片/截图/<画面>/）。代替 screens_fp 登记：核对审阅登记和截图文件，'
+                                     '生成时逐屏与截图比对，不一致就不编码；成品旁写 <文件名>_核查.json')
     a = ap.parse_args()
+    set_style(a.style)
 
     data = json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))
     p = next(x for x in data['passages'] if x['id'] == a.pid)
@@ -456,8 +678,21 @@ def main():
     seal = json.loads((C4 / 'ann' / '复核通过.json').read_text('utf-8'))['指纹']
     if seal.get(a.pid) != hashlib.sha256((C4 / 'ann' / f'{a.pid}.txt').read_bytes()).hexdigest()[:16]:
         raise SystemExit(f'{a.pid} 的翻译与标注与复核定稿不一致（build_vocab.py --reseal），不生成视频')
+    check_names(p)
     # 踩坑 36：先审截图，后生成视频——程序或数据改过、截图还没审阅通过，就不生成视频
-    subprocess.run([sys.executable, str(QA / 'screens_fp.py'), '--project', '专八', 'check', a.pid], check=True)
+    stills = Path(a.stills) if a.stills else None
+    if stills:                                    # 样片：样片.py --approve 登记的指纹与截图文件
+        key = f'{a.pid}@{a.style}'
+        reg = json.loads(SAMPLE_REG.read_text('utf-8')).get(key) if SAMPLE_REG.exists() else None
+        if not reg or reg['指纹'] != fingerprint(a.pid, a.style):
+            raise SystemExit(f'{key} 的样片截图还没有审阅通过，或审阅之后程序、样式、数据改过（样片.py --stills → 审阅 → 样片.py --approve）')
+        got = {x.name: file_hash(x) for x in sorted(stills.glob('screen*.png'))}
+        if got != reg['截图']:
+            raise SystemExit(f'{stills} 里的截图不是审阅登记的那一份（重新截过图）：先审阅再 样片.py --approve')
+    elif a.style != 'C':
+        raise SystemExit('共用背景（--style 1–6）目前只做样片：用 专八/tools/样片.py')
+    else:
+        subprocess.run([sys.executable, str(QA / 'screens_fp.py'), '--project', '专八', 'check', a.pid], check=True)
     tm = json.loads((Path(a.audio_root) / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
@@ -476,39 +711,29 @@ def main():
         raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')
     tmp = Path(tempfile.mkdtemp(prefix='tem8video_'))
     atexit.register(shutil.rmtree, tmp, True)          # 无论成功、核查失败还是出错，退出时都删除
-    slides, owner = [title_slide(p)], [None]      # owner：每屏属于第几句、第几屏
-    for i, s in enumerate(sents):
-        for j, part in enumerate(split_parts(p['id'], i + 1, s)):
-            slides.append(sentence_slide(p, s, i + 1, len(sents), part))
-            owner.append((i, j, part))
-    sizes = []
-    import importlib.util                         # 排版机械检查与中考共用同一个程序
-    spec = importlib.util.spec_from_file_location('layoutcheck', QA / 'layoutcheck.py')
-    LC = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(LC)
-    layout_problems = LC.problems
+    scr = screens(p)
+    owner = [None] + [(k - 1, n, part) for k in range(1, len(sents) + 1)
+                      for n, part in enumerate(split_parts(p['id'], k, sents[k - 1]))]     # owner：每屏属于第几句、第几屏
+    assert len(owner) == len(scr)
+    sizes, probs, diff = [], [], []
     with sync_playwright() as pw:
         exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
         pg = br.new_page(viewport={'width': W, 'height': H}, device_scale_factor=a.scale)
-        for i, h in enumerate(slides):
-            f = tmp / f'{i:03d}.html'
-            f.write_text(h, 'utf-8')
-            pg.goto(f.as_uri())
-            pg.evaluate('document.fonts.ready')
-            pg.wait_for_timeout(150)
-            if i:
-                fs, vs, fits = pg.evaluate(FIT)
-                k = owner[i][0] + 1
-                if not fits or fs < MIN_FS or vs < MIN_VS:     # 放不下或字太小：必须分屏，不硬挤
-                    raise SystemExit(f'第 {k} 句一屏放不下（英文 {fs}px、词汇 {vs}px，下限 {MIN_FS}/{MIN_VS}px）：'
-                                     f'请在 专八/tools/分屏.json 里为 {p["id"]} 第 {k} 句选合适的分句处拆成两屏或多屏')
-                sizes.append((fs, vs))
-            bad = layout_problems(pg, MIN_FS, MIN_VS, poss=True)          # 排版机械检查（含专八的“徽章撇号”）（第 1 批画面核查报出的各类排版毛病，踩坑 33）
-            if bad:
-                raise SystemExit(f'{p["id"]} 第 {i + 1} 屏排版不合格（中考/tools/画面核查/layoutcheck.py --project 专八）：\n  ' + '\n  '.join(bad))
+        for i, label, fit, r in layout(pg, p, tmp / 'x.html'):
+            probs += screen_checks(pg, label, fit, r)
+            if fit:
+                sizes.append(r[:2])
             pg.screenshot(path=str(tmp / f'{i:03d}.png'))
+            if stills:
+                ok, n, m = same_still(small(tmp / f'{i:03d}.png'), small(stills / f'screen{i + 1:02d}.png'))
+                if not ok:
+                    diff.append(f'第 {i + 1} 屏（{label}）与审阅过的截图不同：{n} 个像素不同，最大差 {m}')
         br.close()
+    if probs:
+        raise SystemExit(f'{p["id"]} 排版或画面检查不合格（不生成视频）：\n  ' + '\n  '.join(probs))
+    if stills and (diff or len(list(stills.glob('screen*.png'))) != len(scr)):
+        raise SystemExit('画面与审阅过的截图不一致（不生成视频）：\n  ' + '\n  '.join(diff or [f'屏数 {len(scr)} ≠ 截图 {len(list(stills.glob("screen*.png")))}']))
 
     starts = [x['start'] for x in times]
     ends = [x['end'] for x in times]
@@ -530,11 +755,11 @@ def main():
             cuts.append(t)
             sw.setdefault(i, []).append(t)
     cuts.append(total)
-    assert len(cuts) == len(slides) + 1
+    assert len(cuts) == len(scr) + 1
     FPS = 30
     frames = [round(c * FPS) for c in cuts[:-1]] + [math.ceil(cuts[-1] * FPS)]
     lst = []
-    for i in range(len(slides)):
+    for i in range(len(scr)):
         n = frames[i + 1] - frames[i]
         segf = tmp / f'seg{i:03d}.mp4'
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-loop', '1', '-framerate', str(FPS),
@@ -547,7 +772,7 @@ def main():
 
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    name = video_name(p)
+    name = video_name(p, a.style if stills else None)
     silent = tmp / 'video.mp4'
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
                     '-c', 'copy', str(silent)], check=True)
@@ -558,8 +783,6 @@ def main():
     durs = [float(x) for x in subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'stream=duration', '-of', 'csv=p=0',
                                 str(out / name)], capture_output=True, text=True).stdout.split()]
     dur = min(durs)
-    if dur - ends[-1] < TAIL - 0.05:
-        raise SystemExit(f'结尾静音只有 {dur - ends[-1]:.2f} 秒，不足 {TAIL} 秒')
     # 成品核查：复用高考 verify_videos.check（分辨率、流畅度、声画等长、朗读与画面逐句一致、静音、停顿、响度……）
     sys.path[:0] = [str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
     from verify_videos import check
@@ -567,9 +790,18 @@ def main():
     if sw:
         res.append(switch_check(out / name, times, sw))
     res.append(buzz_check(out / name, times))
-    fails = [f'{n}：{d}' for n, c, d in res if not c]
-    if not re.fullmatch(r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', name) or name != video_name(p):
-        fails.append(f'文件名：{name}')
+    res.append(('结尾静音 ≥ 2 秒', dur - ends[-1] >= TAIL - 0.05, f'{dur - ends[-1]:.2f} 秒'))
+    res.append(frame_check(out / name, frames, [tmp / f'{i:03d}.png' for i in range(len(scr))]))
+    ok_name = re.fullmatch(r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', name) and name == video_name(p, a.style if stills else None)
+    res.append(('文件名', bool(ok_name), name))
+    for n_, c, d in res:
+        print(f"  {'通过' if c else '不通过'} {n_}：{d}")
+    fails = [f'{n_}：{d}' for n_, c, d in res if not c]
+    if stills:                                    # 样片：核查结果写在成品旁边（样片.py 据此判断这一种画面已经做好、可以跳过）
+        (out / (Path(name).stem + '_核查.json')).write_text(json.dumps(
+            {'video': name, 'style': a.style, '指纹': fingerprint(a.pid, a.style), 'ok': not fails, 'duration': round(dur, 3),
+             'size': (out / name).stat().st_size, 'checks': [{'item': n_, 'ok': c, 'detail': d} for n_, c, d in res]},
+            ensure_ascii=False, indent=1), 'utf-8')
     if fails:
         (out / name).unlink()
         raise SystemExit('核查未通过，已删除成品：\n  ' + '\n  '.join(fails))

@@ -27,6 +27,9 @@ def fingerprint(pid):
     h = hashlib.sha256()
     for f in [T / 'make_video.py', T / '样式.css', T / 'fonts' / 'fonts.css']:
         h.update(f.read_bytes())
+    if PROJ == '专八':          # 专八另有字号表、人名表（中考的指纹不变）
+        for f in [T / '字号.json', T / '人名.json']:
+            h.update(f.read_bytes())
     P = {p['id']: p for p in json.loads((R / PROJ / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
     split = json.loads((T / '分屏.json').read_text('utf-8')).get(pid, {})
     h.update(json.dumps([P[pid], split], ensure_ascii=False, sort_keys=True).encode())
@@ -54,7 +57,7 @@ def main():
         sys.path.insert(0, str(T))
         import make_video as M
         from playwright.sync_api import sync_playwright
-        from layoutcheck import screens
+        from layoutcheck import laid_out
         out, ids = Path(args[0]), args[1:]
         P = {p['id']: p for p in json.loads((R / PROJ / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
         with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
@@ -66,12 +69,7 @@ def main():
                 d.mkdir(parents=True, exist_ok=True)
                 for x in d.glob('screen*.png'):
                     x.unlink()
-                for n, (_, h, fit) in enumerate(screens(M, P[pid]), 1):
-                    f.write_text(h, 'utf-8')
-                    pg.goto(f.as_uri())
-                    pg.evaluate('document.fonts.ready')
-                    if fit:
-                        pg.evaluate(M.FIT)
+                for n, _ in enumerate(laid_out(M, pg, P[pid], f), 1):      # 与生成视频同一排版（专八：分屏的句子各屏统一字号）
                     pg.screenshot(path=str(d / f'screen{n:02d}.png'))
                 print(pid, n, '屏', flush=True)
             br.close()
