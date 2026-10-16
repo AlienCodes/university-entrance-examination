@@ -18,7 +18,8 @@
   续接号     分屏的续接号“…”不能落到英文行首（专八旧版画面核查）
   文字重叠   英文、译文、页眉、页脚、词汇栏标题、每个词条的文字框互不相交（专八 t03 第二轮审阅：埋雷“译文压住英文”只有人看出来）。两个项目都查
   括注拆开   释义里放得下一行的括注不能拆到两行（专八 t03 第二轮审阅：（同 / gunwale）、（风暴、/ 夜晚等））。只对专八开（breaks）
-  括注断开   放不下一行的括注只能在空格、中英交界、逗号顿号分号冒号之后、或长中文片段的词间断开（（down the length of 顺着…… / 一路））。只对专八开
+  括注断开   放不下一行的括注只能在中英交界、逗号顿号分号冒号之后、或长中文片段的词间断开（（down the length of 顺着…… / 一路））；
+             括注里的英文片段放得下一行就不能拆开（（down the / length of 顺着……一路））。只对专八开
   短语断开   英文高亮短语放得下一行就不能拆到两行（rough / treatment、at the / expense of）。只对专八开
   译文断词   译文不能在一个词（jieba）的中间断行（蹦 / 跳、相 / 同、霎时 / 间）。只对专八开
              这四项在审阅前的专八程序（59b1562）上 t03 七种画面查出 26—47 处，修正后 0 处；埋雷测试：专八/tools/画面核查/埋雷_排版检查.py
@@ -128,7 +129,13 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
             if (x.el.classList.contains('pl') || x.el.classList.contains('pr')) { const c = getComputedStyle(x.el); W += parseFloat(c.marginLeft) + parseFloat(c.marginRight); } }
           for (let q = a; q < b; q++) if (/\s/.test(gt[q])) W += spw;
           if (W <= x1 - x0 - 2) out.push(`括注拆开：${name}释义「${gt.slice(a, b)}」放得下一行（宽 ${Math.round(W)}，行宽 ${Math.round(x1 - x0)} 像素）却被拆到两行`);
-          for (let j = 1; j < qs.length; j++) if (li.get(qs[j]) !== li.get(qs[j - 1])) out.push(['NOTE', name, gt, a, b, qs[j]]); } } }
+          // 断在英文片段（括注里两个汉字或中文标点之间的一段）中间：这一段放得下一行就不许断（（down the / length of 顺着……一路））
+          const stop = c => cjk(c) || '，；：、。'.includes(c);
+          for (let j = 1; j < qs.length; j++) if (li.get(qs[j]) !== li.get(qs[j - 1])) { const q = qs[j]; let lo = q, hi = q, fits = false;
+            if (!stop(gt[qs[j - 1]]) && !stop(gt[q])) { while (lo > a && !stop(gt[lo - 1])) lo--; while (hi < b && !stop(gt[hi])) hi++;
+              let w = 0; for (let z = lo; z < hi; z++) { const x = at.get(z); if (x) w += x.r - x.l; else if (/\s/.test(gt[z])) w += spw; }
+              fits = w <= x1 - x0 - 2; }
+            out.push(['NOTE', name, gt, a, b, q, fits ? gt.slice(lo, hi).trim() : '']); } } } }
     if (breaks && name === '译文') { const om = offs(k);
       for (let j = 1; j < L.length; j++) { const a = L[j - 1][L[j - 1].length - 1], f = L[j][0];
         if (cjk(a.c) && cjk(f.c) && om.has(f.n)) out.push(['ZHBRK', name, k.textContent, om.get(f.n) + f.i]); } }
@@ -319,9 +326,11 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
     breaks：是否查括注拆开 / 括注断开、短语断开、译文断词（这几项专八开，中考不变）。文字重叠两个项目都查。"""
     res = font_fallback(pg) if fonts else []
     for x in pg.evaluate(CHECK, [min_fs, min_vs, poss, list(names), gaps, breaks]):
-        if isinstance(x, list) and x[0] == 'NOTE':      # 括注里的断点：只许在空格、中英交界、逗号等处（note_ok）
-            _, name, g, a, b, k = x
-            if not note_ok(g[a:b], k - a):
+        if isinstance(x, list) and x[0] == 'NOTE':      # 括注里的断点：只许在中英交界、逗号等处（note_ok）；英文片段放得下一行就不许断开（JS 实测）
+            _, name, g, a, b, k, run = x
+            if run:
+                res.append(f'括注断开：{name}释义「{g[a:k]}／{g[k:b]}」英文片段「{run}」放得下一行却被拆开')
+            elif not note_ok(g[a:b], k - a):
                 res.append(f'括注断开：{name}释义「{g[a:k]}／{g[k:b]}」')
         elif isinstance(x, list) and x[0] == 'ZHBRK':   # 译文在一个词的中间断行
             _, name, t, k = x

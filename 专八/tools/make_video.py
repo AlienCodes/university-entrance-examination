@@ -218,8 +218,10 @@ def long_notes(s):
 
 
 def note_breaks(t):
-    """长括注 t（含两头括号）里可以换行的位置 i（在 t[i] 之前断开）：空格处、中英文交界、括注里的逗号顿号分号冒号之后；
-    除此以外不断开（中文片段整体不断行，比 GLOSS_CHUNK 还长的中文片段由 words 在词间断开）。标点归属：右括号、省略号等跟前一个字，左括号跟后一个字。"""
+    """长括注 t（含两头括号）里可以换行的位置 i（在 t[i] 之前断开）：中英文交界、括注里的逗号顿号分号冒号之后、两个中文片段之间的空格；
+    除此以外不断开：中文片段整体不断行（比 GLOSS_CHUNK 还长的由 words 在词间断开），英文片段（down the length of）整体不断行
+    （比一行还长的由 FIT 放开，note_html 标 class="lr"；t03 截图对照：画面 C 第 54 句“（down the / length of / 顺着……一路）”）。
+    标点归属：右括号、省略号等跟前一个字，左括号跟后一个字。"""
     kind = ['S' if c.isspace() else 'H' if '一' <= c <= '鿿' else 'L' if c.isascii() and c.isalnum() else '' for c in t]
     for i in range(len(t)):                          # 标点归属：左括号看后面，其余看前面；找不到就看另一边
         if not kind[i]:
@@ -230,8 +232,11 @@ def note_breaks(t):
                     break
     out = set()
     for i in range(1, len(t)):
-        if kind[i] == 'S' or kind[i - 1] == 'S':
-            if kind[i] != 'S':
+        if kind[i] == 'S':
+            continue
+        if kind[i - 1] == 'S':                       # 空格之后：两边最近的字一边中文一边英文、或两边都是中文，才可以断开
+            p = next((kind[j] for j in range(i - 1, -1, -1) if kind[j] != 'S'), kind[i])
+            if p != kind[i] or p == 'H':
                 out.add(i)
         elif kind[i] != kind[i - 1] or (t[i - 1] in '，；：、' and t[i] not in ZCLOSE):
             out.add(i)
@@ -249,7 +254,8 @@ def note_html(t, out):
             e -= 1
         body = ''.join(out[a:e])
         han = sum('一' <= c <= '鿿' for c in t[a:e])
-        res.append((words(t[a:e], out[a:e]) if han > GLOSS_CHUNK else f'<nobr>{body}</nobr>') + ''.join(out[e:b]))
+        lr = ' class="lr"' if ' ' in t[a:e] else ''      # 含空格的英文片段：比一行还长时 FIT 放开（notes）
+        res.append((words(t[a:e], out[a:e]) if han > GLOSS_CHUNK else f'<nobr{lr}>{body}</nobr>') + ''.join(out[e:b]))
         if b < len(t) and e == b:
             res.append('<wbr>')
     return ''.join(res)
@@ -500,7 +506,9 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       for (let k = 1; k < ps.length; k++) { b.innerHTML = ps.slice(0, k).join(' ') + '<br>' + ps.slice(k).join(' ');
         const rs = b.getClientRects(); if (rs.length !== 2) continue; const w = Math.max(rs[0].width, rs[1].width); if (!best || w < best[0]) best = [w, b.innerHTML]; }
       b.innerHTML = best ? best[1] : b.dataset.h; const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
-  const notes = () => { for (const x of document.querySelectorAll('x-n')) { x.style.display = '';
+  const notes = () => { for (const e of document.querySelectorAll('x-n nobr.lr')) { e.style.whiteSpace = '';
+      if (e.getBoundingClientRect().width > e.closest('.v > div').clientWidth + 0.5) e.style.whiteSpace = 'normal'; }
+    for (const x of document.querySelectorAll('x-n')) { x.style.display = '';
       if (x.getBoundingClientRect().height > parseFloat(getComputedStyle(x).lineHeight) * 1.5) x.style.display = 'inline'; } };
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };

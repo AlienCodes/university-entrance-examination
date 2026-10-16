@@ -7,7 +7,7 @@
   文字重叠   译文上移压住英文最后一行（行高的 25%）；某个词条上移压住上一个词条（行高的 25%）
   分屏字号   分屏句子的第 2 屏把词汇栏字号改小 3px（实测字号比对 LC.sizes / size_diff）
   括注拆开   放得下一行的括注（同 gunwale）被强行拆成两行
-  括注断开   括注在中文片段中间断开（顺着…… / 一路）
+  括注断开   括注在中文片段中间断开（顺着…… / 一路）；括注里放得下一行的英文片段被拆开（down the / length of）
   短语断开   放得下一行的高亮短语被拆到两行
   译文断词   译文在一个词的中间断行
 另外每种画面都核对：没埋雷的同一屏这些项为 0（埋雷前先查一遍）。有任何一项没查出或误报，退出码非 0。
@@ -84,7 +84,7 @@ def main():
                 if pg.evaluate("() => [...document.querySelectorAll('x-n')].some(x => x.textContent.includes('同 gunwale'))"):
                     todo.append(('note', '括注拆开', 'gunwale'))
                 if pg.evaluate("() => [...document.querySelectorAll('x-n')].some(x => x.textContent.includes('顺着……一路'))"):
-                    todo.append(('note', '括注断开', '一路'))
+                    todo += [('note', '括注断开', '一路'), ('note', '括注断开', 'length of')]
                 if label.endswith('第 1 屏'):
                     first = LC.sizes(pg)
                 if label.endswith('第 2 屏') and 'split_size' not in done:
@@ -98,7 +98,8 @@ def main():
                 if clean:
                     fails.append(f'{look} {label} 没埋雷就报：{clean}')
                 for t, want, arg in todo:
-                    if t in done or (t == 'note' and want in done):
+                    key = f'note:{arg}' if t == 'note' else t
+                    if key in done:
                         continue
                     reload(r)
                     planted = pg.evaluate(PLANT[t], arg) if arg else pg.evaluate(PLANT[t])
@@ -110,8 +111,8 @@ def main():
                     print(f'  {look} {label} 埋 {t}{"（" + arg + "）" if arg else ""} → {"查出" if ok else "漏查"}：{[x for x in got if x.startswith(want)][:1] or got[:2]}', flush=True)
                     if not ok:
                         fails.append(f'{look} {label} {t} 漏查')
-                    done.add(want if t == 'note' else t)
-            missing = {'overlap_zh', 'overlap_vocab', 'phrase', 'zhword', 'split_size', '括注拆开', '括注断开'} - done
+                    done.add(key)
+            missing = {'overlap_zh', 'overlap_vocab', 'phrase', 'zhword', 'split_size', 'note:gunwale', 'note:一路', 'note:length of'} - done
             if missing:
                 fails.append(f'{look} 没埋上：{sorted(missing)}')
         br.close()
