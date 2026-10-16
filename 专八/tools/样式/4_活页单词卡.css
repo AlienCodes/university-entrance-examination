@@ -1,3 +1,7 @@
 /* ===== 专八版调整（专八/tools/make_video.py --style 4；追加在共用基础样式 tools/video/themes/css/4_活页单词卡.css 之后）===== */
 /* 英文里试卷的中文注释（如 “(防水布)”）：基础样式的 .en 只写了 Baloo 2，中文会落到系统字体（layoutcheck 字体回退），补上思源黑体 */
 .en{font-family:'Baloo 2','Noto Sans SC',sans-serif}
+/* 大写 I 的上下短横（make_video.cap_i，x-i）：引擎里的位置按 Nunito 实测，Baloo 2 的字身更高、I 更矮，按 Baloo 2 实测重给（1000px 量：
+   I 顶 0.453 字、底（基线）1.078 字，竖笔宽 常规 0.094 / 粗 0.156—0.172 字；Nunito 是 0.292 / 1.011）：短横与 I 的顶、底对齐，与 Nunito 的相对位置相同 */
+x-i::before{top:.456em}x-i::after{top:1.012em}
+.en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.451em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.957em}

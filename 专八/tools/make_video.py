@@ -107,8 +107,12 @@ def cap_i(h):
     短横比竖笔每边宽约 0.05 字、底横盖住竖笔圆头，I 左右各留 0.03 字，不碰相邻字母和徽章。
     用自定义元素 x-i 而不用 span：词汇栏的 .v span 样式（中文字体、灰色）会套到 span 上，第 1 批第三次画面核查发现词条里的 I 变成灰色细体、像“‡”）。
     h 是已转义的 HTML，标签里的字不动。
-    专八不加：专八英文和词条用 EB Garamond，大写 I 本身带衬线，与小写 l 分得清（再画短横就成了双衬线）。"""
-    return h
+    专八：画面 C 不加（英文和词条用 EB Garamond，大写 I 本身带衬线，与小写 l 分得清，再画短横就成了双衬线）；
+    共用背景 1–6 的英文是圆体 Nunito（1、2、5、6）或 Baloo 2（3、4，I 只比 l 矮 5%，同样分不清），照中考加（t03 截图检查：layoutcheck“大写I”）；
+    Baloo 2 的短横位置在 样式/3_教室黑板.css、4_活页单词卡.css 里按 Baloo 2 实测另给。"""
+    if STYLE == 'C':
+        return h
+    return re.sub(r'(<[^>]*>)|I', lambda m: m.group(1) or '<x-i>I</x-i>', h)
 
 
 def nobr(h):

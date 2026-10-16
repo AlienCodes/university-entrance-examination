@@ -12,6 +12,7 @@
   人名断开   中文人名的间隔号“·”前后不能断行（专八旧版画面核查：理查德·帕克 在 · 处断行）；专八另查登记的整名（专八/tools/人名.json）
              不能拆到两行（t03 审阅：“理查 / 德·帕克”断在名字中间，只查间隔号两边漏掉了）
   词条间距   词汇栏同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍（专八共用背景 2 的“backn.”）。只对专八开
+  省略号     词条里不能出现三个点“...”，要显示成“…”（专八 t03 审阅：pull...through）。只对专八开
   字体回退   画面上每一段文字都只能用网页字体（设计字体）画，不许落到系统字体（t03 审阅：英文里的中文注释“(防水布)”落到了系统黑体
              WenQuanYi Zen Hei）：用 Chrome 开发者协议 CSS.getPlatformFontsForNode 问浏览器每个元素实际用了哪些字体，非网页字体就报。只对专八开
   续接号     分屏的续接号“…”不能落到英文行首（专八旧版画面核查）
@@ -60,7 +61,7 @@ CHECK = r"""([minFs, minVs, poss, names, gaps]) => { names = names || [];
     if (name === '英文') L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];             // z06 编号徽章贴着破折号
       if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
         out.push(`徽章贴破折号：${name}徽章 ${s.textContent} 与「${y.c}」只隔 ${(y.l - s.getBoundingClientRect().right).toFixed(1)} 像素`); });
-    // 大写 I 只查圆体（思源黑体的 I 比 l 矮，分得清）
+    // 大写 I 只查圆体 Nunito、Baloo 2（思源黑体的 I 比 l 矮，分得清）
     // 加了衬线的大写 I：颜色、字体、粗细必须与所在的词一致（第三次画面核查：词条里的 I 被 .v span 样式套成灰色细体），短横不能碰相邻字母和徽章（“AI”粘连）
     L.forEach(ln => ln.forEach((x, j) => { const e = x.el.closest('x-i'); if (!e) return;
       const a = getComputedStyle(e), b = getComputedStyle(e.parentElement), bar = parseFloat(getComputedStyle(e, '::after').width), r = e.getBoundingClientRect(), c = (r.left + r.right) / 2;
@@ -69,7 +70,7 @@ CHECK = r"""([minFs, minVs, poss, names, gaps]) => { names = names || [];
       const p = ln[j - 1], n = ln[j + 1], nr = n && (n.el.closest('sup') || n.el).getBoundingClientRect();
       if ((p && c - bar / 2 < p.r + 1) || (n && c + bar / 2 > (n.el.closest('sup') ? nr.left : n.l) - 1))
         out.push(`衬线I：${name}「${txt(ln).slice(Math.max(0, j - 4), j + 5)}」的 I 短横碰到相邻的字`); }));
-    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && getComputedStyle(x.el).fontFamily.startsWith('Nunito')) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }
+    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && /^(Nunito|"?Baloo 2)/.test(getComputedStyle(x.el).fontFamily)) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }   // Baloo 2（专八共用背景 3、4）的 I 只比 l 矮 5%
     L.forEach((ln, i) => {
       const f = ln[0];
       const want = ZO.includes(f.c) && name !== '英文' && f.r - f.l > em(f.el) * 0.75 ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形、霞鹜文楷的弯引号是半宽，不按全角半字计
@@ -109,7 +110,13 @@ CHECK = r"""([minFs, minVs, poss, names, gaps]) => { names = names || [];
         out.push(`数字单位：英文「${txt(L[j - 1]).slice(-8)} / ${txt(L[j]).slice(0, 8)}」数字与单位被拆到两行`);
   };
   const ttl = document.querySelector('.ttl h1');
-  if (ttl) { if (ttl.scrollWidth > ttl.clientWidth + 1) out.push(`标题：一行放不下（${ttl.scrollWidth} > ${ttl.clientWidth}）`); return out; }
+  if (ttl) { const g = document.createRange(); g.selectNodeContents(ttl); const a = g.getBoundingClientRect(), b = ttl.getBoundingClientRect(),
+      card = document.querySelector('.ttl'), c = card.getBoundingClientRect(), cs = getComputedStyle(card), rows = new Set([...g.getClientRects()].filter(r => r.width).map(r => Math.round(r.top)));
+    const L = c.left + card.clientLeft + parseFloat(cs.paddingLeft), R = c.left + card.clientLeft + card.clientWidth - parseFloat(cs.paddingRight);
+    // 量标题文字本身（专八共用背景 3 的粉笔下划线是 h1 的绝对定位伪元素，向右多出 0.25 字，撑大了 scrollWidth，文字其实放得下）
+    if (a.right > b.right + 1 || a.left < b.left - 1 || a.left < L - 1 || a.right > R + 1 || rows.size > 1)
+      out.push(`标题：一行放不下（文字 ${Math.round(a.left)}–${Math.round(a.right)}，标题框 ${Math.round(b.left)}–${Math.round(b.right)}，卡片 ${Math.round(L)}–${Math.round(R)}，${rows.size} 行）`);
+    return out; }
   const en = document.querySelector('.en'), zh = document.querySelector('.zh');
   block(en, '英文', false); block(zh, '译文', false);
   document.querySelectorAll('.v > div').forEach((d, i) => { block(d, `词条 ${i + 1} `, true);
@@ -118,6 +125,8 @@ CHECK = r"""([minFs, minVs, poss, names, gaps]) => { names = names || [];
       if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
   // 词条间距（专八共用背景 2：样式里的 .v b{margin:0 -.08em} 把词条与词性之间的间距吃掉，成了“backn.”）：同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍
+  if (gaps) for (const el of document.querySelectorAll('.v b')) if (el.textContent.includes('...'))      // 专八 t03 审阅：分开的短语词条 pull...through 用了三个点
+    out.push(`省略号：词条「${el.textContent.slice(0, 30)}」用了三个点，应显示为“…”`);
   if (gaps) { const vs0 = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vs'));
     const end = (el, last) => { const cs = chars(el).filter(x => x.c.trim()); return cs.length ? cs[last ? cs.length - 1 : 0] : null; };
     const box = x => { const g = document.createRange(); g.setStart(x.n, x.i); g.setEnd(x.n, x.i + 1); const rs = g.getClientRects(); return rs[rs.length - 1]; };
@@ -234,18 +243,18 @@ def screens(M, p):
 
 
 def laid_out(M, pg, p, f):
-    """逐屏排版（与生成视频完全相同），每排好一屏 yield (标签, 是否句子屏)：程序有 layout（专八：分屏的句子各屏统一字号）就用它，否则逐屏 FIT（中考，不变）。"""
+    """逐屏排版（与生成视频完全相同），每排好一屏 yield (标签, 是否句子屏, 字号)：程序有 layout（专八：分屏的句子各屏统一字号）就用它，
+    否则逐屏 FIT（中考，不变）。字号 = (英文, 词汇栏) 或 None（片头）。"""
     if hasattr(M, 'layout'):
-        for _, label, fit, _ in M.layout(pg, p, f):
-            yield label, fit
+        for _, label, fit, r in M.layout(pg, p, f):
+            yield label, fit, r and tuple(r[:2])
         return
     for label, h, fit in screens(M, p):
         f.write_text(h, 'utf-8')
         pg.goto(f.as_uri())
         pg.evaluate('document.fonts.ready')
-        if fit:
-            pg.evaluate(M.FIT)
-        yield label, fit
+        r = pg.evaluate(M.FIT) if fit else None
+        yield label, fit, r and tuple(r[:2])
 
 
 def project(argv):
@@ -285,9 +294,13 @@ def main():
         pg = br.new_page(viewport={'width': M.W, 'height': M.H}, device_scale_factor=2)      # 与 make_video.py 生成 4K 视频时相同：倍率不同，字宽有细微差别，换行可能不同
         f = Path(td) / 'x.html'
         for pid in (argv or sorted(P)):
-            probs = []
-            for label, fit in laid_out(M, pg, P[pid], f):
+            probs, size = [], {}
+            for label, fit, r in laid_out(M, pg, P[pid], f):
+                if ' 第 ' in label[2:]:          # 分屏的句子（“第 k 句 第 n 屏”）：各屏字号必须相同（专八 t03 审阅：s20 两屏词汇栏 40/35px）
+                    size.setdefault(label.split(' 第 ')[0], []).append(r)
                 probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS, poss=proj == '专八', names=NAMES, fonts=proj == '专八', gaps=proj == '专八')]
+            if proj == '专八':
+                probs += [f'{k}：分屏字号不一致（各屏英文/词汇栏 {v}）' for k, v in size.items() if len(set(v)) > 1]
             bad[pid] = probs
             print(pid, 'OK' if not probs else f'{len(probs)} 处：\n  ' + '\n  '.join(probs), flush=True)
         br.close()

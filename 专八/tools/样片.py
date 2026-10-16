@@ -92,7 +92,8 @@ def ref_text(p):
 
 def contact(look, pngs, sizes):
     """总览图：每屏缩成 384×216，8 列，标屏号和字号。"""
-    from PIL import Image, ImageDraw
+    from PIL import Image, ImageDraw, ImageFont
+    font = ImageFont.truetype(str(C4.parent / 'tools' / 'video' / 'fonts' / 'NotoSansSC-Regular.ttf'), 17)
     cols, w, h = 8, 384, 216
     rows = (len(pngs) + cols - 1) // cols
     sheet = Image.new('RGB', (cols * w, rows * (h + 26)), 'white')
@@ -100,7 +101,7 @@ def contact(look, pngs, sizes):
     for i, f in enumerate(pngs):
         x, y = i % cols * w, i // cols * (h + 26)
         sheet.paste(Image.open(f).convert('RGB').resize((w - 4, h - 4), Image.LANCZOS), (x + 2, y + 2))
-        d.text((x + 6, y + h + 4), f'{f.stem}  {sizes[i]}', fill='black')
+        d.text((x + 6, y + h), f'{f.stem}  {sizes[i] or "片头"}（英文/词汇栏 px）' if sizes[i] else f'{f.stem}  片头', fill='black', font=font)
     out = folder(look) / '总览.jpg'
     sheet.save(out, quality=88)
     return out
