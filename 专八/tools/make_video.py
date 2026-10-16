@@ -99,6 +99,7 @@ THEME_FONTS = HERE / 'fonts' / 'fonts.css'
 ZH_BOLD = HERE / 'fonts' / 'zh-bold.css'          # 中文粗体黑体（思源黑体 Bold 起名 'ZH Bold'，代替用户要的微软雅黑；哪种画面用它由 样式/*.css 决定）
 INTER = HERE / 'fonts' / 'inter' / 'inter.css'      # 英文 Inter（用户要 Aptos，官方下载被网络拦住，用非常相似的 Inter 代替；哪种画面用它由 样式/*.css 决定）
 ZH_REGULAR = HERE / 'fonts' / 'zh-regular.css'    # 中文常规体黑体（'ZH Regular'，代替微软雅黑；教室黑板用：英文加粗、中文不加粗）
+CRF = {'*': 18}                                      # 整片压缩的 crf（按画面可另给；实测见交接文档）
 POS = re.compile(r'^((?:n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.)\s*(.*)$')
 
 
@@ -885,8 +886,7 @@ def main():
         segf = tmp / f'seg{i:03d}.mp4'
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-loop', '1', '-framerate', str(FPS),
                         '-i', str(tmp / f'{i:03d}.png'), '-frames:v', str(n), '-vf', 'format=yuv420p',
-                        '-c:v', 'libx264', '-preset', 'slow', '-crf', '12', '-tune', 'stillimage',
-                        '-pix_fmt', 'yuv420p', '-g', str(FPS * 10), str(segf)], check=True)
+                        '-c:v', 'libx264', '-preset', 'ultrafast', '-qp', '0', '-pix_fmt', 'yuv420p', str(segf)], check=True)   # 每屏先无损（快），整片最后统一压缩
         lst.append(f"file '{segf}'")
     (tmp / 'list.txt').write_text('\n'.join(lst))
     total = frames[-1] / FPS
@@ -895,8 +895,12 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     name = video_name(p, a.style if stills else None)
     silent = tmp / 'video.mp4'
+    # 整片一次压缩（用户 2026-10-16：“尽可能把每一个视频压缩一下，不用这么大”）：原来每屏单独编码（crf 12），每屏开头一张完整画面，
+    # 教室黑板的粉笔颗粒每张 4.4 MB，78 屏 431 MB；现在每屏先无损、拼好后整片按 GOP 10 秒压一次，换屏时背景沿用前一帧，只存变了的字。
+    # crf 见 CRF（字的边缘在 4K 下看不出差别；逐屏画面与截图一致、成品体积 ≤ 95 MB 都在下面核查）
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', str(tmp / 'list.txt'),
-                    '-c', 'copy', str(silent)], check=True)
+                    '-c:v', 'libx264', '-preset', 'slow', '-crf', str(CRF.get(STYLE, CRF['*'])), '-tune', 'stillimage',
+                    '-pix_fmt', 'yuv420p', '-g', str(FPS * 10), str(silent)], check=True)
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(silent), '-i', str(audio),
                     '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-af', f'apad=whole_dur={total:.3f}',
                     '-t', f'{total:.3f}', '-c:a', 'aac', '-b:a', '192k', '-movflags', '+faststart',
@@ -913,6 +917,8 @@ def main():
     res.append(buzz_check(out / name, times))
     res.append(('结尾静音 ≥ 2 秒', dur - ends[-1] >= TAIL - 0.05, f'{dur - ends[-1]:.2f} 秒'))
     res.append(frame_check(out / name, frames, [tmp / f'{i:03d}.png' for i in range(len(scr))]))
+    size = (out / name).stat().st_size          # GitHub 单个文件上限 100 MB（教室黑板旧版 431 MB 推不上去，也超过发送上限）
+    res.append(('成品体积 ≤ 95 MB', size <= 95 * 2**20, f'{size / 2**20:.1f} MB'))
     ok_name = re.fullmatch(r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', name) and name == video_name(p, a.style if stills else None)
     res.append(('文件名', bool(ok_name), name))
     for n_, c, d in res:
