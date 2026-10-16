@@ -79,7 +79,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       const p = ln[j - 1], n = ln[j + 1], nr = n && (n.el.closest('sup') || n.el).getBoundingClientRect();
       if ((p && c - bar / 2 < p.r + 1) || (n && c + bar / 2 > (n.el.closest('sup') ? nr.left : n.l) - 1))
         out.push(`衬线I：${name}「${txt(ln).slice(Math.max(0, j - 4), j + 5)}」的 I 短横碰到相邻的字`); }));
-    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && /^(Nunito|"?Baloo 2)/.test(getComputedStyle(x.el).fontFamily)) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }   // Baloo 2（专八共用背景 3、4）的 I 只比 l 矮 5%
+    for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && /^(Nunito|"?Baloo 2|"?Inter)/.test(getComputedStyle(x.el).fontFamily)) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }   // Baloo 2（专八共用背景 3、4）的 I 只比 l 矮 5%
+    for (const x of L.flat()) if (x.c === '—' && !x.el.closest('x-dash') && /^"?ZH (Bold|Regular)/.test(getComputedStyle(x.el).fontFamily)) {   // 专八 t03 审阅：思源黑体的“—”是西文窄破折号，粗体汉字旁又细又偏下
+      out.push(`中文破折号：${name}的「——」没有画成全角居中横线（x-dash）`); break; }
     L.forEach((ln, i) => {
       const f = ln[0];
       const want = ZO.includes(f.c) && name !== '英文' && f.r - f.l > em(f.el) * 0.75 ? x0 - em(f.el) / 2 : x0;     // 英文的弯引号是西文字形、霞鹜文楷的弯引号是半宽，不按全角半字计
