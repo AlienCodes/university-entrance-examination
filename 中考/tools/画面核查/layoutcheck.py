@@ -182,6 +182,12 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
     for (const e of en.querySelectorAll('.ph')) { const rs = [...e.getClientRects()].filter(r => r.width > 0), n = new Set(rs.map(r => Math.round(r.top))).size;
       if (n < 2) continue; const es = getComputedStyle(e); cv3.font = `${es.fontWeight} ${es.fontSize} ${es.fontFamily}`;
       const W = rs.reduce((s, r) => s + r.width, 0) + (n - 1) * cv3.measureText(' ').width;
+      // 例外：短语后面一直到英文结尾都是不能断开的（只有标点、不换行空格和分屏续接号“ …”），合起来一行放不下（六级 s26 第 19 句）——按实测总宽判断
+      const g = document.createRange(); g.setStartAfter(e); g.setEnd(en, en.childNodes.length);
+      let tw = 0; if (!g.toString().includes(' ')) { const wk = document.createTreeWalker(en, NodeFilter.SHOW_TEXT), tr = document.createRange();
+        for (let t; (t = wk.nextNode());) if (!e.contains(t) && (e.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+          tr.selectNodeContents(t); for (const q of tr.getClientRects()) tw += q.width; } }
+      if (W <= en.clientWidth + 0.5 && W + tw > en.clientWidth + 0.5 && e === [...en.querySelectorAll('.ph')].pop() && en.lastElementChild && en.lastElementChild.classList.contains('cont')) continue;
       if (W <= en.clientWidth + 0.5) out.push(`短语断开：英文高亮短语「${e.textContent}」放得下一行（宽 ${Math.round(W)}，行宽 ${en.clientWidth} 像素）却被拆到两行`); } }
   // 词条间距（专八共用背景 2：样式里的 .v b{margin:0 -.08em} 把词条与词性之间的间距吃掉，成了“backn.”）：同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍
   if (gaps) for (const el of document.querySelectorAll('.v b')) if (el.textContent.includes('...'))      // 专八 t03 审阅：分开的短语词条 pull...through 用了三个点

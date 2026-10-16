@@ -279,6 +279,8 @@ def note_breaks(t):
                 out.add(i)
         elif kind[i] != kind[i - 1] or (t[i - 1] in '，；：、' and t[i] not in ZCLOSE):
             out.add(i)
+        elif (t[i] == '《' or t[i - 1] == '》') and 0 < i < len(t) - 1:      # 书名号整体不断行、前后可以断（六级 s29：“（宫城先生是电影《龙威小子》中的空手道师父）”）
+            out.add(i)
     return sorted(out)
 
 
@@ -568,15 +570,20 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       for (let k = 1; k < ps.length; k++) { b.innerHTML = ps.slice(0, k).join(' ') + '<br>' + ps.slice(k).join(' ');
         const rs = b.getClientRects(); if (rs.length !== 2) continue; const w = Math.max(rs[0].width, rs[1].width); if (!best || w < best[0]) best = [w, b.innerHTML]; }
       b.innerHTML = best ? best[1] : b.dataset.h; wide(); const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
-  const notes = () => { for (const e of document.querySelectorAll('x-n nobr.lr')) { e.style.whiteSpace = '';
-      if (e.getBoundingClientRect().width > e.closest('.v > div').clientWidth + 0.5) e.style.whiteSpace = 'normal'; }
+  const notes = () => { const sc = getComputedStyle(side), R = side.getBoundingClientRect().left + side.clientLeft + side.clientWidth - parseFloat(sc.paddingRight);
+    for (const e of document.querySelectorAll('x-n nobr.lr')) { e.style.whiteSpace = '';      // 按词汇栏内边距量：网格列会被不断行的片段撑宽（六级 s39 “three- and four-year-olds”伸出 20 像素）
+      if (e.getBoundingClientRect().width > e.closest('.v > div').clientWidth + 0.5 || e.getBoundingClientRect().right > R + 0.5) e.style.whiteSpace = 'normal'; }
     for (const x of document.querySelectorAll('x-n')) { x.style.display = '';
       if (x.getBoundingClientRect().height > parseFloat(getComputedStyle(x).lineHeight) * 1.5) x.style.display = 'inline'; } };
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
   const en = document.querySelector('.en');
   const phr = () => { const lim = en.clientWidth; for (const e of en.querySelectorAll('.ph')) { e.style.whiteSpace = '';
-      if (e.getBoundingClientRect().width > lim + 0.5) e.style.whiteSpace = 'normal'; } };
+      if (e.getBoundingClientRect().width > lim + 0.5) e.style.whiteSpace = 'normal'; }
+    // 分屏第一屏末尾的续接号“ …”与前面的字不断开；最后一个高亮短语连着续接号一行放不下时（六级 s26 第 19 句 “make a better life for themselves, …”
+    // 伸出 71 像素），只好让这个短语在词间断开（layoutcheck 的“短语断开”按短语连同后面粘着的续接号的总宽判断）
+    const c = en.lastElementChild, R = en.getBoundingClientRect().left + en.clientLeft + en.clientWidth, ps = en.querySelectorAll('.ph');
+    if (c && c.classList.contains('cont') && ps.length && c.getBoundingClientRect().right > R + 0.5) ps[ps.length - 1].style.whiteSpace = 'normal'; };
   let fs=st ? st[0] : FS0, vs=st ? st[1] : VS0; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px'); phr();
   const cv = document.createElement('canvas').getContext('2d');
   for (const s of document.querySelectorAll('.en sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
@@ -706,6 +713,10 @@ def switch_time(audio, it, en, cut):
     first = re.sub(r'[^a-z]', '', en[cut:].split()[0].lower())
     expect = (it['end'] - s0) * cut / len(en)
     cand = [t for w, t in words if re.sub(r'[^a-z]', '', w.lower()) == first]
+    if not cand:                                     # 识别结果与原文拼法不同（英式 practising，识别成美式 practicing）：按相似度找，同首字母、相似度至少 0.8
+        import difflib
+        norm = lambda w: re.sub(r'[^a-z]', '', w.lower())
+        cand = [t for w, t in words if norm(w)[:1] == first[:1] and difflib.SequenceMatcher(None, norm(w), first).ratio() >= 0.8]
     if not cand:
         raise SystemExit(f'分屏：语音识别里找不到第二屏第一个词 “{first}”')
     wt = min(cand, key=lambda t: abs(t - expect))
@@ -836,7 +847,7 @@ def screen_checks(pg, label, fit, r):
     out += [f'字体加载失败：{x}' for x in pg.evaluate("() => [...document.fonts].filter(f => f.status === 'error').map(f => f.family)")]
     out += [f'字形：{x} 不在样式字体里' for x in pg.evaluate(TH.GLYPH)]
     if fit:
-        out += [f'横向出界：{x}' for x in pg.evaluate(TH.HBOX)]
+        out += [f'横向出界：{x}' for x in pg.evaluate(HBOX)]
     else:
         out += [f'封面：{x}' for x in pg.evaluate(TH.COVER, False)[2]]
     return [f'{label}：{x}' for x in out]
@@ -851,6 +862,11 @@ def load_lc():
 
 
 LC = load_lc()
+# 横向出界（共用 themes.HBOX）：右半空白的标点（zh_html 标 .pr，margin-right:-.5em，如“；（”里的“；”）落在行末时，字身的右半空白伸出内边距，
+# 墨迹其实在界内（六级 s38 第 8 句、s54 第 21 句报“横向出界：；”）：只对 .pr 把右边界加上它的负外边距再比。themes.py 不动（西班牙语等共用，改了指纹全变）
+HBOX = TH.HBOX.replace("if (q.width && (q.left < L || q.right > R))",
+                       "if (q.width && (q.left < L || q.right + (n.parentElement.classList.contains('pr') ? parseFloat(getComputedStyle(n.parentElement).marginRight) : 0) > R))")
+assert HBOX != TH.HBOX, 'themes.HBOX 改过，横向出界检查的 .pr 修正没套上'
 
 
 def frame_check(mp4, frames, pngs):
