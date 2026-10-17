@@ -100,8 +100,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       // 英文短行：不是最后一行、却空出一半以上，而下一行的第一个词放得进来（s54 “We / don't have to look further than”：高亮短语整体换行留下的空）
       const W = k.clientWidth, spw = em(k) * 0.25;
       L.forEach((ln, i) => { if (i === L.length - 1) return; const nx = L[i + 1]; let j = 1; while (j < nx.length && !nx[j].sp) j++;
-        const fill = ln[ln.length - 1].r - x0, word = nx[j - 1].r - nx[0].l;
-        if (fill < 0.5 * W && fill + spw + word <= W) out.push(`英文短行：英文第 ${i + 1} 行「${txt(ln).slice(0, 16)}」只占 ${Math.round(fill / W * 100)}%，下一行的「${txt(nx.slice(0, j))}」放得进来`); }); }
+        const rt = x => { const s = x.el.closest('sup'); return s ? s.getBoundingClientRect().right : x.r; };      // 编号按徽章的框量（含内边距）
+        const fill = ln[ln.length - 1].r - x0, word = Math.max(...nx.slice(0, j).map(rt)) - nx[0].l;
+        if (fill < 0.5 * W && fill + spw + word <= W - 2) out.push(`英文短行：英文第 ${i + 1} 行「${txt(ln).slice(0, 16)}」只占 ${Math.round(fill / W * 100)}%，下一行的「${txt(nx.slice(0, j))}」放得进来`); }); }
     if (name === '英文') L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];             // z06 编号徽章贴着破折号
       if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
         out.push(`徽章贴破折号：${name}徽章 ${s.textContent} 与「${y.c}」只隔 ${(y.l - s.getBoundingClientRect().right).toFixed(1)} 像素`); });
