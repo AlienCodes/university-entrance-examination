@@ -139,7 +139,8 @@ jobs:
           reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))[f'{pid}@3']
           got = {x.name: M.file_hash(x) for x in M.still_files(Path('六级/样片/截图') / pid)}
           bad = [k for k in sorted(set(reg['截图']) | set(got)) if reg['截图'].get(k) != got.get(k)]
-          print(f'{pid}：{len(got)} 屏，与截图审阅登记逐字节相同的 {len(got) - len(bad)} 屏，不同 {len(bad)} 屏 {bad[:10]}')
+          cpu = next((l.split(':', 1)[1].strip() for l in open('/proc/cpuinfo') if l.startswith('model name')), '')
+          print(f'::{"error" if bad else "notice"} title={pid} 截图::{len(got)} 屏，与截图审阅登记逐字节相同 {len(got) - len(bad)} 屏，不同 {len(bad)} 屏 {bad[:10]}（{cpu}）')
           if bad or reg['指纹'] != M.fingerprint(pid, '3'):
               sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')
           PY
