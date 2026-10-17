@@ -432,8 +432,8 @@ def clause_edges(s):
             i = j
         if len(units) < 2:
             continue
-        if units[0][1] - units[0][0] == 1:           # 分句开头单独一个字：从分句开头绑到第二个字单位
-            out.append((a, units[1][1]))
+        if units[0][1] - units[0][0] == 1:           # 分句开头单独一个字：从这个字绑到第二个字单位（不从分句开头绑：开头的“””是上一句的右引号，
+            out.append((units[0][0], units[1][1]))  # 绑进来就不能在它后面断行，s29 第 21 句“影响。”拉维夫”整串推到下一行、上一行空出 3.9 字，layoutcheck 的“译文短行”查出）
         if units[-1][1] - units[-1][0] == 1:         # 分句结尾单独一个字：从倒数第二个字单位绑到分句结尾
             out.append((units[-2][0], b))
     return out
@@ -504,7 +504,14 @@ def note_segment_html(s, out, a, b):
         t = s[x:y]
         if kind == 'note':
             # 长括注自己再包一层 x-n：分句放不下一行时，括注本身放得下一行就整体换行（不在括注里断开；FIT 先定里层、再定外层）
-            html.append(f'<x-n>{note_html(t, out[x:y])}</x-n>' if any(x <= p and q <= y for p, q in longs) else nb(out[x:y]))
+            ln = next(((p, q) for p, q in longs if x <= p and q <= y), None)
+            if ln:
+                h = f'<x-n>{note_html(s[ln[0]:ln[1]], out[ln[0]:ln[1]])}</x-n>'
+                if (x, y) != ln:                     # 并进来的单字：字连同括注再包一层 x-n——放得下一行就整体不断行（“受（法律、规定等）”），
+                    h = f'<x-n>{nb(out[x:ln[0]])}{h}{nb(out[ln[1]:y])}</x-n>'      # 放不下时括注整体换行、不拆开（s39 第 4 句“……的 / （代替前面提到的名词）”，原来并成一块排，括注被拆开）
+                html.append(h)
+            else:
+                html.append(nb(out[x:y]))
         else:
             html.append(nb(out[x:y]) if y - x <= GLOSS_CHUNK else words(t, out[x:y]))
     return f'<x-n>{"<wbr>".join(html)}{"".join(out[e:b])}</x-n>'
@@ -744,13 +751,20 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     // 一行只剩一两个词），这个短语改为可以在词间断开，先把上一行填满；上一行已过半的照旧整体不断行（layoutcheck 的“英文短行”“短语断开”按同一条线判断）
     // 上一行的长度按短语前面最后一个非空白字的右边界量（整体换行时和断开后，这个字的位置都不变；layoutcheck 用同一个量）
     const L0 = en.getBoundingClientRect().left + en.clientLeft;
-    const before = e => { const w = document.createTreeWalker(en, NodeFilter.SHOW_TEXT); let n, last = null;
+    // 紧贴在短语前面、中间没有空格的字（左引号、左括号：s33 第 11 句 summarized as / “survival of the fittest”）与短语一起换行：
+    // 从这些字的第一个量是否在行首，上一行的长度按它们前面最后一个非空白字量（layoutcheck 的“短语断开”例外同样跳过这些字）
+    const before = e => { const w = document.createTreeWalker(en, NodeFilter.SHOW_TEXT), cs = []; let n;
       while ((n = w.nextNode()) && !e.contains(n) && (e.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_PRECEDING))
-        for (let i = n.data.length - 1; i >= 0; i--) if (!/\s/.test(n.data[i])) { last = [n, i]; break; }
-      if (!last) return null; const g = document.createRange(); g.setStart(last[0], last[1]); g.setEnd(last[0], last[1] + 1); const q = g.getClientRects(); return q[q.length - 1]; };
+        for (let i = 0; i < n.data.length; i++) cs.push([n, i]);
+      const sp = k => /\s/.test(cs[k][0].data[cs[k][1]]);
+      let j = cs.length; while (j > 0 && !sp(j - 1)) j--;
+      const head = j < cs.length ? cs[j] : null; while (j > 0 && sp(j - 1)) j--;
+      const box = c => { if (!c) return null; const g = document.createRange(); g.setStart(c[0], c[1]); g.setEnd(c[0], c[1] + 1); const q = g.getClientRects(); return q[q.length - 1]; };
+      return [box(j > 0 ? cs[j - 1] : null), box(head)]; };
     for (const e of ps) { if (e.style.whiteSpace === 'normal') continue;
-      const rs = [...e.getClientRects()].filter(q => q.width > 0); if (!rs.length || Math.abs(rs[0].left - L0) > 1) continue;
-      const p = before(e); if (p && p.bottom <= rs[0].top + 1 && p.right - L0 < 0.5 * lim) e.style.whiteSpace = 'normal'; } };
+      const rs = [...e.getClientRects()].filter(q => q.width > 0); if (!rs.length) continue;
+      const [p, h] = before(e), first = h || rs[0]; if (Math.abs(first.left - L0) > 1) continue;
+      if (p && p.bottom <= first.top + 1 && p.right - L0 < 0.5 * lim) e.style.whiteSpace = 'normal'; } };
   // 所有格（x-ps，不高亮）用英文正文实测的颜色、粗细、字体（六级黑板审阅：样式 3 没有 --ink，所有格成了近黑色；正文 600 而所有格写死 400）
   { const c = getComputedStyle(document.querySelector('.en'));
     for (const x of document.querySelectorAll('.en x-ps')) { x.style.color = c.color; x.style.fontWeight = c.fontWeight; x.style.fontFamily = c.fontFamily; } }

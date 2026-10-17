@@ -40,6 +40,12 @@
   括注分离   释义里括注与紧挨着的词（中间没有标点）不能拆开——只要这个分句放得下一行（“前景；（成功的） / 希望”“使用 / （的机会）”）
   释义单字   释义在括号外断行时，分句开头或结尾的一个字不能单独落在另一行（“内化；使 / 成为……”“在 / 没有……的情况下”）
   译文断词、释义断词先加载 分词补充.txt（jieba 没有的词，如“占比”：s35 “占 / 比过高”）
+  译文短行   译文不是最后一行、行末空着，而下一行开头第一个按断行规则可以断开的单位（zh_breaks：词、人名、术语、英文段、分句首尾、末两字、标点禁则）
+             放得进这段空，却被推到了下一行——排版程序绑得比规则多（s05 “这种转移 / 自20世纪80年代以来从未停歇”空出 6.9 字、s13、s02 第 1 句）。
+             收尾复查（2026-10-17）在全部 60 篇里又查出两处并已修正：s02 第 5 句（汉字与“‘”之间浏览器不断行，加 <wbr>）、s29 第 21 句（分句开头的右引号被绑进下一个字）
+  英文短行（收紧）上一行的长度按徽章的框量、空格按实测宽（s49 第 21 句误报）；短语前面紧贴的左引号、左括号与短语一起算（s33 第 11 句 “survival of the fittest”）
+  释义单字的例外：断在“一个字 | 长括注”交界、这个字连同括注一行放不下而括注本身放得下（s39 第 4 句：单字并进长括注排成一块，放不下一行时括注被拆开，“括注拆开”查出；引擎改为字与括注分两层 x-n，放不下时括注整体换行）
+  双向验证：六级/tools/画面核查/审阅修正双向验证.py（审阅前的引擎上每类必须报出、现在 0；审阅后补的修正撤掉必须报出）
   徽章撇号   编号不能把高亮词和后面的所有格撇号隔开（专八旧版画面核查：drivers⑫’）。只对专八开（--project 专八、专八 make_video.py）：
              中考程序还没有这项修正，打开后中考已发布的 z04、z09、z10、z28 共 5 屏会报出（2026-10-16 实测），中考下次重做时移植 x-ps 再打开
 
@@ -98,10 +104,11 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       // 注释分离：试卷的中文注释“(学步儿童)”不能与它注释的前一个词分在两行（s45）
       L.forEach((ln, i) => { if (i && ln[0].c === '(' && ln[1] && cjk(ln[1].c)) out.push(`注释分离：英文第 ${i + 1} 行以中文注释「${txt(ln).slice(0, 8)}」开头，与前一个词分开`); });
       // 英文短行：不是最后一行、却空出一半以上，而下一行的第一个词放得进来（s54 “We / don't have to look further than”：高亮短语整体换行留下的空）
-      const W = k.clientWidth, spw = em(k) * 0.25;
+      const W = k.clientWidth, spw = (() => { const c = document.createElement('canvas').getContext('2d'), s = getComputedStyle(k); c.font = `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`; return c.measureText(' ').width; })();
       L.forEach((ln, i) => { if (i === L.length - 1) return; const nx = L[i + 1]; let j = 1; while (j < nx.length && !nx[j].sp) j++;
         const rt = x => { const s = x.el.closest('sup'); return s ? s.getBoundingClientRect().right : x.r; };      // 编号按徽章的框量（含内边距）
-        const fill = ln[ln.length - 1].r - x0, word = Math.max(...nx.slice(0, j).map(rt)) - nx[0].l;
+        // 上一行的长度也按徽章的框量、空格按实测宽（s49 第 21 句“Doing a poor job¹”：按编号数字量少了 10 像素，communicating² 其实放不下，误报）
+        const fill = rt(ln[ln.length - 1]) - x0, word = Math.max(...nx.slice(0, j).map(rt)) - nx[0].l;
         if (fill < 0.5 * W && fill + spw + word <= W - 2) out.push(`英文短行：英文第 ${i + 1} 行「${txt(ln).slice(0, 16)}」只占 ${Math.round(fill / W * 100)}%，下一行的「${txt(nx.slice(0, j))}」放得进来`); }); }
     if (name === '英文') L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];             // z06 编号徽章贴着破折号
       if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
@@ -253,11 +260,15 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       if (W <= en.clientWidth + 0.5 && W + tw > en.clientWidth + 0.5 && e === [...en.querySelectorAll('.ph')].pop() && en.lastElementChild && en.lastElementChild.classList.contains('cont')) continue;
       // 例外（六级黑板审阅）：短语整体换到下一行会让上一行空出一半以上（s54 “We / don't have to look further than”），可以在词间断开——
       // 按断开后短语前面那段文字的实测右边界判断（与 make_video FIT 的 phr 同一条线：不到行宽的一半）
-      { const w2 = document.createTreeWalker(en, NodeFilter.SHOW_TEXT); let n2, lastc = null;      // 短语前面最后一个非空白字
+      // 紧贴在短语前面、中间没有空格的字（左引号“：s33 第 11 句 “survival of the fittest”）算短语的一部分：按它们前面最后一个非空白字量
+      { const w2 = document.createTreeWalker(en, NodeFilter.SHOW_TEXT), cs2 = []; let n2;
         while ((n2 = w2.nextNode()) && !e.contains(n2) && (e.compareDocumentPosition(n2) & Node.DOCUMENT_POSITION_PRECEDING))
-          for (let i = n2.data.length - 1; i >= 0; i--) if (!/\s/.test(n2.data[i])) { lastc = [n2, i]; break; }
-        if (lastc) { const g2 = document.createRange(); g2.setStart(lastc[0], lastc[1]); g2.setEnd(lastc[0], lastc[1] + 1); const q2 = g2.getClientRects(), last = q2[q2.length - 1];
-          if (last && last.bottom > rs[0].top + 1 && last.right - (en.getBoundingClientRect().left + en.clientLeft) < 0.5 * en.clientWidth) continue; } }
+          for (let i = 0; i < n2.data.length; i++) cs2.push([n2, i]);
+        const sp2 = j => /\s/.test(cs2[j][0].data[cs2[j][1]]), box2 = c => { const g2 = document.createRange(); g2.setStart(c[0], c[1]); g2.setEnd(c[0], c[1] + 1); const q2 = g2.getClientRects(); return q2[q2.length - 1]; };
+        let j2 = cs2.length; while (j2 > 0 && !sp2(j2 - 1)) j2--;
+        const head = j2 < cs2.length ? cs2[j2] : null; while (j2 > 0 && sp2(j2 - 1)) j2--;
+        if (j2 > 0) { const last = box2(cs2[j2 - 1]), first = head ? box2(head) : rs[0];
+          if (last && first && last.bottom > first.top + 1 && last.right - (en.getBoundingClientRect().left + en.clientLeft) < 0.5 * en.clientWidth) continue; } }
       if (W <= en.clientWidth + 0.5) out.push(`短语断开：英文高亮短语「${e.textContent}」放得下一行（宽 ${Math.round(W)}，行宽 ${en.clientWidth} 像素）却被拆到两行`); } }
   // 词条间距（专八共用背景 2：样式里的 .v b{margin:0 -.08em} 把词条与词性之间的间距吃掉，成了“backn.”）：同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍
   if (gaps) for (const el of document.querySelectorAll('.v b')) if (el.textContent.includes('...'))      // 专八 t03 审阅：分开的短语词条 pull...through 用了三个点
@@ -546,6 +557,12 @@ def gloss_break(name, g, k, prev_in, wd, linew):
         while b > a and g[b - 1] in '，。、；：！？）”’】」》' and depth_at(g, b - 1) == 0:      # 去掉句末标点（括注的右括号不算）
             b -= 1
         lc, rc = sum(c.isalnum() for c in g[a:k]), sum(c.isalnum() for c in g[k:b])
+        # 例外：断在“一个字 | 括注”交界，而这个字连同括注一行放不下、括注本身放得下（s39 第 4 句“that of ……的 / （代替前面提到的名词）”）——
+        # 只能二选一：字留在上一行、括注整体换行（括注不拆开，括注拆开检查要求的）。字连同括注放得下一行的（“受 / （法律、规定等）保护”）照样报
+        ns = note_span(g, k)
+        unit = ns and ((a, ns[1]) if ns[0] == k and lc == 1 else (ns[0], b) if ns[1] == k and rc == 1 else None)
+        if unit and sum(wd[unit[0]:unit[1]]) > linew - 2 and sum(wd[ns[0]:ns[1]]) <= linew - 2:
+            return out
         if (lc == 1 and re.search(r'[\u4e00-\u9fff]', g[a:k])) or (rc == 1 and re.search(r'[\u4e00-\u9fff]', g[k:b])):
             out.append(f'释义单字：{name}释义「{g[a:k]}／{g[k:b]}」分句开头或结尾的一个字单独落在另一行')
     return out

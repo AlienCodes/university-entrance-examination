@@ -2,7 +2,8 @@
    ① 审阅前的引擎（专八/tools/make_video_审阅前.py，正文 600 的教室黑板样式 = 审阅员看到的截图；jieba 不加载 分词补充.txt）在审阅员报出问题的句子上，
       对应的检查必须报出（检查真能查出这类毛病）；
    ② 现在的引擎和样式在同样的句子上 0 处（修正到位）；
-   ③ 审阅之后又补的修正（左单引号前加 <wbr>）撤掉 → 必须报出，现在 0。
+   ③ 审阅之后又补的修正（左单引号前加 <wbr>、分句开头的右引号不绑进来、短语前紧贴的左引号与短语一起换行、并进长括注的单字与括注分两层排（放不下时括注整体换行）；都是新加的“译文短行”和收紧后的“英文短行”在全部 60 篇里查出的）撤掉 → 必须报出，现在 0。
+   另：s49 第 21 句是收紧前“英文短行”的误报（上一行按编号数字而不是徽章框量），现在必须 0（包含在 ② 里）。
 不是真问题、驳回的审阅意见（理由）记在 驳回 里，不验证。
 用法：/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py（约 10 分钟；全部通过退出码 0）"""
 import json
@@ -40,7 +41,7 @@ CASES = [  # 篇目, 句号, 必须报出的检查（审阅前的引擎）, 审�
     ('s37', 17, '分句单字', '传达得 / 好'),
     ('s26', 2, '英文短行', 'actually / compares unfavourably to'), ('s54', 4, '英文短行', 'We / don’t have to look further than'),
     ('s55', 20, '英文短行', 'They also / hold employees accountable for'), ('s56', 2, '英文短行', 'book / Amusing Ourselves to Death'),
-    ('s49', 4, '英文短行', 'engage in / science communication'),
+    ('s49', 4, '英文短行', 'engage in / science communication'), ('s49', 21, None, '收紧前的误报（Doing a poor job¹ / communicating²）：现在 0'),
     ('s39', 17, '高亮丢失', 'over-imitate 成了正文白色'),
     ('s45', 10, '注释分离', 'toddlers / (学步儿童)'),
     ('s57', 10, '西文撇号', 'Hunt’ s在'),
@@ -51,6 +52,9 @@ CASES = [  # 篇目, 句号, 必须报出的检查（审阅前的引擎）, 审�
 LATER = [  # 审阅之后补的修正：篇目, 句号, (现在的源码片段, 撤掉后), 必须报出的检查
     ('s02', 5, ("            out[i] = '<wbr>' + out[i]\n", "            pass\n"),
      '译文短行'),
+    ('s29', 21, ("            out.append((units[0][0], units[1][1]))", "            out.append((a, units[1][1]))"), '译文短行'),      # 分句开头的右引号不绑进来
+    ('s33', 11, ("const [p, h] = before(e), first = h || rs[0];", "const [p, h] = before(e), first = rs[0];"), '英文短行'),  # 短语前紧贴的左引号与短语一起换行
+    ('s39', 4, ("                if (x, y) != ln:", "                if False:"), '括注拆开'),  # 并进长括注的单字与括注分两层 x-n
 ]
 驳回 = {  # 审阅意见不是真问题（不改，理由）
     's01 screen28 South / Sudan.（英文地名跨行、末行一个词）': '英文在词间换行是正常排版，专名的几个词之间同样可以断；末行一个词在英文里常见，不是错误（同理 s03 screen24 英文 Kate / Winslet；该屏中文“凯特·温斯莱特”在第 1 行完整，没有拆开）',
@@ -113,7 +117,7 @@ def main():
         for pid in sorted(byp):
             a, b = run(pg, f, old, pid, byp[pid]), run(pg, f, cur, pid, byp[pid])
             for p, k, chk, what in CASES:
-                if p != pid:
+                if p != pid or chk is None:          # chk 为 None：只要求现在的引擎 0 处（下面统一查）
                     continue
                 hit = [x for x in a[k] if f'：{chk}：' in x]
                 ok = bool(hit)
