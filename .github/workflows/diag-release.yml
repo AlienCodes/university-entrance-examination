@@ -1,51 +1,38 @@
 # 诊断：GITHUB_TOKEN 建 Release 为什么 403（六级黑板发布 2026-10-17 两次 403，令牌显示 Contents: write）。
-# 推送 .github/diag-release.txt 触发；逐项试：建草稿（不建标签）、在本提交上建标签、在默认分支建正式 Release；
-# 两个任务：只给 contents: write，以及再加 actions: read（与 render-cet6-chalk.yml 相同）。本任务建出来的东西当场删掉。
+# 推送 .github/diag-release.txt 触发。第 1 轮（权限、草稿、标签、正式 Release）全部成功 → 第 2 轮照原样重现发布命令：
+#   F 与发布任务完全相同的 gh release create（同标题、同说明、带附件、--target 本提交），换一个诊断标签
+#   G 真实标签名 cet6-chalk + 同标题同说明，只建草稿（草稿不建标签）
+#   H 同 G，target 换成失败那次运行的提交 278c9bc
+# 本任务建出来的东西当场删掉。
 name: 诊断 Release 权限
 on:
   push:
     paths: ['.github/diag-release.txt']
+permissions:
+  contents: write
+  actions: read
 jobs:
-  only-contents:
+  replay:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-    env: {GH_TOKEN: '${{ github.token }}', R: '${{ github.repository }}', V: only-contents}
+    env: {GH_TOKEN: '${{ github.token }}', GH_REPO: '${{ github.repository }}', R: '${{ github.repository }}'}
     steps:
-      - name: 逐项试
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+      - name: 照原样重现
         run: |
           gh --version | head -1
-          t="diag-${GITHUB_RUN_ID}-${V}"
-          try() { local name="$1"; shift; echo "=== $name"; out=$(gh api "$@" 2>&1); rc=$?; echo "rc=$rc"; echo "$out" | head -c 600; echo; return $rc; }
-          ids=()
-          if try "A 草稿 + target=本提交 SHA" -X POST "repos/$R/releases" -f tag_name="$t-a" -f target_commitish="$GITHUB_SHA" -F draft=true; then ids+=("$(echo "$out" | jq -r .id)"); fi
-          if try "B 草稿 + 不写 target（默认分支）" -X POST "repos/$R/releases" -f tag_name="$t-b" -F draft=true; then ids+=("$(echo "$out" | jq -r .id)"); fi
-          if try "C 标签（git refs）指向本提交" -X POST "repos/$R/git/refs" -f ref="refs/tags/$t-c" -f sha="$GITHUB_SHA"; then gh api -X DELETE "repos/$R/git/refs/tags/$t-c" && echo "已删标签 $t-c"; fi
-          main=$(gh api "repos/$R/commits/main" -q .sha)
-          if try "D 标签（git refs）指向 main" -X POST "repos/$R/git/refs" -f ref="refs/tags/$t-d" -f sha="$main"; then gh api -X DELETE "repos/$R/git/refs/tags/$t-d" && echo "已删标签 $t-d"; fi
-          if try "E 正式 Release + target=main（会建标签）" -X POST "repos/$R/releases" -f tag_name="$t-e" -f target_commitish=main -F draft=false; then
-            gh api -X DELETE "repos/$R/releases/$(echo "$out" | jq -r .id)" && gh api -X DELETE "repos/$R/git/refs/tags/$t-e" && echo "已删 Release 和标签 $t-e"; fi
-          for i in "${ids[@]}"; do gh api -X DELETE "repos/$R/releases/$i" && echo "已删草稿 $i"; done
-          echo "=== 结束"
-  contents-and-actions:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      actions: read
-    env: {GH_TOKEN: '${{ github.token }}', R: '${{ github.repository }}', V: contents-actions}
-    steps:
-      - name: 逐项试
-        run: |
-          gh --version | head -1
-          t="diag-${GITHUB_RUN_ID}-${V}"
-          try() { local name="$1"; shift; echo "=== $name"; out=$(gh api "$@" 2>&1); rc=$?; echo "rc=$rc"; echo "$out" | head -c 600; echo; return $rc; }
-          ids=()
-          if try "A 草稿 + target=本提交 SHA" -X POST "repos/$R/releases" -f tag_name="$t-a" -f target_commitish="$GITHUB_SHA" -F draft=true; then ids+=("$(echo "$out" | jq -r .id)"); fi
-          if try "B 草稿 + 不写 target（默认分支）" -X POST "repos/$R/releases" -f tag_name="$t-b" -F draft=true; then ids+=("$(echo "$out" | jq -r .id)"); fi
-          if try "C 标签（git refs）指向本提交" -X POST "repos/$R/git/refs" -f ref="refs/tags/$t-c" -f sha="$GITHUB_SHA"; then gh api -X DELETE "repos/$R/git/refs/tags/$t-c" && echo "已删标签 $t-c"; fi
-          main=$(gh api "repos/$R/commits/main" -q .sha)
-          if try "D 标签（git refs）指向 main" -X POST "repos/$R/git/refs" -f ref="refs/tags/$t-d" -f sha="$main"; then gh api -X DELETE "repos/$R/git/refs/tags/$t-d" && echo "已删标签 $t-d"; fi
-          if try "E 正式 Release + target=main（会建标签）" -X POST "repos/$R/releases" -f tag_name="$t-e" -f target_commitish=main -F draft=false; then
-            gh api -X DELETE "repos/$R/releases/$(echo "$out" | jq -r .id)" && gh api -X DELETE "repos/$R/git/refs/tags/$t-e" && echo "已删 Release 和标签 $t-e"; fi
-          for i in "${ids[@]}"; do gh api -X DELETE "repos/$R/releases/$i" && echo "已删草稿 $i"; done
+          t="diag-${GITHUB_RUN_ID}"
+          title="六级仔细阅读精读视频 · 教室黑板大字版（60 个）"
+          head -c 1048576 /dev/urandom > CET6-chalkboard-videos-part1-of-3.zip
+          echo "=== F gh release create（同标题、同说明、带附件、--target 本提交）"
+          if gh release create "$t-f" CET6-chalkboard-videos-part1-of-3.zip --target "$GITHUB_SHA" --title "$title" --notes-file .github/diag-notes.md; then
+            echo "F 成功"; gh release delete "$t-f" -y --cleanup-tag && echo "已删 $t-f"; else echo "F 失败 rc=$?"; fi
+          for v in "G $GITHUB_SHA" "H 278c9bc241509168da670cac3921baa87e306e70"; do
+            set -- $v
+            echo "=== $1 草稿 tag=cet6-chalk target=$2 同标题同说明"
+            if out=$(gh api -X POST "repos/$R/releases" -f tag_name=cet6-chalk -f target_commitish="$2" -f name="$title" -F body=@.github/diag-notes.md -F draft=true 2>&1); then
+              echo "$1 成功"; gh api -X DELETE "repos/$R/releases/$(echo "$out" | jq -r .id)" && echo "已删草稿"
+            else echo "$1 失败：$(echo "$out" | head -c 400)"; fi
+          done
           echo "=== 结束"
