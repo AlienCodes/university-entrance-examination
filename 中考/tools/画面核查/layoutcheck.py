@@ -187,7 +187,14 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
     if (breaks && name === '译文') { const om = offs(k);
       for (let j = 1; j < L.length; j++) { const a = L[j - 1][L[j - 1].length - 1], f = L[j][0];
         if (cjk(a.c) && cjk(f.c) && om.has(f.n)) out.push(['ZHBRK', name, k.textContent, om.get(f.n) + f.i]);
-        if (om.has(f.n)) out.push(['ZHEDGE', name, k.textContent, om.get(f.n) + f.i]); } }     // 分句首尾单字、书名 / 术语断开（Python 判断）
+        if (om.has(f.n)) out.push(['ZHEDGE', name, k.textContent, om.get(f.n) + f.i]); }     // 分句首尾单字、书名 / 术语断开（Python 判断）
+      // 译文短行（六级黑板审阅：s05 “这种转移 / 自20世纪80年代以来从未停歇”、s13 “只是说， / 如果20世纪……”上一行空出一大段）：
+      // 每一行（不算最后一行）行末到右边界的空，与下一行开头的各字位置交给 Python：按断行规则（词、人名、术语、英文段、分句首尾、末两字、标点禁则）
+      // 下一行开头第一个可以断开的单位放得进上一行的空，却被整个推到下一行，就是排版程序绑得太多
+      for (let j = 1; j < L.length; j++) { const a = L[j - 1][L[j - 1].length - 1], f = L[j][0]; if (!om.has(f.n)) continue;
+        const gap = x1 - (a.r + (a.el.classList.contains('pr') ? parseFloat(getComputedStyle(a.el).marginRight) : 0));
+        const pos = L[j].filter(x => om.has(x.n)).map(x => [om.get(x.n) + x.i, x.l]), last = L[j][L[j].length - 1];
+        out.push(['ZHGAP', name, j, k.textContent, om.get(f.n) + f.i, gap, pos, last.r, f.el.classList.contains('pl') ? em(f.el) / 2 : 0, em(k)]); } }
     if (breaks && isGloss) { const g = k.querySelector('span[lang]'), om = g && offs(g);      // 括注分离、释义开头 / 结尾单字（Python 判断，宽度用实测）
       if (g) { const wd = new Array(g.textContent.length).fill(0);
         const gt0 = g.textContent;
@@ -438,6 +445,46 @@ def zh_edge(t, k):
     return None
 
 
+def zh_breaks(t, names=()):
+    """译文 t 按断行规则可以断开的位置（在 t[k] 之前断行，k = 1 … len(t) − 1）。与专八 make_video.zh_html 的绑定分开写（独立判断），规则即本程序的各项检查：
+    标点禁则（右半空白的标点、省略号不在行首，左半空白的标点不在行末，“——”“……”不拆开）、译文断词（jieba 词，先加载 分词补充.txt）、
+    人名（间隔号前后、登记的整名）、西文（一段英文 / 数字连同后面紧挨的汉字、连续的西文字符）、术语、分句首尾单字、最后一行至少两个字。"""
+    import re
+    han = lambda c: '一' <= c <= '鿿'
+    n, bad = len(t), set()
+    wb = jieba_bounds(t, True)
+    for k in range(1, n):
+        a, b = t[k - 1], t[k]
+        if b in '，。、：；！？）”’】」》…' or a in '（“‘【「《' or (a == b and a in '—…') or '·' in (a, b) or (han(a) and han(b) and k not in wb):
+            bad.add(k)
+    spans = [(m.start(), m.end() + (m.end() < n and han(t[m.end()]))) for m in re.finditer(LATIN_RUN, t)]
+    spans += [m.span() for m in re.finditer(r'[!-~]+', t)]                     # 连续的西文字符（10,000、Hunt’s 之外的标点）浏览器不断开
+    spans += [m.span() for nm in names for m in re.finditer(re.escape(nm), t)]
+    spans += [m.span() for m in re.finditer(TERM, t)]
+    for a, b in spans:
+        bad.update(range(a + 1, b))
+    hz = [i for i, c in enumerate(t) if han(c)]
+    if len(hz) >= 2:
+        bad.update(range(hz[-2] + 1, n))
+    return {k for k in range(1, n) if k not in bad and not zh_edge(t, k)}
+
+
+def zh_short(name, j, t, k, gap, pos, right, pl, em, names=()):
+    """译文短行（六级黑板审阅：s05 第 5 句“这种转移 / 自20世纪80年代以来从未停歇。”上一行空出 7 个字、s13 第 18 句、s02 第 1 句）：
+    第 j 行（下一行从 t[k] 开始）行末空出 gap 像素；按 zh_breaks 的规则，下一行开头第一个可以断开的单位（到下一行里第一个可断位置为止）
+    放得进这段空（留 0.25 字余量），却被推到了下一行——排版程序绑在一起的比规则要求的多（如把英文段前面的汉字也绑上，连成一长串）。
+    pos：下一行每个字 [位置, 左边界]；right：下一行最后一个字的右边界；pl：下一行第一个字是去掉了左半空白的左标点（放回行中要加回半字）。"""
+    ok = zh_breaks(t, names)
+    left = dict(pos)
+    q = sorted(left)
+    p = next((x for x in q if x > k and any(k < y <= x for y in ok)), None)
+    w = (left[p] if p is not None else right) - left[k] + pl
+    if w <= gap - 0.25 * em:
+        return (f'译文短行：译文第 {j} 行后面空出 {gap / em:.1f} 字，下一行开头的「{t[k:p] if p is not None else t[k:q[-1] + 1]}」'
+                f'（{w / em:.1f} 字）按断行规则放得进来，却被推到了下一行')
+    return None
+
+
 def note_span(g, k):
     """g[k] 是左括号或 g[k-1] 是右括号时，这个括注（最外层）的 (起, 止)。"""
     st, spans = [], []
@@ -526,6 +573,10 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
                 res.append(f'括注断开：{name}释义「{g[a:k]}／{g[k:b]}」')
         elif isinstance(x, list) and x[0] == 'ZHEDGE':  # 分句首尾单字、短术语 / 书名拆开（专八 / 六级）
             why = zh_edge(x[2], x[3])
+            if why:
+                res.append(why)
+        elif isinstance(x, list) and x[0] == 'ZHGAP':   # 译文短行（专八 / 六级）
+            why = zh_short(*x[1:], names=names)
             if why:
                 res.append(why)
         elif isinstance(x, list) and x[0] == 'GBRK':    # 括注分离、释义单字（专八 / 六级）

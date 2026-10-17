@@ -402,6 +402,11 @@ def zh_html(s, gloss=False):
             merged[-1] = (merged[-1][0], max(b, merged[-1][1]))
         else:
             merged.append((a, b))
+    # 左单引号前面可以断行：浏览器（Chromium）不在汉字与“‘”之间断行（“”之前可以），s02 第 5 句“还会让‘艺术家’……”整串推到下一行、上一行空出 4.5 字
+    # （layoutcheck 的“译文短行”查出）；中文排版里左引号只是不能落在行末，前面照常可以断
+    for i, c in enumerate(s):
+        if c == '‘' and i and s[i - 1] not in ZOPEN and not any(a < i < b for a, b in merged):
+            out[i] = '<wbr>' + out[i]
     res, pos = [], 0
     for a, b in merged:
         res += out[pos:a] + [f'<nobr>{"".join(out[a:b])}</nobr>']
