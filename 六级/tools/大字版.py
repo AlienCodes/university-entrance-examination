@@ -1,4 +1,8 @@
-"""六级大字版（教室黑板，用户 2026-10-16：六级 60 篇全部改成专八样片选定的教室黑板）一条命令做到底：先截图、程序全查、审阅登记，
+"""大字版成套生产（六级：教室黑板，用户 2026-10-16；专八：晴空校园，用户 2026-10-17——片头带 985 教学楼、英文全部加粗、生词晴空蓝、短语 B 站粉）一条命令做到底。
+专八用入口 专八/tools/大字版.py（= 本程序，项目切到专八：截图 专八/大字版/截图/、登记 专八/tools/画面核查/截图审阅通过.json、
+成品 专八/最终视频_校园/、核查 专八/大字版/成品核查/；不写篇目 = 已定稿的篇目 t01—t10）。下面的说明以六级为例。
+
+六级大字版（教室黑板，用户 2026-10-16：六级 60 篇全部改成专八样片选定的教室黑板）一条命令做到底：先截图、程序全查、审阅登记，
 审过的截图才许生成视频（与 专八/tools/样片.py 同一套做法；样片按画面，这里按篇目）。引擎与专八共用：六级/tools/make_video.py（= 专八/tools/make_video.py --project 六级）。
 
     /opt/ttsenv/bin/python 六级/tools/大字版.py --stills [s01 …]     # ① 截图 + 全部程序检查（不写篇目 = 全部 60 篇；截过、指纹没变的篇目跳过，--force 重画）
@@ -34,16 +38,28 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-C6 = HERE.parent
-ROOT = C6.parent
-OUT = C6 / '样片'
-SHOTS = OUT / '截图'
-VIDEOS = C6 / '最终视频_黑板'                 # 教室黑板成品（旧版 60 个仍在 六级/最终视频/，不动）
+ROOT = HERE.parents[1]
+PROJECT = os.environ.get('DZB_PROJECT', '六级')      # 专八/tools/大字版.py 设成 专八
+C6 = ROOT / PROJECT
 PY = sys.executable
-sys.path.insert(0, str(HERE))
-import make_video as M  # noqa: E402  六级入口：专八/tools/make_video.py 切到 --project 六级
-
-assert M.PROJ == '六级', M.PROJ
+ENGINE = ROOT / '专八' / 'tools' / 'make_video.py'
+if PROJECT == '六级':
+    sys.path.insert(0, str(HERE))
+    import make_video as M  # noqa: E402  六级入口：专八/tools/make_video.py 切到 --project 六级
+    VIDEOS = C6 / '最终视频_黑板'                 # 教室黑板成品（旧版 60 个仍在 六级/最终视频/，不动）
+    MAKE = [PY, str(HERE / 'make_video.py')]
+else:
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location('make_video', ENGINE)
+    M = importlib.util.module_from_spec(_spec)
+    sys.modules['make_video'] = M
+    _spec.loader.exec_module(M)
+    M.set_project(PROJECT)
+    VIDEOS = C6 / '最终视频_校园'                 # 晴空校园成品（旧版 10 个仍在 专八/最终视频/，不动）
+    MAKE = [PY, str(ENGINE), '--project', PROJECT, '--style', M.PJ['look']]
+OUT = C6 / M.PJ['work']                         # 六级 六级/样片/，专八 专八/大字版/（专八/样片/ 是“同一篇、多种画面”的样片，分开）
+SHOTS = OUT / '截图'
+assert M.PROJ == PROJECT and M.PJ['stills'] == f"{M.PJ['work']}/截图/{{pid}}", (M.PROJ, M.PJ)
 LOOK = M.PJ['look']
 
 
@@ -115,7 +131,7 @@ def save_still(im, f):
 def ref_text(p):
     """参考文字：每屏应有的内容（审阅员对照用；与 样片.py 相同的写法）。"""
     sents = [s for pa in p['paras'] for s in pa]
-    lines = [f'# {p["id"]} {p["paper"]} {p["passage"]} {p["title"]}：第 1 屏片头（CET-6 · READING · SECTION C、标题、大学英语六级 试卷 · 篇目、'
+    lines = [f'# {p["id"]} {p["paper"]} {p["passage"]} {p["title"]}：第 1 屏片头（{M.PJ["tag"]}、标题、{M.PJ["exam"]} 试卷 · 篇目、'
              f'体裁 {p.get("genre") or ""}、全文 {p["words"]} 词 · 逐句精读），之后每句一屏，共 {len(sents)} 句；长句分屏（页脚 PART m/n）。']
     i = 1
     for k, s in enumerate(sents, 1):
@@ -276,7 +292,7 @@ def video(ids):
         if rep.exists():
             rep.unlink()                  # 旧的核查结果作废，免得失败后误判
         with open(log, 'w', encoding='utf-8') as fh:
-            rc = subprocess.run([PY, str(HERE / 'make_video.py'), pid, '--out', str(VIDEOS)], stdout=fh, stderr=subprocess.STDOUT).returncode
+            rc = subprocess.run([*MAKE, pid, '--out', str(VIDEOS)], stdout=fh, stderr=subprocess.STDOUT).returncode
         r = json.loads(rep.read_text('utf-8')) if rep.exists() else None
         good = rc == 0 and mp4.exists() and r and r['ok'] and r['指纹'] == fp
         tail = log.read_text('utf-8').strip().splitlines()[-6:]
@@ -293,7 +309,7 @@ def video(ids):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
-    ap.add_argument('ids', nargs='*', help='篇目（不写 = 全部 60 篇，s01—s60）')
+    ap.add_argument('ids', nargs='*', help='篇目（不写 = 已定稿的全部篇目：六级 s01—s60，专八 t01—t10）')
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument('--stills', action='store_true', help='截图 + 全部程序检查')
     g.add_argument('--approve', action='store_true', help='审阅通过后登记')
@@ -301,7 +317,7 @@ def main():
     ap.add_argument('--force', action='store_true', help='--stills：指纹没变也重画')
     a = ap.parse_args()
     P = passages()
-    ids = a.ids or sorted(P)
+    ids = a.ids or sorted(k for k, p in P.items() if p.get('done', True))
     bad = [x for x in ids if x not in P]
     if bad:
         raise SystemExit(f'没有这些篇目：{bad}')

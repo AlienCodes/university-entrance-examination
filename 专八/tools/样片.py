@@ -171,7 +171,7 @@ def stills(p, looks):
 
 def approve(p, looks):
     rep = json.loads((SHOTS / '汇总.json').read_text('utf-8'))
-    reg = json.loads(M.SAMPLE_REG.read_text('utf-8')) if M.SAMPLE_REG.exists() else {}
+    reg = json.loads(M.YP_REG.read_text('utf-8')) if M.YP_REG.exists() else {}
     bad = []
     for look in looks:
         r = rep.get(look)
@@ -184,7 +184,7 @@ def approve(p, looks):
             continue
         reg[f'{p["id"]}@{look}'] = {'指纹': r['指纹'], '截图': got, '登记时间': time.strftime('%Y-%m-%d %H:%M:%S')}
         print('已登记', f'{p["id"]}@{look}', M.LOOKS[look])
-    write_json(M.SAMPLE_REG, dict(sorted(reg.items())))
+    write_json(M.YP_REG, dict(sorted(reg.items())))
     if bad:
         print('没有登记：\n  ' + '\n  '.join(bad))
     return not bad
@@ -192,7 +192,7 @@ def approve(p, looks):
 
 def video(p, looks):
     summary = json.loads((OUT / '汇总.json').read_text('utf-8')) if (OUT / '汇总.json').exists() else {}
-    reg = json.loads(M.SAMPLE_REG.read_text('utf-8')) if M.SAMPLE_REG.exists() else {}
+    reg = json.loads(M.YP_REG.read_text('utf-8')) if M.YP_REG.exists() else {}
     (OUT / '日志').mkdir(parents=True, exist_ok=True)
     ok_all = True
     for look in looks:

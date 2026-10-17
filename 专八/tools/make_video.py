@@ -54,17 +54,17 @@ FS0 = VS0 = MIN_FS = MIN_VS = None          # set_style() 按 字号.json 设置
 # look = 默认画面；stills = 生成视频前必须核对的审阅截图目录（{pid} 换成篇目；专八没有，用 screens_fp / 样片.py --stills）；
 # reg = 截图审阅登记（<项目>/tools/画面核查/ 下）；name_re = 成品文件名规则（与各项目旧版相同）；tmp = 临时目录前缀
 PROJECTS = {
-    '专八': {'tag': 'TEM-8 · READING · SECTION A', 'top': 'TEM-8 READING', 'exam': '英语专业八级', 'look': 'C', 'stills': None,
-             'reg': '样片审阅通过.json', 'name_re': r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', 'tmp': 'tem8video_'},
-    '六级': {'tag': 'CET-6 · READING · SECTION C', 'top': 'CET-6 READING', 'exam': '大学英语六级', 'look': '3', 'stills': '样片/截图/{pid}',
+    '专八': {'tag': 'TEM-8 · READING · SECTION A', 'top': 'TEM-8 READING', 'exam': '英语专业八级', 'look': '1', 'stills': '大字版/截图/{pid}', 'work': '大字版',
+             'reg': '截图审阅通过.json', 'sample_reg': '样片审阅通过.json', 'name_re': r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', 'tmp': 'tem8video_'},
+    '六级': {'tag': 'CET-6 · READING · SECTION C', 'top': 'CET-6 READING', 'exam': '大学英语六级', 'look': '3', 'stills': '样片/截图/{pid}', 'work': '样片',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
 }
-PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = None      # set_project() 设置
+PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 
 
 def set_project(name, look=True):
     """切换项目：数据、音频、定稿登记、输出在 <项目>/（C4），分屏表、人名表、截图审阅登记在 <项目>/tools/（T）；look=True 时画面切到该项目的默认画面。"""
-    global PROJ, PJ, C4, T, SPLIT, NAMES, SAMPLE_REG
+    global PROJ, PJ, C4, T, SPLIT, NAMES, SAMPLE_REG, YP_REG
     if name not in PROJECTS:
         raise SystemExit(f'--project 只能是 {"、".join(PROJECTS)}：{name}')
     PROJ, PJ, C4 = name, PROJECTS[name], ROOT / name
@@ -72,6 +72,7 @@ def set_project(name, look=True):
     SPLIT = {k: v for k, v in json.loads((T / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}
     NAMES = json.loads((T / '人名.json').read_text('utf-8'))['names']        # 中文音译人名（整名不断行，见 name_spans）
     SAMPLE_REG = T / '画面核查' / PJ['reg']      # 截图审阅登记（专八：样片.py --approve；六级：大字版.py --approve 写入）
+    YP_REG = T / '画面核查' / PJ.get('sample_reg', PJ['reg'])     # 样片.py（同一篇、多种画面）的登记；专八的成套生产（大字版.py）用 SAMPLE_REG，两份分开
     if look:
         set_style(PJ['look'])
 
@@ -1106,11 +1107,13 @@ def main():
     check_names(p)
     # 踩坑 36：先审截图，后生成视频——程序或数据改过、截图还没审阅通过，就不生成视频
     sample = bool(a.stills)                       # 专八样片：成品文件名带画面名称、核查结果写在成品旁边
-    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] else None)
-    tool = '样片.py' if PROJ == '专八' else '六级/tools/大字版.py'
+    # 截图目录：样片.py 传 --stills；成套生产（大字版.py：六级教室黑板、专八晴空校园 2026-10-17 起）用项目的截图目录；专八旧版画面 C 仍走 screens_fp
+    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] and a.style != 'C' else None)
+    tool = '专八/tools/样片.py' if sample else f'{PROJ}/tools/大字版.py'
+    regf = YP_REG if sample else SAMPLE_REG
     if stills:                                    # 样片.py / 大字版.py --approve 登记的指纹与截图文件
         key = f'{a.pid}@{a.style}'
-        reg = json.loads(SAMPLE_REG.read_text('utf-8')).get(key) if SAMPLE_REG.exists() else None
+        reg = json.loads(regf.read_text('utf-8')).get(key) if regf.exists() else None
         if not reg or reg['指纹'] != fingerprint(a.pid, a.style):
             raise SystemExit(f'{key} 的样片截图还没有审阅通过，或审阅之后程序、样式、数据改过（{tool} --stills → 审阅 → {tool} --approve）')
         got = {x.name: file_hash(x) for x in still_files(stills)}
@@ -1233,7 +1236,7 @@ def main():
         print(f"  {'通过' if c else '不通过'} {n_}：{d}")
     fails = [f'{n_}：{d}' for n_, c, d in res if not c]
     if stills:                                    # 核查结果（样片.py / 大字版.py 据此判断这一篇、这种画面已经做好、可以跳过）：样片写在成品旁边，六级写 六级/样片/成品核查/
-        rep_dir = out if sample else C4 / '样片' / '成品核查'
+        rep_dir = out if sample else C4 / PJ['work'] / '成品核查'
         rep_dir.mkdir(parents=True, exist_ok=True)
         (rep_dir / (Path(name).stem + '_核查.json')).write_text(json.dumps(
             {'video': name, 'style': a.style, '指纹': fingerprint(a.pid, a.style), 'ok': not fails, 'duration': round(dur, 3),
