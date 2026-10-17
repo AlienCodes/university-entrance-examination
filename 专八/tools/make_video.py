@@ -113,7 +113,8 @@ sup.sd{margin-right:calc(var(--fs)*.084)}   /* 编号后紧跟破折号时留空
 .en .ph{white-space:nowrap}   /* 高亮短语整体不断行（t03 第二轮审阅：rough / treatment、at the / expense of），比一行还长的由 FIT 放开（phr） */
 x-n{display:inline-block}     /* 释义里的长括注：放得下一行就整体换到下一行（t03 第二轮审阅：（同 / gunwale）），放不下由 FIT 改成行内、只在指定处断开（notes） */
 .cont{color:#9aa39e;font-weight:400}
-.en x-ps{font-weight:400;color:var(--ink,#1c2421)}
+.en x-ps{font-weight:400;color:var(--ink,#1c2421)}   /* 只是排版前的初值：FIT 一开始把所有格的颜色、粗细、字体设成英文正文实测的样式（六级黑板审阅：--ink 只有样式 1、2 定义，黑板上所有格成了近黑色、几乎看不见） */
+x-ap{font-family:'Inter'}     /* 中文里英文词中间的撇号（Hunt’s）：思源黑体的“’”是全角（1 字宽，六级 s57 第 10 句 “Hunt’ s在”），改用英文字体画（zh_html 包 x-ap；画面 C 不包） */
 .bot{position:absolute;left:110px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;font-family:'Inter';font-size:22px;color:#6b746f;letter-spacing:.1em}
 .bar{flex:1;height:3px;background:#dcd8cc;margin:0 30px}.bar i{display:block;height:100%;background:#1f5c4a}
 .ttl{position:absolute;left:150px;right:150px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center}
@@ -165,13 +166,16 @@ def dash(h):
 
 
 UNITS = (r'kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(?:gram|metre|meter)s?|(?:centi|milli)?(?:metre|meter)s?|grams?|tonnes?|tons?'
-         r'|miles?|feet|foot|inch(?:es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?')
+         r'|miles?|feet|foot|inch(?:es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?'
+         r'|(?:m|b|tr)illions?|thousands?|hundreds?')      # 数目单位（六级黑板审阅：s01 “$13 / billion”、s05 “$250 / billion”金额被拆到两行）
 
 
 def esc_en(s):
     """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。
     数字与后面的单位之间用不换行空格（z25 截图审阅：“only about 6 / kg”“1,800 / kg”数字与单位被拆到两行）。"""
     s = re.sub(rf'(\d)\s+(?=(?:{UNITS})(?![A-Za-z]))', '\\1\u00a0', s)
+    # 试卷的中文注释与它注释的前一个词不断开（六级黑板审阅：s45 “toddlers / (学步儿童)”注释单独落到下一行行首）
+    s = re.sub(r'\s+(?=\([^()]*[\u4e00-\u9fff][^()]*\))', '\u00a0', s)
     h = dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
     # 悬空连字符与后面的 or/and 整体不断行（六级 s20 “right- / or left-brained”，行末是连字符；不换行空格不管用：浏览器允许在连字符后、不换行空格前断行）
     return re.sub(r'(?<![\w’-])([A-Za-z]+-) ((?:or|and|nor|to)\b)', r'<nobr>\1 \2</nobr>', h)
@@ -185,17 +189,15 @@ ZPROP = set('“”‘’')      # 专八译文字体霞鹜文楷的弯引号是
 def words(s, out):
     """超过 GLOSS_CHUNK 个字的释义块（如“（代替前面提到的复数名词）”）一行放不下，只允许在词与词之间断行：用 jieba 分词，每个多字词整体不断行
     （依赖：/opt/ttsenv/bin/pip install jieba）。"""
-    import logging
-    import jieba
-    jieba.setLogLevel(logging.WARNING)
     toks, names, pos = [], name_spans(s), 0
-    for w in jieba.cut(s):                           # 专八：人名间隔号与前后的词合成一块（t04 “温思罗普· / 凯洛格”在间隔号处断行）
+    for w in jb().cut(s):                           # 专八：人名间隔号与前后的词合成一块（t04 “温思罗普· / 凯洛格”在间隔号处断行）
         inside = any(a < pos < b for a, b in names)  # 登记的整名（人名.json）不在名字中间断开：分词切在名字里面时并到前一块
         if toks and (w.startswith('·') or toks[-1].endswith('·') or inside):
             toks[-1] += w
         else:
             toks.append(w)
         pos += len(w)
+    toks = head_tokens(toks)
     t = len(toks)                                    # 末尾至少两个字（不算标点）整体不断行，免得最后一行只剩一个字（z35 截图审阅）
     while t > 0 and sum(c.isalnum() for c in ''.join(toks[t:])) < 2:
         t -= 1
@@ -205,6 +207,20 @@ def words(s, out):
         res.append(f'<nobr>{piece}</nobr>' if len(w) > 1 else piece)
         i += len(w)
     return ''.join(res) + (f'<nobr>{"".join(out[i:])}</nobr>' if i < len(s) else '')
+
+
+def wordch(c):
+    """释义里算“字”的字符：汉字、字母数字、省略号（括注紧挨着它们时与括注是一体的，见 note_segment_html）。"""
+    return '\u4e00' <= c <= '\u9fff' or c.isalnum() or c == '…'
+
+
+def head_tokens(toks):
+    """长词串（超过 GLOSS_CHUNK 个字，words 在词间断开）开头至少两个字（不算标点）合成一块：不在行末单独留一个字
+    （六级黑板审阅：“内化；使 / 成为自身观念的一部分”“in the absence of 在 / 没有……的情况下”“……并 / 不像……那么简单”）。"""
+    out = list(toks)
+    while len(out) > 1 and sum(c.isalnum() for c in out[0]) < 2:
+        out[0:2] = [out[0] + out[1]]
+    return out
 
 
 def gloss_chunks(s):
@@ -225,13 +241,23 @@ def gloss_chunks(s):
             ch[k - 1:k + 1] = [[ch[k - 1][0], ch[k][1]]]
 
 
-def jieba_words(s):
-    """jieba 分词的位置 [(起, 止)]（覆盖整个 s）。译文按词绑定、layoutcheck 的“译文断词”都对整段文字分词，结果一致。"""
+def jb():
+    """jieba，先加载 分词补充.txt（与 layoutcheck 共用：中考/tools/画面核查/分词补充.txt；jieba 词典里没有、会切错的词，如“占比”）。"""
     import logging
     import jieba
-    jieba.setLogLevel(logging.WARNING)
+    if not getattr(jieba, '_zb_dict', False):
+        jieba.setLogLevel(logging.WARNING)
+        for w in (QA / '分词补充.txt').read_text('utf-8').splitlines():
+            if w.strip() and not w.startswith('#'):
+                jieba.add_word(w.strip())
+        jieba._zb_dict = True
+    return jieba
+
+
+def jieba_words(s):
+    """jieba 分词的位置 [(起, 止)]（覆盖整个 s）。译文按词绑定、layoutcheck 的“译文断词”都对整段文字分词，结果一致。"""
     out, pos = [], 0
-    for w in jieba.cut(s):
+    for w in jb().cut(s):
         out.append((pos, pos + len(w)))
         pos += len(w)
     return out
@@ -320,7 +346,9 @@ def zh_html(s, gloss=False):
     out = []
     for i, c in enumerate(s):
         nxt, prv = s[i + 1:i + 2], s[i - 1:i]
-        if c in fc and nxt and (nxt in ZCLOSE or nxt in ZOPEN):
+        if c in '’\'' and STYLE != 'C' and re.match(r'[A-Za-z]', prv) and re.match(r'[A-Za-z]', nxt):
+            out.append(f'<x-ap>{esc(c)}</x-ap>')        # 英文词中间的撇号（Hunt’s）用英文字体画（六级黑板审阅：思源黑体的“’”是全角）
+        elif c in fc and nxt and (nxt in ZCLOSE or nxt in ZOPEN):
             out.append(f'<span class="pr">{esc(c)}</span>')
         elif c in fo and (not prv or prv in ZOPEN):
             out.append(f'<span class="pl">{esc(c)}</span>')
@@ -338,17 +366,30 @@ def zh_html(s, gloss=False):
         chunks = lambda lo, hi: ''.join(('<wbr>' if a and s[lo + a] in '…—' else '') +
                                         (f'<nobr>{"".join(out[lo + a:lo + b])}</nobr>' if b - a <= GLOSS_CHUNK else words(s[lo + a:lo + b], out[lo + a:lo + b]))
                                         for a, b in gloss_chunks(s[lo:hi]))
+        def stretch(lo, hi):                         # 没有“括注 + 紧挨着的词”的一段：照旧（长括注单独排 note_html，其余按标点切块）
+            res, pos = [], lo
+            for a, b in long_notes(s):
+                if lo <= a and b <= hi:
+                    res += [chunks(pos, a) if a > pos else '', f'<x-n>{note_html(s[a:b], out[a:b])}</x-n>']
+                    pos = b
+            return ''.join(res) + (chunks(pos, hi) if pos < hi else '')
         res, pos = [], 0
-        for a, b in long_notes(s):                   # \u957f\u62ec\u6ce8\u5355\u72ec\u6392\uff08note_html\uff09\uff0c\u5176\u4f59\u7167\u65e7\u6309\u6807\u70b9\u5207\u5757
-            res += [chunks(pos, a) if a > pos else '', f'<x-n>{note_html(s[a:b], out[a:b])}</x-n>']
-            pos = b
-        return ''.join(res) + (chunks(pos, len(s)) if pos < len(s) else '')
+        for a, b in gloss_segments(s):               # 六级黑板审阅：括注与紧挨着的词所在的分句整体放进 x-n（note_segment_html）
+            h = note_segment_html(s, out, a, b)
+            if h:
+                res += [stretch(pos, a) if a > pos else '', h]
+                pos = b
+        return ''.join(res) + (stretch(pos, len(s)) if pos < len(s) else '')
     ish = lambda c: '\u4e00' <= c <= '\u9fff'
-    groups = [(m.start() - (m.start() > 0 and ish(s[m.start() - 1])), m.end() + (m.end() < len(s) and ish(s[m.end()])))
-              for m in re.finditer(r'[A-Za-z0-9]+', s)]          # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与紧挨的汉字绑在一起
+    # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与后面紧挨的汉字绑在一起（“Z世代”“20世纪”“2500亿”）。
+    # 六级黑板审阅：一段英文（含空格、撇号、百分号：Stable Diffusion、Hunt’s、100%）整体不断行（“Stable / Diffusion”“100% / 可再生”被拆开）；
+    # 只绑后面的汉字、不再绑前面的（“自20世”“和Midjourney提”与前后的词连成一长串，一行放不下整串换行，上一行空出 1/3：s05 第 5 句、s13 第 18 句、s02 第 1 句）
+    groups = [(m.start(), m.end() + (m.end() < len(s) and ish(s[m.end()]))) for m in re.finditer(LATIN_RUN, s)]
     groups += [(i - 1, i + 2) for i, c in enumerate(s) if c == '·' and 0 < i < len(s) - 1]      # 人名间隔号与前后各一个字不断开
     groups += name_spans(s)                                         # 登记的整名不断开（t03 审阅：“理查 / 德·帕克”）
     groups += [(a, b) for a, b in jieba_words(s) if b - a > 1 and all(ish(c) for c in s[a:b])]   # 词不拆开（t03 第二轮审阅：“蹦/跳”“相/同”“霎时/间”）
+    groups += [m.span() for m in re.finditer(r'“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》', s)]     # 短的引号术语、书名整体不断行（六级黑板审阅：“能源 / 转型”“非 / 转基因”《思考，快与 / 慢》）
+    groups += clause_edges(s)                                       # 分句开头、结尾不单独留一个字（六级黑板审阅：s37 “传达得 / 好，或许……”）
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
         k = han[-2]
@@ -366,6 +407,101 @@ def zh_html(s, gloss=False):
         res += out[pos:a] + [f'<nobr>{"".join(out[a:b])}</nobr>']
         pos = b
     return ''.join(res + out[pos:])
+
+
+LATIN_RUN = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*(?: [A-Za-z0-9][A-Za-z0-9’'.&%％-]*)*"      # 译文里的一段英文 / 数字（可含空格）
+
+
+def clause_edges(s):
+    """译文每个分句（，。、；：！？之间的一段）开头、结尾单独一个字（汉字）时，与相邻的那一个字单位（一个汉字或一段英文 / 数字）绑在一起：
+    一行的末尾不留分句的第一个字，下一行的开头不留分句的最后一个字（“传达得 / 好，”）。返回要整体不断行的 [(起, 止)]。"""
+    out = []
+    for m in re.finditer(r'[^，。、；：！？]+', s):
+        a, b = m.span()
+        units, i = [], a                             # 字单位：一个汉字或一段英文 / 数字（引号、括号、破折号等标点不算）
+        while i < b:
+            r = re.compile(LATIN_RUN).match(s, i, b)
+            j = r.end() if r and r.end() > i else i + 1
+            if r and r.end() > i or '\u4e00' <= s[i] <= '\u9fff':
+                units.append((i, j))
+            i = j
+        if len(units) < 2:
+            continue
+        if units[0][1] - units[0][0] == 1:           # 分句开头单独一个字：从分句开头绑到第二个字单位
+            out.append((a, units[1][1]))
+        if units[-1][1] - units[-1][0] == 1:         # 分句结尾单独一个字：从倒数第二个字单位绑到分句结尾
+            out.append((units[-2][0], b))
+    return out
+
+
+def nb(parts):
+    """几个字整体不断行（一个字不用包）。"""
+    h = ''.join(parts)
+    return f'<nobr>{h}</nobr>' if len(parts) > 1 else h
+
+
+def gloss_segments(s):
+    """释义的分句：在最外层（不在括号里）的 ，。、；：！？ 之后切开，标点（连同紧跟的右半空白标点）归前一个分句。返回 [(起, 止)]。"""
+    out, a, depth, i = [], 0, 0, 0
+    while i < len(s):
+        c = s[i]
+        if c in '（(':
+            depth += 1
+        elif c in '）)':
+            depth = max(0, depth - 1)
+        elif not depth and c in '，。、；：！？':
+            j = i + 1
+            while j < len(s) and s[j] in ZCLOSE:
+                j += 1
+            out.append((a, j))
+            a = i = j
+            continue
+        i += 1
+    if a < len(s):
+        out.append((a, len(s)))
+    return out
+
+
+def note_segment_html(s, out, a, b):
+    """六级黑板审阅：释义里括注与它紧挨着的词（中间没有标点）被拆到两行——“前景；（成功的） / 希望”“获取；使用 / （的机会）”“受（疾病） / 影响的”
+    “be covered by 受 / （法律、规定等）保护”“使 / （某事）以……为中心”，“以流媒体方式播放（音乐、视频等） / ；流式传输”分号落到行首。
+    含括注、括注外又有字的分句 s[a:b] 整体放进 x-n：放得下一行就整体不断行（FIT：x-n 是行内块，整块换到下一行）；放不下才在“词 | 括注”交界（<wbr>）、
+    括注里规定的地方（note_html）、长的词串的词间（words）断开。只有一个字的词串并进相邻的括注（不许单独留一个字：“受 / （法律……”）。
+    句末的标点放在 x-n 里面（不落到行首）。不是这种分句返回 None（照旧排）。layoutcheck 的“括注分离”“释义单字”逐屏核对。"""
+    ns = [(x + a, y + a) for x, y in notes(s[a:b])]
+    e = b
+    while e > a and s[e - 1] in ZCLOSE and not any(x <= e - 1 < y for x, y in ns):
+        e -= 1
+    parts, pos = [], a
+    for x, y in ns:
+        if x > pos:
+            parts.append(['run', pos, x])
+        parts.append(['note', x, y])
+        pos = y
+    if pos < e:
+        parts.append(['run', pos, e])
+    if not ns or not any(p[0] == 'run' and any(wordch(c) for c in s[p[1]:p[2]]) for p in parts):
+        return None
+    k = 0
+    while k < len(parts):                            # 只有一个字的词串并进相邻的括注（前面有括注并到前面，否则并到后面）
+        p = parts[k]
+        if p[0] == 'run' and sum(c.isalnum() for c in s[p[1]:p[2]]) <= 1 and len(parts) > 1:
+            if k:
+                parts[k - 1][2] = p[2]
+            else:
+                parts[1][1] = p[1]
+            del parts[k]
+            continue
+        k += 1
+    longs = long_notes(s)
+    html = []
+    for kind, x, y in parts:
+        t = s[x:y]
+        if kind == 'note':
+            html.append(note_html(t, out[x:y]) if any(x <= p and q <= y for p, q in longs) else nb(out[x:y]))
+        else:
+            html.append(nb(out[x:y]) if y - x <= GLOSS_CHUNK else words(t, out[x:y]))
+    return f'<x-n>{"<wbr>".join(html)}{"".join(out[e:b])}</x-n>'
 
 
 def look_files(look=None):
@@ -398,7 +534,21 @@ def page(body):
         extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}"><link rel="stylesheet" href="{ZH_BOLD.as_uri()}"><link rel="stylesheet" href="{INTER.as_uri()}"><link rel="stylesheet" href="{ZH_REGULAR.as_uri()}">'
         theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
     return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}{size_css()}</head>'
-            f'<body><div class="band"></div>{body}</body></html>')
+            f'<body><div class="band"></div>{flat_nobr(body)}</body></html>')
+
+
+def flat_nobr(h):
+    """去掉套在 <nobr> 里面的 <nobr>（外层已经不断行）：HTML 解析器遇到嵌套的 nobr 会先关掉外层、把元素拆开重排（“收养代理”算法），
+    六级 s39 第 17 句 <nobr><span class="w"><nobr>over-imitate</nobr>…</span>—</nobr> 被拆成空的高亮 span 加上一段没高亮的 over-imitate，
+    画面上这个生词成了正文白色（审阅员发现；layoutcheck 的“高亮丢失”逐屏查）。"""
+    out, d, pos = [], 0, 0
+    for m in re.finditer(r'<(/?)nobr\b[^>]*>', h):
+        out.append(h[pos:m.start()])
+        pos = m.end()
+        d += -1 if m.group(1) else 1
+        if (d == 0 and m.group(1)) or (d == 1 and not m.group(1)):
+            out.append(m.group(0))
+    return ''.join(out) + h[pos:]
 
 
 def set_style(look):
@@ -583,7 +733,21 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     // 分屏第一屏末尾的续接号“ …”与前面的字不断开；最后一个高亮短语连着续接号一行放不下时（六级 s26 第 19 句 “make a better life for themselves, …”
     // 伸出 71 像素），只好让这个短语在词间断开（layoutcheck 的“短语断开”按短语连同后面粘着的续接号的总宽判断）
     const c = en.lastElementChild, R = en.getBoundingClientRect().left + en.clientLeft + en.clientWidth, ps = en.querySelectorAll('.ph');
-    if (c && c.classList.contains('cont') && ps.length && c.getBoundingClientRect().right > R + 0.5) ps[ps.length - 1].style.whiteSpace = 'normal'; };
+    if (c && c.classList.contains('cont') && ps.length && c.getBoundingClientRect().right > R + 0.5) ps[ps.length - 1].style.whiteSpace = 'normal';
+    // 整体换到下一行的高亮短语让上一行空出一半以上时（六级黑板审阅：s54 “We / don't have to look further than”、s26 “actually / compares unfavourably to”
+    // 一行只剩一两个词），这个短语改为可以在词间断开，先把上一行填满；上一行已过半的照旧整体不断行（layoutcheck 的“英文短行”“短语断开”按同一条线判断）
+    // 上一行的长度按短语前面最后一个非空白字的右边界量（整体换行时和断开后，这个字的位置都不变；layoutcheck 用同一个量）
+    const L0 = en.getBoundingClientRect().left + en.clientLeft;
+    const before = e => { const w = document.createTreeWalker(en, NodeFilter.SHOW_TEXT); let n, last = null;
+      while ((n = w.nextNode()) && !e.contains(n) && (e.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_PRECEDING))
+        for (let i = n.data.length - 1; i >= 0; i--) if (!/\s/.test(n.data[i])) { last = [n, i]; break; }
+      if (!last) return null; const g = document.createRange(); g.setStart(last[0], last[1]); g.setEnd(last[0], last[1] + 1); const q = g.getClientRects(); return q[q.length - 1]; };
+    for (const e of ps) { if (e.style.whiteSpace === 'normal') continue;
+      const rs = [...e.getClientRects()].filter(q => q.width > 0); if (!rs.length || Math.abs(rs[0].left - L0) > 1) continue;
+      const p = before(e); if (p && p.bottom <= rs[0].top + 1 && p.right - L0 < 0.5 * lim) e.style.whiteSpace = 'normal'; } };
+  // 所有格（x-ps，不高亮）用英文正文实测的颜色、粗细、字体（六级黑板审阅：样式 3 没有 --ink，所有格成了近黑色；正文 600 而所有格写死 400）
+  { const c = getComputedStyle(document.querySelector('.en'));
+    for (const x of document.querySelectorAll('.en x-ps')) { x.style.color = c.color; x.style.fontWeight = c.fontWeight; x.style.fontFamily = c.fontFamily; } }
   let fs=st ? st[0] : FS0, vs=st ? st[1] : VS0; r.setProperty('--fs', fs+'px'); r.setProperty('--vs', vs+'px'); phr();
   const cv = document.createElement('canvas').getContext('2d');
   for (const s of document.querySelectorAll('.en sup')) { let n = s.previousSibling; while (n && n.nodeType === 1) n = n.lastChild || n.previousSibling;
@@ -773,7 +937,7 @@ def fingerprint(pid, look):
     """截图审阅的指纹（专八样片、六级）：生成程序、排版检查程序、这种画面的样式与字体、字号表、本项目人名表、该篇分屏方案与定稿数据；任何一样改了，截图就要重审。"""
     import hashlib
     h = hashlib.sha256()
-    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', HERE / '字号.json', T / '人名.json',
+    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', QA / '分词补充.txt', HERE / '字号.json', T / '人名.json',
               ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css', *look_files(look)]:
         h.update(str(Path(x).relative_to(ROOT)).encode())
         h.update(Path(x).read_bytes())

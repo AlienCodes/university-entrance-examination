@@ -46,11 +46,11 @@ R = HERE.parents[2]
 CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || [];
   const ZC='，。、：；！？）”’】」》', ZO='（“‘【「《', PUN=ZC+ZO+'…—·', out=[];
   const cjk = c => /[一-鿿]/.test(c);
-  const chars = el => { const res=[], w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
-    while ((n=w.nextNode())) for (let i=0;i<n.data.length;i++) { if (/\s/.test(n.data[i])) continue;
+  const chars = el => { const res=[], w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n, sp = false;
+    while ((n=w.nextNode())) for (let i=0;i<n.data.length;i++) { if (/\s/.test(n.data[i])) { if (/[ \t\n]/.test(n.data[i])) sp = true; continue; }
       const rg=document.createRange(); rg.setStart(n,i); rg.setEnd(n,i+1); const rs=rg.getClientRects(); if (!rs.length) continue;
-      const r=rs[rs.length-1]; res.push({c:n.data[i], l:r.left, r:r.right, t:r.top, b:r.bottom, el:n.parentElement, n, i}); }
-    return res; };
+      const r=rs[rs.length-1]; res.push({c:n.data[i], l:r.left, r:r.right, t:r.top, b:r.bottom, el:n.parentElement, n, i, sp}); sp = false; }
+    return res; };      // sp：这个字前面有可以断行的空格（不算不换行空格）——“英文短行”按它找下一行的第一个词
   // 换行：下一个字在前一个字左边，或明显低于前一个字（字身高度的 0.6 以上：一行只有一个字时，下一行的第一个字并不在它左边，专八埋雷测试发现）
   const lines = cs => { const L=[]; for (const x of cs) { const p=L.length && L[L.length-1][L[L.length-1].length-1];
       if (!p || x.l < p.l - 2 || x.t > p.t + 0.6 * (p.b - p.t)) L.push([x]); else L[L.length-1].push(x); } return L; };
@@ -68,6 +68,24 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       const after = y.n.data.slice(y.i), word = s.parentElement.textContent.slice(0, -s.textContent.length);
       if (/^’s(?![A-Za-z])/.test(after) || (/^’(?![A-Za-z])/.test(after) && /s$/.test(word) && !k.textContent.includes('‘')))
         out.push(`徽章撇号：${name}「${word.slice(-12)}」的编号 ${s.textContent} 把词和后面的所有格撇号隔开`); });
+    if (name === '英文' && breaks) {      // 六级黑板审阅（专八 / 六级引擎）
+      // 高亮丢失：s39 “over-imitate” 嵌套的 <nobr> 被 HTML 解析器拆开，高亮 span 空了、编号跑到 span 外面，生词成了正文白色
+      for (const sp of k.querySelectorAll('sup')) { const h = sp.parentElement;
+        if (!h.matches('.w, .ph')) out.push(`高亮丢失：英文编号 ${sp.textContent} 不在高亮词里（前面是「${(sp.previousSibling && sp.previousSibling.textContent || '').slice(-12)}」）`); }
+      for (const h of k.querySelectorAll('.w, .ph')) { const t = [...h.childNodes].filter(c => !(c.nodeType === 1 && c.matches('sup, x-ps'))).map(c => c.textContent).join('');
+        if (!/[A-Za-z0-9]/.test(t)) out.push(`高亮丢失：英文有一个空的高亮（${h.className}${h.querySelector('sup') ? ' 编号 ' + h.querySelector('sup').textContent : ''}）`); }
+      // 所有格样式：所有格不高亮，颜色、粗细、字体与英文正文相同（s05 corporations’ 等在黑板上是近黑色，几乎看不见）
+      const ec = getComputedStyle(k);
+      for (const p of k.querySelectorAll('x-ps')) { const c = getComputedStyle(p);
+        if (c.color !== ec.color || c.fontWeight !== ec.fontWeight || c.fontFamily !== ec.fontFamily)
+          out.push(`所有格样式：「${p.parentElement.textContent.slice(0, 16)}」的所有格是 ${c.color} ${c.fontWeight}，英文正文是 ${ec.color} ${ec.fontWeight}`); }
+      // 注释分离：试卷的中文注释“(学步儿童)”不能与它注释的前一个词分在两行（s45）
+      L.forEach((ln, i) => { if (i && ln[0].c === '(' && ln[1] && cjk(ln[1].c)) out.push(`注释分离：英文第 ${i + 1} 行以中文注释「${txt(ln).slice(0, 8)}」开头，与前一个词分开`); });
+      // 英文短行：不是最后一行、却空出一半以上，而下一行的第一个词放得进来（s54 “We / don't have to look further than”：高亮短语整体换行留下的空）
+      const W = k.clientWidth, spw = em(k) * 0.25;
+      L.forEach((ln, i) => { if (i === L.length - 1) return; const nx = L[i + 1]; let j = 1; while (j < nx.length && !nx[j].sp) j++;
+        const fill = ln[ln.length - 1].r - x0, word = nx[j - 1].r - nx[0].l;
+        if (fill < 0.5 * W && fill + spw + word <= W) out.push(`英文短行：英文第 ${i + 1} 行「${txt(ln).slice(0, 16)}」只占 ${Math.round(fill / W * 100)}%，下一行的「${txt(nx.slice(0, j))}」放得进来`); }); }
     if (name === '英文') L.flat().forEach((x, j, A) => { const s = x.el.closest('sup'), y = A[j + 1];             // z06 编号徽章贴着破折号
       if (s && y && !y.el.closest('sup') && '—–'.includes(y.c) && Math.abs(y.t - x.t) < 40 && y.l - s.getBoundingClientRect().right < 4)
         out.push(`徽章贴破折号：${name}徽章 ${s.textContent} 与「${y.c}」只隔 ${(y.l - s.getBoundingClientRect().right).toFixed(1)} 像素`); });
@@ -80,6 +98,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       const p = ln[j - 1], n = ln[j + 1], nr = n && (n.el.closest('sup') || n.el).getBoundingClientRect();
       if ((p && c - bar / 2 < p.r + 1) || (n && c + bar / 2 > (n.el.closest('sup') ? nr.left : n.l) - 1))
         out.push(`衬线I：${name}「${txt(ln).slice(Math.max(0, j - 4), j + 5)}」的 I 短横碰到相邻的字`); }));
+    if (breaks && name !== '英文') { const A = L.flat();      // 西文撇号：中文里英文词中间的撇号（Hunt’s）必须是窄的西文撇号（思源黑体的“’”是全角，s57 “Hunt’ s在”）
+      A.forEach((x, j) => { if ('’\''.includes(x.c) && j && j + 1 < A.length && /[A-Za-z]/.test(A[j - 1].c) && /[A-Za-z]/.test(A[j + 1].c) && x.r - x.l > em(x.el) * 0.5)
+        out.push(`西文撇号：${name}「${A.slice(Math.max(0, j - 5), j + 3).map(y => y.c).join('')}」的撇号是全角（宽 ${((x.r - x.l) / em(x.el)).toFixed(2)} 字）`); }); }
     for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && /^(Nunito|"?Baloo 2|"?Inter)/.test(getComputedStyle(x.el).fontFamily)) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }   // Baloo 2（专八共用背景 3、4）的 I 只比 l 矮 5%
     for (const x of L.flat()) if (x.c === '—' && !x.el.closest('x-dash') && /^"?ZH (Bold|Regular)/.test(getComputedStyle(x.el).fontFamily)) {   // 专八 t03 审阅：思源黑体的“—”是西文窄破折号，粗体汉字旁又细又偏下
       out.push(`中文破折号：${name}的「——」没有画成全角居中横线（x-dash）`); break; }
@@ -93,8 +114,12 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       if (name !== '英文' && i > 0) { const s = txt(L[i - 1]) + txt(ln), cut = txt(L[i - 1]).length;      // 登记的整名跨两行（理查 / 德·帕克）
         for (const nm of names) for (let j = s.indexOf(nm); j >= 0; j = s.indexOf(nm, j + 1))
           if (j < cut && j + nm.length > cut) out.push(`人名断开：${name}「${nm}」被拆到两行（${s.slice(j, cut)}／${s.slice(cut, j + nm.length)}）`); }
-      if (name === '译文' && i > 0) { const a = L[i - 1][L[i - 1].length - 1], an = /[A-Za-z0-9]/, h = cjk;            // z14 “所说的Z / 世代。”
-        if ((an.test(a.c) && h(f.c)) || (h(a.c) && an.test(f.c))) out.push(`中英断开：译文「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」英文与紧挨的汉字分在两行`); }
+      if (name === '译文' && i > 0) { const a = L[i - 1][L[i - 1].length - 1], an = /[A-Za-z0-9%％]/, h = cjk;            // z14 “所说的Z / 世代。”
+        // 专八 / 六级（breaks）：只查英文、数字与后面的汉字分开（Z / 世代、100% / 可再生）；汉字与后面的英文、数字之间可以断行（“自 / 20世纪”，六级黑板审阅：两边都绑会连成一长串、上一行空出一大段）
+        if ((an.test(a.c) && h(f.c)) || (!breaks && h(a.c) && an.test(f.c))) out.push(`中英断开：译文「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」英文与紧挨的汉字分在两行`);
+        if (breaks && /[A-Za-z0-9]/.test(a.c) && /[A-Za-z0-9]/.test(f.c)) out.push(`西文断开：译文里的英文「${txt(L[i - 1]).slice(-8)}／${txt(ln).slice(0, 8)}」被拆到两行`); }   // Stable / Diffusion
+      if (breaks && name !== '英文' && i > 0 && '，。、：；！？）”’】」》'.includes(f.c))      // 行首禁则（s02 “（音乐、视频等） / ；流式传输”）
+        out.push(`行首禁则：${name}第 ${i + 1} 行以「${f.c}」开头`);
       if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
       if (i > 0) { const a = L[i - 1][L[i - 1].length - 1];
         const g = f.el.closest('span[lang]');
@@ -144,9 +169,23 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
             out.push(['NOTE', name, gt, a, b, q, fits ? gt.slice(lo, hi).trim() : '']); } } } }
     if (breaks && name === '译文') { const om = offs(k);
       for (let j = 1; j < L.length; j++) { const a = L[j - 1][L[j - 1].length - 1], f = L[j][0];
-        if (cjk(a.c) && cjk(f.c) && om.has(f.n)) out.push(['ZHBRK', name, k.textContent, om.get(f.n) + f.i]); } }
+        if (cjk(a.c) && cjk(f.c) && om.has(f.n)) out.push(['ZHBRK', name, k.textContent, om.get(f.n) + f.i]);
+        if (om.has(f.n)) out.push(['ZHEDGE', name, k.textContent, om.get(f.n) + f.i]); } }     // 分句首尾单字、书名 / 术语断开（Python 判断）
+    if (breaks && isGloss) { const g = k.querySelector('span[lang]'), om = g && offs(g);      // 括注分离、释义开头 / 结尾单字（Python 判断，宽度用实测）
+      if (g) { const wd = new Array(g.textContent.length).fill(0);
+        const gt0 = g.textContent;
+        for (const ln of L) for (const x of ln) if (om.has(x.n)) { let w = x.r - x.l, q = om.get(x.n) + x.i;
+          if (x.el.classList.contains('pl') || x.el.classList.contains('pr')) { const c = getComputedStyle(x.el); w += parseFloat(c.marginLeft) + parseFloat(c.marginRight); }
+          // 行首的左括号被 FIT 去掉了左半空白（.po → .pl）；放在一行里时它在行中、是全宽：按全宽算（设计上就去半字的：紧跟在左标点后面或在释义开头，不加）
+          if (x === ln[0] && x.el.classList.contains('pl') && q > 0 && !ZO.includes(gt0[q - 1])) w += em(x.el) / 2;
+          wd[q] = w; }
+        const sw = (() => { const c2 = document.createElement('canvas').getContext('2d'), gs = getComputedStyle(g); c2.font = `${gs.fontWeight} ${gs.fontSize} ${gs.fontFamily}`; return c2.measureText(' ').width; })();
+        g.textContent.split('').forEach((c, q) => { if (/\s/.test(c)) wd[q] = sw; });
+        for (let j = 1; j < L.length; j++) { const f = L[j][0], a = L[j - 1][L[j - 1].length - 1];
+          if (om.has(f.n)) out.push(['GBRK', name, g.textContent, om.get(f.n) + f.i, om.has(a.n), wd, x1 - x0]); } } }
     if (name === '英文') for (let j = 1; j < L.length; j++)
-      if (/\d$/.test(txt(L[j - 1].filter(x => !x.el.closest('sup')))) && /^(kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(gram|metre|meter)s?|(centi|milli)?(metre|meter)s?|grams?|tonnes?|tons?|miles?|feet|foot|inch(es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?)(?![A-Za-z])/.test(txt(L[j])))
+      if (/\d$/.test(txt(L[j - 1].filter(x => !x.el.closest('sup')))) && (/^(kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(gram|metre|meter)s?|(centi|milli)?(metre|meter)s?|grams?|tonnes?|tons?|miles?|feet|foot|inch(es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?)(?![A-Za-z])/.test(txt(L[j]))
+          || (breaks && /^((m|b|tr)illions?|thousands?|hundreds?)(?![A-Za-z])/.test(txt(L[j])))))     // 数目单位只对专八 / 六级（六级黑板审阅：“$13 / billion”）
         out.push(`数字单位：英文「${txt(L[j - 1]).slice(-8)} / ${txt(L[j]).slice(0, 8)}」数字与单位被拆到两行`);
   };
   const ttl = document.querySelector('.ttl h1');
@@ -188,6 +227,13 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         for (let t; (t = wk.nextNode());) if (!e.contains(t) && (e.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) {
           tr.selectNodeContents(t); for (const q of tr.getClientRects()) tw += q.width; } }
       if (W <= en.clientWidth + 0.5 && W + tw > en.clientWidth + 0.5 && e === [...en.querySelectorAll('.ph')].pop() && en.lastElementChild && en.lastElementChild.classList.contains('cont')) continue;
+      // 例外（六级黑板审阅）：短语整体换到下一行会让上一行空出一半以上（s54 “We / don't have to look further than”），可以在词间断开——
+      // 按断开后短语前面那段文字的实测右边界判断（与 make_video FIT 的 phr 同一条线：不到行宽的一半）
+      { const w2 = document.createTreeWalker(en, NodeFilter.SHOW_TEXT); let n2, lastc = null;      // 短语前面最后一个非空白字
+        while ((n2 = w2.nextNode()) && !e.contains(n2) && (e.compareDocumentPosition(n2) & Node.DOCUMENT_POSITION_PRECEDING))
+          for (let i = n2.data.length - 1; i >= 0; i--) if (!/\s/.test(n2.data[i])) { lastc = [n2, i]; break; }
+        if (lastc) { const g2 = document.createRange(); g2.setStart(lastc[0], lastc[1]); g2.setEnd(lastc[0], lastc[1] + 1); const q2 = g2.getClientRects(), last = q2[q2.length - 1];
+          if (last && last.bottom > rs[0].top + 1 && last.right - (en.getBoundingClientRect().left + en.clientLeft) < 0.5 * en.clientWidth) continue; } }
       if (W <= en.clientWidth + 0.5) out.push(`短语断开：英文高亮短语「${e.textContent}」放得下一行（宽 ${Math.round(W)}，行宽 ${en.clientWidth} 像素）却被拆到两行`); } }
   // 词条间距（专八共用背景 2：样式里的 .v b{margin:0 -.08em} 把词条与词性之间的间距吃掉，成了“backn.”）：同一行上词条、词性、释义的文字之间至少隔词汇栏字号的 0.15 倍
   if (gaps) for (const el of document.querySelectorAll('.v b')) if (el.textContent.includes('...'))      // 专八 t03 审阅：分开的短语词条 pull...through 用了三个点
@@ -224,12 +270,28 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
 }"""
 
 
-def ok_break(g, k):
-    if g[k - 1:k].isspace() or g[k:k + 1].isspace():          # 释义里的英文（as A as it is）在空格处换行，正常
-        return True
+def jb(z8=False):
+    """jieba；z8（专八 / 六级）先加载本目录的 分词补充.txt（与专八 make_video.jb 相同；中考不加载，结果不变）。"""
     import logging
     import jieba
     jieba.setLogLevel(logging.WARNING)
+    if z8 and not getattr(jieba, '_zb_dict', False):
+        for w in (HERE / '分词补充.txt').read_text('utf-8').splitlines():
+            if w.strip() and not w.startswith('#'):
+                jieba.add_word(w.strip())
+        jieba._zb_dict = True
+    return jieba
+
+
+def wordch(c):
+    return '\u4e00' <= c <= '\u9fff' or c.isalnum() or c == '…'
+
+
+def ok_break(g, k, z8=False):
+    """z8（专八 / 六级）：分词先加载 分词补充.txt。"""
+    if g[k - 1:k].isspace() or g[k:k + 1].isspace():          # 释义里的英文（as A as it is）在空格处换行，正常
+        return True
+    jieba = jb(z8)
     zc, zo = '，。、：；！？）”’】」》', '（“‘【「《'
     cuts = [0] + [i for i in range(1, len(g)) if (g[i - 1] in zc and g[i] not in zc) or (g[i] in zo and g[i - 1] not in zo)] + [len(g)]
     ch = [[a, b] for a, b in zip(cuts, cuts[1:]) if b > a]
@@ -256,13 +318,10 @@ def ok_break(g, k):
     return k in pos
 
 
-def jieba_bounds(t):
-    """t 按 jieba 分词后的词边界位置（与 专八 make_video.jieba_words 一样对整段文字分词）。"""
-    import logging
-    import jieba
-    jieba.setLogLevel(logging.WARNING)
+def jieba_bounds(t, z8=False):
+    """t 按 jieba 分词后的词边界位置（与 专八 make_video.jieba_words 一样对整段文字分词；z8 先加载 分词补充.txt）。"""
     out, i = {0}, 0
-    for w in jieba.cut(t):
+    for w in jb(z8).cut(t):
         i += len(w)
         out.add(i)
     return out
@@ -333,6 +392,109 @@ def font_fallback(pg):
     return [f'字体回退：「{t}」用了系统字体 {fam}（只能用网页字体）' for fam, t in bad.items()]
 
 
+LATIN_RUN = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*(?: [A-Za-z0-9][A-Za-z0-9’'.&%％-]*)*"
+CLAUSE = r'[^，。、；：！？]+'
+TERM = r'“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》'
+
+
+def zh_edge(t, k):
+    """译文在 t[k] 之前断行（六级黑板审阅）：分句（，。、；：！？之间的一段）开头或结尾只有一个字落在断点的一边（“传达得 / 好，”），
+    或者把短的引号术语、书名拆开（“能源 / 转型”、《思考，快与 / 慢》）。返回问题文字或 None。"""
+    import re
+    for m in re.finditer(TERM, t):
+        if m.start() < k < m.end():
+            return f'术语断开：译文「{t[m.start():k]}／{t[k:m.end()]}」短的引号术语或书名被拆到两行'
+    for m in re.finditer(CLAUSE, t):
+        a, b = m.span()
+        if not a < k < b:
+            continue
+        units, i = [], a                    # 字单位：一个汉字或一段英文 / 数字（标点不算）
+        while i < b:
+            r = re.compile(LATIN_RUN).match(t, i, b)
+            j = r.end() if r and r.end() > i else i + 1
+            if r and r.end() > i or '\u4e00' <= t[i] <= '\u9fff':
+                units.append((i, j))
+            i = j
+        left, right = [u for u in units if u[1] <= k], [u for u in units if u[0] >= k]
+        if len(left) == 1 and left[0][1] - left[0][0] == 1 or len(right) == 1 and right[0][1] - right[0][0] == 1:
+            return f'分句单字：译文「{t[a:k]}／{t[k:b]}」分句的第一个或最后一个字单独落在另一行'
+    return None
+
+
+def note_span(g, k):
+    """g[k] 是左括号或 g[k-1] 是右括号时，这个括注（最外层）的 (起, 止)。"""
+    st, spans = [], []
+    for i, c in enumerate(g):
+        if c in '（(':
+            st.append(i)
+        elif c in '）)' and st:
+            a = st.pop()
+            if not st:
+                spans.append((a, i + 1))
+    return next(((a, b) for a, b in spans if a == k or b == k), None)
+
+
+def segments(g):
+    """释义的分句：最外层（不在括号里）的 ，。、；：！？ 之后切开，标点连同紧跟的右半空白标点归前一个分句（与专八 make_video.gloss_segments 分开写）。"""
+    out, a, depth, i = [], 0, 0, 0
+    while i < len(g):
+        c = g[i]
+        if c in '（(':
+            depth += 1
+        elif c in '）)':
+            depth = max(0, depth - 1)
+        elif not depth and c in '，。、；：！？':
+            j = i + 1
+            while j < len(g) and g[j] in '，。、：；！？）”’】」》':
+                j += 1
+            out.append((a, j))
+            a = i = j
+            continue
+        i += 1
+    if a < len(g):
+        out.append((a, len(g)))
+    return out
+
+
+def depth_at(g, k):
+    d = 0
+    for c in g[:k]:
+        d = d + 1 if c in '（(' else max(0, d - 1) if c in '）)' else d
+    return d
+
+
+def gloss_break(name, g, k, prev_in, wd, linew):
+    """释义在 g[k] 之前断行（六级黑板审阅）：
+    括注分离——在括注与紧挨着的词（中间没有标点）之间断开（“前景；（成功的） / 希望”“使用 / （的机会）”“受 / （法律、规定等）保护”），
+    而这个分句（最外层标点之间，连同句末标点）整个放得下一行（宽度按每个字实测相加）；
+    释义单字——在括号外断开时，分句开头或结尾只有一个字落在断点的一边（“内化；使 / 成为……”“在 / 没有……的情况下”“……并 / 不像……”）。"""
+    import re
+    out = []
+    if not prev_in or k <= 0 or k >= len(g):
+        return out
+    seg = next(((a, b) for a, b in segments(g) if a < k < b), None)
+    if seg and ((g[k] == '（' and wordch(g[k - 1])) or (g[k - 1] == '）' and wordch(g[k]))):
+        w = sum(wd[seg[0]:seg[1]])
+        if w <= linew - 2:
+            out.append(f'括注分离：{name}释义「{g[seg[0]:k]}／{g[k:seg[1]]}」括注与紧挨着的词被拆到两行（这个分句宽 {round(w)}，行宽 {round(linew)} 像素，放得下一行）')
+    if seg and not depth_at(g, k):
+        a, b = seg
+        while b > a and g[b - 1] in '，。、；：！？）”’】」》' and depth_at(g, b - 1) == 0:      # 去掉句末标点（括注的右括号不算）
+            b -= 1
+        lc, rc = sum(c.isalnum() for c in g[a:k]), sum(c.isalnum() for c in g[k:b])
+        if (lc == 1 and re.search(r'[\u4e00-\u9fff]', g[a:k])) or (rc == 1 and re.search(r'[\u4e00-\u9fff]', g[k:b])):
+            out.append(f'释义单字：{name}释义「{g[a:k]}／{g[k:b]}」分句开头或结尾的一个字单独落在另一行')
+    return out
+
+
+def jieba_words_z8(t):
+    out, i = [], 0
+    for w in jb(True).cut(t):
+        out.append((i, i + len(w)))
+        i += len(w)
+    return out
+
+
 def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, breaks=False):
     """当前页面（已排版）的排版问题列表；make_video.py 每屏截图前调用，有问题就不生成视频。
     poss：是否查“徽章撇号”；names：登记的中文整名（查是否被拆到两行）；fonts：是否查字体回退；gaps：是否查词条间距；
@@ -345,13 +507,19 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
                 res.append(f'括注断开：{name}释义「{g[a:k]}／{g[k:b]}」英文片段「{run}」放得下一行却被拆开')
             elif not note_ok(g[a:b], k - a):
                 res.append(f'括注断开：{name}释义「{g[a:k]}／{g[k:b]}」')
+        elif isinstance(x, list) and x[0] == 'ZHEDGE':  # 分句首尾单字、短术语 / 书名拆开（专八 / 六级）
+            why = zh_edge(x[2], x[3])
+            if why:
+                res.append(why)
+        elif isinstance(x, list) and x[0] == 'GBRK':    # 括注分离、释义单字（专八 / 六级）
+            res += gloss_break(*x[1:])
         elif isinstance(x, list) and x[0] == 'ZHBRK':   # 译文在一个词的中间断行
             _, name, t, k = x
-            if k not in jieba_bounds(t):
+            if k not in jieba_bounds(t, breaks):
                 res.append(f'译文断词：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」把一个词拆到两行')
         elif isinstance(x, list):        # 释义在标点以外的地方断行：只有超过 9 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
             _, name, g, k = x
-            if not ok_break(g, k):
+            if not ok_break(g, k, breaks):
                 res.append(f'释义断词：{name}「{g[max(0, k - 6):k]}／{g[k:k + 6]}」')
         else:
             res.append(x)
@@ -403,6 +571,8 @@ def main():
         M = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(M)
         argv = argv[:j] + argv[j + 2:]
+        if proj != '中考' and hasattr(M, 'set_project'):      # 专八 / 六级的旧版引擎（如 专八/tools/make_video_审阅前.py）：切到要查的项目
+            M.set_project(proj, look=False)
     else:
         import make_video as M
     if '--style' in argv:                 # 专八：画面 C、1–6
