@@ -98,4 +98,5 @@
 | ④ 总核查 | `/opt/ttsenv/bin/python 六级/tools/verify_all.py` |
 
 截图在 `六级/样片/截图/<篇目>/screenNN.webp`（无损 WebP，不入库），每篇一张总览图 `总览.jpg`，参考文字 `ref/<篇目>.txt`，结果 `汇总.json`。
-分屏方案 `六级/tools/分屏.json`（337 句，`分屏建议.py --project 六级` 出候选、逐句按意思核对）；人名 `六级/tools/人名.json`；定稿登记 `六级/ann/复核通过.json`。
+分屏方案 `六级/tools/分屏.json`（338 句、多出 382 屏，`分屏建议.py --project 六级` 出候选、逐句按意思核对）；人名 `六级/tools/人名.json`；定稿登记 `六级/ann/复核通过.json`。
+移植时为六级加的每一处排版修正、检查放宽都双向验证过（撤掉修正 → 受影响的屏必须报出；现在 → 0；放宽的检查埋雷必须报出）：`/opt/ttsenv/bin/python 六级/tools/画面核查/双向验证.py`（19 项）。
