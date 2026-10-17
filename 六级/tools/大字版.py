@@ -163,6 +163,16 @@ def contact(d, pngs, sizes):
 def stills(ids, force):
     from playwright.sync_api import sync_playwright
     P = passages()
+    import fcntl
+    SHOTS.mkdir(parents=True, exist_ok=True)
+    locks = []                  # 踩坑 54：同一篇同时开两份截图进程，会互相删对方的截图（专八 t02、t06、t09 屏数不对）——每篇加独占锁，已有进程在画就直接退出
+    for pid in ids:
+        lk = open(SHOTS / f'{pid}.lock', 'w')
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            sys.exit(f'{pid}：另一个进程正在画这一篇的截图（同时画两份会互相删截图，踩坑 54），这次不启动；等它画完再说')
+        locks.append(lk)
     report = json.loads((SHOTS / '汇总.json').read_text('utf-8')) if (SHOTS / '汇总.json').exists() else {}
     common = []
     r = subprocess.run([PY, str(ROOT / '专八' / 'tools' / '字号标定.py'), '--check'], capture_output=True, text=True)
