@@ -1,5 +1,6 @@
 # 六级仔细阅读精读视频（教室黑板、大字版）在 GitHub 自己的机器上生成、核查、打包、发布——不靠本容器醒着（会话空闲时容器被挂起，踩坑 51）。
-# 触发：修改 .github/cet6-render.txt 并推送。第 1 行 = 运行标签（以 test 开头 = 试跑：照样生成、核查、打包核对，但不发布）；
+# 触发：修改 .github/cet6-render.txt 并推送。第 1 行 = 运行标签（以 test 开头 = 试跑：照样生成、核查、打包核对，但不发布；
+#       以 probe 开头 = 只查环境：每篇只重画截图、与审阅登记逐字节比对，不生成视频、不打包——几分钟知道这批机器能不能逐字节重现审过的截图）；
 #       第 2 行起每行一个篇目（s01 … s60；空行和 # 开头的行不算）。不写篇目 = 只汇总打包发布（用仓库里和以前运行留下的视频）。
 # 流程：
 #   prep    核对清单（篇目存在、已审阅登记、登记指纹与现在的程序和数据一致），预热缓存（Python 环境、Chromium 141、语音识别模型），写 manifest（60 篇的顺序与文件名）
@@ -107,6 +108,7 @@ jobs:
         id: ${{ fromJSON(needs.prep.outputs.ids) }}
     env:
       ID: ${{ matrix.id }}
+      PROBE: ${{ startsWith(needs.prep.outputs.tag, 'probe') }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -151,6 +153,7 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
       - name: 生成 4K 视频 + 全部成品核查
+        if: env.PROBE != 'true'
         run: |
           t0=$(date +%s)
           rc=0; env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/tools/大字版.py --video "$ID" || rc=$?
@@ -158,12 +161,14 @@ jobs:
           echo "VIDEO_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
           exit $rc
       - name: verify_all 独立复测
+        if: env.PROBE != 'true'
         run: |
           t0=$(date +%s)
           env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/tools/verify_all.py "$ID"
           grep -E '^- ' 六级/核查报告_黑板.md
           echo "VERIFY_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
       - name: 整理要上传的文件（核查结果再核一遍）
+        if: env.PROBE != 'true'
         run: |
           mkdir -p out
           env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
@@ -201,6 +206,7 @@ jobs:
           PY
           ls -la out
       - uses: actions/upload-artifact@v4
+        if: env.PROBE != 'true'
         with:
           name: cet6-chalk-${{ matrix.id }}
           path: out/
@@ -209,7 +215,7 @@ jobs:
 
   publish:
     needs: [prep, render]
-    if: ${{ !cancelled() && needs.prep.result == 'success' && (needs.render.result == 'success' || needs.render.result == 'skipped') }}
+    if: ${{ !cancelled() && needs.prep.result == 'success' && (needs.render.result == 'success' || needs.render.result == 'skipped') && !startsWith(needs.prep.outputs.tag, 'probe') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:

@@ -2,7 +2,8 @@
 
 视频来源（按优先级）：
   ① 本次运行生成的：artifacts/cet6-chalk-<篇目>/（视频、_核查.json、meta.json、核查报告、日志）
-  ② 仓库里已提交的：六级/最终视频_黑板/<文件名>（核查结果 六级/样片/成品核查/<文件名>_核查.json，同时提交的）
+  ② 仓库里已提交的：六级/最终视频_黑板/<文件名>（核查结果 六级/样片/成品核查/<文件名>_核查.json，同时提交的；指纹与现在的审阅登记不同就不用，
+     如 s47 是 07:18 重新审阅登记之前 03:40 做的样片）
   ③ 以前运行留下、还没过期的 artifact cet6-chalk-<篇目>（最新的优先）：某几篇失败、修好后只重跑那几篇时，其余的不用重做
 每一个都核对：核查结果全部通过、指纹 = 截图审阅登记（截图审阅通过.json）的指纹（登记之后程序、样式、数据都没改过）、体积与核查时相同、≤ 95 MB；
 artifact 另核 sha256 和 verify_all 结果。
@@ -11,7 +12,7 @@ artifact 另核 sha256 和 verify_all 结果。
 Python zipfile 读出来是乱码，中文 Windows 解压也会乱码；Python 写的 zip 对非 ASCII 文件名自动打 UTF-8 标记。
 打完逐个核对（踩坑 43：一律用 Python zipfile）：文件名与顺序、不压缩、每个文件大小、CRC（testzip）、每包 < 2 GB（Release 单个附件上限）。
 
-环境变量：TAG（发布标签，以 test 开头 = 试跑：缺的篇目只提示、用现有的打包核对，不发布）、GITHUB_REPOSITORY、GITHUB_RUN_ID、GH_TOKEN。
+环境变量：TAG（运行标签，以 test 开头 = 试跑：缺的、不能用的篇目只提示，用现有的打包核对，不发布；本次生成的核对不通过一律报错）、GITHUB_REPOSITORY、GITHUB_RUN_ID、GH_TOKEN。
 输出：videos/、CET6-chalkboard-videos-partN-of-M.zip、zips.txt、notes.md、timing.md（本次每篇用时）。
 """
 import hashlib
@@ -120,7 +121,7 @@ def from_old_runs(pid, name):
 def main():
     rendered = set(MAN['render'])
     tracked = committed()
-    got, missing, bad, timing = [], [], [], []
+    got, missing, bad, stale, timing = [], [], [], [], []
     for e in MAN['passages']:
         pid, name = e['id'], e['name']
         if pid in rendered:
@@ -134,28 +135,29 @@ def main():
             timing.append(f'| {pid} | {m.get("秒", {}).get("截图", "")} | {m.get("秒", {}).get("视频", "")} | {m.get("秒", {}).get("verify_all", "")} '
                           f'| {m.get("size", 0) / 2**20:.1f} | {m.get("cpu", "")} |')
             continue
-        if f'六级/最终视频_黑板/{name}' in tracked:
+        whys = []
+        if f'六级/最终视频_黑板/{name}' in tracked:            # 仓库里的不能用（如 s47 是重新审阅登记之前做的样片）就接着找以前运行留下的
             why = from_repo(pid, name)
-            if why:
-                bad.append(f'{pid}（仓库）：{why}')
-            else:
+            if not why:
                 got.append((pid, name, '仓库'))
-            continue
-        src, whys = from_old_runs(pid, name)
+                continue
+            whys.append(f'仓库里的：{why}')
+        src, old = from_old_runs(pid, name)
         if src:
             got.append((pid, name, src))
         else:
             missing.append(pid)
-            if whys:
-                print(f'{pid}：以前的 artifact 都不能用：' + '；'.join(whys), flush=True)
+            stale.extend(f'{pid}：{w}' for w in whys + old)
     for pid, name, src in got:
         print(f'✅ {pid} {name}（{src}，{(VID / name).stat().st_size / 2**20:.1f} MB）', flush=True)
     for x in bad:
         print(f'❌ {x}', flush=True)
+    for x in stale:
+        print(f'{"⚠️" if TEST else "❌"} 不能用：{x}', flush=True)
     if missing:
-        print(f'{"⚠️" if TEST else "❌"} 还没有视频的篇目（{len(missing)} 篇）：{" ".join(missing)}', flush=True)
+        print(f'{"⚠️" if TEST else "❌"} 没有可用视频的篇目（{len(missing)} 篇）：{" ".join(missing)}', flush=True)
     if bad or (missing and not TEST):
-        sys.exit('有视频不能用或缺视频，不打包、不发布' if bad else '缺视频，不打包、不发布（标签以 test 开头才允许缺）')
+        sys.exit('本次生成的视频核对不通过，不打包、不发布' if bad else '缺视频，不打包、不发布（标签以 test 开头才允许缺）')
     order = [e['name'] for e in MAN['passages']]
     names = [n for n in order if (VID / n).exists()]
     assert names == [n for _, n, _ in got], '顺序与篇目顺序（vocab.json）不一致'
