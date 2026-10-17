@@ -764,7 +764,10 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     for (const e of ps) { if (e.style.whiteSpace === 'normal') continue;
       const rs = [...e.getClientRects()].filter(q => q.width > 0); if (!rs.length) continue;
       const [p, h] = before(e), first = h || rs[0]; if (Math.abs(first.left - L0) > 1) continue;
-      if (p && p.bottom <= first.top + 1 && p.right - L0 < 0.5 * lim) e.style.whiteSpace = 'normal'; } };
+      // 上一行：按两个字的竖直中心比（相差超过半个字号就是不同行）。原来比“上一行字框底 ≤ 短语字框顶”，晴空校园的 Nunito 字框高 1.364 字、行高只有 1.3，
+      // 上下两行的字框互相重叠，判断失效（专八 t03 第 4 句 “in a manner that / made my heart sink” 上一行只占 45%，layoutcheck 的“英文短行”查出）
+      const fsz = parseFloat(getComputedStyle(en).fontSize);
+      if (p && (first.top + first.bottom) / 2 - (p.top + p.bottom) / 2 > 0.5 * fsz && p.right - L0 < 0.5 * lim) e.style.whiteSpace = 'normal'; } };
   // 所有格（x-ps，不高亮）用英文正文实测的颜色、粗细、字体（六级黑板审阅：样式 3 没有 --ink，所有格成了近黑色；正文 600 而所有格写死 400）
   { const c = getComputedStyle(document.querySelector('.en'));
     for (const x of document.querySelectorAll('.en x-ps')) { x.style.color = c.color; x.style.fontWeight = c.fontWeight; x.style.fontFamily = c.fontFamily; } }
