@@ -49,7 +49,7 @@ CASES = [  # 篇目, 句号, 必须报出的检查（审阅前的引擎）, 审�
     ('s02', 1, '译文短行', 'Stability AI、 / DeviantArt'), ('s05', 10, '译文短行', '总额 / 为2500亿美元'),
 ]
 LATER = [  # 审阅之后补的修正：篇目, 句号, (现在的源码片段, 撤掉后), 必须报出的检查
-    ('s02', 5, ("        if c == '‘' and i and s[i - 1] not in ZOPEN and not any(a < i < b for a, b in merged):\n            out[i] = '<wbr>' + out[i]\n", ''),
+    ('s02', 5, ("            out[i] = '<wbr>' + out[i]\n", "            pass\n"),
      '译文短行'),
 ]
 驳回 = {  # 审阅意见不是真问题（不改，理由）
