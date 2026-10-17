@@ -17,10 +17,10 @@
 ② --approve：只登记“截图是用现在的程序和数据画的（指纹一致）、程序检查全部通过、截图文件没动过”的篇目，写进
    六级/tools/画面核查/截图审阅通过.json（键 <篇目>@3，指纹 + 每张截图的哈希）。
 ③ --video：只做已登记、且登记之后程序、样式、数据都没改过的篇目（make_video.py 再核对一遍，并逐屏与审过的截图比对，不一致就不编码）；
-   成品 六级/最终视频/<年份月份 第几套 Passage One/Two 题目>.mp4（与旧版同名，覆盖旧版），全部成品核查（verify_videos 全套、分屏换屏、电磁音、
+   成品 六级/最终视频_黑板/<年份月份 第几套 Passage One/Two 题目>.mp4（与旧版同名；放新文件夹，不覆盖、不删除 六级/最终视频/ 里的旧版——2026-10-17 协调人要求），全部成品核查（verify_videos 全套、分屏换屏、电磁音、
    结尾静音、逐屏画面与截图一致、成品体积 ≤ 95 MB）不通过就删除成品；核查结果 六级/样片/成品核查/<文件名>_核查.json。
    已经做好并核查通过、指纹没变的篇目直接跳过（中断后重跑同一条命令就从断处接着做）；日志在 六级/样片/日志/<篇目>.log，汇总 六级/样片/汇总.json。
-   适合 setsid nohup 脱离会话跑。全部做完后：/opt/ttsenv/bin/python 六级/tools/verify_all.py
+   适合 setsid nohup 脱离会话跑。全部做完后：/opt/ttsenv/bin/python 六级/tools/verify_all.py（核查 六级/最终视频_黑板/，报告 六级/核查报告_黑板.md）
 """
 import argparse
 import json
@@ -38,6 +38,7 @@ C6 = HERE.parent
 ROOT = C6.parent
 OUT = C6 / '样片'
 SHOTS = OUT / '截图'
+VIDEOS = C6 / '最终视频_黑板'                 # 教室黑板成品（旧版 60 个仍在 六级/最终视频/，不动）
 PY = sys.executable
 sys.path.insert(0, str(HERE))
 import make_video as M  # noqa: E402  六级入口：专八/tools/make_video.py 切到 --project 六级
@@ -254,7 +255,7 @@ def video(ids):
     for pid in ids:
         p = P[pid]
         name = M.video_name(p)
-        mp4, rep = C6 / '最终视频' / name, OUT / '成品核查' / (Path(name).stem + '_核查.json')
+        mp4, rep = VIDEOS / name, OUT / '成品核查' / (Path(name).stem + '_核查.json')
         fp = M.fingerprint(pid, LOOK)
         if reg.get(f'{pid}@{LOOK}', {}).get('指纹') != fp:
             summary[pid] = {'视频': name, '结果': '没做：截图还没审阅登记，或登记之后程序、样式、数据改过', '时间': time.strftime('%Y-%m-%d %H:%M:%S')}
@@ -275,7 +276,7 @@ def video(ids):
         if rep.exists():
             rep.unlink()                  # 旧的核查结果作废，免得失败后误判
         with open(log, 'w', encoding='utf-8') as fh:
-            rc = subprocess.run([PY, str(HERE / 'make_video.py'), pid], stdout=fh, stderr=subprocess.STDOUT).returncode
+            rc = subprocess.run([PY, str(HERE / 'make_video.py'), pid, '--out', str(VIDEOS)], stdout=fh, stderr=subprocess.STDOUT).returncode
         r = json.loads(rep.read_text('utf-8')) if rep.exists() else None
         good = rc == 0 and mp4.exists() and r and r['ok'] and r['指纹'] == fp
         tail = log.read_text('utf-8').strip().splitlines()[-6:]

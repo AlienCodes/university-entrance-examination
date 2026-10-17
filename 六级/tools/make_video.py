@@ -8,7 +8,7 @@
 数据 六级/data/vocab.json、音频 六级/audio/timings.json（cet4_male，沿用，不重新生成）、定稿登记 六级/ann/复核通过.json、
 分屏 六级/tools/分屏.json、人名 六级/tools/人名.json、截图审阅登记 六级/tools/画面核查/截图审阅通过.json、
 片头 CET-6 · READING · SECTION C / 大学英语六级、页眉 CET-6 READING、默认画面 3 教室黑板、
-文件名与旧版相同：年份月份 第几套 Passage One/Two 题目.mp4（六级/最终视频/）。
+文件名与旧版相同：年份月份 第几套 Passage One/Two 题目.mp4（大字版.py --video 写到 六级/最终视频_黑板/，旧版留在 六级/最终视频/）。
 其他六级工具 `import make_video` 得到的就是这个引擎（已切到六级），如 verify_all.py、layoutcheck.py --project 六级。
 
 旧版（2026-10-12 起生成已发布的 60 个视频：米白底「杂志编号注释」、EB Garamond、64/30px 起）原样保存在 make_video_旧版.py，

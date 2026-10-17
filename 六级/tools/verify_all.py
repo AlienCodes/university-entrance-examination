@@ -3,7 +3,7 @@
 再加上四级自己的文件名规则（年份月份 第几套 Passage One/Two 题目）、文件名不重复、视频与音频是同一版本。
 结果写到 四级/核查报告.md；任何一项不通过，退出码非 0。可指定篇目：verify_all.py c40 c39 …
 六级大字版（2026-10-16 起，教室黑板）：make_video 是与专八共用的引擎（--project 六级），分屏可多屏，每个换屏点都重新测；另查成品体积 ≤ 95 MB。
-结果写到 六级/核查报告.md。可指定篇目：verify_all.py s01 s02 …
+结果写到 六级/核查报告_黑板.md（核查 六级/最终视频_黑板/；旧版的 六级/核查报告.md 不动）。可指定篇目：verify_all.py s01 s02 …
 """
 import json
 import re
@@ -18,7 +18,7 @@ sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / '
 from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
 from verify_videos import check                  # noqa: E402
 
-FINAL = C4 / '最终视频'
+FINAL = C4 / '最终视频_黑板'                     # 教室黑板成品（大字版.py --video 写这里）；旧版 60 个在 六级/最终视频/，是旧引擎做的，不用本程序核查
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
             print('缺少视频：', missing)
             return 1
         files = [f for f in files if f.name in want]
-    lines = ['# 六级最终视频核查报告', '', f'对 `六级/最终视频/` 里的 {len(files)} 个 MP4 成品逐个实测（解码音轨、读取每一帧时间戳），逐项核对。', '']
+    lines = ['# 六级最终视频核查报告', '', f'对 `六级/{FINAL.name}/` 里的 {len(files)} 个 MP4 成品逐个实测（解码音轨、读取每一帧时间戳），逐项核对。', '']
     allok = True
     for mp4 in files:
         p = byname.get(mp4.name)
@@ -63,7 +63,7 @@ def main():
         lines += [f"- {'✅' if c else '❌'} {n}：{d}" for n, c, d in res]
         lines.append('')
     lines[3:3] = [f"**结论：{'全部通过' if allok else '有未通过的项目'}**", '']
-    (C4 / '核查报告.md').write_text('\n'.join(lines), 'utf-8')
+    (C4 / '核查报告_黑板.md').write_text('\n'.join(lines), 'utf-8')
     print('全部通过' if allok else '有未通过的项目')
     return 0 if allok else 1
 
