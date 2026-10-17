@@ -162,8 +162,11 @@ def nobr(h):
 
 
 def dash(h):
-    """破折号与前一个词不断开（第 2 批截图核查：z19 “comes in¹ / —giving”一行以破折号开头）。h 是已转义的 HTML，标签里的字不动。"""
-    return re.sub(r'(<[^>]*>)|(?<![\w’-])([A-Za-z0-9’]+[—–])', lambda m: m.group(1) or f'<nobr>{m.group(2)}</nobr>', h)
+    """破折号与前一个词不断开（第 2 批截图核查：z19 “comes in¹ / —giving”一行以破折号开头）。h 是已转义的 HTML，标签里的字不动。
+    专八校园版（t10 第 20、22 句，杰克·伦敦原文“king,—king”“large,—he”“pounds,—for”）：词与破折号之间还隔着逗号等标点时同样不断开；
+    前面的词是高亮词（标签隔开）时，至少把“标点 + 破折号”绑在一起（逗号前本来就不能断行）。"""
+    return re.sub(r'(<[^>]*>)|(?<![\w’-])([A-Za-z0-9’]+[,;:.!?’”)]*[—–])|([,;:.!?’”)]+[—–])',
+                  lambda m: m.group(1) or f'<nobr>{m.group(2) or m.group(3)}</nobr>', h)
 
 
 UNITS = (r'kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(?:gram|metre|meter)s?|(?:centi|milli)?(?:metre|meter)s?|grams?|tonnes?|tons?'
@@ -191,7 +194,14 @@ def words(s, out):
     """超过 GLOSS_CHUNK 个字的释义块（如“（代替前面提到的复数名词）”）一行放不下，只允许在词与词之间断行：用 jieba 分词，每个多字词整体不断行
     （依赖：/opt/ttsenv/bin/pip install jieba）。"""
     toks, names, pos = [], name_spans(s), 0
-    for w in jb().cut(s):                           # 专八：人名间隔号与前后的词合成一块（t04 “温思罗普· / 凯洛格”在间隔号处断行）
+    cuts = sorted({x for ab in names for x in ab})
+    raw, q = [], 0                                   # 专八校园版 t04 第 8 句：jieba 把“凯洛格和温思罗普”切成“格和温”，跨过两个名字的边界，
+    for w in jb().cut(s):                            # 两个名字连同“和”并成一整块不断行、伸出词汇栏 16 像素——先在登记人名的边界处把分词切开
+        e = q + len(w)
+        for c in [x for x in cuts if q < x < e]:
+            raw.append(s[q:c]); q = c
+        raw.append(s[q:e]); q = e
+    for w in raw:                           # 专八：人名间隔号与前后的词合成一块（t04 “温思罗普· / 凯洛格”在间隔号处断行）
         inside = any(a < pos < b for a, b in names)  # 登记的整名（人名.json）不在名字中间断开：分词切在名字里面时并到前一块
         if toks and (w.startswith('·') or toks[-1].endswith('·') or inside):
             toks[-1] += w
@@ -405,8 +415,10 @@ def zh_html(s, gloss=False):
             merged.append((a, b))
     # 左单引号前面可以断行：浏览器（Chromium）不在汉字与“‘”之间断行（“”之前可以），s02 第 5 句“还会让‘艺术家’……”整串推到下一行、上一行空出 4.5 字
     # （layoutcheck 的“译文短行”查出）；中文排版里左引号只是不能落在行末，前面照常可以断
+    # 专八校园版 t09 第 8 句：“收尾，说道：“她总是……”——Chromium 不在“：”与“““之间断行（引号两边按规则不断），“说道：“她”连成一串推到下一行、
+    # 上一行空出 3 个字（layoutcheck 的“译文短行”查出）；左双引号紧跟在标点后面时，在引号前面加断行点（引号照旧不落在行末）
     for i, c in enumerate(s):
-        if c == '‘' and i and s[i - 1] not in ZOPEN and not any(a < i < b for a, b in merged):
+        if (c == '‘' and i and s[i - 1] not in ZOPEN or c == '“' and i and s[i - 1] in '：，。！？；、') and not any(a < i < b for a, b in merged):
             out[i] = '<wbr>' + out[i]
     res, pos = [], 0
     for a, b in merged:
@@ -498,6 +510,19 @@ def note_segment_html(s, out, a, b):
                 parts[1][1] = p[1]
             del parts[k]
             continue
+        k += 1
+    k = 0
+    while k < len(parts):                            # 括注里只有一个字（“（个）”“（口）”）：并进相邻的词串，不单独换行（专八校园版 t09 第 8 句“一两 / （个）”、
+        p = parts[k]                                 # 第 29 句“（口） / 就等着……吧”，layoutcheck 的“释义单字”“孤字”查出）：后面有词串并到后面，否则并到前面
+        if p[0] == 'note' and sum(c.isalnum() for c in s[p[1]:p[2]]) <= 1 and len(parts) > 1:
+            if k + 1 < len(parts) and parts[k + 1][0] == 'run' and k == 0:
+                parts[k + 1][1] = p[1]
+                del parts[k]
+                continue
+            if k and parts[k - 1][0] == 'run':
+                parts[k - 1][2] = p[2]
+                del parts[k]
+                continue
         k += 1
     longs = long_notes(s)
     html = []
