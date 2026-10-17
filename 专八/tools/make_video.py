@@ -498,7 +498,8 @@ def note_segment_html(s, out, a, b):
     for kind, x, y in parts:
         t = s[x:y]
         if kind == 'note':
-            html.append(note_html(t, out[x:y]) if any(x <= p and q <= y for p, q in longs) else nb(out[x:y]))
+            # 长括注自己再包一层 x-n：分句放不下一行时，括注本身放得下一行就整体换行（不在括注里断开；FIT 先定里层、再定外层）
+            html.append(f'<x-n>{note_html(t, out[x:y])}</x-n>' if any(x <= p and q <= y for p, q in longs) else nb(out[x:y]))
         else:
             html.append(nb(out[x:y]) if y - x <= GLOSS_CHUNK else words(t, out[x:y]))
     return f'<x-n>{"<wbr>".join(html)}{"".join(out[e:b])}</x-n>'
@@ -723,7 +724,7 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
   const notes = () => { const sc = getComputedStyle(side), R = side.getBoundingClientRect().left + side.clientLeft + side.clientWidth - parseFloat(sc.paddingRight);
     for (const e of document.querySelectorAll('x-n nobr.lr')) { e.style.whiteSpace = '';      // 按词汇栏内边距量：网格列会被不断行的片段撑宽（六级 s39 “three- and four-year-olds”伸出 20 像素）
       if (e.getBoundingClientRect().width > e.closest('.v > div').clientWidth + 0.5 || e.getBoundingClientRect().right > R + 0.5) e.style.whiteSpace = 'normal'; }
-    for (const x of document.querySelectorAll('x-n')) { x.style.display = '';
+    for (const x of [...document.querySelectorAll('x-n')].reverse()) { x.style.display = '';      // 先里层后外层（释义分句的 x-n 里套着长括注的 x-n）
       if (x.getBoundingClientRect().height > parseFloat(getComputedStyle(x).lineHeight) * 1.5) x.style.display = 'inline'; } };
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
