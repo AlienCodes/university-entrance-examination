@@ -1,0 +1,12 @@
+/* ===== 专八版调整（专八/tools/make_video.py --style 2；追加在共用基础样式 tools/video/themes/css/2_手账笔记本.css 之后）===== */
+/* 封面：右上角圆形贴纸由中考的「逐句 / 背单词」改为专八的「专八 / 精读」（与书卷水墨封面的「专八精读」印章同义） */
+.ttl::after{content:'专八\A精读'}
+/* 中文统一用粗体黑体（用户 2026-10-16：“中文字体统一使用微软雅黑，加粗一下”；微软雅黑不能下载打包，用外形几乎一样的思源黑体 Bold 代替，
+   字体定义见 专八/tools/fonts/zh-bold.css）：基础样式里凡是用霞鹜文楷的地方都换成 'ZH Bold'，英文字体和英文粗细不变 */
+html,body{font-family:'Nunito','ZH Bold',sans-serif}
+.top span,.ttl .tag,.ttl .sub,.ttl .meta{font-family:'Nunito','ZH Bold'}
+.en{font-family:'Nunito','ZH Bold',sans-serif}
+.zh,.v span,.bot span:last-child,.ttl::after,.ttl h1,.legend{font-family:'ZH Bold'}
+/* 中文破折号“——”画成全角居中粗横（原因和数值见 3_教室黑板.css 的 x-dash） */
+x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transparent}
+x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.715em;height:.11em;background:currentColor;border-radius:.02em}

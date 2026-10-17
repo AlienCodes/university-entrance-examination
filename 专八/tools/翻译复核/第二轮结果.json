@@ -1,0 +1,601 @@
+{
+ "results": [
+  {
+   "id": "t01",
+   "findings": [
+    {
+     "sent": 14,
+     "field": "zh",
+     "headword": "",
+     "current": "虽然正如特兰西克和她的同事们此前报告过的，现有较便宜的电动汽车所提供的续航里程就能满足人们绝大部分的日常驾驶需求，但通常总有那么几次，人们需要开得远得多。",
+     "proposed": "正如特兰西克和同事们此前所报告的，现有较便宜的电动汽车所提供的续航里程就能满足人们绝大部分的日常驾驶需求，但通常总有那么几次，人们需要开得远得多。",
+     "reason": "“虽然正如……报告过的，……”是照搬英文 While…, as… 语序的连词叠用，读来别扭；去掉“虽然”，让步关系仍由后半句的“但”承担，意思不变；“她的”属多余代词。",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches line 170 of the file. Stacking 虽然 and 正如 at the start of the sentence copies the English 'While…, as…' word order and reads awkwardly; an editor would rewrite it. The proposal loses no meaning. 但 still carries the concession, and 此前所报告的 keeps 'have reported'. Every clause is kept: the vast majority of daily needs, existing lower-cost cars, the range they provide, and the few times people must drive much farther. Dropping 她的 is fine because 特兰西克和同事们 is natural and still exact."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In the current line, 虽然 and 正如 are stacked at the start. That copies the English While…, as… order and reads awkwardly; a Chinese editor would rewrite it. The fix keeps the meaning. 就能 (\"can already\") followed by 但 (\"but\") still carries the contrast, and the 正如 clause attaches to the clause right after it, just as the as-clause does in the English. Dropping the extra 她的 (\"her\") is natural and loses nothing. The proposal adds no new error."
+    }
+   ]
+  },
+  {
+   "id": "t02",
+   "findings": [
+    {
+     "sent": 29,
+     "field": "zh",
+     "headword": "",
+     "current": "然而，正如列车员们喜欢指出的那样，并没有一套记功制度与之配套。",
+     "proposed": "然而，列车员们总喜欢指出：并没有一套记功制度与之配套。",
+     "reason": "“正如……喜欢指出的那样”是照搬 As-从句的翻译腔，“喜欢指出的那样”搭配生硬；改为主句直述，意思不变（列车员爱挑明这一点），“喜欢”“指出”仍可对应高亮短语。",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file and is accurate. \"正如……喜欢指出的那样\" is a normal Chinese pattern for an As-clause, keeps the narrator's own statement, and puts 然而 on the fact itself. It is not clear translationese. The proposal turns the line into reported speech by the trainmen (\"列车员们总喜欢指出：…\"), so 然而 now attaches to their pointing out rather than to the fact. That is no more precise and only arguably more natural, so this does not meet the bar for a final check."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current line is accurate, and 正如……的那样 is a normal Chinese way to render an As-clause, not a clear error. It also keeps the original structure: the narrator states the fact and the trainmen's remark is an aside. The proposal turns that into reported speech after 指出：, adds 总, and moves 然而 so it contrasts with the trainmen's remark rather than with the demerit system. The gain is marginal and a matter of taste. When in doubt, do not report."
+    }
+   ]
+  },
+  {
+   "id": "t03",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t04",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t05",
+   "findings": [
+    {
+     "sent": 25,
+     "field": "add",
+     "headword": "",
+     "current": "",
+     "proposed": "Arctic=n. 北极地区",
+     "reason": "In '(Inuit from the western Arctic)', Arctic is a noun meaning the Arctic region. It has no entry in this sentence, but the file annotates Arctic every other time it appears ([1], [7], [14], [15], [34]), so leaving it out here breaks the rule that every word to memorise is annotated in each sentence.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In [25], 'the western Arctic' uses Arctic as a noun meaning the Arctic region, and the sentence has no entry for it. Every other occurrence in the file is annotated, and [15] uses the same 'n. 北极地区' for the noun 'the Arctic'. The proposed POS and sense are correct here and match the Chinese '北极西部'."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In '(Inuit from the western Arctic)', Arctic is a noun meaning the Arctic region. The ZH (北极西部) already reflects this, but the sentence has no entry for it, even though Arctic is annotated in every other sentence where it appears. [15] uses the same noun sense with 'n. 北极地区', so the proposed gloss is correct, matches that entry, and fills a real gap."
+    }
+   ]
+  },
+  {
+   "id": "t06",
+   "findings": [
+    {
+     "sent": 22,
+     "field": "zh",
+     "headword": "",
+     "current": "从一开始，那些就是关于灾难的印象；如果说我也是个阴郁的人，总爱看人生的阴暗面，那么我把这归因于：本该是我快乐欢欣的童年时光，却是在一个养鸡场上度过的。",
+     "proposed": "那些印象从一开始就是关于灾难的；如果说我也是个阴郁的人，总爱看人生的阴暗面，那么我把这归因于：本该是我快乐欢欣的童年时光，却是在一个养鸡场上度过的。",
+     "reason": "“那些就是关于灾难的印象”照搬英文 they were impressions of… 的结构：光杆“那些”作主语，后面又重复“印象”，读来生硬。把“那些印象”放到句首做主语更顺。改后“从一开始”和“关于……的印象”都还在，与高亮词条对得上；其余部分一字未动。",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 40,
+     "field": "zh",
+     "headword": "",
+     "current": "车子两侧支棱出廉价椅子的腿；在那一堆床、桌子和装满厨房用具的箱子后部，放着一板条箱活鸡，箱子上面是那辆婴儿车，我还是婴儿时，曾被人放在里面推着到处转。",
+     "proposed": "车子两侧支棱出廉价椅子的腿；床、桌子和装满厨房用具的箱子堆作一堆，这堆东西的后部放着一板条箱活鸡，板条箱上面是那辆婴儿车，我还是婴儿时，曾被人放在里面推着到处转。",
+     "reason": "“装满厨房用具的箱子后部”容易读成“这些箱子的后部”，而原文 at the back of the pile 指的是整堆东西的后部。后面的“箱子上面”也指代不清：前文既有装厨房用具的箱子，又有板条箱，而 on top of that 指的是板条箱。改后两处指代都明确了，语义没有增减，“后部”“一堆”“板条箱”仍与词条对应。",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 6,
+     "field": "drop",
+     "headword": "o’clock",
+     "current": "o’clock  (单词)  adv. ……点钟",
+     "proposed": "",
+     "reason": "No TEM-8 learner needs to memorise o’clock, so this entry is clearly pointless. It also sits out of order after the other entries for the sentence, which suggests it was tacked on. The sentence still has seven other entries without it.",
+     "severity": "low",
+     "lens": "gloss"
+    },
+    {
+     "sent": 39,
+     "field": "drop",
+     "headword": "Albert Griggs",
+     "current": "Albert Griggs  (短语)  艾伯特·格里格斯（人名）",
+     "proposed": "",
+     "reason": "This is a personal name, not vocabulary, and labelling it 短语 is wrong because a name is not a phrase. It is also inconsistent: Thomas Butterworth, Ben Head, Bidwell and Caesar have no entries. The sentence keeps six real entries without it.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In \"从一开始，那些就是关于灾难的印象\", a bare 那些 is the subject and 印象 is then repeated, which copies \"they were impressions of\" and reads stiffly. \"那些印象从一开始就是关于灾难的\" says exactly the same thing (from the beginning, impressions, of disaster) more naturally. It still matches the from the beginning and impression of entries, and the rest of the line is unchanged."
+    },
+    {
+     "index": 1,
+     "verdict": "amend",
+     "why": "The problem is real. In the current line, 箱子上面 could mean the kitchen-utensil boxes or the crate, but \"on top of that\" refers only to the crate. \"装满厨房用具的箱子后部\" also invites the reading \"the back of the boxes\" when the English means the back of the whole pile. The proposed restructuring fixes both, but 堆作一堆 is unidiomatic, so I changed it to 堆成一堆. Every clause is kept, and the entries (pile, at the back of, crate, on top of) still line up.",
+     "amended_proposed": "车子两侧支棱出廉价椅子的腿；床、桌子和装满厨房用具的箱子堆成一堆，这堆东西的后部放着一板条箱活鸡，板条箱上面是那辆婴儿车，我还是婴儿时，曾被人放在里面推着到处转。"
+    },
+    {
+     "index": 2,
+     "verdict": "reject",
+     "why": "The entry is accurate: dictionaries class o’clock as an adverb, and the sense ……点钟 fits this sentence. The annotation policy includes basic words throughout (quite, cheap, neighbor, childhood, and Wednesday/Saturday elsewhere), and t09 glosses o’clock the same way. An elementary but correct entry is a matter of preference, not a definite error."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches the file. Albert Griggs is a personal name, not vocabulary to memorise, and labelling it 短语 is wrong. It is also inconsistent within the passage: Thomas Butterworth, Ben Head, Bidwell and Caesar have no entries. No checker requires the entry, and the sentence keeps six real entries without it."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In the current line, a bare 那些 is the subject and 印象 is repeated after it (那些就是关于灾难的印象), which follows the English structure and reads awkwardly. Putting 那些印象 first as the subject is more natural and means the same thing. 从一开始 and 关于……的印象 still match their highlighted entries, and nothing else in the line changes."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "There is real ambiguity in the current line. In 那一堆床、桌子和装满厨房用具的箱子后部, 后部 can be read as the back of the boxes, but the English 'at the back of the pile' means the whole pile. The later 箱子上面 is also unclear, since there are two kinds of box. The proposal says this pile's back (这堆东西的后部) and on the crate (板条箱上面). It is accurate and natural, nothing is added or lost, and 一堆, 后部 and 板条箱 still match the entries."
+    },
+    {
+     "index": 2,
+     "verdict": "reject",
+     "why": "The entry is not wrong: dictionaries classify o'clock as an adverb, and ……点钟 is the right meaning. The t07 file glosses o'clock the same way, so this follows the project's usual practice. Being basic or listed last in the sentence is not an error, so removing it is a matter of taste."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "A personal name is not vocabulary a learner should memorise, and labelling a name 短语 is a misclassification. The entry would also highlight a name in the video as if it were a word to learn. It is inconsistent too: other names in this passage (Thomas Butterworth, Ben Head, Bidwell, Caesar) have no entries. Sentence 39 keeps six real entries, so the at-least-one-word rule is still met."
+    }
+   ]
+  },
+  {
+   "id": "t07",
+   "findings": [
+    {
+     "sent": 20,
+     "field": "gloss",
+     "headword": "consume",
+     "current": "v. 摄入；消耗",
+     "proposed": "v. 摄入；食用",
+     "reason": "Here 'consume sugar' means to eat or take in sugar. '消耗' means to use up or burn off (energy, resources), which is a different sense and could lead the learner to read the WHO advice as being about using up sugar.",
+     "severity": "low",
+     "lens": "gloss"
+    },
+    {
+     "sent": 12,
+     "field": "drop",
+     "headword": "Tim Gill",
+     "current": "Tim Gill",
+     "proposed": "",
+     "reason": "This is a person's name, not vocabulary to memorise, and it is wrongly labelled 短语. The sentence already has many real entries, and the name is translated in the ZH line.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches line 181. In \"adults consume no more than six teaspoons of sugar per day\", consume means taking sugar in. 消耗 means using something up (energy, resources), which is the wrong sense and could mislead the learner. The proposed \"v. 摄入；食用\" gives the sense the sentence actually uses."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches line 112. Tim Gill is a personal name, not vocabulary to memorise, and labelling it 短语 is wrong. The ZH line already renders it as 蒂姆·吉尔. Sentence 11 does not annotate the name Richard Di Natale either. Removing this entry still leaves 13 real entries for sentence 12."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In sentence 20, 'consume … sugar' means taking sugar into the body (摄入/食用). '消耗' means using up or burning off, which is a different sense, so the current gloss is wrong for this sentence. The proposed '摄入；食用' is exact and matches the ZH line ('摄入的糖', '摄入量')."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "'Tim Gill' is a person's name, not vocabulary a TEM-8 learner needs to memorise, and labelling it 短语 is wrong. The ZH line already renders the name (蒂姆·吉尔). Sentence 12 keeps 13 other entries, so removing this one breaks no rule."
+    }
+   ]
+  },
+  {
+   "id": "t08",
+   "findings": [
+    {
+     "sent": 10,
+     "field": "zh",
+     "headword": "",
+     "current": "在那里工作的六个月里，我学会了细细品味这个名称所有那些更带讥讽意味的弦外之音；不过就工作而言，它涉及的是拆解或者说分解影视剧本。",
+     "proposed": "在那里工作的六个月里，我学会了细细品味这个名称中所有更带讥讽意味的弦外之音；不过就工作而言，它涉及的是拆解或者说分解影视剧本。",
+     "reason": "“这个名称所有那些……弦外之音”是逐词对应 all of that phrase's 的译法：名词“名称”后面直接跟“所有那些”，读起来不顺。改成“这个名称中所有……”，意思不变，语句通顺。",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 34,
+     "field": "zh",
+     "headword": "",
+     "current": "每个工作日，一班吃苦耐劳的人员在天亮前把分解表送到经纪人的家里或办公室；天亮之后，由四名配有寻呼机的Breakdown外勤人员组成的小队则频频出没于各大制片厂，随时准备扑向能弄到手的剧本。",
+     "proposed": "每个工作日，一班吃苦耐劳的人员在天亮前把分解表送到经纪人的家里或办公室；天亮之后，四名配有寻呼机的Breakdown外勤人员则组成小队，频频出没于各大制片厂，随时准备扑向能弄到手的剧本。",
+     "reason": "“由四名配有寻呼机的Breakdown外勤人员组成的小队”照搬了 a quartet of pager-equipped ... field workers 的结构，主语前是一长串带两个“的”的“由……组成的”修饰语，属于典型的翻译腔。改成“四名……外勤人员则组成小队”，仍保留“四人”“配有寻呼机”和小队的意思。",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file. It is accurate and acceptable as it stands. Putting a noun or name directly before 所有那些 is ordinary Chinese, as in 他所有那些朋友, and 那些 carries the emphasis of 'all of that phrase's'. The proposal is only a small refinement, and 名称中 shifts the meaning slightly from echoes of the name to echoes inside it. This is not a definite error or clear translationese."
+    },
+    {
+     "index": 1,
+     "verdict": "reject",
+     "why": "The current text matches the file. 由……组成的小队 is a standard construction in written Chinese, and the line is accurate: it covers post-dawn, the quartet, pager-equipped and haunted. The proposal 组成小队 turns the quartet into an action (the four people form a team), which the English does not say. That makes it no more precise, and only slightly more natural at best. Since in doubt, do not report."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "“这个名称所有那些……弦外之音”读起来别扭。“名称所有”可能被误读成“为名称所有”，而且“所有那些”是照搬 all of that 的痕迹。“这个名称中所有更带讥讽意味的弦外之音”意思完全一样（that phrase 仍译成“这个名称”），语句通顺。"
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "现译主语前堆了很长的修饰语“由四名配有寻呼机的Breakdown外勤人员组成的”，带两个“的”，是明显的翻译腔。改译保留了 quartet（四名）、pager-equipped（配有寻呼机）、post-dawn（天亮之后）和小队的意思。“则”仍然和前一分句形成对照，没有引入新的错误。"
+    }
+   ]
+  },
+  {
+   "id": "t09",
+   "findings": [
+    {
+     "sent": 20,
+     "field": "zh",
+     "headword": "",
+     "current": "我好几次都没找对，这一点不用人说，我用眼角的余光就看得出来；但最后，我知道自己一定正直直地看着那样东西了——这是从他身上一波波无形地涌出的喜悦中知道的。",
+     "proposed": "我好几次都没找对，这一点不用人说，我用眼角的余光就看得出来；但最后，我知道自己一定是在直直地看着那样东西了——我是从他的喜悦中知道的，那喜悦正一波波无形地从他身上涌出来。",
+     "reason": "“一定正直直地”容易被读成“正直／直地”，造成误读；“这是从他身上一波波无形地涌出的喜悦中知道的”把一长串修饰语塞进“从……中知道的”框架里，是典型的翻译腔。改写后先说“从他的喜悦中知道的”，再另起一句说喜悦如何涌出，意思不增不减（knew it from / pleasure / issuing / in invisible waves / from him 都还在），高亮词 straight（直直地）、issue（涌出）、invisible（无形）、waves（一波波）仍可辨认。",
+     "severity": "medium",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In \"一定正直直地\", readers can take \"正直\" as one word, which is a real misreading risk. \"从……涌出的喜悦中知道的\" packs a long attributive phrase into a frame, which is translationese. The rewrite keeps every element of the EN: must be looking straight at the thing (一定是在直直地看着), knew it from the pleasure (我是从他的喜悦中知道的), issuing in invisible waves from him (一波波无形地从他身上涌出来). It reads clearly more naturally, and the highlighted words still map cleanly."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "“一定正直直地”读起来会卡在“正直”上，母语编辑一定会改；“这是从他身上一波波无形地涌出的喜悦中知道的”把很长的修饰语塞在“喜悦”前面，是明显的翻译腔。改后的版本意思准确完整（knew it from、pleasure、issuing、invisible、waves、from him 都译出来了），中文更自然，高亮词仍能对上，没有引入新错误。"
+    }
+   ]
+  },
+  {
+   "id": "t10",
+   "findings": [
+    {
+     "sent": 27,
+     "field": "zh",
+     "headword": "",
+     "current": "1897年秋天，巴克就是这副样子；那时，克朗代克发现了金矿，这一发现把世界各地的人都拖进了冰封的北国。",
+     "proposed": "1897年秋天，巴克就是这副样子；那时，克朗代克发现的金矿正把世界各地的人拖进冰封的北国。",
+     "reason": "EN 'when the Klondike strike dragged men from all the world into the frozen North' places the dragging, not the discovery, in fall 1897. The current ZH '那时，克朗代克发现了金矿' says the gold was found at that time. That is a factual shift: the strike was in 1896, as the file's own gloss for Klondike says. The added '都' also overstates 'men from all the world' (people from all over the world, not everyone).",
+     "severity": "medium",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In the EN the subject is 'the Klondike strike' and the verb is 'dragged', so the time clause dates the dragging, not the discovery. The current '那时，克朗代克发现了金矿' says the gold was found in fall 1897, but it was found in 1896, as the line's own Klondike gloss says. The proposal keeps every clause: 1897 fall, 这副样子 for 'the manner', 世界各地的人 for 'men from all the world', and 拖进冰封的北国. '克朗代克发现的金矿' reads naturally as 'gold found at the Klondike', the same pattern as '某地发现的化石', and 正 correctly makes the dragging the thing going on at that time."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "This is a real error. In the EN, the 'when' clause dates the dragging of men to the North to fall 1897, not the strike itself. The current ZH '那时，克朗代克发现了金矿' says the gold was found in fall 1897. That contradicts history and the sentence's own Klondike gloss (1896). The proposal fixes it with '克朗代克发现的金矿正把……拖进'. The '正' fits the ongoing 1897 rush. Using a place name in 'X发现的Y' is normal Chinese (cf. 云南发现的化石). The sentence still reads naturally, and dropping the overstating '都' is a small bonus."
+    }
+   ]
+  },
+  {
+   "id": "z3",
+   "findings": [
+    {
+     "sent": 4,
+     "field": "zh",
+     "headword": "",
+     "current": "此前两周，每天的工作最晚上午十点左右就开始，一刻不停地持续6个小时。",
+     "proposed": "此前两周，每天的工作最晚上午十点左右就开始，一刻不停地持续16个小时。",
+     "reason": "The number is wrong: EN says 'continued nonstop for 16 hours', but ZH says 6个小时.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "在水面以下52英尺处，“调查者”号直立着，完整无损，保存得相当糟糕。",
+     "proposed": "在水面以下25英尺处，“调查者”号直立着，完整无损，保存得出奇完好。",
+     "reason": "Two errors. 'Twenty-five feet' was turned into 52英尺. 'remarkably well preserved' was translated as its opposite, 保存得相当糟糕, which also clashes with 完整无损 and with 'frozen in time' in [22].",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 10,
+     "field": "zh",
+     "headword": "",
+     "current": "考古学家原本打算让沉船及其文物留在原处——自1853年3月6日这艘极地船只被困冰中、遭到弃置以来，它们就一直躺在那里。",
+     "proposed": "考古学家原本打算让沉船及其文物留在原处——自1853年6月3日这艘极地船只被困冰中、遭到弃置以来，它们就一直躺在那里。",
+     "reason": "The date is wrong: 'June 3, 1853' is 1853年6月3日, not 3月6日 (month and day are swapped).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 5,
+     "field": "gloss",
+     "headword": "murky",
+     "current": "adj. 清澈的；明亮的",
+     "proposed": "adj. 浑浊的；昏暗的",
+     "reason": "The gloss means the opposite of 'murky' ('murky waters' = cloudy, dark water). It also contradicts the ZH line, which correctly says 浑浊.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 9,
+     "field": "gloss",
+     "headword": "silt",
+     "current": "v. 淤泥；泥沙",
+     "proposed": "n. 淤泥；泥沙",
+     "reason": "'Silt' is the subject noun of 'Silt covers everything', but the POS is marked v. The Chinese meaning 淤泥 is itself a noun.",
+     "severity": "medium",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. EN says 'continued nonstop for 16 hours', so 6个小时 is a factual error. The proposed line fixes only the number."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'Twenty-five feet' is 25英尺, not 52. 'remarkably well preserved' means 出奇完好, not 相当糟糕, which also contradicts 完整无损. The proposal fixes both errors and keeps the other clauses (直立着, 完整无损) unchanged."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'June 3, 1853' is 1853年6月3日, and the current line swaps month and day. The rest of the line is unchanged."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current gloss matches the file and means the opposite of 'murky'. 'murky waters' means cloudy, dark water, so adj. 浑浊的；昏暗的 is correct and agrees with the ZH line's 浑浊."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current gloss matches the file. 'Silt' is the subject noun of 'Silt covers everything', so the POS must be n., not v. The meaning 淤泥；泥沙 is already correct."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The number is a definite error. EN says 'nonstop for 16 hours', and the current ZH says 6个小时. The fix changes only the number and leaves the rest as is."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "There are two definite errors. 'Twenty-five feet' became 52英尺, and 'remarkably well preserved' was turned into its opposite, 保存得相当糟糕. The proposed 25英尺 and 保存得出奇完好 are exact and idiomatic. They also match the remarkably gloss (出奇地) and the summary's 保存得出奇完好的沉船."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "'June 3, 1853' is 1853年6月3日. The current 3月6日 has the month and day swapped. Nothing else changes."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The gloss 清澈的；明亮的 is the opposite of 'murky' and contradicts the ZH line, which says 浑浊. The fix, adj. 浑浊的；昏暗的, is the correct sense for 'murky waters'."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "'Silt' is the subject noun of 'Silt covers everything', and 淤泥；泥沙 are nouns, so the POS should be n., not v. The proposal changes only the POS."
+    }
+   ]
+  },
+  {
+   "id": "z4",
+   "findings": [
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "宅子后面的一切，规模比前面要小得多。",
+     "proposed": "宅子后面的一切，规模比前面还要宏大。",
+     "reason": "The comparison is reversed. 'On even a more spacious scale than at the front' means the back was even larger than the front, not much smaller.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 12,
+     "field": "zh",
+     "headword": "",
+     "current": "他在这里出生，有生以来的两年也都是在这里度过的。",
+     "proposed": "他在这里出生，有生以来的四年也都是在这里度过的。",
+     "reason": "Wrong number. The EN says 'the four years of his life', and [24] and the summary also say 四年.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 13,
+     "field": "zh",
+     "headword": "",
+     "current": "诚然，这里没有别的狗。",
+     "proposed": "诚然，这里也有别的狗。",
+     "reason": "The negation is wrong. 'There were other dogs' means there were other dogs. This is a concession, which [14] continues with 'they did not count'.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 9,
+     "field": "zh",
+     "headword": "",
+     "current": "这里有宽大的马厩，几十个马夫和小伙计在那里高谈阔论；有一排排爬满藤蔓的仆人小屋，有一长溜整整齐齐、望不到头的附属房屋，有长长的葡萄架、青翠的牧场、果园，还有浆果地。",
+     "proposed": "这里有宽大的马厩，十来个马夫和小伙计在那里高谈阔论；有一排排爬满藤蔓的仆人小屋，有一长溜整整齐齐、望不到头的附属房屋，有长长的葡萄架、青翠的牧场、果园，还有浆果地。",
+     "reason": "Wrong quantity. 'A dozen' means about twelve (十来个), not 几十个 (several dozen).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 18,
+     "field": "gloss",
+     "headword": "realm",
+     "current": "n. 现实；真相",
+     "proposed": "n. 王国；领地",
+     "reason": "Wrong sense. 'The whole realm was his' means kingdom or domain, and the ZH line itself uses 王国. 现实；真相 does not fit here.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 9,
+     "field": "gloss",
+     "headword": "stable",
+     "current": "adj. 马厩",
+     "proposed": "n. 马厩",
+     "reason": "Wrong POS. 'stables' is a plural noun here, not the adjective 'stable'.",
+     "severity": "medium",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file and reverses the meaning. 'On even a more spacious scale than at the front' means the back was even larger than the front. The proposed 还要宏大 restores the right comparison, and 还 renders 'even'."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says 'the four years of his life', and [24] and the summary also say 四年, so 两年 is a plain number error."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file but negates the sentence. 'There were other dogs' is a concession that [14] goes on to qualify, so 这里也有别的狗 is correct."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'A dozen' means about twelve, so 十来个 is right and 几十个 (several dozen) overstates the number. The rest of the line is unchanged."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current gloss matches the file and gives the wrong sense. In 'the whole realm was his', realm means kingdom or domain, matching the ZH 王国. n. 王国；领地 is correct."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "The current gloss matches the file and has the wrong part of speech. 'stables' is a plural noun meaning 马厩, so it should be n. 马厩, not adj."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "'On even a more spacious scale than at the front' means the back was even larger. The current 规模比前面要小得多 reverses this. 还要宏大 restores the comparison and keeps the force of 'even'."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The EN says 'the four years of his life', and [24] and the summary also say 四年. 两年 is a definite factual error."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "'There were other dogs' is affirmative and concedes a point that [14] then qualifies with 'they did not count'. The current 没有别的狗 reverses the meaning and contradicts [14]."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "'A dozen' means about twelve, but 几十个 means several dozen. 十来个 is accurate and natural."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "Here 'realm' means kingdom or domain, and the ZH line itself uses 王国. The gloss 现实；真相 is wrong for this sentence, and 王国；领地 is correct."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "'stables' is a plural noun meaning 马厩. Calling it adj. is the wrong POS, since the adjective 'stable' means 稳定的."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}
