@@ -1,4 +1,5 @@
-"""六级黑板（render-cet6-chalk.yml 最后一个任务）：汇总 60 个视频 → 逐个核对 → 每 20 个打一个 zip（不压缩）→ Python zipfile 逐个核对 → 写发布说明。
+"""大字版打包（六级黑板 render-cet6-chalk.yml、专八校园 render-tem8-campus.yml 的最后一个任务；环境变量 PROJECT=六级|专八，默认六级，下面以六级为例）。
+六级黑板（render-cet6-chalk.yml 最后一个任务）：汇总 60 个视频 → 逐个核对 → 每 20 个打一个 zip（不压缩）→ Python zipfile 逐个核对 → 写发布说明。
 
 视频来源（按优先级）：
   ① 本次运行生成的：artifacts/cet6-chalk-<篇目>/（视频、_核查.json、meta.json、核查报告、日志）
@@ -30,8 +31,18 @@ REPO = os.environ['GITHUB_REPOSITORY']
 RUN = os.environ.get('GITHUB_RUN_ID', '')
 LIMIT = 95 * 2**20
 MAN = json.loads(Path('manifest/manifest.json').read_text('utf-8'))
-REG = json.loads(Path('六级/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
-REP = Path('六级/样片/成品核查')
+PROJECT = os.environ.get('PROJECT', '六级')
+CFG = {
+    '六级': {'look': '3', 'work': '样片', 'videos': '最终视频_黑板', 'art': 'cet6-chalk', 'zip': 'CET6-chalkboard-videos', 'n': 60,
+             'head': ['大学英语六级 仔细阅读（Section C）逐句精读视频 · 教室黑板大字版，共 {n} 个（分 {parts} 个压缩包，每包 20 个，解压即可）。',
+                      '4K（3840×2160）、30 帧/秒恒定；英文 Inter 加粗、中文黑体，生词黄色、短语粉色；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
+    '专八': {'look': '1', 'work': '大字版', 'videos': '最终视频_校园', 'art': 'tem8-campus', 'zip': 'TEM8-campus-videos', 'n': 10,
+             'head': ['英语专业八级 阅读理解（Section A）逐句精读视频 · 晴空校园大字版，共 {n} 个（{parts} 个压缩包，解压即可）。',
+                      '4K（3840×2160）、30 帧/秒恒定；片头 985 教学楼；英文全部加粗，生词晴空蓝、短语 B 站粉（黄色底纹）；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
+}[PROJECT]
+LOOK = CFG['look']
+REG = json.loads(Path(f'{PROJECT}/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
+REP = Path(PROJECT) / CFG['work'] / '成品核查'
 ART, OLD, VID = Path('artifacts'), Path('old-artifacts'), Path('videos')
 VID.mkdir(exist_ok=True)
 
@@ -49,7 +60,7 @@ def report_problem(pid, name, rep, size):
     if not rep.exists():
         return f'没有核查结果 {rep}'
     r = json.loads(rep.read_text('utf-8'))
-    fp = REG.get(f'{pid}@3', {}).get('指纹')
+    fp = REG.get(f'{pid}@{LOOK}', {}).get('指纹')
     if r.get('video') != name:
         return f'核查结果里的文件名是 {r.get("video")}'
     if not r.get('ok') or not all(c.get('ok') for c in r.get('checks', [])) or not r.get('checks'):
@@ -79,13 +90,13 @@ def from_artifact(pid, name, d):
 
 
 def committed():
-    out = subprocess.run(['git', '-c', 'core.quotepath=off', 'ls-files', '-z', '--', '六级/最终视频_黑板'],
+    out = subprocess.run(['git', '-c', 'core.quotepath=off', 'ls-files', '-z', '--', f'{PROJECT}/{CFG["videos"]}'],
                          capture_output=True, text=True, check=True).stdout
     return set(x for x in out.split('\0') if x)
 
 
 def from_repo(pid, name):
-    path = f'六级/最终视频_黑板/{name}'
+    path = f'{PROJECT}/{CFG["videos"]}/{name}'
     with open(VID / name, 'wb') as fh:              # 稀疏检出 + blob:none：这里才按需下载这一个视频
         subprocess.run(['git', 'cat-file', 'blob', f'HEAD:{path}'], stdout=fh, check=True)
     why = report_problem(pid, name, REP / (Path(name).stem + '_核查.json'), (VID / name).stat().st_size)
@@ -96,7 +107,7 @@ def from_repo(pid, name):
 
 def from_old_runs(pid, name):
     """以前运行留下的 artifact（还没过期、最新的优先），逐个试，第一个核对通过的就用。返回 (来源说明, 问题列表)。"""
-    r = subprocess.run(['gh', 'api', '-X', 'GET', f'repos/{REPO}/actions/artifacts', '-f', f'name=cet6-chalk-{pid}', '-f', 'per_page=100'],
+    r = subprocess.run(['gh', 'api', '-X', 'GET', f'repos/{REPO}/actions/artifacts', '-f', f'name={CFG["art"]}-{pid}', '-f', 'per_page=100'],
                        capture_output=True, text=True, check=True)
     arts = sorted((a for a in json.loads(r.stdout)['artifacts'] if not a['expired'] and str(a['workflow_run']['id']) != RUN),
                   key=lambda a: a['created_at'], reverse=True)
@@ -125,7 +136,7 @@ def main():
     for e in MAN['passages']:
         pid, name = e['id'], e['name']
         if pid in rendered:
-            d = ART / f'cet6-chalk-{pid}'
+            d = ART / f'{CFG["art"]}-{pid}'
             m = json.loads((d / 'meta.json').read_text('utf-8')) if (d / 'meta.json').exists() else {}
             why = from_artifact(pid, name, d)
             if why:
@@ -136,7 +147,7 @@ def main():
                           f'| {m.get("size", 0) / 2**20:.1f} | {m.get("cpu", "")} |')
             continue
         whys = []
-        if f'六级/最终视频_黑板/{name}' in tracked:            # 仓库里的不能用（如 s47 是重新审阅登记之前做的样片）就接着找以前运行留下的
+        if f'{PROJECT}/{CFG["videos"]}/{name}' in tracked:            # 仓库里的不能用（如 s47 是重新审阅登记之前做的样片）就接着找以前运行留下的
             why = from_repo(pid, name)
             if not why:
                 got.append((pid, name, '仓库'))
@@ -163,12 +174,12 @@ def main():
     assert names == [n for _, n, _ in got], '顺序与篇目顺序（vocab.json）不一致'
     assert len(set(names)) == len(names), '文件名重复'
     if not TEST:
-        assert names == order and len(names) == 60, f'应有 60 个，实有 {len(names)} 个'
+        assert names == order and len(names) == CFG['n'], f'应有 {CFG["n"]} 个，实有 {len(names)} 个'
     n = len(names)
     parts = (n + 19) // 20
     zips = []
     for p in range(parts):
-        z = Path(f'CET6-chalkboard-videos-part{p + 1}-of-{parts}.zip')
+        z = Path(f'{CFG["zip"]}-part{p + 1}-of-{parts}.zip')
         sl = names[p * 20:(p + 1) * 20]
         with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED, allowZip64=True) as zf:
             for x in sl:
@@ -185,8 +196,7 @@ def main():
         zips.append(z.name)
         print(f'📦 {z.name}：{len(sl)} 个，{z.stat().st_size / 2**20:.0f} MB，zipfile 核对通过（文件名、顺序、UTF-8 标记、不压缩、大小、CRC）', flush=True)
     Path('zips.txt').write_text('\n'.join(zips) + '\n', 'utf-8')
-    lines = [f'大学英语六级 仔细阅读（Section C）逐句精读视频 · 教室黑板大字版，共 {n} 个（分 {parts} 个压缩包，每包 20 个，解压即可）。', '',
-             '4K（3840×2160）、30 帧/秒恒定；英文 Inter 加粗、中文黑体，生词黄色、短语粉色；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。', '',
+    lines = [CFG['head'][0].format(n=n, parts=parts), '', CFG['head'][1], '',
              '每个视频都通过了全部成品核查（分辨率、流畅度、声画等长、片头 1.5 秒 / 结尾 2 秒静音、句间停顿、响度、无电磁音、朗读与画面逐句一致、逐屏与审过的截图一致、体积），并单独复测（verify_all）。', '',
              '| # | 文件名 | 压缩包 |', '|---|---|---|']
     lines += [f'| {i} | {x} | part{(i - 1) // 20 + 1} |' for i, x in enumerate(names, 1)]

@@ -1,7 +1,8 @@
 """专八成品视频总核查（由六级 verify_all.py 复制）。四级原说明：四级成品视频总核查：对 四级/最终视频/ 里的每个 MP4 重新实测，复用高考 verify_videos.check 的全部项目
 （分辨率 ≥ 2K、16:9、30 帧恒定、声画等长、片头静音 1.5 秒、句间 0.8 秒、结尾静音 ≥ 2 秒、响度、朗读与画面逐句一致……），
 再加上四级自己的文件名规则（年份月份 第几套 Passage One/Two 题目）、文件名不重复、视频与音频是同一版本。
-结果写到 专八/核查报告.md（原四级说明：四级/核查报告.md）；任何一项不通过，退出码非 0。可指定篇目：verify_all.py t01 t02 …
+专八大字版（2026-10-17 起，晴空校园）：核查 专八/最终视频_校园/，结果写到 专八/核查报告_校园.md；另查成品体积 ≤ 95 MB（与六级大字版相同）。
+旧版 10 个（专八/最终视频/，书卷水墨）的 专八/核查报告.md 不动。任何一项不通过，退出码非 0。可指定篇目：verify_all.py t01 t02 …
 """
 import json
 import re
@@ -16,7 +17,7 @@ sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / '
 from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
 from verify_videos import check                  # noqa: E402
 
-FINAL = C4 / '最终视频'
+FINAL = C4 / '最终视频_校园'                     # 晴空校园成品（大字版.py --video 写这里）；旧版 10 个在 专八/最终视频/
 
 
 def main():
@@ -31,7 +32,7 @@ def main():
             print('缺少视频：', missing)
             return 1
         files = [f for f in files if f.name in want]
-    lines = ['# 专八最终视频核查报告', '', f'对 `专八/最终视频/` 里的 {len(files)} 个 MP4 成品逐个实测（解码音轨、读取每一帧时间戳），逐项核对。', '']
+    lines = ['# 专八最终视频核查报告', '', f'对 `专八/{FINAL.name}/` 里的 {len(files)} 个 MP4 成品逐个实测（解码音轨、读取每一帧时间戳），逐项核对。', '']
     allok = True
     for mp4 in files:
         p = byname.get(mp4.name)
@@ -51,6 +52,8 @@ def main():
         if sw:
             res.append(switch_check(mp4, tm['sentences'], sw))
         res.append(buzz_check(mp4, tm['sentences']))
+        size = mp4.stat().st_size                      # 大字版：成品体积 ≤ 95 MB（GitHub 单个文件上限 100 MB），与生成时的检查相同
+        res.append(('成品体积 ≤ 95 MB', size <= 95 * 2**20, f'{size / 2**20:.1f} MB'))
         res.insert(0, ('文件名：年份 第几篇 题目', bool(re.fullmatch(r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', mp4.name)), mp4.name))
         good = all(r[1] for r in res)
         allok &= good
@@ -59,7 +62,7 @@ def main():
         lines += [f"- {'✅' if c else '❌'} {n}：{d}" for n, c, d in res]
         lines.append('')
     lines[3:3] = [f"**结论：{'全部通过' if allok else '有未通过的项目'}**", '']
-    (C4 / '核查报告.md').write_text('\n'.join(lines), 'utf-8')
+    (C4 / '核查报告_校园.md').write_text('\n'.join(lines), 'utf-8')
     print('全部通过' if allok else '有未通过的项目')
     return 0 if allok else 1
 
