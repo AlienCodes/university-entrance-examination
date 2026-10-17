@@ -45,7 +45,7 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAG }}
-          target_commitish: ${{ github.sha }}
+          target_commitish: ${{ github.ref_name }}
           name: 四级仔细阅读精读视频 ${{ env.NO }}（${{ env.N }} 个）
           body_path: notes.md
           files: ${{ env.ZIPNAME }}

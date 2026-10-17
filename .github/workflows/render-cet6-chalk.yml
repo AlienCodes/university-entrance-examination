@@ -66,6 +66,8 @@ jobs:
               f.write(f'tag={tag}\nids={json.dumps(ids)}\nn={len(ids)}\n')
           print(f'标签 {tag}（{"试跑，不发布" if tag.startswith("test") else "发布 Release " + os.environ["RELEASE_TAG"]}），生成 {len(ids)} 篇：{" ".join(ids)}')
           PY
+      - name: Release 目标检查（踩坑 53：不许钉在触发提交上，否则运行期间改过工作流就 403）
+        run: python3 .github/check-release-target.py
       - uses: ./.github/actions/cet6-chalk-env
       - name: 核对审阅登记与现在的程序、数据一致；写 manifest
         env:
@@ -265,10 +267,10 @@ jobs:
                 case "$a" in CET6-chalkboard-videos-part*.zip) printf '%s\n' "${zips[@]}" | grep -qx "$a" || gh release delete-asset "$RELEASE_TAG" "$a" -y || return 1 ;; esac
               done
             else
-              gh release create "$RELEASE_TAG" "${zips[@]}" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md || return 1
+              gh release create "$RELEASE_TAG" "${zips[@]}" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md || return 1
             fi
           }
-          # GitHub 建 Release 偶发 403（Resource not accessible by integration，令牌权限明明是 Contents: write；踩坑 42、53）：等一等再试，最多 5 次（约 15 分钟）
+          # 目标用分支名（踩坑 53：钉在触发提交上、运行期间又改过工作流 → 403）；其余偶发失败等一等再试，最多 5 次（约 15 分钟）
           for i in 1 2 3 4 5; do
             publish && break
             [ "$i" = 5 ] && { echo "::error::发布 5 次都失败"; exit 1; }

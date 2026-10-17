@@ -31,7 +31,7 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAG }}
-          target_commitish: ${{ github.sha }}
+          target_commitish: ${{ github.ref_name }}
           name: 真题原卷合集（四级 PDF + 高考英语）
           body_path: notes.md
           files: |

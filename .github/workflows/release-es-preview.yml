@@ -156,5 +156,5 @@ jobs:
             gh release upload "$TAG" "${files[@]}" --clobber
             gh release edit "$TAG" --title "$title" --notes-file notes.md
           else
-            gh release create "$TAG" "${files[@]}" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md
+            gh release create "$TAG" "${files[@]}" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md
           fi
