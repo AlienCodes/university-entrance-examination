@@ -257,15 +257,23 @@ jobs:
           mapfile -t zips < zips.txt
           n=$(grep -c '^| [0-9]' notes.md)
           title="六级仔细阅读精读视频 · 教室黑板大字版（${n} 个）"
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            gh release upload "$RELEASE_TAG" "${zips[@]}" --clobber
-            gh release edit "$RELEASE_TAG" --title "$title" --notes-file notes.md
-            for a in $(gh release view "$RELEASE_TAG" --json assets -q '.assets[].name'); do      # 旧的分包（包数变了）删掉
-              case "$a" in CET6-chalkboard-videos-part*.zip) printf '%s\n' "${zips[@]}" | grep -qx "$a" || gh release delete-asset "$RELEASE_TAG" "$a" -y ;; esac
-            done
-          else
-            gh release create "$RELEASE_TAG" "${zips[@]}" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md
-          fi
+          publish() {      # 每条命令都显式 || return 1（函数在 && 里调用时 set -e 不生效）
+            if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+              gh release upload "$RELEASE_TAG" "${zips[@]}" --clobber || return 1
+              gh release edit "$RELEASE_TAG" --title "$title" --notes-file notes.md || return 1
+              for a in $(gh release view "$RELEASE_TAG" --json assets -q '.assets[].name'); do      # 旧的分包（包数变了）删掉
+                case "$a" in CET6-chalkboard-videos-part*.zip) printf '%s\n' "${zips[@]}" | grep -qx "$a" || gh release delete-asset "$RELEASE_TAG" "$a" -y || return 1 ;; esac
+              done
+            else
+              gh release create "$RELEASE_TAG" "${zips[@]}" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md || return 1
+            fi
+          }
+          # GitHub 建 Release 偶发 403（Resource not accessible by integration，令牌权限明明是 Contents: write；踩坑 42、53）：等一等再试，最多 5 次（约 15 分钟）
+          for i in 1 2 3 4 5; do
+            publish && break
+            [ "$i" = 5 ] && { echo "::error::发布 5 次都失败"; exit 1; }
+            w=$((60 * 2 ** (i - 1))); echo "::warning::发布失败（第 $i 次），${w} 秒后重试"; sleep "$w"
+          done
       - name: 发布后核对（Release 附件名与大小和本地 zip 完全相同）
         if: ${{ !startsWith(needs.prep.outputs.tag, 'test') }}
         run: |
