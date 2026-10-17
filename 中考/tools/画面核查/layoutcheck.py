@@ -200,7 +200,7 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       // 下一行开头第一个可以断开的单位放得进上一行的空，却被整个推到下一行，就是排版程序绑得太多
       for (let j = 1; j < L.length; j++) { const a = L[j - 1][L[j - 1].length - 1], f = L[j][0]; if (!om.has(f.n)) continue;
         const gap = x1 - (a.r + (a.el.classList.contains('pr') ? parseFloat(getComputedStyle(a.el).marginRight) : 0));
-        const pos = L[j].filter(x => om.has(x.n)).map(x => [om.get(x.n) + x.i, x.l]), last = L[j][L[j].length - 1];
+        const pos = L[j].filter(x => om.has(x.n)).map(x => [om.get(x.n) + x.i, x.l, x.el.classList.contains('pr') ? parseFloat(getComputedStyle(x.el).marginRight) : 0]), last = L[j][L[j].length - 1];
         out.push(['ZHGAP', name, j, k.textContent, om.get(f.n) + f.i, gap, pos, last.r, f.el.classList.contains('pl') ? em(f.el) / 2 : 0, em(k)]); } }
     if (breaks && isGloss) { const g = k.querySelector('span[lang]'), om = g && offs(g);      // 括注分离、释义开头 / 结尾单字（Python 判断，宽度用实测）
       if (g) { const wd = new Array(g.textContent.length).fill(0);
@@ -322,8 +322,9 @@ def wordch(c):
     return '\u4e00' <= c <= '\u9fff' or c.isalnum() or c == '…'
 
 
-def ok_break(g, k, z8=False):
-    """z8（专八 / 六级）：分词先加载 分词补充.txt。"""
+def ok_break(g, k, z8=False, names=()):
+    """z8（专八 / 六级）：分词先加载 分词补充.txt。names：登记的中文整名——名字两头可以断（专八校园版 t04 第 8 句“卢埃拉·凯洛格和／温思罗普·凯洛格”，
+    jieba 切成“格和温”跨过名字边界），名字中间不能断（jieba 在“凯洛／格”之间也有边界）。"""
     if g[k - 1:k].isspace() or g[k:k + 1].isspace():          # 释义里的英文（as A as it is）在空格处换行，正常
         return True
     jieba = jb(z8)
@@ -350,6 +351,11 @@ def ok_break(g, k, z8=False):
     for w in jieba.cut(g[a:b]):
         i += len(w)
         pos.add(i)
+    import re
+    for nm in names:
+        for m in re.finditer(re.escape(nm), g):
+            pos |= {m.start(), m.end()}
+            pos -= set(range(m.start() + 1, m.end()))
     return k in pos
 
 
@@ -486,10 +492,15 @@ def zh_short(name, j, t, k, gap, pos, right, pl, em, names=()):
     放得进这段空（留 0.25 字余量），却被推到了下一行——排版程序绑在一起的比规则要求的多（如把英文段前面的汉字也绑上，连成一长串）。
     pos：下一行每个字 [位置, 左边界]；right：下一行最后一个字的右边界；pl：下一行第一个字是去掉了左半空白的左标点（放回行中要加回半字）。"""
     ok = zh_breaks(t, names)
-    left = dict(pos)
+    left = {x[0]: x[1] for x in pos}
     q = sorted(left)
     p = next((x for x in q if x > k and any(k < y <= x for y in ok)), None)
     w = (left[p] if p is not None else right) - left[k] + pl
+    # 专八校园版 t09 第 8 句「说道：“」：单位末尾的右标点在行中与下一个标点挤压（“：”右边距 −0.5 字），放到上一行行末时浏览器按全宽算
+    # （实测：行宽再多 2 像素“说道：”才上得去）——按全宽量，不把放不下的误报成短行
+    mr = {x[0]: x[2] for x in pos if len(x) > 2}
+    if p is not None and mr.get(p - 1, 0) < 0:
+        w -= mr[p - 1]
     if w <= gap - 0.25 * em:
         return (f'译文短行：译文第 {j} 行后面空出 {gap / em:.1f} 字，下一行开头的「{t[k:p] if p is not None else t[k:q[-1] + 1]}」'
                 f'（{w / em:.1f} 字）按断行规则放得进来，却被推到了下一行')
@@ -604,7 +615,7 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
                 res.append(f'译文断词：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」把一个词拆到两行')
         elif isinstance(x, list):        # 释义在标点以外的地方断行：只有超过 9 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
             _, name, g, k = x
-            if not ok_break(g, k, breaks):
+            if not ok_break(g, k, breaks, names):
                 res.append(f'释义断词：{name}「{g[max(0, k - 6):k]}／{g[k:k + 6]}」')
         else:
             res.append(x)
