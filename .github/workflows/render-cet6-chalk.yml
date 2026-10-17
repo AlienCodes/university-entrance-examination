@@ -1,0 +1,270 @@
+# 六级仔细阅读精读视频（教室黑板、大字版）在 GitHub 自己的机器上生成、核查、打包、发布——不靠本容器醒着（会话空闲时容器被挂起，踩坑 51）。
+# 触发：修改 .github/cet6-render.txt 并推送。第 1 行 = 运行标签（以 test 开头 = 试跑：照样生成、核查、打包核对，但不发布）；
+#       第 2 行起每行一个篇目（s01 … s60；空行和 # 开头的行不算）。不写篇目 = 只汇总打包发布（用仓库里和以前运行留下的视频）。
+# 流程：
+#   prep    核对清单（篇目存在、已审阅登记、登记指纹与现在的程序和数据一致），预热缓存（Python 环境、Chromium 141、语音识别模型），写 manifest（60 篇的顺序与文件名）
+#   render  每篇一台机器（最多 20 台同时）：环境与本机逐项相同（.github/actions/cet6-chalk-env）→
+#           大字版.py --stills（重画截图 + 全部程序检查；与审阅登记逐张比对哈希，必须逐字节相同）→
+#           大字版.py --video（make_video 再核对登记、逐屏与截图比对，生成 4K 视频 + 全部成品核查，不过就删成品）→
+#           verify_all.py（独立复测）→ 全部通过才上传 artifact cet6-chalk-<篇目>（视频、_核查.json、核查报告、日志、meta.json）。任何一步不过，这一篇的任务失败，不上传视频。
+#   publish 所有篇目都成功后：汇总 60 个（本次生成的 + 仓库里已提交的 + 以前运行留下、核对通过的），逐个核对指纹、体积、sha256，
+#           每 20 个一个 zip（Python zipfile 不压缩、中文文件名带 UTF-8 标记，逐个核对），用 gh 发布 Release cet6-chalk（踩坑 42），发布后核对附件名与大小。
+# 不改任何参与截图指纹的文件；只检出要用的目录（仓库里各项目的旧视频有好几 GB）。
+name: 生成六级视频（教室黑板，GitHub 上生成）
+on:
+  push:
+    paths: ['.github/cet6-render.txt']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: render-cet6-chalk
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: cet6-chalk
+
+jobs:
+  prep:
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.list.outputs.tag }}
+      ids: ${{ steps.list.outputs.ids }}
+      n: ${{ steps.list.outputs.n }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /tools/
+            /四级/tools/
+            /中考/tools/
+            /专八/tools/
+            /六级/
+            !/六级/最终视频/
+            !/六级/最终视频_黑板/
+            !/六级/audio/*.mp3
+      - name: 读清单
+        id: list
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          lines = [x.strip() for x in open('.github/cet6-render.txt', encoding='utf-8').read().splitlines()]
+          lines = [x for x in lines if x and not x.startswith('#')]
+          tag, ids = lines[0], lines[1:]
+          assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', tag), f'标签不合法：{tag}'
+          P = [p['id'] for p in json.load(open('六级/data/vocab.json', encoding='utf-8'))['passages']]
+          bad = [x for x in ids if x not in P]
+          assert not bad, f'没有这些篇目：{bad}'
+          assert len(set(ids)) == len(ids), f'篇目重复：{ids}'
+          ids = [x for x in P if x in ids]                       # 按篇目顺序
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'tag={tag}\nids={json.dumps(ids)}\nn={len(ids)}\n')
+          print(f'标签 {tag}（{"试跑，不发布" if tag.startswith("test") else "发布 Release " + os.environ["RELEASE_TAG"]}），生成 {len(ids)} 篇：{" ".join(ids)}')
+          PY
+      - uses: ./.github/actions/cet6-chalk-env
+      - name: 核对审阅登记与现在的程序、数据一致；写 manifest
+        env:
+          IDS: ${{ steps.list.outputs.ids }}
+          TAG: ${{ steps.list.outputs.tag }}
+        run: |
+          mkdir -p manifest
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, '六级/tools')
+          import make_video as M
+          P = json.load(open('六级/data/vocab.json', encoding='utf-8'))['passages']
+          reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))
+          ids = json.loads(os.environ['IDS'])
+          bad = [f'{x}：{"没有审阅登记" if f"{x}@3" not in reg else "登记之后程序、样式或数据改过"}' for x in ids
+                 if reg.get(f'{x}@3', {}).get('指纹') != M.fingerprint(x, '3')]
+          if bad:
+              sys.exit('这些篇目不能生成（截图审阅登记与现在的程序和数据不一致）：\n  ' + '\n  '.join(bad))
+          man = {'tag': os.environ['TAG'], 'render': ids, 'passages': [{'id': p['id'], 'name': M.video_name(p)} for p in P]}
+          assert len(man['passages']) == 60 and len({e['name'] for e in man['passages']}) == 60
+          json.dump(man, open('manifest/manifest.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+          print(f'{len(ids)} 篇的审阅登记都与现在的程序和数据一致；manifest 60 篇')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manifest-cet6
+          path: manifest/manifest.json
+          if-no-files-found: error
+
+  render:
+    needs: prep
+    if: needs.prep.outputs.n != '0'
+    name: 生成 ${{ matrix.id }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        id: ${{ fromJSON(needs.prep.outputs.ids) }}
+    env:
+      ID: ${{ matrix.id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /tools/
+            /四级/tools/
+            /中考/tools/
+            /专八/tools/
+            /六级/
+            !/六级/最终视频/
+            !/六级/最终视频_黑板/
+      - uses: ./.github/actions/cet6-chalk-env
+      - name: 截图 + 全部程序检查，与审阅登记逐张比对
+        run: |
+          t0=$(date +%s)
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/tools/大字版.py --stills --force "$ID"
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, '六级/tools')
+          import make_video as M
+          pid = os.environ['ID']
+          reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))[f'{pid}@3']
+          got = {x.name: M.file_hash(x) for x in M.still_files(Path('六级/样片/截图') / pid)}
+          bad = [k for k in sorted(set(reg['截图']) | set(got)) if reg['截图'].get(k) != got.get(k)]
+          print(f'{pid}：{len(got)} 屏，与截图审阅登记逐字节相同的 {len(got) - len(bad)} 屏，不同 {len(bad)} 屏 {bad[:10]}')
+          if bad or reg['指纹'] != M.fingerprint(pid, '3'):
+              sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')
+          PY
+          echo "STILLS_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+      - name: 截图不一致时上传截图（诊断用）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diag-stills-${{ matrix.id }}
+          path: 六级/样片/截图/${{ matrix.id }}/
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: 生成 4K 视频 + 全部成品核查
+        run: |
+          t0=$(date +%s)
+          rc=0; env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/tools/大字版.py --video "$ID" || rc=$?
+          echo "----- 日志 六级/样片/日志/$ID.log -----"; cat "六级/样片/日志/$ID.log" || true
+          echo "VIDEO_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+          exit $rc
+      - name: verify_all 独立复测
+        run: |
+          t0=$(date +%s)
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/tools/verify_all.py "$ID"
+          grep -E '^- ' 六级/核查报告_黑板.md
+          echo "VERIFY_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+      - name: 整理要上传的文件（核查结果再核一遍）
+        run: |
+          mkdir -p out
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import hashlib, json, os, shutil, sys
+          from pathlib import Path
+          sys.path.insert(0, '六级/tools')
+          import make_video as M
+          pid = os.environ['ID']
+          p = next(x for x in json.load(open('六级/data/vocab.json', encoding='utf-8'))['passages'] if x['id'] == pid)
+          name = M.video_name(p)
+          mp4 = Path('六级/最终视频_黑板') / name
+          rep = Path('六级/样片/成品核查') / (Path(name).stem + '_核查.json')
+          r = json.loads(rep.read_text('utf-8'))
+          reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))[f'{pid}@3']
+          report = Path('六级/核查报告_黑板.md').read_text('utf-8')
+          assert r['ok'] and all(c['ok'] for c in r['checks']), '核查结果不是全部通过'
+          assert r['指纹'] == reg['指纹'] == M.fingerprint(pid, '3'), '指纹与审阅登记不一致'
+          assert r['size'] == mp4.stat().st_size <= 95 * 2**20, '体积不对'
+          assert '**结论：全部通过**' in report and f'## ✅ {Path(name).stem}' in report, 'verify_all 没有通过'
+          h = hashlib.sha256()
+          with open(mp4, 'rb') as fh:
+              for b in iter(lambda: fh.read(1 << 20), b''):
+                  h.update(b)
+          out = Path('out')
+          shutil.copy(mp4, out / name)
+          shutil.copy(rep, out / rep.name)
+          shutil.copy('六级/核查报告_黑板.md', out / f'核查报告_{pid}.md')
+          shutil.copy(f'六级/样片/日志/{pid}.log', out / f'{pid}.log')
+          cpu = next((l.split(':', 1)[1].strip() for l in open('/proc/cpuinfo') if l.startswith('model name')), '')
+          meta = {'id': pid, 'name': name, 'size': mp4.stat().st_size, 'sha256': h.hexdigest(), '指纹': r['指纹'], 'verify_all': '全部通过',
+                  '秒': {'截图': int(os.environ['STILLS_S']), '视频': int(os.environ['VIDEO_S']), 'verify_all': int(os.environ['VERIFY_S'])},
+                  'cpu': cpu, 'run': f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"}
+          (out / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
+          print(f'{pid} {name}：{meta["size"] / 2**20:.1f} MB，sha256 {meta["sha256"][:16]}，用时 截图 {meta["秒"]["截图"]} 秒 / 视频 {meta["秒"]["视频"]} 秒 / verify_all {meta["秒"]["verify_all"]} 秒（{cpu}）')
+          PY
+          ls -la out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cet6-chalk-${{ matrix.id }}
+          path: out/
+          compression-level: 0
+          if-no-files-found: error
+
+  publish:
+    needs: [prep, render]
+    if: ${{ !cancelled() && needs.prep.result == 'success' && (needs.render.result == 'success' || needs.render.result == 'skipped') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      TAG: ${{ needs.prep.outputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /六级/tools/画面核查/截图审阅通过.json
+            /六级/样片/成品核查/
+      - name: 腾出磁盘（60 个视频 + 打包要约 9 GB）
+        run: |
+          df -h . | tail -1
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup
+          df -h . | tail -1
+      - uses: actions/download-artifact@v4
+        with:
+          name: manifest-cet6
+          path: manifest
+      - uses: actions/download-artifact@v4
+        if: needs.render.result == 'success'
+        with:
+          pattern: cet6-chalk-*
+          path: artifacts
+      - name: 汇总、核对、打包（Python zipfile 核对）、写发布说明
+        run: |
+          python3 .github/cet6-chalk-pack.py
+          cat timing.md
+      - name: 发布 Release（用 gh；标签以 test 开头的试跑不发布）
+        if: ${{ !startsWith(needs.prep.outputs.tag, 'test') }}
+        run: |
+          set -e
+          mapfile -t zips < zips.txt
+          n=$(grep -c '^| [0-9]' notes.md)
+          title="六级仔细阅读精读视频 · 教室黑板大字版（${n} 个）"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "${zips[@]}" --clobber
+            gh release edit "$RELEASE_TAG" --title "$title" --notes-file notes.md
+            for a in $(gh release view "$RELEASE_TAG" --json assets -q '.assets[].name'); do      # 旧的分包（包数变了）删掉
+              case "$a" in CET6-chalkboard-videos-part*.zip) printf '%s\n' "${zips[@]}" | grep -qx "$a" || gh release delete-asset "$RELEASE_TAG" "$a" -y ;; esac
+            done
+          else
+            gh release create "$RELEASE_TAG" "${zips[@]}" --target "$GITHUB_SHA" --title "$title" --notes-file notes.md
+          fi
+      - name: 发布后核对（Release 附件名与大小和本地 zip 完全相同）
+        if: ${{ !startsWith(needs.prep.outputs.tag, 'test') }}
+        run: |
+          gh release view "$RELEASE_TAG" --json assets > assets.json
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          zips = Path('zips.txt').read_text('utf-8').split()
+          got = {a['name']: a['size'] for a in json.load(open('assets.json'))['assets'] if a['name'].startswith('CET6-chalkboard-videos-part')}
+          want = {z: os.path.getsize(z) for z in zips}
+          assert got == want, f'Release 附件与本地不一致：{got} ≠ {want}'
+          print(f'Release {os.environ["RELEASE_TAG"]}：{len(got)} 个附件，名字与大小都与本地 zip 相同')
+          PY
