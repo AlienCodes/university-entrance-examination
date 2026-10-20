@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：15
+- 文章数：16
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.16%
+- 平均识别差异率：1.21%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -26,3 +26,4 @@
 | k14 | 4.49 | 0.96% | programme → program; maximise → maximize; socialise → socialize; centre → center |
 | k15 | 4.48 | 1.68% | haps → heps; centre → center; kotharkar's → katharkar's; kotharkar → katharkar; kotharkar → katharkar; kotharkar's → katharkar's; chandni → channi |
 | k16 | 4.49 | 2.16% | organised → organized; behaviour → behavior; centre → center; desire → desired; wickquasgeck → wickwisjek; heere straat → heerstraat; gentlemen's → gentleman's; routes → roots |
+| k17 | 4.49 | 2.05% | metre → meter; metres → meters; civilisations → civilizations; labour → labor; agrawal → agrol; sichel → sitchell; sichel → sitchell; sichel → sitchell; civilisation → civilization |
