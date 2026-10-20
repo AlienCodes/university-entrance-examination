@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：45
+- 文章数：46
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.96%
+- 平均识别差异率：0.95%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -56,3 +56,4 @@
 | k45 | 4.48 | 0.24% | and → in |
 | k46 | 4.49 | 0.00% |  |
 | k47 | 4.47 | 0.93% | wunderlist → wonderlist; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
+| k48 | 4.47 | 0.48% | ambady → ambuddy; ambady → ambody |
