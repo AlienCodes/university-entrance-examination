@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：9
+- 文章数：10
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.47）
-- 平均识别差异率：1.16%
+- 平均识别差异率：1.15%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -20,3 +20,4 @@
 | k07 | 4.49 | 2.93% | travellers → travelers; ferrovie dello → ferrovidello; italiane → italian; explained → explain; ferrovie → ferrovi; giuricin → gierisin; centres → centers; signalling → signaling; say → zay; travelling → traveling; giuricin → grsn |
 | k08 | 4.49 | 0.74% | they're in → therein; festgoers → festorers |
 | k09 | 4.48 | 2.32% | shakespeare → sheare; jacqui → jackie; randomised → randomized; aged nine and → aging; length → lengths; o'hanlon → oh hanlon; o'hanlon → ohanlon |
+| k10 | 4.49 | 1.05% | modelling → modeling; centres → centers; paralysed → paralyzed; recognising → recognizing; kajaani → kajani |
