@@ -1,4 +1,4 @@
-"""把专八翻译复核中最终采用的修改写回 专八/ann/sNN.txt（由高考 tools/pipeline/apply3.py 改写）。
+"""把考研翻译复核中最终采用的修改写回 考研/ann/kNN.txt（由高考 tools/pipeline/apply3.py 改写）。
 
 输入 decisions3.json：[{pid, sent, field, headword, current, proposed}]
 - zh       : 第 sent 句中文整行替换（current 必须与现有整行完全一致）
@@ -18,7 +18,7 @@ import re
 import sys
 from pathlib import Path
 
-ANN = Path(__file__).resolve().parents[1] / 'ann'      # 专八/ann
+ANN = Path(__file__).resolve().parents[1] / "ann"      # 考研/ann
 TIER = {'单词': '', '短语': '~'}
 
 

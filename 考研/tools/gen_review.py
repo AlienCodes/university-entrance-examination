@@ -1,4 +1,4 @@
-"""从 专八/data/vocab.json 生成复核用的文本文件（每篇一个）。  python3 专八/tools/gen_review.py <输出目录>"""
+"""从 考研/data/vocab.json 生成复核用的文本文件（每篇一个）。  /opt/ttsenv/bin/python 考研/tools/gen_review.py <输出目录>"""
 import json
 import sys
 from pathlib import Path
@@ -11,7 +11,7 @@ n = 0
 for p in D['passages']:
     if not p.get('done'):
         continue
-    L = [f"# {p['id']} 英语专业八级 {p['name']}", f"标题: {p['title']}", f"体裁: {p['genre']}", f"概要: {p['summary']}", '']
+    L = [f"# {p['id']} 考研英语 {p['name']}", f"标题: {p['title']}", f"体裁: {p['genre']}", f"概要: {p['summary']}", '']
     k = 0
     for para in p['paras']:
         for s in para:
