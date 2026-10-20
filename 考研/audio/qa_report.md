@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：20
+- 文章数：21
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.17%
+- 平均识别差异率：1.15%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -31,3 +31,4 @@
 | k19 | 4.46 | 0.89% | karla → carla; diffusion's → diffusions; says ortiz → sesortes |
 | k20 | 4.48 | 0.23% | sackett → sacit |
 | k21 | 4.48 | 0.74% | brookings's → brookings; muro → murrow; sifan → siffin |
+| k22 | 4.50 | 0.75% | confor → canfour; confor → confour; confor → confur |
