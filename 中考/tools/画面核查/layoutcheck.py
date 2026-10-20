@@ -57,6 +57,7 @@
 半宽字形：专八译文字体霞鹜文楷的弯引号“”‘’是半宽（0.44/0.33 字），没有半字空白可去；行首缩进、过度挤压只对全角字形（宽 > 0.75 字）按半字计。
 """
 import importlib.util
+import re
 import json
 import sys
 import tempfile
@@ -126,6 +127,10 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       A.forEach((x, j) => { if ('’\''.includes(x.c) && j && j + 1 < A.length && /[A-Za-z]/.test(A[j - 1].c) && /[A-Za-z]/.test(A[j + 1].c) && x.r - x.l > em(x.el) * 0.5)
         out.push(`西文撇号：${name}「${A.slice(Math.max(0, j - 5), j + 3).map(y => y.c).join('')}」的撇号是全角（宽 ${((x.r - x.l) / em(x.el)).toFixed(2)} 字）`); }); }
     for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && /^(Nunito|"?Baloo 2|"?Inter)/.test(getComputedStyle(x.el).fontFamily)) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }   // Baloo 2（专八共用背景 3、4）的 I 只比 l 矮 5%
+    { const A = L.flat();      // 专八校园版第 2 批截图盲审（t04 “W hoa”、t06 “W hy”、t07 “W hen”）：Nunito 的 W+h 字距偏大，W 必须收紧（make_video.wh 的 x-w）
+      for (let j = 0; j + 1 < A.length; j++) { const x = A[j]; if (x.c !== 'W' || A[j + 1].c !== 'h') continue; const cs = getComputedStyle(x.el);
+        const ls = parseFloat(cs.letterSpacing); if (/^"?Nunito/.test(cs.fontFamily) && (isNaN(ls) ? 0 : ls) > -0.05 * em(x.el)) {
+          out.push(`W与h间隙：${name}「${A.slice(j, j + 5).map(y => y.c).join('')}」的 W 与 h 之间空隙偏大（Nunito 的 W+h 字距没有收紧）`); break; } } }
     for (const x of L.flat()) if (x.c === '—' && !x.el.closest('x-dash') && /^"?ZH (Bold|Regular)/.test(getComputedStyle(x.el).fontFamily)) {   // 专八 t03 审阅：思源黑体的“—”是西文窄破折号，粗体汉字旁又细又偏下
       out.push(`中文破折号：${name}的「——」没有画成全角居中横线（x-dash）`); break; }
     L.forEach((ln, i) => {
@@ -214,6 +219,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         g.textContent.split('').forEach((c, q) => { if (/\s/.test(c)) wd[q] = sw; });
         for (let j = 1; j < L.length; j++) { const f = L[j][0], a = L[j - 1][L[j - 1].length - 1];
           if (om.has(f.n)) out.push(['GBRK', name, g.textContent, om.get(f.n) + f.i, om.has(a.n), wd, x1 - x0]); } } }
+    if (name === '英文') for (let j = 1; j < L.length; j++)          // 专八校园版第 2 批盲审：t06 “Mr.” 落在行末、人名在下一行
+      { const z = L[j - 1].filter(x => !x.el.closest('sup')).at(-1);      // 行文字 txt 不带空格（from Mr. → fromMr.），按最后一个字所在的原文判断
+        if (z && /\b(Mr|Mrs|Ms|Dr|Prof|St)\.$/.test(z.n.data.slice(0, z.i + 1))) out.push(`称谓断开：英文第 ${j} 行以「${txt(L[j - 1]).slice(-12)}」结尾，称谓与人名被拆到两行`); }
     if (name === '英文') for (let j = 1; j < L.length; j++)
       if (/\d$/.test(txt(L[j - 1].filter(x => !x.el.closest('sup')))) && (/^(kg|g|mg|km|m|cm|mm|ml|mph|°C|°F|percent|kilo(gram|metre|meter)s?|(centi|milli)?(metre|meter)s?|grams?|tonnes?|tons?|miles?|feet|foot|inch(es)?|degrees?|hours?|minutes?|seconds?|days?|weeks?|months?|years?)(?![A-Za-z])/.test(txt(L[j]))
           || (breaks && /^((m|b|tr)illions?|thousands?|hundreds?)(?![A-Za-z])/.test(txt(L[j])))))     // 数目单位只对专八 / 六级（六级黑板审阅：“$13 / billion”）
@@ -264,7 +272,8 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
       { const w2 = document.createTreeWalker(en, NodeFilter.SHOW_TEXT), cs2 = []; let n2;
         while ((n2 = w2.nextNode()) && !e.contains(n2) && (e.compareDocumentPosition(n2) & Node.DOCUMENT_POSITION_PRECEDING))
           for (let i = 0; i < n2.data.length; i++) cs2.push([n2, i]);
-        const sp2 = j => /\s/.test(cs2[j][0].data[cs2[j][1]]), box2 = c => { const g2 = document.createRange(); g2.setStart(c[0], c[1]); g2.setEnd(c[0], c[1] + 1); const q2 = g2.getClientRects(); return q2[q2.length - 1]; };
+        const sp2 = j => /[ \t\n]/.test(cs2[j][0].data[cs2[j][1]]),      // 不换行空格不算（与 make_video FIT 相同：Mr. 连着人名短语）
+             _b2 = 0, box2 = c => { const g2 = document.createRange(); g2.setStart(c[0], c[1]); g2.setEnd(c[0], c[1] + 1); const q2 = g2.getClientRects(); return q2[q2.length - 1]; };
         let j2 = cs2.length; while (j2 > 0 && !sp2(j2 - 1)) j2--;
         const head = j2 < cs2.length ? cs2[j2] : null; while (j2 > 0 && sp2(j2 - 1)) j2--;
         if (j2 > 0) { const last = box2(cs2[j2 - 1]), first = head ? box2(head) : rs[0];
@@ -351,6 +360,7 @@ def ok_break(g, k, z8=False, names=()):
     for w in jieba.cut(g[a:b]):
         i += len(w)
         pos.add(i)
+    pos = {x for x in pos if g[x - 1:x] != '…' and not (g[x - 2:x - 1] == '…' and g[x - 1:x] != '…')}       # 省略号后面、省略号后的单字后面不断开（专八校园版第 2 批盲审：“没有走到…… / 的地步”；与 make_video.words 相同）
     import re
     for nm in names:
         for m in re.finditer(re.escape(nm), g):
@@ -435,7 +445,7 @@ def font_fallback(pg):
 
 LATIN_RUN = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*(?: [A-Za-z0-9][A-Za-z0-9’'.&%％-]*)*"
 CLAUSE = r'[^，。、；：！？]+'
-TERM = r'“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》'
+TERM = r'“[^“”，。；：！？、]{1,12}”（[^（）]{1,6}）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）'      # 与 make_video.ZH_TERM 相同（专八校园版第 2 批盲审：短括注、引号术语 + 括注）
 
 
 def zh_edge(t, k):
@@ -469,10 +479,10 @@ def zh_breaks(t, names=()):
     import re
     han = lambda c: '一' <= c <= '鿿'
     n, bad = len(t), set()
-    wb = jieba_bounds(t, True)
+    wb = jieba_bounds(t, True) | {x for nm in names for m in re.finditer(re.escape(nm), t) for x in m.span()}     # 登记人名的两头可以断（与 make_video.jieba_words 相同）
     for k in range(1, n):
         a, b = t[k - 1], t[k]
-        if b in '，。、：；！？）”’】」》…' or a in '（“‘【「《' or (a == b and a in '—…') or '·' in (a, b) or (han(a) and han(b) and k not in wb):
+        if b in '，。、：；！？）”’】」》…' or a in '（“‘【「《' or (a == b and a in '—…') or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):
             bad.add(k)
     spans = [(m.start(), m.end() + (m.end() < n and han(t[m.end()]))) for m in re.finditer(LATIN_RUN, t)]
     spans += [m.span() for m in re.finditer(r'[!-~]+', t)]                     # 连续的西文字符（10,000、Hunt’s 之外的标点）浏览器不断开
@@ -484,6 +494,12 @@ def zh_breaks(t, names=()):
     if len(hz) >= 2:
         bad.update(range(hz[-2] + 1, n))
     return {k for k in range(1, n) if k not in bad and not zh_edge(t, k)}
+
+
+def num_split(t, k):
+    """在 t[k] 之前断行，把单独成词的数词（“一”“两”“几”……）与后面的词拆开（专八校园版第 2 批盲审：t06 “后部放着一 / 板条箱活鸡”）。"""
+    toks = jieba_bounds(t, True)
+    return k in toks and k - 1 in toks and t[k - 1] in '一二两三四五六七八九十百千万几半' and '一' <= t[k:k + 1] <= '鿿'
 
 
 def zh_short(name, j, t, k, gap, pos, right, pl, em, names=()):
@@ -611,8 +627,10 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
             res += gloss_break(*x[1:])
         elif isinstance(x, list) and x[0] == 'ZHBRK':   # 译文在一个词的中间断行
             _, name, t, k = x
-            if k not in jieba_bounds(t, breaks):
+            if k not in jieba_bounds(t, breaks) | {x for nm in names for m in re.finditer(re.escape(nm), t) for x in m.span()}:     # 登记人名两头可以断
                 res.append(f'译文断词：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」把一个词拆到两行')
+            elif num_split(t, k):
+                res.append(f'数词断开：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」单独成词的数词与后面的词被拆到两行')
         elif isinstance(x, list):        # 释义在标点以外的地方断行：只有超过 9 个字的块、且断在分词边界上才合格（与 make_video.words 一致）
             _, name, g, k = x
             if not ok_break(g, k, breaks, names):

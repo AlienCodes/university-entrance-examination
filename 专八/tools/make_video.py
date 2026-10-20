@@ -156,7 +156,15 @@ def cap_i(h):
     Baloo 2 的短横位置在 样式/3_教室黑板.css、4_活页单词卡.css 里按 Baloo 2 实测另给。"""
     if STYLE == 'C':
         return h
-    return re.sub(r'(<[^>]*>)|I', lambda m: m.group(1) or '<x-i>I</x-i>', h)
+    return wh(re.sub(r'(<[^>]*>)|I', lambda m: m.group(1) or '<x-i>I</x-i>', h))
+
+
+def wh(h):
+    """大写 W 后紧跟 h（When、Who、Why、Whoa）：圆体 Nunito 给 W+h 这对字母设了正的字距（+0.05 字），加上 h 左侧留白，
+    W 与 h 之间的空隙约是普通字母间距的两倍，像“W hen”（专八校园版第 2 批截图盲审：t04、t06、t07）。W 包在 x-w 里，
+    Nunito 的几种画面在样式里给 x-w 收紧字距（-0.07 字，放大对比与 Tho、Wo 的间距一致）；其他画面没有这条样式，不受影响。
+    用自定义元素而不用 span（踩坑 34：.v span 有样式）。h 是已转义的 HTML，标签里的字不动。"""
+    return re.sub(r'(<[^>]*>)|W(?=h)', lambda m: m.group(1) or '<x-w>W</x-w>', h)
 
 
 def nobr(h):
@@ -181,6 +189,8 @@ def esc_en(s):
     """英文里试卷的中文注释（如 architecture (建筑).）整体不断行：中文字之间默认可以断行，画面核查发现“(建 / 筑).”被拆到两行。
     数字与后面的单位之间用不换行空格（z25 截图审阅：“only about 6 / kg”“1,800 / kg”数字与单位被拆到两行）。"""
     s = re.sub(rf'(\d)\s+(?=(?:{UNITS})(?![A-Za-z]))', '\\1\u00a0', s)
+    # 称谓与后面的人名不断开（专八校园版第 2 批盲审：t06 “Mr.” 落在行末、“Albert Griggs” 在下一行）
+    s = re.sub(r'\b(Mr|Mrs|Ms|Dr|Prof|St)\. (?=[A-Z]|$)', '\\1.\u00a0', s)      # 段尾的称谓也算：后面的人名是高亮词条时在另一段（t06 Mr. Albert Griggs）
     # 试卷的中文注释与它注释的前一个词不断开（六级黑板审阅：s45 “toddlers / (学步儿童)”注释单独落到下一行行首）
     s = re.sub(r'\s+(?=\([^()]*[\u4e00-\u9fff][^()]*\))', '\u00a0', s)
     h = dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
@@ -188,6 +198,10 @@ def esc_en(s):
     return re.sub(r'(?<![\w’-])([A-Za-z]+-) ((?:or|and|nor|to)\b)', r'<nobr>\1 \2</nobr>', h)
 
 
+# 译文里整体不断行的术语：短引号术语、书名（六级黑板审阅），短括注、引号术语连同后面紧跟的短括注（专八校园版第 2 批盲审：t04 “（指 / 天鹅）”“papa” / （爸爸））。
+# layoutcheck.TERM 与这里相同（“术语断开”）
+ZH_TERM = r'“[^“”，。；：！？、]{1,12}”（[^（）]{1,6}）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）'
+ZH_NUM = set('一二两三四五六七八九十百千万几半')       # 单独成词时与后面的量词、名词不断开（zh_html；layoutcheck 的“数词断开”）
 GLOSS_CHUNK = 9      # 词汇栏一行最多约 9.6 个字（字号最大 40px 时）：9 个字以内的释义块整体不断行（原定 10，z20 “下面就是……的方法；”溢出 16 像素）
 ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》'), set('（“‘【「《')   # 思源黑体实测：前一组字形在左半（右半空白），后一组在右半（左半空白）
 ZPROP = set('“”‘’')      # 专八译文字体霞鹜文楷的弯引号是半宽字形（宽 0.44/0.33 字），不按全角挤压
@@ -211,6 +225,14 @@ def words(s, out):
         else:
             toks.append(w)
         pos += len(w)
+    k = 0                                            # 省略号与后面的词不断开（专八校园版第 2 批盲审：t07 释义“没有走到…… / 的地步”，“的地步”落到下一行行首）
+    while k < len(toks) - 1:
+        if toks[k] and set(toks[k]) <= set('…') and k + 1 < len(toks):
+            toks[k:k + 2] = [toks[k] + toks[k + 1]]
+            if len(toks[k].strip('…')) == 1 and k + 1 < len(toks):       # 后面只跟一个字（“……的”）：再连上后面的词（“……的地步”）
+                toks[k:k + 2] = [toks[k] + toks[k + 1]]
+        else:
+            k += 1
     toks = head_tokens(toks)
     t = len(toks)                                    # 末尾至少两个字（不算标点）整体不断行，免得最后一行只剩一个字（z35 截图审阅）
     while t > 0 and sum(c.isalnum() for c in ''.join(toks[t:])) < 2:
@@ -269,11 +291,18 @@ def jb():
 
 
 def jieba_words(s):
-    """jieba 分词的位置 [(起, 止)]（覆盖整个 s）。译文按词绑定、layoutcheck 的“译文断词”都对整段文字分词，结果一致。"""
+    """jieba 分词的位置 [(起, 止)]（覆盖整个 s）。译文按词绑定、layoutcheck 的“译文断词”都对整段文字分词，结果一致。
+    在登记人名的边界处切开（专八校园版第 2 批盲审：t04 “两位科学家（卢埃拉·凯洛格和温思罗普·凯洛格）”，jieba 切出“格和温”跨过两个名字，
+    整段括注连成一块不断行，上一行空出一半；释义的 words 早已这样切）。"""
+    cuts = sorted({x for ab in name_spans(s) for x in ab})
     out, pos = [], 0
     for w in jb().cut(s):
-        out.append((pos, pos + len(w)))
-        pos += len(w)
+        e = pos + len(w)
+        for c in [x for x in cuts if pos < x < e]:
+            out.append((pos, c))
+            pos = c
+        out.append((pos, e))
+        pos = e
     return out
 
 
@@ -402,7 +431,9 @@ def zh_html(s, gloss=False):
     groups += [(i - 1, i + 2) for i, c in enumerate(s) if c == '·' and 0 < i < len(s) - 1]      # 人名间隔号与前后各一个字不断开
     groups += name_spans(s)                                         # 登记的整名不断开（t03 审阅：“理查 / 德·帕克”）
     groups += [(a, b) for a, b in jieba_words(s) if b - a > 1 and all(ish(c) for c in s[a:b])]   # 词不拆开（t03 第二轮审阅：“蹦/跳”“相/同”“霎时/间”）
-    groups += [m.span() for m in re.finditer(r'“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》', s)]     # 短的引号术语、书名整体不断行（六级黑板审阅：“能源 / 转型”“非 / 转基因”《思考，快与 / 慢》）
+    jw = jieba_words(s)                                             # 专八校园版第 2 批盲审（t06 “后部放着一 / 板条箱活鸡”）：单独成词的数词与后面的词不断开
+    groups += [(x[0], y[1]) for x, y in zip(jw, jw[1:]) if x[1] - x[0] == 1 and s[x[0]] in ZH_NUM and ish(s[y[0]])]
+    groups += [m.span() for m in re.finditer(ZH_TERM, s)]     # 短的引号术语、书名整体不断行（六级黑板审阅：“能源 / 转型”“非 / 转基因”《思考，快与 / 慢》）
     groups += clause_edges(s)                                       # 分句开头、结尾不单独留一个字（六级黑板审阅：s37 “传达得 / 好，或许……”）
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
@@ -785,7 +816,7 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     const before = e => { const w = document.createTreeWalker(en, NodeFilter.SHOW_TEXT), cs = []; let n;
       while ((n = w.nextNode()) && !e.contains(n) && (e.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_PRECEDING))
         for (let i = 0; i < n.data.length; i++) cs.push([n, i]);
-      const sp = k => /\s/.test(cs[k][0].data[cs[k][1]]);
+      const sp = k => /[ \\t\\n]/.test(cs[k][0].data[cs[k][1]]);      // 不换行空格不算（“Mr. ”用不换行空格连着人名短语：t06 Mr. Albert Griggs，称谓算短语的一部分）
       let j = cs.length; while (j > 0 && !sp(j - 1)) j--;
       const head = j < cs.length ? cs[j] : null; while (j > 0 && sp(j - 1)) j--;
       const box = c => { if (!c) return null; const g = document.createRange(); g.setStart(c[0], c[1]); g.setEnd(c[0], c[1] + 1); const q = g.getClientRects(); return q[q.length - 1]; };

@@ -10,3 +10,5 @@ html,body{font-family:'Nunito','ZH Bold',sans-serif}
 /* 中文破折号“——”画成全角居中粗横（原因和数值见 3_教室黑板.css 的 x-dash） */
 x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transparent}
 x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.715em;height:.11em;background:currentColor;border-radius:.02em}
+/* 大写 W 后紧跟 h：Nunito 的 W+h 字距偏大（像“W hen”），收紧 0.07 字（make_video.wh） */
+x-w{letter-spacing:-.07em}
