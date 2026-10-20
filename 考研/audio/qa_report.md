@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：18
+- 文章数：19
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.25%
+- 平均识别差异率：1.19%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -29,3 +29,4 @@
 | k17 | 4.49 | 2.05% | metre → meter; metres → meters; civilisations → civilizations; labour → labor; agrawal → agrol; sichel → sitchell; sichel → sitchell; sichel → sitchell; civilisation → civilization |
 | k18 | 4.49 | 2.12% | dr nikhil chaudhary → doctor nihil shohari; dr → doctor; swanepoel → swanipole; help → helped; ef → fa; chaudhary → shohari; chaudhary → shohari |
 | k19 | 4.46 | 0.89% | karla → carla; diffusion's → diffusions; says ortiz → sesortes |
+| k20 | 4.48 | 0.23% | sackett → sacit |
