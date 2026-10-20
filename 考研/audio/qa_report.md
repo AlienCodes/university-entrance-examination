@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：37
+- 文章数：38
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.97%
+- 平均识别差异率：0.99%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -48,3 +48,4 @@
 | k37 | 4.46 | 0.97% | birds' → bird's; foods → food; pasture → pasteur; brunnquell → brunkwell |
 | k38 | 4.47 | 0.99% | poll → pohl; ameritrade → amaritrade; plan → planned; ameritrade → ameritroyd; adviser → advisor |
 | k39 | 4.48 | 0.72% | brignull → brignall; brignull → brignall; it → iat |
+| k40 | 4.48 | 1.41% | strohminger → strominger; schwitzgebel → schwitzjebel; schwitzgebel → schwitzjebel; strohminger → strominger; schwitzgebel → schwitzjebel; schwitzgebel → schwitzjebel |
