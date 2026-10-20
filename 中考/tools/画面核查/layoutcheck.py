@@ -360,7 +360,8 @@ def ok_break(g, k, z8=False, names=()):
     for w in jieba.cut(g[a:b]):
         i += len(w)
         pos.add(i)
-    pos = {x for x in pos if g[x - 1:x] != '…' and not (g[x - 2:x - 1] == '…' and g[x - 1:x] != '…')}       # 省略号后面、省略号后的单字后面不断开（专八校园版第 2 批盲审：“没有走到…… / 的地步”；与 make_video.words 相同）
+    han = lambda c: '一' <= c <= '鿿'
+    pos = {x for x in pos if not (g[x - 1:x] == '…' and g[x:x + 1] in ('的', '地', '得', '之')) and not (g[x - 2:x - 1] == '…' and g[x - 1:x] in ('的', '地', '得', '之') and han(g[x:x + 1]))}       # 省略号后面、省略号后的单字后面不断开（专八校园版第 2 批盲审：“没有走到…… / 的地步”；与 make_video.words 相同）
     import re
     for nm in names:
         for m in re.finditer(re.escape(nm), g):

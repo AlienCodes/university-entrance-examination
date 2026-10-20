@@ -225,12 +225,20 @@ def words(s, out):
         else:
             toks.append(w)
         pos += len(w)
+    ell = lambda w: bool(w) and set(w) <= set('…')
+    k = 0                                            # jieba 把“……”切成两个“…”：先并成一个
+    while k < len(toks) - 1:
+        if ell(toks[k]) and ell(toks[k + 1]):
+            toks[k:k + 2] = [toks[k] + toks[k + 1]]
+        else:
+            k += 1
     k = 0                                            # 省略号与后面的词不断开（专八校园版第 2 批盲审：t07 释义“没有走到…… / 的地步”，“的地步”落到下一行行首）
     while k < len(toks) - 1:
-        if toks[k] and set(toks[k]) <= set('…') and k + 1 < len(toks):
+        if ell(toks[k]) and toks[k + 1][:1] in ('的', '地', '得', '之'):       # 只管省略号后面紧跟虚词的（“……的”不能落到行首）；“……还是”照旧可断（t02 “无论是……还是……；……或……”连成一块会放不下）
             toks[k:k + 2] = [toks[k] + toks[k + 1]]
-            if len(toks[k].strip('…')) == 1 and k + 1 < len(toks):       # 后面只跟一个字（“……的”）：再连上后面的词（“……的地步”）
+            if len(toks[k].strip('…')) == 1 and k + 1 < len(toks) and '一' <= toks[k + 1][0] <= '鿿':       # 后面只跟一个字（“……的”）：再连上后面的词（“……的地步”）
                 toks[k:k + 2] = [toks[k] + toks[k + 1]]
+            k += 1
         else:
             k += 1
     toks = head_tokens(toks)
