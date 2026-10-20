@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：40
+- 文章数：41
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.01%
+- 平均识别差异率：0.99%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -51,3 +51,4 @@
 | k40 | 4.48 | 1.41% | strohminger → strominger; schwitzgebel → schwitzjebel; schwitzgebel → schwitzjebel; strohminger → strominger; schwitzgebel → schwitzjebel; schwitzgebel → schwitzjebel |
 | k41 | 4.49 | 0.77% | travelling → traveling; subsidise → subsidize; nationalisation → nationalization |
 | k42 | 4.47 | 2.30% | ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ccts → c seatis; ferraro → ferrero; ferraro → ferrero |
+| k43 | 4.48 | 0.22% | lacked → lagged |
