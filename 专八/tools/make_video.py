@@ -58,6 +58,9 @@ PROJECTS = {
              'reg': '截图审阅通过.json', 'sample_reg': '样片审阅通过.json', 'name_re': r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', 'tmp': 'tem8video_'},
     '六级': {'tag': 'CET-6 · READING · SECTION C', 'top': 'CET-6 READING', 'exam': '大学英语六级', 'look': '3', 'stills': '样片/截图/{pid}', 'work': '样片',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
+    # 考研（用户 2026-10-20：与专八晴空校园版完全相同的主题、字体、颜色）：paper = “2026年考研英语一”，passage = “Text 1”
+    '考研': {'tag': 'KAOYAN · READING · PART A', 'top': 'KAOYAN READING', 'exam': '', 'look': '1', 'stills': '大字版/截图/{pid}', 'work': '大字版',
+             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] Text [1-4] \S.*\.mp4', 'tmp': 'kyvideo_'},
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 

@@ -653,8 +653,8 @@ def project(argv):
     if '--project' in argv:
         j = argv.index('--project')
         name, argv = argv[j + 1], argv[:j] + argv[j + 2:]
-    if name not in ('中考', '专八', '六级'):
-        raise SystemExit(f'--project 只能是 中考、专八 或 六级：{name}')
+    if name not in ('中考', '专八', '六级', '考研'):
+        raise SystemExit(f'--project 只能是 中考、专八、六级 或 考研：{name}')
     return name, R / name / 'tools', argv
 
 
@@ -690,10 +690,10 @@ def main():
             for label, fit, r in laid_out(M, pg, P[pid], f):
                 if ' 第 ' in label[2:]:          # 分屏的句子（“第 k 句 第 n 屏”）：各屏实测字号必须相同（专八 t03 审阅：s20 两屏词汇栏 40/35px）
                     got, first = sizes(pg), size.setdefault(label.split(' 第 ')[0], [])
-                    if first and proj in ('专八', '六级'):
+                    if first and proj in ('专八', '六级', '考研'):
                         probs += [f'{label}：{x}' for x in size_diff(first[0], got)]
                     first.append(got)
-                z8 = proj in ('专八', '六级')          # 六级与专八同一个引擎：专八的检查全部打开
+                z8 = proj in ('专八', '六级', '考研')          # 六级、考研与专八同一个引擎：专八的检查全部打开
                 probs += [f'{label}：{x}' for x in problems(pg, M.MIN_FS, M.MIN_VS, poss=z8, names=NAMES, fonts=z8, gaps=z8, breaks=z8)]
             bad[pid] = probs
             print(pid, 'OK' if not probs else f'{len(probs)} 处：\n  ' + '\n  '.join(probs), flush=True)
