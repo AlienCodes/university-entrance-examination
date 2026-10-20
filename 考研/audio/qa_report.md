@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：34
+- 文章数：35
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
 - 平均识别差异率：0.98%
@@ -45,3 +45,4 @@
 | k34 | 4.46 | 0.94% | pen → pin; route → root; geographer' → geographer; classicist' → classicist |
 | k35 | 4.48 | 0.45% | cavs → ∅; centre → center |
 | k36 | 4.47 | 0.96% | thousand era → hundred; c grade → scigrade |
+| k37 | 4.46 | 0.97% | birds' → bird's; foods → food; pasture → pasteur; brunnquell → brunkwell |
