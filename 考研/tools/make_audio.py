@@ -70,6 +70,17 @@ def read_text(self, original, key=None):
                         lambda m: f"{m.group(1)} {UNIT1[m.group(2)]}{'' if m.group(1) == '1' else 's'}", original)
     # and/or 读作 and or（斜杠不许留在朗读文本里）
     original = G.re.sub(r'\band/or\b', 'and or', original)
+    # 考研（合成前逐句预检查出）：引语里编者加的方括号照读括号里的词（[control] pupils → control pupils）
+    original = G.re.sub(r'\[([^\]]+)\]', r'\1', original)
+    # 加号：Disney+、Paramount+ 读作 Disney Plus；成绩 B+ 读作 B plus
+    original = G.re.sub(r'\b([A-F])\+(?=[\s,.;:)”’]|$)', r'\1 plus', original)
+    original = G.re.sub(r'(?<=[a-z])\+(?=[\s,.;:)”’]|$)', ' Plus', original)
+    # AT&T 读作 A T and T（有空格的 Simon & Schuster 高考程序会读成 and）
+    original = original.replace('AT&T', 'A T and T')
+    # 两个词之间的斜杠读作 or（customer/user experience → customer or user experience）
+    original = G.re.sub(r'(?<=[A-Za-z])/(?=[A-Za-z])', ' or ', original)
+    # 21 世纪的年代：2010s 读作 twenty-tens（高考程序读不了，1950s 这类可以）
+    original = G.re.sub(r'\b20([1-9])0s\b', lambda m: 'twenty-' + ['', 'tens', 'twenties', 'thirties', 'forties', 'fifties', 'sixties', 'seventies', 'eighties', 'nineties'][int(m.group(1))], original)
     return _read_text(self, original, key)
 
 

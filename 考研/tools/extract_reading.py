@@ -97,7 +97,7 @@ def main():
         for name, raw in bs:
             tag = f'{paper} {name}'
             try:
-                paras = [tidy(p) for p in paragraphs(raw)]
+                paras = [tidy(p).replace('...', '…') for p in paragraphs(raw)]      # 引文省略号统一为 …（与专八相同）
             except ValueError as e:
                 errs.append(f'{tag}：{e}')
                 continue
@@ -108,7 +108,7 @@ def main():
                     errs.append(f'{tag}：订正 “{e["old"]}” 匹配到 {c} 处（必须恰好 1 处）')
                 text = text.replace(e['old'], e['new'])
             paras = text.split('\n')
-            words = len(' '.join(paras).split())
+            words = len([w for w in re.split(r'[\s—–…]+', ' '.join(paras)) if re.search(r'[A-Za-z0-9]', w)])      # 词数按空白、破折号、省略号切分（踩坑 41：villages—just 是两个词）
             if any(re.search(r'[一-鿿]', re.sub(r'\([^()]*\)', '', p)) for p in paras):
                 errs.append(f'{tag}：括号注释以外还有汉字，疑似页眉页脚或识别错误')
             if not (300 <= words <= 700) or len(paras) < 3:
