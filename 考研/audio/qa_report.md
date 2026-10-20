@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：21
+- 文章数：22
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.15%
+- 平均识别差异率：1.13%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -32,3 +32,4 @@
 | k20 | 4.48 | 0.23% | sackett → sacit |
 | k21 | 4.48 | 0.74% | brookings's → brookings; muro → murrow; sifan → siffin |
 | k22 | 4.50 | 0.75% | confor → canfour; confor → confour; confor → confur |
+| k23 | 4.48 | 0.76% | anne → ann; menke → menck; menke → mank |
