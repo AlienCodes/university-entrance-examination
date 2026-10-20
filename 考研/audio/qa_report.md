@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：25
+- 文章数：26
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.11%
+- 平均识别差异率：1.07%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -36,3 +36,4 @@
 | k24 | 4.49 | 0.93% | organisation → organization; flo → flow; flo → flow; users' → users |
 | k25 | 4.49 | 0.72% | sympathises → sympathizes; recognise → recognize; decentralises → decentralizes |
 | k27 | 4.48 | 1.14% | waterstones → waterstone's; waterstones → waterstone; and schuster → unk shuster; lownie → loney |
+| k28 | 4.49 | 0.00% |  |
