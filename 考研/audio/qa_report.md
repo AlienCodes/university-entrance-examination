@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：31
+- 文章数：32
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
 - 平均识别差异率：1.00%
@@ -42,3 +42,4 @@
 | k31 | 4.47 | 0.50% | chabris → chabras; semel → semmel |
 | k32 | 4.48 | 0.48% | eveline crone → evelyn crohn |
 | k33 | 4.46 | 1.82% | thea → theo; gilardi's → gelardi's; oosten → oostin; gilardi's → gillardi's; joana lia → jonah leah; defined → define; we'll → will |
+| k34 | 4.46 | 0.94% | pen → pin; route → root; geographer' → geographer; classicist' → classicist |
