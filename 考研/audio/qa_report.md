@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：44
+- 文章数：45
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
 - 平均识别差异率：0.96%
@@ -55,3 +55,4 @@
 | k44 | 4.46 | 1.13% | rivals' → rivals; penned → penn; t and t → tnt |
 | k45 | 4.48 | 0.24% | and → in |
 | k46 | 4.49 | 0.00% |  |
+| k47 | 4.47 | 0.93% | wunderlist → wonderlist; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
