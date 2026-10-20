@@ -10,7 +10,7 @@
 | k03 | 2026年考研英语一 | Text 3 | 438 | 6 | The pioneers of wireless saw it as a gift to all the … |
 | k04 | 2026年考研英语一 | Text 4 | 445 | 6 | When Tom Swetnam joined the U.S. Forest Service in the … |
 | k05 | 2026年考研英语二 | Text 1 | 409 | 7 | Ask people about public libraries and a certain image … |
-| k06 | 2026年考研英语二 | Text 2 | 399 | 4 | According to our research, around one in five workers in … |
+| k06 | 2026年考研英语二 | Text 2 | 398 | 4 | According to our research, around one in five workers in … |
 | k07 | 2026年考研英语二 | Text 3 | 384 | 7 | Since the 2008 launch of the high-speed rail network … |
 | k08 | 2026年考研英语二 | Text 4 | 399 | 6 | In 2023, Chicago lost one of its most beloved street … |
 | k09 | 2025年考研英语一 | Text 1 | 419 | 6 | The grammar school boy from Stratford-upon-Avon has landed … |
@@ -40,7 +40,7 @@
 | k33 | 2022年考研英语一 | Text 1 | 431 | 7 | People often complain that plastics are too durable. Water … |
 | k34 | 2022年考研英语一 | Text 2 | 422 | 7 | As the latest crop of students pen their undergraduate … |
 | k35 | 2022年考研英语一 | Text 3 | 428 | 6 | Enlightening, challenging, stimulating, fun. These were … |
-| k36 | 2022年考研英语一 | Text 4 | 404 | 8 | The personal grievance provisions of New Zealand’s … |
+| k36 | 2022年考研英语一 | Text 4 | 403 | 8 | The personal grievance provisions of New Zealand’s … |
 | k37 | 2022年考研英语二 | Text 1 | 396 | 6 | On a recent sunny day, 13,000 chickens roam over Larry … |
 | k38 | 2022年考研英语二 | Text 2 | 472 | 8 | More Americans are opting to work well into retirement, a … |
 | k39 | 2022年考研英语二 | Text 3 | 402 | 6 | We have all encountered them, in both our personal and … |
