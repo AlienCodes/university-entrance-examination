@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：4
+- 文章数：5
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.47）
-- 平均识别差异率：0.93%
+- 平均识别差异率：0.79%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -15,3 +15,4 @@
 | k02 | 4.49 | 0.73% | nineteen fifties → one hundred fiftys |
 | k03 | 4.47 | 1.10% | beaty → b d; programme → program; reith → wreath; neighbourly → neighborly |
 | k04 | 4.48 | 0.22% | prichard → pritchard |
+| k05 | 4.47 | 0.24% | centres → centers |
