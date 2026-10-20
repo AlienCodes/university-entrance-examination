@@ -21,6 +21,7 @@ def split(p):
                lambda m: m.group(0).replace('.', '<DOT>'), p)
     q = re.sub(r'\b(Mr|Mrs|Ms|Dr|Prof|St|Jr|vs|e\.g|i\.e|Ph\.D)\.', lambda m: m.group(0).replace('.', '<DOT>'), q)
     q = re.sub(r'(?<![A-Za-z])([A-HJ-Z])\.(?=\s+[A-Z])', r'\1<DOT>', q)     # 人名首字母 G. K. Chesterton
+    q = re.sub(r'(?<=\w )v\.(?=\s+[A-Z])', 'v<DOT>', q)     # 判例名 Sackett v. EPA（考研 k20）
     # 引语以问号/叹号结束、后面紧跟“某人 said”：与引语是同一句（“…as kids?” Hall said.），不切开
     q = re.sub(r'(?<=[?!][”"]) (?=(?:[A-Z][\w’.-]*\s){1,3}(?:said|says|asked|asks|added|adds|explained|explains|noted|notes|wrote|writes)\b)', '<SP>', q)
     parts = re.split(r'(?<=[.!?])(["”’)]*)\s+(?=["“‘(]?[A-Z0-9])', q)
