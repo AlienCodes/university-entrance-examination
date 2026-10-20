@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：23
+- 文章数：24
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：1.12%
+- 平均识别差异率：1.11%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -34,3 +34,4 @@
 | k22 | 4.50 | 0.75% | confor → canfour; confor → confour; confor → confur |
 | k23 | 4.48 | 0.76% | anne → ann; menke → menck; menke → mank |
 | k24 | 4.49 | 0.93% | organisation → organization; flo → flow; flo → flow; users' → users |
+| k25 | 4.49 | 0.72% | sympathises → sympathizes; recognise → recognize; decentralises → decentralizes |
