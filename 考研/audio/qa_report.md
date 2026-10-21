@@ -52,7 +52,7 @@
 | k41 | 4.49 | 0.77% | travelling → traveling; subsidise → subsidize; nationalisation → nationalization |
 | k42 | 4.47 | 2.30% | ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ferraro → ferrero; ccts → c seatis; ferraro → ferrero; ferraro → ferrero |
 | k43 | 4.48 | 0.22% | lacked → lagged |
-| k44 | 4.46 | 1.13% | rivals' → rivals; penned → penn; t and t → tnt |
+| k44 | 4.46 | 0.90% | rivals' → rivals; t and t → tnt |
 | k45 | 4.48 | 0.24% | and → in |
 | k46 | 4.49 | 0.00% |  |
 | k47 | 4.47 | 0.93% | wunderlist → wonderlist; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
