@@ -123,7 +123,16 @@ def esc(s):
 
 def mark(en, m):
     """原句里把主干（主语、谓语、宾语/表语）加粗标红。"""
-    spans = sorted((en.find(t), en.find(t) + len(t)) for t in (m.get('主语'), m.get('谓语'), m.get('宾语/表语')) if t and en.find(t) >= 0)
+    spans = []                                     # 按整词找（“is”不能落在“This”里面）；找不到整词再退回普通查找
+    for t in (m.get('主语'), m.get('谓语'), m.get('宾语/表语')):
+        t = (t or '').strip()
+        if not t:
+            continue
+        hit = re.search(r'(?<![A-Za-z])' + re.escape(t) + r'(?![A-Za-z])', en)
+        a = hit.start() if hit else en.find(t)
+        if a >= 0:
+            spans.append((a, a + len(t)))
+    spans.sort()
     out, pos = [], 0
     for a, b in spans:
         if a < pos:
