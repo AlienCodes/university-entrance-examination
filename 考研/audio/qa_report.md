@@ -57,5 +57,5 @@
 | k46 | 4.49 | 0.00% |  |
 | k47 | 4.47 | 1.40% | wunderlist → wonderlist; acqui hires → aquahires; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
 | k48 | 4.47 | 0.71% | nalini ambady → nalani ambadi; ambady → ambody |
-| k13 | 4.48 | 2.05% | and → a; as two → astwo point one three; and thirteen cents → ∅ |
+| k13 | 4.49 | 1.79% | as two → astwo point one three; and thirteen cents → ∅ |
 | k26 | 4.47 | 0.70% | would've → would have; keren → karen |
