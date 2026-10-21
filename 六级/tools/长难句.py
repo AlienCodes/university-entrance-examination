@@ -1,4 +1,4 @@
-"""六级长难句分析（用户 2026-10-21：每篇把又长又复杂的句子挑出来，讲清楚怎么读懂、怎么翻译、包含哪些知识点）。
+"""六级、高考（加 --gaokao）长难句分析（用户 2026-10-21：每篇把又长又复杂的句子挑出来，讲清楚怎么读懂、怎么翻译、包含哪些知识点）。
 
     /opt/ttsenv/bin/python 六级/tools/长难句.py select [s01 …]   # ① 程序挑句 → 六级/长难句/挑句.json（不花 token）
     /opt/ttsenv/bin/python 六级/tools/长难句.py check  [s01 …]   # ② 程序检查模型写的分析 六级/长难句/<篇目>.json
@@ -18,8 +18,13 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 C6 = HERE.parent
-DIR = C6 / '长难句'
-P = {p['id']: p for p in json.loads((C6 / 'data' / 'vocab.json').read_text('utf-8'))['passages'] if p.get('done')}
+GK = '--gaokao' in sys.argv          # 高考 70 篇（用户 2026-10-21：高考也要长难句分析）：数据 data/vocab.json，分析 长难句/，PDF 放进 听写卡/<篇目文件夹>/
+if GK:
+    sys.argv.remove('--gaokao')
+BASE = C6.parent if GK else C6
+DIR = BASE / '长难句'
+P = {p['id']: p for p in json.loads((BASE / 'data' / 'vocab.json').read_text('utf-8'))['passages'] if p.get('done')}
+LONG, LONG2, MAXN = (20, 17, 4) if GK else (25, 22, 5)   # 高考句子短：词数门槛 20（放宽 17），每篇最多 4 句
 SENTS = {pid: [s for pa in p['paras'] for s in pa] for pid, p in P.items()}
 PARTS = ['主句', '主语', '谓语', '宾语', '表语', '宾语补足语', '主语从句', '宾语从句', '表语从句', '同位语从句', '定语从句', '非限制性定语从句',
          '时间状语从句', '原因状语从句', '条件状语从句', '让步状语从句', '目的状语从句', '结果状语从句', '比较状语从句', '方式状语从句', '地点状语从句',
@@ -46,11 +51,11 @@ def select(ids):
             n = sum(1 for t in doc if t.dep_ in ('relcl', 'advcl', 'ccomp', 'csubj', 'acl', 'xcomp', 'appos')
                     or (t.dep_ == 'conj' and t.pos_ in ('VERB', 'AUX')))
             rows.append((k, words(s['en']), n))
-        pick = [r for r in rows if r[1] >= 25 and r[2] >= 2]
+        pick = [r for r in rows if r[1] >= LONG and r[2] >= 2]
         if len(pick) < 2:
-            pick = sorted(rows, key=lambda r: -(r[1] + 6 * r[2]))[:2] if not [r for r in rows if r[1] >= 22] else \
-                   [r for r in rows if r[1] >= 22]
-        pick = sorted(pick, key=lambda r: -(r[1] + 6 * r[2]))[:4 if len(pick) <= 6 else 5]
+            pick = sorted(rows, key=lambda r: -(r[1] + 6 * r[2]))[:2] if len([r for r in rows if r[1] >= LONG2]) < 2 else \
+                   [r for r in rows if r[1] >= LONG2]
+        pick = sorted(pick, key=lambda r: -(r[1] + 6 * r[2]))[:4 if len(pick) <= 6 else MAXN]
         out[pid] = [{'k': k, '词数': w, '结构数': n} for k, w, n in sorted(pick)]
         print(pid, [(r['k'], r['词数'], r['结构数']) for r in out[pid]], flush=True)
     DIR.mkdir(exist_ok=True)
@@ -151,7 +156,8 @@ def kp(r):
 def page_html(pid):
     p = P[pid]
     a = json.loads((DIR / f'{pid}.json').read_text('utf-8'))
-    body = [f"<h1>长难句分析</h1><div class='sub'>大学英语六级 {esc(p['paper'])} {esc(p['passage'])} · {esc(p['title'])} · "
+    src = f"高考英语 {esc(p['name'])}" if GK else f"大学英语六级 {esc(p['paper'])} {esc(p['passage'])}"
+    body = [f"<h1>长难句分析</h1><div class='sub'>{src} · {esc(p['title'])} · "
             f"本篇 {len(a['sentences'])} 句（红色加粗 = 句子主干）</div>"]
     for x in a['sentences']:
         s = SENTS[pid][x['k'] - 1]
@@ -172,8 +178,9 @@ def page_html(pid):
 
 
 def pdf(ids):
-    sys.path.insert(0, str(HERE))
-    import make_dictation as MD
+    if not GK:
+        sys.path.insert(0, str(HERE))
+        import make_dictation as MD
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
@@ -182,11 +189,17 @@ def pdf(ids):
             bad = problems(pid)
             if bad:
                 raise SystemExit('检查没通过，不排版：\n  ' + '\n  '.join(bad))
-            p = MD.P[pid] if hasattr(MD, 'P') else next(x for x in MD.ORDER if x['id'] == pid)
-            MD.folder(p).mkdir(parents=True, exist_ok=True)
+            if GK:                                 # 高考听写卡文件夹：“序号 年份 试卷 阅读X 题目”，每篇恰好一个
+                fs = [d for d in (BASE / '听写卡').iterdir() if d.name[3:] == f"{P[pid]['name']} {P[pid]['title']}"]
+                assert len(fs) == 1, (pid, fs)
+                d, base = fs[0], fs[0].name[3:]
+            else:
+                p = MD.P[pid] if hasattr(MD, 'P') else next(x for x in MD.ORDER if x['id'] == pid)
+                d, base = MD.folder(p), MD.base_name(p)
+            d.mkdir(parents=True, exist_ok=True)
             pg.set_content(page_html(pid))
             pg.evaluate('document.fonts.ready')
-            f = MD.folder(p) / f'{MD.base_name(p)} - 4 长难句分析.pdf'
+            f = d / f'{base} - 4 长难句分析.pdf'
             pg.pdf(path=str(f), format='A4', print_background=True, display_header_footer=True, header_template='<span></span>',
                    footer_template="<div style='font-size:8px;width:100%;text-align:center;color:#999'><span class='pageNumber'></span> / <span class='totalPages'></span></div>",
                    margin={'top': '16mm', 'bottom': '18mm', 'left': '15mm', 'right': '15mm'})
