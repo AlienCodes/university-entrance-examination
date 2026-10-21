@@ -7,7 +7,7 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.95%
+- 平均识别差异率：0.97%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -41,7 +41,7 @@
 | k30 | 4.46 | 0.00% |  |
 | k31 | 4.47 | 0.50% | chabris → chabras; semel → semmel |
 | k32 | 4.48 | 0.48% | eveline crone → evelyn crohn |
-| k33 | 4.46 | 1.82% | gilardi's → gelardi's; oosten → oostin; gilardi's → gillardi's; oosten's → oostens; joana lia → jonah leah; defined → define; we'll → will |
+| k33 | 4.46 | 2.73% | thea van oosten → tayavan osten; gilardi's → gelardi's; oosten → osten; gilardi's → gillardi's; oosten → osten; oosten's → osten's; joana lia → juana leah; defined → define; we'll → will |
 | k34 | 4.46 | 0.94% | pen → pin; route → root; geographer' → geographer; classicist' → classicist |
 | k35 | 4.48 | 0.45% | cavs → ∅; centre → center |
 | k36 | 4.47 | 0.96% | thousand era → hundred; c grade → scigrade |
