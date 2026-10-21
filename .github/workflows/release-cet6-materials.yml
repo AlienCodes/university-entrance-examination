@@ -50,9 +50,9 @@ jobs:
               KORD = ['4 长难句分析', '1 汉译英', '2 英译汉', '3 文章填空', '0 逐句精读']
               KNEW = {'4 长难句分析': '长难句分析', '1 汉译英': '汉译英听写卡', '2 英译汉': '英译汉听写卡', '3 文章填空': '文章填空听写卡', '0 逐句精读': '逐句精读'}
               have = {x.name.rsplit(' - ', 1)[1][:-4]: x for x in dst.glob('*.pdf')}
-              kinds = [k for k in KORD if k in have]
-              assert len(kinds) == len(have), sorted(have)
-              for n, k in enumerate(kinds, 1):
+              kseq = [k for k in KORD if k in have]
+              assert len(kseq) == len(have), sorted(have)
+              for n, k in enumerate(kseq, 1):
                   have[k].rename(dst / f"{have[k].name.rsplit(' - ', 1)[0]} - {n} {KNEW[k]}.pdf")
               shutil.copy(Path('六级/audio') / T[p['id']]['file'], dst / f'{f.name[3:]} - {len(pdfs) + 1} 朗读音频.mp3')
           PY
