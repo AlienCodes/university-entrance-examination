@@ -60,7 +60,8 @@ PROJECTS = {
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
     # 考研（用户 2026-10-20：与专八晴空校园版完全相同的主题、字体、颜色）：paper = “2026年考研英语一”，passage = “Text 1”
     '考研': {'tag': 'KAOYAN · READING · PART A', 'top': 'KAOYAN READING', 'exam': '', 'look': '1', 'stills': '大字版/截图/{pid}', 'work': '大字版',
-             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] Text [1-4] \S.*\.mp4', 'tmp': 'kyvideo_'},
+             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] Text [1-4] \S.*\.mp4', 'tmp': 'kyvideo_',
+             'badge': r'考研\A精读'},      # 封面右上角圆形贴纸（样式/1_晴空校园.css 写的是专八的「专八 / 精读」，考研 k02 截图试跑时发现，按项目覆盖）
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 
@@ -614,6 +615,8 @@ def page(body):
     else:                       # 共用背景：共用字体 + 共用基础样式 + 共用版式骨架（词条间距）+ 专八调整（追加在后面覆盖）
         extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}"><link rel="stylesheet" href="{ZH_BOLD.as_uri()}"><link rel="stylesheet" href="{INTER.as_uri()}"><link rel="stylesheet" href="{ZH_REGULAR.as_uri()}">'
         theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
+        if PJ and PJ.get('badge'):            # 项目自己的封面贴纸文字（考研：「考研 / 精读」），追加在专八调整之后覆盖
+            theme += f"<style>.ttl::after{{content:'{PJ['badge']}'}}</style>"
     return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}{size_css()}</head>'
             f'<body><div class="band"></div>{flat_nobr(body)}</body></html>')
 
@@ -1105,7 +1108,24 @@ def screen_checks(pg, label, fit, r):
         out += [f'横向出界：{x}' for x in pg.evaluate(HBOX)]
     else:
         out += [f'封面：{x}' for x in pg.evaluate(TH.COVER, False)[2]]
+        out += [f'封面：{x}' for x in deco_project(pg)]
     return [f'{label}：{x}' for x in out]
+
+
+# 各项目封面装饰文字（::before / ::after 的 content，如右上角贴纸）里允许出现的考试名：别的项目的名字出现就报错
+# （考研 k02 截图试跑：共用的 样式/1_晴空校园.css 把贴纸写死成「专八 / 精读」，考研封面也成了“专八精读”）
+EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'],
+              '四级': ['四级', 'CET-4', 'CET4'], '中考': ['中考'], '高考': ['高考']}
+DECO_JS = """() => { const out = [];
+  for (const el of document.querySelectorAll('*')) for (const p of ['::before', '::after']) {
+    const c = getComputedStyle(el, p).content;
+    if (c && c !== 'none' && c !== 'normal' && c !== '""') out.push(c); }
+  return out; }"""
+
+
+def deco_project(pg):
+    other = [w for k, ws in EXAM_WORDS.items() if k != PROJ for w in ws if not any(w in x or x in w for x in EXAM_WORDS.get(PROJ, []))]
+    return [f'装饰文字 {c} 是别的考试（{w}），应为{PROJ}' for c in pg.evaluate(DECO_JS) for w in other if w in c]
 
 
 def load_lc():
