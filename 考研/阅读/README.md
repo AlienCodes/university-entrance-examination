@@ -10,12 +10,12 @@
 | k02 | 2026年考研英语一 | Text 2 | 396 | 7 | There’s no business like show business—but in Los Angeles, … |
 | k03 | 2026年考研英语一 | Text 3 | 441 | 6 | The pioneers of wireless saw it as a gift to all the … |
 | k04 | 2026年考研英语一 | Text 4 | 445 | 6 | When Tom Swetnam joined the U.S. Forest Service in the … |
-| k49 | 2026年考研英语一 | Part B | 547 | 8 | You don’t need to get out more. If, like most business … |
+| k49 | 2026年考研英语一 | Part B | 546 | 8 | You don’t need to get out more. If, like most business … |
 | k05 | 2026年考研英语二 | Text 1 | 410 | 7 | Ask people about public libraries and a certain image … |
 | k06 | 2026年考研英语二 | Text 2 | 401 | 4 | According to our research, around one in five workers in … |
 | k07 | 2026年考研英语二 | Text 3 | 386 | 7 | Since the 2008 launch of the high-speed rail network … |
 | k08 | 2026年考研英语二 | Text 4 | 399 | 6 | In 2023, Chicago lost one of its most beloved street … |
-| k50 | 2026年考研英语二 | Part B | 613 | 8 | In an effort to support restoration programmes, specialists … |
+| k50 | 2026年考研英语二 | Part B | 616 | 8 | In an effort to support restoration programmes, specialists … |
 | k09 | 2025年考研英语一 | Text 1 | 422 | 6 | The grammar school boy from Stratford-upon-Avon has landed … |
 | k10 | 2025年考研英语一 | Text 2 | 473 | 7 | I was shocked to learn recently that some scientists want … |
 | k11 | 2025年考研英语一 | Text 3 | 413 | 6 | Ever since taking on Netflix Inc. at its own game, old … |
