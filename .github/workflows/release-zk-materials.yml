@@ -33,7 +33,11 @@ jobs:
               assert pdfs == [f'{name} - {k}.pdf' for k in ('0 逐句精读', '1 汉译英', '2 英译汉', '3 文章填空')], (name, pdfs)
               dst = out / f'{i} {name}'
               shutil.copytree(src, dst)
-              shutil.copy(Path('中考/audio') / audio, dst / f'{name} - 朗读音频.mp3')
+              for x in sorted(dst.glob('*.pdf')):         # 文件序号从 1 开始（用户 2026-10-21：0 逐句精读 → 1 逐句精读……，朗读音频排最后）
+                  a, b = x.name.rsplit(' - ', 1)
+                  k, rest = b.split(' ', 1)
+                  x.rename(dst / f'{a} - {int(k) + 1} {rest}')
+              shutil.copy(Path('中考/audio') / audio, dst / f'{name} - {len(pdfs) + 1} 朗读音频.mp3')
               rows.append(f'| {i} | {name} |')
               order.append(f'{top}/{i} {name}')
           assert len(lines) == 40, len(lines)
@@ -47,17 +51,15 @@ jobs:
           Path('order.txt').write_text('\n'.join(order) + '\n', 'utf-8')
           Path('notes.md').write_text(
               f'中考英语阅读真题学习资料，共 {len(lines)} 篇，与 B 站 40P 合集一一对应：文件夹前的序号就是 P 号（1—40）。每篇一个文件夹，5 个文件：\n\n'
-              '- 0 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
-              '- 1 汉译英.pdf：看中文写英文\n- 2 英译汉.pdf：看英文写中文\n'
-              '- 3 文章填空.pdf：原文挖空（试卷的中文注释已去掉），附整句翻译和每空释义\n'
-              '- 朗读音频.mp3：男声逐句朗读（四六级同款声音，与视频是同一份朗读，已去除电磁音）\n\n'
+              '- 1 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
+              '- 2 汉译英.pdf：看中文写英文\n- 3 英译汉.pdf：看英文写中文\n'
+              '- 4 文章填空.pdf：原文挖空（试卷的中文注释已去掉），附整句翻译和每空释义\n'
+              '- 5 朗读音频.mp3：男声逐句朗读（四六级同款声音，与视频是同一份朗读，已去除电磁音）\n\n'
               f'另附 {pname}：{len(papers)} 份中考英语试卷原卷（Word），与 40 篇阅读的出处对应。\n\n'
               '三份听写卡 PDF 的最后一页是答案；A4 纸，可直接打印。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
           PY
           zipname="ZHONGKAO-reading-materials-${tag}.zip"
-          mapfile -t dirs < order.txt
-          (cd dist && zip -r -q "../${zipname}" "${dirs[@]}")
-          unzip -l "${zipname}" | tail -1
+          python3 .github/pack-zip.py "${zipname}" dist $((40 * 5 + 23)) order.txt
           echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
           echo "TAG=${tag}" >> "$GITHUB_ENV"
       - name: 发布

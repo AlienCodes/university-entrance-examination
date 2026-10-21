@@ -106,12 +106,12 @@ def main():
     # 1 资料总览：资料包最外层（历年真题 + 60 个篇目文件夹）+ 一个篇目文件夹打开后的样子
     names = [x.name for x in sorted((BASE / '听写卡').iterdir())]
     root = [('dir hl', P['papers'])] + [('dir', n) for n in names[:3]] + [('more', f"…… 共 {len(names)} 个篇目文件夹，{P['order']}")]
-    files = [('PDF', '0 逐句精读.pdf', P['read']),
-             ('PDF', '1 汉译英.pdf', '看中文写英文，最后一页是答案'),
-             ('PDF', '2 英译汉.pdf', '看英文写中文，最后一页是答案'),
-             ('PDF', '3 文章填空.pdf', '原文挖空，附整句翻译和每空释义'),
-             ('PDF', '4 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),
-             ('MP3', '朗读音频.mp3', P['voice'])]
+    files = [('PDF', '1 逐句精读.pdf', P['read']),           # 压缩包里的文件序号从 1 开始、朗读音频排第 6（用户 2026-10-21；发布时改名）
+             ('PDF', '2 汉译英.pdf', '看中文写英文，最后一页是答案'),
+             ('PDF', '3 英译汉.pdf', '看英文写中文，最后一页是答案'),
+             ('PDF', '4 文章填空.pdf', '原文挖空，附整句翻译和每空释义'),
+             ('PDF', '5 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),
+             ('MP3', '6 朗读音频.mp3', P['voice'])]
     rr = ''.join(f"<div class='r {c}'><span class='fo'></span><span>{t}</span></div>" if c != 'more' else f"<div class='r more'>{t}</div>" for c, t in root)
     rows = ''.join(f"<div class='f'><span class='ic {t.lower()}'>{t}</span><span class='fn'>{n}</span><span class='fd'>{d}</span></div>" for t, n, d in files)
     win = ("<div style='display:flex;flex-direction:column;gap:30px;width:1420px'>"
@@ -163,7 +163,7 @@ def main():
     env = np.clip(env / np.percentile(env, 98), 0, 1) ** 1.6
     bars = ''.join(f"<i style='height:{max(6, int(v * 300))}px'></i>" for v in env)
     dur = len(a) / sr
-    player = (f"<div class='pl'><div class='ttl'>{NAME} - 朗读音频.mp3</div><div class='wave'>{bars}</div>"
+    player = (f"<div class='pl'><div class='ttl'>{NAME} - 6 朗读音频.mp3</div><div class='wave'>{bars}</div>"
               f"<div class='ctl'><span class='btn'>▶</span><div class='prog'><div></div></div><span>00:00 / {int(dur // 60):02d}:{int(dur % 60):02d}</span></div></div>"
               "<style>.pl{width:1420px;background:#fff;border-radius:22px;box-shadow:0 18px 50px rgba(18,60,105,.22);padding:56px 60px}"
               ".ttl{font-family:'ZH Bold',sans-serif;font-size:36px;color:#123c69}.wave{height:320px;display:flex;align-items:center;gap:6px;margin:40px 0}"
