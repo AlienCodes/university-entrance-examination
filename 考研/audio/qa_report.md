@@ -7,7 +7,7 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.96%
+- 平均识别差异率：0.95%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -17,7 +17,7 @@
 | k04 | 4.48 | 0.22% | prichard → pritchard |
 | k05 | 4.47 | 0.24% | centres → centers |
 | k06 | 4.48 | 0.49% | realise → realize; organisations → organizations |
-| k07 | 4.47 | 2.93% | travellers → travelers; ferrovie → ferrovi; explained → explain; ferrovie → ferrovier; ferrovie → fero ver; giuricin → jurichin; centres → centers; signalling → signaling; say → zay; travelling → traveling; giuricin → jurichin |
+| k07 | 4.47 | 2.68% | travellers → travelers; ferrovie → ferrovi; explained → explain; ferrovie → ferrovier; ferrovie → ferovier; giuricin → jurichin; centres → centers; signalling → signaling; say → zay; travelling → traveling; giuricin → jurichin |
 | k08 | 4.49 | 0.74% | they're in → therein; festgoers → festorers |
 | k09 | 4.48 | 2.32% | shakespeare → sheare; jacqui → jackie; randomised → randomized; aged nine and → aging; length → lengths; o'hanlon → oh hanlon; o'hanlon → ohanlon |
 | k10 | 4.49 | 1.05% | modelling → modeling; centres → centers; paralysed → paralyzed; recognising → recognizing; kajaani → kayani |
