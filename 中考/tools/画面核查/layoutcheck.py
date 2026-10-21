@@ -65,6 +65,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 R = HERE.parents[2]
+_zs = importlib.util.spec_from_file_location('zh_bind', HERE / 'zh_bind.py')
+ZB = importlib.util.module_from_spec(_zs)
+_zs.loader.exec_module(ZB)
 
 CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || [];
   const ZC='，。、：；！？）”’】」》］〕', ZO='（“‘【「《［〔', PUN=ZC+ZO+'…—·', out=[];
@@ -128,9 +131,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         out.push(`西文撇号：${name}「${A.slice(Math.max(0, j - 5), j + 3).map(y => y.c).join('')}」的撇号是全角（宽 ${((x.r - x.l) / em(x.el)).toFixed(2)} 字）`); }); }
     for (const x of L.flat()) if (x.c === 'I' && !x.el.closest('x-i') && /^(Nunito|"?Baloo 2|"?Inter)/.test(getComputedStyle(x.el).fontFamily)) { out.push(`大写I：${name}的大写 I 没有衬线（与小写 l 分不清）`); break; }   // Baloo 2（专八共用背景 3、4）的 I 只比 l 矮 5%
     { const A = L.flat();      // 专八校园版第 2 批截图盲审（t04 “W hoa”、t06 “W hy”、t07 “W hen”）：Nunito 的 W+h 字距偏大，W 必须收紧（make_video.wh 的 x-w）
-      for (let j = 0; j + 1 < A.length; j++) { const x = A[j]; if (x.c !== 'W' || A[j + 1].c !== 'h') continue; const cs = getComputedStyle(x.el);
+      for (let j = 0; j + 1 < A.length; j++) { const x = A[j]; if (x.c !== 'W' || !'hi'.includes(A[j + 1].c)) continue; const cs = getComputedStyle(x.el);
         const ls = parseFloat(cs.letterSpacing); if (/^"?Nunito/.test(cs.fontFamily) && (isNaN(ls) ? 0 : ls) > -0.05 * em(x.el)) {
-          out.push(`W与h间隙：${name}「${A.slice(j, j + 5).map(y => y.c).join('')}」的 W 与 h 之间空隙偏大（Nunito 的 W+h 字距没有收紧）`); break; } } }
+          out.push(`W与h间隙：${name}「${A.slice(j, j + 5).map(y => y.c).join('')}」的 W 与后一个字母之间空隙偏大（Nunito 的 W+h、W+i 字距没有收紧）`); break; } } }
     for (const x of L.flat()) if (x.c === '—' && !x.el.closest('x-dash') && /^"?ZH (Bold|Regular)/.test(getComputedStyle(x.el).fontFamily)) {   // 专八 t03 审阅：思源黑体的“—”是西文窄破折号，粗体汉字旁又细又偏下
       out.push(`中文破折号：${name}的「——」没有画成全角居中横线（x-dash）`); break; }
     L.forEach((ln, i) => {
@@ -219,6 +222,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         g.textContent.split('').forEach((c, q) => { if (/\s/.test(c)) wd[q] = sw; });
         for (let j = 1; j < L.length; j++) { const f = L[j][0], a = L[j - 1][L[j - 1].length - 1];
           if (om.has(f.n)) out.push(['GBRK', name, g.textContent, om.get(f.n) + f.i, om.has(a.n), wd, x1 - x0]); } } }
+    if (name === '英文' && breaks) for (let j = 1; j < L.length; j++)      // 考研截图盲审：专名（Brett / Kavanaugh）、“18 or / 21”被拆到两行
+      { const z = L[j - 1].filter(x => !x.el.closest('sup')).at(-1), f = L[j].filter(x => !x.el.closest('sup'))[0];
+        if (z && f) out.push(['ENBRK', z.n.data.slice(0, z.i + 1).slice(-60), f.n.data.slice(f.i).slice(0, 60)]); }
     if (name === '英文') for (let j = 1; j < L.length; j++)          // 专八校园版第 2 批盲审：t06 “Mr.” 落在行末、人名在下一行
       { const z = L[j - 1].filter(x => !x.el.closest('sup')).at(-1);      // 行文字 txt 不带空格（from Mr. → fromMr.），按最后一个字所在的原文判断
         if (z && /\b(Mr|Mrs|Ms|Dr|Prof|St)\.$/.test(z.n.data.slice(0, z.i + 1))) out.push(`称谓断开：英文第 ${j} 行以「${txt(L[j - 1]).slice(-12)}」结尾，称谓与人名被拆到两行`); }
@@ -241,7 +247,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
   document.querySelectorAll('.v > div').forEach((d, i) => { block(d, `词条 ${i + 1} `, true);
     const b = d.querySelector('b'), rs = b.getClientRects(), g = d.querySelector('span[lang]'), last = rs[rs.length - 1];   // z03 词条折行后释义紧接在词条尾巴后面
     if (rs.length > 1) for (const e of [d.querySelector('i'), g].filter(Boolean)) { const r = e.getClientRects()[0];
-      if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
+      if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } }
+    if (breaks && rs.length > 1 && parseFloat(getComputedStyle(b).fontSize) > minVs + 0.5)       // 考研截图盲审：词条一行放不下要先缩字号，缩到下限还放不下才折行
+      out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折成 ${rs.length} 行，词汇栏字号 ${getComputedStyle(b).fontSize} 还没缩到下限 ${minVs}px`); });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
   // 文字重叠（专八 t03 第二轮审阅：埋雷“译文压在英文上 32 像素”人看出来了、程序没有这项）：英文、译文、页眉、页脚、词汇栏标题、每个词条各自按行合成文字框，
   // 不同块的文字框不许相交（横向超过 1 像素且纵向超过 2 像素）。字框是字体的字身高度，行距不算，正常排版相邻两块之间总有空隙
@@ -336,6 +344,8 @@ def ok_break(g, k, z8=False, names=()):
     jieba 切成“格和温”跨过名字边界），名字中间不能断（jieba 在“凯洛／格”之间也有边界）。"""
     if g[k - 1:k].isspace() or g[k:k + 1].isspace():          # 释义里的英文（as A as it is）在空格处换行，正常
         return True
+    if z8 and any(a < k < b for a, b in ZB.zh_spans(g, jb(z8))):     # 复合词（考研截图盲审：后置 / 定语、20世纪90 / 年代中期）
+        return False
     jieba = jb(z8)
     zc, zo = '，。、：；！？）”’】」》］〕', '（“‘【「《［〔'
     cuts = [0] + [i for i in range(1, len(g)) if (g[i - 1] in zc and g[i] not in zc) or (g[i] in zo and g[i - 1] not in zo)] + [len(g)]
@@ -446,7 +456,7 @@ def font_fallback(pg):
 
 LATIN_RUN = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*(?: [A-Za-z0-9][A-Za-z0-9’'.&%％-]*)*"
 CLAUSE = r'[^，。、；：！？]+'
-TERM = r'“[^“”，。；：！？、]{1,12}”（[^（）]{1,6}）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）'      # 与 make_video.ZH_TERM 相同（专八校园版第 2 批盲审：短括注、引号术语 + 括注）
+TERM = r"“[^“”，。；：！？、]{1,12}”（(?:[^（）]{1,6}|[A-Za-z0-9 ’'.,-]{1,20})）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）"      # 与 make_video.ZH_TERM 相同（专八校园版第 2 批盲审：短括注、引号术语 + 括注）
 
 
 def zh_edge(t, k):
@@ -626,6 +636,14 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
                 res.append(why)
         elif isinstance(x, list) and x[0] == 'GBRK':    # 括注分离、释义单字（专八 / 六级）
             res += gloss_break(*x[1:])
+        elif isinstance(x, list) and x[0] == 'ENBRK':   # 英文专名、“18 or 21”被拆到两行（zh_bind.en_spans，与引擎同一份规则）
+            _, p, n = x
+            ctx, k = p + ' ' + n, len(p)
+            if any(a < k < b for a, b in ZB.en_spans(ctx)):
+                res.append(f'专名断开：英文「{p[-20:]} / {n[:20]}」')
+        elif isinstance(x, list) and x[0] == 'ZHBRK' and breaks and any(a < x[3] < b for a, b in ZB.zh_spans(x[2], jb(True))):
+            _, name, t, k = x
+            res.append(f'译文断词：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」把复合词拆到两行（zh_bind）')
         elif isinstance(x, list) and x[0] == 'ZHBRK':   # 译文在一个词的中间断行
             _, name, t, k = x
             if k not in jieba_bounds(t, breaks) | {x for nm in names for m in re.finditer(re.escape(nm), t) for x in m.span()}:     # 登记人名两头可以断

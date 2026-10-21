@@ -170,6 +170,10 @@ def check(pid, path, R=None):
         miss = uncovered(en, taken, names)
         if miss:
             errs.append(f'第{k}句 漏标（不是基础词，必须标注）：{", ".join(dict.fromkeys(miss))}')
+        for e in a['w']:                # 带空位的短语（focus…on）写原文词形时漏了“…”，空位里的词（them、us）会被当成短语一部分高亮（考研截图审阅：k48 focused them on、k46 provide us with）
+            sf = e.get('surf') or ''
+            if e['t'] == 'phr' and '…' in e['h'] and sf and '…' not in sf and len(sf.split()) > len(e['h'].replace('…', ' ').split()):
+                errs.append(f'第{k}句 短语空位：{e["h"]}{{{sf}}} 的原文词形要写“…”（如 {{focused…on}}），空位里的词不属于短语')
         seen = set()
         for e in a['w']:
             if e['t'] != 'phr' and not re.match(r'^(n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.', e['m']):

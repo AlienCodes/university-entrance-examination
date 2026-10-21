@@ -166,7 +166,7 @@ def wh(h):
     W 与 h 之间的空隙约是普通字母间距的两倍，像“W hen”（专八校园版第 2 批截图盲审：t04、t06、t07）。W 包在 x-w 里，
     Nunito 的几种画面在样式里给 x-w 收紧字距（-0.07 字，放大对比与 Tho、Wo 的间距一致）；其他画面没有这条样式，不受影响。
     用自定义元素而不用 span（踩坑 34：.v span 有样式）。h 是已转义的 HTML，标签里的字不动。"""
-    return re.sub(r'(<[^>]*>)|W(?=h)', lambda m: m.group(1) or '<x-w>W</x-w>', h)
+    return re.sub(r'(<[^>]*>)|W(?=[hi])', lambda m: m.group(1) or '<x-w>W</x-w>', h)      # 考研截图盲审：With、Without 的 W+i 同样偏大（“W ith”）
 
 
 def nobr(h):
@@ -195,6 +195,9 @@ def esc_en(s):
     s = re.sub(r'\b(Mr|Mrs|Ms|Dr|Prof|St)\. (?=[A-Z]|$)', '\\1.\u00a0', s)      # 段尾的称谓也算：后面的人名是高亮词条时在另一段（t06 Mr. Albert Griggs）
     # 试卷的中文注释与它注释的前一个词不断开（六级黑板审阅：s45 “toddlers / (学步儿童)”注释单独落到下一行行首）
     s = re.sub(r'\s+(?=\([^()]*[\u4e00-\u9fff][^()]*\))', '\u00a0', s)
+    # 专名（连续 2—4 个首字母大写的词：Brett Kavanaugh、West Virginia、Apple TV.）和“18 or 21”整体不断行（考研截图盲审 17 处；规则在 zh_bind.en_spans，layoutcheck 同一份）
+    for a, b in ZB().en_spans(s):
+        s = s[:a] + s[a:b].replace(' ', '\u00a0') + s[b:]
     h = dash(nobr(re.sub(r'\([^()]*[\u4e00-\u9fff][^()]*\)[.,;:!?”’]*', lambda m: f'<span style="white-space:nowrap">{m.group(0)}</span>', esc(s))))
     # 悬空连字符与后面的 or/and 整体不断行（六级 s20 “right- / or left-brained”，行末是连字符；不换行空格不管用：浏览器允许在连字符后、不换行空格前断行）
     return re.sub(r'(?<![\w’-])([A-Za-z]+-) ((?:or|and|nor|to)\b)', r'<nobr>\1 \2</nobr>', h)
@@ -202,7 +205,7 @@ def esc_en(s):
 
 # 译文里整体不断行的术语：短引号术语、书名（六级黑板审阅），短括注、引号术语连同后面紧跟的短括注（专八校园版第 2 批盲审：t04 “（指 / 天鹅）”“papa” / （爸爸））。
 # layoutcheck.TERM 与这里相同（“术语断开”）
-ZH_TERM = r'“[^“”，。；：！？、]{1,12}”（[^（）]{1,6}）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）'
+ZH_TERM = r"“[^“”，。；：！？、]{1,12}”（(?:[^（）]{1,6}|[A-Za-z0-9 ’'.,-]{1,20})）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）"      # 考研：“该表演了”（Time to Act）英文括注最多 20 个字符
 ZH_NUM = set('一二两三四五六七八九十百千万几半')       # 单独成词时与后面的量词、名词不断开（zh_html；layoutcheck 的“数词断开”）
 GLOSS_CHUNK = 9      # 词汇栏一行最多约 9.6 个字（字号最大 40px 时）：9 个字以内的释义块整体不断行（原定 10，z20 “下面就是……的方法；”溢出 16 像素）
 ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》］〕'), set('（“‘【「《［〔')   # 思源黑体实测：前一组字形在左半（右半空白），后一组在右半（左半空白）；［］〔〕 考研 k09 实测同（ ）
@@ -213,6 +216,7 @@ def words(s, out):
     """超过 GLOSS_CHUNK 个字的释义块（如“（代替前面提到的复数名词）”）一行放不下，只允许在词与词之间断行：用 jieba 分词，每个多字词整体不断行
     （依赖：/opt/ttsenv/bin/pip install jieba）。"""
     toks, names, pos = [], name_spans(s), 0
+    zb = ZB().zh_spans(s, jb())                      # 考研截图盲审：释义“后置 / 定语”“20世纪90 / 年代中期”
     cuts = sorted({x for ab in names for x in ab})
     raw, q = [], 0                                   # 专八校园版 t04 第 8 句：jieba 把“凯洛格和温思罗普”切成“格和温”，跨过两个名字的边界，
     for w in jb().cut(s):                            # 两个名字连同“和”并成一整块不断行、伸出词汇栏 16 像素——先在登记人名的边界处把分词切开
@@ -221,7 +225,7 @@ def words(s, out):
             raw.append(s[q:c]); q = c
         raw.append(s[q:e]); q = e
     for w in raw:                           # 专八：人名间隔号与前后的词合成一块（t04 “温思罗普· / 凯洛格”在间隔号处断行）
-        inside = any(a < pos < b for a, b in names)  # 登记的整名（人名.json）不在名字中间断开：分词切在名字里面时并到前一块
+        inside = any(a < pos < b for a, b in names) or any(a < pos < b for a, b in zb)  # 登记的整名（人名.json）、复合词（zh_bind）不在中间断开：并到前一块
         if toks and (w.startswith('·') or toks[-1].endswith('·') or inside):
             toks[-1] += w
         else:
@@ -298,6 +302,16 @@ def jb():
                 jieba.add_word(w.strip())
         jieba._zb_dict = True
     return jieba
+
+
+def ZB():
+    """中考/tools/画面核查/zh_bind.py：引擎与 layoutcheck 共用的“不许拆开”的片段（中文复合词、英文专名）。"""
+    if not hasattr(ZB, 'm'):
+        import importlib.util
+        sp = importlib.util.spec_from_file_location('zh_bind', QA / 'zh_bind.py')
+        ZB.m = importlib.util.module_from_spec(sp)
+        sp.loader.exec_module(ZB.m)
+    return ZB.m
 
 
 def jieba_words(s):
@@ -444,6 +458,7 @@ def zh_html(s, gloss=False):
     jw = jieba_words(s)                                             # 专八校园版第 2 批盲审（t06 “后部放着一 / 板条箱活鸡”）：单独成词的数词与后面的词不断开
     groups += [(x[0], y[1]) for x, y in zip(jw, jw[1:]) if x[1] - x[0] == 1 and s[x[0]] in ZH_NUM and ish(s[y[0]])]
     groups += [m.span() for m in re.finditer(ZH_TERM, s)]     # 短的引号术语、书名整体不断行（六级黑板审阅：“能源 / 转型”“非 / 转基因”《思考，快与 / 慢》）
+    groups += ZB().zh_spans(s, jb())                                # 复合词、前缀 / 后缀、单字介词、数字 + 量词不拆开（考研截图盲审约 20 处：服务 / 人员、这一 / 威胁、可 / 持续发展）
     groups += clause_edges(s)                                       # 分句开头、结尾不单独留一个字（六级黑板审阅：s37 “传达得 / 好，或许……”）
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
@@ -813,6 +828,7 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     // 词条里的连字符词一行放不下（hw 只好在连字符处断开）时，先缩小词汇栏字号；缩到下限还放不下（六级 s10 you-and-me-against-the-world）才允许断开（考研 k24 consumer-／generated）
     if (vs > MINVS && [...document.querySelectorAll('.v b nobr')].some(n => n.style.whiteSpace === 'normal')) return false;
+    if (vs > MINVS && [...document.querySelectorAll('.v b')].some(b => b.getClientRects().length > 1)) return false;      // 考研截图盲审：多词词条（make / improvements to、tens of / thousands of）也先缩字号，缩到下限还放不下才折行
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
   const en = document.querySelector('.en');
   const phr = () => { const lim = en.clientWidth; for (const e of en.querySelectorAll('.ph')) { e.style.whiteSpace = '';
