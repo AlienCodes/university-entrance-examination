@@ -644,7 +644,7 @@ def set_style(look):
     STYLE = look
     z = SIZES[look]
     FS0, VS0, MIN_FS, MIN_VS = z['fs0'], z['vs0'], z['min_fs'], z['min_vs']
-    FIT = FIT_JS.replace('FS0', str(FS0)).replace('VS0', str(VS0))
+    FIT = FIT_JS.replace('FS0', str(FS0)).replace('MINVS', str(MIN_VS)).replace('VS0', str(VS0))
 
 
 def name_spans(s):
@@ -811,6 +811,8 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     for (const x of [...document.querySelectorAll('x-n')].reverse()) { x.style.display = '';      // 先里层后外层（释义分句的 x-n 里套着长括注的 x-n）
       if (x.getBoundingClientRect().height > parseFloat(getComputedStyle(x).lineHeight) * 1.5) x.style.display = 'inline'; } };
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
+    // 词条里的连字符词一行放不下（hw 只好在连字符处断开）时，先缩小词汇栏字号；缩到下限还放不下（六级 s10 you-and-me-against-the-world）才允许断开（考研 k24 consumer-／generated）
+    if (vs > MINVS && [...document.querySelectorAll('.v b nobr')].some(n => n.style.whiteSpace === 'normal')) return false;
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
   const en = document.querySelector('.en');
   const phr = () => { const lim = en.clientWidth; for (const e of en.querySelectorAll('.ph')) { e.style.whiteSpace = '';
