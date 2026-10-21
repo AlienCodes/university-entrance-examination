@@ -7,7 +7,7 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.97%
+- 平均识别差异率：0.98%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -55,7 +55,7 @@
 | k44 | 4.46 | 0.90% | rivals' → rivals; t and t → tnt |
 | k45 | 4.48 | 0.24% | and → in |
 | k46 | 4.49 | 0.00% |  |
-| k47 | 4.47 | 0.93% | wunderlist → wonderlist; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
+| k47 | 4.47 | 1.40% | wunderlist → wonderlist; acqui hires → aquahires; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
 | k48 | 4.47 | 0.48% | ambady → ambuddy; ambady → ambody |
 | k13 | 4.48 | 2.05% | and → a; as two → astwo point one three; and thirteen cents → ∅ |
 | k26 | 4.47 | 0.70% | would've → would have; keren → karen |
