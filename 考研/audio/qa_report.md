@@ -24,7 +24,7 @@
 | k11 | 4.49 | 0.22% | ace → a |
 | k12 | 4.45 | 0.64% | antiques → antique; creators' → creator's; is → was |
 | k14 | 4.49 | 0.96% | programme → program; maximise → maximize; socialise → socialize; centre → center |
-| k15 | 4.48 | 1.68% | haps → heps; centre → center; kotharkar's → katharkar's; kotharkar → katharkar; kotharkar → katharkar; kotharkar's → katharkar's; chandni → channi |
+| k15 | 4.48 | 1.68% | haps → heps; centre → center; kotharkar's → kotarkar's; kotharkar → kotarkar; kotharkar → kotarkar; kotharkar's → kotarkar's; chandni → channi |
 | k16 | 4.49 | 2.16% | organised → organized; behaviour → behavior; centre → center; desire → desired; wickquasgeck → wickwisjek; heere straat → heerstraat; gentlemen's → gentleman's; routes → roots |
 | k17 | 4.49 | 2.05% | metre → meter; metres → meters; civilisations → civilizations; labour → labor; agrawal → agrol; sichel → sitchell; sichel → sitchell; sichel → sitchell; civilisation → civilization |
 | k18 | 4.49 | 2.12% | dr nikhil chaudhary → doctor nihil shohari; dr → doctor; swanepoel → swanipole; help → helped; ef → fa; chaudhary → shohari; chaudhary → shohari |
