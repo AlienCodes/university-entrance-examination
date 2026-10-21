@@ -7,7 +7,7 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.97%
+- 平均识别差异率：0.96%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -46,7 +46,7 @@
 | k35 | 4.48 | 0.45% | cavs → ∅; centre → center |
 | k36 | 4.47 | 0.96% | thousand era → hundred; c grade → scigrade |
 | k37 | 4.46 | 0.97% | birds' → bird's; foods → food; pasture → pasteur; brunnquell → brunkwell |
-| k38 | 4.47 | 0.99% | poll → pohl; ameritrade → amaritrade; plan → planned; ameritrade → ameritroyd; adviser → advisor |
+| k38 | 4.47 | 0.60% | poll → pohl; plan → planned; adviser → advisor |
 | k39 | 4.48 | 0.72% | brignull → brignall; brignull → brignall; it → iat |
 | k40 | 4.48 | 1.41% | strohminger → strominger; schwitzgebel → schwitzjebel; schwitzgebel → schwitzjebel; strohminger → strominger; schwitzgebel → schwitzjebel; schwitzgebel → schwitzjebel |
 | k41 | 4.49 | 0.77% | travelling → traveling; subsidise → subsidize; nationalisation → nationalization |
