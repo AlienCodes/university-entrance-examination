@@ -60,4 +60,4 @@
 | k13 | 4.49 | 1.79% | as two → astwo point one three; and thirteen cents → ∅ |
 | k26 | 4.47 | 0.70% | would've → would have; keren → karen |
 | k49 | 4.44 | 1.27% | rovelli → rivelli; read → red; barry → bari; tokarczuk → tokarchuk; woolf → wolfe; simenon → simonon; neighbours → neighbors |
-| k50 | 4.48 | 1.95% | programmes → programs; ramni jamnadass → ramney jamnidas; in → and; masting' → masting; janzen → janszen; brancalion → brancalian; ' → ∅; chazdon → chasden; jamnadass → jamnidas; brancalion → brancalian; chazdon → chasden |
+| k50 | 4.48 | 1.78% | programmes → programs; jamnadass → jamnadas; in → and; masting' → masting; janzen → janszen; brancalion → brancalian; ' → ∅; chazdon → chasden; jamnadass → jamnidas; brancalion → brancalian; chazdon → chasden |
