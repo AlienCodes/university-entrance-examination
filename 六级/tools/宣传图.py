@@ -31,7 +31,7 @@ h1{font-family:'ZH Bold',sans-serif;font-size:84px;margin-top:26px;letter-spacin
 .no{position:absolute;right:90px;top:70px;font-family:'ZH Bold',sans-serif;font-size:150px;line-height:1;color:rgba(255,255,255,.18)}
 .desc{font-size:38px;color:#2a3a52;padding:36px 90px 0;line-height:1.5}
 .desc b{font-family:'ZH Bold',sans-serif;color:#123c69}
-.stage{position:absolute;left:90px;right:90px;top:430px;bottom:150px;display:flex;align-items:center;justify-content:center;gap:40px}
+.stage{position:absolute;left:90px;right:90px;top:410px;bottom:150px;display:flex;align-items:center;justify-content:center;gap:40px}
 .pg{background:#fff;box-shadow:0 18px 50px rgba(18,60,105,.22),0 3px 10px rgba(0,0,0,.08);border-radius:10px;overflow:hidden}
 .pg img{display:block;width:100%}
 .bot{position:absolute;left:0;right:0;bottom:0;height:150px;display:flex;align-items:center;justify-content:center;gap:26px;font-size:32px;color:#2a3a52}
@@ -70,24 +70,33 @@ def main():
     OUT.mkdir(exist_ok=True)
     td = Path(tempfile.mkdtemp(prefix='cet6promo_'))
     imgs = {}
-    # 1 资料总览：一个文件夹打开后的样子
-    files = [('PDF', '0 逐句精读.pdf', '与视频画面一致：片头 + 每屏一页，英文高亮、中文翻译、生词编号注释'),
-             ('PDF', '1 汉译英.pdf', '看中文写英文：本篇全部生词与短语默写，最后一页是答案'),
-             ('PDF', '2 英译汉.pdf', '看英文写中文：本篇全部生词与短语默写，最后一页是答案'),
-             ('PDF', '3 文章填空.pdf', '原文挖空，附整句翻译和每空释义，最后一页是答案'),
-             ('PDF', '4 长难句分析.pdf', '每篇 2—5 个长难句：找主干、层层拆解、怎么读懂、怎么翻译、知识点'),
-             ('MP3', '朗读音频.mp3', '男声逐句朗读，与视频同一份朗读')]
-    rows = ''.join(f"<div class='f'><span class='ic {t.lower()}'>{t}</span><div><div class='fn'>{n}</div><div class='fd'>{d}</div></div></div>" for t, n, d in files)
-    win = (f"<div class='win'><div class='bar'><i></i><i></i><i></i><span>01 {NAME}</span></div>{rows}</div>"
-           "<style>.win{width:1420px;background:#fff;border-radius:18px;box-shadow:0 18px 50px rgba(18,60,105,.22);overflow:hidden}"
-           ".bar{height:70px;background:#e9eef6;display:flex;align-items:center;padding:0 26px;gap:12px;font-size:28px;color:#3b4a60}"
-           ".bar i{width:18px;height:18px;border-radius:50%;background:#f26b5e}.bar i+i{background:#f6be4f}.bar i+i+i{background:#5ac05a}.bar span{margin-left:18px}"
-           ".f{display:flex;align-items:center;gap:28px;padding:22px 36px;border-top:1px solid #edf1f7}"
-           ".ic{flex:none;width:96px;height:112px;border-radius:12px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px;"
-           "font-family:'ZH Bold',sans-serif;font-size:28px;color:#fff;background:#d64541}.ic.mp3{background:#2e9e5b}"
-           ".fn{font-family:'ZH Bold',sans-serif;font-size:38px;color:#123c69}.fd{font-size:28px;color:#5b6b80;margin-top:6px}</style>")
-    imgs['01_资料总览'] = page('01', '资料总览', '共 <b>60 个文件夹</b>，每篇一个；每个文件夹里都是下面这 6 个文件（以第 1 篇为例）', win,
-                             chips('<b>60</b> 篇真题', '<b>300</b> 份 PDF', '<b>256</b> 个长难句', '<b>60</b> 段朗读音频'))
+    # 1 资料总览：资料包最外层（历年真题 + 60 个篇目文件夹）+ 一个篇目文件夹打开后的样子
+    names = [x.name for x in sorted((C6 / '听写卡').iterdir())]
+    papers = sorted((C6 / '真题').rglob('*.pdf'))
+    root = [('dir hl', f'历年真题（2021—2026，共 {len(papers)} 套原卷 PDF）')] + [('dir', n) for n in names[:3]] + [('more', f'…… 共 {len(names)} 个篇目文件夹，2026—2021 年从新到旧')]
+    files = [('PDF', '0 逐句精读.pdf', '片头 + 每屏一页，英文高亮、中文翻译、生词编号注释'),
+             ('PDF', '1 汉译英.pdf', '看中文写英文，最后一页是答案'),
+             ('PDF', '2 英译汉.pdf', '看英文写中文，最后一页是答案'),
+             ('PDF', '3 文章填空.pdf', '原文挖空，附整句翻译和每空释义'),
+             ('PDF', '4 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),
+             ('MP3', '朗读音频.mp3', '男声逐句朗读')]
+    rr = ''.join(f"<div class='r {c}'><span class='fo'></span><span>{t}</span></div>" if c != 'more' else f"<div class='r more'>{t}</div>" for c, t in root)
+    rows = ''.join(f"<div class='f'><span class='ic {t.lower()}'>{t}</span><span class='fn'>{n}</span><span class='fd'>{d}</span></div>" for t, n, d in files)
+    win = ("<div style='display:flex;flex-direction:column;gap:30px;width:1420px'>"
+           f"<div class='win'><div class='bar'><i></i><i></i><i></i><span>六级阅读真题60篇学习资料</span></div>{rr}</div>"
+           f"<div class='win'><div class='bar'><i></i><i></i><i></i><span>01 {NAME}</span></div>{rows}</div></div>"
+           "<style>.win{background:#fff;border-radius:18px;box-shadow:0 18px 50px rgba(18,60,105,.22);overflow:hidden}"
+           ".bar{height:58px;background:#e9eef6;display:flex;align-items:center;padding:0 24px;gap:10px;font-size:26px;color:#3b4a60}"
+           ".bar i{width:16px;height:16px;border-radius:50%;background:#f26b5e}.bar i+i{background:#f6be4f}.bar i+i+i{background:#5ac05a}.bar span{margin-left:16px}"
+           ".r{display:flex;align-items:center;gap:22px;padding:12px 32px;border-top:1px solid #edf1f7;font-size:30px;color:#26364d}"
+           ".r.hl{background:#fff6dc;font-family:'ZH Bold',sans-serif;color:#9a5b00}.r.more{color:#7b8aa0;font-size:26px;padding-left:96px}"
+           ".fo{flex:none;width:52px;height:40px;border-radius:6px;background:#f2b84b;position:relative}.fo:before{content:'';position:absolute;left:0;top:-8px;width:22px;height:10px;border-radius:4px 4px 0 0;background:#f2b84b}"
+           ".f{display:flex;align-items:center;gap:22px;padding:11px 32px;border-top:1px solid #edf1f7}"
+           ".ic{flex:none;width:58px;height:66px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;"
+           "font-family:'ZH Bold',sans-serif;font-size:19px;color:#fff;background:#d64541}.ic.mp3{background:#2e9e5b}"
+           ".fn{flex:none;width:330px;font-family:'ZH Bold',sans-serif;font-size:30px;color:#123c69}.fd{font-size:25px;color:#5b6b80}</style>")
+    imgs['01_资料总览'] = page('01', '资料总览', f'<b>历年真题原卷</b>（{len(papers)} 套）+ <b>60 个篇目文件夹</b>，每个文件夹里都是下面这 6 个文件', win,
+                             chips(f'<b>{len(papers)}</b> 套历年真题', '<b>60</b> 篇精读', '<b>300</b> 份 PDF', '<b>256</b> 个长难句', '<b>60</b> 段音频'))
     # 2 长难句分析（只有这一张写“虚拟产品……”）
     p = render_pages(pdf_of('4 长难句分析'), [1, 2], 110, td)
     imgs['02_长难句分析'] = page('02', '长难句分析', '挑出每篇<b>又长又复杂</b>的句子：找主干 → 层层拆解 → 怎么读懂 → 怎么翻译 → 知识点',
