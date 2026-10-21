@@ -107,13 +107,13 @@ def problems(pid):
 CSS = """@page{size:A4;margin:16mm 15mm 18mm}
 body{font-family:'Noto Sans SC','Source Han Sans SC',sans-serif;color:#1d2330;font-size:10.5pt;line-height:1.6}
 h1{font-size:20pt;margin:0 0 2mm;color:#123c69}.sub{color:#556;font-size:10pt;margin-bottom:6mm;border-bottom:1.5px solid #123c69;padding-bottom:2mm}
-.s{break-inside:avoid-page;margin:0 0 7mm;padding:4mm 5mm;border:1px solid #d5dbe5;border-radius:3mm;background:#fbfcfe}
+.s{margin:0 0 7mm;padding:4mm 5mm;border:1px solid #d5dbe5;border-radius:3mm;background:#fbfcfe}
 .no{display:inline-block;background:#123c69;color:#fff;border-radius:2mm;padding:0 2.5mm;font-size:9.5pt;margin-right:2mm}
 .en{font-family:'Inter','Noto Sans',sans-serif;font-size:11.5pt;line-height:1.75;margin:2mm 0 3mm}
 .en b{color:#b3261e}.f{background:#fff6d6;border-left:3px solid #e0a800;padding:1.5mm 3mm;margin:2mm 0;font-weight:600}
-h3{font-size:11pt;color:#123c69;margin:3mm 0 1mm}table{border-collapse:collapse;width:100%;font-size:10pt}
+h3{font-size:11pt;color:#123c69;margin:3mm 0 1mm;break-after:avoid}.s+.s{break-before:page}tr,.en,.f,.zh,li,.kp>div{break-inside:avoid}table{border-collapse:collapse;width:100%;font-size:10pt;table-layout:fixed}
 td,th{border:1px solid #d5dbe5;padding:1.2mm 2mm;vertical-align:top;text-align:left}th{background:#eef2f8;font-weight:600}
-td.e{font-family:'Inter','Noto Sans',sans-serif;width:40%}ol{margin:0;padding-left:6mm}.zh{background:#eef6ee;border-left:3px solid #3c8d40;padding:1.5mm 3mm}
+td.e{font-family:'Inter','Noto Sans',sans-serif}ol{margin:0;padding-left:6mm}.zh{background:#eef6ee;border-left:3px solid #3c8d40;padding:1.5mm 3mm}
 .kp b{color:#123c69}.mono{font-family:'Inter',sans-serif}"""
 
 
@@ -152,7 +152,7 @@ def page_html(pid):
             f"<div class='f'>结构：{esc(x['公式'])}</div>"
             f"<h3>① 找主干</h3><div>主语：<span class='mono'>{esc(m['主语'])}</span>　谓语：<span class='mono'>{esc(m['谓语'])}</span>"
             + (f"　宾语/表语：<span class='mono'>{esc(m['宾语/表语'])}</span>" if m.get('宾语/表语') else '') + "</div>"
-            f"<h3>② 层层拆解</h3><table><tr><th>片段</th><th>成分</th><th>作用（修饰谁 / 做什么）</th><th>说明</th></tr>{rows}</table>"
+            f"<h3>② 层层拆解</h3><table><colgroup><col style='width:29%'><col style='width:15%'><col style='width:22%'><col style='width:34%'></colgroup><tr><th>片段</th><th>成分</th><th>作用（修饰谁 / 做什么）</th><th>说明</th></tr>{rows}</table>"
             f"<h3>③ 怎么读懂</h3><ol>{''.join(f'<li>{esc(t)}</li>' for t in x['读懂步骤'])}</ol>"
             f"<h3>④ 怎么翻译</h3><div>方法：{esc('、'.join(x['翻译']['方法']))}。{esc(x['翻译']['说明'])}</div>"
             f"<div class='zh'>参考译文：{esc(s['zh'])}</div>"
@@ -183,6 +183,48 @@ def pdf(ids):
         br.close()
 
 
+SWAP = {'定语从句': '宾语从句', '宾语从句': '定语从句', '非限制性定语从句': '同位语从句', '同位语从句': '定语从句', '现在分词短语': '过去分词短语',
+        '过去分词短语': '现在分词短语', '不定式短语': '动名词短语', '原因状语从句': '条件状语从句', '条件状语从句': '原因状语从句',
+        '时间状语从句': '让步状语从句', '让步状语从句': '时间状语从句', '介词短语': '同位语', '表语从句': '主语从句', '主语从句': '宾语从句'}
+
+
+def plant(batches, out):
+    """复核埋雷：把每批的分析复制到 out/bNN/，在每批一篇里埋 3 个确定的错误（成分名称换错、主干主语换成修饰成分、两行“作用”对调），
+    答案写在 out 旁边的 <out>_key.json（审阅员看不到）。"""
+    import random, shutil
+    out = Path(out)
+    shutil.rmtree(out, ignore_errors=True)
+    key = []
+    for i, b in enumerate(batches, 1):
+        d = out / f'b{i:02d}'
+        d.mkdir(parents=True)
+        for pid in b:
+            shutil.copy(DIR / f'{pid}.json', d / f'{pid}.json')
+        rnd = random.Random(f'cet6-ld-{i}')
+        pid = rnd.choice(b)
+        a = json.loads((d / f'{pid}.json').read_text('utf-8'))
+        xs = a['sentences']
+        mines = []
+        x = next((x for x in xs if any(r['成分'] in SWAP for r in x['拆解'])), None)
+        if x:
+            r = next(r for r in x['拆解'] if r['成分'] in SWAP)
+            mines.append({'pid': pid, 'k': x['k'], 'what': f"拆解「{r['片段'][:30]}」成分 {r['成分']} → {SWAP[r['成分']]}"})
+            r['成分'] = SWAP[r['成分']]
+        x = next((x for x in xs if x is not (mines and None) and len(x['拆解']) >= 2 and x['k'] not in [m['k'] for m in mines]), xs[-1])
+        cand = [r['片段'] for r in x['拆解'] if r['片段'] != x['主干']['主语'] and r['成分'] not in ('主句', '主语', '谓语')]
+        if cand:
+            mines.append({'pid': pid, 'k': x['k'], 'what': f"主干主语 {x['主干']['主语'][:30]} → {cand[0][:30]}"})
+            x['主干']['主语'] = cand[0]
+        y = next((y for y in xs if len(y['拆解']) >= 3 and y['k'] not in [m['k'] for m in mines]), None) or next(y for y in xs if len(y['拆解']) >= 2)
+        r1, r2 = y['拆解'][0], y['拆解'][-1]
+        mines.append({'pid': pid, 'k': y['k'], 'what': f"拆解「{r1['片段'][:20]}」与「{r2['片段'][:20]}」的作用对调"})
+        r1['作用'], r2['作用'] = r2['作用'], r1['作用']
+        (d / f'{pid}.json').write_text(json.dumps(a, ensure_ascii=False, indent=1), 'utf-8')
+        key.append({'batch': f'b{i:02d}', 'passages': b, 'mines': mines})
+    Path(str(out) + '_key.json').write_text(json.dumps(key, ensure_ascii=False, indent=1), 'utf-8')
+    return key
+
+
 if __name__ == '__main__':
     cmd, ids = sys.argv[1], sys.argv[2:] or list(P)
     if cmd == 'select':
@@ -193,3 +235,6 @@ if __name__ == '__main__':
         sys.exit(1 if bad else 0)
     elif cmd == 'pdf':
         pdf(ids)
+    elif cmd == 'plant':           # plant <out_dir> s01 s02 … ：每 6 篇一批
+        ps = ids[1:]
+        print(json.dumps(plant([ps[i:i + 6] for i in range(0, len(ps), 6)], ids[0]), ensure_ascii=False)[:300])
