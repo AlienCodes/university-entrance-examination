@@ -20,7 +20,7 @@
 | k07 | 4.47 | 2.93% | travellers → travelers; ferrovie → ferrovi; explained → explain; ferrovie → ferrovier; ferrovie → fero ver; giuricin → jurichin; centres → centers; signalling → signaling; say → zay; travelling → traveling; giuricin → jurichin |
 | k08 | 4.49 | 0.74% | they're in → therein; festgoers → festorers |
 | k09 | 4.48 | 2.32% | shakespeare → sheare; jacqui → jackie; randomised → randomized; aged nine and → aging; length → lengths; o'hanlon → oh hanlon; o'hanlon → ohanlon |
-| k10 | 4.49 | 1.05% | modelling → modeling; centres → centers; paralysed → paralyzed; recognising → recognizing; kajaani → kajani |
+| k10 | 4.49 | 1.05% | modelling → modeling; centres → centers; paralysed → paralyzed; recognising → recognizing; kajaani → kayani |
 | k11 | 4.49 | 0.22% | ace → a |
 | k12 | 4.45 | 0.64% | antiques → antique; creators' → creator's; is → was |
 | k14 | 4.49 | 0.96% | programme → program; maximise → maximize; socialise → socialize; centre → center |
