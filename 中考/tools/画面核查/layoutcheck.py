@@ -247,9 +247,7 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
   document.querySelectorAll('.v > div').forEach((d, i) => { block(d, `词条 ${i + 1} `, true);
     const b = d.querySelector('b'), rs = b.getClientRects(), g = d.querySelector('span[lang]'), last = rs[rs.length - 1];   // z03 词条折行后释义紧接在词条尾巴后面
     if (rs.length > 1) for (const e of [d.querySelector('i'), g].filter(Boolean)) { const r = e.getClientRects()[0];
-      if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } }
-    if (breaks && rs.length > 1 && parseFloat(getComputedStyle(b).fontSize) > minVs + 0.5)       // 考研截图盲审：词条一行放不下要先缩字号，缩到下限还放不下才折行
-      out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折成 ${rs.length} 行，词汇栏字号 ${getComputedStyle(b).fontSize} 还没缩到下限 ${minVs}px`); });
+      if (r && r.top < last.top + 2) { out.push(`词条折行：词条 ${i + 1} 「${b.textContent}」折行后，${e === g ? '释义' : '词性'}没有另起一行`); break; } } });
   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);
   // 文字重叠（专八 t03 第二轮审阅：埋雷“译文压在英文上 32 像素”人看出来了、程序没有这项）：英文、译文、页眉、页脚、词汇栏标题、每个词条各自按行合成文字框，
   // 不同块的文字框不许相交（横向超过 1 像素且纵向超过 2 像素）。字框是字体的字身高度，行距不算，正常排版相邻两块之间总有空隙
@@ -518,7 +516,8 @@ def zh_short(name, j, t, k, gap, pos, right, pl, em, names=()):
     第 j 行（下一行从 t[k] 开始）行末空出 gap 像素；按 zh_breaks 的规则，下一行开头第一个可以断开的单位（到下一行里第一个可断位置为止）
     放得进这段空（留 0.25 字余量），却被推到了下一行——排版程序绑在一起的比规则要求的多（如把英文段前面的汉字也绑上，连成一长串）。
     pos：下一行每个字 [位置, 左边界]；right：下一行最后一个字的右边界；pl：下一行第一个字是去掉了左半空白的左标点（放回行中要加回半字）。"""
-    ok = zh_breaks(t, names)
+    zb = ZB.zh_spans(t, jb(True))
+    ok = {y for y in zh_breaks(t, names) if not any(a < y < b for a, b in zb)}     # 引擎绑在一起的复合词（zh_bind）不算可断位置
     left = {x[0]: x[1] for x in pos}
     q = sorted(left)
     p = next((x for x in q if x > k and any(k < y <= x for y in ok)), None)

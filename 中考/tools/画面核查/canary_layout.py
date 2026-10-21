@@ -56,7 +56,11 @@ MINES = [
     (1, 0, '片头标题字号过大，超出白色卡片', lambda h: h.replace('</head>', '<style>.ttl h1{font-size:230px!important;white-space:nowrap}</style></head>'), None),
     (4, 3, '英文字号过大，溢出句子区、压到中文和页脚', None, FIT_THEN("document.documentElement.style.setProperty('--fs','112px')")),
     (8, 7, '中文译文第 3 个字变成乱码“\uFFFD”（缺字形的字在本机显示为空白，所以用乱码符号）', 'ZH3', None),
-    (12, 11, '英文行首有一大段异常空白', lambda h: h.replace('<div class="en">', '<div class="en"><span style="display:inline-block;width:520px"></span>', 1), None),
+    (12, 11, '英文行首有一大段异常空白', lambda h: h.replace('<div class="en">', '<div class="en"><span id="gap" style="display:inline-block;width:520px"></span>', 1),
+     # 句首是长短语时 520 像素空白会自己占一行（考研 k28 第 11 句，文字整体下移、看不出是雷）：逐步缩小，直到第一个词和空白在同一行
+     FIT_THEN("const g=document.getElementById('gap'), w0=document.createTreeWalker(document.querySelector('.en'),NodeFilter.SHOW_TEXT); let n; "
+              "while((n=w0.nextNode()) && !n.data.trim()); const r=document.createRange(); r.setStart(n, n.data.search(/\\S/)); r.setEnd(n, n.data.search(/\\S/)+1); "
+              "for (let w=520; w>=200; w-=40) { g.style.width=w+'px'; if (Math.abs(r.getClientRects()[0].bottom - g.getBoundingClientRect().bottom) < 40) break; }")),
     (15, 14, '词汇栏字号过大，词条超出卡片底边、压到页脚', None, FIT_THEN("document.documentElement.style.setProperty('--vs','62px')")),
 ]
 MINES = [(1, 0, *m[2:]) if m[1] == 0 else (screen_of(plain(m[1])), plain(m[1]), *m[2:]) for m in MINES]      # 中考无分屏的篇目：屏号与原表相同
@@ -69,6 +73,11 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         if edit == 'ZH3':                         # 改数据再渲染（译文由 zh_html 逐字排版，不能直接改 HTML）
             s, edit = dict(s, zh=s['zh'][:2] + '\uFFFD' + s['zh'][3:]), None
         h = M.title_slide(p) if k == 0 else M.sentence_slide(p, s, k, len(sents))
+        # 雷必须真的显出来（考研 k28 第 11 句：句首是长短语，520 像素空白自己占了一行，文字整体下移、看不出来，两位审阅员都“漏查”）：
+        # 先用同一个程序排出不埋雷的这一屏，埋雷后逐像素比较，几乎没变就报错
+        h0 = M.title_slide(p) if k == 0 else M.sentence_slide(p, sents[k - 1], k, len(sents))
+        f.write_text(h0, 'utf-8'); pg.goto(f.as_uri()); pg.evaluate('document.fonts.ready'); pg.evaluate(M.FIT if k else '() => 0')
+        pg.screenshot(path=str(Path(td) / 'orig.png'))
         if edit:
             h2 = edit(h)
             assert h2 != h, f'雷没有埋进去：{what}'
@@ -86,5 +95,10 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
                 M.small(Path(td) / 'big.png').save(S / dst / f'screen{scr:02d}.png')
         else:
             pg.screenshot(path=str(S / dst / f'screen{scr:02d}.png'))
-        print(f'screen{scr:02d}', f'第 {k} 句' if k else '片头', what, flush=True)
+        pg.screenshot(path=str(Path(td) / 'mine.png'))
+        from PIL import Image, ImageChops
+        diff = ImageChops.difference(Image.open(Path(td) / 'orig.png').convert('L'), Image.open(Path(td) / 'mine.png').convert('L'))
+        changed = diff.point(lambda v: 255 if v > 40 else 0).histogram()[255]
+        assert changed > 2000, f'雷没有显出来：screen{scr:02d} {what}（与不埋雷的同一屏只差 {changed} 个像素）'
+        print(f'screen{scr:02d}', f'第 {k} 句' if k else '片头', what, f'（变化 {changed} 像素）', flush=True)
     br.close()

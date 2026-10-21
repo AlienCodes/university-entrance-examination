@@ -691,6 +691,9 @@ def ordered(s):
 def sentence_html(s, lo=0, hi=None):
     """只排 en[lo:hi]（分屏时每屏一段）；编号按整句统一，第二屏接着第一屏编号。"""
     hi = len(s['en']) if hi is None else hi
+    en = s['en']                       # 专名跨在普通文字和高亮词之间（the Mariana / 高亮 Trench、the California / 高亮 Attorney General）：整句先把专名里的空格换成不换行空格（一个字换一个字，位置不变）
+    for a, b in ZB().en_spans(en):
+        en = en[:a] + en[a:b].replace(' ', '\u00a0') + en[b:]
     ws = ordered(s)
     num = {id(w): i + 1 for i, w in enumerate(ws)}
     spans = sorted((a, b, w, j) for w in s['w'] for j, (a, b) in enumerate(w['sp']) if lo <= a and b <= hi)
@@ -705,13 +708,13 @@ def sentence_html(s, lo=0, hi=None):
         sup = f'<sup>{num[id(w)]}</sup>' if j == last[id(w)] else ''     # 分开的短语，编号标在本屏最后一段
         # 所有格紧跟在高亮词后面时，编号标在所有格之后（旧版专八画面核查：drivers⑫’ 编号把词和撇号隔开）；所有格本身不高亮（x-ps 正文颜色）。
         # ’s 一律算；单独的 ’ 只在 -s 词后、且本句前面没有左单引号 ‘ 时算（否则可能是引语的右引号）
-        m = re.match(r'’s(?![A-Za-z])|’(?=[\s,;:.!?—]|$)', s['en'][b:hi]) if sup else None
-        if m and m.group(0) == '’' and (not s['en'][a:b].endswith('s') or '‘' in s['en'][:a]):
+        m = re.match(r'’s(?![A-Za-z])|’(?=[\s,;:.!?—]|$)', en[b:hi]) if sup else None
+        if m and m.group(0) == '’' and (not en[a:b].endswith('s') or '‘' in en[:a]):
             m = None
         ps = f'<x-ps>{esc(m.group(0))}</x-ps>' if m else ''
-        out += esc_en(s['en'][pos:a]) + f'<span class="{cls}">{nobr(esc(s["en"][a:b]))}{ps}{sup}</span>'
+        out += esc_en(en[pos:a]) + f'<span class="{cls}">{nobr(esc(en[a:b]))}{ps}{sup}</span>'
         pos = b + (len(m.group(0)) if m else 0)
-    out += esc_en(s['en'][pos:hi])
+    out += esc_en(en[pos:hi])
     # 连字符复合词跨在普通文字和高亮词之间（z21 “a 600-” + 高亮 kilometer），两段合起来不断行
     hl = r'<span class="(?:w|ph)">(?:(?!</span>).)*</span>'
     out = re.sub(rf'(?<![\w’])([A-Za-z0-9’]+-)({hl})', r'<nobr>\1\2</nobr>', out)
@@ -828,7 +831,6 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;
     // 词条里的连字符词一行放不下（hw 只好在连字符处断开）时，先缩小词汇栏字号；缩到下限还放不下（六级 s10 you-and-me-against-the-world）才允许断开（考研 k24 consumer-／generated）
     if (vs > MINVS && [...document.querySelectorAll('.v b nobr')].some(n => n.style.whiteSpace === 'normal')) return false;
-    if (vs > MINVS && [...document.querySelectorAll('.v b')].some(b => b.getClientRects().length > 1)) return false;      // 考研截图盲审：多词词条（make / improvements to、tens of / thousands of）也先缩字号，缩到下限还放不下才折行
     return l.top >= top + parseFloat(c.paddingTop) - 0.5 && l.bottom <= top + side.clientHeight - parseFloat(c.paddingBottom) + 0.5; };
   const en = document.querySelector('.en');
   const phr = () => { const lim = en.clientWidth; for (const e of en.querySelectorAll('.ph')) { e.style.whiteSpace = '';

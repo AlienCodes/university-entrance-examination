@@ -4,12 +4,12 @@
 
 zh_spans(s, jieba)：中文里不许断开的片段 [(起, 止)]
   ① 名词性复合词：相邻两个词都是 2 个字以上、后一个是名词性（n、vn、nz、ns、nt、nr、ng、an、j），前一个是名词性 / 动词 / 形容词 / 区别词，
-     合起来不超过 6 个字（服务人员、会员资格、保障措施、再生农业、非营利组织、联邦通信委员会、千禧技术奖）；
+     合起来不超过 4 个字（服务人员、会员资格、保障措施、再生农业、非营利组织、联邦通信委员会、千禧技术奖）；
   ② 前缀词、单字数词与后面的词：不、可、非、这一、每一、这些、一、两……（不稳定、可持续、这一威胁）；
   ③ 单字后缀与前面的词：们、型、性、化、者、家、式、级、类（父母们、气候友好型）；“得多”“得很”与前面的词；
   ④ 单字介词、连词与后面不超过 3 个字的词：以、与、和、把、被、在、为、对……（以 / 医院为中心、与 / 空间科学）；
   ⑤ 数字与后面不超过 3 个字的词（20世纪90 / 年代）。
-  一串连起来的片段超过 8 个字就不再往上接（防止一大块不断行、上一行空出一截）。
+  一串连起来的片段超过 5 个字就不再往上接（防止一大块不断行、上一行空出一截）。
 en_spans(t)：英文里不许断开的片段 [(起, 止)]
   ① 专名：连续 2—4 个首字母大写的词（去掉开头的 The、When、In 这类普通词），总长不超过 32 个字符
      （Brett Kavanaugh、West Virginia、San Francisco、Apple TV.、California Attorney General）；
@@ -25,7 +25,7 @@ SUFFIX1 = set('们型性化者家式级类')
 NUM1 = set('一二两三四五六七八九十几半')      # 单独成词的数词与后面的词（这 / 一 / 威胁：jieba 有时切成三段）
 TAIL = {'得多', '得很'}
 FUNC1 = set('以与和及把被将对向从在为让使给跟同由')
-MAXLEN = 8
+MAXLEN = 5          # 绑得太长会整块推到下一行、上一行空出一截（考研第一版 6—8 字，layoutcheck 译文短行查出 63 处）
 han = lambda w: bool(w) and all('一' <= c <= '鿿' for c in w)
 
 
@@ -39,7 +39,7 @@ def zh_spans(s, jieba):
     for (a, _, x, fx), (_, b, y, fy) in zip(ws, ws[1:]):
         if not han(y):
             continue
-        if han(x) and len(x) >= 2 and len(y) >= 2 and fy in NOUN and fx in HEAD and b - a <= 6:
+        if han(x) and len(x) >= 2 and len(y) >= 2 and fy in NOUN and fx in HEAD and b - a <= 4:
             pairs.append((a, b))
         elif (x in PREFIX or x in NUM1) and len(y) <= 4:
             pairs.append((a, b))
