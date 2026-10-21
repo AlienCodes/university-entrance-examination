@@ -39,7 +39,7 @@
 | k28 | 4.49 | 0.00% |  |
 | k29 | 4.49 | 0.49% | metres → meters; horne → horn |
 | k30 | 4.46 | 0.00% |  |
-| k31 | 4.47 | 0.50% | chabris → chabras; semel → semmel |
+| k31 | 4.47 | 0.50% | chabris → chabree; semel → semmel |
 | k32 | 4.48 | 0.48% | eveline crone → evelyn crohn |
 | k33 | 4.46 | 2.73% | thea van oosten → tayavan osten; gilardi's → gelardi's; oosten → osten; gilardi's → gillardi's; oosten → osten; oosten's → osten's; joana lia → juana leah; defined → define; we'll → will |
 | k34 | 4.46 | 0.94% | pen → pin; route → root; geographer' → geographer; classicist' → classicist |
