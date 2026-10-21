@@ -222,9 +222,13 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         g.textContent.split('').forEach((c, q) => { if (/\s/.test(c)) wd[q] = sw; });
         for (let j = 1; j < L.length; j++) { const f = L[j][0], a = L[j - 1][L[j - 1].length - 1];
           if (om.has(f.n)) out.push(['GBRK', name, g.textContent, om.get(f.n) + f.i, om.has(a.n), wd, x1 - x0]); } } }
-    if (name === '英文' && breaks) for (let j = 1; j < L.length; j++)      // 考研截图盲审：专名（Brett / Kavanaugh）、“18 or / 21”被拆到两行
-      { const z = L[j - 1].filter(x => !x.el.closest('sup')).at(-1), f = L[j].filter(x => !x.el.closest('sup'))[0];
-        if (z && f) out.push(['ENBRK', z.n.data.slice(0, z.i + 1).slice(-60), f.n.data.slice(f.i).slice(0, 60)]); }
+    if (name === '英文' && breaks) {      // 考研截图盲审：专名（Brett / Kavanaugh）、“18 or / 21”被拆到两行。按整句判断（与引擎相同：太长的专名本来就允许断开）
+      const tw = document.createTreeWalker(k, NodeFilter.SHOW_TEXT), off = new Map(); let full = '', tn;
+      while ((tn = tw.nextNode())) { if (tn.parentElement.closest('sup')) continue; off.set(tn, full.length); full += tn.data; }
+      const hl = [...k.querySelectorAll('.w, .ph')].map(e => { const ns = [...off.keys()].filter(n => e.contains(n));
+        return ns.length ? [off.get(ns[0]), off.get(ns.at(-1)) + ns.at(-1).data.length] : null; }).filter(Boolean);     // 高亮的位置（与引擎相同：专名连上高亮太长就不绑）
+      for (let j = 1; j < L.length; j++) { const f = L[j].filter(x => !x.el.closest('sup'))[0];
+        if (f && off.has(f.n)) out.push(['ENBRK', full, off.get(f.n) + f.i, hl]); } }
     if (name === '英文') for (let j = 1; j < L.length; j++)          // 专八校园版第 2 批盲审：t06 “Mr.” 落在行末、人名在下一行
       { const z = L[j - 1].filter(x => !x.el.closest('sup')).at(-1);      // 行文字 txt 不带空格（from Mr. → fromMr.），按最后一个字所在的原文判断
         if (z && /\b(Mr|Mrs|Ms|Dr|Prof|St)\.$/.test(z.n.data.slice(0, z.i + 1))) out.push(`称谓断开：英文第 ${j} 行以「${txt(L[j - 1]).slice(-12)}」结尾，称谓与人名被拆到两行`); }
@@ -636,10 +640,10 @@ def problems(pg, min_fs, min_vs, poss=False, names=(), fonts=False, gaps=False, 
         elif isinstance(x, list) and x[0] == 'GBRK':    # 括注分离、释义单字（专八 / 六级）
             res += gloss_break(*x[1:])
         elif isinstance(x, list) and x[0] == 'ENBRK':   # 英文专名、“18 or 21”被拆到两行（zh_bind.en_spans，与引擎同一份规则）
-            _, p, n = x
-            ctx, k = p + ' ' + n, len(p)
-            if any(a < k < b for a, b in ZB.en_spans(ctx)):
-                res.append(f'专名断开：英文「{p[-20:]} / {n[:20]}」')
+            _, full, k, hl = x
+            t = full.replace('\u00a0', ' ')
+            if any(a < k < b for a, b in ZB.en_spans(t, [tuple(h) for h in hl])):
+                res.append(f'专名断开：英文「{t[max(0, k - 20):k]}/ {t[k:k + 20]}」')
         elif isinstance(x, list) and x[0] == 'ZHBRK' and breaks and any(a < x[3] < b for a, b in ZB.zh_spans(x[2], jb(True))):
             _, name, t, k = x
             res.append(f'译文断词：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」把复合词拆到两行（zh_bind）')

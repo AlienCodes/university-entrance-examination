@@ -692,7 +692,7 @@ def sentence_html(s, lo=0, hi=None):
     """只排 en[lo:hi]（分屏时每屏一段）；编号按整句统一，第二屏接着第一屏编号。"""
     hi = len(s['en']) if hi is None else hi
     en = s['en']                       # 专名跨在普通文字和高亮词之间（the Mariana / 高亮 Trench、the California / 高亮 Attorney General）：整句先把专名里的空格换成不换行空格（一个字换一个字，位置不变）
-    for a, b in ZB().en_spans(en):
+    for a, b in ZB().en_spans(en, [x for w in s['w'] for x in w['sp']]):
         en = en[:a] + en[a:b].replace(' ', '\u00a0') + en[b:]
     ws = ordered(s)
     num = {id(w): i + 1 for i, w in enumerate(ws)}

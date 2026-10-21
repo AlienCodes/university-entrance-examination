@@ -67,7 +67,9 @@ STOP = {'The', 'A', 'An', 'In', 'On', 'At', 'But', 'And', 'If', 'When', 'As', 'F
 CAP = r"[A-Z][A-Za-z’'.&-]*"
 
 
-def en_spans(t):
+def en_spans(t, hl=()):
+    """hl：高亮词、短语在 t 里的位置（整体不断行）。专名与跨进去的高亮连起来超过 28 个字符就不绑（考研 k35：Massachusetts + 高亮 Institute of Technology
+    共 37 个字符，连成一整块比一行还宽，伸出右边界）。"""
     out = []
     for m in re.finditer(rf"{CAP}(?: {CAP})+", t):
         ws = m.group(0).split(' ')
@@ -79,7 +81,9 @@ def en_spans(t):
             ws = ws[:4]
         if len(ws) >= 2:
             e = st + len(' '.join(ws))
-            if e - st <= 32:
+            a2 = min([st] + [x for x, y in hl if x < e and y > st])
+            b2 = max([e] + [y for x, y in hl if x < e and y > st])
+            if e - st <= 32 and b2 - a2 <= 28:
                 out.append((st, e))
     out += [m.span() for m in re.finditer(r'\b\d+ (?:or|to|and) \d+\b', t)]
     return out
