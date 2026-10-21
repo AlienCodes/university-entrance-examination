@@ -27,7 +27,7 @@
 | k15 | 4.48 | 2.64% | haps → heps; an hap → nhap; centre → center; kotharkar's → kotarkar's; kotharkar → kotarkar; kotharkar → kotarkar; kotharkar's → kotarkar's; chandni singh → chan ni sing |
 | k16 | 4.49 | 2.16% | organised → organized; behaviour → behavior; centre → center; desire → desired; wickquasgeck → wickwiske; heere straat → heeristraat; gentlemen's → gentleman's; routes → roots |
 | k17 | 4.49 | 2.05% | metre → meter; metres → meters; civilisations → civilizations; labour → labor; agrawal → agarwal; sichel → sitchell; sichel → sitchell; sichel → sitchell; civilisation → civilization |
-| k18 | 4.49 | 2.12% | dr nikhil chaudhary → doctor nihil chowdhury; dr → doctor; swanepoel → swanipool; help → helped; ef → fa; chaudhary → chowdery; chaudhary → chowdery |
+| k18 | 4.49 | 2.12% | dr nikhil chaudhary → doctor nicole chowdery; dr → doctor; swanepoel → swanipool; help → helped; ef → fa; chaudhary → chowdery; chaudhary → chowdery |
 | k19 | 4.46 | 0.89% | karla → carla; diffusion's → diffusions; says ortiz → sesortes |
 | k20 | 4.48 | 0.23% | sackett → sacit |
 | k21 | 4.48 | 0.74% | brookings's → brookings; muro → murrow; sifan → siffin |
