@@ -115,6 +115,7 @@ x-i::before{top:.295em}x-i::after{top:.945em}
 .en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.29em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.89em}
 sup.sd{margin-right:calc(var(--fs)*.084)}   /* 编号后紧跟破折号时留空：专八编号是英文字号的 0.36 倍（中考 0.42），按英文字号定，等于中考的 0.2 × 0.42（t08 “¹¹—”原来只隔 3.7 像素） */
 .pr{margin-right:-.5em}.pl{margin-left:-.5em}
+x-n>.pr:last-child{display:inline-block;width:.5em;margin-right:0;white-space:nowrap}   /* 释义分句末尾的标点（“（内容）广泛的；”）：负外边距让行内块的自身宽度少算半个字，块内放不下、自己折成两行，FIT 只好改成行内拆开（考研 k09 第 10 句 括注分离）；改成半字宽的行内块，宽度算法与排版一致 */
 .en .ph{white-space:nowrap}   /* 高亮短语整体不断行（t03 第二轮审阅：rough / treatment、at the / expense of），比一行还长的由 FIT 放开（phr） */
 x-n{display:inline-block}     /* 释义里的长括注：放得下一行就整体换到下一行（t03 第二轮审阅：（同 / gunwale）），放不下由 FIT 改成行内、只在指定处断开（notes） */
 .cont{color:#9aa39e;font-weight:400}
@@ -204,7 +205,7 @@ def esc_en(s):
 ZH_TERM = r'“[^“”，。；：！？、]{1,12}”（[^（）]{1,6}）|“[^“”，。；：！？、]{1,6}”|《[^《》]{1,8}》|（[^（），。；：]{1,6}）'
 ZH_NUM = set('一二两三四五六七八九十百千万几半')       # 单独成词时与后面的量词、名词不断开（zh_html；layoutcheck 的“数词断开”）
 GLOSS_CHUNK = 9      # 词汇栏一行最多约 9.6 个字（字号最大 40px 时）：9 个字以内的释义块整体不断行（原定 10，z20 “下面就是……的方法；”溢出 16 像素）
-ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》'), set('（“‘【「《')   # 思源黑体实测：前一组字形在左半（右半空白），后一组在右半（左半空白）
+ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》］〕'), set('（“‘【「《［〔')   # 思源黑体实测：前一组字形在左半（右半空白），后一组在右半（左半空白）；［］〔〕 考研 k09 实测同（ ）
 ZPROP = set('“”‘’')      # 专八译文字体霞鹜文楷的弯引号是半宽字形（宽 0.44/0.33 字），不按全角挤压
 
 

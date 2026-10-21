@@ -67,7 +67,7 @@ HERE = Path(__file__).resolve().parent
 R = HERE.parents[2]
 
 CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || [];
-  const ZC='，。、：；！？）”’】」》', ZO='（“‘【「《', PUN=ZC+ZO+'…—·', out=[];
+  const ZC='，。、：；！？）”’】」》］〕', ZO='（“‘【「《［〔', PUN=ZC+ZO+'…—·', out=[];
   const cjk = c => /[一-鿿]/.test(c);
   const chars = el => { const res=[], w=document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n, sp = false;
     while ((n=w.nextNode())) for (let i=0;i<n.data.length;i++) { if (/\s/.test(n.data[i])) { if (/[ \t\n]/.test(n.data[i])) sp = true; continue; }
@@ -147,7 +147,7 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         // 专八 / 六级（breaks）：只查英文、数字与后面的汉字分开（Z / 世代、100% / 可再生）；汉字与后面的英文、数字之间可以断行（“自 / 20世纪”，六级黑板审阅：两边都绑会连成一长串、上一行空出一大段）
         if ((an.test(a.c) && h(f.c)) || (!breaks && h(a.c) && an.test(f.c))) out.push(`中英断开：译文「${txt(L[i - 1]).slice(-6)}／${txt(ln).slice(0, 6)}」英文与紧挨的汉字分在两行`);
         if (breaks && /[A-Za-z0-9]/.test(a.c) && /[A-Za-z0-9]/.test(f.c)) out.push(`西文断开：译文里的英文「${txt(L[i - 1]).slice(-8)}／${txt(ln).slice(0, 8)}」被拆到两行`); }   // Stable / Diffusion
-      if (breaks && name !== '英文' && i > 0 && '，。、：；！？）”’】」》'.includes(f.c))      // 行首禁则（s02 “（音乐、视频等） / ；流式传输”）
+      if (breaks && name !== '英文' && i > 0 && '，。、：；！？）”’】」》］〕'.includes(f.c))      // 行首禁则（s02 “（音乐、视频等） / ；流式传输”）
         out.push(`行首禁则：${name}第 ${i + 1} 行以「${f.c}」开头`);
       if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
       if (i > 0) { const a = L[i - 1][L[i - 1].length - 1];
@@ -337,7 +337,7 @@ def ok_break(g, k, z8=False, names=()):
     if g[k - 1:k].isspace() or g[k:k + 1].isspace():          # 释义里的英文（as A as it is）在空格处换行，正常
         return True
     jieba = jb(z8)
-    zc, zo = '，。、：；！？）”’】」》', '（“‘【「《'
+    zc, zo = '，。、：；！？）”’】」》］〕', '（“‘【「《［〔'
     cuts = [0] + [i for i in range(1, len(g)) if (g[i - 1] in zc and g[i] not in zc) or (g[i] in zo and g[i - 1] not in zo)] + [len(g)]
     ch = [[a, b] for a, b in zip(cuts, cuts[1:]) if b > a]
     solo = lambda j: sum(c.isalnum() for c in g[ch[j][0]:ch[j][1]]) <= 1
@@ -483,7 +483,7 @@ def zh_breaks(t, names=()):
     wb = jieba_bounds(t, True) | {x for nm in names for m in re.finditer(re.escape(nm), t) for x in m.span()}     # 登记人名的两头可以断（与 make_video.jieba_words 相同）
     for k in range(1, n):
         a, b = t[k - 1], t[k]
-        if b in '，。、：；！？）”’】」》…' or a in '（“‘【「《' or (a == b and a in '—…') or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):
+        if b in '，。、：；！？）”’】」》］〕…' or a in '（“‘【「《［〔' or (a == b and a in '—…') or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):
             bad.add(k)
     spans = [(m.start(), m.end() + (m.end() < n and han(t[m.end()]))) for m in re.finditer(LATIN_RUN, t)]
     spans += [m.span() for m in re.finditer(r'[!-~]+', t)]                     # 连续的西文字符（10,000、Hunt’s 之外的标点）浏览器不断开
@@ -548,7 +548,7 @@ def segments(g):
             depth = max(0, depth - 1)
         elif not depth and c in '，。、；：！？':
             j = i + 1
-            while j < len(g) and g[j] in '，。、：；！？）”’】」》':
+            while j < len(g) and g[j] in '，。、：；！？）”’】」》］〕':
                 j += 1
             out.append((a, j))
             a = i = j

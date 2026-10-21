@@ -3,6 +3,7 @@
     /opt/ttsenv/bin/python 考研/tools/分屏定稿.py 结果.json [k01 …]     # 不写篇目 = 结果里的全部篇目
 
 规则（虹吸：程序定、人只看例外）：
+- 分屏手定.json 里人工指定的句子（分屏建议找不到可行切法时，写明理由）直接采用。
 - 每句取 分屏建议 排第一的候选（刀数最少 → 中英对齐错得最少 → 各屏英文最均衡）。
 - 中英对齐：译文锚点（生词释义、数字、缩写）落在与英文不同的那一屏的比例 > 1/3 时，改用“整句译文”（各屏都放整句中文，
   免得某一屏的中文讲的是另一屏的英文）；没有放得下的整句候选就保留切分并在输出里列出，留给审阅员看截图时重点看。
@@ -20,12 +21,17 @@ def main():
     res = json.loads(Path(sys.argv[1]).read_text('utf-8'))
     ids = sys.argv[2:] or res['done']
     plan = json.loads(PLAN.read_text('utf-8'))
+    hand = json.loads((HERE / '分屏手定.json').read_text('utf-8')) if (HERE / '分屏手定.json').exists() else {}
     stats = {'切分': 0, '整句': 0, '对不齐但无整句候选': []}
     for pid in ids:
         new = dict(res['plan'].get(pid, {}))           # 分屏建议写出的方案：现有方案里本来就合格的句子 + 不合格句子的第一候选；下面只按规则改不合格的句子
         for key, r in res['results'].items():
             p, k = key.split(':')
             if p != pid:
+                continue
+            if k in hand.get(pid, {}):                    # 人工指定（分屏手定.json，写明理由）优先
+                new[k] = {x: y for x, y in hand[pid][k].items() if x != '理由'}
+                stats.setdefault('人工指定', []).append(key)
                 continue
             if not r.get('候选'):
                 raise SystemExit(f'{key} 放不下且没有可行的分屏候选：{r}')
@@ -52,6 +58,8 @@ def main():
         if not plan[pid]:
             del plan[pid]
     PLAN.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + '\n', 'utf-8')
+    if stats.get('人工指定'):
+        print('人工指定（分屏手定.json）：', ' '.join(stats['人工指定']))
     print(f'{len(ids)} 篇：切分 {stats["切分"]} 句，整句译文 {stats["整句"]} 句；对不齐但没有整句候选 {len(stats["对不齐但无整句候选"])} 句', *stats['对不齐但无整句候选'], sep='\n  ')
 
 
