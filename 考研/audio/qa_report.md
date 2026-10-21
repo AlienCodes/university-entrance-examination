@@ -7,13 +7,13 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.95%
+- 平均识别差异率：0.96%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
 | k01 | 4.49 | 1.44% | human's → human; animals' → animal's; news' freda kreier → news frida kryer; equines' → equine's |
 | k02 | 4.49 | 0.73% | nineteen fifties → one hundred fiftys |
-| k03 | 4.47 | 1.10% | beaty → b d; programme → program; reith → wreath; neighbourly → neighborly |
+| k03 | 4.46 | 1.32% | beaty → b d; bodleian → bodleyan; programme → program; reith → wreath; neighbourly → neighborly |
 | k04 | 4.48 | 0.22% | prichard → pritchard |
 | k05 | 4.47 | 0.24% | centres → centers |
 | k06 | 4.48 | 0.49% | realise → realize; organisations → organizations |
