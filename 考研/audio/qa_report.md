@@ -6,7 +6,7 @@
 
 - 文章数：50
 - **响度一致性（第一项检查）**：全部通过
-- 平均自然度：4.48（最低 4.45）
+- 平均自然度：4.48（最低 4.44）
 - 平均识别差异率：0.99%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
@@ -59,5 +59,5 @@
 | k48 | 4.47 | 0.71% | nalini ambady → nalani ambadi; ambady → ambody |
 | k13 | 4.49 | 1.79% | as two → astwo point one three; and thirteen cents → ∅ |
 | k26 | 4.47 | 0.70% | would've → would have; keren → karen |
-| k49 | 4.45 | 1.27% | rovelli → rivelli; read → red; barry → bari; tokarczuk → tokarchuk; woolf → wolfe; simenon → simonon; neighbours → neighbors |
+| k49 | 4.44 | 1.27% | rovelli → rivelli; read → red; barry → bari; tokarczuk → tokarchuk; woolf → wolfe; simenon → simonon; neighbours → neighbors |
 | k50 | 4.48 | 1.95% | programmes → programs; ramni jamnadass → ramney jamnidas; in → and; masting' → masting; janzen → janszen; brancalion → brancalian; ' → ∅; chazdon → chasden; jamnadass → jamnidas; brancalion → brancalian; chazdon → chasden |
