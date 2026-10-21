@@ -166,10 +166,17 @@ def kp(r):
     return f"<div><b>{esc(r['名称'])}</b>：<span class='mono'>{esc(r['例'])}</span> —— {esc(r['说明'])}</div>"
 
 
+def gk_name(p):
+    """高考听写卡文件夹名（不含序号），与 tools/dictation/make_dictation.folder_name 相同：试卷名去掉“·3月”这类场次细节。"""
+    paper = re.sub(r'·[^）]*', '', p['paper'])
+    title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
+    return f"{p['year']} {paper} 阅读{p['part']} {title}"
+
+
 def page_html(pid):
     p = P[pid]
     a = json.loads((DIR / f'{pid}.json').read_text('utf-8'))
-    src = f"高考英语 {esc(p['name'])}" if GK else f"大学英语六级 {esc(p['paper'])} {esc(p['passage'])}"
+    src = f"高考英语 {esc(gk_name(p).rsplit(' ', 1)[0])}" if GK else f"大学英语六级 {esc(p['paper'])} {esc(p['passage'])}"
     body = [f"<h1>长难句分析</h1><div class='sub'>{src} · {esc(p['title'])} · "
             f"本篇 {len(a['sentences'])} 句（红色加粗 = 句子主干）</div>"]
     for x in a['sentences']:
@@ -203,7 +210,7 @@ def pdf(ids):
             if bad:
                 raise SystemExit('检查没通过，不排版：\n  ' + '\n  '.join(bad))
             if GK:                                 # 高考听写卡文件夹：“序号 年份 试卷 阅读X 题目”，每篇恰好一个
-                fs = [d for d in (BASE / '听写卡').iterdir() if d.name[3:] == f"{P[pid]['name']} {P[pid]['title']}"]
+                fs = [d for d in (BASE / '听写卡').iterdir() if d.name[3:] == gk_name(P[pid])]
                 assert len(fs) == 1, (pid, fs)
                 d, base = fs[0], fs[0].name[3:]
             else:

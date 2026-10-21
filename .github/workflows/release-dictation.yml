@@ -1,5 +1,6 @@
 # 修改 .github/dictation-release.txt（第一行写标签名，如 dictation-70）并推送时：
-# 把 听写卡/ 下每篇一个文件夹（逐句精读 + 三份听写卡 PDF）加上该篇的朗读音频，打包成 zip，生成 GitHub Release
+# 把 听写卡/ 下每篇一个文件夹（逐句精读 + 三份听写卡 + 长难句分析，共 5 份 PDF）加上该篇的朗读音频，
+# 用 Python zipfile 打包（踩坑 52：中文文件名 UTF-8 标记）、逐个核对，gh 发布（踩坑 42；目标用分支名：踩坑 53）
 name: 发布听写卡压缩包
 on:
   push:
@@ -9,6 +10,9 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
       - name: 组装文件夹并打包
@@ -29,7 +33,7 @@ jobs:
           for i, (f, p) in enumerate(zip(folders, order), 1):
               assert f.name.startswith(f'{i:02d} '), f.name
               pdfs = sorted(f.glob('*.pdf'))
-              assert len(pdfs) == 4, f
+              assert [x.name.split(' - ')[-1] for x in pdfs] == ['0 逐句精读.pdf', '1 汉译英.pdf', '2 英译汉.pdf', '3 文章填空.pdf', '4 长难句分析.pdf'], (f.name, [x.name for x in pdfs])
               dst = out / f.name
               shutil.copytree(f, dst)
               base = f.name[3:]
@@ -37,18 +41,37 @@ jobs:
               rows.append(f"| {i} | {f.name[3:]} |")
           Path('notes.md').write_text(
               f"高考英语阅读 C/D 篇听写卡，共 {len(order)} 篇，每篇一个文件夹：\n\n"
-              "- 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词）\n- 汉译英.pdf：看中文写英文\n- 英译汉.pdf：看英文写中文\n- 文章填空.pdf：原文挖空，附整句翻译和每空释义\n- 朗读音频.mp3：美音女声逐句朗读\n\n"
+              "- 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词）\n- 汉译英.pdf：看中文写英文\n- 英译汉.pdf：看英文写中文\n- 文章填空.pdf：原文挖空，附整句翻译和每空释义\n- 长难句分析.pdf：每篇挑出 2—4 个又长又复杂的句子：找主干、层层拆解、怎么读懂、怎么翻译、包含哪些知识点\n- 朗读音频.mp3：美音女声逐句朗读\n\n"
               "三份听写卡 PDF 的最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
           PY
           zipname="gaokao-english-reading-CD-${tag}.zip"
-          (cd dist && zip -r -q "../${zipname}" .)
-          unzip -l "${zipname}" | tail -1
+          export ZIPNAME="${zipname}"
+          python3 - <<'PY'
+          import os, zipfile
+          from pathlib import Path
+          z = Path(os.environ['ZIPNAME'])
+          files = sorted(x for x in Path('dist').rglob('*') if x.is_file())
+          with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED, allowZip64=True) as zf:
+              for x in files:
+                  zf.write(x, x.relative_to('dist').as_posix())
+          with zipfile.ZipFile(z) as zf:                   # 踩坑 43：一律用 Python zipfile 核对
+              infos = zf.infolist()
+              assert len(infos) == len(files) == 70 * 6, len(infos)
+              for i, x in zip(infos, files):
+                  assert i.filename == x.relative_to('dist').as_posix() and i.file_size == x.stat().st_size, i.filename
+                  assert i.flag_bits & 0x800 or i.filename.isascii(), f'{i.filename} 没有 UTF-8 标记'
+              assert zf.testzip() is None
+          print(f'{z.name}：{len(infos)} 个文件，{z.stat().st_size / 2**20:.0f} MB，zipfile 核对通过')
+          PY
           echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
           echo "TAG=${tag}" >> "$GITHUB_ENV"
-      - uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ env.TAG }}
-          target_commitish: ${{ github.ref_name }}
-          name: 高考英语阅读CD篇听写卡（70篇，含朗读音频）
-          body_path: notes.md
-          files: ${{ env.ZIPNAME }}
+      - name: 发布 Release（gh；目标用分支名）
+        run: |
+          title="高考英语阅读CD篇听写卡（70篇：逐句精读 + 听写卡 + 长难句分析 + 朗读音频）"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIPNAME" --clobber
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" "$ZIPNAME" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md
+          fi
+          test "$(gh release view "$TAG" --json assets -q ".assets[] | select(.name == \"$ZIPNAME\") | .size")" = "$(stat -c %s "$ZIPNAME")"
