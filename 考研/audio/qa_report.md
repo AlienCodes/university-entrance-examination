@@ -41,7 +41,7 @@
 | k30 | 4.46 | 0.00% |  |
 | k31 | 4.47 | 0.50% | chabris → chabras; semel → semmel |
 | k32 | 4.48 | 0.48% | eveline crone → evelyn crohn |
-| k33 | 4.46 | 1.82% | thea → theo; gilardi's → gelardi's; oosten → oostin; gilardi's → gillardi's; joana lia → jonah leah; defined → define; we'll → will |
+| k33 | 4.46 | 1.82% | gilardi's → gelardi's; oosten → oostin; gilardi's → gillardi's; oosten's → oostens; joana lia → jonah leah; defined → define; we'll → will |
 | k34 | 4.46 | 0.94% | pen → pin; route → root; geographer' → geographer; classicist' → classicist |
 | k35 | 4.48 | 0.45% | cavs → ∅; centre → center |
 | k36 | 4.47 | 0.96% | thousand era → hundred; c grade → scigrade |
