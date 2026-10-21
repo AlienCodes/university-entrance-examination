@@ -3,7 +3,7 @@
     /opt/ttsenv/bin/python 考研/tools/分屏定稿.py 结果.json [k01 …]     # 不写篇目 = 结果里的全部篇目
 
 规则（虹吸：程序定、人只看例外）：
-- 分屏手定.json 里人工指定的句子（分屏建议找不到可行切法时，写明理由）直接采用。
+- 分屏手定.json 里人工指定的句子（分屏建议找不到可行切法时，写明理由）直接采用；“无停顿”的原因按音频实测重写（句中没有停顿 / 停顿处切不开）。
 - 每句取 分屏建议 排第一的候选（刀数最少 → 中英对齐错得最少 → 各屏英文最均衡）。
 - 中英对齐：译文锚点（生词释义、数字、缩写）落在与英文不同的那一屏的比例 > 1/3 时，改用“整句译文”（各屏都放整句中文，
   免得某一屏的中文讲的是另一屏的英文）；没有放得下的整句候选就保留切分并在输出里列出，留给审阅员看截图时重点看。
@@ -15,6 +15,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PLAN = HERE / '分屏.json'
+TIM = json.loads((HERE.parent / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']
 
 
 def main():
@@ -31,6 +32,9 @@ def main():
                 continue
             if k in hand.get(pid, {}):                    # 人工指定（分屏手定.json，写明理由）优先
                 new[k] = {x: y for x, y in hand[pid][k].items() if x != '理由'}
+                if '无停顿' in new[k]:                    # 原因按音频实测写（音频重新生成后停顿数会变，手写的会过期；k36、k39、k44 踩过）
+                    n = len(next(x for x in TIM[pid]['sentences'] if x['k'] == int(k))['parts'])
+                    new[k]['无停顿'] = '句中没有停顿' if n == 1 else '停顿处切不开'
                 stats.setdefault('人工指定', []).append(key)
                 continue
             if not r.get('候选'):
