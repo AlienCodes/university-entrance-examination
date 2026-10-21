@@ -28,6 +28,7 @@ jobs:
           set -e
           tag=$(head -1 .github/cet6-materials-release.txt | tr -d '[:space:]')
           echo "TAG=${tag}" >> "$GITHUB_ENV"
+          export TAG="${tag}"            # 同一步里后面的 Python 也要用（$GITHUB_ENV 只对后面的步骤生效）
           python3 - <<'PY'
           import json, os, shutil, zipfile
           from pathlib import Path
