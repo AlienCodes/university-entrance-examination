@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：46
+- 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
 - 平均识别差异率：0.95%
@@ -22,7 +22,7 @@
 | k09 | 4.48 | 2.32% | shakespeare → sheare; jacqui → jackie; randomised → randomized; aged nine and → aging; length → lengths; o'hanlon → oh hanlon; o'hanlon → ohanlon |
 | k10 | 4.49 | 1.05% | modelling → modeling; centres → centers; paralysed → paralyzed; recognising → recognizing; kajaani → kajani |
 | k11 | 4.49 | 0.22% | ace → a |
-| k12 | 4.45 | 0.85% | antiques → antique; creators' → creator's; and → end; is → was |
+| k12 | 4.45 | 0.64% | antiques → antique; creators' → creator's; is → was |
 | k14 | 4.49 | 0.96% | programme → program; maximise → maximize; socialise → socialize; centre → center |
 | k15 | 4.48 | 1.68% | haps → heps; centre → center; kotharkar's → katharkar's; kotharkar → katharkar; kotharkar → katharkar; kotharkar's → katharkar's; chandni → channi |
 | k16 | 4.49 | 2.16% | organised → organized; behaviour → behavior; centre → center; desire → desired; wickquasgeck → wickwisjek; heere straat → heerstraat; gentlemen's → gentleman's; routes → roots |
@@ -57,3 +57,5 @@
 | k46 | 4.49 | 0.00% |  |
 | k47 | 4.47 | 0.93% | wunderlist → wonderlist; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
 | k48 | 4.47 | 0.48% | ambady → ambuddy; ambady → ambody |
+| k13 | 4.49 | 1.28% | and → a; ustwo point one three → uswothirteen |
+| k26 | 4.47 | 0.93% | airbnb → airbim; would've → would have; keren → karen |
