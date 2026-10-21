@@ -52,10 +52,13 @@ def main():
         res.append(buzz_check(mp4, tm['sentences']))
         size = mp4.stat().st_size                      # 大字版：成品体积 ≤ 95 MB（GitHub 单个文件上限 100 MB），与生成时的检查相同
         res.append(('成品体积 ≤ 95 MB', size <= 95 * 2**20, f'{size / 2**20:.1f} MB'))
-        res.insert(0, ('文件名：年份 第几篇 题目', bool(re.fullmatch(r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', mp4.name)), mp4.name))
+        res.insert(0, ('文件名：年份考研英语一/二 Text N 题目', bool(re.fullmatch(r'20\d\d年考研英语[一二] Text [1-4] \S.*\.mp4', mp4.name)), mp4.name))      # 由专八复制时漏改了文件名规则（GitHub 试跑 k02 查出）
         good = all(r[1] for r in res)
         allok &= good
         print(('✅ ' if good else '❌ ') + mp4.name, flush=True)
+        for n, c, d in res:                            # 不通过的项目直接打印出来（GitHub 日志里看得到原因）
+            if not c:
+                print(f'   ❌ {n}：{d}', flush=True)
         lines += [f"## {'✅' if good else '❌'} {mp4.stem}", '']
         lines += [f"- {'✅' if c else '❌'} {n}：{d}" for n, c, d in res]
         lines.append('')
