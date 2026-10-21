@@ -30,7 +30,7 @@
 | k18 | 4.49 | 2.12% | dr nikhil chaudhary → doctor nicole chowdery; dr → doctor; swanepoel → swanipool; help → helped; ef → fa; chaudhary → chowdery; chaudhary → chowdery |
 | k19 | 4.46 | 1.34% | rutkowski's → rutkowski; rutkowski → rutkovsky; karla → carla; diffusion's → diffusions; says ortiz → sesortes |
 | k20 | 4.48 | 0.23% | sackett → sacit |
-| k21 | 4.48 | 0.74% | brookings's → brookings; muro → murrow; sifan → siffin |
+| k21 | 4.48 | 0.99% | brookings's → brookings; muro → murrow; sifan liu → siffon leo |
 | k22 | 4.50 | 0.50% | confor → confirm; confor → confour |
 | k23 | 4.48 | 0.76% | anne → ann; menke → menck; menke → mank |
 | k24 | 4.49 | 0.93% | organisation → organization; flo → flow; flo → flow; users' → users |
