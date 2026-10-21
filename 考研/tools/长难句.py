@@ -123,8 +123,9 @@ def problems(pid):
                 if c.get('层级') not in (1, 2, 3, 4) or not (c.get('意思') or '').strip():
                     bad.append(f'{tag} 意群「{c["片段"][:20]}」：层级须是 1—4、意思不能空')
             v = (m.get('谓语') or '').strip()
-            vi = en.find(v) if v else -1
-            if vi >= 0 and not any(c.get('层级') == 1 and a0 <= vi < b0 for c, (a0, b0) in zip(cs, sp)):
+            # 谓语按整词找（k17 第 17 句：is 先在 history 里找到；k14 第 1 句：was 先在前面的从句里找到），任何一处落在第 1 层的块里就算对
+            vis = [h.start() for h in re.finditer(r'(?<![A-Za-z])' + re.escape(v) + r'(?![A-Za-z])', en)] if v else []
+            if vis and not any(c.get('层级') == 1 and a0 <= vi < b0 for vi in vis for c, (a0, b0) in zip(cs, sp)):
                 bad.append(f'{tag} 意群：主干谓语「{v}」不在第 1 层的块里')
         for r in x.get('拆解', []):
             span(r.get('片段'), '拆解')
