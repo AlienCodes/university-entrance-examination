@@ -2,6 +2,7 @@
 
     /opt/ttsenv/bin/python 六级/tools/宣传图.py            # → 六级/宣传图/01_资料总览.png … 07_朗读音频.png（1600×1600）
     /opt/ttsenv/bin/python 六级/tools/宣传图.py --gaokao   # 高考 70 篇（用户 2026-10-21）→ 宣传图/（仓库根目录）
+    /opt/ttsenv/bin/python 六级/tools/宣传图.py --kaoyan   # 考研 50 篇（用户 2026-10-21，晴空校园配色）→ 考研/宣传图/
 
 全部由程序生成（零 token）：预览用第 1 篇（s01）真实 PDF 页面（pdftoppm 渲染），音频波形用 s01 朗读音频的真实波形。
 “虚拟产品，一旦售出无法退款，谢谢理解”只写在长难句分析那一张（用户要求）。
@@ -17,7 +18,8 @@ HERE = Path(__file__).resolve().parent
 C6 = HERE.parent
 ROOT = C6.parent
 GK = '--gaokao' in sys.argv
-BASE = ROOT if GK else C6                       # 高考：数据、听写卡、音频都在仓库根目录
+KY = '--kaoyan' in sys.argv
+BASE = ROOT if GK else ROOT / '考研' if KY else C6     # 高考：数据、听写卡、音频都在仓库根目录；考研在 考研/
 OUT = BASE / '宣传图'
 FOLDER = sorted((BASE / '听写卡').iterdir())[0]
 NAME = FOLDER.name[3:]
@@ -28,6 +30,12 @@ P = dict(tag='高考英语 · 阅读理解 C/D 篇真题 70 篇（2022—2026）
          papers='高考英语历年真题套卷 + 答案解析（2022—2026 全部）', order='2022—2026 年按年份排列，每年全国卷在前',
          read='片头 + 每句一页，英文高亮、中文翻译、生词释义', read_desc='与视频画面<b>一模一样</b>：片头 + 每句一页，英文高亮、中文翻译、生词释义',
          read_chips=('<b>16:9</b> 横版', '英文高亮 + 中文翻译', '生词释义'), voice='美音女声逐句朗读', voice_key='female', first='p01', ld=275) if GK else \
+    dict(tag='考研英语 · 阅读理解真题 50 篇（2021—2026 英语一 + 英语二）', pack='考研英语阅读真题50篇学习资料',
+         papers='考研英语历年真题套卷 + 答案解析（2021—2026 英语一 + 英语二 全部）', order='2026—2021 年从新到旧，每年英语一在前',
+         read='片头 + 每屏一页，英文高亮、中文翻译、生词编号注释', read_desc='与视频画面<b>一模一样</b>：片头 + 每屏一页，英文高亮、中文翻译、生词编号注释',
+         read_chips=('<b>16:9</b> 横版', '单词 · 短语 分色高亮', '生词编号对应注释'), voice='男声逐句朗读', voice_key='cet4_male', first='k01', ld=319,
+         ld_file='切意群、找主干、层层拆解、读懂步骤、易错点、翻译、知识点',
+         ld_desc='每句<b>七步</b>讲透：切意群 → 找主干 → 层层拆解 → 读懂 → 易错点 → 翻译 → 知识点') if KY else \
     dict(tag='大学英语六级 · 仔细阅读真题 60 篇（2021—2026）', pack='六级阅读真题60篇学习资料',
          papers='六级历年真题套卷 + 答案解析（2021—2026 全部）', order='2026—2021 年从新到旧',
          read='片头 + 每屏一页，英文高亮、中文翻译、生词编号注释', read_desc='与视频画面<b>一模一样</b>：片头 + 每屏一页，英文高亮、中文翻译、生词编号注释',
@@ -74,11 +82,29 @@ h1{color:#ffd23f}.no{color:rgba(255,210,63,.25)}
 """
 
 
+# 考研配色（用户 2026-10-21：和之前的商品图版式一样，配色符合考研的主题）：取自考研视频与 B 站封面的晴空校园——蓝天渐变顶栏、
+# 太阳黄胶囊标签（视频片头 KAOYAN · READING 同款）、橙红强调、草绿 MP3、黄色荧光笔底纹。版式不变。
+KY_CSS = """
+body{background:linear-gradient(170deg,#e6f4ff 0%,#f7fbff 58%,#eaf7e8 100%)}
+.top{background:radial-gradient(circle at 92% 18%,rgba(255,224,110,.95) 0 70px,rgba(255,224,110,.35) 71px 120px,transparent 121px),
+  linear-gradient(120deg,#1052a8 0%,#2f86e0 60%,#74c3ff 100%)}
+.tag{background:#ffc93c;color:#3d2a00;font-family:'ZH Bold',sans-serif;box-shadow:0 4px 0 #f0ad1e}
+h1{color:#fff;text-shadow:0 4px 0 rgba(16,82,168,.45)}.no{color:rgba(255,255,255,.22)}
+.desc{color:#1d3354}.desc b{color:#ff4a12;background:linear-gradient(transparent 62%,#ffe89c 62%)}
+.chip{border-color:#8cc4f5;color:#1d3354;background:#fff}.chip b{color:#ff4a12}
+.notice{background:#fff3d6;border-top-color:#ffc93c;color:#b83c00}
+.pg,.win,.pl{box-shadow:0 18px 50px rgba(16,82,168,.22),0 3px 10px rgba(0,0,0,.08)}
+.bar{background:#e8f3ff}.r.hl{background:#fff4c7;color:#b83c00}.fn{color:#1052a8}
+.ic{background:#ff7a1a}.ic.mp3{background:#2e9e3f}.fo,.fo:before{background:#ffc93c}
+.ttl{color:#1052a8}.wave i{background:linear-gradient(#74c3ff,#1052a8)}.btn{background:#1052a8}
+"""
+
+
 def page(no, title, desc, stage, bottom):
     return (f"<!doctype html><html><head><meta charset='utf-8'>{FONTS}<style>{CSS}</style></head><body>"
             f"<div class='top'><span class='tag'>{TAG}</span><h1>{title}</h1><div class='no'>{no}</div></div>"
             f"<div class='desc'>{desc}</div><div class='stage'>{stage}</div>{bottom}"
-            + (f"<style>{GK_CSS}</style>" if GK else '') + "</body></html>")
+            + (f"<style>{GK_CSS}</style>" if GK else f"<style>{KY_CSS}</style>" if KY else '') + "</body></html>")
 
 
 def chips(*xs):
@@ -101,12 +127,12 @@ def pdf_of(kind):
 def main():
     from playwright.sync_api import sync_playwright
     OUT.mkdir(exist_ok=True)
-    td = Path(tempfile.mkdtemp(prefix='cet6promo_'))
+    td = Path(tempfile.mkdtemp(prefix='kypromo_' if KY else 'cet6promo_'))
     imgs = {}
     # 1 资料总览：资料包最外层（历年真题 + 60 个篇目文件夹）+ 一个篇目文件夹打开后的样子
     names = [x.name for x in sorted((BASE / '听写卡').iterdir())]
     root = [('dir hl', P['papers'])] + [('dir', n) for n in names[:3]] + [('more', f"…… 共 {len(names)} 个篇目文件夹，{P['order']}")]
-    files = [('PDF', '1 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),   # 压缩包里的顺序和名字（用户 2026-10-21；发布时改名）
+    files = [('PDF', '1 长难句分析.pdf', P.get('ld_file', '找主干、层层拆解、怎么读懂、怎么翻译、知识点')),   # 压缩包里的顺序和名字（用户 2026-10-21；发布时改名）
              ('PDF', '2 汉译英听写卡.pdf', '看中文写英文，最后一页是答案'),
              ('PDF', '3 英译汉听写卡.pdf', '看英文写中文，最后一页是答案'),
              ('PDF', '4 文章填空听写卡.pdf', '原文挖空，附整句翻译和每空释义'),
@@ -132,7 +158,7 @@ def main():
                              chips('<b>历年真题</b>套卷+解析', f'<b>{N}</b> 篇精读', f'<b>{N * 5}</b> 份 PDF', f"<b>{P['ld']}</b> 个长难句", f'<b>{N}</b> 段音频'))
     # 2 长难句分析（只有这一张写“虚拟产品……”）
     p = render_pages(pdf_of('4 长难句分析'), [1, 2], 110, td)
-    imgs['02_长难句分析'] = page('02', '长难句分析', '挑出每篇<b>又长又复杂</b>的句子：找主干 → 层层拆解 → 怎么读懂 → 怎么翻译 → 知识点',
+    imgs['02_长难句分析'] = page('02', '长难句分析', P.get('ld_desc', '挑出每篇<b>又长又复杂</b>的句子：找主干 → 层层拆解 → 怎么读懂 → 怎么翻译 → 知识点'),
                               ''.join(f"<div class='pg' style='width:670px'><img src='{u}'></div>" for u in p),
                               "<div class='notice'>虚拟产品，一旦售出无法退款，谢谢理解</div>")
     # 3 逐句精读

@@ -3,6 +3,7 @@
 
     /opt/ttsenv/bin/python 六级/tools/宣传视频.py             # → 六级/宣传图/六级资料介绍.mp4
     /opt/ttsenv/bin/python 六级/tools/宣传视频.py --gaokao   # → 宣传图/高考资料介绍.mp4
+    /opt/ttsenv/bin/python 六级/tools/宣传视频.py --kaoyan   # → 考研/宣传图/考研资料介绍.mp4（第 1 篇 k01 的男声朗读）
 """
 import json
 import subprocess
@@ -11,11 +12,12 @@ from pathlib import Path
 
 C6 = Path(__file__).resolve().parent.parent
 GK = '--gaokao' in sys.argv              # 高考（用户 2026-10-21）：仓库根目录的 宣传图/ 与 audio/，美音女声第 1 篇
-BASE = C6.parent if GK else C6
+KY = '--kaoyan' in sys.argv
+BASE = C6.parent if GK else C6.parent / '考研' if KY else C6
 IMGS = sorted((BASE / '宣传图').glob('0*.png'))
-OUT = BASE / '宣传图' / ('高考资料介绍.mp4' if GK else '六级资料介绍.mp4')
+OUT = BASE / '宣传图' / ('高考资料介绍.mp4' if GK else '考研资料介绍.mp4' if KY else '六级资料介绍.mp4')
 D, X, S, FPS = 4.0, 0.6, 1080, 30          # 每张时长、淡入淡出、边长、帧率
-T = json.loads((BASE / 'audio' / 'timings.json').read_text('utf-8'))['female' if GK else 'cet4_male']['p01' if GK else 's01']
+T = json.loads((BASE / 'audio' / 'timings.json').read_text('utf-8'))['female' if GK else 'cet4_male']['p01' if GK else 'k01' if KY else 's01']
 AUDIO = BASE / 'audio' / T['file']
 
 
