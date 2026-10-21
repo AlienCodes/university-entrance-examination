@@ -380,7 +380,8 @@ def note_breaks(t):
 def note_html(t, out):
     """长括注的 HTML（包在行内块 x-n 里）：只在 note_breaks 的位置可以换行（空格照旧，没有空格的地方加 <wbr>），每段整体不断行；
     比 GLOSS_CHUNK 还长的中文段在词间断开（words）。放得下一行时 x-n 是行内块，整体换到下一行；放不下时 FIT 改成行内，在这些位置断开。"""
-    cuts = [0] + note_breaks(t) + [len(t)]
+    zb = ZB().zh_spans(t, jb())                      # 复合词、数字 + 量词不在中间断开（专八 t10 回归：长括注“1896／年在此发现金”）
+    cuts = [0] + [c for c in note_breaks(t) if not any(x < c < y for x, y in zb)] + [len(t)]
     res = []
     for a, b in zip(cuts, cuts[1:]):
         e = b
