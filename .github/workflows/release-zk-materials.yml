@@ -33,10 +33,14 @@ jobs:
               assert pdfs == [f'{name} - {k}.pdf' for k in ('0 逐句精读', '1 汉译英', '2 英译汉', '3 文章填空')], (name, pdfs)
               dst = out / f'{i} {name}'
               shutil.copytree(src, dst)
-              for x in sorted(dst.glob('*.pdf')):         # 文件序号从 1 开始（用户 2026-10-21：0 逐句精读 → 1 逐句精读……，朗读音频排最后）
-                  a, b = x.name.rsplit(' - ', 1)
-                  k, rest = b.split(' ', 1)
-                  x.rename(dst / f'{a} - {int(k) + 1} {rest}')
+              # 压缩包里的文件顺序和名字（用户 2026-10-21）：序号从 1 开始；长难句分析排第一；三份听写卡名字后面加“听写卡”；逐句精读放在朗读音频上面
+              KORD = ['4 长难句分析', '1 汉译英', '2 英译汉', '3 文章填空', '0 逐句精读']
+              KNEW = {'4 长难句分析': '长难句分析', '1 汉译英': '汉译英听写卡', '2 英译汉': '英译汉听写卡', '3 文章填空': '文章填空听写卡', '0 逐句精读': '逐句精读'}
+              have = {x.name.rsplit(' - ', 1)[1][:-4]: x for x in dst.glob('*.pdf')}
+              kinds = [k for k in KORD if k in have]
+              assert len(kinds) == len(have), sorted(have)
+              for n, k in enumerate(kinds, 1):
+                  have[k].rename(dst / f"{have[k].name.rsplit(' - ', 1)[0]} - {n} {KNEW[k]}.pdf")
               shutil.copy(Path('中考/audio') / audio, dst / f'{name} - {len(pdfs) + 1} 朗读音频.mp3')
               rows.append(f'| {i} | {name} |')
               order.append(f'{top}/{i} {name}')
@@ -51,9 +55,9 @@ jobs:
           Path('order.txt').write_text('\n'.join(order) + '\n', 'utf-8')
           Path('notes.md').write_text(
               f'中考英语阅读真题学习资料，共 {len(lines)} 篇，与 B 站 40P 合集一一对应：文件夹前的序号就是 P 号（1—40）。每篇一个文件夹，5 个文件：\n\n'
-              '- 1 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
-              '- 2 汉译英.pdf：看中文写英文\n- 3 英译汉.pdf：看英文写中文\n'
-              '- 4 文章填空.pdf：原文挖空（试卷的中文注释已去掉），附整句翻译和每空释义\n'
+              '- 1 汉译英听写卡.pdf：看中文写英文\n- 2 英译汉听写卡.pdf：看英文写中文\n'
+              '- 3 文章填空听写卡.pdf：原文挖空（试卷的中文注释已去掉），附整句翻译和每空释义\n'
+              '- 4 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
               '- 5 朗读音频.mp3：男声逐句朗读（四六级同款声音，与视频是同一份朗读，已去除电磁音）\n\n'
               f'另附 {pname}：{len(papers)} 份中考英语试卷原卷（Word），与 40 篇阅读的出处对应。\n\n'
               '三份听写卡 PDF 的最后一页是答案；A4 纸，可直接打印。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')

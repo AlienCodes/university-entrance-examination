@@ -106,11 +106,11 @@ def main():
     # 1 资料总览：资料包最外层（历年真题 + 60 个篇目文件夹）+ 一个篇目文件夹打开后的样子
     names = [x.name for x in sorted((BASE / '听写卡').iterdir())]
     root = [('dir hl', P['papers'])] + [('dir', n) for n in names[:3]] + [('more', f"…… 共 {len(names)} 个篇目文件夹，{P['order']}")]
-    files = [('PDF', '1 逐句精读.pdf', P['read']),           # 压缩包里的文件序号从 1 开始、朗读音频排第 6（用户 2026-10-21；发布时改名）
-             ('PDF', '2 汉译英.pdf', '看中文写英文，最后一页是答案'),
-             ('PDF', '3 英译汉.pdf', '看英文写中文，最后一页是答案'),
-             ('PDF', '4 文章填空.pdf', '原文挖空，附整句翻译和每空释义'),
-             ('PDF', '5 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),
+    files = [('PDF', '1 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),   # 压缩包里的顺序和名字（用户 2026-10-21；发布时改名）
+             ('PDF', '2 汉译英听写卡.pdf', '看中文写英文，最后一页是答案'),
+             ('PDF', '3 英译汉听写卡.pdf', '看英文写中文，最后一页是答案'),
+             ('PDF', '4 文章填空听写卡.pdf', '原文挖空，附整句翻译和每空释义'),
+             ('PDF', '5 逐句精读.pdf', P['read']),
              ('MP3', '6 朗读音频.mp3', P['voice'])]
     rr = ''.join(f"<div class='r {c}'><span class='fo'></span><span>{t}</span></div>" if c != 'more' else f"<div class='r more'>{t}</div>" for c, t in root)
     rows = ''.join(f"<div class='f'><span class='ic {t.lower()}'>{t}</span><span class='fn'>{n}</span><span class='fd'>{d}</span></div>" for t, n, d in files)
@@ -137,18 +137,18 @@ def main():
                               "<div class='notice'>虚拟产品，一旦售出无法退款，谢谢理解</div>")
     # 3 逐句精读
     p = render_pages(pdf_of('0 逐句精读'), [1, 6, 14], 60, td)
-    imgs['03_逐句精读'] = page('03', '逐句精读', P['read_desc'],
+    imgs['06_逐句精读'] = page('06', '逐句精读', P['read_desc'],
                              f"<div style='display:flex;flex-direction:column;gap:30px;align-items:center'><div class='pg' style='width:1220px'><img src='{p[1]}'></div>"
                              f"<div style='display:flex;gap:30px'><div class='pg' style='width:595px'><img src='{p[0]}'></div><div class='pg' style='width:595px'><img src='{p[2]}'></div></div></div>",
                              chips(*P['read_chips']))
     # 4—6 听写卡
-    for no, kind, desc in (('04', '1 汉译英', '看<b>中文</b>写<b>英文</b>：本篇全部生词与短语，按单词 / 短语分组默写'),
-                           ('05', '2 英译汉', '看<b>英文</b>写<b>中文</b>：本篇全部生词与短语，按单词 / 短语分组默写'),
-                           ('06', '3 文章填空', '<b>原文挖空</b>，下面附整句翻译和每空释义，检验在语境里会不会用')):
+    for no, kind, desc in (('03', '1 汉译英', '看<b>中文</b>写<b>英文</b>：本篇全部生词与短语，按单词 / 短语分组默写'),
+                           ('04', '2 英译汉', '看<b>英文</b>写<b>中文</b>：本篇全部生词与短语，按单词 / 短语分组默写'),
+                           ('05', '3 文章填空', '<b>原文挖空</b>，下面附整句翻译和每空释义，检验在语境里会不会用')):
         pdf = pdf_of(kind)
         n = int(subprocess.run(['pdfinfo', str(pdf)], capture_output=True, text=True, check=True).stdout.split('Pages:')[1].split()[0])
         p = render_pages(pdf, [1, n], 110, td)
-        imgs[f'{no}_{kind[2:]}'] = page(no, kind[2:], desc,
+        imgs[f'{no}_{kind[2:]}听写卡'] = page(no, f'{kind[2:]}听写卡', desc,
                                          f"<div class='pg' style='width:700px'><img src='{p[0]}'></div><div style='display:flex;flex-direction:column;align-items:center;gap:14px'>"
                                          f"<div class='pg' style='width:560px'><img src='{p[1]}'></div><div style='font-size:30px;color:#5b6b80'>最后一页：答案</div></div>",
                                          chips('A4 打印', '最后一页是答案', '可反复默写'))

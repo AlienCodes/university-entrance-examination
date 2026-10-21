@@ -36,16 +36,20 @@ jobs:
               assert [x.name.split(' - ')[-1] for x in pdfs] == ['0 逐句精读.pdf', '1 汉译英.pdf', '2 英译汉.pdf', '3 文章填空.pdf'], f
               dst = out / f.name
               shutil.copytree(f, dst)
-              for x in sorted(dst.glob('*.pdf')):         # 文件序号从 1 开始（用户 2026-10-21：0 逐句精读 → 1 逐句精读……，朗读音频排最后）
-                  a, b = x.name.rsplit(' - ', 1)
-                  k, rest = b.split(' ', 1)
-                  x.rename(dst / f'{a} - {int(k) + 1} {rest}')
+              # 压缩包里的文件顺序和名字（用户 2026-10-21）：序号从 1 开始；长难句分析排第一；三份听写卡名字后面加“听写卡”；逐句精读放在朗读音频上面
+              KORD = ['4 长难句分析', '1 汉译英', '2 英译汉', '3 文章填空', '0 逐句精读']
+              KNEW = {'4 长难句分析': '长难句分析', '1 汉译英': '汉译英听写卡', '2 英译汉': '英译汉听写卡', '3 文章填空': '文章填空听写卡', '0 逐句精读': '逐句精读'}
+              have = {x.name.rsplit(' - ', 1)[1][:-4]: x for x in dst.glob('*.pdf')}
+              kinds = [k for k in KORD if k in have]
+              assert len(kinds) == len(have), sorted(have)
+              for n, k in enumerate(kinds, 1):
+                  have[k].rename(dst / f"{have[k].name.rsplit(' - ', 1)[0]} - {n} {KNEW[k]}.pdf")
               shutil.copy(Path('四级/audio') / T[p['id']]['file'], dst / f'{f.name[3:]} - {len(pdfs) + 1} 朗读音频.mp3')
               rows.append(f'| {i} | {f.name[3:]} |')
           Path('notes.md').write_text(
               f'大学英语四级阅读真题（仔细阅读 Section C）学习资料，共 {len(order)} 篇，与 Release 007 的 60 个视频一一对应、顺序相同。每篇一个文件夹：\n\n'
-              '- 1 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
-              '- 2 汉译英.pdf：看中文写英文\n- 3 英译汉.pdf：看英文写中文\n- 4 文章填空.pdf：原文挖空，附整句翻译和每空释义\n'
+              '- 1 汉译英听写卡.pdf：看中文写英文\n- 2 英译汉听写卡.pdf：看英文写中文\n- 3 文章填空听写卡.pdf：原文挖空，附整句翻译和每空释义\n'
+              '- 4 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
               '- 5 朗读音频.mp3：男声逐句朗读（与视频是同一份朗读，已去除电磁音）\n\n'
               '三份听写卡 PDF 的最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
           PY
