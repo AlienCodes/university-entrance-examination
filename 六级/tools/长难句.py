@@ -127,19 +127,32 @@ def esc(s):
 
 
 def mark(en, m):
-    """原句里把主干（主语、谓语、宾语/表语）加粗标红：整词匹配（“is”不落在“This”里），并按句中顺序找（谓语在主语之后、宾语/表语在谓语之后）；
-    祈使句主语写“（省略）”，不标。"""
-    spans, pos = [], 0
-    for t in (m.get('主语'), m.get('谓语'), m.get('宾语/表语')):
+    """原句里把主干（主语、谓语、宾语/表语）加粗标红：整词匹配（“is”不落在“This”里）；
+    主语取紧挨在谓语前面的那一处（p40：句首状语 from AI by Design 里也有 AI，真正的主语是逗号后的 AI），
+    宾语/表语取谓语后面的第一处；谓语前找不到主语（倒装）就取谓语后面的第一处。祈使句主语写“（省略）”，不标。"""
+    def finds(t):
         t = (t or '').strip()
         if not t or t.startswith('（'):
-            continue
+            return []
         pat = re.compile(r'(?<![A-Za-z])' + re.escape(t) + r'(?![A-Za-z])')
-        hit = pat.search(en, pos) or pat.search(en)
-        a = hit.start() if hit else en.find(t)
-        if a >= 0:
-            spans.append((a, a + len(t)))
-            pos = a + len(t)
+        hs = [(h.start(), h.end()) for h in pat.finditer(en)]
+        i = en.find(t)
+        return hs or ([(i, i + len(t))] if i >= 0 else [])
+    S, V, O = (finds(m.get(r)) for r in ('主语', '谓语', '宾语/表语'))
+    spans = []
+    if S and V:
+        pairs = [(v[0] - s[1], s, v) for s in S for v in V if s[1] <= v[0]]
+        if pairs:
+            _, s, v = min(pairs)
+        else:
+            v = V[0]
+            s = next((s for s in S if s[0] >= v[1]), S[0])
+        spans = [s, v]
+    else:
+        spans = (S or V)[:1]
+    if O:
+        after = max(x[1] for x in spans) if spans else 0
+        spans.append(next((o for o in O if o[0] >= after), O[0]))
     out, cur = [], 0
     for a, b in sorted(spans):
         if a < cur:
