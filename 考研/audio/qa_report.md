@@ -7,7 +7,7 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.97%
+- 平均识别差异率：0.98%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -28,7 +28,7 @@
 | k16 | 4.49 | 2.16% | organised → organized; behaviour → behavior; centre → center; desire → desired; wickquasgeck → wickwiske; heere straat → heeristraat; gentlemen's → gentleman's; routes → roots |
 | k17 | 4.49 | 2.05% | metre → meter; metres → meters; civilisations → civilizations; labour → labor; agrawal → agarwal; sichel → sitchell; sichel → sitchell; sichel → sitchell; civilisation → civilization |
 | k18 | 4.49 | 2.12% | dr nikhil chaudhary → doctor nicole chowdery; dr → doctor; swanepoel → swanipool; help → helped; ef → fa; chaudhary → chowdery; chaudhary → chowdery |
-| k19 | 4.46 | 0.89% | karla → carla; diffusion's → diffusions; says ortiz → sesortes |
+| k19 | 4.46 | 1.34% | rutkowski's → rutkowski; rutkowski → rutkovsky; karla → carla; diffusion's → diffusions; says ortiz → sesortes |
 | k20 | 4.48 | 0.23% | sackett → sacit |
 | k21 | 4.48 | 0.74% | brookings's → brookings; muro → murrow; sifan → siffin |
 | k22 | 4.50 | 0.50% | confor → confirm; confor → confour |
