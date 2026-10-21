@@ -55,10 +55,30 @@ h1{font-family:'ZH Bold',sans-serif;font-size:84px;margin-top:26px;letter-spacin
 """
 
 
+# 高考配色（用户 2026-10-21：用高考自己的主题色，不要和六级一模一样）：取自高考 B 站封面（深海军蓝网格底 + 左下紫色光晕、亮黄大字、
+# 珊瑚红标签、青绿描边标签）和视频画面（米白底，青绿 / 橙色高亮）。放在页面最后，覆盖上面和各图里的同名样式；版式不变。
+GK_CSS = """
+body{background:linear-gradient(170deg,#fbf8f1 0%,#f7f3ea 60%,#eef7f5 100%)}
+.top{background-color:#0f1c38;background-image:radial-gradient(circle at 0% 100%,rgba(150,70,210,.55),transparent 42%),
+  linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:auto,44px 44px,44px 44px}
+.tag{background:#e8483f;color:#fff;font-family:'ZH Bold',sans-serif;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+h1{color:#ffd23f}.no{color:rgba(255,210,63,.25)}
+.desc{color:#24324a}.desc b{color:#0f1c38;background:linear-gradient(transparent 62%,#ffe27a 62%)}
+.chip{border-color:#2ec4b6;color:#24324a}.chip b{color:#0f8b8d}
+.notice{background:#0f1c38;border-top-color:#ffd23f;color:#ffd23f}
+.pg,.win,.pl{box-shadow:0 18px 50px rgba(15,28,56,.22),0 3px 10px rgba(0,0,0,.08)}
+.bar{background:#eef0f4}.r.hl{background:#fff4c7;color:#8a5a00}.fn{color:#0f1c38}
+.ic{background:#e8483f}.ic.mp3{background:#14a39a}.fo,.fo:before{background:#ffc93c}
+.ttl{color:#0f1c38}.wave i{background:linear-gradient(#2ec4b6,#0f8b8d)}.btn{background:#0f1c38}
+"""
+
+
 def page(no, title, desc, stage, bottom):
     return (f"<!doctype html><html><head><meta charset='utf-8'>{FONTS}<style>{CSS}</style></head><body>"
             f"<div class='top'><span class='tag'>{TAG}</span><h1>{title}</h1><div class='no'>{no}</div></div>"
-            f"<div class='desc'>{desc}</div><div class='stage'>{stage}</div>{bottom}</body></html>")
+            f"<div class='desc'>{desc}</div><div class='stage'>{stage}</div>{bottom}"
+            + (f"<style>{GK_CSS}</style>" if GK else '') + "</body></html>")
 
 
 def chips(*xs):
