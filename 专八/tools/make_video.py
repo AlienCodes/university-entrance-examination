@@ -60,7 +60,7 @@ PROJECTS = {
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
     # 考研（用户 2026-10-20：与专八晴空校园版完全相同的主题、字体、颜色）：paper = “2026年考研英语一”，passage = “Text 1”
     '考研': {'tag': 'KAOYAN · READING · PART A', 'top': 'KAOYAN READING', 'exam': '', 'look': '1', 'stills': '大字版/截图/{pid}', 'work': '大字版',
-             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] Text [1-4] \S.*\.mp4', 'tmp': 'kyvideo_',
+             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] (?:Text [1-4]|Part B) \S.*\.mp4', 'tmp': 'kyvideo_',
              'badge': r'考研\A精读'},      # 封面右上角圆形贴纸（样式/1_晴空校园.css 写的是专八的「专八 / 精读」，考研 k02 截图试跑时发现，按项目覆盖）
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
@@ -750,10 +750,12 @@ def head(p):
 
 def title_slide(p):
     """--n = 标题字数：专八样式据此把标题排成一行（字号 64—100px），避免在词中间断行（如“使用语|言”“调查|者”）。"""
-    return page(f'''<div class="ttl"><div class="tag">{PJ["tag"]}</div><h1 style="--n:{max(len(p.get("title") or ""), 1)}">{esc(p.get("title") or "")}</h1>
+    tag = PJ["tag"].replace('PART A', 'PART B') if p.get('part') == 'B' else PJ["tag"]       # 考研 2026 年新题型（Part B）两篇
+    ans = f'<span class="ans"><b style="margin-right:.5em;color:var(--blue,inherit)">答案</b>{esc(p["answer"])}</span>' if p.get('answer') else ''      # 新题型的答案（三方核对过）显示在片头图例那一行
+    return page(f'''<div class="ttl"><div class="tag">{tag}</div><h1 style="--n:{max(len(p.get("title") or ""), 1)}">{esc(p.get("title") or "")}</h1>
       <div class="sub">{PJ["exam"]} {esc(p["paper"])} · <i>{esc(p["passage"])}</i></div>
       <div class="meta"><span>{esc(p.get("genre") or "")}</span><span>全文 {p["words"]} 词 · 逐句精读</span></div></div>
-      <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span></div>''')
+      <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span>{ans}</div>''')
 
 
 def split_parts(pid, k, s):

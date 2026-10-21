@@ -1,6 +1,6 @@
 # 考研英语阅读 Part A 精读视频（晴空校园大字版，与考研晴空校园版完全相同：片头 985 教学楼、中英文全部加粗、生词晴空蓝、短语草绿带黄色底纹）在 GitHub 自己的机器上生成、核查、打包、发布。
 # 与 render-tem8-campus.yml 逐行对应，只换项目：每篇一台机器并行；截图与审阅登记逐字节相同才生成；全部核查通过才上传；最后汇总、打包、发布。
-# 触发：修改 .github/kaoyan-render.txt 并推送。第 1 行 = 运行标签（test 开头 = 试跑不发布；probe 开头 = 只查截图能否逐字节重现）；第 2 行起每行一个篇目（k01 … k48）。
+# 触发：修改 .github/kaoyan-render.txt 并推送。第 1 行 = 运行标签（test 开头 = 试跑不发布；probe 开头 = 只查截图能否逐字节重现）；第 2 行起每行一个篇目（k01 … k50）。
 # 驱动程序与六级、考研共用：考研/tools/大字版.py（= 六级/tools/大字版.py，项目切到考研）；打包 .github/cet6-chalk-pack.py（PROJECT=考研）。
 name: 生成考研视频（晴空校园，GitHub 上生成）
 on:
@@ -79,9 +79,9 @@ jobs:
           if bad:
               sys.exit('这些篇目不能生成（截图审阅登记与现在的程序和数据不一致）：\n  ' + '\n  '.join(bad))
           man = {'tag': os.environ['TAG'], 'render': ids, 'passages': [{'id': p['id'], 'name': M.video_name(p)} for p in P]}
-          assert len(man['passages']) == 48 and len({e['name'] for e in man['passages']}) == 48
+          assert len(man['passages']) == 50 and len({e['name'] for e in man['passages']}) == 50      # Part A 48 篇 + 2026 年新题型 Part B 2 篇
           json.dump(man, open('manifest/manifest.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-          print(f'{len(ids)} 篇的审阅登记都与现在的程序和数据一致；manifest 48 篇')
+          print(f'{len(ids)} 篇的审阅登记都与现在的程序和数据一致；manifest 50 篇')
           PY
       - uses: actions/upload-artifact@v4
         with:
@@ -229,7 +229,7 @@ jobs:
             /.github/
             /考研/tools/画面核查/截图审阅通过.json
             /考研/大字版/成品核查/
-      - name: 腾出磁盘（48 个视频 + 打包要约 9 GB）
+      - name: 腾出磁盘（50 个视频 + 打包要约 9.5 GB）
         run: |
           df -h . | tail -1
           sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup

@@ -46,7 +46,7 @@ def main():
             ss = split(para)
             assert ' '.join(ss) == para, (p['id'], para[:80])
             sents.append(ss)
-        res.append({k: p[k] for k in ('id', 'year', 'month', 'set', 'passage', 'paper', 'part', 'words')} | {'sents': sents})
+        res.append({k: p[k] for k in ('id', 'year', 'month', 'set', 'passage', 'paper', 'part', 'words', 'answer') if k in p} | {'sents': sents})      # answer：2026 年新题型（Part B）的答案，片头显示
     (ROOT / '阅读' / 'sents.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
     n = sum(len(s) for r in res for s in r['sents'])
     print(f'{len(res)} 篇，{n} 句')
