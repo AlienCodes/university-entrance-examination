@@ -17,7 +17,7 @@
 | k04 | 4.48 | 0.22% | prichard → pritchard |
 | k05 | 4.47 | 0.24% | centres → centers |
 | k06 | 4.48 | 0.49% | realise → realize; organisations → organizations |
-| k07 | 4.49 | 2.93% | travellers → travelers; ferrovie dello → ferrovidello; italiane → italian; explained → explain; ferrovie → ferrovi; giuricin → gierisin; centres → centers; signalling → signaling; say → zay; travelling → traveling; giuricin → grsn |
+| k07 | 4.47 | 2.93% | travellers → travelers; ferrovie → ferrovi; explained → explain; ferrovie → ferrovier; ferrovie → fero ver; giuricin → jurichin; centres → centers; signalling → signaling; say → zay; travelling → traveling; giuricin → jurichin |
 | k08 | 4.49 | 0.74% | they're in → therein; festgoers → festorers |
 | k09 | 4.48 | 2.32% | shakespeare → sheare; jacqui → jackie; randomised → randomized; aged nine and → aging; length → lengths; o'hanlon → oh hanlon; o'hanlon → ohanlon |
 | k10 | 4.49 | 1.05% | modelling → modeling; centres → centers; paralysed → paralyzed; recognising → recognizing; kajaani → kajani |
