@@ -1,4 +1,5 @@
 #!/bin/bash
+# 踩坑：commit() 里的重试循环原来也用变量 i，把外层分批循环的 i 改掉了，同一批反复推送（2026-10-21）；重试循环改用 t
 # 六级学习资料收尾（一次启动、自己流到底）：等 4 份标准 PDF 生成完、60 篇长难句分析全部通过程序检查 → 排版长难句 PDF →
 # 每 10 篇提交推送一次 → 写发布清单触发 release-cet6-materials.yml。日志：六级/资料收尾.log
 cd "$(dirname "$0")/../.." || exit 1
@@ -9,11 +10,11 @@ until $PY 六级/tools/长难句.py check >/dev/null 2>&1; do sleep 60; done
 echo "$(date +%T) 60 篇长难句分析全部通过检查"
 $PY 六级/tools/长难句.py pdf || { echo "❌ 长难句 PDF 失败"; exit 1; }
 commit() {      # 抢 index.lock 时等一等再试
-  for i in 1 2 3 4 5 6; do git add "$@" && { git diff --cached --quiet || git commit -q -m "$MSG
+  for t in 1 2 3 4 5 6; do git add "$@" && { git diff --cached --quiet || git commit -q -m "$MSG
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01Bo2nvX3EdvyJhDdDqVayNH"; } && break; sleep 10; done
-  for i in 1 2 3 4 5; do git push -q -u origin claude/epic-edison-4gkcfb && return 0; sleep $((5 * i)); done; echo "❌ 推送失败"; exit 1
+  for t in 1 2 3 4 5; do git push -q -u origin claude/epic-edison-4gkcfb && return 0; sleep $((5 * t)); done; echo "❌ 推送失败"; exit 1
 }
 mapfile -t F < <(ls -d 六级/听写卡/*/ | sort)
 for ((i = 0; i < ${#F[@]}; i += 10)); do
