@@ -58,4 +58,4 @@
 | k47 | 4.47 | 0.93% | wunderlist → wonderlist; wunderlist → wonderlist; mr → mister; wunderlist → wonderlist |
 | k48 | 4.47 | 0.48% | ambady → ambuddy; ambady → ambody |
 | k13 | 4.48 | 2.05% | and → a; as two → astwo point one three; and thirteen cents → ∅ |
-| k26 | 4.47 | 0.93% | airbnb → airbim; would've → would have; keren → karen |
+| k26 | 4.47 | 0.70% | would've → would have; keren → karen |
