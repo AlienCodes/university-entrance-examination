@@ -7,7 +7,7 @@
 - 文章数：48
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
-- 平均识别差异率：0.97%
+- 平均识别差异率：0.96%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -35,7 +35,7 @@
 | k23 | 4.48 | 0.25% | anne → ann |
 | k24 | 4.49 | 0.93% | organisation → organization; flo → flow; flo → flow; users' → users |
 | k25 | 4.49 | 0.72% | sympathises → sympathizes; recognise → recognize; decentralises → decentralizes |
-| k27 | 4.48 | 1.14% | waterstones → waterstone's; waterstones → waterstone; and schuster → unk shuster; lownie → loney |
+| k27 | 4.47 | 0.92% | waterstones → waterstone's; waterstones → waterstone; and → unk; lownie → loney |
 | k28 | 4.49 | 0.00% |  |
 | k29 | 4.49 | 0.49% | metres → meters; horne → horn |
 | k30 | 4.46 | 0.00% |  |
