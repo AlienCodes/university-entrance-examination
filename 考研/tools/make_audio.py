@@ -70,6 +70,8 @@ def read_text(self, original, key=None):
                         lambda m: f"{m.group(1)} {UNIT1[m.group(2)]}{'' if m.group(1) == '1' else 's'}", original)
     # and/or 读作 and or（斜杠不许留在朗读文本里）
     original = G.re.sub(r'\band/or\b', 'and or', original)
+    # 考研（语音识别核对查出 k13 读成 UStwo point one three dollars）：US$2.13 读作 2 dollars and 13 cents
+    original = G.re.sub(r'US\$(\d+)\.(\d\d)\b', r'\1 dollars and \2 cents', original)
     # 考研（合成前逐句预检查出）：引语里编者加的方括号照读括号里的词（[control] pupils → control pupils）
     original = G.re.sub(r'\[([^\]]+)\]', r'\1', original)
     # 加号：Disney+、Paramount+ 读作 Disney Plus；成绩 B+ 读作 B plus
