@@ -1,4 +1,4 @@
-# 修改 .github/dictation-release.txt（第一行写标签名，如 dictation-70）并推送时：
+# 修改 .github/dictation-release.txt（第一行写标签名，如 gaokao-materials-70；可加“删除：旧标签”行，先删掉旧版 Release）并推送时：
 # 把 听写卡/ 下每篇一个文件夹（逐句精读 + 三份听写卡 + 长难句分析，共 5 份 PDF）加上该篇的朗读音频，
 # 用 Python zipfile 打包（踩坑 52：中文文件名 UTF-8 标记）、逐个核对，gh 发布（踩坑 42；目标用分支名：踩坑 53）
 name: 发布听写卡压缩包
@@ -52,7 +52,7 @@ jobs:
               "- 1 长难句分析.pdf：每篇挑出 2—4 个又长又复杂的句子：找主干、层层拆解、怎么读懂、怎么翻译、包含哪些知识点\n- 2 汉译英听写卡.pdf：看中文写英文\n- 3 英译汉听写卡.pdf：看英文写中文\n- 4 文章填空听写卡.pdf：原文挖空，附整句翻译和每空释义\n- 5 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词）\n- 6 朗读音频.mp3：美音女声逐句朗读\n\n"
               "三份听写卡 PDF 的最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n" + '\n'.join(rows) + '\n', 'utf-8')
           PY
-          zipname="gaokao-english-reading-CD-${tag}.zip"
+          zipname="GAOKAO-reading-CD-materials-70.zip"
           export ZIPNAME="${zipname}"
           python3 - <<'PY'
           import os, zipfile
@@ -73,6 +73,11 @@ jobs:
           PY
           echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
           echo "TAG=${tag}" >> "$GITHUB_ENV"
+      - name: 删除旧版 Release（用户 2026-10-21：旧的不要，只保留最新生成的；清单第二行起“删除：标签名”）
+        run: |
+          for old in $(grep -oP '^删除：\K\S+' .github/dictation-release.txt); do
+            if [ "$old" != "$TAG" ] && gh release view "$old" >/dev/null 2>&1; then gh release delete "$old" --yes --cleanup-tag; echo "已删除旧版 $old"; fi
+          done
       - name: 发布 Release（gh；目标用分支名）
         run: |
           title="高考英语阅读CD篇听写卡（70篇：逐句精读 + 听写卡 + 长难句分析 + 朗读音频）"
