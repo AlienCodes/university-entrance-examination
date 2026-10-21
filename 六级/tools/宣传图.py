@@ -72,8 +72,7 @@ def main():
     imgs = {}
     # 1 资料总览：资料包最外层（历年真题 + 60 个篇目文件夹）+ 一个篇目文件夹打开后的样子
     names = [x.name for x in sorted((C6 / '听写卡').iterdir())]
-    papers = sorted((C6 / '真题').rglob('*.pdf'))
-    root = [('dir hl', f'历年真题（2021—2026，共 {len(papers)} 套原卷 PDF）')] + [('dir', n) for n in names[:3]] + [('more', f'…… 共 {len(names)} 个篇目文件夹，2026—2021 年从新到旧')]
+    root = [('dir hl', '六级历年真题套卷 + 答案解析（2021—2026 全部）')] + [('dir', n) for n in names[:3]] + [('more', f'…… 共 {len(names)} 个篇目文件夹，2026—2021 年从新到旧')]
     files = [('PDF', '0 逐句精读.pdf', '片头 + 每屏一页，英文高亮、中文翻译、生词编号注释'),
              ('PDF', '1 汉译英.pdf', '看中文写英文，最后一页是答案'),
              ('PDF', '2 英译汉.pdf', '看英文写中文，最后一页是答案'),
@@ -95,8 +94,8 @@ def main():
            ".ic{flex:none;width:58px;height:66px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;"
            "font-family:'ZH Bold',sans-serif;font-size:19px;color:#fff;background:#d64541}.ic.mp3{background:#2e9e5b}"
            ".fn{flex:none;width:330px;font-family:'ZH Bold',sans-serif;font-size:30px;color:#123c69}.fd{font-size:25px;color:#5b6b80}</style>")
-    imgs['01_资料总览'] = page('01', '资料总览', f'<b>历年真题原卷</b>（{len(papers)} 套）+ <b>60 个篇目文件夹</b>，每个文件夹里都是下面这 6 个文件', win,
-                             chips(f'<b>{len(papers)}</b> 套历年真题', '<b>60</b> 篇精读', '<b>300</b> 份 PDF', '<b>256</b> 个长难句', '<b>60</b> 段音频'))
+    imgs['01_资料总览'] = page('01', '资料总览', '<b>历年真题套卷 + 答案解析</b> + <b>60 个篇目文件夹</b>，每个文件夹里都是下面这 6 个文件', win,
+                             chips('<b>历年真题</b>套卷+解析', '<b>60</b> 篇精读', '<b>300</b> 份 PDF', '<b>256</b> 个长难句', '<b>60</b> 段音频'))
     # 2 长难句分析（只有这一张写“虚拟产品……”）
     p = render_pages(pdf_of('4 长难句分析'), [1, 2], 110, td)
     imgs['02_长难句分析'] = page('02', '长难句分析', '挑出每篇<b>又长又复杂</b>的句子：找主干 → 层层拆解 → 怎么读懂 → 怎么翻译 → 知识点',

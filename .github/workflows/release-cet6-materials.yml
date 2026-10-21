@@ -1,5 +1,5 @@
 # 六级学习资料发布（用户 2026-10-21）：修改 .github/cet6-materials-release.txt（第一行写标签名，如 cet6-materials-60）并推送时，
-# 把 六级/真题/ 的 31 套历年真题原卷（放在包根目录「历年真题」）和 六级/听写卡/ 下每篇一个文件夹（0 逐句精读 + 1 汉译英 + 2 英译汉 + 3 文章填空 + 4 长难句分析，共 5 份 PDF，本机生成后入库）加上该篇的朗读音频，
+# 把 六级/听写卡/ 下每篇一个文件夹（0 逐句精读 + 1 汉译英 + 2 英译汉 + 3 文章填空 + 4 长难句分析，共 5 份 PDF，本机生成后入库）加上该篇的朗读音频，
 # 用 Python zipfile 打包（踩坑 52：中文文件名要有 UTF-8 标记）、逐个核对，发布 GitHub Release（gh，目标用分支名：踩坑 53）。顺序与六级黑板视频相同：s01 → s60。
 name: 发布六级学习资料压缩包
 on:
@@ -19,7 +19,6 @@ jobs:
           sparse-checkout: |
             .github
             六级/听写卡
-            六级/真题
             六级/audio
             六级/data
       - name: Release 目标检查（踩坑 53）
@@ -48,12 +47,6 @@ jobs:
               dst = out / f.name
               shutil.copytree(f, dst)
               shutil.copy(Path('六级/audio') / T[p['id']]['file'], dst / f'{f.name[3:]} - 朗读音频.mp3')
-          papers = sorted(Path('六级/真题').rglob('*.pdf'))   # 历年真题原卷（2021—2026），按 年/年月 放在包的根目录
-          assert len(papers) == 31, len(papers)
-          for x in papers:
-              d = out / '历年真题' / x.parent.relative_to('六级/真题')
-              d.mkdir(parents=True, exist_ok=True)
-              shutil.copy(x, d / x.name)
           PY
           python3 - <<'PY'
           import json, os, zipfile
@@ -66,7 +59,7 @@ jobs:
                   zf.write(x, x.relative_to('dist').as_posix())
           with zipfile.ZipFile(z) as zf:                   # 踩坑 43：一律用 Python zipfile 核对
               infos = zf.infolist()
-              assert len(infos) == len(files) == 60 * 6 + 31, len(infos)
+              assert len(infos) == len(files) == 60 * 6, len(infos)
               for i, x in zip(infos, files):
                   assert i.filename == x.relative_to('dist').as_posix() and i.file_size == x.stat().st_size, i.filename
                   assert i.flag_bits & 0x800 or i.filename.isascii(), f'{i.filename} 没有 UTF-8 标记'
@@ -77,8 +70,7 @@ jobs:
           D = [p for p in json.load(open('六级/data/vocab.json', encoding='utf-8'))['passages'] if p.get('done')]
           rows = [f'| {i} | {f.name[3:]} |' for i, f in enumerate(sorted(Path('六级/听写卡').iterdir()), 1)]
           Path('notes.md').write_text(
-              '大学英语六级阅读真题（仔细阅读 Section C）学习资料，共 60 篇，与六级黑板视频（Release cet6-chalk）一一对应、顺序相同。\n\n'
-              '根目录的「历年真题」文件夹：2021—2026 年六级真题原卷 PDF，共 31 套，按年份、考试月份分好。\n\n每篇一个文件夹：\n\n'
+              '大学英语六级阅读真题（仔细阅读 Section C）学习资料，共 60 篇，与六级黑板视频（Release cet6-chalk）一一对应、顺序相同。每篇一个文件夹：\n\n'
               '- 0 逐句精读.pdf：视频画面（教室黑板大字版），片头 + 每屏一页\n'
               '- 1 汉译英.pdf：看中文写英文\n- 2 英译汉.pdf：看英文写中文\n- 3 文章填空.pdf：原文挖空，附整句翻译和每空释义\n'
               '- 4 长难句分析.pdf：每篇挑出 2—5 个又长又复杂的句子：找主干、层层拆解、怎么读懂、怎么翻译、包含哪些知识点\n'
@@ -90,9 +82,9 @@ jobs:
           z=$(cat zip.txt)
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "$z" --clobber
-            gh release edit "$TAG" --title "六级阅读真题60篇 学习资料（历年真题原卷 + 逐句精读 + 听写卡 + 长难句分析 + 朗读音频）" --notes-file notes.md
+            gh release edit "$TAG" --title "六级阅读真题60篇 学习资料（逐句精读 + 听写卡 + 长难句分析 + 朗读音频）" --notes-file notes.md
           else
-            gh release create "$TAG" "$z" --target "$GITHUB_REF_NAME" --title "六级阅读真题60篇 学习资料（历年真题原卷 + 逐句精读 + 听写卡 + 长难句分析 + 朗读音频）" --notes-file notes.md
+            gh release create "$TAG" "$z" --target "$GITHUB_REF_NAME" --title "六级阅读真题60篇 学习资料（逐句精读 + 听写卡 + 长难句分析 + 朗读音频）" --notes-file notes.md
           fi
           gh release view "$TAG" --json assets -q '.assets[] | "\(.name) \(.size)"'
           test "$(gh release view "$TAG" --json assets -q ".assets[] | select(.name == \"$z\") | .size")" = "$(stat -c %s "$z")"
