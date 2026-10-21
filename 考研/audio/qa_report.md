@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：48
+- 文章数：49
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.48（最低 4.45）
 - 平均识别差异率：0.97%
@@ -59,3 +59,4 @@
 | k48 | 4.47 | 0.71% | nalini ambady → nalani ambadi; ambady → ambody |
 | k13 | 4.49 | 1.79% | as two → astwo point one three; and thirteen cents → ∅ |
 | k26 | 4.47 | 0.70% | would've → would have; keren → karen |
+| k49 | 4.45 | 1.27% | rovelli → rivelli; read → red; barry → bari; tokarczuk → tokarchuk; woolf → wolfe; simenon → simonon; neighbours → neighbors |
