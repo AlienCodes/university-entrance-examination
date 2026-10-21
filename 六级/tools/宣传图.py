@@ -1,6 +1,7 @@
 """六级学习资料的 B 站商品图（用户 2026-10-21：打包到 B 站卖，需要“资料总览图”和每份文件打开后的样子，全部 1:1）。
 
-    /opt/ttsenv/bin/python 六级/tools/宣传图.py      # → 六级/宣传图/01_资料总览.png … 07_朗读音频.png（1600×1600）
+    /opt/ttsenv/bin/python 六级/tools/宣传图.py            # → 六级/宣传图/01_资料总览.png … 07_朗读音频.png（1600×1600）
+    /opt/ttsenv/bin/python 六级/tools/宣传图.py --gaokao   # 高考 70 篇（用户 2026-10-21）→ 宣传图/（仓库根目录）
 
 全部由程序生成（零 token）：预览用第 1 篇（s01）真实 PDF 页面（pdftoppm 渲染），音频波形用 s01 朗读音频的真实波形。
 “虚拟产品，一旦售出无法退款，谢谢理解”只写在长难句分析那一张（用户要求）。
@@ -8,18 +9,30 @@
 import json
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 C6 = HERE.parent
 ROOT = C6.parent
-OUT = C6 / '宣传图'
-FOLDER = sorted((C6 / '听写卡').iterdir())[0]
+GK = '--gaokao' in sys.argv
+BASE = ROOT if GK else C6                       # 高考：数据、听写卡、音频都在仓库根目录
+OUT = BASE / '宣传图'
+FOLDER = sorted((BASE / '听写卡').iterdir())[0]
 NAME = FOLDER.name[3:]
 FONTS = ''.join(f"<link rel='stylesheet' href='{(ROOT / '专八' / 'tools' / 'fonts' / f).as_uri()}'>" for f in ('zh-bold.css', 'zh-regular.css'))
 W = 1600
-TAG = '大学英语六级 · 仔细阅读真题 60 篇（2021—2026）'
+# 两个项目不同的文字（其余版式完全相同）
+P = dict(tag='高考英语 · 阅读理解 C/D 篇真题 70 篇（2022—2026）', pack='高考英语阅读CD篇听写卡（70篇）',
+         papers='高考英语历年真题套卷 + 答案解析（2022—2026 全部）', order='2022—2026 年按年份排列，每年全国卷在前',
+         read='片头 + 每句一页，英文高亮、中文翻译、生词释义', read_desc='与视频画面<b>一模一样</b>：片头 + 每句一页，英文高亮、中文翻译、生词释义',
+         read_chips=('<b>16:9</b> 横版', '英文高亮 + 中文翻译', '生词释义'), voice='美音女声逐句朗读', voice_key='female', first='p01', ld=275) if GK else \
+    dict(tag='大学英语六级 · 仔细阅读真题 60 篇（2021—2026）', pack='六级阅读真题60篇学习资料',
+         papers='六级历年真题套卷 + 答案解析（2021—2026 全部）', order='2026—2021 年从新到旧',
+         read='片头 + 每屏一页，英文高亮、中文翻译、生词编号注释', read_desc='与视频画面<b>一模一样</b>：片头 + 每屏一页，英文高亮、中文翻译、生词编号注释',
+         read_chips=('<b>16:9</b> 横版', '单词 · 短语 分色高亮', '生词编号对应注释'), voice='男声逐句朗读', voice_key='cet4_male', first='s01', ld=256)
+TAG = P['tag']
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -71,18 +84,18 @@ def main():
     td = Path(tempfile.mkdtemp(prefix='cet6promo_'))
     imgs = {}
     # 1 资料总览：资料包最外层（历年真题 + 60 个篇目文件夹）+ 一个篇目文件夹打开后的样子
-    names = [x.name for x in sorted((C6 / '听写卡').iterdir())]
-    root = [('dir hl', '六级历年真题套卷 + 答案解析（2021—2026 全部）')] + [('dir', n) for n in names[:3]] + [('more', f'…… 共 {len(names)} 个篇目文件夹，2026—2021 年从新到旧')]
-    files = [('PDF', '0 逐句精读.pdf', '片头 + 每屏一页，英文高亮、中文翻译、生词编号注释'),
+    names = [x.name for x in sorted((BASE / '听写卡').iterdir())]
+    root = [('dir hl', P['papers'])] + [('dir', n) for n in names[:3]] + [('more', f"…… 共 {len(names)} 个篇目文件夹，{P['order']}")]
+    files = [('PDF', '0 逐句精读.pdf', P['read']),
              ('PDF', '1 汉译英.pdf', '看中文写英文，最后一页是答案'),
              ('PDF', '2 英译汉.pdf', '看英文写中文，最后一页是答案'),
              ('PDF', '3 文章填空.pdf', '原文挖空，附整句翻译和每空释义'),
              ('PDF', '4 长难句分析.pdf', '找主干、层层拆解、怎么读懂、怎么翻译、知识点'),
-             ('MP3', '朗读音频.mp3', '男声逐句朗读')]
+             ('MP3', '朗读音频.mp3', P['voice'])]
     rr = ''.join(f"<div class='r {c}'><span class='fo'></span><span>{t}</span></div>" if c != 'more' else f"<div class='r more'>{t}</div>" for c, t in root)
     rows = ''.join(f"<div class='f'><span class='ic {t.lower()}'>{t}</span><span class='fn'>{n}</span><span class='fd'>{d}</span></div>" for t, n, d in files)
     win = ("<div style='display:flex;flex-direction:column;gap:30px;width:1420px'>"
-           f"<div class='win'><div class='bar'><i></i><i></i><i></i><span>六级阅读真题60篇学习资料</span></div>{rr}</div>"
+           f"<div class='win'><div class='bar'><i></i><i></i><i></i><span>{P['pack']}</span></div>{rr}</div>"
            f"<div class='win'><div class='bar'><i></i><i></i><i></i><span>01 {NAME}</span></div>{rows}</div></div>"
            "<style>.win{background:#fff;border-radius:18px;box-shadow:0 18px 50px rgba(18,60,105,.22);overflow:hidden}"
            ".bar{height:58px;background:#e9eef6;display:flex;align-items:center;padding:0 24px;gap:10px;font-size:26px;color:#3b4a60}"
@@ -94,8 +107,9 @@ def main():
            ".ic{flex:none;width:58px;height:66px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;"
            "font-family:'ZH Bold',sans-serif;font-size:19px;color:#fff;background:#d64541}.ic.mp3{background:#2e9e5b}"
            ".fn{flex:none;width:330px;font-family:'ZH Bold',sans-serif;font-size:30px;color:#123c69}.fd{font-size:25px;color:#5b6b80}</style>")
-    imgs['01_资料总览'] = page('01', '资料总览', '<b>历年真题套卷 + 答案解析</b> + <b>60 个篇目文件夹</b>，每个文件夹里都是下面这 6 个文件', win,
-                             chips('<b>历年真题</b>套卷+解析', '<b>60</b> 篇精读', '<b>300</b> 份 PDF', '<b>256</b> 个长难句', '<b>60</b> 段音频'))
+    N = len(names)
+    imgs['01_资料总览'] = page('01', '资料总览', f'<b>历年真题套卷 + 答案解析</b> + <b>{N} 个篇目文件夹</b>，每个文件夹里都是下面这 6 个文件', win,
+                             chips('<b>历年真题</b>套卷+解析', f'<b>{N}</b> 篇精读', f'<b>{N * 5}</b> 份 PDF', f"<b>{P['ld']}</b> 个长难句", f'<b>{N}</b> 段音频'))
     # 2 长难句分析（只有这一张写“虚拟产品……”）
     p = render_pages(pdf_of('4 长难句分析'), [1, 2], 110, td)
     imgs['02_长难句分析'] = page('02', '长难句分析', '挑出每篇<b>又长又复杂</b>的句子：找主干 → 层层拆解 → 怎么读懂 → 怎么翻译 → 知识点',
@@ -103,10 +117,10 @@ def main():
                               "<div class='notice'>虚拟产品，一旦售出无法退款，谢谢理解</div>")
     # 3 逐句精读
     p = render_pages(pdf_of('0 逐句精读'), [1, 6, 14], 60, td)
-    imgs['03_逐句精读'] = page('03', '逐句精读', '与视频画面<b>一模一样</b>：片头 + 每屏一页，英文高亮、中文翻译、生词编号注释',
+    imgs['03_逐句精读'] = page('03', '逐句精读', P['read_desc'],
                              f"<div style='display:flex;flex-direction:column;gap:30px;align-items:center'><div class='pg' style='width:1220px'><img src='{p[1]}'></div>"
                              f"<div style='display:flex;gap:30px'><div class='pg' style='width:595px'><img src='{p[0]}'></div><div class='pg' style='width:595px'><img src='{p[2]}'></div></div></div>",
-                             chips('<b>16:9</b> 横版', '单词 · 短语 分色高亮', '生词编号对应注释'))
+                             chips(*P['read_chips']))
     # 4—6 听写卡
     for no, kind, desc in (('04', '1 汉译英', '看<b>中文</b>写<b>英文</b>：本篇全部生词与短语，按单词 / 短语分组默写'),
                            ('05', '2 英译汉', '看<b>英文</b>写<b>中文</b>：本篇全部生词与短语，按单词 / 短语分组默写'),
@@ -121,8 +135,8 @@ def main():
     # 7 朗读音频：真实波形
     import numpy as np
     import soundfile as sf
-    T = json.loads((C6 / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']['s01']
-    a, sr = sf.read(str(C6 / 'audio' / T['file']), dtype='float32')
+    T = json.loads((BASE / 'audio' / 'timings.json').read_text('utf-8'))[P['voice_key']][P['first']]
+    a, sr = sf.read(str(BASE / 'audio' / T['file']), dtype='float32')
     a = a if a.ndim == 1 else a.mean(1)
     n = 96                                         # 响度包络（均方根），按 98% 分位归一、加大对比：句间停顿看得出来
     env = np.array([np.sqrt(np.mean(c ** 2)) for c in np.array_split(a, n)])
@@ -137,7 +151,7 @@ def main():
               ".ctl{display:flex;align-items:center;gap:30px;font-size:32px;color:#5b6b80}.btn{width:96px;height:96px;border-radius:50%;background:#123c69;color:#fff;"
               "display:flex;align-items:center;justify-content:center;font-size:44px}.prog{flex:1;height:12px;background:#e3eaf4;border-radius:6px}"
               ".prog div{width:0;height:12px}</style>")
-    imgs['07_朗读音频'] = page('07', '朗读音频', '<b>男声逐句朗读</b>，与视频是同一份朗读：句与句之间停顿 0.8 秒，方便跟读、听写', player,
+    imgs['07_朗读音频'] = page('07', '朗读音频', f"<b>{P['voice']}</b>，与视频是同一份朗读：句与句之间停顿 0.8 秒，方便跟读、听写", player,
                              chips('MP3', '每篇一段', '逐句停顿'))
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
