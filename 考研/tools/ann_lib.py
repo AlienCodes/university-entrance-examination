@@ -83,7 +83,8 @@ def uncovered(en, spans, names=()):
             continue
         if is_basic(tok):
             continue
-        if tok[0].isupper() and a > 0 and not re.search(r'[.!?“"‘(]\s*$', en[:a]):     # 句中大写：专有名词
+        start = re.search(r'[.!?“"‘(]\s*$', en[:a]) and not re.search(r'(?:^|[\s(])(?:[A-Z]|Mr|Mrs|Ms|Dr|Prof|St|Jr|Sr)\.\s*$', en[:a])
+        if tok[0].isupper() and a > 0 and not start:     # 句中大写：专有名词（人名缩写 J.、称谓 Dr. 后面不是句首：Daniel J. Simons）
             continue
         if tok.isupper() and len(tok) <= 5:            # 缩写 DNA、AI、IT
             continue
