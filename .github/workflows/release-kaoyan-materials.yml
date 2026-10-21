@@ -1,0 +1,97 @@
+# 考研学习资料发布（用户 2026-10-21，与六级资料包相同；长难句分析更细）：修改 .github/kaoyan-materials-release.txt（第一行写标签名，如 kaoyan-materials-50）并推送时，
+# 把 考研/听写卡/ 下每篇一个文件夹（0 逐句精读 + 1 汉译英 + 2 英译汉 + 3 文章填空 + 4 长难句分析，共 5 份 PDF，本机生成后入库）加上该篇的朗读音频，
+# 用 Python zipfile 打包（踩坑 52：中文文件名要有 UTF-8 标记）、逐个核对，发布 GitHub Release（gh，目标用分支名：踩坑 53）。顺序与考研视频（kaoyan-campus）相同。
+name: 发布考研学习资料压缩包
+on:
+  push:
+    paths: ['.github/kaoyan-materials-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            考研/听写卡
+            考研/audio
+            考研/data
+      - name: Release 目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - name: 组装文件夹、打包、逐个核对
+        run: |
+          set -e
+          tag=$(head -1 .github/kaoyan-materials-release.txt | tr -d '[:space:]')
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          export TAG="${tag}"            # 同一步里后面的 Python 也要用（$GITHUB_ENV 只对后面的步骤生效）
+          python3 - <<'PY'
+          import json, os, shutil, zipfile
+          from pathlib import Path
+          D = [p for p in json.load(open('考研/data/vocab.json', encoding='utf-8'))['passages'] if p.get('done')]
+          T = json.load(open('考研/audio/timings.json', encoding='utf-8'))['cet4_male']
+          root = '考研英语阅读真题50篇学习资料'
+          out = Path('dist') / root
+          out.mkdir(parents=True)
+          folders = sorted(Path('考研/听写卡').iterdir())
+          assert len(folders) == len(D) == 50, (len(folders), len(D))
+          kinds = ['0 逐句精读.pdf', '1 汉译英.pdf', '2 英译汉.pdf', '3 文章填空.pdf', '4 长难句分析.pdf']
+          for i, (f, p) in enumerate(zip(folders, D), 1):
+              assert f.name.startswith(f'{i:02d} {p["paper"]} {p["passage"]} '), (f.name, p['id'])
+              pdfs = sorted(f.glob('*.pdf'))
+              assert [x.name.split(' - ')[-1] for x in pdfs] == kinds, (f.name, [x.name for x in pdfs])
+              dst = out / f.name
+              shutil.copytree(f, dst)
+              # 压缩包里的文件顺序和名字（用户 2026-10-21）：序号从 1 开始；长难句分析排第一；三份听写卡名字后面加“听写卡”；逐句精读放在朗读音频上面
+              KORD = ['4 长难句分析', '1 汉译英', '2 英译汉', '3 文章填空', '0 逐句精读']
+              KNEW = {'4 长难句分析': '长难句分析', '1 汉译英': '汉译英听写卡', '2 英译汉': '英译汉听写卡', '3 文章填空': '文章填空听写卡', '0 逐句精读': '逐句精读'}
+              have = {x.name.rsplit(' - ', 1)[1][:-4]: x for x in dst.glob('*.pdf')}
+              kseq = [k for k in KORD if k in have]
+              assert len(kseq) == len(have), sorted(have)
+              for n, k in enumerate(kseq, 1):
+                  have[k].rename(dst / f"{have[k].name.rsplit(' - ', 1)[0]} - {n} {KNEW[k]}.pdf")
+              shutil.copy(Path('考研/audio') / T[p['id']]['file'], dst / f'{f.name[3:]} - {len(pdfs) + 1} 朗读音频.mp3')
+          PY
+          python3 - <<'PY'
+          import json, os, zipfile
+          from pathlib import Path
+          tag = os.environ['TAG']
+          z = Path(f'KAOYAN-reading-materials-{tag}.zip')
+          files = sorted(x for x in Path('dist').rglob('*') if x.is_file())
+          with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED, allowZip64=True) as zf:
+              for x in files:
+                  zf.write(x, x.relative_to('dist').as_posix())
+          with zipfile.ZipFile(z) as zf:                   # 踩坑 43：一律用 Python zipfile 核对
+              infos = zf.infolist()
+              assert len(infos) == len(files) == 50 * 6, len(infos)
+              for i, x in zip(infos, files):
+                  assert i.filename == x.relative_to('dist').as_posix() and i.file_size == x.stat().st_size, i.filename
+                  assert i.flag_bits & 0x800 or i.filename.isascii(), f'{i.filename} 没有 UTF-8 标记'
+              assert zf.testzip() is None
+          assert z.stat().st_size < 2 * 2**30, f'{z} 超过 2 GB'
+          print(f'{z.name}：{len(infos)} 个文件，{z.stat().st_size / 2**20:.0f} MB，zipfile 核对通过')
+          Path('zip.txt').write_text(z.name, 'utf-8')
+          rows = [f'| {i} | {f.name[3:]} |' for i, f in enumerate(sorted(Path('考研/听写卡').iterdir()), 1)]
+          Path('notes.md').write_text(
+              '考研英语（英语一、英语二）阅读理解真题学习资料，2021—2026 年 Part A 48 篇 + 2026 年新题型 Part B 2 篇，共 50 篇，与考研视频（Release kaoyan-campus）一一对应、顺序相同。每篇一个文件夹：\n\n'
+              '- 1 长难句分析.pdf：每篇 3—8 个又长又复杂的句子（共 319 句），每句七步讲透：切意群（在哪里画“/”、每块什么意思、第几层）、找主干、层层拆解（每个修饰成分挂在谁身上）、一步步读懂、易错点、怎么翻译（顺译草稿 → 调整方法 → 参考译文）、知识点；开头附“通用拆解法”五步\n'
+              '- 2 汉译英听写卡.pdf：看中文写英文\n- 3 英译汉听写卡.pdf：看英文写中文\n- 4 文章填空听写卡.pdf：原文挖空，附整句翻译和每空释义\n'
+              '- 5 逐句精读.pdf：视频画面（晴空校园大字版），片头 + 每屏一页\n'
+              '- 6 朗读音频.mp3：男声逐句朗读（与视频是同一份朗读）\n\n'
+              '三份听写卡 PDF 的最后一页是答案。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
+          PY
+      - name: 发布 Release（gh；目标用分支名）
+        run: |
+          z=$(cat zip.txt)
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$z" --clobber
+            gh release edit "$TAG" --title "考研英语阅读真题50篇 学习资料（长难句分析 + 听写卡 + 逐句精读 + 朗读音频）" --notes-file notes.md
+          else
+            gh release create "$TAG" "$z" --target "$GITHUB_REF_NAME" --title "考研英语阅读真题50篇 学习资料（长难句分析 + 听写卡 + 逐句精读 + 朗读音频）" --notes-file notes.md
+          fi
+          gh release view "$TAG" --json assets -q '.assets[] | "\(.name) \(.size)"'
+          test "$(gh release view "$TAG" --json assets -q ".assets[] | select(.name == \"$z\") | .size")" = "$(stat -c %s "$z")"
