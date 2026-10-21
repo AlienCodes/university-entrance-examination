@@ -1,18 +1,22 @@
 """六级学习资料的 B 站商品介绍短视频（用户 2026-10-21）：用 六级/宣传图/ 的 7 张 1:1 商品图做成 1080×1080 短视频，
 每张 4 秒、缓慢推近、0.6 秒淡入淡出，背景声音是第 1 篇的真实男声朗读（与资料里的朗读音频同一份）。程序生成，零 token。
 
-    /opt/ttsenv/bin/python 六级/tools/宣传视频.py   # → 六级/宣传图/六级资料介绍.mp4
+    /opt/ttsenv/bin/python 六级/tools/宣传视频.py             # → 六级/宣传图/六级资料介绍.mp4
+    /opt/ttsenv/bin/python 六级/tools/宣传视频.py --gaokao   # → 宣传图/高考资料介绍.mp4
 """
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 C6 = Path(__file__).resolve().parent.parent
-IMGS = sorted((C6 / '宣传图').glob('0*.png'))
-OUT = C6 / '宣传图' / '六级资料介绍.mp4'
+GK = '--gaokao' in sys.argv              # 高考（用户 2026-10-21）：仓库根目录的 宣传图/ 与 audio/，美音女声第 1 篇
+BASE = C6.parent if GK else C6
+IMGS = sorted((BASE / '宣传图').glob('0*.png'))
+OUT = BASE / '宣传图' / ('高考资料介绍.mp4' if GK else '六级资料介绍.mp4')
 D, X, S, FPS = 4.0, 0.6, 1080, 30          # 每张时长、淡入淡出、边长、帧率
-T = json.loads((C6 / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']['s01']
-AUDIO = C6 / 'audio' / T['file']
+T = json.loads((BASE / 'audio' / 'timings.json').read_text('utf-8'))['female' if GK else 'cet4_male']['p01' if GK else 's01']
+AUDIO = BASE / 'audio' / T['file']
 
 
 def main():
