@@ -82,7 +82,7 @@ def problems(pid):
             if not x.get(key):
                 bad.append(f'{tag}：缺 {key}')
         m = x.get('主干') or {}
-        pos = [span(m.get(r), f'主干·{r}') for r in ('主语', '谓语') ] + ([span(m['宾语/表语'], '主干·宾语/表语')] if m.get('宾语/表语') else [])
+        pos = [span(m.get(r), f'主干·{r}') for r in (('谓语',) if (m.get('主语') or '').strip() == '（省略）' else ('主语', '谓语'))] + ([span(m['宾语/表语'], '主干·宾语/表语')] if m.get('宾语/表语') else [])
         for r in x.get('拆解', []):
             span(r.get('片段'), '拆解')
             c = re.sub(r'（.*?）$', '', r.get('成分', ''))
@@ -122,24 +122,26 @@ def esc(s):
 
 
 def mark(en, m):
-    """原句里把主干（主语、谓语、宾语/表语）加粗标红。"""
-    spans = []                                     # 按整词找（“is”不能落在“This”里面）；找不到整词再退回普通查找
+    """原句里把主干（主语、谓语、宾语/表语）加粗标红：整词匹配（“is”不落在“This”里），并按句中顺序找（谓语在主语之后、宾语/表语在谓语之后）；
+    祈使句主语写“（省略）”，不标。"""
+    spans, pos = [], 0
     for t in (m.get('主语'), m.get('谓语'), m.get('宾语/表语')):
         t = (t or '').strip()
-        if not t:
+        if not t or t.startswith('（'):
             continue
-        hit = re.search(r'(?<![A-Za-z])' + re.escape(t) + r'(?![A-Za-z])', en)
+        pat = re.compile(r'(?<![A-Za-z])' + re.escape(t) + r'(?![A-Za-z])')
+        hit = pat.search(en, pos) or pat.search(en)
         a = hit.start() if hit else en.find(t)
         if a >= 0:
             spans.append((a, a + len(t)))
-    spans.sort()
-    out, pos = [], 0
-    for a, b in spans:
-        if a < pos:
+            pos = a + len(t)
+    out, cur = [], 0
+    for a, b in sorted(spans):
+        if a < cur:
             continue
-        out += [esc(en[pos:a]), f'<b>{esc(en[a:b])}</b>']
-        pos = b
-    return ''.join(out) + esc(en[pos:])
+        out += [esc(en[cur:a]), f'<b>{esc(en[a:b])}</b>']
+        cur = b
+    return ''.join(out) + esc(en[cur:])
 
 
 def kp(r):
