@@ -55,7 +55,7 @@ else:
     sys.modules['make_video'] = M
     _spec.loader.exec_module(M)
     M.set_project(PROJECT)
-    VIDEOS = C6 / '最终视频_校园'                 # 晴空校园成品（旧版 10 个仍在 专八/最终视频/，不动）
+    VIDEOS = C6 / M.PJ.get('videos', '最终视频_校园')      # 晴空校园成品（旧版 10 个仍在 专八/最终视频/，不动）；考研作文 考研作文/最终视频/
     MAKE = [PY, str(ENGINE), '--project', PROJECT, '--style', M.PJ['look']]
 OUT = C6 / M.PJ['work']                         # 六级 六级/样片/，专八 专八/大字版/（专八/样片/ 是“同一篇、多种画面”的样片，分开）
 SHOTS = OUT / '截图'
@@ -132,8 +132,10 @@ def ref_text(p):
     """参考文字：每屏应有的内容（审阅员对照用；与 样片.py 相同的写法）。"""
     sents = [s for pa in p['paras'] for s in pa]
     lines = [f'# {p["id"]} {p["paper"]} {p["passage"]} {p["title"]}：第 1 屏片头（{M.PJ["tag"]}、标题、{M.PJ["exam"]} 试卷 · 篇目、'
-             f'体裁 {p.get("genre") or ""}、全文 {p["words"]} 词 · 逐句精读），之后每句一屏，共 {len(sents)} 句；长句分屏（页脚 PART m/n）。']
-    i = 1
+             f'体裁 {p.get("genre") or ""}、全文 {p["words"]} 词 · 逐句精读），'
+             + ('第 2 屏原题（原卷截图，静音停留到第一句开口），' if M.intro(p) == 2 else '')
+             + f'之后每句一屏，共 {len(sents)} 句；长句分屏（页脚 PART m/n）。']
+    i = M.intro(p)
     for k, s in enumerate(sents, 1):
         for lo, hi, zh, tag in M.split_parts(p['id'], k, s):
             i += 1
@@ -230,7 +232,7 @@ def stills(ids, force):
             vs = [x[1] for x in sizes if x]
             sents = [s for pa in p['paras'] for s in pa]
             report[pid] = {'篇目': f'{p["paper"]} {p["passage"]} {p["title"]}', '视频': M.video_name(p), '句数': len(sents),
-                           '屏数': len(pngs), '分屏': len(pngs) - 1 - len(sents),
+                           '屏数': len(pngs), '分屏': len(pngs) - M.intro(p) - len(sents),
                            '英文字号': {'最小': min(fs), '中位数': statistics.median(fs), '最大': max(fs)},
                            '词汇栏字号': {'最小': min(vs), '中位数': statistics.median(vs), '最大': max(vs)},
                            '低于起始字号的屏': [f'{labels[i]} {x[0]}/{x[1]}' for i, x in enumerate(sizes) if x and (x[0] < M.FS0 or x[1] < M.VS0)],

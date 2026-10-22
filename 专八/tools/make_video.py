@@ -62,6 +62,12 @@ PROJECTS = {
     '考研': {'tag': 'KAOYAN · READING · PART A', 'top': 'KAOYAN READING', 'exam': '', 'look': '1', 'stills': '大字版/截图/{pid}', 'work': '大字版',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] (?:Text [1-4]|Part B) \S.*\.mp4', 'tmp': 'kyvideo_',
              'badge': r'考研\A精读'},      # 封面右上角圆形贴纸（样式/1_晴空校园.css 写的是专八的「专八 / 精读」，考研 k02 截图试跑时发现，按项目覆盖）
+    # 考研作文（用户 2026-10-22：范文与阅读视频一样逐句翻译、标生词，换成手账笔记本主题；开头展示原题，截图必须高清）：
+    # 篇目 w01—w24，paper “2026年考研英语一”，passage “写作 Part B”；片头之后是原题屏（prompt_slide，数据里有 prompt_img 才有），
+    # 原题屏静音停留到第一句开口（数据里的 lead，考研作文/tools/extract.py 定，音频按它留静音）
+    '考研作文': {'tag': 'KAOYAN · WRITING · PART A', 'top': 'KAOYAN WRITING', 'exam': '', 'look': '2', 'stills': '大字版/截图/{pid}', 'work': '大字版',
+             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] 写作 Part [AB] \S.*\.mp4', 'tmp': 'kywvideo_',
+             'badge': r'考研\A作文', 'videos': '最终视频'},
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 
@@ -758,6 +764,51 @@ def title_slide(p):
       <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span>{ans}</div>''')
 
 
+TITLE_SEC = 1.5      # 片头（静音）秒数：有原题屏时，原题屏从这里开始，到第一句开口（p['lead']）为止
+
+
+def intro(p):
+    """句子之前的屏数：片头，加上原题屏（考研作文）。"""
+    return 2 if p.get('prompt_img') else 1
+
+
+def prompt_slide(p):
+    """原题屏（考研作文，用户 2026-10-22：视频开头展示原题，截图必须高清）：原卷 PDF 按 600 dpi 渲染、裁出本题（<项目>/原题/<篇目>.png，
+    考研作文/tools/原题截图.py），放在白色卡片里按原比例放到最大（只缩小、不放大，PROMPT_JS 实测核对）；卡片上沿贴一条写着“原题”的纸胶带。
+    样式只写在这一屏的 <style> 里，别的屏和别的项目不受影响。"""
+    img = (C4 / '原题' / p['prompt_img']).as_uri()
+    return page(f'''<style>
+.pq{{position:absolute;left:100px;right:90px;top:150px;bottom:30px;background:var(--card,#fff);border-radius:10px;
+  box-shadow:0 0 0 1px #ebe6da,0 3px 0 #ece7dc,0 10px 26px rgba(60,70,95,.10);display:flex;align-items:center;justify-content:center;padding:46px 30px 24px}}
+.pq img{{display:block;max-width:100%;max-height:100%;object-fit:contain}}
+.pq .lab{{position:absolute;top:-27px;left:50%;transform:translateX(-50%) rotate(-1.5deg);padding:4px 46px 6px;white-space:nowrap;
+  font-family:'ZH Bold';font-weight:700;font-size:34px;line-height:44px;letter-spacing:.32em;text-indent:.32em;color:var(--ink,#1c2421);
+  background:repeating-linear-gradient(135deg,rgba(255,228,107,.92) 0 12px,rgba(255,240,170,.92) 12px 24px);
+  clip-path:polygon(0 6%,3% 0,6% 8%,9% 0,12% 7%,15% 0,100% 0,100% 94%,97% 100%,94% 92%,91% 100%,88% 93%,85% 100%,0 100%)}}
+</style>
+<div class="top"><b>{PJ["top"]}</b><span>{head(p)}　{esc(p.get("title") or "")}</span></div>
+<div class="pq" id="pq"><span class="lab">原题</span><img src="{img}" alt=""></div>''')
+
+
+# 原题屏检查：截图加载成功；画面上实际显示的像素（4K 下 CSS 尺寸 × devicePixelRatio）不超过原图像素（只缩小、不放大 = 高清）；
+# 比例不变；在卡片内边距以内；“原题”纸胶带不压住截图；卡片不压页眉；截图按卡片放到最大（宽或高顶满内边距）
+PROMPT_JS = """() => { const bad = [], q = s => document.querySelector(s), img = q('.pq img'), card = q('.pq'), lab = q('.pq .lab'), top = q('.top');
+  if (!img || !card) return ['没有原题卡片或截图'];
+  if (!(img.complete && img.naturalWidth)) return ['原题截图没有加载'];
+  const r = img.getBoundingClientRect(), c = card.getBoundingClientRect(), cs = getComputedStyle(card), d = devicePixelRatio;
+  const L = c.left + parseFloat(cs.paddingLeft), R = c.right - parseFloat(cs.paddingRight), T = c.top + parseFloat(cs.paddingTop), B = c.bottom - parseFloat(cs.paddingBottom);
+  if (img.naturalWidth + 0.5 < r.width * d || img.naturalHeight + 0.5 < r.height * d)
+    bad.push(`原题截图不够高清：原图 ${img.naturalWidth}×${img.naturalHeight}，画面上要 ${Math.round(r.width * d)}×${Math.round(r.height * d)}（会被放大）`);
+  if (Math.abs(r.width / r.height - img.naturalWidth / img.naturalHeight) > 0.003) bad.push('原题截图比例变了');
+  if (r.left < L - 0.5 || r.right > R + 0.5 || r.top < T - 0.5 || r.bottom > B + 0.5) bad.push('原题截图超出卡片内边距');
+  if (Math.min(R - L - r.width, B - T - r.height) > 1) bad.push(`原题截图没有放到最大（宽还差 ${Math.round(R - L - r.width)}px，高还差 ${Math.round(B - T - r.height)}px）`);
+  const a = lab.getBoundingClientRect();
+  if (a.bottom > r.top - 2 && a.left < r.right && r.left < a.right) bad.push('“原题”纸胶带压住了截图');
+  if (c.top < top.getBoundingClientRect().bottom + 30) bad.push('原题卡片离页眉太近');
+  if (c.bottom > innerHeight || c.right > innerWidth || a.top < top.getBoundingClientRect().bottom + 2) bad.push('原题卡片或纸胶带出界、压住页眉');
+  return bad; }"""
+
+
 def split_parts(pid, k, s):
     """分屏：返回 [(lo, hi, 中文, 标签), …]；不分屏返回一屏。专八长句多，可拆成多屏：at 写一个分屏点或按顺序的多个分屏点，
     zh 是各屏中文（比分屏点多一段），必须是定稿译文的原样片段（逐个分句核对），合起来不多不少。
@@ -901,6 +952,8 @@ def screens(p):
     """全部屏：[(标签, HTML, 是否句子屏, 句号 k 或 0)]（片头 k = 0）。"""
     sents = [s for pa in p['paras'] for s in pa]
     out = [('片头', title_slide(p), False, 0)]
+    if p.get('prompt_img'):                       # 考研作文：片头之后是原题屏
+        out.append(('原题', prompt_slide(p), False, 0))
     for k, s in enumerate(sents, 1):
         parts = split_parts(p['id'], k, s)
         for n, part in enumerate(parts, 1):
@@ -1061,6 +1114,8 @@ def fingerprint(pid, look):
         h.update(Path(x).read_bytes())
     P = {p['id']: p for p in json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
     h.update(json.dumps([look, P[pid], SPLIT.get(pid, {})], ensure_ascii=False, sort_keys=True).encode())
+    if P[pid].get('prompt_img'):                  # 原题截图换过（重新裁图）也要重审
+        h.update((C4 / '原题' / P[pid]['prompt_img']).read_bytes())
     return h.hexdigest()[:16]
 
 
@@ -1130,6 +1185,9 @@ def screen_checks(pg, label, fit, r):
     out += [f'字形：{x} 不在样式字体里' for x in pg.evaluate(TH.GLYPH)]
     if fit:
         out += [f'横向出界：{x}' for x in pg.evaluate(HBOX)]
+    elif label == '原题':
+        out += [f'原题屏：{x}' for x in pg.evaluate(PROMPT_JS)]
+        out += [f'原题屏：{x}' for x in deco_project(pg)]
     else:
         out += [f'封面：{x}' for x in pg.evaluate(TH.COVER, False)[2]]
         out += [f'封面：{x}' for x in deco_project(pg)]
@@ -1138,7 +1196,7 @@ def screen_checks(pg, label, fit, r):
 
 # 各项目封面装饰文字（::before / ::after 的 content，如右上角贴纸）里允许出现的考试名：别的项目的名字出现就报错
 # （考研 k02 截图试跑：共用的 样式/1_晴空校园.css 把贴纸写死成「专八 / 精读」，考研封面也成了“专八精读”）
-EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'],
+EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'],
               '四级': ['四级', 'CET-4', 'CET4'], '中考': ['中考'], '高考': ['高考']}
 DECO_JS = """() => { const out = [];
   for (const el of document.querySelectorAll('*')) for (const p of ['::before', '::after']) {
@@ -1253,8 +1311,8 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix=PJ['tmp']))
     atexit.register(shutil.rmtree, tmp, True)          # 无论成功、核查失败还是出错，退出时都删除
     scr = screens(p)
-    owner = [None] + [(k - 1, n, part) for k in range(1, len(sents) + 1)
-                      for n, part in enumerate(split_parts(p['id'], k, sents[k - 1]))]     # owner：每屏属于第几句、第几屏
+    owner = [None] * intro(p) + [(k - 1, n, part) for k in range(1, len(sents) + 1)
+                                 for n, part in enumerate(split_parts(p['id'], k, sents[k - 1]))]     # owner：每屏属于第几句、第几屏（片头、原题屏为 None）
     assert len(owner) == len(scr)
     sizes, probs, diff = [], [], []
     with sync_playwright() as pw:
@@ -1285,7 +1343,11 @@ def main():
     if bad:
         raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
     cuts, sw = [0.0], {}
-    for i, j, part in owner[1:]:
+    if p.get('prompt_img'):                       # 原题屏：片头 1.5 秒之后出现，静音停留到第一句开口（音频按 p['lead'] 留的静音）
+        if abs(starts[0] - p['lead']) > 0.01 or p['lead'] - TITLE_SEC < 5:
+            raise SystemExit(f'第一句从 {starts[0]:.2f}s 开口，数据要求 {p["lead"]}s（片头 {TITLE_SEC}s + 原题屏 ≥ 5s）：请重新生成音频')
+        cuts.append(TITLE_SEC)
+    for i, j, part in owner[intro(p):]:
         if j == 0:
             cuts.append(starts[0] if i == 0 else ends[i - 1] + HOLD)
         else:                                       # 分屏的第二屏：在第二屏第一个词开口之前切换

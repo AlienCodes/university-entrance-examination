@@ -693,8 +693,8 @@ def project(argv):
     if '--project' in argv:
         j = argv.index('--project')
         name, argv = argv[j + 1], argv[:j] + argv[j + 2:]
-    if name not in ('中考', '专八', '六级', '考研'):
-        raise SystemExit(f'--project 只能是 中考、专八、六级 或 考研：{name}')
+    if name not in ('中考', '专八', '六级', '考研', '考研作文'):
+        raise SystemExit(f'--project 只能是 中考、专八、六级、考研 或 考研作文：{name}')
     return name, R / name / 'tools', argv
 
 

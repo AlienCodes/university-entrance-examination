@@ -173,7 +173,10 @@ def verify_loudness(mp3_bytes, items, target_lufs):
     for flt in m._filters.values():
         f = flt.apply_filter(f)
     W, H = 3 * sr, sr // 2
-    st = np.array([-0.691 + 10 * np.log10(np.mean(f[i:i + W] ** 2) + 1e-12) for i in range(0, len(f) - W, H)])
+    # 短时窗口从“第一句开口前 1.5 秒”开始量（与标准片头完全相同）：考研作文片头之后还有 10 秒静音的原题屏，从 0 秒量会多出两个只有
+    # 0.5—1 秒语音的窗口，把波动算大（w02 实测 1.13 LU，语音本身并没有变化）。片头 1.5 秒的项目 t0 = 0，测量与原来逐字节相同。
+    t0 = items[0]['start'] - 1.5 if items and items[0]['start'] - 1.5 > 0.5 else 0.0
+    st = np.array([-0.691 + 10 * np.log10(np.mean(f[i:i + W] ** 2) + 1e-12) for i in range(int(t0 * sr), len(f) - W, H)])
     st = st[st > il - 10]
     peak = 20 * np.log10(np.max(np.abs(a)) + 1e-12)
     rep = {'integrated_lufs': round(float(il), 2), 'sentence_max_dev_lu': round(float(dev), 2),

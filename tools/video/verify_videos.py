@@ -81,8 +81,9 @@ def check(mp4, p, tm):
     x, sr = audio_of(mp4)
     seg = lambda t0, t1: x[int(t0 * sr):int(t1 * sr)]
     # 4. 开头 1.5 秒静音、结尾 2 秒静音
-    ok('开头静音 1.5 秒', abs(times[0]['start'] - 1.5) < 0.01 and peak_db(seg(0, 1.45)) < -60,
-       f"第一句从 {times[0]['start']:.2f}s 开始，前 1.45s 峰值 {peak_db(seg(0, 1.45)):.0f} dB")
+    lead = p.get('lead', 1.5)      # 第一句开口时刻：片头 1.5 秒；考研作文另有原题屏（片头 1.5 秒 + 原题屏，都静音，数据里的 lead）
+    ok('开头静音 1.5 秒' if lead == 1.5 else f'开头静音 {lead:g} 秒（片头 1.5 秒 + 原题屏）', abs(times[0]['start'] - lead) < 0.01 and peak_db(seg(0, lead - 0.05)) < -60,
+       f"第一句从 {times[0]['start']:.2f}s 开始，前 {lead - 0.05:.2f}s 峰值 {peak_db(seg(0, lead - 0.05)):.0f} dB")
     tail = ad - times[-1]['end']
     ok('结尾静音 2 秒', tail >= 1.999 and peak_db(seg(times[-1]['end'] + 0.1, ad)) < -60,
        f'读完后 {tail:.2f}s，峰值 {peak_db(seg(times[-1]["end"] + 0.1, ad)):.0f} dB')

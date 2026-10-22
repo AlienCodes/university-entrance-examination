@@ -35,8 +35,8 @@ nparts = [len(M.split_parts(src, k, s)) for k, s in enumerate(sents, 1)]
 
 
 def screen_of(k):
-    """第 k 句（不分屏）的屏号：片头是第 1 屏，之前每句占 nparts 屏。"""
-    return 2 + sum(nparts[:k - 1])
+    """第 k 句（不分屏）的屏号：片头是第 1 屏（考研作文第 2 屏是原题屏，M.intro），之前每句占 nparts 屏。"""
+    return M.intro(p) + 1 + sum(nparts[:k - 1])
 
 
 def plain(k):
