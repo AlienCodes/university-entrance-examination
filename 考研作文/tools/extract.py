@@ -58,6 +58,7 @@ def main():
                    'words': count(sents), 'prompt_img': f'{pid}.png', 'lead': round(1.5 + PROMPT, 3), 'sents': sents}
             if e.get('salutation') or e.get('title'):
                 rec['letter'] = {k: e[k] for k in ('title', 'salutation', 'closing', 'signature') if e.get(k)}
+                rec['edge'] = [int(bool(e.get('salutation'))) + int(bool(e.get('title'))), int(bool(e.get('closing') or e.get('signature')))]      # 开头、结尾格式行数（响度短时窗口只量正文）
             out.append(rec)
     (C / '作文').mkdir(exist_ok=True)
     (C / '作文' / 'sents.json').write_text(json.dumps(out, ensure_ascii=False, indent=1), 'utf-8')

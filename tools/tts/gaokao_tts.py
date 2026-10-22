@@ -153,7 +153,16 @@ def level(x, target=TARGET_DB):
 LIMITS = {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0}
 
 
-def verify_loudness(mp3_bytes, items, target_lufs):
+def edge_span(items, edge):
+    """考研作文书信、通知的格式行（称呼 Dear Paul,、结束语 Yours, Li Ming、通知标题与署名）不到 1 秒语音、前后都是静音，
+    3 秒短时窗口罩在上面几乎全是静音，把“短时响度波动”算大（11 篇书信 1.03—1.29 LU，正文本身没变）。
+    edge = [开头格式行数, 结尾格式行数]：短时窗口只量正文（第一句正文开口前 0.8 秒到最后一句正文读完后 0.8 秒，即句间停顿）；
+    格式行照样逐句核对与中位数的偏差（≤ 2 LU）、整体响度、峰值。"""
+    head, tail = edge
+    return (items[head]['start'] - 0.8, items[len(items) - 1 - tail]['end'] + 0.8)
+
+
+def verify_loudness(mp3_bytes, items, target_lufs, span=None):
     """第一项检查：对编码后的 MP3 成品做独立测量（ITU-R BS.1770 K 加权响度）。
     整体响度、每句响度偏差、3 秒短时响度波动、峰值，任何一项超标都返回失败原因。"""
     import io
@@ -176,7 +185,10 @@ def verify_loudness(mp3_bytes, items, target_lufs):
     # 短时窗口从“第一句开口前 1.5 秒”开始量（与标准片头完全相同）：考研作文片头之后还有 10 秒静音的原题屏，从 0 秒量会多出两个只有
     # 0.5—1 秒语音的窗口，把波动算大（w02 实测 1.13 LU，语音本身并没有变化）。片头 1.5 秒的项目 t0 = 0，测量与原来逐字节相同。
     t0 = items[0]['start'] - 1.5 if items and items[0]['start'] - 1.5 > 0.5 else 0.0
-    st = np.array([-0.691 + 10 * np.log10(np.mean(f[i:i + W] ** 2) + 1e-12) for i in range(int(t0 * sr), len(f) - W, H)])
+    end = len(f)
+    if span:                                       # 考研作文书信：只量正文（edge_span）
+        t0, end = span[0], min(len(f), int(span[1] * sr))
+    st = np.array([-0.691 + 10 * np.log10(np.mean(f[i:i + W] ** 2) + 1e-12) for i in range(int(t0 * sr), end - W, H)])
     st = st[st > il - 10]
     peak = 20 * np.log10(np.max(np.abs(a)) + 1e-12)
     rep = {'integrated_lufs': round(float(il), 2), 'sentence_max_dev_lu': round(float(dev), 2),
@@ -403,7 +415,7 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
     lufs = vcfg.get('lufs', -16.0)
     a = master(np.concatenate(pieces), lufs)
     mp3 = encode_mp3(a, kbps=vcfg.get('kbps', 128))
-    rep, errs = verify_loudness(mp3, items, lufs)              # 第一项检查：成品响度一致
+    rep, errs = verify_loudness(mp3, items, lufs, **({'span': edge_span(items, p['edge'])} if p.get('edge') else {}))   # 第一项检查：成品响度一致（书信格式行见 edge_span）
     if errs:
         raise RuntimeError(f"{p['id']} {voice_name} 响度检查未通过，未输出文件：" + '；'.join(errs))
     log(f"  响度检查通过：整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"

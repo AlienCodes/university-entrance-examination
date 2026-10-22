@@ -99,7 +99,8 @@ def check(mp4, p, tm):
     import soundfile as sf
     buf = io.BytesIO()
     sf.write(buf, x, sr, format='WAV')
-    rep, errs = verify_loudness(buf.getvalue(), times, -16.0)
+    from gaokao_tts import edge_span
+    rep, errs = verify_loudness(buf.getvalue(), times, -16.0, **({'span': edge_span(times, p['edge'])} if p.get('edge') else {}))
     ok('响度一致（第一项检查）', not errs,
        f"整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
        f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS" + ('；' + '；'.join(errs) if errs else ''))

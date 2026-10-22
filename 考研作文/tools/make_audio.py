@@ -318,10 +318,10 @@ G.compress = lambda x, sr: leveler(_comp(D.debuzz(x, sr), sr), sr)
 _verify = G.verify_loudness
 
 
-def verify_loudness(mp3_bytes, items, target_lufs):
+def verify_loudness(mp3_bytes, items, target_lufs, **kw):
     import io
     import soundfile as sf
-    rep, errs = _verify(mp3_bytes, items, target_lufs)
+    rep, errs = _verify(mp3_bytes, items, target_lufs, **kw)      # kw：书信的 span（gaokao_tts.edge_span）
     a, sr = sf.read(io.BytesIO(mp3_bytes), dtype='float32')
     f0, r, e = D.check(a if a.ndim == 1 else a.mean(1), sr, items)
     rep['buzz_hz'], rep['buzz_db'] = f0, round(r, 1)
