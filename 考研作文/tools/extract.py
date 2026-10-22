@@ -17,7 +17,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 C = HERE.parent
 ROOT = C.parent
-PROMPT = 10.0          # 原题屏停留秒数（静音）
+PROMPT = 2.0           # 原题屏停留秒数（静音）；用户 2026-10-22 看过样片：10 秒太长，改成 2 秒
 _spec = importlib.util.spec_from_file_location('ky_split', ROOT / '考研' / 'tools' / 'split_sents.py')
 _m = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_m)

@@ -1347,8 +1347,8 @@ def main():
         raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
     cuts, sw = [0.0], {}
     if p.get('prompt_img'):                       # 原题屏：片头 1.5 秒之后出现，静音停留到第一句开口（音频按 p['lead'] 留的静音）
-        if abs(starts[0] - p['lead']) > 0.01 or p['lead'] - TITLE_SEC < 5:
-            raise SystemExit(f'第一句从 {starts[0]:.2f}s 开口，数据要求 {p["lead"]}s（片头 {TITLE_SEC}s + 原题屏 ≥ 5s）：请重新生成音频')
+        if abs(starts[0] - p['lead']) > 0.01 or p['lead'] - TITLE_SEC < 1:
+            raise SystemExit(f'第一句从 {starts[0]:.2f}s 开口，数据要求 {p["lead"]}s（片头 {TITLE_SEC}s + 原题屏 ≥ 1s）：请重新生成音频')
         cuts.append(TITLE_SEC)
     for i, j, part in owner[intro(p):]:
         if j == 0:
