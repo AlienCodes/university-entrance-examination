@@ -41,7 +41,9 @@ def main():
                 assert ' '.join(ss) == para, (pid, para[:80])
                 sents.append(ss)
             part = e['part'].split()[-1]
-            rec = {'id': pid, 'src': e['id'], 'year': int(y), 'paper': e['paper'], 'passage': f'写作 Part {part}', 'part': part,
+            # paper “2026年考研英语一 写作”、passage “Part B”：片头副标题里 passage 用英文斜体（Nunito，没有中文字形），中文“写作”放在 paper 里
+            # （w02 截图检查：“写作”落到系统字体 WenQuanYi）；文件名仍是“2026年考研英语一 写作 Part B 题目.mp4”；pdf = 原卷文件名
+            rec = {'id': pid, 'src': e['id'], 'year': int(y), 'paper': f"{e['paper']} 写作", 'passage': f'Part {part}', 'part': part, 'pdf': e['paper'],
                    'words': count(sents), 'prompt_img': f'{pid}.png', 'lead': round(1.5 + PROMPT, 3), 'sents': sents}
             if e.get('salutation') or e.get('title'):
                 rec['letter'] = {k: e[k] for k in ('title', 'salutation', 'closing', 'signature') if e.get(k)}

@@ -246,6 +246,7 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
     if (a.right > b.right + 1 || a.left < b.left - 1 || a.left < L - 1 || a.right > R + 1 || rows.size > (ttl.querySelector('br.tb') ? 2 : 1))
       out.push(`标题：一行放不下（文字 ${Math.round(a.left)}–${Math.round(a.right)}，标题框 ${Math.round(b.left)}–${Math.round(b.right)}，卡片 ${Math.round(L)}–${Math.round(R)}，${rows.size} 行）`);
     return out; }
+  if (document.querySelector('.pq')) return out;      // 考研作文的原题屏：只有原卷截图（没有英文、译文、词条），由 make_video.PROMPT_JS 专门检查
   const en = document.querySelector('.en'), zh = document.querySelector('.zh');
   block(en, '英文', false); block(zh, '译文', false);
   document.querySelectorAll('.v > div').forEach((d, i) => { block(d, `词条 ${i + 1} `, true);

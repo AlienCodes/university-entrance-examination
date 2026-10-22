@@ -74,7 +74,7 @@ def trim(a, pad):
 
 
 def crop(rec, tmp):
-    pdf = PAPERS / f"{rec['paper']}.pdf"
+    pdf = PAPERS / f"{rec['pdf']}.pdf"
     hs, foot = headings(pdf)
     part = rec['part']
     me = [h for h in hs if h[1] == part]

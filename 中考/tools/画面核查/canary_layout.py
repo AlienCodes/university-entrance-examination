@@ -40,10 +40,19 @@ def screen_of(k):
 
 
 def plain(k):
-    """从第 k 句起第一个不分屏的句子（埋雷整句排在一屏上，与视频里这一屏的结构相同）。"""
-    while nparts[k - 1] > 1:
-        k += 1
-    return k
+    """从第 k 句起第一个不分屏的句子（埋雷整句排在一屏上，与视频里这一屏的结构相同）；篇目句子少于 14 句（考研作文 w02 只有 10 句）时，
+    雷表里的第 3、7、11、14 句按比例换成第 round(k × 句数 / 15) 句，句数 ≥ 14 的篇目与原来完全相同；往后找不到不分屏的句子就往前找。"""
+    n = len(nparts)
+    if n < 14:
+        k = max(1, round(k * n / 15))
+    j = k
+    while j <= n and nparts[j - 1] > 1:
+        j += 1
+    if j > n:
+        j = k
+        while j > 1 and nparts[j - 1] > 1:
+            j -= 1
+    return j
 shutil.rmtree(S / dst, ignore_errors=True)
 shutil.copytree(S / src, S / dst)
 shutil.copy(S / 'ref' / f'{src}.txt', S / 'ref' / f'{dst}.txt')
@@ -64,19 +73,23 @@ MINES = [
     (15, 14, '词汇栏字号过大，词条超出卡片底边、压到页脚', None, FIT_THEN("document.documentElement.style.setProperty('--vs','62px')")),
 ]
 MINES = [(1, 0, *m[2:]) if m[1] == 0 else (screen_of(plain(m[1])), plain(m[1]), *m[2:]) for m in MINES]      # 中考无分屏的篇目：屏号与原表相同
+assert len({m[0] for m in MINES}) == len(MINES), f'两个雷落在同一屏：{[m[0] for m in MINES]}'
+if M.intro(p) == 2:                               # 考研作文的原题屏（第 2 屏，句号记 -1）：原卷截图变模糊——用户要求“必须高清”，审阅员必须看得出
+    MINES.insert(1, (2, -1, '原题截图模糊（不高清）', lambda h: h.replace('.pq img{display:block;', '.pq img{filter:blur(1.3px);display:block;', 1), None))
+SLIDE = lambda k, s: M.title_slide(p) if k == 0 else M.prompt_slide(p) if k == -1 else M.sentence_slide(p, s, k, len(sents))
 with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
     br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
     pg = br.new_page(viewport={'width': M.W, 'height': M.H}, device_scale_factor=2 if STYLE else 1)
     f = Path(td) / 'x.html'
     for scr, k, what, edit, js in MINES:
-        s = sents[k - 1] if k else None
+        s = sents[k - 1] if k > 0 else None
         if edit == 'ZH3':                         # 改数据再渲染（译文由 zh_html 逐字排版，不能直接改 HTML）
             s, edit = dict(s, zh=s['zh'][:2] + '\uFFFD' + s['zh'][3:]), None
-        h = M.title_slide(p) if k == 0 else M.sentence_slide(p, s, k, len(sents))
+        h = SLIDE(k, s)
         # 雷必须真的显出来（考研 k28 第 11 句：句首是长短语，520 像素空白自己占了一行，文字整体下移、看不出来，两位审阅员都“漏查”）：
         # 先用同一个程序排出不埋雷的这一屏，埋雷后逐像素比较，几乎没变就报错
-        h0 = M.title_slide(p) if k == 0 else M.sentence_slide(p, sents[k - 1], k, len(sents))
-        f.write_text(h0, 'utf-8'); pg.goto(f.as_uri()); pg.evaluate('document.fonts.ready'); pg.evaluate(M.FIT if k else '() => 0')
+        h0 = SLIDE(k, sents[k - 1] if k > 0 else None)
+        f.write_text(h0, 'utf-8'); pg.goto(f.as_uri()); pg.evaluate('document.fonts.ready'); pg.evaluate(M.FIT if k > 0 else '() => 0')
         pg.screenshot(path=str(Path(td) / 'orig.png'))
         if edit:
             h2 = edit(h)
@@ -85,7 +98,7 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         f.write_text(h, 'utf-8')
         pg.goto(f.as_uri())
         pg.evaluate('document.fonts.ready')
-        pg.evaluate(js or (M.FIT if k else '() => 0'))
+        pg.evaluate(js or (M.FIT if k > 0 else '() => 0'))
         if STYLE:
             pg.screenshot(path=str(Path(td) / 'big.png'))
             out = S / dst / f'screen{scr:02d}.webp'          # 六级的截图是无损 WebP（大字版.py）：雷也存成同一格式、同一文件名，不多出一张 PNG
@@ -100,5 +113,5 @@ with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
         diff = ImageChops.difference(Image.open(Path(td) / 'orig.png').convert('L'), Image.open(Path(td) / 'mine.png').convert('L'))
         changed = diff.point(lambda v: 255 if v > 40 else 0).histogram()[255]
         assert changed > 2000, f'雷没有显出来：screen{scr:02d} {what}（与不埋雷的同一屏只差 {changed} 个像素）'
-        print(f'screen{scr:02d}', f'第 {k} 句' if k else '片头', what, f'（变化 {changed} 像素）', flush=True)
+        print(f'screen{scr:02d}', f'第 {k} 句' if k > 0 else '原题屏' if k < 0 else '片头', what, f'（变化 {changed} 像素）', flush=True)
     br.close()
