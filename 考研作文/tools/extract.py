@@ -7,7 +7,7 @@
 编号 w01 = 2026 年考研英语一 Part A，w02 = 英语一 Part B，w03 = 英语二 Part A，w04 = 英语二 Part B，w05 = 2025 年……（从新到旧，同一年英语一在前）。
 切句用考研阅读的 split（保护缩写、人名首字母），逐段校验句子拼回去与原段落完全一致。
 lead = 第一句开口时刻：片头 1.5 秒 + 原题屏 PROMPT 秒（两段都静音）；音频（make_audio.py）和视频（make_video）都从这里取，不各写一份。
-书信的称呼、结束语、署名先原样记在 letter 里（视频怎么放，做书信样片时再定）。
+书信的称呼单独一段、结束语 + 署名一段；通知的标题、署名各一段（letter 里另记原样）。
 """
 import importlib.util
 import json
@@ -35,8 +35,19 @@ def main():
         for e in json.loads((ROOT / '考研' / '作文' / f'{y}.json').read_text('utf-8')):
             n += 1
             pid = f'w{n:02d}'
+            # 书信、通知的格式行（用户 2026-10-22 说剩下的全部做完，格式由协调人定，事后汇报）：称呼单独一屏（Dear Paul,），
+            # 结束语和署名合成最后一屏（Yours, Li Ming）；通知的标题第一屏、署名最后一屏（Li Ming）。都朗读、都标生词（铁律 1）
+            paras = list(e['body'])
+            if e.get('title'):
+                paras = [e['title']] + paras
+            if e.get('salutation'):
+                paras = [e['salutation']] + paras
+            if e.get('closing'):
+                paras.append(f"{e['closing']} {e['signature']}")
+            elif e.get('signature'):
+                paras.append(e['signature'])
             sents = []
-            for para in e['body']:
+            for para in paras:
                 ss = split(para)
                 assert ' '.join(ss) == para, (pid, para[:80])
                 sents.append(ss)
