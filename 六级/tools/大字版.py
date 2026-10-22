@@ -131,7 +131,7 @@ def save_still(im, f):
 def ref_text(p):
     """参考文字：每屏应有的内容（审阅员对照用；与 样片.py 相同的写法）。"""
     sents = [s for pa in p['paras'] for s in pa]
-    lines = [f'# {p["id"]} {p["paper"]} {p["passage"]} {p["title"]}：第 1 屏片头（{M.PJ["tag"]}、标题、{M.PJ["exam"]} 试卷 · 篇目、'
+    lines = [f'# {p["id"]} {p["paper"]} {p["passage"]} {p["title"]}：第 1 屏片头（{M.PJ["tag"].replace("PART A", "PART B") if p.get("part") == "B" else M.PJ["tag"]}、标题、{M.PJ["exam"]} 试卷 · 篇目、'
              f'体裁 {p.get("genre") or ""}、全文 {p["words"]} 词 · 逐句精读），'
              + ('第 2 屏原题（原卷截图，静音停留到第一句开口），' if M.intro(p) == 2 else '')
              + f'之后每句一屏，共 {len(sents)} 句；长句分屏（页脚 PART m/n）。']

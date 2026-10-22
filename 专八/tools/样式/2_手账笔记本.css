@@ -12,3 +12,10 @@ x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transpare
 x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.715em;height:.11em;background:currentColor;border-radius:.02em}
 /* 大写 W 后紧跟 h：Nunito 的 W+h 字距偏大（像“W hen”），收紧 0.07 字（make_video.wh） */
 x-w{letter-spacing:-.07em}
+
+/* 两位数编号（⑩ 以上，引擎在画面 2 给 sup / .v em 加 class d2）：考研作文 w02 审阅——原来的圆圈 SVG 横向拉伸成扁椭圆，线条变粗、数字挤在一起，
+   和 ①—⑨ 不像一套。句中编号换成按 58:40 比例画的手绘椭圆（同一笔画，横坐标 × 1.45），数字略收紧；词汇栏的圆圈大小不变，两位数字缩小一点、不碰圈 */
+:root{--ring-b2:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 40' preserveAspectRatio='none'><path d='M42.0 7.5C31.9 3.2 13.8 5.0 8.1 15.5 3.5 25.0 13.0 35.2 29.7 35.4 44.9 35.6 53.9 27.4 51.9 18.2 50.5 11.4 42.0 6.4 31.2 6.0' fill='%23ffffff' stroke='%232456a6' stroke-width='3.2' stroke-linecap='round'/></svg>");--ring-r2:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 40' preserveAspectRatio='none'><path d='M42.0 7.5C31.9 3.2 13.8 5.0 8.1 15.5 3.5 25.0 13.0 35.2 29.7 35.4 44.9 35.6 53.9 27.4 51.9 18.2 50.5 11.4 42.0 6.4 31.2 6.0' fill='%23ffffff' stroke='%23c0185a' stroke-width='3.2' stroke-linecap='round'/></svg>")}
+sup.d2{background-image:var(--ring-b2);padding:0 .28em;letter-spacing:-.03em}
+.ph sup.d2{background-image:var(--ring-r2)}
+.v em.d2{font-size:calc(var(--vs)*.6);letter-spacing:-.05em}

@@ -731,6 +731,8 @@ def sentence_html(s, lo=0, hi=None):
     # 单位本身是高亮词时（六级 s11 第 16 句 “77 percent”，percent 是生词），esc_en 看不到后面的单位，数字后的空格要在这里换成不换行空格
     out = re.sub(rf'(\d) (<span class="(?:w|ph)">(?:<nobr>)?(?:{UNITS})(?![A-Za-z]))', '\\1\u00a0\\2', out)
     out = re.sub(rf'({hl}|<nobr>(?:(?!</nobr>).)*</nobr>)([—–])', r'<nobr>\1\2</nobr>', out)      # 高亮词（及其所在的不断行块）与后面的破折号不断开
+    if STYLE == '2':      # 手账笔记本：两位数编号用按比例画的宽椭圆手绘圈（样式 sup.d2；考研作文 w02 审阅：原来的圆圈横向拉伸，线条变粗、数字挤在一起）
+        out = re.sub(r'<sup( class="sd")?>(\d{2,})</sup>', lambda m: f'<sup class="{"sd " if m.group(1) else ""}d2">{m.group(2)}</sup>', out)
     return cap_i(out)      # 大写 I 最后统一加，免得上面按 </span> 配对的规则配错     # 编号徽章后紧跟破折号时留空（z06 “idea²—let”徽章贴着破折号）
 
 
@@ -745,7 +747,8 @@ def vocab_html(s, lo=0, hi=None):
         pos, mean = (m.group(1), m.group(2)) if m else ('', w['m'])
         # 词条的直撇号改弯撇号（与句子一致，踩坑 18）；<wbr>：词性、释义前一定能换行（z09 “Bluetooth-connected adj.”整体不断行，伸进了词汇栏右边留白）
         # 分开的短语词条里的三个点（pull...through）显示成省略号“…”（t03 审阅；只改显示，数据不动）
-        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em>{i}</em><div><b>{cap_i(nobr(esc(w["h"].replace(chr(39), "’").replace("...", "…"))))}</b>'
+        d2 = ' class="d2"' if STYLE == '2' and i >= 10 else ''      # 手账笔记本的两位数编号（样式 .v em.d2）
+        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em{d2}>{i}</em><div><b>{cap_i(nobr(esc(w["h"].replace(chr(39), "’").replace("...", "…"))))}</b>'
                    f'{f"<wbr><i>{pos}</i>" if pos else ""}<wbr><span class="g" lang="zh-CN">{zh_html(mean, gloss=True)}</span></div></div>')
     return ''.join(out)
 
