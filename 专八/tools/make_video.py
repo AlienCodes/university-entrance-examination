@@ -912,7 +912,11 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       return [box(j > 0 ? cs[j - 1] : null), box(head)]; };
     for (const e of ps) { if (e.style.whiteSpace === 'normal') continue;
       const rs = [...e.getClientRects()].filter(q => q.width > 0); if (!rs.length) continue;
-      const [p, h] = before(e), first = h || rs[0]; if (Math.abs(first.left - L0) > 1) continue;
+      // 短语是否在行首：量短语第一个字本身（手账笔记本的荧光笔衬底有 0.08 字的内边距和负外边距，短语框比字靠左约 5 像素，
+      // 按框量永远“不在行首”，这条规则从不生效——考研作文 w05 “to show how they / breathe new life into”、w17 被 layoutcheck 的“英文短行”查出）
+      const tw = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); let tn = tw.nextNode(); while (tn && !/\S/.test(tn.data)) tn = tw.nextNode();
+      let r0 = rs[0]; if (tn) { const g0 = document.createRange(), k0 = tn.data.search(/\S/); g0.setStart(tn, k0); g0.setEnd(tn, k0 + 1); r0 = g0.getClientRects()[0] || r0; }
+      const [p, h] = before(e), first = h || r0; if (Math.abs(first.left - L0) > 1) continue;
       // 上一行：按两个字的竖直中心比（相差超过半个字号就是不同行）。原来比“上一行字框底 ≤ 短语字框顶”，晴空校园的 Nunito 字框高 1.364 字、行高只有 1.3，
       // 上下两行的字框互相重叠，判断失效（专八 t03 第 4 句 “in a manner that / made my heart sink” 上一行只占 45%，layoutcheck 的“英文短行”查出）
       const fsz = parseFloat(getComputedStyle(en).fontSize);
