@@ -38,7 +38,7 @@ jobs:
             /六级/tools/
             /考研作文/
             !/考研作文/最终视频/
-                  - name: 读清单
+      - name: 读清单
         id: list
         run: |
           python3 - <<'PY'
@@ -118,7 +118,7 @@ jobs:
             /六级/tools/
             /考研作文/
             !/考研作文/最终视频/
-                  - uses: ./.github/actions/cet6-chalk-env
+      - uses: ./.github/actions/cet6-chalk-env
       - name: 截图 + 全部程序检查，与审阅登记逐张比对
         run: |
           t0=$(date +%s)
