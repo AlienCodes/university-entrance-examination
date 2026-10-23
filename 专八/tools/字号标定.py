@@ -103,7 +103,7 @@ def main():
             zh_design, hw_design = m['zh']['px'] / 100, m['hw']['px'] / 100
             fs0 = max(64, round(target['en'] / m['en']['xh']))
             vs0 = max(40, round(target['gl'] / m['gl']['face']))
-            zh_px = max(target['zh'] / m['zh']['face'], zh_design * 64)
+            zh_px = max(target['zh'] / m['zh']['face'], zh_design * 64) * pj.get('zh_scale', 1)      # 变体可以要求译文更大（水墨：1.1）
             hw_px = max(target['hw'] / m['hw']['xh'], hw_design * 40)
             looks[key_] = {'fs0': fs0, 'vs0': vs0, 'min_fs': fs0, 'min_vs': round(0.85 * vs0),
                            'zh_k': round(zh_px / fs0, 3), 'hw_k': round(hw_px / vs0, 3),

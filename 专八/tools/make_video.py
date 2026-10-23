@@ -60,7 +60,8 @@ PROJECTS = {
              # 变体（环境变量 DZB_VARIANT 选，入口 专八/tools/大字版_水墨.py）：用户 2026-10-23——专八大字版改用原来的「书卷水墨」古风主题，
              # 沿用校园版的新字体模式（英文全部加粗）；截图、成品、分屏方案各用各的目录和文件，晴空校园版的进度不动（登记键 <篇目>@C 与 @1 也分开）
              'variants': {'水墨': {'look': 'C', 'stills': '大字版水墨/截图/{pid}', 'work': '大字版水墨', 'videos': '最终视频_水墨',
-                                   'split': '分屏_水墨.json', 'css': '样式/C_水墨大字.css', 'font_css': 'fonts/eb-garamond-bold.css'}}},
+                                   'split': '分屏_水墨.json', 'css': '样式/C_水墨大字.css', 'font_css': 'fonts/eb-garamond-bold.css',
+                                   'zh_scale': 1.1}}},   # 用户 2026-10-23：译文稍微大点（字号标定.py 按它放大 C@水墨 的 zh_k）
     '六级': {'tag': 'CET-6 · READING · SECTION C', 'top': 'CET-6 READING', 'exam': '大学英语六级', 'look': '3', 'stills': '样片/截图/{pid}', 'work': '样片',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
     # 考研（用户 2026-10-20：与专八晴空校园版完全相同的主题、字体、颜色）：paper = “2026年考研英语一”，passage = “Text 1”
