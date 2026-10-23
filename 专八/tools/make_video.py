@@ -630,7 +630,7 @@ def look_files(look=None):
 
 def size_css(look=None):
     """字号.json 里这种画面的译文、词条相对字号（追加在所有样式之后；字号标定.py 量字体时先去掉这一段 #sizes）。"""
-    z = SIZES[look or STYLE]
+    z = SIZES[size_key(look or STYLE)]
     return f'<style id="sizes">.zh{{font-size:calc(var(--fs)*{z["zh_k"]})}}.v b{{font-size:calc(var(--vs)*{z["hw_k"]})}}</style>'
 
 
@@ -672,13 +672,21 @@ def flat_nobr(h):
     return ''.join(out) + h[pos:]
 
 
+def size_key(look):
+    """字号.json 里的键：项目变体在自己的画面上用自己的实测（水墨大字：英文加粗后 x 高度变大，同样看上去的大小字号更小），键 <画面>@<变体>；
+    变体的键还没标定时退回原画面的设置——字号标定.py --check（截图前调用）会报“与实测不一致”，不会悄悄用错。"""
+    if PJ and PJ.get('variant') and look == PJ['look'] and f"{look}@{PJ['variant']}" in SIZES:
+        return f"{look}@{PJ['variant']}"
+    return look
+
+
 def set_style(look):
     """切换画面（C、1–6）：起始字号、下限、FIT 都按 字号.json 里这种画面的设置。"""
     global STYLE, FS0, VS0, MIN_FS, MIN_VS, FIT
     if look not in LOOKS:
         raise SystemExit(f'--style 只能是 {"、".join(LOOKS)}：{look}')
     STYLE = look
-    z = SIZES[look]
+    z = SIZES[size_key(look)]
     FS0, VS0, MIN_FS, MIN_VS = z['fs0'], z['vs0'], z['min_fs'], z['min_vs']
     FIT = FIT_JS.replace('FS0', str(FS0)).replace('MINVS', str(MIN_VS)).replace('VS0', str(VS0))
 

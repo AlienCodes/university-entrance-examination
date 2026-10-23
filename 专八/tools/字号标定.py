@@ -92,22 +92,27 @@ def main():
                   'hw': ref['hw']['xh'] * ref['hw']['px'], 'gl': ref['gl']['face'] * ref['gl']['px']}
         s = [s for pa in t03['paras'] for s in pa][0]
         looks = {}
-        for look in M.LOOKS:
-            M.set_style(look)
+        base = {k: v for k, v in M.PROJECTS['专八'].items() if k != 'variants'}
+        # 各画面按原样量；专八的项目变体（如 水墨：书卷水墨 + 英文加粗）在自己的画面上另量一份，键 <画面>@<变体>
+        todo = [(look, look, base) for look in M.LOOKS] + [(f"{v['look']}@{n}", v['look'], {**base, **v, 'variant': n})
+                                                          for n, v in M.PROJECTS['专八'].get('variants', {}).items()]
+        for key_, look, pj in todo:
+            M.PJ = pj
+            M.STYLE = look
             m = open_page(pg, f, M.sentence_slide(t03, s, 1, 9), 100, 100, drop_sizes=True)
             zh_design, hw_design = m['zh']['px'] / 100, m['hw']['px'] / 100
             fs0 = max(64, round(target['en'] / m['en']['xh']))
             vs0 = max(40, round(target['gl'] / m['gl']['face']))
             zh_px = max(target['zh'] / m['zh']['face'], zh_design * 64)
             hw_px = max(target['hw'] / m['hw']['xh'], hw_design * 40)
-            looks[look] = {'fs0': fs0, 'vs0': vs0, 'min_fs': fs0, 'min_vs': round(0.85 * vs0),
+            looks[key_] = {'fs0': fs0, 'vs0': vs0, 'min_fs': fs0, 'min_vs': round(0.85 * vs0),
                            'zh_k': round(zh_px / fs0, 3), 'hw_k': round(hw_px / vs0, 3),
                            '实测': {k: {'字体': f'{v["family"].split(",")[0]} {v["weight"]}', 'x高度比': round(v['xh'], 4), '字面比': round(v['face'], 4)}
                                    for k, v in m.items()},
                            '原设计倍数': {'译文': round(zh_design, 3), '词条': round(hw_design, 3)},
                            '看上去的大小（像素）': {'英文x高度': round(fs0 * m['en']['xh'], 1), '译文字面': round(zh_px * m['zh']['face'], 1),
                                             '词条x高度': round(hw_px * m['hw']['xh'], 1), '释义字面': round(vs0 * m['gl']['face'], 1)}}
-            print(look, M.LOOKS[look], {k: looks[look][k] for k in ('fs0', 'vs0', 'min_fs', 'min_vs', 'zh_k', 'hw_k')}, looks[look]['看上去的大小（像素）'], flush=True)
+            print(key_, M.LOOKS[look], {k: looks[key_][k] for k in ('fs0', 'vs0', 'min_fs', 'min_vs', 'zh_k', 'hw_k')}, looks[key_]['看上去的大小（像素）'], flush=True)
         br.close()
     new = {'_说明': __doc__.split('\n\n')[1].strip() + ' 由 字号标定.py 生成，不要手改。',
            'zk': zk, '中考参照（像素）': {'英文x高度': round(target['en'], 1), '译文字面': round(target['zh'], 1), '词条x高度': round(target['hw'], 1),
