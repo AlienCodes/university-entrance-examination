@@ -2697,6 +2697,11 @@
      "cmd": "DZB_VARIANT=水墨 /opt/ttsenv/bin/python 专八/tools/截图盲审准备.py /tmp/防复发_上限测试 b01=t11,t12@t12; test $? -eq 1",
      "expect": "exit 0",
      "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/数字范围.py",
+     "expect": "exit 0",
+     "needs": "tts"
     }
    ],
    "status": "自动拦截+有双向验证",

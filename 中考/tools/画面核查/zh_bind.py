@@ -74,6 +74,8 @@ def zh_spans(s, jieba):
             out.append((a, b))
     if getattr(jieba, '_zb_dict', False):      # ⑥ 补充词典里的词整体不断开（已加载补充词典时）
         out += [m.span() for w in supp_words() for m in re.finditer(re.escape(w), s)]
+    # ⑦ 数字范围整体不断开（专八 t15 第 5 句译文“（1756— / 1791）”在破折号后断行；新情况检测挑出的屏里看出，2026-10-23）
+    out += [m.span() for m in re.finditer(r'\d+\s*[—–~～-]+\s*\d+', s)]
     return sorted(out)
 
 
