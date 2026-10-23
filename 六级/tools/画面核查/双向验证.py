@@ -42,7 +42,7 @@ CASES = [  # 名称, 篇目, 句号（0 = 片头）, 撤掉的修正 (现在的�
  ('悬空连字符与 or/and 不断开', 's20', {14}, ("return re.sub(r'(?<![\\w’-])([A-Za-z]+-) ((?:or|and|nor|to)\\b)', r'<nobr>\\1 \\2</nobr>', h)", 'return h')),
  ('高亮单位 percent 前不换行空格', 's11', {16}, ("    out = re.sub(rf'(\\d) (<span class=\"(?:w|ph)\">(?:<nobr>)?(?:{UNITS})(?![A-Za-z]))', '\\\\1\\u00a0\\\\2', out)\n", '')),
  ('超宽连字符词条在连字符处断开 wide()', 's10', {21}, ("for (const n of b.querySelectorAll('nobr')) if (n.getBoundingClientRect().right > R + 0.5) n.style.whiteSpace = 'normal'; };", '};')),
- ('括注片段按词汇栏内边距量 notes()', 's39', {16}, (" || e.getBoundingClientRect().right > R + 0.5) e.style.whiteSpace = 'normal'; }", ") e.style.whiteSpace = 'normal'; }")),
+ ('括注片段按词汇栏内边距量 notes()（2026-10-23 起量片段宽度与 R − 左边界，撤掉 = 只比网格列宽）', 's39', {16}, ("if (e.getBoundingClientRect().width > Math.min(dv.clientWidth, R - L) + 0.5) e.style.whiteSpace = 'normal'; }", "if (e.getBoundingClientRect().width > dv.clientWidth + 0.5) e.style.whiteSpace = 'normal'; }")),
  ('末尾短语连续接号放不下时断开 phr()', 's26', {19}, ("if (c && c.classList.contains('cont') && ps.length && c.getBoundingClientRect().right > R + 0.5) ps[ps.length - 1].style.whiteSpace = 'normal';", '')),
  ('书名号整体不断行 note_breaks', 's29', {14}, ("        elif (t[i] == '《' or t[i - 1] == '》') and 0 < i < len(t) - 1:      # 书名号整体不断行、前后可以断（六级 s29：“（宫城先生是电影《龙威小子》中的空手道师父）”）\n            out.add(i)\n", '')),
  ('画面 1–6 译文弯引号照常挤压 zh_html', 's01', {10}, ("if gloss or STYLE != 'C' else", 'if gloss else')),
