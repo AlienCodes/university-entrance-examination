@@ -504,7 +504,8 @@ def zh_html(s, gloss=False):
     groups += [m.span() for m in re.finditer(ZH_TERM, s)]     # 短的引号术语、书名整体不断行（六级黑板审阅：“能源 / 转型”“非 / 转基因”《思考，快与 / 慢》）
     groups += ZB().zh_spans(s, jb())                                # 复合词、前缀 / 后缀、单字介词、数字 + 量词不拆开（考研截图盲审约 20 处：服务 / 人员、这一 / 威胁、可 / 持续发展）
     groups += clause_edges(s)                                       # 分句开头、结尾不单独留一个字（六级黑板审阅：s37 “传达得 / 好，或许……”）
-    groups += [(m.start() - 1, m.end()) for m in re.finditer('—+', s) if m.start() and s[m.start() - 1].strip()]   # 破折号与前一个字不断开，不落在行首（水墨截图盲审 t09、t10）
+    # 破折号与前一个字不断开，不落在行首（水墨截图盲审 t09、t10）；前一个字是虚词（的了地得着过）时连同再前一个字（复审：“亲手做 / 的——”）
+    groups += [(m.start() - (2 if m.start() > 1 and s[m.start() - 1] in DASH_PART else 1), m.end()) for m in re.finditer('—+', s) if m.start() and s[m.start() - 1].strip()]
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
         k = han[-2]
@@ -531,6 +532,7 @@ def zh_html(s, gloss=False):
     return ''.join(res + out[pos:])
 
 
+DASH_PART = '的了地得着过'           # 破折号前的虚词：连同再前一个字一起与破折号绑定（layoutcheck.zh_breaks 同一组字）
 LATIN_RUN = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*(?: [A-Za-z0-9][A-Za-z0-9’'.&%％-]*)*"      # 译文里的一段英文 / 数字（可含空格）
 
 

@@ -511,7 +511,7 @@ def zh_breaks(t, names=()):
     wb = jieba_bounds(t, True) | {x for nm in names for m in re.finditer(re.escape(nm), t) for x in m.span()}     # 登记人名的两头可以断（与 make_video.jieba_words 相同）
     for k in range(1, n):
         a, b = t[k - 1], t[k]
-        if b in '，。、：；！？）”’】」》］〕…' or a in '（“‘【「《［〔' or (a == b and a in '—…') or (b == '—' and a.strip()) or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):      # “——”不在行首（与前一个字不断开）
+        if b in '，。、：；！？）”’】」》］〕…' or a in '（“‘【「《［〔' or (a == b and a in '—…') or (b == '—' and a.strip()) or (b in '的了地得着过' and t[k + 1:k + 2] == '—') or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):      # “——”不在行首（与前一个字不断开）
             bad.add(k)
     spans = [(m.start(), m.end() + (m.end() < n and han(t[m.end()]))) for m in re.finditer(LATIN_RUN, t)]
     spans += [m.span() for m in re.finditer(r'[!-~]+', t)]                     # 连续的西文字符（10,000、Hunt’s 之外的标点）浏览器不断开
