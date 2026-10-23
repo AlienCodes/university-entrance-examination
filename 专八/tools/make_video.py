@@ -1307,8 +1307,9 @@ def main():
     # 踩坑 36：先审截图，后生成视频——程序或数据改过、截图还没审阅通过，就不生成视频
     sample = bool(a.stills)                       # 专八样片：成品文件名带画面名称、核查结果写在成品旁边
     # 截图目录：样片.py 传 --stills；成套生产（大字版.py：六级教室黑板、专八晴空校园 2026-10-17 起）用项目的截图目录；专八旧版画面 C 仍走 screens_fp
-    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] and a.style != 'C' else None)
-    tool = '专八/tools/样片.py' if sample else f'{PROJ}/tools/大字版.py'
+    # 项目变体（专八 水墨：画面 C 走成套生产）同样用项目的截图目录和 大字版 登记，不走旧版的 screens_fp
+    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] and (a.style != 'C' or PJ.get('variant')) else None)
+    tool = '专八/tools/样片.py' if sample else f"{PROJ}/tools/大字版{'_' + PJ['variant'] if PJ.get('variant') else ''}.py"
     regf = YP_REG if sample else SAMPLE_REG
     if stills:                                    # 样片.py / 大字版.py --approve 登记的指纹与截图文件
         key = f'{a.pid}@{a.style}'

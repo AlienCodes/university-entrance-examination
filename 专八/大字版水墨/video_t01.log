@@ -1,0 +1,12 @@
+t01：生成中（日志 /home/user/university-entrance-examination/专八/大字版水墨/日志/t01.log）
+t01：不通过（0 秒）
+               ^^^^^^
+    File "/home/user/university-entrance-examination/专八/tools/make_video.py", line 1324, in main
+      subprocess.run([sys.executable, str(QA / 'screens_fp.py'), '--project', PROJ, 'check', a.pid], check=True)
+    File "/usr/lib/python3.11/subprocess.py", line 571, in run
+      raise CalledProcessError(retcode, process.args,
+  subprocess.CalledProcessError: Command '['/opt/ttsenv/bin/python', '/home/user/university-entrance-examination/中考/tools/画面核查/screens_fp.py', '--project', '专八', 'check', 't01']' returned non-zero exit status 1.
+
+real	0m0.530s
+user	0m0.291s
+sys	0m0.048s

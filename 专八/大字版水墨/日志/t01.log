@@ -1,0 +1,11 @@
+['t01'] 的截图还没有审阅通过（程序或数据改过之后必须先审截图）：
+  screens_fp.py shots <目录> t01 → 排版审阅员 + 埋雷 + 大写 I 等改动处放大逐个看 → screens_fp.py approve t01
+Traceback (most recent call last):
+  File "/home/user/university-entrance-examination/专八/tools/make_video.py", line 1456, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/user/university-entrance-examination/专八/tools/make_video.py", line 1324, in main
+    subprocess.run([sys.executable, str(QA / 'screens_fp.py'), '--project', PROJ, 'check', a.pid], check=True)
+  File "/usr/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/opt/ttsenv/bin/python', '/home/user/university-entrance-examination/中考/tools/画面核查/screens_fp.py', '--project', '专八', 'check', 't01']' returned non-zero exit status 1.
