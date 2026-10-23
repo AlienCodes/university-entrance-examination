@@ -22,13 +22,13 @@
 | t15 | 2021 | Passage Three | 1021 | 6 | Like many historical films, Amadeus is far from a faithful … |
 | t16 | 2019 | Passage One | 1000 | 7 | When it came to concealing his troubles, Tommy Wilhelm was … |
 | t17 | 2019 | Passage Two | 1005 | 6 | By the 1840s New York was the leading commercial city of … |
-| t18 | 2019 | Passage Three | 891 | 12 | Why make a film about Ned Kelly? More ingenious crimes than … |
+| t18 | 2019 | Passage Three | 892 | 12 | Why make a film about Ned Kelly? More ingenious crimes than … |
 | t19 | 2018 | Passage One | 822 | 11 | “Britain’s best export,” I was told by the head of the … |
-| t20 | 2018 | Passage Two | 872 | 9 | Some of the advantages of bilingualism include better … |
+| t20 | 2018 | Passage Two | 871 | 9 | Some of the advantages of bilingualism include better … |
 | t21 | 2018 | Passage Three | 823 | 16 | Once across the river and into the wholesale district, she … |
 | t22 | 2017 | Passage One | 777 | 11 | It’s 7pm on a balmy Saturday night in June, and I have just … |
-| t23 | 2017 | Passage Two | 1236 | 11 | I can still remember the faces when I suggested a method of … |
-| t24 | 2017 | Passage Three | 812 | 14 | Once again, seething, residual anger has burst forth in an … |
+| t23 | 2017 | Passage Two | 1237 | 11 | I can still remember the faces when I suggested a method of … |
+| t24 | 2017 | Passage Three | 814 | 14 | Once again, seething, residual anger has burst forth in an … |
 | t25 | 2016 | Passage One | 975 | 11 | There was music from my neighbor’s house through the summer … |
 | t26 | 2016 | Passage Two | 1021 | 13 | The term “cyberspace” was coined by William Gibson, a … |
 | t27 | 2016 | Passage Three | 967 | 11 | You should treat skeptically the loud cries now coming from … |
