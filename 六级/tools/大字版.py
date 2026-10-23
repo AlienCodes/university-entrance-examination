@@ -214,7 +214,7 @@ def run_preflight(ids, inject=False):
     return probs
 
 
-def stills(ids, force):
+def stills(ids, force, keep_going=False):
     from playwright.sync_api import sync_playwright
     P = passages()
     import fcntl
@@ -301,6 +301,10 @@ def stills(ids, force):
                   f'问题 {len(probs)} 处（{time.time() - t0:.0f} 秒）', flush=True)
             for x in probs:
                 print('  ', x, flush=True)
+            if probs and not keep_going:            # 及时做、及时查（用户 2026-10-23，铁律 15）：一篇有问题就停，改完再接着画；不要画完一大批才发现、整批推翻重画
+                stopped = f'{pid} 有 {len(probs)} 处问题，停在这里（改完重跑同一条命令：已画好且指纹没变的篇目自动跳过；要一口气画完加 --keep-going）'
+                print(stopped, flush=True)
+                break
         br.close()
     for x in common:
         print('  共同问题：', x, flush=True)
@@ -386,6 +390,7 @@ def main():
     g.add_argument('--preflight', action='store_true', help='只做开画前的快速预检（人名登记、样式字体缺字、分屏方案、空屏），几秒一篇')
     g.add_argument('--preflight-selftest', action='store_true', help='预检的双向验证：故意放进缺字、拿掉一个人名，必须报出来')
     ap.add_argument('--force', action='store_true', help='--stills：指纹没变也重画')
+    ap.add_argument('--keep-going', action='store_true', help='--stills：某篇有问题也接着画后面的篇目（默认一篇有问题就停：及时做、及时查）')
     a = ap.parse_args()
     P = passages()
     ids = a.ids or sorted(k for k, p in P.items() if p.get('done', True))
@@ -399,7 +404,7 @@ def main():
             print('双向验证：' + ('通过（缺字、人名都报出来了）' if ok else '不通过：预检漏报'), flush=True)
             sys.exit(0 if ok else 1)
         sys.exit(1 if probs else 0)
-    ok = stills(ids, a.force) if a.stills else approve(ids) if a.approve else video(ids)
+    ok = stills(ids, a.force, a.keep_going) if a.stills else approve(ids) if a.approve else video(ids)
     sys.exit(0 if ok else 1)
 
 
