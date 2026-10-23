@@ -244,6 +244,9 @@ table.voc th{background:var(--ink);color:#fff;font-weight:500;padding:1.4mm 2.5m
 table.voc td{border-bottom:1px solid #e6e2d8;padding:1.4mm 2.5mm;vertical-align:top}
 table.voc td.w{font-family:'EB Garamond','Noto Sans SC';font-size:11.4pt;font-weight:600}table.voc td.r{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--mute)}
 table.voc tr{break-inside:avoid}
+.vg{break-inside:avoid}.vr{display:grid;grid-template-columns:34% 36% 30%;font-size:9.6pt}
+.vr>div{border-bottom:1px solid #e6e2d8;padding:1.4mm 2.5mm}.vr.th>div{background:var(--ink);color:#fff;font-weight:500;border:0}
+.vr .w{font-family:'EB Garamond','Noto Sans SC';font-size:11.4pt;font-weight:600}.vr .r{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--mute)}
 /* 总论 */
 .lead{font-family:'LXGW WenKai','Noto Sans SC';font-size:11pt;color:var(--ink2)}
 .box{background:var(--soft);border-radius:3mm;padding:3mm 4mm;margin:2.5mm 0;break-inside:avoid}
@@ -268,6 +271,10 @@ table.voc tr{break-inside:avoid}
 .ans mark{background:linear-gradient(transparent 50%,var(--hp) 50%,var(--hp) 94%,transparent 94%)}
 .lines{margin-top:1.4mm}.lines div{height:9.5mm;border-bottom:1px solid #cfd6e3}
 .how{background:var(--soft);border-radius:3mm;padding:3mm 4mm;font-size:9.8pt;margin-bottom:4mm}
+.chap.ans{break-before:auto;margin-top:9mm}.chap.ans:first-child{margin-top:0}.keep{break-inside:avoid}
+.fit .card{margin:2.2mm 0}.fit .card .l{padding:2mm 3.5mm}.fit .card .r{padding:2mm 3mm}.fit .card .zh{margin-bottom:1.2mm}
+.fit .card .en{line-height:2.05}.fit .lines{margin-top:1mm}.fit .lines div{height:8.6mm}.fit .how{margin-bottom:3mm}
+.fit2 .card{margin:1.7mm 0}.fit2 .card .en{line-height:1.95}.fit2 .lines div{height:8mm}.fit2 .card .r{font-size:8.9pt;line-height:1.5}.fit2 .how{padding:2.4mm 4mm}
 """
 
 
@@ -347,8 +354,10 @@ def essay_chapter(no, pid, tmp):
         num[i] = k
     s = d['审题']
     sec = lambda n, t, tip='': f"<div class='sec'><div class='n'>{n}</div><h2>{t}</h2>{f'<div class=tip>{tip}</div>' if tip else ''}</div>"
-    trans = ''.join(f"<p>{''.join(esc(Z.get(k, '')) for k in range(sum(len(x) for x in p['sents'][:i]) + 1, sum(len(x) for x in p['sents'][:i + 1]) + 1))}</p>"
-                    for i in range(len(p['sents'])))
+    tp = [f"<p>{''.join(esc(Z.get(k, '')) for k in range(sum(len(x) for x in p['sents'][:i]) + 1, sum(len(x) for x in p['sents'][:i + 1]) + 1))}</p>"
+          for i in range(len(p['sents']))]
+    # “参考译文”小标题与第一段不分开（否则会单独留在页底）
+    trans = "<div class='keep'><b style='font-family:Noto Sans SC;font-size:9pt;color:var(--mute)'>参考译文</b>" + tp[0] + '</div>' + ''.join(tp[1:])
     flow = ''.join(f"<div><i>{esc(x['段'])}</i><b>{esc(x['作用'])}</b><p>{esc(x['内容'])}</p></div>" for x in d['思路'])
     steps = ''.join(f"<div class='step'><div class='s'>{i:02d}</div><div><b>{esc(x['标题'])}</b><p>{esc(x['做法'])}</p>"
                     f"<div class='q'>{''.join(f'<div><span class=k>{k}</span> {esc(S[k - 1])}<div class=qz>{esc(Z.get(k, chr(32)))}</div></div>' for k in x['对应'])}</div></div></div>"
@@ -360,7 +369,12 @@ def essay_chapter(no, pid, tmp):
         + ''.join(f"<div class='ex'><div class='t'>例{j}</div><div class='e'>{esc(y['en'])}</div><div class='z'>{esc(y['zh'])}</div></div>" for j, y in enumerate(x['例句'], 1))
         + "<div class='alt'><b>也可以这样说</b>" + ''.join(f"<div><span>{esc(r['en'])}</span><i>{esc(r['zh'])}</i></div>" for r in x['替换']) + "</div></div></div>"
         for i, x in enumerate(d['句式'], 1))
-    voc = ''.join(f"<tr><td class='w'>{esc(y['词'])}</td><td>{esc(y['义'])}</td><td class='r'>{esc(y['替代'])}</td></tr>" for y in d['词汇'])
+    vr = [f"<div class='vr'><div class='w'>{esc(y['词'])}</div><div>{esc(y['义'])}</div><div class='r'>{esc(y['替代'])}</div></div>" for y in d['词汇']]
+    # 长表：表头与前 3 行不分开，最后 2 行不分开，中间各行可以换页
+    k = len(vr) if len(vr) <= 10 else 3; tail = max(k, len(vr) - 2)   # 10 行以内整张表不分开（拆开会在章末留下两行没有表头的孤行）
+    voc = (f"<div class='vg'>" + sec(7, '亮点词汇', '把普通说法换成高分说法')
+           + "<div class='vr th'><div>高分表达</div><div>意思</div><div>替代的普通说法</div></div>" + ''.join(vr[:k]) + '</div>'
+           + ''.join(f"<div class='vg'>{r}</div>" for r in vr[k:tail]) + (f"<div class='vg'>{''.join(vr[tail:])}</div>" if vr[tail:] else ''))
     return (f"<section class='chap' data-mark='CH{no:02d}'><div class='band'><div><div class='no'>MODEL ESSAY {no:02d} · {esc(p['part'] == 'A' and 'PART A 小作文' or 'PART B 大作文')}</div>"
             f"<h1><span>{esc(meta.get('T', ''))}</span></h1></div><div class='meta'><b>{esc(sub)}</b>{esc(meta.get('G', ''))} · 范文 {p['words']} 词</div></div>"
             + sec(1, '原题') + f"<div class='prompt'><img src='{prompt_img(pid, tmp)}'></div>"
@@ -371,11 +385,10 @@ def essay_chapter(no, pid, tmp):
             + "<div class='warn'><b>容易失分的地方</b><ul>" + ''.join(f'<li>{esc(x)}</li>' for x in s['易错']) + '</ul></div>'
             + sec(3, '写作思路', '先列提纲，每段一个任务') + f"<div class='flow' style='--n:{len(d['思路'])}'>{flow}</div>"
             + sec(4, '满分范文', '荧光笔 + 圆圈编号 = 下面讲的高分句式') + essay_html(p, spans)
-            + f"<div class='trans'><b style='font-family:Noto Sans SC;font-size:9pt;color:var(--mute)'>参考译文</b>{trans}</div>"
+            + f"<div class='trans'>{trans}</div>"
             + sec(5, '一步一步写出这篇范文') + steps
             + sec(6, '高分句式', '公式 → 原句 → 讲解 → 仿写') + pats
-            + "<div style='break-inside:avoid'>" + sec(7, '亮点词汇', '把普通说法换成高分说法')
-            + f"<table class='voc'><tr><th>高分表达</th><th>意思</th><th>替代的普通说法</th></tr>{voc}</table></div></section>")
+            + voc + "</section>")
 
 
 def general_chapter():
@@ -434,7 +447,7 @@ def toc_html(entries, pages):
             + ''.join(f"<div><span>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></div>" for m, a, b in entries) + '</div></section>')
 
 
-def card_section(pid, answers, how=''):
+def card_section(pid, answers, how='', fit=0):
     p, v, sub = head_info(pid)
     d = json.loads((DATA / f'{pid}.json').read_text('utf-8'))
     meta, Z = zh(pid)
@@ -459,11 +472,11 @@ def card_section(pid, answers, how=''):
         full = ("<div class='sec'><div class='n'>B</div><h2>整句默写：看中文，写出英文原句</h2><div class='tip'>写完再对照答案</div></div>"
                 + ''.join(f"<div class='card' style='grid-template-columns:1fr'><div class='l'><div class='zh' data-n='{i}'>{esc(Z.get(x['句'], ''))}</div>"
                           f"<div class='lines'>{'<div></div>' * (2 if len(S[x['句'] - 1]) < 110 else 3)}</div></div></div>" for i, x in enumerate(d['默写'], 1)))
-    return (f"<section class='chap{' ans' if answers else ''}' data-mark='C{pid}'><div class='band'><div><div class='no'>DICTATION · {esc(sub)}</div>"
+    return (f"<section class='chap{' ans' if answers else ''}{' fit' if fit else ''}{' fit2' if fit > 1 else ''}' data-mark='C{pid}'><div class='keep'><div class='band'><div><div class='no'>DICTATION · {esc(sub)}</div>"
             f"<h1><span>{esc(meta.get('T', ''))}</span></h1></div><div class='meta'><b>{'答案' if answers else '作文默写卡'}</b>{esc(meta.get('G', ''))}</div></div>"
             + how + ("<div class='sec'><div class='n'>A</div><h2>句式填空：补全横线处的关键表达</h2><div class='tip'>右边提醒：练的是什么句式、为什么值得背</div></div>" if not answers else
                "<div class='sec'><div class='n'>✓</div><h2>答案：粉色是填空的部分，整句也是 B 部分的答案</h2></div>")
-            + ''.join(items) + full + '</section>')
+            + items[0] + '</div>' + ''.join(items[1:]) + full + '</section>')
 
 
 def render(pg, body, title, out, tmp, footer=True):
@@ -492,6 +505,29 @@ def page_of(pdf, marks):
             if m not in got and re.sub(r'\s+', '', key) in t:
                 got[m] = i
     return got, n
+
+
+def fill(pdf, page):
+    """这一页正文（去掉页脚）从顶到最后一行墨迹占了多少。"""
+    import numpy as np
+    from PIL import Image
+    with tempfile.TemporaryDirectory() as t:
+        subprocess.run(['pdftoppm', '-r', '20', '-gray', '-png', '-singlefile', '-f', str(page), '-l', str(page), str(pdf), f'{t}/p'], check=True)
+        a = np.asarray(Image.open(f'{t}/p.png')).astype(float)
+    body = a[: int(a.shape[0] * 0.93)]
+    ink = np.where((body < 200).sum(1) > 1)[0]
+    return ink.max() / body.shape[0] if len(ink) else 0
+
+
+def tail_fill(pdf, keys):
+    """每一节（按标记找起始页）最后一页的占用比例：{标记: (起始页, 最后一页, 占用)}。"""
+    first, n = page_of(pdf, keys)
+    order = sorted(first.items(), key=lambda kv: kv[1])
+    out = {}
+    for i, (m, p) in enumerate(order):
+        last = order[i + 1][1] - 1 if i + 1 < len(order) else n
+        out[m] = (p, last, fill(pdf, last))
+    return out
 
 
 def merge(parts, out):
@@ -539,8 +575,25 @@ def build(ids):
         for answers, out, title in ((False, OUT_CARDS, '考研作文默写卡'), (True, OUT_ANS, '考研作文默写卡（答案）')):
             render(pg, cover(title, '2021—2026 · 英语一 / 英语二 · 共 ' + str(len(ids)) + ' 篇范文',
                              '默的不只是单词，是能直接用进作文的句子和句式' if not answers else '粉色 = 填空答案；整句 = 整句默写答案'), '封面', tmp / 'c.pdf', tmp, footer=False)
-            body = ''.join(card_section(pid, answers, how if not answers and i == 0 else '') for i, pid in enumerate(ids))
-            render(pg, body, title, tmp / 'b.pdf', tmp)
+            body = lambda fit: ''.join(card_section(pid, answers, how if not answers and i == 0 else '', fit.get(pid, 0)) for i, pid in enumerate(ids))
+            render(pg, body({}), title, tmp / 'b.pdf', tmp)
+            if not answers:
+                # 每篇从新的一页开始；最后一页只剩一两张卡（占用不到 35%）的篇目，第二遍收紧间距，挤回前一页
+                keys = {pid: 'DICTATION·' + head_info(pid)[2] for pid in ids}
+                t1 = tail_fill(tmp / 'b.pdf', keys)
+                if len(t1) != len(ids):
+                    sys.exit(f'{title}：有篇目在 PDF 里找不到起始页')
+                short = lambda t: {pid for pid, (a, b, u) in t.items() if b > a and u < 0.35}
+                fit, t = {}, t1
+                for lv in (1, 2):   # 收紧两级：还挤不回去的再收一级
+                    todo = short(t)
+                    if not todo:
+                        break
+                    fit.update({pid: lv for pid in todo})
+                    render(pg, body(fit), title, tmp / 'b.pdf', tmp)
+                    t = tail_fill(tmp / 'b.pdf', keys)
+                won = sorted(pid for pid in fit if t[pid][1] - t[pid][0] < t1[pid][1] - t1[pid][0])
+                print(f'  收紧 {len(fit)} 篇（二级 {sum(v > 1 for v in fit.values())} 篇），少一页的 {len(won)} 篇；最后一页仍只剩一两张卡：{sorted(short(t)) or "无"}')
             merge([tmp / 'c.pdf', tmp / 'b.pdf'], out)
             font_check(out)
             print(f'{title} → {out}')
