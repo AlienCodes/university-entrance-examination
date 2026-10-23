@@ -30,7 +30,7 @@
 | t17 | 4.47 | 0.59% | effete → a feat; sun → son; factotum → factum; gradgrind → gradgrand; mister → mr |
 | t18 | 4.48 | 0.45% | peasant's → peasants'; seem → seemed; dissidence → dissidents; claimed → claim |
 | t19 | 4.49 | 0.84% | miss council → miscouncil; neighbors → neighbours; aussie → ozzy; heart break alley' → heartbreak alley |
-| t20 | 4.46 | 0.90% | whorfianism → warfianism; of → have; chalari → kalari; languages' → language's; eu → iu; pop whorfian → popwarfian; ∅ → kalari |
+| t20 | 4.46 | 0.90% | whorfianism → warfianism; of → have; chalari → kalari; languages' → language's; eu → au; pop whorfian → popwarfian; chalari → kalari |
 | t21 | 4.45 | 0.24% | labelled → labeled; grey → gray |
 | t22 | 4.47 | 4.38% | cervejaria → serve geria; zambujeira → zambugera; bs → b's; alentejo → alantasio; evora → evra; treacly → treakly; south west alentejo → southwest alentasio; alentejo → alentasio; burgau → bergau; hours' → hours; faro → faroe; herdade da nespereira → erdada de nespera; zambujeira → zambujera; azenha |
 | t23 | 4.48 | 1.27% | ticking → sticking; teachers' → teachers; realise → realize; kieran → kiran; story telling' → storytelling; ' → ∅; why' → why; intervention' → intervention; families' → families; technology' communications' → technology communications; environment' → environment; language' → language; narrative' → n |
