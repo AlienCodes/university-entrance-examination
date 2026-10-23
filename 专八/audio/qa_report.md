@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：14
+- 文章数：15
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.14%
+- 平均识别差异率：1.12%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -25,3 +25,4 @@
 | t12 | 4.49 | 1.55% | frachetti → friketti; frachetti → frichetti; steppes → steps; karakum → karakoum; frachetti → friketti; frachetti → friketti; frachetti → friketi; dzhungar → junger; begash → bigash; begash → bagash; frachetti → fracetti; begash → bagash; begash → bagash; frachetti → friketti; begash → bogash; begas |
 | t13 | 4.47 | 0.41% | du chaillu → duchayou; pictures' → pictures |
 | t14 | 4.46 | 1.20% | antonapoulos → antonapolis; antonapoulos → antonapoulis; antonapoulos → antanapolis; antonapoulos loved → antonapoulved; antonapoulos → antonapolis; antonapoulos → antonapoul; antonapoulos → antonapoul; antonapoulos → antonapoul; antonapoulos → antanapolis; antonapoulos → antonapolis; antonapoulos → |
+| t15 | 4.48 | 0.85% | to → ∅; hulce → hulse; to → ∅; constanze → constanza; shaffer → schaffer; shaffer's → schaffer's; borne → born; travelled → traveled; seraglio → soraglio |
