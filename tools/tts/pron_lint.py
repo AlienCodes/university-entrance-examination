@@ -35,3 +35,16 @@ def ambiguous_inflections(pron, items):
             if not all(_norm(ph).startswith(_norm(b)[:-1] if len(_norm(b)) > 2 else _norm(b)) for b in got.values()):
                 out[w] = {'音标': ph, '首见': key, '词干': got}
     return out
+
+
+def stale_sentence_fixes(pron, items):
+    """踩坑 13：按句号登记的读音修正（读音修正.json 的 sentence）重新切句后编号会整体平移，悄悄作用到别的句子上（Ortiz 读两遍）。
+    每条逐句修正里的词必须真的出现在那一句的朗读文本里；items：[(句子编号, 朗读文本)]。返回问题列表。"""
+    text = dict(items)
+    bad = []
+    for key, fix in pron.sentence.items():
+        if key not in text:
+            continue                                   # 别的篇目（不在这次检查范围）
+        words = set(pron.WORD.findall(text[key]))
+        bad += [f'{key} 逐句读音修正“{w}”在这一句里找不到（切句改过、编号平移了？）' for w in fix if w not in words]
+    return bad

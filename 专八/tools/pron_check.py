@@ -31,6 +31,9 @@ def collect():
             for w in pron.WORD.findall(items[-1][1]):
                 if w not in out and ('❓' in g2p(w)[0] or w in pron.lexicon or w in pron.sentence.get(key, {})):
                     out[w] = {'音标': pron.phonemes(w, key), '首见': key}
+    stale = pron_lint.stale_sentence_fixes(pron, items)          # 踩坑 13：逐句读音修正必须对得上那一句
+    if stale:
+        sys.exit('逐句读音修正对不上句子：\n  ' + '\n  '.join(stale))
     # 词典外的派生词能对应几个读音不同的词干（toiled：toil / toile），也要人工核对（踩坑 72，tools/tts/pron_lint.py）
     for w, v in pron_lint.ambiguous_inflections(pron, items).items():
         out.setdefault(w, {'音标': v['音标'], '首见': v['首见']})

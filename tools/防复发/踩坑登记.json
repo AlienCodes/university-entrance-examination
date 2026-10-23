@@ -412,9 +412,15 @@
      "evidence": "tools/check_pitfalls.py:348:    R.add(11, '最终视频', not dup, f'重复：{dup}' if dup else f'{len(files)} 个文件名互不重复')"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "本机这一层没有：各项目 verify_all.py 文档写着“文件名不重复”，代码里却没有这项，`byname = {video_name(p): p …}` 遇到重名会悄悄把一篇覆盖掉，生成时后一篇直接覆盖前一篇的 MP4；要到 GitHub 打包才报。四级发布流程没有任何重名检查。没有埋雷。",
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/文件名不重复.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "本机这一层没有：各项目 verify_all.py 文档写着“文件名不重复”，代码里却没有这项，`byname = {video_name(p): p …}` 遇到重名会悄悄把一篇覆盖掉，生成时后一篇直接覆盖前一篇的 MP4；要到 GitHub 打包才报。四级发布流程没有任何重名检查。没有埋雷。｜已补：verify_videos.duplicate_names，六个项目 verify_all 调用（2026-10-23 补）",
    "fix": "在共用引擎 set_project（或每个 verify_all.py main 开头）断言 len({video_name(p) for p in P}) == len(P)，重名就列出篇目并退出；埋雷：内存里把两篇的 title/paper 设成一样，断言报出。"
   },
   {
@@ -460,9 +466,15 @@
      "evidence": "tools/tts/gaokao_tts.py:59:                raise RuntimeError(f'文本修正未匹配 {key}: {target!r}')"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "只管 text 替换这一种。按句号登记的 sentence 读音修正、tail_trim（剪句末气声）从不检查键是否还对应同一句：重新切句后编号整体平移，它们会悄悄作用到别的句子（tail_trim 可能剪掉真字），指向已不存在句号的条目被静默忽略；替换目标若恰好也出现在平移后的新句里，也不会报。没有埋雷。",
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/逐句修正.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只管 text 替换这一种。按句号登记的 sentence 读音修正、tail_trim（剪句末气声）从不检查键是否还对应同一句：重新切句后编号整体平移，它们会悄悄作用到别的句子（tail_trim 可能剪掉真字），指向已不存在句号的条目被静默忽略；替换目标若恰好也出现在平移后的新句里，也不会报。没有埋雷。｜已补：pron_lint.stale_sentence_fixes，专八 pron_check 调用（2026-10-23 补；tail_trim、其他项目待接）",
    "fix": "在 pron_check.py（配音前已在跑）加：读音修正.json 里每个 text/sentence/tail_trim 键必须指向当前 sents.json 存在的句子，sentence 里的每个词必须出现在该句，tail_trim 条目登记“句末词”并核对一致；埋雷：内存里把一个键号 +1，断言报出。"
   },
   {
@@ -1840,9 +1852,15 @@
      "evidence": ".github/workflows/render-cet6-chalk.yml:70: run: python3 .github/check-release-target.py"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "我实测了这条正则，有 3 种写法漏掉：`--target ${{ github.sha }}`、`--target=$GITHUB_SHA`、`-f target_commitish=$GITHUB_SHA`。CLAUDE.md 说的“埋雷双向验证”没有留在仓库里。另有 10 个旧工作流（release-videos、release-zk-videos 等）自己不调用这个检查，只有那 8 个工作流运行时才会顺带扫描它们。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/发布目标.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "我实测了这条正则，有 3 种写法漏掉：`--target ${{ github.sha }}`、`--target=$GITHUB_SHA`、`-f target_commitish=$GITHUB_SHA`。CLAUDE.md 说的“埋雷双向验证”没有留在仓库里。另有 10 个旧工作流（release-videos、release-zk-videos 等）自己不调用这个检查，只有那 8 个工作流运行时才会顺带扫描它们。｜已补：check-release-target.py 正则补全 7 种写法（旧的漏 4 种，2026-10-23 补）",
    "fix": "正则改成：同一行里既有 target 又有 GITHUB_SHA 或 github.sha 就报。加一个 --selftest：内置 5 行埋雷样例必须全部报出，`--target \"$GITHUB_REF_NAME\"` 不能报；每个工作流跑检查前先跑 --selftest。所有 release-*.yml 的第一步都加上这个检查。"
   },
   {
@@ -2657,5 +2675,5 @@
   "kaoyan-writing v5"
  ],
  "_复盘豁免说明": "防复发机制建立（2026-10-23）之前发布的批次：教训已写进 CLAUDE.md 踩坑表，不再补复盘；之后的每个批次都要复盘",
- "_没有测试的旧坑基线": 45
+ "_没有测试的旧坑基线": 42
 }

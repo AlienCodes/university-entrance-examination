@@ -157,3 +157,12 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def duplicate_names(passages, name):
+    """踩坑 11：同一项目里两篇的成品文件名相同（天津卷两次考试）。各项目 verify_all.py 原来用 {文件名: 篇目} 建表，重名时后一篇悄悄覆盖前一篇
+    （防复发审计 2026-10-23 查出）；返回 {文件名: [篇目…]}，非空就不通过。"""
+    seen = {}
+    for p in passages:
+        seen.setdefault(name(p), []).append(p['id'])
+    return {k: v for k, v in seen.items() if len(v) > 1}

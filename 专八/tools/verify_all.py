@@ -16,7 +16,7 @@ sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音�
 sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
 from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
 import make_video as _M                          # noqa: E402
-from verify_videos import check                  # noqa: E402
+from verify_videos import check, duplicate_names                  # noqa: E402
 
 FINAL = C4 / _M.PJ.get('videos', '最终视频_校园')   # 晴空校园成品（大字版.py --video 写这里）；DZB_VARIANT=水墨 时是 最终视频_水墨；旧版 10 个在 专八/最终视频/
 REPORT = C4 / f"核查报告_{_M.PJ.get('variant', '校园')}.md"   # 核查报告_校园.md / 核查报告_水墨.md
@@ -26,6 +26,10 @@ def main():
     P = {p['id']: p for p in json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
     T = json.loads((C4 / 'audio' / 'timings.json').read_text('utf-8'))[VOICE]
     byname = {video_name(p): p for p in P.values()}
+    dup = duplicate_names(P.values(), video_name)          # 踩坑 11：文件名重复会让一篇悄悄覆盖另一篇（防复发审计）
+    if dup:
+        print('文件名重复：', dup)
+        return 1
     files = sorted(FINAL.glob('*.mp4'), key=lambda f: f.name, reverse=True)
     if sys.argv[1:]:                                   # 只核查指定篇目（如 c40 c39 …）
         want = {video_name(P[i]) for i in sys.argv[1:]}

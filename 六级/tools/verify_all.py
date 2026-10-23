@@ -16,7 +16,7 @@ ROOT = C4.parent
 sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音检查）与四级共用
 sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
 from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
-from verify_videos import check                  # noqa: E402
+from verify_videos import check, duplicate_names                  # noqa: E402
 
 FINAL = C4 / '最终视频_黑板'                     # 教室黑板成品（大字版.py --video 写这里）；旧版 60 个在 六级/最终视频/，是旧引擎做的，不用本程序核查
 
@@ -25,6 +25,10 @@ def main():
     P = {p['id']: p for p in json.loads((C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
     T = json.loads((C4 / 'audio' / 'timings.json').read_text('utf-8'))[VOICE]
     byname = {video_name(p): p for p in P.values()}
+    dup = duplicate_names(P.values(), video_name)          # 踩坑 11：文件名重复会让一篇悄悄覆盖另一篇（防复发审计）
+    if dup:
+        print('文件名重复：', dup)
+        return 1
     files = sorted(FINAL.glob('*.mp4'), key=lambda f: f.name, reverse=True)
     if sys.argv[1:]:                                   # 只核查指定篇目（如 c40 c39 …）
         want = {video_name(P[i]) for i in sys.argv[1:]}
