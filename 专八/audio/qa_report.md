@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：16
+- 文章数：17
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.16%
+- 平均识别差异率：1.13%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -27,3 +27,4 @@
 | t14 | 4.46 | 1.20% | antonapoulos → antonapolis; antonapoulos → antonapoulis; antonapoulos → antanapolis; antonapoulos loved → antonapoulved; antonapoulos → antonapolis; antonapoulos → antonapoul; antonapoulos → antonapoul; antonapoulos → antonapoul; antonapoulos → antanapolis; antonapoulos → antonapolis; antonapoulos → |
 | t15 | 4.48 | 0.85% | to → ∅; hulce → hulse; to → ∅; constanze → constanza; shaffer → schaffer; shaffer's → schaffer's; borne → born; travelled → traveled; seraglio → soraglio |
 | t16 | 4.45 | 1.68% | verdi → verde; blond → blonde; rubin → ruben; with lacy → wacy; ansonia → and sonia; ansonia → ensonia; cumulous → cumulus; rubin → reuben; rubin → ruben; saks → zagz; blond → blonde; cost → costs; eighteen → point one eight |
+| t17 | 4.47 | 0.68% | effete → a feat; sun → son; factotum → factum; seemed → seem; he → hey; gradgrind → gradgrand |
