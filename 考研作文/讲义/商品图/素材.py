@@ -25,6 +25,7 @@ def pdf_pages():
     """三份 PDF 的封面 + 讲义 w02 一章全部内页（按章首标记找页码，不写死）。"""
     for k, f in PDF.items():
         subprocess.run(['pdftoppm', '-r', '110', '-f', '1', '-l', '1', '-png', '-singlefile', str(f), str(OUT / f'封面_{k}')], check=True)
+        subprocess.run(['pdftoppm', '-r', '120', '-f', '2', '-l', '2', '-png', '-singlefile', str(f), str(OUT / f'第2页_{k}')], check=True)   # 商品总图：每份一张真实内页
     got, n = J.page_of(J.OUT_HANDOUT, {'a': 'MODEL ESSAY 02', 'b': 'MODEL ESSAY 03'})
     a, b = got['a'], got['b']              # 直接量的是合并后的 PDF（含封面），页码就是 PDF 页码
     for i, p in enumerate(range(a, b), 1):
