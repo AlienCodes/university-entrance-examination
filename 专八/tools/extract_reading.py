@@ -58,6 +58,9 @@ def respace(p):
     """2022—2025 年的试卷文字层常丢空格（10%tax、2014.When、&Eating、Association(AMA)urged、St.Louis），按固定规则补回；
     原文的字数统计 “(1023 words)” 去掉；词间用空格隔开的连字符 “ - ” 是破折号。"""
     p = re.sub(r'\s*\(\d+\s*words\)\s*$', '', p)
+    # 试卷的列表符号 ◼（2016 年 Passage Three 第 3 段 “Consider: ◼ … ◼ …”，5 项）：去掉，列表项照常按句切开——留着会把两句连成一句（“…subsidies). ◼ Dropout…”）、
+    # 朗读和画面上都多出一个方块，片头词数也多算 5 个
+    p = re.sub(r'\s*◼\s*', ' ', p)
     p = re.sub(r'(?<=\d)%(?=[A-Za-z])', '% ', p)
     p = re.sub(r'(?<=[a-z]{2})\.(?=[A-Z][a-z])|(?<=\d{4})\.(?=[A-Z][a-z])|(?<=\bSt)\.(?=[A-Z])', '. ', p)
     p = re.sub(r'\s*&\s*', ' & ', p)

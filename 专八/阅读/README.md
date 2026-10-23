@@ -31,4 +31,4 @@
 | t24 | 2017 | Passage Three | 814 | 14 | Once again, seething, residual anger has burst forth in an … |
 | t25 | 2016 | Passage One | 975 | 11 | There was music from my neighbor’s house through the summer … |
 | t26 | 2016 | Passage Two | 1021 | 13 | The term “cyberspace” was coined by William Gibson, a … |
-| t27 | 2016 | Passage Three | 967 | 11 | You should treat skeptically the loud cries now coming from … |
+| t27 | 2016 | Passage Three | 962 | 11 | You should treat skeptically the loud cries now coming from … |
