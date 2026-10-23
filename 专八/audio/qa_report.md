@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：25
+- 文章数：26
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.12%
+- 平均识别差异率：1.11%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -36,3 +36,4 @@
 | t23 | 4.48 | 1.27% | ticking → sticking; teachers' → teachers; realise → realize; kieran → kiran; story telling' → storytelling; ' → ∅; why' → why; intervention' → intervention; families' → families; technology' communications' → technology communications; environment' → environment; language' → language; narrative' → n |
 | t24 | 4.47 | 0.12% | seething → saathing |
 | t25 | 4.48 | 0.51% | wagon → wagons; toiled → twiled; centre → center; signed jay → sanjay |
+| t26 | 4.47 | 1.05% | neuromancer → neomancer; fibre → fiber; gregg → greg; organisations → organizations; defences → defenses; cybergeddon → cybergetin; organised → organized; organisations → organizations; defences → defenses; isps → isbs; dubbed → dub |
