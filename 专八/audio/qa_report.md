@@ -4,7 +4,7 @@
 
 ## cet4_male
 
-- 文章数：13
+- 文章数：14
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
 - 平均识别差异率：1.14%
@@ -24,3 +24,4 @@
 | t11 | 4.48 | 2.82% | qomolangma → chomolangma; qomolangma → chomolangma; qomolangma's → chomo langma's; qomolangma → chomalangma; khumbu → kumbu; qomolangma → chomalangma; nepal → napal; qomolangma → chomolongma; qomolangma → chomolongma; serac → sarak; khumbu → kumbu; ∅ → point; qomolangma → chomalangma; qomolangma → c |
 | t12 | 4.49 | 1.55% | frachetti → friketti; frachetti → frichetti; steppes → steps; karakum → karakoum; frachetti → friketti; frachetti → friketti; frachetti → friketi; dzhungar → junger; begash → bigash; begash → bagash; frachetti → fracetti; begash → bagash; begash → bagash; frachetti → friketti; begash → bogash; begas |
 | t13 | 4.47 | 0.41% | du chaillu → duchayou; pictures' → pictures |
+| t14 | 4.46 | 1.20% | antonapoulos → antonapolis; antonapoulos → antonapoulis; antonapoulos → antanapolis; antonapoulos loved → antonapoulved; antonapoulos → antonapolis; antonapoulos → antonapoul; antonapoulos → antonapoul; antonapoulos → antonapoul; antonapoulos → antanapolis; antonapoulos → antonapolis; antonapoulos → |
