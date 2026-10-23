@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：11
+- 文章数：12
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.17%
+- 平均识别差异率：1.20%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -22,3 +22,4 @@
 | t09 | 4.42 | 0.27% | she'll be → she's; see → say |
 | t10 | 4.47 | 1.42% | gravelled → graveled; demesne → domain; ysabel → isabel; ysabel → isabel; mollie → molly; ysabel → isabel; a huge st → ahugsint; and → ∅; and → ∅ |
 | t11 | 4.48 | 2.82% | qomolangma → chomolangma; qomolangma → chomolangma; qomolangma's → chomo langma's; qomolangma → chomalangma; khumbu → kumbu; qomolangma → chomalangma; nepal → napal; qomolangma → chomolongma; qomolangma → chomolongma; serac → sarak; khumbu → kumbu; ∅ → point; qomolangma → chomalangma; qomolangma → c |
+| t12 | 4.49 | 1.55% | frachetti → friketti; frachetti → frichetti; steppes → steps; karakum → karakoum; frachetti → friketti; frachetti → friketti; frachetti → friketi; dzhungar → junger; begash → bigash; begash → bagash; frachetti → fracetti; begash → bagash; begash → bagash; frachetti → friketti; begash → bogash; begas |
