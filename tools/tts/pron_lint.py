@@ -22,7 +22,8 @@ def ambiguous_inflections(pron, items):
     for key, text in items:
         for w in pron.WORD.findall(text):
             lw = w.lower()
-            if w in out or known(w) or (w[0].isupper() and lw not in gold):
+            if w in out or known(w) or (w[0].isupper() and lw not in gold) or w in pron.lexicon or w in pron.sentence.get(key, {}):
+                # 已有人工读音修正的词（读音修正.json）已经核对过，不再算歧义
                 continue
             stems = [lw[:-len(a)] + b for a, b in SUF if lw.endswith(a) and len(lw) - len(a) >= 3 and lw[:-len(a)] + b in gold]
             if lw.endswith('ed') and len(lw) > 5 and lw[-3] == lw[-4]:
