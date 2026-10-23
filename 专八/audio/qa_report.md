@@ -35,6 +35,6 @@
 | t22 | 4.47 | 4.38% | cervejaria → serve geria; zambujeira → zambugera; bs → b's; alentejo → alantasio; evora → evra; treacly → treakly; south west alentejo → southwest alentasio; alentejo → alentasio; burgau → bergau; hours' → hours; faro → faroe; herdade da nespereira → erdada de nespera; zambujeira → zambujera; azenha |
 | t23 | 4.48 | 1.27% | ticking → sticking; teachers' → teachers; realise → realize; kieran → kiran; story telling' → storytelling; ' → ∅; why' → why; intervention' → intervention; families' → families; technology' communications' → technology communications; environment' → environment; language' → language; narrative' → n |
 | t24 | 4.47 | 0.12% | seething → saathing |
-| t25 | 4.48 | 0.51% | wagon → wagons; toiled → twiled; centre → center; signed jay → sanjay |
+| t25 | 4.48 | 0.51% | wagon → wagons; oboes → obos; centre → center; signed jay → san j |
 | t26 | 4.47 | 1.05% | neuromancer → neomancer; fibre → fiber; gregg → greg; organisations → organizations; defences → defenses; cybergeddon → cybergetin; organised → organized; organisations → organizations; defences → defenses; isps → isbs; dubbed → dub |
 | t27 | 4.47 | 0.60% | lax → lacks; true → drew; admissions → admission; strengths → strength; ' → ∅; scholarships → scholarship |
