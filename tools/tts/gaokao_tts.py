@@ -34,6 +34,9 @@ from textnorm import normalize  # noqa: E402
 
 
 # ---------------------------------------------------------------- 文本与发音
+ABBR_FIX = True          # 踩坑 72 的修正开关（只给双向验证用：关掉时 check_double 必须报出 t20:46）
+
+
 class Pronouncer:
     """原文 -> 朗读文本 -> 音素。应用 pronunciations.json 里的修正。"""
 
@@ -74,11 +77,29 @@ class Pronouncer:
                 if stem_ph:
                     ph = stem_ph + possessive_suffix(stem_ph)
             return f'[{w}](/{ph}/)' if ph else w
-        return self.WORD.sub(sub, text)
+        out = self.WORD.sub(sub, text)
+        if not ABBR_FIX:
+            return out
+        # 踩坑 72：标了读音的缩写（spaCy 把 Ms. Mr. Ltd. 当成一个词）后面紧跟另一个标了读音的词时，misaki 把后一个词读两遍、
+        # 逗号也丢掉（专八 t20:46 “Ms. Chalari,” 读成 Ms. Chalari-Kalari）。把句点放进方括号里就正常（只改这一种写法，别处不变）
+        rules = self.g2p.nlp.tokenizer.rules
+        return re.sub(r'\[([A-Za-z]+)\]\((/[^)]*/)\)\.(?=\s+\[)',
+                      lambda m: f'[{m.group(1)}.]({m.group(2)})' if m.group(1) + '.' in rules else m.group(0), out)
 
     def phonemes(self, read_text, key=None):
-        ph, _ = self.g2p(self._mark(read_text, key))
+        marked = self._mark(read_text, key)
+        ph, _ = self.g2p(marked)
+        self.check_double(marked, ph, key)
         return ph
+
+    def check_double(self, marked, ph, key=None):
+        """独立检查（踩坑 72）：标了读音的词不许被读两遍。misaki 读两遍时，前后两遍粘在一起、中间没有空格：
+        标的读音 + 标的读音，或 不标时的默认读音 + 标的读音（反过来也算）。"""
+        for w, p in set(re.findall(r'\[([^\]]+)\]\(/([^)]*)/\)', marked)):
+            d = self.g2p(w.rstrip('.'))[0]
+            for glued in {p + p, d + p, p + d} if d and d != p else {p + p}:
+                if len(p) >= 2 and glued in ph:
+                    raise RuntimeError(f'{key} 标了读音的词被读两遍（踩坑 72）：{w} → {ph}')
 
 
 def possessive_suffix(ph):
