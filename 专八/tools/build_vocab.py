@@ -12,11 +12,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ann_lib as A  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
+import text_rules as TR  # noqa: E402
 
 R = A.load_sents()
 out, errs = [], []
 for pid, r in R.items():
-    rec = {k: r[k] for k in ('id', 'year', 'month', 'set', 'passage', 'paper', 'part', 'words')}
+    rec = {k: r[k] for k in ('id', 'year', 'month', 'set', 'passage', 'paper', 'part')}
+    # 片头“全文 N 词”从定稿句子按共用规则重算（tools/text_rules.word_count；原来用提取时 len(split()) 的数：中文注释算成词、破折号两侧算一个词）
+    rec['words'] = TR.word_count(' '.join(s for para in r['sents'] for s in para))
     rec['name'] = f"{r['paper']} {r['passage']}"
     f = A.ANN / f'{pid}.txt'
     if not f.exists():

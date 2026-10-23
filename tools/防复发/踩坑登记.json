@@ -1,0 +1,2536 @@
+{
+ "_说明": "踩坑登记（防复发机制）：CLAUDE.md 踩坑表每一行 → 哪个阶段、哪段程序拦住、双向验证命令、状态、缺口。2026-10-23 由 6 个代理逐条审计（每条都附代码出处）生成底稿，之后每补一条检查就更新这里。tools/防复发/防复发自检.py 读这里。",
+ "rows": [
+  {
+   "id": "1",
+   "title": "视频音量忽大忽小（个别音节峰值压低整篇）",
+   "stages": [
+    "音频",
+    "视频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: render → verify_loudness（各项目 make_audio.py 用 G.verify_loudness 包一层再调用）",
+     "runs": "生成音频时自动，不通过不写 MP3",
+     "evidence": "tools/tts/gaokao_tts.py:441:        raise RuntimeError(f\"{p['id']} {voice_name} 响度检查未通过，未输出文件：\" + '；'.join(errs))"
+    },
+    {
+     "where": "tools/video/verify_videos.py: check → 响度一致（第一项检查）",
+     "runs": "每个视频生成后自动（专八共用引擎 make_video.py:1478、中考/四级/高考 make_video），GitHub 生成流程里 verify_all 再测一次",
+     "evidence": "tools/video/verify_videos.py:103:    rep, errs = verify_loudness(buf.getvalue(), times, -16.0, **({'span': edge_span(times, p['edge'])} if p.get('edge') else {}))"
+    },
+    {
+     "where": ".github/workflows/render-*.yml: verify_all 独立复测",
+     "runs": "GitHub 发布流程（每篇）",
+     "evidence": ".github/workflows/render-kaoyan-campus.yml:164:          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 考研/tools/verify_all.py \"$ID\""
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "没有任何埋雷测试证明 verify_loudness 还能报出“某句过响/峰值过高/短时波动”；阈值或测量窗口一改（踩坑 63、66 都改过 t0 和 span）就可能悄悄变松。tools/tts/loudcheck.py 只是手动打印工具。",
+   "fix": "加 tools/tts/双向验证_响度.py：取一篇已发布 MP3 + timings，在内存里 ①原样→必须 0 条；②某句 +6 dB→必须报“句间响度偏差”；③插一个 0 dBFS 咔哒→必须报“峰值”；④6 秒区段 +4 dB→必须报“短时响度波动”；几秒跑完，放进 make_audio.py main 开头和 render-*.yml 的 prep 步骤。"
+  },
+  {
+   "id": "2",
+   "title": "自己查自己，检查结果失真（0.00 dB）",
+   "stages": [
+    "音频",
+    "视频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: verify_loudness（对编码后再解码的 MP3 用 pyloudnorm BS.1770 测）",
+     "runs": "生成音频时自动",
+     "evidence": "tools/tts/gaokao_tts.py:193:    m = pyln.Meter(sr)"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_repo 踩坑 2",
+     "runs": "要手动跑（check_pitfalls.py all，只看高考）",
+     "evidence": "tools/check_pitfalls.py:380:    R.add(2, 'gaokao_tts.py', 'verify_loudness(' in tts and 'pyloudnorm' in tts, '成品 MP3 用 BS.1770（pyloudnorm）独立测量')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "“独立”只做到一半：处理链 master() 也是用同一个 pyloudnorm Meter 把整体响度归一到 −16（gaokao_tts.py:328-330），所以“整体响度”这一项仍是同一实现自己查自己；只有句间偏差/短时波动/峰值是不同算法。check_pitfalls 的踩坑 2 检查只是字符串包含判断，且只在手动 all 时跑。没有双向验证。",
+   "fix": "verify_videos.check 再加一路完全不同实现的测量：ffmpeg -af ebur128=peak=true（libebur128）取整体响度和真峰值，要求在 −16±0.7 且与 pyloudnorm 相差 ≤ 0.5 LU；在上面的“双向验证_响度.py”里同时断言两套测量都报出注入的过响句。删掉 check_pitfalls 里的字符串判断。"
+  },
+  {
+   "id": "3",
+   "title": "有的句子没标注任何单词",
+   "stages": [
+    "文字",
+    "视频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "<项目>/tools/ann_lib.py: check（build_vocab.py 调用，任何错误都不输出 vocab.json）",
+     "runs": "生成数据（build_vocab）时自动",
+     "evidence": "中考/tools/ann_lib.py:161:            errs.append(f'第{k}句 没有标注任何单词（铁律：每句至少一个）')"
+    },
+    {
+     "where": "专八/tools/make_video.py（专八/六级/考研/考研作文 共用引擎）空句检查；中考、四级、高考 make_video 同样",
+     "runs": "生成截图/视频时自动",
+     "evidence": "专八/tools/make_video.py:1382:        raise SystemExit(f'第 {empty} 句没有标注单词，不生成视频')"
+    },
+    {
+     "where": "tools/video/verify_videos.py: check → 每句至少标注一个单词",
+     "runs": "每个视频生成后自动 + verify_all",
+     "evidence": "tools/video/verify_videos.py:79:    ok('每句至少标注一个单词', not empty, f'空句 {empty}' if empty else f'{len(sents)} 句全部有标注')"
+    },
+    {
+     "where": "tools/build.py + tools/check_pitfalls.py: check_text 踩坑 3（高考）",
+     "runs": "高考 build、高考 make_video 自动",
+     "evidence": "tools/check_pitfalls.py:168:        R.add(3, pid, not empty, f'空句 {empty}' if empty else f'{len(S)} 句都有标注')"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 句子没有标注单词（p25，踩坑 3）",
+    "needs": "tts"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "三层拦截都在，但埋雷只覆盖高考自己的 check_pitfalls.check_text（本次实跑 13/13 通过）；正在用的 ann_lib.check、共用引擎、verify_videos.check 这几份没有埋雷；test_check_pitfalls.py 不在任何流程里，只靠记得跑。",
+   "fix": "在 render-*.yml prep 和各项目 build_vocab.py 开头加一步双向验证：内存里把一篇副本某句的 w 清空，断言 ann_lib.check 报“没有标注任何单词”、verify_videos.check 的空句判断为假；同时把 tools/test_check_pitfalls.py 加进 prep（约 1 分钟）。"
+  },
+  {
+   "id": "4",
+   "title": "分段合成段尾无标点，最后一个词被吞（ozone）",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: synth_sentence（所有项目共用：每段补标点结尾）",
+     "runs": "生成音频时自动（结构上防止）",
+     "evidence": "tools/tts/gaokao_tts.py:243:    # 每段都以标点结尾，否则模型会把最后一个词收得太急"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_audio 踩坑 4（识别自检必须针对当前 MP3）+ 23（漏读/多读等关键差异未登记就失败）",
+     "runs": "高考 make_video 生成前自动",
+     "evidence": "tools/check_pitfalls.py:281:        R.add(4, pid, fresh, '语音识别自检针对的是当前音频' if fresh else '没有针对当前音频的语音识别自检：请运行 gaokao_tts.py qa')"
+    },
+    {
+     "where": "<项目>/tools/batch_audio.sh → qa_audio.py（tools/tts/qa.py 识别回转）",
+     "runs": "中考/考研/六级/四级批量生成音频后自动跑，但只出报告、失败只 echo，不拦下一步",
+     "evidence": "中考/tools/batch_audio.sh:8:  $PY 中考/tools/qa_audio.py \"$id\" || echo \"自检出错：$id\""
+    },
+    {
+     "where": "专八/tools/batch_audio.sh → tools/tts/识别分诊.py（漏读、词尾等非无害差异先自动截取重听，仍听不出又没登记在 专八/audio/识别差异已核.json 的列为待核，退出码 1）",
+     "runs": "专八批量配音每篇自动（9f408b8 起），有待核就停",
+     "evidence": "专八/tools/batch_audio.sh:17:  [ $tri = 0 ] || { echo \"停止：$id 识别分诊有待核（见上面），改读音、试合成确认后从 $id 重跑\"; exit 1; }"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 音频换了却没重跑语音识别自检（p22，踩坑 4）",
+    "needs": "tts"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 9f408b8 起专八已补上：batch_audio.sh 每篇 make_audio → qa_audio → 识别分诊，待核就停，登记表改成程序读的 识别差异已核.json；双向验证可跑：`/opt/ttsenv/bin/python tools/tts/识别分诊.py 专八 t25 --rev 7193562` 报出 t25:5 toiled→twiled、退出码 1（本次实跑）。仍有缺口：中考、考研、六级、四级的 batch_audio.sh 照旧 qa 失败只 echo、不分诊，登记仍是人看的 识别差异已核.md；考研作文 批量_本机.sh 的 qa_audio 带 `|| true`；截图/视频生成前没有任何检查要求“识别自检针对当前 MP3”（识别分诊不比 mp3_sha256，只靠批量脚本的顺序保证）；没有埋“句末漏一个词”的雷证明能报出漏读。",
+   "fix": "把 专八/tools/batch_audio.sh 的写法（开头 pron_check、每篇 识别分诊、出错即停）复制到 中考/考研/六级/四级 的 batch_audio.sh 和 考研作文 批量_本机.sh（去掉 || true）；识别分诊 比对 qa_report[pid].mp3_sha256 与当前 MP3，不一致直接报“自检过期”；大字版 --preflight 只读跑一次分诊（不重听）确认 0 待核；埋雷：把一条 qa_report 的 asr 末词删掉，断言列为待核。"
+  },
+  {
+   "id": "5",
+   "title": "括号内容被模型跳过（five millimeters）",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: Pronouncer.read_text 残留字符检查（各项目 make_audio 的 read_text 都先做本项目规范化再调用它）",
+     "runs": "生成音频时自动，残留就抛错",
+     "evidence": "tools/tts/gaokao_tts.py:65:            raise RuntimeError(f'{key} 朗读文本残留括号/数字/符号/中文：{t}')"
+    },
+    {
+     "where": "<项目>/tools/make_audio.py: read_text 包装最后交给共用函数",
+     "runs": "生成音频时自动",
+     "evidence": "考研/tools/make_audio.py:86:    return _read_text(self, original, key)"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 朗读文本残留中文（p31，踩坑 5）",
+    "needs": "tts"
+   },
+   "status": "自动拦截+有双向验证",
+   "gap": "检查条件是 `if key and …`，gaokao_tts.py say 子命令（cmd_say，做样音用）调用 pron.read_text(s) 不传 key，残留检查和响度检查都被跳过——与铁律 10③“任何给用户的音频都走完整处理链”冲突；埋雷测试不在任何流程里自动跑。",
+   "fix": "read_text 去掉 `key and` 条件（key 缺省时用 'say'），cmd_say 合成后同样调用 verify_loudness；把 tools/test_check_pitfalls.py 放进 render-*.yml 的 prep 步骤。"
+  },
+  {
+   "id": "6",
+   "title": "人名缩写处误断句、U.S. 句末没断句",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "高考"
+   ],
+   "guards": [
+    {
+     "where": "tools/build.py 排版检查 + tools/check_pitfalls.py: check_text 英文排版（高考）",
+     "runs": "高考 build、高考 make_video 自动",
+     "evidence": "tools/check_pitfalls.py:97:        (r'\\bU\\.S\\. (?:The|This|It|They|He|She|We|In|But|And|A|An)\\b', 'U.S. 句末没断句'), (r'\\s[,.;:!?]', '标点前多余空格'),"
+    },
+    {
+     "where": "<项目>/tools/split_sents.py: split（四级/六级/专八/中考/考研；考研作文 extract.py 借用考研的）",
+     "runs": "切句时（只是结构上保护，无检查）",
+     "evidence": "考研/tools/split_sents.py:23:    q = re.sub(r'(?<![A-Za-z])([A-HJ-Z])\\.(?=\\s+[A-Z])', r'\\1<DOT>', q)     # 人名首字母 G. K. Chesterton"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 在人名缩写处断句（p28，踩坑 7）",
+    "needs": "tts"
+   },
+   "status": "只靠流程或记性",
+   "gap": "只有已完结的高考有检查和埋雷。6 个在用项目的 split_sents.py 切完不做任何检查（main 只校验拼回原段），而且我在内存里实测考研 split：'…in the U.S. The policy failed.' 不切开；'Sen. Warren' 切成 'He met Sen.' / 'Warren…'；'Jan. 5, 2020' 切成 'It opened on Jan.' / '5, 2020…'。目前 6 个项目 sents.json 扫描 0 处，属于潜在问题，靠精校代理碰运气发现。",
+   "fix": "在每个 split_sents.py main（和 考研作文/tools/extract.py）切完后断言：没有句子以 `(?:^|\\s)(?:[A-HJ-Z]|Sen|Gen|Rep|Gov|Jan|Feb|Mar|Apr|Aug|Sept?|Oct|Dec|Mt|Ft|Lt|Col|Capt|Rev)\\.$` 结尾，句中不出现 check_pitfalls.py:97 那条 U.S. 规则；埋雷用上面 3 个句子（必须全部报出）；同时把 Sen|Gen|Rep|Gov|Jan… 加进 ABBR、U.S. 后接常见句首词时不保护。"
+  },
+  {
+   "id": "7",
+   "title": "原文排版错误：直引号、缺空格、带空格连字符等",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研"
+   ],
+   "guards": [
+    {
+     "where": "四级/tools/check_text.py: RULES/check（四级、六级、专八、中考、考研共用）",
+     "runs": "extract_reading.py 提取（含原文订正之后）时自动，有一条就报错",
+     "evidence": "四级/tools/check_text.py:18:    (r'[\"\\']', '直引号或直撇号'),"
+    },
+    {
+     "where": "<项目>/tools/extract_reading.py 调用 check_text",
+     "runs": "提取原文时自动",
+     "evidence": "考研/tools/extract_reading.py:181:        errs += [f\"{r['paper']} {r['passage']} {x}\" for x in check_text.check(r)"
+    },
+    {
+     "where": "tools/build.py + tools/check_pitfalls.py: check_text 踩坑 7（高考，sent.py fix_typography 修正）",
+     "runs": "高考 build、高考 make_video 自动",
+     "evidence": "tools/build.py:81:      (r'(?<=[A-Za-z])\\((?=[A-Za-z])','括号前缺空格'),(r'(?:^|\\s)[A-HJ-Z]\\.$','在人名缩写处断句'),(r'\\b(\\w+) \\1\\b','重复单词')]"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 英文直撇号（p26，踩坑 7）",
+    "needs": "tts"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "在用项目靠 check_text.py，它的 20 条规则没有任何埋雷（埋雷只测高考 build/check_pitfalls 那份）；考研作文的范文由 extract.py 直接切句，完全不经过 check_text（ann_lib.check 只查中文排版），直引号、缺空格不会被拦。",
+   "fix": "给 check_text.py 加 --selftest：每条 RULES 各造一个反例（\"x\"、word ,、a,b、word(、 - ）断言逐条报出、原样干净文本 0 条，由 extract_reading.py 开头自动跑；考研作文/tools/extract.py 对每段调用 check_text.check（同中考做法），有一条就不写 sents.json。"
+  },
+  {
+   "id": "8",
+   "title": "视频画面比声音短",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/video/verify_videos.py: check → 画面与声音等长",
+     "runs": "每个视频生成后自动（共用引擎 + 中考/四级/高考 make_video），不通过删成品；GitHub 流程 verify_all 再测",
+     "evidence": "tools/video/verify_videos.py:59:    ok('画面与声音等长', abs(vd - ad) < 0.1, f'画面 {vd:.2f}s，声音 {ad:.2f}s')"
+    },
+    {
+     "where": "专八/tools/make_video.py: 生成后调用 verify_videos.check",
+     "runs": "make_video 每篇自动",
+     "evidence": "专八/tools/make_video.py:1478:    from verify_videos import check"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "容差 0.1 秒（3 帧），画面可以比声音短 0.09 秒照样通过；没有埋雷证明这条检查还能报出“画面短”。",
+   "fix": "容差收紧到 1/30 秒；把 ffprobe 取时长的判断抽成小函数，加 tools/video/双向验证_成品.py：用 ffmpeg lavfi 造 5 秒 color+sine 小样片和一份画面截短 0.5 秒的副本，断言前者通过、后者报“画面与声音等长”不通过（秒级，不需要渲染），放进 render-*.yml prep。"
+  },
+  {
+   "id": "9",
+   "title": "4K 长画面让 ffmpeg 内存暴涨被杀",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py（共用引擎）每屏单独无损编码再 concat；中考、四级、高考 make_video 同样",
+     "runs": "生成流程本身（结构上防止，无检查）",
+     "evidence": "专八/tools/make_video.py:1449:        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-loop', '1', '-framerate', str(FPS),"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_repo 踩坑 9（只看高考 tools/video/make_video.py 的字符串）",
+     "runs": "要手动跑（check_pitfalls.py all）",
+     "evidence": "tools/check_pitfalls.py:375:    R.add(9, 'make_video.py', \"'-f', 'concat'\" in mv and \"'-c', 'copy'\" in mv and \"'-loop', '1'\" in mv and '+faststart' in mv,"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "只靠代码写法；唯一的检查是对高考那份 make_video 做字符串匹配，且只在手动 all 时跑，共用引擎（专八/六级/考研/考研作文）改回整片长图不会被发现。好在失败方式是“被系统杀掉、退出码非 0、不出成品”，不会出坏视频，只会浪费时间。",
+   "fix": "在 render-*.yml 的“生成 4K 视频”一步用 `/usr/bin/time -v` 包住 大字版.py --video，从输出取 Maximum resident set size，超过 4 GB 就让该步失败；或把 check_pitfalls 的踩坑 9 字符串检查改成对 专八/中考/四级 make_video.py 也查一遍，并在 prep 里跑。"
+  },
+  {
+   "id": "10",
+   "title": "结尾静音四舍五入只有 1.99 秒",
+   "stages": [
+    "音频",
+    "视频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/video/verify_videos.py: check → 结尾静音 2 秒（音轨 ≥ 1.999 s 且确实无声）",
+     "runs": "每个视频生成后自动 + verify_all",
+     "evidence": "tools/video/verify_videos.py:88:    ok('结尾静音 2 秒', tail >= 1.999 and peak_db(seg(times[-1]['end'] + 0.1, ad)) < -60,"
+    },
+    {
+     "where": "专八/tools/make_video.py: 结尾静音 ≥ 2 秒（按最短流时长）",
+     "runs": "生成视频时自动",
+     "evidence": "专八/tools/make_video.py:1483:    res.append(('结尾静音 ≥ 2 秒', dur - ends[-1] >= TAIL - 0.05, f'{dur - ends[-1]:.2f} 秒'))"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_audio 踩坑 10（高考音频时间轴）",
+     "runs": "高考 make_video 生成前自动",
+     "evidence": "tools/check_pitfalls.py:277:        R.add(10, pid, ok, f'开头 {st[0]:.2f}s，句间 {min(gaps):.3f}–{max(gaps):.3f}s，结尾 {tm[\"duration\"] - en[-1]:.2f}s')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "严格的 ≥ 1.999 秒只量音轨；按画面流量的那条（各引擎 make_video）放宽到 TAIL − 0.05 = 1.95 秒，加上“等长”容差 0.1 秒，画面结尾可短于 2 秒而通过；没有埋雷。",
+   "fix": "各引擎把 `TAIL - 0.05` 改成 `TAIL - 0.001`（最后一帧本来就向上取整，现有成品应都过）；在上面的“双向验证_成品.py”里加一个结尾只留 1.98 秒的小样片，断言被报出。"
+  },
+  {
+   "id": "11",
+   "title": "天津卷两次考试文件名相同",
+   "stages": [
+    "视频",
+    "发布"
+   ],
+   "projects": [
+    "高考",
+    "六级",
+    "专八",
+    "考研",
+    "考研作文",
+    "中考"
+   ],
+   "guards": [
+    {
+     "where": ".github/cet6-chalk-pack.py（六级/考研/考研作文/专八/专八水墨 的 render 流程打包步骤）",
+     "runs": "GitHub 发布流程（打包前自动）",
+     "evidence": ".github/cet6-chalk-pack.py:185:    assert len(set(names)) == len(names), '文件名重复'"
+    },
+    {
+     "where": ".github/workflows/release-zk-videos.yml: 打包视频（中考）",
+     "runs": "GitHub 发布流程",
+     "evidence": ".github/workflows/release-zk-videos.yml:26:            [ -e \"stage/$dst\" ] && { echo \"包内文件名重复：$dst\"; exit 1; }"
+    },
+    {
+     "where": "tools/video/verify_videos.py: main + tools/check_pitfalls.py: check_video 踩坑 11（高考）",
+     "runs": "要手动跑（交付前 verify_videos.py / check_pitfalls video）",
+     "evidence": "tools/check_pitfalls.py:348:    R.add(11, '最终视频', not dup, f'重复：{dup}' if dup else f'{len(files)} 个文件名互不重复')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "本机这一层没有：各项目 verify_all.py 文档写着“文件名不重复”，代码里却没有这项，`byname = {video_name(p): p …}` 遇到重名会悄悄把一篇覆盖掉，生成时后一篇直接覆盖前一篇的 MP4；要到 GitHub 打包才报。四级发布流程没有任何重名检查。没有埋雷。",
+   "fix": "在共用引擎 set_project（或每个 verify_all.py main 开头）断言 len({video_name(p) for p in P}) == len(P)，重名就列出篇目并退出；埋雷：内存里把两篇的 title/paper 设成一样，断言报出。"
+  },
+  {
+   "id": "12",
+   "title": "pkill -f 匹配到自己的 shell 把自己杀掉",
+   "stages": [
+    "流程"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/check_pitfalls.py: check_repo 踩坑 12（扫描已跟踪的 .py/.sh/.js）",
+     "runs": "要手动跑（check_pitfalls.py all）",
+     "evidence": "tools/check_pitfalls.py:371:    R.add(12, '仓库脚本', not pk, f'含 pkill -f：{pk}' if pk else '没有 pkill -f')"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "这个坑发生在模型临时敲的 Bash 命令里，不在仓库脚本里，扫仓库管不到；check_pitfalls.py all 还是手动的，而且它自己的“踩坑必须登记”检查（COVER 只登记到 27，CLAUDE.md 已到 73）现在必然不通过，说明这个总检查已经没人在跑。仓库里没有 .claude/settings.json 钩子、也没有 git hooks。同类坑 54（pgrep 中文路径）同样无程序拦截。",
+   "fix": "（需用户同意改设置）加一个 Claude Code PreToolUse 钩子：Bash 命令含 `pkill -f`、`killall`，或 `pgrep -f` 的模式里有非 ASCII 字符就拒绝并提示“按 PID 结束 / 用 [-] 方括号 ASCII 模式”；另把 check_repo 拆成单独的轻量脚本放进 render-*.yml prep，并把 COVER 补到 73 让 all 重新能变绿。"
+  },
+  {
+   "id": "13",
+   "title": "合并切句后旧逐句补丁让词读两遍（Ortiz）",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: Pronouncer.read_text 逐句文本修正必须匹配（各项目 读音修正.json 的 text 叠加进来）",
+     "runs": "生成音频时自动，匹配不到就抛错",
+     "evidence": "tools/tts/gaokao_tts.py:59:                raise RuntimeError(f'文本修正未匹配 {key}: {target!r}')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "只管 text 替换这一种。按句号登记的 sentence 读音修正、tail_trim（剪句末气声）从不检查键是否还对应同一句：重新切句后编号整体平移，它们会悄悄作用到别的句子（tail_trim 可能剪掉真字），指向已不存在句号的条目被静默忽略；替换目标若恰好也出现在平移后的新句里，也不会报。没有埋雷。",
+   "fix": "在 pron_check.py（配音前已在跑）加：读音修正.json 里每个 text/sentence/tail_trim 键必须指向当前 sents.json 存在的句子，sentence 里的每个词必须出现在该句，tail_trim 条目登记“句末词”并核对一致；埋雷：内存里把一个键号 +1，断言报出。"
+  },
+  {
+   "id": "14",
+   "title": "先生成视频后复核翻译，16 个视频返工",
+   "stages": [
+    "文字",
+    "视频",
+    "流程"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py（专八/六级/考研/考研作文 共用引擎）复核定稿指纹比对",
+     "runs": "生成截图/视频时自动，不一致就不生成",
+     "evidence": "专八/tools/make_video.py:1355:        raise SystemExit(f'{a.pid} 的翻译与标注与复核定稿不一致（build_vocab.py --reseal），不生成视频')"
+    },
+    {
+     "where": "中考/tools/make_video.py: reviewed 标记",
+     "runs": "生成视频时自动",
+     "evidence": "中考/tools/make_video.py:432:        raise SystemExit(f'{a.pid} 的翻译与标注还没有通过复核（build_vocab.py --reseal {a.pid}），不生成视频')"
+    },
+    {
+     "where": "<项目>/tools/build_vocab.py: 标注文件与 复核通过.json 指纹不符就不输出 vocab.json",
+     "runs": "生成数据时自动",
+     "evidence": "考研/tools/build_vocab.py:67:        sys.exit(f'以下标注文件与复核定稿不一致（改动未经复核）：{diff}；复核后用 --reseal 重新登记。')"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_text 踩坑 14（高考，make_video 生成前调用）",
+     "runs": "高考 make_video 自动",
+     "evidence": "tools/check_pitfalls.py:163:        R.add(14, pid, approved.get(pid) == text_fp(p),"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 复核通过后又改了文字（p32，踩坑 14）",
+    "needs": "tts"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "在用的共用引擎指纹检查、build_vocab 的封版检查都没有埋雷（埋雷只测高考 check_pitfalls）；各项目 make_audio.py 不查封版，复核没完就能先出音频（之后英文若改，靠 verify_videos 的“朗读与画面逐句一致”兜底）；四级 make_video 本身不查封版，只靠 build_vocab。“每条修改双人复核”本身是流程。",
+   "fix": "各项目 make_audio.py main 开头加与 专八/tools/make_video.py:1353-1355 相同的 sha256 比对（未封版不配音）；埋雷：内存里把一篇 ann 副本改一个字，断言引擎的封版检查和 build_vocab 都拒绝；放进 render-*.yml prep。"
+  },
+  {
+   "id": "15",
+   "title": "双人都同意才采用，5 条真问题被否决漏掉",
+   "stages": [
+    "文字",
+    "流程"
+   ],
+   "projects": [],
+   "guards": [
+    {
+     "where": "tools/check_pitfalls.py: COVER 登记（明确写着是流程项，无程序检查）",
+     "runs": "不运行（仅登记说明）",
+     "evidence": "tools/check_pitfalls.py:40:    15: '被否决的意见逐条人工过目（流程项，复核结果存档）', 16: '英文订正全部记录在案',"
+    },
+    {
+     "where": "六级/tools/翻译复核/README.md（复核记录里手写“第 1 轮补充：分歧与否决意见逐条人工过目”）",
+     "runs": "靠协调人记得做",
+     "evidence": "六级/tools/翻译复核/README.md:9:| 第 1 轮补充 | s21–s40 | 第 1 轮的分歧与否决意见逐条人工过目 | — | 1 条（s37 use=n. 用途） |"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "复核工作流（如 考研/tools/workflows/ky-zh-audit.js）把两位核验人的 accept/reject/amend 都存进 第N轮结果*.json，但没有任何程序核对“每条非双 accept 的意见都在 第N轮决定_人工*.json 里有逐条决定和理由”；六级 README 里还写着“s21–s60 的分歧意见在做到这些篇时再过目”，完全靠记得。",
+   "fix": "写 tools/复核闭环.py <项目>：读各轮结果 json，凡 va/vb 不是双 accept 的意见，要求在决定文件里有同 id+句号+字段+词条 的条目（采用/不采用 + why），缺一条就退出 1；各项目 build_vocab.py --reseal 先调用它，不闭环不许封版；埋雷：删掉一条人工决定，断言报出。"
+  },
+  {
+   "id": "16",
+   "title": "英文复核以“原文如此”放过语法错误",
+   "stages": [
+    "文字",
+    "流程"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研"
+   ],
+   "guards": [
+    {
+     "where": "tools/check_pitfalls.py: check_text #16（sent.py 的 POST 订正必须写进 原文订正记录.md）",
+     "runs": "高考 make_video 每篇生成前自动（check_text）",
+     "evidence": "tools/check_pitfalls.py:193:         R.add(16, pid, not miss, f'订正记录里找不到：{miss}' if miss else f'{len(post.get(pid, []))} 处订正都有记录')"
+    },
+    {
+     "where": "四级/tools/extract_reading.py（六级同）：原文订正记录.md 由 原文订正.json 自动生成，每条带 type/why",
+     "runs": "提取原文时自动",
+     "evidence": "四级/tools/extract_reading.py:218:             rec += [f\"| {e['type']} | {e['old']} | {e['new']} | {e['why']} |\" for e in es]"
+    },
+    {
+     "where": "考研/tools/workflows/ky-proofread.js CONTEXT（专八/中考/四六级 proofread、final-check 同）：提示词写明“原文如此不是理由”；gen_proof.py --canary 植入埋雷副本",
+     "runs": "要手动跑（复核工作流）；埋雷计分靠人数",
+     "evidence": "考研/tools/workflows/ky-proofread.js:37: const CONTEXT = `… (\"it is the exam's original wording\" is NOT a reason to keep an error) …"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "真正的坑（复核人以原文如此放过错误）只靠提示词措辞 + 埋雷副本，而文字复核的埋雷没有程序计分：考研/tools/精校进度/README.md 里 11/12（漏 potion）是人手数出来的，漏雷不会让任何程序失败。#16 只查“订正有没有记账”，且只管高考 sent.py；test_check_pitfalls.py 没有 #16 的雷。",
+   "fix": "把 专八/tools/workflows/tem8-ink-stills-review.js:39-46 的 score/again（漏雷整批重审）照搬进各项目 *-proofread.js / *-final-check.js，埋雷答案从 埋雷位置.json 经 args 传入（按 id + current 含植入串匹配），返回 caught/mines；apply_dec.py / extract_reading --reseal 读这一轮的计分，不是 100% 就拒绝；每轮埋雷至少放一处“试卷原文本身的语法错误”。test_check_pitfalls 加一颗雷：往 POST 加一条 原文订正记录.md 里没有的订正，必须报 #16。"
+  },
+  {
+   "id": "17",
+   "title": "原文修正匹配不到静默失效",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "专八",
+    "中考",
+    "考研"
+   ],
+   "guards": [
+    {
+     "where": "tools/sent.py：POST 订正不唯一 / FIX、POST 没匹配到就 assert",
+     "runs": "每次运行 sent.py 自动（高考）",
+     "evidence": "tools/sent.py:480: assert not miss, f'原文修正没有匹配到：{miss}'"
+    },
+    {
+     "where": "*/tools/extract_reading.py：原文订正.json 每条必须恰好匹配 1 处，否则不输出",
+     "runs": "提取原文时自动（四级 六级 专八 中考 考研）",
+     "evidence": "专八/tools/extract_reading.py:124:                     errs.append(f'{tag}：订正 “{e[\"old\"]}” 匹配到 {c} 处（必须恰好 1 处）')"
+    },
+    {
+     "where": "考研/tools/apply_dec.py（中考同）：翻译复核决定写回时每条必须恰好匹配一次",
+     "runs": "写回复核决定时自动",
+     "evidence": "考研/tools/apply_dec.py:62:                     if lines[i].count(d['current']) != 1:"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_sents_json（sents.json 必须等于 sent.py 当前输出）",
+     "runs": "要手动跑（只在 check_pitfalls.py all）",
+     "evidence": "tools/check_pitfalls.py:124: def check_sents_json(R):"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "没有任何双向验证。sent.py 的 FIX 只查“至少匹配到一次”然后全部替换（tools/sent.py:465-466 `if a in t: used.add(...)`），匹配两处会静默改两处；POST 的唯一性是逐段落判断的（assert 在段落循环里），同一片段出现在两段时两段都被改、不报错。sents.json 过期检查只在 all 模式里，而 all 模式现在没人跑（见 26）。",
+   "fix": "sent.py 给 FIX 加 `assert t.count(a)==1`，POST 改为先在整篇（各段拼接）上计数再替换；test_check_pitfalls 加一项：像 check_sents_json 那样把 sent.py + passages.json 复制到临时目录，追加一条不存在的、一条出现两次的订正，运行必须非零退出；对一个 extract_reading 用临时 原文订正.json 注入假条目，必须报“必须恰好 1 处”。"
+  },
+  {
+   "id": "18",
+   "title": "直撇号没被排版检查发现",
+   "stages": [
+    "文字",
+    "截图"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "四级/tools/check_text.py RULES「直引号或直撇号」（专八/中考/考研/六级 extract_reading 都 import 这一份）",
+     "runs": "提取原文时自动，有一处不输出",
+     "evidence": "四级/tools/check_text.py:18:     (r'[\"\\']', '直引号或直撇号'),"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py「直引号」（英文与词条）",
+     "runs": "中考 make_video 每屏自动；专八引擎（专八/六级/考研/考研作文）截图、生成时自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:262:   for (const el of [en, ...document.querySelectorAll('.v b')]) if (/['\"]/.test(el.textContent)) out.push(`直引号：「${el.textContent.slice(0, 30)}」`);"
+    },
+    {
+     "where": "tools/build.py TYPO / tools/check_pitfalls.py TYPO「直撇号」",
+     "runs": "高考 build 与 make_video 前自动",
+     "evidence": "tools/build.py:80: TYPO=[(r'\"','直引号'),(r\"'\",'直撇号'),…"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 英文直撇号（p26，踩坑 7）",
+    "needs": "tts"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "现有的雷（本次实测 13/13 查出）只打在高考 check_pitfalls 的 TYPO 副本上；各在用项目实际依赖的 四级/tools/check_text.py 和 layoutcheck「直引号」都没有双向验证；test_check_pitfalls.py 没被任何流水线或 GitHub 工作流调用。考研作文 extract.py 完全没有文字检查，只能靠截图阶段的 layoutcheck 拦。",
+   "fix": "给 四级/tools/check_text.py 加 --selftest：check({'paras':[\"The world's best.\"]}) 必须报「直引号或直撇号」，弯撇号版本必须为 []；在每个 extract_reading 开头调用（毫秒级）。考研作文 extract.py 末尾调用 check_text.check。"
+  },
+  {
+   "id": "19",
+   "title": "千分位分数被读成乱码",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: Pronouncer.read_text 残留字符检查（共用，render_passage 带句号键调用）",
+     "runs": "生成音频时每句自动（所有项目的 make_audio 都走 G.render_passage）",
+     "evidence": "tools/tts/gaokao_tts.py:65:             raise RuntimeError(f'{key} 朗读文本残留括号/数字/符号/中文：{t}')"
+    },
+    {
+     "where": "tools/tts/textnorm.py: 分数 1/1000th（含千分位分母）规范化",
+     "runs": "read_text 内自动",
+     "evidence": "tools/tts/textnorm.py:94:     t = re.sub(r'\\b1/(\\d{1,3}(?:,\\d{3})+|\\d+)th\\b',"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_text #5（逐句跑 read_text）",
+     "runs": "高考 make_video 前自动",
+     "evidence": "tools/check_pitfalls.py:195:         # #5 #13 #19 #23 朗读文本"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 朗读文本残留符号 # +（p31，踩坑 5）",
+    "needs": "tts"
+   },
+   "status": "自动拦截+有双向验证",
+   "gap": "埋雷证明“残留数字/符号就停”这根绊线有效（本次实测通过；另实测 1/25,000th → one twenty-five-thousandth，1/25,000 会报错），但没有任何测试钉住具体的规范化规则，各项目 make_audio 自己叠加的规则（°F、$125,000.、2010s）也没有测试；绊线要等到批量合成中途才触发，而且 test_check_pitfalls 要手动跑。",
+   "fix": "加 tools/tts/test_textnorm.py：输入→期望朗读文本的对照表（1/25,000th、$125,000.、2010s、330ml、°F），由 test_check_pitfalls 调用；各项目 make_audio 合成前先对全部句子空跑一遍 read_text（几秒），残留在合成开始前一次全列出。"
+  },
+  {
+   "id": "20",
+   "title": "改了英文没重生成音频",
+   "stages": [
+    "音频",
+    "视频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/video/verify_videos.py: check「朗读内容与画面英文逐句一致」（共用）",
+     "runs": "各项目 make_video 每篇生成后自动；verify_all；GitHub render-*.yml 的「verify_all 独立复测」",
+     "evidence": "tools/video/verify_videos.py:76:     ok('朗读内容与画面英文逐句一致', not stale, f'不一致：第 {stale} 句' if stale else f'{len(sents)} 句全部一致')"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_audio #20（同时比 text 与当前 read_text）",
+     "runs": "高考 make_video 前自动",
+     "evidence": "tools/check_pitfalls.py:271:         R.add(20, pid, ok, f'{len(S)} 句全部一致' if ok else f'句数 {len(tm[\"sentences\"])}/{len(S)}，不一致：第 {stale} 句（需重新生成音频）')"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 英文改了却没重新生成音频（p20，踩坑 20）",
+    "needs": "tts"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "现有的雷只打在高考的 check_pitfalls.check_audio 上；另外 6 个项目依赖的 verify_videos.check 第 75 行没有雷。verify_videos 只比 text、不比 read，所以非高考项目改了 读音修正.json 的文本替换却没重新生成音频，查不出来。而且这项检查要等整篇视频渲染完才跑（几分钟白费）。",
+   "fix": "把 verify_videos.py:74-76 抽成 stale_sents(sents, times, pron=None)，各项目 大字版 --stills / make_video 渲染前先拿 vocab.json 与 audio/timings.json 跑一遍（包括比 pron.read_text 与 timings 里的 read，同 check_pitfalls.py:268-270），不一致就不开画；test_check_pitfalls 加一颗雷：直接对 stale_sents 喂一份改过的副本。"
+  },
+  {
+   "id": "21",
+   "title": "收紧复核标准后复核人变松",
+   "stages": [
+    "流程",
+    "文字"
+   ],
+   "projects": [
+    "高考"
+   ],
+   "guards": [
+    {
+     "where": "tools/test_check_pitfalls.py（给检查程序埋雷）",
+     "runs": "要手动跑",
+     "evidence": "tools/test_check_pitfalls.py:6: （踩坑 21：检查标准一变就要埋雷测试，防止检查程序自己变松。）"
+    },
+    {
+     "where": "专八/tools/gen_proof.py --canary、考研/tools/plant_review.py（给复核人植入埋雷副本）",
+     "runs": "要手动跑；文字复核的计分靠人数",
+     "evidence": "专八/tools/gen_proof.py:73:     if '--canary' in sys.argv:"
+    },
+    {
+     "where": "专八/tools/workflows/tem8-ink-stills-review.js score/again（截图审阅自动计分、漏雷整批重审；ky-stills-review.js 同）",
+     "runs": "截图审阅工作流内自动（只管截图审阅，不管文字复核）",
+     "evidence": "专八/tools/workflows/tem8-ink-stills-review.js:40: const score = x => (x.mines || []).filter(m => (x.r?.findings || []).some(f => sameScreen(f, m))).length"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "埋雷 13 处，查出 13 处",
+    "needs": "tts"
+   },
+   "status": "只靠流程或记性",
+   "gap": "“改了复核指令却没跑埋雷”这件事没有任何程序能发现：*-proofread / *-zh-audit / *-final-check 工作流（5 个项目）都不给埋雷计分，计分是人手数的（考研 第一轮 11/12，potion 漏查）。只有截图审阅会自动计分。test_check_pitfalls 只覆盖高考检查程序，只有“雷必须查出”一个方向（不验证干净数据能通过），也没有任何工作流或 CI 调用它。",
+   "fix": "①把 tem8-ink-stills-review.js:39-46 的计分/重审照搬进文字复核工作流；②每轮复核把提示词文本的哈希与埋雷计分一起存下，apply_dec.py 发现提示词哈希不同于最近一次 100% 埋雷计分时的哈希，就拒绝写回；③加一个 GitHub 工作流，tools/** 有改动就跑 test_check_pitfalls.py。"
+  },
+  {
+   "id": "22",
+   "title": "视频必须绝对流畅",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/video/verify_videos.py: check「画面流畅（帧间隔恒定 1/30 秒）」「声音连续（无断档）」（共用）",
+     "runs": "各项目 make_video 生成后自动；verify_all；GitHub render-*.yml",
+     "evidence": "tools/video/verify_videos.py:64:     ok('画面流畅（帧间隔恒定 1/30 秒）', len(gaps) and np.allclose(gaps, gaps[0], atol=1e-3) and abs(gaps[0] - 1 / 30) < 1e-3,"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_video_file（完整解码零错误、h264/yuv420p/30fps、faststart）",
+     "runs": "要手动跑（check_pitfalls.py video/all，只管高考）",
+     "evidence": "tools/check_pitfalls.py:325:     R.add(22, f'{name}：完整解码零错误', r.returncode == 0 and not r.stderr.strip(), r.stderr.strip()[:200] or '零错误')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "没有任何雷能证明帧间隔、音频断档检查还有效。完整解码、编码参数、faststart 只存在于高考的 check_pitfalls（手动 video 模式），另外 6 个项目根本不查。",
+   "fix": "把 check_pitfalls.py:316-331 的完整解码 + 编码参数 + moov_first 移进 verify_videos.check（所有项目自动受益）；加一个约 5 秒的雷：ffmpeg -f lavfi -i testsrc=d=3:r=30 生成干净样片（必须通过），再用 -vf \"select='not(eq(n,40))'\" -vsync vfr 丢一帧（必须报画面流畅失败），只需要 ffmpeg。"
+  },
+  {
+   "id": "23",
+   "title": "句末词内弯撇号丢音（isn’t→is）",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: read_text 词内弯撇号换直撇号（共用）",
+     "runs": "生成音频时每句自动（全部项目）",
+     "evidence": "tools/tts/gaokao_tts.py:61:         t = re.sub(r\"(?<=[A-Za-z])’(?=[A-Za-z])\", \"'\", t)"
+    },
+    {
+     "where": "tools/check_pitfalls.py: check_audio #23 critical_ops（否定词/词尾/漏读/多读）+ tools/tts/识别差异已核.json",
+     "runs": "高考 make_video 前自动",
+     "evidence": "tools/check_pitfalls.py:290:             R.add(23, pid, not crit, '；'.join(crit) + '（逐条听辨/修正读音，确认无误后登记到 识别差异已核.json）' if crit else '无否定词、词尾、漏读、多读差异')"
+    },
+    {
+     "where": "tools/tts/qa.py（各项目 qa_audio.py 调用）→ qa_report.md；人工核对写进 */audio/识别差异已核.md",
+     "runs": "中考/考研/六级/四级/考研作文要手动核对；核对结果是自由文本",
+     "evidence": "tools/tts/qa.py:90:                 'mp3_sha256': hashlib.sha256((OUT / r['file']).read_bytes()).hexdigest(),"
+    },
+    {
+     "where": "专八/tools/batch_audio.sh → tools/tts/识别分诊.py + 专八/audio/识别差异已核.json（程序读的登记表）",
+     "runs": "专八批量配音每篇自动（9f408b8 起），有待核就停",
+     "evidence": "专八/tools/batch_audio.sh:12:  $PY tools/tts/识别分诊.py 专八 \"$id\"; tri=$?"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 否定词读错（isn’t→is）（p21，踩坑 23）",
+    "needs": "tts"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 专八已在 9f408b8 补上（batch_audio.sh 每篇跑 识别分诊：非无害差异重听仍不对、又没登记在 识别差异已核.json 就停；`识别分诊.py 专八 t25 --rev 7193562` 本次实跑报出 toiled→twiled、退出码 1）。其余 5 个项目（四级/六级/中考/考研/考研作文）的识别差异仍只列在 qa_report.md、核对结论是自由文本 识别差异已核.md，否定词或词尾差异没人核对照样能生成视频；识别分诊不比 mp3_sha256，qa_report 比当前 MP3 旧时没有程序拦（只靠批量脚本的顺序）；它的 benign() 会把句中大写的词整类放过；没有单元测试钉住 ’→' 替换。",
+   "fix": "把 专八 batch_audio.sh 的 识别分诊 关口复制到其余 5 个项目的配音批量脚本，把各自的 识别差异已核.md 转成 json；识别分诊 加 mp3_sha256 时效比对；否定词（not/n't/never/no）差异不走自动放过、一律列待核；加单元断言 read_text('polluted air isn’t.') 含 \"isn't\"。"
+  },
+  {
+   "id": "24",
+   "title": "高亮词落在另一词形上",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "高考"
+   ],
+   "guards": [
+    {
+     "where": "tools/check_pitfalls.py: check_text #24 spaCy 词性比对 + tools/词性已核.json",
+     "runs": "高考 make_video 前自动",
+     "evidence": "tools/check_pitfalls.py:219:             R.add(24, pid, not pbad, '；'.join(pbad) if pbad else '高亮词词性与释义一致')"
+    },
+    {
+     "where": "中考/tools/ambig_check.py（列出句内重复出现的高亮词，人工核对）",
+     "runs": "要手动跑；没有登记表",
+     "evidence": "中考/tools/ambig_check.py:1: \"\"\"列出同一句里高亮词还出现在别处的词条（匹配程序取第一处空闲的位置）：逐条人工核对高亮是否落在释义对应的那一处（专八、六级的踩坑 #24 同类）。…"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 高亮词词性与释义不符（matters）（p27，踩坑 24）",
+    "needs": "tts"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "只有高考有这项检查。四级/六级/专八/中考/考研/考研作文的 ann_lib.check、build_vocab 里都没有词性比对（这些项目的标注工具里 grep 不到 spacy）；中考的 ambig_check 要手动跑、没有登记，别的项目连这个都没有。正在做的专八 t11–t27 也没有这道关。",
+   "fix": "把 check_pitfalls.py:196-219 移成共用模块（像 check_text 那样放在 四级/tools/pos_check.py），在每个 build_vocab.py 里调用（build_vocab 本来就是出错即退出的关口），每个项目一份 词性已核.json；selftest 复用 matters 这颗雷。"
+  },
+  {
+   "id": "25",
+   "title": "两处修改叠加、中文半角标点",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "*/tools/ann_lib.py zh_problems（半角标点、连续重复字串…）经 build_vocab.py 调用 A.check",
+     "runs": "build_vocab 时自动，有错就退出（四级 六级 专八 中考 考研 考研作文）",
+     "evidence": "专八/tools/build_vocab.py:26:     e, t, n = A.check(pid, f, R)"
+    },
+    {
+     "where": "tools/build.py 中文排版检查 + tools/check_pitfalls.py #25",
+     "runs": "高考 build 与 make_video 前自动",
+     "evidence": "tools/check_pitfalls.py:189:         R.add(25, pid, not zbad, '；'.join(zbad) if zbad else '中文排版正常')"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 概要里重复字串（两处修改叠在一起）（p30，踩坑 25）",
+    "needs": "tts"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "雷只打在高考那份上。6 份手抄的 ann_lib.zh_problems（目前内容相同，但会走样）都没有测试；重复检查只抓紧挨着的 ≥4 字重复，两处修改叠出的不相邻重复、或短于 4 字的重叠都能通过。",
+   "fix": "加 tools/test_zh_problems.py：用 importlib 逐个按路径载入 6 个 ann_lib，断言 '他说,我们' → 半角标点、'概要里重复概要里重复' → 连续重复字串、干净句子 → []，并断言 6 份函数源码逐字节相同（防走样）；在每个 build_vocab 开头调用（毫秒级）。"
+  },
+  {
+   "id": "26",
+   "title": "用错 Python 读到旧报告“全部通过”",
+   "stages": [
+    "流程",
+    "视频",
+    "发布"
+   ],
+   "projects": [
+    "高考",
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/check_pitfalls.py main()：检查程序本身出错一律算不通过",
+     "runs": "运行 check_pitfalls 时自动",
+     "evidence": "tools/check_pitfalls.py:442:         raise SystemExit('❌ 检查程序本身出错，视为不通过')"
+    },
+    {
+     "where": "tools/check_pitfalls.py check_repo #26：核查报告比全部视频新、覆盖全部视频；新踩坑必须登记",
+     "runs": "要手动跑（只在 check_pitfalls.py all）",
+     "evidence": "tools/check_pitfalls.py:392:     R.add(26, '核查报告.md', ok, f'覆盖全部 {len(files)} 个视频且比视频新' if ok else '报告过期或没覆盖全部视频：请重新运行 verify_videos.py')"
+    },
+    {
+     "where": ".github/workflows/render-*.yml：同一任务里新跑 verify_all，并断言报告结论与本篇",
+     "runs": "GitHub 渲染工作流内自动（六级黑板、考研、考研作文、专八校园/水墨）",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:193:           assert '**结论：全部通过**' in report and f'## ✅ {Path(name).stem}' in report, 'verify_all 没有通过'"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "文档里写的高考这道关实际上已经失效：check_pitfalls.py 最后一次改动是 2026-10-01，COVER 只登记了 1–27，而 CLAUDE.md 有 1–73，所以 `all` 模式必然报“踩坑 28…73 没有登记”（46 条），根本过不了，也就没人跑（仓库里没有 踩坑检查报告.md，最终视频/ 也不在工作区）。release-zk-videos.yml:43 和 release-tem8-videos.yml:35 只在发布说明里 echo “每个视频都通过了全部核查”，并不检查报告。整件事没有任何雷。",
+   "fix": "①check_repo 不再比对写死的 COVER，改为解析 CLAUDE.md 每行“自动检查在哪里”一栏里用反引号标出的路径，断言每个路径都在 git ls-files 里（28–73 行自动登记；正则改成 \\d+a? 以兼容 60a）；②release-zk-videos.yml / release-tem8-videos.yml 上传前对每个 mp4 加上与 render-cet6-chalk.yml:193 相同的断言，并核对 sha256 与 _核查.json 一致；③加雷：在临时 FINAL 目录里 touch 一个比 核查报告.md 新的 mp4，#26 必须报失败。"
+  },
+  {
+   "id": "27",
+   "title": "词尾辅音被吞（reawakened）",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考",
+    "专八"
+   ],
+   "guards": [
+    {
+     "where": "tools/check_pitfalls.py: critical_ops 词尾差异 + 识别差异已核.json（#23）；#4 语音识别自检必须针对当前 MP3（mp3_sha256）",
+     "runs": "高考 make_video 前自动",
+     "evidence": "tools/check_pitfalls.py:281:         R.add(4, pid, fresh, '语音识别自检针对的是当前音频' if fresh else '没有针对当前音频的语音识别自检：请运行 gaokao_tts.py qa')"
+    },
+    {
+     "where": "*/tools/qa_audio.py → qa_report.md；人工核对写进 */audio/识别差异已核.md",
+     "runs": "中考/考研/六级/四级/考研作文要手动核对；结论是自由文本",
+     "evidence": "中考/tools/qa_audio.py:1: \"\"\"中考音频自检（由六级 qa_audio.py 复制）。…复用高考 tools/tts/qa.py（语音识别回转比对 + UTMOS 自然度 + 响度独立测量）…"
+    },
+    {
+     "where": "专八/tools/batch_audio.sh → tools/tts/识别分诊.py（词尾等差异截取重听仍不对、又没登记就列待核，退出码 1）",
+     "runs": "专八批量配音每篇自动（9f408b8 起），有待核就停",
+     "evidence": "专八/tools/batch_audio.sh:17:  [ $tri = 0 ] || { echo \"停止：$id 识别分诊有待核（见上面），改读音、试合成确认后从 $id 重跑\"; exit 1; }"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+    "expect": "✅ 词尾 -ed 被吞（reawakened→reawaken）（p24，踩坑 23）",
+    "needs": "tts"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 专八 9f408b8 起由 batch_audio.sh 每篇跑 识别分诊（make_audio → qa_audio → 分诊，失败或待核即停；`识别分诊.py 专八 t25 --rev 7193562` 本次实跑报出 toiled→twiled、退出码 1，可作双向验证）。其余 5 个在用项目照旧：读音修正后重新生成 MP3，没重跑 qa_audio 或没登记差异，照样能生成视频；识别分诊本身不比 mp3_sha256，直接跑 make_audio.py（不经 batch_audio.sh）就绕过它；截图/视频生成前没有任何一处复核“识别自检针对当前 MP3、0 待核”。",
+   "fix": "同第 23 行：识别分诊 关口推广到所有项目的配音脚本，加 mp3_sha256 时效检查，并在 大字版 --preflight 和 render 工作流的 prep 里只读复核一次（0 待核才开画）；雷照搬 test_check_pitfalls 的 p22/p24。"
+  },
+  {
+   "id": "28",
+   "title": "引号造成停顿",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "四级",
+    "六级",
+    "中考",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "*/tools/make_audio.py：strip_quotes + 送进模型的文字残留引号就报错（6 份副本）",
+     "runs": "生成音频时每段自动",
+     "evidence": "专八/tools/make_audio.py:234:             raise RuntimeError(f'{key} 合成文字残留引号：{x}')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "同一段代码抄了 6 份、没有任何测试；哪份 strip_quotes 或残留正则被改坏（或某条新的合成路径绕过它），都发现不了。高考的 gaokao_tts.render_passage 本身不去引号（高考已定稿、用女声，但以后复用时会再踩）。",
+   "fix": "把 strip_quotes 和残留检查移进 tools/tts/gaokao_tts.py（只留一份，由 render_passage 调用），删掉 6 份副本；selftest：strip_quotes('He called it “right to grow” and ‘safe’, didn’t he?') 不得残留 “”‘ 和非词内的 ’，并保留 didn't；原始字符串直接送进残留检查必须报错。"
+  },
+  {
+   "id": "29",
+   "title": "临时目录不删、磁盘写满",
+   "stages": [
+    "视频",
+    "截图"
+   ],
+   "projects": [
+    "四级",
+    "六级",
+    "中考",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py：剩余 <3 GB 就停 + atexit 删除临时目录（专八引擎，PROJECTS 的 tmp 前缀覆盖 六级/考研/考研作文）",
+     "runs": "视频生成时自动",
+     "evidence": "专八/tools/make_video.py:1393:     atexit.register(shutil.rmtree, tmp, True)          # 无论成功、核查失败还是出错，退出时都删除"
+    },
+    {
+     "where": "中考/tools/make_video.py、四级/tools/make_video.py 同样的磁盘检查 + atexit",
+     "runs": "视频生成时自动",
+     "evidence": "中考/tools/make_video.py:450:         raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')"
+    },
+    {
+     "where": "六级/tools/大字版.py：截图剩余 <1 GB 就停",
+     "runs": "--stills 时自动",
+     "evidence": "六级/tools/大字版.py:256:             if free < 1:"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "进程被 SIGKILL、内存不足被杀、容器挂起时 atexit 不会执行（踩坑 51），前缀为 tem8video_/cet6video_/kyvideo_ 的临时目录照样会越积越多，启动时也不清理。高考的 tools/video/make_video.py:149 `tmp = Path(tempfile.mkdtemp())` 从来不删、也不查磁盘。没有任何测试。",
+   "fix": "每个 make_video 启动时扫一遍 Path(tempfile.gettempdir()).glob(PJ['tmp']+'*')，超过 6 小时、或 pid 文件对应的进程已经不在的就删；高考 make_video 补上同样 3 行（磁盘检查 + atexit）；selftest：把 shutil.disk_usage 打桩成 2 GB，必须 SystemExit。"
+  },
+  {
+   "id": "30",
+   "title": "片头词数含中文注释、注释被拆行",
+   "stages": [
+    "文字",
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "中考",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/extract_reading.py：词数去掉中文注释、破折号两边分开算",
+     "runs": "提取时自动（只有中考；这是改法，不是能发现问题的检查）",
+     "evidence": "中考/tools/extract_reading.py:145:             words = len([w for w in re.split(r'[\\s—]+', re.sub(r'\\s*\\([^()]*[一-鿿][^()]*\\)', '', ' '.join(paras))) if …"
+    },
+    {
+     "where": "中考/tools/make_video.py esc_en：中文注释包进 white-space:nowrap",
+     "runs": "渲染时自动（改法，不是检查）",
+     "evidence": "中考/tools/make_video.py:118:     return dash(nobr(re.sub(r'\\([^()]*[一-鿿][^()]*\\)[.,;:!?”’]*', lambda m: f'<span style=\"white-space:nowrap\">{m.group(0)}</span>', esc(s))))"
+    },
+    {
+     "where": "考研/tools/build_vocab.py：按现行规则从定稿句子重新数词，与片头不一致就报错（考研作文同）",
+     "runs": "build_vocab 时自动",
+     "evidence": "考研/tools/build_vocab.py:25:         errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py「注释分离」",
+     "runs": "只在 breaks=True 时（专八/六级引擎）；中考 make_video 调用时不开",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:110:       L.forEach((ln, i) => { if (i && ln[0].c === '(' && ln[1] && cjk(ln[1].c)) out.push(`注释分离：…"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "同一个坑在别的项目里还在：片头“全文 N 词”把中文注释算成词——四级 40/60 篇、六级 28/60 篇、专八 14/27 篇（words = len(' '.join(paras).split())，见 专八/tools/extract_reading.py:127、四级:144、六级:146），例如专八 t03 的 947 里含 4 个 “(防水布)” 这样的注释；vocab.json 原样带进封面（专八/tools/make_video.py:823）。中考的 build_vocab 没有复算。没有任何 layoutcheck 项能发现注释在中间被拆开（“(建 / 筑)”）：注释分离只查以 “(” 开头的行，而且中考不开。整件事没有任何雷。",
+   "fix": "建一个共用的 word_count()（用考研规则：按 [\\s—–…]+ 切分，只数含 [A-Za-z0-9] 的词，自然不算中文注释），每个 extract_reading 都 import 它；把复算检查（考研/tools/build_vocab.py:21-25）复制进另外 4 个 build_vocab.py，四级、六级、专八会立刻报出来——赶在专八 t11–t27 画封面之前做；layoutcheck 加一条对所有项目生效的规则：中文注释的 “(” 与 “)” 之间不许换行（把第 110 行推广），用一个拆开的 “(建筑)” 做双向验证。"
+  },
+  {
+   "id": "31",
+   "title": "人眼漏查画面形近字/同音字",
+   "stages": [
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py: 复核定稿指纹（ann/复核通过.json）",
+     "runs": "make_video 开头自动（共用引擎：专八/六级/考研/考研作文）",
+     "evidence": "专八/tools/make_video.py:1355: raise SystemExit(f'{a.pid} 的翻译与标注与复核定稿不一致（build_vocab.py --reseal），不生成视频')"
+    },
+    {
+     "where": "专八/tools/make_video.py: same_still（生成时逐屏与审阅截图比对）",
+     "runs": "make_video 每屏自动；GitHub render-*.yml 另逐字节比对截图",
+     "evidence": "专八/tools/make_video.py:1409: ok, n, m = same_still(small(tmp / f'{i:03d}.png'), small(still_file(stills, i)))"
+    },
+    {
+     "where": "专八/tools/make_video.py: frame_check（成品每屏取一帧与截图比对）",
+     "runs": "make_video 编码后自动",
+     "evidence": "专八/tools/make_video.py:1484: res.append(frame_check(out / name, frames, [tmp / f'{i:03d}.png' for i in range(len(scr))]))"
+    },
+    {
+     "where": "中考/tools/画面核查/pixelcheck.py + canary.py + 埋雷位置.json（15 雷）",
+     "runs": "要手动跑（中考 make_video/batch_video.sh 都不调用）",
+     "evidence": "中考/tools/画面核查/pixelcheck.py:1: \"\"\"画面与定稿文字逐屏机械比对（不靠人眼）：用生成视频的同一套程序，按复核定稿的数据…重新渲染每一屏"
+    }
+   ],
+   "test": {
+    "cmd": "D=$(mktemp -d) && /opt/ttsenv/bin/python 中考/tools/画面核查/screens_fp.py shots \"$D\" z03 z13 z16 && /opt/ttsenv/bin/python 中考/tools/画面核查/canary.py \"$D\" 中考/tools/画面核查/埋雷位置.json && /opt/ttsenv/bin/python 中考/tools/画面核查/pixelcheck.py \"$D\" y1 y2 y3 --as y1=z03,y2=z16,y3=z13",
+    "expect": "有差异的：['y1', 'y2', 'y3']（每个埋雷屏都列出）",
+    "needs": "browser"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "共用引擎的 same_still / frame_check 没有任何埋雷测试：阈值（64 像素、24 级）或比对代码被改松不会有人发现；现有的埋雷（埋雷位置.json）只测中考的 pixelcheck，而且要手动跑。中考 make_video 没有 frame_check/same_still，中考如果重做，只靠记得跑 pixelcheck。",
+   "fix": "给引擎加 `make_video.py --selftest-frames`（几十秒）：排一屏，HTML 里把一个字换成形近字（纪录→记录），same_still 必须返回 False；编码前对调两屏 PNG，frame_check 必须失败。在 render-*.yml 的 prep 里调用它。中考重做时在 batch_video.sh 的 make_video 后面接 pixelcheck（或者把 frame_check 移植进中考 make_video）。"
+  },
+  {
+   "id": "32",
+   "title": "为省 token 砍掉排版审阅",
+   "stages": [
+    "截图",
+    "流程"
+   ],
+   "projects": [
+    "专八",
+    "考研"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/canary_layout.py: 雷必须显出来",
+     "runs": "截图盲审准备时自动（专八/tools/截图盲审准备.py 调用）",
+     "evidence": "中考/tools/画面核查/canary_layout.py:128: assert changed > 2000, f'雷没有显出来：screen{scr:02d} {what}（与不埋雷的同一屏只差 {changed} 个像素）'"
+    },
+    {
+     "where": "专八/tools/截图盲审准备.py: 每批埋 5 雷",
+     "runs": "盲审前手动启动，启动后自动埋雷",
+     "evidence": "专八/tools/截图盲审准备.py:14: r = subprocess.run([sys.executable, str(R / '中考/tools/画面核查/canary_layout.py'), '--project', '专八', '--style', 'C', ..."
+    },
+    {
+     "where": "专八/tools/workflows/tem8-ink-stills-review.js、考研/tools/workflows/ky-stills-review.js: 自动计分、漏雷整批重审",
+     "runs": "审阅工作流内自动",
+     "evidence": "考研/tools/workflows/ky-stills-review.js:42: const again = first.filter(x => x && (!x.r || score(x) < (x.mines || []).length))"
+    }
+   ],
+   "test": {
+    "cmd": "D=$(mktemp -d) && /opt/ttsenv/bin/python 中考/tools/画面核查/screens_fp.py shots \"$D\" z01 && /opt/ttsenv/bin/python 中考/tools/画面核查/canary_layout.py \"$D\" z01 y4",
+    "expect": "5 行带“（变化 N 像素）”，exit 0（只证明雷埋进去了，审阅员查不查得出由工作流计分）",
+    "needs": "browser"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 行号按 9f408b8 后的 大字版.py 更新为 317。登记这一步不要求审阅真的发生过：六级/tools/大字版.py:317 的 approve() 只核对程序检查、指纹和截图哈希，从不检查这批截图有没有一份埋雷全部查出的盲审记录。所以跳过审阅员（正是这一条踩的坑）不会被拦住。中考的 zk-frame-qa.js 没有自动计分。",
+   "fix": "审阅工作流把结果写进 <项目>/tools/画面核查/盲审结果.json，每篇记 {截图哈希, caught, mines}。approve() 遇到下面任一情况就拒绝登记：没有记录、caught≠mines、截图哈希与现在的不同。"
+  },
+  {
+   "id": "33",
+   "title": "排版毛病视频生成后才发现",
+   "stages": [
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "中考",
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/make_video.py: layout_problems 每屏",
+     "runs": "make_video 每屏自动（中考）",
+     "evidence": "中考/tools/make_video.py:479: raise SystemExit(f'{p[\"id\"]} 第 {i + 1} 屏排版不合格（中考/tools/画面核查/layoutcheck.py）：\\n  ' + '\\n  '.join(bad))"
+    },
+    {
+     "where": "专八/tools/make_video.py: screen_checks → layoutcheck.problems",
+     "runs": "make_video 每屏自动 + 大字版.py --stills 每屏 + GitHub render 每篇（专八/六级/考研/考研作文）",
+     "evidence": "专八/tools/make_video.py:1263: out += LC.problems(pg, MIN_FS, MIN_VS, poss=True, names=NAMES, fonts=True, gaps=True, breaks=True)"
+    },
+    {
+     "where": "六级/tools/画面核查/双向验证.py（撤修正必须报、现在 0；含标点挤压、连字符）",
+     "runs": "要手动跑",
+     "evidence": "六级/tools/画面核查/双向验证.py:50:  ('画面 1–6 译文弯引号照常挤压 zh_html', 's01', {10}, (\"if gloss or STYLE != 'C' else\", 'if gloss else')),"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/双向验证.py",
+    "expect": "全部双向通过",
+    "needs": "browser"
+   },
+   "status": "自动拦截+有双向验证",
+   "gap": "双向验证要手动跑。最后一次存档的通过记录是 考研/大字版/日志/回归_汇总.log（10-21），而 layoutcheck.py 在 10-23 还改过。以下几项没有留下来的雷：行首缩进、孤字、直撇号、留白、词条折行、横向溢出（只有当年 --module 跑过一次）。中考调用 problems() 时没开 breaks/fonts/poss，后加的十几项检查对中考不生效。四级、高考的引擎没有 layoutcheck。",
+   "fix": "在 双向验证.py 的 MINES 里加 JS 雷：首字右移 20px（行首缩进）、释义末尾单字另起一行（孤字）、’ 换成 '（直撇号）、#list 推出内边距（留白）。把两套双向验证接进 render-*.yml 的 prep，或者按踩坑 37 的指纹门禁执行。"
+  },
+  {
+   "id": "34",
+   "title": "衬线 I 样式改动未先看就批量",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "中考",
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 衬线I、大写I",
+     "runs": "make_video 每屏自动、大字版 --stills 每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:126: out.push(`衬线I：${name}「…」的 I 与所在的词样式不同（${a.color} ${a.fontWeight} / ${b.color} ${b.fontWeight}）`);"
+    },
+    {
+     "where": "指纹含样式与字体：改样式后旧登记作废，必须重截图、重登记",
+     "runs": "make_video / screens_fp check 自动",
+     "evidence": "中考/tools/画面核查/screens_fp.py:28: for f in [T / 'make_video.py', T / '样式.css', T / 'fonts' / 'fonts.css']:"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "衬线I / 大写I 没有留下来的雷，只有当年 --module 跑过一次。“样式改动先渲染、逐处放大看”没有程序强制：指纹门禁只要求重截图，登记时程序检查为 0 就能过，不要求人看过改动处。",
+   "fix": "在 六级/tools/画面核查/双向验证.py 的 MINES 加两条：`document.querySelector('x-i').style.color='gray'`（必须报“衬线I”），以及把一个 x-i 拆回纯文本（必须报“大写I”，Nunito 画面）。登记门禁同踩坑 32：盲审记录里必须有改动的屏。"
+  },
+  {
+   "id": "35",
+   "title": "改程序引起意外的全局排版变化",
+   "stages": [
+    "截图",
+    "流程"
+   ],
+   "projects": [
+    "中考"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/progdiff.py",
+     "runs": "要手动跑（没有任何脚本或工作流调用它）",
+     "evidence": "中考/tools/画面核查/progdiff.py:1: \"\"\"比较新旧两版生成程序对同一篇的排版，列出有实质变化的屏（不花 token）。"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "progdiff 只能用于中考（它 import 中考/tools/make_video）。专八、六级、考研、考研作文的共用引擎改动后，没有任何工具列出换行变了的屏。一处意外的全局变化（如 8→10px）只要过了 layoutcheck，重截图后照样能登记。",
+   "fix": "在 大字版.py --stills 里把每屏新截图的哈希与 截图审阅通过.json 里已登记的“截图”哈希比较（数据现成，不花时间），写出 变了的屏.json 并打印每篇的变化屏数。--approve 遇到这两种情况就拒绝：变了的屏没有审阅记录覆盖；超过 30% 的屏变了却没加 --expect-global \"原因\"。"
+  },
+  {
+   "id": "36",
+   "title": "未先审截图就生成视频",
+   "stages": [
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "中考",
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py: 截图审阅登记指纹门禁",
+     "runs": "make_video 开头自动",
+     "evidence": "专八/tools/make_video.py:1368: raise SystemExit(f'{key} 的样片截图还没有审阅通过，或审阅之后程序、样式、数据改过（{tool} --stills → 审阅 → {tool} --approve）')"
+    },
+    {
+     "where": "专八/tools/make_video.py: 截图文件哈希必须是登记的那一份",
+     "runs": "make_video 开头自动",
+     "evidence": "专八/tools/make_video.py:1371: raise SystemExit(f'{stills} 里的截图不是审阅登记的那一份（重新截过图）：先审阅再 {tool} --approve')"
+    },
+    {
+     "where": ".github/workflows/render-*.yml: 重截图后与登记逐字节比对",
+     "runs": "GitHub 生成流程每篇自动",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:147: sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')"
+    },
+    {
+     "where": "中考/tools/make_video.py → screens_fp.py check",
+     "runs": "make_video 开头自动（中考）",
+     "evidence": "中考/tools/make_video.py:434: subprocess.run([sys.executable, str(HERE / '画面核查' / 'screens_fp.py'), 'check', a.pid], check=True)"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "①没有测试证明门禁在样式或程序改动后确实拒绝生成。②引擎指纹（专八/tools/make_video.py:1191）漏了引擎排版要用的 中考/tools/画面核查/zh_bind.py（make_video.py:328 加载），也漏了画面 C 用到的 themes.py。zh_bind 一改，旧登记仍然算“有效”，要到生成时 same_still 或 GitHub 逐字节比对才拦下，白白多画一遍。③登记不要求审阅证据（见踩坑 32）。",
+   "fix": "fingerprint() 的文件表里加 QA / 'zh_bind.py' 和 TH.__file__。再加一个几秒的自测：把指纹输入文件在内存里改一个字节，fingerprint 必须变，main() 必须以“还没有审阅通过”退出。"
+  },
+  {
+   "id": "37",
+   "title": "检查程序自身出错（漏查/误报）",
+   "stages": [
+    "流程"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py --module <旧版 make_video.py>",
+     "runs": "要手动跑",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:56:    /opt/ttsenv/bin/python 中考/tools/画面核查/layoutcheck.py --module <旧版 make_video.py> z01 …   （用旧版程序排版，检验本检查能查出旧版的毛病）"
+    },
+    {
+     "where": "六级/tools/画面核查/审阅修正双向验证.py、双向验证.py、专八/tools/画面核查/埋雷_排版检查.py",
+     "runs": "要手动跑",
+     "evidence": "六级/tools/画面核查/审阅修正双向验证.py:8: 用法：/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py（约 10 分钟；全部通过退出码 0）\"\"\""
+    },
+    {
+     "where": "考研/大字版/日志/regress.sh（临时回归脚本，放在日志目录）",
+     "runs": "要手动跑",
+     "evidence": "考研/大字版/日志/regress.sh:2: # 考研审阅修正后的全量回归（踩坑 56：每条规则改完都跑全量回归）"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
+    "expect": "全部双向通过",
+    "needs": "heavy"
+   },
+   "status": "只靠流程或记性",
+   "gap": "改了 layoutcheck.py、zh_bind.py 或引擎之后，没有任何东西强制跑这几套双向验证。回归脚本放在日志目录里，还写死了 cd 路径。最后存档的通过记录是 10-21，之后 layoutcheck.py 还改过（10-23 提交“专八水墨修正后复审…”）。也没有规则要求每条新检查都配一个雷。",
+   "fix": "把 regress.sh 挪成 tools/回归.sh（用相对路径），依次跑 六级两套双向验证、专八 埋雷_排版检查.py、大字版 --preflight-selftest、tools/tts/双向验证_读两遍.py。全部通过后写 回归通过.json，内容是 sha256(layoutcheck.py, zh_bind.py, 专八/tools/make_video.py, 分词补充.txt)。大字版 --stills/--approve 和 render-*.yml 的 prep 发现哈希不一致就拒绝。再加一条 grep 自查：layoutcheck 里每个 out.push 的标签，都必须在某个双向验证用例里出现。"
+  },
+  {
+   "id": "38",
+   "title": "返工未给最小范围、手算数字错",
+   "stages": [
+    "流程"
+   ],
+   "projects": [
+    "六级"
+   ],
+   "guards": [
+    {
+     "where": ".github/cet6-render-list.py: 按指纹列出真正需要重做的篇目",
+     "runs": "要手动跑（推清单前）",
+     "evidence": ".github/cet6-render-list.py:1: \"\"\"写 .github/cet6-render.txt（…）：列出还没有可用成品的篇目——"
+    },
+    {
+     "where": "六级/tools/大字版.py video(): 已做好且指纹没变的篇目自动跳过",
+     "runs": "大字版 --video 自动",
+     "evidence": "六级/tools/大字版.py:358: print(f'{pid}：已做好并核查通过，跳过（{name}）', flush=True)"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "critic: 证据行号按 9f408b8 后的 大字版.py 更新（354→358）。“返工前给用户最小范围的选项”“报告里的数字由程序统计”完全靠自觉。最小重做清单的生成程序只有六级有，考研、专八、考研作文的 .github/*-render.txt 都是手写的。",
+   "fix": "把 cet6-render-list.py 改成按 PROJECT 环境变量通用（与 cet6-chalk-pack.py 同一种写法），打印“需重做 N 篇：篇目 + 原因（指纹变了 / 核查未过 / 没有成品）”。汇报模板直接贴它的输出，数字一律从 汇总.json 由脚本生成。"
+  },
+  {
+   "id": "39",
+   "title": "徽章贴字、中英断开、行首破折号",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "中考",
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 徽章贴字",
+     "runs": "make_video 每屏、大字版 --stills 每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:322: if (gap < 1.2) out.push(`徽章贴字：英文「…」与徽章 ${s.textContent} 只隔 ${gap.toFixed(1)} 像素`); }"
+    },
+    {
+     "where": "layoutcheck.py: 行首破折号（英文）",
+     "runs": "同上",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:143: if (name === '英文' && '—–'.includes(f.c)) out.push(`行首破折号：英文第 ${i + 1} 行「…」以破折号开头`);"
+    },
+    {
+     "where": "layoutcheck.py: 中英断开",
+     "runs": "同上",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:152: if ((an.test(a.c) && h(f.c)) || (!breaks && h(a.c) && an.test(f.c))) out.push(`中英断开：译文「…」英文与紧挨的汉字分在两行`);"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
+    "expect": "全部双向通过（只覆盖 中英断开 s27 第 12 句）",
+    "needs": "heavy"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "徽章贴字和英文行首破折号没有留下来的雷。中英断开只在要手动跑的 10 分钟套件里有一条。审阅范围要用的“progdiff --lines”只有中考能用。",
+   "fix": "在 双向验证.py 的 MINES 加两条：`document.querySelector('.en sup').style.marginLeft='-2px'`（必须报“徽章贴字”）；在一行开头插入 '—'（必须报“行首破折号”）。"
+  },
+  {
+   "id": "40",
+   "title": "专名读错被识别器放过、句末气声",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "考研作文",
+    "专八"
+   ],
+   "guards": [
+    {
+     "where": "考研作文/tools/批量_本机.sh → pron_check.py（set -e -o pipefail，未登记就停）",
+     "runs": "考研作文本机批量自动",
+     "evidence": "考研作文/tools/批量_本机.sh:10: $PY $T/pron_check.py 2>&1 | grep -v -i warn | tail -3"
+    },
+    {
+     "where": "专八/tools/batch_audio.sh: 开头先跑 pron_check（含 pron_lint 词形歧义），未核就停",
+     "runs": "专八批量配音开头自动（9f408b8 起）",
+     "evidence": "专八/tools/batch_audio.sh:8:$PY 专八/tools/pron_check.py > /dev/null 2>&1 || { echo \"停止：专名 / 词形歧义读音还有没核对的词（先跑 pron_check.py，核对后 --approve）\"; exit 1; }"
+    },
+    {
+     "where": "中考/考研 tools/pron_check.py（未登记或音标变化 exit 1）",
+     "runs": "要手动跑（make_audio、batch_audio.sh 都不调用）",
+     "evidence": "中考/tools/pron_check.py:46:    sys.exit(1 if bad else 0)"
+    },
+    {
+     "where": "tail_trim（读音修正.json 逐句登记剪句末气声）",
+     "runs": "生成音频时自动（只有中考、考研作文）",
+     "evidence": "中考/tools/make_audio.py:99: TAIL_TRIM = json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8')).get('tail_trim', {})"
+    }
+   ],
+   "test": {},
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 9f408b8 起专八 batch_audio.sh 开头先跑 pron_check（未核退出 1 就停），原来“专八 batch_audio 不调用 pron_check”已不成立。仍有缺口：中考、考研的 make_audio.py 和 batch_audio.sh 都不调用 pron_check，只靠 CLAUDE.md“配音前”这一条自查；任何项目直接跑 make_audio.py（不经批量脚本）都绕得过去。tail_trim 只有中考、考研作文的 make_audio 有，专八、考研复制的 make_audio 里没有 TAIL_TRIM。pron_check 没有可重跑的双向验证。",
+   "fix": "在各项目 make_audio.py 的 main 开头调用 pron_check 的比对，有未核词就退出（不靠批量脚本）；中考、考研的 batch_audio.sh 第一行照 专八 加 `$PY <项目>/tools/pron_check.py || exit 1`。tail_trim 挪到 tools/tts 共用。加 `pron_check.py --selftest`：在内存里去掉一个已登记的词，必须 exit 1。"
+  },
+  {
+   "id": "41",
+   "title": "释义孤字、数字单位断开、推送卡死",
+   "stages": [
+    "截图",
+    "文字",
+    "流程"
+   ],
+   "projects": [
+    "中考",
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 孤字（释义折行单字）",
+     "runs": "make_video 每屏、大字版 --stills 每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:185:        out.push(`孤字：${name}释义折行后一行只有「${txt(L[j])}」`); }"
+    },
+    {
+     "where": "layoutcheck.py: 数字单位",
+     "runs": "同上",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:244:        out.push(`数字单位：英文「${txt(L[j - 1]).slice(-8)} / ${txt(L[j]).slice(0, 8)}」数字与单位被拆到两行`);"
+    },
+    {
+     "where": "中考/tools/extract_reading.py: 词数按空白和破折号切分",
+     "runs": "提取数据时自动",
+     "evidence": "中考/tools/extract_reading.py:145: words = len([w for w in re.split(r'[\\s—]+', …)])   # 破折号两边算两个词（z21 截图审阅：villages—just）"
+    },
+    {
+     "where": "考研/tools/自动提交.sh、六级/tools/自动提交.sh: 暂存区有改动才提交、推送重试",
+     "runs": "后台自动提交脚本",
+     "evidence": "考研/tools/自动提交.sh:8:  git diff --cached --quiet && return"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
+    "expect": "全部双向通过（覆盖 数字单位 s01/s05，不覆盖 孤字）",
+    "needs": "heavy"
+   },
+   "status": "自动拦截（无双向验证）",
+   "gap": "这一条的主角“释义孤字”没有留下来的雷。各项目的 batch_audio.sh 和 batch_video.sh（中考、专八、考研、六级、四级）仍是 `git commit … && git push -q …` 只推一次：不看暂存区、不重试，推送失败的提交没有人补推。后台任务 30 分钟上限要用 setsid，也只靠记性。",
+   "fix": "在 双向验证.py 的 MINES 加一条：用 JS 把某个释义的最后一个字放进单独一行（必须报“孤字”）。把所有 batch_*.sh 里的 commit&&push 换成 自动提交.sh 的 once() 写法：git diff --cached --quiet || git commit；然后 git push 重试 4 次。"
+  },
+  {
+   "id": "42",
+   "title": "softprops 发布插件 403",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "中考",
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": ".github/workflows/release-zk-videos.yml: 改用 gh 发布",
+     "runs": "GitHub 发布流程",
+     "evidence": ".github/workflows/release-zk-videos.yml:67:            gh release create \"$TAG\" \"$ZIPNAME\" --target \"$GITHUB_REF_NAME\" --title \"$title\" --notes-file notes.md"
+    },
+    {
+     "where": ".github/workflows/render-*.yml: 发布后核对附件名与大小",
+     "runs": "GitHub 发布流程自动（六级/专八/考研/考研作文）",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:289:          assert got == want, f'Release 附件与本地不一致：{got} ≠ {want}'"
+    },
+    {
+     "where": ".github/check-release-target.py（只查 Release 钉在 GITHUB_SHA）",
+     "runs": "GitHub render-*.yml、3 个资料发布流程的 prep 自动",
+     "evidence": ".github/check-release-target.py:10:        if re.search(r'--target\\s+\"?\\$\\{?GITHUB_SHA|target_commitish:\\s*\\$\\{\\{\\s*github\\.sha', line):"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "仍有 5 个工作流用 softprops：release-cet4-videos.yml:45、release-videos.yml:45、release-papers.yml:31、release-tem8-videos.yml:46、release-cet6-videos.yml:46，没有任何检查禁止它。CLAUDE.md 写的守卫 pub.sh / pub_all.sh 不在仓库里（git 历史也没有）。中考两个发布流程发布后不做任何核对。check-release-target.py 不在 10 个 release-*.yml 里运行。",
+   "fix": "扩展 check-release-target.py：遇到 'softprops/action-gh-release'、'unzip -l'、'zip -0' 也报错。新建一个很小的 lint-workflows.yml（推送 .github/** 时触发）运行它，同时做 yaml.safe_load 和步骤数比对（踩坑 68）。给 release-zk-*.yml 补上 render 流程那段附件名与大小核对。改正 CLAUDE.md 里 pub.sh 的引用。"
+  },
+  {
+   "id": "43",
+   "title": "unzip -l 看不到中文名、空等",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文",
+    "中考",
+    "四级",
+    "高考"
+   ],
+   "guards": [
+    {
+     "where": ".github/pack-zip.py: Python zipfile 打包并逐个核对（中考资料、四级听写卡）",
+     "runs": "GitHub 发布流程自动",
+     "evidence": ".github/pack-zip.py:25:        assert i.flag_bits & 0x800 or i.filename.isascii(), f'{i.filename} 没有 UTF-8 标记'"
+    },
+    {
+     "where": ".github/cet6-chalk-pack.py（大字版视频包：六级/专八/考研/考研作文）",
+     "runs": "GitHub render 发布任务自动",
+     "evidence": ".github/cet6-chalk-pack.py:201:                assert i.flag_bits & 0x800, f'{z}：{i.filename} 没有 UTF-8 标记'"
+    },
+    {
+     "where": ".github/workflows/release-cet6-materials.yml 等资料流程内联 zipfile 核对",
+     "runs": "GitHub 发布流程自动",
+     "evidence": ".github/workflows/release-cet6-materials.yml:68:          with zipfile.ZipFile(z) as zf:                   # 踩坑 43：一律用 Python zipfile 核对"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "下面几个视频、原卷发布流程仍用 Info-ZIP 打包、用 `unzip -l` 查看，正是这一条的坑：release-zk-videos.yml:33-34、release-videos.yml:31-32、release-cet4/cet6/tem8-videos.yml:26-27、release-papers.yml:20-23。任何流程都没有“发布后下载 + zipfile 比对”（render 流程只比附件名和大小）。pack-zip 的断言没有双向验证。",
+   "fix": "用踩坑 42 的同一个 lint 拒绝工作流里的 `unzip -l`、`zip -0`、`zip -q`，把这些流程改用 .github/pack-zip.py。给 pack-zip.py 加 --selftest：用 Info-ZIP `zip -0` 打一个中文名文件，UTF-8 标记断言必须失败；用 Python 打包必须通过。"
+  },
+  {
+   "id": "44",
+   "title": "西语声码器帧频梳状电磁音",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "西班牙语"
+   ],
+   "guards": [],
+   "test": {},
+   "status": "已不适用",
+   "gap": "西班牙语/ 已整体删除（提交 8f90c15，用户 2026-10-17 要求），buzz.py、test_buzz.py、make_audio.py 都不在工作区。需要时可以从 8f90c15^ 恢复（git cat-file 已确认存在）。",
+   "fix": "西语项目重启时：git checkout 8f90c15^ -- 西班牙语/tools/buzz.py 西班牙语/tools/test_buzz.py，让 make_audio 在输出前调用 test_buzz 的 40 篇必过加埋雷测试。"
+  },
+  {
+   "id": "45",
+   "title": "工具包写死本机绝对路径",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "西班牙语"
+   ],
+   "guards": [],
+   "test": {},
+   "status": "已不适用",
+   "gap": "build_kit.py 和 release-es-kit.yml 随西语一起删除（8f90c15）。这条通用教训没有守卫：现在 .github/ 里没有 /home/user，但 六级/tools/发布_黑板.sh、六级/tools/批量生成_黑板.sh、专八/tools/截图盲审准备.py、考研/大字版/日志/regress.sh 写死了 /home/user/university-entrance-examination。目前它们只在本机跑，一旦挪进 GitHub 流程就会失败。",
+   "fix": "在踩坑 42 的 lint 里加一条：render-*.yml 签出的 tools/ 和 */tools/ 下的 .py、.sh 文件出现 /home/user 就报错（一行 grep）。"
+  },
+  {
+   "id": "46",
+   "title": "开发机与老师机浏览器版本不同",
+   "stages": [
+    "截图",
+    "视频",
+    "发布"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": ".github/actions/cet6-chalk-env/action.yml: 浏览器版本断言",
+     "runs": "GitHub 渲染流程每台机器自动（5 个 render-*.yml 都用这个环境）",
+     "evidence": ".github/actions/cet6-chalk-env/action.yml:64: echo \"$v\" | grep -qx 'Chromium 141\\.0\\.7390\\.37 *' || { echo \"::error::浏览器版本不是 Chromium 141.0.7390.37：$v\"; exit 1; }"
+    },
+    {
+     "where": ".github/workflows/render-*.yml: 截图与审阅登记逐字节比对",
+     "runs": "GitHub 渲染流程每篇自动，生成视频之前",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:147: sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "critic: 原来标“已不适用”不对。西语的检查确已随 8f90c15 删除（西班牙语/ 只剩未跟踪的 __pycache__），但这一条的风险（截图用的浏览器与生成视频用的不同 → 换行不同）对 4 个大字版项目仍然存在，而且 GitHub 上有自动拦截：cet6-chalk-env 断言 Chromium 141.0.7390.37（5 个 render-*.yml 都用它），重截图后与审阅登记逐字节比对，不一致不生成视频。缺口：本机 六级/tools/大字版.py:245 只写死路径 /opt/pw-browsers/chromium、不核对版本，本机浏览器一旦升级要等 GitHub 跑一轮才发现；没有双向验证（如故意换一个版本号必须报）。",
+   "fix": "在 大字版.py 启动浏览器后断言 br.version == '141.0.7390.37'，或者把 br.version 写进 M.fingerprint，这样本机当场就能拦下；action.yml 的版本断言加一个自测：把期望版本改一位，必须 exit 1。"
+  },
+  {
+   "id": "47",
+   "title": "清临时目录删掉软链接指向的模型",
+   "stages": [
+    "流程",
+    "分屏",
+    "音频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/.gitignore（模型目录不入库）",
+     "runs": "提交时（只保证模型不进仓库，不防软链接）",
+     "evidence": "tools/tts/.gitignore:1: models/"
+    },
+    {
+     "where": "CLAUDE.md 踩坑 47（操作规范：find 仓库 -xtype l 必须为空）",
+     "runs": "要手动跑",
+     "evidence": "CLAUDE.md:108: | 47 | 清理临时目录（scratchpad）腾磁盘时，把 `tools/tts/models/` 里软链接指向的 Kokoro、语音识别模型一并删了"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "critic: 证据行号按当前 CLAUDE.md（新增铁律 15 后）更新为 108。整个仓库没有一处程序执行 find -xtype l 或 is_symlink（grep 为 0）。download_models.py 发现目标“已存在”就跳过，不拒绝软链接；清理临时目录也没有专用脚本。现状没问题：本次 find 确认仓库里没有软链接，tools/tts/models/ 下都是真实文件。但以后不再犯，全靠记性。",
+   "fix": "在 tools/tts/download_models.py 结尾和 大字版.py preflight 里各加一行：models/ 下任何一项 is_symlink()，或 `find 仓库 -xtype l` 有输出，就报错。清理临时目录统一用一个小脚本，先查仓库里有没有软链接指向要删的目录，有就停下。"
+  },
+  {
+   "id": "48",
+   "title": "磁盘配额被转录、截图副本、旧视频吃光",
+   "stages": [
+    "流程",
+    "视频",
+    "截图"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文",
+    "中考",
+    "四级"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py main(): 剩余 < 3 GB 拒绝生成（六级、专八、考研、考研作文共用的引擎）",
+     "runs": "生成每个视频时自动",
+     "evidence": "专八/tools/make_video.py:1391: raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')"
+    },
+    {
+     "where": "六级/tools/大字版.py stills(): 剩余 < 1 GB 停在下一篇之前",
+     "runs": "--stills 截图时每篇自动",
+     "evidence": "六级/tools/大字版.py:256: if free < 1:"
+    },
+    {
+     "where": "中考/tools/make_video.py、四级/tools/make_video.py: 3 GB 检查",
+     "runs": "生成视频时自动",
+     "evidence": "中考/tools/make_video.py:450: raise SystemExit(f'磁盘剩余只有 {free:.1f} GB（至少需要 3 GB），先清理临时文件再生成视频')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "只在生成视频、截图开始时拦一下。真正吃空间的东西（审阅截图副本、子任务转录、旧成品视频用 sparse-checkout 移出）全靠记得清理；音频生成和复制审阅副本都不查剩余空间；阈值检查本身也没有测试。高考的 tools/video/make_video.py 没有空间检查。",
+   "fix": "把同一个“剩余 < 3 GB 就停”的函数也放进 make_audio.py 和复制审阅副本的脚本开头。加一个约 5 行的测试：用 monkeypatch 让 shutil.disk_usage 返回 2 GB，确认 make_video.main 抛出“至少需要 3 GB”。审阅结束后删副本，写进出副本的那个脚本的末尾。"
+  },
+  {
+   "id": "49",
+   "title": "批量视频攒满 10 篇才推送，重启全丢",
+   "stages": [
+    "视频",
+    "流程"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "六级/tools/批量生成_黑板.sh: 每篇 生成→verify_all→提交→推送，推送失败就停",
+     "runs": "本机批量脚本每篇自动",
+     "evidence": "六级/tools/批量生成_黑板.sh:26: git status -sb | head -1 | grep -q ahead && { echo \"STOP 推送失败 $id\" >> $LOG; exit 1; }"
+    },
+    {
+     "where": ".github/workflows/render-*.yml: 每篇一台机器，做完立刻上传 artifact",
+     "runs": "GitHub 渲染流程每篇自动",
+     "evidence": ".github/workflows/render-kaoyan-campus.yml:209: name: kaoyan-campus-${{ matrix.id }}"
+    },
+    {
+     "where": "考研/tools/自动提交.sh: 每 5 分钟把中间产物提交推送",
+     "runs": "要手动和批量一起启动",
+     "evidence": "考研/tools/自动提交.sh:16: while alive \"$@\"; do once; sleep 300; done"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "视频这一步已经靠结构保证：在 GitHub 上每篇一个 artifact，或者本机每篇推送一次。但新写的本机批量脚本没有任何约束：考研作文/tools/批量_本机.sh:16-21 等音频、识别、分屏、截图全部做完才 git add/commit/push 一次，做到一半容器被挂起，前面的全丢。“每篇做完就备份”没有程序强制。",
+   "fix": "批量_本机.sh 开头用 setsid 在后台启动一个跟 考研/tools/自动提交.sh 一样的定时提交脚本（传本脚本的 PID），或者每做完一篇就 commit 并 push。以后新写的本机批量脚本都从这份模板复制。"
+  },
+  {
+   "id": "50",
+   "title": "子代理改做别的，协调人凭提交说明报数",
+   "stages": [
+    "流程",
+    "截图"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "六级/tools/大字版.py approve(): 程序打印实际登记篇数",
+     "runs": "--approve 时自动打印，汇报时用不用它的数字靠人",
+     "evidence": "六级/tools/大字版.py:332: print(f'已登记 {len(ids) - len(bad)} 篇')"
+    },
+    {
+     "where": "六级/tools/大字版.py video(): 没有登记或指纹不符就不生成",
+     "runs": "--video 每篇自动",
+     "evidence": "六级/tools/大字版.py:350: summary[pid] = {'视频': name, '结果': '没做：截图还没审阅登记，或登记之后程序、样式、数据改过', ..."
+    },
+    {
+     "where": ".github/workflows/render-*.yml prep: 核对审阅登记与当前指纹",
+     "runs": "GitHub 渲染流程开头自动",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:88: sys.exit('这些篇目不能生成（截图审阅登记与现在的程序和数据不一致）：\\n  ' + '\\n  '.join(bad))"
+    }
+   ],
+   "test": {},
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 证据行号按 9f408b8 后的 大字版.py 更新（328→332、346→350）。下游有拦截：没登记的篇目不会生成出错的视频。但两件事仍靠记性：给用户汇报的数字从哪儿来，以及子代理指令里有没有写“中途的消息已处理，不要改做”。仓库里也没有一条命令能直接列出各项目已登记、已截图、已生成的篇数，所以照样可能把错的数字报给用户。",
+   "fix": "给 大字版.py 加 --status：读 汇总.json、截图审阅通过.json、成品核查/，按项目打印各项篇数，汇报一律粘贴它的输出。子代理指令的固定开头写进仓库文件（如 tools/子代理指令头.md），工作流脚本拼 prompt 时自动带上。"
+  },
+  {
+   "id": "51",
+   "title": "容器空闲被挂起，脱离会话的批量一起停",
+   "stages": [
+    "流程"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "GitHub Actions 渲染（render-*.yml）：长任务不在本容器跑（结构性规避）",
+     "runs": "推清单文件自动触发",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:107: fail-fast: false"
+    },
+    {
+     "where": "六级/tools/大字版.py: 指纹没变的篇目跳过，可续跑",
+     "runs": "重跑同一条命令时自动",
+     "evidence": "六级/tools/大字版.py:26: 已经做好并核查通过、指纹没变的篇目直接跳过（中断后重跑同一条命令就从断处接着做）"
+    },
+    {
+     "where": "开工必读.md 清单：后台等待任务 + send_later",
+     "runs": "要手动跑",
+     "evidence": "开工必读.md:35: - [ ] 批量用脚本链一次启动；设好后台等待任务和 `send_later` 防中断；之后不盯、不查"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "本机长任务防挂起，靠模型记得挂一个 run_in_background 等待任务和 send_later，仓库里没有任何程序检查。视频和截图批量已迁到 GitHub、脚本也能续跑，所以最多丢正在做的那一篇。但本机的音频、截图链（考研作文/tools/批量_本机.sh、专八/tools/水墨流水线.sh）被挂起后，没人自动续跑。",
+   "fix": "本机流水线脚本启动时写一个 运行中.json（命令和 PID），正常结束时删掉。配一个 SessionStart 钩子（需用户同意改 settings）：发现 运行中.json 而进程不在，就按原命令自动续跑。能放到 GitHub 的批量（如截图）继续迁过去。"
+  },
+  {
+   "id": "52",
+   "title": "zip -0 中文名无 UTF-8 标记；旧版视频被跳过",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文",
+    "中考",
+    "四级"
+   ],
+   "guards": [
+    {
+     "where": ".github/cet6-chalk-pack.py: Python zipfile 打包，逐个核对 UTF-8 标记、顺序、不压缩、大小、CRC，以及指纹 = 审阅登记",
+     "runs": "GitHub 发布流程 publish 自动（5 个 render-*.yml）",
+     "evidence": ".github/cet6-chalk-pack.py:201: assert i.flag_bits & 0x800, f'{z}：{i.filename} 没有 UTF-8 标记'"
+    },
+    {
+     "where": ".github/pack-zip.py（资料包：中考、四级听写卡）",
+     "runs": "release-zk-materials.yml、release-cet4-dictation.yml 自动",
+     "evidence": ".github/pack-zip.py:25: assert i.flag_bits & 0x800 or i.filename.isascii(), f'{i.filename} 没有 UTF-8 标记'"
+    },
+    {
+     "where": ".github/cet6-render-list.py: 已提交但指纹与登记不同的照样重做",
+     "runs": "要手动跑（写清单时）",
+     "evidence": ".github/cet6-render-list.py: elif r.get('指纹') != reg.get(f'{p[\"id\"]}@3', {}).get('指纹'):"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "6 个旧发布工作流还在用 zip -0 或 zip -q：release-videos.yml:31（高考）、release-cet4-videos.yml:26、release-cet6-videos.yml:26、release-tem8-videos.yml:26、release-zk-videos.yml:33、release-papers.yml:20-21。“下次再用时改”靠记性。六级/tools/批量生成_黑板.sh:14 还是“已提交就跳过”。两项都没有能长期重跑的埋雷测试。",
+   "fix": "写 .github/check-workflows.py（可以和 check-release-target.py 合并）：任何工作流里出现 `zip -0|zip -q|zip -r|unzip -l` 就报错，放在所有 release-*.yml 的第一步跑。现在就把这 6 个工作流换成 python3 .github/pack-zip.py。批量生成_黑板.sh 的跳过条件改用 cet6-render-list.py 的判断。"
+  },
+  {
+   "id": "53",
+   "title": "Release 钉在触发提交上导致 403",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": ".github/check-release-target.py: 扫描全部工作流，钉在 GITHUB_SHA / github.sha 就报错",
+     "runs": "8 个工作流（5 个 render、3 个资料发布）的第一步自动跑",
+     "evidence": ".github/check-release-target.py:10: if re.search(r'--target\\s+\"?\\$\\{?GITHUB_SHA|target_commitish:\\s*\\$\\{\\{\\s*github\\.sha', line):"
+    },
+    {
+     "where": ".github/workflows/render-cet6-chalk.yml prep",
+     "runs": "GitHub 发布流程 prep 自动",
+     "evidence": ".github/workflows/render-cet6-chalk.yml:70: run: python3 .github/check-release-target.py"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "我实测了这条正则，有 3 种写法漏掉：`--target ${{ github.sha }}`、`--target=$GITHUB_SHA`、`-f target_commitish=$GITHUB_SHA`。CLAUDE.md 说的“埋雷双向验证”没有留在仓库里。另有 10 个旧工作流（release-videos、release-zk-videos 等）自己不调用这个检查，只有那 8 个工作流运行时才会顺带扫描它们。",
+   "fix": "正则改成：同一行里既有 target 又有 GITHUB_SHA 或 github.sha 就报。加一个 --selftest：内置 5 行埋雷样例必须全部报出，`--target \"$GITHUB_REF_NAME\"` 不能报；每个工作流跑检查前先跑 --selftest。所有 release-*.yml 的第一步都加上这个检查。"
+  },
+  {
+   "id": "54",
+   "title": "pgrep 中文路径失灵，两份截图进程互删",
+   "stages": [
+    "截图",
+    "流程"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "六级/tools/大字版.py stills(): 每篇加 flock 独占锁，已有进程在画就退出",
+     "runs": "--stills 每篇自动（六级、专八、考研、考研作文、专八水墨共用这个驱动）",
+     "evidence": "六级/tools/大字版.py:228: sys.exit(f'{pid}：另一个进程正在画这一篇的截图（同时画两份会互相删截图，踩坑 54），这次不启动；等它画完再说')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "“别的进程持锁时退出码 1”的双向验证没有留在仓库。--video 这一步没有锁，两份 --video 跑同一篇会同时写同一个成品和临时文件。pgrep 用 ASCII 模式靠记性。",
+   "fix": "加 `大字版.py --lock-selftest`：先在本进程里 flock 某一篇的 .lock，再起子进程跑 --stills 这一篇，必须退出码 1 且输出含“踩坑 54”（锁检查在预检之前，1 秒内结束），然后放锁。video() 里同样加每篇的锁。"
+  },
+  {
+   "id": "55",
+   "title": "排版检查误报：人名边界、挤压右标点",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py ok_break(): 登记人名两头可断、中间不可断",
+     "runs": "截图时每屏自动（make_video.screen_checks → LC.problems）",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:385: for nm in names:"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py 译文短行: 行末挤压过的右标点按全宽量",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:548: if p is not None and mr.get(p - 1, 0) < 0:"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "修正已写进 layoutcheck，但“旧检查报、新检查不报、放得进的照样报”的单元验证没有留在仓库。六级那两套双向验证跑的是六级的句子，不含专八 t04 第 8 句、t09 第 8 句，所以这两处以后如果退回去，不会有任何测试报警。",
+   "fix": "在 六级/tools/画面核查/审阅修正双向验证.py 加两条（或另写一份专八版）：t04:8、t09:8 在现在的引擎上必须 0 处；在“凯洛／格”中间插 <br>，必须报释义断词；把“说道：”所在行的宽度加 3 像素（放得下了）却仍推到下一行，必须报译文短行。"
+  },
+  {
+   "id": "56",
+   "title": "W+h 字距、称谓/数词拆开、省略号绑定",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: W与h间隙",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:137: out.push(`W与h间隙：${name}「...」的 W 与后一个字母之间空隙偏大（Nunito 的 W+h、W+i 字距没有收紧）`)"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 称谓断开",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:240: if (z && /\\b(Mr|Mrs|Ms|Dr|Prof|St)\\.$/.test(...)) out.push(`称谓断开：英文第 ${j} 行...`)"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 数词断开",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:671: res.append(f'数词断开：{name}「...」单独成词的数词与后面的词被拆到两行')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "三项新检查都在截图阶段自动跑，但 W与h间隙、称谓断开、数词断开都没有能长期重跑的双向验证。六级/tools/画面核查/审阅修正双向验证.py 只覆盖了术语断开 3 条。“每条规则改完都跑全量回归”靠记性：回归脚本只在 考研/大字版/日志/chain*.sh 这类临时脚本里跑过，不在任何流水线里。",
+   "fix": "照 六级/tools/画面核查/双向验证.py 的 CASES 写法，在内存里撤掉修正：撤掉 wh() 后，含 When 的句子必须报 W与h间隙；撤掉称谓后的不换行空格，必须报称谓断开；撤掉 ZH_NUM 绑定，必须报数词断开。再加一个 GitHub 工作流（触发路径：专八/tools/make_video.py、中考/tools/画面核查/layoutcheck.py、zh_bind.py），这几个文件一改就自动跑全部双向验证脚本。"
+  },
+  {
+   "id": "57",
+   "title": "考研封面贴纸写成“专八精读”",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py deco_project(): 封面、原题屏的 ::before/::after 文字出现别的考试名就报错",
+     "runs": "截图、生成视频时封面屏自动（screen_checks）",
+     "evidence": "专八/tools/make_video.py:1273: out += [f'封面：{x}' for x in deco_project(pg)]"
+    },
+    {
+     "where": "专八/tools/make_video.py PROJECTS[项目]['badge'] 按项目覆盖贴纸",
+     "runs": "渲染时自动",
+     "evidence": "专八/tools/make_video.py:688: theme += f\"<style>.ttl::after{{content:'{PJ['badge']}'}}</style>\""
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "只查 ::before/::after 的 content，贴纸如果做成图片、SVG 或普通文字就查不到。考研作文和考研在 EXAM_WORDS 里都只认“考研”，考研作文封面误用阅读的“考研 精读”查不出。“去掉覆盖时报专八”的双向验证没有留在仓库。",
+   "fix": "加约 5 行的自测：set_project('考研') 后删掉 PJ['badge']，渲染 title_slide，deco_project 必须报“专八”；恢复后必须 0。规则从“不许出现别的考试名”改成“贴纸文字必须等于 PJ['badge']”，这样考研作文也能查到。"
+  },
+  {
+   "id": "58",
+   "title": "全角方括号不在标点集合，释义末标点宽度错",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py: 引擎左右半空白标点集合含［］〔〕",
+     "runs": "渲染时自动",
+     "evidence": "专八/tools/make_video.py:228: ZCLOSE, ZOPEN = set('，。、：；！？）”’】」》］〕'), set('（“‘【「《［〔')"
+    },
+    {
+     "where": "专八/tools/make_video.py 样式: x-n 末尾 .pr 改成半字宽行内块",
+     "runs": "渲染时自动",
+     "evidence": "专八/tools/make_video.py:135: x-n>.pr:last-child{display:inline-block;width:.5em;margin-right:0;white-space:nowrap}"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 检查程序的标点集合（JS 与 Python 两处）",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:74: const ZC='，。、：；！？）”’】」》］〕', ZO='（“‘【「《［〔', PUN=ZC+ZO+'…—·', out=[];"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "标点集合分别写在 4 个地方：引擎第 228 行，layoutcheck 的 JS 第 74 行、Python 第 359 行和第 514 行，全靠手工同步。译文里出现新标点时没有程序提醒，“先实测字形、加进两边的集合”靠记性。k09 的双向验证（旧引擎报 3 处、新引擎 0）没有留在仓库。",
+   "fix": "在 大字版.py 的 preflight 加一项：译文、释义里 unicodedata 类别为 P* 的字、全角符号，不在 ZCLOSE|ZOPEN|'…—·' 和白名单里的，一律报错（几秒、开画前）。再加一个断言测试：4 份集合必须相同；更好的做法是 layoutcheck 直接从引擎导入同一份集合。"
+  },
+  {
+   "id": "59",
+   "title": "连字符词条直接断开；长句找不到分屏切法",
+   "stages": [
+    "截图",
+    "分屏"
+   ],
+   "projects": [
+    "考研",
+    "专八",
+    "六级",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 连字符",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:168: if (a.c === '-' && /[A-Za-z]/.test(f.c) && !wide) out.push(`连字符：${name}「...」`"
+    },
+    {
+     "where": "专八/tools/make_video.py FIT: 连字符词条放不下先缩字号",
+     "runs": "渲染时自动",
+     "evidence": "专八/tools/make_video.py:962: // 词条里的连字符词一行放不下（hw 只好在连字符处断开）时，先缩小词汇栏字号；缩到下限还放不下...才允许断开（考研 k24 consumer-／generated）"
+    },
+    {
+     "where": "考研/tools/分屏定稿.py: 分屏手定.json 优先采用",
+     "runs": "分屏流水线自动（考研/tools/阶段E_截图.sh、专八/tools/水墨流水线.sh）",
+     "evidence": "考研/tools/分屏定稿.py:33: if k in hand.get(pid, {}):                    # 人工指定（分屏手定.json，写明理由）优先"
+    },
+    {
+     "where": "split_check.py（必须 ALL OK）",
+     "runs": "分屏流水线自动",
+     "evidence": "专八/tools/水墨流水线.sh:21: tail -1 $W/split_check_水墨.log | grep -q \"ALL OK\" || stop \"split_check 没有全部通过\""
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/双向验证.py",
+    "expect": "exit 0（每行以 OK 开头，含“连字符例外：放得下的连字符词在连字符处断开必须报”）",
+    "needs": "browser"
+   },
+   "status": "自动拦截+有双向验证",
+   "gap": "这套双向验证只证明“连字符”检查能报出断开（六级 s20、s10 埋雷），没有撤掉“先缩字号”的修正去验证考研 k24。分屏定稿“一次列全”的双向验证（去掉人工指定报 21 句）没有留在仓库。考研作文/tools/批量_本机.sh 里分屏建议和截图两步带 `|| true`，失败了也不停。",
+   "fix": "写一个考研版的双向验证 CASE：撤掉 make_video.py:962 的缩字号循环，k24 必须报“连字符”。分屏定稿.py 加 --selftest：在内存里清空 分屏手定，必须列出要人工指定的句子并以退出码 1 结束。批量_本机.sh 去掉这两处 `|| true`。"
+  },
+  {
+   "id": "60a",
+   "title": "改词数规则后片头词数没重算",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "考研/tools/build_vocab.py: 按现行规则从定稿句子重数词，与 sents.json 不一致就报错",
+     "runs": "生成 vocab.json 时自动（考研作文/tools/批量_本机.sh 第 9 行也调用）",
+     "evidence": "考研/tools/build_vocab.py:25: errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
+    },
+    {
+     "where": "考研作文/tools/build_vocab.py（同一条复算）",
+     "runs": "生成 vocab.json 时自动",
+     "evidence": "考研作文/tools/build_vocab.py:25: errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "复算只有在重跑 build_vocab 时才会执行，而这次的坑恰恰是“改了上游、忘了重跑下游”。片头直接用 vocab.json 里的 words（专八/tools/make_video.py:823），截图和生成视频时都不复算。六级、专八、中考的 build_vocab 根本没有复算。“旧 sents.json 报 37 篇”的双向验证没有留在仓库。",
+   "fix": "把复算挪进渲染引擎：在 title_slide 或 大字版.py preflight 里，用 build_vocab 同一条正则从 p['paras'] 的英文重数，与 p['words'] 不等就报错。这样六级、专八、考研、考研作文每次截图、生成都会自动查；中考的 make_video.py 也加上。build_vocab 再加 --selftest：在内存里把一篇的 words 减 1，必须报错。"
+  },
+  {
+   "id": "60",
+   "title": "专名、复合词被拆行；短语空位被高亮",
+   "stages": [
+    "截图",
+    "文字"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/zh_bind.py（zh_spans、en_spans；引擎和 layoutcheck 共用同一份）",
+     "runs": "渲染、截图检查时自动",
+     "evidence": "专八/tools/make_video.py:328: sp = importlib.util.spec_from_file_location('zh_bind', QA / 'zh_bind.py')"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 专名断开、译文断词（复合词）",
+     "runs": "截图时每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:665: res.append(f'译文断词：{name}「...」把复合词拆到两行（zh_bind）')"
+    },
+    {
+     "where": "考研/tools/ann_lib.py check(): 短语空位",
+     "runs": "build_vocab 时自动（A.check）",
+     "evidence": "考研/tools/ann_lib.py:176: errs.append(f'第{k}句 短语空位：{e[\"h\"]}{{{sf}}} 的原文词形要写“…”（如 {{focused…on}}），空位里的词不属于短语')"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "检查都在截图阶段自动跑，但“旧引擎报 107 处、新引擎 0”的双向验证只在 考研/大字版/日志/chain*.sh 这类临时脚本里跑过，没有留下能长期重跑的测试。zh_bind 规则以后被改松，不会有任何测试报警。六级/tools/ann_lib.py 没有短语空位检查（考研、考研作文、专八都有，专八是 slot_in_surface）。",
+   "fix": "新建 考研/tools/画面核查/双向验证.py（照六级的写法），CASES 用盲审时报出的句子：Brett Kavanaugh、Mariana Trench、服务人员、可持续、W ith、focused…on。在内存里撤掉 zh_bind 或 en_spans 对应的规则后必须报出，现在的引擎必须 0。专八 ann_lib.slot_in_surface 同步到六级的 ann_lib。这套测试也挂进上面“改引擎就自动跑双向验证”的 GitHub 工作流。"
+  },
+  {
+   "id": "61",
+   "title": "工作流内联Python变量覆盖；埋雷不显",
+   "stages": [
+    "发布",
+    "截图"
+   ],
+   "projects": [
+    "专八"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/canary_layout.py: 雷必须显出来（与不埋雷的同一屏逐像素比，变化 ≤2000 像素就断言失败）",
+     "runs": "埋雷时自动（专八/tools/截图盲审准备.py 调用；其他项目只有手动跑 canary_layout 时才有）",
+     "evidence": "中考/tools/画面核查/canary_layout.py:128: assert changed > 2000, f'雷没有显出来：screen{scr:02d} {what}（与不埋雷的同一屏只差 {changed} 个像素）'"
+    },
+    {
+     "where": "中考/tools/画面核查/canary_layout.py: 行首空白雷从 520px 逐步缩小，直到和第一个词在同一行",
+     "runs": "埋雷时自动",
+     "evidence": "中考/tools/画面核查/canary_layout.py:72: \"for (let w=520; w>=200; w-=40) { g.style.width=w+'px'; if (Math.abs(r.getClientRects()[0].bottom - g.getBoundingClientRect().bottom) < 40) break; }\""
+    },
+    {
+     "where": "专八/tools/截图盲审准备.py: 每批跑 canary_layout，退出码非 0 就停",
+     "runs": "专八水墨截图盲审准备时自动",
+     "evidence": "专八/tools/截图盲审准备.py:14: r = subprocess.run([sys.executable, str(R / '中考/tools/画面核查/canary_layout.py'), '--project', '专八', '--style', 'C', ..."
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "①（kinds 变量覆盖）完全没有机制：release-cet6-materials.yml / release-kaoyan-materials.yml 里的 heredoc Python（第 42 行 kinds = [...]）推送前从不执行，仓库里没有任何脚本把工作流里的 Python 抽出来跑，没有 pre-push 钩子；只有到 GitHub 上才会暴露。②有断言，但没有双向验证证明“雷没显出来”时真的会报；而且只有专八的盲审准备脚本会自动调用它。",
+   "fix": "①把 release-*-materials.yml 里的 heredoc Python 移到 .github/*.py 文件里（照 cet6-chalk-pack.py 的做法），加 --dry-run 2 只跑前 2 个文件夹；新增 .github/check-workflows.py，对每个 python3 - <<'PY' 段执行 compile()，并对改动过的工作流跑 dry-run；由提交进仓库的 pre-push 钩子（core.hooksPath=.githooks）和 自动提交.sh 调用。②给 canary_layout.py 加 --selftest：埋一个 0 宽的空白雷，必须触发 AssertionError「雷没有显出来」。"
+  },
+  {
+   "id": "62",
+   "title": "补充词典词被 jieba 切开断行",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/zh_bind.py: zh_spans ⑥ 补充词典里的词整体不断开（引擎和 layoutcheck 共用）",
+     "runs": "大字版 --stills / --video 每屏排版时自动（引擎 jb() 总是加载 分词补充.txt）",
+     "evidence": "中考/tools/画面核查/zh_bind.py:75: if getattr(jieba, '_zb_dict', False):      # ⑥ 补充词典里的词整体不断开（已加载补充词典时）"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 译文断词（含 zh_bind 复合词）",
+     "runs": "make_video.screen_checks 每屏自动（--stills 截图和 --video 生成都跑）",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:665: res.append(f'译文断词：{name}「{t[max(0, k - 6):k]}／{t[k:k + 6]}」把复合词拆到两行（zh_bind）')"
+    },
+    {
+     "where": "专八/tools/make_video.py: screen_checks 调用 LC.problems(breaks=True)",
+     "runs": "每屏自动",
+     "evidence": "专八/tools/make_video.py:1263: out += LC.problems(pg, MIN_FS, MIN_VS, poss=True, names=NAMES, fonts=True, gaps=True, breaks=True)"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "检查和引擎用的是同一份 zh_spans 规则（踩坑 2：用同一种方法自己查自己）：⑥被删掉、或者词没加进 分词补充.txt，引擎和检查会一起失效，什么也不报。仓库里没有任何测试覆盖⑥（踩坑 71 说的“旧引擎 26 处”是临时跑的，没有提交）；六级/tools/画面核查/双向验证.py:43-45 还把一条原有用例注释掉了，理由是“见踩坑 71”。jieba 新切错的词，仍然只能靠人工审阅发现。另外：单独跑 layoutcheck.py 时 z8 只认 专八/六级/考研（第 752 行），漏了考研作文。",
+   "fix": "加一个纯 Python 单元测试（不开浏览器，几秒）：对 分词补充.txt 里的每个词，在含它的真实译文句子上断言 zh_spans 覆盖整词；再加一条双向验证（照 六级 双向验证.build() 的做法）：只在内存里改引擎，去掉 make_video.py:245 的 zb 判断，专八里含“吧台/名目”的句子必须报译文断词。layoutcheck 另写一条独立判断：断点两侧拼起来是 分词补充.txt 里的词就报（直接查子串，不经过 zh_spans）。第 752 行把考研作文加进 z8。"
+  },
+  {
+   "id": "63",
+   "title": "原题屏长静音使短时响度误报",
+   "stages": [
+    "音频",
+    "视频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: verify_loudness 短时窗口从第一句开口前 1.5 秒起量",
+     "runs": "生成音频时自动（各项目 make_audio 调用）；qa.py；verify_videos",
+     "evidence": "tools/tts/gaokao_tts.py:208: t0 = items[0]['start'] - 1.5 if items and items[0]['start'] - 1.5 > 0.5 else 0.0"
+    },
+    {
+     "where": "专八/tools/make_video.py: 第一句开口时刻 ≠ 数据里的 lead 就报错",
+     "runs": "生成视频时自动（考研作文有原题屏时）",
+     "evidence": "专八/tools/make_video.py:1428: if abs(starts[0] - p['lead']) > 0.01 or p['lead'] - TITLE_SEC < 1:"
+    },
+    {
+     "where": "tools/video/verify_videos.py: 开头静音按 lead 核对",
+     "runs": "make_video 生成后、verify_all 自动",
+     "evidence": "tools/video/verify_videos.py:84: lead = p.get('lead', 1.5)      # 第一句开口时刻：片头 1.5 秒；考研作文另有原题屏"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "窗口放窄之后，没有测试证明：开头有长静音时正文里真实的响度波动仍然能查出来；也没有测试证明片头 1.5 秒的项目仍然从 0 秒量（“测量逐字节不变”只手动核对过一次）。以后改了 1.5 或 0.5 这两个常数，测量会悄悄变掉。",
+   "fix": "新增 tools/tts/test_loudness_window.py（用 numpy 造粉红噪声假句子，不需要 TTS，2 秒内跑完）：(a) 1.5 秒开头时断言 t0 == 0；(b) 11.5 秒静音开头、响度均匀 → 通过；(c) 同样的开头、正文里有 3 秒段高 3 dB → 必须报“短时响度波动”。由 check_pitfalls.py 的 text 阶段调用，或在 make_audio 启动时调用。"
+  },
+  {
+   "id": "64",
+   "title": "片头英文字段混入中文落到系统字体",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: font_fallback 字体回退（CDP getPlatformFontsForNode）",
+     "runs": "screen_checks 每屏自动（含片头/封面，fonts=True）",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:472: return [f'字体回退：「{t}」用了系统字体 {fam}（只能用网页字体）' for fam, t in bad.items()]"
+    },
+    {
+     "where": "专八/tools/make_video.py: screen_checks 字形检查 TH.GLYPH",
+     "runs": "每屏自动",
+     "evidence": "专八/tools/make_video.py:1265: out += [f'字形：{x} 不在样式字体里' for x in pg.evaluate(TH.GLYPH)]"
+    },
+    {
+     "where": "六级/tools/大字版.py: preflight 开画前把 title_slide(p) 和全部译文/释义用字渲染一遍查字体回退",
+     "runs": "大字版 --stills 开画前自动",
+     "evidence": "六级/tools/大字版.py:196: probs += [f'{pid} 字形预检：{x}' for x in M.LC.font_fallback(pg)]"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest",
+    "expect": "双向验证：通过",
+    "needs": "browser"
+   },
+   "status": "自动拦截+有双向验证",
+   "gap": "critic: 证据行号按 9f408b8 后的 大字版.py 更新（194→196）。自检只把缺字（ༀ）塞进句子译文，没有塞进片头的 paper/passage 字段，而本条踩坑恰恰出在这里；自检只有人记得才会跑；在考研作文上自检注定失败，因为 人名.json 的 names 为空（本次核实 0 个），inject 拿不掉人名，“人名”那半永远报不出来，所以这个项目没法用它验证；“新版式先想清楚每个字段装什么文字”这一条没有任何程序检查。",
+   "fix": "preflight(inject=True) 同时把探测字塞进 p['passage'] 和 p['paper']，再渲染 title_slide；names 为空时只断言“字形预检”那半；--stills 开画前，按引擎+layoutcheck 的指纹缓存，自动跑一次 --preflight-selftest（指纹变了才重跑，只花几秒）。"
+  },
+  {
+   "id": "65",
+   "title": "两位数编号圈被拉成扁椭圆",
+   "stages": [
+    "截图"
+   ],
+   "projects": [],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py: 手账笔记本两位数编号加 class d2（只是修正，不是检查）",
+     "runs": "生成 HTML 时自动（只在画面 2）",
+     "evidence": "专八/tools/make_video.py:804: d2 = ' class=\"d2\"' if STYLE == '2' and i >= 10 else ''      # 手账笔记本的两位数编号（样式 .v em.d2）"
+    },
+    {
+     "where": "专八/tools/样式/2_手账笔记本.css: sup.d2 用 58:40 的椭圆圈",
+     "runs": "样式本身",
+     "evidence": "专八/tools/样式/2_手账笔记本.css:19: sup.d2{background-image:var(--ring-b2);padding:0 .28em;letter-spacing:-.03em}"
+    }
+   ],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "没有任何程序检查编号圈的宽高比；canary_layout 里也没有“编号圈被拉伸”的雷。以后新主题、三位数编号、换字体，圈都可能再次被拉扁，只能指望盲审人员看出来。",
+   "fix": "在 layoutcheck 里加“编号圈变形”：对每个带 background-image 的 sup / .v em，比较框的宽高比和圈图本身的比例（.d2 是 58:40，否则 1:1），偏差超过 15% 就报。双向验证：在内存里去掉 make_video.py:804 的 d2，考研作文 w02 里带 ⑩ 的那一屏必须报出。"
+  },
+  {
+   "id": "66",
+   "title": "书信格式行致响度误报、句末气声",
+   "stages": [
+    "音频",
+    "视频"
+   ],
+   "projects": [
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: edge_span 短时窗口只量正文（格式行照样查逐句偏差、整体响度、峰值）",
+     "runs": "生成音频时自动（make_audio 检测到 p['edge'] 时）",
+     "evidence": "tools/tts/gaokao_tts.py:439: rep, errs = verify_loudness(mp3, items, lufs, **({'span': edge_span(items, p['edge'])} if p.get('edge') else {}))"
+    },
+    {
+     "where": "tools/tts/qa.py: 语音识别自检里的响度复测按 edge",
+     "runs": "qa_audio 自动",
+     "evidence": "tools/tts/qa.py:77: loud, lerr = verify_loudness((OUT / r['file']).read_bytes(), r['sentences'], -16.0, **({'span': edge_span(r['sentences'], edge)} if edge else {}))"
+    },
+    {
+     "where": "tools/video/verify_videos.py: 视频音轨响度按 edge",
+     "runs": "make_video / verify_all 自动",
+     "evidence": "tools/video/verify_videos.py:103: rep, errs = verify_loudness(buf.getvalue(), times, -16.0, **({'span': edge_span(times, p['edge'])} if p.get('edge') else {}))"
+    },
+    {
+     "where": "考研作文/tools/make_audio.py: tail_trim 剪句末气声（逐句人工登记）",
+     "runs": "生成音频时自动（只对登记过的句子）",
+     "evidence": "考研作文/tools/make_audio.py:109: TAIL_TRIM = json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8')).get('tail_trim', {})"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "edge_span 把格式行排除在短时窗口外，但没有测试证明靠近格式行的正文句子出现响度跳变时仍能查出。气声（report→reports）、Shenzhen 这类读错，只能靠语音识别加人工登记；而 考研作文/tools/批量_本机.sh 在 qa_audio 后面写了 `|| true`，识别失败也照样往下走。",
+   "fix": "在 test_loudness_window.py（见 63）里加书信的情况：称呼很轻 → 通过；正文某句高 3 dB → 必须报错。批量_本机.sh 去掉 qa_audio 后面的 `|| true`，再接 tools/tts/识别分诊.py（有没登记的识别差异就退出码 1），让批量停在出问题的那一篇。"
+  },
+  {
+   "id": "67",
+   "title": "引擎按衬底框量行首，短行规则失效",
+   "stages": [
+    "截图"
+   ],
+   "projects": [
+    "六级",
+    "专八",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 英文短行（按字量，不按框量）",
+     "runs": "screen_checks 每屏自动（--stills / --video）",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:117: if (fill < 0.5 * W && fill + spw + word <= W - 2) out.push(`英文短行：英文第 ${i + 1} 行「${txt(ln).slice(0, 16)}」只占 ${Math.round(fill / W * 100)}%，下一行的「${txt(nx.slice(0, j))}」放得进来`); }); }"
+    },
+    {
+     "where": "专八/tools/make_video.py: 短语是否在行首改为量第一个字本身（修正）",
+     "runs": "每屏排版自动",
+     "evidence": "专八/tools/make_video.py:991: let r0 = rs[0]; if (tn) { const g0 = document.createRange(), k0 = tn.data.search(/\\S/); g0.setStart(tn, k0); g0.setEnd(tn, k0 + 1); r0 = g0.getClientRects()[0] || r0; }"
+    },
+    {
+     "where": "六级/tools/画面核查/审阅修正双向验证.py: 撤掉同一段代码里 first = h || r0 的修正，必须报英文短行",
+     "runs": "要手动跑",
+     "evidence": "六级/tools/画面核查/审阅修正双向验证.py:56: ('s33', 11, (\"const [p, h] = before(e), first = h || r0;\", \"const [p, h] = before(e), first = r0;\"), '英文短行'),"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
+    "expect": "全部双向通过",
+    "needs": "heavy"
+   },
+   "status": "自动拦截+有双向验证",
+   "gap": "双向验证只在六级黑板（画面 3）上证明“英文短行”能查出来；没有一条用例撤掉本条的修正（r0 改回 rs[0] 量框），去手账笔记本（画面 2）的 w05/w17 上验证；验证要手动跑约 10 分钟，没有任何流水线调用它。“换主题时引擎里所有按元素框量的规则都要考虑内边距”这条教训没有通用检查。",
+   "fix": "在 审阅修正双向验证.py 里加一条考研作文画面 2 的用例：把 make_video.py:991 换回 `let r0 = rs[0];`，w05 必须报“英文短行”；再把这套双向验证接到引擎指纹上（引擎、layoutcheck、样式变了，--stills 就自动先跑一遍）。"
+  },
+  {
+   "id": "68",
+   "title": "复制工作流删行留缩进致工作流无效",
+   "stages": [
+    "发布",
+    "流程"
+   ],
+   "projects": [],
+   "guards": [],
+   "test": {},
+   "status": "只靠流程或记性",
+   "gap": "“推送前 yaml.safe_load + 步骤数比对”只手动做过一次。仓库里没有任何脚本做这件事（在 *.py / *.sh 里 grep safe_load、yaml 都没有结果），也没有 pre-push 钩子。工作流里的检查帮不上忙，因为无效的工作流根本不会运行。（现状我只读核对过：5 个 render-*.yml 都是 prep 6 / render 8 / publish 7。）",
+   "fix": "新增 .github/check-workflows.py：对每个工作流 yaml.safe_load；任何 run: 字符串里出现形如 `^\\s*- (name|uses|run):` 的行就失败（说明步骤被吞进了多行字符串）；比对所有 render-*.yml 的任务/步骤数结构是否一致（6/8/7）；同时 compile 每段 heredoc Python。由提交进仓库的 pre-push 钩子和 自动提交.sh 调用。双向验证：用一份删掉 `!/考研/真题/` 那行、但留下缩进的副本，必须失败。"
+  },
+  {
+   "id": "69",
+   "title": "讲义PDF断行字形问题、量错版心",
+   "stages": [
+    "截图",
+    "发布"
+   ],
+   "projects": [
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "考研作文/tools/讲义.py: WRAP_JS（孤字、标点独占一行、数字与单位、公式词、省略号行首、Li Ming），有问题就不出 PDF",
+     "runs": "每次 build 讲义自动",
+     "evidence": "考研作文/tools/讲义.py:597: wrap = pg.evaluate(WRAP_JS)"
+    },
+    {
+     "where": "考研作文/tools/讲义.py: 屏幕排版宽度等于打印版心 180mm",
+     "runs": "每次 build 自动",
+     "evidence": "考研作文/tools/讲义.py:290: scr = '@media screen{body{width:' + ('180mm' if footer else '210mm') + '}}'"
+    },
+    {
+     "where": "考研作文/tools/讲义.py: PDF 字体回退检查",
+     "runs": "每次 build 自动",
+     "evidence": "考研作文/tools/讲义.py:651: raise SystemExit(f'{pdf.name} 用了系统字体（字体回退）：\\n' + '\\n'.join(bad))"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "“规则关掉报 70/46/41 处、打开 0 处”的双向验证没有提交（讲义.py 里没有 selftest）；设了 JY_REPORT 环境变量，就会把硬性拦截降成只打印（讲义.py:600）；release-kaoyan-writing-handout.yml 只打包已提交的 PDF，不重新生成也不重新核查，所以 JY_REPORT 下生成的 PDF 照样能发出去；别的 PDF 生成程序（六级/考研 make_dictation、长难句.py）完全没有 孤字/WRAP 检查。",
+   "fix": "给讲义.py 加 --selftest：在内存里把 esc 换成只做转义的版本（规则关掉），断言 WRAP_JS 报出 >0 处；规则打开时断言 0 处。build 时写一份戳记 json（PDF 的 sha256 + wrap=0），发布工作流核对 sha 一致才打包；把 WRAP_JS 抽成共用模块，听写卡、长难句 PDF 的生成程序也调用。"
+  },
+  {
+   "id": "70",
+   "title": "商品图印页码式编号、末字孤行",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "考研作文/讲义/商品图/商品图.py: CHECK_JS 页码式编号检查",
+     "runs": "生成商品图时自动",
+     "evidence": "考研作文/讲义/商品图/商品图.py:285: if (/^\\\\d{1,2}\\\\s*\\\\/\\\\s*\\\\d{1,2}$/.test(t)) out.push('出现页码式编号（用户不要）: ' + t); }"
+    },
+    {
+     "where": "考研作文/讲义/商品图/商品图.py: 每张图跑讲义的 WRAP_JS",
+     "runs": "生成商品图时自动",
+     "evidence": "考研作文/讲义/商品图/商品图.py:314: bad += [f'{name}: {x}' for x in pg.evaluate(CHECK_JS) + pg.evaluate(WRAP_JS)]"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "JPG 先存进 成品/ 才给出检查结论（第 318-319 行先 save，第 325 行才 exit 1），检查不通过的图仍留在上传文件夹里；“不印编号”只在 商品图.py 里查，各项目的 封面/系列封面.py 和 六级/tools/宣传图.py 既没有编号检查也没有 WRAP_JS；正则只匹配内容恰好是“02 / 09”的文本节点（漏掉“02/09页”、::before 生成的内容、SVG 文字）；“套装要有商品总图”没有检查；“放回编号报 1 处”的双向验证没有提交。",
+   "fix": "先渲染到临时目录，0 处问题才移进 成品/；把编号检查（正则放宽到 `\\b\\d{1,2}\\s*/\\s*\\d{1,2}\\b`，同时查文本和伪元素的 content）和 WRAP_JS 抽成共用的 promo_check，封面、宣传图、商品图三类程序都调用；加 --selftest：插入 <div>02 / 09</div>，必须报 1 处。"
+  },
+  {
+   "id": "71",
+   "title": "水墨盲审约45处排版问题（10类）",
+   "stages": [
+    "文字",
+    "分屏",
+    "截图"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/ann_lib.py: slot_in_surface 短语空位检查（build_vocab 报错就不写 vocab.json）",
+     "runs": "专八 build_vocab.py 自动",
+     "evidence": "专八/tools/ann_lib.py:190: if slot_in_surface(e):"
+    },
+    {
+     "where": "专八/tools/make_video.py: empty_split_parts 每屏至少一个词条",
+     "runs": "大字版 preflight 和 --stills 自动（四个大字版项目）；专八 分屏建议 / split_check",
+     "evidence": "六级/tools/大字版.py:266: probs += M.empty_split_parts(p)          # 分屏后每一屏至少一个词条（专八书卷水墨截图盲审：词汇栏空着的 4 屏）"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 行首破折号",
+     "runs": "screen_checks 每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:157: out.push(`行首破折号：${name}第 ${i + 1} 行以「——」开头`);"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 半宽右引号后的左括号",
+     "runs": "screen_checks 每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:172: out.push(`标点挤压：${name}「${a.c}${b.c}」半宽右引号后的左括号没有去掉左半空白`);"
+    },
+    {
+     "where": "中考/tools/画面核查/layoutcheck.py: 专名断开（含数字、日期）/ 括注断开",
+     "runs": "screen_checks 每屏自动",
+     "evidence": "中考/tools/画面核查/layoutcheck.py:662: res.append(f'专名断开：英文「{t[max(0, k - 20):k]}/ {t[k:k + 20]}」')"
+    },
+    {
+     "where": "专八/tools/make_video.py: 以 f 结尾的词条加 class f（只是修正，没有检查）",
+     "runs": "生成 HTML 时自动",
+     "evidence": "专八/tools/make_video.py:807: fb = ' class=\"f\"' if w['h'].rstrip(' .…').endswith('f') else ''"
+    }
+   ],
+   "test": {},
+   "status": "自动拦截（无双向验证）",
+   "gap": "(a) “旧引擎（git HEAD 快照）+ 新检查报 26 处、新引擎 0 处”的双向验证是临时跑的，没有提交，六级/tools/画面核查/双向验证.py:43-45 却已经把一条用例注释掉、改指向它；(b) ④ f 的弯钩没有检查：layoutcheck.py:299-310 的“词条间距”量的是排版框的 a.right，不是墨迹，伸出字身的弯钩量不到；(c) slot_in_surface 只在专八的 ann_lib 里有；考研、考研作文 ann_lib.py:173-176 的版本只在词头写了“…”时才查（漏掉“induce sb to”这种），六级、中考的 ann_lib 完全没有；(d) ①⑦⑧⑨ 的检查和引擎共用同一套 zh_bind 规则（自己查自己）；(e) ⑩（FIT 量片段宽度）没有专门的用例。",
+   "fix": "把那次临时测试提交成 专八/tools/画面核查/双向验证_水墨.py：用 `git show <修正前提交>:专八/tools/make_video.py` 在内存里执行旧引擎（照 六级 双向验证.build() 的做法），断言行首破折号、半宽引号左括号、专名断开、括注断开、译文断词每类 >0 处、新引擎 0 处。“词条间距”改按墨迹量，复用“徽章贴字”（layoutcheck.py:313-321）里 canvas actualBoundingBoxRight 的算法；双向验证：在内存里去掉 class f，'a set of' 必须报。slot_in_surface 移到 tools/ 下的共用模块，考研、考研作文、六级的 ann_lib 都 import 它，并加三条单元断言（induced father to → True；induced…to → False；kept hidden → False）。"
+  },
+  {
+   "id": "72",
+   "title": "缩写后标注词读两遍、词典词注错音",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py: Pronouncer.check_double（标的读音和默认读音粘在一起就报错）",
+     "runs": "合成每一段时自动（所有项目的 make_audio 都用共用的 Pronouncer）",
+     "evidence": "tools/tts/gaokao_tts.py:102: raise RuntimeError(f'{key} 标了读音的词被读两遍（踩坑 72）：{w} → {ph}')"
+    },
+    {
+     "where": "tools/tts/双向验证_读两遍.py: ABBR_FIX 关掉必须报 t20:46 和人造句子，打开 0 句",
+     "runs": "要手动跑",
+     "evidence": "tools/tts/双向验证_读两遍.py:83: print('全部双向通过' if ok else '有不通过的项目')"
+    },
+    {
+     "where": "tools/tts/pron_lint.py via 专八/tools/pron_check.py: 词形歧义（toiled/toile）列出来人工登记",
+     "runs": "专八 batch_audio.sh 开头自动、未核就停（9f408b8 起）；考研、考研作文、中考的 pron_check 不含 pron_lint",
+     "evidence": "专八/tools/pron_check.py:35: for w, v in pron_lint.ambiguous_inflections(pron, items).items():"
+    },
+    {
+     "where": "tools/tts/识别分诊.py（专八 batch_audio.sh 每篇调用：无害差异自动放过、存疑的截取重听，仍不对又没登记在 专八/audio/识别差异已核.json 就退出 1）",
+     "runs": "专八批量配音每篇自动（9f408b8 起），有待核就停",
+     "evidence": "专八/tools/batch_audio.sh:12:  $PY tools/tts/识别分诊.py 专八 \"$id\"; tri=$?"
+    },
+    {
+     "where": "tools/tts/识别复核.py: 截取 / 试合成复核识别差异",
+     "runs": "要手动跑",
+     "evidence": "tools/tts/识别复核.py:3: /opt/ttsenv/bin/python tools/tts/识别复核.py 专八 截取 t20:40 t17:42 …"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python tools/tts/双向验证_读两遍.py 专八",
+    "expect": "全部双向通过",
+    "needs": "tts"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 原来说的“识别分诊.py 未纳入 git、batch_audio.sh 不调用它、qa 失败只 echo、专八 pron_check 不在流程里”已在 9f408b8 改掉：专八 batch_audio.sh 开头跑 pron_check（含 pron_lint），每篇 make_audio → qa_audio → 识别分诊，任一步失败或有待核就停；识别分诊 的双向验证可跑：`/opt/ttsenv/bin/python tools/tts/识别分诊.py 专八 t25 --rev 7193562` 本次实跑报出 t25:5 toiled→twiled、退出码 1。剩下的缺口：①读两遍、识别分诊 的双向验证都只能手动跑，“去掉 toiled 修正就报出”的 pron_lint 双向验证没有提交成脚本；②考研、考研作文、中考的 pron_check 不含 pron_lint，这几个项目和六级、四级的配音批量都不跑 识别分诊（中考/考研 batch_audio.sh 仍是 qa 失败只 echo）；③直接跑 make_audio.py（不经 batch_audio.sh）时这些关口全被绕过；④识别分诊 只要任何一次截取重听听出原词就放过，seemed→seem 这类轻微吞音可能被放过。",
+   "fix": "pron_check 的调用挪进各项目 make_audio.py main 开头（不靠批量脚本）；考研、考研作文、中考的 pron_check 加 pron_lint.ambiguous_inflections；把 专八 batch_audio.sh 的 识别分诊 关口复制到其余项目；把 `识别分诊.py 专八 t25 --rev 7193562`（必须退出 1 且含 toiled）和 pron_lint 的“去掉 toiled 修正必须列出”写进 tools/tts/双向验证_配音.sh，与 双向验证_读两遍.py 一起在 tools/tts 改动时自动跑（指纹缓存）。"
+  },
+  {
+   "id": "73",
+   "title": "检查太晚、一次只报一个致反复返工",
+   "stages": [
+    "分屏",
+    "截图",
+    "音频",
+    "流程"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "六级/tools/大字版.py: preflight 开画前预检（人名登记、样式字体缺字、分屏方案、空屏），有一处就不开画",
+     "runs": "大字版 --stills 开画前自动（六级/专八/考研/考研作文 共用）",
+     "evidence": "六级/tools/大字版.py:230: pre = run_preflight(ids)                 # 踩坑 73：几秒钟的预检先过，有一处就不开画（全部列出来，一次改完）"
+    },
+    {
+     "where": "六级/tools/大字版.py: --stills 一篇有问题就停（默认；--keep-going 才一口气画完）",
+     "runs": "大字版 --stills 每篇自动（9f408b8 提交）",
+     "evidence": "六级/tools/大字版.py:304:             if probs and not keep_going:            # 及时做、及时查（用户 2026-10-23，铁律 15）：一篇有问题就停，改完再接着画"
+    },
+    {
+     "where": "六级/tools/大字版.py: --preflight-selftest 放进缺字、拿掉人名必须报出",
+     "runs": "要手动跑",
+     "evidence": "六级/tools/大字版.py:404: print('双向验证：' + ('通过（缺字、人名都报出来了）' if ok else '不通过：预检漏报'), flush=True)"
+    },
+    {
+     "where": "专八/tools/分屏定稿.py: 要人工指定的句子（含中英对不齐又没整句候选）一次全部列出，退出码 1，不写方案",
+     "runs": "专八 水墨流水线.sh 分屏步骤自动",
+     "evidence": "专八/tools/分屏定稿.py:82: raise SystemExit(1)"
+    },
+    {
+     "where": "专八/tools/水墨流水线.sh: 分屏建议 → 分屏定稿 → split_check → 截图，出错即停",
+     "runs": "专八水墨一次启动",
+     "evidence": "专八/tools/水墨流水线.sh:15: stop() { echo \"流水线停止：$1（$(date -u +%H:%M)）\" | tee -a \"$log\"; exit 1; }"
+    },
+    {
+     "where": "专八/tools/batch_audio.sh: 配音前 pron_check（含 pron_lint）未核就停；每篇 识别分诊 有待核就停",
+     "runs": "专八批量配音自动（9f408b8 起）",
+     "evidence": "专八/tools/batch_audio.sh:8:$PY 专八/tools/pron_check.py > /dev/null 2>&1 || { echo \"停止：专名 / 词形歧义读音还有没核对的词（先跑 pron_check.py，核对后 --approve）\"; exit 1; }"
+    },
+    {
+     "where": "专八/tools/workflows/tem8-ink-stills-review.js: 盲审提示词要求报出中英错屏",
+     "runs": "盲审工作流（模型）",
+     "evidence": "专八/tools/workflows/tem8-ink-stills-review.js:25: BUT report as a defect any part whose Chinese plainly belongs to ANOTHER part's English"
+    }
+   ],
+   "test": {
+    "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest",
+    "expect": "双向验证：通过",
+    "needs": "browser"
+   },
+   "status": "半自动（程序报出、人核对登记）",
+   "gap": "critic: 两处已过时：“一篇有问题就停”（--keep-going）已在 9f408b8 提交（大字版.py:304，默认停）；⑤ 专八 batch_audio.sh 开头已跑 pron_check（含 pron_lint）、每篇跑 识别分诊（--rev 7193562 双向验证本次实跑报出 toiled）。仍然成立的：修正只做在专八的副本里——考研、考研作文的 分屏定稿.py:41 仍然碰到第一句就 raise SystemExit（两份内容相同，本次核实），中英对不齐的句子只打印不退出；考研作文/tools/批量_本机.sh 仍然在 qa_audio、分屏建议、--stills 后面写 `|| true`，失败照样提交（正是②那种坑）。①“去掉人工指定报 21 句”没有提交成可重跑的测试；④只改了审阅提示词，canary_layout 的 5 个雷里没有“中英错屏”雷，证明不了审阅员能查出来；⑤中考、考研、考研作文的配音不跑 pron_lint / 识别分诊，直接跑 make_audio.py 也绕得过；--preflight-selftest 要手动跑，在 人名.json 为空的考研作文（names=0）上注定失败。",
+   "fix": "把专八 分屏定稿.py 的“一次列全 + 退出码 1”逻辑合并成一份共用程序，替换考研、考研作文的副本；考研作文 批量_本机.sh 去掉所有 `|| true`，照 水墨流水线.sh 改用 stop()，配音段照 专八 batch_audio.sh 每篇 识别分诊；canary_layout 加一个“中英错屏”雷（把第 2 屏的 zh 换成第 1 屏的，复用 专八/tools/画面核查/canary.py 的 zh_part 操作）；把 --preflight-selftest、双向验证_读两遍、识别分诊 --rev、六级两套双向验证合成一个 tools/双向验证_全部.sh，按工具指纹缓存，--stills / make_audio 开头指纹变了就自动先跑；提交 分屏定稿 的双向验证：在内存里清空 分屏手定_水墨.json 的 t11—t27，必须列出 21 句。"
+  }
+ ]
+}
