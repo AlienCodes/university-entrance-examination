@@ -129,7 +129,7 @@ def body_169(w=1920, h=1080):
 <div class="ab" data-k="title" style="left:200px;top:196px;font:900 176px/1 Black">{KAOYAN}<span>写作</span></div>
 <div class="ab" data-k="line2" style="left:210px;top:448px;font:900 132px/1.12 Black"><span class="hy">真题满分范文</span></div>
 <div class="ab" data-k="hook" style="left:210px;top:614px;font:900 108px/1.15 Black">{HOOK}<span>大小作文</span></div>
-<div class="ab" data-k="tags" style="left:210px;top:774px">{tag(f'大作文 {num(NB)} + 小作文 {num(NA)}', 36, 14)}{tag(f'{num(SENTS)} 句逐句精讲', 36, 14)}{tag(f'{num(UNIQ_TXT)} 高分词句', 36, 0)}</div>
+<div class="ab" data-k="tags" style="left:210px;top:774px">{tag(f'大作文 {num(NB)} + 小作文 {num(NA)}', 36, 14)}{tag(f'{num(SENTS)} 句逐句精读', 36, 14)}{tag(f'{num(UNIQ_TXT)} 高分词句', 36, 0)}</div>
 <div class="ab" data-k="feat" style="left:214px;top:872px;font:700 40px/1.3 Bold;color:{INK}">{feat(40)}</div>
 {sticker(1262, 48, 296)}
 {cards(1338, 400, 540, 1386, 612, 500)}"""
@@ -144,7 +144,7 @@ def body_43(w=1440, h=1080):
 <div class="ab" data-k="title" style="left:174px;top:188px;font:900 168px/1 Black">{KAOYAN}<span>写作</span></div>
 <div class="ab" data-k="line2" style="left:182px;top:430px;font:900 124px/1.12 Black"><span class="hy">真题满分范文</span></div>
 <div class="ab" data-k="hook" style="left:182px;top:594px;font:900 96px/1.15 Black">{HOOK}<span>大小作文</span></div>
-<div class="ab" data-k="tags" style="left:182px;top:752px;line-height:1.75">{tag(f'大作文 {num(NB)} + 小作文 {num(NA)}', 40, 0)}<br>{tag(f'{num(SENTS)} 句逐句精讲', 40)}{tag(f'{num(UNIQ_TXT)} 高分词句', 40, 0)}</div>
+<div class="ab" data-k="tags" style="left:182px;top:752px;line-height:1.75">{tag(f'大作文 {num(NB)} + 小作文 {num(NA)}', 40, 0)}<br>{tag(f'{num(SENTS)} 句逐句精读', 40)}{tag(f'{num(UNIQ_TXT)} 高分词句', 40, 0)}</div>
 {sticker(1086, 40, 270)}
 {cards(1046, 452, 366, 1070, 640, 340)}"""
 
