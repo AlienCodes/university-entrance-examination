@@ -1,13 +1,15 @@
 # 专八书卷水墨大字版：截图 + 全部程序检查放在 GitHub 上画（与 render-tem8-ink.yml 生成视频的机器同一个环境：Chromium 141、Python 3.11.15、fontconfig 对齐），
 # 每篇一台机器并行；截图与 汇总.json 作为 artifact（stills-<篇目>）上传，本机下载后做新情况检测、新旧截图比对，再 --approve 登记。
 # 为什么：本机（容器镜像 2026-10-23 起）没有 Chromium 141、下载站被代理拦截，本机画的截图与 GitHub 生成视频时重画的不能保证逐字节相同。
+# 本机下载 artifact 被代理拦截（blob.core.windows.net 403），所以最后一个任务 collect 把 27 篇截图与 汇总.json 合并后提交回本分支，本机 git pull 即得；提交的差异就是新旧截图比对。
 # 触发：修改 .github/tem8-ink-stills.txt 并推送（第 1 行运行标签，第 2 行起每行一个篇目）。
 name: 专八水墨截图（GitHub 上画、全部程序检查）
 on:
   push:
     paths: ['.github/tem8-ink-stills.txt']
 permissions:
-  contents: read
+  contents: write
+  actions: read
 concurrency:
   group: stills-tem8-ink
   cancel-in-progress: false
@@ -111,3 +113,48 @@ jobs:
           path: out/
           retention-days: 7
           if-no-files-found: error
+
+  collect:
+    needs: [stills, split]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /专八/大字版水墨/截图/
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: stills-*
+          path: dl
+      - name: 合并截图与 汇总.json（每篇程序检查 0 处才合并）
+        run: |
+          python3 - <<'PY'
+          import json, shutil
+          from pathlib import Path
+          SH = Path('专八/大字版水墨/截图')
+          summ = json.loads((SH / '汇总.json').read_text('utf-8'))
+          n = 0
+          for d in sorted(Path('dl').glob('stills-t*')):
+              pid = d.name.split('-', 1)[1]
+              g = json.loads((d / '汇总.json').read_text('utf-8'))
+              r = g[pid]
+              assert not r['问题'] and not g['_共同']['问题'], (pid, r['问题'], g['_共同']['问题'])
+              shutil.rmtree(SH / pid, ignore_errors=True)
+              shutil.copytree(d / pid, SH / pid)
+              summ[pid] = r; summ['_共同'] = g['_共同']; n += 1
+          (SH / '汇总.json').write_text(json.dumps(summ, ensure_ascii=False, indent=1) + '\n', 'utf-8')
+          print(f'合并 {n} 篇')
+          PY
+      - name: 提交回本分支
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A 专八/大字版水墨/截图
+          git commit -q -m "专八水墨截图（GitHub 上画，$(head -1 .github/tem8-ink-stills.txt)，全部程序检查 0 处）：$(tail -n +2 .github/tem8-ink-stills.txt | tr '\n' ' ')"
+          for i in 1 2 3 4; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i * 5)); done
+          exit 1
