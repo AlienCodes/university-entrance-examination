@@ -11,3 +11,12 @@
 **2026-10-23 书卷水墨截图盲审**：t06 第 15 句 “induced father to②” 把空位里的 father 也标成了短语色（审阅员看出）。补成程序检查 `ann_lib.slot_in_surface`（短语词头中间有 sb / sth / sb's 空位、原文词形没用“…”隔开且词数多于词头去掉空位后的词数），
 t01—t10 查出 5 条：t02 第 45 句 {told you to}、t03 第 4 句 {made my heart sink}、第 63 句 {beat me to a pulp}、t06 第 15 句 {induced father to}、t08 第 44 句 {getting them on}，
 都改成用“…”隔开（只改高亮范围，译文、释义不动），`build_vocab.py --reseal` 重新登记；t11—t27 初稿里同类 11 条在复核定稿时一起改。
+
+
+## t11—t27（2026-10-23）
+
+| 轮次 | 埋雷 | 结果 |
+|---|---|---|
+| 初稿 | — | 17 篇，`../workflows/tem8-annotate.js`，check_ann 全部 OK（t27 去掉 ◼ 后按 73 句重排） |
+| 第 1 轮 | 12/12（z5 取自 t13、z6 取自 t22） | 意见 387 条：双核验通过 276 条直接采用（`第一轮决定_双核验通过_t11-t27.json`）；其余 111 条（改法不同 79、分歧 21、双否决 11）逐篇交给一位裁决人（看全篇上下文，`第一轮裁决_t11-t27.json`）：采用 96、不改 15；写入后 check_ann 报出的找不到 / 漏标 / 短语空位 33 条逐条修正（`第一轮_词条修正_t11-t27.json`，含 14 条短语空位） |
+| 第 2 轮（终查） | 12/12（z7 取自 t17、z8 取自 t25） | 真实意见 11 条（已收敛）：人工逐条决定，采用 8 条（collapse、bear 改单词，beanie、nearly as much as 释义，加 three-story、be to do，well-organised 词头），不改 2 条（t11 第 29 句双否决；t19 Italy 句首专名必须有词条），另补 onto（collapse 改单词后 onto 要单独标）（`第二轮决定_t11-t27.json`）。之后并入 `../../ann/`，`build_vocab.py --reseal`：27 篇 8169 个词条全部通过 |
