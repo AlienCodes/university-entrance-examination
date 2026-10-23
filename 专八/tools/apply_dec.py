@@ -18,7 +18,8 @@ import re
 import sys
 from pathlib import Path
 
-ANN = Path(__file__).resolve().parents[1] / 'ann'      # 专八/ann
+import os
+ANN = Path(os.environ['ANN_DIR']) if os.environ.get('ANN_DIR') else Path(__file__).resolve().parents[1] / 'ann'      # 专八/ann；ANN_DIR 指定别的目录（t11—t27 复核定稿前在草稿副本上改）
 TIER = {'单词': '', '短语': '~'}
 
 
