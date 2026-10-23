@@ -40,7 +40,9 @@ CASES = [  # 名称, 篇目, 句号（0 = 片头）, 撤掉的修正 (现在的�
  ('释义以省略号/破折号开头的块前加 <wbr>', 's04', {17}, ("('<wbr>' if a and s[lo + a] in '…—' else '') +", '')),
  ('释义以省略号/破折号开头的块前加 <wbr>（s21；原 s05 第 9 句在 2026-10-17 审阅修正后不再触发）', 's21', {4}, ("('<wbr>' if a and s[lo + a] in '…—' else '') +", '')),
  ('悬空连字符与 or/and 不断开', 's20', {14}, ("return re.sub(r'(?<![\\w’-])([A-Za-z]+-) ((?:or|and|nor|to)\\b)', r'<nobr>\\1 \\2</nobr>', h)", 'return h')),
- ('高亮单位 percent 前不换行空格', 's11', {16}, ("    out = re.sub(rf'(\\d) (<span class=\"(?:w|ph)\">(?:<nobr>)?(?:{UNITS})(?![A-Za-z]))', '\\\\1\\u00a0\\\\2', out)\n", '')),
+# 2026-10-23 起由 zh_bind.en_spans ③（数字 + 小写词整体不断开，专八书卷水墨截图盲审）统一覆盖：撤掉下面这条旧修正后 s11 第 16 句仍 0 处是预期，不再单独验证；
+ # ③ 本身的双向验证见 踩坑 71（旧引擎 + 新检查报“in 26 / countries”“20 / barrels”等，新引擎 0）
+ # ('高亮单位 percent 前不换行空格', 's11', {16}, ("    out = re.sub(rf'(\\d) (<span class=\"(?:w|ph)\">(?:<nobr>)?(?:{UNITS})(?![A-Za-z]))', '\\\\1\\u00a0\\\\2', out)\n", '')),
  ('超宽连字符词条在连字符处断开 wide()', 's10', {21}, ("for (const n of b.querySelectorAll('nobr')) if (n.getBoundingClientRect().right > R + 0.5) n.style.whiteSpace = 'normal'; };", '};')),
  ('括注片段按词汇栏内边距量 notes()（2026-10-23 起量片段宽度与 R − 左边界，撤掉 = 只比网格列宽）', 's39', {16}, ("if (e.getBoundingClientRect().width > Math.min(dv.clientWidth, R - L) + 0.5) e.style.whiteSpace = 'normal'; }", "if (e.getBoundingClientRect().width > dv.clientWidth + 0.5) e.style.whiteSpace = 'normal'; }")),
  ('末尾短语连续接号放不下时断开 phr()', 's26', {19}, ("if (c && c.classList.contains('cont') && ps.length && c.getBoundingClientRect().right > R + 0.5) ps[ps.length - 1].style.whiteSpace = 'normal';", '')),
