@@ -83,7 +83,7 @@ jobs:
           if bad:
               sys.exit('这些篇目不能生成（截图审阅登记与现在的程序和数据不一致）：\n  ' + '\n  '.join(bad))
           man = {'tag': os.environ['TAG'], 'render': ids, 'passages': [{'id': p['id'], 'name': M.video_name(p)} for p in P]}
-          assert len(man['passages']) == 10 and len({e['name'] for e in man['passages']}) == 10
+          assert len(man['passages']) == 27 and len({e['name'] for e in man['passages']}) == 27
           json.dump(man, open('manifest/manifest.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
           print(f'{len(ids)} 篇的审阅登记都与现在的程序和数据一致；manifest 10 篇')
           PY
