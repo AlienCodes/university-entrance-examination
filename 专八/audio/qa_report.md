@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：20
+- 文章数：21
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.07%
+- 平均识别差异率：1.03%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -31,3 +31,4 @@
 | t18 | 4.48 | 0.45% | peasant's → peasants'; seem → seemed; dissidence → dissidents; claimed → claim |
 | t19 | 4.49 | 0.84% | miss council → miscouncil; neighbors → neighbours; aussie → ozzy; heart break alley' → heartbreak alley |
 | t20 | 4.46 | 0.90% | whorfianism → warfianism; of → have; chalari → kalari; languages' → language's; eu → iu; pop whorfian → popwarfian; ∅ → kalari |
+| t21 | 4.45 | 0.24% | labelled → labeled; grey → gray |
