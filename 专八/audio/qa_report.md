@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：23
+- 文章数：24
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.19%
+- 平均识别差异率：1.14%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -34,3 +34,4 @@
 | t21 | 4.45 | 0.24% | labelled → labeled; grey → gray |
 | t22 | 4.47 | 4.38% | cervejaria → serve geria; zambujeira → zambugera; bs → b's; alentejo → alantasio; evora → evra; treacly → treakly; south west alentejo → southwest alentasio; alentejo → alentasio; burgau → bergau; hours' → hours; faro → faroe; herdade da nespereira → erdada de nespera; zambujeira → zambujera; azenha |
 | t23 | 4.48 | 1.27% | ticking → sticking; teachers' → teachers; realise → realize; kieran → kiran; story telling' → storytelling; ' → ∅; why' → why; intervention' → intervention; families' → families; technology' communications' → technology communications; environment' → environment; language' → language; narrative' → n |
+| t24 | 4.47 | 0.12% | seething → saathing |
