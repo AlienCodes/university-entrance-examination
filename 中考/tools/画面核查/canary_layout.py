@@ -72,7 +72,20 @@ MINES = [
               "for (let w=520; w>=200; w-=40) { g.style.width=w+'px'; if (Math.abs(r.getClientRects()[0].bottom - g.getBoundingClientRect().bottom) < 40) break; }")),
     (15, 14, '词汇栏字号过大，词条超出卡片底边、压到页脚', None, FIT_THEN("document.documentElement.style.setProperty('--vs','62px')")),
 ]
-MINES = [(1, 0, *m[2:]) if m[1] == 0 else (screen_of(plain(m[1])), plain(m[1]), *m[2:]) for m in MINES]      # 中考无分屏的篇目：屏号与原表相同
+_used = set()
+
+
+def _pick(k):
+    """第 k 句起第一个不分屏、且还没埋过雷的句子：分屏多的篇目（专八水墨 t01 第 3—7 句都分屏）两个雷会落到同一句，顺延到下一个；
+    以前不撞的篇目结果与原来完全相同。"""
+    j = plain(k)
+    while j in _used and j < len(nparts):
+        j = plain(j + 1)
+    _used.add(j)
+    return j
+
+
+MINES = [(1, 0, *m[2:]) if m[1] == 0 else (lambda j: (screen_of(j), j, *m[2:]))(_pick(m[1])) for m in MINES]      # 中考无分屏的篇目：屏号与原表相同
 assert len({m[0] for m in MINES}) == len(MINES), f'两个雷落在同一屏：{[m[0] for m in MINES]}'
 if M.intro(p) == 2:                               # 考研作文的原题屏（第 2 屏，句号记 -1）：原卷截图变模糊——用户要求“必须高清”，审阅员必须看得出
     MINES.insert(1, (2, -1, '原题截图模糊（不高清）', lambda h: h.replace('.pq img{display:block;', '.pq img{filter:blur(1.3px);display:block;', 1), None))
