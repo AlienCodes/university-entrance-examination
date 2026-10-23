@@ -207,6 +207,7 @@ def stills(ids, force):
                 M.check_names(p)
             except SystemExit as e:
                 probs.append(str(e))
+            probs += M.empty_split_parts(p)          # 分屏后每一屏至少一个词条（专八书卷水墨截图盲审：词汇栏空着的 4 屏）
             try:
                 pauses, bad = split_pauses(p)
                 probs += bad

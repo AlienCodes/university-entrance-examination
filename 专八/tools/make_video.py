@@ -131,7 +131,7 @@ x-i::before{top:.295em}x-i::after{top:.945em}
 .en .w x-i::before,.en .ph x-i::before,.en .w x-i::after,.en .ph x-i::after,.v b x-i::before,.v b x-i::after{width:.25em;margin-left:-.125em;height:.135em}
 .en .w x-i::before,.en .ph x-i::before,.v b x-i::before{top:.29em}.en .w x-i::after,.en .ph x-i::after,.v b x-i::after{top:.89em}
 sup.sd{margin-right:calc(var(--fs)*.084)}   /* 编号后紧跟破折号时留空：专八编号是英文字号的 0.36 倍（中考 0.42），按英文字号定，等于中考的 0.2 × 0.42（t08 “¹¹—”原来只隔 3.7 像素） */
-.pr{margin-right:-.5em}.pl{margin-left:-.5em}
+.pr{margin-right:-.5em}.pl{margin-left:-.5em}.pq{margin-left:-.3em}
 x-n>.pr:last-child{display:inline-block;width:.5em;margin-right:0;white-space:nowrap}   /* 释义分句末尾的标点（“（内容）广泛的；”）：负外边距让行内块的自身宽度少算半个字，块内放不下、自己折成两行，FIT 只好改成行内拆开（考研 k09 第 10 句 括注分离）；改成半字宽的行内块，宽度算法与排版一致 */
 .en .ph{white-space:nowrap}   /* 高亮短语整体不断行（t03 第二轮审阅：rough / treatment、at the / expense of），比一行还长的由 FIT 放开（phr） */
 x-n{display:inline-block}     /* 释义里的长括注：放得下一行就整体换到下一行（t03 第二轮审阅：（同 / gunwale）），放不下由 FIT 改成行内、只在指定处断开（notes） */
@@ -366,6 +366,18 @@ def long_notes(s):
     return [(a, b) for a, b in notes(s) if b - a > GLOSS_CHUNK or any(c in ZCLOSE or c in ZOPEN for c in s[a + 1:b - 1])]
 
 
+def lead_word(t, i):
+    """括注开头紧跟左括号的一个短英文词（不超过 6 个字母）之后的空格不断开：“（that / 从句中动词用原形）”行末只剩“（that”（专八书卷水墨截图盲审 t02 第 67 屏）。
+    layoutcheck.note_ok 用同一条规则独立判断。"""
+    j = i - 1
+    while j > 0 and t[j].isspace():
+        j -= 1
+    k = j
+    while k > 0 and t[k].isascii() and t[k].isalpha():
+        k -= 1
+    return t[k] in '（(' and k == 0 and 0 < j - k <= 6 and '一' <= t[i] <= '鿿'      # 后面是中文时（“（Member of Parliament 的缩写）”这类长英文另有规则）
+
+
 def note_breaks(t):
     """长括注 t（含两头括号）里可以换行的位置 i（在 t[i] 之前断开）：中英文交界、括注里的逗号顿号分号冒号之后、两个中文片段之间的空格；
     除此以外不断开：中文片段整体不断行（比 GLOSS_CHUNK 还长的由 words 在词间断开），英文片段（down the length of）整体不断行
@@ -385,12 +397,22 @@ def note_breaks(t):
             continue
         if kind[i - 1] == 'S':                       # 空格之后：两边最近的字一边中文一边英文、或两边都是中文，才可以断开
             p = next((kind[j] for j in range(i - 1, -1, -1) if kind[j] != 'S'), kind[i])
-            if p != kind[i] or p == 'H':
+            if (p != kind[i] or p == 'H') and not lead_word(t, i):
                 out.add(i)
         elif kind[i] != kind[i - 1] or (t[i - 1] in '，；：、' and t[i] not in ZCLOSE):
             out.add(i)
         elif (t[i] == '《' or t[i - 1] == '》') and 0 < i < len(t) - 1:      # 书名号整体不断行、前后可以断（六级 s29：“（宫城先生是电影《龙威小子》中的空手道师父）”）
             out.add(i)
+    m = re.match(r'[（(][A-Za-z]{1,6} +(?=[一-鿿])', t)         # 开头短英文词后面不断（lead_word）：给紧跟的中文片段在词间加断点（两头各至少 2 个字），
+    if m:                                            # 整段括注一行放不下时不至于只能任意断开（水墨 t02 “（that 从句中动词用原 / 形）”）
+        a = b = m.end()
+        while b < len(t) and '一' <= t[b] <= '鿿':
+            b += 1
+        pos = a
+        for w in jb().cut(t[a:b]):
+            pos += len(w)
+            if a + 2 <= pos <= b - 2:
+                out.add(pos)
     return sorted(out)
 
 
@@ -435,6 +457,10 @@ def zh_html(s, gloss=False):
             out.append(f'<x-ap>{esc(c)}</x-ap>')        # 英文词中间的撇号（Hunt’s）用英文字体画（六级黑板审阅：思源黑体的“’”是全角）
         elif c in fc and nxt and (nxt in ZCLOSE or nxt in ZOPEN):
             out.append(f'<span class="pr">{esc(c)}</span>')
+        elif c in fo and fo is not ZOPEN and prv in '”’':
+            # 画面 C 译文：霞鹜文楷的右引号是半宽字形，后面全宽左括号的左半空白显得空出一个字（水墨截图盲审 t04 “mama”（妈妈））：往左挪 0.3 字（.pq）。
+            # 不用 .pl 的 −0.5 字：右引号只有 0.44 字宽，左括号会挪到引号起点的左边，layoutcheck 按字的位置分行时误判成另起一行
+            out.append(f'<span class="pq">{esc(c)}</span>')
         elif c in fo and (not prv or prv in ZOPEN):
             out.append(f'<span class="pl">{esc(c)}</span>')
         elif c in fo:
@@ -478,6 +504,7 @@ def zh_html(s, gloss=False):
     groups += [m.span() for m in re.finditer(ZH_TERM, s)]     # 短的引号术语、书名整体不断行（六级黑板审阅：“能源 / 转型”“非 / 转基因”《思考，快与 / 慢》）
     groups += ZB().zh_spans(s, jb())                                # 复合词、前缀 / 后缀、单字介词、数字 + 量词不拆开（考研截图盲审约 20 处：服务 / 人员、这一 / 威胁、可 / 持续发展）
     groups += clause_edges(s)                                       # 分句开头、结尾不单独留一个字（六级黑板审阅：s37 “传达得 / 好，或许……”）
+    groups += [(m.start() - 1, m.end()) for m in re.finditer('—+', s) if m.start() and s[m.start() - 1].strip()]   # 破折号与前一个字不断开，不落在行首（水墨截图盲审 t09、t10）
     han = [i for i, c in enumerate(s) if ish(c)]
     if len(han) >= 3:
         k = han[-2]
@@ -771,7 +798,10 @@ def vocab_html(s, lo=0, hi=None):
         # 词条的直撇号改弯撇号（与句子一致，踩坑 18）；<wbr>：词性、释义前一定能换行（z09 “Bluetooth-connected adj.”整体不断行，伸进了词汇栏右边留白）
         # 分开的短语词条里的三个点（pull...through）显示成省略号“…”（t03 审阅；只改显示，数据不动）
         d2 = ' class="d2"' if STYLE == '2' and i >= 10 else ''      # 手账笔记本的两位数编号（样式 .v em.d2）
-        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em{d2}>{i}</em><div><b>{cap_i(nobr(esc(w["h"].replace(chr(39), "’").replace("...", "…"))))}</b>'
+        # 词条以 f 结尾（a lot of、a set of）：<b class="f">——书卷水墨大字的 EB Garamond 粗体 f 弯钩伸出字身，紧贴后面的释义（水墨截图盲审：“of一套”只空 6 像素，
+        # 别的词条约 15 像素）；只有 样式/C_水墨大字.css 给 b.f 加右边距，其他画面没有这条样式、渲染不变
+        fb = ' class="f"' if w['h'].rstrip(' .…').endswith('f') else ''
+        out.append(f'<div class="v {"ph" if w["t"] == "phr" else ""}"><em{d2}>{i}</em><div><b{fb}>{cap_i(nobr(esc(w["h"].replace(chr(39), "’").replace("...", "…"))))}</b>'
                    f'{f"<wbr><i>{pos}</i>" if pos else ""}<wbr><span class="g" lang="zh-CN">{zh_html(mean, gloss=True)}</span></div></div>')
     return ''.join(out)
 
@@ -833,6 +863,19 @@ PROMPT_JS = """() => { const bad = [], q = s => document.querySelector(s), img =
   if (c.top < top.getBoundingClientRect().bottom + 30) bad.push('原题卡片离页眉太近');
   if (c.bottom > innerHeight || c.right > innerWidth || a.top < top.getBoundingClientRect().bottom + 2) bad.push('原题卡片或纸胶带出界、压住页眉');
   return bad; }"""
+
+
+def empty_split_parts(p):
+    """分屏后每一屏至少有一个词条：铁律 1“每句至少标一个词”推广到每一屏（专八书卷水墨截图盲审：t04 第 19 句第 2 屏、t07 第 39 句第 1 屏、
+    t08 第 7、15 句第 1 屏的词汇栏只有标题、空着，像没做完）。词条的高亮从哪一屏开始就算哪一屏的。返回问题列表。"""
+    out = []
+    S = [s for pa in p['paras'] for s in pa]
+    for k, s in enumerate(S, 1):
+        parts = split_parts(p['id'], k, s)
+        if len(parts) > 1:
+            out += [f'第 {k} 句 第 {j} 屏：分屏后这一屏没有词条（词汇栏空着），换分屏点' for j, (lo, hi, *_) in enumerate(parts, 1)
+                    if not any(lo <= w['sp'][0][0] < hi for w in s['w'])]
+    return out
 
 
 def split_parts(pid, k, s):
@@ -905,7 +948,10 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       b.innerHTML = best ? best[1] : b.dataset.h; wide(); const br = document.createElement('br'); br.className = 'hw'; b.after(br); } };
   const notes = () => { const sc = getComputedStyle(side), R = side.getBoundingClientRect().left + side.clientLeft + side.clientWidth - parseFloat(sc.paddingRight);
     for (const e of document.querySelectorAll('x-n nobr.lr')) { e.style.whiteSpace = '';      // 按词汇栏内边距量：网格列会被不断行的片段撑宽（六级 s39 “three- and four-year-olds”伸出 20 像素）
-      if (e.getBoundingClientRect().width > e.closest('.v > div').clientWidth + 0.5 || e.getBoundingClientRect().right > R + 0.5) e.style.whiteSpace = 'normal'; }
+      // 量片段宽度能不能放进一整行（到词汇栏内边距为止），不看它现在落在哪：原来比“现在的右边界 > R”，片段排在行中（“议员（Member of Parliament”）时
+      // 明明换到下一行放得下，也被放开成任意断行，“（Member / of Parliament 的缩写）”（水墨 t07 第 10 句，layoutcheck 括注断开）
+      const dv = e.closest('.v > div'), L = dv.getBoundingClientRect().left + dv.clientLeft;
+      if (e.getBoundingClientRect().width > Math.min(dv.clientWidth, R - L) + 0.5) e.style.whiteSpace = 'normal'; }
     for (const x of [...document.querySelectorAll('x-n')].reverse()) { x.style.display = '';      // 先里层后外层（释义分句的 x-n 里套着长括注的 x-n）
       if (x.getBoundingClientRect().height > parseFloat(getComputedStyle(x).lineHeight) * 1.5) x.style.display = 'inline'; } };
   const sideFits = () => { hw(); notes(); const s=side.getBoundingClientRect(), c=getComputedStyle(side), l=list.getBoundingClientRect(), top=s.top+side.clientTop;

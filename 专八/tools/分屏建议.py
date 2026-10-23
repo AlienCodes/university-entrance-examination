@@ -217,6 +217,8 @@ def main():
                 if int(k) not in bad and not c.get('无停顿') and not all(
                         pause_ok(audio, tm['sentences'][int(k) - 1], sents[int(k) - 1]['en'], q[0])[0] for q in parts[1:]):
                     bad[int(k)] = ['换屏不在停顿处']
+                elif int(k) not in bad and any(not any(lo <= w['sp'][0][0] < hi for w in sents[int(k) - 1]['w']) for lo, hi, *_ in parts):
+                    bad[int(k)] = ['分屏有一屏没有词条']          # 每一屏至少一个词条（make_video.empty_split_parts）
             keep = {k: v for k, v in M.SPLIT.get(pid, {}).items() if int(k) not in bad}
             print(f'{pid}（画面 {",".join(looks)}，下限 {M.MIN_FS}/{M.MIN_VS}）：不合格 {sorted(bad)}；现有分屏合格 {sorted(keep, key=int)}', flush=True)
             for k in sorted(bad):
@@ -235,6 +237,8 @@ def main():
                             cuts = list(cuts)
                             b = [0] + cuts + [len(en)]
                             if any(y - x < 12 for x, y in zip(b, b[1:])) or (need and not set(cuts) & need):
+                                continue
+                            if any(not any(x <= w['sp'][0][0] < y for w in s['w']) for x, y in zip(b, b[1:])):      # 每一屏至少一个词条（make_video.empty_split_parts）
                                 continue
                             z = ((0, 0, 0), None) if zfull else best_zh(s, cuts)       # zfull：各屏都放整句译文（中文语序与英文对不上时）
                             if z:

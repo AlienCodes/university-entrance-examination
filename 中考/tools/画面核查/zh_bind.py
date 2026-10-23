@@ -10,10 +10,14 @@ zh_spans(s, jieba)：中文里不许断开的片段 [(起, 止)]
   ④ 单字介词、连词与后面不超过 3 个字的词：以、与、和、把、被、在、为、对……（以 / 医院为中心、与 / 空间科学）；
   ⑤ 数字与后面不超过 3 个字的词（20世纪90 / 年代）。
   一串连起来的片段超过 5 个字就不再往上接（防止一大块不断行、上一行空出一截）。
+  ⑥ 分词补充.txt 里的词（jieba 切错的词：吧台、名目、而非……）出现在哪里都整体不断开——只在已加载补充词典时（专八 / 六级引擎、layoutcheck z8；中考不加载，结果不变）。
+     不靠改 jieba 词频（踩坑 62：suggest_freq 强制成词仍敌不过上下文里更强的词，“在吧台上”照样切成 在 / 吧 / 台上，还会把“然而非常”切成 然 / 而非 / 常）。
 en_spans(t)：英文里不许断开的片段 [(起, 止)]
   ① 专名：连续 2—4 个首字母大写的词（去掉开头的 The、When、In 这类普通词），总长不超过 32 个字符
      （Brett Kavanaugh、West Virginia、San Francisco、Apple TV.、California Attorney General）；
-  ② 数字 or/to/and 数字（18 or 21）。
+  ② 数字 or/to/and 数字（18 or 21）；
+  ③ 数字与后面的小写词（in 26 / countries、the 10 / highest：专八书卷水墨截图盲审），日期“June 3, 1853”整体不断开（t05 “on June 3, / 1853.”）；
+  ④ 句首的长专名（只隔着 The、A 这类词、22 个字符以上）不绑：一行放不下“The + 专名”时 The 会单独占一行（水墨 t07 “The / Australian Beverages Council,”）。
 """
 import re
 
@@ -27,6 +31,18 @@ TAIL = {'得多', '得很'}
 FUNC1 = set('以与和及把被将对向从在为让使给跟同由')
 MAXLEN = 5          # 绑得太长会整块推到下一行、上一行空出一截（考研第一版 6—8 字，layoutcheck 译文短行查出 63 处）
 han = lambda w: bool(w) and all('一' <= c <= '鿿' for c in w)
+
+
+_SUPP = None
+
+
+def supp_words():
+    """分词补充.txt 里的词（与 make_video.jb、layoutcheck.jb 读同一个文件）。"""
+    global _SUPP
+    if _SUPP is None:
+        from pathlib import Path
+        _SUPP = [w.strip() for w in (Path(__file__).resolve().parent / '分词补充.txt').read_text('utf-8').splitlines() if w.strip() and not w.startswith('#')]
+    return _SUPP
 
 
 def zh_spans(s, jieba):
@@ -56,7 +72,9 @@ def zh_spans(s, jieba):
                 out[-1] = (out[-1][0], max(b, out[-1][1]))
         else:
             out.append((a, b))
-    return out
+    if getattr(jieba, '_zb_dict', False):      # ⑥ 补充词典里的词整体不断开（已加载补充词典时）
+        out += [m.span() for w in supp_words() for m in re.finditer(re.escape(w), s)]
+    return sorted(out)
 
 
 STOP = {'The', 'A', 'An', 'In', 'On', 'At', 'But', 'And', 'If', 'When', 'As', 'For', 'So', 'This', 'That', 'These', 'Those', 'It', 'Its',
@@ -83,7 +101,9 @@ def en_spans(t, hl=()):
             e = st + len(' '.join(ws))
             a2 = min([st] + [x for x, y in hl if x < e and y > st])
             b2 = max([e] + [y for x, y in hl if x < e and y > st])
-            if e - st <= 32 and b2 - a2 <= 28:
+            if e - st <= 32 and b2 - a2 <= 28 and not (st <= 4 and e - st >= 22):      # ④ 句首长专名不绑
                 out.append((st, e))
     out += [m.span() for m in re.finditer(r'\b\d+ (?:or|to|and) \d+\b', t)]
+    out += [m.span() for m in re.finditer(r'(?<![\w.,-])\d+(?:[.,]\d+)*%? [a-z][a-z’\'-]*', t)]       # ③ 数字 + 小写词
+    out += [m.span() for m in re.finditer(r'\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}\b', t)]
     return out

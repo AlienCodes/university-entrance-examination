@@ -1,7 +1,8 @@
 """排版机械检查（不花 token，生成视频之前跑）：用生成视频的同一程序排出每一屏，逐字量出位置，检查第 1 批画面核查（排版审阅员）报出的各类排版毛病：
 
   行首缩进   中文译文、词汇栏释义的每一行，第一个字必须顶格（行首的左括号、左引号要去掉左半空白）
-  标点挤压   相邻两个全角标点（如“：“”“）；”“”。”）之间不能空出半个字以上
+  标点挤压   相邻两个全角标点（如“：“”“）；”“”。”）之间不能空出半个字以上；半宽右引号（霞鹜文楷）后的左括号要去掉左半空白（水墨 t04 “mama”（妈妈））
+  行首破折号 译文一行不以“——”开头（专八 / 六级；水墨截图盲审 t09、t10）
   孤字       中文译文最后一行只剩一个字；词汇栏释义折行后的一行只有一个字（z35 截图审阅：“用心 / （做）”“节日；（文化） / 节”）
   数字单位   英文的数字与后面的单位不能拆到两行（z25 截图审阅：“only about 6 / kg”）
   释义断词   词汇栏释义只能在标点处、或在词条与释义之间换行，不能把“可/能”“泳/衣”拆开
@@ -152,6 +153,8 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         if (breaks && /[A-Za-z0-9]/.test(a.c) && /[A-Za-z0-9]/.test(f.c)) out.push(`西文断开：译文里的英文「${txt(L[i - 1]).slice(-8)}／${txt(ln).slice(0, 8)}」被拆到两行`); }   // Stable / Diffusion
       if (breaks && name !== '英文' && i > 0 && '，。、：；！？）”’】」》］〕'.includes(f.c))      // 行首禁则（s02 “（音乐、视频等） / ；流式传输”）
         out.push(`行首禁则：${name}第 ${i + 1} 行以「${f.c}」开头`);
+      if (breaks && name !== '英文' && i > 0 && f.c === '—')      // 专八书卷水墨截图盲审（t09 第 36 句、t10 第 50 句）：译文一行以破折号开头，破折号与前一个字不断开
+        out.push(`行首破折号：${name}第 ${i + 1} 行以「——」开头`);
       if (!(isGloss && i === 0) && Math.abs(f.l - want) > 2) out.push(`行首缩进：${name}第 ${i + 1} 行「${txt(ln).slice(0, 12)}」偏 ${Math.round(f.l - want)} 像素`);
       if (i > 0) { const a = L[i - 1][L[i - 1].length - 1];
         const g = f.el.closest('span[lang]');
@@ -164,6 +167,9 @@ CHECK = r"""([minFs, minVs, poss, names, gaps, breaks]) => { names = names || []
         const wide = nb && box && [...nb.getClientRects()].reduce((s, r) => s + r.width, 0) > box.clientWidth + 0.5;
         if (a.c === '-' && /[A-Za-z]/.test(f.c) && !wide) out.push(`连字符：${name}「${txt(L[i - 1]).slice(-12)}／${txt(ln).slice(0, 8)}」`); }
       for (let j = 1; j < ln.length; j++) { const a = ln[j - 1], b = ln[j];
+        // 半宽字形的右引号（霞鹜文楷“”宽 0.44 字）后面紧跟全宽的左括号（左半空白没去掉）：看上去空出半个多字（水墨截图盲审 t04 “mama”（妈妈））
+        if (name !== '英文' && '”’'.includes(a.c) && ZO.includes(b.c) && a.r - a.l < em(a.el) * 0.6 && b.r - b.l > em(b.el) * 0.75 && b.l + 0.5 * em(b.el) - a.r > 0.35 * em(b.el))
+          out.push(`标点挤压：${name}「${a.c}${b.c}」半宽右引号后的左括号没有去掉左半空白`);
         if (ZC.includes(a.c) && (ZC + ZO).includes(b.c) && b.l - a.l > em(a.el) * 0.75)
           out.push(`标点挤压：${name}「${a.c}${b.c}」间距 ${(((b.l - a.l) / em(a.el))).toFixed(2)} 字`);
         // 过度挤压（样片 z10 画面核查：行中的“花（时间）”左括号被去掉了半字空白）：只有相邻两个标点、或行首的左标点才可以挤
@@ -400,6 +406,15 @@ def note_ok(t, i):
     lat = lambda c: c.isascii() and c.isalnum()
     if t[i - 1] in '（(“‘' or t[i] in '）)，。、；：！？”’…':
         return False
+    m = re.match(r'[（(]([A-Za-z]{1,6})( +)(?=[\u4e00-\u9fff])', t)        # 括注开头紧跟左括号的短英文词、后面是中文时，词后不断开（专八书卷水墨截图盲审 t02 “（that / 从句中动词用原形）”）
+    if m and i in (m.end(1), m.end()):
+        return False
+    if m:                                                # 它后面紧跟的中文片段可以在词间断开（两头各至少 2 个字），不论片段多长（与 make_video.note_breaks 相同）
+        a = b = m.end()
+        while b < len(t) and '\u4e00' <= t[b] <= '\u9fff':
+            b += 1
+        if a + 2 <= i <= b - 2 and (i - a) in jieba_bounds(t[a:b], True):
+            return True
     if t[i - 1].isspace() or t[i].isspace() or t[i - 1] in '，；：、':
         return True
     a = next((c for c in reversed(t[:i]) if han(c) or lat(c)), '')
@@ -488,7 +503,7 @@ def zh_edge(t, k):
 
 def zh_breaks(t, names=()):
     """译文 t 按断行规则可以断开的位置（在 t[k] 之前断行，k = 1 … len(t) − 1）。与专八 make_video.zh_html 的绑定分开写（独立判断），规则即本程序的各项检查：
-    标点禁则（右半空白的标点、省略号不在行首，左半空白的标点不在行末，“——”“……”不拆开）、译文断词（jieba 词，先加载 分词补充.txt）、
+    标点禁则（右半空白的标点、省略号、“——”不在行首，左半空白的标点不在行末，“——”“……”不拆开）、译文断词（jieba 词，先加载 分词补充.txt）、
     人名（间隔号前后、登记的整名）、西文（一段英文 / 数字连同后面紧挨的汉字、连续的西文字符）、术语、分句首尾单字、最后一行至少两个字。"""
     import re
     han = lambda c: '一' <= c <= '鿿'
@@ -496,7 +511,7 @@ def zh_breaks(t, names=()):
     wb = jieba_bounds(t, True) | {x for nm in names for m in re.finditer(re.escape(nm), t) for x in m.span()}     # 登记人名的两头可以断（与 make_video.jieba_words 相同）
     for k in range(1, n):
         a, b = t[k - 1], t[k]
-        if b in '，。、：；！？）”’】」》］〕…' or a in '（“‘【「《［〔' or (a == b and a in '—…') or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):
+        if b in '，。、：；！？）”’】」》］〕…' or a in '（“‘【「《［〔' or (a == b and a in '—…') or (b == '—' and a.strip()) or '·' in (a, b) or (han(a) and han(b) and k not in wb) or num_split(t, k):      # “——”不在行首（与前一个字不断开）
             bad.add(k)
     spans = [(m.start(), m.end() + (m.end() < n and han(t[m.end()]))) for m in re.finditer(LATIN_RUN, t)]
     spans += [m.span() for m in re.finditer(r'[!-~]+', t)]                     # 连续的西文字符（10,000、Hunt’s 之外的标点）浏览器不断开

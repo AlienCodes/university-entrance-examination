@@ -62,7 +62,10 @@ def main():
                         print(f'{pid} {k} ❌ {e}')
                         continue
                     r = render_all(pg, td, p, int(k), s, parts)
-                    ok = all(x[2] for x in r)
+                    empty = [j for j, (lo, hi, *_) in enumerate(parts, 1) if not any(lo <= w['sp'][0][0] < hi for w in s['w'])]
+                    if empty:          # 每一屏至少一个词条（make_video.empty_split_parts）
+                        print(f'{pid} {k} ❌ 第 {empty} 屏没有词条（词汇栏空着）')
+                    ok = all(x[2] for x in r) and not empty
                     bad += not ok
                     print(f'{pid} {k} {"OK" if ok else "❌ 仍放不下"} ' + ' | '.join(f'第{i + 1}屏 英文{x[0]}px 词汇{x[1]}px' for i, x in enumerate(r)))
             print('ALL OK' if not bad else f'{bad} 句不通过')

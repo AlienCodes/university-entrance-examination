@@ -63,6 +63,13 @@ def main():
                 e['无停顿'] = c['无停顿']
             stats['切分'] += 1
             new[k] = e
+        for k, v in hand.get(pid, {}).items():           # 人工指定的句子不论这次结果里有没有都采用（水墨：t04 第 19 句等分屏本来放得下、但有一屏没有词条，不在分屏建议的结果里）
+            if k not in new or {x: y for x, y in v.items() if x != '理由'} != {x: y for x, y in new[k].items() if x != '无停顿'} | ({'无停顿': v['无停顿']} if '无停顿' in v else {}):
+                new[k] = {x: y for x, y in v.items() if x != '理由'}
+                if '无停顿' in new[k]:
+                    n = len(next(x for x in TIM[pid]['sentences'] if x['k'] == int(k))['parts'])
+                    new[k]['无停顿'] = '句中没有停顿' if n == 1 else '停顿处切不开'
+                stats.setdefault('人工指定', []).append(f'{pid}:{k}')
         plan[pid] = {k: new[k] for k in sorted(new, key=int)}
         if not plan[pid]:
             del plan[pid]

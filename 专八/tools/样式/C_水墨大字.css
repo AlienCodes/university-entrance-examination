@@ -19,3 +19,6 @@ body, body *{font-weight:700 !important}
 .ph{color:var(--ph)}.ph sup{background:var(--ph)}.v.ph em{background:var(--ph)}.v.ph b{color:var(--ph)}.legend .lp{background:var(--ph)}
 /* 释义里的撇号用西文字形（fonts/eb-garamond-bold.css 的 InkQuote 只含 ‘ ’）：思源宋体的“’”是全角，“don’t”显示成“don’ t”（layoutcheck 西文撇号，t04、t05） */
 .v span{font-family:'InkQuote','Noto Serif SC',serif}
+/* 词条以 f 结尾（a lot of、a set of、a type of）：EB Garamond 粗体 f 的弯钩伸出字身，紧贴后面的释义（水墨截图盲审：“of一套”只空 6 像素，别的词条约 15 像素）；
+   引擎给这类词条加 class f（make_video.py），这里补上弯钩伸出的那一截 */
+.v b.f{padding-right:.16em}
