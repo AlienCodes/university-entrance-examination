@@ -383,7 +383,9 @@ def note_breaks(t):
     除此以外不断开：中文片段整体不断行（比 GLOSS_CHUNK 还长的由 words 在词间断开），英文片段（down the length of）整体不断行
     （比一行还长的由 FIT 放开，note_html 标 class="lr"；t03 截图对照：画面 C 第 54 句“（down the / length of / 顺着……一路）”）。
     标点归属：右括号、省略号等跟前一个字，左括号跟后一个字。"""
-    kind = ['S' if c.isspace() else 'H' if '一' <= c <= '鿿' else 'L' if c.isascii() and c.isalnum() else '' for c in t]
+    # 公式里的“+”算英文（与 layoutcheck 的英文片段一致）：“（形容词 + as 引导让步倒装）”“（too + 形容词 + a + 名词）”原来把“+”并到前面的中文，
+    # 在“+ / as”“+ / a +”之间断开（水墨 t16 第 54 句、t21 第 21 句，layoutcheck 括注断开）
+    kind = ['S' if c.isspace() else 'H' if '一' <= c <= '鿿' else 'L' if c.isascii() and c.isalnum() or c == '+' else '' for c in t]
     for i in range(len(t)):                          # 标点归属：左括号看后面，其余看前面；找不到就看另一边
         if not kind[i]:
             fwd = t[i] in ZOPEN or t[i] == '('
