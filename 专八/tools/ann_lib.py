@@ -121,6 +121,23 @@ def zh_problems(z, whole=False):
     return probs
 
 
+SLOT = {'sb', 'sth', 'somebody', 'something', "sb's", "sth's", 'sb.', 'sth.'}
+
+
+def slot_in_surface(e):
+    """短语词头中间有空位（sb / sth，不算末尾的 do / doing / sb / sth），而原文词形没有用“…”隔开、且词数多于词头去掉空位后的词数：
+    空位里的词（father、you、him）被一起高亮成了短语。被动、倒装等原文词数不多于词头的（kept hidden、put to shame）不算。"""
+    sf = e.get('surf') or ''
+    if e['t'] != 'phr' or not sf or '…' in sf:
+        return False
+    toks = e['h'].replace('…', ' ').split()
+    while toks and toks[-1] in SLOT | {'do', 'doing'}:
+        toks.pop()
+    if not any(t in SLOT for t in toks[1:]):
+        return False
+    return len(sf.split()) > len([t for t in toks if t not in SLOT])
+
+
 def check(pid, path, R=None):
     """返回 (错误列表, 备用列表, 词条数)。错误必须为零。"""
     R = R or load_sents()
@@ -169,6 +186,9 @@ def check(pid, path, R=None):
         miss = uncovered(en, taken, names)
         if miss:
             errs.append(f'第{k}句 漏标（不是基础词，必须标注）：{", ".join(dict.fromkeys(miss))}')
+        for e in a['w']:                # 短语空位（sb / sth）里的词不属于短语：写原文词形要用“…”隔开（专八水墨截图盲审：t06 “induced father to” 把 father 也标成了短语色）
+            if slot_in_surface(e):
+                errs.append(f'第{k}句 短语空位：{e["h"]}{{{e["surf"]}}} 把空位里的词也高亮了，原文词形要用“…”隔开（如 {{induced…to}}）')
         seen = set()
         for e in a['w']:
             if e['t'] != 'phr' and not re.match(r'^(n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.', e['m']):
