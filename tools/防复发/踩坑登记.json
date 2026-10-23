@@ -2661,6 +2661,47 @@
    "status": "自动拦截+有双向验证",
    "gap": "四级、六级、高考、中考的已发布视频片头词数仍是旧算法（待用户决定是否重做）；这些项目的 build_vocab 还没接 text_rules",
    "fix": "各项目 build_vocab 改用 text_rules.word_count 重算；防复发审计每批复盘时对所有项目跑一遍同类检查"
+  },
+  {
+   "id": "75",
+   "title": "整屏盲审巨量消耗 token",
+   "stages": [
+    "截图",
+    "流程"
+   ],
+   "projects": [
+    "专八",
+    "六级",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/截图盲审准备.py: CAP=40",
+     "runs": "准备审阅副本时自动",
+     "evidence": "截图盲审准备.py: 要审 N 屏，超过上限 40"
+    },
+    {
+     "where": "专八/tools/新情况检测.py",
+     "runs": "截图后、登记前",
+     "evidence": "新情况检测.py"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "DZB_VARIANT=水墨 /opt/ttsenv/bin/python 专八/tools/新情况检测.py --见过 t01 t02 t03 --新 t11 t12 --自检",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "DZB_VARIANT=水墨 /opt/ttsenv/bin/python 专八/tools/截图盲审准备.py /tmp/防复发_上限测试 b01=t11,t12@t12; test $? -eq 1",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "六级、考研的截图审阅入口还没接上限（下次用时接）",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
