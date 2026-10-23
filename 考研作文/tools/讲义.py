@@ -110,7 +110,7 @@ def check(pid):
         e('句式：4—7 个')
     taken = {}
     for i, x in enumerate(pats, 1):
-        for k in ('名称', '公式', '原句', '讲解'):
+        for k in ('名称', '表达', '公式', '原句', '原句译', '讲解'):      # 表达：这个句式用来表达什么意思（用户 2026-10-23：每个英文句子下面先有中文，句式要说明白表达什么）
             if not x.get(k):
                 e(f'句式 {i}：缺 {k}')
         src = x.get('原句', '')
@@ -132,8 +132,8 @@ def check(pid):
             z = y.get('zh', '')
             if not z or ZH_HALF.search(z) or not re.search(r'[。！？]$', z):
                 e(f'句式 {i} 例句 {j}：中文缺失、用了半角标点或没有句末标点')
-        if not 1 <= len(x.get('替换', [])) <= 4:
-            e(f'句式 {i}：替换说法 1—4 个')
+        if not 1 <= len(x.get('替换', [])) <= 4 or any(not isinstance(r, dict) or not r.get('en') or not r.get('zh') for r in x.get('替换', [])):
+            e(f'句式 {i}：替换说法 1—4 个，每个是 {{"en": …, "zh": …}}（英文下面要有中文）')
     if not 5 <= len(d.get('词汇', [])) <= 10 or any(not all(y.get(k) for k in ('词', '义', '替代')) for y in d.get('词汇', [])):
         e('词汇：5—10 个，每个要有 词、义、替代')
     for y in d.get('词汇', []):
@@ -221,7 +221,8 @@ mark sup{font-family:'Noto Sans SC';font-size:7.5pt;color:var(--berry);font-weig
 .step .s{font-family:'Nunito','Noto Sans SC';font-weight:800;color:var(--blue);font-size:15pt;line-height:1}
 .step b{font-size:10.6pt}.step p{margin:.6mm 0}
 .step .q{font-size:11pt;color:var(--ink2);border-left:2.5px solid var(--rule);padding-left:3mm;margin-top:1mm;line-height:1.6}
-.pat{border:1px solid #e6e2d8;border-radius:3mm;margin:3.5mm 0;break-inside:avoid;overflow:hidden;background:#fff}
+.pat{border:1px solid #e6e2d8;border-radius:3mm;margin:3.5mm 0;overflow:hidden;background:#fff;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.pat .top{break-inside:avoid}.pat .ex,.pat .alt{break-inside:avoid}
 .pat .h{display:flex;align-items:center;gap:2mm;background:var(--soft);padding:1.8mm 3.5mm}
 .pat .h .c{color:var(--berry);font-weight:700;font-size:12pt}.pat .h b{font-size:11pt}
 .pat .b{padding:2.4mm 3.5mm}
@@ -232,7 +233,12 @@ mark sup{font-family:'Noto Sans SC';font-size:7.5pt;color:var(--berry);font-weig
 .ex{display:grid;grid-template-columns:7mm 1fr;gap:1mm 1.5mm;margin:1.2mm 0}
 .ex .t{font-family:'Nunito','Noto Sans SC';font-weight:800;font-size:8pt;color:#fff;background:var(--green);border-radius:1mm;height:4.4mm;text-align:center;margin-top:1mm}
 .ex .e{font-size:11.2pt;line-height:1.5}.ex .z{grid-column:2;color:var(--mute);font-size:9.2pt;margin-top:-.6mm}
-.alt{margin-top:1.6mm;font-size:9.2pt;color:var(--mute)}.alt span{font-family:'EB Garamond','Noto Sans SC';font-size:10.6pt;color:var(--ink2);background:var(--soft);border-radius:1.5mm;padding:0 1.6mm;margin:0 1mm .8mm 0;display:inline-block}
+.alt{margin-top:1.8mm;font-size:9.2pt;color:var(--mute);border-top:1px dashed #e3dfd3;padding-top:1.4mm}.alt b{display:block;font-size:8.6pt;color:var(--blue);margin-bottom:.4mm}
+.alt>div{margin:.5mm 0}.alt span{font-family:'EB Garamond','Noto Sans SC';font-size:10.8pt;color:var(--ink)}.alt i{font-style:normal;display:block;font-size:9pt;color:var(--mute)}
+.mean{background:#eef6ff;border-left:3px solid var(--blue);border-radius:0 2mm 2mm 0;padding:1.4mm 3mm;margin-bottom:2mm;font-size:10.2pt}.mean b{color:var(--blue);margin-right:2mm;font-size:9pt}
+.oz{font-size:9.4pt;color:var(--mute);margin:-.8mm 0 1.6mm}
+.step .q>div{margin:.6mm 0}.qz{font-family:'Noto Sans SC';font-size:9pt;color:var(--mute);line-height:1.5}
+.tl{margin:1.2mm 0}.te{font-family:'EB Garamond','Noto Sans SC';font-size:11.2pt}.tz{font-size:9pt;color:var(--mute)}
 table.voc{width:100%;border-collapse:collapse;font-size:9.6pt}
 table.voc th{background:var(--ink);color:#fff;font-weight:500;padding:1.4mm 2.5mm;text-align:left}
 table.voc td{border-bottom:1px solid #e6e2d8;padding:1.4mm 2.5mm;vertical-align:top}
@@ -345,13 +351,14 @@ def essay_chapter(no, pid, tmp):
                     for i in range(len(p['sents'])))
     flow = ''.join(f"<div><i>{esc(x['段'])}</i><b>{esc(x['作用'])}</b><p>{esc(x['内容'])}</p></div>" for x in d['思路'])
     steps = ''.join(f"<div class='step'><div class='s'>{i:02d}</div><div><b>{esc(x['标题'])}</b><p>{esc(x['做法'])}</p>"
-                    f"<div class='q'>{' '.join(f'<span class=k>{k}</span> ' + esc(S[k - 1]) for k in x['对应'])}</div></div></div>"
+                    f"<div class='q'>{''.join(f'<div><span class=k>{k}</span> {esc(S[k - 1])}<div class=qz>{esc(Z.get(k, chr(32)))}</div></div>' for k in x['对应'])}</div></div></div>"
                     for i, x in enumerate(d['步骤'], 1))
     pats = ''.join(
-        f"<div class='pat'><div class='h'><span class='c'>{CIRC[i - 1]}</span><b>{esc(x['名称'])}</b></div><div class='b'>"
-        f"<div class='f'>{esc(x['公式'])}</div><div class='o en'>{esc(x['原句'])}</div><div class='why'>{esc(x['讲解'])}</div>"
+        f"<div class='pat'><div class='top'><div class='h'><span class='c'>{CIRC[i - 1]}</span><b>{esc(x['名称'])}</b></div><div class='b'>"
+        f"<div class='mean'><b>这个句式表达</b>{esc(x['表达'])}</div><div class='f'>{esc(x['公式'])}</div>"
+        f"<div class='o en'>{esc(x['原句'])}</div><div class='oz'>{esc(x['原句译'])}</div><div class='why'>{esc(x['讲解'])}</div></div></div><div class='b' style='padding-top:0'>"
         + ''.join(f"<div class='ex'><div class='t'>例{j}</div><div class='e'>{esc(y['en'])}</div><div class='z'>{esc(y['zh'])}</div></div>" for j, y in enumerate(x['例句'], 1))
-        + f"<div class='alt'>也可以说：{''.join(f'<span>{esc(r)}</span>' for r in x['替换'])}</div></div></div>"
+        + "<div class='alt'><b>也可以这样说</b>" + ''.join(f"<div><span>{esc(r['en'])}</span><i>{esc(r['zh'])}</i></div>" for r in x['替换']) + "</div></div></div>"
         for i, x in enumerate(d['句式'], 1))
     voc = ''.join(f"<tr><td class='w'>{esc(y['词'])}</td><td>{esc(y['义'])}</td><td class='r'>{esc(y['替代'])}</td></tr>" for y in d['词汇'])
     return (f"<section class='chap' data-mark='CH{no:02d}'><div class='band'><div><div class='no'>MODEL ESSAY {no:02d} · {esc(p['part'] == 'A' and 'PART A 小作文' or 'PART B 大作文')}</div>"
@@ -386,6 +393,8 @@ def general_chapter():
             elif b['类'] == '要点':
                 out.append("<div class='box'>" + (f"<h3>{esc(b['标题'])}</h3>" if b.get('标题') else '') + "<ul>"
                            + ''.join(f'<li>{esc(x)}</li>' for x in b['条']) + '</ul></div>')
+            elif b['类'] == '模板' and b.get('行'):
+                out.append(f"<div class='box'><h3>{esc(b['标题'])}</h3>" + ''.join(f"<div class='tl'><div class='te'>{esc(e_)}</div><div class='tz'>{esc(z_)}</div></div>" for e_, z_ in b['行']) + '</div>')
             elif b['类'] == '模板':
                 out.append(f"<div class='box'><h3>{esc(b['标题'])}</h3><div class='tpl'>{esc(b['文'])}</div>" + (f"<p class='why'>{esc(b['说明'])}</p>" if b.get('说明') else '') + "</div>")
             elif b['类'] == '对照':
