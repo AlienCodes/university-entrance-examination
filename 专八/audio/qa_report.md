@@ -7,7 +7,7 @@
 - 文章数：27
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.07%
+- 平均识别差异率：1.06%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -27,7 +27,7 @@
 | t14 | 4.46 | 0.40% | antonapoulos → antanapoulos; antonapoulos → antanapoulos; antonapoulos → antinapoulos; antonapoulos → antonopoulos; antonapoulos → antanapoulos |
 | t15 | 4.48 | 0.85% | to → ∅; hulce → hulse; to → ∅; constanze → constanza; shaffer → schaffer; shaffer's → schaffer's; borne → born; travelled → traveled; seraglio → soraglio |
 | t16 | 4.45 | 1.68% | verdi → verde; blond → blonde; rubin → ruben; with lacy → wacy; ansonia → and sonia; ansonia → ensonia; cumulous → cumulus; rubin → reuben; rubin → ruben; saks → zagz; blond → blonde; cost → costs; eighteen → point one eight |
-| t17 | 4.47 | 0.68% | effete → a feat; sun → son; factotum → factum; seemed → seem; he → hey; gradgrind → gradgrand |
+| t17 | 4.47 | 0.59% | effete → a feat; sun → son; factotum → factum; gradgrind → gradgrand; mister → mr |
 | t18 | 4.48 | 0.45% | peasant's → peasants'; seem → seemed; dissidence → dissidents; claimed → claim |
 | t19 | 4.49 | 0.84% | miss council → miscouncil; neighbors → neighbours; aussie → ozzy; heart break alley' → heartbreak alley |
 | t20 | 4.46 | 0.90% | whorfianism → warfianism; of → have; chalari → kalari; languages' → language's; eu → iu; pop whorfian → popwarfian; ∅ → kalari |
