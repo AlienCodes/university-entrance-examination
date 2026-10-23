@@ -53,7 +53,7 @@ LATER = [  # 审阅之后补的修正：篇目, 句号, (现在的源码片段, 
     ('s02', 5, ("            out[i] = '<wbr>' + out[i]\n", "            pass\n"),
      '译文短行'),
     ('s29', 21, ("            out.append((units[0][0], units[1][1]))", "            out.append((a, units[1][1]))"), '译文短行'),      # 分句开头的右引号不绑进来
-    ('s33', 11, ("const [p, h] = before(e), first = h || rs[0];", "const [p, h] = before(e), first = rs[0];"), '英文短行'),  # 短语前紧贴的左引号与短语一起换行
+    ('s33', 11, ("const [p, h] = before(e), first = h || r0;", "const [p, h] = before(e), first = r0;"), '英文短行'),  # 短语前紧贴的左引号与短语一起换行（踩坑 67 起量短语第一个字 r0）
     ('s39', 4, ("h = f'<x-n>{note_html(s[ln[0]:ln[1]], out[ln[0]:ln[1]])}</x-n>'\n                if (x, y) != ln:",
                 "h = f'<x-n>{note_html(t, out[x:y])}</x-n>'\n                if False:"), '括注拆开'),  # 并进长括注的单字与括注分两层 x-n
 ]
