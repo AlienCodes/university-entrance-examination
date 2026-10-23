@@ -22,3 +22,6 @@ body, body *{font-weight:700 !important}
 /* 词条以 f 结尾（a lot of、a set of、a type of）：EB Garamond 粗体 f 的弯钩伸出字身，紧贴后面的释义（水墨截图盲审：“of一套”只空 6 像素，别的词条约 15 像素）；
    引擎给这类词条加 class f（make_video.py），这里补上弯钩伸出的那一截 */
 .v b.f{padding-right:.16em}
+/* 译文里的中文单引号（‘画’、‘伤心巷’，t13、t19、t27）：霞鹜文楷网页字体（lxgw-wenkai-webfont）各分包都不含 U+2018/2019，原来落到系统字体（layoutcheck 字体回退）；
+   放在霞鹜文楷之后用 InkQuote（EB Garamond 粗体的 ‘ ’），只有这两个字落到它，其余字不变 */
+.zh{font-family:'LXGW WenKai','InkQuote'}
