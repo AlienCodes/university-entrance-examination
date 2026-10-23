@@ -29,6 +29,7 @@ import argparse
 import html
 import json
 import math
+import os
 import re
 import subprocess
 import sys
@@ -55,7 +56,11 @@ FS0 = VS0 = MIN_FS = MIN_VS = None          # set_style() 按 字号.json 设置
 # reg = 截图审阅登记（<项目>/tools/画面核查/ 下）；name_re = 成品文件名规则（与各项目旧版相同）；tmp = 临时目录前缀
 PROJECTS = {
     '专八': {'tag': 'TEM-8 · READING · SECTION A', 'top': 'TEM-8 READING', 'exam': '英语专业八级', 'look': '1', 'stills': '大字版/截图/{pid}', 'work': '大字版',
-             'reg': '截图审阅通过.json', 'sample_reg': '样片审阅通过.json', 'name_re': r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', 'tmp': 'tem8video_'},
+             'reg': '截图审阅通过.json', 'sample_reg': '样片审阅通过.json', 'name_re': r'20\d\d年 Passage (One|Two|Three) \S.*\.mp4', 'tmp': 'tem8video_',
+             # 变体（环境变量 DZB_VARIANT 选，入口 专八/tools/大字版_水墨.py）：用户 2026-10-23——专八大字版改用原来的「书卷水墨」古风主题，
+             # 沿用校园版的新字体模式（英文全部加粗）；截图、成品、分屏方案各用各的目录和文件，晴空校园版的进度不动（登记键 <篇目>@C 与 @1 也分开）
+             'variants': {'水墨': {'look': 'C', 'stills': '大字版水墨/截图/{pid}', 'work': '大字版水墨', 'videos': '最终视频_水墨',
+                                   'split': '分屏_水墨.json', 'css': '样式/C_水墨大字.css', 'font_css': 'fonts/eb-garamond-bold.css'}}},
     '六级': {'tag': 'CET-6 · READING · SECTION C', 'top': 'CET-6 READING', 'exam': '大学英语六级', 'look': '3', 'stills': '样片/截图/{pid}', 'work': '样片',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月 第[123]套 Passage (One|Two) \S.*\.mp4', 'tmp': 'cet6video_'},
     # 考研（用户 2026-10-20：与专八晴空校园版完全相同的主题、字体、颜色）：paper = “2026年考研英语一”，passage = “Text 1”
@@ -78,8 +83,13 @@ def set_project(name, look=True):
     if name not in PROJECTS:
         raise SystemExit(f'--project 只能是 {"、".join(PROJECTS)}：{name}')
     PROJ, PJ, C4 = name, PROJECTS[name], ROOT / name
+    var = os.environ.get('DZB_VARIANT')
+    if var:                                       # 项目变体（如 专八 水墨）：覆盖画面、目录、分屏方案和追加样式
+        if var not in PJ.get('variants', {}):
+            raise SystemExit(f'{name} 没有变体 {var}（可选：{"、".join(PJ.get("variants", {})) or "无"}）')
+        PJ = {**PJ, **PJ['variants'][var], 'variant': var}
     T = C4 / 'tools'
-    SPLIT = {k: v for k, v in json.loads((T / '分屏.json').read_text('utf-8')).items() if not k.startswith('_')}
+    SPLIT = {k: v for k, v in json.loads((T / PJ.get('split', '分屏.json')).read_text('utf-8')).items() if not k.startswith('_')}
     NAMES = json.loads((T / '人名.json').read_text('utf-8'))['names']        # 中文音译人名（整名不断行，见 name_spans）
     SAMPLE_REG = T / '画面核查' / PJ['reg']      # 截图审阅登记（专八：样片.py --approve；六级：大字版.py --approve 写入）
     YP_REG = T / '画面核查' / PJ.get('sample_reg', PJ['reg'])     # 样片.py（同一篇、多种画面）的登记；专八的成套生产（大字版.py）用 SAMPLE_REG，两份分开
@@ -613,7 +623,8 @@ def look_files(look=None):
     """决定这种画面样子的样式文件（指纹用）：C = 样式.css + 专八字体；1–6 = 共用基础样式 + 专八调整 + 共用字体。"""
     look = look or STYLE
     if look == 'C':
-        return [THEME, *sorted(p for p in (HERE / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css')]
+        var = [HERE / PJ['css']] if PJ and PJ.get('css') else []          # 变体追加的样式（水墨大字：英文加粗）
+        return [THEME, *sorted(p for p in (HERE / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css'), *var]
     return [*TH.files(look), HERE / '样式' / TH.THEMES[look]['file'], ZH_BOLD, ZH_REGULAR, INTER, *sorted((HERE / 'fonts' / 'inter' / 'files').glob('*'))]
 
 
@@ -635,6 +646,9 @@ def page(body):
     if STYLE == 'C':
         extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">'
         theme = f'<style>{THEME.read_text("utf-8")}</style>'
+        if PJ and PJ.get('css'):              # 变体（水墨大字）：加粗字重的字体 + 追加样式（在原样式之后覆盖）
+            extra += f'<link rel="stylesheet" href="{(HERE / PJ["font_css"]).as_uri()}">'
+            theme += f'<style>{(HERE / PJ["css"]).read_text("utf-8")}</style>'
     else:                       # 共用背景：共用字体 + 共用基础样式 + 共用版式骨架（词条间距）+ 专八调整（追加在后面覆盖）
         extra = f'<link rel="stylesheet" href="{TH.FONTS_CSS.as_uri()}"><link rel="stylesheet" href="{ZH_BOLD.as_uri()}"><link rel="stylesheet" href="{INTER.as_uri()}"><link rel="stylesheet" href="{ZH_REGULAR.as_uri()}">'
         theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
