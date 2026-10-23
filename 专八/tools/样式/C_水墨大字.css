@@ -17,3 +17,5 @@ body, body *{font-weight:700 !important}
 :root{--w:#1f6fd6;--ph:#2a9142}
 .w{color:var(--w)}sup{background:var(--w)}.v em{background:var(--w)}.v b{color:var(--w)}.legend .lw{background:var(--w)}
 .ph{color:var(--ph)}.ph sup{background:var(--ph)}.v.ph em{background:var(--ph)}.v.ph b{color:var(--ph)}.legend .lp{background:var(--ph)}
+/* 释义里的撇号用西文字形（fonts/eb-garamond-bold.css 的 InkQuote 只含 ‘ ’）：思源宋体的“’”是全角，“don’t”显示成“don’ t”（layoutcheck 西文撇号，t04、t05） */
+.v span{font-family:'InkQuote','Noto Serif SC',serif}
