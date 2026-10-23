@@ -14,6 +14,7 @@ R = HERE.parent.parent
 sys.path[:0] = [str(R / 'tools' / 'tts'), str(HERE)]
 import make_audio as M  # noqa: E402
 from misaki import en  # noqa: E402
+import pron_lint  # noqa: E402
 
 REG = HERE / '专名读音已核.json'
 
@@ -22,13 +23,17 @@ def collect():
     pron = M.G.Pronouncer()
     g2p = en.G2P(trf=False, british=False)
     P = {p['id']: p for p in json.loads((R / '专八' / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
-    out = {}
+    out, items = {}, []
     for pid, p in sorted(P.items()):
         for k, s in enumerate([x for pa in p['paras'] for x in pa], 1):
             key = f'{pid}:{k}'
-            for w in pron.WORD.findall(pron.read_text(s['en'], key)):
+            items.append((key, pron.read_text(s['en'], key)))
+            for w in pron.WORD.findall(items[-1][1]):
                 if w not in out and ('❓' in g2p(w)[0] or w in pron.lexicon or w in pron.sentence.get(key, {})):
                     out[w] = {'音标': pron.phonemes(w, key), '首见': key}
+    # 词典外的派生词能对应几个读音不同的词干（toiled：toil / toile），也要人工核对（踩坑 72，tools/tts/pron_lint.py）
+    for w, v in pron_lint.ambiguous_inflections(pron, items).items():
+        out.setdefault(w, {'音标': v['音标'], '首见': v['首见']})
     return out
 
 

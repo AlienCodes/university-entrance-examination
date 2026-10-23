@@ -1,0 +1,36 @@
+"""读音预检的共用函数（各项目 pron_check.py 调用）。
+
+ambiguous_inflections：词典外的派生词（-ed/-s/-ing/-er/-ly），能对应几个词典里的词干、而它的读音与其中某个词干对不上的，列出来人工核对。
+踩坑 72：misaki 把 toiled 当成 toile（一种布料，读 twɑl）加 d，读成 twˈɑld；专名读音检查只看词典外的专名，没管这类普通词，
+直到语音识别听成 twiled、整篇音频重做才发现。双向验证：去掉 toiled 的读音修正，专八 27 篇报出 toiled；加上修正后不报。"""
+import re
+
+SUF = [('ed', ''), ('ed', 'e'), ('d', ''), ('ied', 'y'), ('es', ''), ('s', ''), ('ies', 'y'), ('ing', ''), ('ing', 'e'),
+       ('er', ''), ('ers', ''), ('ly', '')]
+
+
+def _norm(s):
+    return re.sub('[ᵻəɪ]', 'ə', re.sub('[ˈˌ]', '', s))      # 弱读元音 ᵻ / ə / ɪ 视为相同，不比重音
+
+
+def ambiguous_inflections(pron, items):
+    """items：[(句子编号, 朗读文本)]。返回 {词: {'音标': 当前读音, '首见': 句子编号, '词干': {词干: 读音}}}。"""
+    lex = pron.g2p.lexicon
+    gold, silver = lex.golds, lex.silvers
+    known = lambda w: any(x in d for x in (w, w.lower()) for d in (gold, silver))
+    out = {}
+    for key, text in items:
+        for w in pron.WORD.findall(text):
+            lw = w.lower()
+            if w in out or known(w) or (w[0].isupper() and lw not in gold):
+                continue
+            stems = [lw[:-len(a)] + b for a, b in SUF if lw.endswith(a) and len(lw) - len(a) >= 3 and lw[:-len(a)] + b in gold]
+            if lw.endswith('ed') and len(lw) > 5 and lw[-3] == lw[-4]:
+                stems.append(lw[:-3])                          # 双写辅音：unrolled → unroll
+            if not stems:
+                continue
+            ph = pron.phonemes(w, key)
+            got = {st: pron.phonemes(st) for st in dict.fromkeys(stems)}
+            if not all(_norm(ph).startswith(_norm(b)[:-1] if len(_norm(b)) > 2 else _norm(b)) for b in got.values()):
+                out[w] = {'音标': ph, '首见': key, '词干': got}
+    return out

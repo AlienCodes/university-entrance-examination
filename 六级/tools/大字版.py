@@ -162,6 +162,58 @@ def contact(d, pngs, sizes):
     return out
 
 
+def preflight(pg, td, P, ids, inject=False):
+    """开画之前的快速预检（一篇几秒）：截图一画就是几十分钟，人名没登记、样式字体缺字、分屏方案不成立这类问题不该画完才发现
+    （踩坑 73：专八水墨 t11–t27 画了 40 分钟才报出 56 个人名没登记、译文中文单引号缺字形、分屏方案没写进去）。全部列出来，有一处就不开画。
+    字形：把这一篇的标题、全部译文、全部释义里出现过的每个字，分别放进一屏的译文和释义（同一套样式），问浏览器每个字用了哪个字体（与截图检查同一个函数）。
+    inject=True 是双向验证：故意放进一个样式字体没有的字（藏文 ༀ）、从人名表里拿掉一个名字，必须报出来。"""
+    probs = []
+    names = list(M.NAMES)
+    if inject and names:
+        M.NAMES[:] = names[:-1]          # 拿掉最后一个登记的人名（这一批新登记的）
+    try:
+        for pid in ids:
+            p = P[pid]
+            try:
+                M.check_names(p)
+            except SystemExit as e:
+                probs.append(str(e))
+            probs += [f'{pid} {x}' for x in M.empty_split_parts(p)]
+            S = [x for pa in p['paras'] for x in pa]
+            for k in M.SPLIT.get(pid, {}):
+                try:
+                    M.split_parts(pid, int(k), S[int(k) - 1])
+                except SystemExit as e:
+                    probs.append(f'{pid} {e}')
+            zh = ''.join(sorted(set(''.join(x['zh'] for x in S) + str(p.get('title', '')) + ('ༀ' if inject else ''))))
+            gl = ''.join(sorted(set(''.join(w['m'] for x in S for w in x['w']))))
+            s = dict(S[0], zh=zh, w=[dict(S[0]['w'][0], m=gl)] + S[0]['w'][1:])
+            f = Path(td) / 'preflight.html'
+            for html in (M.sentence_slide(p, s, 1, len(S)), M.title_slide(p)):
+                f.write_text(html, 'utf-8')
+                pg.goto(f.as_uri())
+                pg.evaluate('document.fonts.ready')
+                probs += [f'{pid} 字形预检：{x}' for x in M.LC.font_fallback(pg)]
+                probs += [f'{pid} 字形预检：{x} 不在样式字体里' for x in pg.evaluate(M.TH.GLYPH)]
+    finally:
+        M.NAMES[:] = names
+    return list(dict.fromkeys(probs))
+
+
+def run_preflight(ids, inject=False):
+    from playwright.sync_api import sync_playwright
+    P = passages()
+    with sync_playwright() as pw, tempfile.TemporaryDirectory() as td:
+        br = pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
+        pg = br.new_page(viewport={'width': M.W, 'height': M.H})
+        probs = preflight(pg, td, P, ids, inject)
+        br.close()
+    for x in probs:
+        print('  ' + x, flush=True)
+    print(f'预检：{len(probs)} 处问题' if probs else '预检：0 处问题', flush=True)
+    return probs
+
+
 def stills(ids, force):
     from playwright.sync_api import sync_playwright
     P = passages()
@@ -175,6 +227,10 @@ def stills(ids, force):
         except BlockingIOError:
             sys.exit(f'{pid}：另一个进程正在画这一篇的截图（同时画两份会互相删截图，踩坑 54），这次不启动；等它画完再说')
         locks.append(lk)
+    pre = run_preflight(ids)                 # 踩坑 73：几秒钟的预检先过，有一处就不开画（全部列出来，一次改完）
+    if pre:
+        print('预检没通过，不开画（改完再跑同一条命令）', flush=True)
+        return False
     report = json.loads((SHOTS / '汇总.json').read_text('utf-8')) if (SHOTS / '汇总.json').exists() else {}
     common = []
     r = subprocess.run([PY, str(ROOT / '专八' / 'tools' / '字号标定.py'), '--check'], capture_output=True, text=True)
@@ -327,6 +383,8 @@ def main():
     g.add_argument('--stills', action='store_true', help='截图 + 全部程序检查')
     g.add_argument('--approve', action='store_true', help='审阅通过后登记')
     g.add_argument('--video', action='store_true', help='生成 4K 视频 + 全部成品核查（只做已登记的篇目，可续跑）')
+    g.add_argument('--preflight', action='store_true', help='只做开画前的快速预检（人名登记、样式字体缺字、分屏方案、空屏），几秒一篇')
+    g.add_argument('--preflight-selftest', action='store_true', help='预检的双向验证：故意放进缺字、拿掉一个人名，必须报出来')
     ap.add_argument('--force', action='store_true', help='--stills：指纹没变也重画')
     a = ap.parse_args()
     P = passages()
@@ -334,6 +392,13 @@ def main():
     bad = [x for x in ids if x not in P]
     if bad:
         raise SystemExit(f'没有这些篇目：{bad}')
+    if a.preflight or a.preflight_selftest:
+        probs = run_preflight(ids, inject=a.preflight_selftest)
+        if a.preflight_selftest:
+            ok = any('字形预检' in x for x in probs) and any('人名' in x for x in probs)
+            print('双向验证：' + ('通过（缺字、人名都报出来了）' if ok else '不通过：预检漏报'), flush=True)
+            sys.exit(0 if ok else 1)
+        sys.exit(1 if probs else 0)
     ok = stills(ids, a.force) if a.stills else approve(ids) if a.approve else video(ids)
     sys.exit(0 if ok else 1)
 

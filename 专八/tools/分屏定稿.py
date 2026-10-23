@@ -8,6 +8,7 @@
 - 每句取 分屏建议 排第一的候选（刀数最少 → 中英对齐错得最少 → 各屏英文最均衡）。
 - 中英对齐：译文锚点（生词释义、数字、缩写）落在与英文不同的那一屏的比例 > 1/3 时，改用“整句译文”（各屏都放整句中文，
   免得某一屏的中文讲的是另一屏的英文）；没有放得下的整句候选就保留切分并在输出里列出，留给审阅员看截图时重点看。
+- 要人工指定的句子（没有可行候选、或中英对不齐又没有整句候选）一次全部列出、退出码 1、不写方案（踩坑 73：原来碰到第一句就停）。
 - 篇目整篇替换为 分屏建议 写出的方案（现有方案里本来就合格的句子保留；k02 试跑时只读不合格句子、把合格的旧方案丢了），其余篇目不动。
 """
 import json
@@ -29,6 +30,7 @@ def main():
     plan = json.loads(PLAN.read_text('utf-8'))
     hand = json.loads(HAND.read_text('utf-8')) if HAND.exists() else {}
     stats = {'切分': 0, '整句': 0, '对不齐但无整句候选': []}
+    need = []                                            # 要人工指定的句子（分屏手定.json），全部列出来
     for pid in ids:
         new = dict(res['plan'].get(pid, {}))           # 分屏建议写出的方案：现有方案里本来就合格的句子 + 不合格句子的第一候选；下面只按规则改不合格的句子
         for key, r in res['results'].items():
@@ -42,8 +44,9 @@ def main():
                     new[k]['无停顿'] = '句中没有停顿' if n == 1 else '停顿处切不开'
                 stats.setdefault('人工指定', []).append(key)
                 continue
-            if not r.get('候选'):
-                raise SystemExit(f'{key} 放不下且没有可行的分屏候选：{r}')
+            if not r.get('候选'):                          # 踩坑 73：原来碰到第一句就停，补一句、重跑、再停在下一句；改成全部列出来，一次补完
+                need.append(f"{key} 放不下且没有可行的分屏候选（{'有整句译文候选' if r.get('整句译文候选') else '整句也放不下'}）：{r['英文'][:90]}")
+                continue
             c = r['候选'][0]
             wrong, right = c['对齐（错/对）']
             e = {'at': c['at'][0] if len(c['at']) == 1 else c['at']}
@@ -58,6 +61,7 @@ def main():
                     new[k] = e
                     continue
                 stats['对不齐但无整句候选'].append(f'{key} 错/对 {wrong}/{right}')
+                need.append(f'{key} 中英对不齐（对齐 错/对 {wrong}/{right}）且没有整句译文候选：要人工指定（专八水墨 t20:16 第 1 屏英文“用外语测试”配“与用母语……相比”）')
             e['zh'] = c['zh']
             if c['无停顿']:
                 e['无停顿'] = c['无停顿']
@@ -73,6 +77,9 @@ def main():
         plan[pid] = {k: new[k] for k in sorted(new, key=int)}
         if not plan[pid]:
             del plan[pid]
+    if need:                                             # 有要人工指定的句子：不写方案，一次全部列出来，补完 分屏手定.json 再跑
+        print(f'{len(need)} 句要人工指定分屏（写进 {HAND.name}，分屏手定助手.py 逐屏验证），方案没有写出：', *need, sep='\n  ')
+        raise SystemExit(1)
     PLAN.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + '\n', 'utf-8')
     if stats.get('人工指定'):
         print('人工指定（分屏手定.json）：', ' '.join(stats['人工指定']))
