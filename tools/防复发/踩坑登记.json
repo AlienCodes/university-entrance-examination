@@ -34,9 +34,15 @@
      "evidence": ".github/workflows/render-kaoyan-campus.yml:164:          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 考研/tools/verify_all.py \"$ID\""
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "没有任何埋雷测试证明 verify_loudness 还能报出“某句过响/峰值过高/短时波动”；阈值或测量窗口一改（踩坑 63、66 都改过 t0 和 span）就可能悄悄变松。tools/tts/loudcheck.py 只是手动打印工具。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/响度.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：验证/响度.py 用合成朗读信号测仓库里的 verify_loudness（某句 +6 dB、咔哒、6 秒 +4 dB、整体 −20 都报出，正常 0）。 原缺口：没有任何埋雷测试证明 verify_loudness 还能报出“某句过响/峰值过高/短时波动”；阈值或测量窗口一改（踩坑 63、66 都改过 t0 和 span）就可能悄悄变松。tools/tts/loudcheck.py 只是手动打印工具。",
    "fix": "加 tools/tts/双向验证_响度.py：取一篇已发布 MP3 + timings，在内存里 ①原样→必须 0 条；②某句 +6 dB→必须报“句间响度偏差”；③插一个 0 dBFS 咔哒→必须报“峰值”；④6 秒区段 +4 dB→必须报“短时响度波动”；几秒跑完，放进 make_audio.py main 开头和 render-*.yml 的 prep 步骤。"
   },
   {
@@ -439,9 +445,15 @@
      "evidence": "tools/check_pitfalls.py:371:    R.add(12, '仓库脚本', not pk, f'含 pkill -f：{pk}' if pk else '没有 pkill -f')"
     }
    ],
-   "test": {},
-   "status": "只靠流程或记性",
-   "gap": "这个坑发生在模型临时敲的 Bash 命令里，不在仓库脚本里，扫仓库管不到；check_pitfalls.py all 还是手动的，而且它自己的“踩坑必须登记”检查（COVER 只登记到 27，CLAUDE.md 已到 73）现在必然不通过，说明这个总检查已经没人在跑。仓库里没有 .claude/settings.json 钩子、也没有 git hooks。同类坑 54（pgrep 中文路径）同样无程序拦截。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：钩子.py pretool 在 Bash 工具层面拦下模式不带方括号的 pkill -f（只认命令位置）。 原缺口：这个坑发生在模型临时敲的 Bash 命令里，不在仓库脚本里，扫仓库管不到；check_pitfalls.py all 还是手动的，而且它自己的“踩坑必须登记”检查（COVER 只登记到 27，CLAUDE.md 已到 73）现在必然不通过，说明这个总检查已经没人在跑。仓库里没有 .claude/settings.json 钩子、也没有 git hooks。同类坑 54（pgrep 中文路径）同样无程序拦截。",
    "fix": "（需用户同意改设置）加一个 Claude Code PreToolUse 钩子：Bash 命令含 `pkill -f`、`killall`，或 `pgrep -f` 的模式里有非 ASCII 字符就拒绝并提示“按 PID 结束 / 用 [-] 方括号 ASCII 模式”；另把 check_repo 拆成单独的轻量脚本放进 render-*.yml prep，并把 COVER 补到 73 让 all 重新能变绿。"
   },
   {
@@ -1000,9 +1012,15 @@
      "evidence": "专八/tools/make_audio.py:234:             raise RuntimeError(f'{key} 合成文字残留引号：{x}')"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "同一段代码抄了 6 份、没有任何测试；哪份 strip_quotes 或残留正则被改坏（或某条新的合成路径绕过它），都发现不了。高考的 gaokao_tts.render_passage 本身不去引号（高考已定稿、用女声，但以后复用时会再踩）。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/引号.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：验证/引号.py 核对 6 份 strip_quotes 去干净、保留词内撇号、合成前都调用、6 份一致；残留检查认不出直单引号（上游已统一成弯引号）。 原缺口：同一段代码抄了 6 份、没有任何测试；哪份 strip_quotes 或残留正则被改坏（或某条新的合成路径绕过它），都发现不了。高考的 gaokao_tts.render_passage 本身不去引号（高考已定稿、用女声，但以后复用时会再踩）。",
    "fix": "把 strip_quotes 和残留检查移进 tools/tts/gaokao_tts.py（只留一份，由 render_passage 调用），删掉 6 份副本；selftest：strip_quotes('He called it “right to grow” and ‘safe’, didn’t he?') 不得残留 “”‘ 和非词内的 ’，并保留 didn't；原始字符串直接送进残留检查必须报错。"
   },
   {
@@ -1531,9 +1549,15 @@
      "evidence": ".github/check-release-target.py:10:        if re.search(r'--target\\s+\"?\\$\\{?GITHUB_SHA|target_commitish:\\s*\\$\\{\\{\\s*github\\.sha', line):"
     }
    ],
-   "test": {},
-   "status": "只靠流程或记性",
-   "gap": "仍有 5 个工作流用 softprops：release-cet4-videos.yml:45、release-videos.yml:45、release-papers.yml:31、release-tem8-videos.yml:46、release-cet6-videos.yml:46，没有任何检查禁止它。CLAUDE.md 写的守卫 pub.sh / pub_all.sh 不在仓库里（git 历史也没有）。中考两个发布流程发布后不做任何核对。check-release-target.py 不在 10 个 release-*.yml 里运行。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：仓库检查.py 新工作流用 softprops 就拦；旧的 7 个登记在 LEGACY（只许减少，改好了不删也拦）。 原缺口：仍有 5 个工作流用 softprops：release-cet4-videos.yml:45、release-videos.yml:45、release-papers.yml:31、release-tem8-videos.yml:46、release-cet6-videos.yml:46，没有任何检查禁止它。CLAUDE.md 写的守卫 pub.sh / pub_all.sh 不在仓库里（git 历史也没有）。中考两个发布流程发布后不做任何核对。check-release-target.py 不在 10 个 release-*.yml 里运行。",
    "fix": "扩展 check-release-target.py：遇到 'softprops/action-gh-release'、'unzip -l'、'zip -0' 也报错。新建一个很小的 lint-workflows.yml（推送 .github/** 时触发）运行它，同时做 yaml.safe_load 和步骤数比对（踩坑 68）。给 release-zk-*.yml 补上 render 流程那段附件名与大小核对。改正 CLAUDE.md 里 pub.sh 的引用。"
   },
   {
@@ -1568,9 +1592,15 @@
      "evidence": ".github/workflows/release-cet6-materials.yml:68:          with zipfile.ZipFile(z) as zf:                   # 踩坑 43：一律用 Python zipfile 核对"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "下面几个视频、原卷发布流程仍用 Info-ZIP 打包、用 `unzip -l` 查看，正是这一条的坑：release-zk-videos.yml:33-34、release-videos.yml:31-32、release-cet4/cet6/tem8-videos.yml:26-27、release-papers.yml:20-23。任何流程都没有“发布后下载 + zipfile 比对”（render 流程只比附件名和大小）。pack-zip 的断言没有双向验证。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：仓库检查.py 新工作流用 unzip -l 就拦（旧的在 LEGACY）。 原缺口：下面几个视频、原卷发布流程仍用 Info-ZIP 打包、用 `unzip -l` 查看，正是这一条的坑：release-zk-videos.yml:33-34、release-videos.yml:31-32、release-cet4/cet6/tem8-videos.yml:26-27、release-papers.yml:20-23。任何流程都没有“发布后下载 + zipfile 比对”（render 流程只比附件名和大小）。pack-zip 的断言没有双向验证。",
    "fix": "用踩坑 42 的同一个 lint 拒绝工作流里的 `unzip -l`、`zip -0`、`zip -q`，把这些流程改用 .github/pack-zip.py。给 pack-zip.py 加 --selftest：用 Info-ZIP `zip -0` 打一个中文名文件，UTF-8 标记断言必须失败；用 Python 打包必须通过。"
   },
   {
@@ -1657,9 +1687,15 @@
      "evidence": "CLAUDE.md:108: | 47 | 清理临时目录（scratchpad）腾磁盘时，把 `tools/tts/models/` 里软链接指向的 Kokoro、语音识别模型一并删了"
     }
    ],
-   "test": {},
-   "status": "只靠流程或记性",
-   "gap": "critic: 证据行号按当前 CLAUDE.md（新增铁律 15 后）更新为 108。整个仓库没有一处程序执行 find -xtype l 或 is_symlink（grep 为 0）。download_models.py 发现目标“已存在”就跳过，不拒绝软链接；清理临时目录也没有专用脚本。现状没问题：本次 find 确认仓库里没有软链接，tools/tts/models/ 下都是真实文件。但以后不再犯，全靠记性。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：仓库检查.py 每次提交前查软链接：指向仓库外、断掉都拦。 原缺口：critic: 证据行号按当前 CLAUDE.md（新增铁律 15 后）更新为 108。整个仓库没有一处程序执行 find -xtype l 或 is_symlink（grep 为 0）。download_models.py 发现目标“已存在”就跳过，不拒绝软链接；清理临时目录也没有专用脚本。现状没问题：本次 find 确认仓库里没有软链接，tools/tts/models/ 下都是真实文件。但以后不再犯，全靠记性。",
    "fix": "在 tools/tts/download_models.py 结尾和 大字版.py preflight 里各加一行：models/ 下任何一项 is_symlink()，或 `find 仓库 -xtype l` 有输出，就报错。清理临时目录统一用一个小脚本，先查仓库里有没有软链接指向要删的目录，有就停下。"
   },
   {
@@ -1832,9 +1868,15 @@
      "evidence": ".github/cet6-render-list.py: elif r.get('指纹') != reg.get(f'{p[\"id\"]}@3', {}).get('指纹'):"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "6 个旧发布工作流还在用 zip -0 或 zip -q：release-videos.yml:31（高考）、release-cet4-videos.yml:26、release-cet6-videos.yml:26、release-tem8-videos.yml:26、release-zk-videos.yml:33、release-papers.yml:20-21。“下次再用时改”靠记性。六级/tools/批量生成_黑板.sh:14 还是“已提交就跳过”。两项都没有能长期重跑的埋雷测试。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：仓库检查.py 新工作流用 zip -0 / zip -q 就拦（旧的在 LEGACY）。 原缺口：6 个旧发布工作流还在用 zip -0 或 zip -q：release-videos.yml:31（高考）、release-cet4-videos.yml:26、release-cet6-videos.yml:26、release-tem8-videos.yml:26、release-zk-videos.yml:33、release-papers.yml:20-21。“下次再用时改”靠记性。六级/tools/批量生成_黑板.sh:14 还是“已提交就跳过”。两项都没有能长期重跑的埋雷测试。",
    "fix": "写 .github/check-workflows.py（可以和 check-release-target.py 合并）：任何工作流里出现 `zip -0|zip -q|zip -r|unzip -l` 就报错，放在所有 release-*.yml 的第一步跑。现在就把这 6 个工作流换成 python3 .github/pack-zip.py。批量生成_黑板.sh 的跳过条件改用 cet6-render-list.py 的判断。"
   },
   {
@@ -1889,9 +1931,15 @@
      "evidence": "六级/tools/大字版.py:228: sys.exit(f'{pid}：另一个进程正在画这一篇的截图（同时画两份会互相删截图，踩坑 54），这次不启动；等它画完再说')"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "“别的进程持锁时退出码 1”的双向验证没有留在仓库。--video 这一步没有锁，两份 --video 跑同一篇会同时写同一个成品和临时文件。pgrep 用 ASCII 模式靠记性。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：钩子.py pretool 拦下模式里有中文的 pgrep / pkill。--video 没有锁仍是缺口。 原缺口：“别的进程持锁时退出码 1”的双向验证没有留在仓库。--video 这一步没有锁，两份 --video 跑同一篇会同时写同一个成品和临时文件。pgrep 用 ASCII 模式靠记性。",
    "fix": "加 `大字版.py --lock-selftest`：先在本进程里 flock 某一篇的 .lock，再起子进程跑 --stills 这一篇，必须退出码 1 且输出含“踩坑 54”（锁检查在预检之前，1 秒内结束），然后放锁。video() 里同样加每篇的锁。"
   },
   {
@@ -2094,9 +2142,15 @@
      "evidence": "考研/tools/ann_lib.py:176: errs.append(f'第{k}句 短语空位：{e[\"h\"]}{{{sf}}} 的原文词形要写“…”（如 {{focused…on}}），空位里的词不属于短语')"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "检查都在截图阶段自动跑，但“旧引擎报 107 处、新引擎 0”的双向验证只在 考研/大字版/日志/chain*.sh 这类临时脚本里跑过，没有留下能长期重跑的测试。zh_bind 规则以后被改松，不会有任何测试报警。六级/tools/ann_lib.py 没有短语空位检查（考研、考研作文、专八都有，专八是 slot_in_surface）。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/断行规则.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：验证/断行规则.py 用盲审查出的断行（服务人员、可持续、这一威胁、父母们、以医院、Brett Kavanaugh、18 or 21）证明 jieba 在词中断、zh_bind 绑住。 原缺口：检查都在截图阶段自动跑，但“旧引擎报 107 处、新引擎 0”的双向验证只在 考研/大字版/日志/chain*.sh 这类临时脚本里跑过，没有留下能长期重跑的测试。zh_bind 规则以后被改松，不会有任何测试报警。六级/tools/ann_lib.py 没有短语空位检查（考研、考研作文、专八都有，专八是 slot_in_surface）。",
    "fix": "新建 考研/tools/画面核查/双向验证.py（照六级的写法），CASES 用盲审时报出的句子：Brett Kavanaugh、Mariana Trench、服务人员、可持续、W ith、focused…on。在内存里撤掉 zh_bind 或 en_spans 对应的规则后必须报出，现在的引擎必须 0。专八 ann_lib.slot_in_surface 同步到六级的 ann_lib。这套测试也挂进上面“改引擎就自动跑双向验证”的 GitHub 工作流。"
   },
   {
@@ -2193,9 +2247,15 @@
      "evidence": "专八/tools/make_video.py:1263: out += LC.problems(pg, MIN_FS, MIN_VS, poss=True, names=NAMES, fonts=True, gaps=True, breaks=True)"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "检查和引擎用的是同一份 zh_spans 规则（踩坑 2：用同一种方法自己查自己）：⑥被删掉、或者词没加进 分词补充.txt，引擎和检查会一起失效，什么也不报。仓库里没有任何测试覆盖⑥（踩坑 71 说的“旧引擎 26 处”是临时跑的，没有提交）；六级/tools/画面核查/双向验证.py:43-45 还把一条原有用例注释掉了，理由是“见踩坑 71”。jieba 新切错的词，仍然只能靠人工审阅发现。另外：单独跑 layoutcheck.py 时 z8 只认 专八/六级/考研（第 752 行），漏了考研作文。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/断行规则.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：验证/断行规则.py 证明 网络中立、吧台 加载补充词典前后 jieba 都在词中断，zh_spans ⑥ 绑住。 原缺口：检查和引擎用的是同一份 zh_spans 规则（踩坑 2：用同一种方法自己查自己）：⑥被删掉、或者词没加进 分词补充.txt，引擎和检查会一起失效，什么也不报。仓库里没有任何测试覆盖⑥（踩坑 71 说的“旧引擎 26 处”是临时跑的，没有提交）；六级/tools/画面核查/双向验证.py:43-45 还把一条原有用例注释掉了，理由是“见踩坑 71”。jieba 新切错的词，仍然只能靠人工审阅发现。另外：单独跑 layoutcheck.py 时 z8 只认 专八/六级/考研（第 752 行），漏了考研作文。",
    "fix": "加一个纯 Python 单元测试（不开浏览器，几秒）：对 分词补充.txt 里的每个词，在含它的真实译文句子上断言 zh_spans 覆盖整词；再加一条双向验证（照 六级 双向验证.build() 的做法）：只在内存里改引擎，去掉 make_video.py:245 的 zb 判断，专八里含“吧台/名目”的句子必须报译文断词。layoutcheck 另写一条独立判断：断点两侧拼起来是 分词补充.txt 里的词就报（直接查子串，不经过 zh_spans）。第 752 行把考研作文加进 z8。"
   },
   {
@@ -2225,9 +2285,15 @@
      "evidence": "tools/video/verify_videos.py:84: lead = p.get('lead', 1.5)      # 第一句开口时刻：片头 1.5 秒；考研作文另有原题屏"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "窗口放窄之后，没有测试证明：开头有长静音时正文里真实的响度波动仍然能查出来；也没有测试证明片头 1.5 秒的项目仍然从 0 秒量（“测量逐字节不变”只手动核对过一次）。以后改了 1.5 或 0.5 这两个常数，测量会悄悄变掉。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/响度.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：验证/响度.py：11.5 秒才开口的音频不误报，正文 6 秒 +4 dB 照样报出。 原缺口：窗口放窄之后，没有测试证明：开头有长静音时正文里真实的响度波动仍然能查出来；也没有测试证明片头 1.5 秒的项目仍然从 0 秒量（“测量逐字节不变”只手动核对过一次）。以后改了 1.5 或 0.5 这两个常数，测量会悄悄变掉。",
    "fix": "新增 tools/tts/test_loudness_window.py（用 numpy 造粉红噪声假句子，不需要 TTS，2 秒内跑完）：(a) 1.5 秒开头时断言 t0 == 0；(b) 11.5 秒静音开头、响度均匀 → 通过；(c) 同样的开头、正文里有 3 秒段高 3 dB → 必须报“短时响度波动”。由 check_pitfalls.py 的 text 阶段调用，或在 make_audio 启动时调用。"
   },
   {
@@ -2324,9 +2390,15 @@
      "evidence": "考研作文/tools/make_audio.py:109: TAIL_TRIM = json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8')).get('tail_trim', {})"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "edge_span 把格式行排除在短时窗口外，但没有测试证明靠近格式行的正文句子出现响度跳变时仍能查出。气声（report→reports）、Shenzhen 这类读错，只能靠语音识别加人工登记；而 考研作文/tools/批量_本机.sh 在 qa_audio 后面写了 `|| true`，识别失败也照样往下走。",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/响度.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：验证/响度.py：书信格式行不用 edge_span 报出（原样重现）、用了 0 处、旁边正文 +4 dB 照样报出。 原缺口：edge_span 把格式行排除在短时窗口外，但没有测试证明靠近格式行的正文句子出现响度跳变时仍能查出。气声（report→reports）、Shenzhen 这类读错，只能靠语音识别加人工登记；而 考研作文/tools/批量_本机.sh 在 qa_audio 后面写了 `|| true`，识别失败也照样往下走。",
    "fix": "在 test_loudness_window.py（见 63）里加书信的情况：称呼很轻 → 通过；正文某句高 3 dB → 必须报错。批量_本机.sh 去掉 qa_audio 后面的 `|| true`，再接 tools/tts/识别分诊.py（有没登记的识别差异就退出码 1），让批量停在出问题的那一篇。"
   },
   {
@@ -2376,9 +2448,15 @@
    ],
    "projects": [],
    "guards": [],
-   "test": {},
-   "status": "只靠流程或记性",
-   "gap": "“推送前 yaml.safe_load + 步骤数比对”只手动做过一次。仓库里没有任何脚本做这件事（在 *.py / *.sh 里 grep safe_load、yaml 都没有结果），也没有 pre-push 钩子。工作流里的检查帮不上忙，因为无效的工作流根本不会运行。（现状我只读核对过：5 个 render-*.yml 都是 prep 6 / render 8 / publish 7。）",
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-23 补：仓库检查.py 每次提交前解析全部工作流，步骤字符串里藏着“- name: / - uses:”行就拦（删行留缩进原样重现能报出）。 原缺口：“推送前 yaml.safe_load + 步骤数比对”只手动做过一次。仓库里没有任何脚本做这件事（在 *.py / *.sh 里 grep safe_load、yaml 都没有结果），也没有 pre-push 钩子。工作流里的检查帮不上忙，因为无效的工作流根本不会运行。（现状我只读核对过：5 个 render-*.yml 都是 prep 6 / render 8 / publish 7。）",
    "fix": "新增 .github/check-workflows.py：对每个工作流 yaml.safe_load；任何 run: 字符串里出现形如 `^\\s*- (name|uses|run):` 的行就失败（说明步骤被吞进了多行字符串）；比对所有 render-*.yml 的任务/步骤数结构是否一致（6/8/7）；同时 compile 每段 heredoc Python。由提交进仓库的 pre-push 钩子和 自动提交.sh 调用。双向验证：用一份删掉 `!/考研/真题/` 那行、但留下缩进的副本，必须失败。"
   },
   {
@@ -2727,5 +2805,5 @@
   "kaoyan-writing v5"
  ],
  "_复盘豁免说明": "防复发机制建立（2026-10-23）之前发布的批次：教训已写进 CLAUDE.md 踩坑表，不再补复盘；之后的每个批次都要复盘",
- "_没有测试的旧坑基线": 41
+ "_没有测试的旧坑基线": 28
 }

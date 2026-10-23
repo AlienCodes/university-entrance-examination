@@ -57,6 +57,9 @@ case('pkill -f 带方括号 → 放', 0, 'pretool', tool('Bash', command='pkill 
 case('pgrep 中文模式 → 拦（踩坑 54）', 2, 'pretool', tool('Bash', command='pgrep -f 大字版.py'))
 case('pgrep ASCII 模式 → 放', 0, 'pretool', tool('Bash', command='pgrep -f "ttsenv/bin/python .*[-]-stills" | head'))
 case('普通命令 → 放', 0, 'pretool', tool('Bash', command='git status && echo 完成'))
+case('AskUserQuestion → 拦（铁律 12）', 2, 'pretool', tool('AskUserQuestion', questions=[]))
+case('文字里提到 pkill -f 中文 → 放', 0, 'pretool', tool('Bash', command='echo "Bash：pkill -f 大字版 要拦" > a.txt'))
+case('分号后 sudo pkill -f 无方括号 → 拦', 2, 'pretool', tool('Bash', command='ls; sudo pkill -f make_video'))
 # 对话过长
 with tempfile.TemporaryDirectory() as d:
     small, big = Path(d, 's.jsonl'), Path(d, 'b.jsonl')

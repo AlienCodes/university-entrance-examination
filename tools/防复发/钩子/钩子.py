@@ -8,6 +8,7 @@
     Agent / Task / Workflow：提示或脚本里必须写“token 预算：约 N 万”（铁律 17：动手前先估 token）；
         超过 FFF_BUDGET_MAX（默认 30 万）拦下；要整屏看截图（盲审、逐屏、整屏）却不走 新情况检测.py / 截图盲审准备.py 的拦下。
     Read 图片：同一会话看图超过 FFF_IMG_LIMIT（默认 30）张拦下，改用 新情况检测.py。
+    AskUserQuestion：一律拦下（铁律 12：工作流不许因为等用户回答而停下——自己定、接着做、事后汇报）。
     Bash：pkill -f 的模式不带方括号（会匹配到自己的 shell，踩坑 12）、pgrep/pkill 模式里有中文（ps 里显示成 ?，踩坑 54）拦下。
 拦下 = 退出码 2 + stderr 写原因（Claude Code 把原因交给模型）。钩子自己出任何错都放行（退出 0），不卡正常工作。
 双向验证：python3 tools/防复发/验证/钩子.py"""
@@ -93,7 +94,8 @@ def check_read(inp, sid):
 
 def check_bash(inp):
     cmd = inp.get('command') or ''
-    for m in re.finditer(r'\b(pkill|pgrep)\b([^|;&\n]*)', cmd):
+    # 只认处在命令位置的 pkill / pgrep（行首、; | & ( ` $( 之后、sudo / xargs 之后），文字里提到的不算
+    for m in re.finditer(r'(?:^|[;&|(`\n]|\bsudo|\bxargs|\bexec)[ \t]*(pkill|pgrep)\b([^|;&\n]*)', cmd):
         args = m.group(2)
         if re.search(r'[^\x00-\x7f]', args):
             deny(f'{m.group(1)} 的模式里有中文：ps 里中文显示成 ?，匹配不到（踩坑 54）。改用 ASCII 模式，如 pgrep -f "ttsenv/bin/python .*[-]-stills"。')
@@ -135,6 +137,8 @@ def main():
                 check_read(inp, data.get('session_id') or '')
             elif tool == 'Bash':
                 check_bash(inp)
+            elif tool == 'AskUserQuestion':
+                deny('铁律 12：工作流不许因为等用户回答而停下。挑稳妥、能撤回的做法（先备份、改名不删）先做，把问题写进汇报让用户事后定。')
     except SystemExit:
         raise
     except Exception as e:                    # 钩子自己出错一律放行，不卡正常工作
