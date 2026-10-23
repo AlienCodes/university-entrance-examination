@@ -15,20 +15,20 @@
 | t08 | 2023 | Passage Two | 1066 | 8 | I’d been living in Los Angeles just under a year when, in … |
 | t09 | 2023 | Passage Three | 1079 | 17 | It was delightful to be in such a place, after long weeks … |
 | t10 | 2022 | Passage One | 762 | 6 | Buck did not read the newspapers, or he would have known … |
-| t11 | 2022 | Passage Two | 1047 | 11 | Early this winter, the hundreds of climbers making plans … |
-| t12 | 2022 | Passage Three | 1188 | 10 | Vast stretches of central Asia feel eerily uninhabited. Fly … |
+| t11 | 2022 | Passage Two | 1050 | 11 | Early this winter, the hundreds of climbers making plans … |
+| t12 | 2022 | Passage Three | 1188 | 10 | Vast stretches of Central Asia feel eerily uninhabited. Fly … |
 | t13 | 2021 | Passage One | 722 | 6 | The gorilla is something of a paradox on the African scene. … |
 | t14 | 2021 | Passage Two | 1243 | 7 | In the town there were two mutes, and they were always … |
-| t15 | 2021 | Passage Three | 1018 | 6 | Like many historical films, Amadeus is far from a faithful … |
+| t15 | 2021 | Passage Three | 1021 | 6 | Like many historical films, Amadeus is far from a faithful … |
 | t16 | 2019 | Passage One | 1000 | 7 | When it came to concealing his troubles, Tommy Wilhelm was … |
 | t17 | 2019 | Passage Two | 1005 | 6 | By the 1840s New York was the leading commercial city of … |
-| t18 | 2019 | Passage Three | 885 | 12 | Why make a film about Ned Kelly? More ingenious crime than … |
-| t19 | 2018 | Passage One | 824 | 11 | “Britain’s best export,” I was told by the head of the … |
+| t18 | 2019 | Passage Three | 891 | 12 | Why make a film about Ned Kelly? More ingenious crimes than … |
+| t19 | 2018 | Passage One | 822 | 11 | “Britain’s best export,” I was told by the head of the … |
 | t20 | 2018 | Passage Two | 872 | 9 | Some of the advantages of bilingualism include better … |
 | t21 | 2018 | Passage Three | 823 | 16 | Once across the river and into the wholesale district, she … |
-| t22 | 2017 | Passage One | 779 | 11 | It’s 7pm on a balmy Saturday night in June, and I have just … |
-| t23 | 2017 | Passage Two | 1241 | 11 | I can still remember the faces when I suggested a method of … |
-| t24 | 2017 | Passage Three | 806 | 14 | Once again, seething, residual anger has burst forth in an … |
+| t22 | 2017 | Passage One | 777 | 11 | It’s 7pm on a balmy Saturday night in June, and I have just … |
+| t23 | 2017 | Passage Two | 1236 | 11 | I can still remember the faces when I suggested a method of … |
+| t24 | 2017 | Passage Three | 812 | 14 | Once again, seething, residual anger has burst forth in an … |
 | t25 | 2016 | Passage One | 975 | 11 | There was music from my neighbor’s house through the summer … |
-| t26 | 2016 | Passage Two | 1024 | 13 | THE TERM “CYBERSPACE” was coined by William Gibson, a … |
-| t27 | 2016 | Passage Three | 977 | 11 | You should treat skeptically the loud cries now coming from … |
+| t26 | 2016 | Passage Two | 1021 | 13 | The term “cyberspace” was coined by William Gibson, a … |
+| t27 | 2016 | Passage Three | 967 | 11 | You should treat skeptically the loud cries now coming from … |
