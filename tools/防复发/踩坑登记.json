@@ -1297,9 +1297,15 @@
      "evidence": "中考/tools/make_video.py:434: subprocess.run([sys.executable, str(HERE / '画面核查' / 'screens_fp.py'), 'check', a.pid], check=True)"
     }
    ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "①没有测试证明门禁在样式或程序改动后确实拒绝生成。②引擎指纹（专八/tools/make_video.py:1191）漏了引擎排版要用的 中考/tools/画面核查/zh_bind.py（make_video.py:328 加载），也漏了画面 C 用到的 themes.py。zh_bind 一改，旧登记仍然算“有效”，要到生成时 same_still 或 GitHub 逐字节比对才拦下，白白多画一遍。③登记不要求审阅证据（见踩坑 32）。",
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/截图指纹.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "①没有测试证明门禁在样式或程序改动后确实拒绝生成。②引擎指纹（专八/tools/make_video.py:1191）漏了引擎排版要用的 中考/tools/画面核查/zh_bind.py（make_video.py:328 加载），也漏了画面 C 用到的 themes.py。zh_bind 一改，旧登记仍然算“有效”，要到生成时 same_still 或 GitHub 逐字节比对才拦下，白白多画一遍。③登记不要求审阅证据（见踩坑 32）。｜已补：指纹加入 zh_bind.py，双向验证逐个文件改一个字节指纹必须变（旧引擎报出 zh_bind 漏掉）",
    "fix": "fingerprint() 的文件表里加 QA / 'zh_bind.py' 和 TH.__file__。再加一个几秒的自测：把指纹输入文件在内存里改一个字节，fingerprint 必须变，main() 必须以“还没有审阅通过”退出。"
   },
   {
@@ -2675,5 +2681,5 @@
   "kaoyan-writing v5"
  ],
  "_复盘豁免说明": "防复发机制建立（2026-10-23）之前发布的批次：教训已写进 CLAUDE.md 踩坑表，不再补复盘；之后的每个批次都要复盘",
- "_没有测试的旧坑基线": 42
+ "_没有测试的旧坑基线": 41
 }

@@ -1188,7 +1188,7 @@ def fingerprint(pid, look):
     """截图审阅的指纹（专八样片、六级）：生成程序、排版检查程序、这种画面的样式与字体、字号表、本项目人名表、该篇分屏方案与定稿数据；任何一样改了，截图就要重审。"""
     import hashlib
     h = hashlib.sha256()
-    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', QA / '分词补充.txt', HERE / '字号.json', T / '人名.json',
+    for x in [Path(__file__).resolve(), QA / 'layoutcheck.py', QA / '分词补充.txt', QA / 'zh_bind.py', HERE / '字号.json', T / '人名.json',      # zh_bind：引擎和排版检查共用的断行规则（防复发审计：原来漏了，改了它截图登记不作废）
               ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css', *look_files(look)]:
         h.update(str(Path(x).relative_to(ROOT)).encode())
         h.update(Path(x).read_bytes())
