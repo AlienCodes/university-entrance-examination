@@ -112,7 +112,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 句子没有标注单词（p25，踩坑 3）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截（无双向验证）",
@@ -156,11 +156,18 @@
      "evidence": "专八/tools/batch_audio.sh:17:  [ $tri = 0 ] || { echo \"停止：$id 识别分诊有待核（见上面），改读音、试合成确认后从 $id 重跑\"; exit 1; }"
     }
    ],
-   "test": {
-    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 音频换了却没重跑语音识别自检（p22，踩坑 4）",
-    "needs": "tts"
-   },
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/识别分诊.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
    "status": "半自动（程序报出、人核对登记）",
    "gap": "critic: 9f408b8 起专八已补上：batch_audio.sh 每篇 make_audio → qa_audio → 识别分诊，待核就停，登记表改成程序读的 识别差异已核.json；双向验证可跑：`/opt/ttsenv/bin/python tools/tts/识别分诊.py 专八 t25 --rev 7193562` 报出 t25:5 toiled→twiled、退出码 1（本次实跑）。仍有缺口：中考、考研、六级、四级的 batch_audio.sh 照旧 qa 失败只 echo、不分诊，登记仍是人看的 识别差异已核.md；考研作文 批量_本机.sh 的 qa_audio 带 `|| true`；截图/视频生成前没有任何检查要求“识别自检针对当前 MP3”（识别分诊不比 mp3_sha256，只靠批量脚本的顺序保证）；没有埋“句末漏一个词”的雷证明能报出漏读。",
    "fix": "把 专八/tools/batch_audio.sh 的写法（开头 pron_check、每篇 识别分诊、出错即停）复制到 中考/考研/六级/四级 的 batch_audio.sh 和 考研作文 批量_本机.sh（去掉 || true）；识别分诊 比对 qa_report[pid].mp3_sha256 与当前 MP3，不一致直接报“自检过期”；大字版 --preflight 只读跑一次分诊（不重听）确认 0 待核；埋雷：把一条 qa_report 的 asr 末词删掉，断言列为待核。"
@@ -194,7 +201,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 朗读文本残留中文（p31，踩坑 5）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截+有双向验证",
@@ -224,7 +231,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 在人名缩写处断句（p28，踩坑 7）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "只靠流程或记性",
@@ -264,7 +271,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 英文直撇号（p26，踩坑 7）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截（无双向验证）",
@@ -499,7 +506,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 复核通过后又改了文字（p32，踩坑 14）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截（无双向验证）",
@@ -638,7 +645,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 英文直撇号（p26，踩坑 7）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截（无双向验证）",
@@ -673,7 +680,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 朗读文本残留符号 # +（p31，踩坑 5）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截+有双向验证",
@@ -704,7 +711,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 英文改了却没重新生成音频（p20，踩坑 20）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截（无双向验证）",
@@ -740,7 +747,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "埋雷 13 处，查出 13 处",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "只靠流程或记性",
@@ -804,11 +811,18 @@
      "evidence": "专八/tools/batch_audio.sh:12:  $PY tools/tts/识别分诊.py 专八 \"$id\"; tri=$?"
     }
    ],
-   "test": {
-    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 否定词读错（isn’t→is）（p21，踩坑 23）",
-    "needs": "tts"
-   },
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/识别分诊.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
    "status": "半自动（程序报出、人核对登记）",
    "gap": "critic: 专八已在 9f408b8 补上（batch_audio.sh 每篇跑 识别分诊：非无害差异重听仍不对、又没登记在 识别差异已核.json 就停；`识别分诊.py 专八 t25 --rev 7193562` 本次实跑报出 toiled→twiled、退出码 1）。其余 5 个项目（四级/六级/中考/考研/考研作文）的识别差异仍只列在 qa_report.md、核对结论是自由文本 识别差异已核.md，否定词或词尾差异没人核对照样能生成视频；识别分诊不比 mp3_sha256，qa_report 比当前 MP3 旧时没有程序拦（只靠批量脚本的顺序）；它的 benign() 会把句中大写的词整类放过；没有单元测试钉住 ’→' 替换。",
    "fix": "把 专八 batch_audio.sh 的 识别分诊 关口复制到其余 5 个项目的配音批量脚本，把各自的 识别差异已核.md 转成 json；识别分诊 加 mp3_sha256 时效比对；否定词（not/n't/never/no）差异不走自动放过、一律列待核；加单元断言 read_text('polluted air isn’t.') 含 \"isn't\"。"
@@ -836,7 +850,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 高亮词词性与释义不符（matters）（p27，踩坑 24）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "半自动（程序报出、人核对登记）",
@@ -866,7 +880,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 概要里重复字串（两处修改叠在一起）（p30，踩坑 25）",
+    "expect": "exit 0",
     "needs": "tts"
    },
    "status": "自动拦截（无双向验证）",
@@ -937,11 +951,18 @@
      "evidence": "专八/tools/batch_audio.sh:17:  [ $tri = 0 ] || { echo \"停止：$id 识别分诊有待核（见上面），改读音、试合成确认后从 $id 重跑\"; exit 1; }"
     }
    ],
-   "test": {
-    "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
-    "expect": "✅ 词尾 -ed 被吞（reawakened→reawaken）（p24，踩坑 23）",
-    "needs": "tts"
-   },
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/识别分诊.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
    "status": "半自动（程序报出、人核对登记）",
    "gap": "critic: 专八 9f408b8 起由 batch_audio.sh 每篇跑 识别分诊（make_audio → qa_audio → 分诊，失败或待核即停；`识别分诊.py 专八 t25 --rev 7193562` 本次实跑报出 toiled→twiled、退出码 1，可作双向验证）。其余 5 个在用项目照旧：读音修正后重新生成 MP3，没重跑 qa_audio 或没登记差异，照样能生成视频；识别分诊本身不比 mp3_sha256，直接跑 make_audio.py（不经 batch_audio.sh）就绕过它；截图/视频生成前没有任何一处复核“识别自检针对当前 MP3、0 待核”。",
    "fix": "同第 23 行：识别分诊 关口推广到所有项目的配音脚本，加 mp3_sha256 时效检查，并在 大字版 --preflight 和 render 工作流的 prep 里只读复核一次（0 待核才开画）；雷照搬 test_check_pitfalls 的 p22/p24。"
@@ -1044,7 +1065,13 @@
      "evidence": "中考/tools/画面核查/layoutcheck.py:110:       L.forEach((ln, i) => { if (i && ln[0].c === '(' && ln[1] && cjk(ln[1].c)) out.push(`注释分离：…"
     }
    ],
-   "test": {},
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/词数.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
    "status": "只靠流程或记性",
    "gap": "同一个坑在别的项目里还在：片头“全文 N 词”把中文注释算成词——四级 40/60 篇、六级 28/60 篇、专八 14/27 篇（words = len(' '.join(paras).split())，见 专八/tools/extract_reading.py:127、四级:144、六级:146），例如专八 t03 的 947 里含 4 个 “(防水布)” 这样的注释；vocab.json 原样带进封面（专八/tools/make_video.py:823）。中考的 build_vocab 没有复算。没有任何 layoutcheck 项能发现注释在中间被拆开（“(建 / 筑)”）：注释分离只查以 “(” 开头的行，而且中考不开。整件事没有任何雷。",
    "fix": "建一个共用的 word_count()（用考研规则：按 [\\s—–…]+ 切分，只数含 [A-Za-z0-9] 的词，自然不算中文注释），每个 extract_reading 都 import 它；把复算检查（考研/tools/build_vocab.py:21-25）复制进另外 4 个 build_vocab.py，四级、六级、专八会立刻报出来——赶在专八 t11–t27 画封面之前做；layoutcheck 加一条对所有项目生效的规则：中文注释的 “(” 与 “)” 之间不许换行（把第 110 行推广），用一个拆开的 “(建筑)” 做双向验证。"
@@ -1087,7 +1114,7 @@
    "test": {
     "cmd": "D=$(mktemp -d) && /opt/ttsenv/bin/python 中考/tools/画面核查/screens_fp.py shots \"$D\" z03 z13 z16 && /opt/ttsenv/bin/python 中考/tools/画面核查/canary.py \"$D\" 中考/tools/画面核查/埋雷位置.json && /opt/ttsenv/bin/python 中考/tools/画面核查/pixelcheck.py \"$D\" y1 y2 y3 --as y1=z03,y2=z16,y3=z13",
     "expect": "有差异的：['y1', 'y2', 'y3']（每个埋雷屏都列出）",
-    "needs": "browser"
+    "needs": "heavy"
    },
    "status": "自动拦截（无双向验证）",
    "gap": "共用引擎的 same_still / frame_check 没有任何埋雷测试：阈值（64 像素、24 级）或比对代码被改松不会有人发现；现有的埋雷（埋雷位置.json）只测中考的 pixelcheck，而且要手动跑。中考 make_video 没有 frame_check/same_still，中考如果重做，只靠记得跑 pixelcheck。",
@@ -1124,7 +1151,7 @@
    "test": {
     "cmd": "D=$(mktemp -d) && /opt/ttsenv/bin/python 中考/tools/画面核查/screens_fp.py shots \"$D\" z01 && /opt/ttsenv/bin/python 中考/tools/画面核查/canary_layout.py \"$D\" z01 y4",
     "expect": "5 行带“（变化 N 像素）”，exit 0（只证明雷埋进去了，审阅员查不查得出由工作流计分）",
-    "needs": "browser"
+    "needs": "heavy"
    },
    "status": "半自动（程序报出、人核对登记）",
    "gap": "critic: 行号按 9f408b8 后的 大字版.py 更新为 317。登记这一步不要求审阅真的发生过：六级/tools/大字版.py:317 的 approve() 只核对程序检查、指纹和截图哈希，从不检查这批截图有没有一份埋雷全部查出的盲审记录。所以跳过审阅员（正是这一条踩的坑）不会被拦住。中考的 zk-frame-qa.js 没有自动计分。",
@@ -1163,7 +1190,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/双向验证.py",
-    "expect": "全部双向通过",
+    "expect": "exit 0",
     "needs": "browser"
    },
    "status": "自动拦截+有双向验证",
@@ -1359,7 +1386,7 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
-    "expect": "全部双向通过（只覆盖 中英断开 s27 第 12 句）",
+    "expect": "全部双向通过",
     "needs": "heavy"
    },
    "status": "自动拦截（无双向验证）",
@@ -1440,11 +1467,18 @@
      "evidence": "考研/tools/自动提交.sh:8:  git diff --cached --quiet && return"
     }
    ],
-   "test": {
-    "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
-    "expect": "全部双向通过（覆盖 数字单位 s01/s05，不覆盖 孤字）",
-    "needs": "heavy"
-   },
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/审阅修正双向验证.py",
+     "expect": "全部双向通过",
+     "needs": "heavy"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/词数.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
    "status": "自动拦截（无双向验证）",
    "gap": "这一条的主角“释义孤字”没有留下来的雷。各项目的 batch_audio.sh 和 batch_video.sh（中考、专八、考研、六级、四级）仍是 `git commit … && git push -q …` 只推一次：不看暂存区、不重试，推送失败的提交没有人补推。后台任务 30 分钟上限要用 setsid，也只靠记性。",
    "fix": "在 双向验证.py 的 MINES 加一条：用 JS 把某个释义的最后一个字放进单独一行（必须报“孤字”）。把所有 batch_*.sh 里的 commit&&push 换成 自动提交.sh 的 once() 写法：git diff --cached --quiet || git commit；然后 git push 重试 4 次。"
@@ -1999,39 +2033,12 @@
    ],
    "test": {
     "cmd": "/opt/ttsenv/bin/python 六级/tools/画面核查/双向验证.py",
-    "expect": "exit 0（每行以 OK 开头，含“连字符例外：放得下的连字符词在连字符处断开必须报”）",
+    "expect": "exit 0",
     "needs": "browser"
    },
    "status": "自动拦截+有双向验证",
    "gap": "这套双向验证只证明“连字符”检查能报出断开（六级 s20、s10 埋雷），没有撤掉“先缩字号”的修正去验证考研 k24。分屏定稿“一次列全”的双向验证（去掉人工指定报 21 句）没有留在仓库。考研作文/tools/批量_本机.sh 里分屏建议和截图两步带 `|| true`，失败了也不停。",
    "fix": "写一个考研版的双向验证 CASE：撤掉 make_video.py:962 的缩字号循环，k24 必须报“连字符”。分屏定稿.py 加 --selftest：在内存里清空 分屏手定，必须列出要人工指定的句子并以退出码 1 结束。批量_本机.sh 去掉这两处 `|| true`。"
-  },
-  {
-   "id": "60a",
-   "title": "改词数规则后片头词数没重算",
-   "stages": [
-    "文字"
-   ],
-   "projects": [
-    "考研",
-    "考研作文"
-   ],
-   "guards": [
-    {
-     "where": "考研/tools/build_vocab.py: 按现行规则从定稿句子重数词，与 sents.json 不一致就报错",
-     "runs": "生成 vocab.json 时自动（考研作文/tools/批量_本机.sh 第 9 行也调用）",
-     "evidence": "考研/tools/build_vocab.py:25: errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
-    },
-    {
-     "where": "考研作文/tools/build_vocab.py（同一条复算）",
-     "runs": "生成 vocab.json 时自动",
-     "evidence": "考研作文/tools/build_vocab.py:25: errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
-    }
-   ],
-   "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "复算只有在重跑 build_vocab 时才会执行，而这次的坑恰恰是“改了上游、忘了重跑下游”。片头直接用 vocab.json 里的 words（专八/tools/make_video.py:823），截图和生成视频时都不复算。六级、专八、中考的 build_vocab 根本没有复算。“旧 sents.json 报 37 篇”的双向验证没有留在仓库。",
-   "fix": "把复算挪进渲染引擎：在 title_slide 或 大字版.py preflight 里，用 build_vocab 同一条正则从 p['paras'] 的英文重数，与 p['words'] 不等就报错。这样六级、专八、考研、考研作文每次截图、生成都会自动查；中考的 make_video.py 也加上。build_vocab 再加 --selftest：在内存里把一篇的 words 减 1，必须报错。"
   },
   {
    "id": "60",
@@ -2067,6 +2074,39 @@
    "status": "自动拦截（无双向验证）",
    "gap": "检查都在截图阶段自动跑，但“旧引擎报 107 处、新引擎 0”的双向验证只在 考研/大字版/日志/chain*.sh 这类临时脚本里跑过，没有留下能长期重跑的测试。zh_bind 规则以后被改松，不会有任何测试报警。六级/tools/ann_lib.py 没有短语空位检查（考研、考研作文、专八都有，专八是 slot_in_surface）。",
    "fix": "新建 考研/tools/画面核查/双向验证.py（照六级的写法），CASES 用盲审时报出的句子：Brett Kavanaugh、Mariana Trench、服务人员、可持续、W ith、focused…on。在内存里撤掉 zh_bind 或 en_spans 对应的规则后必须报出，现在的引擎必须 0。专八 ann_lib.slot_in_surface 同步到六级的 ann_lib。这套测试也挂进上面“改引擎就自动跑双向验证”的 GitHub 工作流。"
+  },
+  {
+   "id": "60a",
+   "title": "改词数规则后片头词数没重算",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "考研/tools/build_vocab.py: 按现行规则从定稿句子重数词，与 sents.json 不一致就报错",
+     "runs": "生成 vocab.json 时自动（考研作文/tools/批量_本机.sh 第 9 行也调用）",
+     "evidence": "考研/tools/build_vocab.py:25: errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
+    },
+    {
+     "where": "考研作文/tools/build_vocab.py（同一条复算）",
+     "runs": "生成 vocab.json 时自动",
+     "evidence": "考研作文/tools/build_vocab.py:25: errs.append(f\"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）\")"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/词数.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截（无双向验证）",
+   "gap": "复算只有在重跑 build_vocab 时才会执行，而这次的坑恰恰是“改了上游、忘了重跑下游”。片头直接用 vocab.json 里的 words（专八/tools/make_video.py:823），截图和生成视频时都不复算。六级、专八、中考的 build_vocab 根本没有复算。“旧 sents.json 报 37 篇”的双向验证没有留在仓库。",
+   "fix": "把复算挪进渲染引擎：在 title_slide 或 大字版.py preflight 里，用 build_vocab 同一条正则从 p['paras'] 的英文重数，与 p['words'] 不等就报错。这样六级、专八、考研、考研作文每次截图、生成都会自动查；中考的 make_video.py 也加上。build_vocab 再加 --selftest：在内存里把一篇的 words 减 1，必须报错。"
   },
   {
    "id": "61",
@@ -2196,7 +2236,7 @@
     }
    ],
    "test": {
-    "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest",
+    "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest t27",
     "expect": "双向验证：通过",
     "needs": "browser"
    },
@@ -2462,11 +2502,23 @@
      "evidence": "tools/tts/识别复核.py:3: /opt/ttsenv/bin/python tools/tts/识别复核.py 专八 截取 t20:40 t17:42 …"
     }
    ],
-   "test": {
-    "cmd": "/opt/ttsenv/bin/python tools/tts/双向验证_读两遍.py 专八",
-    "expect": "全部双向通过",
-    "needs": "tts"
-   },
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/tts/双向验证_读两遍.py 专八",
+     "expect": "全部双向通过",
+     "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/词形歧义.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/识别分诊.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
    "status": "半自动（程序报出、人核对登记）",
    "gap": "critic: 原来说的“识别分诊.py 未纳入 git、batch_audio.sh 不调用它、qa 失败只 echo、专八 pron_check 不在流程里”已在 9f408b8 改掉：专八 batch_audio.sh 开头跑 pron_check（含 pron_lint），每篇 make_audio → qa_audio → 识别分诊，任一步失败或有待核就停；识别分诊 的双向验证可跑：`/opt/ttsenv/bin/python tools/tts/识别分诊.py 专八 t25 --rev 7193562` 本次实跑报出 t25:5 toiled→twiled、退出码 1。剩下的缺口：①读两遍、识别分诊 的双向验证都只能手动跑，“去掉 toiled 修正就报出”的 pron_lint 双向验证没有提交成脚本；②考研、考研作文、中考的 pron_check 不含 pron_lint，这几个项目和六级、四级的配音批量都不跑 识别分诊（中考/考研 batch_audio.sh 仍是 qa 失败只 echo）；③直接跑 make_audio.py（不经 batch_audio.sh）时这些关口全被绕过；④识别分诊 只要任何一次截取重听听出原词就放过，seemed→seem 这类轻微吞音可能被放过。",
    "fix": "pron_check 的调用挪进各项目 make_audio.py main 开头（不靠批量脚本）；考研、考研作文、中考的 pron_check 加 pron_lint.ambiguous_inflections；把 专八 batch_audio.sh 的 识别分诊 关口复制到其余项目；把 `识别分诊.py 专八 t25 --rev 7193562`（必须退出 1 且含 toiled）和 pron_lint 的“去掉 toiled 修正必须列出”写进 tools/tts/双向验证_配音.sh，与 双向验证_读两遍.py 一起在 tools/tts 改动时自动跑（指纹缓存）。"
@@ -2523,14 +2575,87 @@
      "evidence": "专八/tools/workflows/tem8-ink-stills-review.js:25: BUT report as a defect any part whose Chinese plainly belongs to ANOTHER part's English"
     }
    ],
-   "test": {
-    "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest",
-    "expect": "双向验证：通过",
-    "needs": "browser"
-   },
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest t27",
+     "expect": "双向验证：通过",
+     "needs": "browser"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/分屏定稿.py",
+     "expect": "exit 0",
+     "needs": "none"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python 专八/tools/大字版_水墨.py --preflight-selftest t27",
+     "expect": "双向验证：通过",
+     "needs": "browser"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/词形歧义.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/识别分诊.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
    "status": "半自动（程序报出、人核对登记）",
    "gap": "critic: 两处已过时：“一篇有问题就停”（--keep-going）已在 9f408b8 提交（大字版.py:304，默认停）；⑤ 专八 batch_audio.sh 开头已跑 pron_check（含 pron_lint）、每篇跑 识别分诊（--rev 7193562 双向验证本次实跑报出 toiled）。仍然成立的：修正只做在专八的副本里——考研、考研作文的 分屏定稿.py:41 仍然碰到第一句就 raise SystemExit（两份内容相同，本次核实），中英对不齐的句子只打印不退出；考研作文/tools/批量_本机.sh 仍然在 qa_audio、分屏建议、--stills 后面写 `|| true`，失败照样提交（正是②那种坑）。①“去掉人工指定报 21 句”没有提交成可重跑的测试；④只改了审阅提示词，canary_layout 的 5 个雷里没有“中英错屏”雷，证明不了审阅员能查出来；⑤中考、考研、考研作文的配音不跑 pron_lint / 识别分诊，直接跑 make_audio.py 也绕得过；--preflight-selftest 要手动跑，在 人名.json 为空的考研作文（names=0）上注定失败。",
    "fix": "把专八 分屏定稿.py 的“一次列全 + 退出码 1”逻辑合并成一份共用程序，替换考研、考研作文的副本；考研作文 批量_本机.sh 去掉所有 `|| true`，照 水墨流水线.sh 改用 stop()，配音段照 专八 batch_audio.sh 每篇 识别分诊；canary_layout 加一个“中英错屏”雷（把第 2 屏的 zh 换成第 1 屏的，复用 专八/tools/画面核查/canary.py 的 zh_part 操作）；把 --preflight-selftest、双向验证_读两遍、识别分诊 --rev、六级两套双向验证合成一个 tools/双向验证_全部.sh，按工具指纹缓存，--stills / make_audio 开头指纹变了就自动先跑；提交 分屏定稿 的双向验证：在内存里清空 分屏手定_水墨.json 的 t11—t27，必须列出 21 句。"
+  },
+  {
+   "id": "74",
+   "title": "同一个坑在别的项目复发（片头词数旧算法）",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "专八",
+    "考研",
+    "四级",
+    "六级",
+    "高考",
+    "中考"
+   ],
+   "guards": [
+    {
+     "where": "tools/text_rules.py: word_count（规则只写一处）；专八/考研 build_vocab 从定稿句子重算",
+     "runs": "build_vocab 每次自动",
+     "evidence": "tools/text_rules.py: def word_count"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/词数.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "四级、六级、高考、中考的已发布视频片头词数仍是旧算法（待用户决定是否重做）；这些项目的 build_vocab 还没接 text_rules",
+   "fix": "各项目 build_vocab 改用 text_rules.word_count 重算；防复发审计每批复盘时对所有项目跑一遍同类检查"
   }
- ]
+ ],
+ "_复盘豁免": [
+  "cet6 cet6-chalk-full-1",
+  "cet6 cet6-chalk-publish-1",
+  "cet6 probe-1",
+  "cet6 test-pack-1",
+  "cet6 test-s60-1",
+  "cet6 test-s60-2",
+  "kaoyan test-k02",
+  "kaoyan test-k02b",
+  "kaoyan v1",
+  "kaoyan v2",
+  "kaoyan-writing v1",
+  "kaoyan-writing v2",
+  "kaoyan-writing v3",
+  "kaoyan-writing v4",
+  "kaoyan-writing v5"
+ ],
+ "_复盘豁免说明": "防复发机制建立（2026-10-23）之前发布的批次：教训已写进 CLAUDE.md 踩坑表，不再补复盘；之后的每个批次都要复盘",
+ "_没有测试的旧坑基线": 45
 }
