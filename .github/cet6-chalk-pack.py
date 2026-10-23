@@ -1,4 +1,4 @@
-"""大字版打包（六级黑板 render-cet6-chalk.yml、专八校园 render-tem8-campus.yml、考研校园 render-kaoyan-campus.yml 的最后一个任务；环境变量 PROJECT=六级|专八|考研，默认六级，下面以六级为例）。
+"""大字版打包（六级黑板 render-cet6-chalk.yml、专八校园 render-tem8-campus.yml、考研校园 render-kaoyan-campus.yml 的最后一个任务；环境变量 PROJECT=六级|专八|专八水墨|考研|考研作文，默认六级；专八水墨 = 专八书卷水墨大字版 render-tem8-ink.yml，目录仍是 专八/，下面以六级为例）。
 六级黑板（render-cet6-chalk.yml 最后一个任务）：汇总 60 个视频 → 逐个核对 → 每 20 个打一个 zip（不压缩）→ Python zipfile 逐个核对 → 写发布说明。
 
 视频来源（按优先级）：
@@ -39,6 +39,9 @@ CFG = {
     '专八': {'look': '1', 'work': '大字版', 'videos': '最终视频_校园', 'art': 'tem8-campus', 'zip': 'TEM8-campus-videos', 'n': 10,
              'head': ['英语专业八级 阅读理解（Section A）逐句精读视频 · 晴空校园大字版，共 {n} 个（{parts} 个压缩包，解压即可）。',
                       '4K（3840×2160）、30 帧/秒恒定；片头 985 教学楼；英文全部加粗，生词晴空蓝、短语草绿（黄色底纹）；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
+    '专八水墨': {'dir': '专八', 'look': 'C', 'work': '大字版水墨', 'videos': '最终视频_水墨', 'art': 'tem8-ink', 'zip': 'TEM8-ink-videos', 'n': 10,
+             'head': ['英语专业八级 阅读理解（Section A）逐句精读视频 · 书卷水墨大字版，共 {n} 个（{parts} 个压缩包，解压即可）。',
+                      '4K（3840×2160）、30 帧/秒恒定；书卷水墨古风；英文 EB Garamond、中英文全部加粗，中文译文加大；生词晴空蓝、短语翠绿（词汇栏与正文同色）；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
     '考研': {'look': '1', 'work': '大字版', 'videos': '最终视频_校园', 'art': 'kaoyan-campus', 'zip': 'KAOYAN-campus-videos', 'n': 50,
              'head': ['考研英语（英语一、英语二）阅读理解逐句精读视频 · 晴空校园大字版，共 {n} 个：Part A（Text 1—4，2021—2026 年）48 个 + 2026 年新题型 Part B 2 个（英语一排序题、英语二人物观点匹配题，片头附答案）（分 {parts} 个压缩包，每包 20 个，解压即可）。',
                       '4K（3840×2160）、30 帧/秒恒定；片头 985 教学楼；英文、中文全部加粗，生词晴空蓝、短语草绿（黄色底纹）；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
@@ -47,8 +50,9 @@ CFG = {
                       '4K（3840×2160）、30 帧/秒恒定；开头展示原卷高清原题；英文 Nunito、中文黑体，生词黄色、短语粉色；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
 }[PROJECT]
 LOOK = CFG['look']
-REG = json.loads(Path(f'{PROJECT}/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
-REP = Path(PROJECT) / CFG['work'] / '成品核查'
+D = CFG.get('dir', PROJECT)                      # 项目目录（专八水墨 → 专八）
+REG = json.loads(Path(f'{D}/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
+REP = Path(D) / CFG['work'] / '成品核查'
 ART, OLD, VID = Path('artifacts'), Path('old-artifacts'), Path('videos')
 VID.mkdir(exist_ok=True)
 
@@ -96,13 +100,13 @@ def from_artifact(pid, name, d):
 
 
 def committed():
-    out = subprocess.run(['git', '-c', 'core.quotepath=off', 'ls-files', '-z', '--', f'{PROJECT}/{CFG["videos"]}'],
+    out = subprocess.run(['git', '-c', 'core.quotepath=off', 'ls-files', '-z', '--', f'{D}/{CFG["videos"]}'],
                          capture_output=True, text=True, check=True).stdout
     return set(x for x in out.split('\0') if x)
 
 
 def from_repo(pid, name):
-    path = f'{PROJECT}/{CFG["videos"]}/{name}'
+    path = f'{D}/{CFG["videos"]}/{name}'
     with open(VID / name, 'wb') as fh:              # 稀疏检出 + blob:none：这里才按需下载这一个视频
         subprocess.run(['git', 'cat-file', 'blob', f'HEAD:{path}'], stdout=fh, check=True)
     why = report_problem(pid, name, REP / (Path(name).stem + '_核查.json'), (VID / name).stat().st_size)
@@ -153,7 +157,7 @@ def main():
                           f'| {m.get("size", 0) / 2**20:.1f} | {m.get("cpu", "")} |')
             continue
         whys = []
-        if f'{PROJECT}/{CFG["videos"]}/{name}' in tracked:            # 仓库里的不能用（如 s47 是重新审阅登记之前做的样片）就接着找以前运行留下的
+        if f'{D}/{CFG["videos"]}/{name}' in tracked:            # 仓库里的不能用（如 s47 是重新审阅登记之前做的样片）就接着找以前运行留下的
             why = from_repo(pid, name)
             if not why:
                 got.append((pid, name, '仓库'))
