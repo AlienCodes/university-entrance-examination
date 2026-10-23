@@ -6,3 +6,6 @@ body, body *{font-weight:700 !important}
 .en .w, .en .ph, .v b{font-weight:800 !important}
 /* 书卷水墨原样式的 .zh{text-wrap:pretty} 会为了“末行不太短”把整个词推到下一行，上一行空出两三个字（layoutcheck 译文短行）；断行由引擎的规则管，恢复普通换行 */
 .zh{text-wrap:wrap}
+/* 用户 2026-10-23（看过 t01 样片）：右边词汇卡的单词要和文章里标注的颜色一样——文章里生词是蓝色（.w = --dian），词汇卡里的生词也用蓝色；
+   短语在文章和词汇卡里本来就都是朱红（.v.ph b 选择器更具体，仍是 --zhu）。只改颜色，不影响换行 */
+.v b{color:var(--dian)}
