@@ -11,6 +11,7 @@
 页面内容不许横向溢出。
 """
 import html
+import os
 import json
 import re
 import subprocess
@@ -177,23 +178,25 @@ def check(pid):
 # ------------------------------------------------------------------ 排版
 FONTS = [ROOT / 'tools' / 'video' / 'themes' / 'fonts' / 'fonts.css', ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css']
 CSS = r"""
+@font-face{font-family:Apos;font-weight:400;src:url(NU400);unicode-range:U+2019}@font-face{font-family:Apos;font-weight:700;src:url(NU700);unicode-range:U+2019}
+x-nb{white-space:nowrap}
 :root{--ink:#1f2537;--ink2:#3d4458;--mute:#6b7287;--blue:#2456a6;--berry:#c0185a;--hy:#ffe46b;--hp:#ffc4d8;--paper:#faf8f3;--rule:#c6d5ec;--card:#ffffff;--soft:#f3f6fb;--green:#2e7d4f}
 *{box-sizing:border-box}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-body{margin:0;font-family:'Noto Sans SC',sans-serif;font-size:10.2pt;line-height:1.72;color:var(--ink)}
+body{margin:0;font-family:Apos,'Noto Sans SC',sans-serif;font-size:10.2pt;line-height:1.72;color:var(--ink)}
 .en,.essay,.ex .e,.f code,.q{font-family:'EB Garamond','Noto Sans SC',serif}
 h1,h2,h3{margin:0;font-weight:700}
 .chap{break-before:page}
 .band{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2.2px solid var(--ink);padding-bottom:2.6mm;margin-bottom:4.5mm}
 .band .no{font-family:'Nunito','Noto Sans SC';font-weight:800;font-size:9pt;letter-spacing:.18em;color:var(--blue)}
 .band h1{font-size:19pt;line-height:1.25;margin-top:1mm}
-.band h1 span{background:linear-gradient(transparent 58%,var(--hy) 58%,var(--hy) 92%,transparent 92%);padding:0 1.2mm}
+.band h1 span{background:linear-gradient(var(--hy),var(--hy)) 0 87.9%/100% 34% no-repeat;padding:0 1.2mm}
 .band .meta{text-align:right;font-size:9pt;color:var(--mute);line-height:1.5}
 .band .meta b{display:block;color:var(--ink2);font-size:10pt}
 .sec{display:flex;align-items:center;gap:2.5mm;margin:6mm 0 2.6mm;break-after:avoid}
 .sec .n{font-family:'Nunito','Noto Sans SC';font-weight:800;color:#fff;background:var(--blue);border-radius:50%;width:6.4mm;height:6.4mm;display:flex;align-items:center;justify-content:center;font-size:9.5pt}
 .sec h2{font-size:13pt;letter-spacing:.04em}
-.sec .tip{margin-left:auto;font-family:'LXGW WenKai','Noto Sans SC';color:var(--mute);font-size:9.5pt}
+.sec .tip{margin-left:auto;font-family:Apos,'LXGW WenKai','Noto Sans SC';color:var(--mute);font-size:9.5pt}
 .prompt{border:1px solid #e3e0d6;border-radius:3mm;padding:3mm;background:#fff;text-align:center;break-inside:avoid}
 .prompt img{max-width:100%;max-height:108mm}
 .chips{display:flex;flex-wrap:wrap;gap:2mm;margin-bottom:2.5mm}
@@ -204,7 +207,7 @@ h1,h2,h3{margin:0;font-weight:700}
 .task li::before{content:'';position:absolute;left:0;top:1.6mm;width:3.6mm;height:3.6mm;border:1.6px solid var(--blue);border-radius:1mm}
 .warn{background:#fff5f8;border-left:3px solid var(--berry);border-radius:0 2mm 2mm 0;padding:2mm 3.5mm;margin-top:2.5mm;break-inside:avoid}
 .warn b{color:var(--berry)}.warn ul{margin:.5mm 0 0;padding-left:5mm}
-.tone{font-family:'LXGW WenKai','Noto Sans SC';color:var(--ink2);margin-top:2mm}
+.tone{font-family:Apos,'LXGW WenKai','Noto Sans SC';color:var(--ink2);margin-top:2mm}
 .flow{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:2.5mm}
 .flow>div{background:var(--soft);border-radius:2.5mm;padding:2.5mm 3mm;border-top:3px solid var(--blue);break-inside:avoid}
 .flow b{display:block;font-size:10.5pt}.flow i{font-style:normal;color:var(--berry);font-weight:700;font-size:9pt}
@@ -213,9 +216,9 @@ h1,h2,h3{margin:0;font-weight:700}
 }
 .essay p{margin:0 0 .3em;text-indent:2em}.essay p.ln{text-indent:0}.essay p.ttl{text-align:center;font-weight:700;text-indent:0}.essay p.sig{text-indent:0}
 .essay .k{font-family:'Nunito','Noto Sans SC';font-size:6.5pt;color:var(--mute);vertical-align:.7em;margin-right:.6mm}
-mark{background:linear-gradient(transparent 52%,var(--hy) 52%,var(--hy) 94%,transparent 94%);color:inherit;padding:0 .3mm}
-mark sup{font-family:'Noto Sans SC';font-size:7.5pt;color:var(--berry);font-weight:700;margin-left:.3mm}
-.trans{font-family:'LXGW WenKai','Noto Sans SC';font-size:10pt;color:var(--ink2);margin-top:3mm;line-height:1.75}
+mark{background:linear-gradient(var(--hy),var(--hy)) 0 89.7%/100% 42% no-repeat;color:inherit;padding:0 .3mm}
+mark sup{font-family:Apos,'Noto Sans SC';font-size:7.5pt;color:var(--berry);font-weight:700;margin-left:.3mm}
+.trans{font-family:Apos,'LXGW WenKai','Noto Sans SC';font-size:10pt;color:var(--ink2);margin-top:3mm;line-height:1.75}
 .trans p{margin:0 0 1.2mm;text-indent:2em}
 .step{display:grid;grid-template-columns:9mm 1fr;gap:2mm;margin:2.8mm 0;break-inside:avoid}
 .step .s{font-family:'Nunito','Noto Sans SC';font-weight:800;color:var(--blue);font-size:15pt;line-height:1}
@@ -227,9 +230,9 @@ mark sup{font-family:'Noto Sans SC';font-size:7.5pt;color:var(--berry);font-weig
 .pat .h .c{color:var(--berry);font-weight:700;font-size:12pt}.pat .h b{font-size:11pt}
 .pat .b{padding:2.4mm 3.5mm}
 .f{background:#fffbe6;border:1px dashed #e7c84a;border-radius:2mm;padding:1.6mm 3mm;font-size:10.4pt;margin-bottom:2mm}
-.f::before{content:'公式  ';font-family:'Noto Sans SC';font-weight:700;color:#8a6d00;font-size:8.6pt}
-.o{font-size:11.2pt;margin:1mm 0 1.6mm}.o::before{content:'范文原句  ';font-family:'Noto Sans SC';font-weight:700;color:var(--blue);font-size:8.6pt}
-.why{font-family:'LXGW WenKai','Noto Sans SC';font-size:10pt;color:var(--ink2);margin:1mm 0 2mm}
+.f::before{content:'公式  ';font-family:Apos,'Noto Sans SC';font-weight:700;color:#8a6d00;font-size:8.6pt}
+.o{font-size:11.2pt;margin:1mm 0 1.6mm}.o::before{content:'范文原句  ';font-family:Apos,'Noto Sans SC';font-weight:700;color:var(--blue);font-size:8.6pt}
+.why{font-family:Apos,'LXGW WenKai','Noto Sans SC';font-size:10pt;color:var(--ink2);margin:1mm 0 2mm}
 .ex{display:grid;grid-template-columns:7mm 1fr;gap:1mm 1.5mm;margin:1.2mm 0}
 .ex .t{font-family:'Nunito','Noto Sans SC';font-weight:800;font-size:8pt;color:#fff;background:var(--green);border-radius:1mm;height:4.4mm;text-align:center;margin-top:1mm}
 .ex .e{font-size:11.2pt;line-height:1.5}.ex .z{grid-column:2;color:var(--mute);font-size:9.2pt;margin-top:-.6mm}
@@ -237,7 +240,7 @@ mark sup{font-family:'Noto Sans SC';font-size:7.5pt;color:var(--berry);font-weig
 .alt>div{margin:.5mm 0}.alt span{font-family:'EB Garamond','Noto Sans SC';font-size:10.8pt;color:var(--ink)}.alt i{font-style:normal;display:block;font-size:9pt;color:var(--mute)}
 .mean{background:#eef6ff;border-left:3px solid var(--blue);border-radius:0 2mm 2mm 0;padding:1.4mm 3mm;margin-bottom:2mm;font-size:10.2pt}.mean b{color:var(--blue);margin-right:2mm;font-size:9pt}
 .oz{font-size:9.4pt;color:var(--mute);margin:-.8mm 0 1.6mm}
-.step .q>div{margin:.6mm 0}.qz{font-family:'Noto Sans SC';font-size:9pt;color:var(--mute);line-height:1.5}
+.step .q>div{margin:.6mm 0}.qz{font-family:Apos,'Noto Sans SC';font-size:9pt;color:var(--mute);line-height:1.5}
 .tl{margin:1.2mm 0}.te{font-family:'EB Garamond','Noto Sans SC';font-size:11.2pt}.tz{font-size:9pt;color:var(--mute)}
 table.voc{width:100%;border-collapse:collapse;font-size:9.6pt}
 table.voc th{background:var(--ink);color:#fff;font-weight:500;padding:1.4mm 2.5mm;text-align:left}
@@ -248,7 +251,7 @@ table.voc tr{break-inside:avoid}
 .vr>div{border-bottom:1px solid #e6e2d8;padding:1.4mm 2.5mm}.vr.th>div{background:var(--ink);color:#fff;font-weight:500;border:0}
 .vr .w{font-family:'EB Garamond','Noto Sans SC';font-size:11.4pt;font-weight:600}.vr .r{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--mute)}
 /* 总论 */
-.lead{font-family:'LXGW WenKai','Noto Sans SC';font-size:11pt;color:var(--ink2)}
+.lead{font-family:Apos,'LXGW WenKai','Noto Sans SC';font-size:11pt;color:var(--ink2)}
 .box{background:var(--soft);border-radius:3mm;padding:3mm 4mm;margin:2.5mm 0;break-inside:avoid}
 .box h3{font-size:11pt;color:var(--blue);margin-bottom:1mm}
 .box ul{margin:0;padding-left:5mm}.box li{margin:.6mm 0}
@@ -256,19 +259,19 @@ table.voc tr{break-inside:avoid}
 .bad{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:0;font-size:9.6pt;border:1px solid #eadbe0;border-radius:2mm;overflow:hidden;margin-top:2mm}
 .bad>div{padding:1.3mm 2.5mm;border-bottom:1px solid #f1e6ea}.bad .x{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--berry);text-decoration:line-through}
 .bad .v{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--green);font-weight:600}.bad .hd{background:#fbeef2;font-weight:700;color:var(--berry);font-size:9pt}
-.toc{columns:2;column-gap:10mm;font-size:10pt}.toc div{display:flex;gap:2mm;break-inside:avoid;padding:.6mm 0;border-bottom:1px dotted #d9d4c7}
-.toc div span:nth-child(2){flex:1}.toc .pg{font-family:'Nunito','Noto Sans SC';font-weight:700;color:var(--blue)}
+.toc{font-size:10.6pt}.toc div{display:grid;grid-template-columns:62mm 1fr 14mm;gap:3mm;break-inside:avoid;padding:1.1mm 0;border-bottom:1px dotted #d9d4c7}
+.toc .a{color:var(--mute);font-size:9.6pt}.toc .pg{font-family:'Nunito','Noto Sans SC';font-weight:700;color:var(--blue);text-align:right}
 .idx td{font-size:9.2pt}.idx td.e{font-family:'EB Garamond','Noto Sans SC';font-size:10.4pt}
 /* 默写卡 */
 .card{border:1.2px solid #e1dccf;border-radius:3mm;margin:3.2mm 0;display:grid;grid-template-columns:1fr 46mm;break-inside:avoid;overflow:hidden}
-.card .l{padding:2.6mm 3.5mm}.card .r{background:#fff9db;border-left:1.2px dashed #e7c84a;padding:2.6mm 3mm;font-family:'LXGW WenKai','Noto Sans SC';font-size:9.3pt;line-height:1.55;color:#5b4a10}
-.card .r b{display:block;font-family:'Noto Sans SC';color:#8a6d00;font-size:8.6pt;margin-top:1mm}
+.card .l{padding:2.6mm 3.5mm}.card .r{background:#fff9db;border-left:1.2px dashed #e7c84a;padding:2.6mm 3mm;font-family:Apos,'LXGW WenKai','Noto Sans SC';font-size:9.3pt;line-height:1.55;color:#5b4a10}
+.card .r b{display:block;font-family:Apos,'Noto Sans SC';color:#8a6d00;font-size:8.6pt;margin-top:1mm}
 .card .zh{font-size:9.8pt;color:var(--ink2);margin-bottom:1.6mm}
 .card .zh::before{content:attr(data-n);font-family:'Nunito','Noto Sans SC';font-weight:800;color:#fff;background:var(--blue);border-radius:1mm;padding:0 1.5mm;margin-right:2mm;font-size:8.6pt}
 .card .en{font-size:12.6pt;line-height:2.25}
 .gap{display:inline-block;border-bottom:1.3px solid var(--ink);height:1.1em;vertical-align:-.2em;position:relative}
 .gap sup{position:absolute;left:0;top:-1.1em;font-family:'Nunito','Noto Sans SC';font-size:6.5pt;color:var(--berry);font-weight:800}
-.ans mark{background:linear-gradient(transparent 50%,var(--hp) 50%,var(--hp) 94%,transparent 94%)}
+.ans mark{background:linear-gradient(var(--hp),var(--hp)) 0 89.3%/100% 44% no-repeat}
 .lines{margin-top:1.4mm}.lines div{height:9.5mm;border-bottom:1px solid #cfd6e3}
 .how{background:var(--soft);border-radius:3mm;padding:3mm 4mm;font-size:9.8pt;margin-bottom:4mm}
 .chap.ans{break-before:auto;margin-top:9mm}.chap.ans:first-child{margin-top:0}.keep{break-inside:avoid}
@@ -281,13 +284,56 @@ table.voc tr{break-inside:avoid}
 def page_html(body, title, footer=True):
     links = ''.join(f"<link rel='stylesheet' href='{f.as_uri()}'>" for f in FONTS)
     # 页脚用 CSS 页边框（@page @bottom-*，Chromium 131 起支持）：用的是文档自己的网页字体；Chromium 的 footer_template 在另一个上下文里，只能用系统字体（字体回退被 font_check 拦下）
-    pg = ("@page{size:A4;margin:16mm 15mm 17mm;@bottom-left{content:'" + title + "';font-family:'Noto Sans SC';font-size:7.5pt;color:#8a90a0}"
+    pg = ("@page{size:A4;margin:16mm 15mm 17mm;@bottom-left{content:'" + title + "';font-family:Apos,'Noto Sans SC';font-size:7.5pt;color:#8a90a0}"
           "@bottom-right{content:counter(page);font-family:'Nunito','Noto Sans SC';font-weight:700;font-size:8pt;color:#8a90a0}}") if footer else '@page{size:A4;margin:0}'
-    return f"<!doctype html><html><head><meta charset='utf-8'><title>{html.escape(title)}</title>{links}<style>{pg}{CSS}</style></head><body>{body}</body></html>"
+    # 屏幕排版宽度与打印版心相同（A4 210mm − 左右页边 30mm），程序检查（溢出、断行）量到的就是打印出来的换行
+    scr = '@media screen{body{width:' + ('180mm' if footer else '210mm') + '}}'
+    nu = ROOT / 'tools' / 'video' / 'themes' / 'fonts' / 'nunito' / 'files'
+    css = CSS.replace('NU400', (nu / 'nunito-latin-400-normal.woff2').as_uri()).replace('NU700', (nu / 'nunito-latin-700-normal.woff2').as_uri())
+    return f"<!doctype html><html><head><meta charset='utf-8'><title>{html.escape(title)}</title>{links}<style>{pg}{css}{scr}</style></head><body>{body}</body></html>"
 
 
-def esc(s):
-    return html.escape(s, quote=False)
+CJK = '\u3400-\u9fff'
+CORE = re.compile(f'[{CJK}0-9]')
+
+
+def esc(s, formula=False):
+    """转义 + 断行规则（排版审阅 2026-10-23）：末两字不分开（不留孤字）、数字与单位不分开、省略号不放行首、
+    Li Ming 不拆开；公式里的中文占位词（动词原形、截止日期……）整体不断开。用自定义元素 x-nb，不用 span（踩坑 34）。"""
+    s = s.replace('Li Ming', 'Li\u00a0Ming')
+    s = re.sub(r' (?=[…⋯])', '\u00a0', s)
+    spans = [m.span() for m in re.finditer(f'\\d[\\d.,]*%? ?[{CJK}]', s)]
+    if formula:
+        spans += [m.span() for m in re.finditer(f'[{CJK}]{{2,8}}\\d*', s)]
+    i = len(s)
+    while i > 0 and not CORE.match(s[i - 1]) and not s[i - 1].isspace() and not (s[i - 1].isascii() and s[i - 1].isalpha()):
+        i -= 1
+    j, n = i, 0
+    while j > 0 and n < 2:
+        c = s[j - 1]
+        if c.isspace() or (c.isascii() and c.isalpha()):
+            break
+        n += bool(CORE.match(c))
+        j -= 1
+    if n == 2 and re.search(f'[{CJK}]', s[j:i]):
+        k = j
+        while k > 0 and s[k - 1] in '…⋯':
+            k -= 1
+        if k < j and k > 0 and CORE.match(s[k - 1]):
+            k -= 1
+        spans.append((min(k, j), len(s)))
+    out, pos = [], 0
+    for a, b in sorted(spans):
+        if a < pos:            # 与前一段重叠：并进前一段
+            if b > pos:
+                out[-1] = out[-1][:-len('</x-nb>')] + html.escape(s[pos:b], quote=False) + '</x-nb>'
+                pos = b
+            continue
+        out.append(html.escape(s[pos:a], quote=False))
+        out.append('<x-nb>' + html.escape(s[a:b], quote=False) + '</x-nb>')
+        pos = b
+    out.append(html.escape(s[pos:], quote=False))
+    return ''.join(out)
 
 
 def marked(sent, spans):
@@ -357,14 +403,14 @@ def essay_chapter(no, pid, tmp):
     tp = [f"<p>{''.join(esc(Z.get(k, '')) for k in range(sum(len(x) for x in p['sents'][:i]) + 1, sum(len(x) for x in p['sents'][:i + 1]) + 1))}</p>"
           for i in range(len(p['sents']))]
     # “参考译文”小标题与第一段不分开（否则会单独留在页底）
-    trans = "<div class='keep'><b style='font-family:Noto Sans SC;font-size:9pt;color:var(--mute)'>参考译文</b>" + tp[0] + '</div>' + ''.join(tp[1:])
+    trans = "<div class='keep'><b style='font-family:Apos,Noto Sans SC;font-size:9pt;color:var(--mute)'>参考译文</b>" + tp[0] + '</div>' + ''.join(tp[1:])
     flow = ''.join(f"<div><i>{esc(x['段'])}</i><b>{esc(x['作用'])}</b><p>{esc(x['内容'])}</p></div>" for x in d['思路'])
     steps = ''.join(f"<div class='step'><div class='s'>{i:02d}</div><div><b>{esc(x['标题'])}</b><p>{esc(x['做法'])}</p>"
                     f"<div class='q'>{''.join(f'<div><span class=k>{k}</span> {esc(S[k - 1])}<div class=qz>{esc(Z.get(k, chr(32)))}</div></div>' for k in x['对应'])}</div></div></div>"
                     for i, x in enumerate(d['步骤'], 1))
     pats = ''.join(
         f"<div class='pat'><div class='top'><div class='h'><span class='c'>{CIRC[i - 1]}</span><b>{esc(x['名称'])}</b></div><div class='b'>"
-        f"<div class='mean'><b>这个句式表达</b>{esc(x['表达'])}</div><div class='f'>{esc(x['公式'])}</div>"
+        f"<div class='mean'><b>这个句式表达</b>{esc(x['表达'])}</div><div class='f'>{esc(x['公式'], True)}</div>"
         f"<div class='o en'>{esc(x['原句'])}</div><div class='oz'>{esc(x['原句译'])}</div><div class='why'>{esc(x['讲解'])}</div></div></div><div class='b' style='padding-top:0'>"
         + ''.join(f"<div class='ex'><div class='t'>例{j}</div><div class='e'>{esc(y['en'])}</div><div class='z'>{esc(y['zh'])}</div></div>" for j, y in enumerate(x['例句'], 1))
         + "<div class='alt'><b>也可以这样说</b>" + ''.join(f"<div><span>{esc(r['en'])}</span><i>{esc(r['zh'])}</i></div>" for r in x['替换']) + "</div></div></div>"
@@ -423,7 +469,7 @@ def index_chapter(ids):
         d = json.loads((DATA / f'{pid}.json').read_text('utf-8'))
         meta, _ = zh(pid)
         for x in d['句式']:
-            rows.append(f"<tr><td>{esc(x['名称'])}</td><td class='e'>{esc(x['公式'])}</td><td>{esc(P[pid]['pdf'][:4])} {esc(P[pid]['pdf'][6:])} {esc(P[pid]['passage'])}</td></tr>")
+            rows.append(f"<tr><td>{esc(x['名称'])}</td><td class='e'>{esc(x['公式'], True)}</td><td>{esc(P[pid]['pdf'][:4])} {esc(P[pid]['pdf'][6:])} {esc(P[pid]['passage'])}</td></tr>")
     return ("<section class='chap' data-mark='IDX'><div class='band'><div><div class='no'>INDEX · ALL PATTERNS</div><h1><span>高分句式总表</span></h1></div>"
             "<div class='meta'><b>考前一页过一遍</b>全部范文里讲过的句式</div></div>"
             f"<table class='voc idx'><tr><th style='width:30%'>句式</th><th>公式</th><th style='width:24%'>出自</th></tr>{''.join(rows)}</table></section>")
@@ -434,17 +480,17 @@ def cover(title, sub, note):
             f"background-image:radial-gradient(circle at 1.5px 1.5px,rgba(70,92,128,.2) 1.3px,transparent 1.7px);background-size:7mm 7mm'>"
             f"<div style='position:absolute;left:0;top:0;bottom:0;width:14mm;background:repeating-linear-gradient(transparent 0 6mm,#7d8596 6mm 7.2mm,transparent 7.2mm 11mm)'></div>"
             f"<div style='position:absolute;left:34mm;right:24mm;top:62mm'>"
-            f"<div style='font-family:Nunito,'Noto Sans SC';font-weight:800;letter-spacing:.3em;color:var(--blue);font-size:11pt'>KAOYAN ENGLISH WRITING</div>"
-            f"<div style='font-size:34pt;font-weight:700;line-height:1.3;margin:6mm 0'><span style='background:linear-gradient(transparent 56%,var(--hy) 56%,var(--hy) 92%,transparent 92%);padding:0 2mm'>{esc(title)}</span></div>"
+            f"<div style='font-family:Nunito,Noto Sans SC;font-weight:800;letter-spacing:.3em;color:var(--blue);font-size:11pt'>KAOYAN ENGLISH WRITING</div>"
+            f"<div style='font-size:34pt;font-weight:700;line-height:1.3;margin:6mm 0'><span style='background:linear-gradient(var(--hy),var(--hy)) 0 87.5%/100% 36% no-repeat;padding:0 2mm'>{esc(title)}</span></div>"
             f"<div style='font-size:15pt;color:var(--ink2);line-height:1.6'>{sub}</div>"
-            f"<div style='margin-top:16mm;font-family:'LXGW WenKai','Noto Sans SC';font-size:12pt;color:var(--ink2);line-height:1.9'>{note}</div></div>"
+            f"<div style='margin-top:16mm;font-family:Apos,LXGW WenKai,Noto Sans SC;font-size:12pt;color:var(--ink2);line-height:1.9'>{note}</div></div>"
             f"<div style='position:absolute;right:22mm;top:30mm;width:34mm;height:34mm;border-radius:50%;background:var(--hy);display:flex;align-items:center;justify-content:center;"
             f"transform:rotate(10deg);font-weight:700;font-size:15pt;text-align:center;line-height:1.25;box-shadow:0 2mm 4mm rgba(0,0,0,.08)'>考研<br>作文</div></div>")
 
 
 def toc_html(entries, pages):
     return ("<section data-mark='TOC'><div class='band'><div><div class='no'>CONTENTS</div><h1><span>目录</span></h1></div><div class='meta'></div></div><div class='toc'>"
-            + ''.join(f"<div><span>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></div>" for m, a, b in entries) + '</div></section>')
+            + ''.join(f"<div><span class='a'>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></div>" for m, a, b in entries) + '</div></section>')
 
 
 def card_section(pid, answers, how='', fit=0):
@@ -465,7 +511,8 @@ def card_section(pid, answers, how='', fit=0):
                 out.append(f"<span class='gap' style='width:{max(12, (b - a) * 2.15):.1f}mm'><sup>{n}</sup></span>")
             j = b
         out.append(esc(sent[j:]))
-        items.append(f"<div class='card'><div class='l'><div class='zh' data-n='{i}'>{esc(Z.get(x['句'], ''))}</div><div class='en'>{''.join(out)}</div></div>"
+        en = GAP_PUNCT.sub(r'<x-nb>\1\2</x-nb>', ''.join(out))
+        items.append(f"<div class='card'><div class='l'><div class='zh' data-n='{i}'>{esc(Z.get(x['句'], ''))}</div><div class='en'>{en}</div></div>"
                      f"<div class='r'><b>掌握句式</b>{esc(x['句式'])}<b>为什么默写这句</b>{esc(x['意义'])}</div></div>")
     full = ''
     if not answers:
@@ -479,18 +526,81 @@ def card_section(pid, answers, how='', fit=0):
             + items[0] + '</div>' + ''.join(items[1:]) + full + '</section>')
 
 
+GAP_PUNCT = re.compile(r"(<span class='gap'[^>]*><sup>\d+</sup></span>|<mark>[^<]*</mark>)([.,;:?!”’)]+)")
+
+
+# 断行检查（排版审阅 2026-10-23 查出 25 处后补成程序检查）：逐字量出所在的行
+WRAP_JS = r"""() => {
+  const CJK = /[㐀-鿿]/, DIG = /[0-9]/, PUN = /[\s，。、；：？！“”‘’（）《》「」…⋯—·,.;:?!()\[\]\/+|%-]/;
+  const blockOf = el => { while (el && getComputedStyle(el).display.startsWith('inline')) el = el.parentElement; return el; };
+  const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT), r = document.createRange(), B = new Map();
+  for (let n; (n = tw.nextNode());) {
+    if (n.nodeType === 1) {          // 填空横线算一个“字”（编号 sup 是绝对定位的，不能拿它当位置）
+      if (n.classList.contains('gap')) { const b = blockOf(n.parentElement), k = n.getBoundingClientRect();
+        let a = B.get(b); if (!a) B.set(b, a = []); a.push({ c: '＿', y: k.top + k.height / 2 }); }
+      continue;
+    }
+    const t = n.textContent; if (!t.trim()) continue;
+    if (getComputedStyle(n.parentElement).position === 'absolute') continue;
+    const b = blockOf(n.parentElement); if (!b) continue;
+    let a = B.get(b); if (!a) B.set(b, a = []);
+    for (let i = 0; i < t.length; i++) {
+      if (/\s/.test(t[i])) { a.push({ c: ' ' }); continue; }
+      r.setStart(n, i); r.setEnd(n, i + 1);
+      const q = r.getClientRects(); if (!q.length) continue;
+      const k = q[q.length - 1]; a.push({ c: t[i], y: k.top + k.height / 2 });
+    }
+  }
+  const out = [];
+  for (const [b, a] of B) {
+    const lh = parseFloat(getComputedStyle(b).fontSize) * 0.6, L = [];
+    let cur = null;
+    for (const x of a) {
+      if (x.y === undefined) { if (cur) cur.push(x); continue; }
+      if (!cur || x.y - cur.y0 > lh) L.push(cur = Object.assign([], { y0: x.y }));
+      cur.push(x);
+    }
+    if (L.length < 2) continue;
+    const txt = l => l.map(x => x.c).join('').trim();
+    const name = (b.className || b.tagName) + '｜' + txt(L[L.length - 2]).slice(-12) + '／' + txt(L[L.length - 1]).slice(0, 12);
+    const last = txt(L[L.length - 1]), core = [...last].filter(c => !PUN.test(c));
+    if (core.length === 1 && (CJK.test(core[0]) || DIG.test(core[0]))) out.push('孤字：' + name);
+    if (core.length === 0) out.push('标点独占一行：' + name);
+    const formula = b.matches('.f, .idx td.e');
+    for (let i = 1; i < L.length; i++) {
+      const p = txt(L[i - 1]), n = txt(L[i]);
+      if (!p || !n) continue;
+      const e = p[p.length - 1], s0 = n[0];
+      const tag = (b.className || b.tagName) + '｜' + p.slice(-10) + '／' + n.slice(0, 10);
+      if (DIG.test(e) && CJK.test(s0)) out.push('数字与单位分开：' + tag);
+      if (formula && CJK.test(e) && CJK.test(s0)) out.push('公式里的中文词断开：' + tag);
+      if (/^[…⋯]/.test(n) || /^[…⋯]+$/.test(n)) out.push('省略号在行首：' + tag);
+      if (/Li$/.test(p) && /^Ming/.test(n)) out.push('Li Ming 拆开：' + tag);
+    }
+  }
+  return out;
+}"""
+
+
 def render(pg, body, title, out, tmp, footer=True):
     f = Path(tmp) / 'x.html'
     f.write_text(page_html(body, title, footer), 'utf-8')
     pg.goto(f.as_uri())
     pg.evaluate('document.fonts.ready')
     pg.wait_for_timeout(300)
-    bad = pg.evaluate("""() => { const out = []; const W = document.documentElement.clientWidth;
+    bad = pg.evaluate("""() => { const out = []; const W = document.body.getBoundingClientRect().right;
       for (const el of document.querySelectorAll('section *')) { const r = el.getBoundingClientRect();
         if (r.width && (r.right > W + 1 || el.scrollWidth > el.clientWidth + 2 && getComputedStyle(el).overflow === 'hidden')) out.push((el.className || el.tagName) + '：' + (el.textContent || '').slice(0, 30)); }
       return out.slice(0, 20); }""")
     if bad:
         raise SystemExit(f'{out.name}：内容横向溢出：\n  ' + '\n  '.join(bad))
+    wrap = pg.evaluate(WRAP_JS)
+    if wrap:
+        msg = f'{out.name}（{title}）断行问题 {len(wrap)} 处：\n  ' + '\n  '.join(wrap)
+        if os.environ.get('JY_REPORT'):
+            print(msg)
+        else:
+            raise SystemExit(msg)
     pg.pdf(path=str(out), print_background=True, prefer_css_page_size=True)
 
 
