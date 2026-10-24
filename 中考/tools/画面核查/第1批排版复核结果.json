@@ -1,0 +1,745 @@
+{
+ "results": [
+  {
+   "id": "y4",
+   "findings": [
+    {
+     "screen": 1,
+     "sentence": 0,
+     "kind": "title",
+     "description": "The title on the cover is far too big for the white card. The reference title is 海洋变暖与南极海冰骤减, but only 海洋变暖与南 fits in the card, and 南 is clipped where it runs past the card edge. 极 is hidden behind the yellow 'Aa' circle, a sliver of 海 shows at the right screen edge, and 冰骤减 runs off the screen. The title should sit on one line inside the card at a smaller size. The other cover items are correct: tag 中考英语 · 阅读理解, '中考英语 2026年 北京 ·' with the 阅读C pill, genre 说明文 · 自然与环境, and 全文 348 词 (matches the reference EN, not counting the Chinese notes).",
+     "severity": "high",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "description": "The font size here is far larger than on every other sentence screen (the English is about twice the size of screens 2-3 and 5-18), so the text overflows its area. The first English line 'Some research(1) has' sits up in the purple header band and covers the yellow header line. The second line of the Chinese, 升高。, falls into the footer and is drawn on top of 'SENTENCE 3 / 17', which can no longer be read. The text should be auto-fitted to the normal size and stay between the header and the footer. The numbering is fine (circles 1-4, panel 1-4).",
+     "severity": "high",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "description": "The vocabulary panel is drawn at an oversized font, and its 11 entries overflow the card. Entries 1-3 (researcher, input…into, recorded) are pushed above the card and do not appear. Their leftovers overlap the header: a white '3', a grey 'adj.', and the end of entry 3's meaning, 记录下来的, which covers the VOCABULARY tag and the card's top border. The header text '2026年 北京 · 阅读C 海洋变暖与南极海冰骤减' is garbled, with parts of its glyphs missing. Entry 8 (sea ice 海冰) crosses the card's bottom border and the footer progress bar. Entry 9 (grow) is cut off at the bottom of the screen. Entries 10 (as) and 11 (real world) are missing. The panel should show entries 1-11 at the normal size, all inside the card, matching circles 1-11 in the English (the English side and the footer 'SENTENCE 14 / 17' are correct).",
+     "severity": "high",
+     "lens": "visual"
+    },
+    {
+     "screen": 8,
+     "sentence": 7,
+     "kind": "glyph",
+     "description": "The Chinese translation shows a replacement character (�, black diamond with a question mark) where 洲 should be. The screen reads 南极�四周环绕着一条由强风和风暴构成的地带。 and the reference is 南极洲四周环绕着……",
+     "severity": "high",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "description": "The first English line is not left-aligned. 'These winds blow(1)' starts at about x=610 instead of the normal left margin at about x=90, which leaves a large blank gap at the start of the line. The second line, 'surface water(2) and ice forward(3).', starts at the normal margin. Both lines should start at the left margin, as on every other screen. The numbering is fine (circles 1-3, panel 1-3).",
+     "severity": "medium",
+     "lens": "visual"
+    },
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "layout",
+     "description": "In the vocabulary panel, the headword of entry 2, 'southward-moving', is broken across two lines at the hyphen ('southward-' / 'moving adj. 向南移动的'). On every other screen the headwords stay whole on one line. The text is not cut off. This is cosmetic only.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    18
+   ],
+   "notes": [
+    "I opened all 18 screens (cover + 17 sentences, matching the expected 18 screens; no split sentences and no PART labels, which is correct) and zoomed in on screens 4, 7, 8, 10, 15 and 18.\n\nNumbering, recorded per screen as circles in the English | panel | footer:\n- s2: 1-12 | 1-12 | 1/17\n- s3: 1-10, with 'as … as' badged only on the second 'as' | 1-10 | 2/17\n- s4: 1-4 | 1-4 | 3/17 (footer overlapped by Chinese)\n- s5: 1-7, with 'played a … role in' badged only on its last piece | 1-7 | 4/17\n- s6: 1-12 | 1-12 | 5/17\n- s7: 1-12 | 1-12 | 6/17\n- s8: 1-4 | 1-4 | 7/17\n- s9: 1-11 | 1-11 | 8/17\n- s10: 1-12, with 'protects … from' badged on 'from' | 1-12 | 9/17\n- s11: 1-5 | 1-5 | 10/17\n- s12: 1-3 | 1-3 | 11/17\n- s13: 1-8 | 1-8 | 12/17\n- s14: 1-11, with 'Between … and' badged on 'and' | 1-11 | 13/17\n- s15: 1-11, with 'input … into' badged on 'into' | only 4-8 fully visible, 9 cut off, 1-3 and 10-11 missing | 14/17\n- s16: 1-8 | 1-8 | 15/17\n- s17: 1-10 | 1-10 | 16/17\n- s18: 1-12 | 1-12 | 17/17\n\nThe progress knob position matches k/17 on every screen. Badge shapes and colours match their entry type throughout. Chinese ellipses are drawn consistently (centred). Hyphenated words that wrap in the English body ('wind-/driven' on s14) are normal line breaks and not reported.\n\nDefects found: the cover title overflows; screen 4 has an oversized font and overlaps the header and footer; screen 15's vocabulary panel overflows and garbles the header; screen 8 has a replacement character in place of 洲; screen 12's first line is offset; screen 11's panel headword breaks at the hyphen (low).\n\nFiles are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/frames10/y4/ (reference: .../frames10/ref/y4.txt)."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen01. The title is drawn at a huge size. 海洋变暖与 sit inside the card, 南 runs past the card's right edge at about x=1320, 极 is hidden behind the yellow Aa circle, a glyph fragment shows at the right screen edge, and 冰骤减 are off-screen. The rest of the cover matches the reference: 中考英语 · 阅读理解, 2026年 北京 · 阅读C, 说明文 · 自然与环境, 全文 348 词."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen04. Sentence 3 is drawn at about twice the normal size. 'Some research(1) has' sits up in the purple header band and covers the yellow header line. The second Chinese line, 升高。, overlaps the footer, so 'SENTENCE 3 / 17' cannot be read. The badges 1-4 match the panel."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed on screen15. The vocab panel uses an oversized font. Entries 1-3 are pushed above the card. Leftovers show in the header: a white '3', a grey 'adj.', and 记录下来的 over the VOCABULARY tag and the card's top border. The header text '2026年 北京 · 阅读C 海洋变暖…' is garbled, with glyphs missing. Entry 8 (sea ice 海冰) crosses the card's bottom border down to the footer and progress bar. Entry 9 is cut off at the screen bottom. Entries 10 and 11 are missing. The English side and the footer are fine."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Confirmed on screen08. The Chinese reads 南极�四周环绕着一条由强风和风暴构成的地带。, with a replacement character (black diamond with a question mark) where the reference has 洲."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Confirmed on screen12. The first English line 'These winds blow(1)' starts at about x=610. The second line, 'surface water(2) and ice forward(3).', starts at the normal margin, about x=90, which leaves a large blank gap before the first line. No other screen does this."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Confirmed on screen11. Entry 2's headword is broken across two lines at the hyphen: 'southward-' on one line, then 'moving adj. 向南移动的'. Hyphenated headwords elsewhere stay whole, for example wind-driven on screen14. Nothing is cut off, so this is cosmetic, but it is as described."
+    }
+   ]
+  },
+  {
+   "id": "z01",
+   "findings": [
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "layout",
+     "description": "In the vocabulary panel, entry 2's headword 'southward-moving' is split across two lines at the hyphen: line 1 shows 'southward-' and line 2 shows 'moving adj. 向南移动的'. The headword alone fits on one line (about 410 px of about 470 px available), so it should stay whole and only the POS and meaning should wrap. As shown, it reads like two separate headwords.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 14,
+     "sentence": 13,
+     "kind": "layout",
+     "description": "In the English sentence, the highlighted single-word entry 'wind-driven' (badge 2) is split at its hyphen across lines 1 and 2, with 'wind-' at the end of line 1 and 'driven²' at the start of line 2. The highlighted vocabulary item appears in two pieces with the badge only on the second, which looks like a split phrase. Keeping hyphenated highlighted words unbroken would avoid this.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    18
+   ],
+   "notes": [
+    "I opened all 18 screens and compared them with ref/z01.txt. The reference expects 18 screens (the title card plus 17 sentences, none split), and that is what the folder has. No screen shows a PART label.\n\nTitle card (screen 1): it matches the reference. The title 海洋变暖与南极海冰骤减 is on one line. It shows '中考英语 2026年 北京 ·' with a purple 阅读C pill, the tag '中考英语 · 阅读理解', the genre '说明文 · 自然与环境' and '全文 348 词 · 逐句精读'. I recounted the words from the reference EN sentences, leaving out the Chinese glosses: 348.\n\nPer screen: the badge numbers in the English (as a set), the panel numbers from top to bottom, and the footer.\n- s02: 1-12 / 1-12 / 1/17\n- s03: 1-10 / 1-10 / 2/17\n- s04: 1-4 / 1-4 / 3/17\n- s05: 1-7 / 1-7 / 4/17 (split phrase 'played a…role in' has its number only on 'role in')\n- s06: 1-12 / 1-12 / 5/17\n- s07: 1-12 / 1-12 / 6/17\n- s08: 1-4 / 1-4 / 7/17\n- s09: 1-11 / 1-11 / 8/17\n- s10: English order 1,2,3,4,6,7,5,8-12 / panel 1-12 / 9/17 (protects…from has 5 on 'from')\n- s11: 1-5 / 1-5 / 10/17\n- s12: 1-3 / 1-3 / 11/17\n- s13: 1-8 / 1-8 / 12/17\n- s14: 1-11 / 1-11 / 13/17 (Between…and has 1 on 'and')\n- s15: English order 1,3,4,5,2,6-11 / panel 1-11 / 14/17 (input…into has 2 on 'into')\n- s16: 1-8 / 1-8 / 15/17\n- s17: 1-10 / 1-10 / 16/17\n- s18: 1-12 / 1-12 / 17/17\n\nOn every screen, the panel entries match the reference set, ordered by first appearance. Phrase vs word colours and badge shapes (yellow rounded square vs purple circle) match the entry type. The progress knob position matches k/17 to within about 0.003 on every screen.\n\nI zoomed in to check the panel's right and bottom edges (s06, s09, s10, s18), the right edge of the English text (s07), and the ellipsis rendering (s02, s03, s15). Nothing is clipped or overlapping. Every …… is drawn centred, consistently. as…as, protect…from and input…into all use the same ellipsis glyph.\n\nThree things I saw but did not report because they look like normal typesetting:\n- Chinese meanings wrap mid-word in a few places, e.g. 看/法 on s04 and 之/间 on s14.\n- An unsqueezed full-width gap appears between ； and （ in 表面；（海）面.\n- Phrases wrap across lines (record high, sea ice, in the years to come), with the badge correctly on the last part.\n\nThe only defects are the two low-severity hyphen line breaks reported as findings."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 11's vocabulary panel shows entry 2 as 'southward-' on one line and 'moving adj. 向南移动的' on the next. The reference gives the headword as the single word 'southward-moving'. It would fit on one line: 'southward-' takes about 245 px and 'moving' about 155 px, against about 470 px of space. So the break comes from wrapping at the hyphen, and it makes the entry read as two pieces."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 14's English sentence ends line 1 with 'wind-' and starts line 2 with 'driven²', with the badge only on the second piece. The reference lists 'wind-driven' as one single word (单词), not a phrase. The design only lets phrases split with the number on the last piece, so a single word broken at its hyphen is a layout defect, not the intended style."
+    }
+   ]
+  },
+  {
+   "id": "z02",
+   "findings": [
+    {
+     "screen": 19,
+     "sentence": 18,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In the Chinese translation, line 1 \"心理学家本杰明·斯托姆说：“我们对互联网的依赖日\" has a visible blank gap of about 1.5 characters between the full-width colon \"：\" and the opening quote \"“\". The two full-width punctuation marks are not compressed, so the line looks like it has a stray space.",
+     "lens": "visual"
+    },
+    {
+     "screen": 14,
+     "sentence": 13,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In vocabulary entry 5 (suggest v. 提出（看法）；表明), the second line \"法）；表明\" has a full-character blank gap between \"）\" and \"；\". Adjacent full-width punctuation is not compressed.",
+     "lens": "visual"
+    },
+    {
+     "screen": 16,
+     "sentence": 15,
+     "kind": "layout",
+     "severity": "low",
+     "description": "Vocabulary entry 5 (suggest v. 提出（看法）；表明) has the same uncompressed \"）；\" pair: line 1 reads \"提出（看法）  ；表\" with a visible blank gap between the closing parenthesis and the semicolon.",
+     "lens": "visual"
+    },
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In vocabulary entry 3, the gap between the headword \"be designed to\" and its meaning \"（生来）就是为了；旨在\" is about three times the normal gap, because the full-width \"（\" carries its own blank left half. It looks like a stray space after the headword.",
+     "lens": "visual"
+    },
+    {
+     "screen": 9,
+     "sentence": 8,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In vocabulary entry 1 (flood n. 泛滥；大量涌来（的东西）), the wrapped second line \"（的东西）\" starts about 20 px to the right of the hanging indent that every other wrapped meaning uses. The full-width \"（\" carries its own blank left half, so the line looks misaligned.",
+     "lens": "visual"
+    },
+    {
+     "screen": 20,
+     "sentence": 19,
+     "kind": "layout",
+     "severity": "low",
+     "description": "The Chinese translation's first line begins with a full-width \"“\" that is blank on its left half. Line 1 (\"“记忆正在发生变化…\") therefore looks indented by about 20 px compared with line 2 (\"朝好的方向变化吗？\") and with the Chinese lines on the other screens.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    21
+   ],
+   "notes": [
+    "I opened all 21 screens and the reference file (z02, 2026 北京 阅读D). The reference expects 21 screens and no split sentences: there are 21, in the right order, and no PART label appears anywhere.\n\nTitle card: matches the reference. Title 互联网是否在损害我们的记忆 on one line; 中考英语 2026年 北京 · [阅读D pill]; tag 中考英语 · 阅读理解; 说明文 · 科技与心理; 全文 393 词 · 逐句精读. A whitespace word count of the 20 English sentences, with the Chinese notes (系统)(无穷尽的)(回忆)(心理学家) removed, also gives 393.\n\nFor each sentence screen, the numbers in the English (left to right), the numbers in the panel (top to bottom) and the footer:\n- Screen 2 (S1/20): 1–6, 1–6. \"sounding alarms\" wraps over two lines; the badge is on the last piece.\n- Screen 3 (S2): 1–9, 1–9.\n- Screen 4 (S3): 1–6, 1–6.\n- Screen 5 (S4): 1–14, 1–14.\n- Screen 6 (S5): 1–7, 1–7.\n- Screen 7 (S6): 1–3, 1–3.\n- Screen 8 (S7): English 1,2,3,4,5,6,7,8,10,9,11,12,13. This is correct: the split phrase both…and (9) carries its badge on \"and\", which comes after short- (10). Panel 1–13.\n- Screen 9 (S8): 1–4, 1–4.\n- Screen 10 (S9): English 1–6,8,9,7,10. Correct: causing … to (7) has its badge on \"to\". Panel 1–10.\n- Screen 11 (S10): 1–12, 1–12.\n- Screen 12 (S11): 1–5, 1–5.\n- Screen 13 (S12): 1–10, 1–10.\n- Screen 14 (S13): 1–6, 1–6.\n- Screen 15 (S14): 1–5, 1–5.\n- Screen 16 (S15): English 1,3,2,4,5,7,8,9,10,6,11. Correct: having a … effect on (2) has its badge on \"on\", change … from … to (6) on \"to\", and focus on (9) wraps over two lines. Panel 1–11.\n- Screen 17 (S16): 1–8, 1–8.\n- Screen 18 (S17): 1–8, 1–8.\n- Screen 19 (S18): 1–9, 1–9.\n- Screen 20 (S19): 1–5, 1–5.\n- Screen 21 (S20/20): 1, 1.\n\nOn every screen:\n- The panel numbers run 1, 2, 3 … with no gap, repeat or swap.\n- The badge numbers in the English match the panel numbers.\n- Every highlight has a panel entry, and every panel entry has a highlight.\n- Highlight colours and badge shapes match the entry type (purple round badge for words, yellow rounded-square badge for phrases).\n- The footer number goes up by 1 from screen to screen, ending at 20/20.\n\nI measured each progress knob against k/20 and all agree to within 1%.\n\nNothing is cut off, overlapping, garbled or replaced by an empty box or �. The last panel entry on screens 11, 13 and 19 sits only about 8–12 px above the panel's bottom border but does not touch it. Panel font sizes vary with the number of entries, as intended. Chinese ellipses (……) are drawn as centred dots everywhere, consistently.\n\nAll 6 findings are low-severity spacing issues with one cause: adjacent full-width Chinese punctuation is not compressed, and a full-width （ or “ at the start of a line leaves its blank left half. Fixing it everywhere at once, for example by turning on the font's punctuation compression in CSS, would clear all of them. Translations and glosses were not judged, as instructed."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 19, ZH line 1: in the zoomed crop there is a clear blank of about 1.5 characters between '说：' and '“我们'. The colon sits in the left half of its cell and the opening quote is right-aligned in its own cell, and the two are not compressed. The text matches the reference; the stray-looking space is a real visual defect."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 14, vocab entry 5 (suggest v. 提出（看法）；表明): the wrapped line 2 reads '法）  ；  表明', with roughly a full character of blank between '）' and '；'. Visible in the zoomed crop."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Screen 16, vocab entry 5: line 1 '提出（看法）；表' shows the same uncompressed '）；' pair, with a visible blank gap between the closing parenthesis and the semicolon. Confirmed in the zoomed crop."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Screen 10, vocab entry 3: between the highlighted headword 'be designed to' and '（生来）' there is about 35 px of blank, versus the roughly 12 px gap that other entries use between headword and meaning. The cause is the blank left half of the full-width '（'. It looks like a stray space."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Screen 9, vocab entry 1: the wrapped line '（的东西）' has its first ink at x≈1358. Other wrapped meanings start at the hanging indent x≈1330 (for example '法' on screen 14). That is a visible offset of about 25 px, caused by the blank left half of '（'."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Screen 20, ZH translation: measured first ink of line 1 ('“记忆…') is at x≈147 and of line 2 ('朝好的方向变化吗？') at x≈122. The first line is visibly indented by about 25 px because the left half of the full-width '“' is blank."
+    }
+   ]
+  },
+  {
+   "id": "z03",
+   "findings": [
+    {
+     "screen": 13,
+     "sentence": 12,
+     "kind": "glyph",
+     "description": "The panel headword is drawn as \"on one's own\" with a straight ASCII apostrophe. Every apostrophe in the sentence text uses the curly ’ (\"men’s\" on screens 7 and 8), so the two styles are mixed. The project rule that word-internal straight apostrophes become curly does not reach this headword. The reference text has the same straight apostrophe, so the fix is in the data (on one’s own), not in the rendering.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 3,
+     "sentence": 2,
+     "kind": "layout",
+     "description": "Entry 1 in the vocabulary panel (at the beginning of): the meaning 在……开始时 wraps onto its own line and starts at x≈1342, about 10 px right of every other continuation line in the panel (x≈1332, e.g. 化）节 on this screen and 料的；意外的 on screen 2). The space between headword and meaning seems to be carried to the start of the new line, so the line looks slightly indented.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "description": "Same misalignment as screen 3. In entry 2 (last for), the meaning 持续（一段时间） wraps onto its own line and starts at x≈1341, while the other continuation lines start at x≈1332 (e.g. 的 under entry 4, crowds of). The same leading space produces a visible ~10 px indent.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    20
+   ],
+   "notes": [
+    "I opened and checked all 20 screens: the title card plus 19 sentence screens, none split. The reference expects 20 screens and 19 sentences with no splits, and that matches.\n\nTitle card: everything matches the reference.\n- Title 从放风筝到摘番茄：快速进步的机器人, on one line.\n- 中考英语 2026年 河北 · with a 阅读C pill.\n- Tag 中考英语 · 阅读理解.\n- Genre 说明文 · 科技与生活.\n- 全文 245 词. My own count of the reference English, leaving out the Chinese notes (线), (半程马拉松) and (成熟的), is also 245.\n- The legend pill is present.\n\nNumbering on each screen (badge numbers in the English = panel numbers):\n\n| Screen | Sentence | Badges / panel | Unnumbered phrase pieces |\n|---|---|---|---|\n| 2 | 1 | 1–7 | – |\n| 3 | 2 | 1–8 | – |\n| 4 | 3 | 1–6 | – |\n| 5 | 4 | 1–5 | – |\n| 6 | 5 | 1–6 | – |\n| 7 | 6 | 1–4 | broke |\n| 8 | 7 | 1–6 | – |\n| 9 | 8 | 1–4 | – |\n| 10 | 9 | 1 | – |\n| 11 | 10 | 1–4 | – |\n| 12 | 11 | 1–3 | – |\n| 13 | 12 | 1–4 | – |\n| 14 | 13 | 1–7 | whether (badge 2 on \"or not\") |\n| 15 | 14 | 1–6 | – |\n| 16 | 15 | 1–8 | leave (badge 6 on \"untouched\") |\n| 17 | 16 | 1–5 | – (in / recent years only wraps across a line) |\n| 18 | 17 | 1–4 | – |\n| 19 | 18 | 1–5 | allow (badge 3 on \"to\") |\n| 20 | 19 | 1–7 | playing (badge 4 on \"role in\") |\n\nOn every screen the panel numbers are consecutive in order of first appearance, and the set of badge numbers in the English equals the set in the panel. Each footer reads SENTENCE k / 19 with the right k, and no screen has a PART label. I measured the progress-bar knob on every screen and it sits at k/19 within about 0.3%.\n\nOther checks:\n- Badge shape and colour match the item type everywhere: round purple for words, yellow rounded square for phrases.\n- The Chinese …… is drawn as centred dots in every panel entry. English headwords such as whether…or not and leave…untouched use the English font's low dots, which is fine for English.\n- No text is cut off or overlaps anything. The panels on screens 3, 16 and 20 are full but stay inside the card, and screen 20's first entry clears the VOCABULARY tag.\n- No tofu, � or garbled characters. The Chinese notes inside the English lines render correctly.\n- Font sizes look consistent from screen to screen.\n\nI modified no files."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Zoomed screen 13. The panel headword is drawn as \"on one's own\" with a straight vertical apostrophe. The sentence text on screen 7 (sentence 6) and screen 8 (sentence 7) draws \"men’s\" with a curly ’, so the video mixes the two styles. The reference z03.txt also has the straight apostrophe (on one's own). The rendering is faithful, but the glyph breaks the project's curly-apostrophe rule (踩坑 #18), so it is a real typographic defect. The fix belongs in the data, as the reviewer says."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Measured the leftmost ink of each text line in the vocabulary panel of screen 3. The wrapped meaning line 在……开始时 (rows 243-278) starts at x=1342. Every other line, including the continuation 化）节, starts at x=1330-1333. On screen 2, 料的；意外的 and 的 start at x=1331-1333. The ~10 px indent is real and visible. It only happens when a phrase's whole meaning drops to a new line. Partial wraps such as help with 帮忙做；/在……方面帮忙 on screen 12 are not indented."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Same measurement on screen 4. The wrapped line 持续（一段时间） (rows 447-483) starts at x=1341. All other panel lines start at x=1330-1333, including 的 under entry 4 (crowds of), which starts at x=1333. The same ~10 px indent is present."
+    }
+   ]
+  },
+  {
+   "id": "z04",
+   "findings": [
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "layout",
+     "severity": "low",
+     "description": "In the vocabulary panel, entry 3 'be connected with' is too long for its gloss to fit on the same line, so the whole gloss '与……有关' moves to the next line. That line starts about 10 px to the right of the headword column: ink begins at x≈1342, while every other wrapped panel line in the video starts at x≈1331–1333 (for example '极的' on screen 3, '一起工作' on screen 5, '在……期间' on screen 11). The cause is `.v span{margin-left:10px}` (中考/tools/make_video.py:58). That margin is meant to separate the headword from the gloss, but it is also applied when the gloss span starts a new line. Expected: the wrapped gloss lines up flush with the headword column, as the other wrapped lines do.",
+     "lens": "visual"
+    },
+    {
+     "screen": 13,
+     "sentence": 12,
+     "kind": "layout",
+     "severity": "low",
+     "description": "Same problem as screen 10. Panel entry 3 'tell the whole story' sends its whole gloss '说明全部情况' to the next line, and that line is indented about 10 px further than the headword column (x≈1342 instead of ≈1332), because the span's 10 px left margin is carried to the line start. Expected: flush with the headword column, like the other wrapped panel lines.",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "severity": "low",
+     "description": "Panel entry 7: there is a visibly wide gap (about 30 px) between the headword 'happen to' and its gloss '（某事）发生在……身上；遇到'. Most of it is the empty space built into the left side of the full-width opening parenthesis '（', and the 10 px gloss margin adds to it. In every other entry the gap between headword and gloss is narrow, so this one looks like a stray blank. Expected: the normal headword–gloss spacing, which a half-width-trimmed opening parenthesis would give.",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "low",
+     "description": "Panel entry 4: same wide gap (about 30 px) between the POS 'n.' and the gloss '（体内的）化学物质；化学'. It comes from the full-width opening parenthesis's built-in left space plus the 10 px gloss margin, and is noticeably wider than the POS–gloss gap in every other entry. Expected: normal spacing.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    17
+   ],
+   "notes": [
+    "I opened all 17 screens in order: screen 1 is the cover and screens 2–17 are sentences 1–16. The reference expects 17 screens with no split sentences, and that is what the video has. No screen shows a PART label, and none should.\n\nCover: it matches the reference. The title '科学家尝试测量动物的快乐' is on one line. The tag reads '中考英语 · 阅读理解', the next line reads '中考英语 2026年 河北 ·' followed by the '阅读D' pill, and the bottom line reads '说明文 · 科学与动物' and '全文 233 词 · 逐句精读'. I counted the reference English words myself, leaving out the Chinese glosses: 233, which matches. The legend pill is present.\n\nNumbering, per screen: circle numbers in the English / panel numbers / footer:\n- s02: 1-4 / 1-4 / 1/16\n- s03: 1-10 / 1-10 / 2/16\n- s04: 1-5 / 1-5 / 3/16\n- s05: 1-5 / 1-5 / 4/16 ('working together' wraps across two lines and has its badge only on 'together')\n- s06: 1-4 / 1-4 / 5/16\n- s07: 1-10 / 1-10 / 6/16 ('define … as' badge only on 'as')\n- s08: 1-5 / 1-5 / 7/16\n- s09: 1-10 / 1-10 / 8/16 ('not … but' badge only on 'but')\n- s10: 1-4 / 1-4 / 9/16\n- s11: 1-7 / 1-7 / 10/16\n- s12: 1-7 / 1-7 / 11/16 ('happen to' wraps, badge on 'to')\n- s13: 1-3 / 1-3 / 12/16\n- s14: 1-7 / 1-7 / 13/16\n- s15: 1-10 / 1-10 / 14/16\n- s16: 1-4 / 1-4 / 15/16\n- s17: 1-5 / 1-5 / 16/16\n\nOn every sentence screen the panel numbers run consecutively with no gaps or repeats, and the set of numbers in the English matches the set in the panel. Every highlight has its badge, and every highlight's colour and badge shape match its entry type (单词 or 短语). I checked the progress-bar knob position against k/16 on every screen and all are within a few pixels.\n\nContent: the English, Chinese translation and panel entries on every screen match the reference. Chinese ellipses '……' are drawn as centred dots everywhere (screens 7, 9, 10, 11, 12), so the style is consistent.\n\nZoomed checks: I enlarged and inspected the double-digit badges (fear 10, research 10, truly 10), the first and last panel rows against the VOCABULARY tab and the panel border on the 10-entry screens (3, 15), and the long English lines near the panel edge (screens 7, 9, 11, 14, 15). There is no clipping or overlap, no tofu or replacement characters, and no font size that is out of line with the other screens.\n\nThe only defects are the four low-severity spacing problems listed above:\n1. When an entry's whole gloss wraps to its own line, the gloss's 10 px margin shows up as an extra indent (screens 10 and 13).\n2. Glosses that begin with a full-width '（' show a wide blank gap before the parenthesis (screens 12 and 15).\n\nI checked that cause 1 is not the glyph shapes: 与, 说, 在, 生, 化, 兴 and 极 all render with the same left edge in Noto Sans SC.\n\nOn screen 17 the badge sits between 'humans' and its possessive apostrophe ('humans⁵’'). This follows directly from the reference highlighting 'humans', so I did not report it. I did not modify any files; my crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/z04crops/."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen 10. Entry 3's headword 'be connected with' starts at x=1330. Its gloss '与……有关' is pushed whole onto the next line and its ink starts at x=1342. Wrapped panel lines on screens 3, 5, 7, 9, 11, 12, 14 and 15 all start at x≈1327–1333; those breaks fall inside the span, so no margin is applied. The cause is the gloss span's margin-left:10px (make_video.py:58), which 样式.css does not override. There is no whitespace between </b> and <span>, so the margin is carried to the new line when the whole span wraps. The ≈10 px indent can be seen relative to the headword."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen 13. Entry 3's headword 'tell the whole story' starts at x=1329. Its gloss '说明全部情况' sits alone on the next line and starts at x=1341, about 11 px to the right of the headword column and of every other wrapped panel line in the video (x≈1327–1333). This has the same cause as item 0: the span's 10 px left margin is applied at the start of the new line."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed on screen 12, entry 7. The ink gap between the end of the 'happen to' headword with its highlight band (x=1542) and the '（' of '（某事）发' (x=1582) is about 39 px. For comparison, phrase headword-to-gloss gaps elsewhere are about 12 px (e.g. 'body temperature' to '体温') and POS-to-gloss gaps are 14–16 px. The extra space comes from the blank built into the left side of the full-width '（' plus the 10 px margin. The gloss text itself matches the reference; the stray-looking wide gap is visible. The reviewer's '~30 px' understates it slightly but describes it correctly."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Confirmed on screen 15, entry 4. The gap between the end of 'n.' (x=1566) and the '（' of '（体内的）化学物质；化学' (x=1607) is about 40 px, against 14–16 px between POS and gloss in every other entry (e.g. scientist n. 科学家, if conj. 是否). The cause is the same: the full-width opening parenthesis's built-in left blank plus the 10 px gloss margin. The text matches the reference; only the spacing is off, and it is visibly wider."
+    }
+   ]
+  },
+  {
+   "id": "z05",
+   "findings": [
+    {
+     "screen": 14,
+     "sentence": 13,
+     "kind": "layout",
+     "description": "In the vocabulary panel, entry 1 \"by doing\" sits alone on its line even though there is room after it. Its whole meaning \"通过（做某事）\" drops to the next line and is indented about 10 px further than every other wrapped meaning line. Measured left edges: x≈1342 here, against x≈1331–1336 for \"又一次；反复\", \"白\" and \"似……的东西\" on the same screen. The likely cause is that the meaning span's leading margin or space is carried onto the new line. Expected: the meaning starts on the headword line, or at least lines up with the other wrapped lines.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 0,
+     "sentence": 0,
+     "kind": "layout",
+     "description": "Chinese text wraps character by character with no word protection. Two-character words are split across lines, often leaving one character alone on the next line, which is harder for students to read. In the vocabulary panel: s3 不/过 and 生活/中; s4 基础/的; s5 想一/想; s8 泳/衣 (the whole meaning 泳衣 is split); s11 手提/箱 and 充/分地; s12 （做/到） and 迅/速地; s13 可/能 (the core meaning 可能 is broken); s14 明/白 and 类/似; s15 更重/要的是 and 引/导; s17 恰当/的; s18 是这/样）; s19 难/的; s20 不/仅; s21 所/以 and 可能的/话. In the Chinese translation: s5 活/动。 and s14 概/念。. No text is cut off, so this is a typographic/readability issue only.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    21
+   ],
+   "notes": [
+    "I opened all 21 screens in order, plus the reference. The structure matches the reference: screen 1 is the cover and screens 2–21 are sentences 1–20, one screen each, with no splits and no PART labels.\n\nCover matches the reference:\n- Title: 收拾行李：在生活中学数学, on one line.\n- Tag: 中考英语 · 阅读理解.\n- Line: 中考英语 2026年 河北 ·, followed by the purple pill 任务型阅读.\n- Genre: 说明文 · 教育与生活.\n- Word count: 全文 253 词. I recounted the reference EN with the Chinese glosses excluded and got 253.\n\nHeader on every sentence screen: 2026年 河北 · 任务型阅读 收拾行李：在生活中学数学.\n\nFor each screen: circles in the English, left to right / panel numbers, top to bottom / footer / progress-bar knob position.\n- s2: 1–6 / 1–6 / SENTENCE 1/20 / knob ≈0.05\n- s3: 1–5 / 1–5 / 2/20 / ≈0.10\n- s4: 1–3 / 1–3 / 3/20 / ≈0.15\n- s5: 1–3 / 1–3 / 4/20 / ≈0.20\n- s6: 1–2 / 1–2 / 5/20 / ≈0.25\n- s7: 1–3 / 1–3 / 6/20 / ≈0.30\n- s8: 1–5 / 1–5 / 7/20 / ≈0.35\n- s9: 1–3 / 1–3 / 8/20 / ≈0.40\n- s10: 1–3 / 1–3 / 9/20 / ≈0.45\n- s11: 1–3 / 1–3 / 10/20 / ≈0.50\n- s12: 1 (fail to), [pack, no circle], 2 (in), 3–6 / 1–6 / 11/20 / ≈0.55\n- s13: 1 might, 2 try, 3 folding, 4 in different ways, [make, no circle], 5 smaller / 1–5 / 12/20 / ≈0.60\n- s14: 1 By trying, 2 again and again, 3 understand, 4 something like, 5 volume / 1–5 / 13/20 / ≈0.65\n- s15: 1, 2, [guide, no circle], 3 toward, 4, 5 / 1–5 / 14/20 / ≈0.70\n- s16: 1, [put, no circle], 2 together, 3 ask her child if, 4 do so / 1–4 / 15/20 / ≈0.75\n- s17: 1–5 / 1–5 / 16/20 / ≈0.80\n- s18: 1–3 / 1–3 / 17/20 / ≈0.85\n- s19: 1–5 / 1–5 / 18/20 / ≈0.90\n- s20: 1, 2, [not only, no circle], 3 but also / 1–3 / 19/20 / ≈0.95\n- s21: 1, 2 (do housework, wrapped across a line, highlight continuous), 3, 4, 5 / 1–5 / 20/20 / knob at the end\n\nOn s13 (S12) and s14 (S13), the panel order differs from the order the entries are listed in the reference (might; understand). The screens number by first appearance in the sentence, which is the intended design, so these are not defects.\n\nEvery highlight's colour and badge shape match its entry type: single words are purple with a round badge, phrases are magenta on yellow with a square badge, and split phrases carry their number only on the last piece. I zoomed in on the panels of s12, s16 and s18: every Chinese ellipsis …… is centred, consistently. The English headword ellipses (pack…in and so on) are normal Latin low dots.\n\nI found no cut-off text, overlaps, garbled glyphs, tofu or abnormal font sizes. The EN and ZH text on every screen matches the reference. The only problems are two low-severity Chinese line-wrapping issues."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen14 (sentence 13). Entry 1 'by doing' is alone on its line, and '通过（做某事）' starts on the next line. Measured left edges: 通 at x=1342. Every other wrapped meaning line on screen14 sits at x=1332–1336, and on screens 02, 03, 12, 15, 16, 20 and 21 they sit at x=1332–1333. This is not the glyph's own spacing: in the Chinese translation on the same screen, 通 and 念 both start at x=122. So the meaning is indented about 10 px extra. There was also room for it on the headword line. 'by doing' ends at x≈1509, the meaning is about 250 px wide, the usual gap is about 13 px, and panel text elsewhere reaches x≈1790. The meaning would end near 1772, so it fits."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Opened every screen and checked each cited break. The reviewer's 'sN' is the screen number, and every break is present as described. Vocabulary panel: screen03 不/过 and 生活/中; screen04 基础/的; screen05 想一/想; screen08 泳/衣; screen11 手提/箱 and 充/分地; screen12 （做/到） and 迅/速地; screen13 可/能; screen14 明/白 and 类/似; screen15 更重/要的是 and 引/导; screen17 恰当/的; screen18 是这/样）; screen19 难/的; screen20 不/仅; screen21 所/以 and 可能的/话. Translation: screen05 活/动。 and screen14 概/念。. In many of these, one character is left alone on the next line. Nothing is cut off, so as the reviewer says this is a readability problem only. The design brief does not describe it as intended."
+    }
+   ]
+  },
+  {
+   "id": "z06",
+   "findings": [
+    {
+     "screen": 23,
+     "sentence": 22,
+     "kind": "layout",
+     "description": "In the Chinese translation line '贝聿铭解释说：“它应该属于苏州，…' there is a wide blank gap between the full-width colon '：' and the opening quote '“'. The colon sits at the left of its em box and the quote at the right of its own, which leaves more than 1 em of empty space, so the line looks like it has a missing character. It should look like '说：“它…' with normal spacing between the colon and the quote, for example by compressing the punctuation (text-spacing-trim / halt).",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 9,
+     "sentence": 8,
+     "kind": "layout",
+     "description": "Vocabulary entry 6 'show interest in': the headword fills the first line, and the meaning wraps to the next one. That first wrapped meaning line ' 对……表现出兴趣；' starts about 10 px to the right of the headword's left edge, while the line below it, '对……感兴趣', starts flush at the headword edge. The inline gap or margin between headword and meaning is being carried to the start of the new line, so the two lines of one meaning are misaligned.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "layout",
+     "description": "Vocabulary entry 4 'have…influence on': its meaning '对……有影响' wraps onto its own line and starts about 10 px further right than the headword. Every other wrapped line in the panel starts flush at the headword edge, for example '的；国际化的' under entry 1 and '的；建筑学的' under entry 2. This is the same leading-gap artifact as on screen 9.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 19,
+     "sentence": 18,
+     "kind": "layout",
+     "description": "Vocabulary entry 2 'be different from': its meaning '与……不同' wraps onto its own line and starts about 10 px further right than the headword. The continuation line under entry 4, '建筑风格', starts flush at the headword edge, so the two do not line up. Same leading-gap artifact as on screens 9 and 11.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    27
+   ],
+   "notes": [
+    "I opened all 27 screens in order, plus enlarged crops of the suspect areas. The reference expects 27 screens: a title card plus 26 sentences with no splits, and that is what the video has. The order is correct and no screen carries a PART label.\n\nTitle card (screen 1) matches the reference:\n- Title '现代建筑大师贝聿铭' on one line.\n- Tag '中考英语 · 阅读理解'.\n- '中考英语 2026年 山西 ·' followed by the purple '阅读' pill.\n- Genre '记叙文 · 人物与经历'.\n- '全文 259 词 · 逐句精读'. Splitting the reference English on spaces, without the Chinese notes (建筑)(设计)(卢浮宫), gives 259 words. The only way to reach 260 is to count 'idea—let' as two words.\n\nPer-screen notes. Each line gives: circle numbers in the English, left to right / panel numbers, top to bottom / footer.\n- s2: 1,2,3,4,5 / 1-5 / 1/26\n- s3: 1-5 / 1-5 / 2/26. The phrase 'around | the world' is split across lines, with the badge only on the last piece.\n- s4: 1 / 1 / 3/26\n- s5: 1-4 / 1-4 / 4/26\n- s6: 1,2 / 1,2 / 5/26\n- s7: 1,2,3 / 1-3 / 6/26\n- s8: 1-4 / 1-4 / 7/26. The panel lists during, would, garden, whenever. That is first-appearance order and is correct, even though the reference lists them in a different order.\n- s9: 1-6 / 1-6 / 8/26. 'show | interest in' is split, with the badge on the last piece.\n- s10: 1,2 / 1,2 / 9/26\n- s11: 1,2,3,5,4 / 1-5 / 10/26. The phrase 'had … influence on' takes number 4 because 'had' comes first, and its badge sits on the last piece 'influence on', after strong (5). The two sets match, so this is correct.\n- s12: 1,2 / 1,2 / 11/26\n- s13: 1,2 / 1,2 / 12/26\n- s14: 1,2 / 1,2 / 13/26\n- s15: 1-4 / 1-4 / 14/26\n- s16: 1-7 / 1-7 / 15/26\n- s17: 1 / 1 / 16/26\n- s18: 1-5 / 1-5 / 17/26\n- s19: 1-5 / 1-5 / 18/26. 'was … different from' has an unbadged 'was' piece. 'at that | time' is split with the badge on 'time'.\n- s20: 1,2 / 1,2 / 19/26\n- s21: 1-3 / 1-3 / 20/26\n- s22: 1-3 / 1-3 / 21/26\n- s23: 1,2 / 1,2 / 22/26\n- s24: 1-3 / 1-3 / 23/26\n- s25: 1-4 / 1-4 / 24/26\n- s26: 1,2 / 1,2 / 25/26. 'at the age | of' is split.\n- s27: 1-3 / 1-3 / 26/26\n\nEvery progress knob is in the right place for k/26; I spot-measured several. Highlight colours and badge colours match the entry type everywhere. I found no clipping, overlap, tofu boxes, replacement characters or abnormal font sizes. The Chinese ellipses '……' are drawn centred in every panel entry.\n\nThings I checked and did not report:\n1. Panel badges for phrases are yellow circles, not rounded squares. 中考/tools/样式.css gives them the same circular shape as word badges, so this is the actual design.\n2. In the rounded Nunito font, a capital I looks almost the same as a lowercase l. A student could read 'Ieoh' (s2) as 'leoh'. This is how the font is designed, not a rendering error.\n3. Smaller full-width punctuation gaps of the same kind as the s23 colon gap: '（时间）；' (s7), 'v. （表示…' (s8), and the wrapped '（著名建筑师）' (s2), whose leading '（' makes the line look indented."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen23. In the ZH line '贝聿铭解释说：“它…', the colon ink sits at x≈389–395 and the opening-quote ink at x≈452–465, so there is about 56 px of empty space between them. The character pitch is about 43–44 px, so that is roughly 1.3 em. The colon is pushed to the left of its cell and the quote to the right of its own, and no punctuation squeezing is applied, so it reads like a missing character. The reference text is '说：“它' with no added space."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Measured on screen09, entry 6 'show interest in'. The headword ink starts at x≈1332. The first wrapped meaning line '对……表现出兴趣；' starts at x≈1342, while the second line '对……感兴趣' starts at x≈1332. Both lines begin with the same glyph 对, so the ~10 px indent on the first line is a real leading-gap artifact and not a difference in glyph bearing."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Measured on screen11. The wrapped meaning '对……有影响' under entry 4 'have…influence on' starts at x≈1342, while the headword starts at x≈1332. The other continuation lines start at x≈1333: '的；国际化的' (entry 1), '的；建筑学的' (entry 2) and '的' (entry 5). So it is misaligned by about 10 px, exactly as described."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Measured on screen19. The wrapped meaning '与……不同' under entry 2 'be different from' starts at x≈1342. The headword starts at x≈1332, and the continuation line '建筑风格' under entry 4 starts at x≈1332. This is the same ~10 px leading-gap misalignment as on screens 9 and 11."
+    }
+   ]
+  },
+  {
+   "id": "z07",
+   "findings": [
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "description": "In the vocabulary panel, entry 1 'spend v.' sits alone on the first line. Its whole meaning '度过；花（时间）' is pushed down to the next line, even though at least '度过；' would fit after 'v.'. That second line also starts about 8–10 px further right (x≈1338) than the headword (x≈1328) and than wrapped glosses on other screens (x≈1330, e.g. 'bank' on screen 3 and 'collection' on screen 4). Every other wrapped gloss in this video breaks inside the meaning and lines up under the headword.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 9,
+     "sentence": 8,
+     "kind": "layout",
+     "description": "Chinese line '她常对团队成员说：  “选定一件事…': the full-width colon '：' followed by the full-width opening quote '“' leaves a blank gap of about one character between them. Neither glyph has its empty half removed, so the gap looks like a stray space inside the line.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 13,
+     "sentence": 12,
+     "kind": "layout",
+     "description": "The Chinese line starts with a full-width '“' whose glyph sits on the right half of its box. The visible text therefore begins about half a character to the right of the usual left edge (≈x 145 instead of ≈x 120 on every other screen), so this line looks indented. There is a similar wide gap after '希望。”' before '一位'.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 2,
+     "sentence": 1,
+     "kind": "layout",
+     "description": "In panel entry 2, '银行；（储存物品的）库' shows a blank gap of about one character between '；' and '（'. The same unsqueezed full-width gap appears between 'n.' and '（' in the 'bank' entries on screens 3, 4, 5, 12, 19 and 20 and in 'mount' on screen 10. It reads as a stray space inside the gloss.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    22
+   ],
+   "notes": [
+    "I opened all 22 screens in order and read the reference z07.txt. Structure: 1 title card plus 21 sentence screens, which matches the expected 22. No sentence is split, and no PART label appears anywhere, which is correct.\n\nTitle card: '储存生命的种子库' on one line; '中考英语 2026年 辽宁 ·' followed by the purple pill '阅读D'; the tag '中考英语 · 阅读理解'; genre '记叙文 · 自然与科学'; '全文 317 词 · 逐句精读'. The 317 matches a whitespace count of all 21 EN sentences with the Chinese annotations (中国西南野生生物种质资源库)/(种子)/(基因)/(庄稼) removed, the same rule extract_reading.py uses. The legend pill is present.\n\nNumbering, written down for every screen (English badges left to right / panel top to bottom / footer). All panels are consecutive from 1 with no gaps, repeats or swaps. The set of English badges equals the panel set on every screen. Every badge position fits first-appearance order:\n- s1 1-5/1-5\n- s2 1-6\n- s3 1-11\n- s4 1-6\n- s5 1-10\n- s6: 1,2,3('more'/'than' line-wrapped, badge on 'than'),4,5,6,7,['got' no badge],9,8,10,11,12,13 / 1-13\n- s7 1-2\n- s8 1-4\n- s9 1-7\n- s10 1-5\n- s11: 1,2,3('in the'/'wild'),4,['add' no badge],6,7,8,9,5,10 / 1-10\n- s12 1-4\n- s13 1-13\n- s14 1-5\n- s15 1-5\n- s16 1-5\n- s17 1-4\n- s18: 1,2,3,['are' no badge],5,4 / 1-5\n- s19: 1,2,3,4,5,['turn' no badge],7,6,8,9,10,11 / 1-11\n- s20: 1,2,3,4,5,['spent' no badge],7,6,8,9 / 1-9\n- s21 1-8\n\nSplit phrases (get…hurt, add…to, are…found in, turn…into, spent…on) carry the badge only on the last piece. Highlight colours and badge colours match the entry types: purple for words, magenta on yellow with a yellow badge for phrases. Panel and English badges are the same shape for words and phrases, only the colour differs. 样式.css gives both badge types the same radius, so this is the intended design, not a defect. Footers read SENTENCE 1/21 … 21/21 in order. I checked every progress knob against k/21 (within about 3 px).\n\nNothing is cut off, overlapping, garbled, or shown as tofu or replacement characters. Font sizes are consistent. The tightest panels (s3, s5, s6, s13, s20: last entry at y≈950) still clear the panel border, confirmed by zoom. The Chinese ellipsis …… is drawn centred in every occurrence (s6, s11, s19, s20). The English headwords add...to, turn...into and spend...on use Latin baseline dots, consistently.\n\nMinor and not reported: in the panel, some two-character words are broken across lines with a single orphan character ('所/以' s15 screen 16, '存在/于' s18 screen 19, '宝/贵的' screens 6 and 16, '没有什/么' screen 8). Chinese line breaking allows this, and nothing is cut off. The four low findings are all about full-width punctuation not being squeezed together, or wrap placement. They are cosmetic, and the punctuation gaps probably come from the template, so they likely appear in other videos too."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen12. Entry 1 shows 'spend v.' alone on the first line, and the whole gloss '度过；花（时间）' drops to the next line. By pixel measurement 'v.' ends at x=1479, and the gloss, about 275 px wide, would fit before the panel's text edge at about 1790, since 'one more 再一个；又一个' on the same panel reaches that far. '度过；' would fit easily. The wrapped line starts at x=1339, but the headword 'spend' starts at x=1329, a 10 px indent. This matches the CSS rule `.v span{margin-left:10px}`, which takes effect at the start of the span once the span has wrapped. Every other wrapped gloss in this video breaks inside the meaning and lines up under its headword at x≈1328–1333: bank on screens 2, 3 and 5, collection on 4, nothing on 8, give oneself to on 9, mount and above sea level on 10, share on 13, therefore and valuable on 16, be found in on 19, around the world on 20, and respect for and spend…on on 21. Screen 12 is the only exception."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen09 by measuring the Chinese line. '说' ends at x=465, the colon '：' is drawn at 476–481, and the opening quote '“' does not start until x=539, with '选' at 557. That leaves about 58 px of blank space between the colon and the quote, while one character is about 43.5 px wide and normal spacing between glyphs is about 5 px. So the gap is more than one character wide and looks like a stray space in '说：  “选定'. The renderer does squeeze other punctuation pairs: on screen13, '。”' is compressed, with '。' at 514–526 and '”' already at 535. So the gap at '：“' is not applied consistently."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed on screen13. The first mark drawn on the Chinese line is '“' at x=147–161. On other screens the first character starts at about x=122: screen02 at 122, screen09 at 122 and screen03 at 124. The opening quote is full-width with its glyph on the right half and no line-start trimming, so the line looks indented by about half a character next to the pink bar. The second part of the claim is also true: after '希望。”' the '”' ends at x=549 and '一' starts at 579, a gap of about 30 px where normal spacing is about 5 px. That gap is the unsqueezed right half of the full-width closing quote. It is less severe than the indent but it is visible."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Confirmed. On screen02 entry 2, '；' ends at x=1576 and '（' starts at x=1632, a 56 px blank where one character is about 40 px, so the gap is more than one character wide. The unsqueezed opening bracket also makes the gap after the part of speech too wide. On screen04, 'n.' ends at 1455 and '（' starts at 1496, a 41 px gap, while in 'seed n. 种子' on the same screen the gap from 'n.' to '种' is only 16 px. On screen10 (mount), 'n.' ends at 1502 and '（' starts at 1545, a 43 px gap. Screens 3, 5, 12, 19 and 20 all show 'bank n. （储存物品的）库' with the same visibly wider gap before '（'. The cause is full-width punctuation that is not squeezed: the empty half of '；' or the margin after 'n.' is followed by the empty left half of '（'. It is not part of the stated design and reads as an extra space."
+    }
+   ]
+  },
+  {
+   "id": "z08",
+   "findings": [
+    {
+     "screen": 21,
+     "sentence": 20,
+     "kind": "layout",
+     "description": "The Chinese translation begins with a full-width opening quote “. Its glyph sits in the right half of its em box, so the first line's ink starts at x≈147 while lines 2 and 3 start at x≈121. Line 1 therefore looks indented by about 26 px against the pink bar and against the lines below it. Screen 16 (sentence 15, “像阴阳这样的术语…) has the same 26 px offset. A line should start flush at x≈121 like every other screen; this needs opening-punctuation trimming at line start. Cosmetic only.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "description": "In vocabulary entry 5, the headword “have a chance to do” fills line 1, so the whole meaning “有机会做某事” wraps to line 2. It starts at x≈1342, while every other continuation line in the panel starts at x≈1331–1334, so about 9 px of leading space or margin is carried onto the new line. The wrapped meaning should line up with the other continuation lines.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 19,
+     "sentence": 18,
+     "kind": "layout",
+     "description": "Vocabulary continuation lines that begin with a full-width “（” look out of line, because the parenthesis's built-in left space pushes the ink about 20–26 px right of the other continuation lines (x≈1329–1334). Instances: screen 19 entry 1 “（还）；与……一起” at x≈1352; screen 20 entry 4 “（某事）” at x≈1358; screen 21 entry 5 “（it 作形式主语）” at x≈1346. Cosmetic only.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 0,
+     "sentence": 0,
+     "kind": "highlight",
+     "description": "Phrase badges in the VOCABULARY panel are drawn as perfect yellow circles, the same shape as the purple word badges. In the English sentence the same phrases use yellow rounded-rectangle badges, and the cover legend uses a yellow square for 短语. The panel badges therefore match their highlights in colour but not in shape. Zoomed examples: screen 3 entry 7 “leave school”; screen 21 entries 2, 3 and 10. This affects every screen that has a phrase and is probably a style-sheet issue, not specific to this passage.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    21
+   ],
+   "notes": [
+    "I opened all 21 screens in order, read the reference, and zoomed into the vocabulary panels (s03, s12, s18, s21), the Chinese quote lines (s16, s17, s21) and the badge shapes. Python with PIL is /opt/ttsenv/bin/python; the system python3 has no PIL.\n\nStructure: 21 screens = cover + 20 sentences, as the reference expects. No sentence is split, and no PART label appears anywhere, which is correct.\n\nCover: title “新疆女孩阿依的中医梦” on one line; “中考英语 2026年 浙江 ·” with the 阅读C pill; tag “中考英语 · 阅读理解”; genre “记叙文 · 人物与经历”; “全文 291 词 · 逐句精读”. I recomputed 291 from the reference EN with the Chinese note (术语) excluded, and it matches. The header on every sentence screen reads “2026年 浙江 · 阅读C  新疆女孩阿依的中医梦”.\n\nNumbering, as screen: English circles left to right / panel top to bottom / footer:\n- s02: 1 / 1 / 1/20\n- s03: 1–7 / 1–7 / 2/20\n- s04: 1–4 / 1–4 / 3/20\n- s05: 1–4 / 1–4 / 4/20\n- s06: 1–7 / 1–7 / 5/20\n- s07: 1,2 / 1,2 / 6/20 (“was … from”: badge only on “from”)\n- s08: 1–7 / 1–7 / 7/20 (old=6 before town=7, by order of appearance)\n- s09: 1–8 / 1–8 / 8/20\n- s10: 1–5 / 1–5 / 9/20\n- s11: 1–5 / 1–5 / 10/20\n- s12: 1–7 / 1–7 / 11/20\n- s13: 1–4 / 1–4 / 12/20\n- s14: 1–4 / 1–4 / 13/20\n- s15: 1,3,4,2,5,6,7 / 1–7 / 14/20 (“it was … to”: badge 2 on “to”)\n- s16: 1–5 / 1–5 / 15/20\n- s17: 1–5 / 1–5 / 16/20\n- s18: 1–6 / 1–6 / 17/20\n- s19: 1–9 / 1–9 / 18/20 (by=5 by order of appearance)\n- s20: 1,2,3,5,4,6,7 / 1–7 / 19/20 (“use … to”: badge 4 on “to”)\n- s21: 1,2,3,4,6,7,5,8,9,10 / 1–10 / 20/20 (“it’s … to”: badge 5 on “to”)\n\nIn every case the set of English circles equals the set of panel numbers. Every highlight has an entry, highlight colours match each entry's type, and the progress knob sits at k/20 on every screen.\n\nEN, ZH and every gloss match the reference on every screen. Chinese …… is drawn as centred dots everywhere; the English headwords “it is…to do” and “use…to do” use baseline dots, which is consistent. Nothing is cut off, overlapping, garbled or missing a glyph, and the auto-fitted font sizes look normal.\n\nNot filed as a defect: the headword “of one's own” on screen 18 uses a straight apostrophe. It matches the reference exactly, but the sentence text uses curly ones (Ayi’s, don’t, it’s), so the reference headword may be worth normalising."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed by measuring dark-pixel edges. On screen 21, Chinese line 1 (starting with “) has ink from x=147, while lines 2 and 3 start at x=122. Screen 16 (“像阴阳这样的术语…) also starts at x=147. Normal ZH lines elsewhere (screens 3 and 12) start at x=122. So line 1 is indented about 25 px, because the full-width opening quote sits in the right half of its em box. Visible against the pink bar; cosmetic."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen 12. The wrapped meaning “有机会做某事” (entry 5) has ink from x=1342. The other continuation lines in the panel start at x=1331–1334 (“划” 1331, “中学” 1334), and line starts sit at 1330–1333. Likely cause: base CSS `.v span{margin-left:10px}`. When a phrase has no POS and its whole meaning span wraps, that margin is carried onto the new line, giving the ~10 px indent."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed by measurement. Screen 19, entry 1 continuation “（还）；与……一起”: x=1352 vs 1326–1329 for every other line. Screen 20, entry 4 “（某事）”: x=1358 vs 1332–1333. Screen 21, entry 5 “（it 作形式主语）”: x=1346 vs 1323–1325. In all three the meaning span began on line 1, so no margin is involved. The ~22–25 px offset comes from the full-width “（” glyph's built-in left space. Cosmetic misalignment, as described."
+    },
+    {
+     "index": 3,
+     "real": false,
+     "why": "This is the intended, user-approved design. 样式.css gives every panel badge `.v em` the same circle and changes only the colour for phrases (`.v.ph em{background:var(--sun)}`). In the sentence, `sup` is a pill (border-radius:1em) for both words and phrases. Measured: sentence word badge 30×41 and phrase badge 30×39, the same pill shape; panel word and phrase badges are both 52×52 circles. So shape does not separate words from phrases anywhere; colour does. The pill-vs-circle difference applies to word badges too, and the user-approved sample (样式设计/样本/对比_右栏放大_s1.jpg, 样本5 v2) shows the same yellow circles for phrases in the panel."
+    }
+   ]
+  },
+  {
+   "id": "z09",
+   "findings": [
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "layout",
+     "description": "In the vocabulary panel, entry 5 'make a telephone call' fills the whole first line, so its meaning '打电话' wraps onto its own line. That line starts at x≈1339, about 10 px to the right of every other wrapped line on the same screen ('连接的' and '边……一边' both start at x≈1329). It looks like the leading space or margin before the meaning was carried onto the new line. It should line up flush with the other wrapped lines. Cosmetic only; nothing is cut off.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    24
+   ],
+   "notes": [
+    "I checked all 24 screens (title card plus 23 sentences, none split), which matches the 24 screens and 23 sentences the reference expects. No PART labels appear, which is correct because no sentence is split.\n\nTitle card: the title '摩托车头盔的发展与智能化' fits on one line. It reads '中考英语 2026年 浙江 ·' with the purple pill '阅读D', the tag '中考英语 · 阅读理解', the genre '说明文 · 科技与安全' and '全文 289 词 · 逐句精读'. I recounted the words from the reference EN with the Chinese note (碳纤维) left out and got 289, which matches.\n\nNumbering, for each screen as (circles in the English left to right) / (panel numbers) / footer:\n- S2 1,2,3 / 1-3 / 1/23\n- S3 2,1,3 / 1-3 / 2/23 (split phrase protect…from: number only on 'from')\n- S4 1-6 / 1-6 / 3\n- S5 1-5 / 1-5 / 4\n- S6 1,3,4,5,2,6 / 1-6 / 5 (keep…off: number on 'off')\n- S7 1-7 / 1-7 / 6\n- S8 1-6 / 1-6 / 7 (carbon fibre wraps across lines, number on 'fibre')\n- S9 1,2 / 1,2 / 8\n- S10 1-5 / 1-5 / 9\n- S11 1-8 / 1-8 / 10\n- S12 1,2,3,4 / 1-4 / 11 (are … found in: number on 'found in')\n- S13 1-8 / 1-8 / 12\n- S14 1,2,3,4,5 / 1-5 / 13 (are able to wraps across lines)\n- S15 1-9 / 1-9 / 14\n- S16 1-5 / 1-5 / 15\n- S17 1-4 / 1-4 / 16\n- S18 1-9 / 1-9 / 17\n- S19 1-4 / 1-4 / 18\n- S20 1-5 / 1-5 / 19\n- S21 1-7 / 1-7 / 20 (turn their heads, get a … sense of: numbers on the last pieces)\n- S22 1-8 / 1-8 / 21\n- S23 1-9 / 1-9 / 22\n- S24 1-7 / 1-7 / 23 (when necessary, gets … close to: numbers on the last pieces)\n\nOn every screen the panel runs 1..n with no gaps, the circle set equals the panel set, and the numbers follow first appearance. Every highlight's colour and badge shape matches its type (words purple with round badges, phrases magenta on yellow with rounded-square badges). Every panel entry has a highlight on the same screen.\n\nProgress bar: I measured the knob position by pixel. It moves about 60 px per sentence, from x≈376 at 1/23 to x≈1703 at 23/23, so it matches k/N everywhere.\n\nRendering: no tofu, replacement characters or garbled glyphs. Nothing is cut off or overlapping. The Chinese ellipsis …… is drawn centred on every panel entry (S3, S5, S7, S8, S10, S11, S13, S18, S20, S21, S23), and both headwords protect…from and keep…off use the same baseline ellipsis, so the style is consistent. Font sizes are consistent across screens.\n\nNot counted as defects:\n- Full-width brackets in the meanings (e.g. 'n. （头盔的）面罩', 'adj. （程度）高的', 'adv. （修饰比较级）') leave a wide gap after the part of speech. That is normal spacing for full-width Chinese brackets and is the same on every screen.\n- The panel lists entries by first appearance, so 'become' (S15) and 'need to' (S21) come before entries that the reference lists earlier. This is correct by design."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen11 (sentence 10/23). I measured the first dark pixel column of each wrapped line in the vocabulary panel. '连接的' (entry 2) and '边……一边' (entry 6) both start at x=1329, but '打电话' under 'make a telephone call' (entry 5) starts at x=1339. That is 10 px further right, and an enlarged crop shows it plainly: the wrapped meaning sits indented relative to the headword's highlight band and the other wrapped lines. This looks like the space or margin before the meaning carried onto the new line. It is cosmetic only and nothing is cut off, as the reviewer described."
+    }
+   ]
+  },
+  {
+   "id": "z10",
+   "findings": [
+    {
+     "screen": 6,
+     "sentence": 5,
+     "kind": "layout",
+     "description": "Vocabulary entry 2 'intergenerational adj.': the wrapped meaning line '跨代的；几代人之间的' starts at x≈1342, about 10 px to the right of the hanging-indent margin (x≈1332) that every other wrapped line uses (e.g. '前班' just below). The space between the POS and the meaning seems to have been carried onto the start of the new line. Nothing is cut off, but the line is misaligned.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "layout",
+     "description": "Vocabulary entry 6 'spend v.': the whole meaning '度过；花（时间）' drops to the next line, which starts at x≈1340 instead of the x≈1331 margin used by the other wrapped lines (a leading space carried over). 'spend v.' is left alone on its line with empty space after it, so the entry looks misaligned.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 16,
+     "sentence": 15,
+     "kind": "layout",
+     "description": "Vocabulary entry 4 'spend time with': the wrapped meaning line '和……一起度过时光' starts at x≈1341 instead of the x≈1332 margin of the other entries (leading space at the line start). It is misaligned by about 10 px.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 17,
+     "sentence": 16,
+     "kind": "layout",
+     "description": "Vocabulary entry 3 'the same age as': the wrapped meaning line '与……同龄' starts at x≈1342 instead of the x≈1332 margin (leading space at the line start). It is misaligned by about 10 px compared with the wrapped line of entry 2 '在……中间；只能和……' directly above.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 3,
+     "sentence": 2,
+     "kind": "glyph",
+     "description": "The vocabulary headword is drawn as \"it doesn't matter\" with a straight ASCII apostrophe, while the English sentence on the same screen shows the curly \"doesn’t\". The reference headword also uses the straight form, so the screen matches the reference. The two apostrophe styles on one screen are still inconsistent, and the project rule says in-word apostrophes should be curly.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 14,
+     "sentence": 13,
+     "kind": "layout",
+     "description": "Chinese translation: '项目，  “母亲养育”只' has an unusually wide blank gap of about 1 em between the full-width comma and the opening quote. The comma keeps its right-side blank and the quote keeps its left-side blank, so there is no punctuation compression. Elsewhere (e.g. '，”' on screens 8, 17 and 18) adjacent punctuation is compressed, so this gap looks like a missing character.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 8,
+     "sentence": 7,
+     "kind": "layout",
+     "description": "Chinese translation line 1: '‘母亲养育’ ，孩子们' has a visible blank gap between the closing single quote ’ and the comma ，, because adjacent punctuation is not compressed. This is inconsistent with the tight '们，”园长' later on the same screen.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 6,
+     "sentence": 5,
+     "kind": "layout",
+     "description": "Chinese translation ends '名叫“母亲养育” 。' with a visible blank gap between the closing quote ” and the full stop 。, because adjacent punctuation is not compressed. Elsewhere (e.g. '。”' on screens 9 and 19 and '，”' on screens 8, 17 and 18) such pairs are tight.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 9,
+     "sentence": 8,
+     "kind": "layout",
+     "description": "The vocabulary panel is completely full with 9 entries. Entry 1 sits right under the VOCABULARY tag, and the yellow band of entry 9 'stage of life' ends at y≈976, only about 7–8 px above the panel's bottom border (y≈984). Nothing overlaps or is cut off, but there is almost no bottom padding. Screen 11, which also has 9 entries, keeps about 20 px.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    19
+   ],
+   "notes": [
+    "I opened all 19 screens plus the reference. The structure matches: screen 1 is the title card and screens 2–19 are sentences 1–18, one screen each, with no splits and no PART labels, as the reference expects (19 screens).\n\nTitle card: the title '跨代幼儿园让老人和孩子都受益' is on one line; '中考英语 2026年 山东 ·' is followed by the purple pill '阅读C'; the tag reads '中考英语 · 阅读理解'; genre '说明文 · 社会与生活'; '全文 303 词 · 逐句精读'. Recounting the reference English with the project rule (Chinese notes excluded) gives 303, which matches. The legend pill is present.\n\nPer-screen record — (a) English badge numbers left to right / (b) panel numbers / (c) footer:\n- s2: 1,2 / 1-2 / 1/18\n- s3: 1 / 1 / 2/18\n- s4: 1,3,2,4,5,6 / 1-6 / 3/18 ('have … in common' split; badge only on 'in common')\n- s5: 1,2,3,4 / 1-4 / 4/18\n- s6: 1,2,3,4 / 1-4 / 5/18\n- s7: 2,3,1,4 / 1-4 / 6/18 ('brings' piece has no badge)\n- s8: 1-7 / 1-7 / 7/18\n- s9: 1-9 / 1-9 / 8/18\n- s10: 1,2,3 / 1-3 / 9/18\n- s11: 2,3,4,1,5,6,7,8,9 / 1-9 / 10/18 ('bring' piece has no badge)\n- s12: 1-4 / 1-4 / 11/18\n- s13: 1-7 / 1-7 / 12/18\n- s14: 1-6 / 1-6 / 13/18\n- s15: 1-6 / 1-6 / 14/18\n- s16: 1-7 / 1-7 / 15/18\n- s17: 1-4 / 1-4 / 16/18\n- s18: 1-5 / 1-5 / 17/18\n- s19: 1-4 / 1-4 / 18/18\n\nEvery panel is consecutive with no gap, repeat or swap, and the badge set equals the panel set on every screen. Badge shape and colour match the entry type everywhere (word = round purple badge, phrase = yellow rounded square on a yellow band). Phrases that run across a line break (s8 'make it possible for them to', s18 'the rest of', 'one day') have one badge at the end.\n\nThe progress knob matches k/18 on every screen (measured within about 3 px). EN, ZH, headwords, POS and meanings match the reference on every screen. Chinese ellipses '……' are drawn centred everywhere. No tofu, replacement characters, cut-off text or overlaps.\n\nAll findings are low severity:\n- Wrapped vocabulary meanings start with a stray leading space on 4 screens.\n- One headword has a straight apostrophe.\n- Three places have uncompressed adjacent CJK punctuation gaps.\n- The 9-entry panel on screen 9 has almost no bottom padding.\n\nNot reported, as standard CJK font behaviour: a Chinese line that begins with an opening quote “ looks indented by about 25 px (screens 8, 9, 17, 18, 19). In screen 8 the name '彭妮·利文斯顿' breaks across lines after the middle dot, which is acceptable.\n\nHelper scripts and crops were written only under scratchpad/zk/tools10 and frames10/*.png; no project files were modified."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed by pixel measurement on screen06: the wrapped meaning line '跨代的；几代人之间的' (y524-562) starts at x=1342. The other panel lines, including '前班' (y652-688), start at x=1332-1333. Cause: CSS '.v span{margin-left:10px}'. When the whole meaning span wraps to a new line, its left margin moves with it, giving a visible 10 px misalignment."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen11: 'spend v.' stands alone on its line, and '度过；花（时间）' (y713-751) starts at x=1341. The other wrapped lines start at x=1331-1332 (e.g. '动' at y389, 'kid', 'improve'). Same cause: the 10 px span margin is carried onto the new line."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Confirmed on screen16: '和……一起度过时光' (y588-623) starts at x=1342. Every other line in the panel starts at x=1332-1333. This is the same 10 px offset from the span margin."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Confirmed on screen17: '与……同龄' (y653-688) starts at x=1343. The wrapped lines of entry 2 directly above ('在……中间；只能和……' at y471 and '在一起' at y524) and '护理员' below all start at x=1332. The 10 px misalignment is real."
+    },
+    {
+     "index": 4,
+     "real": false,
+     "why": "Zooming in confirms the headword is drawn 'it doesn't matter' with a straight apostrophe, while the sentence shows a curly 'doesn’t'. But the reference headword is also spelled with the straight apostrophe, so the screen matches the approved reference exactly. Under the verification rules this is not a screen defect; if anything it belongs in the vocabulary data."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Confirmed on screen14, zoomed: '项目，' is followed by a blank gap about one character wide before '“母亲养育”只'. The comma's right blank and the opening quote's left blank are both kept. Elsewhere adjacent pairs are compressed: '们,”' on screen08 and '间,”' on screen17 have half-width commas. The gap looks like a missing character."
+    },
+    {
+     "index": 6,
+     "real": true,
+     "why": "Confirmed on screen08 line 1, zoomed: '‘母亲养育’' is followed by a clear blank before '，孩子们'. Pairs on the same screen are compressed, e.g. '他们,”园长' on line 2, which uses a half-width comma. The spacing is inconsistent, as described."
+    },
+    {
+     "index": 7,
+     "real": true,
+     "why": "Confirmed on screen06, zoomed: '名叫“母亲养育”' then a wide blank before the final '。'. By contrast, '去。”' on screen19 and '，”' on screens 08 and 17 are tight. The uncompressed gap is visible."
+    },
+    {
+     "index": 8,
+     "real": true,
+     "why": "Measured on screen09: the yellow band of 'stage of life' ends at y=976 and the panel edge or outline begins at y=983. That leaves about 7 px, against a designed 30 px panel padding, and the content starts 26 px below the top border, so the layout is bottom-heavy. Nothing is cut off. Screen11, which also has 9 entries, keeps about 15 px (content ends at y=968), slightly less than the reported 20 px, but screen09 is clearly tighter. The cramped bottom is real as described."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

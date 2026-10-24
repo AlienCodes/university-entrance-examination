@@ -1,0 +1,21 @@
+/* ===== 专八版调整（专八/tools/make_video.py --style 2；追加在共用基础样式 tools/video/themes/css/2_手账笔记本.css 之后）===== */
+/* 封面：右上角圆形贴纸由中考的「逐句 / 背单词」改为专八的「专八 / 精读」（与书卷水墨封面的「专八精读」印章同义） */
+.ttl::after{content:'专八\A精读'}
+/* 中文统一用粗体黑体（用户 2026-10-16：“中文字体统一使用微软雅黑，加粗一下”；微软雅黑不能下载打包，用外形几乎一样的思源黑体 Bold 代替，
+   字体定义见 专八/tools/fonts/zh-bold.css）：基础样式里凡是用霞鹜文楷的地方都换成 'ZH Bold'，英文字体和英文粗细不变 */
+html,body{font-family:'Nunito','ZH Bold',sans-serif}
+.top span,.ttl .tag,.ttl .sub,.ttl .meta{font-family:'Nunito','ZH Bold'}
+.en{font-family:'Nunito','ZH Bold',sans-serif}
+.zh,.v span,.bot span:last-child,.ttl::after,.ttl h1,.legend{font-family:'ZH Bold'}
+/* 中文破折号“——”画成全角居中粗横（原因和数值见 3_教室黑板.css 的 x-dash） */
+x-dash{position:relative;letter-spacing:.092em;-webkit-text-fill-color:transparent}
+x-dash::after{content:'';position:absolute;left:.05em;right:.05em;top:.715em;height:.11em;background:currentColor;border-radius:.02em}
+/* 大写 W 后紧跟 h：Nunito 的 W+h 字距偏大（像“W hen”），收紧 0.07 字（make_video.wh） */
+x-w{letter-spacing:-.07em}
+
+/* 两位数编号（⑩ 以上，引擎在画面 2 给 sup / .v em 加 class d2）：考研作文 w02 审阅——原来的圆圈 SVG 横向拉伸成扁椭圆，线条变粗、数字挤在一起，
+   和 ①—⑨ 不像一套。句中编号换成按 58:40 比例画的手绘椭圆（同一笔画，横坐标 × 1.45），数字略收紧；词汇栏的圆圈大小不变，两位数字缩小一点、不碰圈 */
+:root{--ring-b2:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 40' preserveAspectRatio='none'><path d='M42.0 7.5C31.9 3.2 13.8 5.0 8.1 15.5 3.5 25.0 13.0 35.2 29.7 35.4 44.9 35.6 53.9 27.4 51.9 18.2 50.5 11.4 42.0 6.4 31.2 6.0' fill='%23ffffff' stroke='%232456a6' stroke-width='3.2' stroke-linecap='round'/></svg>");--ring-r2:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 40' preserveAspectRatio='none'><path d='M42.0 7.5C31.9 3.2 13.8 5.0 8.1 15.5 3.5 25.0 13.0 35.2 29.7 35.4 44.9 35.6 53.9 27.4 51.9 18.2 50.5 11.4 42.0 6.4 31.2 6.0' fill='%23ffffff' stroke='%23c0185a' stroke-width='3.2' stroke-linecap='round'/></svg>")}
+sup.d2{background-image:var(--ring-b2);padding:0 .28em;letter-spacing:-.03em}
+.ph sup.d2{background-image:var(--ring-r2)}
+.v em.d2{font-size:calc(var(--vs)*.6);letter-spacing:-.05em}

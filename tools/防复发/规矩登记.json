@@ -1,0 +1,278 @@
+{
+ "_说明": "规矩登记（铁律 16、18：已立的所有规矩都要有程序保证真的执行）。CLAUDE.md「# 项目铁律」每一条 → 由哪段程序保证、双向验证命令、状态、缺口。防复发自检核对一一对应：CLAUDE.md 多一条没登记的铁律就拦下；没有双向验证的铁律数量只许减少（_没有测试的铁律基线）。needs：none = 只要 python3 + PyYAML；pip = 再加 numpy scipy pyloudnorm soundfile jieba（GitHub 推送时都跑）；tts / browser / heavy 只在本机。",
+ "rows": [
+  {
+   "id": "1",
+   "title": "每一句至少标出一个单词",
+   "guards": [
+    "tools/build.py、各项目 make_video.py：空句直接报错",
+    "tools/video/verify_videos.py：每句生词非空"
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/test_check_pitfalls.py",
+     "needs": "tts",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "2",
+   "title": "音频响度从头到尾一致（−16 LUFS、句间 ≤ 2 LU、短时 ≤ 1 LU、峰值 ≤ −1 dBFS）",
+   "guards": [
+    "tools/tts/gaokao_tts.py verify_loudness：生成音频时不通过不写 MP3",
+    "tools/video/verify_videos.py：视频音轨再测"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/响度.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "3",
+   "title": "视频开头静音 1.5 秒、片头信息，读完后静音 2 秒",
+   "guards": [
+    "各引擎 make_video.py：第一句开口 ≠ lead 报错",
+    "tools/video/verify_videos.py：开头静音按 lead、结尾 ≥ 2.0 秒"
+   ],
+   "test": [],
+   "status": "自动拦截（无双向验证）",
+   "gap": "需要真视频才能埋雷（踩坑 8、10 同一缺口）；结尾静音按画面量放宽到 1.95 秒。"
+  },
+  {
+   "id": "4",
+   "title": "逗号等处停顿；句间固定 0.8 秒（停留 0.5 + 0.3）",
+   "guards": [
+    "各项目 make_audio.py synth_sentence：clause_pause 0.28、fixed_sentence_gap",
+    "make_video.py：逐句核对停顿时长"
+   ],
+   "test": [],
+   "status": "自动拦截（无双向验证）",
+   "gap": "停顿核对没有埋雷测试。"
+  },
+  {
+   "id": "5",
+   "title": "16:9、不低于 2K（默认 3840×2160）、字号大",
+   "guards": [
+    "tools/video/verify_videos.py：分辨率、帧率"
+   ],
+   "test": [],
+   "status": "自动拦截（无双向验证）",
+   "gap": "需要真视频才能埋雷。"
+  },
+  {
+   "id": "6",
+   "title": "成品文件名 年份 试卷 阅读C/D 题目.mp4，两次考试写明场次",
+   "guards": [
+    "tools/video/verify_videos.py：文件名不得重复"
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/文件名不重复.py",
+     "needs": "tts",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "7",
+   "title": "文章顺序按年份排，每年全国卷在前",
+   "guards": [
+    "各项目抽取脚本的排序（写在数据生成里）"
+   ],
+   "test": [],
+   "status": "只靠流程或记性",
+   "gap": "没有程序核对发布清单顺序。"
+  },
+  {
+   "id": "8",
+   "title": "配音默认四六级男声 cet4_male（fenrir 0.6 + onyx 0.4，语速 0.95）",
+   "guards": [
+    "tools/tts/voices.json cet4_male",
+    "各项目 make_audio.py VOICE 默认值"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/默认男声.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "9",
+   "title": "每完成一步都提交并推送",
+   "guards": [
+    "六级/tools/批量生成_黑板.sh 等批量脚本逐篇提交推送（踩坑 49）",
+    "GitHub Actions 每篇一个 artifact"
+   ],
+   "test": [],
+   "status": "只靠流程或记性",
+   "gap": "模型手动做的步骤没有程序核对是否推送。"
+  },
+  {
+   "id": "10",
+   "title": "坚决不能有电磁音（9 个固定频点陷波，任何频点 > +3 dB 报错）",
+   "guards": [
+    "四级/tools/debuzz.py check：make_audio 成品、make_video 音轨、verify_all"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/电磁音.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "11",
+   "title": "标点朗读规则（引号不停顿、括号按逗号停顿、词内撇号保留）",
+   "guards": [
+    "6 个 make_audio.py strip_quotes + 合成段残留引号检查",
+    "Pronouncer.read_text：残留括号报错"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/引号.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "残留检查认不出直单引号（原文已统一成弯引号，上游 fix_typography 保证）。"
+  },
+  {
+   "id": "12",
+   "title": "工作流永远不许因为等用户回答而停下",
+   "guards": [
+    "tools/防复发/钩子/钩子.py pretool：AskUserQuestion 一律拦下"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "长任务 send_later 自查仍靠模型记得设。"
+  },
+  {
+   "id": "13",
+   "title": "虹吸效应：杜绝 token 浪费",
+   "guards": [
+    "钩子.py：Agent / Workflow 必须写 token 预算、超 30 万拦下；看图上限",
+    "长机器活放 GitHub Actions（render-*.yml）"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "14",
+   "title": "每一步都先设计最好的方法（先样片、放对地方、规模按收益定）",
+   "guards": [
+    "钩子.py session：开工清单；pretool：预算",
+    "分屏定稿.py、大字版.py --preflight：先最难的一篇走完全程才放开"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/分屏定稿.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "“先样片再批量”没有程序核对（批量清单不知道样片是否跑过）。"
+  },
+  {
+   "id": "15",
+   "title": "及时做、及时查：几秒的预检在前，逐篇查、遇错即停",
+   "guards": [
+    "pron_check.py + pron_lint.py（配音前）",
+    "分屏定稿.py（一次列全）",
+    "大字版.py --preflight（截图前）"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/分屏定稿.py",
+     "needs": "none",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/词形歧义.py",
+     "needs": "tts",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "16",
+   "title": "防复发机制：踩坑登记、新坑必带双向验证、复盘关卡",
+   "guards": [
+    "tools/防复发/防复发自检.py（.githooks/pre-commit 每次提交、GitHub 推送时）"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/防复发自检.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "17",
+   "title": "淘汰巨量消耗 token 的做法（整屏盲审禁用、截图盲审 ≤ 40 屏）",
+   "guards": [
+    "钩子.py：整屏盲审的 Agent / Workflow 拦下、同会话看图 > 30 张拦下",
+    "专八/tools/截图盲审准备.py 上限 40 屏",
+    "新情况检测.py"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "18",
+   "title": "所有新任务都开新对话",
+   "guards": [
+    "钩子.py prompt：对话记录超过 4 MB 每次提醒写交接、开新会话"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/钩子.py",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只提醒、不拦（拦了会让当前这一步做不完）。"
+  }
+ ],
+ "_没有测试的铁律基线": 5
+}

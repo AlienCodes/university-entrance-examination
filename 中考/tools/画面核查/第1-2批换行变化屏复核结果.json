@@ -1,0 +1,194 @@
+{
+ "results": [
+  {
+   "id": "y4",
+   "findings": [
+    {
+     "screen": 1,
+     "sentence": 0,
+     "kind": "title",
+     "severity": "high",
+     "description": "The cover title 海洋变暖与南极海冰骤减 is far too large for the card. It runs past the card's right edge and yellow shadow onto the purple background, the big yellow Aa circle covers part of it, and the right screen edge cuts off the rest. Only 海洋变暖与 is fully readable: 南 is half covered, 极 is hidden behind the circle, 海 is cut at x≈1920, and 冰骤减 is completely off screen. The title should fit on one line inside the white card. The other cover text matches the reference: 中考英语 · 阅读理解, 中考英语 2026年 北京 · 阅读C, 说明文 · 自然与环境, and 全文 348 词 (348 words, verified).",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The vocabulary panel font is abnormally large, roughly twice the size used on other screens, and the 11 entries overflow the panel at both ends. Entries 1 (researcher) and 2 (input…into) are pushed above the screen and not visible at all. Entry 3 (recorded adj. 记录下来的) sits on top of the purple header band and the VOCABULARY tag: its badge '3' and 'adj.' are drawn inside the header, and the purple headword covers the header text '2026年 北京 · 阅读C 海洋变暖与南极海冰骤减', which now looks broken. Entry 8 (sea ice 海冰) crosses the panel's bottom border and the footer progress bar. Entry 9 (grow 增长) is cut off at the bottom of the screen, and entries 10 (as) and 11 (real world) are off screen. The English shows circles 1–11, but the panel shows only 4–8 cleanly (3 and 9 partly), so the two sets do not match. The footer SENTENCE 14 / 17 and the progress bar are correct.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The English sentence 'Some research has suggested that higher air temperatures may be the cause.' is set in an abnormally large font, about 1.6× the size on the other screens, and it starts too high. The first line 'Some research¹ has' runs into the purple header band and over the thin yellow rule under it (tops of the letters at y≈90, the rule at y≈108). The text should stay inside the content area below the header and use a normal size.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The Chinese translation is also oversized. Its second line 升高。 runs into the footer and is printed right over the label 'SENTENCE 3 / 17', so the sentence counter can't be read. The pink bar also reaches down into the footer. The progress bar position is correct (3/17).",
+     "lens": "visual"
+    },
+    {
+     "screen": 8,
+     "sentence": 7,
+     "kind": "glyph",
+     "severity": "high",
+     "description": "In the Chinese translation the character 洲 is missing and a replacement-character box (a black box with a '?') appears in its place. The screen reads '南极�四周环绕着一条由强风和风暴构成的地带。' but the reference has '南极洲四周环绕着一条由强风和风暴构成的地带。'. The panel entry 'Antarctica n. 南极洲' on the same screen renders 洲 correctly.",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "severity": "medium",
+     "description": "The first English line 'These winds blow¹' does not start at the left margin. It begins at x≈610 instead of x≈90, leaving a blank gap of about 520 px at the start of the line. The second line 'surface water² and ice forward³.' starts at the normal left margin, so the paragraph looks right-aligned on line 1 only. Both lines should start flush left like every other screen.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    18
+   ],
+   "notes": [
+    "I opened all 18 screens (1 cover + 17 sentences) and the reference y4.txt. The structure matches the reference: 18 screens, 17 sentences, no split sentences, and no PART label on any screen. On every sentence screen the footer number is right (1/17 to 17/17), and the progress knob position matches k/N within about 0.3%.\n\nNumbering, as circles in the English / entries in the panel:\n- Sentences 1, 5, 6, 9 and 17: 1–12 / 1–12.\n- Sentence 2: 1–10 / 1–10.\n- Sentence 3: 1–4 / 1–4.\n- Sentence 4: 1–7 / 1–7. 'played a … role in' carries its number only on the last piece.\n- Sentence 7: 1–4 / 1–4.\n- Sentence 8: 1–11 / 1–11.\n- Sentence 9: 'protects … from' is numbered 5, on 'from' only.\n- Sentence 10: 1–5 / 1–5.\n- Sentence 11: 1–3 / 1–3.\n- Sentence 12: 1–8 / 1–8.\n- Sentence 13: 1–11 / 1–11. 'Between … and' and 'melt away' are numbered only on their last piece.\n- Sentence 14: the English has 1–11, but the panel is broken (see the screen 15 finding).\n- Sentence 15: 1–8 / 1–8.\n- Sentence 16: 1–10 / 1–10.\n\nEvery highlight colour matches its entry type (purple for single words, magenta on yellow for phrases).\n\nI zoomed in to check the Chinese punctuation pairs （多少）；, 表面；（海）面, （个）；, the …… marks and the wrapped meanings in the panel; all are correct. I put the Chinese translations of all screens side by side and compared them with the reference. They match, apart from the replacement character on screen 8.\n\nScreens that need attention:\n- 1 (cover): the title overflows the card and is cut off.\n- 4: the font is oversized; the English runs into the header and the Chinese covers the footer label.\n- 8: a replacement-character box in place of 洲.\n- 12: the first English line starts about 520 px to the right of the margin.\n- 15: the vocabulary panel overflows into the header and off the bottom of the screen; entries 1, 2, 10 and 11 can't be seen.\n\nRead-only check; no files were changed. I wrote zoomed crops to /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/y4crops/."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 1: the title 海洋变暖与南极海冰骤减 is far too large. Only 海洋变暖与 is fully readable. 南 runs past the card edge and is partly hidden by the yellow Aa circle. A fragment of the next character shows at x≈1830–1920 and is cut off by the screen edge, and the rest of the title is off screen. The other cover text matches the reference."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 15 (sentence 14): the vocabulary panel font is roughly double the normal size. Entries 1–2 are not visible. Entry 3's badge '3' and 'adj.' sit inside the purple header, the header text '2026年 北京 · 阅读C 海洋变暖…' is partly wiped out, and 记录下来的 overlaps the VOCABULARY tag. Entry 8 (sea ice 海冰) crosses the panel border and the progress bar. Entry 9 is cut off at the bottom of the screen, and entries 10–11 are missing, while the English shows badges 1–11."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Screen 4: the English sentence is set much larger than on the other screens. The first line 'Some research¹ has' starts at y≈90, overlapping the header band and the yellow rule at y≈108."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Screen 4: the Chinese translation is oversized. Its second line 升高。 is printed over 'SENTENCE 3 / 17' in the footer, which makes the counter unreadable, and the pink bar runs down into the footer. The progress knob (x≈560) is in the correct position for 3/17."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Zooming in on screen 8 confirms a dark replacement box with a '?' between 南极 and 四周 where 洲 should be. The reference has 南极洲四周环绕着…. On the same screen, 洲 renders correctly in the panel entry 'Antarctica n. 南极洲'."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Screen 12: the first line 'These winds blow¹' starts at x≈610, while the second line 'surface water² and ice forward³.' and the English on every other screen start at x≈90. This leaves a large blank gap at the start of line 1."
+    }
+   ]
+  },
+  {
+   "id": "z01",
+   "findings": [],
+   "opened": [
+    3
+   ],
+   "notes": [
+    "I checked screen07 (sentence 6) in full, using zoomed crops of the English, the vocabulary panel and the Chinese/footer. I also opened screen06 and screen08 to compare font size and progress-bar steps. Screen07 has no defects.\n(a) Circle numbers in the English, left to right: 1 temperature, 2 saltiness, 3 records, 4 past, 5 suggest, 6 deep, 7 saltwater, 8 rising, 9 towards, 10 surface, 11 melt, 12 sea ice. The phrase \"sea ice\" has magenta text on a yellow band with a yellow rounded-square badge; all the others are purple bold words with round purple badges.\n(b) Panel numbers, top to bottom: 1–12, consecutive with no gap or repeat. Headwords, POS and meanings match the reference's 12 entries in order of first appearance (temperature n. 温度 … sea ice 海冰). Entry 12 has a round yellow badge and magenta-on-yellow styling, so its colour matches its type.\n(c) The footer reads \"SENTENCE 6 / 17\" with no PART label, which is correct because sentence 6 is not split. The progress knob is at x≈804, between the knobs on screen06 (≈722) and screen08 (≈886). That is about 82 px per sentence, which matches 1389/17, so the bar matches 6/17.\nThe English matches the reference exactly, including \"melt (融化) sea ice.\" The Chinese wraps after 咸 and matches the reference. Nothing is cut off or overlapping, and there are no tofu boxes, garbled characters or odd gaps. The full-width punctuation in the panel (；（海）) is rendered compactly as designed. The English and Chinese font sizes match screen06.\nOne observation, not reported as a defect: the gloss \"(融化)\" wraps to the start of line 6, apart from \"melt\" at the end of line 5. The gloss itself is not broken, and it would not fit on line 5, so this is a normal wrap at a space. Screens opened: 07, 06 and 08."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z07",
+   "findings": [],
+   "opened": [
+    3
+   ],
+   "notes": [
+    "Scope: only screen07.png had changed. I inspected all of it, including enlarged crops of the 5 English lines, the Chinese translation and both halves of the vocabulary panel. I also opened screen06 and screen08 to compare against the neighbouring screens.\n\nScreen07 shows sentence 6, which is correct: there are 22 screens, the title card plus 21 unsplit sentences, so screen k+1 is sentence k.\n(a) Badge numbers in the English, left to right: 1 scientist, 2 led, 3 more than (phrase, yellow rounded square), 4 trips, 5 mountains, 6 even, 7 age, then \"got\" (first piece of the split phrase get hurt, highlighted but correctly without a badge), 9 badly, 8 hurt (last piece of the phrase, yellow rounded square), 10 falling, 11 back, 12 horse, 13 during.\n(b) Panel numbers, top to bottom: 1–13, consecutive with no gaps, repeats or swaps. Order of first appearance is right, since \"got\" comes before \"badly\", so get hurt is 8 and badly is 9. The set of badge numbers in the English equals the set in the panel.\nEvery panel headword, POS and meaning matches the reference: scientist n. 科学家 / lead v. 带领；率领 / more than 多于；超过 / trip n. 行程；旅行 / mountain n. 山；高山 / even adv. 甚至 / age n. 年龄；年纪 / get hurt 受伤 / badly adv. 严重地；厉害地 / fall v. 摔下；跌落 / back n. 背部 / horse n. 马 / during prep. 在……期间. The …… in 在……期间 is drawn centred.\n(c) The footer reads \"SENTENCE 6 / 21\" with no PART label. The progress knob is at x≈711, which matches 6/21 (expected ≈713) and sits evenly between screen06 (≈645) and screen08 (≈778).\n\nHighlight colours fit the entry types: words are purple with round badges, phrases are magenta on a yellow band.\n\nThe English text matches the reference exactly, including both em dashes. The dash after \"mountains\" ends line 2 and stays inside the text area, about x≈1160.\n\nThe Chinese translation matches the reference and wraps cleanly, with no tofu, missing glyphs or odd gaps. Nothing is cut off or overlapping, and the header and footer are correct (\"2026年 辽宁 · 阅读D 储存生命的种子库\").\n\nFont size is consistent with the neighbouring screens: the English matches, and the panel is only slightly tighter because it holds 13 entries. No defects found."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z10",
+   "findings": [],
+   "opened": [
+    4
+   ],
+   "notes": [
+    "I checked screen06 (sentence 5), the only screen that changed, in full and found no defects. I enlarged crops of the panel, the English and the Chinese to check them. I opened screens 05, 07 and 11 only for comparison.\n\nScreen06:\n(a) Numbers in the English, left to right: attend 1, intergenerational 2, preschool 3, called 4. All four are purple bold single words with round purple badges, matching their entries (all 单词).\n(b) Panel numbers, top to bottom: 1 attend v. 上（学）；参加 / 2 intergenerational adj. 跨代的；几代人之间的 / 3 preschool n. 幼儿园；学前班 / 4 call v. 把……叫作；称为. They are consecutive, the same set as in the English, and the headwords, word types and meanings match the reference.\n(c) The footer reads \"SENTENCE 5 / 18\" with no PART label, which is correct because sentence 5 is not split. The progress knob sits at about 0.276 of the bar, which matches 5/18 = 0.278. The neighbouring screens fit: screen05 is sentence 4 and screen07 is sentence 6.\n\nThe Chinese line 两人上的是一所跨代幼儿园，名叫“母亲养育”。 matches the reference, and ”。 is set tight as intended. Panel meanings wrap only at punctuation (幼儿园；/学前班, and 跨代的；几代人之间的 on its own line after adj.). The …… in 把……叫作 is drawn as centred dots, the same as on screens 07 and 11. The spacing around 上（学） looks the same as 生活（复数 lives） on screen11.\n\nFont sizes for the English, the Chinese and the panel match screens 05 and 07. Nothing is cut off or overlapping, and I saw no tofu, replacement characters or odd gaps. The header (2026年 山东 · 阅读C 跨代幼儿园让老人和孩子都受益) and the footer are correct. The folder has 19 screens (title card plus 18 sentences), which matches the expected 19.\n\nOne housekeeping note: the PIL module is not installed on any Python here, so I cropped with ImageMagick `convert`. My crops went to /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/z10crop/, an existing folder of earlier review crops. I overwrote any earlier p1.png, p2.png, en.png and zh.png there; no project files were changed."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z11",
+   "findings": [],
+   "opened": [
+    3
+   ],
+   "notes": [
+    "Scope was screen04 only, which is sentence 3; I opened screen03 and screen19 just to compare. The folder has 23 screens (screen01–screen23), which matches the 23 expected in the reference.\n\nScreen04 (sentence 3):\n(a) Circle numbers in the English, left to right: Internet 1, has no effect on 2 (phrase across two lines, badge only on \"on\"), physical 3, store 4, information 5, different 6, websites 7, apps 8, social media 9 (phrase across two lines, badge only on \"media\"), computer 10, servers 11.\n(b) Vocabulary panel, top to bottom: 1 Internet n., 2 have no effect on (phrase), 3 physical adj., 4 store v., 5 information n., 6 different adj., 7 website n., 8 app n., 9 social media (phrase), 10 computer n., 11 server n. These run 1–11 with no gap, repeat or swap, and match the circles in the English exactly. The order follows first appearance in the sentence, which is why store and information come before different even though the reference lists them in a different order.\n(c) Footer reads \"SENTENCE 3 / 22\" with no PART label, which is right because sentence 3 is not split. The progress knob sits at about 0.135 of the bar, matching 3/22.\n\nOther checks on screen04:\n- Highlight colours are right: phrases are magenta on yellow with yellow rounded-square badges, single words are purple with round purple badges, and the panel phrase badges are round and yellow.\n- The English and Chinese text match the reference. \"(服务器).\" stays together on its own line.\n- The \"……\" in 对……没有影响 is drawn centred.\n- Meanings in the panel wrap only at \"；\" or between the headword and the meaning.\n- Nothing is cut off, overlapping or garbled (I zoomed in on every region), and there are no tofu boxes or strange gaps.\n- The font size is in line with screen19, a sentence of similar length; the panel text is slightly smaller to fit 11 entries, which is the auto-fit.\n- The header reads \"2026年 山东 · 阅读D 上网也会留下数字碳足迹\".\n\nNo defects found."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z13",
+   "findings": [],
+   "opened": [
+    5
+   ],
+   "notes": [
+    "I found no defects on the three changed screens. I opened them in full (screen07, screen13, screen22), plus screen05 and screen12 to compare the \"……\" style, how a short vocabulary panel is centred, and font size. I enlarged crops of the English sentences and the vocabulary panels.\n\nExpected structure: 23 screens (1 title card plus 22 sentences, no splits), and the folder has screen01 to screen23. Each changed screen shows k = screen number − 1, as expected.\n\nscreen07 (sentence 6):\n- (a) English badges, left to right: 1 Instead of (yellow rounded square), 2 cooling, 3 quickly, 4 sunset, 5 materials, 6 slowly, 7 give out (yellow rounded square), 8 stored, 9 heat.\n- (b) Panel 1–9: instead of, cool v., quickly adv. (wraps after \"；\"), sunset n., material n., slowly adv., give out, stored adj., heat n. The phrase entries have yellow round badges.\n- (c) Footer reads SENTENCE 6 / 22 with no PART label. The knob sits at about 0.27 of the bar, and 6/22 = 0.27.\n- The English and Chinese match the reference, and nothing is cut off or overlapping.\n\nscreen13 (sentence 12):\n- (a) English badges 1–12: understand, effective, trees, really, researchers, studied, then \"air temperature\" (7, split across two lines with the badge only on \"temperature\"), tree cover (8), data, nearly, findings, surprising.\n- (b) The panel runs 1–12 in order of first appearance; \"really\" is 4th even though the reference lists it last, which is correct. The meanings match the reference, including 树木覆盖（率）.\n- (c) Footer reads SENTENCE 12 / 22. The knob is at about 0.54, and 12/22 = 0.545.\n- The note \"(数据)\" stays together on one line. The English font size is in line with screen12, the other 12-entry, five-line screen.\n\nscreen22 (sentence 21):\n- (a) English badges 1–5: cool, improve, then \"air quality\" (3, split across two lines with the badge on \"quality\"), urban, comfortable.\n- (b) Panel 1–5: the cool entry wraps after \"；\" onto \"为……降温\", and the dots are centred, the same as on screen05 and screen12. The urban entry also wraps at \"；\".\n- (c) Footer reads SENTENCE 21 / 22. The knob is at about 0.95, and 21/22 = 0.955.\n- The panel is centred vertically with space above and below, the same as on screen05, so that is the normal layout.\n\nOn all three screens the header reads \"2026年 济南 · 阅读D\" with the correct title. The circle numbers in the English match the panel numbers, and every highlight colour matches its entry type. I saw no tofu boxes, replacement characters, stray gaps or clipping."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z14",
+   "findings": [],
+   "opened": [
+    3
+   ],
+   "notes": [
+    "I checked screen06 (sentence 5) in full against the reference and found no defects. I also opened screen05 and screen07 to compare numbering, progress bar and font size. I enlarged the English, Chinese and vocabulary-panel areas of screen06 to check them closely.\n\n- **Circle numbers in the English, left to right:** 1 more than, 2 volunteers, 3 planted, 4 suosuo trees, 5 most of whom, 6 were aged, 7 on \"and\", 8 called, 9 on \"Zers\". The phrase \"between … and\" is split, and only its last piece \"and\" carries a number. The same holds for \"Gen / Zers\", which wraps across two lines with the number only on \"Zers\".\n- **Panel numbers, top to bottom:** 1 through 9, consecutive with no gap, repeat or swap. Headwords, word types and meanings all match the reference: more than, volunteer n., plant v., suosuo tree, most of whom, be aged, between...and, call v., Gen Zer.\n- **Highlight colours:** they match the entry types. The single words volunteers, planted and called are purple with round purple badges. The phrases are magenta on yellow with yellow badges.\n- **Footer and progress bar:** the footer reads \"SENTENCE 5 / 17\" with no PART label, which is right because sentence 5 is not split. The yellow knob sits at about x=722 on a track running from about 315 to 1705. That is 0.293 of the way along, against 5/17 = 0.294. Its step from screen05 (about 641) and to screen07 (about 804) is about 82 px, which fits 17 sentences.\n- **Text:** the English and Chinese both match the reference exactly. The Chinese ellipses in the panel are drawn as centred dots, the same as on screen05 and screen07.\n- **Layout:** nothing is cut off or overlapping. The \"Gen\" highlight ends at about x=1180, before the panel edge at about 1228. The English font is slightly smaller than on the shorter neighbouring sentences because it is auto-fitted, which is within the normal range. There are no tofu boxes, replacement characters or stray gaps.\n\nOne minor observation, not a defect: the Chinese translation breaks its second line after \"也就是人们所说\", leaving roughly 180 px empty, and puts \"的Z世代。\" on the third line. This is an ordinary ragged-right line break, with nothing cut off or overlapping.\n\nThe header text is identical on all three screens. I did not open the other screens because the pixel comparison shows they did not change."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z19",
+   "findings": [],
+   "opened": [
+    4
+   ],
+   "notes": [
+    "I found no defects on screen15.png (sentence 14), the only screen that changed. I also opened screens 12, 14 and 16 to compare against it.\n\nThe folder has 27 screens, which matches the reference: one title card plus 26 sentences, none split.\n\nScreen15 checks, all passing:\n- (a) Circle numbers in the English, left to right: 2 (clever), 3 (method), 4 (called), 5 (coral), 6 (gardening), 1 (on \"comes in\", the last piece of the split phrase \"That's where … comes in\"), 8 (reefs), 7 (on \"chance\", the last piece of \"giving … a second chance\").\n- (b) Panel numbers, top to bottom: 1–8, consecutive, with no gap, repeat or swap. The set matches the set of circles in the English.\n- Order: the numbering follows first appearance. \"That's where\" comes first, so it is 1. \"giving\" comes before \"reefs\", so the phrase is 7 and reefs is 8.\n- Highlights and badges: the phrase pieces (\"That's where\", \"comes in\", \"giving\", \"a second chance\") are magenta on a yellow band. Their badges (1 and 7) are yellow rounded squares with dark numbers. The single words are purple bold with round purple badges, and the panel colours match each entry's type.\n- (c) Footer reads \"SENTENCE 14 / 26\" with no PART label, which is correct for an unsplit sentence. The progress knob sits at about 0.537 of the bar, against 14/26 = 0.538. On screen14 the knob is at about 0.50, against 13/26.\n- Text: the English, the Chinese translation (it wraps before \"——它给珊瑚礁第二次机会。\") and the panel headwords, POS labels and meanings all match the reference.\n- Rendering (enlarged crops of all text regions): nothing is cut off or overlapping, and there are no empty boxes, replacement characters or odd gaps. The quotes around \"coral gardening\" are correct. The Chinese ellipsis …… is drawn as centred dots, the same as on screen12. \"call v. 把……叫作；/称……为\" wraps after \"；\" exactly as it does on screen12.\n- Font size is in line with the neighbouring screens."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z20",
+   "findings": [],
+   "opened": [
+    2
+   ],
+   "notes": [
+    "The folder has 22 screens, which matches the 22 expected (title card plus 21 sentences, none split). Only screen14 (sentence 13) was in scope. I checked all of it, with zoomed crops of every English line, the Chinese, the footer and each panel entry. I also opened screen13 (sentence 12) to compare font size and the progress bar.\n\nScreen14, sentence 13:\n(a) Numbers in the English circles, left to right: once 1, certain 2, area 3, the number of 4, hunting 5, events 6, dropped 7, a month 9, to 8. \"from\" has no number because it is the first piece of the split phrase \"from … to\", and \"to\" carries 8. Seeing 9 before 8 is expected here: \"a month\" sits between the two pieces, and the panel numbers by first appearance, where \"from\" comes first. This matches the reference order.\n(b) Panel numbers, top to bottom: 1 to 9, consecutive, with no gap, repeat or swap. Headwords and meanings match the reference: once, certain, area, the number of, hunting, event, drop, from…to, a month.\n(c) Footer: \"SENTENCE 13 / 21\", with no PART label (correct, the sentence is not split). The progress knob is at x≈1178. The expected position is 330 + 0.619 × 1375 ≈ 1181, so it matches. Screen13's knob at x≈1113 also matches 12/21.\n\nThe circle numbers in the English are the same set as the panel numbers. All highlight colours are right: single words are purple with round purple badges, and phrases are magenta on a yellow band with yellow rounded-square badges in the English and round yellow badges in the panel.\n\nThe \"……\" in entry 4 (……的数量) and entry 8 (从……到……) are both drawn as centred dots, so the style is consistent. The \"……\" at the start of entry 4's second line is flush with the left edge. \"（a 表示“每”）\" has the tight \"”）\" spacing as designed, and that meaning wraps only after the \"）\". Nothing is cut off, overlapping, garbled or missing. The English font size (cap height about 50 px) is the same as on screen13. The Chinese translation matches the reference."
+   ],
+   "failed": 0,
+   "verdicts": []
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

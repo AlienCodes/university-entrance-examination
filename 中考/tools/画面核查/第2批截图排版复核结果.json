@@ -1,0 +1,471 @@
+{
+ "results": [
+  {
+   "id": "y4",
+   "findings": [
+    {
+     "screen": 1,
+     "sentence": 0,
+     "kind": "title",
+     "severity": "high",
+     "description": "Cover title is drawn far too large: each glyph is about 190px tall, much bigger than the auto-fit size for an 11-character title, so the title overflows the white card. Only '上网也会留' sits inside the card. '下' spills over the card's right border and yellow shadow and is partly hidden behind the big yellow 'Aa' circle. '数字碳足迹' is hidden behind the Aa circle or cut off at the right edge of the screen (fragments show at x≈1830–1920). Expected: the full title '上网也会留下数字碳足迹' on ONE line, entirely inside the card. The other cover items are correct: tag '中考英语 · 阅读理解', '中考英语 2026年 山东 ·' with the '阅读D' pill, genre '说明文 · 科技与环境', and '全文 318 词' (318 matches the reference count).",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "severity": "high",
+     "description": "Sentence 3's English is drawn at an abnormal size, roughly 3x the other screens, and spills off both ends of the text area. The first part of the sentence ('You may think that the Internet has no effect on the physical') is pushed above the screen. Only fragments of 'physical', the tail of badge 3 and 'world, but' remain, drawn inside the purple header band on top of the '中考英语 READING' pill. At the bottom, '(服务器).' runs into the footer and is drawn over 'SENTENCE 3 / 22' and the progress bar. The vocabulary panel on the same screen renders normally.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "chinese",
+     "severity": "high",
+     "description": "No Chinese translation is visible on this screen. '你也许认为互联网对现实世界没有影响，但我们把各种网站、应用程序和社交媒体上的所有信息都存储在计算机服务器上。' is missing, pushed off-screen by the oversized English.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "numbering",
+     "severity": "high",
+     "description": "Badge numbers visible in the English: (3 partly cut off), 4, 5, 6, 7, 8, 9, 10, 11. The panel shows 1–11. Badges 1 (Internet) and 2 (has no effect on) and their highlighted words are off-screen, so panel entries 1 and 2 have no visible highlighted item on this screen.",
+     "lens": "visual"
+    },
+    {
+     "screen": 8,
+     "sentence": 7,
+     "kind": "glyph",
+     "severity": "high",
+     "description": "Missing glyph in the Chinese translation. The first line reads '网上▯有的信息、图片和音乐都以小数据包的形式传输。': a narrow tofu/replacement box with a question mark appears where '所' should be. It should read '网上所有的信息…'.",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The vocabulary panel text is drawn abnormally large (headwords and meanings about 1.6–2x the other screens) and overflows the panel at both ends. At the top, entry 1 'different kinds of' is pushed into the purple header band: 'kinds of' sits on a light rectangle drawn over the header text, hiding '年 山东 · 阅读D 上网' so only '2026' and '也会留下数字碳足迹' are visible. 'Different' and badge 1 are not visible. Its meaning '不同种类的；' overlaps the yellow header rule and the 'VOCABULARY' tag. At the bottom, entry 5's meaning '电；电能' is drawn below the panel, over the progress bar in the footer. Entry 6 'work v. 运行；运转' is completely off-screen: only the top edge of its badge shows at y≈1075. The English and Chinese on this screen are normal.",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "numbering",
+     "severity": "high",
+     "description": "English badges: 1, 2, 3, 4, 5, 6. Panel numbers visible: 2, 3, 4, 5. Badge 1 is cut off or hidden in the header and entry 6 is missing (off-screen), so English items 1 (Different kinds of) and 6 (work) have no readable panel entry on screen.",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "severity": "medium",
+     "description": "Strange blank gap at the start of the English. Line 1 'The faster the' starts at x≈610 instead of the left margin (x≈90), leaving about 520px empty before it. Lines 2 and 3 ('search engine² (引擎) works³, the' and 'greater¹ the use⁴ of electricity⁵.') start correctly at x≈90. Numbering itself is correct: 2, 3, 1, 4, 5 in the English, 1–5 in the panel, and the split phrase 'The faster … the greater' carries badge 1 only on its last piece.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    23
+   ],
+   "notes": [
+    "I opened all 23 screens in order: screen01 is the cover and screen02–23 are sentences 1–22. That matches the expected structure: 23 screens, no split sentences, and no PART label on any footer, which is correct. I also enlarged crops of every Chinese translation line and every vocabulary panel to look for missing glyphs.\n\nWhat I recorded for each screen (English badges / panel numbers / footer):\n- s02: 1-9 / 1-9 / 1/22\n- s03: 1-5 / 1-5 / 2/22\n- s04: 1 and 2 off-screen / 1-11 / 3/22, footer overlapped\n- s05: 1-3 / 1-3 / 4\n- s06: 1-6 / 1-6 / 5\n- s07: 1-7 / 1-7 / 6 (carbon footprint split over a line break, badge on last piece)\n- s08: 1-6 / 1-6 / 7\n- s09: 1-6 / 1-6 / 8\n- s10: 1, sends(no badge), 3, to², 4 / 1-4 / 9\n- s11: 1, 2, 3, 4, 5 / 1-5 / 10\n- s12: 2, 3, 1, 4, 5 / 1-5 / 11\n- s13: 1-4 / 1-4 / 12\n- s14: 1-6 / 1-6 / 13\n- s15: 1-6 / panel broken / 14\n- s16: 1-4 / 1-4 / 15\n- s17: 1-7 / 1-7 / 16\n- s18: 1-4 / 1-4 / 17\n- s19: 1-10 / 1-10 / 18\n- s20: 1, 2, 3, 5, 4, 6, 7, 8, 9 / 1-9 / 19 (between…and and large amounts of: badge on last piece)\n- s21: 2, 3, 1, 4-7 / 1-7 / 20\n- s22: 1, 2, 3, 5, 6, 4, 7 / 1-7 / 21\n- s23: 1-6 / 1-6 / 22\n\nThe progress bar knob moves evenly (about 63px per sentence) and reaches the end at 22/22. Highlight colours match the entry types on every screen. Panel headwords, parts of speech and meanings match the reference.\n\nChecked and found fine:\n- **Word count:** I counted the reference EN with the Chinese notes excluded and got 318 words, which matches the cover.\n- **Question mark on s23:** the '？' after '吗' looks Latin-like. I rendered U+FF1F from the bundled Noto Sans SC subset and it is the same glyph, so it is not a wrong character.\n- **Font for '所' (s08):** it is covered by the existing subset file noto-sans-sc-118-400-normal.woff2. The box on screen is therefore a rendering or font-load failure, not a missing font file.\n\nThe four broken screens (s01 title too large, s04 English too large, s15 panel too large, s08 missing glyph) all look like auto-fit or font-load failures during rendering. A re-render would most likely fix them, but each needs to be checked again afterwards.\n\nBorderline points I did not report, because they fit the allowed wrap rules:\n- s12 panel entry 1 wraps '（“the＋ / 比较级……，' right after the full-width plus sign.\n- s21 panel entry 1 leaves the leading '……' of the meaning at the end of the headword line and starts the next line with '的一个办法是……'.\n\nAll files I wrote went to the scratchpad (y4_* crops and montages). No project files were modified."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen01. The title glyphs are about 190px tall (y≈390–580). Only 上网也会留 fits inside the white card. 下 starts at x≈1270, crosses the card border at x≈1320 and the yellow shadow, and runs under the yellow Aa circle. The rest of the title is hidden behind the circle, with dark stroke fragments sticking out at x≈1830–1920 on the right edge. The other cover items are right, and 318 matches my own count of the reference words with the Chinese notes left out."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Confirmed on screen04. The English is drawn at roughly 3x the normal size. 'ysi' of 'physical', the tail of badge 3 and 'world, but' sit inside the purple header band, on top of the 中考英语 READING pill. The first part of the sentence is off-screen above. '(服务器).' at the bottom is drawn over 'SENTENCE 3 / 22' and the progress bar. The vocabulary panel looks normal."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Screen04 shows no Chinese translation and no pink bar anywhere. The oversized English fills the whole text area down to the footer."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "In screen04's English, only the tail of badge 3 and badges 4–11 are visible. Internet (1) and has no effect on (2) are off-screen above. The panel lists 1–11, so entries 1 and 2 have no visible highlighted word on this screen."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Zooming into screen08's Chinese line shows a narrow replacement box with a question mark between 网上 and 有的信息. The reference reads 网上所有的信息, so 所 is missing."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Confirmed on screen15. The panel text is about twice the normal size. 'kinds of' sits on a light rectangle in the header, hiding 年 山东 · 阅读D 上网, so only 2026 and 也会留下数字碳足迹 remain. 'Different' and badge 1 are not visible. 不同种类的； overlaps the yellow rule and the VOCABULARY tag. 电；电能 is drawn below the panel, over the progress bar. Entry 6 'work' is off-screen; only the top of its badge shows at y≈1075."
+    },
+    {
+     "index": 6,
+     "real": true,
+     "why": "Screen15's English shows badges 1–6. The panel only shows readable numbers 2, 3, 4 and 5. Entry 1 is pushed into the header without its badge, and entry 6 (work) is below the screen edge."
+    },
+    {
+     "index": 7,
+     "real": true,
+     "why": "On screen12, line 1 'The faster the' starts at x≈610, leaving about 520px empty to its left. Lines 2 and 3 start at x≈90. The numbering is correct: 2, 3, 1, 4, 5 in the English, with badge 1 only on 'greater', and 1–5 in the panel."
+    }
+   ]
+  },
+  {
+   "id": "z11",
+   "findings": [],
+   "opened": [
+    23
+   ],
+   "notes": [
+    "I opened all 23 screens in order and found no defects. That matches the reference structure: 1 title card and 22 sentence screens, with no sentence split, so no footer shows a PART label.\n\nTitle card: the title 上网也会留下数字碳足迹 fits on one line. It reads \"中考英语 2026年 山东 ·\" followed by the pill 阅读D, the tag 中考英语 · 阅读理解 and the genre 说明文 · 科技与环境. The word count 全文 318 词 · 逐句精读 is correct: I recounted the 22 English sentences without the Chinese notes and got 318.\n\nFor each sentence screen I wrote down the circle numbers in the English (left to right), the panel numbers (top to bottom) and the footer:\n- S1: EN 1–9, panel 1–9, 1/22.\n- S2: EN 1–5, panel 1–5, 2/22.\n- S3: EN 1–11, panel 1–11, 3/22. \"has no / effect on\" and \"social / media\" each wrap across lines, with the badge on the last piece.\n- S4: EN 1–3, panel 1–3, 4/22.\n- S5: EN 1–6, panel 1–6, 5/22.\n- S6: EN 1–7, panel 1–7, 6/22. \"carbon / footprint\" wraps across lines, badge on the last piece.\n- S7: EN 1–6, panel 1–6, 7/22.\n- S8: EN 1–6, panel 1–6, 8/22.\n- S9: EN 1, 3, 2 (sends…to carries 2 only on \"to\"), panel 1–4 with 4 on \"servers\", 9/22.\n- S10: EN 1, 2 (on \"back to\"), 3, 4, 5, panel 1–5, 10/22.\n- S11: EN 2, 3, 1 (on \"the greater\"), 4, 5, panel 1–5, 11/22.\n- S12: EN 1–4, panel 1–4, 12/22.\n- S13: EN 1–6, panel 1–6, 13/22.\n- S14: EN 1–6, panel 1–6, 14/22.\n- S15: EN 1–4, panel 1–4, 15/22.\n- S16: EN 1–7, panel 1–7, 16/22. \"bad / weather\" wraps across lines, badge on the last piece.\n- S17: EN 1–4, panel 1–4, 17/22.\n- S18: EN 1–10, panel 1–10, 18/22.\n- S19: EN 1, 2, 3, 5, 4 (between…and), 6, 7, 8 (large amounts / of), 9, panel 1–9, 19/22.\n- S20: EN 2, 3, 1 (One way to … is to), 4–7, panel 1–7, 20/22.\n- S21: EN 1, 2, 3, 5, 6, 4 (four times / more … than), 7, panel 1–7, 21/22.\n- S22: EN 1–6, panel 1–6, 22/22.\n\nOn every screen the panel numbers run in order with no gaps or repeats, and the numbers in the English match the panel exactly. The badge numbers seem to follow each phrase's first word, so on split phrases they read out of order from left to right; that is consistent across screens. Every highlighted item matches its panel entry and the reference highlight text. Words are purple with round purple badges; phrases are magenta on yellow, with rounded-square yellow badges in the English and round yellow badges in the panel.\n\nProgress bar: I measured the knob positions with a script. They move by about 63 px per sentence, from k=1 at x≈378 to k=22 at x≈1702, so they match k/22.\n\nI zoomed in on screens 2, 4, 6, 10, 12 and 23 and checked these:\n- **Clipping and overlap:** nothing is cut off or overlapping. The longest English lines (S3 \"has no\", S18 \"a lot of\") stop about 30 px short of the vocabulary panel.\n- **Glyphs:** there are no missing or broken characters and no odd gaps.\n- **Ellipses:** the Chinese …… is drawn centred everywhere.\n- **Line wrapping:** vocabulary meanings break only at punctuation or between words. Examples are \"the＋ / 比较级\" in S11, \"提到 / 的同类事物\" in S21 and \"…… / 的一个办法是……\" in S20.\n- **Brackets:** an opening bracket at the start of a line sits flush with the line, within the glyph's normal side spacing.\n- **Font sizes:** the panels with 10–11 entries (S3, S18) use a smaller font, which is the expected auto-fit.\n\nScreens are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/shots2/z11/. My zoom crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/crops11/. No project files were changed."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z12",
+   "findings": [],
+   "opened": [
+    27
+   ],
+   "notes": [
+    "I found no defects in z12. I opened all 27 screens in order (screen01 is the title card, screen02–27 are sentences 1–26), read the reference file, and zoomed into the spots that looked uncertain.\n\nStructure: 27 screens, as expected. No sentence is split and no screen shows a PART label. The footer reads SENTENCE 1/26 through 26/26 in order. I measured the progress-bar knob on every screen with a script; its position matches k/26 within 0.5%.\n\nNumbering, as circles in the English / panel entries:\n- S1: 1 / 1\n- S2: 1-3 / 1-3\n- S3: 1, 2 / 1, 2 (\"making a\" has no badge, \"comeback\" has 2)\n- S4: 1-7 / 1-7\n- S5: 1-9 / 1-9 (\"cutting\" has no badge, \"out of\" has 3)\n- S6: 1-4\n- S7: 1-12\n- S8: 1-5\n- S9: 1-5\n- S10: 1-4\n- S11: 1-7\n- S12: 1-5\n- S13: 1, 2\n- S14: 1-3\n- S15: 1-4\n- S16: 1-4\n- S17: 1-3\n- S18: 1, 2\n- S19: 1-3\n- S20: 1-4\n- S21: 1-3\n- S22: 1-4\n- S23: 1-3\n- S24: 1-6\n- S25: English reads 1, 2, 4, 3, 5, 6, 7; panel 1-7. The phrase \"less about … more about\" is split, so its number 3 sits only on the last piece, after \"perfection\" (4). That follows the stated design.\n- S26: 1-10 / 1-10\n\nOn every screen the panel runs in order with no gaps, and the set of numbers in the English matches the panel.\n\nContent against the reference:\n- Every highlight's colour and badge shape match its type (word or phrase).\n- Every panel headword, part of speech and Chinese meaning matches the reference.\n- The English and Chinese text on every screen matches the reference.\n- Chinese ellipses (……) in the panel are drawn centred everywhere.\n- Panel meanings wrap only at punctuation, before an opening bracket, or between words. Opening brackets at the start of a line sit flush left.\n- No Chinese line starts with punctuation, and no hyphenated word is split.\n\nLayout: I measured margins with a script. Panel text stays at least 44 px inside the panel's right border, and English and Chinese text stays at least 44 px left of the panel. Nothing overlaps the header, footer or panel. There are no tofu boxes or replacement characters. Font sizes look consistent; the panel shrinks a little on screens 8, 26 and 27, which is the automatic fitting.\n\nTitle card: title on one line \"杂志拼贴画：轻松有趣的手工爱好\", \"中考英语 2026年 济南 ·\" with the 阅读C pill, tag \"中考英语 · 阅读理解\", genre \"说明文 · 爱好与生活\", and \"全文 325 词 · 逐句精读\". I recounted the English words with the Chinese notes left out and got 325.\n\nChecked and not counted as defects:\n- Some badges sit very close to the last letter of their word (DIY¹, \"a pair of\"¹¹, \"One of\"¹). At 10x zoom there is a gap of about 1–2 px, so they do not overlap.\n- The capital I is drawn with serifs everywhere. That is how this font draws it.\n- On screen 26 the S25 panel headword \"less about…more about\" wraps onto two lines between words. It is fully visible."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z13",
+   "findings": [],
+   "opened": [
+    23
+   ],
+   "notes": [
+    "I opened all 23 screens in order, plus the reference file. Wherever something was small or uncertain I zoomed in on crops: the phrase badges on screens 03 and 04, the panel entries on 06, 08, 11, 14 and 19, the dash after badge 6 on 12, the en dashes on 15, and the right edges of the English text and the vocabulary panel on 22. I found no visual, layout or numbering defects.\n\nStructure: 23 screens, as the reference expects. Screen 01 is the title card and screens 02 to 23 are sentences 1 to 22, one screen each. No sentence is split, and no PART label appears anywhere, which is correct.\n\nTitle card: everything matches the reference. The title sits on one line. The tag reads \"中考英语 · 阅读理解\", the line below reads \"中考英语 2026年 济南 ·\" with the \"阅读D\" pill, the genre is \"说明文 · 环境与城市\", and the count reads \"全文 320 词 · 逐句精读\". I confirmed the 320 independently: counting the words in the 22 English sentences, leaving out the Chinese notes (城市热岛效应), (树荫), (数据) and (气体), also gives 320. The legend pill is present.\n\nNumbers recorded per screen. Each line gives the badges in the English from left to right, then the panel numbers from top to bottom, then the footer:\n- 02: 1,2,3,4,5 | 1–5 | 1/22\n- 03: 1,2 | 1–2 | 2/22\n- 04: 1 | 1 | 3/22\n- 05: 1–6 | 1–6 | 4/22\n- 06: 1,3,2,4,5,6,7,8,9,10,11 | 1–11 | 5/22. The phrase \"is … connected with\" is numbered from its first piece, \"is\", which comes before \"closely\"(3). Its badge 2 sits only on the last piece, \"with\".\n- 07: 1–9 | 1–9 | 6/22. \"give out\" wraps across lines, with the badge on \"out\".\n- 08: 1–4 | 1–4 | 7/22\n- 09: 1–5 | 1–5 | 8/22. \"high temperatures\" wraps, with the badge on the second line.\n- 10: 1–10 | 1–10 | 9/22\n- 11: 1,2,4,3,5,6 | 1–6 | 10/22. \"preventing … from\" carries badge 3 on \"from\".\n- 12: 1–12 | 1–12 | 11/22\n- 13: 1–12 | 1–12 | 12/22. \"air temperature\" wraps.\n- 14: 1,3,4,5,6,2,7,8 | 1–8 | 13/22. \"reduce … by\" carries badge 2 on \"by\".\n- 15: 1–11 | 1–11 | 14/22\n- 16: 1–9 | 1–9 | 15/22\n- 17: 1–10 | 1–10 | 16/22\n- 18: 1–4 | 1–4 | 17/22\n- 19: 1–4 | 1–4 | 18/22\n- 20: 1–6 | 1–6 | 19/22\n- 21: 1–3 | 1–3 | 20/22\n- 22: 1–5 | 1–5 | 21/22\n- 23: 1–7 | 1–7 | 22/22\n\nOn every screen:\n- The panel numbers run in order with no gaps or repeats, and match the badge numbers in the English.\n- Every highlight has a matching panel entry.\n- Highlight colours and badge shapes match the entry type: single words in purple with round badges, phrases in magenta on yellow with rounded-square badges.\n- The progress knob sits at k/22 (to within about 0.3%), and the last screen shows a full bar.\n\nThe English, Chinese and vocabulary text match the reference on every screen. I found:\n- no cut-off or overlapping text (the closest approach to the panel is \"air quality³\" on screen 22, about 30 px clear);\n- no tofu, replacement characters or missing glyphs;\n- no abnormal font sizes;\n- no split hyphenated words or en-dash ranges.\n\nThe ellipses in the panel meanings are drawn centred everywhere. An opening bracket at the start of a wrapped meaning line sits flush left: \"（用在比较级前）\" on screen 08 and \"（了）\" on screen 14.\n\nTwo spacing points I judged to be normal: the half-character gap after \"）\" before \"……\" (screens 08 and 14) and the spacing in \"反射（光、热）的\" (screen 19). Both are ordinary full-width punctuation spacing, not adjacent marks that should be pulled together, so I did not report them."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z14",
+   "findings": [
+    {
+     "screen": 6,
+     "sentence": 5,
+     "kind": "layout",
+     "description": "Chinese translation breaks the term 'Z世代' across lines: line 2 ends with a lone Latin 'Z' ('……也就是人们所说的Z') and line 3 is just '世代。'. Line 2 still had room, so this break looks like the short-last-line (orphan) control pushing '世代。' down, which leaves the stray 'Z' at the end of the line. It should be kept together, e.g. '…所说的' / 'Z世代。'. Text otherwise matches the reference.",
+     "severity": "low",
+     "lens": "visual"
+    },
+    {
+     "screen": 10,
+     "sentence": 9,
+     "kind": "layout",
+     "description": "The vocabulary panel (18 entries) is auto-fitted to the smallest text in the video: Chinese meanings are about 22 px tall at 1920×1080, against about 25 px on screen 4 (13 entries) and about 35–40 px on the 3–4-entry screens. About 200 px of panel width on the right is unused while the English stays at full size (about 58 px). Nothing is cut off, overlapping or wrong, but this is the hardest screen to read on a phone. Raise it only if a minimum panel font size is wanted.",
+     "severity": "low",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    18
+   ],
+   "notes": [
+    "z14 (2026 烟台 阅读C) checks out on structure and numbering. The two findings above are both low-severity typesetting points. Nothing is wrong with numbering, highlighting, glyphs or text content.\n\nAll 18 screens opened in order. Screens 4, 6, 7, 8, 10, 13, 16 and 18 were also cropped and enlarged; image tools were run with /opt/ttsenv/bin/python because the system Python has no PIL.\n\n**Structure:** 18 screens = title card + 17 sentences. No splits are expected and none appear; no PART labels.\n\n**Title card:**\n- Title 'Z世代志愿者赴民勤植树' on one line.\n- Tag '中考英语 · 阅读理解'.\n- '中考英语 2026年 烟台 ·' followed by the purple pill '阅读C'.\n- Genre '记叙文 · 环保与志愿服务'.\n- '全文 296 词 · 逐句精读'. I recounted the 17 EN sentences without the Chinese notes (来源)(贡献) and also got 296.\n- Legend pill present.\n\n**Footers:** run SENTENCE 1/17 to 17/17 with no skip or repeat. I measured the progress knob on every screen: it is within 0.3% of k/17, and screen 18 is fully filled.\n\n**Numbering per screen** (circles in the English = panel entries, all consecutive from 1, sets equal):\n\n| Screen | Sentence | Numbers |\n|---|---|---|\n| 2 | S1 | 1–3 |\n| 3 | S2 | 1–4 |\n| 4 | S3 | 1–13 (save = #7, by first appearance) |\n| 5 | S4 | 1–4 |\n| 6 | S5 | 1–9 |\n| 7 | S6 | 1–2 |\n| 8 | S7 | 1–9 |\n| 9 | S8 | 1–4 |\n| 10 | S9 | 1–18 |\n| 11 | S10 | 1–4 |\n| 12 | S11 | 1–3 |\n| 13 | S12 | 1–5 |\n| 14 | S13 | 1–4 |\n| 15 | S14 | 1–7 |\n| 16 | S15 | 1–10 |\n| 17 | S16 | 1–4 |\n| 18 | S17 | 1–10 (public #4 and activity #5, by appearance) |\n\n**Highlighting:**\n- Split phrases carry their badge only on the last piece: between…and, spent…planting, contributing…to, making a…promise, are…confident in. So do the phrases broken across lines: environmental protection, Gen Zers, suosuo trees, volunteer work, travel to, take action.\n- Word and phrase colours and badge shapes match their entry types on every screen.\n\n**Text against the reference:**\n- Panel headword, POS and meaning match on all 17 sentences.\n- EN and ZH text match on all screens. The Chinese notes (来源) and (贡献) are shown and not highlighted.\n- The Chinese ellipsis '……' is drawn centred the same way everywhere. The English headwords (spend...doing, between...and) use the English font's low dots.\n- Compact punctuation is fine: '：“', '。”' and the dash '——'.\n- Hyphenated words (third-, fourth-largest, 26-year-old, coming-of-age, Lee Ting-Hsuan) are never split.\n- No tofu, replacement characters, overlaps or cut-off text.\n\n**Not reported, for the orchestrator's judgement:**\n- The Chinese translation also breaks between characters inside words on screen 7 ('种梭' / '梭树。') and screen 13 ('数千名志' / '愿者之一。'). This is ordinary Chinese line breaking and the design rule against splitting words only covers panel meanings, so I did not list these.\n- Screen 7, panel entry 1 wraps as 'spend...doing 花' / '（时间）做某事'. Breaking before an opening bracket is allowed by the stated rule, but it leaves '花' alone on the headword line."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen06.png (sentence 5). Line 2 of the Chinese translation ends with a lone Latin 'Z' ('…也就是人们所说的Z') and line 3 is only '世代。', so the term Z世代 is split across lines. The cause is in zh_html() in /home/user/university-entrance-examination/中考/tools/make_video.py: it wraps the last two Han characters plus the closing punctuation in a <nobr> so the last line always has at least two characters. That binds '世代。' together but not the Latin 'Z' in front of it. The browser then keeps 'Z' on line 2 and moves only the bound '世代。' down. Line 2 ends at about x=1070, against about 1175 for line 1, so there was room for more on that line. The text itself matches the reference; the defect is the line break. The suggested fix ('…所说的' / 'Z世代。') is correct."
+    },
+    {
+     "index": 1,
+     "real": false,
+     "why": "The measurements in the report are accurate. On screen10.png (18 entries) the ink height of the Chinese meanings is about 21 px, against about 25 px on screen04.png (13 entries) and about 37 px on the 3–4-entry screens. About 220 px of panel width on the right is empty. But this is the intended auto-fit, not a defect. FIT shrinks the panel font (--vs) from 40 px until the list fits, and make_video.py enforces a readability floor of MIN_VS = 22: any sentence that would need a smaller size stops the build and must be split. Screen 10 comes out at about 22–23 px, so it meets the project's own minimum. The panel runs out of height, not width: the 18 entries fill it from about y=205 to y=945. Using the empty width would need a different layout, so that space is not wasted. Nothing is cut off or overlapping, and all 18 entries match reference sentence [9]. The reviewer also says nothing is wrong."
+    }
+   ]
+  },
+  {
+   "id": "z15",
+   "findings": [],
+   "opened": [
+    20
+   ],
+   "notes": [
+    "I found no defects in z15 (2026 烟台 阅读D, 研究人员发现一种吃塑料的新细菌). I opened all 20 screens in order, read the reference file, and zoomed into the panel semicolons at line ends, every Chinese ellipsis, every bracket at the start of a line, the split phrases in the English, and the Chinese quote spacing on screen 15.\n\nStructure: 20 screens were expected and 20 are there (title card plus 19 sentences). No sentence is split, and no screen shows a PART label.\n\nTitle card: the title fits on one line. It reads \"中考英语 2026年 烟台 ·\" followed by the 阅读D pill. The tag is \"中考英语 · 阅读理解\" and the genre is \"说明文 · 科技与环境\". The word count \"全文 279 词\" matches my count of the reference English with the Chinese notes left out (279).\n\nNumbering, screen by screen. \"Circles\" are the numbers in the English, left to right; \"panel\" is the vocabulary panel, top to bottom. Wherever the English order differs from the panel, the reason is the same: a split phrase carries its number only on its last piece, and the panel is ordered by first appearance.\n- s02 (sentence 1): circles 1–6, panel 1–6, footer 1/19.\n- s03 (sentence 2): circles 1–9, panel 1–9, footer 2/19.\n- s04 (sentence 3): circles 1–6, panel 1–6, footer 3/19.\n- s05 (sentence 4): circles 1–9, panel 1–9, footer 4/19. Germany is 7 because it appears before soil and bacterium.\n- s06 (sentence 5): circles 1–4, panel 1–4, footer 5/19.\n- s07 (sentence 6): circles 1,2,3,4,5,7,6,8,9,10; panel 1–10; footer 6/19. \"be used in\" is 6 because the piece \"is\" comes before \"widely\" (7).\n- s08 (sentence 7): circles 1–7, panel 1–7, footer 7/19.\n- s09 (sentence 8): circles 1–6, panel 1–6, footer 8/19.\n- s10 (sentence 9): circles 1–8, panel 1–8, footer 9/19. \"most\" is 1.\n- s11 (sentence 10): circles 1–5, panel 1–5, footer 10/19.\n- s12 (sentence 11): circles 1–4, panel 1–4, footer 11/19.\n- s13 (sentence 12): circles 1–5, panel 1–5, footer 12/19.\n- s14 (sentence 13): circles 1–3, panel 1–3, footer 13/19.\n- s15 (sentence 14): circles 1–8, panel 1–8, footer 14/19.\n- s16 (sentence 15): circles 1–7, panel 1–7, footer 15/19. European Union wraps across two lines, and its number 3 is on \"Union\".\n- s17 (sentence 16): circles 1,2,3,5,4,6,7,8; panel 1–8; footer 16/19. turn…into is 4 and its number sits on \"into\".\n- s18 (sentence 17): circles 1,2,4,3,5,6,7; panel 1–7; footer 17/19.\n- s19 (sentence 18): circles 1–6, panel 1–6, footer 18/19.\n- s20 (sentence 19): circles 1,2,3,4,6,7,5,8,9; panel 1–9; footer 19/19. \"such\" is 1.\n\nOn every screen the set of numbers in the English equals the set in the panel, every highlighted item has a panel entry, and the panel numbers run without gaps.\n\nProgress bar: I measured the knob position on every screen; it is within about 0.003 of k/19, and on screen 20 it sits at the end.\n\nHighlight colours: they match the entry types throughout. Phrases are magenta on yellow, including Hermann Heipieper and European Union. Hyphenated single words (polyurethane-based, hard-to-recycle, plastic-eating) are purple and are not split across lines.\n\nText against the reference: the English, the Chinese translations and the panel meanings all match.\n\nRendering: I saw no cut-off or overlapping text, no tofu or replacement characters, and no font size out of line with the other screens. All seven Chinese ellipses (……) are drawn in the same centred style. Brackets at the start of a line sit flush left. Semicolons at line ends use the same full-width glyph as mid-line ones. The blank before the opening quote on screen 15 is ordinary full-width quote spacing, not a gap. On screen 20 the Chinese line ends at about x=1185, inside the text area and well clear of the panel."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z16",
+   "findings": [
+    {
+     "screen": 2,
+     "sentence": 1,
+     "kind": "layout",
+     "severity": "low",
+     "description": "Phrase badge 4 after 'repeats itself': the top hook of the final 'f' runs straight into the yellow badge with no background gap between them (pixel check: magenta f pixels sit right next to the badge yellow). The badge should sit clear of the letter.",
+     "lens": "visual"
+    },
+    {
+     "screen": 7,
+     "sentence": 6,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'bright¹': the crossbar of the final 't' runs into the purple badge, so purple letter and purple badge read as one shape. 'look at⁴': the 't' crossbar touches the yellow badge. Both badges should have a visible gap.",
+     "lens": "visual"
+    },
+    {
+     "screen": 14,
+     "sentence": 13,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'repeat²': the crossbar of the final 't' runs into the purple badge 2 (purple on purple, no gap).",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'cricket¹': the crossbar of the final 't' fuses with the purple badge 1. Connected-component analysis finds letter and badge as a single 58x54 px blob instead of a separate badge of about 31x41 px.",
+     "lens": "visual"
+    },
+    {
+     "screen": 17,
+     "sentence": 16,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'cricket³' at the start of line 2: the crossbar of the final 't' fuses with the purple badge 3 (one merged purple shape).",
+     "lens": "visual"
+    },
+    {
+     "screen": 18,
+     "sentence": 17,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'find out²': the crossbar of the final 't' touches the yellow badge 2 with no background gap.",
+     "lens": "visual"
+    },
+    {
+     "screen": 23,
+     "sentence": 22,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'roll over⁴': the arm of the final 'r' touches the yellow badge 4 (only an antialias pixel between them, no background).",
+     "lens": "visual"
+    },
+    {
+     "screen": 25,
+     "sentence": 24,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'This kind of¹': the hook of the final 'f' touches the yellow badge 1. 'development⁴': the 't' crossbar runs into the purple badge 4 (purple on purple, merged).",
+     "lens": "visual"
+    },
+    {
+     "screen": 26,
+     "sentence": 25,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'over and over²' (end of line 1): the arm of the final 'r' touches the yellow badge 2 with no background gap.",
+     "lens": "visual"
+    },
+    {
+     "screen": 28,
+     "sentence": 27,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'breakfast²': the crossbar of the final 't' fuses with the purple badge 2 (detected as one merged purple component).",
+     "lens": "visual"
+    },
+    {
+     "screen": 29,
+     "sentence": 28,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'repeat¹': the crossbar of the final 't' runs into the purple badge 1 (no gap).",
+     "lens": "visual"
+    },
+    {
+     "screen": 31,
+     "sentence": 30,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'off⁴' (line 3): the top hook of the second 'f' runs into the yellow badge 4 (magenta pixels directly next to badge yellow).",
+     "lens": "visual"
+    },
+    {
+     "screen": 32,
+     "sentence": 31,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'It seems as if¹' and 'is full of²': in both, the hook of the final 'f' touches the yellow badge with no background gap.",
+     "lens": "visual"
+    },
+    {
+     "screen": 33,
+     "sentence": 32,
+     "kind": "layout",
+     "severity": "low",
+     "description": "'without²': the crossbar of the final 't' fuses with the purple badge 2 (merged component). 'harder⁵': the arm of the final 'r' touches the purple badge 5 (only an antialias pixel between them). Purple on purple makes letter and number read as one shape.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    33
+   ],
+   "notes": [
+    "I opened all 33 screens in order, plus the reference. The structure is correct: 1 title card and 32 sentence screens (33 expected), no splits and no PART labels. Footers read SENTENCE 1/32 through 32/32 in order. I measured each progress-bar knob position, and all of them match k/32 within about 0.5%.\n\nNumbering, per screen (circles in the English left to right / panel top to bottom):\ns02 1,2,3,4 / 1-4; s03 1,2,3 / 1-3; s04 1,2,3 / 1-3; s05 1 / 1; s06 1,2 / 1-2; s07 1,2,3,4,5 / 1-5; s08 1-6 / 1-6 ('many' + 'times⁶' split across lines, number on the last piece); s09 1,2; s10 1,2; s11 1,2,3; s12 1; s13 1; s14 1,2,3; s15 1,3,2,5,6,4 / 1-6 (split phrases 'uses…to²' and 'make…sounds⁴' have the number on the last piece only); s16 1-4; s17 1,2,3 ('The hotter…the more¹'); s18 1-4; s19 1-3; s20 1-3; s21 1-5; s22 1,2; s23 1-4; s24 1-3; s25 1-4; s26 1-4; s27 1,2; s28 1-3; s29 1,2,4,3 order of appearance = repeat¹, many times², becomes³, pattern⁴ (correct by first appearance); s30 1,2 ('Having a…class¹'); s31 1-4 ('a / week³' split across lines; 'having…off⁴'); s32 1-3; s33 1-6.\nOn every screen the panel numbers are consecutive with no gaps, the set matches the circles in the English, and the entry counts and types match the reference. Highlight colours match entry types everywhere (words purple, phrases magenta on yellow), and phrase badges in the English are yellow rounded shapes.\n\nText: the English, Chinese and every panel entry match the reference on all 32 screens.\n\nTitle card: the title is on one line; '中考英语 2026年 河南 ·' is followed by the '阅读D' pill; the tag reads '中考英语 · 阅读理解'; genre '说明文 · 自然与生活'. The word count '全文 282 词' matches the project's counting rule (whitespace split, Chinese notes excluded).\n\nPunctuation: all brackets and the quote that start a wrapped panel line sit flush with the left edge (measured within 1–5 px of where ideographs start). Every panel line wrap falls at punctuation or a space. Chinese ellipses are centred everywhere, and English ellipses in headwords sit on the baseline. The full-width ？ (U+FF1F) and ！ (U+FF01) are the real characters from the data, drawn the same way on every screen. Nothing is cut off, nothing overlaps the header, footer or panel, and there are no tofu boxes or replacement characters.\n\nThe only defect I found is the badge collisions reported above. They are one systemic issue: in 中考/tools/样式.css (line 25), sup has margin-left .04em, which is too little room for letters that stick out to the right. The final 't' crossbar, 'f' hook, 'r' arm and similar strokes touch the badge or merge into it. It is worst purple on purple, where the letter and number read as one shape. I confirmed it with pixel maps and a connected-component check. Crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/z16crops/ (sheet_touch.png, sheet_touch2.png). These are 1080p screenshots, so in the 4K video the gaps may be 1–2 px rather than zero, but on a phone they will still look attached."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 2, 'itself⁴'. In rows y=534–539 the f hook is solid magenta (b3135f) at x=845, x=846 is a magenta/yellow blend (df9692, e18d65, eca95b…) and x=847 is solid badge yellow (ffd84a). No background pixel separates them. The 4x zoom also shows the hook running into the badge."
+    },
+    {
+     "index": 1,
+     "real": false,
+     "why": "Screen 7. Both junctions have a column of pure background (fbfaff) between the letter and the badge in every crossbar row: bright¹ at x=629 (rows 422–428) and look at⁴ at x=751 (rows 505–511). Each badge forms its own 31x41 component. The gap is tight (about 1.2 px) but present, so the letter does not run into or touch the badge."
+    },
+    {
+     "index": 2,
+     "real": false,
+     "why": "Screen 14, 'repeat²'. Column x=674 is pure background (fbfaff) in rows 505–511 and 96% background (f4f1fd) in row 508. The badge is a separate 31x40 component and the 4x zoom shows a thin gap. It is tight, but the claim that there is no gap is not true."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Screen 15, 'cricket¹'. In rows 424–427 the crossbar (x≤343) and the badge (x≥345) are bridged by one partial pixel at x=344 (bba8ee, a084e6, ac93e9, which is 45–62% background). No background pixel lies between them. Connected-component analysis gives one 58–59x51 purple blob. Confirmed."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Screen 17, 'cricket³'. Same pixel pattern as cricket¹: in rows 549–552, x=285 is only a 45–62% light antialias pixel between the crossbar and the badge. The component merges into a 59x51 blob, and in the zoom the crossbar is visibly fused with badge 3."
+    },
+    {
+     "index": 5,
+     "real": false,
+     "why": "Screen 18, 'find out²'. Column x=537 is pure background (fbfaff) in every crossbar row (464–470), between the t's antialias edge at x=536 and the badge edge at x=538. The badge is a separate 31x41 component and the zoom shows a visible gap. It does not touch."
+    },
+    {
+     "index": 6,
+     "real": true,
+     "why": "Screen 23, 'roll over⁴'. In rows 548–552 the r arm is solid magenta at x=939. x=940 is a pink antialias pixel (d786af, d174a2) and x=941 is badge yellow tinted only slightly by background (ffd94e, ffdc60). No background pixel separates them, which matches the description."
+    },
+    {
+     "index": 7,
+     "real": true,
+     "why": "Only the first half is confirmed. Screen 25, 'This kind of¹': in rows 451–455 the f hook is solid magenta at x=434, x=435 is a magenta/yellow blend (df9692, e18d65…) and x=436 is solid yellow, so the hook touches the badge. 'development⁴' does not have the problem: column x=762 is pure background in every crossbar row (547–553) and the badge is separate."
+    },
+    {
+     "index": 8,
+     "real": false,
+     "why": "Screen 26, 'over and over²'. Column x=1147 is background or near-background (fbfaff, faf7fd, and at worst f5e7f2, which is about 92% background) in every row of the r arm (464–470). The arm's solid magenta ends at x=1146 and the badge starts at x=1148. The gap is tight (about 1 px) but present, and the zoom shows it, so the claim of no background gap is not true."
+    },
+    {
+     "index": 9,
+     "real": true,
+     "why": "Screen 28, 'breakfast²'. In rows 549–552 the crossbar and badge 2 are bridged at x=371 by one 45–62% light pixel, with no background pixel. Even at a strict threshold they form one merged 58x51 component, and the zoom shows them fused."
+    },
+    {
+     "index": 10,
+     "real": true,
+     "why": "Screen 29, 'repeat¹'. In rows 467–468 the only pixel between the crossbar (solid to x=449) and the badge (x=451, nearly solid) is a light-lilac antialias pixel at x=450 (c9b9f2, d6caf5, 72–80% background). There is no clean background pixel and the zoom shows them almost joined. This case is borderline: the gap is about 0.8 px, compared with about 1 px clean gaps in items 2 and 8."
+    },
+    {
+     "index": 11,
+     "real": true,
+     "why": "Screen 31, 'off⁴'. In rows 575–580 the top hook of the second f is solid magenta at x=396, x=397 is a magenta/yellow blend (ba2763, cb5158, e08852, efad4e, facd56) and x=398 is solid badge yellow. Magenta sits directly against the badge. The crossbar in rows 591–594 also abuts it."
+    },
+    {
+     "index": 12,
+     "real": true,
+     "why": "Screen 32, 'if¹' and 'of²'. In rows 451–455 both f hooks are solid magenta and the next pixel is a magenta/yellow blend (if¹ at x=474: df9692…f6c45e; of²: d26b74…fdd556), followed by solid yellow. No background pixel separates them in either case."
+    },
+    {
+     "index": 13,
+     "real": true,
+     "why": "Screen 33. 'without²': in rows 393–396 the crossbar and badge are bridged at x=706 by one 45–62% light pixel, giving a merged 58x50 component. 'harder⁵': in rows 476–478 the r arm (solid to x=941) and the badge (x=943) have only a 68–76% light antialias pixel between them at x=942 (d2c4f4, c3b0f0, cfc1f3). Both halves are confirmed."
+    }
+   ]
+  },
+  {
+   "id": "z17",
+   "findings": [],
+   "opened": [
+    20
+   ],
+   "notes": [
+    "I opened all 20 screens in order, plus the reference file. I also enlarged crops of screens 4, 7, 11, 13, 15, 17 and 20 to check punctuation, glyphs and the two-digit badges. I found no visual or numbering defects in z17.\n\nStructure: 20 screens, as the reference expects. Screen 1 is the title card, and screens 2–20 are sentences 1–19, one screen each. No sentence is split and no PART label appears. The footer runs SENTENCE 1/19 to 19/19 in step, and the progress knob matches k/19 on every screen (within a few pixels).\n\nTitle card matches the reference:\n- Title: 中外学生在“诗会”中趣学中国诗歌, on one line.\n- Line below it: 中考英语 2026年 湖北 · followed by the 阅读B pill.\n- Tag: 中考英语 · 阅读理解.\n- Genre: 记叙文 · 文化与交流.\n- Word count: 全文 271 词. This matches the method in extract_reading.py: split on spaces after dropping the Chinese notes (主题)(节奏)(意境). That gives 270 English words plus the bare 水 in \"For example, 水 (shui) shows…\". Counting 水 as a word is defensible, since it is the subject of that sentence, so I did not report it.\n\nNumbering, per screen. \"Panel\" is the vocabulary list; \"English\" is the circle numbers left to right; \"–\" is a phrase piece with no number.\n- S2 (sentence 1): English 1-6, panel 1-6.\n- S3 (2): 1,2,3,4,5 / 1-5. \"exchange students\" breaks across lines; the number is on the last piece only.\n- S4 (3): 1-7 / 1-7.\n- S5 (4): 1-7 / 1-7.\n- S6 (5): 1-3 / 1-3.\n- S7 (6): –,2,1,3,4,5,6 / 1-6. The number for On…were is on \"were\".\n- S8 (7): 1-4 / 1-4.\n- S9 (8): 1,2,3,–,4,5,6 / 1-6. use…to: \"used\" has no number, \"to\" has 4.\n- S10 (9): 1,–,3,4,5,6,2,7,8,9 / 1-9.\n- S11 (10): 1-6 / 1-6. \"exchange student\" breaks across lines; 6 is on the last piece.\n- S12 (11): 1-6 / 1-6.\n- S13 (12): 1,–,3,4,5,2,6,…,13 / 1-13.\n- S14 (13): 1-5 / 1-5. Order exchange student, study, both, benefit, greatly, which is the order they first appear.\n- S15 (14): 1-5 / 1-5.\n- S16 (15): 1-3 / 1-3.\n- S17 (16): 1-7 / 1-7.\n- S18 (17): 1,2,3,–,4,5,6 / 1-6. The number for felt…proud of is on \"proud of\".\n- S19 (18): 1-4 / 1-4.\n- S20 (19): 1,–,3,4,–,5,6,2,–,8,9,10,7 / 1-10.\n\nOn every screen the panel numbers run 1, 2, 3… with no gaps or repeats, and the circle numbers in the English are the same set as the panel. Every highlight has a matching panel entry. Words are purple with round badges and phrases are magenta on yellow with rounded-square badges, and each colour matches its panel entry.\n\nRendering:\n- No text is cut off or overlaps anything. The longest English and Chinese lines end at about x≈1190, clear of the panel at x≈1228.\n- The panel on screens 13 and 20 uses a smaller font to fit 13 and 10 entries. That is auto-fit, not a fault.\n- No garbled characters, empty boxes (tofu) or odd gaps.\n- The Chinese …… is centred everywhere (把……叫作, ……上有……, 为……感到自豪, and others). On…were, put…together and use…to do show a normal English ellipsis.\n- Paired Chinese punctuation is tight: ；（ on the line entry, ，‘ on S17, 。” on S11 and S18.\n- The capital \"I\" with serifs on S11, S15 and S18 is the same English font used throughout, not a substitute font."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z18",
+   "findings": [],
+   "opened": [
+    26
+   ],
+   "notes": [
+    "I opened all 26 screens in order, read the reference z18.txt, and zoomed into crops wherever something was small. The screen count is 26, as expected (title card plus 25 sentences, no splits). No screen shows a PART label, which is right because no sentence is split.\n\nTitle card (screen 01): title 中国邮政的发展历程 is on one line. It reads \"中考英语 2026年 湖北 ·\" followed by the 阅读C pill, the tag \"中考英语 · 阅读理解\" and the genre 说明文 · 历史与社会. The word count reads 全文 290 词. I recounted the reference English without the Chinese notes and got 290; 中考/阅读/README.md also says 290.\n\nPer screen: a = circle numbers in the English, left to right; b = panel numbers, top to bottom; c = footer.\n- s02: a 1-6, b 1-6, c S1/25\n- s03: a 1-3, b 1-3, c S2\n- s04: a 1-3 (2 and 3 are phrases), b 1-3, c S3\n- s05: a 1-4, b 1-4, c S4\n- s06: a 1-5, b 1-5, c S5\n- s07: a 1-7, b 1-7, c S6\n- s08: a 1-6, b 1-6, c S7\n- s09: a 1-3 (all phrases), b 1-3, c S8\n- s10: a 1-6, b 1-6, c S9\n- s11: a 1-2, b 1-2, c S10\n- s12: a 1-4, b 1-4, c S11\n- s13: a 1-6, b 1-6, c S12\n- s14: a 1-8 (Since is #1 because it appears first), b 1-8, c S13\n- s15: a 1 (only on the last piece of Take … for example), b 1, c S14\n- s16: a 1-4, b 1-4, c S15\n- s17: a 1-6 (put into wraps across a line break with one badge), b 1-6, c S16\n- s18: a 1-5, b 1-5, c S17\n- s19: a 1-3, b 1-3, c S18\n- s20: a 1-5, b 1-5, c S19\n- s21: a 1-3, b 1-3, c S20\n- s22: a 1-5, b 1-5, c S21\n- s23: a 1-5, b 1-5, c S22\n- s24: a 1-6, b 1-6, c S23\n- s25: a 2,1,3,4,5,6,7,8,9,10, b 1-10, c S24. The 2-before-1 order is by design: From … to is #1 and carries its badge only on \"to\", after pigeons².\n- s26: a 1-6, b 1-6, c S25\n\nProgress bar: I measured the knob position on every screen. It sits at k/25 within 0.002 throughout, and is full on S25.\n\nEverything else matched or looked clean:\n- **Highlights and panel entries:** every highlighted item and every panel entry (headword, POS, meaning) matches the reference. Words are purple with round badges; phrases are magenta on yellow, with rounded-square badges in the English and round ones in the panel.\n- **Chinese text:** every Chinese translation matches the reference.\n- **Layout:** no text is cut off or overlapping. The longest English lines end at x≈1190, short of the panel at about 1228. The longest panel lines end at x≈1780, inside the border at about 1830. The 10-entry panel on s25 fits above the panel bottom.\n- **Font sizes:** no screen's font size looks abnormal compared with the others.\n- **Glyphs:** no tofu or replacement characters, and no odd gaps inside a line.\n- **Punctuation:** every …… (s11, s12, s13, s14, s15, s24) is drawn as centred dots, consistently. The —— on s14 is drawn unbroken. ！ (s19) and ？ (s26) are full-width U+FF01/U+FF1F in the data and are drawn by Noto Sans SC. '，“' is compact on s20, and the opening （ is flush at the start of the line on s10.\n- **Chinese notes:** (包裹), (分支) and (快递) are never broken across lines.\n\nI found no defects."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z19",
+   "findings": [
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "low",
+     "description": "The English line breaks between \"comes in(1)\" and the em dash, so line 3 starts with the dash (\"—giving reefs(8) a second chance(7).\"). The reference has \"comes in—giving\", with the dash attached to \"in\". The dash should stay at the end of line 2 or move down together with \"in\". A line that begins with an em dash is a typesetting flaw. The likely cause is the badge after \"in\", which creates a break point. Nothing else on this screen is wrong: circles 1–8 match panel 1–8, the split phrases carry their numbers on the last piece, and the Chinese dash \"——\" at the start of the Chinese line 2 is allowed.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    27
+   ],
+   "notes": [
+    "I found one real defect, a low-severity line break on screen 15 (sentence 14). Nothing else needs fixing.\n\nStructure: 27 screens, matching the reference: the title card plus one screen for each of the 26 sentences, with no splits. None of the screens shows a PART label.\n\nTitle card: the title, the pill \\\"2026年 武汉 · 阅读C\\\", the tag \\\"中考英语 · 阅读理解\\\" and the genre \\\"说明文 · 海洋与环境\\\" all match. \\\"全文 310 词\\\" is right: the reference EN text, without its Chinese notes and split on spaces (the rule in extract_reading.py), gives 310.\n\nNumbering on every screen, as (circles left to right in the English | panel top to bottom | footer); the progress knob position matched k/26 on every screen:\n- S1 (1,2,3,4,5,6 | 1–6 | 1/26)\n- S2 (1,3,2,4: the as…as number sits on its second \\\"as\\\" | 1–4 | 2/26)\n- S3 (1–4 | 1–4 | 3/26)\n- S4 (1 | 1 | 4/26)\n- S5 (1–5 | 1–5 | 5/26)\n- S6 (1–6 | 1–6 | 6/26)\n- S7 (1 | 1 | 7/26)\n- S8 (1–3 | 1–3 | 8/26)\n- S9 (1–9 | 1–9 | 9/26)\n- S10 (1–3 | 1–3 | 10/26)\n- S11 (1–9 | 1–9 | 11/26)\n- S12 (1–3 | 1–3 | 12/26)\n- S13 (1, 2, then \\\"around\\\" with no circle, 3, 4 | 1–4 | 13/26)\n- S14 (2,3,4,5,6,1,8,7: \\\"That's where\\\" and \\\"giving\\\" have no circle | 1–8 | 14/26)\n- S15 (1–3 | 1–3 | 15/26)\n- S16 (1–6 | 1–6 | 16/26)\n- S17 (1–7: the panel numbers follow first appearance, ones=3 before tiny=4 | 1–7 | 17/26)\n- S18 (1–8 | 1–8 | 18/26)\n- S19 (1–12 | 1–12 | 19/26)\n- S20 (1–4 | 1–4 | 20/26)\n- S21 (1–6 | 1–6 | 21/26)\n- S22 (1–5 | 1–5 | 22/26)\n- S23 (1–2 | 1–2 | 23/26)\n- S24 (1–5 | 1–5 | 24/26)\n- S25 (2,3,1,4,5,6,7,8,9,10: \\\"calls on\\\" has no circle | 1–10 | 25/26)\n- S26 (1–7 | 1–7 | 26/26)\n\nHighlight colours, badge types and panel headwords match the 单词/短语 types on every screen. The Chinese text and the vocabulary meanings match the reference.\n\nChecked by zooming in, not defects:\n- On screens 05 and 11, \\\"？\\\" is the full-width mark as drawn by Noto Sans SC, and the \\\"！\\\" on screens 08 and 24 is also full-width.\n- The \\\"……\\\" marks are drawn centred everywhere. \\\"as…as\\\" and the other English headwords use the Latin ellipsis, which is normal.\n- \\\"保罗·格林\\\" uses the full-width middle dot.\n- The panels with 10–12 entries (screens 20 and 26) are scaled down but readable, and the two-digit badges fit inside their circles.\n- No text is cut off or overlaps anything; the longest English lines end about 30–60 px before the panel.\n- Hyphenated words (lab-controlled, man-made, L-shaped) are never split.\n- There is no tofu, � or garbled text anywhere.\n\nCrops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/z19crop/. They were made with /opt/ttsenv/bin/python, because the system python3 has no PIL. No project files were changed."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "I opened screen15 (SENTENCE 14 / 26). Line 2 of the English ends with \"comes in\" and its yellow badge 1. Line 3 starts with the em dash: \"—giving reefs(8) a second chance(7).\" The reference EN reads \"comes in—giving\", so the dash belongs to \"in\" and is not a separate word. Starting a line with an em dash is a typesetting flaw: the break should come after the dash, not before it. The design spec allows this only for the Chinese dash, not the English one. The break point most likely comes from the badge after \"in\". Everything else on the screen is right: badges 1–8 match panel entries 1–8, split phrases carry their number on the last piece, and \"reef\" is entry 8 in the reference."
+    }
+   ]
+  },
+  {
+   "id": "z20",
+   "findings": [],
+   "opened": [
+    22
+   ],
+   "notes": [
+    "I opened all 22 screens in order and checked them against ref/z20.txt. That is 1 title card plus 21 sentence screens, which matches the expected 22. No sentence is split, and no screen shows a PART label.\n\nTitle card (screen01): the title \"人工智能助力节能、保护动物和减少污染\" is on one line. It shows \"中考英语 2026年 湖南 ·\" with the purple pill 阅读C, the tag 中考英语 · 阅读理解, the genre 说明文 · 科技与环境, and \"全文 257 词 · 逐句精读\". The reference gives no word count, so I counted the EN text myself without the Chinese notes (空调)/(数据)/(人造卫星) and also got 257.\n\nNumbering per screen. Circles in the English (left to right) / panel numbers (top to bottom) / footer:\n- s02: 1,2,3,4 / 1-4 / 1/21\n- s03: 1-6 / 1-6 / 2/21\n- s04: 1-5 / 1-5 / 3/21\n- s05: 1-4 / 1-4 / 4/21\n- s06: 1,2 / 1,2 / 5/21\n- s07: 1-4 / 1-4 / 6/21\n- s08: 2,1,3,4 / 1-4 / 7/21. The order is correct: \"makes … changes\" is a split phrase, numbered only on \"changes\".\n- s09: 1,2,3 / 1-3 / 8/21\n- s10: 1-4 / 1-4 / 9/21\n- s11: 1-5 / 1-5 / 10/21\n- s12: 1-7 / 1-7 / 11/21\n- s13: 1,2,3 / 1-3 / 12/21\n- s14: 1-7,9,8 / 1-9 / 13/21. The order is correct: \"from … to\" is split and numbered on \"to\", and \"a month\" (9) sits in between.\n- s15: 1,2 / 1,2 / 14/21\n- s16: 1-6 / 1-6 / 15/21\n- s17: 1-4 / 1-4 / 16/21\n- s18: 1-6 / 1-6 / 17/21\n- s19: 1-10 / 1-10 / 18/21\n- s20: 1-4 / 1-4 / 19/21\n- s21: 1-4 / 1-4 / 20/21\n- s22: 2,1 / 1,2 / 21/21. \"make … choices\" is split and numbered on \"choices\".\n\nOn every screen the set of numbers in the English equals the set in the panel. The progress knob matches k/21 within a few pixels each time.\n\nText against the reference: every highlighted span, entry type and colour (purple word with round badge; magenta on yellow phrase with rounded-square badge), headword, part of speech and meaning matches. Every EN and ZH line matches as well.\n\nLayout: I measured the rightmost English pixel on each screen; the largest is x=1196 on s19, still inside the text area that ends at 1198, and nothing touches the panel. Nothing in the panel overlaps the VOCABULARY tag or the bottom border, even with 9 and 10 entries (s14, s19). The two-digit badge \"10\" on s19 shows both digits fully.\n\nI zoomed in to check every ellipsis: all are centred, including those that start a meaning (\"……的数量\", \"……中没有一个\", \"（修饰比较级）……得多\"). Brackets at the start of a line sit flush left (\"（很大）作用\", \"（修饰比较级）\", \"（某事）\").\n\nThe question mark at the end of the s15 translation (\"呢?\") looks narrow, but the source character is the full-width ？ (U+FF1F). I rendered Noto Sans SC's U+FF1F, and its Simplified Chinese glyph is left-aligned with the same shape, so this is correct.\n\nSome meanings break onto short lines, such as s03 here's how: \"下面 / 就是……的 / 方法；……是这样的\" and s19 much: \"adv.\" alone on its line. These come from the browser not starting a line with \"……\", and every break falls between words or at punctuation, so I did not count them as defects.\n\nI found no tofu, replacement characters, cut-off text, overlaps or abnormal font sizes.\n\nI did not modify any files. My zoomed crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/crops20/."
+   ],
+   "failed": 0,
+   "verdicts": []
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

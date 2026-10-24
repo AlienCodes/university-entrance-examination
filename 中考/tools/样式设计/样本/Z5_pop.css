@@ -1,0 +1,58 @@
+
+/* ===== Z5 POP · 中考英语逐句精读  —  bold & playful colour-blocking (violet + sunny yellow + pink) =====
+   单词 = bold violet + violet badge (white number); 短语 = bold berry on a yellow marker swipe + yellow badge (ink number).
+   English in Nunito (rounded, wider than EB Garamond), so line-height/letter/word spacing are tightened and .main is
+   widened to 90..1198px (band hidden); the full 482-screen fit run passes with no screen smaller than the plain CSS.
+   Decorations live only in the margins (SVG data-URI on body) and in the violet header block. */
+:root{--ink:#1e1538;--vio:#5420d1;--berry:#b3135f;--sun:#ffd84a;--swipe:#ffe47a;--pink:#ff6fae;--lilac:#f1ecff;--page:#fbfaff;--panel:#f4f0ff;--muted:#5b4f8a;--zh:#3f3a5a}
+html,body{background:var(--page) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080' viewBox='0 0 1920 1080'%3E%0A%3Ccircle cx='0' cy='1080' r='86' fill='%235420d1'/%3E%0A%3Ccircle cx='0' cy='640' r='44' fill='%23ffd84a'/%3E%0A%3Ccircle cx='44' cy='214' r='16' fill='none' stroke='%23ff6fae' stroke-width='7'/%3E%0A%3Cg fill='%235420d1' fill-opacity='.22'%3E%3Ccircle cx='22' cy='390' r='4'/%3E%3Ccircle cx='22' cy='410' r='4'/%3E%3Ccircle cx='22' cy='430' r='4'/%3E%3Ccircle cx='22' cy='450' r='4'/%3E%3Ccircle cx='42' cy='390' r='4'/%3E%3Ccircle cx='42' cy='410' r='4'/%3E%3Ccircle cx='42' cy='430' r='4'/%3E%3Ccircle cx='42' cy='450' r='4'/%3E%3Ccircle cx='62' cy='390' r='4'/%3E%3Ccircle cx='62' cy='410' r='4'/%3E%3Ccircle cx='62' cy='430' r='4'/%3E%3Ccircle cx='62' cy='450' r='4'/%3E%3C/g%3E%0A%3Ccircle cx='1920' cy='1080' r='66' fill='%23ff6fae'/%3E%0A%3Ccircle cx='1884' cy='930' r='13' fill='%23ffd84a'/%3E%0A%3Cpath d='M1866 300 l24 20 -24 20 24 20 -24 20 24 20' fill='none' stroke='%235420d1' stroke-opacity='.35' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%0A%3C/svg%3E") no-repeat;color:var(--ink);font-family:'Noto Sans SC',sans-serif}
+.band{display:none}
+.main{left:90px;width:1108px;top:130px;bottom:90px}
+
+/* header = violet colour block */
+.top{left:0;right:0;top:0;height:108px;padding:0 90px 0 90px;align-items:center;border-bottom:0;background:var(--vio)}
+.top::after{content:'';position:absolute;left:0;right:0;top:100%;height:9px;background:var(--sun)}
+.top b{font-family:'Fredoka','Noto Sans SC';font-weight:600;font-size:25px;letter-spacing:.08em;color:var(--ink);background:var(--sun);border-radius:999px;padding:7px 22px 6px}
+.top span{font-family:'Noto Sans SC';font-weight:500;color:#f1ecff;font-size:24px}
+
+/* English = hero */
+.en{font-family:'Nunito','Noto Sans SC',sans-serif;font-weight:400;line-height:1.3;letter-spacing:-.012em;word-spacing:-.04em;color:var(--ink)}
+.en .w{font-weight:800;color:var(--vio)}
+.en .ph{font-weight:800;color:var(--berry);background-color:var(--swipe);background-image:linear-gradient(var(--page) 0 60%,transparent 60% 87%,var(--page) 87%)}
+sup{font-family:'Nunito';font-weight:800;font-size:calc(var(--fs)*.42);color:#fff;background:var(--vio);border-radius:1em;padding:.1em .3em .08em;margin-left:.04em;vertical-align:.9em;line-height:1}
+.ph sup{background:var(--sun);color:var(--ink)}
+.v.ph{font-weight:400;color:inherit}
+.cont{color:#8d86a8}
+
+/* Chinese = calm second voice */
+.zh{font-family:'Noto Sans SC';font-weight:400;color:var(--zh);line-height:1.46;margin-top:calc(var(--fs)*.38);border-left:0;padding-left:30px;position:relative}
+.zh::before{content:'';position:absolute;left:0;top:.28em;bottom:.28em;width:8px;border-radius:8px;background:var(--pink)}
+
+/* vocabulary card: sticker look (ink outline + hard yellow shadow, both box-shadows); the VOCABULARY label is a tab on the top edge */
+.side{background:var(--panel);border-radius:28px;box-shadow:0 0 0 3px var(--ink),12px 12px 0 3px var(--sun)}
+.side h3{position:absolute;top:-20px;left:34px;margin:0;font-family:'Fredoka';font-weight:600;font-size:21px;letter-spacing:.16em;color:var(--ink);background:var(--sun);border-radius:999px;padding:6px 18px 5px;box-shadow:0 0 0 3px var(--ink)}
+.v em{font-family:'Nunito';font-weight:800;font-size:calc(var(--vs)*.8);width:calc(var(--vs)*1.3);height:calc(var(--vs)*1.3);margin-top:0;background:var(--vio);color:#fff}
+.v.ph em{background:var(--sun);color:var(--ink)}
+.v b{font-family:'Nunito';font-weight:800;font-size:calc(var(--vs)*1.12);color:var(--vio)}
+.v.ph b{color:var(--berry);background-color:var(--swipe);background-image:linear-gradient(var(--panel) 0 60%,transparent 60% 87%,var(--panel) 87%)}
+.v i{font-family:'Nunito';font-style:italic;color:var(--muted)}
+.v span{font-family:'Noto Sans SC';color:var(--zh)}
+
+/* footer + progress */
+.bot{left:90px;font-family:'Fredoka','Noto Sans SC';font-weight:600;font-size:22px;color:var(--muted);letter-spacing:.08em}
+.bar{height:12px;border-radius:99px;background:#e7e0fb}
+.bar i{border-radius:99px;background:var(--vio);position:relative}
+.bar i::after{content:'';position:absolute;right:-9px;top:50%;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 3px var(--vio)}
+
+/* ===== cover ===== */
+body:has(.ttl){background:var(--vio) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080' viewBox='0 0 1920 1080'%3E%0A%3Cdefs%3E%3Cpattern id='st' width='26' height='26' patternUnits='userSpaceOnUse' patternTransform='rotate(45)'%3E%3Crect width='13' height='26' fill='%23ffd84a'/%3E%3C/pattern%3E%0A%3CclipPath id='pill'%3E%3Crect x='300' y='52' width='260' height='52' rx='26'/%3E%3C/clipPath%3E%3C/defs%3E%0A%3Ccircle cx='74' cy='70' r='36' fill='%23ff6fae'/%3E%0A%3Ccircle cx='200' cy='84' r='22' fill='none' stroke='%23ffd84a' stroke-width='8'/%3E%0A%3Crect x='300' y='52' width='260' height='52' rx='26' fill='url(%23st)' clip-path='url(%23pill)'/%3E%0A%3Cpath d='M0 840 C130 800 250 880 268 990 C276 1040 262 1080 262 1080 L0 1080Z' fill='%23ff6fae'/%3E%0A%3Cg fill='%23ffffff' fill-opacity='.35'%3E%3Ccircle cx='1440' cy='58' r='5'/%3E%3Ccircle cx='1440' cy='88' r='5'/%3E%3Ccircle cx='1440' cy='118' r='5'/%3E%3Ccircle cx='1470' cy='58' r='5'/%3E%3Ccircle cx='1470' cy='88' r='5'/%3E%3Ccircle cx='1470' cy='118' r='5'/%3E%3Ccircle cx='1500' cy='58' r='5'/%3E%3Ccircle cx='1500' cy='88' r='5'/%3E%3Ccircle cx='1500' cy='118' r='5'/%3E%3Ccircle cx='1530' cy='58' r='5'/%3E%3Ccircle cx='1530' cy='88' r='5'/%3E%3Ccircle cx='1530' cy='118' r='5'/%3E%3Ccircle cx='1560' cy='58' r='5'/%3E%3Ccircle cx='1560' cy='88' r='5'/%3E%3Ccircle cx='1560' cy='118' r='5'/%3E%3Ccircle cx='1590' cy='58' r='5'/%3E%3Ccircle cx='1590' cy='88' r='5'/%3E%3Ccircle cx='1590' cy='118' r='5'/%3E%3C/g%3E%0A%3Cpath d='M760 1012 q30 -30 60 0 t60 0 t60 0 t60 0' fill='none' stroke='%23ffd84a' stroke-width='10' stroke-linecap='round'/%3E%0A%3Cg stroke='%23ffffff' stroke-width='8' stroke-linecap='round'%3E%3Cpath d='M1846 150 v40 M1826 170 h40'/%3E%3Cpath d='M560 1010 v34 M543 1027 h34'/%3E%3C/g%3E%0A%3Ccircle cx='1428' cy='690' r='54' fill='%23ff6fae' stroke='%231e1538' stroke-width='4'/%3E%0A%3Ccircle cx='1838' cy='300' r='26' fill='none' stroke='%23ffffff' stroke-width='7'/%3E%0A%3C/svg%3E") no-repeat}
+.ttl{left:120px;right:600px;top:150px;bottom:150px;background:#fff;border-radius:44px;padding:0 80px;box-shadow:0 0 0 4px var(--ink),18px 18px 0 4px var(--sun)}
+.ttl .tag{align-self:flex-start;font-family:'Noto Sans SC';font-weight:700;letter-spacing:.2em;font-size:30px;color:var(--ink);background:var(--sun);border-radius:999px;padding:8px 26px}
+.ttl h1{font-family:'ZCOOL KuaiLe','Noto Sans SC';font-weight:400;font-size:clamp(64px,calc(1036px / var(--n)),128px);white-space:nowrap;line-height:1.2;margin:40px 0 24px;color:var(--ink)}
+.ttl .sub{font-family:'Noto Sans SC';font-weight:500;font-size:42px;color:var(--zh)}
+.ttl .sub i{font-family:'Fredoka','Noto Sans SC';font-style:normal;font-weight:600;color:#fff;background:var(--vio);border-radius:999px;padding:2px 22px 4px;margin-left:6px}
+.ttl .meta{margin-top:56px;padding-top:28px;border-top:4px dashed #d9cff7;font-size:30px;color:var(--muted)}
+.legend{right:auto;left:1380px;bottom:64px;font-family:'Noto Sans SC';font-weight:500;font-size:26px;color:var(--ink);background:#fff;border-radius:999px;padding:12px 28px;box-shadow:0 0 0 4px var(--ink)}
+.legend .lw{background:var(--vio)}
+.legend .lp{background:var(--sun);border-radius:6px;width:34px;box-shadow:0 0 0 2px var(--ink)}
+body:has(.ttl)::after{content:'Aa';position:absolute;left:1390px;top:250px;width:440px;height:440px;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:600;font-size:210px;color:var(--vio);box-shadow:0 0 0 4px var(--ink)}
