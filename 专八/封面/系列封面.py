@@ -282,6 +282,11 @@ def v2_D(w=1920, h=1080):
 {cards(1470, 760, 360)}"""
 
 
+# “重点单词”：蓝色实心块白字（用户 2026-10-24：所有重点单词要更大、更显眼）
+KEYW = (f'<span style="display:inline-block;background:{BLUE};color:#fff;border-radius:.12em;padding:0 .12em .04em;margin-left:.06em;'
+        f'box-shadow:0 .06em 0 rgba(0,0,0,.2)">重点单词</span>')
+
+
 def v2_E(w=1920, h=1080):
     """E 定稿（D + 3 位评审意见）：痛点问句放大占一行；标题加“阅读”（不被当成背单词视频）；删掉手机上读不出的小标签和小截图；“30 篇全收录”放大。"""
     return f"""
@@ -290,11 +295,11 @@ def v2_E(w=1920, h=1080):
 <div class="wcard" style="left:44px;top:40px;width:1360px;height:900px"></div>
 <div class="ab" data-k="pain" data-min="{MIN_SELL}" style="left:100px;top:80px;font:900 {fs(88)}/1.2 Black;color:#fff;padding:6px 40px 14px;
   background:{KY};border-radius:60px;box-shadow:0 8px 0 rgba(0,0,0,.18)">单词书背了就忘？</div>
-<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:88px;top:250px;font:900 {fs(198)}/1 Black;letter-spacing:-.02em">
+<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:88px;top:232px;font:900 {fs(198)}/1 Black;letter-spacing:-.02em">
   <span style="color:{KY};text-shadow:0 .04em 0 rgba(30,27,23,.18)">专八</span>阅读<span class="zt" style="margin-left:.06em">真题</span></div>
-<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:100px;top:500px;font:900 {fs(84)}/1.25 Black;color:{INK2}">在真题文章里记住<br>
-  <span style="color:{INK};font-size:1.5em">专八<span class="mk" style="color:{BLUE}">所有重点单词</span></span></div>
-<div class="ab" data-k="facts" style="left:104px;top:808px;font:700 46px/1.3 Bold;color:{INK2}"><span style="color:{KY}">{SENTS}</span> 句一句一屏逐句精读 · <span style="color:{KY}">{UNIQ_V2}</span> 词条全标注 · 4K 大字版</div>
+<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:100px;top:470px;font:900 {fs(76)}/1.2 Black;color:{INK2}">在真题文章里记住专八<br>
+  <span style="display:inline-block;margin-top:14px;color:{INK};font-size:2.3em;line-height:1.1;letter-spacing:-.02em">所有{KEYW}</span></div>
+<div class="ab" data-k="facts" style="left:104px;top:842px;font:700 42px/1.3 Bold;color:{INK2}"><span style="color:{KY}">{SENTS}</span> 句一句一屏逐句精读 · <span style="color:{KY}">{UNIQ_V2}</span> 词条全标注 · 4K 大字版</div>
 {seal(1440, 70, 400)}
 <div class="ab" data-k="years" style="left:1430px;top:560px;color:{PAPER};text-align:center;width:430px">
   <div style="font:900 72px/1.1 Black"><span class="lat" style="font-size:2.1em;color:{YEL}">{N}</span> 篇</div>
@@ -311,9 +316,9 @@ def v2_E43(w=1440, h=1080):
   background:{KY};border-radius:56px;box-shadow:0 8px 0 rgba(0,0,0,.18)">单词书背了就忘？</div>
 <div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:70px;top:236px;font:900 {fs(152)}/1 Black;letter-spacing:-.03em">
   <span style="color:{KY};text-shadow:0 .04em 0 rgba(30,27,23,.18)">专八</span>阅读<span class="zt" style="margin-left:.05em">真题</span></div>
-<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:80px;top:440px;font:900 {fs(70)}/1.25 Black;color:{INK2}">在真题文章里记住<br>
-  <span style="color:{INK};font-size:1.45em">专八<span class="mk" style="color:{BLUE}">所有重点单词</span></span></div>
-<div class="ab" data-k="facts" style="left:84px;top:730px;width:900px;white-space:normal;font:700 40px/1.5 Bold;color:{INK2}"><span style="color:{KY}">{SENTS}</span> 句一句一屏逐句精读<br><span style="color:{KY}">{UNIQ_V2}</span> 词条全标注 · 4K 大字版</div>
+<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:80px;top:424px;font:900 {fs(62)}/1.2 Black;color:{INK2}">在真题文章里记住专八<br>
+  <span style="display:inline-block;margin-top:12px;color:{INK};font-size:2.15em;line-height:1.1;letter-spacing:-.02em">所有{KEYW}</span></div>
+<div class="ab" data-k="facts" style="left:84px;top:752px;width:900px;white-space:normal;font:700 40px/1.5 Bold;color:{INK2}"><span style="color:{KY}">{SENTS}</span> 句一句一屏逐句精读<br><span style="color:{KY}">{UNIQ_V2}</span> 词条全标注 · 4K 大字版</div>
 {seal(1066, 66, 330)}
 <div class="ab" data-k="years" style="left:1056px;top:500px;color:{PAPER};text-align:center;width:350px">
   <div style="font:900 60px/1.1 Black"><span class="lat" style="font-size:2.1em;color:{YEL}">{N}</span> 篇</div>
