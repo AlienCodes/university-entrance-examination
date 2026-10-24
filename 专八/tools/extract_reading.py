@@ -6,6 +6,8 @@
 用户 2026-10-10：专八只要 Section A 的 Passage One、Passage Two、Passage Three 三篇。
 输入：专八/真题/年份年 英语专业八级真题.pdf（2016—2019、2021—2025，2020 年停考），用 pdftotext -layout 提取。
 排序：从新到旧（2025 年在前），同一年按 Passage One、Two、Three；编号 t01 = 2025 年 Passage One … t27 = 2016 年 Passage Three。
+2026 年起新加的年份接在后面编号（t28 = 2026 年 Passage One …），已发布的 t01—t27 不重编；passages.json 按编号排，展示（视频顺序、封面、目录）按年份从新到旧（`order_key`）。
+2026 年的原卷是扫描版（没有文字层）：同目录的 .txt 是识别后逐页对照原图校对的文字，pdftotext 取不到文字时用它。
 分段：专八原文每段以 “(1) (2) …” 编号开头，按编号分段并核对编号连续，成稿去掉段号（与四六级一致）。
 输出：专八/阅读/passages.json（与六级同一格式）、每篇一个文本文件、README.md 目录。
 任何一篇提取异常（找不到起止、段号不连续、字数异常、残留页眉页码、混入题目）都会报错，不输出。
@@ -25,6 +27,7 @@ OUT = ROOT / '阅读'
 NAMES = ('Passage One', 'Passage Two', 'Passage Three')
 HEAD = {'Passage One': r'PASSAGE\s+(?:ONE|1)', 'Passage Two': r'PASSAGE\s+(?:TWO|2)', 'Passage Three': r'PASSAGE\s+(?:THREE|3)'}
 NOISE = re.compile(r'tem8app|言回|burningvocabulary|zhenti|https?:|www\.|^\d+\s*/\s*\d+$|^\d+$')
+BASE_YEAR = 2025                         # t01—t27（2016—2025）已发布，编号固定；以后的年份接在后面
 EDIT_F = HERE / '原文订正.json'
 EDIT = json.loads(EDIT_F.read_text('utf-8')) if EDIT_F.exists() else {}
 
@@ -102,9 +105,13 @@ def paragraphs(raw):
 def main():
     OUT.mkdir(exist_ok=True)
     res, errs = [], []
-    for f in sorted(SRC.glob('*.pdf'), reverse=True):                 # 从新到旧
+    pdfs = sorted(SRC.glob('*.pdf'), reverse=True)                   # 从新到旧
+    pdfs = [f for f in pdfs if int(f.name[:4]) <= BASE_YEAR] + sorted((f for f in pdfs if int(f.name[:4]) > BASE_YEAR), key=lambda f: f.name)
+    for f in pdfs:
         y = int(re.match(r'(\d{4})年', f.name).group(1))
         txt = subprocess.run(['pdftotext', '-layout', str(f), '-'], capture_output=True, text=True, check=True).stdout
+        if not txt.strip():                                           # 扫描版没有文字层：用校对过的识别文字
+            txt = f.with_suffix('.txt').read_text('utf-8')
         try:
             bs = blocks(txt)
         except StopIteration:
@@ -134,8 +141,8 @@ def main():
             res.append({'id': f't{len(res) + 1:02d}', 'year': y, 'month': 3, 'set': 1, 'passage': name,
                         'paper': f'{y}年', 'part': name.split()[1], 'paras': paras, 'words': words,
                         'source': str(f.relative_to(ROOT))})
-    if len(res) != 27:
-        errs.append(f'文章总数 {len(res)} 篇，应为 27 篇（9 套 × 3 篇）')
+    if len(res) != 3 * len(pdfs):
+        errs.append(f'文章总数 {len(res)} 篇，应为 {3 * len(pdfs)} 篇（{len(pdfs)} 套 × 3 篇）')
     tags = {f"{r['paper']} {r['passage']}" for r in res}
     if set(EDIT) - tags:
         errs.append(f'原文订正.json 里有对不上篇目的条目：{sorted(set(EDIT) - tags)}')
@@ -151,7 +158,7 @@ def main():
     seal_f = OUT / '封版.json'
     fp = {f"{r['id']} {r['paper']} {r['passage']}": hashlib.sha256('\n'.join(r['paras']).encode()).hexdigest()[:16] for r in res}
     if '--reseal' in sys.argv:
-        seal_f.write_text(json.dumps({'说明': '专八阅读 Section A 27 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。',
+        seal_f.write_text(json.dumps({'说明': f'专八阅读 Section A {len(res)} 篇精校定稿的文字指纹。文字一改就必须重新精校、重新封版（--reseal）。',
                                       '指纹': fp}, ensure_ascii=False, indent=1), 'utf-8')
     elif seal_f.exists():
         old = json.loads(seal_f.read_text('utf-8'))['指纹']
@@ -168,9 +175,9 @@ def main():
         first = r['paras'][0][:60].rsplit(' ', 1)[0] + ' …'
         rows.append(f"| {r['id']} | {r['year']} | {r['passage']} | {r['words']} | {len(r['paras'])} | {first} |")
     (OUT / 'README.md').write_text(
-        '# 英语专业八级 阅读理解 Section A（2016—2025，共 27 篇）\n\n'
+        f'# 英语专业八级 阅读理解 Section A（2016—{max(r["year"] for r in res)}，共 {len(res)} 篇）\n\n'
         '用户 2026-10-10：只要 Part II Reading Comprehension · Section A 的 Passage One、Two、Three。2020 年停考，无真题。\n'
-        '从新到旧排列，同一年按 Passage One、Two、Three。原文段号 (1)(2)… 已去掉，段落顺序不变。\n\n'
+        '编号：t01—t27 为 2025—2016（从新到旧），2026 年起新加的接在后面（t28 起）。同一年按 Passage One、Two、Three。原文段号 (1)(2)… 已去掉，段落顺序不变。\n\n'
         '| 编号 | 年份 | 篇目 | 词数 | 段数 | 开头 |\n|---|---|---|---|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
     print(f'{len(res)} 篇，共 {sum(r["words"] for r in res)} 词 → {OUT}')
 

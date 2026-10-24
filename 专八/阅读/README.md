@@ -1,7 +1,7 @@
-# 英语专业八级 阅读理解 Section A（2016—2025，共 27 篇）
+# 英语专业八级 阅读理解 Section A（2016—2026，共 30 篇）
 
 用户 2026-10-10：只要 Part II Reading Comprehension · Section A 的 Passage One、Two、Three。2020 年停考，无真题。
-从新到旧排列，同一年按 Passage One、Two、Three。原文段号 (1)(2)… 已去掉，段落顺序不变。
+编号：t01—t27 为 2025—2016（从新到旧），2026 年起新加的接在后面（t28 起）。同一年按 Passage One、Two、Three。原文段号 (1)(2)… 已去掉，段落顺序不变。
 
 | 编号 | 年份 | 篇目 | 词数 | 段数 | 开头 |
 |---|---|---|---|---|---|
@@ -32,3 +32,6 @@
 | t25 | 2016 | Passage One | 975 | 11 | There was music from my neighbor’s house through the summer … |
 | t26 | 2016 | Passage Two | 1021 | 13 | The term “cyberspace” was coined by William Gibson, a … |
 | t27 | 2016 | Passage Three | 962 | 11 | You should treat skeptically the loud cries now coming from … |
+| t28 | 2026 | Passage One | 1060 | 13 | Sally Brown, who was born in Vermont in the early 1800s, … |
+| t29 | 2026 | Passage Two | 967 | 8 | Ancient Chinese paintings can be traced back to as early as … |
+| t30 | 2026 | Passage Three | 835 | 7 | On weekdays the street was very lively. It woke to its work … |
