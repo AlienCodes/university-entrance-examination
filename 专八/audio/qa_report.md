@@ -4,10 +4,10 @@
 
 ## cet4_male
 
-- 文章数：28
+- 文章数：29
 - **响度一致性（第一项检查）**：全部通过
 - 平均自然度：4.47（最低 4.42）
-- 平均识别差异率：1.05%
+- 平均识别差异率：1.04%
 
 | 文章 | 自然度 | 差异率 | 差异（朗读文本 → 识别结果） |
 |---|---|---|---|
@@ -39,3 +39,4 @@
 | t26 | 4.47 | 1.05% | neuromancer → neomancer; fibre → fiber; gregg → greg; organisations → organizations; defences → defenses; cybergeddon → cybergetin; organised → organized; organisations → organizations; defences → defenses; isps → isbs; dubbed → dub |
 | t27 | 4.47 | 0.60% | lax → lacks; true → drew; admissions → admission; strengths → strength; ' → ∅; scholarships → scholarship |
 | t29 | 4.49 | 0.60% | water ink → watering; shi → shir; archeology → archaeology; gu kaizhi → guk haijer |
+| t28 | 4.47 | 0.90% | labour → labor; laboured → labored; labour → labor; humphries → humphreys; schneider → schnader; labour → labor; meagre → meager; laboured → labored; landes → landz; worker's → workers' |
