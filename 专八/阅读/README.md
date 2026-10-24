@@ -33,5 +33,5 @@
 | t26 | 2016 | Passage Two | 1021 | 13 | The term “cyberspace” was coined by William Gibson, a … |
 | t27 | 2016 | Passage Three | 962 | 11 | You should treat skeptically the loud cries now coming from … |
 | t28 | 2026 | Passage One | 1060 | 13 | Sally Brown, who was born in Vermont in the early 1800s, … |
-| t29 | 2026 | Passage Two | 967 | 8 | Ancient Chinese paintings can be traced back to as early as … |
+| t29 | 2026 | Passage Two | 968 | 8 | Ancient Chinese paintings can be traced back to as early as … |
 | t30 | 2026 | Passage Three | 835 | 7 | On weekdays the street was very lively. It woke to its work … |
