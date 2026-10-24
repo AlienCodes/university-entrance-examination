@@ -8,12 +8,13 @@ JPG 供上传；专八/封面/work/（不入库）里有缩略图、B 站信息�
 信息层级：①“专八”全图最大、最醒目（朱红实心粗体）②“真题”（墨底反白）③“用文章记住专八所有重点单词”④真实数字。
 做法照搬考研系列封面（考研/封面/系列封面.py）：主标题用 NotoSansSC Black 实心高对比，水墨只做氛围，不用细楷书做标题。
 封面上的数字全部从 专八/data/vocab.json 现算（27 篇、1279 句、不重复词条 5150 → “5000+”只往下取整，不夸大）。
-v2（2026-10-24，30 篇含 2026）：/opt/ttsenv/bin/python 专八/封面/系列封面.py --v2 草稿 | --v2 定稿 A | --自检
+v2（2026-10-24，30 篇含 2026）：/opt/ttsenv/bin/python 专八/封面/系列封面.py --v2 草稿 | --v2 定稿 E | --自检
 按 B 站手机信息流缩略图（320×180）设计：一个焦点 + 一个钩子（2026 已更新），年份新的在前（2026—2016）；
-定稿 A 出 专八阅读真题30篇_封面v2_16比9 / _4比3（PNG + JPG），B、C 出 16:9 备选 JPG；旧 27 / 30 篇版文件不动。
+定稿 E（D + 3 位英专生评审意见）出 专八阅读真题30篇_封面v2_16比9 / _4比3（PNG + JPG），A—D 出 16:9 备选 JPG；旧 27 / 30 篇版文件不动。
 渲染后程序自查：缩略图字高（踩坑 76）、文字不出画、不进 B 站左下（播放量）/右下（时长）遮挡区、关键元素互不重叠、字体全部加载。
 """
 import json
+import re
 import sys
 from pathlib import Path
 from urllib.parse import quote
@@ -281,6 +282,45 @@ def v2_D(w=1920, h=1080):
 {cards(1470, 760, 360)}"""
 
 
+def v2_E(w=1920, h=1080):
+    """E 定稿（D + 3 位评审意见）：痛点问句放大占一行；标题加“阅读”（不被当成背单词视频）；删掉手机上读不出的小标签和小截图；“30 篇全收录”放大。"""
+    return f"""
+<div class="moon" style="left:1380px;top:-120px;width:620px;height:620px"></div>
+<div class="mtn"></div>
+<div class="wcard" style="left:44px;top:40px;width:1360px;height:900px"></div>
+<div class="ab" data-k="pain" data-min="{MIN_SELL}" style="left:100px;top:80px;font:900 {fs(88)}/1.2 Black;color:#fff;padding:6px 40px 14px;
+  background:{KY};border-radius:60px;box-shadow:0 8px 0 rgba(0,0,0,.18)">单词书背了就忘？</div>
+<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:88px;top:250px;font:900 {fs(198)}/1 Black;letter-spacing:-.02em">
+  <span style="color:{KY};text-shadow:0 .04em 0 rgba(30,27,23,.18)">专八</span>阅读<span class="zt" style="margin-left:.06em">真题</span></div>
+<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:100px;top:500px;font:900 {fs(84)}/1.25 Black;color:{INK2}">在真题文章里记住<br>
+  <span style="color:{INK};font-size:1.5em">专八<span class="mk" style="color:{BLUE}">所有重点单词</span></span></div>
+<div class="ab" data-k="facts" style="left:104px;top:808px;font:700 46px/1.3 Bold;color:{INK2}"><span style="color:{KY}">{SENTS}</span> 句一句一屏逐句精读 · <span style="color:{KY}">{UNIQ_V2}</span> 词条全标注 · 4K 大字版</div>
+{seal(1440, 70, 400)}
+<div class="ab" data-k="years" style="left:1430px;top:560px;color:{PAPER};text-align:center;width:430px">
+  <div style="font:900 72px/1.1 Black"><span class="lat" style="font-size:2.1em;color:{YEL}">{N}</span> 篇</div>
+  <div style="font:900 60px/1.3 Black">真题全收录</div>
+  <div style="font:900 44px/1.5 Black;opacity:.9"><span class="lat">{YEARS_NEW}</span></div></div>"""
+
+
+def v2_E43(w=1440, h=1080):
+    return f"""
+<div class="moon" style="left:960px;top:-120px;width:560px;height:560px"></div>
+<div class="mtn"></div>
+<div class="wcard" style="left:36px;top:40px;width:1000px;height:900px"></div>
+<div class="ab" data-k="pain" data-min="{MIN_SELL}" style="left:80px;top:80px;font:900 {fs(76)}/1.2 Black;color:#fff;padding:6px 36px 12px;
+  background:{KY};border-radius:56px;box-shadow:0 8px 0 rgba(0,0,0,.18)">单词书背了就忘？</div>
+<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:70px;top:236px;font:900 {fs(152)}/1 Black;letter-spacing:-.03em">
+  <span style="color:{KY};text-shadow:0 .04em 0 rgba(30,27,23,.18)">专八</span>阅读<span class="zt" style="margin-left:.05em">真题</span></div>
+<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:80px;top:440px;font:900 {fs(70)}/1.25 Black;color:{INK2}">在真题文章里记住<br>
+  <span style="color:{INK};font-size:1.45em">专八<span class="mk" style="color:{BLUE}">所有重点单词</span></span></div>
+<div class="ab" data-k="facts" style="left:84px;top:730px;width:900px;white-space:normal;font:700 40px/1.5 Bold;color:{INK2}"><span style="color:{KY}">{SENTS}</span> 句一句一屏逐句精读<br><span style="color:{KY}">{UNIQ_V2}</span> 词条全标注 · 4K 大字版</div>
+{seal(1066, 66, 330)}
+<div class="ab" data-k="years" style="left:1056px;top:500px;color:{PAPER};text-align:center;width:350px">
+  <div style="font:900 60px/1.1 Black"><span class="lat" style="font-size:2.1em;color:{YEL}">{N}</span> 篇</div>
+  <div style="font:900 50px/1.3 Black">真题全收录</div>
+  <div style="font:900 38px/1.5 Black;opacity:.9"><span class="lat">{YEARS_NEW}</span></div></div>"""
+
+
 def v2_A43(w=1440, h=1080):
     return f"""
 <div class="moon" style="left:960px;top:-120px;width:560px;height:560px"></div>
@@ -376,8 +416,8 @@ def phone(png, name):
     im.resize((w // 3, h // 3), Image.LANCZOS).resize((w, h), Image.NEAREST).save(WORK / f'{name}_手机1倍屏放大.png')
 
 
-V2 = {'A': v2_A, 'B': v2_B, 'C': v2_C, 'D': v2_D}
-V2_43 = {'A': v2_A43}
+V2 = {'A': v2_A, 'B': v2_B, 'C': v2_C, 'D': v2_D, 'E': v2_E}
+V2_43 = {'A': v2_A43, 'E': v2_E43}
 
 
 def run_v2(args):
@@ -396,16 +436,19 @@ def run_v2(args):
             for f, w, h, k in jobs:
                 for kk, expect in ((1.0, False), (0.5, True)):
                     K = kk
-                    _, res = render(br, f(), w, h, f'自检_{k}', WORK)
+                    body = f()
+                    _, res = render(br, body, w, h, f'自检_{k}', WORK)
                     hit = {x.split()[0] for x in res['problems'] if '缩略图字高' in x}
-                    need = {'title', 'hook', 'sell'} if expect else set()
+                    need = set(re.findall(r'data-k="(\w+)" (?:data-bleed="1" )?data-min=', body)) if expect else set()
+                    if expect and not {'title', 'hook', 'sell'} <= need:
+                        bad.append(f'{k} 缺少 data-min 元素：{sorted(need)}')
                     if hit != need:
                         bad.append(f'{k} 字号×{kk}：报出 {sorted(hit)}，应为 {sorted(need)}')
                     if not expect and res['problems']:
                         bad += [f'{k}: {x}' for x in res['problems']]
             K = 1.0
             br.close()
-            print('\n'.join(bad) or '自检通过：正常字号 0 处；字号×0.5 时 title / hook / sell 全部报出（每个版式）')
+            print('\n'.join(bad) or '自检通过：正常字号 0 处；字号×0.5 时每个 data-min 元素（title / hook / sell / pain）全部报出（每个版式）')
             sys.exit(1 if bad else 0)
         final = args[1] if args[0] == '定稿' else None
         jobs = []
