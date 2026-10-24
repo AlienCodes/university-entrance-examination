@@ -94,8 +94,28 @@ def v2_check(t):
     return errs
 
 
+# v2 粉丝动态（用户 2026-10-24：最多不超过 230 字），与 v2 封面、简介呼应
+DYN_V2_MAX = 230
+DYN_V2 = (f'📢 专八阅读真题 {Y1} 年 {N_NEW} 篇已更新！\n'
+          f'单词书背了就忘？换个记法：在专八阅读真题文章里记住专八重点单词。\n'
+          f'{Y1}—{Y0} 共 {N} 篇全收录，{SENTS} 句一句一屏逐句精读：英文朗读 + 中文翻译 + 生词编号注释，'
+          f'标注 {UNIQ} 个单词和短语，4K 大字版，手机上也看得清。\n'
+          f'一天 1 篇，一个月读完 {N} 篇。备考专八的英专同学先收藏，也转给一起考专八的同学吧～')
+
+
+def dyn_check(t):
+    import re
+    ok = {str(x) for x in (N, SENTS, UNIQ, Y0, Y1, N_NEW, 1, 4)}
+    errs = [f'粉丝动态 {len(t)} 字，超过 {DYN_V2_MAX}'] if len(t) > DYN_V2_MAX else []
+    errs += [f'数字 {x} 不是从数据算出来的' for x in re.findall(r'\d+', t) if x not in ok]
+    errs += [f'夸大说法：{b}' for b in V2_BANNED if b in t]
+    errs += [f'缺：{k}' for k in ('专八阅读', '专八真题' if '专八真题' in t else '真题', '单词书背了就忘', f'{Y1}', f'{N} 篇') if k not in t]
+    return errs
+
+
 if '--简介v2' in sys.argv or '--简介v2自检' in sys.argv:
     T2 = v2_desc()
+    D2 = DYN_V2
     if '--简介v2自检' in sys.argv:               # 双向验证：正常 0 处；放进错数字、夸大说法、删掉说明，都必须报出
         bad = []
         if v2_check(T2):
@@ -105,14 +125,20 @@ if '--简介v2' in sys.argv or '--简介v2自检' in sys.argv:
                         ('前两行没钩子', T2.replace('单词书背了就忘？', '', 1))]:
             if not v2_check(t):
                 bad.append(f'埋雷“{name}”没报出')
-        print('\n'.join(bad) or '简介 v2 自检通过：正常 0 处，5 种埋雷全部报出')
+        if dyn_check(D2):
+            bad.append(f'正常粉丝动态报错：{dyn_check(D2)}')
+        for name, t in [('超 230 字', D2 + '啊' * (DYN_V2_MAX - len(D2) + 1)), ('错数字', D2.replace(str(UNIQ), '6000', 1)), ('夸大', D2 + '包过')]:
+            if not dyn_check(t):
+                bad.append(f'粉丝动态埋雷“{name}”没报出')
+        print('\n'.join(bad) or '简介 v2 自检通过：正常 0 处，简介 5 种、粉丝动态 3 种埋雷全部报出')
         sys.exit(1 if bad else 0)
-    e = v2_check(T2)
+    e = v2_check(T2) + dyn_check(D2)
     if e:
         print('简介 v2 检查不通过：\n  ' + '\n  '.join(e))
         sys.exit(1)
     (HERE / f'B站简介_v2_{N}篇.txt').write_text(T2, 'utf-8')
-    print(f'B站简介_v2_{N}篇.txt {len(T2)} 字，检查通过')
+    (HERE / f'B站粉丝动态_v2_{N}篇.txt').write_text(D2, 'utf-8')
+    print(f'B站简介_v2_{N}篇.txt {len(T2)} 字、B站粉丝动态_v2_{N}篇.txt {len(D2)} 字，检查通过')
     sys.exit(0)
 
 
