@@ -23,6 +23,9 @@ jobs:
       tag: ${{ steps.list.outputs.tag }}
       ids: ${{ steps.list.outputs.ids }}
       n: ${{ steps.list.outputs.n }}
+      rel: ${{ steps.list.outputs.rel }}
+      project: ${{ steps.list.outputs.project }}
+      zip: ${{ steps.list.outputs.zip }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -57,9 +60,11 @@ jobs:
           assert not bad, f'没有这些篇目：{bad}'
           assert len(set(ids)) == len(ids), f'篇目重复：{ids}'
           ids = [x for x in P if x in ids]                       # 按篇目顺序
+          y26 = tag.startswith('tem8-ink-2026')                  # 2026 年三篇单独发 Release tem8-ink-2026（27 篇的 tem8-ink 不动）
+          rel, proj, zp = ('tem8-ink-2026', '专八水墨2026', 'TEM8-ink-2026-videos') if y26 else (os.environ['RELEASE_TAG'], '专八水墨', 'TEM8-ink-videos')
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write(f'tag={tag}\nids={json.dumps(ids)}\nn={len(ids)}\n')
-          print(f'标签 {tag}（{"试跑，不发布" if tag.startswith("test") else "发布 Release " + os.environ["RELEASE_TAG"]}），生成 {len(ids)} 篇：{" ".join(ids)}')
+              f.write(f'tag={tag}\nids={json.dumps(ids)}\nn={len(ids)}\nrel={rel}\nproject={proj}\nzip={zp}\n')
+          print(f'标签 {tag}（{"试跑，不发布" if tag.startswith("test") else "发布 Release " + rel}），生成 {len(ids)} 篇：{" ".join(ids)}')
           PY
       - name: Release 目标检查（踩坑 53：不许钉在触发提交上，否则运行期间改过工作流就 403）
         run: python3 .github/check-release-target.py
@@ -82,8 +87,12 @@ jobs:
                  if reg.get(f'{x}@C', {}).get('指纹') != M.fingerprint(x, 'C')]
           if bad:
               sys.exit('这些篇目不能生成（截图审阅登记与现在的程序和数据不一致）：\n  ' + '\n  '.join(bad))
+          y26 = os.environ['TAG'].startswith('tem8-ink-2026')
+          P = [p for p in P if (p['year'] == 2026) == y26]                 # 2026 版只放 2026 年三篇；否则照旧 27 篇
+          N = 3 if y26 else 27
+          assert all(x in {p['id'] for p in P} for x in ids), f'篇目不属于本次发布：{ids}'
           man = {'tag': os.environ['TAG'], 'render': ids, 'passages': [{'id': p['id'], 'name': M.video_name(p)} for p in P]}
-          assert len(man['passages']) == 27 and len({e['name'] for e in man['passages']}) == 27
+          assert len(man['passages']) == N and len({e['name'] for e in man['passages']}) == N
           json.dump(man, open('manifest/manifest.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
           print(f'{len(ids)} 篇的审阅登记都与现在的程序和数据一致；manifest 10 篇')
           PY
@@ -225,6 +234,9 @@ jobs:
     timeout-minutes: 120
     env:
       TAG: ${{ needs.prep.outputs.tag }}
+      RELEASE_TAG: ${{ needs.prep.outputs.rel }}
+      PROJECT: ${{ needs.prep.outputs.project }}
+      ZIPPRE: ${{ needs.prep.outputs.zip }}
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
@@ -252,7 +264,7 @@ jobs:
           path: artifacts
       - name: 汇总、核对、打包（Python zipfile 核对）、写发布说明
         run: |
-          PROJECT=专八水墨 python3 .github/cet6-chalk-pack.py
+          python3 .github/cet6-chalk-pack.py
           cat timing.md
       - name: 发布 Release（用 gh；标签以 test 开头的试跑不发布）
         if: ${{ !startsWith(needs.prep.outputs.tag, 'test') }}
@@ -261,12 +273,13 @@ jobs:
           mapfile -t zips < zips.txt
           n=$(grep -c '^| [0-9]' notes.md)
           title="专八阅读精读视频 · 书卷水墨大字版（${n} 个）"
+          [ "$RELEASE_TAG" = tem8-ink-2026 ] && title="专八阅读精读视频 · 书卷水墨大字版 · 2026 年（${n} 个）"
           publish() {      # 每条命令都显式 || return 1（函数在 && 里调用时 set -e 不生效）
             if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
               gh release upload "$RELEASE_TAG" "${zips[@]}" --clobber || return 1
               gh release edit "$RELEASE_TAG" --title "$title" --notes-file notes.md || return 1
               for a in $(gh release view "$RELEASE_TAG" --json assets -q '.assets[].name'); do      # 旧的分包（包数变了）删掉
-                case "$a" in TEM8-ink-videos-part*.zip) printf '%s\n' "${zips[@]}" | grep -qx "$a" || gh release delete-asset "$RELEASE_TAG" "$a" -y || return 1 ;; esac
+                case "$a" in "$ZIPPRE"-part*.zip) printf '%s\n' "${zips[@]}" | grep -qx "$a" || gh release delete-asset "$RELEASE_TAG" "$a" -y || return 1 ;; esac
               done
             else
               gh release create "$RELEASE_TAG" "${zips[@]}" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md || return 1
@@ -286,7 +299,7 @@ jobs:
           import json, os
           from pathlib import Path
           zips = Path('zips.txt').read_text('utf-8').split()
-          got = {a['name']: a['size'] for a in json.load(open('assets.json'))['assets'] if a['name'].startswith('TEM8-ink-videos-part')}
+          got = {a['name']: a['size'] for a in json.load(open('assets.json'))['assets'] if a['name'].startswith(os.environ['ZIPPRE'] + '-part')}
           want = {z: os.path.getsize(z) for z in zips}
           assert got == want, f'Release 附件与本地不一致：{got} ≠ {want}'
           print(f'Release {os.environ["RELEASE_TAG"]}：{len(got)} 个附件，名字与大小都与本地 zip 相同')
