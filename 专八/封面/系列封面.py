@@ -261,6 +261,26 @@ def v2_C(w=1920, h=1080):
 <img class="card" data-k="card1" src="{shot('front')}" style="left:930px;top:360px;width:900px;transform:rotate(-2deg)">"""
 
 
+def v2_D(w=1920, h=1080):
+    """D 痛点提问：A 的版式，题签换成英专生的痛点“单词书背了就忘？”，卖点改成答案“在真题文章里记住”；右栏“30 篇 / 一句一屏”。"""
+    return f"""
+<div class="moon" style="left:1380px;top:-120px;width:620px;height:620px"></div>
+<div class="mtn"></div>
+<div class="wcard" style="left:44px;top:40px;width:1360px;height:900px"></div>
+<div class="ab" data-k="pain" data-min="{MIN_SELL}" style="left:104px;top:84px;font:900 {fs(66)}/1.2 Black;color:{KY};padding:4px 30px 10px;
+  border:6px solid {KY};border-radius:44px;background:#fff">单词书背了就忘？</div>
+<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:92px;top:200px;font:900 {fs(262)}/1 Black;letter-spacing:-.02em">
+  <span style="color:{KY};text-shadow:0 .04em 0 rgba(30,27,23,.18)">专八</span><span class="zt" style="margin-left:.08em">真题</span></div>
+<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:104px;top:500px;font:900 {fs(84)}/1.25 Black;color:{INK2}">在真题文章里记住<br>
+  <span style="color:{INK};font-size:1.36em">专八<span class="mk" style="color:{BLUE}">所有重点单词</span></span></div>
+<div class="ab" data-k="facts" style="left:104px;top:812px">{facts(44, n=False)}</div>
+{seal(1440, 70, 400)}
+<div class="ab" data-k="years" style="left:1452px;top:540px;color:{PAPER};text-align:center;width:390px">
+  <div style="font:900 64px/1.1 Black"><span class="lat" style="font-size:1.9em;color:{YEL}">{N}</span> 篇全收录</div>
+  <div style="font:900 40px/1.5 Black;opacity:.92"><span class="lat">{YEARS_NEW}</span></div></div>
+{cards(1470, 760, 360)}"""
+
+
 def v2_A43(w=1440, h=1080):
     return f"""
 <div class="moon" style="left:960px;top:-120px;width:560px;height:560px"></div>
@@ -356,7 +376,7 @@ def phone(png, name):
     im.resize((w // 3, h // 3), Image.LANCZOS).resize((w, h), Image.NEAREST).save(WORK / f'{name}_手机1倍屏放大.png')
 
 
-V2 = {'A': v2_A, 'B': v2_B, 'C': v2_C}
+V2 = {'A': v2_A, 'B': v2_B, 'C': v2_C, 'D': v2_D}
 V2_43 = {'A': v2_A43}
 
 
