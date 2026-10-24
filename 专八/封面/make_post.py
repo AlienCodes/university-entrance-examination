@@ -27,7 +27,8 @@ ALTS = [f'【专八真题】{Y0}—{Y1}英语专业八级阅读{N}篇全收录�
         f'专八词汇别死背！{N}篇专八阅读真题帮你记住{U}重点单词｜英语专业八级TEM-8逐句精读 {Y0}—{Y1}']
 TAGS = ['专八', '英语专业八级', '专八阅读', '专八真题', '专八词汇', '专八单词', 'TEM8', '英专', '英语精读', '逐句翻译']
 
-CAT = '\n'.join(f"P{i} {p['year']} {p['passage']} {p['title']}" for i, p in enumerate(P, 1))
+PS = sorted(P, key=lambda p: -p['year'])        # 目录按年份从新到旧（同一年 Passage One—Three 顺序不变）
+CAT = '\n'.join(f"P{i} {p['year']} {p['passage']} {p['title']}" for i, p in enumerate(PS, 1))
 DESC = f"""【这是什么】{Y0}—{Y1} 年英语专业八级（专八 / TEM-8）阅读真题 {N} 篇全收录（每年 Passage One—Three，2020 年停考），一句一屏逐句精读，用真题文章记忆专八重点词汇：{N} 篇共 {WORDS} 词、{SENTS} 句，标注 {UNIQ} 个单词和短语。
 【视频里有什么】逐句朗读 + 逐句中文翻译 + 生词短语编号注释（词性 + 中文释义），4K 大字版，手机上也看得清。
 【适合谁】备考专八的英专生、想积累专八词汇 / 专八单词的同学、练英语精读和阅读理解的同学。
@@ -50,7 +51,7 @@ if errs:
     sys.exit('文案检查不通过：\n  ' + '\n  '.join(errs))
 
 alts = '\n'.join(f'- 备选 {i}（{len(a)} 字）：{a}' for i, a in enumerate(ALTS, 1))
-(HERE / 'B站上传文案.md').write_text(f"""# 专八阅读真题 {N} 篇 · B 站上传文案
+(HERE / ('B站上传文案.md' if N == 27 else f'B站上传文案_{N}篇.md')).write_text(f"""# 专八阅读真题 {N} 篇 · B 站上传文案
 
 由 `专八/封面/make_post.py` 从 `专八/data/vocab.json` 生成，数字与视频、封面一致；字数已按 B 站限制检查（标题 ≤ {TITLE_MAX} 字、简介 ≤ {DESC_MAX} 字、标签 ≤ {TAG_MAX} 个且每个 ≤ {TAG_LEN} 字、粉丝动态 ≤ {DYN_MAX} 字）。
 
@@ -76,6 +77,34 @@ alts = '\n'.join(f'- 备选 {i}（{len(a)} 字）：{a}' for i, a in enumerate(A
 
 `专八/封面/系列封面/专八阅读真题{N}篇_封面_16比9.jpg`、`专八阅读真题{N}篇_封面_4比3.jpg`
 """, 'utf-8')
+FINE = f"""专八词汇别再死背单词书了！{Y0}—{Y1} 专八阅读真题 {N} 篇全收录，一句一屏逐句精读，在真题文章里记住 {UNIQ} 个专八重点单词和短语。
+
+📌 视频里有什么
+✅ 真题原文：英语专业八级（TEM-8）{Y0}—{Y1} 每年 Passage One—Three（2020 年停考），共 {N} 篇、{WORDS} 词、{SENTS} 句
+✅ 一句一屏：逐句朗读 + 逐句中文翻译，边听边看
+✅ 生词全标注：{UNIQ} 个单词和短语编号注释（词性 + 中文释义），单词蓝色、短语绿色，一眼分清
+✅ 4K 大字版：手机上也看得清清楚楚
+
+📖 推荐用法（每天 1 篇，{N} 天刷完）
+① 先不看翻译，听一遍原文，记下没听懂、不认识的地方
+② 再逐句暂停，看翻译和生词注释，跟着读一遍
+③ 第二天先回看前一天的生词，在文章里复习，比背词表记得牢
+
+🎯 适合谁
+备考专八的英专生；想系统积累专八词汇、专八单词的同学；想练英语精读、阅读理解和翻译的同学
+
+📂 目录（按年份从新到旧，点分P直接看）
+{CAT}
+
+💬 评论区告诉我：你今年考专八吗？最想先看哪一年？
+觉得有用就点赞、收藏起来慢慢刷，转给一起备考的同学，专八一起加油！"""
+assert len(FINE) <= DESC_MAX, f'精修版简介 {len(FINE)} 字，超过 {DESC_MAX}'
+FP = HERE / f'B站简介精修版_{N}篇.txt'
+if N == 27:          # 27 篇版是人工精修定稿：程序生成的必须与它逐字相同（证明模板与定稿一致），不覆盖
+    assert FP.read_text('utf-8') == FINE, '精修版模板与 27 篇定稿不一致'
+else:
+    FP.write_text(FINE, 'utf-8')
+print(FP.name, len(FINE), '字')
 print(TITLE, len(TITLE))
 for a in ALTS:
     print(a, len(a))

@@ -36,8 +36,11 @@ for p in _P:
     _PER.setdefault(p['year'], set()).add(p['passage'])
 # 每年 Passage One/Two/Three 三篇都在（2020 年专八停考），“真题全收录”才成立
 assert all(v == {'Passage One', 'Passage Two', 'Passage Three'} for v in _PER.values()) and 2020 not in _PER
-assert N == 27 and all(p.get('done') for p in _P)
-assert SENTS == 1279 and UNIQ == 5150 and YEARS == '2016—2025', (SENTS, UNIQ, YEARS)      # 数据一改就停下，先核对封面上的说法
+# 数据一改就停下，先核对封面上的说法。27 篇版（2016—2025）是 git 版本 99fab65 的数据；30 篇版加 2026 三篇（2026-10-24）。
+# 文件名带篇数，30 篇版另存新文件，不覆盖已发布的 27 篇版。
+_KNOWN = {27: (1279, 5150, '2016—2025'), 30: (1416, 5637, '2016—2026')}
+assert N in _KNOWN and all(p.get('done') for p in _P)
+assert (SENTS, UNIQ, YEARS) == _KNOWN[N], (SENTS, UNIQ, YEARS)
 UNIQ_TXT = f'{UNIQ // 1000 * 1000}+'          # 5150 → “5000+”，只往下取整，不夸大
 
 # 书卷水墨配色（专八/tools/样式.css、样式/C_水墨大字.css）；“专八”用比视频朱砂更亮的朱红——宣纸上最跳
@@ -241,8 +244,8 @@ if __name__ == '__main__':
     bad = []
     with sync_playwright() as p:
         br = p.chromium.launch(executable_path='/opt/pw-browsers/chromium')
-        for body, w, h, name, tsize in [(body_169(), 1920, 1080, '专八阅读真题27篇_封面_16比9', (320, 180)),
-                                        (body_43(), 1440, 1080, '专八阅读真题27篇_封面_4比3', (240, 180))]:
+        for body, w, h, name, tsize in [(body_169(), 1920, 1080, f'专八阅读真题{N}篇_封面_16比9', (320, 180)),
+                                        (body_43(), 1440, 1080, f'专八阅读真题{N}篇_封面_4比3', (240, 180))]:
             png, res = render(br, body, w, h, name)
             im = Image.open(png)
             assert im.size == (w * 2, h * 2), im.size

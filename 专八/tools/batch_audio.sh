@@ -13,7 +13,7 @@ for id in "$@"; do
   git add 专八/audio && git commit -q -m "专八音频：$id 及自检（识别分诊$([ $tri = 0 ] && echo 通过 || echo 有待核)）
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01Bo2nvX3EdvyJhDdDqVayNH" && git push -q -u origin claude/epic-edison-4gkcfb
+Claude-Session: https://claude.ai/code/session_01WhDnYj6UxZLetru7tKTw6Y" && git push -q -u origin claude/epic-edison-4gkcfb
   [ $tri = 0 ] || { echo "停止：$id 识别分诊有待核（见上面），改读音、试合成确认后从 $id 重跑"; exit 1; }
 done
 echo 全部完成
