@@ -37,6 +37,85 @@ DESC = f"""【这是什么】{Y0}—{Y1} 年英语专业八级（专八 / TEM-8�
 {CAT}"""
 DYN = f'专八阅读真题{N}篇逐句精读来啦！{Y0}—{Y1}年英语专业八级阅读全收录，逐句朗读+逐句翻译+生词注释，用文章记住专八{U}重点词汇，英专备考收藏起来慢慢刷～'
 
+# ───────────── v2 简介（2026-10-24 重做，与 v2 封面呼应）─────────────
+# 3 个角度起草（痛点 / 2026 更新 / 方法）→ 3 位英专生盲评（乙 22、丙 21.5、甲 19 分）→ 合成定稿；评审挑出的夸大说法全部不用。
+# 正文模板里的数字全部从 vocab.json 现算；目录由程序生成（按年份从新到旧）。输出 B站简介_v2_{N}篇.txt，不覆盖旧精修版。
+N_NEW = sum(p['year'] == Y1 for p in P)
+V2_HEAD = """单词书背了就忘？在专八阅读真题文章里记住专八重点单词：一句一屏，朗读 + 翻译 + 生词注释。
+🆕 {Y1} 年 {N_NEW} 篇已更新｜{Y1}—{Y0} 共 {N} 篇、{SENTS} 句全收录。
+同一个词，放回它在考试里出现的那句话，更容易记住。
+
+📚 收录范围
+英语专业八级（专八 / TEM-8）阅读真题，{Y1}—{Y0} 每年 Passage One—Three 全部收录（2020 年停考），共 {N} 篇。
+P1—P{N_NEW} 就是 {Y1} 年最新的 {N_NEW} 篇。明年要考、想先熟悉专八真题的英专同学，现在就能用上。
+
+📊 一共有多少内容
+{N} 篇共 {WORDS} 词、{SENTS} 句，标注了 {UNIQ} 个不重复的单词和短语。每个标注的词都在它出现的那一句里就地注释，专八词汇在真题句子里一句一句读到。
+
+🎬 画面怎么看
+· 一句一屏：英文男声逐句朗读，同屏显示这一句的中文翻译
+· 生词带编号注释：词性 + 中文释义，单词蓝色、短语绿色
+· 4K 大字版，手机上也看得清
+
+✍️ 建议这样用
+一天 1 篇，一个月读完 {N} 篇。第一遍跟着朗读，把每一句读懂；第二遍看到编号的专八单词先停一下，自己想意思，再看注释。
+
+⚠️ 先说清楚
+这是真题文章的逐句精读，视频里没有题目、选项、答案和解析，也不讲做题技巧。可以先用自己的真题册做题，做完再来逐句精读。适合想把专八阅读文章真正读懂、顺带积累专八词汇的英专同学。
+
+📖 分P目录（点分P直接跳到对应篇目）"""
+V2_TAIL = """觉得有用就先收藏，备考时随时回来翻；也可以转给一起考专八的同学。
+哪句翻译或注释你觉得不准确，欢迎在评论区指出，我会一条条看、认真改。哪一篇读得最吃力？也在评论区告诉我 👇"""
+# 评审指出的夸大 / 与画面不符的说法：一律不许出现
+V2_BANNED = ['不用单独去背', '都标出来', '都放回', '复盘', '遮住翻译', '只听朗读', '系统积累', '比单词表', '一篇读不完', '所有重点', '包过', '必过', '命中']
+V2_KEYS = ['专八', '专八阅读', '专八真题', '专八词汇', '专八单词', '英语专业八级', 'TEM-8', '英专']
+
+
+def v2_desc():
+    return V2_HEAD.format(N=N, SENTS=SENTS, UNIQ=UNIQ, WORDS=WORDS, Y0=Y0, Y1=Y1, N_NEW=N_NEW) + '\n' + CAT + '\n\n' + V2_TAIL
+
+
+def v2_check(t):
+    import re
+    errs = []
+    if len(t) > DESC_MAX:
+        errs.append(f'简介 {len(t)} 字，超过 {DESC_MAX}')
+    ok = {str(x) for x in (N, SENTS, UNIQ, WORDS, Y0, Y1, 2020, N_NEW, 1, 4)} | {str(i) for i in range(1, N + 1)}
+    body = t.replace(CAT, '')
+    errs += [f'数字 {x} 不是从数据算出来的' for x in re.findall(r'\d+', body) if x not in ok]
+    errs += [f'夸大说法：{b}' for b in V2_BANNED if b in t]
+    errs += [f'缺搜索词：{k}' for k in V2_KEYS if k not in t]
+    if '没有题目、选项、答案和解析' not in t:
+        errs.append('缺“视频里没有题目、选项、答案和解析”的说明（不许让人以为有讲解）')
+    top = '\n'.join(t.splitlines()[:2])               # 手机上折叠时露出的前两行
+    errs += [f'前两行缺：{k}' for k in ('专八', '单词书背了就忘', str(Y1), f'{N} 篇') if k not in top]
+    if CAT not in t:
+        errs.append('目录不是程序生成的那份')
+    return errs
+
+
+if '--简介v2' in sys.argv or '--简介v2自检' in sys.argv:
+    T2 = v2_desc()
+    if '--简介v2自检' in sys.argv:               # 双向验证：正常 0 处；放进错数字、夸大说法、删掉说明，都必须报出
+        bad = []
+        if v2_check(T2):
+            bad.append(f'正常简介报错：{v2_check(T2)}')
+        for name, t in [('错数字', T2.replace(str(SENTS), str(SENTS + 4), 1)), ('夸大', T2 + '专八词汇不用单独去背'),
+                        ('删说明', T2.replace('没有题目、选项、答案和解析', '有题目')), ('超长', T2 + '啊' * 2000),
+                        ('前两行没钩子', T2.replace('单词书背了就忘？', '', 1))]:
+            if not v2_check(t):
+                bad.append(f'埋雷“{name}”没报出')
+        print('\n'.join(bad) or '简介 v2 自检通过：正常 0 处，5 种埋雷全部报出')
+        sys.exit(1 if bad else 0)
+    e = v2_check(T2)
+    if e:
+        print('简介 v2 检查不通过：\n  ' + '\n  '.join(e))
+        sys.exit(1)
+    (HERE / f'B站简介_v2_{N}篇.txt').write_text(T2, 'utf-8')
+    print(f'B站简介_v2_{N}篇.txt {len(T2)} 字，检查通过')
+    sys.exit(0)
+
+
 errs = [f'{n} {len(t)} 字，超过 {TITLE_MAX}' for n, t in [('标题', TITLE)] + [(f'备选{i}', a) for i, a in enumerate(ALTS, 1)] if len(t) > TITLE_MAX]
 if len(DESC) > DESC_MAX:
     errs.append(f'简介 {len(DESC)} 字，超过 {DESC_MAX}')
