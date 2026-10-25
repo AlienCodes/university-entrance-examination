@@ -170,19 +170,19 @@ body{font-family:'TNR','Liberation Serif','Noto Serif SC';font-weight:400;positi
 .top{position:absolute;left:90px;right:90px;top:0;height:118px;border-bottom:2px solid #000;display:flex;align-items:center}
 .top b{font-weight:700;font-size:40px;white-space:nowrap}
 .top b em{font-style:normal;margin-right:60px}
-.st{font-family:'Noto Serif SC','TNR';font-size:36px;white-space:nowrap;margin-left:auto;margin-right:30px}
+.st{font-family:'Noto Serif SC','TNR';font-weight:700;font-size:36px;white-space:nowrap;margin-left:auto;margin-right:30px}
 .cd{display:flex;align-items:baseline;gap:14px;border:3px solid #000;padding:2px 22px 4px;white-space:nowrap}
-.cd i{font-style:normal;font-family:'Noto Serif SC';font-size:32px}
+.cd i{font-style:normal;font-family:'Noto Serif SC';font-weight:700;font-size:32px}
 .cd span{font-weight:700;font-size:66px;line-height:80px;font-variant-numeric:tabular-nums;min-width:120px;text-align:right}
 .main{position:absolute;left:90px;right:90px;top:156px;bottom:44px}
 .foot{display:none}
-.ttl{position:absolute;left:0;right:0;top:110px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+.ttl{position:absolute;left:0;right:0;top:80px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
 .ttl h1{font-weight:700;font-size:80px;line-height:1.15}
 .ttl h2{font-weight:700;font-size:80px;line-height:1.1}
 .ttl .tl{font-weight:700;font-size:46px;align-self:flex-end;margin-right:220px}
 .ttl .pt{font-weight:700;font-size:56px;width:1560px;display:flex;justify-content:space-between;margin-top:46px}
-.ttl .zh{font-family:'Noto Serif SC';font-size:56px;margin-top:40px}
-.ttl .note{font-family:'Noto Serif SC';font-size:36px;line-height:1.3}
+.ttl .zh{font-family:'Noto Serif SC';font-weight:700;font-size:84px;margin-top:44px}
+.ttl .note{font-family:'Noto Serif SC';font-weight:700;font-size:58px;line-height:1.3}
 .sec{font-weight:700;font-size:52px;margin-bottom:34px;white-space:nowrap}
 .sec em{font-style:normal;margin-right:30px}
 .instr{font-weight:700;font-style:italic;font-size:56px;line-height:1.55;text-wrap:pretty}
@@ -207,12 +207,12 @@ body{font-family:'TNR','Liberation Serif','Noto Serif SC';font-weight:400;positi
 .ql .opt{font-size:68px;line-height:112px;display:flex}
 .ql .opt b{width:90px;flex:none}
 .end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px;text-align:center}
-.end h1{font-weight:700;font-size:68px;line-height:1.3}.end p{font-family:'Noto Serif SC';font-size:46px}
+.end h1{font-weight:700;font-size:68px;line-height:1.3}.end p{font-family:'Noto Serif SC';font-weight:700;font-size:52px}
 .ans{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(8,auto);grid-auto-flow:column;column-gap:70px;row-gap:6px}
 .ans div{font-size:46px;line-height:68px;border-bottom:1px solid #000;display:flex;flex-wrap:wrap;column-gap:18px}
 .ans .n{font-weight:700;min-width:66px;flex:none}
 .ans .a{flex:1 1 0;min-width:0}
-.ans .zh{font-family:'Noto Serif SC';font-size:34px;white-space:nowrap;padding-left:84px;flex-basis:100%;line-height:46px;margin-top:-10px}
+.ans .zh{font-family:'Noto Serif SC';font-weight:700;font-size:34px;white-space:nowrap;padding-left:84px;flex-basis:100%;line-height:46px;margin-top:-10px}
 .ansb{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
 .ansb div{font-size:43px;line-height:96px;border-bottom:1px solid #000;display:flex;gap:20px;white-space:nowrap}
 .ansb .n{font-weight:700;min-width:56px}
