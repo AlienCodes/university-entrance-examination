@@ -203,7 +203,7 @@ body{font-family:'TNR','Liberation Serif','Noto Serif SC';font-weight:400;positi
 .ln.d{padding-left:90px}.ln.d::before{content:'\\2014';position:absolute;left:46px}
 .gap{white-space:nowrap}
 .inst2{font-weight:700;font-style:italic;font-size:42px;line-height:1.35;margin:-8px 0 30px}
-.pl .r{display:grid;grid-template-columns:80px 1fr 1fr;column-gap:30px;font-size:43px;line-height:58px;margin-bottom:8px}
+.pl .r{display:grid;grid-template-columns:70px 1fr 1fr;column-gap:24px;font-size:40px;line-height:56px;margin-bottom:8px}
 .opt b{font-weight:400;margin-right:14px}
 .qn{font-weight:700;font-size:52px;margin-bottom:26px}
 .stem{font-weight:700;font-size:72px;line-height:1.25;margin-bottom:52px;text-wrap:balance;max-width:1700px}
@@ -549,12 +549,23 @@ def selftest():
         cases = [('正常（单题 + 答题卡）', page(good), good, False), ('正常', page(sheet), sheet, False),
                  ('答题卡里混进答案', page(sheet).replace('and knowledge', 'and knowledge long-term memory'), sheet, True),
                  ('选项太长溢出', page(good).replace('Creativity is irrational.', 'Creativity is irrational. ' * 4), good, True),
-                 ('字体里没有的字', page(good).replace('QUESTION 9', 'QUESTION 9 ☃'), good, True)]
+                 ('字体里没有的字', page(good).replace('Question 9', 'Question 9 𝄞 ꙮ'), good, True)]
         for name, htm, s, want in cases:
             got = run(htm, s)
             print(('✅' if bool(got) == want else '❌'), name, '→', got[:2] or '0 处')
             ok &= bool(got) == want
+        # 彩色像素：正常画面 0，放一个红块必须报出
+        for name, htm, want in (('正常画面无彩色', page(good), False),
+                                ('放进一个红块', page(good).replace('</body>', '<div style="position:absolute;left:10px;top:10px;width:30px;height:30px;background:#c00"></div></body>'), True)):
+            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); pg.wait_for_function('document.fonts.status === "loaded"')
+            png = OUT / 'selftest.png'; pg.screenshot(path=str(png)); got = color_check(png)
+            print(('✅' if bool(got) == want else '❌'), name, '→', got or '0 处'); ok &= bool(got) == want
         br.close()
+    # 字形与原卷一致：原卷字体必须通过，换成 Liberation Serif 必须报出
+    for fam, want in (('TNR', 0), ('Liberation Serif', 1)):
+        r = subprocess.run([sys.executable, str(HERE / '字形比对.py')] + (['--字体', fam] if fam != 'TNR' else []), capture_output=True, text=True)
+        print(('✅' if (r.returncode != 0) == bool(want) else '❌'), f'字形比对（{fam}）→', r.stdout.strip().splitlines()[-1])
+        ok &= (r.returncode != 0) == bool(want)
     sys.exit(0 if ok else 1)
 
 
