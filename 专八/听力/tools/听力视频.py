@@ -242,7 +242,7 @@ def page(s):
         body = ('<div class="ttl blk"><h1>TEST FOR ENGLISH MAJORS (2025)</h1><h2>-GRADE EIGHT-</h2>'
                 '<div class="pt"><span>PART I</span><span>LISTENING COMPREHENSION</span><span>(25 MIN)</span></div>'
                 '<div class="zh">2025 年专八听力  视频版真题考试</div>'
-                '<div class="note">原题原音，一刀不剪；画面跟着录音出题。</div><div class="note">请备好纸笔作答，参考答案在录音结束后给出。</div></div>')
+                '<div class="note">原题原音</div><div class="note">请备好纸笔作答，参考答案将在考试结束后给出。</div></div>')
     elif k == 'instr':
         sec = s['sec']
         head = '<em>SECTION A</em>MINI-LECTURE' if sec == 'A' else '<em>SECTION B</em>INTERVIEW'
