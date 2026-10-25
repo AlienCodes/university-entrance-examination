@@ -5,12 +5,13 @@
 匹配高亮的规则直接复用高考 tools/build.py 里的 parse/find，保证两边一致。
 """
 import json
+import os
 import re
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent                     # 专八/
-REPO = ROOT.parent
+ROOT = Path(os.environ['ZB_ROOT']).resolve() if os.environ.get('ZB_ROOT') else HERE.parent      # 专八/；ZB_ROOT 换成另一套同结构的数据（专八/听力/原文：阅读/sents.json、ann/、data/）
+REPO = HERE.parents[1]                 # 仓库根（不随 ZB_ROOT 变）
 ANN = ROOT / 'ann'
 
 _src = (REPO / 'tools' / 'build.py').read_text('utf-8')
