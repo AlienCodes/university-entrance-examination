@@ -203,7 +203,11 @@ body{font-family:'TNR','Liberation Serif','Noto Serif SC';font-weight:400;positi
 .ln.d{padding-left:90px}.ln.d::before{content:'\\2014';position:absolute;left:46px}
 .gap{white-space:nowrap}
 .inst2{font-weight:700;font-style:italic;font-size:42px;line-height:1.35;margin:-8px 0 30px}
-.pl .r{display:grid;grid-template-columns:70px 1fr 1fr;column-gap:24px;font-size:40px;line-height:56px;margin-bottom:8px}
+.pl .r{display:grid;grid-template-columns:70px 1fr 1fr;column-gap:24px;font-size:40px;line-height:54px}
+/* 题与题之间留空隙、加一条浅灰细线（用户 2026-10-25：“第一题和第二题紧紧贴在一起……要有空隙，中间一条比较浅的线”） */
+.pl .qg{padding:13px 0 14px;border-bottom:1.5px solid #c8c8c8}
+.pl .qg:first-child{padding-top:0}
+.pl .qg:last-child{border-bottom:none}
 .opt b{font-weight:400;margin-right:14px}
 .qn{font-weight:700;font-size:52px;margin-bottom:26px}
 .stem{font-weight:700;font-size:72px;line-height:1.25;margin-bottom:52px;text-wrap:balance;max-width:1700px}
@@ -271,10 +275,10 @@ def page(s):
         rows = ''
         for i in rng:
             o = Q['questions'][i][1]
-            rows += (f'<div class="r"><span class="n">{i + 1}.</span>' +
+            rows += (f'<div class="qg"><div class="r"><span class="n">{i + 1}.</span>' +
                      ''.join(f'<span class="opt"><b>{"ABCD"[j]}.</b>{esc(o[j])}</span>' for j in (0, 1)) +
                      '</div><div class="r"><span></span>' +
-                     ''.join(f'<span class="opt"><b>{"ABCD"[j]}.</b>{esc(o[j])}</span>' for j in (2, 3)) + '</div>')
+                     ''.join(f'<span class="opt"><b>{"ABCD"[j]}.</b>{esc(o[j])}</span>' for j in (2, 3)) + '</div></div>')
         name = 'Part One' if p == 1 else 'Part Two'
         body = (f'<div class="main pl"><div class="sec blk"><em>SECTION B</em>INTERVIEW: {name.upper()}</div>'
                 f'<div class="inst2 blk">Now, listen to Part {"One" if p == 1 else "Two"} of the interview. Questions {"1 to 5" if p == 1 else "6 to 10"} are based on Part {"One" if p == 1 else "Two"} of the interview.</div><div class="blk">{rows}</div></div>')
