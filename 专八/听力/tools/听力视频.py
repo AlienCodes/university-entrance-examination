@@ -447,7 +447,7 @@ def stills(sample=False):
 
 
 # ───────────────────────── 视频 ─────────────────────────
-def video(wav):
+def video(wav, fast=False):
     import numpy as np, soundfile as sf, pyloudnorm as pl
     L, total, T = states()
     a, sr = sf.read(wav, dtype='float64', always_2d=True)
@@ -455,11 +455,13 @@ def video(wav):
     gain_db = -16 - pl.Meter(sr).integrated_loudness(a)
     g = 10 ** (gain_db / 20)
     if 20 * np.log10(np.abs(a).max() * g) > -1: die('整体增益后峰值超过 −1 dBFS（只许整体增益，不许压缩限幅）')
-    lead = np.zeros((int(round(LEAD * sr)), 2)); tail = np.zeros((int(round((ANS_A + ANS_B) * sr)), 2))
+    nfr = round((total + LEAD) * FPS)
+    # 声音总长 = 画面整帧数的时长（第一次成品 -shortest 按短 6 毫秒的声音把画面截掉一帧）
+    lead = np.zeros((int(round(LEAD * sr)), 2))
+    tail = np.zeros((int(round(nfr / FPS * sr)) - len(lead) - len(a), 2))
     y = np.concatenate([lead, a * g, tail])
     OUT.mkdir(parents=True, exist_ok=True)
     sf.write(OUT / 'audio.wav', y, sr, subtype='PCM_24')
-    nfr = round((total + LEAD) * FPS)
     # 每个状态的开始帧（录音时刻 + LEAD，取整到帧）
     fr = [(round((t + LEAD) * FPS), key(s)) for t, s in L]
     fr = [(f, k) for f, k in fr]
@@ -478,7 +480,18 @@ def video(wav):
     cmd = ['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', str(OUT / 'list.txt'), '-i', str(OUT / 'audio.wav'),
            '-fps_mode', 'cfr', '-r', str(FPS), '-frames:v', str(nfr), '-c:v', 'libx264', '-preset', 'medium', '-tune', 'stillimage', '-crf', '18',
            '-pix_fmt', 'yuv420p', '-g', '300', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-af', 'aresample=48000',
-           '-movflags', '+faststart', '-shortest', str(out)]
+           '-movflags', '+faststart', str(out)]
+    if fast:      # 试跑：480p 极速编码，只核对帧数与声画时长（几分钟），通过再正式编码
+        cmd = [x for x in cmd]; i = cmd.index('-c:v'); cmd[i:i] = ['-vf', 'scale=480:270']
+        cmd[cmd.index('medium')] = 'ultrafast'; cmd[-1] = str(OUT / 'fast.mp4')
+        subprocess.run(cmd, check=True)
+        n = len(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v', '-show_entries', 'packet=pts_time', '-of', 'csv=p=0', cmd[-1]],
+                               capture_output=True, text=True).stdout.split())
+        ad = float(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a', '-show_entries', 'stream=duration', '-of', 'csv=p=0', cmd[-1]],
+                                  capture_output=True, text=True).stdout)
+        print('试跑：帧数', n, '应为', nfr, '声音', ad, '画面', n / FPS)
+        if n != nfr or abs(ad - n / FPS) > 0.05: die('试跑帧数或声画时长不对')
+        return
     subprocess.run(cmd, check=True)
     verify(out, T, total, fr)
 
@@ -577,4 +590,4 @@ if __name__ == '__main__':
     if c == '--自检': selftest()
     if c == 'timeline': timeline()  # python 听力视频.py timeline 原音.wav
     elif c == 'stills': stills('--sample' in sys.argv)
-    elif c == 'video': video(sys.argv[2])
+    elif c == 'video': video(sys.argv[2], '--试跑' in sys.argv)

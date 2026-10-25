@@ -10,6 +10,7 @@ $PY 取字体.py
 $PY 听力视频.py --自检
 $PY 听力视频.py timeline "$WAV"
 $PY 听力视频.py stills
+$PY 听力视频.py video "$WAV" --试跑      # 480p 极速试跑，帧数、声画时长不对就停（几分钟）
 $PY 听力视频.py video "$WAV"
 bash 提交发布.sh
 echo "流水线全部完成"
