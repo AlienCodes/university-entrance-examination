@@ -394,7 +394,8 @@ def color_check(png):
 
 
 def key(s):
-    return hashlib.sha1(json.dumps(s, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:12]
+    # 按页面 HTML（含样式）取指纹：改了样式，旧截图自动作废（第一版按状态取指纹，改字号后会沿用旧截图）
+    return hashlib.sha1(page(s).encode()).hexdigest()[:12]
 
 
 def stills(sample=False):
