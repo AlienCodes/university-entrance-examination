@@ -74,6 +74,16 @@ PROJECTS = {
     '考研作文': {'tag': 'KAOYAN · WRITING · PART A', 'top': 'KAOYAN WRITING', 'exam': '', 'look': '2', 'stills': '大字版/截图/{pid}', 'work': '大字版',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] 写作 Part [AB] \S.*\.mp4', 'tmp': 'kywvideo_',
              'badge': r'考研\A作文', 'videos': '最终视频'},
+    # 专八听力原文精读（用户 2026-10-25）：2025 专八听力录音原文（讲座、采访、说明、念题）逐句精读，书卷水墨大字（与专八水墨同一套画面、字号）；
+    # 声音用听力原音（不是 TTS），句子起止由 专八/听力/原文/tools/原音音轨.py 对齐求出、长等待压到 2 秒。目录不在仓库顶层：dir。
+    # 原音（audio='原音'）不适用 TTS 才有的几项：句间固定 0.8 秒停顿、停顿处数字静音、逐句响度偏差 / 短时波动、电磁音（声码器）、读完固定停留 0.5 秒——
+    # 改为：换屏在两句之间（cut_check）、整体响度与峰值（loud_check）；其余成品核查照跑
+    '专八听力': {'dir': '专八/听力/原文', 'audio': '原音', 'tag': 'TEM-8 · LISTENING · 2025', 'top': 'TEM-8 LISTENING', 'exam': '', 'look': '1',
+             'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
+             'name_re': r'2025年专八听力 Section (A|B Part One|B Part Two) \S.*\.mp4', 'tmp': 'tem8lvideo_',
+             'variants': {'水墨': {'look': 'C', 'stills': '大字版水墨/截图/{pid}', 'work': '大字版水墨', 'videos': '最终视频_水墨',
+                                   'split': '分屏_水墨.json', 'css': '样式/C_水墨大字.css', 'font_css': 'fonts/eb-garamond-bold.css',
+                                   'zh_scale': 1.1}}},
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 
@@ -83,7 +93,7 @@ def set_project(name, look=True):
     global PROJ, PJ, C4, T, SPLIT, NAMES, SAMPLE_REG, YP_REG
     if name not in PROJECTS:
         raise SystemExit(f'--project 只能是 {"、".join(PROJECTS)}：{name}')
-    PROJ, PJ, C4 = name, PROJECTS[name], ROOT / name
+    PROJ, PJ, C4 = name, PROJECTS[name], ROOT / PROJECTS[name].get('dir', name)
     var = os.environ.get('DZB_VARIANT')
     if var:                                       # 项目变体（如 专八 水墨）：覆盖画面、目录、分屏方案和追加样式
         if var not in PJ.get('variants', {}):
@@ -98,7 +108,7 @@ def set_project(name, look=True):
         set_style(PJ['look'])
 
 
-set_project('专八', look=False)      # 默认项目专八（画面在下面 set_style('C')）
+set_project(os.environ.get('DZB_PROJECT') or '专八', look=False)      # 默认项目专八（画面在下面 set_style('C')）；DZB_PROJECT 指定别的项目（分屏、检查工具 import 本模块时用，如 专八听力）
 
 CSS = """
 *{box-sizing:border-box;margin:0;padding:0}
@@ -1276,7 +1286,7 @@ def screen_checks(pg, label, fit, r):
 
 # 各项目封面装饰文字（::before / ::after 的 content，如右上角贴纸）里允许出现的考试名：别的项目的名字出现就报错
 # （考研 k02 截图试跑：共用的 样式/1_晴空校园.css 把贴纸写死成「专八 / 精读」，考研封面也成了“专八精读”）
-EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'],
+EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'],
               '四级': ['四级', 'CET-4', 'CET4'], '中考': ['中考'], '高考': ['高考']}
 DECO_JS = """() => { const out = [];
   for (const el of document.querySelectorAll('*')) for (const p of ['::before', '::after']) {
@@ -1304,6 +1314,31 @@ LC = load_lc()
 HBOX = TH.HBOX.replace("if (q.width && (q.left < L || q.right > R))",
                        "if (q.width && (q.left < L || q.right + (n.parentElement.classList.contains('pr') ? parseFloat(getComputedStyle(n.parentElement).marginRight) : 0) > R))")
 assert HBOX != TH.HBOX, 'themes.HBOX 改过，横向出界检查的 .pr 修正没套上'
+
+
+# 原音（专八听力）不做的成品核查：都是 TTS 配音才有的性质——句间固定 0.8 秒且数字静音、逐句响度偏差与 3 秒短时波动（录音里本来就有说话人、
+# 播音员的音量差别，只做整体增益 + 前瞻限幅）、读完固定停留 0.5 秒（录音的停顿有长有短）。电磁音（声码器细音）也不做（buzz_check 不调用）。
+RAW_SKIP = ('句间停顿', '响度一致', '读完停留')
+
+
+def cut_check(cuts, owner, times, n0):
+    """原音：每次换到下一句的时刻都在两句之间（不早于上一句读完、不晚于下一句开口）。"""
+    bad = []
+    for c, (i, j, _) in zip(cuts[n0:], owner):
+        if j == 0 and i and not (times[i - 1]['end'] - 1e-6 <= c <= times[i]['start'] + 1e-6):
+            bad.append(i + 1)
+    return ('换屏在两句之间（原音）', not bad, f'不符合：第 {bad} 句' if bad else '全部在句间停顿里')
+
+
+def loud_check(mp4):
+    """原音：成品音轨整体响度 −16 ± 0.7 LUFS、峰值 ≤ −1 dBFS（ITU-R BS.1770，pyloudnorm 独立测量）。"""
+    import numpy as np
+    import pyloudnorm as pyln
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(mp4), '-vn', '-ac', '1', '-ar', '48000', '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+    y = np.frombuffer(raw, dtype=np.float32).astype(np.float64)
+    lufs = pyln.Meter(48000).integrated_loudness(y)
+    peak = 20 * np.log10(np.abs(y).max() + 1e-12)
+    return ('整体响度与峰值（原音）', abs(lufs + 16) <= 0.7 and peak <= -1.0, f'{lufs:.2f} LUFS，峰值 {peak:.2f} dBFS')
 
 
 def frame_check(mp4, frames, pngs):
@@ -1420,7 +1455,8 @@ def main():
     TAIL = 2.0
     total = max(tm['duration'], ends[-1] + TAIL)
     HOLD, GAP = 0.5, 0.8
-    bad = [i + 2 for i in range(len(times) - 1) if abs(starts[i + 1] - ends[i] - GAP) > 0.01]
+    RAW = PJ.get('audio') == '原音'                 # 原音（专八听力）：句间是录音里本来的停顿，不是固定 0.8 秒
+    bad = [] if RAW else [i + 2 for i in range(len(times) - 1) if abs(starts[i + 1] - ends[i] - GAP) > 0.01]
     if bad:
         raise SystemExit(f'第 {bad} 句之前的停顿不是 {GAP} 秒，请用最新设置重新生成音频')
     cuts, sw = [0.0], {}
@@ -1430,7 +1466,11 @@ def main():
         cuts.append(TITLE_SEC)
     for i, j, part in owner[intro(p):]:
         if j == 0:
-            cuts.append(starts[0] if i == 0 else ends[i - 1] + HOLD)
+            if i and RAW:                             # 原音：停顿 ≥ 0.8 秒照常读完停 0.5 秒再切；更短的停顿按同一比例（0.5/0.8）切在停顿中间
+                g = starts[i] - ends[i - 1]
+                cuts.append(ends[i - 1] + (HOLD if g >= GAP else g * HOLD / GAP))
+            else:
+                cuts.append(starts[0] if i == 0 else ends[i - 1] + HOLD)
         else:                                       # 分屏的第二屏：在第二屏第一个词开口之前切换
             t = switch_time(audio, times[i], sents[i]['en'], part[0])
             if not starts[i] + 0.3 < t < ends[i] - 0.3:
@@ -1476,10 +1516,14 @@ def main():
     # 成品核查：复用高考 verify_videos.check（分辨率、流畅度、声画等长、朗读与画面逐句一致、静音、停顿、响度……）
     sys.path[:0] = [str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
     from verify_videos import check
-    res = [r for r in check(out / name, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))]
+    res = [r for r in check(out / name, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))
+           and not (RAW and r[0].startswith(RAW_SKIP))]
     if sw:
         res.append(switch_check(out / name, times, sw))
-    res.append(buzz_check(out / name, times))
+    if RAW:
+        res += [cut_check(cuts, owner[intro(p):], times, intro(p)), loud_check(out / name)]
+    else:
+        res.append(buzz_check(out / name, times))
     res.append(('结尾静音 ≥ 2 秒', dur - ends[-1] >= TAIL - 0.05, f'{dur - ends[-1]:.2f} 秒'))
     res.append(frame_check(out / name, frames, [tmp / f'{i:03d}.png' for i in range(len(scr))]))
     size = (out / name).stat().st_size          # GitHub 单个文件上限 100 MB（教室黑板旧版 431 MB 推不上去，也超过发送上限）

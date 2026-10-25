@@ -160,7 +160,18 @@ def align(pid, paras, R, y, sr):
         j = int(s1 * 100)
         while j < int(hi * 100) - 2 and j < int((s1 + 0.6) * 100) and db[j] > thr:
             j += 1
-        out.append({'k': k + 1, 's0': s0, 's1': s1, 'start': i / 100, 'end': j / 100, 'ratio': round(ratio, 3)})
+        # 句内的停顿（≥ 0.15 秒低于门限）：分屏只在停顿处换屏（分屏建议.py 的 pause_ok 读 parts）
+        parts, run0, seg0 = [], None, i
+        for q in range(i, j):
+            if db[q] <= thr:
+                run0 = q if run0 is None else run0
+            else:
+                if run0 is not None and q - run0 >= 15 and run0 > seg0:
+                    parts.append([seg0 / 100, run0 / 100])
+                    seg0 = q
+                run0 = None
+        parts.append([seg0 / 100, j / 100])
+        out.append({'k': k + 1, 's0': s0, 's1': s1, 'start': i / 100, 'end': j / 100, 'ratio': round(ratio, 3), 'parts': parts})
     return out, errs
 
 
@@ -185,6 +196,7 @@ def build(pid, paras, R, y, sr):
         st = t_new + (x['start'] - pos)
         en = t_new + (x['end'] - pos)
         times.append({'k': k + 1, 'para': para_of[k], 'start': round(st, 3), 'end': round(en, 3), 'text': sents[k], 'read': sents[k],
+                      'parts': [[round(st + p0 - x['start'], 3), round(st + p1 - x['start'], 3)] for p0, p1 in x['parts']],
                       'orig': [round(x['start'], 3), round(x['end'], 3)], 'match': x['ratio']})
     end_orig = al[-1]['end'] + 0.1
     pieces.append((pos, end_orig))

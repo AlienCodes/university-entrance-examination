@@ -55,6 +55,7 @@ else:
     sys.modules['make_video'] = M
     _spec.loader.exec_module(M)
     M.set_project(PROJECT)
+    C6 = M.C4                                     # 项目目录（专八听力：专八/听力/原文，make_video.PROJECTS 的 dir）
     VIDEOS = C6 / M.PJ.get('videos', '最终视频_校园')      # 晴空校园成品（旧版 10 个仍在 专八/最终视频/，不动）；考研作文 考研作文/最终视频/
     MAKE = [PY, str(ENGINE), '--project', PROJECT, '--style', M.PJ['look']]
 OUT = C6 / M.PJ['work']                         # 六级 六级/样片/，专八 专八/大字版/（专八/样片/ 是“同一篇、多种画面”的样片，分开）

@@ -10,6 +10,9 @@ $P install -q -r .github/cet6-render-requirements.txt
 $P install -q "kokoro-onnx>=0.6.1" "misaki[en]>=0.9.4" num2words soundfile soxr pyloudnorm lameenc \
   "torch==2.11.0" "torchaudio==2.11.0" \
   en_core_web_sm@https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+# 2026-10-25：新装的 spacy 3.8.16 + preshed 3.0.14 / cymem 2.0.16 一加载 en_core_web_sm 就 OverflowError（分屏建议.py 跑不起来）；钉在能用的版本，并当场试加载
+$P install -q "spacy==3.8.7" "thinc==8.3.6" "preshed==3.0.9" "cymem==2.0.11" "murmurhash==1.0.12"
+/opt/ttsenv/bin/python -c "import spacy; spacy.load('en_core_web_sm')('It is ok.'); print('spacy 正常')"
 /opt/ttsenv/bin/python -c "import torch, torchaudio, kokoro_onnx, misaki, playwright; assert torch.__version__.split('+')[0] == torchaudio.__version__.split('+')[0], (torch.__version__, torchaudio.__version__); print('环境就绪：torch', torch.__version__)"
 /opt/ttsenv/bin/python tools/tts/download_models.py --qa
 git config core.hooksPath .githooks

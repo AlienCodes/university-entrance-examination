@@ -19,9 +19,15 @@ import os
 
 HERE = Path(__file__).resolve().parent
 VAR = os.environ.get('DZB_VARIANT')
+if os.environ.get('DZB_PROJECT', '专八') != '专八':      # 别的项目（专八听力：专八/听力/原文/tools/）的分屏方案、人工指定、音频
+    sys.path.insert(0, str(HERE))
+    import make_video as _M
+    HERE, _AUD = _M.T, _M.C4 / 'audio'
+else:
+    _AUD = HERE.parent / 'audio'
 PLAN = HERE / (f'分屏_{VAR}.json' if VAR else '分屏.json')
 HAND = HERE / (f'分屏手定_{VAR}.json' if VAR else '分屏手定.json')
-TIM = json.loads((HERE.parent / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']
+TIM = json.loads((_AUD / 'timings.json').read_text('utf-8'))['cet4_male']
 
 
 def main():
