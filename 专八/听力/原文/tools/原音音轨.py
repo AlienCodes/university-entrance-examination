@@ -47,6 +47,8 @@ def read_text():
             if out[cur][-1]:
                 out[cur].append([])
         elif cur:
+            if re.search(r' [—–] |\s--\s|"|\'', line):        # 排版与专八阅读一致：破折号不带空格（L3 第 25 句 “sleep — plants” 截图报行首破折号）、弯引号、弯撇号
+                raise SystemExit(f'原文.txt 排版不统一（带空格的破折号或直引号）：{line[:60]}')
             out[cur][-1].append(line.strip())
     return {k: [p for p in v if p] for k, v in out.items()}
 
@@ -252,6 +254,12 @@ def main():
     mono = y.mean(axis=1) if y.ndim == 2 else y
     R = json.loads((SRC / '识别.json').read_text('utf-8'))
     T = read_text()
+    # 句子定稿（ann_lib / build_vocab 读 阅读/sents.json，ZB_ROOT=专八/听力/原文）：每次从 原文.txt 重写，保证与音轨同一份文字
+    META = {'L1': ('Section A', 'A'), 'L2': ('Section B Part One', 'B'), 'L3': ('Section B Part Two', 'B')}
+    (C4 / '阅读').mkdir(exist_ok=True)
+    (C4 / '阅读' / 'sents.json').write_text(json.dumps(
+        [{'id': k, 'year': 2025, 'month': 3, 'set': 1, 'passage': META[k][0], 'paper': '2025年专八听力', 'part': META[k][1], 'words': 0, 'sents': v}
+         for k, v in T.items()], ensure_ascii=False, indent=1), 'utf-8')
     tf = C4 / 'audio' / 'timings.json'
     allt = json.loads(tf.read_text('utf-8')) if tf.exists() else {'cet4_male': {}}
     rep = ['# 原音音轨对齐报告（程序生成）', '']
