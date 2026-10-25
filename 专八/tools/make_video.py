@@ -1327,7 +1327,7 @@ def cut_check(cuts, owner, times, n0):
     for c, (i, j, _) in zip(cuts[n0:], owner):
         if j == 0 and i and not (times[i - 1]['end'] - 1e-6 <= c <= times[i]['start'] + 1e-6):
             bad.append(i + 1)
-    return ('换屏在两句之间（原音）', not bad, f'不符合：第 {bad} 句' if bad else '全部在句间停顿里')
+    return ('换屏在两句之间（原音）', bool(not bad), f'不符合：第 {bad} 句' if bad else '全部在句间停顿里')
 
 
 def loud_check(mp4):
@@ -1338,7 +1338,7 @@ def loud_check(mp4):
     y = np.frombuffer(raw, dtype=np.float32).astype(np.float64)
     lufs = pyln.Meter(48000).integrated_loudness(y)
     peak = 20 * np.log10(np.abs(y).max() + 1e-12)
-    return ('整体响度与峰值（原音）', abs(lufs + 16) <= 0.7 and peak <= -1.0, f'{lufs:.2f} LUFS，峰值 {peak:.2f} dBFS')
+    return ('整体响度与峰值（原音）', bool(abs(lufs + 16) <= 0.7 and peak <= -1.0), f'{lufs:.2f} LUFS，峰值 {peak:.2f} dBFS')
 
 
 def frame_check(mp4, frames, pngs):
@@ -1518,7 +1518,7 @@ def main():
     from verify_videos import check
     res = [r for r in check(out / name, p, tm) if not r[0].startswith('文件名') and not (sw and r[0].startswith('读完停留'))
            and not (RAW and r[0].startswith(RAW_SKIP))]
-    if sw:
+    if sw and not RAW:                            # 原音：分屏换屏时刻由 switch_time 按识别定，句间换屏由 cut_check 查、每屏画面由 frame_check 查；固定停留 0.5 秒不适用
         res.append(switch_check(out / name, times, sw))
     if RAW:
         res += [cut_check(cuts, owner[intro(p):], times, intro(p)), loud_check(out / name)]
