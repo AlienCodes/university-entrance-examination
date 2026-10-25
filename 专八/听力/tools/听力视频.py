@@ -556,6 +556,8 @@ def verify(out, T, total, fr):
 def selftest():
     """双向验证（踩坑 77）：正常画面 0 处；故意放进 ①答案 ②溢出 ③字体里没有的字，三项检查都必须报出"""
     from playwright.sync_api import sync_playwright
+    if not (FL / 'TimesNewRoman.ttf').exists():
+        die('缺原卷字体（fonts_local 不进仓库）：先跑 /opt/ttsenv/bin/python 专八/听力/tools/取字体.py')
     ok = True
     exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
     good = {'kind': 'q', 'n': 9, 'st': '作答', 'cd': 7, 'cdl': '作答'}
@@ -588,7 +590,8 @@ def selftest():
     # 字形与原卷一致：原卷字体必须通过，换成 Liberation Serif 必须报出
     for fam, want in (('TNR', 0), ('Liberation Serif', 1)):
         r = subprocess.run([sys.executable, str(HERE / '字形比对.py')] + (['--字体', fam] if fam != 'TNR' else []), capture_output=True, text=True)
-        print(('✅' if (r.returncode != 0) == bool(want) else '❌'), f'字形比对（{fam}）→', r.stdout.strip().splitlines()[-1])
+        last = r.stdout.strip().splitlines()[-1] if r.stdout.strip() else '无输出：' + r.stderr.strip()[-200:]
+        print(('✅' if (r.returncode != 0) == bool(want) else '❌'), f'字形比对（{fam}）→', last)
         ok &= (r.returncode != 0) == bool(want)
     sys.exit(0 if ok else 1)
 
