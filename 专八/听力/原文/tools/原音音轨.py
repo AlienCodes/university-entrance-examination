@@ -32,7 +32,7 @@ WIN = {'L1': (0.0, 743.0), 'L2': (743.0, 1164.0), 'L3': (1164.0, 1551.0)}     # 
 LEAD, MAXGAP, KEEP, XF, TAIL = 1.5, 2.0, 1.0, 0.02, 2.2
 
 
-# 识别器漏掉的句子（时刻按能量实测，内容另行截取复核，见 audio/对齐报告.md）：
+# 识别器漏掉的句子（时刻按能量实测；内容截取 738.5—744 秒单独识别复核：“This is the end of Section A, Mini Lecture.”，2026-10-25）：
 # L1 末句 739.8—741.7 有 1.9 秒语音没识别出来、742.2—742.9 识别成 “Mini Lecture”；与 Section B 结尾 “This is the end of Section B Interview.” 句式、时长相同
 OVERRIDE = {('L1', 'This is the end of Section A, Mini-Lecture.'): (739.75, 742.95)}
 
