@@ -2818,6 +2818,45 @@
    "status": "自动拦截+有双向验证",
    "gap": "考研、六级等其他项目的封面生成器还没接（下次做封面时接，规则照搬 data-min）",
    "fix": ""
+  },
+  {
+   "id": "77",
+   "title": "听力视频：画面切换时刻靠测量对齐容易错位、考试画面可能提前出现答案",
+   "stages": [
+    "时间轴",
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "专八听力"
+   ],
+   "guards": [
+    {
+     "where": "专八/听力/tools/听力视频.py timeline：锚点恰好一处、全部递增，静音终点取较早者",
+     "runs": "每次生成时间轴",
+     "evidence": "锚点…找到 N 处 / 锚点不是按考试顺序递增"
+    },
+    {
+     "where": "专八/听力/tools/听力视频.py stills：CHECK_JS + font_check（CDP）+ leak_check",
+     "runs": "每张截图自动",
+     "evidence": "出画面 / 溢出 / 折行 / 字体回退 / 答案泄露"
+    },
+    {
+     "where": "专八/听力/tools/听力视频.py verify：分辨率、恒定帧率、声画等长、响度、峰值、首尾静音、画面切换抽查",
+     "runs": "生成后自动，不通过删成品",
+     "evidence": "成品核查不通过"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python 专八/听力/tools/听力视频.py --自检",
+     "expect": "exit 0",
+     "needs": "browser"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
