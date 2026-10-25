@@ -469,6 +469,8 @@ def video(wav):
         png = OUT / 'shots' / f'{k}.png'
         if not png.exists(): die(f'缺截图 {k}（先跑 stills）')
         lst.append(f"file '{png}'\nduration {(nxt - f) / FPS:.6f}")
+    # concat 的最后一段会少算一帧（第一次成品 48508 帧，应为 48509）：末屏多垫 1 秒，再用 -frames:v 截到精确帧数
+    lst.append(f"file '{OUT / 'shots' / (fr[-1][1] + '.png')}'\nduration 1.000000")
     lst.append(f"file '{OUT / 'shots' / (fr[-1][1] + '.png')}'")
     (OUT / 'list.txt').write_text('\n'.join(lst) + '\n')
     (OUT / '帧表.json').write_text(json.dumps(fr), 'utf-8')
