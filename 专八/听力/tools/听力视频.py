@@ -76,18 +76,18 @@ def timeline():
     T['previewB'] = pv[0]
     T['part1'] = find('Now listen to part one', 805, 820)
     T['int1'] = find('Good evening everybody', 815, 830)
-    # “This is the end of Part One of the interview”：识别成 “…end. … end of Part One”，取 “end of Part One” 前两个词（This is）的开始
+    # “This is the end of Part One of the interview”：取 “end of Part” 前第三个词（This）的开始，必须真的是 this（核对员查出原来差一个词）
     i = [k for k, w in enumerate(words) if 1075 <= w[1] < 1085 and w[0] == 'end' and words[k + 1][0] == 'of' and words[k + 2][0] == 'part']
-    if len(i) != 1: die('Part One 结束语找不到')
-    T['part1End'] = words[i[0] - 2][1]
+    if len(i) != 1 or words[i[0] - 3][0] != 'this': die('Part One 结束语找不到')
+    T['part1End'] = words[i[0] - 3][1]
     T['q1'] = find('Question one', 1085, 1090)
     p1 = sil(T['q1'], 1170, 9.5, 11.5)
     if len(p1) != 5: die(f'Part One 题后停顿应 5 段，找到 {len(p1)}')
     T['part2'] = find('Now listen to Part 2', 1160, 1170)
     T['int2'] = find('Historically there have', 1170, 1180)
     i = [k for k, w in enumerate(words) if 1445 <= w[1] < 1455 and w[0] == 'end' and words[k + 1][0] == 'of' and words[k + 2][0] == 'part']
-    if len(i) != 1: die('Part Two 结束语找不到')
-    T['part2End'] = words[i[0] - 2][1]
+    if len(i) != 1 or words[i[0] - 3][0] != 'this': die('Part Two 结束语找不到')
+    T['part2End'] = words[i[0] - 3][1]
     T['q6'] = find('Question six', 1455, 1462)
     p2 = sil(T['q6'], 1545, 9.5, 11.5)
     if len(p2) != 5: die(f'Part Two 题后停顿应 5 段，找到 {len(p2)}')
@@ -118,6 +118,8 @@ def states():
     def countdown(a, b, label, **s):
         """[a, b) 倒计时：显示 ceil(b - t)；在 b-k 处换数"""
         n = math.ceil(b - a - 1e-6)
+        if (b - a) - (n - 1) < 0.5:          # 开头不足半秒的那一格（如 182.12 秒的 3:03 只停 4 帧）并进下一格，不闪
+            n -= 1
         add(a, cd=n, cdl=label, **s)
         for k in range(n - 1, 0, -1):
             add(b - k, cd=k, cdl=label, **s)
@@ -131,7 +133,8 @@ def states():
     add(T['lecture'], kind='sheet', st='Mini-lecture 播放中，只放一遍')
     add(T['checkSay'], kind='sheet', st='Mini-lecture 结束，检查时间三分钟')
     countdown(*T['check'], '检查', kind='sheet', st='检查答案')
-    add(T['check'][1], kind='instr', sec='B', hi=-1)
+    add(T['check'][1], kind='sheet', st='Section A 结束')          # 录音：This is the end of Section A, mini-lecture.
+    add(T['secB'], kind='instr', sec='B', hi=-1)
     for k, t in enumerate(T['instrB'][:6]):
         add(t, kind='instr', sec='B', hi=k)
     add(T['instrB'][6], kind='plist', part=1, st='预览 Part One 选项（30 秒）')
