@@ -12,7 +12,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 D = HERE.parent / '2025'
-FONTS = ROOT / '专八' / 'tools' / 'fonts'
+FL = HERE.parent / 'fonts_local'          # 原卷 PDF 里取出的字体（.gitignore，不进仓库）
 import os
 OUT = Path(os.environ.get('TEM8_OUT', '/tmp/tem8listen'))      # 截图、中间文件、成品（不进仓库）
 FPS, LEAD = 30, 1.5
@@ -127,27 +127,27 @@ def states():
     for k, t in enumerate(T['instrA']):
         add(t, kind='instr', sec='A', hi=k)
     countdown(*T['previewA'], '预览', kind='sheet', st='预览答题卡（30 秒）')
-    add(T['nowA'], kind='sheet', st='Mini-lecture 即将开始 · 只放一遍')
-    add(T['lecture'], kind='sheet', st='Mini-lecture 播放中 · 只放一遍')
-    add(T['checkSay'], kind='sheet', st='Mini-lecture 结束 · 检查时间三分钟')
+    add(T['nowA'], kind='sheet', st='Mini-lecture 即将开始，只放一遍')
+    add(T['lecture'], kind='sheet', st='Mini-lecture 播放中，只放一遍')
+    add(T['checkSay'], kind='sheet', st='Mini-lecture 结束，检查时间三分钟')
     countdown(*T['check'], '检查', kind='sheet', st='检查答案')
     add(T['check'][1], kind='instr', sec='B', hi=-1)
     for k, t in enumerate(T['instrB'][:6]):
         add(t, kind='instr', sec='B', hi=k)
     add(T['instrB'][6], kind='plist', part=1, st='预览 Part One 选项（30 秒）')
     countdown(*T['previewB'], '预览', kind='plist', part=1, st='预览 Part One 选项（30 秒）')
-    add(T['part1'], kind='plist', part=1, st='Part One 即将开始 · 采访结束后念第 1—5 题')
-    add(T['int1'], kind='plist', part=1, st='Part One 播放中 · 采访结束后念第 1—5 题')
-    add(T['part1End'], kind='plist', part=1, st='Part One 结束 · 即将念题')
+    add(T['part1'], kind='plist', part=1, st='Part One 即将开始，采访结束后念第 1—5 题')
+    add(T['int1'], kind='plist', part=1, st='Part One 播放中，采访结束后念第 1—5 题')
+    add(T['part1End'], kind='plist', part=1, st='Part One 结束，即将念题')
     starts = [T['q1']] + [p[1] for p in T['pauses'][:4]] + [T['q6']] + [p[1] for p in T['pauses'][5:9]]
     for k in range(10):
         a, b = T['pauses'][k]
         add(starts[k], kind='q', n=k + 1, st='念题')
-        countdown(a, b, '作答', kind='q', n=k + 1, st='作答')
+        countdown(a, b, '作答', kind='q', n=k + 1, st='请在答题纸上作答')
         if k == 4:
-            add(T['part2'], kind='plist', part=2, st='Part Two 即将开始 · 采访结束后念第 6—10 题')
-            add(T['int2'], kind='plist', part=2, st='Part Two 播放中 · 采访结束后念第 6—10 题')
-            add(T['part2End'], kind='plist', part=2, st='Part Two 结束 · 即将念题')
+            add(T['part2'], kind='plist', part=2, st='Part Two 即将开始，采访结束后念第 6—10 题')
+            add(T['int2'], kind='plist', part=2, st='Part Two 播放中，采访结束后念第 6—10 题')
+            add(T['part2End'], kind='plist', part=2, st='Part Two 结束，即将念题')
     add(T['endB'], kind='end')
     add(T['audioEnd'], kind='ansA')
     add(T['audioEnd'] + ANS_A, kind='ansB')
@@ -158,74 +158,65 @@ def states():
 
 # ───────────────────────── HTML ─────────────────────────
 CSS = """
-@import url('FONTS/fonts.css'); @import url('FONTS/eb-garamond-bold.css'); @import url('FONTS/inter/inter.css');
-:root{--paper:#f4eee2;--paper2:#ece4d4;--ink:#1e1b17;--ink2:#34302a;--mute:#6a6255;--faint:#a39a8a;--rule:#d3c8b2;--dian:#1f4677;--zhu:#b03c2a;--w:#1f6fd6}
+@font-face{font-family:'TNR';src:url('FL/TimesNewRoman.ttf');font-weight:400;font-style:normal}
+@font-face{font-family:'TNR';src:url('FL/TimesNewRomanBold.ttf');font-weight:700;font-style:normal}
+@font-face{font-family:'TNR';src:url('FL/TimesNewRomanItalic.ttf');font-weight:400;font-style:italic}
+@font-face{font-family:'TNR';src:url('FL/TimesNewRomanBoldItalic.ttf');font-weight:700;font-style:italic}
+@font-face{font-family:'WingX';src:url('FL/Wingdings.ttf')}
+/* 考卷样式（用户 2026-10-25）：纯白底黑字，不用主题；字体就是原卷 PDF 里嵌入的 Times New Roman 四个字重 + SimSun + Wingdings（只在本机，不进仓库） */
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1920px;height:1080px;overflow:hidden;background:var(--paper);color:var(--ink);font-weight:700}
-body{font-family:'EB Garamond','LXGW WenKai',serif;position:relative}
-.top{position:absolute;left:80px;right:80px;top:0;height:112px;border-bottom:3px solid var(--ink);display:flex;align-items:center;justify-content:space-between}
-.top::after{content:'';position:absolute;left:0;right:0;bottom:-9px;height:1px;background:var(--ink)}
-.top b{font-family:'Inter';font-weight:700;font-size:25px;letter-spacing:.16em;white-space:nowrap}
-.top b::before{content:'';display:inline-block;width:14px;height:14px;background:var(--zhu);margin-right:16px;vertical-align:2px}
-.st{font-family:'LXGW WenKai','EB Garamond';font-size:34px;color:var(--dian);white-space:nowrap;margin-left:auto;margin-right:28px}
-.cd{display:flex;align-items:baseline;gap:14px;background:var(--zhu);color:#fbf6ec;padding:6px 26px 8px;box-shadow:inset 0 0 0 4px var(--zhu),inset 0 0 0 6px #fbf6ec;white-space:nowrap}
-.cd i{font-style:normal;font-family:'LXGW WenKai';font-size:30px}
-.cd span{font-family:'EB Garamond';font-weight:800;font-size:64px;line-height:76px;font-variant-numeric:tabular-nums;min-width:118px;text-align:right}
-.main{position:absolute;left:80px;right:80px;top:150px;bottom:44px}
-.foot{position:absolute;left:80px;right:80px;bottom:0;height:40px;font-family:'Inter';font-size:16px;letter-spacing:.2em;color:var(--faint);text-align:right}
-/* 片头 */
-.ttl{position:absolute;left:230px;right:230px;top:120px;bottom:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
- box-shadow:inset 0 0 0 20px var(--paper),inset 0 0 0 23px var(--ink),inset 0 0 0 29px var(--paper),inset 0 0 0 30px var(--ink);text-align:center}
-.ttl .k{font-family:'Inter';font-size:26px;letter-spacing:.3em;color:var(--zhu)}
-.ttl h1{font-size:76px;line-height:1.1;letter-spacing:.02em}
-.ttl h2{font-size:46px;color:var(--dian)}
-.ttl .zh{font-family:'LXGW WenKai';font-size:58px;color:var(--ink)}
-.ttl .note{font-family:'LXGW WenKai';font-size:36px;color:var(--mute);line-height:1.3;margin-top:-10px}
-.seal{display:inline-block;font-family:'LXGW WenKai';font-size:40px;color:#fbf6ec;background:var(--zhu);padding:8px 22px;box-shadow:inset 0 0 0 5px var(--zhu),inset 0 0 0 7px #fbf6ec}
-/* 说明 */
-.sec{font-family:'Inter';font-size:40px;letter-spacing:.12em;margin-bottom:40px}
-.sec em{font-style:normal;color:var(--zhu);margin-right:28px}
-.instr{font-style:italic;font-size:58px;line-height:1.5;color:var(--faint);text-wrap:pretty}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#fff;color:#000}
+body{font-family:'TNR','Liberation Serif','Noto Serif SC';font-weight:400;position:relative;-webkit-font-smoothing:antialiased}
+.top{position:absolute;left:90px;right:90px;top:0;height:118px;border-bottom:2px solid #000;display:flex;align-items:center}
+.top b{font-weight:700;font-size:40px;white-space:nowrap}
+.top b em{font-style:normal;margin-right:60px}
+.st{font-family:'Noto Serif SC','TNR';font-size:36px;white-space:nowrap;margin-left:auto;margin-right:30px}
+.cd{display:flex;align-items:baseline;gap:14px;border:3px solid #000;padding:2px 22px 4px;white-space:nowrap}
+.cd i{font-style:normal;font-family:'Noto Serif SC';font-size:32px}
+.cd span{font-weight:700;font-size:66px;line-height:80px;font-variant-numeric:tabular-nums;min-width:120px;text-align:right}
+.main{position:absolute;left:90px;right:90px;top:156px;bottom:44px}
+.foot{display:none}
+.ttl{position:absolute;left:0;right:0;top:110px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+.ttl h1{font-weight:700;font-size:80px;line-height:1.15}
+.ttl h2{font-weight:700;font-size:80px;line-height:1.1}
+.ttl .tl{font-weight:700;font-size:46px;align-self:flex-end;margin-right:220px}
+.ttl .pt{font-weight:700;font-size:56px;width:1560px;display:flex;justify-content:space-between;margin-top:46px}
+.ttl .zh{font-family:'Noto Serif SC';font-size:56px;margin-top:40px}
+.ttl .note{font-family:'Noto Serif SC';font-size:36px;line-height:1.3}
+.sec{font-weight:700;font-size:52px;margin-bottom:34px;white-space:nowrap}
+.sec em{font-style:normal;margin-right:30px}
+.instr{font-weight:700;font-style:italic;font-size:56px;line-height:1.55;text-wrap:pretty}
 .instr s{text-decoration:none}
-.instr s.on{color:var(--ink);background:linear-gradient(transparent 62%,#e6d7b8 62%)}
-.instr s.done{color:var(--mute)}
-/* 答题卡 */
-.sheet{position:absolute;inset:0;border:3px solid var(--ink);padding:18px 40px 0;background:#f7f2e8}
-.sheet .t{text-align:center;font-size:48px;margin-bottom:10px}
+.instr s.on{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:8px}
+.sheet{position:absolute;inset:0;border:2px solid #000;padding:16px 40px 0}
+.sheet .t{text-align:center;font-weight:700;font-size:44px;margin-bottom:8px}
 .cols{display:flex;gap:56px}
 .col{flex:1;min-width:0}
-.ln{font-size:35px;line-height:45px;position:relative}
-.ln.h{margin-top:20px}
+.ln{font-size:37px;line-height:46px;position:relative}
+.ln.h{font-weight:700;margin-top:18px}
 .ln.h:first-child{margin-top:0}
-.ln.b{padding-left:44px}.ln.b::before{content:'';position:absolute;left:12px;top:18px;width:12px;height:12px;border-radius:50%;background:var(--ink)}
-.ln.e{padding-left:92px}
-.ln.d{padding-left:92px}.ln.d::before{content:'—';position:absolute;left:44px}
-.ln.p{margin-top:0}
-.gap{white-space:nowrap;color:var(--dian)}
-.gap u{display:inline-block;width:170px;height:36px;border-bottom:3px solid var(--dian);vertical-align:-4px;margin-left:6px;text-decoration:none}
-/* 选项一览 */
-.hint{font-family:'LXGW WenKai';font-size:34px;color:var(--mute);margin:-18px 0 26px}
-.pl .r{display:grid;grid-template-columns:80px 1fr 1fr;column-gap:30px;font-size:43px;line-height:62px;margin-bottom:14px}
-.pl .r .n{color:var(--zhu);font-weight:800}
-.opt b{color:var(--dian);margin-right:12px;font-weight:800}
-/* 单题 */
-.qn{font-family:'Inter';font-size:34px;letter-spacing:.24em;color:var(--zhu);margin-bottom:22px}
-.stem{font-size:74px;line-height:1.22;margin-bottom:56px;text-wrap:balance;max-width:1700px}
-.ql .opt{font-size:66px;line-height:112px;display:flex;align-items:baseline}
-.ql .opt b{display:inline-block;width:82px;height:82px;line-height:78px;text-align:center;border:4px solid var(--dian);border-radius:50%;font-size:50px;margin-right:36px;flex:none;position:relative;top:-8px}
-/* 结束 */
-.end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;text-align:center}
-.end h1{font-size:64px}.end p{font-family:'LXGW WenKai';font-size:44px;color:var(--mute)}
-/* 答案 */
+.ln.b{padding-left:46px}.ln.b::before{content:'\\F06C';font-family:'WingX';position:absolute;left:8px;top:0;font-size:30px}
+.ln.e{padding-left:80px}
+.ln.d{padding-left:90px}.ln.d::before{content:'\\2014';position:absolute;left:46px}
+.gap{white-space:nowrap}
+.inst2{font-weight:700;font-style:italic;font-size:42px;line-height:1.35;margin:-8px 0 30px}
+.pl .r{display:grid;grid-template-columns:80px 1fr 1fr;column-gap:30px;font-size:43px;line-height:58px;margin-bottom:8px}
+.opt b{font-weight:400;margin-right:14px}
+.qn{font-weight:700;font-size:52px;margin-bottom:26px}
+.stem{font-weight:700;font-size:72px;line-height:1.25;margin-bottom:52px;text-wrap:balance;max-width:1700px}
+.ql .opt{font-size:68px;line-height:112px;display:flex}
+.ql .opt b{width:90px;flex:none}
+.end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px;text-align:center}
+.end h1{font-weight:700;font-size:68px;line-height:1.3}.end p{font-family:'Noto Serif SC';font-size:46px}
 .ans{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(8,auto);grid-auto-flow:column;column-gap:70px;row-gap:6px}
-.ans div{font-size:44px;line-height:66px;flex-wrap:wrap;column-gap:18px;border-bottom:1px solid var(--rule);display:flex;gap:18px}
-.ans .n{color:var(--zhu);font-weight:800;min-width:60px;flex:none}
+.ans div{font-size:46px;line-height:68px;border-bottom:1px solid #000;display:flex;flex-wrap:wrap;column-gap:18px}
+.ans .n{font-weight:700;min-width:66px;flex:none}
 .ans .a{flex:1 1 0;min-width:0}
-.ans .zh{font-family:'LXGW WenKai';font-size:32px;color:var(--mute);white-space:nowrap;padding-left:78px;flex-basis:100%;line-height:44px;margin-top:-10px}
+.ans .zh{font-family:'Noto Serif SC';font-size:34px;white-space:nowrap;padding-left:84px;flex-basis:100%;line-height:46px;margin-top:-10px}
 .ansb{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
-.ansb div{font-size:41px;line-height:96px;border-bottom:1px solid var(--rule);display:flex;gap:20px;white-space:nowrap}
-.ansb .n{color:var(--zhu);font-weight:800;min-width:56px}
-.ansb b{color:#fbf6ec;background:var(--dian);width:64px;line-height:64px;align-self:center;text-align:center;font-weight:800}
+.ansb div{font-size:43px;line-height:96px;border-bottom:1px solid #000;display:flex;gap:20px;white-space:nowrap}
+.ansb .n{font-weight:700;min-width:56px}
+.ansb b{font-weight:700;width:64px;line-height:62px;align-self:center;text-align:center;border:2px solid #000}
 """
 
 
@@ -234,12 +225,12 @@ def esc(s):
 
 
 def gaps(s):
-    return re.sub(r'\{(\d+)\}', lambda m: f'<span class="gap chk-nb">({m.group(1)})<u></u></span>', esc(s))
+    return re.sub(r'\{(\d+)\}', lambda m: f'<span class="gap">({m.group(1)}) _______</span>', esc(s))
 
 
 def page(s):
     k = s['kind']
-    top = '<div class="top"><b>TEM-8 2025 · PART I LISTENING COMPREHENSION</b>'
+    top = '<div class="top"><b><em>PART I</em>LISTENING COMPREHENSION</b>'
     if s.get('st'):
         top += f'<span class="st">{esc(s["st"])}</span>'
     if 'cd' in s:
@@ -248,11 +239,10 @@ def page(s):
     body = ''
     if k == 'title':
         top = ''
-        body = ('<div class="ttl blk"><div class="k">TEST FOR ENGLISH MAJORS · GRADE EIGHT</div>'
-                '<h1>TEM-8 2025 · PART I<br>LISTENING COMPREHENSION</h1>'
-                '<div class="zh">2025 年专八听力 · 视频版真题考试</div>'
-                '<div class="note">原题原音，一刀不剪；画面跟着录音出题。</div><div class="note">请备好纸笔作答，参考答案在录音结束后给出。</div>'
-                '<span class="seal">准备开始</span></div>')
+        body = ('<div class="ttl blk"><h1>TEST FOR ENGLISH MAJORS (2025)</h1><h2>-GRADE EIGHT-</h2>'
+                '<div class="pt"><span>PART I</span><span>LISTENING COMPREHENSION</span><span>(25 MIN)</span></div>'
+                '<div class="zh">2025 年专八听力  视频版真题考试</div>'
+                '<div class="note">原题原音，一刀不剪；画面跟着录音出题。</div><div class="note">请备好纸笔作答，参考答案在录音结束后给出。</div></div>')
     elif k == 'instr':
         sec = s['sec']
         head = '<em>SECTION A</em>MINI-LECTURE' if sec == 'A' else '<em>SECTION B</em>INTERVIEW'
@@ -283,32 +273,33 @@ def page(s):
                      '</div><div class="r"><span></span>' +
                      ''.join(f'<span class="opt"><b>{"ABCD"[j]}.</b>{esc(o[j])}</span>' for j in (2, 3)) + '</div>')
         name = 'Part One' if p == 1 else 'Part Two'
-        body = (f'<div class="main pl"><div class="sec blk"><em>SECTION B</em>{name.upper()} OF THE INTERVIEW · QUESTIONS {"1 TO 5" if p == 1 else "6 TO 10"}</div>'
-                f'<div class="hint blk">采访只放一遍；结束后念第 {"1—5" if p == 1 else "6—10"} 题，每题后停顿 10 秒。</div><div class="blk">{rows}</div></div>')
+        body = (f'<div class="main pl"><div class="sec blk"><em>SECTION B</em>INTERVIEW: {name.upper()}</div>'
+                f'<div class="inst2 blk">Now, listen to Part {"One" if p == 1 else "Two"} of the interview. Questions {"1 to 5" if p == 1 else "6 to 10"} are based on Part {"One" if p == 1 else "Two"} of the interview.</div><div class="blk">{rows}</div></div>')
     elif k == 'q':
         n = s['n']
         stem, o, _ = Q['questions'][n - 1]
-        body = (f'<div class="main"><div class="qn blk">QUESTION {n}</div><div class="stem blk">{esc(stem)}</div><div class="ql blk">' +
-                ''.join(f'<div class="opt one"><b>{"ABCD"[j]}</b><span>{esc(o[j])}</span></div>' for j in range(4)) + '</div></div>')
+        body = (f'<div class="main"><div class="qn blk">Question {n}</div><div class="stem blk">{esc(stem)}</div><div class="ql blk">' +
+                ''.join(f'<div class="opt one"><b>{"ABCD"[j]}.</b><span>{esc(o[j])}</span></div>' for j in range(4)) + '</div></div>')
     elif k == 'end':
-        body = ('<div class="main"><div class="end blk"><h1>This is the end of Part I<br>Listening Comprehension.</h1>'
+        body = ('<div class="main"><div class="end blk"><h1>This is the end of<br>PART I LISTENING COMPREHENSION.</h1>'
                 '<p>听力考试结束，请放下笔。下面是参考答案。</p></div></div>')
     elif k == 'ansA':
-        top = top.replace('</b>', '</b><span class="st">参考答案 · Section A Mini-lecture</span>', 1)
+        top = top.replace('</b>', '</b><span class="st">参考答案：Section A Mini-lecture</span>', 1)
         items = ''
         for i, a in enumerate(Q['gap_answers']):
             m = re.match(r'(.*?)(（.*）)?$', a)
             note = f'<span class="zh">{esc(m.group(2))}</span>' if m.group(2) else ''
             items += f'<div><span class="n">({i + 1})</span><span class="a">{esc(m.group(1))}</span>{note}</div>'
-        body = f'<div class="main"><div class="sec blk"><em>KEY</em>WORKING MEMORY · GAP FILLING</div><div class="ans blk">{items}</div></div>'
+        body = f'<div class="main"><div class="sec blk"><em>KEY</em>SECTION A MINI-LECTURE</div><div class="ans blk">{items}</div></div>'
     elif k == 'ansB':
-        top = top.replace('</b>', '</b><span class="st">参考答案 · Section B Interview</span>', 1)
+        top = top.replace('</b>', '</b><span class="st">参考答案：Section B Interview</span>', 1)
         items = ''
         for i in [0, 5, 1, 6, 2, 7, 3, 8, 4, 9]:
             st, o, a = Q['questions'][i]
             items += f'<div><span class="n">{i + 1}.</span><b>{a}</b><span>{esc(o["ABCD".index(a)])}</span></div>'
-        body = f'<div class="main"><div class="sec blk"><em>KEY</em>INTERVIEW · QUESTIONS 1—10</div><div class="ansb blk">{items}</div></div>'
-    css = CSS.replace('FONTS', FONTS.as_uri())
+        body = f'<div class="main"><div class="sec blk"><em>KEY</em>SECTION B INTERVIEW</div><div class="ansb blk">{items}</div></div>'
+    css = CSS.replace('FL/', FL.as_uri() + '/')
+    css = "@import url('" + (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri() + "');" + css
     return f'<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head><body>{top}{body}<div class="foot">TEM-8 2025 LISTENING</div></body></html>'
 
 
@@ -339,7 +330,7 @@ CHECK_JS = r"""() => {
    if (Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left) > 0.5 && Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top) > 0.5) bad.push('重叠 ' + a.className + ' / ' + b.className);
  }
  // 选项、一览行、答案行、状态、倒计时：必须一行
- for (const e of document.querySelectorAll('.opt, .pl .r > span, .ansb div, .ans .zh, .note, .hint, .end p, .ttl .zh, .ttl h2, .st, .cd i, .cd span, .gap, .sec, .qn, .top b')) {
+ for (const e of document.querySelectorAll('.opt, .pl .r > span, .ansb div, .ans .zh, .note, .inst2, .end p, .ttl .zh, .ttl h2, .ttl h1, .st, .cd i, .cd span, .gap, .sec, .qn, .top b')) {
    const lh = parseFloat(getComputedStyle(e).lineHeight) || parseFloat(getComputedStyle(e).fontSize) * 1.3;
    const rs = e.getClientRects(); if (rs.length > 1) { bad.push('折行 ' + e.textContent.slice(0, 40)); continue; }
    if (e.getBoundingClientRect().height > lh * 1.6 + 8) bad.push('折行 ' + e.textContent.slice(0, 40));
@@ -350,7 +341,7 @@ CHECK_JS = r"""() => {
  return bad;
 }"""
 
-ALLOWED_FONTS = {'EB Garamond', 'LXGW WenKai', 'Inter'}
+ALLOWED_FONTS = {'Times New Roman', 'Liberation Serif', 'Noto Serif SC', 'Wingdings'}   # 原卷字体 + 原卷里没有轮廓的字的后备（度量兼容 / 思源宋体）
 
 
 def font_check(page_, cdp):
@@ -388,6 +379,15 @@ def leak_check(s, htm):
     if '参考答案 ·' in txt or 'key' in txt.split():
         bad.append('答案泄露：答案标题')
     return bad
+
+
+def color_check(png):
+    """考卷样式只许黑白灰：任何像素 R、G、B 相差超过 6 就算彩色"""
+    import numpy as np
+    from PIL import Image
+    a = np.asarray(Image.open(png).convert('RGB')).astype(int)
+    n = int(((a.max(2) - a.min(2)) > 6).sum())
+    return f'画面里有 {n} 个彩色像素' if n else ''
 
 
 def key(s):
@@ -431,6 +431,9 @@ def stills(sample=False):
                 continue
             if not png.exists():
                 pg.screenshot(path=str(png))
+                c = color_check(png)
+                if c:
+                    png.unlink(); die(f'{c}：{s}')
             if sample:
                 print('样张', s['kind'], 'cd' in s, png)
         br.close()
