@@ -19,5 +19,11 @@ git commit -qm "专八听力 2025 视频版真题考试：成品（分段提交�
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01YGt3soXoAhqVXEXfDohr2h"
-for i in 1 2 3 4; do git push -q origin claude/epic-edison-4gkcfb && break || sleep $((2**i)); done
+# 别的会话可能往同一分支推了提交：先 rebase 再推；4 次都推不上就报错停下（原来的循环推不上也照样往下走、还打印“已推送”）
+ok=0
+for i in 1 2 3 4; do
+  git pull -q --rebase origin claude/epic-edison-4gkcfb && git push -q origin claude/epic-edison-4gkcfb && { ok=1; break; }
+  sleep $((2**i))
+done
+[ $ok = 1 ] || { echo "停止：推送失败"; exit 1; }
 echo "已推送：$(ls "$D" | wc -l) 段，sha256 $sha"

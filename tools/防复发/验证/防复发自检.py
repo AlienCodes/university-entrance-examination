@@ -39,8 +39,9 @@ for r in r3['rows']:
         r['test'] = {}
         break
 case('旧坑的双向验证被删掉（基线变多）→ 拦', zj.check_registry(r3, md)[0], True, '只许减少')
-md_law = md.replace('\n# 踩坑记录', '\n19. **新立的规矩。**\n\n# 踩坑记录', 1)
-case('铁律多一条没登记 → 拦', zj.check_laws(laws, md_law)[0], True, '铁律 19')
+n_new = max(int(i) for i in zj.law_ids(md)) + 1  # 下一个编号，不写死（铁律 19 立了以后写死的 19 就和真铁律重号）
+md_law = md.replace('\n# 踩坑记录', f'\n{n_new}. **新立的规矩。**\n\n# 踩坑记录', 1)
+case('铁律多一条没登记 → 拦', zj.check_laws(laws, md_law)[0], True, f'铁律 {n_new}')
 md_less = md.replace('\n18. **', '\n**', 1)
 case('登记的铁律从 CLAUDE.md 删了 → 拦', zj.check_laws(laws, md_less)[0], True, '已经没有')
 l2 = copy.deepcopy(laws)
