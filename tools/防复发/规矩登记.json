@@ -272,6 +272,27 @@
    ],
    "status": "自动拦截+有双向验证",
    "gap": "只提醒、不拦（拦了会让当前这一步做不完）。"
+  },
+  {
+   "id": "19",
+   "title": "多题同屏：题与题之间有空隙 + 浅灰细线（视频标准规格）",
+   "guards": [
+    "tools/题目间隔.py QGAP_JS：专八/听力/tools/听力视频.py 每张截图自动跑（空隙 < 20 像素、没有分隔线、线太深太粗、编号不在 .qg 里就停）"
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/题目间隔.py --自检",
+     "needs": "browser",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python 专八/听力/tools/听力视频.py --自检",
+     "needs": "browser",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "目前只有听力视频引擎接了；以后新做画题目的引擎必须接（规则只写在 tools/题目间隔.py 一处）。"
   }
  ],
  "_没有测试的铁律基线": 5

@@ -13,6 +13,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 D = HERE.parent / '2025'
 FL = HERE.parent / 'fonts_local'          # 原卷 PDF 里取出的字体（.gitignore，不进仓库）
+sys.path.insert(0, str(ROOT / 'tools'))
+from 题目间隔 import QGAP_JS, MIN_GAP                          # 标准规格：多题同屏，题与题之间有空隙 + 浅灰细线（铁律 19）
 import os
 OUT = Path(os.environ.get('TEM8_OUT', '/tmp/tem8listen'))      # 截图、中间文件、成品（不进仓库）
 FPS, LEAD = 30, 1.5
@@ -215,13 +217,14 @@ body{font-family:'TNR','Liberation Serif','Noto Serif SC';font-weight:400;positi
 .ql .opt b{width:90px;flex:none}
 .end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:44px;text-align:center}
 .end h1{font-weight:700;font-size:68px;line-height:1.3}.end p{font-family:'Noto Serif SC';font-weight:700;font-size:52px}
-.ans{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(8,auto);grid-auto-flow:column;column-gap:70px;row-gap:6px}
-.ans div{font-size:46px;line-height:68px;border-bottom:1px solid #000;display:flex;flex-wrap:wrap;column-gap:18px}
+.ans{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(8,auto);grid-auto-flow:column;column-gap:70px}
+/* 标准规格（铁律 19）：题与题之间有空隙、浅灰细线分开 */
+.ans .qg{font-size:46px;line-height:66px;padding:6px 0 8px;border-bottom:1.5px solid #c8c8c8;display:flex;flex-wrap:wrap;column-gap:18px}
 .ans .n{font-weight:700;min-width:66px;flex:none}
 .ans .a{flex:1 1 0;min-width:0}
-.ans .zh{font-family:'Noto Serif SC';font-weight:700;font-size:34px;white-space:nowrap;padding-left:84px;flex-basis:100%;line-height:46px;margin-top:-10px}
+.ans .zh{font-family:'Noto Serif SC';font-weight:700;font-size:34px;white-space:nowrap;padding-left:84px;flex-basis:100%;line-height:46px;margin-top:-4px}
 .ansb{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}
-.ansb div{font-size:43px;line-height:96px;border-bottom:1px solid #000;display:flex;gap:20px;white-space:nowrap}
+.ansb .qg{font-size:43px;line-height:96px;border-bottom:1.5px solid #c8c8c8;display:flex;gap:20px;white-space:nowrap}
 .ansb .n{font-weight:700;min-width:56px}
 .ansb b{font-weight:700;width:64px;line-height:62px;align-self:center;text-align:center;border:2px solid #000}
 """
@@ -296,14 +299,14 @@ def page(s):
         for i, a in enumerate(Q['gap_answers']):
             m = re.match(r'(.*?)(（.*）)?$', a)
             note = f'<span class="zh">{esc(m.group(2))}</span>' if m.group(2) else ''
-            items += f'<div><span class="n">({i + 1})</span><span class="a">{esc(m.group(1))}</span>{note}</div>'
+            items += f'<div class="qg"><span class="n">({i + 1})</span><span class="a">{esc(m.group(1))}</span>{note}</div>'
         body = f'<div class="main"><div class="sec blk"><em>KEY</em>SECTION A MINI-LECTURE</div><div class="ans blk">{items}</div></div>'
     elif k == 'ansB':
         top = top.replace('</b>', '</b><span class="st">参考答案：Section B Interview</span>', 1)
         items = ''
         for i in [0, 5, 1, 6, 2, 7, 3, 8, 4, 9]:
             st, o, a = Q['questions'][i]
-            items += f'<div><span class="n">{i + 1}.</span><b>{a}</b><span>{esc(o["ABCD".index(a)])}</span></div>'
+            items += f'<div class="qg"><span class="n">{i + 1}.</span><b>{a}</b><span>{esc(o["ABCD".index(a)])}</span></div>'
         body = f'<div class="main"><div class="sec blk"><em>KEY</em>SECTION B INTERVIEW</div><div class="ansb blk">{items}</div></div>'
     css = CSS.replace('FL/', FL.as_uri() + '/')
     css = "@import url('" + (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri() + "');" + css
@@ -337,7 +340,7 @@ CHECK_JS = r"""() => {
    if (Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left) > 0.5 && Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top) > 0.5) bad.push('重叠 ' + a.className + ' / ' + b.className);
  }
  // 选项、一览行、答案行、状态、倒计时：必须一行
- for (const e of document.querySelectorAll('.opt, .pl .r > span, .ansb div, .ans .zh, .note, .inst2, .end p, .ttl .zh, .ttl h2, .ttl h1, .st, .cd i, .cd span, .gap, .sec, .qn, .top b')) {
+ for (const e of document.querySelectorAll('.opt, .pl .r > span, .ansb .qg, .ans .zh, .note, .inst2, .end p, .ttl .zh, .ttl h2, .ttl h1, .st, .cd i, .cd span, .gap, .sec, .qn, .top b')) {
    const lh = parseFloat(getComputedStyle(e).lineHeight) || parseFloat(getComputedStyle(e).fontSize) * 1.3;
    const rs = e.getClientRects(); if (rs.length > 1) { bad.push('折行 ' + e.textContent.slice(0, 40)); continue; }
    if (e.getBoundingClientRect().height > lh * 1.6 + 8) bad.push('折行 ' + e.textContent.slice(0, 40));
@@ -429,7 +432,7 @@ def stills(sample=False):
             tmp.write_text(htm, 'utf-8')
             pg.goto(tmp.as_uri()); pg.evaluate('document.fonts.ready')
             pg.wait_for_function('document.fonts.status === "loaded"')
-            bad = pg.evaluate(CHECK_JS) + font_check(pg, cdp) + leak_check(s, htm)
+            bad = pg.evaluate(CHECK_JS) + pg.evaluate(QGAP_JS, MIN_GAP) + font_check(pg, cdp) + leak_check(s, htm)
             if bad:
                 errs += 1
                 print('排版检查不通过', s, sorted(set(bad))[:8])
@@ -565,10 +568,11 @@ def selftest():
 
         def run(htm, s):
             tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); pg.wait_for_function('document.fonts.status === "loaded"')
-            return pg.evaluate(CHECK_JS) + font_check(pg, cdp) + leak_check(s, htm)
+            return pg.evaluate(CHECK_JS) + pg.evaluate(QGAP_JS, MIN_GAP) + font_check(pg, cdp) + leak_check(s, htm)
         cases = [('正常（单题 + 答题卡）', page(good), good, False), ('正常', page(sheet), sheet, False),
                  ('答题卡里混进答案', page(sheet).replace('and knowledge', 'and knowledge long-term memory'), sheet, True),
                  ('选项太长溢出', page(good).replace('Creativity is irrational.', 'Creativity is irrational. ' * 4), good, True),
+                 ('选项一览题与题之间没分开（铁律 19）', page({'kind': 'plist', 'part': 2, 'st': 'x'}).replace('class="qg"', 'class="x"'), {'kind': 'plist', 'part': 2, 'st': 'x'}, True),
                  ('字体里没有的字', page(good).replace('Question 9', 'Question 9 𝄞 ꙮ'), good, True)]
         for name, htm, s, want in cases:
             got = run(htm, s)
