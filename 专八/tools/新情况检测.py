@@ -18,7 +18,8 @@ import make_video as M  # noqa: E402
 
 a = sys.argv[1:]
 seen_ids = a[a.index('--见过') + 1:a.index('--新')]
-new_ids = [x for x in a[a.index('--新') + 1:] if not x.startswith('--')]
+rest = a[a.index('--新') + 1:]
+new_ids = [x for i, x in enumerate(rest) if not x.startswith('--') and (i == 0 or rest[i - 1] != '--见过项目')]
 P = {p['id']: p for p in json.loads((M.C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
 
 PATTERNS = {
@@ -60,11 +61,22 @@ def features(s):
     return f
 
 
+SEEN_PROJ = a[a.index('--见过项目') + 1] if '--见过项目' in a else None     # 见过的篇目在别的项目（专八听力：同一套书卷水墨，见过的是专八阅读 t01—t30）
+
+
 def novel(seen, new, inject=False):
+    global P
     known = set()
+    if SEEN_PROJ:
+        cur = M.PROJ
+        M.set_project(SEEN_PROJ, look=False)
+        P0, P = P, {p['id']: p for p in json.loads((M.C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
     for pid in seen:
         for _, _, s in screens(pid):
             known |= features(s)
+    if SEEN_PROJ:
+        M.set_project(cur, look=False)
+        P = P0
     hits = {}
     for pid in new:
         for scr, k, s in screens(pid):
@@ -76,7 +88,7 @@ def novel(seen, new, inject=False):
 
 
 if '--自检' in a:
-    ok = any('§' in k for k in novel(seen_ids, new_ids, inject=True)) and not novel(seen_ids, seen_ids)
+    ok = any('§' in k for k in novel(seen_ids, new_ids, inject=True)) and (SEEN_PROJ or not novel(seen_ids, seen_ids))
     print('新情况检测：双向通过（放进的 § 报出来了，见过的篇目对自己 0 处）' if ok else '新情况检测：不通过')
     sys.exit(0 if ok else 1)
 hits = novel(seen_ids, new_ids)
