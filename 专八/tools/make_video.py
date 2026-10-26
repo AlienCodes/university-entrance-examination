@@ -74,6 +74,11 @@ PROJECTS = {
     '考研作文': {'tag': 'KAOYAN · WRITING · PART A', 'top': 'KAOYAN WRITING', 'exam': '', 'look': '2', 'stills': '大字版/截图/{pid}', 'work': '大字版',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年考研英语[一二] 写作 Part [AB] \S.*\.mp4', 'tmp': 'kywvideo_',
              'badge': r'考研\A作文', 'videos': '最终视频'},
+    # 六级作文（用户 2026-10-26：主题用六级教室黑板，规格与六级阅读视频一样；写作专有的原题屏、lead 与考研作文相同）：
+    # 篇目 c01—c31，paper “2026年6月大学英语六级 第1套 写作”，passage “Part I”
+    '六级作文': {'tag': 'CET-6 · WRITING · PART I', 'top': 'CET-6 WRITING', 'exam': '', 'look': '3', 'stills': '大字版/截图/{pid}', 'work': '大字版',
+             'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月大学英语六级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet6wvideo_',
+             'videos': '最终视频'},
     # 专八听力原文精读（用户 2026-10-25）：2025 专八听力录音原文（讲座、采访、说明、念题）逐句精读，书卷水墨大字（与专八水墨同一套画面、字号）；
     # 声音用听力原音（不是 TTS），句子起止由 专八/听力/原文/tools/原音音轨.py 对齐求出、长等待压到 2 秒。目录不在仓库顶层：dir。
     # 原音（audio='原音'）不适用 TTS 才有的几项：句间固定 0.8 秒停顿、停顿处数字静音、逐句响度偏差 / 短时波动、电磁音（声码器）、读完固定停留 0.5 秒——
@@ -1286,7 +1291,7 @@ def screen_checks(pg, label, fit, r):
 
 # 各项目封面装饰文字（::before / ::after 的 content，如右上角贴纸）里允许出现的考试名：别的项目的名字出现就报错
 # （考研 k02 截图试跑：共用的 样式/1_晴空校园.css 把贴纸写死成「专八 / 精读」，考研封面也成了“专八精读”）
-EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'],
+EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'], '六级作文': ['六级', 'CET-6', 'CET6'],
               '四级': ['四级', 'CET-4', 'CET4'], '中考': ['中考'], '高考': ['高考']}
 DECO_JS = """() => { const out = [];
   for (const el of document.querySelectorAll('*')) for (const p of ['::before', '::after']) {
