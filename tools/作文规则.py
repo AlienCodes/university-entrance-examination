@@ -29,6 +29,10 @@ def numbers(prompt, body, allow=()):
     for m in re.finditer(r'\b(\d+(?:\.\d+)?)(?=%| percent)|\b(1[89]\d\d|20\d\d)\b', body):
         n = m[1] or m[2]
         if float(n) not in src and n not in allow: out.append(f'数字不在题目里：{n}')
+    # 年份与数值要配对：题目写成“1990 年 3.4%”，正文“3.4% in 1990”必须与之一致
+    data = {y: float(v) for y, v in re.findall(r'(\d{4}) 年 (\d+(?:\.\d+)?)%', prompt)}
+    for v, y in re.findall(r'(\d+(?:\.\d+)?)% in (\d{4})', body):
+        if y in data and float(v) != data[y]: out.append(f'年份与数值不符：{v}% in {y}（题目 {y} 年 {data[y]}%）')
     return out
 def word_range(limit):
     """用户 2026-10-26：题目要求最优先，范围内写到靠上。
@@ -63,6 +67,8 @@ def run(dirs, lims=None):
                 for x in check(e, lo, hi): print(e['id'], x); total += 1
     return total
 def selftest():
+    if not any('年份与数值不符' in g for g in check({'id': 't', 'prompt': '【图表】1990 年 3.4%，2005 年 21%', 'limit': '', 'body': ['It reached 21% in 1990.']})): return print('自检：年份配对漏报') or False
+    if check({'id': 't', 'prompt': '【图表】1990 年 3.4%，2005 年 21%', 'limit': '', 'body': ['It rose from 3.4% in 1990 to 21% in 2005.']}): return print('自检：年份配对误报') or False
     e = {'id': 't', 'prompt': '【图表】 39.3% 2019', 'first': 'It is true.', 'limit': '',
          'body': ['It is true. The colour rose to 39.3% in 2019, towards 40%.', 'He said "hi" ,and left.Then the the end。']}
     got = check(e)
