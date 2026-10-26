@@ -3,6 +3,7 @@
 
   python3 六级作文/tools/讲义复核材料.py A --篇 c01-c10 [--雷 埋雷.json] [--总论] > 稿.md   # 考官/教研：全部内容
   python3 六级作文/tools/讲义复核材料.py B --篇 c01-c31 [--雷 埋雷.json] > 稿.md            # 母语编辑：只看英文（例句、替换、升格、词汇）
+  python3 六级作文/tools/讲义复核材料.py F --篇 c01-c31 [--雷 埋雷.json] > 稿.md            # 只看句式卡（公式与原句、例句是否对得上）
   python3 六级作文/tools/讲义复核材料.py apply 修改.json                                     # 按位置标签改数据（old 必须恰好出现一次）
 
 埋雷 / 修改 文件：[{"篇": "c30", "位置": "句式[0].例句[1].en", "old": "…", "new": "…"}, …]
@@ -103,7 +104,7 @@ def english_only(d):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('mode', choices=['A', 'B', 'apply'])
+    ap.add_argument('mode', choices=['A', 'B', 'F', 'apply'])
     ap.add_argument('file', nargs='?')
     ap.add_argument('--篇', default='c01-c31')
     ap.add_argument('--雷')
@@ -137,9 +138,11 @@ def main():
         for m in mines:
             if m['篇'] == pid:
                 patch(d, m['位置'], m['old'], m['new'], '雷')
-        lines += head(pid, E, PR, a.mode == 'A')
+        lines += head(pid, E, PR, a.mode == 'A') if a.mode != 'F' else [f'# {pid}', '']
         d.pop('id', None)
-        render(d if a.mode == 'A' else english_only(d), '', lines)
+        if a.mode == 'F':      # 只看句式卡：公式与原句、例句、替换说法是否对得上
+            d = {'句式': d.get('句式', [])}
+        render(d if a.mode in ('A', 'F') else english_only(d), '', lines)
         lines.append('')
     used = {m['篇'] for m in mines}
     miss = used - set(todo) - ({'总论'} if a.总论 else set())
