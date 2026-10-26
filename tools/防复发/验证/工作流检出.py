@@ -28,7 +28,11 @@ def trial(pats, proj, pid):
         subprocess.run(['git', '-C', str(R), 'worktree', 'add', '-q', '--no-checkout', '--detach', str(wt), 'HEAD'], check=True)
         subprocess.run(['git', '-C', str(wt), 'sparse-checkout', 'set', '--no-cone', *pats], check=True, capture_output=True)
         subprocess.run(['git', '-C', str(wt), 'checkout', '-q'], check=True)
-        r = subprocess.run([PY, str(wt / '四级作文/tools/原题屏试排.py'), proj, str(td / 'out'), pid], capture_output=True, text=True, timeout=900)
+        drv = wt / '四级作文/tools/原题屏试排.py'          # 试排驱动本身不是工作流的依赖：六级作文的检出里没有，复制进去
+        drv.parent.mkdir(parents=True, exist_ok=True)
+        if not drv.exists():
+            shutil.copy(R / '四级作文/tools/原题屏试排.py', drv)
+        r = subprocess.run([PY, str(drv), proj, str(td / 'out'), pid], capture_output=True, text=True, timeout=900)
         tail = (r.stdout + r.stderr).strip().splitlines()[-1:] or ['']
         return r.returncode, tail[0][:160]
     finally:
