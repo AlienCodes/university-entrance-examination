@@ -3,8 +3,10 @@ import json, sys, pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[1] / '作文'
 sys.path.insert(0, str(ROOT.parents[1] / 'tools'))
 import 作文规则 as r
-out = ['# 大学英语四级作文范文（2026—2021，共 31 套）', '',
-       '字数：题目要求 150—200 词，范文一律写到 190—200 词（2023 年 12 月三套题目写明不含给定首句，字数不含首句）。', '']
+es = [e for y in sorted((p.stem for p in ROOT.glob('20??.json')), reverse=True) for e in json.loads((ROOT / f'{y}.json').read_text())]
+ws = [r.counted(e) for e in es]
+out = [f'# 大学英语四级作文范文（2026—2021，共 {len(es)} 套）', '',
+       f'字数：题目要求 120—180 词，范文一律写到 {min(ws)}—{max(ws)} 词（程序按 tools/作文规则.counted 统计，绝不超过 180）。', '']
 n = 0
 for y in sorted((p.stem for p in ROOT.glob('20??.json')), reverse=True):
     for e in json.loads((ROOT / f'{y}.json').read_text()):

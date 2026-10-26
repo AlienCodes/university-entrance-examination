@@ -43,14 +43,19 @@ def main():
     for n, e in enumerate(essays(), 1):
         pid = f'c{n:02d}'
         y, m, s = re.match(r'c(\d{4})-(\d\d)-(\d)', e['id']).groups()
+        # 建议书、报告、命题作文的标题（8 篇）：照考研作文，标题单独第一屏、朗读、标生词（铁律 1）；edge 记开头格式行数（响度短时窗口只量正文）
+        paras = ([e['title']] if e.get('title') else []) + list(e['body'])
         sents = []
-        for para in e['body']:
+        for para in paras:
             ss = split(para)
             assert ' '.join(ss) == para, (pid, para[:80])
             sents.append(ss)
         rec = {'id': pid, 'src': e['id'], 'year': int(y), 'month': int(m), 'set': int(s),
                'paper': f"{e['paper']} 写作", 'passage': 'Part I', 'pdf': e['paper'],
                'words': count(sents), 'prompt_img': f'{pid}.png', 'lead': round(1.5 + PROMPT, 3), 'sents': sents}
+        if e.get('title'):
+            rec['letter'] = {'title': e['title']}
+            rec['edge'] = [1, 0]
         if e.get('first'):
             rec['first'] = e['first']
         out.append(rec)
