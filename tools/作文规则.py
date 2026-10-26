@@ -31,7 +31,9 @@ def numbers(prompt, body, allow=()):
         if float(n) not in src and n not in allow: out.append(f'数字不在题目里：{n}')
     return out
 def check(e, lo=None, hi=None):
-    body = ' '.join(e['body']); out = spelling(body) and [f'英式拼写：{w}' for w in spelling(body)] or []
+    body = ' '.join(e['body'])
+    own = body[len(e['first']):] if e.get('first') and body.startswith(e['first']) else body  # 照抄的题目首句不查拼写
+    out = [f'英式拼写：{w}' for w in spelling(own)]
     for t in e['body'] + [e[k] for k in ('title', 'salutation', 'closing', 'signature') if e.get(k)]: out += punct(t)
     if '【图表】' in e['prompt']: out += numbers(e['prompt'], body, e.get('allow_numbers', ()))
     if e.get('first'):
