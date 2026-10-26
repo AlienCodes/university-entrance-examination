@@ -309,6 +309,28 @@
     }
    ],
    "status": "自动拦截+有双向验证"
+  },
+  {
+   "id": "21",
+   "title": "作文题目必须配中文翻译：视频放原题屏、讲义放原题小节",
+   "guards": [
+    "专八/tools/make_video.py prompt_zh_problems / prompt_en_problems / PZ_JS：原题屏截图时每篇自动跑，有一处不出图、不生成（项目配置 prompt_zh：四级作文、六级作文）",
+    "四级作文、六级作文 讲义.py check → tools/作文题目译文.py：漏数字、漏引号原句就不出 PDF"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/原题屏译文.py",
+     "needs": "browser",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "python3 tools/作文题目译文.py --自检",
+     "needs": "none",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "考研作文还没接（原题屏只有截图、讲义没有题目译文）；新作文项目复制引擎时要在 PROJECTS 里开 prompt_zh。"
   }
  ],
  "_没有测试的铁律基线": 5

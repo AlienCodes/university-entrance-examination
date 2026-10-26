@@ -78,15 +78,18 @@ PROJECTS = {
     # 篇目 c01—c31，paper “2026年6月大学英语六级 第1套 写作”，passage “Part I”
     '六级作文': {'tag': 'CET-6 · WRITING · PART I', 'top': 'CET-6 WRITING', 'exam': '', 'look': '3', 'stills': '大字版/截图/{pid}', 'work': '大字版',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月大学英语六级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet6wvideo_',
-             'videos': '最终视频'},
+             'videos': '最终视频',
+             # 原题屏 = 原题（排版英文；图表题保留图表截图）+ 题目译文（与四级作文同一套，用户 2026-10-26）；译文用黑板画面的中文字体
+             'prompt_zh': True, 'pz_k': 0.88, 'pq_min': [36, 31], 'pq_min_chart': [26, 22], 'pz_font': 'ZH Regular'},
     # 四级作文（用户 2026-10-26：“视频当然还是用四级之前那个视频自带的主题”）：四级阅读视频（Release 007，四级/tools/make_video.py 设计 C）的
     # 「杂志编号注释」= 本引擎的基础样式 CSS 本身（米白底、墨绿竖条、EB Garamond + 思源宋体、圆形编号）；画面 C 但不叠专八的 样式.css（书卷水墨）——plain。
     # 篇目 c01—c32，paper “2026年6月大学英语四级 第1套 写作”，passage “Part I”
     '四级作文': {'tag': 'CET-4 · WRITING · PART I', 'top': 'CET-4 WRITING', 'exam': '', 'look': 'C', 'plain': True, 'size': 'C@杂志',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
              'name_re': r'20\d\d年(6|12)月大学英语四级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet4wvideo_', 'videos': '最终视频',
-             # 原题屏在截图下面加题目中文翻译（用户 2026-10-26：学生暂停时要看懂题目；与讲义同一份复核过的 题目译文，一字不差）
-             'prompt_zh': True},
+             # 原题屏 = 原题（排版英文）+ 题目中文翻译（用户 2026-10-26：学生暂停时要看懂题目；与讲义同一份复核过的 题目译文，一字不差）；
+             # pz_k 译文 / 英文字号比，pq_min 字号下限 [英文, 中文]（px，1920×1080；pq_min_chart 图表题，图表占掉一块），pz_font 译文字体（本画面的中文字体）
+             'prompt_zh': True, 'pz_k': 0.88, 'pq_min': [40, 35], 'pq_min_chart': [40, 35], 'pz_font': 'Noto Serif SC'},
     # 专八听力原文精读（用户 2026-10-25）：2025 专八听力录音原文（讲座、采访、说明、念题）逐句精读，书卷水墨大字（与专八水墨同一套画面、字号）；
     # 声音用听力原音（不是 TTS），句子起止由 专八/听力/原文/tools/原音音轨.py 对齐求出、长等待压到 2 秒。目录不在仓库顶层：dir。
     # 原音（audio='原音'）不适用 TTS 才有的几项：句间固定 0.8 秒停顿、停顿处数字静音、逐句响度偏差 / 短时波动、电磁音（声码器）、读完固定停留 0.5 秒——
@@ -895,21 +898,79 @@ def prompt_zh_lines(p):
     return json.loads((C4 / '讲义' / 'data' / f'{p["id"]}.json').read_text('utf-8'))['题目译文']
 
 
+def prompt_en_blocks(p):
+    """原题屏排版的英文：题目数据里的 prompt（tools/作文题目译文.prompt_of，已与原卷 PDF 核对），按空行分段。
+    图表题（含【图表】说明）只排 Directions 一段：图表标题、Source 都在图表截图里（<篇目>_图.png，六级作文/tools/原题图表.py）。"""
+    import importlib.util as _iu
+    spec = _iu.spec_from_file_location('作文题目译文', ROOT / 'tools' / '作文题目译文.py')
+    TR = _iu.module_from_spec(spec); spec.loader.exec_module(TR)
+    pr = TR.prompt_of(PROJ[:2], p['src'])
+    blocks = [x.strip() for x in pr.split('\n\n') if x.strip()]
+    chart = any(x.startswith('【图表】') for x in blocks)
+    return (blocks[:1] if chart else blocks), chart
+
+
 def prompt_zh_html(p):
-    """四级作文原题屏（用户 2026-10-26）：卡片上半是原题截图（.pqi 里按比例放到最大），下半是「题目译文」（本画面的思源宋体，
-    每条一段，走译文的标点挤压与断行 zh_html）。截图只缩小不放大；放不下时截图让位给译文（译文字号固定，手机上看得清）。"""
-    img = (C4 / '原题' / p['prompt_img']).as_uri()
+    """作文原题屏（四级作文、六级作文，用户 2026-10-26）：原题 + 题目译文。
+    原题的 Directions 不再放原卷截图（8:1 的长条，占满整屏宽字也只有 17 像素高），改成排版文字：只取题目数据里的 prompt（画面文字与它逐字相同，
+    prompt_en_problems 查），EB Garamond（接近试卷的衬线字体），Directions: 粗体、说明斜体、参考陈述正体，与原卷一样；图表题的图表保留高清截图。
+    题目译文：讲义数据里复核过的 题目译文（一字不差），本画面的中文字体，走译文的标点挤压与断行 zh_html。
+    版式：PZ_FIT 在「左右两栏（分栏比例逐档试）/ 上下排」里挑英文字号最大的一种（译文字号 = 英文 × PJ['pz_k']，两边一起放大），
+    两块在各自的栏里上下居中（留白均衡）。字号下限 PJ['pq_min']（英文、中文，1920×1080 下的 px），PZ_JS 查。"""
+    blocks, chart = prompt_en_blocks(p)
+    en = []
+    for i, x in enumerate(blocks):
+        if i == 0 and x.startswith('Directions:'):
+            en.append(f'<p class="pd"><b>Directions:</b> <i>{esc(x[len("Directions:"):].strip())}</i></p>')
+        else:
+            en.append(f'<p class="ps">{esc(x)}</p>')
+    im = ''
+    if chart:
+        src = C4 / '原题' / f'{p["id"]}_图.png'
+        if not src.exists():
+            raise SystemExit(f'{p["id"]} 是图表题，缺图表截图 {src}（先跑 六级作文/tools/原题图表.py）')
+        im = f'<div class="pim"><img src="{src.as_uri()}" alt=""></div>'
     zh = ''.join(f'<div class="pz">{zh_html(x, latin_words=True)}</div>' for x in prompt_zh_lines(p))
+    font = PJ.get('pz_font', 'Noto Serif SC')
     return f'''<style>
-.pq{{flex-direction:column;align-items:stretch;padding:40px 34px 22px}}
-.pqi{{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}}
-.pzh{{flex:none;margin-top:16px;padding:12px 22px 6px;border-top:2px solid #d7d2c3}}
-.pzh .zh{{font-size:35px;line-height:1.5;color:#2c3532;margin:0;padding:0;border:0}}
-.pzh .pz{{margin:0 0 6px}}
-.pzh .zt{{display:inline-block;font-family:'Noto Serif SC';font-weight:700;font-size:28px;line-height:38px;color:#fff;background:#1f5c4a;border-radius:6px;padding:0 14px;margin-bottom:8px}}
+.pq{{display:block;padding:44px 40px 24px}}
+.pgrid{{position:absolute;left:40px;right:40px;top:44px;bottom:24px;display:grid;column-gap:56px;row-gap:26px;align-content:center;align-items:center}}
+.pgrid.lr{{grid-template-columns:var(--ca) var(--cb);grid-template-areas:"le zh"}}
+.pgrid.tb{{grid-template-columns:100%;grid-template-areas:"le" "zh"}}
+.pgrid.tb.ch{{grid-template-areas:"en en" "im zh";grid-template-columns:var(--ca) var(--cb)}}
+.pleft{{grid-area:le;display:flex;flex-direction:column;justify-content:center;gap:30px;min-width:0}}
+.pgrid.tb.ch .pleft{{display:contents}}
+.pgrid.tb.ch .pen{{grid-area:en}}
+.pgrid.lr .pzh{{border-left:2px solid #d7d2c3;padding-left:52px;margin-left:-28px}}
+.pgrid.tb .pzh{{border-top:2px solid #d7d2c3;padding-top:20px}}
+.pgrid.tb.ch .pzh{{border-top:0;padding-top:0;border-left:2px solid #d7d2c3;padding-left:52px;margin-left:-28px}}
+.pen{{grid-area:en;font-family:'EB Garamond',serif;font-size:var(--pe);line-height:1.42;color:#1c2421;min-width:0}}
+.pen p{{margin:0;text-align:left;hyphens:none}}
+.pen .pd b{{font-weight:700}}
+.pen .ps{{margin-top:.45em;text-indent:2em}}
+.pim{{grid-area:im;min-width:0;display:flex;justify-content:center}}
+.pim img{{display:block;width:100%;height:auto}}
+.pzh{{grid-area:zh;min-width:0}}
+.pzh .zh{{font-family:'{font}',serif;font-size:var(--pc);line-height:1.55;color:#2c3532;margin:0;padding:0;border:0;background:none;text-shadow:none}}
+.pzh .pz{{margin:0 0 .3em}}
+.pzh .zt{{display:inline-block;font-family:'{font}';font-weight:700;font-size:26px;line-height:36px;color:#fff;background:#1f5c4a;border-radius:6px;padding:0 14px;margin-bottom:10px}}
 </style>
-<div class="pq" id="pq"><span class="lab">原题</span><div class="pqi"><img src="{img}" alt=""></div>
-<div class="pzh"><span class="zt">题目译文</span><div class="zh" lang="zh-CN">{zh}</div></div></div>'''
+<div class="pq" id="pq"><span class="lab">原题</span><div class="pgrid{' ch' if chart else ''}">
+<div class="pleft"><div class="pen" lang="en">{''.join(en)}</div>{im}</div>
+<div class="pzh"><span class="zt">题目译文</span><div class="zh" lang="zh-CN">{zh}</div></div></div></div>'''
+
+
+def prompt_en_problems(shown, blocks):
+    """原题屏排版的英文与题目数据 prompt 逐段逐字相同（空白折叠后比较；引号、标点都要一样）。shown = 画面上 .pen 每段 p 的文字。"""
+    norm = lambda t: re.sub(r'\s+', ' ', t.replace(' ', ' ')).strip()
+    got, want = [norm(x) for x in shown], [norm(x) for x in blocks]
+    if got == want:
+        return []
+    if len(got) != len(want):
+        return [f'原题英文段数 {len(got)} 与题目数据 {len(want)} 不一致']
+    i = next(k for k in range(len(want)) if got[k] != want[k])
+    j = next((k for k in range(min(len(got[i]), len(want[i]))) if got[i][k] != want[i][k]), min(len(got[i]), len(want[i])))
+    return [f'原题英文第 {i + 1} 段与题目数据不一致（第 {j} 字起：画面“{got[i][j:j + 20]}” / 数据“{want[i][j:j + 20]}”）']
 
 
 def prompt_zh_problems(shown, lines):
@@ -1109,6 +1170,68 @@ FIT = None          # set_style() 按画面填入起始字号
 # 原题屏的题目译文（四级作文）：落在行首的 .po 改成 .pl（去左半字），与上下行的字对齐，并在它前面固定换行（与 FIT_JS 末尾同一规则）
 PO_JS = """() => { for (const e of document.querySelectorAll('.pzh .po')) { const k=e.closest('.zh'), b=k.getBoundingClientRect();
     if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl'; e.before(document.createElement('br')); } } }"""
+PZ_CHMIN = 0.46      # 图表截图宽度下限（占版面宽的比例）：图表里的数字要看得见
+# 作文原题屏（prompt_zh）的版式：在「上下排」「左右两栏（左栏占 36%—64%，每 2% 一档）」里，每种按英文字号二分找放得下的最大值
+# （译文字号 = 英文 × k，一起放大），挑英文字号最大的一种；同样大时取先试的（上下排在前）。最后对选定版式跑 PO_JS（行首左半空白标点），
+# 放不下就再缩 0.5px。放得下 = 每一块都在网格里、不横向溢出。返回 [版式, 左栏 %, 英文 px]。
+PZ_FIT = """async (k) => { const g = document.querySelector('.pgrid'), ch = g.classList.contains('ch'), kids = [...g.querySelectorAll('.pen,.pim,.pzh')], img = g.querySelector('.pim img');
+  for (const im of g.querySelectorAll('img')) { try { await im.decode(); } catch (e) {} }
+  const zb = g.querySelector('.pzh .zh'), zh0 = zb.innerHTML;
+  const set = (cls, a, s) => { g.className = 'pgrid ' + cls + (ch ? ' ch' : ''); g.style.setProperty('--ca', `minmax(0,${a}fr)`); g.style.setProperty('--cb', `minmax(0,${100 - a}fr)`);
+    g.style.setProperty('--pe', s + 'px'); g.style.setProperty('--pc', (s * k).toFixed(2) + 'px'); };
+  const fits = () => { const G = g.getBoundingClientRect(); return kids.every(e => { const b = e.getBoundingClientRect();
+    return b.top >= G.top - 0.5 && b.bottom <= G.bottom + 0.5 && b.left >= G.left - 0.5 && b.right <= G.right + 0.5 && e.scrollWidth <= e.clientWidth + 1; })
+    && (!img || img.getBoundingClientRect().width >= CHMIN * G.width - 0.5); };
+  const shorts = () => { const zr = zb.getBoundingClientRect(), em = parseFloat(getComputedStyle(zb).fontSize); let n = 0;      // 与 PZ_JS 的“题目译文短行”同一规则
+    for (const pz of zb.querySelectorAll('.pz')) { const rg = document.createRange(); rg.selectNodeContents(pz); const L = {};
+      for (const x of rg.getClientRects()) if (x.width > 0) { const t = Math.round(x.top + x.height / 2); const key = Object.keys(L).find(y => Math.abs(y - t) < em * 0.6) ?? t; L[key] = Math.max(L[key] || 0, x.right); }
+      const ys = Object.keys(L).map(Number).sort((a, b) => a - b); n += ys.slice(0, -1).filter(y => L[y] < zr.right - 6 * em).length; }
+    return n; };
+  const res = [], cands = [['tb', ch ? 50 : 100]];
+  for (let a = 30; a <= 70; a += 2) { cands.push(['lr', a]); if (ch) cands.push(['tb', a]); }
+  for (const [cls, a] of cands) { let lo = 10, hi = 90;
+    while (hi - lo > 0.25) { const m = (lo + hi) / 2; set(cls, a, m); if (fits()) lo = m; else hi = m; }
+    res.push([cls, a, Math.floor(lo * 2) / 2]); }
+  res.sort((x, y) => y[2] - x[2]);                    // 字号从大到小；同样大时保持先试的在前（sort 稳定）
+  for (const [cls, a, s0] of res.slice(0, 12)) { let s = s0; zb.innerHTML = zh0; set(cls, a, s);
+    (""" + PO_JS + """)();
+    while (!fits() && s > 10) { s -= 0.5; set(cls, a, s); }
+    if (!shorts()) return [cls, a, s]; }
+  const [cls, a, s] = res[0]; zb.innerHTML = zh0; set(cls, a, s); (""" + PO_JS + """)(); return [cls, a, s, '有短行']; }"""
+# 作文原题屏检查（prompt_zh）：版式在卡片里、各块不重叠不溢出；英文、译文字号不低于下限（mins = [英文, 中文] px，1920×1080）；图表截图只缩不放、比例不变；
+# 译文行首左半空白、短行（与 PROMPT_JS 同一规则）；纸胶带不压内容、卡片不压页眉。双向验证 tools/防复发/验证/原题屏译文.py。
+PZ_JS = """(mins) => { const bad = [], q = s => document.querySelector(s), card = q('.pq'), g = q('.pq .pgrid'), lab = q('.pq .lab'), top = q('.top');
+  if (!card || !g) return ['没有原题卡片或版式网格'];
+  const G = g.getBoundingClientRect(), c = card.getBoundingClientRect(), kids = [...g.querySelectorAll('.pen,.pim,.pzh')], d = devicePixelRatio;
+  const name = e => e.classList.contains('pen') ? '原题英文' : e.classList.contains('pim') ? '图表截图' : '题目译文';
+  for (const e of kids) { const b = e.getBoundingClientRect();
+    if (b.top < G.top - 0.5 || b.bottom > G.bottom + 0.5 || b.left < G.left - 0.5 || b.right > G.right + 0.5) bad.push(`${name(e)}超出原题卡片`);
+    if (e.scrollWidth > e.clientWidth + 1 || e.scrollHeight > e.clientHeight + 1) bad.push(`${name(e)}溢出`); }
+  for (let i = 0; i < kids.length; i++) for (let j = i + 1; j < kids.length; j++) { const a = kids[i].getBoundingClientRect(), b = kids[j].getBoundingClientRect();
+    if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1) bad.push(`${name(kids[i])}与${name(kids[j])}重叠`); }
+  const pe = parseFloat(getComputedStyle(q('.pen')).fontSize), zb = q('.pzh .zh'), pc = parseFloat(getComputedStyle(zb).fontSize);
+  if (pe < mins[0] - 0.01) bad.push(`原题英文字号 ${pe}px 低于下限 ${mins[0]}px`);
+  if (pc < mins[1] - 0.01) bad.push(`题目译文字号 ${pc}px 低于下限 ${mins[1]}px`);
+  const img = q('.pim img');
+  if (q('.pim') && !img) bad.push('没有图表截图');
+  if (img) { const r = img.getBoundingClientRect();
+    if (!(img.complete && img.naturalWidth)) bad.push('图表截图没有加载');
+    else { if (img.naturalWidth + 0.5 < r.width * d || img.naturalHeight + 0.5 < r.height * d) bad.push(`图表截图不够高清：原图 ${img.naturalWidth}×${img.naturalHeight}，画面上要 ${Math.round(r.width * d)}×${Math.round(r.height * d)}`);
+      if (Math.abs(r.width / r.height - img.naturalWidth / img.naturalHeight) > 0.003) bad.push('图表截图比例变了');
+      if (r.width < CHMIN * G.width - 0.5) bad.push(`图表截图太小（宽 ${Math.round(r.width)}px，不到版面的 ${CHMIN * 100}%）`); } }
+  const zr = zb.getBoundingClientRect(), em = pc;
+  for (const e of zb.querySelectorAll('.po')) if (Math.abs(e.getClientRects()[0].left - zr.left) < 1) bad.push(`题目译文行首的“${e.textContent}”没有去掉左半空白`);
+  for (const pz of zb.querySelectorAll('.pz')) {
+    const rg = document.createRange(); rg.selectNodeContents(pz); const L = {};
+    for (const x of rg.getClientRects()) if (x.width > 0) { const t = Math.round(x.top + x.height / 2); const key = Object.keys(L).find(y => Math.abs(y - t) < em * 0.6) ?? t; L[key] = Math.max(L[key] || 0, x.right); }
+    const ys = Object.keys(L).map(Number).sort((a, b) => a - b);
+    ys.slice(0, -1).forEach((y, i) => { if (L[y] < zr.right - 6 * em) bad.push(`题目译文短行：第 ${i + 1} 行右边空出 ${Math.round((zr.right - L[y]) / em)} 个字（${pz.textContent.slice(0, 8)}…）`); }); }
+  const a = lab.getBoundingClientRect();
+  for (const e of kids) { const b = e.getBoundingClientRect(); if (a.bottom > b.top + 1 && a.left < b.right && b.left < a.right) bad.push(`“原题”纸胶带压住了${name(e)}`); }
+  if (c.top < top.getBoundingClientRect().bottom + 30) bad.push('原题卡片离页眉太近');
+  if (c.bottom > innerHeight || c.right > innerWidth || a.top < top.getBoundingClientRect().bottom + 2) bad.push('原题卡片或纸胶带出界、压住页眉');
+  return bad; }"""
+PZ_FIT, PZ_JS = (x.replace('CHMIN', str(PZ_CHMIN)) for x in (PZ_FIT, PZ_JS))
 # 片头标题一行放不下时（六级 s06 “儿童使用社交媒体：不应禁止，但数字媒体巨头须受监管” 25 个字，教室黑板的标题一行只放得下约 21 个字，伸出卡片 200 像素），
 # 在第一个冒号后面换行（br.tb），分成意思完整的两行；放得下就什么都不做（专八的标题都放得下，画面不变）。layoutcheck 的“标题”检查认 br.tb：只许在这里分成两行
 TITLE_JS = """() => { const h = document.querySelector('.ttl h1'), card = document.querySelector('.ttl'); if (!h || !card) return 0;
@@ -1172,7 +1295,7 @@ def layout(pg, p, f):
             pg.wait_for_timeout(150)
             pg.evaluate(TITLE_JS)
             if label == '原题' and PJ.get('prompt_zh'):
-                pg.evaluate(PO_JS)                    # 题目译文：落在行首的左半空白标点去掉左半空白（与译文 FIT 同一规则）
+                pg.evaluate(PZ_FIT, PJ['pz_k'])       # 作文原题屏：挑字最大的版式；行首左半空白标点去掉左半空白（PO_JS，与译文 FIT 同一规则）
             yield i, label, False, None
             continue
         r = load(h, start.get(i))
@@ -1364,9 +1487,12 @@ def screen_checks(pg, label, fit, r):
     if fit:
         out += [f'横向出界：{x}' for x in pg.evaluate(HBOX)]
     elif label == '原题':
-        out += [f'原题屏：{x}' for x in pg.evaluate(PROMPT_JS)]
         if PJ.get('prompt_zh'):
+            out += [f'原题屏：{x}' for x in pg.evaluate(PZ_JS, PJ['pq_min_chart'] if prompt_en_blocks(P_CUR)[1] else PJ['pq_min'])]
             out += [f'原题屏：{x}' for x in prompt_zh_problems(pg.inner_text('.pzh .zh'), prompt_zh_lines(P_CUR))]
+            out += [f'原题屏：{x}' for x in prompt_en_problems(pg.eval_on_selector_all('.pen p', 'ps => ps.map(p => p.innerText)'), prompt_en_blocks(P_CUR)[0])]
+        else:
+            out += [f'原题屏：{x}' for x in pg.evaluate(PROMPT_JS)]
         out += [f'原题屏：{x}' for x in deco_project(pg)]
     else:
         out += [f'封面：{x}' for x in pg.evaluate(TH.COVER, False)[2]]

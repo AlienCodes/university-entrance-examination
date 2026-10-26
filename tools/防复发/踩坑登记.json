@@ -2996,13 +2996,43 @@
     "视频"
    ],
    "projects": [
-    "四级作文"
+    "四级作文",
+    "六级作文"
    ],
    "guards": [
     {
      "where": "专八/tools/make_video.py：prompt_zh_problems（screen_checks 原题屏）+ PROMPT_JS 的题目译文检查 + PO_JS（layout）",
      "runs": "大字版.py --stills / --video 每个原题屏自动，有一处就不出图、不生成",
      "evidence": "原题屏：题目译文短行 / 题目译文与讲义数据不一致"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/原题屏译文.py",
+     "expect": "exit 0",
+     "needs": "playwright"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
+  },
+  {
+   "id": "83",
+   "title": "作文原题屏的原题是 8:1 长条截图，字太小；改成排版文字 + 自动选字最大的版式",
+   "stages": [
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "四级作文",
+    "六级作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py：prompt_en_problems + PZ_JS（screen_checks 原题屏）+ PZ_FIT（layout）",
+     "runs": "大字版.py --stills / --video 每个原题屏自动，有一处就不出图、不生成",
+     "evidence": "原题屏：原题英文字号低于下限 / 原题英文与题目数据不一致 / 图表截图太小 / 题目译文短行"
     }
    ],
    "test": [
