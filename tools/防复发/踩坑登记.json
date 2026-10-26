@@ -2867,6 +2867,44 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "78",
+   "title": "新容器自带的浏览器换成了 Chrome 153，GitHub 生成环境仍装 Chromium 141：本机审过的截图在 GitHub 上一张也对不上",
+   "stages": [
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "六级作文"
+   ],
+   "guards": [
+    {
+     "where": ".github/check-browser-match.py：本机 /opt/pw-browsers/chromium 与工作流 cet6-chalk-env 的 browser 输入对应的版本必须相同",
+     "runs": "六级作文/tools/批量_本机.sh 开头",
+     "evidence": "浏览器不一致：GitHub 上用 …，本机是 …"
+    },
+    {
+     "where": ".github/actions/cet6-chalk-env：browser 输入（141 默认 / 153），装浏览器后核对版本号；153 同时装新容器的两条 fontconfig 与 fonts-inter",
+     "runs": "GitHub 每个生成任务",
+     "evidence": "浏览器版本不是 …"
+    },
+    {
+     "where": "render-*.yml：截图与审阅登记逐字节比对",
+     "runs": "GitHub 每篇",
+     "evidence": "与截图审阅登记逐字节相同 0 屏"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/浏览器一致.py",
+     "expect": "exit 0",
+     "needs": ""
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
