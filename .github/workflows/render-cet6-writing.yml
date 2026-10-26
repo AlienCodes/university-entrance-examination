@@ -59,6 +59,8 @@ jobs:
       - name: Release 目标检查（踩坑 53：不许钉在触发提交上，否则运行期间改过工作流就 403）
         run: python3 .github/check-release-target.py
       - uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '153'
       - name: 核对审阅登记与现在的程序、数据一致；写 manifest
         env:
           IDS: ${{ steps.list.outputs.ids }}
@@ -120,6 +122,8 @@ jobs:
             /六级作文/
             !/六级作文/最终视频/
       - uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '153'
       - name: 截图 + 全部程序检查，与审阅登记逐张比对
         run: |
           t0=$(date +%s)
