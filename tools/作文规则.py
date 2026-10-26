@@ -30,6 +30,12 @@ def numbers(prompt, body, allow=()):
         n = m[1] or m[2]
         if float(n) not in src and n not in allow: out.append(f'数字不在题目里：{n}')
     return out
+def word_range(limit):
+    """用户 2026-10-26：可写范围 = [最低字数, min(题目上限, ⌊最低 × 1.2⌋)]；about N 按 N—1.2N。"""
+    m = re.search(r'at least (\d+)', limit) or re.search(r'about (\d+)', limit)
+    lo = int(m[1]); hi = lo * 12 // 10
+    top = re.search(r'no more than (\d+)', limit)
+    return lo, min(hi, int(top[1])) if top else hi
 def check(e, lo=None, hi=None):
     body = ' '.join(e['body'])
     own = body[len(e['first']):] if e.get('first') and body.startswith(e['first']) else body  # 照抄的题目首句不查拼写
@@ -51,6 +57,7 @@ def run(dirs, lims=None):
             for e in json.loads(p.read_text()):
                 if not e['body']: continue
                 lo, hi = (lims or {}).get(d, (None, None))
+                if lo == 'word_range': lo, hi = word_range(e['limit'])
                 e.setdefault('allow_numbers', ALLOW.get(e['id'], ()))
                 for x in check(e, lo, hi): print(e['id'], x); total += 1
     return total
