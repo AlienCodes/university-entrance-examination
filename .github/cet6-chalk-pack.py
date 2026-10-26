@@ -1,4 +1,4 @@
-"""大字版打包（六级黑板 render-cet6-chalk.yml、专八校园 render-tem8-campus.yml、考研校园 render-kaoyan-campus.yml 的最后一个任务；环境变量 PROJECT=六级|专八|专八水墨|专八水墨2026|考研|考研作文|六级作文，默认六级；专八水墨 = 专八书卷水墨大字版 render-tem8-ink.yml，目录仍是 专八/，下面以六级为例）。
+"""大字版打包（六级黑板 render-cet6-chalk.yml、专八校园 render-tem8-campus.yml、考研校园 render-kaoyan-campus.yml 的最后一个任务；环境变量 PROJECT=六级|专八|专八水墨|专八水墨2026|考研|考研作文|六级作文|四级作文，默认六级；专八水墨 = 专八书卷水墨大字版 render-tem8-ink.yml，目录仍是 专八/，下面以六级为例）。
 六级黑板（render-cet6-chalk.yml 最后一个任务）：汇总 60 个视频 → 逐个核对 → 每 20 个打一个 zip（不压缩）→ Python zipfile 逐个核对 → 写发布说明。
 
 视频来源（按优先级）：
@@ -54,6 +54,9 @@ CFG = {
     '六级作文': {'look': '3', 'work': '大字版', 'videos': '最终视频', 'art': 'cet6-writing', 'zip': 'CET6-writing-videos', 'n': 31,
              'head': ['大学英语六级 写作（Part I）满分范文逐句精读视频 · 教室黑板大字版，共 {n} 个：2021—2026 年 31 套真题，每套一篇（{parts} 个压缩包，解压即可）。',
                       '4K（3840×2160）、30 帧/秒恒定；开头展示原卷高清原题；英文 Inter 加粗、中文黑体，生词黄色、短语粉色；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
+    '四级作文': {'look': 'C', 'work': '大字版', 'videos': '最终视频', 'art': 'cet4-writing', 'zip': 'CET4-writing-videos', 'n': 32,
+             'head': ['大学英语四级 写作（Part I）满分范文逐句精读视频 · 四级杂志版，共 {n} 个：2021—2026 年 32 套真题，每套一篇（{parts} 个压缩包，解压即可）。',
+                      '4K（3840×2160）、30 帧/秒恒定；开头展示原卷高清原题；英文 EB Garamond、中文思源宋体，生词墨绿、短语赭红，圆形编号注释；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
 }[PROJECT]
 LOOK = CFG['look']
 D = CFG.get('dir', PROJECT)                      # 项目目录（专八水墨 → 专八）
