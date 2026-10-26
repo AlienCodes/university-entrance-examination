@@ -47,7 +47,7 @@ def check(mp4, p, tm):
 
     # 1. 文件名
     paper = re.sub(r'·[^）]*', '', p['paper'])
-    ok('文件名：年份 试卷 篇目 题目', mp4.name.startswith(f"{p['year']} {paper} 阅读{p['part']} {p['title']}"), mp4.name)
+    ok('文件名：年份 试卷 篇目 题目', mp4.name.startswith(f"{p['year']} {paper} 阅读{p.get('part', '')} {p['title']}"), mp4.name)
     # 2. 分辨率与时长
     info = json.loads(run(['ffprobe', '-v', 'error', '-show_entries', 'stream=codec_type,width,height,duration',
                            '-of', 'json', str(mp4)]))['streams']
