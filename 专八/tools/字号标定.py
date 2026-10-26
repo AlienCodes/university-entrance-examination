@@ -96,6 +96,8 @@ def main():
         # 各画面按原样量；专八的项目变体（如 水墨：书卷水墨 + 英文加粗）在自己的画面上另量一份，键 <画面>@<变体>
         todo = [(look, look, base) for look in M.LOOKS] + [(f"{v['look']}@{n}", v['look'], {**base, **v, 'variant': n})
                                                           for n, v in M.PROJECTS['专八'].get('variants', {}).items()]
+        # 别的项目自己的画面（四级作文：画面 C 不叠书卷水墨 = 四级杂志，plain），键是项目的 size（C@杂志）
+        todo += [(v['size'], v['look'], {**base, 'plain': v.get('plain', False)}) for v in M.PROJECTS.values() if v.get('size')]
         for key_, look, pj in todo:
             M.PJ = pj
             M.STYLE = look

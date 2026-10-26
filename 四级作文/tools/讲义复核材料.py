@@ -130,7 +130,7 @@ def main():
         for m in mines:
             if m['篇'] == '总论':
                 patch(z, m['位置'], m['old'], m['new'], '雷')
-        lines += ['# 总论（六级写作总攻略）', '']
+        lines += ['# 总论（四级写作总攻略）', '']
         render(z, '', lines)
         lines.append('')
     for pid in todo:

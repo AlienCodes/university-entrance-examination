@@ -3,9 +3,9 @@
     python3 四级作文/tools/讲义.py check [c01 …]     # 程序检查（不写篇目 = data/ 里全部）
     python3 四级作文/tools/讲义.py build [c01 …]     # 检查通过后生成三份 PDF（不写篇目 = 全部 32 篇）
 
-数据：四级作文/讲义/data/<篇目>.json（审题、要求、思路、步骤、得分、升格、句式、词汇、默写），总论.json（六级写作总攻略）；
+数据：四级作文/讲义/data/<篇目>.json（审题、要求、思路、步骤、得分、升格、句式、词汇、默写），总论.json（四级写作总攻略）；
 范文句子 四级作文/作文/sents.json、参考译文 四级作文/ann/（复核定稿）、原题 四级作文/原题/ 直接取用。
-比考研讲义多三块（交接 六级/交接_四级作文范文.md）：①题目要求逐条落实（要求 → 范文原句）；②为什么是满分档（切题、结构与连贯、语言，引用范文原样文字）；
+比考研讲义多三块（交接 四级/交接_四级作文范文.md）：①题目要求逐条落实（要求 → 范文原句）；②为什么是满分档（切题、结构与连贯、语言，引用范文原样文字）；
 ③升格示范（普通写法一步步改成范文原句）。检查：所有引用都必须是范文原样文字，升格最后一步就是范文原句；其余同考研讲义。
 """
 import html
@@ -28,7 +28,7 @@ import ann_lib as A  # noqa: E402
 P = {p['id']: p for p in json.loads((C / '作文' / 'sents.json').read_text('utf-8'))}
 V = {p['id']: p for p in json.loads((C / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
 CIRC = '①②③④⑤⑥⑦⑧⑨⑩'
-OUT_HANDOUT = D / '六级英语写作满分范文精讲.pdf'
+OUT_HANDOUT = D / '四级英语写作满分范文精讲.pdf'
 OUT_CARDS = D / '四级作文默写卡.pdf'
 OUT_ANS = D / '四级作文默写卡（答案）.pdf'
 
@@ -162,7 +162,7 @@ def check(pid):
         sx = x.get('句式', '')
         if sx and sx != '给定首句' and not sx.startswith('要点：') and any(n not in cards for n in sx.split('；')):
             e(f'默写 {i}：句式“{sx}”不是本篇句式卡的名称（写卡名，或“给定首句”，或以“要点：”开头的说明）')
-    # 六级新增：要求对照、得分分析、升格示范（引用一律是范文原样文字）
+    # 四级同六级：要求对照、得分分析、升格示范（引用一律是范文原样文字）
     body = ' '.join(S)
     req = d.get('要求', [])
     if not 3 <= len(req) <= 8:
@@ -289,7 +289,7 @@ table.voc tr{break-inside:avoid}
 .vg{break-inside:avoid}.vr{display:grid;grid-template-columns:34% 36% 30%;font-size:9.6pt}
 .vr>div{border-bottom:1px solid #e6e2d8;padding:1.4mm 2.5mm}.vr.th>div{background:var(--ink);color:#fff;font-weight:500;border:0}
 .vr .w{font-family:'EB Garamond','Noto Sans SC';font-size:11.4pt;font-weight:600}.vr .r{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--mute)}
-/* 六级新增：要求对照、得分分析、升格示范 */
+/* 同六级：要求对照、得分分析、升格示范 */
 .rq{display:grid;grid-template-columns:27% 43% 30%;font-size:9.6pt;break-inside:avoid}
 .rq>div{border-bottom:1px solid #e6e2d8;padding:1.4mm 2.5mm}.rq.th>div{background:var(--ink);color:#fff;font-weight:500;border:0}
 .rq .o2{font-size:11pt;line-height:1.5}.rq .c{color:var(--ink2);font-size:9.2pt}
@@ -545,7 +545,7 @@ def cover(title, sub, note):
             f"<div style='font-size:15pt;color:var(--ink2);line-height:1.6'>{sub}</div>"
             f"<div style='margin-top:16mm;font-family:Apos,LXGW WenKai,Noto Sans SC;font-size:12pt;color:var(--ink2);line-height:1.9'>{note}</div></div>"
             f"<div style='position:absolute;right:22mm;top:30mm;width:34mm;height:34mm;border-radius:50%;background:var(--hy);display:flex;align-items:center;justify-content:center;"
-            f"transform:rotate(10deg);font-weight:700;font-size:15pt;text-align:center;line-height:1.25;box-shadow:0 2mm 4mm rgba(0,0,0,.08)'>六级<br>作文</div></div>")
+            f"transform:rotate(10deg);font-weight:700;font-size:15pt;text-align:center;line-height:1.25;box-shadow:0 2mm 4mm rgba(0,0,0,.08)'>四级<br>作文</div></div>")
 
 
 TOC_TIP = ['① 点击目录里任意一行标题，就能直接跳到那一章的第一页；阅读器侧边栏的“书签”也可以随时跳转。',
@@ -951,13 +951,13 @@ def build(ids):
         pg = br.new_page()
         tmp = Path(tmp)
         # 讲义：封面（不编页码）+ 目录 + 总论 + 各篇 + 句式总表；目录页码两遍排版（第一遍量出各章在第几页）
-        render(pg, cover('六级英语写作 满分范文精讲', '2021—2026 · 大学英语四级 · 共 ' + str(len(ids)) + ' 套真题',
+        render(pg, cover('四级英语写作 满分范文精讲', '2021—2026 · 大学英语四级 · 共 ' + str(len(ids)) + ' 套真题',
                          '审题 → 要求对照 → 思路 → 范文 → 一步一步写 → 满分档分析 → 升格示范 → 高分句式 → 亮点词汇<br>每个句式都有公式、讲解和两个仿写例句'), '封面', tmp / 'cover.pdf', tmp, footer=False)
         entries, keys = handout_toc(ids)
         pages = {}
         for _ in range(2):
             body = toc_html(entries, pages) + general_chapter() + ''.join(essay_chapter(i, pid, tmp) for i, pid in enumerate(ids, 1)) + index_chapter(ids)
-            render(pg, body, '六级英语写作满分范文精讲', tmp / 'body.pdf', tmp)
+            render(pg, body, '四级英语写作满分范文精讲', tmp / 'body.pdf', tmp)
             pages, n = page_of(tmp / 'body.pdf', keys)
         miss = [k for k in keys if k not in pages]
         if miss:
