@@ -1,4 +1,4 @@
-"""六级作文范文程序检查：tools/作文规则.py 的全部规则 + 计入字数在 word_range（题目有上限按上限，六级 150—200；只给下限才限 120%；题目写明不含首句的，扣掉首句）。
+"""六级作文范文程序检查：tools/作文规则.py 的全部规则 + 计入字数在 word_range（题目要求最优先、写到靠上：六级 190—200；题目写明不含首句的，扣掉首句）。
 python3 六级/tools/作文检查.py   有一处就退出码 1"""
 import sys, pathlib
 R = pathlib.Path(__file__).resolve().parents[2]

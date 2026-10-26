@@ -31,10 +31,12 @@ def numbers(prompt, body, allow=()):
         if float(n) not in src and n not in allow: out.append(f'数字不在题目里：{n}')
     return out
 def word_range(limit):
-    """用户 2026-10-26 澄清：题目给了上限 → [下限, 上限]；只给下限（at least N / about N）→ [N, ⌊N × 1.2⌋]。"""
+    """用户 2026-10-26：题目要求最优先，范围内写到靠上。
+    题目给了上限 → [下限 + 80% 区间, 上限]（六级 150—200 → 190—200）；只给下限 → [⌈1.1N⌉, ⌊1.2N⌋]。"""
     m = re.search(r'at least (\d+)', limit) or re.search(r'about (\d+)', limit)
     lo = int(m[1]); top = re.search(r'no more than (\d+)', limit)
-    return lo, int(top[1]) if top else lo * 12 // 10
+    if top: hi = int(top[1]); return lo + -(-(hi - lo) * 8 // 10), hi
+    return -(-lo * 11 // 10), lo * 12 // 10
 def check(e, lo=None, hi=None):
     body = ' '.join(e['body'])
     own = body[len(e['first']):] if e.get('first') and body.startswith(e['first']) else body  # 照抄的题目首句不查拼写
