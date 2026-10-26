@@ -18,7 +18,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 R = HERE.parent.parent
 proj, mode, rest = sys.argv[1], sys.argv[2], sys.argv[3:]
-SRC = {'六级': '仔细阅读', '四级': '仔细阅读', '考研作文': '作文'}.get(proj, '阅读')
+SRC = {'六级': '仔细阅读', '四级': '仔细阅读', '考研作文': '作文', '六级作文': '作文'}.get(proj, '阅读')
 sys.path[:0] = [str(HERE), str(R / proj / 'tools')]
 if proj in ('四级', '六级'):
     sys.path.insert(1, str(R / '四级' / 'tools'))
