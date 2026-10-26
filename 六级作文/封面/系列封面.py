@@ -133,6 +133,55 @@ def A43(w=1440, h=1080):
  全部真题 {y(N)} 篇 · 逐句精读 · 模板句式</div>""")
 
 
+# ───────── A1—A3（用户 2026-10-26 看 A 后：“真题”“满分”一定要突出）：只改主标题区 ─────────
+# “真题”“满分”四个字是全图最大一档（data-k=zt，主标题级 ≥24 像素），“六级写作”第二档（data-k=six，同样主标题级），“范文”略小。
+# 颜色与“六级写作”拉开：六级写作改成粉笔白（“六级”仍是系列粉），真题＝粉笔黄、满分＝粉笔红；钩子改成白字 + 黄色下划线，不再用红底，免得和“满分”抢。
+def zt_html(v, size, fan):
+    if v == 'A1':        # 两块粉笔涂块
+        return (f'{L.hl("真题", YEL, px=18, extra=f"font-size:{fs(size)}")}'
+                f'{L.hl("满分", RED, ink="#fff", px=18, extra=f"font-size:{fs(size)};margin-left:{size * .2:.0f}px")}'
+                f'<span class="ck" data-k="fan" data-min="{MIN_HOOK}" style="font-size:{fs(fan)};margin-left:{size * .14:.0f}px">范文</span>')
+    if v == 'A2':        # 实心粉笔字 + 粉笔下划线
+        return (f'<span class="ck" style="font-size:{fs(size)};color:{YEL}">真题</span>'
+                f'<span class="ck" style="font-size:{fs(size)};color:{RED}">满分</span>'
+                f'<span class="ck" data-k="fan" data-min="{MIN_HOOK}" style="font-size:{fs(fan)};margin-left:{size * .1:.0f}px">范文</span>'
+                f'<div style="margin-top:-6px">{underline(round(size * 4.05))}</div>')
+    # A3：真题黄字，满分外画一圈粉笔红圈（像老师批卷）
+    ring = (f'<svg style="position:absolute;left:-14%;top:-16%;width:128%;height:132%;overflow:visible" viewBox="0 0 100 100" preserveAspectRatio="none" filter="url(#line)">'
+            f'<path d="M50 4 C 86 4, 99 22, 98 50 C 97 80, 76 97, 46 96 C 16 95, 2 78, 3 50 C 4 24, 22 6, 58 7" fill="none" stroke="{RED}" stroke-width="3.2" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:{size * .07:.0f}px"/></svg>')
+    return (f'<span class="ck" style="font-size:{fs(size)};color:{YEL}">真题</span>'
+            f'<span style="position:relative;display:inline-block;margin:0 {size * .3:.0f}px 0 {size * .22:.0f}px">{ring}<span class="ck" style="position:relative;font-size:{fs(size)};color:{YEL}">满分</span></span>'
+            f'<span class="ck" data-k="fan" data-min="{MIN_HOOK}" style="font-size:{fs(fan)}">范文</span>')
+
+
+def hook2(size):
+    return (f'<span class="ck">彻底解决</span><span class="ck" style="color:{YEL}">写作问题</span>'
+            f'<div style="margin-top:-4px">{underline(round(size * 8.1), col=YEL)}</div>')
+
+
+def Av(v, w=1920, h=1080):
+    if w >= 1900:
+        zs, fan, top = (236, 150, 330) if v != 'A3' else (226, 140, 342)
+        return board(w, h, f"""
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:72px;top:36px;font:900 {fs(88)}/1.1 Black">{hook2(88)}</div>
+{seal(1556, 48, 280, rot=6)}
+<div class="ab ck" data-k="six" data-min="{MIN_TITLE}" style="left:68px;top:{top - 150}px;font:900 {fs(150)}/1 Black">{SIX}写作</div>
+<div class="ab" data-k="zt" data-min="{MIN_TITLE}" style="left:66px;top:{top + 26}px;font:900 {fs(zs)}/1.12 Black;letter-spacing:.01em">{zt_html(v, zs, fan)}</div>
+{card(1450, 400, 410, rot=-3)}
+<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:66px;top:{748 if v != 'A2' else 760}px">{years(62, mr=14)}</div>
+<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:72px;top:868px;font:900 {fs(64)}/1.2 Black">
+ 全部真题 {y(N)} 篇 · 逐句精读 · 模板句式</div>""")
+    zs, fan = (210, 136) if v != 'A3' else (196, 126)
+    return board(w, h, f"""
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:44px;font:900 {fs(86)}/1.15 Black">{hook2(86)}</div>
+{seal(1104, 44, 262, rot=6)}
+<div class="ab ck" data-k="six" data-min="{MIN_TITLE}" style="left:58px;top:178px;font:900 {fs(150)}/1 Black">{SIX}写作</div>
+<div class="ab" data-k="zt" data-min="{MIN_TITLE}" style="left:56px;top:{372 if v != 'A3' else 384}px;font:900 {fs(zs)}/1.12 Black">{zt_html(v, zs, fan)}</div>
+<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:58px;top:{700 if v != 'A2' else 716}px">{years(60, mr=14)}</div>
+<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:64px;top:836px;font:900 {fs(64)}/1.2 Black">
+ 全部真题 {y(N)} 篇 · 逐句精读 · 模板句式</div>""")
+
+
 # ───────── B：钩子打头、居中对称（无截图） ─────────
 def B(w=1920, h=1080):
     c = w / 2
@@ -172,12 +221,14 @@ def C(w=1920, h=1080):
  <div class="ck" style="position:relative">{rows}</div></div>""")
 
 
-DIRS = {'A': A, 'B': B, 'C': C}
+DIRS = {'A1': lambda w=1920, h=1080: Av('A1', w, h), 'A2': lambda w=1920, h=1080: Av('A2', w, h),
+        'A3': lambda w=1920, h=1080: Av('A3', w, h), 'B': B, 'C': C}
 
 CHECK_JS = r"""
 () => {
   const W = innerWidth, H = innerHeight, out = [];
-  const r = [...document.querySelectorAll('[data-k]')].map(e => { const b = e.getBoundingClientRect(); return {k: e.dataset.k, x0: b.left, y0: b.top, x1: b.right, y1: b.bottom}; });
+  const els = [...document.querySelectorAll('[data-k]')];
+  const r = els.map(e => { const b = e.getBoundingClientRect(); return {k: e.dataset.k, x0: b.left, y0: b.top, x1: b.right, y1: b.bottom}; });
   for (const a of r) {
     const card = a.k.startsWith('card');
     if (!card && (a.x0 < 24 || a.y0 < 24 || a.x1 > W - 24 || a.y1 > H - 52)) out.push(`${a.k} 出画/压到木框 ${JSON.stringify(a)}`);
@@ -186,6 +237,7 @@ CHECK_JS = r"""
   }
   for (let i = 0; i < r.length; i++) for (let j = i + 1; j < r.length; j++) {
     const a = r[i], b = r[j];
+    if (els[i].contains(els[j]) || els[j].contains(els[i])) continue;     // 嵌套（如“范文”在主标题行里）不算重叠
     const ox = Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0), oy = Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0);
     if (ox > 0 && oy > 0) out.push(`${a.k} 与 ${b.k} 重叠 ${ox.toFixed(0)}×${oy.toFixed(0)}`);
   }
@@ -205,7 +257,7 @@ CHECK_JS = r"""
   for (const e of document.querySelectorAll('[data-min]')) {
     const tw = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
     let m = 1e9;
-    for (let t; (t = tw.nextNode());) if (t.textContent.trim()) m = Math.min(m, parseFloat(getComputedStyle(t.parentElement).fontSize));
+    for (let t; (t = tw.nextNode());) if (t.textContent.trim() && t.parentElement.closest('[data-min]') === e) m = Math.min(m, parseFloat(getComputedStyle(t.parentElement).fontSize));
     const px = m * 180 / H;
     if (px < +e.dataset.min) out.push(`${e.dataset.k} 缩略图字高 ${px.toFixed(1)}px < 下限 ${e.dataset.min}px（320×180）`);
   }
@@ -242,7 +294,7 @@ def selftest(br):
                 _, res = render(br, body, w, 1080, f'自检_{k}_{w}', WORK)
                 hit = {x.split()[0] for x in res['problems'] if '缩略图字高' in x}
                 need = set(re.findall(r'data-k="(\w+)" data-min=', body)) if kk < 1 else set()
-                if kk < 1 and not {'title', 'hook', 'years'} <= need:
+                if kk < 1 and not ({'hook', 'years'} <= need and ('title' in need or {'six', 'zt'} <= need)):
                     bad.append(f'{k}{w} 缺少 data-min 元素：{sorted(need)}')
                 if hit != need:
                     bad.append(f'{k}{w} 字号×{kk}：报出 {sorted(hit)}，应为 {sorted(need)}')
@@ -265,7 +317,11 @@ def main(args):
         final = args[1] if args[0] == '定稿' else None
         jobs = []
         for k, f in DIRS.items():
-            if final is None:
+            if final is None and k.startswith('A'):
+                jobs += [(f(1920, 1080), 1920, 1080, f'草稿_{k}_16比9', WORK, False), (f(1440, 1080), 1440, 1080, f'草稿_{k}_4比3', WORK, False)]
+            elif final is None:
+                continue
+            elif False:
                 jobs += [(f(1920, 1080), 1920, 1080, f'草稿_{k}_16比9', WORK, False)]
             elif k == final:
                 jobs += [(f(1920, 1080), 1920, 1080, f'六级写作真题满分范文{N}篇_封面_16比9', OUT, True),
