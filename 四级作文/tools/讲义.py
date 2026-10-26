@@ -80,6 +80,10 @@ def check(pid):
     e = lambda m: errs.append(f'{pid} {m}')
     if d.get('id') != pid:
         e('id 不对')
+    # 讲义里写的“本篇 / 全文 N 词”必须等于正文词数（sents.json 的 words，标题不计）：改范文后讲义里的旧字数曾漏改（c19 179→177，复核员查出）
+    for m in re.finditer(r'(本篇|全文|范文)(?:共|只有)?\s*(\d+)\s*词', json.dumps(d, ensure_ascii=False)):
+        if int(m.group(2)) != p['words']:
+            e(f'写的“{m.group(0)}”与正文词数 {p["words"]} 不符')
     s = d.get('审题', {})
     for k in ('题型', '语气', '字数'):
         if not isinstance(s.get(k), str) or not s.get(k):

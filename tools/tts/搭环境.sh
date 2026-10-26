@@ -7,7 +7,7 @@ cd "$(dirname "$0")/../.."
 [ -x /opt/ttsenv/bin/python ] || python3.11 -m venv /opt/ttsenv
 P=/opt/ttsenv/bin/pip
 $P install -q -r .github/cet6-render-requirements.txt
-$P install -q "kokoro-onnx>=0.6.1" "misaki[en]>=0.9.4" num2words soundfile soxr pyloudnorm lameenc \
+$P install -q "kokoro-onnx>=0.6.1" "misaki[en]>=0.9.4" num2words soundfile soxr pyloudnorm lameenc pypdf \
   "torch==2.11.0" "torchaudio==2.11.0" \
   en_core_web_sm@https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 # 2026-10-25：新装的 spacy 3.8.16 + preshed 3.0.14 / cymem 2.0.16 一加载 en_core_web_sm 就 OverflowError（分屏建议.py 跑不起来）；钉在能用的版本，并当场试加载
