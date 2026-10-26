@@ -21,6 +21,9 @@ _spec = importlib.util.spec_from_file_location('ky_split', ROOT / '考研' / 'to
 _m = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_m)
 split = _m.split
+import sys
+sys.path.insert(0, str(ROOT / 'tools'))
+import 作文规则 as R  # noqa: E402
 
 
 def count(sents):
@@ -52,7 +55,9 @@ def main():
             sents.append(ss)
         rec = {'id': pid, 'src': e['id'], 'year': int(y), 'month': int(m), 'set': int(s),
                'paper': f"{e['paper']} 写作", 'passage': 'Part I', 'pdf': e['paper'],
-               'words': count(sents), 'prompt_img': f'{pid}.png', 'lead': round(1.5 + PROMPT, 3), 'sents': sents}
+               'words': count(sents[1:] if e.get('title') else sents), 'prompt_img': f'{pid}.png', 'lead': round(1.5 + PROMPT, 3), 'sents': sents}
+        # 片头词数只数正文（标题不计入字数，与讲义、tools/作文规则.counted 一致；c25 曾显示 183 > 上限 180）
+        assert rec['words'] == R.counted(e), (pid, rec['words'], R.counted(e))
         if e.get('title'):
             rec['letter'] = {'title': e['title']}
             rec['edge'] = [1, 0]

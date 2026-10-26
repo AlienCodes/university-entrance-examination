@@ -20,7 +20,7 @@ for pid, r in R.items():
     rec = {k: r[k] for k in ('id', 'src', 'year', 'passage', 'paper', 'part', 'words', 'prompt_img', 'lead', 'letter', 'edge') if k in r}      # 考研作文：src 范文编号，prompt_img 原题截图，lead 第一句开口时刻
     # 片头“全文 N 词”必须按现行规则（空白、破折号、省略号切分，踩坑 41）从定稿句子重新数一遍：考研 37 篇的片头曾用了旧规则数出的词数
     # （改规则后没有重跑 split_sents.py，sents.json 里还是旧数，少 1—5 个），程序没查出来，视频已发布才发现（2026-10-21）
-    recount = len([w for w in re.split(r'[\s—–…]+', ' '.join(s for para in r['sents'] for s in para)) if re.search(r'[A-Za-z0-9]', w)])
+    recount = len([w for w in re.split(r'[\s—–…]+', ' '.join(s for para in r['sents'][(r.get('edge') or [0])[0]:] for s in para)) if re.search(r'[A-Za-z0-9]', w)])
     if recount != r['words']:
         errs.append(f"{pid} 片头词数 {r['words']} 与定稿句子重新数的 {recount} 不一致（先重跑 extract_reading.py、split_sents.py）")
     rec['name'] = f"{r['paper']} {r['passage']}"
