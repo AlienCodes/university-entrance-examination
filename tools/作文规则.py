@@ -41,6 +41,11 @@ def word_range(limit):
     lo = int(m[1]); top = re.search(r'no more than (\d+)', limit)
     if top: hi = int(top[1]); return lo + -(-(hi - lo) * 8 // 10), hi
     return -(-lo * 11 // 10), lo * 12 // 10
+def counted(e):
+    """计入字数：正文全部；题目写明不含给定首句（not including）的扣掉首句。汇总、检查共用这一处。"""
+    n = wc(' '.join(e['body']))
+    if 'not including' in e.get('limit', '') and e.get('first'): n -= wc(e['first'])
+    return n
 def check(e, lo=None, hi=None):
     body = ' '.join(e['body'])
     own = body[len(e['first']):] if e.get('first') and body.startswith(e['first']) else body  # 照抄的题目首句不查拼写
@@ -49,8 +54,7 @@ def check(e, lo=None, hi=None):
     if '【图表】' in e['prompt']: out += numbers(e['prompt'], body, e.get('allow_numbers', ()))
     if e.get('first'):
         if not e['body'][0].startswith(e['first']): out.append('首句没有逐字照抄题目给定的句子')
-    n = wc(body)
-    if 'not including' in e.get('limit', '') and e.get('first'): n -= wc(e['first'])
+    n = counted(e)
     if lo and not (lo <= n <= hi): out.append(f'字数 {n} 不在 {lo}—{hi}')
     return out
 # 考研作文里不在题目中的数字：推算值与虚构细节（考研/作文/复核记录.md 已逐个复核）
