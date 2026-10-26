@@ -47,7 +47,7 @@ CASES = [  # 名称, 篇目, 句号（0 = 片头）, 撤掉的修正 (现在的�
  ('括注片段按词汇栏内边距量 notes()（2026-10-23 起量片段宽度与 R − 左边界，撤掉 = 只比网格列宽）', 's39', {16}, ("if (e.getBoundingClientRect().width > Math.min(dv.clientWidth, R - L) + 0.5) e.style.whiteSpace = 'normal'; }", "if (e.getBoundingClientRect().width > dv.clientWidth + 0.5) e.style.whiteSpace = 'normal'; }")),
  ('末尾短语连续接号放不下时断开 phr()', 's26', {19}, ("if (c && c.classList.contains('cont') && ps.length && c.getBoundingClientRect().right > R + 0.5) ps[ps.length - 1].style.whiteSpace = 'normal';", '')),
  ('书名号整体不断行 note_breaks', 's29', {14}, ("        elif (t[i] == '《' or t[i - 1] == '》') and 0 < i < len(t) - 1:      # 书名号整体不断行、前后可以断（六级 s29：“（宫城先生是电影《龙威小子》中的空手道师父）”）\n            out.add(i)\n", '')),
- ('画面 1–6 译文弯引号照常挤压 zh_html', 's01', {10}, ("if gloss or STYLE != 'C' else", 'if gloss else')),
+ ('画面 1–6 译文弯引号照常挤压 zh_html', 's01', {10}, ("if gloss or not wenkai else", 'if gloss else')),
  ('横向出界 .pr 放宽（撤掉 = 误报，s55；原 s38 第 8 句在正文加粗、审阅修正后不再触发）', 's55', {6}, ('pg.evaluate(HBOX)', 'pg.evaluate(TH.HBOX)')),
  ('横向出界 .pr 放宽（撤掉 = 误报，s54）', 's54', {21}, ('pg.evaluate(HBOX)', 'pg.evaluate(TH.HBOX)')),
 ]
