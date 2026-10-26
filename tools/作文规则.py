@@ -38,7 +38,7 @@ def word_range(limit):
     """用户 2026-10-26：题目要求最优先，范围内写到靠上。
     题目给了上限 → [下限 + 80% 区间, 上限]（六级 150—200 → 190—200）；只给下限 → [⌈1.1N⌉, ⌊1.2N⌋]。"""
     m = re.search(r'at least (\d+)', limit) or re.search(r'about (\d+)', limit)
-    lo = int(m[1]); top = re.search(r'no more than (\d+)', limit)
+    lo = int(m[1]); top = re.search(r'not? more than (\d+)', limit)
     if top: hi = int(top[1]); return lo + -(-(hi - lo) * 8 // 10), hi
     return -(-lo * 11 // 10), lo * 12 // 10
 def counted(e):
