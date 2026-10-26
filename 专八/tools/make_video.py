@@ -79,6 +79,12 @@ PROJECTS = {
     '六级作文': {'tag': 'CET-6 · WRITING · PART I', 'top': 'CET-6 WRITING', 'exam': '', 'look': '3', 'stills': '大字版/截图/{pid}', 'work': '大字版',
              'reg': '截图审阅通过.json', 'name_re': r'20\d\d年(6|12)月大学英语六级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet6wvideo_',
              'videos': '最终视频'},
+    # 四级作文（用户 2026-10-26：“视频当然还是用四级之前那个视频自带的主题”）：四级阅读视频（Release 007，四级/tools/make_video.py 设计 C）的
+    # 「杂志编号注释」= 本引擎的基础样式 CSS 本身（米白底、墨绿竖条、EB Garamond + 思源宋体、圆形编号）；画面 C 但不叠专八的 样式.css（书卷水墨）——plain。
+    # 篇目 c01—c32，paper “2026年6月大学英语四级 第1套 写作”，passage “Part I”
+    '四级作文': {'tag': 'CET-4 · WRITING · PART I', 'top': 'CET-4 WRITING', 'exam': '', 'look': 'C', 'plain': True, 'size': 'C@杂志',
+             'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
+             'name_re': r'20\d\d年(6|12)月大学英语四级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet4wvideo_', 'videos': '最终视频'},
     # 专八听力原文精读（用户 2026-10-25）：2025 专八听力录音原文（讲座、采访、说明、念题）逐句精读，书卷水墨大字（与专八水墨同一套画面、字号）；
     # 声音用听力原音（不是 TTS），句子起止由 专八/听力/原文/tools/原音音轨.py 对齐求出、长等待压到 2 秒。目录不在仓库顶层：dir。
     # 原音（audio='原音'）不适用 TTS 才有的几项：句间固定 0.8 秒停顿、停顿处数字静音、逐句响度偏差 / 短时波动、电磁音（声码器）、读完固定停留 0.5 秒——
@@ -466,11 +472,13 @@ def zh_html(s, gloss=False):
     释义用思源宋体，引号是全角，照常处理。人名间隔号“·”前后不断行（旧版画面核查：理查德·帕克 在 · 处断行）。"""
     # 只有画面 C 的译文是霞鹜文楷（弯引号半宽）；1–6 的译文是思源黑体 / Noto Sans SC，弯引号是全角（各画面实测宽 1.00 字），照常挤压
     # （六级 s01 第 10 句：教室黑板的译文「”。」之间空出 1.00 字，layoutcheck 标点挤压查出）
-    fc, fo = (ZCLOSE, ZOPEN) if gloss or STYLE != 'C' else (ZCLOSE - ZPROP, ZOPEN - ZPROP)
+    # 四级杂志（画面 C、plain）的译文是思源宋体，弯引号全角，与 1–6 一样照常处理
+    wenkai = STYLE == 'C' and not (PJ and PJ.get('plain'))
+    fc, fo = (ZCLOSE, ZOPEN) if gloss or not wenkai else (ZCLOSE - ZPROP, ZOPEN - ZPROP)
     out = []
     for i, c in enumerate(s):
         nxt, prv = s[i + 1:i + 2], s[i - 1:i]
-        if c in '’\'' and STYLE != 'C' and re.match(r'[A-Za-z]', prv) and re.match(r'[A-Za-z]', nxt):
+        if c in '’\'' and not wenkai and re.match(r'[A-Za-z]', prv) and re.match(r'[A-Za-z]', nxt):
             out.append(f'<x-ap>{esc(c)}</x-ap>')        # 英文词中间的撇号（Hunt’s）用英文字体画（六级黑板审阅：思源黑体的“’”是全角）
         elif c in fc and nxt and (nxt in ZCLOSE or nxt in ZOPEN):
             out.append(f'<span class="pr">{esc(c)}</span>')
@@ -669,6 +677,8 @@ def note_segment_html(s, out, a, b):
 def look_files(look=None):
     """决定这种画面样子的样式文件（指纹用）：C = 样式.css + 专八字体；1–6 = 共用基础样式 + 专八调整 + 共用字体。"""
     look = look or STYLE
+    if look == 'C' and PJ and PJ.get('plain'):      # 四级杂志：基础样式（在本文件 CSS 里，程序指纹已含）+ 四级字体
+        return sorted(p for p in (ROOT / '四级' / 'tools' / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css')
     if look == 'C':
         var = [HERE / PJ['css']] if PJ and PJ.get('css') else []          # 变体追加的样式（水墨大字：英文加粗）
         return [THEME, *sorted(p for p in (HERE / 'fonts').rglob('*') if p.is_file() and p.suffix == '.css'), *var]
@@ -690,7 +700,9 @@ def page(body):
     """英文里试卷的中文注释（如 “(防水布)”）用样式自己的中文字体画（C：.en 字体表里的思源宋体；1–6：各样式 .en 的中文字体，4 由 样式/4_活页单词卡.css 补上）：
     t03 审阅发现 “(防水布)(用压条固定)(船舷边缘)(反复猛击)” 落到了系统黑体（WenQuanYi Zen Hei），layoutcheck 的“字体回退”逐屏查。"""
     fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()      # 字体与四级共用（EB Garamond、Inter、思源宋体）
-    if STYLE == 'C':
+    if STYLE == 'C' and PJ and PJ.get('plain'):      # 四级杂志：不叠书卷水墨（样式.css），也不加专八字体（霞鹜文楷）
+        extra = theme = ''
+    elif STYLE == 'C':
         extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">'
         theme = f'<style>{THEME.read_text("utf-8")}</style>'
         if PJ and PJ.get('css'):              # 变体（水墨大字）：加粗字重的字体 + 追加样式（在原样式之后覆盖）
@@ -724,6 +736,8 @@ def size_key(look):
     变体的键还没标定时退回原画面的设置——字号标定.py --check（截图前调用）会报“与实测不一致”，不会悄悄用错。"""
     if PJ and PJ.get('variant') and look == PJ['look'] and f"{look}@{PJ['variant']}" in SIZES:
         return f"{look}@{PJ['variant']}"
+    if PJ and PJ.get('size') and look == PJ['look'] and PJ['size'] in SIZES:      # 四级杂志：C@杂志（没有水墨的字体，同样看上去的大小字号不同）
+        return PJ['size']
     return look
 
 
@@ -1291,7 +1305,7 @@ def screen_checks(pg, label, fit, r):
 
 # 各项目封面装饰文字（::before / ::after 的 content，如右上角贴纸）里允许出现的考试名：别的项目的名字出现就报错
 # （考研 k02 截图试跑：共用的 样式/1_晴空校园.css 把贴纸写死成「专八 / 精读」，考研封面也成了“专八精读”）
-EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'], '六级作文': ['六级', 'CET-6', 'CET6'],
+EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'], '六级作文': ['六级', 'CET-6', 'CET6'], '四级作文': ['四级', 'CET-4', 'CET4'],
               '四级': ['四级', 'CET-4', 'CET4'], '中考': ['中考'], '高考': ['高考']}
 DECO_JS = """() => { const out = [];
   for (const el of document.querySelectorAll('*')) for (const p of ['::before', '::after']) {
@@ -1398,7 +1412,7 @@ def main():
     sample = bool(a.stills)                       # 专八样片：成品文件名带画面名称、核查结果写在成品旁边
     # 截图目录：样片.py 传 --stills；成套生产（大字版.py：六级教室黑板、专八晴空校园 2026-10-17 起）用项目的截图目录；专八旧版画面 C 仍走 screens_fp
     # 项目变体（专八 水墨：画面 C 走成套生产）同样用项目的截图目录和 大字版 登记，不走旧版的 screens_fp
-    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] and (a.style != 'C' or PJ.get('variant')) else None)
+    stills = Path(a.stills) if a.stills else (C4 / PJ['stills'].format(pid=a.pid) if PJ['stills'] and (a.style != 'C' or PJ.get('variant') or PJ.get('plain')) else None)
     tool = '专八/tools/样片.py' if sample else f"{PROJ}/tools/大字版{'_' + PJ['variant'] if PJ.get('variant') else ''}.py"
     regf = YP_REG if sample else SAMPLE_REG
     if stills:                                    # 样片.py / 大字版.py --approve 登记的指纹与截图文件

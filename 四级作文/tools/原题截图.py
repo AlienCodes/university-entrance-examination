@@ -63,7 +63,9 @@ def headings(pdf):
 
 
 def render(pdf, pg, top, bot, tmp):
-    x, y, w, h = round(30 * K), round(top * K), round(535 * K), round((bot - top) * K)
+    ws = words(pdf, pg)        # 左右边界按本页文字实际范围（2021-06 扫描件整页偏左，固定的 30—565 磅会切掉 Part / Directions 的首字母）
+    x0, x1 = max(min(w[0] for w in ws) - 8, 0), max(w[2] for w in ws) + 8
+    x, y, w, h = round(x0 * K), round(top * K), round((x1 - x0) * K), round((bot - top) * K)
     f = Path(tmp) / f'p{pg}_{round(top)}'
     subprocess.run(['pdftoppm', '-f', str(pg), '-l', str(pg), '-r', str(DPI), '-x', str(x), '-y', str(y), '-W', str(w), '-H', str(h),
                     '-gray', '-png', '-singlefile', str(pdf), str(f)], check=True)
@@ -78,19 +80,30 @@ def trim(a, pad):
     return a[max(r[0] - pad, 0):min(r[-1] + pad + 1, a.shape[0]), max(c[0] - pad, 0):min(c[-1] + pad + 1, a.shape[1])]
 
 
+def cut_above(a):
+    """从“Part I”这一行（裁剪起点下 14 磅处，一定落在标题字里）往上找第一条全白行，切掉它上面的东西
+    （2026-06 第 1 套：页眉试卷标题紧贴 Part I 上方，旧裁法带进了标题的下半截）。"""
+    r = round(14 * K)
+    while r > 0 and (a[r] < 200).any():
+        r -= 1
+    return a[r:]
+
+
 def crop(rec, tmp):
     pdf = pdf_of(rec)
     hs, foot = headings(pdf)
     me = [h for h in hs if h[1] == 'I']
+    if len(me) == 2 and me[0][0] == me[1][0] and pdf.name.startswith('2021年6月'):
+        me = me[:1]       # 2021-06 第 3 套：Part II（听力说明）的文字层识别成“Part I”；Writing 永远是试卷第一个 Part
     if len(me) != 1:
         raise SystemExit(f"{rec['id']}：{pdf.name} 里 Part I 标题找到 {len(me)} 个：{hs}")
     pg, _, y0 = me[0]
     nxt = [h for h in hs if (h[0], h[2]) > (pg, y0)]
     pieces = []
     if nxt and nxt[0][0] == pg:                       # 下一题在同一页：裁到下一题标题之前
-        pieces.append(render(pdf, pg, y0 - 6, nxt[0][2] - 4, tmp))
+        pieces.append(cut_above(render(pdf, pg, y0 - 6, nxt[0][2] - 4, tmp)))
     else:                                              # 裁到页脚；本题跨页（下一页还有本题内容）时接上
-        pieces.append(render(pdf, pg, y0 - 6, foot[pg] - 4, tmp))
+        pieces.append(cut_above(render(pdf, pg, y0 - 6, foot[pg] - 4, tmp)))
         if pg + 1 in foot and not (nxt and nxt[0][0] == pg + 1 and nxt[0][2] < 120):
             end = nxt[0][2] - 4 if nxt and nxt[0][0] == pg + 1 else foot[pg + 1] - 4
             nb = render(pdf, pg + 1, 40, end, tmp)
