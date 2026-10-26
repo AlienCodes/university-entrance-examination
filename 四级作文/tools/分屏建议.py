@@ -184,6 +184,8 @@ def main():
     opt = lambda k: argv[argv.index(k) + 1] if k in argv else None
     looks = opt('--styles').split(',') if opt('--styles') else (list(M.LOOKS) if M.PROJ == '专八' else [M.PJ['look']])
     out = Path(opt('--out')) if opt('--out') else None
+    if out:
+        out.parent.mkdir(parents=True, exist_ok=True)
     ids = [a for i, a in enumerate(argv) if not a.startswith('--') and (i == 0 or argv[i - 1] not in ('--styles', '--out'))]
     P = {x['id']: x for x in json.loads((M.C4 / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
     ids = ids or sorted(P)
