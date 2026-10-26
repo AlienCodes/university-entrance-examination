@@ -2917,7 +2917,7 @@
    ],
    "guards": [
     {
-     "where": "六级作文/tools/讲义.py：linkify（合并后按 body.pdf 命名目标的真实页码把目录链接改成直接跳页、加书签）→ toc_gate（toc_check）",
+     "where": "六级作文/tools/讲义.py：linkify（合并后按 body.pdf 命名目标的真实页码把目录链接改成直接跳页、加书签）→ toc_gate（toc_check）；add_checkboxes（目录每行“已读”复选框）",
      "runs": "讲义.py build 每份 PDF 生成后自动，不通过不算生成成功",
      "evidence": "目录链接检查不通过：…（目录 N 项，链接 M 个 / 页码不一致 / 书签 N 条）"
     }

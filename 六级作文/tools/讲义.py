@@ -310,9 +310,9 @@ table.voc tr{break-inside:avoid}
 .bad{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:0;font-size:9.6pt;border:1px solid #eadbe0;border-radius:2mm;overflow:hidden;margin-top:2mm}
 .bad>div{padding:1.3mm 2.5mm;border-bottom:1px solid #f1e6ea}.bad .x{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--berry);text-decoration:line-through}
 .bad .v{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--green);font-weight:600}.bad .hd{background:#fbeef2;font-weight:700;color:var(--berry);font-size:9pt}
-.toc{font-size:10.6pt}.toc a{color:inherit;text-decoration:none}.toc a,.toc div{display:grid;grid-template-columns:62mm 1fr 14mm;gap:3mm;break-inside:avoid;padding:1.1mm 0;border-bottom:1px dotted #d9d4c7}
+.toc{font-size:10.6pt}.toc .tr{display:grid;grid-template-columns:8mm 1fr;align-items:center;break-inside:avoid;border-bottom:1px dotted #d9d4c7}.toc a{display:grid;grid-template-columns:58mm 1fr 14mm;gap:3mm;padding:1.1mm 0;color:inherit;text-decoration:none}.toc .th{font-size:8.6pt;color:var(--mute);border-bottom:1px solid var(--rule)}.toc .th>span:last-child{display:grid;grid-template-columns:58mm 1fr 14mm;gap:3mm;padding:.8mm 0}.toc .th .r{text-align:right}
 .toc .a{color:var(--mute);font-size:9.6pt}
-.toctip{background:var(--hy);border-radius:2mm;padding:2.2mm 3.5mm;margin:0 0 3.5mm;font-weight:700;font-size:10.6pt}.toc .pg{font-family:'Nunito','Noto Sans SC';font-weight:700;color:var(--blue);text-align:right}
+.toctip{background:var(--hy);border-radius:2mm;padding:2.2mm 3.5mm;margin:0 0 3.5mm;font-size:10.2pt;line-height:1.6}.toctip b{font-weight:700}.toctip div+div{margin-top:.8mm}.toc .pg{font-family:'Nunito','Noto Sans SC';font-weight:700;color:var(--blue);text-align:right}
 .idx td{font-size:9.2pt}.idx td.e{font-family:'EB Garamond','Noto Sans SC';font-size:10.4pt}
 /* 默写卡 */
 .card{border:1.2px solid #e1dccf;border-radius:3mm;margin:3.2mm 0;display:grid;grid-template-columns:1fr 46mm;break-inside:avoid;overflow:hidden}
@@ -548,14 +548,18 @@ def cover(title, sub, note):
             f"transform:rotate(10deg);font-weight:700;font-size:15pt;text-align:center;line-height:1.25;box-shadow:0 2mm 4mm rgba(0,0,0,.08)'>六级<br>作文</div></div>")
 
 
-TOC_TIP = '点击目录里任意一行标题，就能直接跳到那一章的第一页；阅读器侧边栏的“书签”也可以随时跳转。'
+TOC_TIP = ['① 点击目录里任意一行标题，就能直接跳到那一章的第一页；阅读器侧边栏的“书签”也可以随时跳转。',
+           '② 读完一章，在左边“已读”方框里打勾并保存文件，下次打开就知道读到哪里了；多数 PDF 阅读器还会自动记住上次看到的页面，也可以用阅读器自带的“添加书签”标记任意位置。']
+CK = 10.2           # “已读”复选框边长（pt，3.6mm）；左栏 8mm，框在栏里水平居中
 
 
 def toc_html(entries, pages):
     """目录：每一行是一个链接（a href='#标记'，章首 section 的 id 就是标记）；Chromium 打出的是命名目标，合并后由 linkify 改成直接跳页。"""
     return ("<section data-mark='TOC' style='break-after:page'><div class='band'><div><div class='no'>CONTENTS</div><h1><span>目录</span></h1></div><div class='meta'></div></div>"
-            f"<div class='toctip'>{esc(TOC_TIP)}</div><div class='toc'>"
-            + ''.join(f"<a href='#{m}'><span class='a'>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></a>" for m, a, b in entries) + '</div></section>')
+            "<div class='toctip'>" + ''.join(f'<div>{esc(t)}</div>' for t in TOC_TIP) + "</div><div class='toc'>"
+            "<div class='tr th'><span>已读</span><span><span>试卷</span><span>题目</span><span class='r'>页码</span></span></div>"
+            + ''.join(f"<div class='tr'><span class='ck'></span><a href='#{m}'><span class='a'>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></a></div>"
+                      for m, a, b in entries) + '</div></section>')
 
 
 def card_section(pid, answers, how='', fit=0):
@@ -729,8 +733,46 @@ def linkify(out, body_pdf, entries):
                 a[NameObject('/Dest')] = ArrayObject([w.pages[nd[name] + off].indirect_reference, NameObject('/Fit')])
     for m, a, b in entries:
         w.add_outline_item(f'{a}　{b}' if b else a, nd[m] + off)
+    add_checkboxes(w)
     w.page_mode = '/UseOutlines'
     w.write(str(out))
+
+
+def add_checkboxes(w):
+    """目录每一行左边的“已读”复选框（AcroForm 复选框，带打勾 / 不打勾两种外观，勾上保存就记住进度）：
+    位置按这一行目录链接的区域算——链接（a）左边是 8mm 的“已读”栏，框在栏里居中、上下与这一行居中。"""
+    from pypdf.generic import ArrayObject, DecodedStreamObject, DictionaryObject, FloatObject, NameObject, NumberObject, TextStringObject, BooleanObject
+    def ap(data):
+        st = DecodedStreamObject()
+        st.set_data(data)
+        st.update({NameObject('/Type'): NameObject('/XObject'), NameObject('/Subtype'): NameObject('/Form'),
+                   NameObject('/BBox'): ArrayObject([FloatObject(0), FloatObject(0), FloatObject(CK), FloatObject(CK)])})
+        return w._add_object(st)
+    box = b'0.45 0.49 0.56 RG 0.9 w 0.6 0.6 9 9 re S'
+    off_ap, on_ap = ap(box), ap(box + b' 0.11 0.36 0.75 RG 1.5 w 1 J 1 j 2.3 5.3 m 4.3 3 l 8 7.6 l S')
+    fields = ArrayObject()
+    col = 8 * 72 / 25.4
+    for page in w.pages:
+        for a in list(page.get('/Annots') or []):
+            a = a.get_object()
+            d = a.get('/Dest')
+            if a.get('/Subtype') != '/Link' or not isinstance(d, ArrayObject):
+                continue
+            x0, y0, x1, y1 = map(float, a['/Rect'])
+            cx, cy = x0 - col / 2, (y0 + y1) / 2
+            name = 'read_p%d_%d' % (d[0].idnum, len(fields))
+            wd = DictionaryObject({
+                NameObject('/Type'): NameObject('/Annot'), NameObject('/Subtype'): NameObject('/Widget'), NameObject('/FT'): NameObject('/Btn'),
+                NameObject('/T'): TextStringObject(name), NameObject('/TU'): TextStringObject('已读'), NameObject('/F'): NumberObject(4),
+                NameObject('/Rect'): ArrayObject([FloatObject(cx - CK / 2), FloatObject(cy - CK / 2), FloatObject(cx + CK / 2), FloatObject(cy + CK / 2)]),
+                NameObject('/V'): NameObject('/Off'), NameObject('/AS'): NameObject('/Off'),
+                NameObject('/AP'): DictionaryObject({NameObject('/N'): DictionaryObject({NameObject('/On'): on_ap, NameObject('/Off'): off_ap})}),
+                NameObject('/MK'): DictionaryObject({NameObject('/BC'): ArrayObject([FloatObject(.45), FloatObject(.49), FloatObject(.56)])}),
+                NameObject('/P'): page.indirect_reference})
+            ref = w._add_object(wd)
+            page[NameObject('/Annots')].append(ref)
+            fields.append(ref)
+    w._root_object[NameObject('/AcroForm')] = DictionaryObject({NameObject('/Fields'): fields, NameObject('/NeedAppearances'): BooleanObject(False)})
 
 
 def toc_check(pdf, entries, keys):
@@ -747,8 +789,19 @@ def toc_check(pdf, entries, keys):
     tocp = list(range(t0, min(first.values()) - 1)) if t0 is not None else []      # 目录从 CONTENTS 那页起，到第一章前一页
     if not tocp:
         return [f'{pdf.name}：找不到目录页']
-    if not any(re.sub(r'\s+', '', TOC_TIP) in re.sub(r'\s+', '', txt(i)) for i in tocp):
-        errs.append(f'{pdf.name}：目录页没有提示文字（{TOC_TIP[:12]}……）')
+    tt = re.sub(r'\s+', '', ''.join(txt(i) for i in tocp))
+    for tip in TOC_TIP:
+        if re.sub(r'\s+', '', tip) not in tt:
+            errs.append(f'{pdf.name}：目录页没有提示文字（{tip[:14]}……）')
+    boxes = []
+    for i in tocp:
+        for a in r.pages[i].get('/Annots') or []:
+            a = a.get_object()
+            if a.get('/Subtype') == '/Widget' and a.get('/FT') == '/Btn':
+                n_ = a.get('/AP', {}).get('/N', {})
+                boxes.append((i, list(map(float, a['/Rect'])), sorted(str(k) for k in n_.keys()) if hasattr(n_, 'keys') else []))
+    acro = r.trailer['/Root'].get('/AcroForm')
+    nf = len(acro.get_object().get('/Fields', [])) if acro else 0
     links = []
     for i in tocp:
         H = float(r.pages[i].mediabox.height)
@@ -764,8 +817,16 @@ def toc_check(pdf, entries, keys):
     links.sort()
     if len(links) != len(entries):
         errs.append(f'{pdf.name}：目录 {len(entries)} 项，链接 {len(links)} 个')
-    for (m, a, b), (i, _, _, dest, t) in zip(entries, links):
+    if nf != len(entries) or len(boxes) != len(entries):
+        errs.append(f'{pdf.name}：目录 {len(entries)} 项，“已读”复选框 {len(boxes)} 个（表单字段 {nf} 个）')
+    for (m, a, b), (i, ny1, x0, dest, t) in zip(entries, links):
         lab = f'{a} {b}'.strip()
+        bx = [bb for (j, bb, k) in boxes if j == i and bb[2] <= x0 + 1 and x0 - 30 <= bb[0] and -ny1 - 30 < (bb[1] + bb[3]) / 2 < -ny1]
+        kinds = [k for (j, bb, k) in boxes if j == i and bb in bx]
+        if len(bx) != 1:
+            errs.append(f'{pdf.name}：“{lab}”这一行左边的“已读”复选框 {len(bx)} 个')
+        elif not ('/Off' in kinds[0] and len(kinds[0]) == 2):
+            errs.append(f'{pdf.name}：“{lab}”的复选框没有打勾 / 不打勾两种外观（{kinds[0]}）')
         if re.sub(r'\s+', '', a) not in re.sub(r'\s+', '', t):
             errs.append(f'{pdf.name}：“{lab}”那一行的链接区域里是别的文字（{t[:30]}）')
             continue
@@ -816,7 +877,7 @@ def toc_gate(pdf, entries, keys):
     errs = toc_check(pdf, entries, keys)
     if errs:
         raise SystemExit('目录链接检查不通过：\n  ' + '\n  '.join(errs))
-    print(f'  目录链接检查：{len(entries)} 项全部可点、页码一致、书签 {len(entries)} 条')
+    print(f'  目录检查：{len(entries)} 项全部可点、页码一致、书签 {len(entries)} 条、“已读”复选框 {len(entries)} 个')
 
 
 def toc_selftest():
@@ -856,9 +917,23 @@ def toc_selftest():
             mut('去掉目录链接', drop_links)
             mut('一个链接跳到下一页', shift)
             mut('去掉书签', no_outline)
+            def no_boxes(w):
+                for pg in w.pages[1:3]:
+                    if '/Annots' in pg:
+                        pg[NameObject('/Annots')] = ArrayObject([x for x in pg['/Annots'] if x.get_object().get('/Subtype') != '/Widget'])
+                del w._root_object[NameObject('/AcroForm')]
+            def one_look(w):
+                for pg in w.pages[1:3]:
+                    for x in pg.get('/Annots') or []:
+                        x = x.get_object()
+                        if x.get('/Subtype') == '/Widget':
+                            del x['/AP']['/N'][NameObject('/On')]
+                            return
+            mut('去掉“已读”复选框', no_boxes)
+            mut('一个复选框只有一种外观', one_look)
         # 去掉提示文字：用不带提示的目录检查（把提示换成一句不存在的话）
         global TOC_TIP
-        keep, TOC_TIP = TOC_TIP, '这句提示文字不存在'
+        keep, TOC_TIP = TOC_TIP, TOC_TIP[:1] + ['这句提示文字不存在']
         e = toc_check(pdf, entries, keys)
         TOC_TIP = keep
         print(f'  没有提示文字：报 {len(e)} 处' + ('' if e else '（应报出，失效！）'))
