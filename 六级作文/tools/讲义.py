@@ -310,8 +310,9 @@ table.voc tr{break-inside:avoid}
 .bad{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:0;font-size:9.6pt;border:1px solid #eadbe0;border-radius:2mm;overflow:hidden;margin-top:2mm}
 .bad>div{padding:1.3mm 2.5mm;border-bottom:1px solid #f1e6ea}.bad .x{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--berry);text-decoration:line-through}
 .bad .v{font-family:'EB Garamond','Noto Sans SC';font-size:11pt;color:var(--green);font-weight:600}.bad .hd{background:#fbeef2;font-weight:700;color:var(--berry);font-size:9pt}
-.toc{font-size:10.6pt}.toc div{display:grid;grid-template-columns:62mm 1fr 14mm;gap:3mm;break-inside:avoid;padding:1.1mm 0;border-bottom:1px dotted #d9d4c7}
-.toc .a{color:var(--mute);font-size:9.6pt}.toc .pg{font-family:'Nunito','Noto Sans SC';font-weight:700;color:var(--blue);text-align:right}
+.toc{font-size:10.6pt}.toc a{color:inherit;text-decoration:none}.toc a,.toc div{display:grid;grid-template-columns:62mm 1fr 14mm;gap:3mm;break-inside:avoid;padding:1.1mm 0;border-bottom:1px dotted #d9d4c7}
+.toc .a{color:var(--mute);font-size:9.6pt}
+.toctip{background:var(--hy);border-radius:2mm;padding:2.2mm 3.5mm;margin:0 0 3.5mm;font-weight:700;font-size:10.6pt}.toc .pg{font-family:'Nunito','Noto Sans SC';font-weight:700;color:var(--blue);text-align:right}
 .idx td{font-size:9.2pt}.idx td.e{font-family:'EB Garamond','Noto Sans SC';font-size:10.4pt}
 /* 默写卡 */
 .card{border:1.2px solid #e1dccf;border-radius:3mm;margin:3.2mm 0;display:grid;grid-template-columns:1fr 46mm;break-inside:avoid;overflow:hidden}
@@ -341,6 +342,7 @@ def page_html(body, title, footer=True):
     scr = '@media screen{body{width:' + ('180mm' if footer else '210mm') + '}}'
     nu = ROOT / 'tools' / 'video' / 'themes' / 'fonts' / 'nunito' / 'files'
     css = CSS.replace('NU400', (nu / 'nunito-latin-400-normal.woff2').as_uri()).replace('NU700', (nu / 'nunito-latin-700-normal.woff2').as_uri())
+    body = re.sub(r"<section class='(chap[^']*)' data-mark='(\w+)'", r"<section id='\2' class='\1' data-mark='\2'", body)
     return f"<!doctype html><html><head><meta charset='utf-8'><title>{html.escape(title)}</title>{links}<style>{pg}{css}{scr}</style></head><body>{body}</body></html>"
 
 
@@ -546,9 +548,14 @@ def cover(title, sub, note):
             f"transform:rotate(10deg);font-weight:700;font-size:15pt;text-align:center;line-height:1.25;box-shadow:0 2mm 4mm rgba(0,0,0,.08)'>六级<br>作文</div></div>")
 
 
+TOC_TIP = '点击目录里任意一行标题，就能直接跳到那一章的第一页；阅读器侧边栏的“书签”也可以随时跳转。'
+
+
 def toc_html(entries, pages):
-    return ("<section data-mark='TOC'><div class='band'><div><div class='no'>CONTENTS</div><h1><span>目录</span></h1></div><div class='meta'></div></div><div class='toc'>"
-            + ''.join(f"<div><span class='a'>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></div>" for m, a, b in entries) + '</div></section>')
+    """目录：每一行是一个链接（a href='#标记'，章首 section 的 id 就是标记）；Chromium 打出的是命名目标，合并后由 linkify 改成直接跳页。"""
+    return ("<section data-mark='TOC' style='break-after:page'><div class='band'><div><div class='no'>CONTENTS</div><h1><span>目录</span></h1></div><div class='meta'></div></div>"
+            f"<div class='toctip'>{esc(TOC_TIP)}</div><div class='toc'>"
+            + ''.join(f"<a href='#{m}'><span class='a'>{esc(a)}</span><span>{esc(b)}</span><span class='pg'>{pages.get(m, '')}</span></a>" for m, a, b in entries) + '</div></section>')
 
 
 def card_section(pid, answers, how='', fit=0):
@@ -702,11 +709,161 @@ def merge(parts, out):
     subprocess.run(['pdfunite', *map(str, parts), str(out)], check=True)
 
 
+def linkify(out, body_pdf, entries):
+    """合并（pdfunite）会丢掉 Chromium 打出的命名目标，目录链接就失效了：按 body.pdf 里每个命名目标（章首 section 的 id）的真实页码，
+    把最终文件里的目录链接改成直接跳页（显式目标），并按目录加侧边栏书签。"""
+    from pypdf import PdfReader, PdfWriter
+    from pypdf.generic import ArrayObject, NameObject
+    rb = PdfReader(str(body_pdf))
+    nd = {str(k).lstrip('/'): rb.get_destination_page_number(v) for k, v in rb.named_destinations.items()}
+    w = PdfWriter(clone_from=str(out))
+    off = len(w.pages) - len(rb.pages)                                     # 前面的封面页数
+    for page in w.pages:
+        for a in page.get('/Annots') or []:
+            a = a.get_object()
+            d = a.get('/Dest')
+            if a.get('/Subtype') == '/Link' and d is not None and not isinstance(d, ArrayObject):
+                name = str(d).lstrip('/')
+                if name not in nd:
+                    raise SystemExit(f'{out.name}：目录链接 #{name} 在 PDF 里没有目标')
+                a[NameObject('/Dest')] = ArrayObject([w.pages[nd[name] + off].indirect_reference, NameObject('/Fit')])
+    for m, a, b in entries:
+        w.add_outline_item(f'{a}　{b}' if b else a, nd[m] + off)
+    w.page_mode = '/UseOutlines'
+    w.write(str(out))
+
+
+def toc_check(pdf, entries, keys):
+    """最终 PDF 的目录检查（用户 2026-10-26：目录标题点一下跳到那一章；双向验证 toc-selftest）：
+    目录页有提示文字；每个目录项都有链接（按顺序、链接区域里的文字就是这一项）；链接目标页 = 目录上印的页码 = 目标页页脚的页码
+    = 这一章实际起始页（章首标记文字第一次出现的页）；书签条数 = 目录项数、每条指向同一页。返回问题列表（空 = 通过）。"""
+    from pypdf import PdfReader
+    r = PdfReader(str(pdf))
+    errs = []
+    num = {p.indirect_reference.idnum: i for i, p in enumerate(r.pages)}
+    txt = lambda i, *crop: subprocess.run(['pdftotext', '-f', str(i + 1), '-l', str(i + 1), *crop, str(pdf), '-'], capture_output=True, text=True).stdout
+    first, n = page_of(pdf, keys)
+    t0 = next((i for i in range(n) if 'CONTENTS' in txt(i)), None)
+    tocp = list(range(t0, min(first.values()) - 1)) if t0 is not None else []      # 目录从 CONTENTS 那页起，到第一章前一页
+    if not tocp:
+        return [f'{pdf.name}：找不到目录页']
+    if not any(re.sub(r'\s+', '', TOC_TIP) in re.sub(r'\s+', '', txt(i)) for i in tocp):
+        errs.append(f'{pdf.name}：目录页没有提示文字（{TOC_TIP[:12]}……）')
+    links = []
+    for i in tocp:
+        H = float(r.pages[i].mediabox.height)
+        for a in r.pages[i].get('/Annots') or []:
+            a = a.get_object()
+            if a.get('/Subtype') != '/Link':
+                continue
+            x0, y0, x1, y1 = map(float, a['/Rect'])
+            d = a.get('/Dest')
+            dest = num.get(d[0].idnum) if hasattr(d, '__getitem__') and not isinstance(d, str) and len(d) and hasattr(d[0], 'idnum') else None
+            t = txt(i, '-x', str(int(x0)), '-y', str(int(H - y1)), '-W', str(int(x1 - x0) + 1), '-H', str(int(y1 - y0) + 1))
+            links.append((i, -y1, x0, dest, ' '.join(t.split())))
+    links.sort()
+    if len(links) != len(entries):
+        errs.append(f'{pdf.name}：目录 {len(entries)} 项，链接 {len(links)} 个')
+    for (m, a, b), (i, _, _, dest, t) in zip(entries, links):
+        lab = f'{a} {b}'.strip()
+        if re.sub(r'\s+', '', a) not in re.sub(r'\s+', '', t):
+            errs.append(f'{pdf.name}：“{lab}”那一行的链接区域里是别的文字（{t[:30]}）')
+            continue
+        pr = re.findall(r'(\d+)\s*$', t)
+        if dest is None:
+            errs.append(f'{pdf.name}：“{lab}”的链接没有直接跳页的目标')
+            continue
+        foot = re.findall(r'\d+', ' '.join(txt(dest).split()[-3:]))
+        real = first.get(m, 0) - 1
+        if not pr or int(pr[0]) != dest or not foot or int(foot[-1]) != dest or dest != real:
+            errs.append(f'{pdf.name}：“{lab}”目录印的页码 {pr[0] if pr else "无"}、链接跳到第 {dest} 页（页脚 {foot[-1] if foot else "无"}）、这一章实际从第 {real} 页开始，不一致')
+    flat_o = []
+    def walk(o):
+        for x in o:
+            walk(x) if isinstance(x, list) else flat_o.append(r.get_destination_page_number(x))
+    walk(r.outline)
+    if len(flat_o) != len(entries):
+        errs.append(f'{pdf.name}：书签 {len(flat_o)} 条，目录 {len(entries)} 项')
+    elif [x + 0 for x in flat_o] != [d for *_, d, _ in links][:len(flat_o)]:
+        errs.append(f'{pdf.name}：书签指向的页与目录链接不一致')
+    return errs
+
+
 def font_check(pdf):
     t = subprocess.run(['pdffonts', str(pdf)], capture_output=True, text=True).stdout
     bad = [l for l in t.splitlines()[2:] if re.search(r'WenQuanYi|DejaVu|Liberation|Droid|Fallback', l)]
     if bad:
         raise SystemExit(f'{pdf.name} 用了系统字体（字体回退）：\n' + '\n'.join(bad))
+
+
+def handout_toc(ids):
+    """讲义的目录项 [(标记, 左栏, 右栏)] 与各章的章首标记文字 {标记: 文字}（page_of 找起始页用）。"""
+    gen = (DATA / '总论.json').exists()
+    entries = ([('GEN', '写作总攻略', '评分标准 · 结构 · 模板 · 避坑')] if gen else []) + \
+              [(f'CH{i:02d}', f'{P[pid]["year"]}年{P[pid]["month"]}月 第{P[pid]["set"]}套', zh(pid)[0].get('T', '')) for i, pid in enumerate(ids, 1)] + [('IDX', '高分句式总表', '')]
+    keys = {'GEN': 'WRITING GUIDE', 'IDX': 'INDEX · ALL PATTERNS'} if gen else {'IDX': 'INDEX · ALL PATTERNS'}
+    keys.update({f'CH{i:02d}': f'MODEL ESSAY {i:02d}' for i in range(1, len(ids) + 1)})
+    return entries, keys
+
+
+def cards_toc(ids):
+    """默写卡（答案）的目录项与章首标记文字。"""
+    return ([(f'C{pid}', f'{P[pid]["year"]}年{P[pid]["month"]}月 第{P[pid]["set"]}套', zh(pid)[0].get('T', '')) for pid in ids],
+            {f'C{pid}': 'DICTATION·' + head_info(pid)[2] for pid in ids})
+
+
+def toc_gate(pdf, entries, keys):
+    errs = toc_check(pdf, entries, keys)
+    if errs:
+        raise SystemExit('目录链接检查不通过：\n  ' + '\n  '.join(errs))
+    print(f'  目录链接检查：{len(entries)} 项全部可点、页码一致、书签 {len(entries)} 条')
+
+
+def toc_selftest():
+    """双向验证：现在的三份 PDF 必须 0 处；去掉目录链接、把一个链接改跳到下一页、改掉一个印的页码对应的目标、去掉书签、去掉提示文字，都必须报出来。"""
+    from pypdf import PdfReader, PdfWriter
+    from pypdf.generic import ArrayObject, NameObject
+    ids = sorted(P)
+    bad = 0
+    for pdf, (entries, keys) in ((OUT_HANDOUT, handout_toc(ids)), (OUT_CARDS, cards_toc(ids)), (OUT_ANS, cards_toc(ids))):
+        e = toc_check(pdf, entries, keys)
+        print(f'{pdf.name}：正常 {len(e)} 处' + ('（应为 0）' if e else ''))
+        bad += bool(e)
+        with tempfile.TemporaryDirectory() as t:
+            def mut(name, f):
+                nonlocal bad
+                w = PdfWriter(clone_from=str(pdf))
+                f(w)
+                q = Path(t) / pdf.name
+                w.write(str(q))
+                e = toc_check(q, entries, keys)
+                print(f'  {name}：报 {len(e)} 处' + ('' if e else '（应报出，失效！）'))
+                bad += not e
+            def drop_links(w):
+                for pg in w.pages[1:3]:
+                    if '/Annots' in pg:
+                        del pg[NameObject('/Annots')]
+            def shift(w):
+                for pg in w.pages[1:3]:
+                    for a in pg.get('/Annots') or []:
+                        a = a.get_object()
+                        num = {p.indirect_reference.idnum: i for i, p in enumerate(w.pages)}
+                        i = num[a['/Dest'][0].idnum]
+                        a[NameObject('/Dest')] = ArrayObject([w.pages[i + 1].indirect_reference, NameObject('/Fit')])
+                        return
+            def no_outline(w):
+                del w._root_object[NameObject('/Outlines')]
+            mut('去掉目录链接', drop_links)
+            mut('一个链接跳到下一页', shift)
+            mut('去掉书签', no_outline)
+        # 去掉提示文字：用不带提示的目录检查（把提示换成一句不存在的话）
+        global TOC_TIP
+        keep, TOC_TIP = TOC_TIP, '这句提示文字不存在'
+        e = toc_check(pdf, entries, keys)
+        TOC_TIP = keep
+        print(f'  没有提示文字：报 {len(e)} 处' + ('' if e else '（应报出，失效！）'))
+        bad += not e
+    sys.exit(1 if bad else 0)
 
 
 def build(ids):
@@ -721,10 +878,7 @@ def build(ids):
         # 讲义：封面（不编页码）+ 目录 + 总论 + 各篇 + 句式总表；目录页码两遍排版（第一遍量出各章在第几页）
         render(pg, cover('六级英语写作 满分范文精讲', '2021—2026 · 大学英语六级 · 共 ' + str(len(ids)) + ' 套真题',
                          '审题 → 要求对照 → 思路 → 范文 → 一步一步写 → 满分档分析 → 升格示范 → 高分句式 → 亮点词汇<br>每个句式都有公式、讲解和两个仿写例句'), '封面', tmp / 'cover.pdf', tmp, footer=False)
-        entries = ([('GEN', '写作总攻略', '评分标准 · 结构 · 模板 · 避坑')] if (DATA / '总论.json').exists() else []) + \
-                  [(f'CH{i:02d}', f'{P[pid]["year"]}年{P[pid]["month"]}月 第{P[pid]["set"]}套', zh(pid)[0].get('T', '')) for i, pid in enumerate(ids, 1)] + [('IDX', '高分句式总表', '')]
-        keys = {'GEN': 'WRITING GUIDE', 'IDX': 'INDEX · ALL PATTERNS'} if (DATA / '总论.json').exists() else {'IDX': 'INDEX · ALL PATTERNS'}
-        keys.update({f'CH{i:02d}': f'MODEL ESSAY {i:02d}' for i in range(1, len(ids) + 1)})
+        entries, keys = handout_toc(ids)
         pages = {}
         for _ in range(2):
             body = toc_html(entries, pages) + general_chapter() + ''.join(essay_chapter(i, pid, tmp) for i, pid in enumerate(ids, 1)) + index_chapter(ids)
@@ -735,7 +889,9 @@ def build(ids):
             sys.exit(f'目录：这些章节在 PDF 里找不到：{miss}')
         D.mkdir(exist_ok=True)
         merge([tmp / 'cover.pdf', tmp / 'body.pdf'], OUT_HANDOUT)
+        linkify(OUT_HANDOUT, tmp / 'body.pdf', entries)
         font_check(OUT_HANDOUT)
+        toc_gate(OUT_HANDOUT, entries, keys)
         print(f'讲义 {n + 1} 页 → {OUT_HANDOUT}')
         # 默写卡与答案
         how = ("<div class='how'><b>怎么用这份默写卡</b><br>① 先读右边的黄色提醒：这一句练的是什么句式、为什么值得背；② A 部分只填横线处的关键表达（编号对应答案里的粉色部分）；"
@@ -743,7 +899,8 @@ def build(ids):
         for answers, out, title in ((False, OUT_CARDS, '六级作文默写卡'), (True, OUT_ANS, '六级作文默写卡（答案）')):
             render(pg, cover(title, '2021—2026 · 大学英语六级 · 共 ' + str(len(ids)) + ' 篇范文',
                              '默的不只是单词，是能直接用进作文的句子和句式' if not answers else '粉色 = 填空答案；整句 = 整句默写答案'), '封面', tmp / 'c.pdf', tmp, footer=False)
-            body = lambda fit: ''.join(card_section(pid, answers, how if not answers and i == 0 else '', fit.get(pid, 0)) for i, pid in enumerate(ids))
+            centries, ckeys = cards_toc(ids)
+            body = lambda fit, pages={}: toc_html(centries, pages) + ''.join(card_section(pid, answers, how if not answers and i == 0 else '', fit.get(pid, 0)) for i, pid in enumerate(ids))
             render(pg, body({}), title, tmp / 'b.pdf', tmp)
             if not answers:
                 # 每篇从新的一页开始；最后一页只剩一两张卡（占用不到 35%）的篇目，第二遍收紧间距，挤回前一页
@@ -762,8 +919,17 @@ def build(ids):
                     t = tail_fill(tmp / 'b.pdf', keys)
                 won = sorted(pid for pid in fit if t[pid][1] - t[pid][0] < t1[pid][1] - t1[pid][0])
                 print(f'  收紧 {len(fit)} 篇（二级 {sum(v > 1 for v in fit.values())} 篇），少一页的 {len(won)} 篇；最后一页仍只剩一两张卡：{sorted(short(t)) or "无"}')
+            # 目录页码：量出各篇起始页后带页码再排一遍（页码只是数字，排版不变），再量一遍必须相同
+            fitd = fit if not answers else {}
+            cp, _ = page_of(tmp / 'b.pdf', ckeys)
+            render(pg, body(fitd, cp), title, tmp / 'b.pdf', tmp)
+            cp2, _ = page_of(tmp / 'b.pdf', ckeys)
+            if cp2 != cp or len(cp) != len(ids):
+                sys.exit(f'{title}：目录带页码后各篇起始页变了或找不到：{cp} → {cp2}')
             merge([tmp / 'c.pdf', tmp / 'b.pdf'], out)
+            linkify(out, tmp / 'b.pdf', centries)
             font_check(out)
+            toc_gate(out, centries, ckeys)
             print(f'{title} → {out}')
         br.close()
 
@@ -775,6 +941,8 @@ def main():
         errs = [x for pid in ids for x in check(pid)]
         print('\n'.join(errs) if errs else f'{len(ids)} 篇检查全部通过')
         sys.exit(1 if errs else 0)
+    if cmd == 'toc-selftest':
+        toc_selftest()
     if cmd == 'build':
         build(ids or sorted(P))
 

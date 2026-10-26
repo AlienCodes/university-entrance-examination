@@ -2905,6 +2905,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "79",
+   "title": "六级作文讲义目录点不了：Chromium 打出的目录链接是命名目标，pdfunite 合并封面时把命名目标丢了，链接全部失效；也没有书签和提示",
+   "stages": [
+    "讲义"
+   ],
+   "projects": [
+    "六级作文"
+   ],
+   "guards": [
+    {
+     "where": "六级作文/tools/讲义.py：linkify（合并后按 body.pdf 命名目标的真实页码把目录链接改成直接跳页、加书签）→ toc_gate（toc_check）",
+     "runs": "讲义.py build 每份 PDF 生成后自动，不通过不算生成成功",
+     "evidence": "目录链接检查不通过：…（目录 N 项，链接 M 个 / 页码不一致 / 书签 N 条）"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/讲义目录链接.py",
+     "expect": "exit 0",
+     "needs": "poppler"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
