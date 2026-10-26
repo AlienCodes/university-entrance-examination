@@ -2,7 +2,8 @@
 # 用户 2026-10-10：四级、六级的 Release 都已下载、视频也都保存在仓库里，全部删掉。只删 Release（附件），git 标签保留。
 # 用户 2026-10-14：高考、四级的 Release 全部删掉，只保留六级和专八（以及中考）的。
 # 用户 2026-10-17：西班牙语相关的全部删掉（含 Release es-kit、es-kit-preview）。
-# 为防误删，只允许删高考、四级、西班牙语的 Release（videos-*、dictation-*、papers-*、cet4-*、007、es-kit、es-kit-preview）；六级 cet6-*、专八 tem8-*、中考 zk-* 及其他标签一律报错、一个都不删。
+# 用户 2026-10-26：旧 Release 都可以删。先删内容已在别的 Release 里的 6 个：zk-01（女声，已由男声版取代）、zk-m01—m04（都在 zk-m-all 合集里）、tem8-01（已由 tem8-ink 27 个取代）；其余等用户确认。
+# 为防误删，只允许删高考、四级、西班牙语的 Release（videos-*、dictation-*、papers-*、cet4-*、007、es-kit、es-kit-preview，以及上面那 6 个）；六级 cet6-*、专八 tem8-*、中考 zk-* 及其他标签一律报错、一个都不删。
 name: 删除 Release
 on:
   push:
@@ -23,7 +24,7 @@ jobs:
           mapfile -t tags < <(sed -e 's/#.*//' -e 's/[[:space:]]//g' .github/delete-releases.txt | sed '/^$/d')
           [ ${#tags[@]} -gt 0 ] || { echo "没有列出标签"; exit 1; }
           for t in "${tags[@]}"; do
-            [[ "$t" =~ ^(videos-.+|dictation-.+|papers-.+|cet4-.+|007|es-kit|es-kit-preview)$ ]] || { echo "不允许删除：$t"; exit 1; }
+            [[ "$t" =~ ^(videos-.+|dictation-.+|papers-.+|cet4-.+|007|es-kit|es-kit-preview|zk-01|zk-m0[1-4]|tem8-01)$ ]] || { echo "不允许删除：$t"; exit 1; }
           done
           for t in "${tags[@]}"; do
             if gh release view "$t" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
