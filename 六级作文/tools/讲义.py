@@ -54,7 +54,7 @@ ZH_HALF = re.compile(r'[一-鿿][,;:?!]|[,;:?!][一-鿿]')
 
 def en_ok(s):
     out = []
-    if not re.search(r'[.!?]$', s):
+    if not re.search(r'[.!?][”’]?$', s):
         out.append('没有以句末标点结束')
     if re.search(r'["\']', s):
         out.append('直引号或直撇号（用 ’ “ ”）')
@@ -158,6 +158,10 @@ def check(pid):
             spans.append((a, a + len(g)))
         if not x.get('挖空') or not x.get('句式') or not x.get('意义'):
             e(f'默写 {i}：要有 挖空、句式、意义')
+        cards = {c.get('名称') for c in d.get('句式', [])}
+        sx = x.get('句式', '')
+        if sx and sx != '给定首句' and not sx.startswith('要点：') and any(n not in cards for n in sx.split('；')):
+            e(f'默写 {i}：句式“{sx}”不是本篇句式卡的名称（写卡名，或“给定首句”，或以“要点：”开头的说明）')
     # 六级新增：要求对照、得分分析、升格示范（引用一律是范文原样文字）
     body = ' '.join(S)
     req = d.get('要求', [])
