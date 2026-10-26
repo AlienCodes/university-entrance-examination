@@ -174,6 +174,8 @@ def check(pid, path, R=None):
             sf = e.get('surf') or ''
             if e['t'] == 'phr' and '…' in e['h'] and sf and '…' not in sf and len(sf.split()) > len(e['h'].replace('…', ' ').split()):
                 errs.append(f'第{k}句 短语空位：{e["h"]}{{{sf}}} 的原文词形要写“…”（如 {{focused…on}}），空位里的词不属于短语')
+            if '…' in sf and (sf.strip().startswith('…') or sf.strip().endswith('…')):      # 空位在两头（{leaving…}）：后一段是空的，画面上出现空高亮（四级作文 c01:2 截图检查拦下）
+                errs.append(f'第{k}句 原文词形 {{{sf}}} 的“…”要在两段之间（如 {{leaving…more time}}），不能在开头或结尾')
         seen = set()
         for e in a['w']:
             if e['t'] != 'phr' and not re.match(r'^(n|v|adj|adv|prep|conj|pron|num|det|int|abbr|pref|suf)\.', e['m']):

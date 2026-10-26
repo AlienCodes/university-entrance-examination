@@ -84,6 +84,7 @@ STOP = {'The', 'A', 'An', 'In', 'On', 'At', 'But', 'And', 'If', 'When', 'As', 'F
         'Without', 'From', 'By', 'To', 'Of', 'Our', 'Their', 'His', 'Her', 'My', 'Your', 'What', 'Why', 'How', 'Where', 'Who', 'Which',
         'There', 'Here', 'Now', 'Then', 'Still', 'Even', 'Many', 'Most', 'Some', 'All', 'Such', 'One', 'Two', 'Like', 'Unlike', 'Under',
         'Over', 'According', 'Despite', 'During', 'Last', 'Next', 'Each', 'Every', 'Both', 'No', 'Not', 'Only', 'Just', 'Also', 'Yes'}
+TITLE_LOW = {'a', 'an', 'the', 'for', 'of', 'on', 'to', 'in', 'and', 'or', 'with', 'at', 'by', 'from'}
 CAP = r"[A-Z][A-Za-z’'.&-]*"
 
 
@@ -91,7 +92,10 @@ def en_spans(t, hl=()):
     """hl：高亮词、短语在 t 里的位置（整体不断行）。专名与跨进去的高亮连起来超过 28 个字符就不绑（考研 k35：Massachusetts + 高亮 Institute of Technology
     共 37 个字符，连成一整块比一行还宽，伸出右边界）。"""
     out = []
-    for m in re.finditer(rf"{CAP}(?: {CAP})+", t):
+    # 标题式大写的一整行（作文标题 A Proposal for a Freshman Orientation Program）不是专名：每个实词都大写，连起来超过一行宽（四级作文 c27 横向出界 34 像素）
+    ws_all = re.findall(r"[A-Za-z][A-Za-z’'-]*", t)
+    titled = len(ws_all) >= 3 and all(w[0].isupper() or w in TITLE_LOW for w in ws_all) and not re.search(r'[.!?]$', t.strip())
+    for m in ([] if titled else re.finditer(rf"{CAP}(?: {CAP})+", t)):
         ws = m.group(0).split(' ')
         st = m.start()
         while ws and ws[0] in STOP:
