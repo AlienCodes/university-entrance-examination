@@ -18,6 +18,6 @@ git add -A 四级作文
 git commit -qm "四级作文批量（本机）：音频、识别核对、分屏、截图检查（$IDS）
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01Kz2Swx8NSaZAWZWNYjfnRH" || true
+Claude-Session: https://claude.ai/code/session_0172xuh5Z3Ycc4U31psj43Le" || true
 for i in 1 2 3; do git push -q -u origin claude/epic-edison-4gkcfb && break || sleep $((2**i)); done
 echo CHAIN_DONE
