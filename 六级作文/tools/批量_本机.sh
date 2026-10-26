@@ -3,6 +3,7 @@
 # 用法：bash 六级作文/tools/批量_本机.sh c30 c01 …   （视频在 GitHub Actions 上生成：.github/cet6-writing-render.txt）
 set -e -o pipefail
 cd "$(dirname "$0")/../.."
+python3 .github/check-browser-match.py .github/workflows/render-cet6-writing.yml || exit 1   # 踩坑 78：本机与 GitHub 浏览器必须一致
 PY=/opt/ttsenv/bin/python
 IDS="$*"
 T=六级作文/tools
