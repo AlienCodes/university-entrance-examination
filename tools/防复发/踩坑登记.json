@@ -3045,6 +3045,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "84",
+   "title": "生成工作流的 sparse-checkout 没覆盖引擎新读的目录（题目数据），GitHub 上整批失败",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "四级作文",
+    "六级作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/验证/工作流检出.py：按工作流 render 任务的检出路径建稀疏工作树、试排原题屏",
+     "runs": "触发 GitHub 生成前、防复发自检 --测试",
+     "evidence": "按工作流的检出：退出码非 0"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/工作流检出.py",
+     "expect": "exit 0",
+     "needs": "browser"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只覆盖作文两个工作流的原题屏；别的工作流引擎新读目录时把它加进 CASES。",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
