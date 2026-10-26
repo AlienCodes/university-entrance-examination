@@ -84,7 +84,9 @@ PROJECTS = {
     # 篇目 c01—c32，paper “2026年6月大学英语四级 第1套 写作”，passage “Part I”
     '四级作文': {'tag': 'CET-4 · WRITING · PART I', 'top': 'CET-4 WRITING', 'exam': '', 'look': 'C', 'plain': True, 'size': 'C@杂志',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
-             'name_re': r'20\d\d年(6|12)月大学英语四级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet4wvideo_', 'videos': '最终视频'},
+             'name_re': r'20\d\d年(6|12)月大学英语四级 第[123]套 写作 Part I \S.*\.mp4', 'tmp': 'cet4wvideo_', 'videos': '最终视频',
+             # 原题屏在截图下面加题目中文翻译（用户 2026-10-26：学生暂停时要看懂题目；与讲义同一份复核过的 题目译文，一字不差）
+             'prompt_zh': True},
     # 专八听力原文精读（用户 2026-10-25）：2025 专八听力录音原文（讲座、采访、说明、念题）逐句精读，书卷水墨大字（与专八水墨同一套画面、字号）；
     # 声音用听力原音（不是 TTS），句子起止由 专八/听力/原文/tools/原音音轨.py 对齐求出、长等待压到 2 秒。目录不在仓库顶层：dir。
     # 原音（audio='原音'）不适用 TTS 才有的几项：句间固定 0.8 秒停顿、停顿处数字静音、逐句响度偏差 / 短时波动、电磁音（声码器）、读完固定停留 0.5 秒——
@@ -458,7 +460,7 @@ def note_html(t, out):
     return ''.join(res)
 
 
-def zh_html(s, gloss=False):
+def zh_html(s, gloss=False, latin_words=False):
     """中文标点挤压（第 1 批画面核查：“说：  “我们”“看法）  ；”“母亲养育” 。”中间空出半个到一个字，段首“记忆…”比下一行缩进半个字；
     字体的 halt 对冒号、引号不生效，所以关掉浏览器自带的挤压（text-spacing-trim: space-all），由这里统一决定）：
     右半空白的标点后面紧跟标点 → 去掉它的右半空白（.pr）；左半空白的标点在开头或紧跟在左半空白的标点后 → 去掉左半空白（.pl）；
@@ -520,7 +522,8 @@ def zh_html(s, gloss=False):
     # 第 2 批截图核查：z14 “所说的Z / 世代。”——英文字母、数字与后面紧挨的汉字绑在一起（“Z世代”“20世纪”“2500亿”）。
     # 六级黑板审阅：一段英文（含空格、撇号、百分号：Stable Diffusion、Hunt’s、100%）整体不断行（“Stable / Diffusion”“100% / 可再生”被拆开）；
     # 只绑后面的汉字、不再绑前面的（“自20世”“和Midjourney提”与前后的词连成一长串，一行放不下整串换行，上一行空出 1/3：s05 第 5 句、s13 第 18 句、s02 第 1 句）
-    groups = [(m.start(), m.end() + (m.end() < len(s) and ish(s[m.end()]))) for m in re.finditer(LATIN_RUN, s)]
+    # latin_words（四级作文原题屏的题目译文，括号里保留的英文较长）：英文只按单词绑定，词与词之间可以断行，免得整段英文推到下一行、上一行空出一截
+    groups = [(m.start(), m.end() + (m.end() < len(s) and ish(s[m.end()]))) for m in re.finditer(LATIN_WORD if latin_words else LATIN_RUN, s)]
     groups += [(i - 1, i + 2) for i, c in enumerate(s) if c == '·' and 0 < i < len(s) - 1]      # 人名间隔号与前后各一个字不断开
     groups += name_spans(s)                                         # 登记的整名不断开（t03 审阅：“理查 / 德·帕克”）
     groups += [(a, b) for a, b in jieba_words(s) if b - a > 1 and all(ish(c) for c in s[a:b])]   # 词不拆开（t03 第二轮审阅：“蹦/跳”“相/同”“霎时/间”）
@@ -536,6 +539,9 @@ def zh_html(s, gloss=False):
         k = han[-2]
         while k > 0 and re.match(r'[A-Za-z0-9]', s[k - 1]):
             k -= 1
+        tail = list(re.finditer(LATIN_WORD, s[han[-1]:]))
+        if latin_words and tail:                    # 末尾是括号里的长英文：只把最后一个英文词连同后面的标点绑在一起，不把整段英文推到下一行
+            k = han[-1] + tail[-1].start()
         groups.append((k, len(s)))
     merged = []
     for a, b in sorted(g for g in groups if g[1] - g[0] > 1):
@@ -559,6 +565,7 @@ def zh_html(s, gloss=False):
 
 DASH_PART = '的了地得着过'           # 破折号前的虚词：连同再前一个字一起与破折号绑定（layoutcheck.zh_breaks 同一组字）
 LATIN_RUN = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*(?: [A-Za-z0-9][A-Za-z0-9’'.&%％-]*)*"      # 译文里的一段英文 / 数字（可含空格）
+LATIN_WORD = r"[A-Za-z0-9][A-Za-z0-9’'.&%％-]*"      # 一个英文单词 / 数字（zh_html latin_words）
 
 
 def clause_edges(s):
@@ -856,6 +863,7 @@ def title_slide(p):
       <div class="legend"><span><em class="lw"></em>单词</span><span><em class="lp"></em>短语</span>{ans}</div>''')
 
 
+P_CUR = None
 TITLE_SEC = 1.5      # 片头（静音）秒数：有原题屏时，原题屏从这里开始，到第一句开口（p['lead']）为止
 
 
@@ -879,7 +887,42 @@ def prompt_slide(p):
   clip-path:polygon(0 6%,3% 0,6% 8%,9% 0,12% 7%,15% 0,100% 0,100% 94%,97% 100%,94% 92%,91% 100%,88% 93%,85% 100%,0 100%)}}
 </style>
 <div class="top"><b>{PJ["top"]}</b><span>{head(p)}　{esc(p.get("title") or "")}</span></div>
-<div class="pq" id="pq"><span class="lab">原题</span><img src="{img}" alt=""></div>''')
+{prompt_zh_html(p) if PJ.get("prompt_zh") else f'<div class="pq" id="pq"><span class="lab">原题</span><img src="{img}" alt=""></div>'}''')
+
+
+def prompt_zh_lines(p):
+    """原题屏的题目译文：讲义数据里复核过的 题目译文（<项目>/讲义/data/<篇目>.json，一处数据，讲义与视频两处用）。"""
+    return json.loads((C4 / '讲义' / 'data' / f'{p["id"]}.json').read_text('utf-8'))['题目译文']
+
+
+def prompt_zh_html(p):
+    """四级作文原题屏（用户 2026-10-26）：卡片上半是原题截图（.pqi 里按比例放到最大），下半是「题目译文」（本画面的思源宋体，
+    每条一段，走译文的标点挤压与断行 zh_html）。截图只缩小不放大；放不下时截图让位给译文（译文字号固定，手机上看得清）。"""
+    img = (C4 / '原题' / p['prompt_img']).as_uri()
+    zh = ''.join(f'<div class="pz">{zh_html(x, latin_words=True)}</div>' for x in prompt_zh_lines(p))
+    return f'''<style>
+.pq{{flex-direction:column;align-items:stretch;padding:40px 34px 22px}}
+.pqi{{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}}
+.pzh{{flex:none;margin-top:16px;padding:12px 22px 6px;border-top:2px solid #d7d2c3}}
+.pzh .zh{{font-size:35px;line-height:1.5;color:#2c3532;margin:0;padding:0;border:0}}
+.pzh .pz{{margin:0 0 6px}}
+.pzh .zt{{display:inline-block;font-family:'Noto Serif SC';font-weight:700;font-size:28px;line-height:38px;color:#fff;background:#1f5c4a;border-radius:6px;padding:0 14px;margin-bottom:8px}}
+</style>
+<div class="pq" id="pq"><span class="lab">原题</span><div class="pqi"><img src="{img}" alt=""></div>
+<div class="pzh"><span class="zt">题目译文</span><div class="zh" lang="zh-CN">{zh}</div></div></div>'''
+
+
+def prompt_zh_problems(shown, lines):
+    """原题屏要完整包含该篇 题目译文（去掉空白后逐字相同）。shown = 画面上 .pzh .zh 的文字。双向验证 tools/防复发/验证/原题屏译文.py。"""
+    norm = lambda t: re.sub(r'[\s\u00ad\u200b\u2060\u00a0]', '', t)
+    if not lines:
+        return ['讲义数据里没有 题目译文']
+    want = norm(''.join(lines))
+    got = norm(shown or '')
+    if got != want:
+        miss = [x for x in lines if norm(x) not in got]
+        return [f'题目译文与讲义数据不一致（缺 {len(miss)} 条' + (f'：{miss[0][:20]}…' if miss else '，或多出 / 改动了文字') + '）']
+    return []
 
 
 # 原题屏检查：截图加载成功；画面上实际显示的像素（4K 下 CSS 尺寸 × devicePixelRatio）不超过原图像素（只缩小、不放大 = 高清）；
@@ -888,7 +931,23 @@ PROMPT_JS = """() => { const bad = [], q = s => document.querySelector(s), img =
   if (!img || !card) return ['没有原题卡片或截图'];
   if (!(img.complete && img.naturalWidth)) return ['原题截图没有加载'];
   const r = img.getBoundingClientRect(), c = card.getBoundingClientRect(), cs = getComputedStyle(card), d = devicePixelRatio;
-  const L = c.left + parseFloat(cs.paddingLeft), R = c.right - parseFloat(cs.paddingRight), T = c.top + parseFloat(cs.paddingTop), B = c.bottom - parseFloat(cs.paddingBottom);
+  const box = q('.pq .pqi'), bx = box && box.getBoundingClientRect(), zh = q('.pq .pzh');
+  const L = box ? bx.left : c.left + parseFloat(cs.paddingLeft), R = box ? bx.right : c.right - parseFloat(cs.paddingRight),
+        T = box ? bx.top : c.top + parseFloat(cs.paddingTop), B = box ? bx.bottom : c.bottom - parseFloat(cs.paddingBottom);
+  if (box) {
+    const z = zh.getBoundingClientRect();
+    if (z.top < r.bottom + 4) bad.push('题目译文压住了原题截图');
+    if (z.bottom > c.bottom - parseFloat(cs.paddingBottom) + 0.5 || z.left < c.left || z.right > c.right) bad.push('题目译文超出原题卡片');
+    if (zh.scrollHeight > zh.clientHeight + 1 || zh.scrollWidth > zh.clientWidth + 1) bad.push('题目译文溢出');
+    const zb = zh.querySelector('.zh'), zr = zb.getBoundingClientRect(), em = parseFloat(getComputedStyle(zb).fontSize);
+    for (const e of zh.querySelectorAll('.po')) if (Math.abs(e.getClientRects()[0].left - zr.left) < 1) bad.push(`题目译文行首的“${e.textContent}”没有去掉左半空白`);
+    for (const pz of zh.querySelectorAll('.pz')) {           // 非末行的行尾离右边超过 6 个字 = 短行（英文长词自然换行会空出 3—5 个字，不算）（整段英文推到下一行、上一行空出一截）
+      const g = document.createRange(); g.selectNodeContents(pz); const L = {};
+      for (const x of g.getClientRects()) if (x.width > 0) { const t = Math.round(x.top + x.height / 2); const key = Object.keys(L).find(y => Math.abs(y - t) < em * 0.6) ?? t; L[key] = Math.max(L[key] || 0, x.right); }
+      const ys = Object.keys(L).map(Number).sort((a, b) => a - b);
+      ys.slice(0, -1).forEach((y, i) => { if (L[y] < zr.right - 6 * em) bad.push(`题目译文短行：第 ${i + 1} 行右边空出 ${Math.round((zr.right - L[y]) / em)} 个字（${pz.textContent.slice(0, 8)}…）`); }); }
+    if (r.width < 0.5 * (c.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight))) bad.push(`原题截图缩得太小（宽 ${Math.round(r.width)}px，不到卡片一半）`);
+  }
   if (img.naturalWidth + 0.5 < r.width * d || img.naturalHeight + 0.5 < r.height * d)
     bad.push(`原题截图不够高清：原图 ${img.naturalWidth}×${img.naturalHeight}，画面上要 ${Math.round(r.width * d)}×${Math.round(r.height * d)}（会被放大）`);
   if (Math.abs(r.width / r.height - img.naturalWidth / img.naturalHeight) > 0.003) bad.push('原题截图比例变了');
@@ -1047,6 +1106,9 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       (x && g.toString() === '' ? x : e).before(document.createElement('br')); } }   // 括注开头的左括号：换行放在括注外面（括注是行内块，放在里面会空出一行）
   return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""      # st = [英文, 词汇栏] 起始字号（分屏的句子统一字号用，见 layout）；不给就从 FS0/VS0 开始
 FIT = None          # set_style() 按画面填入起始字号
+# 原题屏的题目译文（四级作文）：落在行首的 .po 改成 .pl（去左半字），与上下行的字对齐，并在它前面固定换行（与 FIT_JS 末尾同一规则）
+PO_JS = """() => { for (const e of document.querySelectorAll('.pzh .po')) { const k=e.closest('.zh'), b=k.getBoundingClientRect();
+    if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl'; e.before(document.createElement('br')); } } }"""
 # 片头标题一行放不下时（六级 s06 “儿童使用社交媒体：不应禁止，但数字媒体巨头须受监管” 25 个字，教室黑板的标题一行只放得下约 21 个字，伸出卡片 200 像素），
 # 在第一个冒号后面换行（br.tb），分成意思完整的两行；放得下就什么都不做（专八的标题都放得下，画面不变）。layoutcheck 的“标题”检查认 br.tb：只许在这里分成两行
 TITLE_JS = """() => { const h = document.querySelector('.ttl h1'), card = document.querySelector('.ttl'); if (!h || !card) return 0;
@@ -1062,6 +1124,8 @@ set_style('C')      # 默认画面 C（书卷水墨）
 
 def screens(p):
     """全部屏：[(标签, HTML, 是否句子屏, 句号 k 或 0)]（片头 k = 0）。"""
+    global P_CUR
+    P_CUR = p                                     # 原题屏检查（题目译文）要知道是哪一篇
     sents = [s for pa in p['paras'] for s in pa]
     out = [('片头', title_slide(p), False, 0)]
     if p.get('prompt_img'):                       # 考研作文：片头之后是原题屏
@@ -1107,6 +1171,8 @@ def layout(pg, p, f):
             pg.evaluate('document.fonts.ready')
             pg.wait_for_timeout(150)
             pg.evaluate(TITLE_JS)
+            if label == '原题' and PJ.get('prompt_zh'):
+                pg.evaluate(PO_JS)                    # 题目译文：落在行首的左半空白标点去掉左半空白（与译文 FIT 同一规则）
             yield i, label, False, None
             continue
         r = load(h, start.get(i))
@@ -1299,6 +1365,8 @@ def screen_checks(pg, label, fit, r):
         out += [f'横向出界：{x}' for x in pg.evaluate(HBOX)]
     elif label == '原题':
         out += [f'原题屏：{x}' for x in pg.evaluate(PROMPT_JS)]
+        if PJ.get('prompt_zh'):
+            out += [f'原题屏：{x}' for x in prompt_zh_problems(pg.inner_text('.pzh .zh'), prompt_zh_lines(P_CUR))]
         out += [f'原题屏：{x}' for x in deco_project(pg)]
     else:
         out += [f'封面：{x}' for x in pg.evaluate(TH.COVER, False)[2]]

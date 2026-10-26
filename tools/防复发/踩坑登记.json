@@ -2987,6 +2987,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "82",
+   "title": "四级作文视频原题屏没有中文翻译；加译文时长英文括注整段不断开造成短行、行首左括号没去半字",
+   "stages": [
+    "截图",
+    "视频"
+   ],
+   "projects": [
+    "四级作文"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.py：prompt_zh_problems（screen_checks 原题屏）+ PROMPT_JS 的题目译文检查 + PO_JS（layout）",
+     "runs": "大字版.py --stills / --video 每个原题屏自动，有一处就不出图、不生成",
+     "evidence": "原题屏：题目译文短行 / 题目译文与讲义数据不一致"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/原题屏译文.py",
+     "expect": "exit 0",
+     "needs": "playwright"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
