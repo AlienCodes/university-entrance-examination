@@ -701,7 +701,10 @@ def page(body):
     t03 审阅发现 “(防水布)(用压条固定)(船舷边缘)(反复猛击)” 落到了系统黑体（WenQuanYi Zen Hei），layoutcheck 的“字体回退”逐屏查。"""
     fonts = (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri()      # 字体与四级共用（EB Garamond、Inter、思源宋体）
     if STYLE == 'C' and PJ and PJ.get('plain'):      # 四级杂志：不叠书卷水墨（样式.css），也不加专八字体（霞鹜文楷）
-        extra = theme = ''
+        # 页脚“逐句精读”等 Inter 元素里的中文：Inter 没有中文字形，原四级 CSS 落到系统字体（预检拦下）；中文改用本画面的思源宋体，英文字形不变
+        extra, theme = '', ("<style>.bot,.top b,.ttl .tag,.side h3{font-family:'Inter','Noto Serif SC'}"
+                         # 原题屏标签：手账的黄纸胶带 + 思源黑体（ZH Bold，本画面没加载）换成杂志的墨绿标签 + 思源宋体
+                         "#pq .lab{font-family:'Noto Serif SC';font-weight:700;color:#fff;background:#1f5c4a;clip-path:none;transform:translateX(-50%);border-radius:6px}</style>")
     elif STYLE == 'C':
         extra = f'<link rel="stylesheet" href="{THEME_FONTS.as_uri()}">'
         theme = f'<style>{THEME.read_text("utf-8")}</style>'
