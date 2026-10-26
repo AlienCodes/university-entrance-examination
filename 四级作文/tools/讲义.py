@@ -24,6 +24,8 @@ D = C / '讲义'
 DATA = D / 'data'
 sys.path.insert(0, str(HERE))
 import ann_lib as A  # noqa: E402
+sys.path.insert(0, str(HERE.parents[1] / 'tools'))
+import 作文题目译文 as TR  # noqa: E402
 
 P = {p['id']: p for p in json.loads((C / '作文' / 'sents.json').read_text('utf-8'))}
 V = {p['id']: p for p in json.loads((C / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
@@ -215,6 +217,9 @@ def check(pid):
         elif isinstance(o, str) and ZH_HALF.search(o):
             e(f'{path} 用了半角标点：{o[:30]}')
     walk(d)
+    # 题目译文（用户 2026-10-26：题目一定要非常详细地翻译成中文）：规则在 tools/作文题目译文.py，四级、六级共用
+    for x in TR.check(TR.prompt_of(C.name[:2], p['src']), d.get('题目译文')):
+        e(x)
     return errs
 
 
@@ -242,6 +247,9 @@ h1,h2,h3{margin:0;font-weight:700}
 .sec .tip{margin-left:auto;font-family:Apos,'LXGW WenKai','Noto Sans SC';color:var(--mute);font-size:9.5pt}
 .prompt{border:1px solid #e3e0d6;border-radius:3mm;padding:3mm;background:#fff;text-align:center;break-inside:avoid}
 .prompt img{max-width:100%;max-height:108mm}
+.ptr{margin-top:2.5mm;border-left:1.2mm solid var(--blue);background:var(--soft);border-radius:0 2.5mm 2.5mm 0;padding:2.5mm 4mm 2mm}
+.ptr .lab{display:inline-block;font-weight:700;color:#fff;background:var(--blue);border-radius:1.5mm;padding:.3mm 2.5mm;font-size:9.5pt;margin-bottom:1mm}
+.ptr p{margin:1.2mm 0;line-height:1.75;break-inside:avoid}
 .chips{display:flex;flex-wrap:wrap;gap:2mm;margin-bottom:2.5mm}
 .chip{border-radius:5mm;padding:.4mm 3mm;font-size:9pt;background:var(--soft);color:var(--blue);font-weight:500}
 .chip.w{background:#fff4c2;color:#7a5a00}
@@ -485,6 +493,7 @@ def essay_chapter(no, pid, tmp):
     return (f"<section class='chap' data-mark='CH{no:02d}'><div class='band'><div><div class='no'>MODEL ESSAY {no:02d} · PART I WRITING</div>"
             f"<h1><span>{esc(meta.get('T', ''))}</span></h1></div><div class='meta'><b>{esc(sub)}</b>{esc(meta.get('G', ''))} · 范文 {p['words']} 词</div></div>"
             + sec(1, '原题') + f"<div class='prompt'><img src='{prompt_img(pid, tmp)}'></div>"
+            + "<div class='ptr'><span class='lab'>题目译文</span>" + ''.join(f'<p>{esc(x)}</p>' for x in d['题目译文']) + '</div>'
             + sec(2, '审题', '先弄清楚要写什么，再动笔')
             + f"<div class='chips'><span class='chip'>{esc(s['题型'])}</span><span class='chip w'>{esc(s['字数'])}</span></div>"
             + "<ul class='task'>" + ''.join(f'<li>{esc(x)}</li>' for x in s['任务']) + '</ul>'
