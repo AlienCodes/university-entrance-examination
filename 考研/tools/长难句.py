@@ -15,12 +15,19 @@
 """
 import html
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-KY = HERE.parent
+# 项目参数（专八 2026-10-27 起共用本程序）：第一个参数可写 --project 专八（默认考研）；make_dictation.py 读同一个 ZL_PROJECT
+if sys.argv[1:2] == ['--project']:
+    os.environ['ZL_PROJECT'] = sys.argv[2]
+    del sys.argv[1:3]
+PROJ = os.environ.get('ZL_PROJECT', '考研')
+LABEL = {'考研': '考研英语', '专八': '英语专八'}[PROJ]
+KY = HERE.parent.parent / PROJ
 DIR = KY / '长难句'
 P = {p['id']: p for p in json.loads((KY / 'data' / 'vocab.json').read_text('utf-8'))['passages'] if p.get('done')}
 LONG, LONG2, MINN, MAXN = 25, 20, 3, 8
@@ -174,13 +181,13 @@ ol{margin:0;padding-left:6mm}.zh{background:#eef6ee;border-left:3px solid #3c8d4
 .kp b{color:#123c69}.mono{font-family:'Inter',sans-serif}"""
 
 LEVEL = {1: '主干', 2: '一层修饰', 3: '二层修饰', 4: '三层修饰'}
-GUIDE = """<div class='guide'><h2>考研长难句通用拆解法（每句都按这五步走）</h2><ol>
+GUIDE = """<div class='guide'><h2>__PROJ__长难句通用拆解法（每句都按这五步走）</h2><ol>
 <li><b>切意群</b>：先看标点（逗号、破折号、括号、分号）和“信号词”——连词（and / but / because / although / if / when）、关系词（who / which / that / where）、
 非谓语（to do / doing / done）、介词短语开头处——在这些地方画“/”，把长句切成几小块，每块单独都能看懂。</li>
 <li><b>找主干</b>：在各块里找<b>真正的谓语动词</b>（有时态、跟主语一致的那个动词；to do、doing、done 不是谓语），它前面的核心名词是主语，后面的是宾语或表语。主干所在的块是第 1 层。</li>
 <li><b>挂修饰</b>：其余每块都问一句“它修饰谁 / 说明什么”——修饰主干的是第 2 层，修饰第 2 层的是第 3 层……把层次理清，句子就不乱了。</li>
 <li><b>顺着读</b>：按意群顺序一块一块往下理解（顺译），不要回头找、不要逐词死抠；遇到“插入语”先跳过，读完主干再回来看。</li>
-<li><b>调成中文</b>：把顺译的草稿按中文习惯调整——长定语往前放或拆成短句、被动改主动、名词化改动词——得到通顺的译文。</li></ol></div>"""
+<li><b>调成中文</b>：把顺译的草稿按中文习惯调整——长定语往前放或拆成短句、被动改主动、名词化改动词——得到通顺的译文。</li></ol></div>""".replace('__PROJ__', PROJ)
 
 
 def esc(s):
@@ -237,7 +244,7 @@ def kp(r):
 def page_html(pid):
     p = P[pid]
     a = json.loads((DIR / f'{pid}.json').read_text('utf-8'))
-    body = [f"<h1>长难句分析</h1><div class='sub'>考研英语 {esc(p['paper'])} {esc(p['passage'])} · {esc(p['title'])} · "
+    body = [f"<h1>长难句分析</h1><div class='sub'>{LABEL} {esc(p['paper'])} {esc(p['passage'])} · {esc(p['title'])} · "
             f"本篇 {len(a['sentences'])} 句（红色加粗 = 句子主干；红色“/” = 意群切分处）</div>{GUIDE}"]
     for x in a['sentences']:
         s = SENTS[pid][x['k'] - 1]
@@ -310,7 +317,7 @@ def plant(batches, out):
         d.mkdir(parents=True)
         for pid in b:
             shutil.copy(DIR / f'{pid}.json', d / f'{pid}.json')
-        rnd = random.Random(f'kaoyan-ld-{i}')
+        rnd = random.Random(f'kaoyan-ld-{i}' if PROJ == '考研' else f'{PROJ}-ld-{i}')
         pid = rnd.choice(b)
         a = json.loads((d / f'{pid}.json').read_text('utf-8'))
         xs = a['sentences']
