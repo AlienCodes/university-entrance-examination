@@ -11,7 +11,8 @@
 - 图上展示的全部是资料包里真实的页面（素材.py 从发布的 PDF 渲染裁出），不做假图；
 - 图上的每个数字都从数据现算（专八/data/vocab.json、长难句 json、PDF 页数、听写卡条目、朗读时长），数据一变就停下核对；
 - 不写价格、免费、限时、保过、押题，不写“最 / 第一 / 唯一”（“最新”除外，2026 年是最新一年），不编评价销量，不放二维码、外链；
-  领取方式只写“获取方式见动态正文”。
+  图上不写领取流程（获取方式 / 领取方式 / 私信 / 网盘 / 链接都报错），领取方式只在动态正文里留给用户填；
+  首尾两张必须有“充电”（充电即可获取全套资料，用户 2026-10-27）；列内容一律长难句分析在首位。
 渲染后程序自查（CHECK_JS + 讲义 WRAP_JS + 缺字）：
 - 文字不出画、标了 data-k 的块互不重叠、图片字体全部加载；
 - 不出现“02 / 09”这类编号（踩坑 70）、不出现别的项目名（踩坑 57）、禁用词；
@@ -160,10 +161,15 @@ body{{position:relative;font-family:Bold,sans-serif;color:{INK};background:{PAPE
 
 
 def head(title, sub, top=34):
-    # 不加“02 / 09”这类编号（踩坑 70）
-    return (f'<div class="ab" data-k="pill" style="left:36px;top:{top}px"><span class="pill">英语专八阅读真题 · 学习资料包</span></div>'
+    # 不加“02 / 09”这类编号（踩坑 70）；右上角统一的小“充电获取”标识（用户 2026-10-27）
+    return (BADGE +f'<div class="ab" data-k="pill" style="left:36px;top:{top}px"><span class="pill">英语专八阅读真题 · 学习资料包</span></div>'
             f'<div class="ab h1" data-k="h1" data-min="{MIN_H1}" style="left:34px;top:{top + 46}px;width:652px"><div>{title}</div></div>'
             + (f'<div class="ab sub" data-k="sub" style="left:36px;top:{top + 104}px;width:648px"><div>{sub}</div></div>' if sub else ''))
+
+
+CHARGE = '充电即可获取'
+ZT = '历年专八真题 2015—2026'      # 用户网盘里的历年真题全套（不写具体套数：2020 年停考，套数未核实）
+BADGE = (f'<div class="ab" data-k="badge" style="right:36px;top:34px"><span class="pill" style="background:{KY};color:#fff">充电获取</span></div>')
 
 
 def n(x, c=KY):
@@ -172,19 +178,20 @@ def n(x, c=KY):
 
 # ---------------------------------------------------------------- 01 封面：三个方向
 def cover_A():
-    """靛蓝书衣：大标题 + 朱红钩子 + 底部扇形真实页面。"""
+    """靛蓝书衣：朱红钩子“充电即可获取全套资料” + 大标题 + 卖点（长难句在首位）+ 底部扇形真实页面。"""
+    chip = f'class="chip" style="background:{PAPER};color:{CLOTH};font-size:{fs(19)};padding:8px 12px 9px;margin:0 7px 7px 0"'
     return f"""<body class="cloth">
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:36px;top:36px;background:{KY};color:#fff;padding:10px 20px 12px;border-radius:12px;font:900 {fs(32)}/1 Black">
-<div>含 {YEARS[0]} 最新真题</div></div>
-<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:32px;top:108px;color:{PAPER};font:900 {fs(112)}/1.08 Black;letter-spacing:.01em">
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:36px;top:34px;background:{KY};color:#fff;padding:12px 22px 14px;border-radius:12px;font:900 {fs(36)}/1 Black;box-shadow:0 6px 16px rgba(0,0,0,.3)">
+<div>{CHARGE}全套资料</div></div>
+<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:32px;top:114px;color:{PAPER};font:900 {fs(104)}/1.08 Black;letter-spacing:.01em">
 <div>专八阅读</div><div>真题 <span class="lat" style="color:{YEL};font-size:1.12em;letter-spacing:-.02em">{N}</span> 篇</div></div>
-<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:36px;top:378px;color:{PAPER};font:900 {fs(34)}/1.35 Black">
-<div>全套学习资料包 · 每篇 6 件套</div></div>
-<div class="ab" data-k="chips" data-min="{MIN_SELL}" style="left:36px;top:436px;width:660px">
-<span class="chip" style="background:{PAPER};color:{CLOTH};font-size:{fs(21)}">长难句 {LONG} 句</span><span class="chip" style="background:{PAPER};color:{CLOTH};font-size:{fs(21)}">逐句精读</span><span class="chip" style="background:{PAPER};color:{CLOTH};font-size:{fs(21)}">三种听写卡</span><span class="chip" style="background:{PAPER};color:{CLOTH};font-size:{fs(21)}">男声朗读</span></div>
-<div class="shot bleed" style="left:24px;top:530px;width:300px;transform:rotate(-5deg)"><img src="{img('cs_full1.png')}"></div>
-<div class="shot bleed" style="left:410px;top:528px;width:290px;transform:rotate(5deg)"><img src="{img('dk3_full.png')}"></div>
-<div class="shot" style="left:170px;top:500px;width:380px;transform:rotate(0deg)"><img src="{img('jd_01_2.png')}"></div>
+<div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:36px;top:364px;color:{YEL};font:900 {fs(28)}/1.3 Black">
+<div>含 {YEARS[0]} 最新真题 · 每篇 6 件套</div></div>
+<div class="ab" data-k="chips" data-min="{MIN_SELL}" style="left:36px;top:408px;width:660px">
+<span {chip}>长难句分析 {LONG} 句</span><span {chip}>{ZT} + 答案解析 + 听力音频</span><span {chip}>逐句精读</span><span {chip}>三种听写卡</span><span {chip}>男声朗读</span></div>
+<div class="shot bleed" style="left:24px;top:586px;width:300px;transform:rotate(-5deg)"><img src="{img('cs_full1.png')}"></div>
+<div class="shot bleed" style="left:410px;top:584px;width:290px;transform:rotate(5deg)"><img src="{img('zt_2025.png')}"></div>
+<div class="shot bleed" style="left:170px;top:560px;width:380px"><img src="{img('jd_01_2.png')}"></div>
 </body>"""
 
 
@@ -232,26 +239,28 @@ def timeline(tid='t28', h=56, w=200, color=DIAN):
 
 
 def p_all():
-    tiles = [('jd_01_2.png', '逐句精读', f'{PG["0 逐句精读"]} 页', 'top'),
-             ('cs_card.png', '长难句分析', f'{PG["4 长难句分析"]} 页', 'top'),
-             ('dk1.png', '汉译英听写', f'{PG["1 汉译英"]} 页', 'top'),
-             ('dk2.png', '英译汉听写', f'{PG["2 英译汉"]} 页', 'top'),
-             ('dk3.png', '文章填空', f'{PG["3 文章填空"]} 页', 'top'),
-             (None, '朗读音频', f'{AUDIO_H} 小时+', '')]
-    cells = ''
-    for i, (im, name, num, pos) in enumerate(tiles):
-        x, y = 36 + (i % 3) * 220, 196 + (i // 3) * 246
-        pic = (f'<img src="{img(im)}" style="width:100%;height:100%;object-fit:cover;object-position:left {pos}">' if im else
-               f'<div style="height:100%;display:flex;align-items:center;justify-content:center;background:{PAPER}">{timeline(w=170, h=70)}</div>')
-        cells += (f'<div class="ab" data-k="tile{i}" style="left:{x}px;top:{y}px;width:208px;height:234px;background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(30,27,23,.15);overflow:hidden">'
-                  f'<div style="height:150px;overflow:hidden;border-bottom:1px solid #e6dfd0">{pic}</div>'
-                  f'<div style="padding:12px 14px 0"><div style="font:900 24px/1.2 Black">{e(name)}</div>'
-                  f'<div style="font:700 19px/1.5 Bold;color:{MUTE}">共 {n(num.split()[0], ZHU)} {e(num.split()[1])}</div></div>'
-                  '</div>')
-    return f"""<body class="paper">{head(f'一篇一个文件夹，每篇 6 件套', f'{N} 个文件夹，按年份 {YEARS[0]}→{YEARS[-1]} 排好，打开就能用')}
-{cells}
-<div class="ab" data-k="band" style="left:36px;top:682px;width:648px;text-align:center;font:900 20px/1 Black;color:{CLOTH}">
-<div>PDF 共 {n(TOTAL_PG, KY)} 页 · {N} 段男声朗读</div></div>
+    """总览：两大块——30 篇阅读精读资料包、历年专八真题全套；列的顺序长难句在首位（用户 2026-10-27）。"""
+    def tile(x, y, w, h, im, name, num, unit, ih=None):
+        ih = ih or h - 84
+        pic = (f'<img src="{img(im)}" style="width:100%;height:100%;object-fit:cover;object-position:left top">' if im else
+               f'<div style="height:100%;display:flex;align-items:center;justify-content:center;background:{PAPER}">{timeline(w=w - 40, h=60)}</div>')
+        return (f'<div class="ab" data-k="t{x}_{y}" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px;background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(30,27,23,.15);overflow:hidden">'
+                f'<div style="height:{ih}px;overflow:hidden;border-bottom:1px solid #e6dfd0">{pic}</div>'
+                f'<div style="padding:10px 14px 0"><div style="font:900 22px/1.2 Black">{e(name)}</div>'
+                f'<div style="font:700 18px/1.45 Bold;color:{MUTE}">{n(num, ZHU)} {e(unit)}</div></div></div>')
+    zt = ''.join(f'<span class="chip" style="background:{PAPER};color:{CLOTH};font-size:18px;padding:7px 10px 8px;margin:0 6px 6px 0">{e(t)}</span>' for t in ('真题', '答案', '解析', '听力音频'))
+    return f"""<body class="paper">{head('充电即可获取：两大块全套资料', '30 篇阅读精读资料包（每篇一个文件夹）+ 历年专八真题全套')}
+{tile(36, 190, 316, 236, 'cs_card.png', '① 长难句分析', LONG, f'句逐层拆解 · {PG["4 长难句分析"]} 页')}
+<div class="ab" data-k="zt" style="left:368px;top:190px;width:316px;height:236px;background:{CLOTH};border-radius:12px;box-shadow:0 8px 20px rgba(30,27,23,.2);overflow:hidden">
+<div style="height:64px;overflow:hidden;opacity:.95"><img src="{img('zt_2025.png')}" style="width:100%;display:block"></div>
+<div style="padding:10px 14px 0;color:{PAPER}"><div style="font:900 22px/1.2 Black">② 历年专八真题全套</div>
+<div style="font:700 18px/1.5 Bold;color:{YEL}"><span class="lat">2015—2026</span> · 10 年以上</div>
+<div style="margin-top:6px">{zt}</div></div></div>
+{tile(36, 442, 204, 236, 'jd_01_2.png', '③ 逐句精读', SENTS, f'句 · {PG["0 逐句精读"]} 页')}
+{tile(258, 442, 204, 236, 'dk3.png', '④ 三种听写卡', PG["1 汉译英"] + PG["2 英译汉"] + PG["3 文章填空"], '页')}
+{tile(480, 442, 204, 236, None, '⑤ 朗读音频', f'{AUDIO_H}小时+', f'· {N} 段男声')}
+<div class="ab" data-k="band" style="left:36px;top:690px;width:648px;text-align:center;font:900 19px/1 Black;color:{CLOTH}">
+<div>阅读资料包 PDF 共 {n(TOTAL_PG, KY)} 页 · 2026→2016 排好</div></div>
 </body>"""
 
 
@@ -293,7 +302,7 @@ def p_dict():
 
 # ---------------------------------------------------------------- 06 朗读 + 配套视频
 def p_audio():
-    return f"""<body class="cloth">
+    return f"""<body class="cloth">{BADGE}
 <div class="ab" data-k="pill" style="left:36px;top:34px"><span class="pill" style="background:{PAPER};color:{CLOTH}">英语专八阅读真题 · 学习资料包</span></div>
 <div class="ab h1" data-k="h1" data-min="{MIN_H1}" style="left:34px;top:80px;color:{PAPER}"><div>{N} 段男声朗读，共 {n(f'{AUDIO_H} 小时+', YEL)}</div></div>
 <div class="ab sub" data-k="sub" style="left:36px;top:138px;width:648px;color:#d9d2c3"><div>和专八单词视频同一个声音、同一套文章：看视频记单词，拿资料精读、听写、跟读</div></div>
@@ -342,19 +351,20 @@ def p_route():
 
 # ---------------------------------------------------------------- 09 收尾
 def p_end():
-    items = [(f'{N}', '篇真题', f'{YR} · 含 {YEARS[0]} 最新 {NEW} 篇'), (f'{LONG}', '句长难句', '五步逐层拆解'),
-             (f'{SENTS}', '句逐句精读', '英文 + 译文 + 生词'), (f'{CARD}', '个生词听写', '汉译英 · 英译汉'),
-             (f'{GAPS}', '空文章填空', '回到原文记生词'), (f'{AUDIO_H}小时+', '男声朗读', f'{N} 段，和视频同一个声音')]
-    rows = ''.join(f'<div style="display:flex;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(244,238,226,.18)">'
-                   f'<div class="lat" style="width:180px;text-align:right;font-size:40px;color:{YEL};letter-spacing:-.01em">{a}</div>'
-                   f'<div style="font:900 25px/1.2 Black;color:{PAPER};margin:0 14px 0 14px;white-space:nowrap">{e(b)}</div>'
+    """收尾：行动号召——为 UP 主充电，获取全套资料；列的顺序长难句在首位。"""
+    items = [(f'{LONG}', '句长难句分析', '主干 · 意群层级 · 易错点'), ('2015—2026', '历年专八真题', '10 年以上 · 答案 · 解析 · 听力'),
+             (f'{SENTS}', '句逐句精读', f'{N} 篇 · 含 {YEARS[0]} 最新 {NEW} 篇'), (f'{CARD}', '个生词听写', f'三种听写卡 · {GAPS} 空填空'),
+             (f'{AUDIO_H}小时+', '男声朗读', f'{N} 段，和视频同一个声音')]
+    rows = ''.join(f'<div style="display:flex;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(244,238,226,.18)">'
+                   f'<div class="lat" style="width:196px;text-align:right;font-size:{34 if len(a) > 6 else 40}px;color:{YEL};letter-spacing:-.01em;white-space:nowrap">{a}</div>'
+                   f'<div style="font:900 25px/1.2 Black;color:{PAPER};margin:0 12px 0 14px;white-space:nowrap">{e(b)}</div>'
                    f'<div style="font:700 18px/1.3 Bold;color:#c9c1b1">{e(c)}</div></div>' for a, b, c in items)
     return f"""<body class="cloth">
 <div class="ab" data-k="pill" style="left:36px;top:34px"><span class="pill" style="background:{PAPER};color:{CLOTH}">英语专八阅读真题 · 学习资料包</span></div>
-<div class="ab h1" data-k="h1" data-min="{MIN_H1}" style="left:34px;top:80px;color:{PAPER}"><div>一套资料，把 {N} 篇真题吃透</div></div>
-<div class="ab" data-k="rows" style="left:36px;top:160px;width:648px">{rows}</div>
-<div class="ab" data-k="pg" style="left:36px;top:584px;width:648px;text-align:center;font:900 22px/1 Black;color:{PAPER}"><div>PDF 共 {n(TOTAL_PG, YEL)} 页 · 每篇一个文件夹</div></div>
-<div class="ab" data-k="get" data-min="{MIN_HOOK}" style="left:120px;top:628px;width:480px;height:66px"><div class="seal" style="width:480px;height:66px;font-size:{fs(30)}">获取方式见动态正文</div></div>
+<div class="ab h1" data-k="h1" data-min="{MIN_H1}" style="left:34px;top:80px;color:{PAPER}"><div>为 UP 主充电，获取全套资料</div></div>
+<div class="ab" data-k="rows" style="left:24px;top:156px;width:660px">{rows}</div>
+<div class="ab" data-k="pg" style="left:36px;top:504px;width:648px;text-align:center;font:900 21px/1 Black;color:{PAPER}"><div>阅读资料包 PDF 共 {n(TOTAL_PG, YEL)} 页 · 每篇一个文件夹</div></div>
+<div class="ab" data-k="get" data-min="{MIN_HOOK}" style="left:60px;top:556px;width:600px;height:112px"><div class="seal" style="width:600px;height:112px;font-size:{fs(44)}">{CHARGE}全套资料</div></div>
 </body>"""
 
 
@@ -363,7 +373,8 @@ PAGES = [('01_封面', None), ('02_资料包总览', p_all), ('03_长难句分�
 
 # ---------------------------------------------------------------- 程序自查
 BANNED = ['考研', '六级', '四级', '中考', '高考', '雅思', '托福', 'CET', '价格', '免费', '限时', '保过', '押题', '包过', '必过', '第一', '唯一',
-          '全网', '销量', '好评', '¥', '元', 'http', 'www', '二维码', '扫码']
+          '全网', '销量', '好评', '¥', '元', 'http', 'www', '二维码', '扫码',
+          '获取方式', '领取方式', '私信', '网盘', '链接']        # 图上不写领取流程（只在动态正文里留给用户填）
 
 CHECK_JS = """
 (MIN_BODY) => {
@@ -383,6 +394,16 @@ CHECK_JS = """
     const f = parseFloat(getComputedStyle(t.parentElement).fontSize);
     if (f < MIN_BODY) out.push(`字号 ${f}px < ${MIN_BODY}px: ` + t.textContent.slice(0, 20));
   }
+  // 截图卡片不能压住文字块；overflow:hidden 的框不能把里面的内容裁掉
+  const shots = [...document.querySelectorAll('.shot')].map(e => e.getBoundingClientRect());
+  for (const a of r) for (const q of shots) {
+    const ox = Math.min(a.x1, q.right) - Math.max(a.x0, q.left), oy = Math.min(a.y1, q.bottom) - Math.max(a.y0, q.top);
+    if (ox > 0.5 && oy > 0.5) out.push(`${a.k} 与截图重叠 ${ox.toFixed(0)}×${oy.toFixed(0)}`);
+  }
+  for (const e of document.querySelectorAll('[data-k] *')) if (getComputedStyle(e).overflow === 'hidden' && !e.querySelector('img') && e.scrollHeight > e.clientHeight + 1)
+    out.push(`${e.closest('[data-k]').dataset.k} 内容被裁掉 ${e.scrollHeight}>${e.clientHeight}`);
+  for (const e of document.querySelectorAll('[data-k]')) if (getComputedStyle(e).overflow === 'hidden' && e.scrollHeight > e.clientHeight + 1)
+    out.push(`${e.dataset.k} 内容被裁掉 ${e.scrollHeight}>${e.clientHeight}`);
   for (const im of document.images) if (!im.complete || !im.naturalWidth) out.push('图片没加载: ' + im.src.slice(-30));
   for (const e of document.querySelectorAll('.shot:not(.bleed)')) { const b = e.getBoundingClientRect();
     if (b.left < 0 || b.top < 0 || b.right > W || b.bottom > H) out.push('截图出画: ' + e.querySelector('img').src.split('/').pop() + ' ' + JSON.stringify([b.left, b.top, b.right, b.bottom].map(Math.round))); }
@@ -436,7 +457,10 @@ def text_problems(text):
     return out
 
 
-def render(br, body, name, out_dir=WORK):
+MUST = {'01_封面': '充电', '09_一套资料': '充电'}   # 第 1 张和最后一张必须有“充电”（用户 2026-10-27：充电即可获取全套资料）
+
+
+def render(br, body, name, out_dir=WORK, must=None):
     if not body.startswith('<body'):
         body = '<body>' + body + '</body>'
     WORK.mkdir(parents=True, exist_ok=True)
@@ -449,6 +473,8 @@ def render(br, body, name, out_dir=WORK):
     pg.wait_for_timeout(400)
     res = pg.evaluate(CHECK_JS, MIN_BODY)
     bad = res['out'] + pg.evaluate(WRAP_JS) + text_problems(res['text'])
+    if must and must not in res['text']:
+        bad.append(f'缺少“{must}”')
     png = out_dir / f'{name}.png'
     out_dir.mkdir(parents=True, exist_ok=True)
     pg.screenshot(path=str(png))
@@ -474,19 +500,26 @@ def selftest(br):
     """双向验证：正常 0 处；每种故意放进去的错误都必须报出。"""
     global SCALE, ESC
     fails = []
-    _, bad = render(br, cover_A(), '_t_正常')
-    _, bad2 = render(br, p_end(), '_t_正常2')
+    _, bad = render(br, cover_A(), '_t_正常', must='充电')
+    _, bad2 = render(br, p_end(), '_t_正常2', must='充电')
     if bad or bad2:
         fails.append(f'正常版式报了问题：{bad + bad2}')
     cases = {
         '放回编号': (lambda: p_end().replace('</body>', '<div class="ab" style="right:30px;top:30px;font:900 24px Black;color:#fff">02 / 09</div></body>'), '编号'),
-        '禁用词': (lambda: p_end().replace('获取方式见动态正文', '免费领取'), '禁用词'),
-        '别的项目名': (lambda: p_end().replace('一套资料', '考研资料'), '别的项目名'),
-        '缺字': (lambda: p_end().replace('一套资料', '一套资料𠀾'), '字体里没有'),
+        '禁用词': (lambda: p_end().replace('为 UP 主充电', '免费领取，为 UP 主充电'), '禁用词'),
+        '别的项目名': (lambda: p_end().replace('每篇一个文件夹', '考研资料'), '别的项目名'),
+        '缺字': (lambda: p_end().replace('每篇一个文件夹', '每篇一个文件夹𠀾'), '字体里没有'),
         '字号过小': (lambda: p_end().replace('font:700 18px/1.3', 'font:700 12px/1.3'), '字号'),
+        '写了领取方式': (lambda: p_end().replace('每篇一个文件夹', '获取方式见动态正文'), '禁用词'),
+        '写了网盘': (lambda: p_all().replace('两大块全套资料', '网盘资料'), '禁用词'),
+        '写了私信': (lambda: p_end().replace('每篇一个文件夹', '充电后私信'), '禁用词'),
     }
+    cases['截图压住文字'] = (lambda: cover_A().replace('left:170px;top:560px', 'left:170px;top:470px'), '与截图重叠')
+    cases['内容被裁掉'] = (lambda: p_all().replace('<div style="height:64px;overflow:hidden', '<div style="height:150px;overflow:hidden'), '内容被裁掉')
+    cases['封面没有充电'] = (lambda: cover_A().replace(CHARGE, '含全套'), '缺少“充电”')
+    cases['收尾没有充电'] = (lambda: p_end().replace(CHARGE, '全套资料').replace('为 UP 主充电', '为 UP 主'), '缺少“充电”')
     for k, (fn, key) in cases.items():
-        _, b = render(br, fn(), f'_t_{k}')
+        _, b = render(br, fn(), f'_t_{k}', must='充电')
         if not any(key in x for x in b):
             fails.append(f'{k}：没报出（{b}）')
     SCALE = 0.25       # 字号缩到 1/4：每个 data-min 元素都必须报（B 的“专八”本身特别大，×0.5 仍合格）
@@ -517,7 +550,7 @@ def main(argv):
         if '--自检' in argv:
             fails = selftest(br)
             br.close()
-            print('\n'.join(fails) or '自检通过：正常 0 处；放回编号、禁用词、别的项目名、缺字、字号过小、缩略图字号×0.25、孤字（不经过 esc）全部报出')
+            print('\n'.join(fails) or '自检通过：正常 0 处；放回编号、禁用词、别的项目名、缺字、字号过小、写领取方式 / 网盘 / 私信、首尾图缺“充电”、截图压住文字、框里内容被裁掉、缩略图字号×0.25、孤字（不经过 esc）全部报出')
             return 1 if fails else 0
         bad = []
         if '--封面' in argv:
@@ -535,7 +568,7 @@ def main(argv):
                 body = (fn or COVERS[COVER])()
                 if only and not any(name.startswith(o) for o in only):
                     continue
-                p, b = render(br, body, name, OUT)
+                p, b = render(br, body, name, OUT, MUST.get(name))
                 pngs.append(p)
                 bad += b
                 print(f'{p.name} {p.stat().st_size / 1e6:.2f} MB')

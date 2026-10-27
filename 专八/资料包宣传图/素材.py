@@ -20,13 +20,15 @@ def folder(n):
 
 
 def pdf(n, k):
+    if k == 'zt':        # 历年真题卷（专八/真题/<n>年 英语专业八级真题.pdf）
+        return REPO / '专八' / '真题' / f'{n}年 英语专业八级真题.pdf'
     return next(folder(n).glob(f'* - {k} *.pdf'))
 
 
 def page(n, k, p, dpi=None, width=None):
     """渲染第 p 页，返回 PIL 图。"""
     TMP.mkdir(parents=True, exist_ok=True)
-    out = TMP / f'{n:02d}_{k}_{p}'
+    out = TMP / f'{n}_{k}_{p}'
     opt = ['-r', str(dpi)] if dpi else ['-scale-to-x', str(width), '-scale-to-y', '-1']
     subprocess.run(['pdftoppm', '-q', *opt, '-f', str(p), '-l', str(p), '-singlefile', '-png', str(pdf(n, k)), str(out)], check=True)
     return Image.open(f'{out}.png').convert('RGB')
@@ -45,6 +47,7 @@ ITEMS = [
     ('jd_06_4', 6, 0, 4, None, None),
     ('jd_17_3', 17, 0, 3, None, None),
     ('jd_25_2', 25, 0, 2, None, None),
+    ('zt_2025', 2025, 'zt', 1, (0.06, 0.04, 0.94, 0.50), 200),
     ('cs_card', 1, 4, 1, (0.075, 0.445, 0.925, 0.945), 300),
     ('cs_steps', 1, 4, 2, (0.095, 0.618, 0.92, 0.935), 300),
     ('cs_full1', 1, 4, 1, None, 150),
