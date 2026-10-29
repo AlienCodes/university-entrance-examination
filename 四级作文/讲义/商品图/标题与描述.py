@@ -61,8 +61,8 @@ LIM = {tuple(map(int, re.findall(r'\d+', e['limit']))) for e in M.ES}       # �
 assert len(LIM) == 1 and len(next(iter(LIM))) == 2, LIM
 L0, L1 = next(iter(LIM))
 
-SHORT = f'四级作文真题满分范文{N}篇 {Y0}-{Y1} 讲义+默写卡'
-LONG = f'四级英语写作满分范文精讲 {Y0}-{Y1}大学英语四级作文真题全{N}篇 {NEW}已更新 原题中文译文 升格示范 高分句式 讲义+默写卡+答案 PDF'
+SHORT = f'彻底搞定四级写作｜四级真题满分范文{N}篇 讲义+默写卡'
+LONG = f'彻底搞定四级写作｜{Y0}-{Y1}四级作文真题满分范文全{N}篇 {NEW}已更新 原题中文译文 一步一步写 升格示范 高分句式 讲义+默写卡+答案 PDF'
 
 DESC = f"""【四级英语写作 · 真题满分范文精讲】
 {Y0}—{Y1} 年大学英语四级写作真题全收录：{NE} 次考试、{N} 篇满分范文，{NEW}已更新。
