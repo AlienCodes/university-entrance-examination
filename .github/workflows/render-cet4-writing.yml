@@ -203,7 +203,10 @@ jobs:
           shutil.copy('四级作文/核查报告.md', out / f'核查报告_{pid}.md')
           shutil.copy(f'四级作文/大字版/日志/{pid}.log', out / f'{pid}.log')
           cpu = next((l.split(':', 1)[1].strip() for l in open('/proc/cpuinfo') if l.startswith('model name')), '')
-          meta = {'id': pid, 'name': name, 'size': mp4.stat().st_size, 'sha256': h.hexdigest(), '指纹': r['指纹'], 'verify_all': '全部通过',
+          tm = json.load(open('四级作文/audio/timings.json', encoding='utf-8'))['cet4_male'][pid]      # 踩坑 86：视频与所用音频绑定，打包时与合格证比对
+          asha = hashlib.sha256(Path('四级作文/audio', tm['file']).read_bytes()).hexdigest()
+          assert asha == tm['certificate']['mp3_sha256'], '音频与合格证不符'
+          meta = {'id': pid, 'name': name, 'size': mp4.stat().st_size, 'sha256': h.hexdigest(), '指纹': r['指纹'], 'verify_all': '全部通过', 'audio_sha256': asha,
                   '秒': {'截图': int(os.environ['STILLS_S']), '视频': int(os.environ['VIDEO_S']), 'verify_all': int(os.environ['VERIFY_S'])},
                   'cpu': cpu, 'run': f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"}
           (out / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
@@ -235,6 +238,7 @@ jobs:
           sparse-checkout: |
             /.github/
             /四级作文/tools/画面核查/截图审阅通过.json
+            /四级作文/audio/timings.json
             /四级作文/大字版/成品核查/
       - name: 腾出磁盘（32 个视频 + 打包）
         run: |

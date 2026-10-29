@@ -3095,6 +3095,43 @@
    "status": "自动拦截+有双向验证",
    "gap": "2026-10-29 前已发布的 438 篇不追溯（用户决定）。专八、中考视频引擎把 make_video.py 自身算进截图指纹，合格证由生成后的 verify_videos.check 拦（不通过删除成品）。",
    "fix": ""
+  },
+  {
+   "id": "86",
+   "title": "只换音频重做时，打包会复用旧音频做的视频：截图指纹不含音频，旧视频的指纹仍等于审阅登记，仓库视频和 90 天内的旧 artifact 都会被当成“全部通过”发布",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "四级作文",
+    "六级作文",
+    "考研作文",
+    "六级",
+    "考研",
+    "专八"
+   ],
+   "guards": [
+    {
+     "where": ".github/cet6-chalk-pack.py report_problem：这一篇现在的 timings 带合格证时，核查里必须有通过且不是“旧成品”的“音频合格证”，meta.json 的 audio_sha256 必须 = 合格证 mp3_sha256；仓库视频（无 meta）不收；发布任务缺 timings 直接报错",
+     "runs": "每次 GitHub 打包发布",
+     "evidence": "视频所用音频 … ≠ 现在合格证的 MP3 …（只换了音频，旧视频不能用）"
+    },
+    {
+     "where": ".github/workflows/render-cet4-writing.yml 整理上传：meta 写 audio_sha256（并核对 = 合格证）；7 个用此打包程序的工作流 publish 都检出 <项目>/audio/timings.json",
+     "runs": "每篇 render",
+     "evidence": "音频与合格证不符"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/音频绑定.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "其他 6 个 render 工作流的 meta 还没写 audio_sha256：它们的音频以后换成带合格证的新音频时，打包会拒收（安全方向），到时照 render-cet4-writing.yml 补一行。",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

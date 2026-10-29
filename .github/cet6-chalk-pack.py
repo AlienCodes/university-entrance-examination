@@ -8,6 +8,10 @@
   ③ 以前运行留下、还没过期的 artifact cet6-chalk-<篇目>（最新的优先）：某几篇失败、修好后只重跑那几篇时，其余的不用重做
 每一个都核对：核查结果全部通过、指纹 = 截图审阅登记（截图审阅通过.json）的指纹（登记之后程序、样式、数据都没改过）、体积与核查时相同、≤ 95 MB；
 artifact 另核 sha256 和 verify_all 结果。
+音频绑定（踩坑 86）：截图指纹不含音频，只换音频时旧视频的指纹照样等于登记值。所以只要这一篇现在的 timings（<项目>/audio/timings.json）带合格证
+（意群响度处理链生成的新音频），视频就必须同时满足：核查结果里有“音频合格证”一项、通过、不是“旧成品”；meta.json 记的 audio_sha256
+（render 任务生成视频时所用 MP3 的 sha256）= 现在合格证的 mp3_sha256。仓库里提交的视频没有 meta，一律不收；旧运行的 artifact 音频不同也不收。
+没有合格证的旧成品（响度旧成品清单，不追溯）照旧。发布任务的 sparse-checkout 必须带 <项目>/audio/timings.json，缺了直接报错。
 
 打包用 Python zipfile（不压缩，ZIP_STORED）：Info-ZIP 的 zip -0 不给中文文件名打 UTF-8 标记（本机实测 flag_bits=0），
 Python zipfile 读出来是乱码，中文 Windows 解压也会乱码；Python 写的 zip 对非 ASCII 文件名自动打 UTF-8 标记。
@@ -63,6 +67,20 @@ D = CFG.get('dir', PROJECT)                      # 项目目录（专八水墨 �
 REG = json.loads(Path(f'{D}/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
 REP = Path(D) / CFG['work'] / '成品核查'
 ART, OLD, VID = Path('artifacts'), Path('old-artifacts'), Path('videos')
+TIMINGS = Path(os.environ.get('PACK_TIMINGS', f'{D}/audio/timings.json'))
+
+
+def audio_need(pid):
+    """这一篇现在的音频合格证要求的 MP3 sha256；旧成品（没有合格证）返回 None。"""
+    if not TIMINGS.exists():
+        sys.exit(f'打包要核对视频所用的音频，缺 {TIMINGS}（发布任务的 sparse-checkout 要带上它，踩坑 86）')
+    tm = json.loads(TIMINGS.read_text('utf-8')).get('cet4_male', {}).get(pid) or {}
+    c = tm.get('certificate') or {}
+    if not c and not tm.get('clause_check'):
+        return None
+    if not c.get('passed') or not c.get('mp3_sha256'):
+        sys.exit(f'{pid}：timings 里的音频合格证不完整（{c}）')
+    return c['mp3_sha256']
 VID.mkdir(exist_ok=True)
 
 
@@ -74,8 +92,8 @@ def sha256(f):
     return h.hexdigest()
 
 
-def report_problem(pid, name, rep, size):
-    """核查结果是否可用：全部通过、指纹与审阅登记相同、体积相同。返回问题（空字符串 = 可用）。"""
+def report_problem(pid, name, rep, size, meta=None):
+    """核查结果是否可用：全部通过、指纹与审阅登记相同、体积相同；有合格证的音频还要与视频绑定（audio_need）。返回问题（空字符串 = 可用）。"""
     if not rep.exists():
         return f'没有核查结果 {rep}'
     r = json.loads(rep.read_text('utf-8'))
@@ -90,6 +108,14 @@ def report_problem(pid, name, rep, size):
         return f'体积 {size} ≠ 核查时 {r.get("size")}'
     if size > LIMIT:
         return f'体积 {size / 2**20:.1f} MB > 95 MB'
+    need = audio_need(pid)
+    if need:
+        ac = [c for c in r['checks'] if str(c.get('item', '')).startswith('音频合格证')]
+        if not ac or not ac[0].get('ok') or '旧成品' in str(ac[0].get('detail', '')):
+            return '核查结果里没有通过的“音频合格证”（视频用的是旧音频）'
+        got = (meta or {}).get('audio_sha256')
+        if got != need:
+            return f'视频所用音频 {str(got)[:12]} ≠ 现在合格证的 MP3 {need[:12]}（只换了音频，旧视频不能用）'
     return ''
 
 
@@ -102,7 +128,7 @@ def from_artifact(pid, name, d):
         return 'verify_all 没有通过'
     if m.get('sha256') != sha256(f):
         return 'sha256 与生成时不同'
-    why = report_problem(pid, name, d / (Path(name).stem + '_核查.json'), f.stat().st_size)
+    why = report_problem(pid, name, d / (Path(name).stem + '_核查.json'), f.stat().st_size, m)
     if not why:
         shutil.move(str(f), VID / name)
     return why
