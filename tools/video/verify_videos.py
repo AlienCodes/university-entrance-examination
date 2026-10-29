@@ -106,7 +106,9 @@ def check(mp4, p, tm):
                                  fine=not is_legacy(tm))     # 意群级检查：2026-10-29 之后生成的一律查（踩坑 85），已发布的旧成品不追溯
     ok('响度一致（第一项检查）', not errs,
        f"整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
-       f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS" + ('；' + '；'.join(errs) if errs else ''))
+       f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS"
+       + (f"；意群：比相邻意群最多小 {-rep.get('clause_nb_min_lu', 0):.2f} LU（上限 1.2），段尾最多小 {-rep.get('clause_tail_min_db', 0):.2f} dB（上限 4.0）"
+          if 'clause_nb_min_lu' in rep else '') + ('；' + '；'.join(errs) if errs else ''))
     # 7. 画面切换：读完后 0.45s 仍是本句，0.55s 已是下一句；片头在开头
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
