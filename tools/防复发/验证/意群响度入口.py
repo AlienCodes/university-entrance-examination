@@ -291,11 +291,23 @@ def files(over):
     return out, errs
 
 
+def ignored_dirs():
+    """.gitignore 忽略的目录（下载的模型、第三方代码，如 tools/tts/models/）：不是本仓库的程序，不查。"""
+    import subprocess
+    try:
+        out = subprocess.run(['git', '-C', str(R), '-c', 'core.quotepath=off', 'ls-files', '--others', '--ignored', '--exclude-standard',
+                              '--directory'], capture_output=True, text=True, check=True).stdout.split('\n')
+        return tuple(x for x in out if x.endswith('/'))
+    except (OSError, subprocess.CalledProcessError):
+        return ()
+
+
 def _read_all():
     out, errs = {}, []
+    ign = ignored_dirs()
     for p in [*R.rglob('*.py'), *R.rglob('*.sh')]:
         rel = p.relative_to(R).as_posix()
-        if any(rel.startswith(d) for d in SKIP_DIRS) or '/.git/' in rel or rel.startswith('.git/'):
+        if any(rel.startswith(d) for d in SKIP_DIRS + ign) or '/.git/' in rel or rel.startswith('.git/'):
             continue
         try:
             out[rel] = p.read_text('utf-8')
