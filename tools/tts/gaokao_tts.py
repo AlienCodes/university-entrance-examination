@@ -22,6 +22,9 @@ from pathlib import Path
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import 合格证 as CERT  # noqa: E402  合格证规则只写一处（标准库，发布工作流也用）
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent                      # 仓库根目录
 SENTS = HERE.parent / 'sents.json'             # 70 篇原文（已切句）
@@ -268,7 +271,7 @@ def segment(x):
     return fade(level_clause(even(x)))
 
 
-LIMITS = {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0}
+LIMITS = CERT.LIMITS
 
 
 def edge_span(items, edge):
@@ -330,46 +333,42 @@ def verify_loudness(mp3_bytes, items, target_lufs, span=None, fine=True):
     return rep, errs
 
 
-CHAIN = 'clause-v1'    # 处理链版本：段内电平统一 even + 每段 BS.1770 统一 + 意群级检查（踩坑 85，2026-10-29）
-LEGACY = HERE / '响度旧成品清单.json'   # 2026-10-29 之前已发布的成品（不追溯，用户决定）：按 文件|时长|响度 登记，新生成的不可能撞上
+CHAIN = CERT.CHAIN      # 处理链版本：段内电平统一 even + 每段 BS.1770 统一 + 意群级检查（踩坑 85，2026-10-29）
+LEGACY = CERT.LEGACY    # 2026-10-29 之前已发布的成品（不追溯，用户决定）：按 文件|时长|响度 登记，新生成的不可能撞上
+_VERIFY_CORE = verify_loudness   # 模块加载时存下原始检查：项目包一层（加电磁音检查等）也好、把 fine 关掉也好，写文件前一定再用它测一遍（踩坑 87）
 
 
 def certificate(mp3_bytes, rep):
-    """音频合格证：处理链版本、成品 MP3 的 sha256、全部响度测量（含意群级最差值）。只有检查全部通过才会写出来。"""
-    return {'chain': CHAIN, 'passed': True, 'mp3_sha256': hashlib.sha256(mp3_bytes).hexdigest(), 'loudness': rep,
-            'limits': dict(LIMITS, **__import__('importlib').import_module('响度细查').FINE_LIMITS),
-            'date': time.strftime('%Y-%m-%d')}
+    """音频合格证：处理链版本、成品 MP3 的 sha256、全部响度测量（含意群级最差值）。passed 按实测写（final_check 全部通过才为 True）。"""
+    errs = CERT.cert_problems({'chain': CHAIN, 'passed': True, 'mp3_sha256': hashlib.sha256(mp3_bytes).hexdigest(),
+                               'loudness': rep, 'limits': dict(CERT.STD_LIMITS)})
+    return {'chain': CHAIN, 'passed': not errs, 'mp3_sha256': hashlib.sha256(mp3_bytes).hexdigest(), 'loudness': rep,
+            'limits': dict(CERT.STD_LIMITS), 'date': time.strftime('%Y-%m-%d')}
+
+
+def final_check(mp3_bytes, items, target_lufs, span=None):
+    """写文件前的最后一道检查：项目自己的 verify_loudness（可能包了电磁音检查）+ 模块加载时存下的原始检查（fine=True，关不掉）。
+    报告里的响度测量一律取原始检查的值。返回 (报告, 问题列表)。"""
+    kw = {'span': span} if span else {}
+    rep, errs = verify_loudness(mp3_bytes, items, target_lufs, **kw) if verify_loudness is not _VERIFY_CORE else ({}, [])
+    core, cerrs = _VERIFY_CORE(mp3_bytes, items, target_lufs, fine=True, **kw)
+    rep = dict(rep or {}, **core)
+    errs = list(dict.fromkeys(list(errs or []) + cerrs))
+    return rep, errs
 
 
 def legacy_key(tm):
-    L = tm.get('loudness') or {}
-    return f"{tm.get('file')}|{tm.get('duration')}|{L.get('integrated_lufs')}|{L.get('sentence_max_dev_lu')}|{L.get('short_term_std_lu')}"
+    return CERT.legacy_key(tm)
 
 
 def is_legacy(tm):
-    """不适用意群级处理与合格证的音频：2026-10-29 前已发布的 TTS 成品（旧成品清单），以及考试原声（专八听力，source='原音'，不是 TTS）。"""
-    if tm.get('source') == '原音':
-        return True
-    return LEGACY.exists() and legacy_key(tm) in set(json.loads(LEGACY.read_text('utf-8'))['keys'])
+    """不适用意群级处理与合格证的音频：2026-10-29 前已发布的 TTS 成品（旧成品清单），以及考试原声（专八听力，只认 原音音轨.py 写出的条目）。"""
+    return CERT.is_legacy(tm)
 
 
-def certificate_problems(tm, mp3_path=None):
-    """视频生成前 / 后核对音频合格证。旧成品（响度旧成品清单）放行；其余必须是当前处理链、检查通过、（给了 MP3 时）sha256 一致。"""
-    if is_legacy(tm):
-        return []
-    c = tm.get('certificate') or {}
-    errs = []
-    if tm.get('clause_check') != CHAIN or c.get('chain') != CHAIN:
-        errs.append(f"音频不是当前处理链 {CHAIN} 生成的（没有意群级电平统一与检查），不许生成视频")
-    elif not c.get('passed'):
-        errs.append('音频合格证显示检查未通过')
-    if mp3_path is not None and not errs:
-        side = Path(str(mp3_path)[:-4] + '.loudness.json')
-        if not side.exists():
-            errs.append(f'缺少合格证文件 {side.name}')
-        elif json.loads(side.read_text('utf-8')).get('mp3_sha256') != hashlib.sha256(Path(mp3_path).read_bytes()).hexdigest():
-            errs.append('合格证与 MP3 不符（MP3 在检查之后被改过）')
-    return errs
+def certificate_problems(tm, mp3_path=None, **kw):
+    """视频生成前 / 后、发布前核对音频合格证（规则见 合格证.py）。旧成品放行；其余必须是当前处理链、旁证一致、测量值在上限内、sha256 一致。"""
+    return CERT.problems(tm, mp3_path, **kw)
 
 
 CLAUSE = re.compile(r'(?:(?<=[,;:—])|(?<=[,;:—]["”’)]))\s+(?=\S)')
@@ -614,7 +613,10 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
         a = a.copy()
         a[int(s_ * OUT_SR):int(e_ * OUT_SR)] *= 10 ** (-float(db_) / 20)
     mp3 = encode_mp3(a, kbps=vcfg.get('kbps', 128))
-    rep, errs = verify_loudness(mp3, items, lufs, **({'span': edge_span(items, p['edge'])} if p.get('edge') else {}))   # 第一项检查：成品响度一致（书信格式行见 edge_span）
+    rep, errs = final_check(mp3, items, lufs, edge_span(items, p['edge']) if p.get('edge') else None)   # 第一项检查：成品响度一致（书信格式行见 edge_span）；原始检查关不掉（踩坑 87）
+    cert = certificate(mp3, rep)                       # 合格证（踩坑 85）：MP3 旁边一份，timings 里一份；没有合格证的音频 verify_videos 拒绝
+    if not cert['passed'] and not errs:
+        errs = ['合格证核对未通过：' + '；'.join(CERT.cert_problems(cert))]
     if errs:
         raise RuntimeError(f"{p['id']} {voice_name} 响度检查未通过，未输出文件：" + '；'.join(errs))
     log(f"  响度检查通过：整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
@@ -626,7 +628,6 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
     if wav:
         write_wav(str(base) + '.wav', a)
     write_subs(base, items, load_zh(p['id']))
-    cert = certificate(mp3, rep)                       # 合格证（踩坑 85）：MP3 旁边一份，timings 里一份；没有合格证的音频 verify_videos 拒绝
     Path(str(base) + '.loudness.json').write_text(json.dumps(cert, ensure_ascii=False, indent=1), 'utf-8')
     return {'file': f"{out_dir.name}/{base.name}.mp3", 'duration': round(len(a) / OUT_SR, 3),
             'loudness': rep, 'sentences': items, 'clause_check': CHAIN, 'certificate': cert}
@@ -660,10 +661,11 @@ def cmd_say(args):
     style = engine.style(vcfg['style'])
     text = args.text if args.text != '-' else sys.stdin.read()
     sents = re.split(r'(?<=[.!?])["”’)]*\s+(?=["“‘(]?[A-Z0-9])', text.strip())
-    pieces, allp, t = [np.zeros(int(0.3 * SR), np.float32)], [], 0.3
+    pieces, allp, t, items = [np.zeros(int(0.3 * SR), np.float32)], [], 0.3, []
     for i, s in enumerate(sents):
         au, ps = synth_sentence(pron.read_text(s), None, engine, pron, style, args.speed or vcfg.get('speed', 1.0), vcfg)
         allp += [[t + x, t + y] for x, y in ps]
+        items.append({'k': i + 1, 'start': round(t, 3), 'end': round(t + len(au) / SR, 3), 'parts': [[round(t + x, 3), round(t + y, 3)] for x, y in ps]})
         pieces.append(au)
         t += len(au) / SR
         gap = np.zeros(int((vcfg['tail'] if i == len(sents) - 1 else gap_after(s, False, vcfg)) * SR), np.float32)
@@ -671,8 +673,26 @@ def cmd_say(args):
         t += len(gap) / SR
     a = master(np.concatenate(pieces), vcfg.get('lufs', -16.0), parts=allp)
     out = Path(args.output)
-    (write_wav if out.suffix.lower() == '.wav' else write_mp3)(out, a)
-    print(f'已保存 {out}（{len(a) / OUT_SR:.1f} 秒）')
+    save_checked(out, a, items, vcfg.get('lufs', -16.0))
+    print(f'已保存 {out}（{len(a) / OUT_SR:.1f} 秒），响度检查通过，合格证 {CERT.sidecar_of(out).name}')
+
+
+def save_checked(out, a, items, lufs):
+    """say 等单独输出的音频：编码 → final_check（含意群级）→ 合格证 → 才写文件；不合格就报错、不写（踩坑 87）。
+    WAV 也按同样的 MP3 编码结果检查（WAV 是 MP3 的未压缩版本，响度相同），合格证旁写。"""
+    out = Path(out)
+    mp3 = encode_mp3(a)
+    rep, errs = final_check(mp3, items, lufs)
+    cert = certificate(mp3, rep)
+    if errs or not cert['passed']:
+        raise RuntimeError(f'{out.name} 响度检查未通过，未输出文件：' + '；'.join(errs or CERT.cert_problems(cert)))
+    if out.suffix.lower() == '.wav':
+        write_wav(out, a)
+        cert = dict(cert, wav_sha256=hashlib.sha256(out.read_bytes()).hexdigest())
+    else:
+        out.write_bytes(mp3)
+    CERT.sidecar_of(out).write_text(json.dumps(cert, ensure_ascii=False, indent=1), 'utf-8')
+    return cert
 
 
 def cmd_subs(args):

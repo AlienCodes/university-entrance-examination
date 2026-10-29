@@ -40,7 +40,40 @@ def peak_db(x):
     return 20 * np.log10(np.max(np.abs(x)) + 1e-12) if len(x) else -120
 
 
-def check(mp4, p, tm):
+def find_mp3(mp4, tm):
+    """成品视频用的 MP3：从视频所在目录往上找 <某一级>/audio/<tm['file']>（中考/最终视频 → 中考/audio，最终视频 → audio），
+    找不到再在仓库里所有 audio 目录找（样片目录等）。返回候选列表（可能为空）。专八、中考引擎在截图指纹里不能改，
+    所以由 check 自己找，不靠调用者传（踩坑 87）。"""
+    f = tm.get('file')
+    if not f:
+        return []
+    out = []
+    d = Path(mp4).resolve().parent
+    for _ in range(6):
+        c = d / 'audio' / f
+        if c.exists() and c not in out:
+            out.append(c)
+        if d == d.parent:
+            break
+        d = d.parent
+    if not out:
+        out = [c for c in [ROOT / 'audio' / f, *ROOT.glob(f'*/audio/{f}'), *ROOT.glob(f'*/*/*/audio/{f}')] if c.exists()]
+    return out
+
+
+def cert_check(mp4, tm, mp3_path=None):
+    """音频合格证：旧成品放行；新音频核对 timings 里的合格证、MP3 旁的合格证文件、MP3 的 sha256（规则见 tools/tts/合格证.py）。"""
+    from gaokao_tts import certificate_problems, is_legacy
+    if is_legacy(tm):
+        return []
+    cands = [Path(mp3_path)] if mp3_path is not None else find_mp3(mp4, tm)
+    if not cands:
+        return [f"找不到这个视频用的 MP3（{tm.get('file')}），无法核对合格证"]
+    tries = [certificate_problems(tm, c) for c in cands]
+    return next((t for t in tries if not t), tries[0])
+
+
+def check(mp4, p, tm, mp3_path=None):
     from gaokao_tts import verify_loudness, LIMITS
     res = []
     ok = lambda name, cond, detail: res.append((name, bool(cond), detail))
@@ -100,7 +133,7 @@ def check(mp4, p, tm):
     buf = io.BytesIO()
     sf.write(buf, x, sr, format='WAV')
     from gaokao_tts import edge_span, is_legacy, certificate_problems
-    cp = certificate_problems(tm)
+    cp = cert_check(mp4, tm, mp3_path)                # 合格证 + 旁证 + sha256（踩坑 87：以前不传 MP3，sha256 与旁证从没核过）
     ok('音频合格证（处理链版本、意群响度检查）', not cp, '；'.join(cp) if cp else ('旧成品（响度旧成品清单，不追溯）' if is_legacy(tm) else '合格'))
     rep, errs = verify_loudness(buf.getvalue(), times, -16.0, **({'span': edge_span(times, p['edge'])} if p.get('edge') else {}),
                                  fine=not is_legacy(tm))     # 意群级检查：2026-10-29 之后生成的一律查（踩坑 85），已发布的旧成品不追溯

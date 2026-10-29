@@ -19,6 +19,11 @@ OUT = BASE / '宣传图' / ('高考资料介绍.mp4' if GK else '考研资料介
 D, X, S, FPS = 4.0, 0.6, 1080, 30          # 每张时长、淡入淡出、边长、帧率
 T = json.loads((BASE / 'audio' / 'timings.json').read_text('utf-8'))['female' if GK else 'cet4_male']['p01' if GK else 'k01' if KY else 's01']
 AUDIO = BASE / 'audio' / T['file']
+sys.path.insert(0, str(C6.parent / 'tools' / 'tts'))
+from gaokao_tts import certificate_problems  # noqa: E402  踩坑 87：用的是 TTS 朗读，旧成品放行，新音频必须带合格证
+_cp = certificate_problems(T, AUDIO)
+if _cp:
+    sys.exit('音频合格证不合格，不生成视频：' + '；'.join(_cp))
 
 
 def main():

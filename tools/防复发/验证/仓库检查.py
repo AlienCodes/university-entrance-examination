@@ -42,9 +42,24 @@ case('YAML 坏了 → 报', ck.check_workflow('new.yml', GOOD + '  bad: [\n'), T
 case('新工作流用 softprops → 报（踩坑 42）', ck.check_workflow('new.yml', GOOD.replace('python3 x.py', 'echo') + '      - uses: softprops/action-gh-release@v2\n'), True, '踩坑 42')
 case('新工作流用 zip -0 → 报（踩坑 52）', ck.check_workflow('new.yml', GOOD.replace('python3 x.py', 'zip -0 -r a.zip d')), True, '踩坑 52')
 case('新工作流用 unzip -l → 报（踩坑 43）', ck.check_workflow('new.yml', GOOD.replace('python3 x.py', 'unzip -l a.zip | grep x')), True, '踩坑 43')
-legacy = sorted(ck.LEGACY)[0]
+legacy = sorted(ck.LEGACY - set(ck.AUDIO_RELEASE))[0]      # release-papers.yml（不发音频，踩坑 87 的规则不管它）
 case('登记的旧流程用 zip -0 → 放', ck.check_workflow(legacy, GOOD.replace('python3 x.py', 'zip -0 -r a.zip d')), False)
 case('登记的旧流程已改好却还在 LEGACY → 报（只许减少）', ck.check_workflow(legacy, GOOD), True, 'LEGACY')
+# 踩坑 87：发布音频 / 视频前核对合格证
+W = R0 = Path(__file__).resolve().parents[3] / '.github' / 'workflows'
+zk = (W / 'release-zk-videos.yml').read_text('utf-8')
+step = """      - name: 音频合格证核对（踩坑 87：每条 timings 都是旧成品或带 clause-v1 合格证、MP3 与合格证一致，不合格不发布）
+        run: python3 .github/check-audio-cert.py 中考/audio
+"""
+assert step in zk
+case('中考视频发布流程现在 → 0', ck.check_workflow('release-zk-videos.yml', zk), False)
+case('去掉合格证核对步骤 → 报（踩坑 87）', ck.check_workflow('release-zk-videos.yml', zk.replace(step, '')), True, 'check-audio-cert')
+case('核的音频目录不对 → 报', ck.check_workflow('release-zk-videos.yml', zk.replace('check-audio-cert.py 中考/audio', 'check-audio-cert.py 四级/audio')), True, '没核')
+moved = zk.replace(step, '').replace('      - name: 发布（gh', step + '      - name: 发布（gh')
+case('合格证核对挪到打包之后 → 报', ck.check_workflow('release-zk-videos.yml', moved), True, '之后')
+km = (W / 'release-kaoyan-materials.yml').read_text('utf-8')
+case('稀疏检出去掉 tools/tts → 报', ck.check_workflow('release-kaoyan-materials.yml', km.replace('            tools/tts\n', '')), True, '稀疏检出')
+case('新的发布流程没登记 → 报', ck.check_workflow('release-new-videos.yml', GOOD), True, 'AUDIO_RELEASE')
 case('现在仓库里的全部工作流 → 0', ck.check_workflows(), False)
 
 with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as out:

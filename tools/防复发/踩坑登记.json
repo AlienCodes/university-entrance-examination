@@ -3132,6 +3132,93 @@
    "status": "自动拦截+有双向验证",
    "gap": "其他 6 个 render 工作流的 meta 还没写 audio_sha256：它们的音频以后换成带合格证的新音频时，打包会拒收（安全方向），到时照 render-cet4-writing.yml 补一行。",
    "fix": ""
+  },
+  {
+   "id": "87",
+   "title": "音频合格证关卡有洞：没核查的 MP4 被下一篇一起提交、发布不核合格证、verify_videos 不核 sha256 与旁证、手写 / 超标合格证放行、项目包一层就能关掉意群检查、say 不检查、入口检查容易绕过、自己写 source=原音 就豁免、旧成品清单删一加一不报、改成永远通过验证照样 exit 0",
+   "stages": [
+    "音频",
+    "视频",
+    "发布"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "中考",
+    "考研",
+    "专八",
+    "四级作文",
+    "六级作文",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/合格证.py（规则只写一处：处理链、上限、旧成品清单、原音、合格证核对）；gaokao_tts.certificate_problems / verify_videos.cert_check / .github/check-audio-cert.py 都调它",
+     "runs": "生成视频前后、发布前、防复发自检",
+     "evidence": "音频合格证…不合格 / 不一致 / 超标 / 被改过"
+    },
+    {
+     "where": "tools/tts/gaokao_tts.py final_check（项目那一层 + 模块加载时存下的 _VERIFY_CORE(fine=True)）、save_checked（say）",
+     "runs": "每篇音频、say 写文件前",
+     "evidence": "响度检查未通过，未输出文件"
+    },
+    {
+     "where": "tools/video/verify_videos.py cert_check（自己从视频位置找 MP3，核旁证与 sha256）",
+     "runs": "每个视频生成后（各引擎）、verify_all",
+     "evidence": "音频合格证（处理链版本、意群响度检查）❌"
+    },
+    {
+     "where": "tools/video/batch_commit.sh（中考、四级、专八、六级 batch_video.sh 都转到这里）",
+     "runs": "批量生成视频",
+     "evidence": "最终视频里的改动不是恰好这一篇的一个 MP4，不提交"
+    },
+    {
+     "where": ".github/check-audio-cert.py；仓库检查.py AUDIO_RELEASE（发布流程必须在打包前核）",
+     "runs": "每次发布、每次推送（仓库检查）",
+     "evidence": "音频合格证核对未通过，不发布"
+    },
+    {
+     "where": "tools/防复发/验证/意群响度入口.py（按产物查 + AST 入口发现 + check 过滤 / 清空 + 原音写入者 + 旧成品清单冻结）",
+     "runs": "防复发自检 --测试、GitHub 每次推送",
+     "evidence": "入口漏接 / 绕过报错"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/意群响度入口.py",
+     "expect": "exit 0",
+     "needs": "none"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/合格证视频核查.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/最终检查.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/逐篇提交.py",
+     "expect": "exit 0",
+     "needs": "none"
+    },
+    {
+     "cmd": "python3 .github/check-audio-cert.py --自检",
+     "expect": "exit 0",
+     "needs": "none"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "已发布的 438 篇不追溯（清单冻结，只许减少）。专八、中考视频引擎在截图指纹里改不得，生成前不核合格证，靠生成后的 verify_videos.check（行为测试证明它真的拦）。入口检查是静态的，挡的是“复制旧脚本漏接”和常见绕过写法；最终兜底是按产物查（每条 timings 都必须合格）和发布前核对。专八听力考试原声不在范围内（用户 2026-10-29）。",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

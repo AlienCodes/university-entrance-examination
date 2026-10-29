@@ -100,7 +100,8 @@ def clause_stats(cl):
 
 
 # 意群级检查的阈值（踩坑 85；由新处理链样片的实测分布定，见 tools/防复发/方法进化记录.md「复盘 音频 意群响度」）
-FINE_LIMITS = {'clause_nb': 1.2, 'clause_tail': 4.0}
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from 合格证 import FINE_LIMITS  # noqa: E402  上限只写一处（合格证.py）
 NB_MIN_DUR, TAIL_MIN_DUR, TAIL_LEN = 0.8, 1.6, 0.8
 
 

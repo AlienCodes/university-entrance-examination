@@ -13,7 +13,8 @@ sys.path.insert(0, __import__('os').path.dirname(__file__))
 from _抽取 import load  # noqa: E402
 sys.path.insert(0, __import__('os').path.join(__import__('os').path.dirname(__file__), '..', '..', 'tts'))   # verify_loudness 的意群检查要导入 响度细查
 
-g = load('tools/tts/gaokao_tts.py', ['LIMITS', 'verify_loudness', 'edge_span'], {'np': np})
+import 合格证 as CERT  # noqa: E402  上限只写一处（踩坑 87）
+g = load('tools/tts/gaokao_tts.py', ['LIMITS', 'verify_loudness', 'edge_span'], {'np': np, 'CERT': CERT})
 V, EDGE = g['verify_loudness'], g['edge_span']
 SR = 24000
 rng = np.random.default_rng(7)

@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: 安装依赖
-        run: pip install -q pyyaml numpy scipy pyloudnorm soundfile jieba num2words lameenc   # 后两个：意群响度双向验证要导入 gaokao_tts、编 MP3（踩坑 85）
+        run: pip install -q pyyaml numpy scipy pyloudnorm soundfile jieba num2words lameenc soxr   # 后三个：意群响度双向验证要导入 gaokao_tts、编 MP3（踩坑 85），最终检查要跑 master（踩坑 86）
       - name: 登记核对 + 仓库检查
         run: python3 tools/防复发/防复发自检.py --不查复盘
       - name: 双向验证（纯 Python）

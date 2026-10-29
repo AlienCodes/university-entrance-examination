@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: 音频合格证核对（踩坑 87：每条 timings 都是旧成品或带 clause-v1 合格证、MP3 与合格证一致，不合格不发布）
+        run: python3 .github/check-audio-cert.py 六级/audio
       - name: 打包视频
         run: |
           set -e

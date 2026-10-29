@@ -25,7 +25,8 @@
     "tools/video/verify_videos.py：视频音轨再测",
     "tools/tts/响度细查.py fine_check（verify_loudness 默认打开）",
     "合格证 *.loudness.json：verify_videos 与各视频引擎没有就拒绝",
-    "tools/防复发/验证/意群响度入口.py：每个入口都接上"
+    "tools/防复发/验证/意群响度入口.py：每个入口都接上",
+    "tools/tts/合格证.py + final_check + verify_videos.cert_check + .github/check-audio-cert.py（踩坑 87：合格证关卡关不掉、绕不过）"
    ],
    "test": [
     {
@@ -42,6 +43,26 @@
      "cmd": "python3 tools/防复发/验证/意群响度入口.py",
      "needs": "none",
      "expect": "exit 0"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/合格证视频核查.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/最终检查.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/逐篇提交.py",
+     "expect": "exit 0",
+     "needs": "none"
+    },
+    {
+     "cmd": "python3 .github/check-audio-cert.py --自检",
+     "expect": "exit 0",
+     "needs": "none"
     }
    ],
    "status": "自动拦截+有双向验证"
