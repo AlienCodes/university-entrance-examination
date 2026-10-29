@@ -5,8 +5,9 @@
 <临时>/项目/最终视频/x.mp4（ffmpeg 合成；本机、GitHub 都用真 MP4，没有 ffmpeg 时改用同一段音频直接喂给 check 的解码函数）。
 check 不传 MP3 路径（专八、中考引擎就是这样调的），由它自己从视频位置找到 MP3、核旁证和 sha256。
   用例：① 合格 → 两行都 ✅；② 没有合格证；③ 手写最小合格证；④ 合格证里写超标值；⑤ 旁证 passed=False 而 timings 写 True；
-        ⑥ MP3 在检查之后被改过；⑦ 视频音轨里一个意群末尾被压低 5 dB（合格证照旧）→ 响度一致必须 ❌（意群检查自己判，不靠崩溃）。
-  变异：把 verify_videos / gaokao_tts 改成“永远通过”的 4 种写法，每一种都必须让上面至少一个用例失败（证明本验证真能抓住）。
+        ⑥ MP3 在检查之后被改过；⑦ 视频音轨里一个意群末尾被压低 5 dB（合格证照旧）→ 响度一致必须 ❌（意群检查自己判，不靠崩溃）；
+        ⑧ 找不到 MP3 → 合格证必须 ❌。
+  变异：把 verify_videos / gaokao_tts 改成“永远通过”的 5 种写法，每一种都必须让上面至少一个用例失败（证明本验证真能抓住）。
     python3 tools/防复发/验证/合格证视频核查.py"""
 import hashlib
 import importlib.util
@@ -105,11 +106,14 @@ def prepare(G, top):
         ('⑥ MP3 在检查之后被改过（check 自己找 MP3）→ 合格证 ❌', base, cert, mp3[:-200] + bytes(200), dec, {CERT_ROW: False}),
         ('⑦ 视频音轨一个意群末尾压低 5 dB（合格证照旧）→ 响度 ❌', base, cert, mp3,
          dip(dec, long_['end'] - 0.8, long_['end'], 5.0), {CERT_ROW: True, LOUD_ROW: False}),
+        ('⑧ 找不到 MP3（磁盘和仓库 audio 里都没有）→ 合格证 ❌', base, cert, None, dec, {CERT_ROW: False}),
     ]
     out = []
     for i, (name, tm, side, data, vaudio, want) in enumerate(cases):
         root = Path(top) / f'c{i}' / '项目'
-        mp4 = make(root, data, vaudio)
+        mp4 = make(root, mp3 if data is None else data, vaudio)
+        if data is None:                          # ⑧：视频做好后 MP3 不见了
+            (root / 'audio' / 'cet4_male' / 'x.mp3').unlink()
         if side is not None:
             (root / 'audio' / 'cet4_male' / 'x.loudness.json').write_text(json.dumps(side), 'utf-8')
         out.append((name, tm, mp4, want))
@@ -149,6 +153,7 @@ def main():
         ('verify_videos：合格证那一行永远通过 ok(…, True, …)', 'v', f"ok('{CERT_ROW}', not cp,", f"ok('{CERT_ROW}', True,"),
         ('verify_videos：cert_check(...) and []', 'v', 'cp = cert_check(mp4, tm, mp3_path)', 'cp = cert_check(mp4, tm, mp3_path) and []'),
         ('verify_videos：fine=not is_legacy(tm) and False', 'v', 'fine=not is_legacy(tm))', 'fine=not is_legacy(tm) and False)'),
+        ('verify_videos：找不到 MP3 就放行 return [] and [...]（协调会话复核补）', 'v', '        return [f"找不到这个视频用的 MP3', '        return [] and [f"找不到这个视频用的 MP3'),
         ('gaokao_tts：关掉 if fine:（意群检查不跑）', 'g', '    if fine:\n        import importlib', '    if False:\n        import importlib'),
     ]
     for name, which, a, b in MUT:

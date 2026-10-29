@@ -122,6 +122,15 @@ def selftest():
     run('GitHub 上没检出 MP3（--ci）、旁证 passed=False → 报', '不一致', data=None, ci=True, side=dict(cert, passed=False))
     run('本机磁盘和 git 里都没有 MP3 → 报', '找不到 MP3', data=None)
     run('自己写 source=原音 → 报', '不是当前处理链', tm={'file': 'v/x.mp3', 'source': '原音', 'duration': 1, 'sentences': [{'parts': []}]})
+    # 命令行退出码（协调会话复核补）：发布工作流靠退出码停下，不合格必须非 0、合格必须 0
+    for name, want_bad, kw in (('命令行：不合格的目录 → 退出码非 0', True, {'side': dict(cert, passed=False)}), ('命令行：合格的目录 → 退出码 0', False, {})):
+        with tempfile.TemporaryDirectory() as td:
+            build(td, **kw)
+            rc = subprocess.run([sys.executable, str(Path(__file__).resolve()), str(Path(td) / 'audio')], capture_output=True, text=True).returncode
+        ok = (rc != 0) == want_bad
+        print(f"  {'✅' if ok else '❌'} {name}：退出码 {rc}")
+        if not ok:
+            bad.append(name)
     if bad:
         sys.exit(f'check-audio-cert 自检失效：{bad}')
     print('check-audio-cert 自检：全部通过')
