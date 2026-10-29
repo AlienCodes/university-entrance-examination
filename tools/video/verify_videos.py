@@ -99,9 +99,11 @@ def check(mp4, p, tm):
     import soundfile as sf
     buf = io.BytesIO()
     sf.write(buf, x, sr, format='WAV')
-    from gaokao_tts import edge_span
+    from gaokao_tts import edge_span, is_legacy, certificate_problems
+    cp = certificate_problems(tm)
+    ok('音频合格证（处理链版本、意群响度检查）', not cp, '；'.join(cp) if cp else ('旧成品（响度旧成品清单，不追溯）' if is_legacy(tm) else '合格'))
     rep, errs = verify_loudness(buf.getvalue(), times, -16.0, **({'span': edge_span(times, p['edge'])} if p.get('edge') else {}),
-                                 fine=bool(tm.get('clause_check')))     # 意群级检查：新处理链的音频（踩坑 85），已发布的不追溯
+                                 fine=not is_legacy(tm))     # 意群级检查：2026-10-29 之后生成的一律查（踩坑 85），已发布的旧成品不追溯
     ok('响度一致（第一项检查）', not errs,
        f"整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
        f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS" + ('；' + '；'.join(errs) if errs else ''))

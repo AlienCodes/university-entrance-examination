@@ -12,7 +12,9 @@
 人名、多音词等发音修正在 pronunciations.json，音色在 voices.json。
 """
 import argparse
+import hashlib
 import json
+import os
 import re
 import sys
 import time
@@ -195,13 +197,13 @@ def voiced(x, sr, H):
 
 def even(x, sr=SR, tol=EVEN_TOL, gmax=EVEN_MAX):
     """段内电平统一（踩坑 85，用户 2026-10-29“偶尔一个地方声音突然小了一点”）。
-    模型常在一段（逗号到逗号）的最后一两个词、或插入语上把声音收小：全部成品里意群末尾 0.6 秒比主体低 2.2 dB（中位，自然语调），
-    约 1% 低 5—7 dB，个别插入语低 12 dB 以上；分段 level 只把整段平均拉齐、1 秒慢速电平器又太慢，都补不回来。
-    做法：K 计权 10 ms 帧；只用浊音帧（voiced，按周期性判断）测电平，150 ms 内取最响（音节峰值），再按 250 ms 能量平滑；
-    比本段中位低超过 tol 的地方只往上补（≤ gmax），增益 70 ms 平滑。
-    清音、气声、停顿帧不参与测量，沿用相邻浊音帧的增益：它们与所在的词同比例变化，不会被单独抬高。
+    模型常在一段（逗号到逗号）的最后一两个词、或插入语上把声音收小：原始合成的段尾 0.8 秒元音比段内其余低 5—8 dB，
+    成品里 1% 的意群末尾低 4.6 dB 以上；分段 level 只把整段平均拉齐、1 秒慢速电平器又跟不上，都补不全。
+    做法：K 计权 10 ms 帧；只用浊音帧（voiced，按周期性判断）测电平：300 ms 窗内浊音帧的平均能量，与整段浊音的平均能量比，
+    低于 tol 的地方只往上补（≤ gmax），增益 70 ms 平滑。
+    清音、气声、停顿帧不参与测量，沿用相邻浊音帧的增益，且补完不超过整段浊音平均（句尾安静元音后的 s、ts 不会被抬得比主体还响）。
     在压缩、去电磁音之前做（铁律 10 的陷波照旧），只改慢变的电平，不改频响。"""
-    from scipy.ndimage import maximum_filter1d, uniform_filter1d
+    from scipy.ndimage import minimum_filter1d, uniform_filter1d
     import pyloudnorm as pyln
     H = int(0.01 * sr)
     n = len(x) // H
@@ -210,23 +212,19 @@ def even(x, sr=SR, tol=EVEN_TOL, gmax=EVEN_MAX):
     f = np.asarray(x, dtype=np.float64)
     for flt in pyln.Meter(sr)._filters.values():
         f = flt.apply_filter(f)
-    L = 10 * np.log10(np.mean(f[:n * H].reshape(n, H) ** 2, axis=1) + 1e-12)
+    e = np.mean(f[:n * H].reshape(n, H) ** 2, axis=1) + 1e-20
     v = voiced(x, sr, H)[:n]
     if v.sum() < 10:
         return x
-    Lp = maximum_filter1d(np.where(v, L, -200.0), 15, mode='constant', cval=-200.0)
-    num = uniform_filter1d(np.where(v, 10 ** (Lp / 10), 0.0), 25, mode='constant')
-    den = uniform_filter1d(v.astype(float), 25, mode='constant')
-    has = den > 1e-6
-    idx = np.where(has)[0]
-    E = np.interp(np.arange(n), idx, 10 * np.log10(num[idx] / den[idx] + 1e-20))   # 没有浊音的地方沿用相邻值
-    ref = np.median(E[v])
-    g = np.clip(-(E - ref + tol), 0.0, gmax)
-    # 上限：补完后任何一帧（含清辅音 s、sh 和尾音）都不超过本段的音节峰值参考 ref，句尾安静元音后的嘶声不会被抬得比主体还响
-    Ls = 10 * np.log10(uniform_filter1d(10 ** (L / 10), 5, mode='nearest') + 1e-20)
-    g = np.minimum(g, np.maximum(0.0, ref - Ls))
-    from scipy.ndimage import minimum_filter1d
-    g = uniform_filter1d(minimum_filter1d(g, 7, mode='nearest'), 7, mode='nearest')
+    num = uniform_filter1d(np.where(v, e, 0.0), 31, mode='constant')
+    den = uniform_filter1d(v.astype(float), 31, mode='constant')
+    idx = np.where(den > 1e-6)[0]
+    E = np.interp(np.arange(n), idx, 10 * np.log10(num[idx] / den[idx]))       # 没有浊音的地方沿用相邻值
+    ref = 10 * np.log10(np.mean(e[v]))
+    g = np.clip(ref - E - tol, 0.0, gmax)
+    Ls = 10 * np.log10(uniform_filter1d(e, 5, mode='nearest'))
+    g = np.minimum(g, np.where(v, gmax, np.maximum(0.0, ref - Ls)))           # 清音帧补完不超过整段浊音平均
+    g = uniform_filter1d(minimum_filter1d(g, 5, mode='nearest'), 7, mode='nearest')
     t = (np.arange(n) + 0.5) * H
     gs = 10 ** (np.interp(np.arange(len(x)), t, g) / 20)
     return (np.asarray(x) * gs).astype(np.float32)
@@ -266,7 +264,7 @@ def level_clause(x, sr=SR, target=CLAUSE_LUFS):
 
 def segment(x):
     """每段合成后的统一处理（规则只写一处，各项目的 synth_sentence 都调这里）：段内电平统一（even）→ 整段按 BS.1770 响度统一（level_clause）→ 边缘淡入淡出。
-    踩坑 85 起取代各项目的 fade(level(…))（四级 make_audio 的 level_k 等不再用于分段）。"""
+    踩坑 85 起取代各项目原来的“先 level 再 fade”（四级 make_audio 的 level_k 等不再用于分段）。"""
     return fade(level_clause(even(x)))
 
 
@@ -330,6 +328,45 @@ def verify_loudness(mp3_bytes, items, target_lufs, span=None, fine=True):
         rep.update(frep)
         errs += ferrs
     return rep, errs
+
+
+CHAIN = 'clause-v1'    # 处理链版本：段内电平统一 even + 每段 BS.1770 统一 + 意群级检查（踩坑 85，2026-10-29）
+LEGACY = HERE / '响度旧成品清单.json'   # 2026-10-29 之前已发布的成品（不追溯，用户决定）：按 文件|时长|响度 登记，新生成的不可能撞上
+
+
+def certificate(mp3_bytes, rep):
+    """音频合格证：处理链版本、成品 MP3 的 sha256、全部响度测量（含意群级最差值）。只有检查全部通过才会写出来。"""
+    return {'chain': CHAIN, 'passed': True, 'mp3_sha256': hashlib.sha256(mp3_bytes).hexdigest(), 'loudness': rep,
+            'limits': dict(LIMITS, **__import__('importlib').import_module('响度细查').FINE_LIMITS),
+            'date': time.strftime('%Y-%m-%d')}
+
+
+def legacy_key(tm):
+    L = tm.get('loudness') or {}
+    return f"{tm.get('file')}|{tm.get('duration')}|{L.get('integrated_lufs')}|{L.get('sentence_max_dev_lu')}|{L.get('short_term_std_lu')}"
+
+
+def is_legacy(tm):
+    return LEGACY.exists() and legacy_key(tm) in set(json.loads(LEGACY.read_text('utf-8'))['keys'])
+
+
+def certificate_problems(tm, mp3_path=None):
+    """视频生成前 / 后核对音频合格证。旧成品（响度旧成品清单）放行；其余必须是当前处理链、检查通过、（给了 MP3 时）sha256 一致。"""
+    if is_legacy(tm):
+        return []
+    c = tm.get('certificate') or {}
+    errs = []
+    if tm.get('clause_check') != CHAIN or c.get('chain') != CHAIN:
+        errs.append(f"音频不是当前处理链 {CHAIN} 生成的（没有意群级电平统一与检查），不许生成视频")
+    elif not c.get('passed'):
+        errs.append('音频合格证显示检查未通过')
+    if mp3_path is not None and not errs:
+        side = Path(str(mp3_path)[:-4] + '.loudness.json')
+        if not side.exists():
+            errs.append(f'缺少合格证文件 {side.name}')
+        elif json.loads(side.read_text('utf-8')).get('mp3_sha256') != hashlib.sha256(Path(mp3_path).read_bytes()).hexdigest():
+            errs.append('合格证与 MP3 不符（MP3 在检查之后被改过）')
+    return errs
 
 
 CLAUSE = re.compile(r'(?:(?<=[,;:—])|(?<=[,;:—]["”’)]))\s+(?=\S)')
@@ -425,12 +462,38 @@ def limit(x, sr, ceiling_db=-1.5, lookahead=0.005, release=0.060):
     return np.clip(y, -ceil, ceil)
 
 
-def master(a, target_lufs=-16.0, peak_db=-1.5):
-    """母带处理：重采样到 48k → 压缩 → 统一响度到 target_lufs → 前瞻限幅。"""
+def clause_trim(a, parts, sr=OUT_SR, rng=3.0):
+    """意群间再统一（踩坑 85）：压缩与慢速电平会让意群之间重新差出 ±1 LU（短意群 “After all,” 被带响 1.06 LU，后一段相对小 1.0 LU，
+    六级作文 c21）。按 BS.1770 门限响度把每个意群拉回本篇意群中位数（≤ ±rng dB）；增益只在意群之间停顿的中点切换（静音处，10 ms 斜坡）。
+    不足 0.5 秒的意群不单独调，跟随前一段。parts：[[起, 止], …]（秒，按时间顺序）。"""
+    if not parts:
+        return a
+    L = [gated_lufs(a[int(s * sr):int(e * sr)], sr) if e - s >= 0.5 else None for s, e in parts]
+    ok = [x for x in L if x is not None]
+    if not ok:
+        return a
+    med = float(np.median(ok))
+    gains, last = [], 0.0
+    for x in L:
+        last = float(np.clip(med - x, -rng, rng)) if x is not None else last
+        gains.append(last)
+    g = np.zeros(len(a))
+    edges = [0] + [int((parts[i][1] + parts[i + 1][0]) / 2 * sr) for i in range(len(parts) - 1)] + [len(a)]
+    for i, gd in enumerate(gains):
+        g[edges[i]:edges[i + 1]] = gd
+    r = int(0.01 * sr)
+    g = np.convolve(np.pad(g, r, mode='edge'), np.ones(2 * r + 1) / (2 * r + 1), mode='valid')[:len(a)]
+    return (a * 10 ** (g / 20)).astype(np.float32)
+
+
+def master(a, target_lufs=-16.0, peak_db=-1.5, parts=None):
+    """母带处理：重采样到 48k → 压缩 → 意群间再统一（parts，踩坑 85）→ 统一响度到 target_lufs → 前瞻限幅。"""
     import soxr
     import pyloudnorm as pyln
     a = soxr.resample(a, SR, OUT_SR, quality='VHQ').astype(np.float32)
     a = compress(a, OUT_SR)
+    if parts:
+        a = clause_trim(a, parts)
     meter = pyln.Meter(OUT_SR)
     for _ in range(2):                    # 限幅会让响度略降，迭代一次补偿
         a = a * 10 ** ((target_lufs - meter.integrated_loudness(a)) / 20)
@@ -540,7 +603,13 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
             pieces.append(np.zeros(int(round(g * SR)), np.float32))
             t += int(round(g * SR)) / SR
     lufs = vcfg.get('lufs', -16.0)
-    a = master(np.concatenate(pieces), lufs)
+    a = master(np.concatenate(pieces), lufs, parts=[pt for it in items for pt in it['parts']])   # 意群间再统一（踩坑 85）
+    dip = os.environ.get('LOUDNESS_TEST_DIP')        # 双向验证用：在真实流程里把第 k 句第 j 段压低 db（如 "3:1:2"），检查必须报错、不出文件
+    if dip:
+        k_, j_, db_ = dip.split(':')
+        s_, e_ = items[int(k_) - 1]['parts'][int(j_) - 1]
+        a = a.copy()
+        a[int(s_ * OUT_SR):int(e_ * OUT_SR)] *= 10 ** (-float(db_) / 20)
     mp3 = encode_mp3(a, kbps=vcfg.get('kbps', 128))
     rep, errs = verify_loudness(mp3, items, lufs, **({'span': edge_span(items, p['edge'])} if p.get('edge') else {}))   # 第一项检查：成品响度一致（书信格式行见 edge_span）
     if errs:
@@ -553,8 +622,10 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
     if wav:
         write_wav(str(base) + '.wav', a)
     write_subs(base, items, load_zh(p['id']))
+    cert = certificate(mp3, rep)                       # 合格证（踩坑 85）：MP3 旁边一份，timings 里一份；没有合格证的音频 verify_videos 拒绝
+    Path(str(base) + '.loudness.json').write_text(json.dumps(cert, ensure_ascii=False, indent=1), 'utf-8')
     return {'file': f"{out_dir.name}/{base.name}.mp3", 'duration': round(len(a) / OUT_SR, 3),
-            'loudness': rep, 'sentences': items, 'clause_check': 1}     # 新处理链 + 意群级检查（踩坑 85）
+            'loudness': rep, 'sentences': items, 'clause_check': CHAIN, 'certificate': cert}
 
 
 def cmd_passages(args):
@@ -585,11 +656,16 @@ def cmd_say(args):
     style = engine.style(vcfg['style'])
     text = args.text if args.text != '-' else sys.stdin.read()
     sents = re.split(r'(?<=[.!?])["”’)]*\s+(?=["“‘(]?[A-Z0-9])', text.strip())
-    pieces = [np.zeros(int(0.3 * SR), np.float32)]
+    pieces, allp, t = [np.zeros(int(0.3 * SR), np.float32)], [], 0.3
     for i, s in enumerate(sents):
-        pieces.append(synth_sentence(pron.read_text(s), None, engine, pron, style, args.speed or vcfg.get('speed', 1.0), vcfg)[0])
-        pieces.append(np.zeros(int((vcfg['tail'] if i == len(sents) - 1 else gap_after(s, False, vcfg)) * SR), np.float32))
-    a = master(np.concatenate(pieces), vcfg.get('lufs', -16.0))
+        au, ps = synth_sentence(pron.read_text(s), None, engine, pron, style, args.speed or vcfg.get('speed', 1.0), vcfg)
+        allp += [[t + x, t + y] for x, y in ps]
+        pieces.append(au)
+        t += len(au) / SR
+        gap = np.zeros(int((vcfg['tail'] if i == len(sents) - 1 else gap_after(s, False, vcfg)) * SR), np.float32)
+        pieces.append(gap)
+        t += len(gap) / SR
+    a = master(np.concatenate(pieces), vcfg.get('lufs', -16.0), parts=allp)
     out = Path(args.output)
     (write_wav if out.suffix.lower() == '.wav' else write_mp3)(out, a)
     print(f'已保存 {out}（{len(a) / OUT_SR:.1f} 秒）')

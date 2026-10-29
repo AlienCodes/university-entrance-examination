@@ -100,18 +100,46 @@ def clause_stats(cl):
 
 
 # 意群级检查的阈值（踩坑 85；由新处理链样片的实测分布定，见 tools/防复发/方法进化记录.md「复盘 音频 意群响度」）
-FINE_LIMITS = {'clause_nb': 1.2, 'clause_tail': 3.0}
+FINE_LIMITS = {'clause_nb': 1.2, 'clause_tail': 4.0}
 NB_MIN_DUR, TAIL_MIN_DUR, TAIL_LEN = 0.8, 1.6, 0.8
+
+
+def vowel_frames(a, sr):
+    """10 ms 帧：K 计权电平 L（dB）与“元音帧”标记。元音帧 = 100—1000 Hz 能量 > 2 kHz 以上能量的 2 倍（低频占优），
+    且不比前后 1 秒内最响处低 25 dB 以上。清辅音（s、ts、sh）、停顿不算，所以 “texts” 这类清辅音结尾不会被当成“变小”。
+    按频谱判断，与处理端 gaokao_tts.voiced（按周期性）是两种独立的方法（踩坑 2）。"""
+    from scipy.ndimage import maximum_filter1d
+    a = np.asarray(a, dtype=np.float64)
+    f = kweight(a, sr)
+    H = int(0.01 * sr)
+    n = len(a) // H
+    L = 10 * np.log10(np.mean(f[:n * H].reshape(n, H) ** 2, axis=1) + 1e-12)
+    W = int(0.02 * sr)
+    fr = np.lib.stride_tricks.sliding_window_view(np.concatenate([a, np.zeros(W)]), W)[::H][:n] * np.hanning(W)
+    S = np.abs(np.fft.rfft(fr, axis=1)) ** 2
+    fq = np.fft.rfftfreq(W, 1 / sr)
+    lf = S[:, (fq >= 100) & (fq < 1000)].sum(axis=1)
+    hf = S[:, fq >= 2000].sum(axis=1)
+    return L, (lf > 2 * hf) & (L > maximum_filter1d(L, 201) - 25)
+
+
+def tail_drop(L, ok, s, e):
+    """意群 [s, e) 最后 TAIL_LEN 秒的元音帧平均电平 − 其余部分的元音帧平均电平（dB）；元音帧不足 80 ms 返回 None。"""
+    i0, i1, im = int(s / 0.01), int(e / 0.01), int((e - TAIL_LEN) / 0.01)
+    A, B = ok[im:i1], ok[i0:im]
+    if A.sum() < 8 or B.sum() < 8:
+        return None
+    eL = 10 ** (L / 10)
+    return float(10 * np.log10(eL[im:i1][A].mean()) - 10 * np.log10(eL[i0:im][B].mean()))
 
 
 def fine_check(a, sr, items):
     """意群级响度检查（成品 MP3 / 视频音轨）：
-    ① 每个意群（≥ 0.8 秒）与前后相邻意群的响度差 ≥ −clause_nb LU（某个意群整体“突然小一截”）；
-    ② 每个意群（≥ 1.6 秒）最后 0.8 秒与本意群其余部分之差 ≥ −clause_tail LU（意群末尾的词被收小）。
+    ① 每个意群（≥ 0.8 秒）与前后相邻意群的 BS.1770 响度差 ≥ −clause_nb LU（某个意群整体“突然小一截”）；
+    ② 每个意群（≥ 1.6 秒）最后 0.8 秒的元音电平比本意群其余部分低不超过 clause_tail dB（意群末尾的词被收小）。
     返回 (报告, 问题列表)。"""
-    cl = clause_loudness(a, sr, items)
-    st = clause_stats(cl)
-    z2 = kweight(a, sr) ** 2
+    st = clause_stats(clause_loudness(a, sr, items))
+    L, ok = vowel_frames(a, sr)
     errs, worst_nb, worst_tail = [], 0.0, 0.0
     for r in st:
         if r['dur'] >= NB_MIN_DUR:
@@ -119,13 +147,14 @@ def fine_check(a, sr, items):
             if r['d_nb'] < -FINE_LIMITS['clause_nb']:
                 errs.append(f"第{r['k']}句第{r['j'] + 1}段（{r['start']:.2f}s）比相邻意群小 {-r['d_nb']:.2f} LU")
         if r['dur'] >= TAIL_MIN_DUR:
-            d = gated(z2, sr, r['end'] - TAIL_LEN, r['end']) - gated(z2, sr, r['start'], r['end'] - TAIL_LEN)
-            worst_tail = min(worst_tail, d)
-            if d < -FINE_LIMITS['clause_tail']:
-                errs.append(f"第{r['k']}句第{r['j'] + 1}段末尾（{r['end'] - TAIL_LEN:.2f}s 起）比本段其余部分小 {-d:.2f} LU")
-    rep = {'clause_nb_min_lu': round(float(worst_nb), 2), 'clause_tail_min_lu': round(float(worst_tail), 2)}
+            d = tail_drop(L, ok, r['start'], r['end'])
+            if d is not None:
+                worst_tail = min(worst_tail, d)
+                if d < -FINE_LIMITS['clause_tail']:
+                    errs.append(f"第{r['k']}句第{r['j'] + 1}段末尾（{r['end'] - TAIL_LEN:.2f}s 起）比本段其余部分小 {-d:.2f} dB")
+    rep = {'clause_nb_min_lu': round(float(worst_nb), 2), 'clause_tail_min_db': round(float(worst_tail), 2)}
     if errs:
-        errs = [f"意群响度：{len(errs)} 处（上限：相邻 {FINE_LIMITS['clause_nb']} LU、末尾 {FINE_LIMITS['clause_tail']} LU）：" + '；'.join(errs[:5])]
+        errs = [f"意群响度：{len(errs)} 处（上限：比相邻意群小 {FINE_LIMITS['clause_nb']} LU、末尾小 {FINE_LIMITS['clause_tail']} dB）：" + '；'.join(errs[:5])]
     return rep, errs
 
 

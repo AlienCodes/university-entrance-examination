@@ -245,7 +245,7 @@ def apo(t):
 
 
 def check_audio(R, pids, voice='female'):
-    from gaokao_tts import verify_loudness, Pronouncer
+    from gaokao_tts import verify_loudness, Pronouncer, is_legacy, certificate_problems
     D = data()
     P = {p['id']: p for p in D['passages']}
     T = load(AUDIO / 'timings.json', {}).get(voice, {})
@@ -260,9 +260,11 @@ def check_audio(R, pids, voice='female'):
         tm = T[pid]
         mp3 = (AUDIO / tm['file']).read_bytes()
         # #1 #2 响度：对 MP3 成品独立测量
-        rep, errs = verify_loudness(mp3, tm['sentences'], -16.0, fine=bool(tm.get('clause_check')))   # 踩坑 85，已发布的不追溯
+        rep, errs = verify_loudness(mp3, tm['sentences'], -16.0, fine=not is_legacy(tm))   # 踩坑 85，已发布的旧成品不追溯
         R.add(1, pid, not errs, f"整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
                                  f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS" + ('；' + '；'.join(errs) if errs else ''))
+        cp = certificate_problems(tm, AUDIO / tm['file'])          # 踩坑 85：音频合格证（处理链版本、sha256）
+        R.add(1, pid, not cp, '合格证：' + ('；'.join(cp) if cp else ('旧成品不追溯' if is_legacy(tm) else '合格')))
         # #20 #13 朗读内容与当前英文、当前朗读修正一致（改了英文或修正却没重新生成音频，会在这里暴露）
         S = sents(p)
         stale = [k for k, (s, t) in enumerate(zip(S, tm['sentences']), 1)

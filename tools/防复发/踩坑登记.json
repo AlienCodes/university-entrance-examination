@@ -3073,6 +3073,56 @@
    "status": "自动拦截+有双向验证",
    "gap": "只覆盖作文两个工作流的原题屏；别的工作流引擎新读目录时把它加进 CASES。",
    "fix": ""
+  },
+  {
+   "id": "85",
+   "title": "意群内部“突然小一截”（段尾词被模型收小、压缩与慢速电平把短意群带响），原四项检查量不到",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考",
+    "四级",
+    "六级",
+    "中考",
+    "考研",
+    "专八",
+    "四级作文",
+    "六级作文",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/gaokao_tts.py verify_loudness → 响度细查.fine_check（意群相邻 ≤ 1.2 LU、段尾元音 ≤ 4 dB）",
+     "runs": "每篇音频生成时，不通过不写 MP3",
+     "evidence": "响度检查未通过，未输出文件：意群响度…"
+    },
+    {
+     "where": "tools/video/verify_videos.py + 各视频引擎：音频合格证（clause-v1、sha256）",
+     "runs": "生成视频前 / 后",
+     "evidence": "音频合格证不合格，不生成视频"
+    },
+    {
+     "where": "tools/防复发/验证/意群响度入口.py：每个音频 / 视频入口都接上",
+     "runs": "防复发自检 --测试、GitHub 每次推送",
+     "evidence": "入口漏接报错"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/意群响度.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/意群响度入口.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "2026-10-29 前已发布的 438 篇不追溯（用户决定）；西班牙语不在本仓库，其生成流程要单独接 segment / fine_check。",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

@@ -16,7 +16,7 @@
 
 ## 双向验证的 needs
 
-`none`：只要 python3 + PyYAML；`pip`：再加 numpy scipy pyloudnorm soundfile jieba ——这两类每次推送都在 GitHub 上跑。`tts` / `browser` / `heavy` 只在本机（`--测试`、`--测试 --全部`）。
+`none`：只要 python3 + PyYAML；`pip`：再加 numpy scipy pyloudnorm soundfile jieba num2words lameenc ——这两类每次推送都在 GitHub 上跑。`tts` / `browser` / `heavy` 只在本机（`--测试`、`--测试 --全部`）。
 测共用代码时用 `验证/_抽取.py` 只抽出要测的函数（不 import 整个模块，免得拉进语音模型），测的就是仓库里正在用的那份。
 
 ## 新铁律的规矩

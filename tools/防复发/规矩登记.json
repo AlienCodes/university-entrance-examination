@@ -1,5 +1,5 @@
 {
- "_说明": "规矩登记（铁律 16、18：已立的所有规矩都要有程序保证真的执行）。CLAUDE.md「# 项目铁律」每一条 → 由哪段程序保证、双向验证命令、状态、缺口。防复发自检核对一一对应：CLAUDE.md 多一条没登记的铁律就拦下；没有双向验证的铁律数量只许减少（_没有测试的铁律基线）。needs：none = 只要 python3 + PyYAML；pip = 再加 numpy scipy pyloudnorm soundfile jieba（GitHub 推送时都跑）；tts / browser / heavy 只在本机。",
+ "_说明": "规矩登记（铁律 16、18：已立的所有规矩都要有程序保证真的执行）。CLAUDE.md「# 项目铁律」每一条 → 由哪段程序保证、双向验证命令、状态、缺口。防复发自检核对一一对应：CLAUDE.md 多一条没登记的铁律就拦下；没有双向验证的铁律数量只许减少（_没有测试的铁律基线）。needs：none = 只要 python3 + PyYAML；pip = 再加 numpy scipy pyloudnorm soundfile jieba num2words lameenc（GitHub 推送时都跑）；tts / browser / heavy 只在本机。",
  "rows": [
   {
    "id": "1",
@@ -19,15 +19,28 @@
   },
   {
    "id": "2",
-   "title": "音频响度从头到尾一致（−16 LUFS、句间 ≤ 2 LU、短时 ≤ 1 LU、峰值 ≤ −1 dBFS）",
+   "title": "音频响度从头到尾一致（−16 LUFS、句间 ≤ 2 LU、短时 ≤ 1 LU、峰值 ≤ −1 dBFS；意群相邻 ≤ 1.2 LU、段尾元音 ≤ 4 dB，2026-10-29 起生成的一律查）",
    "guards": [
     "tools/tts/gaokao_tts.py verify_loudness：生成音频时不通过不写 MP3",
-    "tools/video/verify_videos.py：视频音轨再测"
+    "tools/video/verify_videos.py：视频音轨再测",
+    "tools/tts/响度细查.py fine_check（verify_loudness 默认打开）",
+    "合格证 *.loudness.json：verify_videos 与各视频引擎没有就拒绝",
+    "tools/防复发/验证/意群响度入口.py：每个入口都接上"
    ],
    "test": [
     {
      "cmd": "python3 tools/防复发/验证/响度.py",
      "needs": "pip",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/意群响度.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "python3 tools/防复发/验证/意群响度入口.py",
+     "needs": "none",
      "expect": "exit 0"
     }
    ],
