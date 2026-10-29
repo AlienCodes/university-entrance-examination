@@ -171,6 +171,105 @@ def level(x, target=TARGET_DB):
     return (x * 10 ** (g / 20)).astype(np.float32)
 
 
+EVEN_TOL = 1.5     # 段内电平统一：比本段中位数低超过这个值（dB）才往上补
+EVEN_MAX = 12.0    # 最多补这么多（dB）：插入语 “…, however,” 曾被模型读得低 12—15 dB（专八 t23:33）
+
+
+def voiced(x, sr, H):
+    """每 H 个采样一帧（窗 30 ms）是否浊音：自相关在 80—400 Hz 基频范围的归一化峰值 > 0.5，且不比本段最响处低 45 dB 以上。
+    元音、浊辅音为真；气声、s/f/sh 等清辅音、停顿为假（按周期性判断，与音量无关，很轻的词照样算进来）。"""
+    W = int(0.03 * sr)
+    n = len(x) // H
+    xp = np.concatenate([np.asarray(x, np.float64), np.zeros(W)])
+    fr = np.stack([xp[i * H:i * H + W] for i in range(n)]) * np.hanning(W)
+    nf = 1 << (2 * W - 1).bit_length()
+    sp = np.fft.rfft(fr, nf, axis=1)
+    ac = np.fft.irfft(np.abs(sp) ** 2, nf, axis=1)[:, :W]
+    # 汉宁窗的自相关会随时延衰减，除以窗本身的自相关做无偏校正
+    wac = np.fft.irfft(np.abs(np.fft.rfft(np.hanning(W), nf)) ** 2, nf)[:W]
+    lo, hi = int(sr / 400), int(sr / 80)
+    r = (ac[:, lo:hi] / wac[lo:hi]) / (ac[:, :1] / wac[0] + 1e-20)
+    e = 10 * np.log10(ac[:, 0] / W + 1e-20)
+    return (r.max(axis=1) > 0.5) & (e > e.max() - 45)
+
+
+def even(x, sr=SR, tol=EVEN_TOL, gmax=EVEN_MAX):
+    """段内电平统一（踩坑 85，用户 2026-10-29“偶尔一个地方声音突然小了一点”）。
+    模型常在一段（逗号到逗号）的最后一两个词、或插入语上把声音收小：全部成品里意群末尾 0.6 秒比主体低 2.2 dB（中位，自然语调），
+    约 1% 低 5—7 dB，个别插入语低 12 dB 以上；分段 level 只把整段平均拉齐、1 秒慢速电平器又太慢，都补不回来。
+    做法：K 计权 10 ms 帧；只用浊音帧（voiced，按周期性判断）测电平，150 ms 内取最响（音节峰值），再按 250 ms 能量平滑；
+    比本段中位低超过 tol 的地方只往上补（≤ gmax），增益 70 ms 平滑。
+    清音、气声、停顿帧不参与测量，沿用相邻浊音帧的增益：它们与所在的词同比例变化，不会被单独抬高。
+    在压缩、去电磁音之前做（铁律 10 的陷波照旧），只改慢变的电平，不改频响。"""
+    from scipy.ndimage import maximum_filter1d, uniform_filter1d
+    import pyloudnorm as pyln
+    H = int(0.01 * sr)
+    n = len(x) // H
+    if n < 20:
+        return x
+    f = np.asarray(x, dtype=np.float64)
+    for flt in pyln.Meter(sr)._filters.values():
+        f = flt.apply_filter(f)
+    L = 10 * np.log10(np.mean(f[:n * H].reshape(n, H) ** 2, axis=1) + 1e-12)
+    v = voiced(x, sr, H)[:n]
+    if v.sum() < 10:
+        return x
+    Lp = maximum_filter1d(np.where(v, L, -200.0), 15, mode='constant', cval=-200.0)
+    num = uniform_filter1d(np.where(v, 10 ** (Lp / 10), 0.0), 25, mode='constant')
+    den = uniform_filter1d(v.astype(float), 25, mode='constant')
+    has = den > 1e-6
+    idx = np.where(has)[0]
+    E = np.interp(np.arange(n), idx, 10 * np.log10(num[idx] / den[idx] + 1e-20))   # 没有浊音的地方沿用相邻值
+    ref = np.median(E[v])
+    g = np.clip(-(E - ref + tol), 0.0, gmax)
+    # 上限：补完后任何一帧（含清辅音 s、sh 和尾音）都不超过本段的音节峰值参考 ref，句尾安静元音后的嘶声不会被抬得比主体还响
+    Ls = 10 * np.log10(uniform_filter1d(10 ** (L / 10), 5, mode='nearest') + 1e-20)
+    g = np.minimum(g, np.maximum(0.0, ref - Ls))
+    from scipy.ndimage import minimum_filter1d
+    g = uniform_filter1d(minimum_filter1d(g, 7, mode='nearest'), 7, mode='nearest')
+    t = (np.arange(n) + 0.5) * H
+    gs = 10 ** (np.interp(np.arange(len(x)), t, g) / 20)
+    return (np.asarray(x) * gs).astype(np.float32)
+
+
+CLAUSE_LUFS = -23.0  # 每段（意群）的 BS.1770 门限响度统一到这个值，之后整篇再统一到 −16 LUFS
+
+
+def gated_lufs(x, sr=SR):
+    """BS.1770 门限响度（K 计权、400 ms 块、75% 重叠、−70 LUFS 绝对门限、−10 LU 相对门限）；不足一个块按整段能量算。"""
+    import pyloudnorm as pyln
+    f = np.asarray(x, dtype=np.float64)
+    for flt in pyln.Meter(sr)._filters.values():
+        f = flt.apply_filter(f)
+    z = f ** 2
+    W, Hb = int(0.4 * sr), int(0.1 * sr)
+    if len(z) < W:
+        return -0.691 + 10 * np.log10(np.mean(z) + 1e-20) if len(z) else -120.0
+    c = np.concatenate([[0.0], np.cumsum(z)])
+    st = np.arange(0, len(z) - W + 1, Hb)
+    e = (c[st + W] - c[st]) / W
+    e = e[-0.691 + 10 * np.log10(e + 1e-20) > -70]
+    if not len(e):
+        return -120.0
+    e = e[-0.691 + 10 * np.log10(e + 1e-20) > -0.691 + 10 * np.log10(np.mean(e)) - 10]
+    return float(-0.691 + 10 * np.log10(np.mean(e)))
+
+
+def level_clause(x, sr=SR, target=CLAUSE_LUFS):
+    """整段电平：按 BS.1770 门限响度把每段（意群）统一到 target。
+    原来的 level / level_k 按“比本段最响帧低 30 dB 以内的 20 ms 帧”的 RMS 算，与人耳响度（BS.1770）差 ±1 LU：
+    k48 拼接后、母带处理前意群之间就有 −0.8～+1.2 LU 的离散（成品最差 −1.8 LU）。
+    检查（verify_loudness 的意群检查）测的是经过陷波、压缩、慢速电平、限幅、MP3 编码之后的成品，埋雷双向验证证明它查得出。"""
+    g = np.clip(target - gated_lufs(x, sr), -12, 12)
+    return (np.asarray(x) * 10 ** (g / 20)).astype(np.float32)
+
+
+def segment(x):
+    """每段合成后的统一处理（规则只写一处，各项目的 synth_sentence 都调这里）：段内电平统一（even）→ 整段按 BS.1770 响度统一（level_clause）→ 边缘淡入淡出。
+    踩坑 85 起取代各项目的 fade(level(…))（四级 make_audio 的 level_k 等不再用于分段）。"""
+    return fade(level_clause(even(x)))
+
+
 LIMITS = {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0}
 
 
@@ -183,9 +282,11 @@ def edge_span(items, edge):
     return (items[head]['start'] - 0.8, items[len(items) - 1 - tail]['end'] + 0.8)
 
 
-def verify_loudness(mp3_bytes, items, target_lufs, span=None):
+def verify_loudness(mp3_bytes, items, target_lufs, span=None, fine=True):
     """第一项检查：对编码后的 MP3 成品做独立测量（ITU-R BS.1770 K 加权响度）。
-    整体响度、每句响度偏差、3 秒短时响度波动、峰值，任何一项超标都返回失败原因。"""
+    整体响度、每句响度偏差、3 秒短时响度波动、峰值，任何一项超标都返回失败原因。
+    fine：意群级检查（踩坑 85，响度细查.fine_check）。2026-10-29 起生成的音频一律检查（timings 记 clause_check）；
+    此前已发布的成品不追溯（用户 2026-10-29 决定），verify_videos、check_pitfalls 按 timings 有无 clause_check 传入。"""
     import io
     import pyloudnorm as pyln
     import soundfile as sf
@@ -223,6 +324,11 @@ def verify_loudness(mp3_bytes, items, target_lufs, span=None):
         errs.append(f'短时响度波动 {st.std():.2f} LU（上限 {LIMITS["short_term_std"]}）')
     if peak > LIMITS['peak_db']:
         errs.append(f'峰值 {peak:.2f} dBFS（上限 {LIMITS["peak_db"]}）')
+    if fine:
+        import importlib
+        frep, ferrs = importlib.import_module('响度细查').fine_check(a if a.ndim == 1 else a.mean(1), sr, items)
+        rep.update(frep)
+        errs += ferrs
     return rep, errs
 
 
@@ -245,7 +351,7 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
               for i, x in enumerate(merged)]
     out, parts, t = [], [], 0.0
     for i, x in enumerate(merged):
-        seg = fade(level(engine.synth(pron.phonemes(x, key), style, speed)))   # 每段先统一响度，边缘淡入淡出
+        seg = segment(engine.synth(pron.phonemes(x, key), style, speed))   # 段内电平统一 + 整段浊音电平 + 淡入淡出（踩坑 85）
         parts.append((t, t + len(seg) / SR))
         out.append(seg)
         t += len(seg) / SR
@@ -448,7 +554,7 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
         write_wav(str(base) + '.wav', a)
     write_subs(base, items, load_zh(p['id']))
     return {'file': f"{out_dir.name}/{base.name}.mp3", 'duration': round(len(a) / OUT_SR, 3),
-            'loudness': rep, 'sentences': items}
+            'loudness': rep, 'sentences': items, 'clause_check': 1}     # 新处理链 + 意群级检查（踩坑 85）
 
 
 def cmd_passages(args):

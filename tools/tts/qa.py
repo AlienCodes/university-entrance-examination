@@ -74,7 +74,7 @@ def run(args):
             P_ = json.loads((OUT.parent / 'data' / 'vocab.json').read_text('utf-8')) if (OUT.parent / 'data' / 'vocab.json').exists() else {'passages': []}
             edge = next((x.get('edge') for x in P_['passages'] if x['id'] == pid), None)      # 考研作文书信格式行（gaokao_tts.edge_span）
             from gaokao_tts import edge_span
-            loud, lerr = verify_loudness((OUT / r['file']).read_bytes(), r['sentences'], -16.0, **({'span': edge_span(r['sentences'], edge)} if edge else {}))
+            loud, lerr = verify_loudness((OUT / r['file']).read_bytes(), r['sentences'], -16.0, **({'span': edge_span(r['sentences'], edge)} if edge else {}), fine=bool(r.get('clause_check')))
             print(f"[{v}] {pid}  响度：{'通过' if not lerr else '未通过 ' + '；'.join(lerr)}  {loud}", flush=True)
             a, sr = sf.read(str(OUT / r['file']), dtype='float32')
             a16 = soxr.resample(a, sr, 16000).astype(np.float32)

@@ -269,7 +269,7 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
         raw = engine.synth(pron.phonemes(x, key), style, speed)
         if key in TAIL_TRIM and i == len(merged) - 1:      # 登记过的句子：剪掉句末多发的气声
             raw = trim_tail(raw)
-        seg = G.fade(G.level(raw))
+        seg = G.segment(raw)
         spans.append((t, t + len(seg) / G.SR))
         out.append(seg)
         t += len(seg) / G.SR

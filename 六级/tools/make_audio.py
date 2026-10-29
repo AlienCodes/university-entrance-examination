@@ -225,7 +225,7 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
     for i, x in enumerate(merged):
         if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
             raise RuntimeError(f'{key} 合成文字残留引号：{x}')
-        seg = G.fade(G.level(engine.synth(pron.phonemes(x, key), style, speed)))
+        seg = G.segment(engine.synth(pron.phonemes(x, key), style, speed))
         spans.append((t, t + len(seg) / G.SR))
         out.append(seg)
         t += len(seg) / G.SR

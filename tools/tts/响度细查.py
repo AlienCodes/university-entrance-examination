@@ -68,9 +68,9 @@ def clause_loudness(a, sr, items):
     """每个意群的响度。返回 [(句号 k, 意群序号 j, 起, 止, LUFS)]，按时间顺序。"""
     z2 = kweight(a, sr) ** 2
     out = []
-    for it in items:
+    for n, it in enumerate(items, 1):
         for j, (s, e) in enumerate(it.get('parts') or [[it['start'], it['end']]]):
-            out.append((it['k'], j, s, e, gated(z2, sr, s, e)))
+            out.append((it.get('k', n), j, s, e, gated(z2, sr, s, e)))
     return out
 
 
@@ -97,6 +97,36 @@ def clause_stats(cl):
         lo = min(idx, key=lambda x: L[x])
         rows[lo]['d_sent'] = round(float(L[lo] - _epow([L[x] for x in idx if x != lo])), 2)
     return rows
+
+
+# 意群级检查的阈值（踩坑 85；由新处理链样片的实测分布定，见 tools/防复发/方法进化记录.md「复盘 音频 意群响度」）
+FINE_LIMITS = {'clause_nb': 1.2, 'clause_tail': 3.0}
+NB_MIN_DUR, TAIL_MIN_DUR, TAIL_LEN = 0.8, 1.6, 0.8
+
+
+def fine_check(a, sr, items):
+    """意群级响度检查（成品 MP3 / 视频音轨）：
+    ① 每个意群（≥ 0.8 秒）与前后相邻意群的响度差 ≥ −clause_nb LU（某个意群整体“突然小一截”）；
+    ② 每个意群（≥ 1.6 秒）最后 0.8 秒与本意群其余部分之差 ≥ −clause_tail LU（意群末尾的词被收小）。
+    返回 (报告, 问题列表)。"""
+    cl = clause_loudness(a, sr, items)
+    st = clause_stats(cl)
+    z2 = kweight(a, sr) ** 2
+    errs, worst_nb, worst_tail = [], 0.0, 0.0
+    for r in st:
+        if r['dur'] >= NB_MIN_DUR:
+            worst_nb = min(worst_nb, r['d_nb'])
+            if r['d_nb'] < -FINE_LIMITS['clause_nb']:
+                errs.append(f"第{r['k']}句第{r['j'] + 1}段（{r['start']:.2f}s）比相邻意群小 {-r['d_nb']:.2f} LU")
+        if r['dur'] >= TAIL_MIN_DUR:
+            d = gated(z2, sr, r['end'] - TAIL_LEN, r['end']) - gated(z2, sr, r['start'], r['end'] - TAIL_LEN)
+            worst_tail = min(worst_tail, d)
+            if d < -FINE_LIMITS['clause_tail']:
+                errs.append(f"第{r['k']}句第{r['j'] + 1}段末尾（{r['end'] - TAIL_LEN:.2f}s 起）比本段其余部分小 {-d:.2f} LU")
+    rep = {'clause_nb_min_lu': round(float(worst_nb), 2), 'clause_tail_min_lu': round(float(worst_tail), 2)}
+    if errs:
+        errs = [f"意群响度：{len(errs)} 处（上限：相邻 {FINE_LIMITS['clause_nb']} LU、末尾 {FINE_LIMITS['clause_tail']} LU）：" + '；'.join(errs[:5])]
+    return rep, errs
 
 
 def load_mp3(rel):

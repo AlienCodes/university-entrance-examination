@@ -260,7 +260,7 @@ def check_audio(R, pids, voice='female'):
         tm = T[pid]
         mp3 = (AUDIO / tm['file']).read_bytes()
         # #1 #2 响度：对 MP3 成品独立测量
-        rep, errs = verify_loudness(mp3, tm['sentences'], -16.0)
+        rep, errs = verify_loudness(mp3, tm['sentences'], -16.0, fine=bool(tm.get('clause_check')))   # 踩坑 85，已发布的不追溯
         R.add(1, pid, not errs, f"整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
                                  f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS" + ('；' + '；'.join(errs) if errs else ''))
         # #20 #13 朗读内容与当前英文、当前朗读修正一致（改了英文或修正却没重新生成音频，会在这里暴露）
