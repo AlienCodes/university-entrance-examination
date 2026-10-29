@@ -433,11 +433,6 @@ def main():
     # 踩坑 36：先审截图，后生成视频——程序或数据改过、截图还没审阅通过，就不生成视频
     subprocess.run([sys.executable, str(HERE / '画面核查' / 'screens_fp.py'), 'check', a.pid], check=True)
     tm = json.loads((Path(a.audio_root) / 'timings.json').read_text('utf-8'))[VOICE][a.pid]
-    sys.path.insert(0, str(ROOT / 'tools' / 'tts'))
-    from gaokao_tts import certificate_problems      # 踩坑 85：没有合格证（意群级电平统一与检查）的音频不生成视频，旧成品不追溯
-    _cp = certificate_problems(tm, Path(a.audio_root) / tm['file'])
-    if _cp:
-        sys.exit('音频合格证不合格，不生成视频：' + '；'.join(_cp))
     sents = [s for para in p['paras'] for s in para]
     times = tm['sentences']
     assert len(sents) == len(times), '音频句数与文章句数不一致，请重新生成音频'

@@ -1,7 +1,6 @@
 # 修改 .github/delete-releases.txt 并推送时删除其中列出的 GitHub Release（每行一个标签名）。
 # 用户 2026-10-10：四级、六级的 Release 都已下载、视频也都保存在仓库里，全部删掉。只删 Release（附件），git 标签保留。
 # 用户 2026-10-14：高考、四级的 Release 全部删掉，只保留六级和专八（以及中考）的。
-# 用户 2026-10-17：西班牙语相关的全部删掉（含 Release es-kit、es-kit-preview）。
 # 用户 2026-10-26：旧 Release 都可以删。先删内容已在别的 Release 里的 6 个：zk-01（女声，已由男声版取代）、zk-m01—m04（都在 zk-m-all 合集里）、tem8-01（已由 tem8-ink 27 个取代）；其余等用户确认。
 # 用户 2026-10-26 确认：之前的 Release 都已下载、发布过，除了四级、六级写作这 4 个（cet4-writing、cet6-writing、cet4-writing-handout、cet6-writing-handout）全部删掉。为防误删，这 4 个一律报错、一个都不删。
 name: 删除 Release
@@ -10,7 +9,6 @@ on:
     paths: ['.github/delete-releases.txt']
 permissions:
   contents: write
-  actions: write      # 西班牙语：一并删掉 Actions 里的产物、缓存、运行记录
 jobs:
   delete:
     runs-on: ubuntu-latest
@@ -28,30 +26,10 @@ jobs:
           done
           for t in "${tags[@]}"; do
             if gh release view "$t" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-              if [[ "$t" == es-* ]]; then gh release delete "$t" --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" && echo "已删除（连同标签）：$t"
-              else gh release delete "$t" --yes --repo "$GITHUB_REPOSITORY" && echo "已删除：$t"; fi
+              gh release delete "$t" --yes --repo "$GITHUB_REPOSITORY" && echo "已删除：$t"
             else
               echo "不存在（已删过）：$t"
             fi
           done
-          if printf '%s\n' "${tags[@]}" | grep -q '^es-'; then        # 西班牙语（用户 2026-10-17：云端所有相关的东西全部删掉）
-            R="repos/$GITHUB_REPOSITORY"
-            for t in $(git ls-remote --tags origin | grep -oE 'refs/tags/es-kit(-preview)?$' | sed 's#refs/tags/##'); do
-              gh api -X DELETE "$R/git/refs/tags/$t" && echo "已删标签 $t"
-            done
-            git ls-remote --tags origin | grep -E 'refs/tags/es-' || echo "西班牙语标签：已无"
-            for wf in release-es-kit.yml release-es-preview.yml; do
-              wid=$(gh api "$R/actions/workflows" --paginate -q ".workflows[] | select(.path == \".github/workflows/$wf\") | .id" || true)
-              [ -n "$wid" ] || { echo "工作流 $wf：找不到"; continue; }
-              for run in $(gh api "$R/actions/workflows/$wid/runs?per_page=100" --paginate -q '.workflow_runs[].id'); do
-                for a in $(gh api "$R/actions/runs/$run/artifacts?per_page=100" -q '.artifacts[].id'); do gh api -X DELETE "$R/actions/artifacts/$a" && echo "已删产物 $a（运行 $run）"; done
-                gh api -X DELETE "$R/actions/runs/$run" && echo "已删运行记录 $run（$wf）"
-              done
-            done
-            for k in $(gh api "$R/actions/caches?per_page=100" --paginate -q '.actions_caches[] | select(.key | test("(^|[-_])es[-_]|qwen|supertonic|spanish|西班牙"; "i")) | .id'); do
-              gh api -X DELETE "$R/actions/caches/$k" && echo "已删缓存 $k"
-            done
-            echo "剩余缓存："; gh api "$R/actions/caches?per_page=100" -q '.actions_caches[] | "\(.key)  \(.size_in_bytes)"' || true
-          fi
           echo "剩余 Release："
           gh release list --repo "$GITHUB_REPOSITORY" --limit 100

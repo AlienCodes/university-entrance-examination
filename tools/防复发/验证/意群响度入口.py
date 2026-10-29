@@ -98,8 +98,10 @@ def check(over=None):
         s = F[f]
         if 'sys.modules[__name__]' in s:            # 只是别名（如 六级 → 专八引擎）
             continue
-        if 'certificate_problems(' not in s:
-            errs.append(f'{f}：视频引擎生成前没核对音频合格证')
+        # 生成前核对合格证，或生成后跑 verify_videos.check（合格证核对在里面，不通过就删除成品）。
+        # 专八、中考引擎把 make_video.py 自身算进截图审阅指纹（踩坑 36），不在引擎里加代码，靠 verify_videos.check 拦（2026-10-29）
+        if 'certificate_problems(' not in s and 'from verify_videos import check' not in s:
+            errs.append(f'{f}：视频引擎既没在生成前核对音频合格证，也没在生成后跑 verify_videos.check')
     import json
     leg = json.loads(F.get('tools/tts/响度旧成品清单.json') or (R / 'tools/tts/响度旧成品清单.json').read_text('utf-8'))
     if leg['count'] > LEGACY_MAX or len(leg['keys']) > LEGACY_MAX:
@@ -139,7 +141,7 @@ def main():
     v = (R / 'tools/video/verify_videos.py').read_text('utf-8')
     case('verify_videos 去掉合格证核对 → 报出', check({'tools/video/verify_videos.py': v.replace('certificate_problems(tm)', 'list()')})[0], 'verify_videos')
     m = (R / '中考/tools/make_video.py').read_text('utf-8')
-    case('中考视频引擎去掉合格证核对 → 报出', check({'中考/tools/make_video.py': m.replace('certificate_problems', 'cp_removed')})[0], '中考/tools/make_video.py')
+    case('中考视频引擎去掉生成后核查（verify_videos.check）→ 报出', check({'中考/tools/make_video.py': m.replace('from verify_videos import check', 'check = None')})[0], '中考/tools/make_video.py')
     import json
     leg = json.loads((R / 'tools/tts/响度旧成品清单.json').read_text('utf-8'))
     leg['keys'].append('新音频.mp3|1|2|3|4')

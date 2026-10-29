@@ -1605,64 +1605,36 @@
   },
   {
    "id": "44",
-   "title": "西语声码器帧频梳状电磁音",
-   "stages": [
-    "音频"
-   ],
-   "projects": [
-    "西班牙语"
-   ],
+   "title": "（空号：已随西语项目删除）",
+   "stages": [],
+   "projects": [],
    "guards": [],
    "test": {},
    "status": "已不适用",
-   "gap": "西班牙语/ 已整体删除（提交 8f90c15，用户 2026-10-17 要求），buzz.py、test_buzz.py、make_audio.py 都不在工作区。需要时可以从 8f90c15^ 恢复（git cat-file 已确认存在）。",
-   "fix": "西语项目重启时：git checkout 8f90c15^ -- 西班牙语/tools/buzz.py 西班牙语/tools/test_buzz.py，让 make_audio 在输出前调用 test_buzz 的 40 篇必过加埋雷测试。"
+   "gap": "已随西语项目删除（用户 2026-10-29：跟西班牙语有关的全部删掉）；CLAUDE.md 踩坑表不再列出，编号保留为空号。",
+   "fix": ""
   },
   {
    "id": "45",
-   "title": "工具包写死本机绝对路径",
-   "stages": [
-    "发布"
-   ],
-   "projects": [
-    "西班牙语"
-   ],
+   "title": "（空号：已随西语项目删除）",
+   "stages": [],
+   "projects": [],
    "guards": [],
    "test": {},
    "status": "已不适用",
-   "gap": "build_kit.py 和 release-es-kit.yml 随西语一起删除（8f90c15）。这条通用教训没有守卫：现在 .github/ 里没有 /home/user，但 六级/tools/发布_黑板.sh、六级/tools/批量生成_黑板.sh、专八/tools/截图盲审准备.py、考研/大字版/日志/regress.sh 写死了 /home/user/university-entrance-examination。目前它们只在本机跑，一旦挪进 GitHub 流程就会失败。",
-   "fix": "在踩坑 42 的 lint 里加一条：render-*.yml 签出的 tools/ 和 */tools/ 下的 .py、.sh 文件出现 /home/user 就报错（一行 grep）。"
+   "gap": "已随西语项目删除（用户 2026-10-29：跟西班牙语有关的全部删掉）；CLAUDE.md 踩坑表不再列出，编号保留为空号。",
+   "fix": ""
   },
   {
    "id": "46",
-   "title": "开发机与老师机浏览器版本不同",
-   "stages": [
-    "截图",
-    "视频",
-    "发布"
-   ],
-   "projects": [
-    "六级",
-    "专八",
-    "考研",
-    "考研作文"
-   ],
-   "guards": [
-    {
-     "where": ".github/actions/cet6-chalk-env/action.yml: 浏览器版本断言",
-     "runs": "GitHub 渲染流程每台机器自动（5 个 render-*.yml 都用这个环境）",
-     "evidence": ".github/actions/cet6-chalk-env/action.yml:64: echo \"$v\" | grep -qx 'Chromium 141\\.0\\.7390\\.37 *' || { echo \"::error::浏览器版本不是 Chromium 141.0.7390.37：$v\"; exit 1; }"
-    },
-    {
-     "where": ".github/workflows/render-*.yml: 截图与审阅登记逐字节比对",
-     "runs": "GitHub 渲染流程每篇自动，生成视频之前",
-     "evidence": ".github/workflows/render-cet6-chalk.yml:147: sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')"
-    }
-   ],
+   "title": "（空号：已随西语项目删除）",
+   "stages": [],
+   "projects": [],
+   "guards": [],
    "test": {},
-   "status": "自动拦截（无双向验证）",
-   "gap": "critic: 原来标“已不适用”不对。西语的检查确已随 8f90c15 删除（西班牙语/ 只剩未跟踪的 __pycache__），但这一条的风险（截图用的浏览器与生成视频用的不同 → 换行不同）对 4 个大字版项目仍然存在，而且 GitHub 上有自动拦截：cet6-chalk-env 断言 Chromium 141.0.7390.37（5 个 render-*.yml 都用它），重截图后与审阅登记逐字节比对，不一致不生成视频。缺口：本机 六级/tools/大字版.py:245 只写死路径 /opt/pw-browsers/chromium、不核对版本，本机浏览器一旦升级要等 GitHub 跑一轮才发现；没有双向验证（如故意换一个版本号必须报）。",
-   "fix": "在 大字版.py 启动浏览器后断言 br.version == '141.0.7390.37'，或者把 br.version 写进 M.fingerprint，这样本机当场就能拦下；action.yml 的版本断言加一个自测：把期望版本改一位，必须 exit 1。"
+   "status": "已不适用",
+   "gap": "已随西语项目删除（用户 2026-10-29：跟西班牙语有关的全部删掉）；CLAUDE.md 踩坑表不再列出，编号保留为空号。通用教训“本机与 GitHub 浏览器不同”由踩坑 78 覆盖。",
+   "fix": ""
   },
   {
    "id": "47",
@@ -3098,8 +3070,8 @@
      "evidence": "响度检查未通过，未输出文件：意群响度…"
     },
     {
-     "where": "tools/video/verify_videos.py + 各视频引擎：音频合格证（clause-v1、sha256）",
-     "runs": "生成视频前 / 后",
+     "where": "tools/video/verify_videos.py：音频合格证（clause-v1、sha256）；各视频引擎生成后都跑，四级、高考引擎生成前也核对",
+     "runs": "生成视频后（各引擎），四级 / 高考生成前",
      "evidence": "音频合格证不合格，不生成视频"
     },
     {
@@ -3121,7 +3093,7 @@
     }
    ],
    "status": "自动拦截+有双向验证",
-   "gap": "2026-10-29 前已发布的 438 篇不追溯（用户决定）；西班牙语不在本仓库，其生成流程要单独接 segment / fine_check。",
+   "gap": "2026-10-29 前已发布的 438 篇不追溯（用户决定）。专八、中考视频引擎把 make_video.py 自身算进截图指纹，合格证由生成后的 verify_videos.check 拦（不通过删除成品）。",
    "fix": ""
   }
  ],
@@ -3143,5 +3115,5 @@
   "kaoyan-writing v5"
  ],
  "_复盘豁免说明": "防复发机制建立（2026-10-23）之前发布的批次：教训已写进 CLAUDE.md 踩坑表，不再补复盘；之后的每个批次都要复盘",
- "_没有测试的旧坑基线": 27
+ "_没有测试的旧坑基线": 26
 }
