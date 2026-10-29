@@ -62,7 +62,7 @@ assert len(LIM) == 1 and len(next(iter(LIM))) == 2, LIM
 L0, L1 = next(iter(LIM))
 
 SHORT = f'四级写作：{N}篇真题满分范文+{PG["讲义"]}页精讲+默写卡+答案'
-LONG = f'四级写作：{N}篇真题满分范文+{PG["讲义"]}页精讲+{PG["默写卡"]}页默写卡+{PG["答案"]}页答案｜每篇原题中文译文 审题 一步一步写 升格示范 高分句式｜{Y0}-{Y1}全收录 {NEW}已更新 PDF'
+LONG = f'四级写作：{N}篇真题满分范文+{PG["讲义"]}页精讲+{PG["默写卡"]}页默写卡+{PG["答案"]}页答案｜原题译文 升格示范 高分句式｜{NEW}已更新'
 
 DESC = f"""【四级英语写作 · 真题满分范文精讲】
 {Y0}—{Y1} 年大学英语四级写作真题全收录：{NE} 次考试、{N} 篇满分范文，{NEW}已更新。
@@ -102,7 +102,7 @@ TITLE_MD = f"""# 四级写作讲义 商品标题（由 标题与描述.py 生成
 
 {SHORT}
 
-## 长版（{len(LONG)} 字，给允许长标题的平台）
+## 长版（{len(LONG)} 字，小店上限 60 字，推荐用这个）
 
 {LONG}
 
@@ -134,6 +134,8 @@ if __name__ == '__main__':
     bad = desc_problems(DESC)
     if len(SHORT) > 30:
         bad.append(f'短标题 {len(SHORT)} 字 > 30')
+    if len(LONG) > 60:                  # B 站小店标题上限 60 字（用户 2026-10-29）
+        bad.append(f'长标题 {len(LONG)} 字 > 60')
     for name, t in (('标题', TITLE_MD.split('不写纸质版')[0]), ('描述', DESC_MD)):
         bad += [f'{name}出现禁用词「{w}」' for w in BANNED if w in t]
     if bad:
