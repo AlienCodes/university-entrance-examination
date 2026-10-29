@@ -84,6 +84,8 @@ with tempfile.TemporaryDirectory() as td:
     case('MP3 在检查之后被改过 → 拒绝', G.certificate_problems(tm, mp3), '被改过')
 old = json.loads((HERE.parents[2] / '考研' / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']['k48']
 case('已发布的旧成品（k48）→ 放行（不追溯）', G.certificate_problems(old), None)
+yuan = json.loads((HERE.parents[2] / '专八' / '听力' / '原文' / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']
+case('专八听力考试原声（不是 TTS）→ 放行', [e for v in yuan.values() for e in G.certificate_problems(v)], None)
 
 if bad:
     sys.exit(f'意群响度双向验证失效：{bad}')

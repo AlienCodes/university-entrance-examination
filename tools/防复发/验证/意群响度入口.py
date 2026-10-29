@@ -21,7 +21,28 @@ EXEMPT = {      # 路径 → 理由（只许减少）
     'tools/pipeline/audio_debug/tail3.py': '读音诊断：同上',
     '四级/电磁音排查/生成试听.py': '2026-10-08 电磁音排查的一次性对照（只改一个因素的原始合成），已结束，不再使用',
     '四级/音色试听/生成试听.py': '2026-10-07 选音色的一次性试听，已结束，不再使用',
+    '四级/停顿对比/生成对比.py': '2026-10-07 逗号停顿规则的一次性对照样音，已结束，不再使用',
+    'tools/tts/download_models.py': '只下载模型文件（提到 kokoro 是下载地址），不合成、不写音频',
+    '专八/听力/原文/tools/原音音轨.py': '专八听力考试原声（不是 TTS，用户 2026-10-29 定为不在范围内）；成品另有整体响度与峰值检查',
+    '专八/听力/tools/听力视频.py': '专八听力考试原声的视频音轨（不是 TTS），同上',
 }
+# 兜底式入口发现（协调会话 2026-10-29）：不只认 gaokao_tts 的调用者——调用任何 TTS 引擎、编码 MP3、把 WAV 写成文件的脚本都算音频入口
+TTS_RE = re.compile(r'\.synth\(|kokoro|supertonic|OfflineTts|\bpiper\b|edge_tts|qwen\w*tts|\bTTS\(|\.tts\(|create_speech|text_to_speech|'
+                    r'\.synthesize\(|\.generate_audio\(', re.I)
+MP3_RE = re.compile(r'encode_mp3\(|write_mp3\(|lameenc|libmp3lame|render_passage\(')
+WAV_RE = re.compile(r'(?:\bsf|soundfile|wavfile)\.write\(\s*(?!buf\b|io\.)|wave\.open\([^)]*[\'"]wb?[\'"]|write_wav\(')
+
+
+def is_audio_entry(s):
+    return bool(TTS_RE.search(s) or MP3_RE.search(s) or WAV_RE.search(s)
+                or ('ffmpeg' in s and re.search(r'\.mp3\b', s) and re.search(r'-c:a|-acodec|libmp3lame', s)))
+
+
+def wired(s):
+    """接上了意群级处理与检查：走共用的 render_passage（segment + verify_loudness + 合格证），或自己同时调 segment 与 verify_loudness / fine_check。"""
+    return 'render_passage(' in s or ('segment(' in s and re.search(r'verify_loudness\(|fine_check\(', s))
+
+
 SKIP_DIRS = ('tools/防复发/',)
 LEGACY_MAX = 438     # 2026-10-29 已发布、不追溯的成品条数（只许减少）
 
@@ -43,15 +64,20 @@ def files(over):
 def check(over=None):
     F = files(over or {})
     errs = []
-    audio = [f for f, s in F.items() if re.search(r'\.synth\(|render_passage\(|encode_mp3\(|write_mp3\(', s)]
+    audio = [f for f, s in F.items() if is_audio_entry(s)]
     for f in audio:
         if f in EXEMPT:
             continue
         s = F[f]
+        if f != 'tools/tts/gaokao_tts.py' and not wired(s):
+            errs.append(f'{f}：会合成或写出音频，却没接意群级处理与检查（render_passage，或 segment + verify_loudness）')
         if '.synth(' in s and 'segment(' not in s:
             errs.append(f'{f}：直接合成却没经过 segment（意群级电平统一）')
         if re.search(r'fade\((G\.)?level\(', s):
             errs.append(f'{f}：还在用 fade(level(…)) 旁路，没走 segment')
+    for f in EXEMPT:
+        if f not in F:
+            errs.append(f'豁免名单里的 {f} 已不存在：从 EXEMPT 删掉（豁免只许减少）')
     for f, s in F.items():
         if re.search(r'verify_loudness\([^)]*fine\s*=\s*False', s):
             errs.append(f'{f}：给 verify_loudness 传了 fine=False（关掉意群检查）')
@@ -99,6 +125,14 @@ def main():
         'G.segment(engine.synth(pron.phonemes(x, key), style, speed))', 'G.fade(G.level(engine.synth(pron.phonemes(x, key), style, speed)))')})[0], 'fade(level')
     case('新项目复制旧脚本、没走 segment → 报出', check({'新项目/tools/make_audio.py':
                                                    'seg = G.level(engine.synth(ph, style, 1.0))\nG.render_passage(p)\n'})[0], '新项目/tools/make_audio.py')
+    case('新引擎（piper）写 WAV、不接检查 → 报出', check({'新项目/tools/朗读.py':
+        'import piper, soundfile as sf\nv = piper.PiperVoice.load(m)\nsf.write(out / "a.wav", v.synthesize(t), 22050)\n'})[0], '新项目/tools/朗读.py')
+    case('新引擎用 ffmpeg 编 MP3、不接检查 → 报出', check({'新项目/tools/转码.py':
+        'import subprocess\nsubprocess.run(["ffmpeg", "-i", w, "-c:a", "libmp3lame", str(out) + ".mp3"])\n'})[0], '新项目/tools/转码.py')
+    case('新引擎接上 segment + verify_loudness → 不报', [e for e in check({'新项目/tools/朗读2.py':
+        'import piper\nx = G.segment(v.synthesize(t))\nrep, errs = G.verify_loudness(mp3, items, -16.0)\nG.write_mp3(o, x)\n'})[0] if '朗读2' in e], None)
+    case('只写进内存缓冲区（核查用）→ 不算入口', [e for e in check({'新项目/tools/核查.py':
+        'import io, soundfile as sf\nbuf = io.BytesIO()\nsf.write(buf, x, sr, format="WAV")\n'})[0] if '核查.py' in e], None)
     case('有人传 fine=False → 报出', check({'中考/tools/x.py': 'verify_loudness(mp3, items, -16.0, fine=False)'})[0], 'fine=False')
     g = (R / 'tools/tts/gaokao_tts.py').read_text('utf-8')
     case('segment 去掉 even → 报出', check({'tools/tts/gaokao_tts.py': g.replace('return fade(level_clause(even(x)))', 'return fade(level_clause(x))')})[0], 'even')

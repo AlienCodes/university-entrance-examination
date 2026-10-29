@@ -347,6 +347,9 @@ def legacy_key(tm):
 
 
 def is_legacy(tm):
+    """不适用意群级处理与合格证的音频：2026-10-29 前已发布的 TTS 成品（旧成品清单），以及考试原声（专八听力，source='原音'，不是 TTS）。"""
+    if tm.get('source') == '原音':
+        return True
     return LEGACY.exists() and legacy_key(tm) in set(json.loads(LEGACY.read_text('utf-8'))['keys'])
 
 
