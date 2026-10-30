@@ -61,6 +61,14 @@ def inner_parts(x, sr=SR, min_sil=0.15, db=-42):
     return [(a * 0.01, b * 0.01) for a, b in merged]
 
 
+# 每个意群的峰值上限（dBFS）：意群统一到 CLAUSE_LUFS（−23）后，母带整体加约 +7 dB 到 −16 LUFS，限幅器门槛 −1.5 dBFS，
+# 所以意群这一级把峰值先限到 −23 + 14.5 = −8.5，母带的限幅器几乎不用再动手。
+# 2026-10-30 实测：Qwen3-TTS 的瞬态比 Kokoro 尖，不这样做时母带限幅器要压掉 6.4 dB、约 4% 的采样被压 > 1 dB，
+# 尖峰多的意群被压得多，成品里比相邻意群小 1.3—1.8 LU（意群检查报错）。用的是共用处理链同一个前瞻限幅器 G.limit，只是挪到意群这一级、
+# 并在之后再按 BS.1770 统一一次（level_clause）。
+PEAK_CLAUSE = G.CLAUSE_LUFS + 14.5
+
+
 def per_clause(x, sr=SR, min_dur=0.5):
     """每个意群各过一次 G.segment（段内电平统一 + BS.1770 统一 + 淡入淡出），意群之间的停顿原样保留。
     与共用处理链的设计一致：Kokoro 按逗号逐个意群合成、每个意群过一次 segment；Qwen 一次合成一整段（含几个意群），
@@ -81,7 +89,7 @@ def per_clause(x, sr=SR, min_dur=0.5):
         if i0 > prev:
             out.append(np.zeros(i0 - prev, np.float32))
             t += (i0 - prev) / sr
-        y = G.segment(x[i0:i1])
+        y = G.level_clause(G.limit(G.segment(x[i0:i1]), sr, PEAK_CLAUSE))
         parts.append((t + pad if i0 > 0 else t, t + len(y) / sr - (pad if i1 < len(x) else 0)))
         out.append(y)
         t += len(y) / sr
