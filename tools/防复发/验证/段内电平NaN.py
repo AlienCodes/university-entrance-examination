@@ -1,12 +1,11 @@
 """双向验证：段内电平统一 even() 遇到数字静音不出 NaN（踩坑 88）。
 样本：Qwen3-TTS 真实合成的一段（段首约 2000 个采样纯零），2026-10-30 高考语法填空选型时整段变 NaN、成品报“整体响度 −inf”。
-  ① 修正前的 even（从 git 取 2026-10-30 修正前的 gaokao_tts.py，故意把错误放回去）→ 必须出 NaN（证明样本能触发）；
+  ① 修正前的 even（从现在的源码临时还原两处旧写法，故意把错误放回去；不依赖 git 历史）→ 必须出 NaN（证明样本能触发）；
   ② 现在的 even / segment → 全部有限；
   ③ 从没触发过的普通音频（意群响度样本 k48 的前 3 秒）：现在与修正前逐字节相同（修正只改了原来会出 NaN 的地方）；
   ④ segment 遇到 NaN 输入当场报错，不往下传。
     python3 tools/防复发/验证/段内电平NaN.py"""
 import importlib.util
-import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -19,14 +18,20 @@ ROOT = HERE.parents[2]
 sys.path.insert(0, str(ROOT / 'tools' / 'tts'))
 import gaokao_tts as G  # noqa: E402
 
-OLD_REV = '5041d1d'   # 修正前最后一个提交
 bad = []
 x, sr = sf.read(str(HERE / '样本' / '段内电平NaN_qwen段首静音.flac'), dtype='float32')
 assert sr == G.SR, sr
 
-old_src = subprocess.run(['git', 'show', f'{OLD_REV}:tools/tts/gaokao_tts.py'], cwd=ROOT, capture_output=True, check=True).stdout
+# 把错误放回去：从现在的源码临时还原那两处旧写法（不依赖 git 历史，CI 只检出最新一个提交）
+src = (ROOT / 'tools' / 'tts' / 'gaokao_tts.py').read_text('utf-8')
+old_src = src
+for new, old in [("10 * np.log10(np.maximum(num[idx], 1e-20) / den[idx])", "10 * np.log10(num[idx] / den[idx])"),
+                 ("10 * np.log10(np.maximum(uniform_filter1d(e, 5, mode='nearest'), 1e-20))", "10 * np.log10(uniform_filter1d(e, 5, mode='nearest'))"),
+                 ("    if not np.isfinite(y).all():", "    if False:")]:
+    assert new in old_src, f'修正的写法变了，还原不了（更新这个验证）：{new}'
+    old_src = old_src.replace(new, old)
 d = Path(tempfile.mkdtemp())
-(d / 'gaokao_tts_old.py').write_bytes(old_src)
+(d / 'gaokao_tts_old.py').write_text(old_src, 'utf-8')
 spec = importlib.util.spec_from_file_location('gaokao_tts_old', d / 'gaokao_tts_old.py')
 OLD = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(OLD)
