@@ -3282,6 +3282,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "别的项目（Kokoro）的成品还没接 breath_check；新声音（用户本人录音克隆）同样走 prep / checks",
    "fix": ""
+  },
+  {
+   "id": "90",
+   "title": "shell 脚本用了中文变量名（高考语法填空/tools/全片.sh 的 稿=$1）：bash 不认，脚本一启动就 command not found，从没跑起来过（2026-10-30 14:31）",
+   "stages": [
+    "流程"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/验证/sh变量名.py 扫仓库全部 *.sh",
+     "runs": "提交前防复发自检、GitHub fangfufa-check",
+     "evidence": "赋值、$名、${名、local/export/read 出现非 ASCII 变量名"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/sh变量名.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

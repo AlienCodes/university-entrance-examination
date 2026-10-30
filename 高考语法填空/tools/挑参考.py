@@ -31,20 +31,26 @@ VOICE_DIR = ROOT / '高考语法填空/tts/音色'
 RELEASE = 'https://github.com/aliencodes/university-entrance-examination/releases/download/user-voice'
 
 
+def seams(x, min_run=0.005):
+    """剪辑接缝：连续数字零（|x| < 1e-6）≥ 5 ms 的段 [(起样本, 止样本)]。用户自己剪掉呼吸后留下的整段零静音就是这种。"""
+    z = np.r_[0, (np.abs(x) < 1e-6).astype(np.int8), 0]
+    d = np.diff(z)
+    st, en = np.where(d == 1)[0], np.where(d == -1)[0]
+    k = (en - st) >= int(min_run * SR)
+    return list(zip(st[k], en[k]))
+
+
 def build_ref(x, spans):
-    """录音（decode 的 24 kHz）按 spans 拼成参考：句间停顿 ≤ 0.6 秒、去呼吸（克隆会学参考里的换气）、−20 LUFS、峰值 ≤ 0.9。
-    挑参考 与 qwen_synth（Actions 上合成时）都用它，参考片段不另存音频。"""
-    pieces = []
-    for k, (s, e) in enumerate(spans):
-        pieces.append(x[s:e])
-        if k + 1 < len(spans):
-            pieces.append(np.zeros(min(spans[k + 1][0] - e, int(0.6 * SR)), np.float32))
-    ref = BR.debreath(np.concatenate(pieces), SR)[0]
+    """录音（decode 的 24 kHz）里从第一句开头到最后一句结尾的原始连续音频（不剪不拼，句间停顿与底噪原样保留），−20 LUFS、峰值 ≤ 0.9。
+    挑参考 与 qwen_synth（Actions 上合成时）都用它，参考片段不另存音频。片段里有剪辑接缝或呼吸就报错（不让模型学到断口和换气）。"""
+    ref = np.array(x[spans[0][0]:spans[-1][1]], dtype=np.float32)
+    if seams(ref):
+        raise RuntimeError(f'参考片段里有剪辑接缝 {seams(ref)[:3]}')
     ref = (ref * 10 ** ((-20 - lufs(ref)) / 20)).astype(np.float32)
     ref = ref / max(1.0, float(np.abs(ref).max()) / 0.9)
     left = BR.breath_check(np.concatenate([np.zeros(SR // 4, np.float32), ref, np.zeros(SR // 4, np.float32)]), SR)
     if left:
-        raise RuntimeError(f'参考片段去呼吸后仍有呼吸 {left}')
+        raise RuntimeError(f'参考片段里有呼吸 {left}')
     return ref
 
 
@@ -59,7 +65,7 @@ def lufs(x):
     return pyln.Meter(SR).integrated_loudness(x.astype(np.float64))
 
 
-def utterances(x, min_pause=0.35):
+def utterances(x, min_pause=0.25):
     lvl, per, H, W = BR._frames(x, SR)
     ref = np.percentile(lvl, 99)
     floor = np.percentile(lvl, 10)
@@ -109,7 +115,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--录音', nargs='+', required=True)
     ap.add_argument('--名', required=True)
-    ap.add_argument('--秒', nargs=2, type=float, default=[12, 25])
+    ap.add_argument('--秒', nargs=2, type=float, default=[4.5, 10])
+    ap.add_argument('--个数', type=int, default=3)
     a = ap.parse_args()
     asr = ASR()
     U = []
@@ -117,12 +124,16 @@ def main():
         x = decode(p)
         x = (x * 10 ** ((-23 - lufs(x)) / 20)).astype(np.float32)
         spans, lvl, H = utterances(x)
+        cut = np.zeros(len(x) + 1, np.int8)                  # 接缝样本的前缀和：窗口里有没有接缝 O(1) 判断
+        for s0, e0 in seams(x):
+            cut[s0 + 1:e0 + 1] = 1
+        cut = np.cumsum(cut, dtype=np.int64)
         for s, e in spans:
             y = x[s:e]
             pre = x[max(0, s - int(0.3 * SR)):s]
             text, tags = asr(y)
             f0, f0sd = f0_median(y)
-            U.append({'file': k, 's': s, 'e': e, 'x': x, 'text': text, 'tags': tags,
+            U.append({'file': k, 's': s, 'e': e, 'x': x, 'cut': cut, 'text': text, 'tags': tags,
                       'clip': int((np.abs(y) > 0.98).sum()),
                       'floor': float(10 * np.log10(np.mean(pre ** 2) + 1e-20)) if len(pre) > SR // 10 else -90.0,
                       'breath': len(BR.breath_check(np.concatenate([np.zeros(SR // 4, np.float32), y * 10 ** (7 / 20),
@@ -141,7 +152,9 @@ def main():
             bad.append('削波')
         if not any(t == 'Speech' for t in u['tags']) or any(t in ('Laughter', 'Cough', 'BGM', 'Applause', 'Sneeze', 'Cry') for t in u['tags']):
             bad.append(f"事件 {u['tags']}")
-        if u['floor'] > -55:
+        if u['breath']:
+            bad.append('呼吸')
+        if u['floor'] > -50:
             bad.append(f"底噪 {u['floor']:.0f}")
         if not u['f0'] or abs(12 * np.log2(u['f0'] / g_f0)) > 3:
             bad.append('基频异常')
@@ -164,10 +177,14 @@ def main():
             us = U[i:j + 1]
             if any(ok(u) for u in us):
                 continue
+            m = int(0.04 * SR)
+            c = U[i]['cut']
+            if c[min(len(c) - 1, U[j]['e'] + m)] - c[max(0, U[i]['s'] - m)]:
+                continue                                       # 窗口（两头各多 0.04 秒）里有剪辑接缝
             text = ''.join(u['text'] for u in us)
             mix = bool(re.search(r'[A-Za-z]{2,}', text)) and bool(re.search(r'[一-鿿]', text))
             score = (-np.mean([u['floor'] for u in us]) / 10 - 2 * sum(u['breath'] for u in us)
-                     + float(np.mean([u['f0sd'] or 0 for u in us])) + (1.5 if mix else 0) - abs(dur - 18) / 10)
+                     + float(np.mean([u['f0sd'] or 0 for u in us])) + (1.5 if mix else 0) - abs(dur - 8) / 10)
             W.append((round(float(score), 2), i, j, dur, text))
     if not W:
         rej = {}
@@ -176,23 +193,29 @@ def main():
                 rej[b.split(' ')[0]] = rej.get(b.split(' ')[0], 0) + 1
         raise SystemExit(f'没有合格的 {a.秒[0]}—{a.秒[1]} 秒窗口（不放宽条件）。各句不合格原因计数：{rej}')
     W.sort(reverse=True)
-    score, i, j, dur, text = W[0]
-    spans = [[U[k]['s'], U[k]['e']] for k in range(i, j + 1)]
-    src = Path(a.录音[U[i]['file']])
-    ref = build_ref(decode(src), spans)          # 与合成时同一个函数、同一份原始解码，先在本机试一遍
+    picked = []
+    for w in W:                                        # 前 N 名，互不重叠
+        if all(w[2] < p[1] or w[1] > p[2] for p in picked):
+            picked.append(w)
+        if len(picked) == a.个数:
+            break
     VOICE_DIR.mkdir(parents=True, exist_ok=True)
-    meta = {'说明': f'用户本人录音（Release user-voice 的 {src.name}）里程序挑出的参考片段（挑参考.py：无削波、全是语音、底噪低、基频一致、语速正常，'
-                  '按底噪、呼吸、语调起伏打分）。不另存音频：合成时 qwen_synth 从 Release 下载录音，用 挑参考.build_ref 按 spans 现做'
-                  '（去呼吸、停顿 ≤ 0.6 秒、−20 LUFS）。用户 2026-10-30 同意声音公开使用。',
-            'source': src.name, 'source_url': f'{RELEASE}/{src.name}', 'spans': spans, 'ref_text': text,
-            'window_sec': [round(U[i]['s'] / SR, 2), round(U[j]['e'] / SR, 2)], 'score': score, 'sec': round(len(ref) / SR, 2)}
-    (VOICE_DIR / f'{a.名}.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
-    lines = [f'# 参考片段挑选（{a.名}）', '', f'全录音 {len(U)} 句，基频中位数 {g_f0:.0f} Hz，合格窗口 {len(W)} 个。前 5 名：', '',
+    for n, (score, i, j, dur, text) in enumerate(picked, 1):
+        spans = [[int(U[i]['s']) - int(0.03 * SR), int(U[j]['e']) + int(0.03 * SR)]]   # 两头各留 30 ms（窗口 ±0.04 秒内无接缝）
+        src = Path(a.录音[U[i]['file']])
+        ref = build_ref(decode(src), spans)          # 与合成时同一个函数、同一份原始解码，先在本机试一遍
+        meta = {'说明': f'用户本人录音（Release user-voice 的 {src.name}）里程序挑出的参考片段（挑参考.py：无削波、全是语音、没有剪辑接缝、'
+                      '没有呼吸、底噪低、基频一致、语速正常，按底噪、语调起伏、中英混说打分）。不另存音频：合成时 qwen_synth 从 Release 下载录音，'
+                      '用 挑参考.build_ref 按 spans 取原始连续音频（不剪不拼）。用户 2026-10-30 同意声音克隆与公开使用。',
+                'source': src.name, 'source_url': f'{RELEASE}/{src.name}', 'spans': spans, 'ref_text': text,
+                'window_sec': [round(U[i]['s'] / SR, 2), round(U[j]['e'] / SR, 2)], 'score': score, 'sec': round(len(ref) / SR, 2)}
+        (VOICE_DIR / f'{a.名}_{n}.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
+        print(f'参考片段 {n}：{src.name} {meta["window_sec"]}（{meta["sec"]} 秒，分 {score}）ref_text：{text}')
+    lines = [f'# 参考片段挑选（{a.名}）', '', f'全录音 {len(U)} 句，基频中位数 {g_f0:.0f} Hz，合格窗口 {len(W)} 个。前 10 名（前 {len(picked)} 个互不重叠的已选用）：', '',
              '| 分 | 文件 | 起—止（秒） | 长 | 文字 |', '|---|---|---|---|---|']
-    for sc, i2, j2, d2, t2 in W[:5]:
+    for sc, i2, j2, d2, t2 in W[:10]:
         lines.append(f"| {sc} | {Path(a.录音[U[i2]['file']]).name} | {U[i2]['s'] / SR:.1f}—{U[j2]['e'] / SR:.1f} | {d2:.1f} | {t2} |")
     (VOICE_DIR / f'{a.名}.挑选.md').write_text('\n'.join(lines) + '\n', 'utf-8')
-    print(f'参考片段：{src.name} {meta["window_sec"]}（{meta["sec"]} 秒，分 {score}）\nref_text：{text}')
 
 
 if __name__ == '__main__':

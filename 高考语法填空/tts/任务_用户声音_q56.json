@@ -1,0 +1,32 @@
+{
+ "说明": "第 56 题样片：用户本人声音（两段参考各一个候选）× 3 次，稿是正式讲解稿的 q56 各段；Actions 上直接走完整处理链（含去呼吸 + 呼吸检查）",
+ "script": "高考语法填空/稿/2026_新课标Ⅰ卷.json",
+ "only": [
+  "q56a",
+  "q56b",
+  "q56c",
+  "q56d",
+  "q56e",
+  "q56f",
+  "q56g"
+ ],
+ "takes": [
+  1,
+  2,
+  3
+ ],
+ "candidates": [
+  {
+   "id": "user1",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_1.json"
+  },
+  {
+   "id": "user2",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json"
+  }
+ ]
+}

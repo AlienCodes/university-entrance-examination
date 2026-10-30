@@ -54,6 +54,9 @@ def main():
     torch.set_num_threads(4)
     c, take, part = JOBS[a.shard]
     segs = json.loads((ROOT / task['script']).read_text('utf-8'))['segments']
+    if task.get('only'):                  # 只合成这几段（如第 56 题样片 q56a—q56g）
+        segs = [s for s in segs if s['id'] in task['only']]
+        assert len(segs) == len(task['only']), '任务的 only 里有稿中没有的段'
     nparts = task.get('parts', 1)
     segs = [s for i, s in enumerate(segs) if i % nparts == part]
     od = Path(a.out) / c['id'] / f'take{take}'
