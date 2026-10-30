@@ -73,7 +73,15 @@ def main():
         prompt = m.create_voice_clone_prompt(ref_audio=(w[0], sr), ref_text=c['design_text'])
     elif c['mode'] == 'clone_ref':
         v = json.loads((ROOT / c['voice']).read_text('utf-8'))
-        rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
+        if 'source_url' in v:            # 用户本人录音：从 Release 下载，按 spans 现做参考（挑参考.build_ref，与本机挑选时同一个函数）
+            import subprocess
+            import tempfile
+            import 挑参考 as PR
+            src = Path(tempfile.mkdtemp()) / v['source']
+            subprocess.run(['curl', '-sSfL', '-o', str(src), v['source_url']], check=True)
+            rw, rsr = PR.build_ref(PR.decode(src), v['spans']), PR.SR
+        else:
+            rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         prompt = m.create_voice_clone_prompt(ref_audio=(rw, rsr), ref_text=v['ref_text'])
     else:
