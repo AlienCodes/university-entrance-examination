@@ -40,9 +40,48 @@ def seams(x, min_run=0.005):
     return list(zip(st[k], en[k]))
 
 
-def build_ref(x, spans):
+def fill_seams(x, seed=0):
+    """把剪辑接缝（整段数字零）填上这份录音自己的底噪：取全录音最安静的非零帧（底噪）求平均频谱，按它给白噪声整形，
+    电平 = 底噪帧的中位 RMS，两头 5 ms 渐变。只用在参考录音上（让参考“无接缝”、能挑 20—30 秒连续片段），不进成品。
+    固定种子：本机挑选与 Actions 上合成时现做的参考逐样本相同。"""
+    x = np.array(x, dtype=np.float32, copy=True)
+    S = seams(x)
+    if not S:
+        return x
+    H = 480
+    n = len(x) // H
+    fr = x[:n * H].reshape(n, H).astype(np.float64)
+    rms = np.sqrt(np.mean(fr ** 2, 1))
+    nz = rms > 1e-7
+    lv = 20 * np.log10(rms[nz])
+    fl = np.percentile(lv, 5)
+    quiet = np.where(nz & (20 * np.log10(rms + 1e-12) < fl + 4))[0]
+    spec = np.mean([np.abs(np.fft.rfft(fr[i] * np.hanning(H))) ** 2 for i in quiet[:4000]], 0)
+    rng = np.random.default_rng(seed)
+    total = sum(e - s for s, e in S)
+    w = rng.standard_normal(total + 4 * H)
+    W = np.fft.rfft(w)
+    shape = np.interp(np.fft.rfftfreq(len(w)), np.fft.rfftfreq(H), np.sqrt(spec))
+    tone = np.fft.irfft(W * shape, len(w))
+    tone = tone / (np.sqrt(np.mean(tone ** 2)) + 1e-20) * float(np.median(rms[quiet]))
+    fd = int(0.005 * SR)
+    pos = 0
+    for s, e in S:
+        seg = tone[pos:pos + (e - s)].astype(np.float32)
+        pos += e - s
+        k = min(fd, len(seg) // 2)
+        if k:
+            seg[:k] *= np.linspace(0, 1, k, dtype=np.float32)
+            seg[-k:] *= np.linspace(1, 0, k, dtype=np.float32)
+        x[s:e] = seg
+    return x
+
+
+def build_ref(x, spans, fill=False):
     """录音（decode 的 24 kHz）里从第一句开头到最后一句结尾的原始连续音频（不剪不拼，句间停顿与底噪原样保留），−20 LUFS、峰值 ≤ 0.9。
     挑参考 与 qwen_synth（Actions 上合成时）都用它，参考片段不另存音频。片段里有剪辑接缝或呼吸就报错（不让模型学到断口和换气）。"""
+    if fill:
+        x = fill_seams(x)
     ref = np.array(x[spans[0][0]:spans[-1][1]], dtype=np.float32)
     if seams(ref):
         raise RuntimeError(f'参考片段里有剪辑接缝 {seams(ref)[:3]}')
@@ -126,11 +165,14 @@ def main():
     ap.add_argument('--名', required=True)
     ap.add_argument('--秒', nargs=2, type=float, default=[4.5, 10])
     ap.add_argument('--个数', type=int, default=3)
+    ap.add_argument('--补底噪', action='store_true', help='先把剪辑接缝填上底噪（只用于参考），再挑')
     a = ap.parse_args()
     asr = ASR()
     U = []
     for k, p in enumerate(a.录音):
         x = decode(p)
+        if a.补底噪:
+            x = fill_seams(x)
         x = (x * 10 ** ((-23 - lufs(x)) / 20)).astype(np.float32)
         spans, lvl, H = utterances(x)
         cut = np.zeros(len(x) + 1, np.int8)                  # 接缝样本的前缀和：窗口里有没有接缝 O(1) 判断
@@ -212,11 +254,11 @@ def main():
     for n, (score, i, j, dur, text) in enumerate(picked, 1):
         spans = [[int(U[i]['s']) - int(0.03 * SR), int(U[j]['e']) + int(0.03 * SR)]]   # 两头各留 30 ms（窗口 ±0.04 秒内无接缝）
         src = Path(a.录音[U[i]['file']])
-        ref = build_ref(decode(src), spans)          # 与合成时同一个函数、同一份原始解码，先在本机试一遍
+        ref = build_ref(decode(src), spans, fill=a.补底噪)   # 与合成时同一个函数、同一份原始解码，先在本机试一遍
         meta = {'说明': f'用户本人录音（Release user-voice 的 {src.name}）里程序挑出的参考片段（挑参考.py：无削波、全是语音、没有剪辑接缝、'
                       '没有呼吸、底噪低、基频一致、语速正常，按底噪、语调起伏、中英混说打分）。不另存音频：合成时 qwen_synth 从 Release 下载录音，'
                       '用 挑参考.build_ref 按 spans 取原始连续音频（不剪不拼）。用户 2026-10-30 同意声音克隆与公开使用。',
-                'source': src.name, 'source_url': f'{RELEASE}/{src.name}', 'spans': spans, 'ref_text': text,
+                'source': src.name, 'source_url': f'{RELEASE}/{src.name}', 'spans': spans, 'ref_text': text, 'fill_seams': bool(a.补底噪),
                 'window_sec': [round(U[i]['s'] / SR, 2), round(U[j]['e'] / SR, 2)], 'score': score, 'sec': round(len(ref) / SR, 2)}
         (VOICE_DIR / f'{a.名}_{n}.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
         print(f'参考片段 {n}：{src.name} {meta["window_sec"]}（{meta["sec"]} 秒，分 {score}）ref_text：{text}')

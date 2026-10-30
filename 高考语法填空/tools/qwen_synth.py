@@ -82,7 +82,9 @@ def main():
             import 挑参考 as PR
             src = Path(tempfile.mkdtemp()) / v['source']
             subprocess.run(['curl', '-sSfL', '--retry', '5', '--retry-all-errors', '-o', str(src), v['source_url']], check=True)
-            rw, rsr = PR.build_ref(PR.decode(src), v['spans']), PR.SR
+            rw, rsr = PR.build_ref(PR.decode(src), v['spans'], fill=v.get('fill_seams', False)), PR.SR
+            src.unlink()                  # 录音 252 MB：做完参考就删（本机预演曾在 /tmp 留下 6 份，磁盘写满）
+            src.parent.rmdir()
         else:
             rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
