@@ -43,6 +43,11 @@ def main():
         return
     import numpy as np
     import soundfile as sf
+    import sys
+    sys.path[:0] = [str(ROOT / 'tools/tts'), str(Path(__file__).parent)]
+    import gaokao_tts as G          # 处理链的依赖开头就导入：缺什么第一秒就停，不等合成完（铁律 15）
+    import 讲解音频 as J
+    import pyloudnorm, soxr, lameenc, scipy.signal  # noqa: F401
     import torch
     from qwen_tts import Qwen3TTSModel
     torch.set_num_threads(4)
@@ -89,10 +94,6 @@ def main():
         print(f"{c['id']} take{take} {s['id']} {len(x) / sr:.1f}s 音频，用时 {el:.0f}s", flush=True)
     meta['total_compute'] = round(time.time() - t0, 1)
     if nparts == 1:                       # 整份稿在这一台机器上：就地走完整处理链
-        import sys
-        sys.path[:0] = [str(ROOT / 'tools/tts'), str(Path(__file__).parent)]
-        import gaokao_tts as G
-        import 讲解音频 as J
         a, items = J.build(segs, od)
         f0, db = J.tone_check(a, G.OUT_SR, items)
         mx, top = J.tonal_scan(a, G.OUT_SR, items)
