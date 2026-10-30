@@ -30,7 +30,7 @@ echo "已触发；等 Actions 合成"
 R=""
 for k in $(seq 60); do
   git fetch -q origin gram-tts-out || true
-  R=$(git ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep '任务_用户声音-' | sort -V | tail -1 || true)
+  R=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep '任务_用户声音-' | sort -V | tail -1 || true)
   if [ -n "$R" ]; then break; fi
   sleep 120
 done

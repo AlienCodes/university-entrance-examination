@@ -3337,6 +3337,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "92",
+   "title": "git 输出里的中文路径默认被转义（core.quotepath），等合成结果的脚本 grep 中文永远匹配不上，结果 16:33 就到了却一直空等",
+   "stages": [
+    "流程"
+   ],
+   "projects": [
+    "全部"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/验证/sh中文路径.py 扫仓库全部 *.sh",
+     "runs": "提交前防复发自检、GitHub fangfufa-check",
+     "evidence": "同一行 git ls-tree / ls-files / --name-only 输出 grep 中文却没写 -c core.quotepath=false"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/sh中文路径.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

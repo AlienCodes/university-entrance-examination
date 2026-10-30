@@ -7,8 +7,8 @@ cd "$(dirname "$0")/../.."
 PY=/opt/ttsenv/bin/python
 BR=claude/epic-edison-4gkcfb
 T=$(mktemp -d)
-latest() { git ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "$1" | sort -V | tail -1 || true; }
-A0=$(git fetch -q origin gram-tts-out; latest '任务_用户声音-'); B0=$(latest '任务_用户声音_q56-')
+latest() { git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "$1" | sort -V | tail -1 || true; }
+A0="${A0-}"; B0="${B0-}"   # 已有的旧结果（默认无：直接用最新的）
 A=""; B=""
 for k in $(seq 75); do
   git fetch -q origin gram-tts-out || true
