@@ -393,6 +393,10 @@ def verify(mp4, mp3, tm, pngdir, ids, fr):
     f0, mx = tone_check(a, 48000, items)
     if mx > BUZZ_MAX_DB:
         errs.append(f'电磁音：{f0} Hz 高出周围 {mx} dB')
+    if any('‖' in it.get('text', '') or '？' in it.get('text', '') for it in items):   # 标记边界停顿、问句尾音（视频音轨上独立量）
+        import 讲解节奏
+        _, rerr = 讲解节奏.check(a, 48000, items, {it['id']: it['text'] for it in items})
+        errs += ['视频音轨节奏：' + x for x in rerr]
     import 去呼吸
     br = 去呼吸.breath_check(a, 48000)
     if br:

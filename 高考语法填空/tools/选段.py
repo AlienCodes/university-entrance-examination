@@ -74,21 +74,28 @@ def candidates(segs, run, ears, only=None):
             n_zh = len(re.findall(r'[一-鿿]', s['text']))
             dur = len(x) / G.SR
             pace_bad = s['lang'] == 'Chinese' and n_zh and not (0.12 <= dur / max(n_zh + 2 * len(re.findall('[A-Za-z]+', s['text'])), 1) <= 0.4)
-            score = err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
+            rise = None
+            if s['text'].rstrip().endswith('？'):             # 问句：尾音轻飘上扬的那次不要（讲解节奏.RISE_MAX）
+                import 讲解节奏 as NJ
+                y = G.trim(x)
+                rise, _ = NJ.tail_rise(y, G.SR, len(y) / G.SR)
+            score = (err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
+                     + (30 + 5 * rise if rise is not None and rise > NJ.RISE_MAX else 0))
             rows.append({'take': t.name, 'err': err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
-                         'dur': round(dur, 2), 'pace_bad': bool(pace_bad), 'score': round(score, 2)})
+                         'dur': round(dur, 2), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
+                         'score': round(score, 2)})
         rows.sort(key=lambda r: r['score'])
         table[s['id']] = rows
         print(s['id'], [(r['take'], r['score'], r['err']) for r in rows], flush=True)
     return table
 
 
-def assemble(segs, run, table, out, lead, tail, max_rounds=8):
+def assemble(segs, U, run, table, out, lead, tail, max_rounds=12):
     pick = {sid: 0 for sid in table}
     for rnd in range(max_rounds + 1):
         tmp = Path(tempfile.mkdtemp(prefix='xd_'))
         try:
-            for s in segs:
+            for s in U:
                 r = table[s['id']][pick[s['id']]]
                 shutil.copy(Path(run) / r['take'] / f"{s['id']}.wav", tmp / f"{s['id']}.wav")
             try:
@@ -116,17 +123,19 @@ def blame(a, items, msg):
     import 响度细查 as RX
     ts = [float(x) for x in re.findall(r'（(\d+\.\d+)s', msg)]
     out = []
+    us = [u for it in items for u in it.get('units', [it])]
     for t in ts:
-        for i, it in enumerate(items):
+        for i, it in enumerate(us):
             if it['start'] - 0.3 <= t <= it['end'] + 0.3:
                 out.append(it['id'])
-                if '比相邻' in msg and i + 1 < len(items):
-                    out.append(items[i + 1]['id'])      # 相邻意群小：也可能是后一段太响
+                if ('比相邻' in msg or '停顿' in msg) and i + 1 < len(us):
+                    out.append(us[i + 1]['id'])      # 相邻意群小 / 停顿不够：也可能在后一小段
                 break
     if not out:
         st = RX.clause_stats(RX.clause_loudness(a.astype(np.float64), G.OUT_SR, items))
         worst = sorted(st, key=lambda r: r['d_nb'])[:2]
         out = [items[r['k'] - 1]['id'] for r in worst]
+        out = [u['id'] for x in out for it in items if it['id'] == x for u in it.get('units', [it])]
     return list(dict.fromkeys(out))
 
 
@@ -143,13 +152,14 @@ def main():
     if a.only:
         segs = [s for s in segs if s['id'] in a.only]
     ears = E.Ears()
-    table = candidates(segs, a.run, ears)
-    pick, meta = assemble(segs, a.run, table, a.out, a.lead, a.tail)
+    U = J.expand(segs)                    # 稿里 ‖ 处的小段各自选优（讲解音频.units）
+    table = candidates(U, a.run, ears)
+    pick, meta = assemble(segs, U, a.run, table, a.out, a.lead, a.tail)
     chosen = {sid: dict(table[sid][i], rank=i) for sid, i in pick.items()}
     out = Path(a.out)
     out.with_suffix('.选段.json').write_text(json.dumps({'run': str(a.run), 'chosen': chosen, 'all': table}, ensure_ascii=False, indent=1), 'utf-8')
     lines = [f"# 识别差异（{out.name}）", '', '每段最终选用那次的识别差异（同音字已按拼音放过；剩下的逐条人工核对）。', '']
-    for s in segs:
+    for s in U:
         c = chosen[s['id']]
         if c['diff']:
             lines.append(f"- {s['id']}（{c['take']}，错 {c['err']}）：{'；'.join(c['diff'])}")

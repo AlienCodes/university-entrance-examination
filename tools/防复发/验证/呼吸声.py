@@ -92,7 +92,7 @@ def calls(path, func, name):
     return False
 
 
-need = [('高考语法填空/tools/讲解音频.py', 'prep', 'debreath'), ('高考语法填空/tools/讲解音频.py', 'build', 'prep'),
+need = [('高考语法填空/tools/讲解音频.py', 'prep', 'debreath'), ('高考语法填空/tools/讲解音频.py', '_build_units', 'prep'), ('高考语法填空/tools/讲解音频.py', 'build', '_build_units'),
         ('高考语法填空/tools/选段.py', 'seg_score', 'prep'), ('高考语法填空/tools/讲解音频.py', 'checks', 'breath_check'),
         ('高考语法填空/tools/讲解音频.py', 'render', 'checks'), ('高考语法填空/tools/qwen_synth.py', 'main', 'checks'),
         ('高考语法填空/tools/讲解视频.py', 'verify', 'breath_check')]

@@ -81,7 +81,7 @@ def main():
             import tempfile
             import 挑参考 as PR
             src = Path(tempfile.mkdtemp()) / v['source']
-            subprocess.run(['curl', '-sSfL', '-o', str(src), v['source_url']], check=True)
+            subprocess.run(['curl', '-sSfL', '--retry', '5', '--retry-all-errors', '-o', str(src), v['source_url']], check=True)
             rw, rsr = PR.build_ref(PR.decode(src), v['spans']), PR.SR
         else:
             rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
@@ -90,7 +90,7 @@ def main():
     else:
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         print('支持的音色', m.get_supported_speakers(), '语言', m.get_supported_languages(), flush=True)
-    for s in segs:
+    for s in J.expand(segs):              # 稿里 ‖ 处拆成小段分别合成（讲解音频.units）
         torch.manual_seed(take * 1000 + int(''.join(ch for ch in s['id'] if ch.isdigit()) or 0))
         ts = time.time()
         if c['mode'] in ('design_clone', 'clone_ref'):

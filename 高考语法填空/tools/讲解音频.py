@@ -161,8 +161,42 @@ def checks(a, items):
     return f0, db
 
 
+MARK = '‖'
+PAUSE_MARK = 0.55      # 稿里 ‖ 处的静音（秒）：用户录音句间停顿 10—90% 分位 0.18—0.46 秒，标记边界要明显停一下（讲解节奏.py）
+
+
+def units(seg):
+    """一段 → 小段：稿里 ‖ 标出必须停顿的边界（说完词义、说完一步推理、答案前、问句后），每个小段单独合成、单独选优，
+    拼接时中间放 PAUSE_MARK 秒真静音（停顿由构造保证；讲解节奏.check 用识别对齐独立量）。没有 ‖ 的段原样一个小段。"""
+    ps = [p.strip() for p in seg['text'].split(MARK) if p.strip()]
+    if len(ps) <= 1:
+        return [dict(seg, text=seg['text'].replace(MARK, ''))]
+    return [dict(seg, id=f"{seg['id']}~{k}", text=p, parent=seg['id'],
+                 gap=PAUSE_MARK if k < len(ps) else seg.get('gap', 0.6)) for k, p in enumerate(ps, 1)]
+
+
+def expand(segs):
+    return [u for s in segs for u in units(s)]
+
+
 def build(segs, wavdir, lead=1.5, tail=2.0):
-    """返回 (48 kHz 成品, items)。items 每段一条：start/end/parts（秒，成品时间轴）、id、text。"""
+    """返回 (48 kHz 成品, items)。items 每段一条：start/end/parts（秒，成品时间轴）、id、text（稿原文，含 ‖）、units（小段的起止与文字）。
+    原始音频按小段存（<段 id>~<k>.wav；没有 ‖ 的段就是 <段 id>.wav）。"""
+    U = expand(segs)
+    a, uitems = _build_units(U, wavdir, lead, tail)
+    by = {}
+    for u, it in zip(U, uitems):
+        by.setdefault(u.get('parent', u['id']), []).append(it)
+    items = []
+    for k, s in enumerate(segs, 1):
+        us = by[s['id']]
+        items.append({'k': k, 'id': s['id'], 'start': us[0]['start'], 'end': us[-1]['end'],
+                      'parts': [p for x in us for p in x['parts']], 'text': s['text'],
+                      'units': [{'id': x['id'], 'start': x['start'], 'end': x['end'], 'text': x['text']} for x in us]})
+    return a, items
+
+
+def _build_units(segs, wavdir, lead, tail):
     pieces = [np.zeros(int(lead * SR), np.float32)]
     t, items = lead, []
     for k, s in enumerate(segs, 1):
@@ -180,12 +214,17 @@ def build(segs, wavdir, lead=1.5, tail=2.0):
     return a, items
 
 
-def render(segs, wavdir, out, lead=1.5, tail=2.0):
+def render(segs, wavdir, out, lead=1.5, tail=2.0, rhythm=True):
     a, items = build(segs, wavdir, lead, tail)
     f0, db = checks(a, items)
+    if rhythm:                     # 标记边界的停顿、问句尾音（识别对齐，独立量；只在本机做，Actions 上没有识别模型）
+        import 讲解节奏 as NJ
+        rrep, rerr = NJ.check(a, G.OUT_SR, items, {s['id']: s['text'] for s in segs})
+        if rerr:
+            raise RuntimeError('节奏：' + '；'.join(rerr[:6]) + '，未输出')
     mx, top = tonal_scan(a, G.OUT_SR, items)
     cert = G.save_checked(Path(out), a, items, -16.0)
-    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
+    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'rhythm': rrep if rhythm else None, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
             'clause_check': G.CHAIN, 'breath': 0}
     Path(out).with_suffix('.timings.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
     return meta

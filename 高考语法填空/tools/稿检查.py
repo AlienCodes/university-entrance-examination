@@ -3,7 +3,10 @@
 ② 朗读段 en 是原文里连续的一段（逐字相同）；配音文字 = en 去掉中文注释、空格读作 blank（只比单词）；
 ③ 每题的步骤 读句→提示→词性→成分→形式→答案→口诀 全部出现且顺序不乱；答案段之前空格不显示答案；
 ④ 全文通读 = 原文填上答案、去掉中文注释（逐词相同）；
-⑤ 中文段的配音文字里没有阿拉伯数字（题号写汉字，防止读成 five six）。
+⑤ 中文段的配音文字里没有阿拉伯数字（题号写汉字，防止读成 five six）；
+⑥ 问句干脆（用户 2026-10-30：“是不是谓语呢？”尾音轻飘）：？ 前不带 呢 / 吧 / 啊，问句后面是 ‖ 或段尾（停一下）；
+⑦ 给了词的题：“提示”段里先单独说出词义，“X 的意思……。‖”自成一句（用户 2026-10-30：先说 hold 的意思是举办，停一下，再推理）；
+   答案段的“答案”前面有 ‖ 或在段首。
 用法：python 稿检查.py 稿.json [--自检]"""
 import json
 import re
@@ -60,6 +63,22 @@ def problems(doc):
                                           lambda m: doc['answers'][m.group(1)].split(' / ')[0], p)) for p in P)
     if words(full) != words(filled):
         errs.append('全文通读与原文（填上答案）不一致')
+    for s in segs:
+        if s['lang'] != 'Chinese':
+            continue
+        for m in re.finditer('？', s['text']):
+            if re.search('[呢吧啊]$', s['text'][:m.start()]):
+                errs.append(f"{s['id']} 问句带“{s['text'][m.start() - 1]}”：{s['text'][max(0, m.start() - 12):m.end()]}")
+            rest = s['text'][m.end():]
+            if rest and not rest.startswith('‖'):
+                errs.append(f"{s['id']} 问句后面没有停顿标记 ‖：{s['text'][max(0, m.start() - 12):m.end() + 6]}")
+        if '提示' in s.get('steps', []) and '给' in s['text'] and '没' not in s['text']:
+            if not re.search(r"‖[A-Za-z]+ (?:在这里)?的意思[^。‖，]*。‖", s['text']):
+                errs.append(f"{s['id']} 给了词，却没先单独说出词义（“‖X 的意思是……。‖”，中间不带逗号）：{s['text'][:40]}")
+        if '答案' in s.get('steps', []):
+            i = s['text'].find('答案')
+            if i > 0 and s['text'][:i] != '所以' and '‖' not in s['text'][:i]:
+                errs.append(f"{s['id']} “答案”前面没有停顿标记 ‖：{s['text'][:40]}")
     ids = [s['id'] for s in segs]
     if len(set(ids)) != len(ids):
         errs.append('段落 id 重复')
@@ -76,6 +95,9 @@ def selftest(doc):
     d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'f05')['text'] = 'As transportation and communication was underdeveloped at that time, it was very difficult for households to obtain daily necessities.'; mines.append(('通读', d))
     d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q58a')['text'] = '第58题。'; mines.append(('数字', d))
     d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q65e')['answer'] = True; mines.append(('答案提前显示', d))
+    d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q56d')['text'] = '那它在这句话里是不是谓语呢？我们找一下主干。'; mines.append(('问句带呢、问句后没停顿', d))
+    d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q56c')['text'] = '括号里给了一个词，hold，举办。给了词，一般都要变形。hold 是个动词。'; mines.append(('词义没单独成句', d))
+    d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q59f')['text'] = '过去时，再加上复数，就是 were。答案：were。'; mines.append(('答案前没停顿', d))
     ok = not problems(doc)
     for name, d in mines:
         e = problems(d)
