@@ -37,9 +37,9 @@ def main():
     ap.add_argument('--out', default='out')
     a = ap.parse_args()
     task = json.loads(Path(a.task).read_text('utf-8'))
-    J = jobs(task)
+    JOBS = jobs(task)
     if a.list:
-        print(json.dumps(list(range(len(J)))))
+        print(json.dumps(list(range(len(JOBS)))))
         return
     import numpy as np
     import soundfile as sf
@@ -51,7 +51,7 @@ def main():
     import torch
     from qwen_tts import Qwen3TTSModel
     torch.set_num_threads(4)
-    c, take, part = J[a.shard]
+    c, take, part = JOBS[a.shard]
     segs = json.loads((ROOT / task['script']).read_text('utf-8'))['segments']
     nparts = task.get('parts', 1)
     segs = [s for i, s in enumerate(segs) if i % nparts == part]
