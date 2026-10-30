@@ -8,7 +8,7 @@
   debreath(x, sr)      处理（任何电平处理之前）：词核（相对本段最响帧 −40 dB 以上的连续帧，含浊音帧或峰值 > −18 dB）
                        两头各多留 30 ms，其余（停顿里的换气、底噪）换成真静音，边界 5 ms 渐变。量法：自相关周期性、相对电平。
   breath_check(a, sr)  检查（成品上独立量，量法不同，踩坑 2）：绝对电平（dBFS）+ YIN 判浊音；长 ≥ 0.1 秒、峰值 > −60 dBFS、
-                       比最响处低 8 dB 以上、没有浊音、两头被 −60 dBFS 以下隔开的孤岛就算一处呼吸。空表 = 合格。
+                       比最响处低 8 dB 以上、没有浊音、3 kHz 以上能量占比 < 0.5（不是擦音）、400 Hz 以下 < 0.05（不带嗓音）、两头被 −60 dBFS 以下隔开的孤岛就算一处呼吸。空表 = 合格。
 双向验证：python3 tools/防复发/验证/呼吸声.py
 用法：python3 去呼吸.py 音频…   # 列出每个文件的呼吸处
 """
@@ -22,6 +22,30 @@ VOICED = 0.5         # 自相关周期性
 MARGIN = 0.03        # 词核两头多留（秒），再 5 ms 淡出淡入
 CHK_FLOOR = -60.0    # 检查：dBFS
 CHK_MIN = 0.10       # 检查：秒
+BLOCK = 2000         # 分块帧数
+HF_CONS = 0.5        # 孤岛 3 kHz 以上能量占比 ≥ 此值 = 清辅音（塞音成阻后的 -ts、-s 尾音等），不是换气：处理不切、检查不报
+                     # 实测：旧样音 A 的 17 处换气占比 0.04—0.31；s、x 等擦音 0.78—0.82
+
+
+LF_VOICE = 0.05      # 孤岛 400 Hz 以下能量占比 ≥ 此值 = 带嗓音的尾音（鼻音、弱化元音，周期性没量出来），不是换气
+                     # 实测：旧样音 A 的换气 0.00—0.02；四六级等已发布成品里被旧规则报出的孤岛 10% 分位 0.07、中位 0.12
+
+
+def bands(y, sr):
+    """(3 kHz 以上能量占比, 400 Hz 以下能量占比)。"""
+    y = np.asarray(y, np.float64)
+    if len(y) < 16:
+        return 0.0, 1.0
+    S = np.abs(np.fft.rfft(y * np.hanning(len(y)))) ** 2
+    f = np.fft.rfftfreq(len(y), 1 / sr)
+    tot = S.sum() + 1e-30
+    return float(S[f > 3000].sum() / tot), float(S[f < 400].sum() / tot)
+
+
+def breath_like(y, sr):
+    """换气的频谱：既不是擦音（高频为主），也不带嗓音（低频几乎没有）。"""
+    hf, lf = bands(y, sr)
+    return hf < HF_CONS and lf < LF_VOICE
 
 
 def _frames(x, sr, hop=0.01, win=0.03):
@@ -29,14 +53,16 @@ def _frames(x, sr, hop=0.01, win=0.03):
     n = max(0, (len(x) - W) // H + 1)
     if n == 0:
         return np.zeros(0), np.zeros(0), H, W
-    idx = np.arange(W)[None, :] + H * np.arange(n)[:, None]
-    f = x[idx].astype(np.float64)
-    lvl = 10 * np.log10(np.mean(f ** 2, 1) + 1e-20)
-    g = f - f.mean(1, keepdims=True)
-    spec = np.fft.rfft(g, 2 * W)
-    ac = np.fft.irfft(np.abs(spec) ** 2)[:, :W]
-    ac = ac / (ac[:, :1] + 1e-20)
-    per = ac[:, int(sr / 400):int(sr / 60)].max(1)
+    lvl, per = np.empty(n), np.empty(n)
+    for b0 in range(0, n, BLOCK):                    # 分块算（逐帧独立，结果与一次算完相同；长音频不爆内存）
+        b1 = min(n, b0 + BLOCK)
+        idx = np.arange(W)[None, :] + H * np.arange(b0, b1)[:, None]
+        f = x[idx].astype(np.float64)
+        lvl[b0:b1] = 10 * np.log10(np.mean(f ** 2, 1) + 1e-20)
+        g = f - f.mean(1, keepdims=True)
+        ac = np.fft.irfft(np.abs(np.fft.rfft(g, 2 * W)) ** 2)[:, :W]
+        ac = ac / (ac[:, :1] + 1e-20)
+        per[b0:b1] = ac[:, int(sr / 400):int(sr / 60)].max(1)
     return lvl, per, H, W
 
 
@@ -57,7 +83,7 @@ def cores(x, sr):
         j = i
         while j < n and act[j]:
             j += 1
-        if (per[i:j] > VOICED).any() or lvl[i:j].max() > ref + CORE_LOUD:
+        if (per[i:j] > VOICED).any() or lvl[i:j].max() > ref + CORE_LOUD or not breath_like(x[i * H:(j - 1) * H + W], sr):
             keep[max(0, i * H - m):min(len(x), (j - 1) * H + W + m)] = True
         i = j
     gone, i = [], 0
@@ -96,17 +122,19 @@ def breath_check(a, sr):
     n = max(0, (len(a) - W) // H + 1)
     if n == 0:
         return []
-    idx = np.arange(W)[None, :] + H * np.arange(n)[:, None]
-    fr = a[idx]
-    lvl = 10 * np.log10(np.mean(fr ** 2, 1) + 1e-20)
-    # 浊音：YIN 累积均值归一化差分函数（与处理端的自相关峰不同的算法），70—400 Hz 内最小值 < 0.35
-    g = fr - fr.mean(1, keepdims=True)
-    ac = np.fft.irfft(np.abs(np.fft.rfft(g, 2 * W)) ** 2)[:, :W // 2]
-    d = 2 * (ac[:, :1] - ac)
-    d[:, 0] = 0
-    cm = d[:, 1:] * np.arange(1, d.shape[1]) / (np.cumsum(d[:, 1:], 1) + 1e-20)
     q0, q1 = int(sr / 400), int(sr / 70)
-    voiced = cm[:, q0 - 1:q1 - 1].min(1) < 0.35
+    lvl, voiced = np.empty(n), np.empty(n, bool)
+    for b0 in range(0, n, BLOCK):
+        b1 = min(n, b0 + BLOCK)
+        fr = a[np.arange(W)[None, :] + H * np.arange(b0, b1)[:, None]]
+        lvl[b0:b1] = 10 * np.log10(np.mean(fr ** 2, 1) + 1e-20)
+        # 浊音：YIN 累积均值归一化差分函数（与处理端的自相关峰不同的算法），70—400 Hz 内最小值 < 0.35
+        g = fr - fr.mean(1, keepdims=True)
+        ac = np.fft.irfft(np.abs(np.fft.rfft(g, 2 * W)) ** 2)[:, :W // 2]
+        d = 2 * (ac[:, :1] - ac)
+        d[:, 0] = 0
+        cm = d[:, 1:] * np.arange(1, d.shape[1]) / (np.cumsum(d[:, 1:], 1) + 1e-20)
+        voiced[b0:b1] = cm[:, q0 - 1:q1 - 1].min(1) < 0.35
     ref = np.percentile(lvl, 99)
     act = lvl > CHK_FLOOR
     out, i = [], 0
@@ -117,7 +145,8 @@ def breath_check(a, sr):
         j = i
         while j < n and act[j]:
             j += 1
-        if (j - i) * H / sr >= CHK_MIN and not voiced[i:j].any() and lvl[i:j].max() < ref - 8:
+        if ((j - i) * H / sr >= CHK_MIN and not voiced[i:j].any() and lvl[i:j].max() < ref - 8
+                and breath_like(a[i * H:(j - 1) * H + W], sr)):
             out.append((round(i * H / sr, 2), round(((j - 1) * H + W) / sr, 2), round(float(lvl[i:j].max()), 1)))
         i = j
     return out
@@ -125,13 +154,7 @@ def breath_check(a, sr):
 
 def _load(p):
     import soundfile as sf
-    try:
-        x, sr = sf.read(str(p), dtype='float32')
-    except Exception:
-        import subprocess
-        raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(p), '-f', 'f32le', '-ac', '1', '-ar', '48000', '-'],
-                             capture_output=True, check=True).stdout
-        return np.frombuffer(raw, np.float32).copy(), 48000
+    x, sr = sf.read(str(p), dtype='float32')
     return (x.mean(1) if x.ndim > 1 else x), sr
 
 

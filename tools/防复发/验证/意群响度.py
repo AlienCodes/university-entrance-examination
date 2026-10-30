@@ -75,6 +75,7 @@ with tempfile.TemporaryDirectory() as td:
     mp3 = Path(td) / 'x.mp3'
     data = G.encode_mp3(a.astype(np.float32))
     mp3.write_bytes(data)
+    rep = dict(rep, breath_count=G.breath_core(data)[0])      # 铁律 22：合格证带呼吸检查（final_check 写的）
     cert = G.certificate(data, rep)
     (Path(td) / 'x.loudness.json').write_text(json.dumps(cert), 'utf-8')
     tm = {'file': 'cet4_male/x.mp3', 'duration': 1.0, 'loudness': rep, 'clause_check': G.CHAIN, 'certificate': cert}

@@ -4,7 +4,8 @@
 
 合格的新音频（2026-10-29 之后生成的）必须同时满足：
   ① timings 条目 clause_check = 当前处理链，合格证 chain = 当前处理链、passed is True；
-  ② 合格证的 limits 与这里的标准上限逐项相同，loudness 每一项都在上限以内（整体、句间、短时、峰值、相邻意群、段尾元音），
+  ② 合格证的 limits 与这里的标准上限逐项相同，loudness 每一项都在上限以内（整体、句间、短时、峰值、相邻意群、段尾元音、
+     呼吸声 breath_count = 0（铁律 22；2026-10-31 起必须有这一项）），
      timings 条目的 loudness 与合格证里的逐项相同；
   ③ MP3 旁边有合格证文件 *.loudness.json，内容与 timings 里的合格证完全相同；
   ④（有 MP3 时）MP3 的 sha256 与合格证一致（检查之后没被改过）。
@@ -23,6 +24,8 @@ LEGACY = HERE / '响度旧成品清单.json'
 RAW_WRITER = '专八/听力/原文/tools/原音音轨.py'      # 唯一允许写 source='原音' 的程序（踩坑 87）
 CORE = ('integrated_lufs', 'sentence_max_dev_lu', 'short_term_std_lu', 'peak_dbfs')
 FINE = ('clause_nb_min_lu', 'clause_tail_min_db')
+BREATH = 'breath_count'      # 铁律 22（2026-10-30）：成品停顿里的换气处数，必须为 0
+BREATH_FROM = '2026-10-31'   # 这天起出的合格证必须带 breath_count（之前的合格证没有这一项，不追溯；有的照样要求为 0）
 
 
 def legacy_key(tm):
@@ -90,9 +93,15 @@ def cert_problems(c, tm_loud=None):
             bad.append(f"相邻意群 {L['clause_nb_min_lu']} LU")
         if L['clause_tail_min_db'] < -FINE_LIMITS['clause_tail']:
             bad.append(f"段尾元音 {L['clause_tail_min_db']} dB")
+        if BREATH in L and L[BREATH] != 0:
+            bad.append(f"呼吸声 {L[BREATH]} 处（铁律 22）")
         if bad:
             errs.append('音频合格证里的测量值超标：' + '，'.join(bad))
-    if tm_loud is not None and any((tm_loud or {}).get(k) != L.get(k) for k in CORE + FINE):
+    if BREATH not in L and str(c.get('date', '9999')) >= BREATH_FROM:
+        errs.append('音频合格证没有呼吸声检查（breath_count，铁律 22）')
+    elif BREATH in L and not (isinstance(L[BREATH], int) and not isinstance(L[BREATH], bool)):
+        errs.append('音频合格证的 breath_count 不是整数')
+    if tm_loud is not None and any((tm_loud or {}).get(k) != L.get(k) for k in CORE + FINE + ((BREATH,) if BREATH in L else ())):
         errs.append('timings 里的响度测量与合格证不一致')
     return errs
 

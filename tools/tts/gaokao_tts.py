@@ -345,7 +345,7 @@ _VERIFY_CORE = verify_loudness   # 模块加载时存下原始检查：项目包
 def certificate(mp3_bytes, rep):
     """音频合格证：处理链版本、成品 MP3 的 sha256、全部响度测量（含意群级最差值）。passed 按实测写（final_check 全部通过才为 True）。"""
     errs = CERT.cert_problems({'chain': CHAIN, 'passed': True, 'mp3_sha256': hashlib.sha256(mp3_bytes).hexdigest(),
-                               'loudness': rep, 'limits': dict(CERT.STD_LIMITS)})
+                               'loudness': rep, 'limits': dict(CERT.STD_LIMITS), 'date': time.strftime('%Y-%m-%d')})
     return {'chain': CHAIN, 'passed': not errs, 'mp3_sha256': hashlib.sha256(mp3_bytes).hexdigest(), 'loudness': rep,
             'limits': dict(CERT.STD_LIMITS), 'date': time.strftime('%Y-%m-%d')}
 
@@ -356,9 +356,21 @@ def final_check(mp3_bytes, items, target_lufs, span=None):
     kw = {'span': span} if span else {}
     rep, errs = verify_loudness(mp3_bytes, items, target_lufs, **kw) if verify_loudness is not _VERIFY_CORE else ({}, [])
     core, cerrs = _VERIFY_CORE(mp3_bytes, items, target_lufs, fine=True, **kw)
+    core['breath_count'], berrs = breath_core(mp3_bytes)
     rep = dict(rep or {}, **core)
-    errs = list(dict.fromkeys(list(errs or []) + cerrs))
+    errs = list(dict.fromkeys(list(errs or []) + cerrs + berrs))
     return rep, errs
+
+
+def breath_core(mp3_bytes):
+    """铁律 22（用户 2026-10-30：配音不许有呼吸声）：成品里停顿处的换气（tools/tts/去呼吸.breath_check）。返回 (处数, 问题列表)。
+    写进合格证（loudness.breath_count），合格证规则（合格证.cert_problems）要求为 0。"""
+    import io
+    import soundfile as sf
+    import 去呼吸
+    a, sr = sf.read(io.BytesIO(mp3_bytes), dtype='float32')
+    br = 去呼吸.breath_check(a, sr)
+    return len(br), ([f'呼吸声 {len(br)} 处（铁律 22）：{br[:6]}'] if br else [])
 
 
 def legacy_key(tm):

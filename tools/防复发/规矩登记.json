@@ -365,6 +365,24 @@
    ],
    "status": "自动拦截+有双向验证",
    "gap": "考研作文还没接（原题屏只有截图、讲义没有题目译文）；新作文项目复制引擎时要在 PROJECTS 里开 prompt_zh。"
+  },
+  {
+   "id": "22",
+   "title": "配音不许有呼吸声（用户 2026-10-30）",
+   "guards": [
+    "tools/tts/去呼吸.debreath：高考语法填空讲解配音（讲解音频.prep）在任何电平处理之前固定去呼吸",
+    "tools/tts/gaokao_tts.final_check → breath_core：所有项目写音频前量呼吸，写进合格证 loudness.breath_count",
+    "tools/tts/合格证.cert_problems：breath_count ≠ 0、2026-10-31 起缺这一项都不合格 → 不许生成视频（verify_videos、讲解视频.verify 再量视频音轨）、不许发布（.github/check-audio-cert.py）"
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/呼吸声.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "Kokoro 项目（高考、四六级、考研、专八、中考）的处理链还没接 debreath，只靠关口拦：出新音频若被拦，先给那条处理链接 debreath（样片先给用户听）"
   }
  ],
  "_没有测试的铁律基线": 5

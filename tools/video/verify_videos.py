@@ -142,6 +142,10 @@ def check(mp4, p, tm, mp3_path=None):
        f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS"
        + (f"；意群：比相邻意群最多小 {-rep.get('clause_nb_min_lu', 0):.2f} LU（上限 1.2），段尾最多小 {-rep.get('clause_tail_min_db', 0):.2f} dB（上限 4.0）"
           if 'clause_nb_min_lu' in rep else '') + ('；' + '；'.join(errs) if errs else ''))
+    if 'breath_count' in ((tm.get('certificate') or {}).get('loudness') or {}):     # 铁律 22：合格证带呼吸检查的，视频音轨再独立量一次
+        import 去呼吸
+        br = 去呼吸.breath_check(x, sr)
+        ok('没有呼吸声（铁律 22）', not br, f'{len(br)} 处：{br[:4]}' if br else '0 处')
     # 7. 画面切换：读完后 0.45s 仍是本句，0.55s 已是下一句；片头在开头
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
