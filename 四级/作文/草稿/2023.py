@@ -1,0 +1,32 @@
+B = {
+'c2023-12-1': [
+ "Of all the things at my university, what impresses me most is not the modern buildings or the beautiful scenery, but the dedication of our teachers.",
+ "I first noticed it in my first week. In an advanced math class, I could not follow a difficult proof, so I emailed the teacher late that evening. To my surprise, she replied within an hour and offered to explain it again after class the next day. Later I found that she was not an exception. Many teachers here stay after class to answer questions, read our papers carefully and give detailed comments. Some even invite undergraduates to join their research projects.",
+ "Their dedication has influenced me deeply. Seeing how seriously they treat their work, I have learned to be more responsible in my studies and to help classmates whenever they need it. I believe that what makes a university great is not its buildings but its people, and our teachers are the best proof of this.",
+],
+'c2023-12-2': [
+ "My hometown is a small town in southern China. When I went back there during the last summer vacation, I was amazed by the great changes that had taken place in recent years.",
+ "The most obvious change is in transportation. Narrow dirt roads have been replaced by wide paved ones, and a new high-speed railway station has shortened the trip to the provincial capital from five hours to just one and a half. Daily life has also become much more convenient. A large supermarket and a modern hospital have opened, and even many elderly residents now pay for groceries with their phones. What pleases me most is that the environment has improved. The polluted river near my old house has been cleaned up, and the new park along its banks has become a favorite place for residents to walk in the evening.",
+ "These developments have made life in my hometown more comfortable, and some young people who once worked in big cities have even returned to start businesses. I am proud of my hometown, and I hope to contribute to its future after graduation.",
+],
+'c2023-12-3': [
+ "Of all the events held on campus, the one that impressed me most was a charity fun run organized by our student union last spring.",
+ "Early that Saturday morning, more than a thousand students and teachers gathered at the stadium, all wearing the same bright orange T-shirts. The five-kilometer route ran past the library, the lake and the teaching buildings. Many runners dressed up in funny costumes, and volunteers along the way handed out water and cheered for everyone. I am not a strong runner, and by the fourth kilometer I was almost exhausted. Just then, a classmate I hardly knew slowed down and ran beside me until we crossed the finish line together. Later, all the registration fees were donated to a rural primary school to build a small library.",
+ "The event impressed me not because of the race itself but because of the warmth it showed. It taught me that a small act of kindness can make a big difference, and it made me feel truly at home at my university.",
+],
+'c2023-06-1': [
+ "Classmates are the people we spend the most time with at college, so maintaining a warm and friendly relationship with them is important for every student.",
+ "There are several ways to build such a relationship. First, we should treat others with respect and sincerity. Listening patiently when classmates share their ideas and accepting their different habits and opinions can prevent many misunderstandings. Second, we should be willing to offer help, whether by explaining a difficult problem or by looking after a classmate who is ill. Third, taking part in group activities, such as class trips and team projects, gives us chances to know each other better.",
+ "A friendly relationship brings many benefits. It creates a pleasant atmosphere in which everyone feels supported and less lonely far from home. Classmates who get along well can also learn from each other and make progress together. Moreover, the communication skills we develop in dealing with classmates will help us build good relationships in our future careers. Therefore, it is well worth the effort to be a kind and caring classmate.",
+],
+'c2023-06-2': [
+ "More and more college students are taking part in community service, and I believe this is a valuable trend for both students and society.",
+ "Community service benefits students in many ways. It allows them to apply what they have learned in class to real life and develops practical abilities such as communication and teamwork. Working with people from different backgrounds also helps them understand society better and become more responsible citizens. At the same time, the community gains energy and fresh ideas from young volunteers.",
+ "As a computer science major, I can offer something practical to my community. Many elderly residents find it difficult to use smartphones, so I would like to teach them how to make video calls, pay bills online and schedule appointments with doctors. In addition, I can tutor children in math and English on weekends, especially those whose parents are busy at work. Through such service, I hope to make a small but real difference in people’s lives while growing into a more capable person myself.",
+],
+'c2023-06-3': [
+ "Online classes have become an important part of university education. In my opinion, they have both clear advantages and obvious disadvantages, and they can be improved in several ways.",
+ "On the one hand, online classes are flexible and convenient. Students can attend them from anywhere, and recorded lectures allow them to review difficult points as many times as they need. Online platforms also give students access to excellent courses from other universities. On the other hand, online classes have their limits. Without face-to-face contact, students may find it hard to concentrate, and teachers cannot easily tell whether students understand the lesson. Moreover, a poor Internet connection can interrupt a class at any moment.",
+ "To make online classes more effective, teachers could add more interaction, such as short quizzes, group discussions and live question-and-answer sessions. Universities should also improve their online platforms and provide technical support. As for students, they need to manage their time well and stay focused. With these improvements, online classes can be a valuable complement to traditional teaching.",
+],
+}

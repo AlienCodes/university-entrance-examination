@@ -1,0 +1,48 @@
+# 专八听力原文精读（书卷水墨）：修改 .github/tem8-listening-text-release.txt 并推送时发布 GitHub Release。
+# 清单：第 1 行标签（tem8-listening-text-2025）；之后每行一个成品：<sha256> <文件名>（专八/听力/原文/最终视频_水墨/ 下，按播放顺序）。
+# 流程：核对 sha256 → Python zipfile 打包（不压缩、中文文件名带 UTF-8 标记，踩坑 52）→ gh 发布（目标用分支名，踩坑 53）→ 下载回来逐个核对。
+# 由 release-tem8-listening.yml 改写（步骤数相同：checkout、发布目标检查、核对打包、发布、下载核对，共 5 步；踩坑 68）。
+name: 发布专八听力原文精读视频
+on:
+  push:
+    paths: ['.github/tem8-listening-text-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            专八/听力/原文/最终视频_水墨
+            tools/tts
+            专八/听力/原文/audio
+          lfs: false
+      - name: 音频合格证核对（踩坑 87：每条 timings 都是旧成品或带 clause-v1 合格证、MP3 与合格证一致，不合格不发布）
+        run: python3 .github/check-audio-cert.py 专八/听力/原文/audio
+      - name: 发布目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - name: 核对、打包
+        run: python3 .github/tem8-listening-text-pack.py pack
+      - name: 发布 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=$(sed -n 1p .github/tem8-listening-text-release.txt | tr -d '[:space:]')
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" TEM8-listening-text-2025.zip --clobber
+            gh release edit "$TAG" --notes-file notes.md
+          else
+            gh release create "$TAG" TEM8-listening-text-2025.zip --target "$GITHUB_REF_NAME" --title "2025 专八听力 原文逐句精读（书卷水墨）" --notes-file notes.md
+          fi
+      - name: 下载回来核对
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=$(sed -n 1p .github/tem8-listening-text-release.txt | tr -d '[:space:]')
+          mkdir dl && gh release download "$TAG" -p TEM8-listening-text-2025.zip -D dl
+          python3 .github/tem8-listening-text-pack.py verify dl/TEM8-listening-text-2025.zip

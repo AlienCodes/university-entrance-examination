@@ -1,0 +1,27 @@
+/* 专八大字版「书卷水墨」（用户 2026-10-23）：用原来的古风主题，沿用新的字体模式；看过样片后又要求“所有的字都用粗体”——
+   英文、正文卡片里的中文译文、右边词汇卡的单词和中文释义、页眉页脚、片头，一律加粗（700）；生词、短语、词条再重一级（800）。
+   字体都有真字重：EB Garamond 700/800、700 斜体（fonts/eb-garamond-bold.css），霞鹜文楷 Bold，思源宋体 700，Inter 700/800。颜色、纸张、印章仍是书卷水墨原样。
+   译文“稍微大点”：字号.json 的 C@水墨 由 字号标定.py 按变体的 zh_scale（1.1）放大，不手改。 */
+body, body *{font-weight:700 !important}
+.en .w, .en .ph, .v b{font-weight:800 !important}
+/* 书卷水墨原样式的 .zh{text-wrap:pretty} 会为了“末行不太短”把整个词推到下一行，上一行空出两三个字（layoutcheck 译文短行）；断行由引擎的规则管，恢复普通换行 */
+.zh{text-wrap:wrap}
+/* 用户 2026-10-23（看过 t01 样片）：右边词汇卡的单词要和文章里标注的颜色一样——文章里生词是蓝色（.w = --dian），词汇卡里的生词也用蓝色；
+   短语在文章和词汇卡里本来就都是朱红（.v.ph b 选择器更具体，仍是 --zhu）。只改颜色，不影响换行 */
+.v b{color:var(--dian)}
+/* 用户 2026-10-23（看 t01 样片后）：原来的靛青生词“跟黑色正文差不多、不显眼”，朱砂短语“看着不太舒服”——“选两个看着最舒服、又比较显眼的颜色”。
+   同一屏画了 4 组候选（晴空蓝+翠绿、宝蓝+松石绿、湖蓝+草木绿、钴蓝+紫罗兰）放大对比并实测：选 A 晴空蓝 #1f6fd6 + 翠绿 #2a9142——
+   离黑色正文最远（CIELAB ΔE 75 / 71，原来的靛青只有 41），两色最分得开（ΔE 111；钴蓝+紫罗兰只有 24），对纸 4.2 / 3.5、对词汇栏 3.9 / 3.2
+   （英文 73px 粗体属于大号字，可读下限 3:1）；也是校园版用户看过多种之后选定的蓝绿两色。只改生词、短语（文章、编号、词汇卡、片头图例），
+   左边色条、进度条、片头的 Passage 字样仍是靛青，印章、页眉方块仍是朱砂。 */
+:root{--w:#1f6fd6;--ph:#2a9142}
+.w{color:var(--w)}sup{background:var(--w)}.v em{background:var(--w)}.v b{color:var(--w)}.legend .lw{background:var(--w)}
+.ph{color:var(--ph)}.ph sup{background:var(--ph)}.v.ph em{background:var(--ph)}.v.ph b{color:var(--ph)}.legend .lp{background:var(--ph)}
+/* 释义里的撇号用西文字形（fonts/eb-garamond-bold.css 的 InkQuote 只含 ‘ ’）：思源宋体的“’”是全角，“don’t”显示成“don’ t”（layoutcheck 西文撇号，t04、t05） */
+.v span{font-family:'InkQuote','Noto Serif SC',serif}
+/* 词条以 f 结尾（a lot of、a set of、a type of）：EB Garamond 粗体 f 的弯钩伸出字身，紧贴后面的释义（水墨截图盲审：“of一套”只空 6 像素，别的词条约 15 像素）；
+   引擎给这类词条加 class f（make_video.py），这里补上弯钩伸出的那一截 */
+.v b.f{padding-right:.16em}
+/* 译文里的中文单引号（‘画’、‘伤心巷’，t13、t19、t27）：霞鹜文楷网页字体（lxgw-wenkai-webfont）各分包都不含 U+2018/2019，原来落到系统字体（layoutcheck 字体回退）；
+   放在霞鹜文楷之后用 InkQuote（EB Garamond 粗体的 ‘ ’），只有这两个字落到它，其余字不变 */
+.zh{font-family:'LXGW WenKai','InkQuote'}

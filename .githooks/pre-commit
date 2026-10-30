@@ -1,0 +1,6 @@
+#!/bin/bash
+# 防复发机制（铁律 16）：每次提交前自动跑防复发自检（登记核对 + 复盘核对，约 1—2 秒）。
+# 踩坑表多了没登记的行、新坑没带双向验证、没有测试的旧坑变多、上一批没复盘就开新批次 → 提交被拦下。
+# 启用：git config core.hooksPath .githooks（.claude/settings.json 的 SessionStart 钩子每次开会话自动设置）
+cd "$(git rev-parse --show-toplevel)" || exit 0
+out=$(python3 tools/防复发/防复发自检.py 2>&1) || { echo "$out"; echo "提交被拦下：防复发自检没通过（见上面）"; exit 1; }

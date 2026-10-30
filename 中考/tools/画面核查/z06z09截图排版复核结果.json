@@ -1,0 +1,122 @@
+{
+ "results": [
+  {
+   "id": "y4",
+   "findings": [
+    {
+     "screen": 1,
+     "sentence": 0,
+     "kind": "title",
+     "severity": "high",
+     "description": "Cover title overflows its card. The title should be \"现代建筑大师贝聿铭\" on one line inside the white card. Instead it runs past the card's right edge, behind the yellow \"Aa\" circle and off the right edge of the screen. Only \"现代建筑大师\" can be read, and 师 is partly hidden. \"贝聿铭\" is covered by the circle; only fragments of strokes show at x≈1830–1920. The title font size was not reduced to fit.",
+     "lens": "visual"
+    },
+    {
+     "screen": 8,
+     "sentence": 7,
+     "kind": "glyph",
+     "severity": "high",
+     "description": "Missing glyph in the Chinese translation. The screen shows \"在那▯假期里，每当有空，他就会去游览园林。\": the character 些 is drawn as a narrow tofu box with a mark inside. The reference uses the normal U+4E9B 些, and 些 renders correctly on screen 09.",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "high",
+     "description": "Vocabulary panel font is far too large, about 1.6× the other screens, so the entries overflow the panel at both ends. Top: entry 1's badge and the headword \"won\" are pushed above the panel border, behind the purple header band and the VOCABULARY tag; only \"v. 获得；\" and \"赢得\" are visible. Bottom: entry 4's meaning \"n. 建筑；建筑学\" falls below the panel's bottom border and is drawn over the progress bar and the footer's \"逐句精读\". \"Pritzker Prize\" also wraps onto two lines. The entries 2–4 badges and the English circles 1–4 do match, but entry 1's badge cannot be seen.",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "severity": "medium",
+     "description": "Large blank gap at the start of the English. The first line \"He decided to¹\" starts at x≈612 instead of the left margin (x≈90), while the second line \"become an architect².\" starts correctly at x≈90. That leaves about 520 px of empty space before \"He\". The whole short sentence would fit on one line.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "severity": "medium",
+     "description": "Font size is abnormal compared with all other screens. The English \"Pei was born in Guangzhou in 1917.\" is about 1.6× normal (cap height ≈77 px against ≈47 px elsewhere). The Chinese \"贝聿铭1917年出生于广州。\" is about 1.7× normal. Sentences of similar length (5, 11, 16) use the normal size, so this one stands out.",
+     "lens": "visual"
+    },
+    {
+     "screen": 1,
+     "sentence": 0,
+     "kind": "title",
+     "severity": "low",
+     "description": "Possible word-count discrepancy. The cover says \"全文 259 词\". Counting the 26 reference sentences without the Chinese notes gives 260 words. The 259 matches splitting on whitespace only, which counts \"idea—let\" in sentence 17 as one word. Please confirm which counting rule is intended.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    27
+   ],
+   "notes": [
+    "I opened all 27 screens in order: screen01 is the cover, screens 02–27 are sentences 1–26. That matches the reference: 27 screens, 26 sentences, no splits, and no screen shows a PART label.\n\nFor every sentence screen I wrote down three things: the circle numbers in the English, the numbers in the panel, and the footer. On all 26 screens the panel numbers run 1..n with no gaps, the circle numbers in the English are the same set, and the footer reads SENTENCE k / 26 with k going from 1 to 26 in order. Progress bars measured within 0.3% of k/26.\n\n- **Phrase badges on split phrases:** each badge sits only on the last piece (around / the world⁵; show / interest in⁶; had … influence on⁴; was … different from²; at that / time⁵; at the age / of²). In sentence 10 the English circles read 1,2,3,5,4. This is correct, because \\\"had\\\" appears before \\\"strong\\\".\n- **Colours:** every highlight's colour and badge shape matches its type and its panel entry.\n- **Panel ellipses:** all the …… marks are drawn centred and look the same everywhere.\n- **Compact punctuation and hyphenated words:** spacing is correct in （时间）；, ：“ and 。”, and must-see is not split.\n- **The serif I in \\\"Ieoh\\\":** correct in both the English and the panel.\n- **Cover text:** the tag 中考英语 · 阅读理解, \\\"中考英语 2026年 山西 ·\\\" with the 阅读 pill, and the genre 记叙文 · 人物与经历 all match the reference.\n\nDefects found: the cover title overflows (screen 1), a tofu glyph replaces 些 (screen 8), the panel overflows (screen 15), a blank gap starts the English (screen 12), and the font is oversized (screen 4). There is also a low-severity question about the word count.\n\nPIL is not installed in any of the system Pythons, so I made the zoomed crops with ImageMagick's convert. They are saved in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad (y4_*.png)."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen01 does not fit the title inside the white card. '现代建筑大师' runs to the card's right edge at x≈1320, and 师 is cut off by the edge and the yellow 'Aa' circle. The rest of the title ('贝聿铭') is hidden behind the circle; only stroke fragments show at the far right of the screen (x≈1800–1920). The title is drawn at full size, not reduced to fit on one line inside the card."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Zoomed in on screen08: the Chinese line reads '在那▯假期里…'. The third character is a narrow tofu box with a mark inside, not 些. The reference ZH for sentence 7 uses U+4E9B (checked the code points), and 些 renders normally on screen09 ('看到那些山石…', '这些景物'). So the screen differs from the reference."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "On screen15 the vocabulary panel font is far larger than on every other screen. Entry 1's badge and 'won' are pushed above the panel border, behind the header band and the VOCABULARY tag; only part of the purple badge, 'v. 获得；' and '赢得' can be seen. 'Pritzker Prize' wraps onto two lines. Entry 4's 'n. 建筑；建筑学' falls below the panel's bottom border and is drawn over the progress bar and '逐句精读'. Text is cut off and overlaps, which is a real defect."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "On screen12 (SENTENCE 11/26) the first English line 'He decided to¹' starts at x≈612, while the second line 'become an architect².' starts at the normal left margin (x≈90). That leaves about 520 px of empty space before 'He'. No other screen has this indent, and the short sentence would fit on one line."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Screen04 (SENTENCE 3/26) uses a much larger font. The English cap height is about 77 px, against about 47–49 px on screen06 (sentence 5) and screen17 (sentence 16), which are sentences of similar length. The Chinese is also about 1.7× normal (≈70 px glyphs against ≈42 px). This is far more than the small differences auto-fitting causes, and screen04 clearly stands out from the other 25 sentence screens."
+    },
+    {
+     "index": 5,
+     "real": false,
+     "why": "The cover does say '全文 259 词', and the reviewer's arithmetic is right: splitting on whitespace gives 259 and a regex count gives 260, the difference being 'idea—let'. But 259 is what the pipeline's own rule produces: 中考/tools/extract_reading.py line 145 splits on whitespace after removing the Chinese notes, and 中考/阅读/passages.json stores words=259 for z06. The reference file gives no word count for the cover to contradict. This is a counting-rule choice applied to every passage, not a place where the screen differs from the reference or a visual defect."
+    }
+   ]
+  },
+  {
+   "id": "z06",
+   "findings": [],
+   "opened": [
+    10
+   ],
+   "notes": [
+    "I found no defects. Scope was the 8 changed screens (02, 13, 15, 17, 18, 22, 23, 24), each checked in full. I also opened screens 03 and 16, which did not change, to compare font sizes, ellipsis style and how meanings wrap. The folder has 27 screens, which matches the reference (title card plus 26 unsplit sentences), so no screen should have a PART label and none does.\n\nPer-screen record (English circles left to right / panel top to bottom / footer):\n- screen02, s1: English 1y 2y 3 4 5 / panel 1-5 / SENTENCE 1/26, bar about 4%. Ieoh Ming Pei and was known as are phrases (magenta on yellow, yellow rounded-square badges); master, modern and architecture are words (purple, round badges). The annotation \"(建筑).\" sits whole on line 3 without breaking. In the panel, entry 1 wraps before the opening bracket, giving \"贝聿铭 / （著名建筑师）\". That is a break at punctuation, and the bracket sits flush left. The \"……\" in entry 2 is centred, the same as on screen16.\n- screen13, s12: 1y (went abroad) 2 (study) / 1-2 / 12/26, bar about 46%. \"出国；/去国外\" wraps after the semicolon.\n- screen15, s14: 1 (won) 2y (Pritzker Prize) 3 (honor) 4 (architecture) / 1-4 / 14/26, bar about 54%. The Pritzker Prize meaning goes whole onto the next line, the same way Louvre Museum does on screen16.\n- screen17, s16: 1 / 1 / 16/26, bar about 61%.\n- screen18, s17: 1-5 all words / 1-5 / 17/26, bar about 65%. The em dash after idea's badge 2 touches but does not overlap it.\n- screen22, s21: 1-3 / 1-3 / 21/26, bar about 81%. must-see stays on one line.\n- screen23, s22: 1 (explained) 2y (belong to) / 1-2 / 22/26, bar about 84%. The full-width colon and opening quote（'：“'）are set tight as intended.\n- screen24, s23: 1-3 / 1-3 / 23/26, bar about 88%. The ending \".”\" and the Chinese '。”' are correct.\n\nOn every changed screen, highlight colours and badge shapes match the entry types, and the circle numbers equal the panel numbers. Font sizes match the unchanged screens (English line pitch about 83 px on both). Nothing is cut off or overlapping, and there are no tofu boxes, replacement characters or odd gaps.\n\nOne minor difference: a long phrase meaning that contains brackets wraps two ways. On screen02 it breaks before \"（\"; on screens 15 and 16 the whole meaning moves to the next line. Both follow the stated wrap rules, so I did not report it.\n\nCrops I made are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/crop06/."
+   ],
+   "failed": 0,
+   "verdicts": []
+  },
+  {
+   "id": "z09",
+   "findings": [],
+   "opened": [
+    8
+   ],
+   "notes": [
+    "No defects on the five changed screens (04, 16, 17, 18, 24). I also opened screens 03, 05, 15, 19 and 23 to compare numbering, font size and layout, and I zoomed into the English line and the vocabulary panel on every changed screen. The folder has 24 screens: a title card plus sentences 1–23, none split. That matches the expected count in the reference.\n\nPer screen: badges in the English (left to right) / panel numbers (top to bottom) / footer.\n\n- **screen04 (sentence 3):** 1,2,3,4,5,6 / 1–6 / SENTENCE 3 / 23. Progress knob at about 13%. Phrase \"because of\" is magenta on yellow with a yellow rounded-square badge 4; the other five are purple words with round badges. The panel matches: about adv. 大约; rider n. 骑手; save v. 救；挽救（生命）; because of 因为；由于; helmet n. 头盔; use n. 使用. No PART label.\n- **screen16 (sentence 15):** 1,2,3,4,5 / 1–5 / 15/23. Knob at about 65%. \"In this way\" is a phrase with yellow badge 1. The meaning wraps at \"这样；\" to \"通过这种方式\", which is allowed (break at punctuation).\n- **screen17 (sentence 16):** 1,2,3,4 / 1–4 / 16/23. Knob at about 70%. Phrases \"These days\" (1) and \"way of life\" (4); words \"AI\" (2) and \"changing\" (3). The panel matches.\n- **screen18 (sentence 17):** 1–9 / 1–9 / 17/23. Knob at about 74%. All nine are words with purple round badges, and the panel meanings match the reference. \"在……里面\" shows centred ellipsis dots, the same style as \"保护……免受\" on screen03. The \"great\" meaning wraps after \"高的；\". The panel fills its card without touching the edges.\n- **screen24 (sentence 23):** 1,2,3,4,5,6,7 / 1–7 / 23/23. Knob at the end of the bar. \"when necessary\" is highlighted across two lines and carries badge 4 only on its last piece. The split phrase \"gets … close to\" shows \"gets\" highlighted with no badge and \"close to\" with yellow badge 7, which is correct. The panel's \"when necessary\" meaning drops to the next line between headword and meaning.\n\nOn all five screens:\n- The footer numbers and the progress bar are right.\n- The header shows \"2026年 浙江 · 阅读D 摩托车头盔的发展与智能化\".\n- Nothing is cut off or overlapping, and there is no garbled text, tofu or blank gap.\n- Highlight colours match each entry's type (word or phrase).\n- Font sizes and line spacing match the neighbouring unchanged screens.\n\nThe title card (screen01) did not change, so I did not re-inspect it."
+   ],
+   "failed": 0,
+   "verdicts": []
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

@@ -1,0 +1,70 @@
+# 修改 .github/zk-videos-release.txt 并推送时生成 GitHub Release（中考视频专用，与高考、四六级、专八的发布流程分开）：
+# 第一行写标签名（10 篇一批：男声 zk-m01 = z01—z10，zk-m02 = z11—z20，zk-m03 = z21—z30，zk-m04 = z31—z40；女声的 zk-01 已发布、保留；
+# zk-m-all = 40 篇合集）；第 2 行起逐行列出 中考/最终视频/ 下要发布的 MP4 文件名，写成“原文件名|包内文件名”时在压缩包里改用后面的名字
+# 发布内容：一个打包好的 zip（GitHub 会把附件名里的中文和空格改掉，所以只发 zip，压缩包里保留完整中文文件名）
+name: 发布中考视频
+on:
+  push:
+    paths: ['.github/zk-videos-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 音频合格证核对（踩坑 87：每条 timings 都是旧成品或带 clause-v1 合格证、MP3 与合格证一致，不合格不发布）
+        run: python3 .github/check-audio-cert.py 中考/audio
+      - name: 打包视频
+        run: |
+          set -e
+          tag=$(head -1 .github/zk-videos-release.txt | tr -d '[:space:]')
+          mapfile -t lines < <(tail -n +2 .github/zk-videos-release.txt | sed '/^[[:space:]]*$/d')
+          [ ${#lines[@]} -gt 0 ] || { echo "没有列出视频"; exit 1; }
+          mkdir -p stage; files=()
+          for l in "${lines[@]}"; do
+            src="${l%%|*}"; dst="${l#*|}"
+            [ -f "中考/最终视频/$src" ] || { echo "找不到：$src"; exit 1; }
+            [ -e "stage/$dst" ] && { echo "包内文件名重复：$dst"; exit 1; }
+            ln "中考/最终视频/$src" "stage/$dst"; files+=("$dst")
+          done
+          n=${#files[@]}
+          # 标签 zk-m01、zk-m02 … 是男声版（用户 2026-10-14 改用四六级男声；女声的 zk-01 保留不动）
+          if [[ "$tag" == zk-m* ]]; then VOICE_TXT="男声（四六级同款）"; else VOICE_TXT="女声"; fi
+          zipname="ZHONGKAO-reading-videos-${tag}.zip"
+          (cd stage && zip -0 -q "../${zipname}" "${files[@]}")
+          unzip -l "${zipname}" | tail -1
+          {
+            echo "中考英语阅读理解逐句精读视频（适合初中生背单词：每句英文 + 中文翻译 + 生词编号注释），本次共 ${n} 个。"
+            if [[ "$tag" == zk-m-all ]]; then echo; echo "排序：按年份从新到旧（2026 → 2025 → 2024）；同一年北京卷第一、山东卷第二、济南卷第三、烟台卷第四，其余按省份；压缩包里的先后顺序与 B 站合集 P1—P40 一致。"; fi
+            echo
+            echo "4K（3840×2160）、30 帧/秒，${VOICE_TXT}朗读（已去除电磁音），中文翻译 + 生词编号注释；句与句之间停顿 0.8 秒。"
+            echo
+            echo "下载下面的 \`${zipname}\`，解压即可。"
+            echo
+            echo "每个视频都通过了全部核查（无电磁音、分辨率、流畅度、声画等长、片头/结尾静音、句间停顿、响度一致、朗读与画面逐句一致），核查报告见仓库 \`中考/核查报告.md\`。"
+            echo
+            echo "| # | 文件名 |"
+            echo "|---|---|"
+            i=0; for f in "${files[@]}"; do i=$((i+1)); echo "| $i | $f |"; done
+          } > notes.md
+          echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
+          echo "N=${n}" >> "$GITHUB_ENV"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          no=${tag#zk-}
+          if [[ "$tag" == zk-m* ]]; then no="（男声）${tag#zk-m}"; fi
+          if [[ "$tag" == zk-m-all ]]; then no="（男声）40 篇合集"; fi
+          echo "NO=${no}" >> "$GITHUB_ENV"
+      - name: 发布（gh 命令行；2026-10-15 第三方 softprops/action-gh-release 在 zk-m04 连续两次 403，改用 GitHub 自带的 gh）
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -e
+          title="中考英语阅读精读视频 ${NO}（${N} 个）"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIPNAME" --clobber
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" "$ZIPNAME" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md
+          fi

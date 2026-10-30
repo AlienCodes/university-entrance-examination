@@ -1,0 +1,59 @@
+/* EB Garamond 700 / 800、700 斜体（@fontsource/eb-garamond 5.3.0，SIL OFL，见 LICENSE-eb-garamond）：专八大字版「书卷水墨」沿用校园版新字体模式——英文全部加粗（用户 2026-10-23）。
+   四级共用的 fonts.css 只有 400–600，700/800 会被浏览器假加粗；只由 水墨 变体加载（make_video.PROJECTS['专八']['variants']['水墨']['font_css']）。 */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./files/eb-garamond-latin-ext-700-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./files/eb-garamond-latin-700-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(./files/eb-garamond-latin-ext-800-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url(./files/eb-garamond-latin-800-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./files/eb-garamond-latin-ext-700-italic.woff2) format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./files/eb-garamond-latin-700-italic.woff2) format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+/* 释义里英文词中间的撇号（don’t、Majesty’s）：释义用思源宋体，它的“’”是全角（layoutcheck 西文撇号：t04 “don’ t”、t05 “Majesty’ s”）。
+   只把 ‘ ’ 两个字交给 EB Garamond 画（unicode-range），汉字和其他标点仍是思源宋体；t01—t10 释义里没有中文单引号，成对替换也不会一宽一窄 */
+@font-face {
+  font-family: 'InkQuote';
+  font-style: normal;
+  font-weight: 700;
+  src: url(./files/eb-garamond-latin-700-normal.woff2) format('woff2');
+  unicode-range: U+2018-2019;
+}

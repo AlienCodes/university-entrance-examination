@@ -1,0 +1,545 @@
+{
+ "results": [
+  {
+   "id": "s01",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s02",
+   "findings": [
+    {
+     "sent": 7,
+     "field": "gloss",
+     "headword": "streaming",
+     "current": "v. 以流媒体方式播放（音乐、视频等）；流式传输",
+     "proposed": "n. 流媒体播放；流式传输（音乐、视频等）",
+     "reason": "In 'If streaming music can be accomplished within the law', streaming is a gerund (the act of streaming music) and is the subject of the clause. The project rule is gerund = n., and a verb entry would need the dictionary form 'stream', not 'streaming'. The current headword and POS do not match each other or the way the word is used here.",
+     "severity": "medium",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "The current text matches the file and there is a real defect: [7] is now the only entry in zh2 that puts an -ing headword with a 'v.' gloss. Last round changed adj. to v. but the headword change was never made. The proposed fix, n., is wrong. In 'streaming music can be accomplished', streaming takes the direct object 'music', so it is a verbal gerund, and a noun cannot take an object. Project practice lists such gerunds under the verb lemma with v. In this same file [6] has 'obtaining' → obtain v., s21 and s41 do the same with approaching and implementing, s42 already has 'stream v.', and last round's two reviewers rejected the 'gerund = n.' rule for this exact item. The correct fix is to change the headword to 'stream', keep 'streaming' as the highlight and keep the verb gloss.",
+     "amended_proposed": "- stream  (单词)  v. 以流媒体方式播放（音乐、视频等）；流式传输   ← 高亮原文: \"streaming\"   [headword changes from 'streaming' to 'stream'; POS stays v.; the highlighted text stays \"streaming\"]"
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current entry contradicts itself: the headword is the -ing form 'streaming' but is labelled v. In 'If streaming music can be accomplished', streaming is a gerund (or an attributive noun) acting as the subject, not a finite verb. Every other -ing headword in the set is glossed as n. (shifting, licensing, bullying, safeguarding), so this change matches the project convention. The proposed 'n. 流媒体播放；流式传输（音乐、视频等）' is accurate and fits the ZH translation 流媒体音乐. It does not change the meaning."
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s04",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s05",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s06",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s07",
+   "findings": [
+    {
+     "sent": 1,
+     "field": "drop",
+     "headword": "had not",
+     "current": "had not  (短语)  （过去完成时）没有",
+     "proposed": "",
+     "reason": "\"hadn't\" is just the auxiliary had plus not. It is a free combination that every learner already knows, so it should not be labelled 短语 or glossed as vocabulary. Sentence 1 still keeps other entries (the other day, log into, service).",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current entry matches the file. 'hadn't' is just the auxiliary had plus not, which is basic grammar and not a phrase a CET-6 learner needs to memorise. Labelling it 短语 is misleading. Sentence 1 still has three valid entries after the drop: the other day, log into and service."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "\"hadn't\" is only the auxiliary had plus not, so it is grammar, not vocabulary to memorise. Labelling it 短语 and glossing it as （过去完成时）没有 treats a free grammatical combination as a lexical item, which is a real mislabel and a demanding teacher would cut it. Dropping it adds no error and changes no meaning. Sentence 1 still has three proper entries (the other day, log into, service), so the rule that every sentence has at least one annotated word still holds."
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "findings": [
+    {
+     "sent": 3,
+     "field": "zh",
+     "headword": "",
+     "current": "这不过是说，我们能够观察到自己产生了某种渴望、某个快乐的念头，甚至某种可怕的情绪，而不在当下做出反应，进而放大这种感受，或让思绪一发不可收拾地陷入对往事的回想或对未来之事的预想。",
+     "proposed": "这不过是说，我们能够观察到自己产生了某种渴望、某个快乐的念头，甚至某种可怕的情绪，而不会在当下做出放大这种感受的反应，也不会让思绪一发不可收拾地陷入对往事的回想或对未来之事的预想。",
+     "reason": "The scope of the negation is misleading. The English \"without reacting in the moment in a way that amplifies the feeling or sends the mind spiraling\" rules out a specific kind of reaction: one that amplifies the feeling or sets the mind spiraling. In Chinese, \"不A，进而B\" naturally reads as \"don't A, and as a result B\", so \"不在当下做出反应，进而放大这种感受\" can be taken to mean that not reacting amplifies the feeling, which is the opposite of the author's point. The fix puts the amplifying and spiraling inside the negation.",
+     "severity": "medium",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 8,
+     "field": "gloss",
+     "headword": "make it possible for…to",
+     "current": "使某人能够做",
+     "proposed": "使……能够（做某事）",
+     "reason": "The headword includes \"to\", but the highlight is only \"makes it possible for\", so the \"to\" of \"to target\" is not highlighted and the phrase is only partly highlighted. The highlight should be \"makes it possible for … to\", as the sibling entry \"make it impossible for…to\" in another file does. The gloss is also aligned with the headword's \"…\" placeholder and that sibling's style. The main fix is the highlight; the gloss change is secondary.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. The English negates only one kind of reaction: one that amplifies the feeling or sends the mind spiraling. The current ZH '而不在当下做出反应，进而放大这种感受' rules out any reaction at all, and its negation scope is ambiguous: it can be read as 'not reacting amplifies the feeling'. The proposal '不会在当下做出放大这种感受的反应，也不会让思绪……' puts both results inside the negation and keeps every element (在当下, 放大感受, 一发不可收拾地陷入, 回想/预想). It is precise and natural Chinese."
+    },
+    {
+     "index": 1,
+     "verdict": "reject",
+     "why": "The current text matches the file, but the gloss '使某人能够做' is already an accurate and standard gloss for 'make it possible for sb to do'. Changing it to '使……能够（做某事）' is only a style tweak. The real problem the proposal names is the highlight, not the gloss: the headword includes 'to' but the highlight is only 'makes it possible for'. A gloss-field change cannot fix that. If it is fixed, it should be a separate highlight correction to \"makes it possible for … to\", with the gloss left as is."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current line is imprecise. \"不在当下做出反应，进而放大这种感受\" denies reacting at all, so the English restriction \"in a way that amplifies…\" is lost. It also invites the reading \"don't react, and thus amplify\". The proposal puts the amplifying and the spiraling inside the negation, keeps the meaning, and reads naturally."
+    },
+    {
+     "index": 1,
+     "verdict": "amend",
+     "amended_proposed": "Highlight: \"makes it possible for … to\" (same format as s31's \"makes it impossible for … to\"). Gloss: 使……能够（做某事）",
+     "why": "The real error is the partial highlight. The headword includes \"to\" but the highlight stops at \"for\", so the \"to\" of \"to target\" is left out. Changing only the gloss would leave that error in place, so the highlight must be extended. The gloss change on its own is only a matter of taste, since \"使某人能够做\" is not wrong, but it does match the sibling entry's \"……\" style."
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s10",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s11",
+   "findings": [
+    {
+     "sent": 17,
+     "field": "drop",
+     "headword": "should not",
+     "current": "should not  (短语)  不应该；不应当   ← 高亮原文: \"shouldn’t\"",
+     "proposed": "",
+     "reason": "'should not' is just the modal 'should' plus 'not', a free combination and not a fixed phrase, so the 短语 label is wrong (rule 5). Every learner already knows the word, so the entry is pointless. It is also listed out of order, after 'one another'. The sentence still has plenty of other entries, so the at-least-one-word rule is not affected.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file (line 165). The entry is not wrong: \"shouldn't\" does mean 不应该/不应当 here, and since the headword is two words it naturally falls under the 短语 format, so nothing is mislabelled or misleading. An entry that is trivial or sits slightly out of order is a refinement, not a definite error. It may also have been added on purpose so learners notice the negation. Under the final-check rule of reporting only definite errors, it should stay as it is."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The entry is accurate: shouldn't does mean 不应该/不应当 here. It is not a definite error. The file marks every multi-word headword as 短语, so the label follows that convention. The ordering point is only cosmetic. The same entry was added on purpose for the contraction shouldn't in s14 [13] and s58 [18], so dropping it only here would make the files inconsistent. Removing it is a matter of taste, not a correction."
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s13",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s14",
+   "findings": [
+    {
+     "sent": 13,
+     "field": "drop",
+     "headword": "should not",
+     "current": "should not  (短语)  不应该；不应当   ← 高亮原文: \"shouldn’t\"",
+     "proposed": "",
+     "reason": "\"shouldn't\" is not a fixed phrase. It is the modal \"should\" plus a negative, which every learner already knows. Labelling it 短语 is misleading, and the sentence already has enough real entries (condemn sb for, pity sb for, intensity, need for).",
+     "severity": "low",
+     "lens": "gloss"
+    },
+    {
+     "sent": 11,
+     "field": "zh",
+     "headword": "",
+     "current": "它与对尊重和敬重的渴望有关，而在我们的社会中，只有通过获取物质财富才能赢得这种尊重和敬重。",
+     "proposed": "它与对尊重和敬重的渴望有关，而在我们的社会中，只有通过获取财物才能赢得这种尊重和敬重。",
+     "reason": "Sentences 11 and 12 use the same key term: 'material goods', then 'the goods themselves'. The ZH gives it two different words: 物质财富 (material wealth) in [11] and 财物 in [12]. Both glosses use 财物 (material goods = 物质财物；物品; goods = 财物；商品), so the [11] ZH also doesn't match its own vocabulary line. Using 财物 in [11] makes 财物本身 in [12] point back to the same term.",
+     "severity": "low",
+     "lens": "coherence"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current entry matches line 110 of the file. 'shouldn't' is just the modal 'should' plus 'not', which any CET-6 learner already knows. Labelling it 短语 misclassifies it as a fixed phrase. Sentence [13] still keeps real entries after the drop (condemn sb for, pity sb for, intensity, need for), so it is not left empty."
+    },
+    {
+     "index": 1,
+     "verdict": "reject",
+     "why": "The current text matches the file. 获取物质财富 is a natural, accurate rendering of 'acquisition of material goods' in this context: the possessions are fancy cars and houses. The proposed 财物 is no more precise, because 财物 also covers money, just as 物质财富 does. [12]'s 财物本身 still reads clearly on its own. This is a consistency refinement, not a definite error, and the ZH does not have to repeat the gloss word for word."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "\"shouldn't\" is the basic modal \"should\" plus \"not\". It is not a phrase and not something a CET-6 learner needs to memorise, so labelling it 短语 misleads. Sentence 13 still has several real entries (condemn sb for, pity sb for, intensity, need for, greed, the next time), so dropping it leaves no gap."
+    },
+    {
+     "index": 1,
+     "verdict": "reject",
+     "why": "物质财富 is the standard, accurate and idiomatic rendering of \"material goods\" in \"the acquisition of material goods\". The ZH does not have to repeat the gloss word for word. 财物本身 in [12] still clearly points back to it, so this is a taste-level consistency tweak, not an error. The proposed 获取财物 also reads less naturally and carries a legal/theft overtone (cf. 非法获取财物)."
+    }
+   ]
+  },
+  {
+   "id": "s15",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s16",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s17",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s18",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s19",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s20",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "k3",
+   "findings": [
+    {
+     "sent": 2,
+     "field": "zh",
+     "headword": "",
+     "current": "这促成了一项计划，旨在遏制那些让全部公司利润避开税务机关的做法。",
+     "proposed": "这促成了一项计划，旨在遏制那些让很大一部分公司利润避开税务机关的做法。",
+     "reason": "原文 a large chunk of corporate profits 的意思是“很大一部分公司利润”，不是“全部”。译成“全部”夸大了数量，与原文不符。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 7,
+     "field": "zh",
+     "headword": "",
+     "current": "20世纪70年代，这一数字还不到20%。",
+     "proposed": "20世纪70年代，这一数字还不到2%。",
+     "reason": "数字错了：原文是 less than 2%，译文写成了 20%，相差十倍，也削弱了与 2019 年 37% 的对比。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "这一数字被大幅上升的主要原因有两个：一是20世纪80年代避税行业的发展壮大，二是美国的政策使利润更容易从高税率国家转移到避税天堂。",
+     "proposed": "这一数字大幅上升的主要原因有两个：一是20世纪80年代避税行业的发展壮大，二是美国的政策使利润更容易从高税率国家转移到避税天堂。",
+     "reason": "“上升”是不及物动词，不能用“被”。“被大幅上升”是病句，原文 the large increase 也没有被动意思。",
+     "severity": "medium",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 1,
+     "field": "gloss",
+     "headword": "crack down on",
+     "current": "崩溃；垮掉",
+     "proposed": "严厉打击；取缔",
+     "reason": "crack down on 的意思是“严厉打击、整治”。“崩溃；垮掉”是 crack up / break down 一类的意思，与本句和译文（打击）都不符。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 1,
+     "field": "gloss",
+     "headword": "economy",
+     "current": "v. 经济体",
+     "proposed": "n. 经济体",
+     "reason": "economies 在句中是名词复数（the world’s biggest economies），词性标成 v. 是错的。",
+     "severity": "high",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. \"a large chunk of corporate profits\" means a large part of the profits, not all of them. \"全部\" is a factual mistranslation, and \"很大一部分\" is correct and also matches the sentence's own gloss for \"a large chunk of\"."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says \"less than 2%\", so \"不到20%\" is a numerical error, ten times too large. \"不到2%\" is correct."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file. \"上升\" is intransitive, so \"被大幅上升\" is ungrammatical, and the EN has no passive sense. Deleting \"被\" fixes it and leaves the rest of the line accurate."
+    },
+    {
+     "index": 3,
+     "verdict": "amend",
+     "amended_proposed": "严厉打击；整治",
+     "why": "The current gloss \"崩溃；垮掉\" matches the file and is plainly wrong. However, \"取缔\" means to ban or outlaw something, which is not the sense in this sentence (cracking down on the abusive use of tax havens). \"严厉打击；整治\" is the exact sense here and agrees with the ZH \"打击\" and the summary's \"严厉打击\"."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current text matches the file. In \"the world's biggest economies\", \"economies\" is a plural noun, so the POS v. is wrong. It should be n. 经济体."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "a large chunk of 是“很大一部分”，“全部”属于明确的误译。改后的译文准确、自然，并与本句的短语释义“很大一部分”一致。"
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "原文是 less than 2%，译成 20% 是数字错误。改成“不到2%”与原文完全一致。"
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "“上升”是不及物动词，“被大幅上升”是病句，原文也没有被动意思。删掉“被”后通顺，意思不变。"
+    },
+    {
+     "index": 3,
+     "verdict": "amend",
+     "amended_proposed": "严厉打击；整治",
+     "why": "现释义“崩溃；垮掉”完全错误，必须改。“严厉打击”准确，也与译文“打击”对应；但“取缔”指明令禁止、撤销，不是本句的用法，所以第二个义项改用“整治”。"
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "economies 在句中是名词复数（the world’s biggest economies），标成 v. 是词性错误，应为 n.。"
+    }
+   ]
+  },
+  {
+   "id": "k4",
+   "findings": [
+    {
+     "sent": 5,
+     "field": "zh",
+     "headword": "",
+     "current": "要取得成功，组织或许可以打造一套转型计划，让变革能够迅速被带动起来，遍及各个部门、贯穿各个层级。",
+     "proposed": "要取得成功，组织必须打造一套转型计划，让变革能够迅速被带动起来，遍及各个部门、贯穿各个层级。",
+     "reason": "EN says 'must build', which states an obligation. '或许可以' turns it into a tentative suggestion, so the modality is wrong.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 9,
+     "field": "zh",
+     "headword": "",
+     "current": "对所有成年人来说，行为改变并非易事。",
+     "proposed": "对大多数成年人来说，行为改变并非易事。",
+     "reason": "Wrong quantifier: EN says 'most adults' (大多数), not all adults (所有).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 3,
+     "field": "zh",
+     "headword": "",
+     "current": "大多数组织都渴望推行重大的变革计划，结果却发现这些计划完全无法实施。",
+     "proposed": "大多数组织都渴望推行重大的变革计划，结果却发现这些计划几乎无法实施。",
+     "reason": "Wrong degree word: EN says 'nearly impossible' (几乎无法), and '完全无法' overstates it. The line's own gloss for nearly is '几乎'.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 6,
+     "field": "zh",
+     "headword": "",
+     "current": "无论高层管理者的投入程度如何，除非各个层级的关键思想领袖都欣然地被接受这项变革，否则这一举措终将衰败、消亡。",
+     "proposed": "无论高层管理者的投入程度如何，除非各个层级的关键思想领袖都欣然接受这项变革，否则这一举措终将衰败、消亡。",
+     "reason": "In EN the leaders are the ones who embrace the change. '欣然地被接受' wrongly makes them passive and is also ungrammatical.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 1,
+     "field": "gloss",
+     "headword": "disastrous",
+     "current": "adj. 有益的",
+     "proposed": "adj. 灾难性的",
+     "reason": "Wrong meaning: disastrous means catastrophic (灾难性的), not beneficial. The ZH line itself correctly says '灾难性后果'.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "maximize",
+     "current": "n. 使最大化；最大限度地获得",
+     "proposed": "v. 使最大化；最大限度地获得",
+     "reason": "Wrong part of speech: maximize is a verb here ('To maximize the value'), not a noun.",
+     "severity": "high",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. EN says 'must build', which is an obligation, so '或许可以' gets the modality wrong. '必须' is correct, and the rest of the line is unchanged and accurate."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. EN says 'most adults', so '所有' is the wrong quantifier and '大多数' is correct."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file. EN says 'nearly impossible', so '完全无法' overstates it. '几乎无法' is precise and agrees with the gloss for nearly (几乎)."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches the file. In EN the thought leaders are the ones who embrace the change, so the passive '欣然地被接受' is wrong and ungrammatical. '都欣然接受这项变革' is correct."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'disastrous' means 灾难性的, the opposite of '有益的', and the ZH line already says 灾难性后果."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'To maximize the value' uses maximize as a verb, so the POS should be v., and the Chinese senses are already verbal."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "'must build' expresses obligation, but '或许可以' turns it into a tentative suggestion, which is a real modality error. '必须' is exact and reads naturally."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "EN says 'most adults', but '所有成年人' says all adults, so the quantifier is wrong. '大多数成年人' is exact."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "'nearly impossible' means almost impossible, not completely impossible, so '完全无法' overstates it. '几乎无法' is exact and also matches the line's own gloss for nearly (几乎)."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "In EN the leaders actively embrace the change. '欣然地被接受' wrongly makes them passive and is ungrammatical Chinese. '欣然接受' is correct and matches the embrace gloss used in sentence 4."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "disastrous means catastrophic, so '有益的' (beneficial) is the opposite meaning. 'adj. 灾难性的' is correct and matches the ZH line's '灾难性后果'."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "'To maximize the value' uses maximize as a verb, and the Chinese meanings already given are verbal, so 'n.' is the wrong part of speech. 'v.' is correct."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

@@ -1,0 +1,43 @@
+# 防复发自检（铁律 16）：每次推送都在 GitHub 上免费跑一遍——登记核对（踩坑表、铁律）、仓库检查（工作流、软链接）、
+# 全部纯 Python 的双向验证（needs 为 none / pip 的；tts / 浏览器 / heavy 的只在本机跑）。不占本机、不花 token。
+# 复盘核对要 git 历史，只在本机提交前钩子做（这里 --不查复盘）。
+name: 防复发自检
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !*.mp4
+            !*.mp3
+            !*.wav
+            !*.m4a
+            !*.png
+            !*.jpg
+            !*.jpeg
+            !*.webp
+            !*.pdf
+            !*.zip
+            !*.onnx
+            !*.bin
+            !*.pth
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 安装依赖
+        run: pip install -q pyyaml numpy scipy pyloudnorm soundfile jieba num2words lameenc soxr   # 后三个：意群响度双向验证要导入 gaokao_tts、编 MP3（踩坑 85），最终检查要跑 master（踩坑 86）
+      - name: 登记核对 + 仓库检查
+        run: python3 tools/防复发/防复发自检.py --不查复盘
+      - name: 双向验证（纯 Python）
+        run: python3 tools/防复发/防复发自检.py --不查复盘 --测试 --ci

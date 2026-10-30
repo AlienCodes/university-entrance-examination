@@ -1,0 +1,138 @@
+# 六级黑板视频的生成环境，与本机（容器）逐项相同，审过的截图才能逐字节重现（make_video.py 核对截图哈希与 截图审阅通过.json 一致才生成）：
+#   /opt/ttsenv            Python 3.11.15 + .github/cet6-render-requirements.txt（版本与本机 /opt/ttsenv 相同）
+#   /opt/pw-browsers/chromium → chromium-1194/chrome-linux/chrome（Chromium 141.0.7390.37，Playwright 1.56.0 带的那一版；驱动它的是 playwright 1.63.0，与本机相同）
+#   Chromium 运行库与字体（playwright install-deps，与本机装的一样）、fontconfig 设置与本机相同（conf.d 逐个对齐）
+#   ffmpeg 6.1.1（Ubuntu 24.04 apt，与本机 6.1.1-3ubuntu5 相同）
+#   语音识别模型 tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8（与 tools/tts/download_models.py --qa 同一个文件；换屏时刻用）
+# 不改任何参与截图指纹的文件；路径靠在 /opt 下建同名目录重现（踩坑 45：发布的文件里不写本机绝对路径）。
+name: 六级黑板视频生成环境
+description: 与本机相同的 Python、Chromium 141（chromium-1194）、ffmpeg、fontconfig 与语音识别模型
+inputs:
+  asr:
+    description: 是否需要语音识别模型（换屏时刻）
+    default: 'true'
+  browser:
+    description: >-
+      浏览器：141 = Chromium 141.0.7390.37（chromium-1194，六级阅读、考研等已审截图用它画的，默认）；
+      153 = Chrome for Testing 153.0.8010.12（chromium-1243，playwright 1.63.0 自带；2026-10-22 起的新容器 /opt/pw-browsers/chromium 就是它，
+      连同新容器的两条 fontconfig 设置 fontconf153/ 与 fonts-inter。六级作文起用：本机画的截图要在 GitHub 上逐字节重现，踩坑 78）
+    default: '141'
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11.15'
+
+    - name: 准备 /opt/ttsenv、/opt/pw-browsers（与本机同路径）
+      shell: bash
+      run: |
+        sudo mkdir -p /opt/ttsenv /opt/pw-browsers
+        sudo chown -R "$(id -u):$(id -g)" /opt/ttsenv /opt/pw-browsers
+
+    - name: 恢复 Python 环境（缓存）
+      id: venv
+      uses: actions/cache@v4
+      with:
+        path: /opt/ttsenv
+        key: cet6-ttsenv-ubuntu24.04-py3.11.15-${{ hashFiles('.github/cet6-render-requirements.txt') }}
+
+    - name: 安装 Python 包（固定版本）
+      if: steps.venv.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        python -m venv /opt/ttsenv
+        /opt/ttsenv/bin/pip install -q --disable-pip-version-check -r .github/cet6-render-requirements.txt
+
+    - name: Playwright 1.56.0 的安装程序（它带的浏览器就是 chromium-1194）
+      shell: bash
+      run: python -m venv /tmp/pw156 && /tmp/pw156/bin/pip install -q --disable-pip-version-check playwright==1.56.0
+
+    - name: 恢复 Chromium（缓存）
+      id: chromium
+      uses: actions/cache@v4
+      with:
+        path: /opt/pw-browsers
+        key: ${{ inputs.browser == '153' && 'pw-chromium-1243-ubuntu24.04-v1' || 'pw-chromium-1194-ubuntu24.04-v1' }}
+
+    - name: 下载 Chromium 141.0.7390.37（chromium-1194）
+      if: steps.chromium.outputs.cache-hit != 'true' && inputs.browser != '153'
+      shell: bash
+      run: PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers /tmp/pw156/bin/python -m playwright install chromium
+
+    - name: 下载 Chrome for Testing 153.0.8010.12（chromium-1243，playwright 1.63.0 自带）
+      if: steps.chromium.outputs.cache-hit != 'true' && inputs.browser == '153'
+      shell: bash
+      run: PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers /opt/ttsenv/bin/python -m playwright install chromium
+
+    - name: 系统依赖（Chromium 运行库与字体）+ ffmpeg
+      shell: bash
+      run: |
+        sudo /tmp/pw156/bin/python -m playwright install-deps chromium > /tmp/install-deps.log 2>&1 || { tail -50 /tmp/install-deps.log; exit 1; }
+        sudo apt-get install -y -q --no-install-recommends ffmpeg > /tmp/apt-ffmpeg.log 2>&1 || { tail -50 /tmp/apt-ffmpeg.log; exit 1; }
+        if [ "${{ inputs.browser }}" = 153 ]; then
+          ln -sfn /opt/pw-browsers/chromium-1243/chrome-linux64/chrome /opt/pw-browsers/chromium
+          v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"
+          echo "$v" | grep -qx 'Google Chrome for Testing 153\.0\.8010\.12 *' || { echo "::error::浏览器版本不是 Chrome 153.0.8010.12：$v"; exit 1; }
+          sudo apt-get install -y -q --no-install-recommends fonts-inter > /tmp/apt-inter.log 2>&1 || { tail -50 /tmp/apt-inter.log; exit 1; }
+        else
+          ln -sfn /opt/pw-browsers/chromium-1194/chrome-linux/chrome /opt/pw-browsers/chromium
+          v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"
+          echo "$v" | grep -qx 'Chromium 141\.0\.7390\.37 *' || { echo "::error::浏览器版本不是 Chromium 141.0.7390.37：$v"; exit 1; }
+        fi
+        ffmpeg -version | head -1; dpkg-query -W ffmpeg
+        ffmpeg -version | head -1 | grep -q '^ffmpeg version 6\.1\.1' || { echo "::error::ffmpeg 不是 6.1.1"; exit 1; }
+
+    - name: fontconfig 设置与本机对齐（/etc/fonts/conf.d 逐个相同）
+      shell: bash
+      run: |
+        want="10-hinting-slight.conf 10-scale-bitmap-fonts.conf 10-sub-pixel-rgb.conf 10-yes-antialias.conf 11-lcdfilter-default.conf
+              20-unhint-small-dejavu-lgc-sans-mono.conf 20-unhint-small-dejavu-lgc-sans.conf 20-unhint-small-dejavu-lgc-serif.conf
+              20-unhint-small-dejavu-sans-mono.conf 20-unhint-small-dejavu-sans.conf 20-unhint-small-dejavu-serif.conf 20-unhint-small-vera.conf
+              25-wqy-zenhei.conf 30-metric-aliases.conf 30-opensymbol.conf 40-nonlatin.conf 45-generic.conf 45-latin.conf 48-spacing.conf
+              49-sansserif.conf 50-user.conf 51-local.conf 57-dejavu-sans-mono.conf 57-dejavu-sans.conf 57-dejavu-serif.conf
+              58-dejavu-lgc-sans-mono.conf 58-dejavu-lgc-sans.conf 58-dejavu-lgc-serif.conf 60-generic.conf 60-latin.conf 64-wqy-zenhei.conf
+              65-fonts-ipafont-gothic.conf 65-fonts-persian.conf 65-nonlatin.conf 69-unifont.conf 70-no-bitmaps-except-emoji.conf
+              80-delicious.conf 90-synthetic.conf"
+        echo "原来的 conf.d：$(ls /etc/fonts/conf.d | tr '\n' ' ')"
+        sudo find /etc/fonts/conf.d -mindepth 1 ! -name README -delete
+        for f in $want; do
+          t=""; for d in /usr/share/fontconfig/conf.avail /etc/fonts/conf.avail; do [ -f "$d/$f" ] && { t="$d/$f"; break; }; done
+          if [ -n "$t" ]; then sudo ln -s "$t" "/etc/fonts/conf.d/$f"; else echo "::warning::本机有、这里没有的 fontconfig 设置：$f"; fi
+        done
+        if [ "${{ inputs.browser }}" = 153 ]; then      # 新容器多出的两条（灰度抗锯齿、不微调；sans-serif 优先 Inter）
+          for f in "${{ github.action_path }}"/fontconf153/*.conf; do sudo cp "$f" /etc/fonts/conf.d/; done
+        fi
+        sudo fc-cache -f > /dev/null
+        echo "对齐后的 conf.d：$(ls /etc/fonts/conf.d | tr '\n' ' ')"
+
+    - name: 恢复语音识别模型（缓存）
+      if: inputs.asr == 'true'
+      id: asr
+      uses: actions/cache@v4
+      with:
+        path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+        key: asr-sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+
+    - name: 下载语音识别模型
+      if: inputs.asr == 'true' && steps.asr.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p tools/tts/models
+        curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar xj -C tools/tts/models
+        ls tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+
+    - name: 环境自检
+      shell: bash
+      run: |
+        /opt/ttsenv/bin/python - <<'PY'
+        import sys, importlib.metadata as md
+        from PIL import features
+        for m in ['numpy', 'scipy', 'soundfile', 'soxr', 'pyloudnorm', 'jieba', 'PIL', 'sherpa_onnx', 'playwright.sync_api', 'num2words']:
+            __import__(m)
+        print('Python', sys.version.split()[0], '｜', '，'.join(f'{p} {md.version(p)}' for p in
+              ['playwright', 'numpy', 'scipy', 'soundfile', 'soxr', 'pyloudnorm', 'jieba', 'pillow', 'sherpa-onnx', 'num2words']), '｜ libwebp', features.version('webp'))
+        assert sys.version.startswith('3.11.15'), sys.version
+        assert features.version('webp') == '1.6.0', features.version('webp')
+        PY
+        echo "CPU：$(grep -m1 'model name' /proc/cpuinfo | cut -d: -f2)，$(nproc) 核；内存 $(free -g | awk '/Mem/{print $2}') GB；磁盘剩余 $(df -h . | tail -1 | awk '{print $4}')"

@@ -1,0 +1,42 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git -C \"$CLAUDE_PROJECT_DIR\" config core.hooksPath .githooks 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/防复发/钩子/钩子.py\" session || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/防复发/钩子/钩子.py\" prompt || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Task|Workflow|Read|Bash|AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/防复发/钩子/钩子.py\" pretool",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

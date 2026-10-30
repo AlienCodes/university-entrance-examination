@@ -1,0 +1,90 @@
+# 专八听力视频版真题考试：修改 .github/tem8-listening-release.txt 并推送时发布 GitHub Release。
+# 清单：第 1 行标签（tem8-listening-2025）；第 2 行成品文件名；第 3 行整片 sha256；第 4 行起是仓库里的分段文件（专八/听力/最终视频/ 下，
+# GitHub 单个文件不能超过 100 MB，成品按 90 MB 切段提交）。
+# 流程：拼回成品 → 核对 sha256 → Python zipfile 打包（不压缩、中文文件名带 UTF-8 标记，踩坑 52）→ gh 发布（目标用分支名，踩坑 53）→ 下载回来逐字节核对。
+name: 发布专八听力视频版真题考试
+on:
+  push:
+    paths: ['.github/tem8-listening-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            专八/听力/最终视频
+          lfs: false
+      - name: 发布目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - name: 拼回成品、核对、打包
+        run: |
+          set -euo pipefail
+          L=.github/tem8-listening-release.txt
+          tag=$(sed -n 1p $L | tr -d '[:space:]'); name=$(sed -n 2p $L); sha=$(sed -n 3p $L | tr -d '[:space:]')
+          mapfile -t parts < <(tail -n +4 $L | sed '/^[[:space:]]*$/d')
+          [ ${#parts[@]} -gt 0 ] || { echo "停止：清单里没有分段"; exit 1; }
+          mkdir -p out
+          for p in "${parts[@]}"; do [ -f "专八/听力/最终视频/$p" ] || { echo "停止：找不到 $p"; exit 1; }; cat "专八/听力/最终视频/$p" >> "out/$name"; done
+          got=$(sha256sum "out/$name" | cut -d' ' -f1)
+          [ "$got" = "$sha" ] || { echo "停止：拼回的成品 sha256 $got ≠ 清单 $sha"; exit 1; }
+          python3 - "$name" "$tag" <<'EOF'
+          import sys, zipfile, zlib, os
+          name, tag = sys.argv[1], sys.argv[2]
+          src = os.path.join('out', name); z = f'TEM8-listening-2025.zip'
+          with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED) as f:
+              f.write(src, name)
+          crc = 0
+          with open(src, 'rb') as fh:
+              for b in iter(lambda: fh.read(1 << 20), b''): crc = zlib.crc32(b, crc)
+          with zipfile.ZipFile(z) as f:
+              (i,) = f.infolist()
+              assert i.filename == name, i.filename
+              assert i.flag_bits & 0x800, '中文文件名没有 UTF-8 标记'
+              assert i.compress_type == zipfile.ZIP_STORED and i.file_size == os.path.getsize(src) and i.CRC == crc
+              assert f.testzip() is None
+          print('打包核对通过', z, os.path.getsize(z))
+          EOF
+          {
+            echo "2025 年英语专业八级（TEM-8）听力 · 视频版真题考试：打开视频就像坐进考场。"
+            echo
+            echo "- 原题原音，录音一刀不剪（预览、作答停顿、3 分钟检查时间都保留），只做整体响度统一（−16 LUFS）；"
+            echo "- 画面跟着录音走：考试说明、Section A 答题卡（15 空）、Section B 每道题的题干和 A—D 选项，预览 / 作答 / 检查时间都有倒计时；"
+            echo "- 录音结束后给出参考答案（填空 15 空 + 选择题 10 题）。"
+            echo
+            echo "4K（3840×2160）、30 帧/秒，纯白底黑字考卷样式。下载下面的 \`TEM8-listening-2025.zip\`，解压即可（文件名：$name）。"
+            echo
+            echo "sha256（mp4）：\`$sha\`"
+          } > notes.md
+          echo "TAG=$tag" >> "$GITHUB_ENV"; echo "SHA=$sha" >> "$GITHUB_ENV"; echo "NAME=$name" >> "$GITHUB_ENV"
+      - name: 发布 Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" TEM8-listening-2025.zip --clobber
+            gh release edit "$TAG" --notes-file notes.md
+          else
+            gh release create "$TAG" TEM8-listening-2025.zip --target "$GITHUB_REF_NAME" --title "2025 专八听力 视频版真题考试" --notes-file notes.md
+          fi
+      - name: 下载回来核对
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir dl && gh release download "$TAG" -p TEM8-listening-2025.zip -D dl
+          python3 - <<'EOF'
+          import zipfile, hashlib, os
+          with zipfile.ZipFile('dl/TEM8-listening-2025.zip') as f:
+              (i,) = f.infolist()
+              assert i.filename == os.environ['NAME'], i.filename
+              h = hashlib.sha256()
+              with f.open(i) as fh:
+                  for b in iter(lambda: fh.read(1 << 20), b''): h.update(b)
+          assert h.hexdigest() == os.environ['SHA'], '下载回来的 mp4 与成品不一致'
+          print('下载核对通过：', i.filename, i.file_size, h.hexdigest())
+          EOF

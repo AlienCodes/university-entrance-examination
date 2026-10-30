@@ -1,0 +1,693 @@
+{
+ "results": [
+  {
+   "id": "s21",
+   "findings": [
+    {
+     "sent": 20,
+     "field": "zh",
+     "headword": "",
+     "current": "例如，不同地方的日落足够相似，足以使其具有近乎普遍的吸引力。",
+     "proposed": "例如，不同地方的日落相似到足以使其具有近乎普遍的吸引力。",
+     "reason": "“足够相似，足以……”是把 enough…to 逐词译成了两层，“足够”和“足以”意思重复，读来拗口，中文编辑会改。用“相似到足以……”一层就能表达同样的程度和结果，意思完全不变，生词“足以”（enough…to）、“相似”、“普遍”、“吸引力”在译文里也都还看得出来。",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In \"足够相似，足以……\" the enough…to structure is translated twice, so \"足够\" and \"足以\" say the same thing. That is clear translationese. \"相似到足以使其具有近乎普遍的吸引力\" says it once and keeps every part of the meaning: 不同地方, similar, enough…to, almost universal appeal. Its handling of warrant is as precise as before, and the highlighted words still show in the translation. The new line is equally precise and clearly more natural."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In the current line, 足够相似 and 足以 both render enough. Saying it twice is clunky translationese that a Chinese editor would cut. 相似到足以…… keeps the same degree-and-result meaning in one natural clause, adds no new error, and keeps every glossed item (足以, 相似, 普遍, 吸引力) visible in the translation."
+    }
+   ]
+  },
+  {
+   "id": "s22",
+   "findings": [
+    {
+     "sent": 14,
+     "field": "headword",
+     "headword": "solution",
+     "current": "solution",
+     "proposed": "solution for",
+     "reason": "The entry is labelled as a single word (单词) with a noun POS, but the highlight is the split span \"solution … for\" (\"A solution has yet to be found for this challenge\"). A single-word entry should not highlight a preposition with it. Because \"for\" really goes with \"solution\" here (solution for this challenge), make it the phrase \"solution for\" (短语, no POS). This also keeps the first \"for\" separate from the later conjunction \"for\" (因为), which has its own entry. The gloss needs to change to match; see the next finding.",
+     "severity": "medium",
+     "lens": "gloss"
+    },
+    {
+     "sent": 14,
+     "field": "gloss",
+     "headword": "solution",
+     "current": "n. 解决办法；解决方案",
+     "proposed": "……的解决办法",
+     "reason": "This goes with the headword change to the phrase \"solution for\". A phrase has no POS, so the gloss becomes \"……的解决办法\", which matches the highlighted \"solution … for\".",
+     "severity": "medium",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "amended_proposed": "- solution  (单词)  n. 解决办法；解决方案   ← 高亮原文: \"solution\"   (keep the headword and gloss; only the highlight changes: drop \"for\", so the span is just [2,10] \"solution\")",
+     "why": "The current line matches the file, and the problem is real: a single-word entry should not highlight \"for\" along with \"solution\". But the earlier review already rejected the phrase \"solution for\" with two votes. The set collocation is \"solution to\", and \"for this challenge\" could just as well go with \"be found\". Bringing the phrase back would teach a doubtful collocation. The real error is a highlight left over from that change. The fix is to keep the single word \"solution\" and highlight only \"solution\". The conjunction \"for\" has its own span [51,54], so dropping the first \"for\" does not affect it."
+    },
+    {
+     "index": 1,
+     "verdict": "reject",
+     "why": "This edit only makes sense with the phrase \"solution for\", which is rejected above. Under the single-word entry, the current gloss \"n. 解决办法；解决方案\" is correct, gives the POS, and matches 解决办法 in the ZH."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In every zh3 file, this is the only 单词 entry whose highlight spans several words (\"solution … for\"). A one-word noun entry that also highlights a preposition is a real error. The \"for\" here belongs with \"solution\" (a solution for this challenge), so turning the entry into the phrase \"solution for\" is correct. It also follows the corpus's existing pattern: \"solution to (短语) ……的解决办法\", \"argument for\" and \"increase in\". Keeping it separate from the conjunction \"for\" (因为) entry is a further benefit."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "This follows from changing the headword to the phrase \"solution for\": phrases carry no POS, so the gloss changes too. \"……的解决办法\" is accurate and natural, and it matches the existing \"solution to\" entry word for word. The meaning does not change."
+    }
+   ]
+  },
+  {
+   "id": "s23",
+   "findings": [
+    {
+     "sent": 0,
+     "field": "summary",
+     "headword": "",
+     "current": "而是心理健康护理",
+     "proposed": "而是心理健康治疗",
+     "reason": "The summary translates 'mental health care' as 心理健康护理, but sentence [22] translates the same phrase as 心理健康治疗. In this context 护理 suggests nursing care and reads less naturally. Changing the summary keeps it consistent with sentence [22] and more idiomatic.",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 14,
+     "field": "add",
+     "headword": "",
+     "current": "",
+     "proposed": "ideal=adj. 理想的；最合适的",
+     "reason": "In 'choosing the ideal filter', ideal is an adjective. Everywhere else in this text it is a noun (the so-called ideal, beauty ideal), and the [5] entry glosses only the noun. Learners would benefit from seeing the adjective sense in the same passage. The text annotates words of similar difficulty (tool, background, image), so this entry fits the existing level.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the S line exactly, once. 心理健康护理 is a literal calque of 'care' and suggests nursing, and it clashes with the 心理健康治疗 used for the same phrase in [22]. The proposal is just as precise, more natural, and makes the summary consistent with [22]."
+    },
+    {
+     "index": 1,
+     "verdict": "amend",
+     "amended_proposed": "ideal{the ideal}=adj. 理想的；最合适的",
+     "why": "The omission is real. In 'choosing the ideal filter', ideal is an adjective. The only single-word gloss for it in this text is the noun in [5], and here it appears only inside the phrase 'beauty ideal'. This text glosses words as basic as tool, background and image, so the adjective sense should be listed too, and the POS and sense (理想的；最合适的) are correct. But the proposal as written has no highlight anchor. In tools/build.py find(), entries are matched longest first, so 'beauty ideal' claims the first 'ideal'. A bare 'ideal' would then land on the second one, the noun in 'accepted beauty ideal'. That puts an adj. gloss on a noun, the wrong-word-form highlight problem in pitfall #24. The highlight '{the ideal}' matches only 'the ideal filter', and it does not overlap 'filter' or the 'beauty ideal' match."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In Chinese, 护理 suggests nursing care, and 心理健康护理 reads as a nursing term. As the remedy that stands against cosmetic intervention, 心理健康治疗 is what a native editor would write. It is also exactly how sentence [22] renders the same phrase, so the summary and the sentence currently disagree. The meaning does not change."
+    },
+    {
+     "index": 1,
+     "verdict": "amend",
+     "why": "The entry is needed. In 'choosing the ideal filter', ideal is an adjective (理想的；最合适的), and 'ideal' is not on the basic word list. The coverage check skipped it only because the noun 'ideal' inside the ~beauty ideal entry already counts the word as done for this sentence, so learners get no gloss for a different part of speech and meaning. The gloss is correct, but the highlight must be pinned. find() in tools/build.py highlights the first occurrence not already taken. ~beauty ideal takes only the first 'beauty ideal' ('desired beauty ideal'), so a plain 'ideal' entry would land on the noun in 'the accepted beauty ideal'. That would show an adjective gloss on a noun (pitfall #24). 'the ideal' occurs only once in this sentence, so using it as the highlight text places the highlight correctly.",
+     "amended_proposed": "ideal{the ideal}=adj. 理想的；最合适的"
+    }
+   ]
+  },
+  {
+   "id": "s24",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s25",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s26",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s27",
+   "findings": [
+    {
+     "sent": 14,
+     "field": "zh",
+     "headword": "",
+     "current": "与此同时，成功依靠可再生能源运转的国家，通常是凭借超乎寻常的水力发电能力才做到这一点。",
+     "proposed": "另一方面，成功依靠可再生能源运转的国家，通常是凭借超乎寻常的水力发电能力才做到这一点。",
+     "reason": "这里的 Meanwhile 起对比作用：上一句讲城市，这一句转而讲国家，并不是说两件事同时发生。“与此同时”强调同时性，是按字面套用的翻译腔，也和本句词表中 meanwhile 的释义“另一方面；而”对不上。改成“另一方面”后，中文更地道，意思也更准确，学生在译文里还能直接找到释义对应的词。",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches line 134 of the file. In the EN, 'Meanwhile' moves from cities (sentence 13) to countries as a parallel point, not something happening at the same time, so '与此同时' is the literal stock rendering. It also conflicts with this sentence's own gloss (meanwhile: 另一方面；而). '另一方面' fits the sense and matches the gloss. Every other clause is unchanged, so the proposal is at least as precise and more natural."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "Sentences 12–13 are about cities; sentence 14 turns to countries. Here Meanwhile brings in a parallel, contrasting case and has nothing to do with time. '与此同时' wrongly suggests the two things happen at the same time, and it doesn't match the gloss on this same line ('另一方面；而'). '另一方面' is just as precise, reads naturally, adds no new error and lines the translation up with the gloss."
+    }
+   ]
+  },
+  {
+   "id": "s28",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s29",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s30",
+   "findings": [
+    {
+     "sent": 14,
+     "field": "zh",
+     "headword": "",
+     "current": "而且，他们身边的其他人受益还要更大，因为这些人不必再听那些伤人感情的讽刺话语了。",
+     "proposed": "而且，这个人身边的其他人受益还要更大，因为他们不必再听那些伤人感情的讽刺话语了。",
+     "reason": "Wrong cross-sentence reference. In the English, 'their life' is singular 'they' and points back to 'a person' in [13], which the ZH renders as 一个人. The ZH line here uses the plural 他们, which has no plural antecedent in the Chinese text. A reader could take it as some unnamed group, or as the 'other people' themselves. Using 这个人 ties it back to [13], and 他们 then correctly means the other people.",
+     "severity": "medium",
+     "lens": "coherence"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In the EN, 'their' in [14] is singular 'they' and points back to 'a person' in [13], which the ZH renders as 一个人. The plural 他们 in the current ZH has no plural antecedent, so a reader could take it as a different group of people. The proposal ties the reference back to 这个人, and 他们 then clearly means the other people. Every clause still matches the EN (also, benefit even more, no longer have to hear, emotionally hurtful language of sarcasm), and the line reads naturally."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In [13] the ZH introduces a single generic person as 一个人, so plural 他们 in [14] has no antecedent. It copies the English singular 'they' literally, and a reader could take it to mean some unnamed group. 这个人身边的其他人 links back to [13] correctly. Moving 他们 to the because-clause makes it refer to the other people, as the English does. The meaning is unchanged and the Chinese reads naturally."
+    }
+   ]
+  },
+  {
+   "id": "s31",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s32",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s33",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s34",
+   "findings": [
+    {
+     "sent": 14,
+     "field": "headword",
+     "headword": "it's worth",
+     "current": "it's worth",
+     "proposed": "it is worth",
+     "reason": "A headword should be in dictionary form, without the contraction. The pattern is 'it is worth (doing sth)'. The highlight “it’s worth” still matches it, and the gloss （做某事）是值得的 is correct.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file: line 158 reads \"it's worth (短语) （做某事）是值得的 ← \"it’s worth\"\". The entry is accurate. The gloss gives the correct sense for \"it’s worth bearing in mind\", and the highlight matches the EN. Keeping the contraction in the headword is a style preference, not a definite error. The corpus already uses contracted headwords for fixed spoken patterns, such as \"it's possible that\", \"there's nothing wrong with\", \"it's not clear\" and \"before it's too late\". Under the final-check rule, this is a refinement of an entry that is already correct, so it should not be reported."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "This is a matter of taste, not an error. The headword \"it's worth\" is a standard, recognisable way to show the phrase. It matches the highlight, and its gloss （做某事）是值得的 is already correct. The corpus also keeps \"it's\" headwords in many other places (\"it's clear that\", \"it's no wonder that\", \"it's not clear\", \"it's just that\"), so changing only this one makes things less consistent, not more. The current line is accurate, so in a final check it should stay as it is."
+    }
+   ]
+  },
+  {
+   "id": "s35",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s36",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s37",
+   "findings": [
+    {
+     "sent": 16,
+     "field": "zh",
+     "headword": "",
+     "current": "而如果监控工具剥夺了自主权，这时它们就最不得人心了。",
+     "proposed": "而如果监控工具剥夺了自主权，那就最不得人心了。",
+     "reason": "“这时它们就……”照搬了英文 that's when they 的结构：“这时”生硬，“它们”是多余的代词。改成“那就……”更自然，意思不变（如果剥夺自主权，监控工具在这种情况下最不得人心）。",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 21,
+     "field": "zh",
+     "headword": "",
+     "current": "因此，职场监控可能既为员工赋能，又对希望提高效率、增加盈利的公司有用。",
+     "proposed": "所以说，职场监控可能既为员工赋能，又对希望提高效率、增加盈利的公司有用。",
+     "reason": "Here the English 'So' sums up the whole passage; it is not a cause-and-effect link to sentence 20. In Chinese, '因此' right after [20] ('许多员工仍然心存怀疑，担心自己的公民自由受到侵蚀') reads as 'because staff are sceptical, surveillance can empower staff', which makes no sense. '所以说' (or '总之', which the summary already uses) gives the summing-up sense and keeps the passage coherent.",
+     "severity": "low",
+     "lens": "coherence"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. The English means the tools are most unpopular when they take away autonomy. In the current line, '如果……，这时它们就……' mixes a condition (如果) with a time word (这时), and the extra pronoun 它们 copies 'that's when they'. A native editor would rewrite this. The proposal keeps the condition (如果…剥夺了自主权) and the superlative (最不得人心), and the subject (监控工具) is still clear from the first clause. It is just as precise and clearly more natural."
+    },
+    {
+     "index": 1,
+     "verdict": "reject",
+     "why": "The current text matches the file and is not wrong. 因此 is the standard rendering of 'So', and the English has the same position right after [20]. [21] starts the final paragraph, and Chinese argumentative writing commonly opens a conclusion with 因此, so it reads as a summing-up, not as a causal link to [20]. 所以说 is more colloquial and no more precise. This is a refinement, not a definite error."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "In “这时它们就最不得人心了”, the “这时” and the extra pronoun “它们” copy the English “that's when they” word for word. A native editor would cut both. “那就最不得人心了” means the same thing (the tools are least popular in that case) with “最” still carrying the emphasis, it reads naturally, and it adds no error."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "Here “So” opens the closing paragraph and sums up the passage; it is not a cause. “因此” sits right after [20] (“staff remain sceptical”), and since each sentence is shown alone on screen, it reads as “because staff are sceptical, surveillance empowers staff”, which makes no sense. “所以说” keeps the “so” while marking a summing-up. The meaning is unchanged and nothing new goes wrong."
+    }
+   ]
+  },
+  {
+   "id": "s38",
+   "findings": [
+    {
+     "sent": 9,
+     "field": "zh",
+     "headword": "",
+     "current": "我们渐渐把它称作“纠缠力”，即孩子向父母施压、要他们购买某些东西的能力。",
+     "proposed": "我们渐渐把孩子的这股力量称作“纠缠力”，即孩子向父母施压、要他们购买某些东西的能力。",
+     "reason": "The ZH for [8] is reordered so that it ends with “这种状况就在我们不知不觉间逐渐形成了”. A bare “它” at the start of [9] then reads as pointing back to “这种状况”, the general state of affairs from [7]/[8], so the ZH says that this whole situation is called pester power. In the English, “it” is what children were recruited into: the commercial assault on their parents, i.e. the children's ability to pressure them. Naming the referent explicitly fixes the reference.",
+     "severity": "low",
+     "lens": "coherence"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches line 77 of the file. The English \"it\" in [9] is just as loose as \"它\": it can also be read as continuing the \"it\" of [8], which is the situation itself. So \"它\" mirrors the source faithfully. The appositive \"即孩子向父母施压、要他们购买某些东西的能力\" already makes clear what \"纠缠力\" means, so the current line is not wrong or misleading. The proposal also adds problems. \"这股力量\" points back to a \"force\" that no earlier sentence mentions. It also repeats \"孩子\" right before \"即孩子……的能力\", which a native editor would cut."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The English 'it' in [9] is just as loose as the Chinese: it carries on from the 'it' of [8] (the situation children were recruited into), and the appositive that follows ('or the ability of children to pressure parents...') says what it means. The current '它' keeps that structure, and '即……的能力' makes the meaning clear, so the line is accurate and natural. The proposal adds an interpretation of its own. '这股力量' has nothing earlier to refer back to (no force was mentioned before), and '孩子的这股力量……即孩子……的能力' repeats 孩子 and doubles 力量/能力, so the Chinese gets worse. This is not a definite error."
+    }
+   ]
+  },
+  {
+   "id": "s39",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s40",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "k5",
+   "findings": [
+    {
+     "sent": 2,
+     "field": "zh",
+     "headword": "",
+     "current": "这个词现在指的是努力保护野生动植物和自然生态系统的人。",
+     "proposed": "这个词过去指的是努力保护野生动植物和自然生态系统的人。",
+     "reason": "\"used to refer to\" 是“过去指”，译成“现在指”意思正好反了，也和下一句“到了21世纪……已经演变”矛盾。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 3,
+     "field": "zh",
+     "headword": "",
+     "current": "到了20世纪，这个词的含义已经演变，涵盖了应对人为气候变化的需要。",
+     "proposed": "到了21世纪，这个词的含义已经演变，涵盖了应对人为气候变化的需要。",
+     "reason": "原文是 \"In the 21st century\"，世纪数译错了。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 4,
+     "field": "zh",
+     "headword": "",
+     "current": "环保主义这两个分支之间的区别，是科学界内部在核能问题上产生分歧的唯一原因。",
+     "proposed": "环保主义这两个分支之间的区别，是科学界内部在核能问题上产生分歧的原因。",
+     "reason": "原文是 \"the cause\"，没有 only/sole 一类的词。“唯一”是凭空加上的，夸大了原意（概要里的写法是对的）。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 7,
+     "field": "zh",
+     "headword": "",
+     "current": "核能比石油、天然气和煤炭清洁一些，是一个自然而然的选择，在水力发电能力有限的地方尤其如此。",
+     "proposed": "核能比石油、天然气和煤炭清洁得多，是一个自然而然的选择，在水力发电能力有限的地方尤其如此。",
+     "reason": "\"far cleaner\" 是“清洁得多”，译成“清洁一些”把程度弱化了，和本句 far 的释义“……得多”也对不上。",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 1,
+     "field": "gloss",
+     "headword": "environmentalist",
+     "current": "adj. 环保主义者；环境保护论者",
+     "proposed": "n. 环保主义者；环境保护论者",
+     "reason": "这里 environmentalist 是名词（指“环保主义者”这个词），中文释义也是名词，词性标成 adj. 是错的。",
+     "severity": "medium",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "refer to",
+     "current": "参考；查阅",
+     "proposed": "指；指的是",
+     "reason": "\"refer to people trying to...\" 里的 refer to 是“指……”，不是“参考；查阅”，释义和本句用法不符。",
+     "severity": "medium",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "利昂·克拉克曾参与为联合国政府间气候变化专门委员会撰写报告，他并不盲目支持核能，但他表示，如果我们真心想实现碳中和，保留核能这一选项很有价值。",
+     "proposed": "利昂·克拉克曾参与为联合国政府间气候变化专门委员会撰写报告，他并不盲目支持核能，但表示，如果我们真心想实现碳中和，保留核能这一选项很有价值。",
+     "reason": "The second 他 in \"他并不……，但他表示\" is a redundant pronoun (translationese). After 但 the subject carries over naturally.",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 14,
+     "field": "zh",
+     "headword": "",
+     "current": "与此同时，成功依靠可再生能源运转的国家，通常是凭借超乎寻常的水力发电能力才做到这一点。",
+     "proposed": "另一方面，成功依靠可再生能源运转的国家，通常是凭借超乎寻常的水力发电能力才做到这一点。",
+     "reason": "\"Meanwhile\" here introduces a contrasting parallel case, not something happening at the same time. The sentence's own gloss reads 另一方面；而, so \"与此同时\" is a literal rendering that also doesn't match the gloss.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "\"used to refer to\" means it referred to this in the past. The current \"现在指\" says the opposite and contradicts sentence 3. \"过去指\" is correct."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The EN says \"In the 21st century\", so \"20世纪\" is a factual mistranslation."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The EN says \"the cause\", with no sole or only. \"唯一\" was added by the translator and overstates the claim. The proposed line matches the EN exactly."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "\"far cleaner\" means much cleaner. \"清洁一些\" weakens it and does not match the gloss for far (……得多). \"清洁得多\" is correct."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "In this sentence environmentalist is a noun, and the gloss itself is a noun meaning, so the POS should be n., not adj."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "In \"refer to people trying to...\" the sense is to mean or denote, not to consult or look something up. \"指；指的是\" is the correct sense here."
+    },
+    {
+     "index": 6,
+     "verdict": "reject",
+     "why": "\"他并不盲目支持核能，但他表示\" is accurate, and repeating the subject after 但 is ordinary Chinese. Dropping 他 is a minor style refinement, not definite translationese."
+    },
+    {
+     "index": 7,
+     "verdict": "accept",
+     "why": "Here Meanwhile brings in a parallel case (countries as well as cities), not something happening at the same time. The sentence's own gloss is 另一方面；而, so \"与此同时\" is a literal rendering that also contradicts the gloss. \"另一方面\" keeps every clause precise and matches the gloss."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "\"used to refer to\" means 过去指. 现在指 reverses the meaning and contradicts sentence 3 and the summary."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The English says \"21st century\". 20世纪 is a factual mistranslation."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "\"the cause\" has no only or sole. 唯一 is an added overstatement, and the summary already leaves it out."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "\"far cleaner\" means 清洁得多. 清洁一些 weakens the degree and does not match this sentence's own gloss for far (……得多)."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "Here environmentalist is a noun and the Chinese gloss is a noun. adj. is the wrong part of speech."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "In \"refer to people...\" refer to means 指. 参考；查阅 is the wrong sense for this sentence."
+    },
+    {
+     "index": 6,
+     "verdict": "reject",
+     "why": "但他表示 is already natural, idiomatic Chinese and not translationese. Dropping 他 is only a matter of taste."
+    },
+    {
+     "index": 7,
+     "verdict": "accept",
+     "why": "Meanwhile here introduces a parallel, contrasting case (cities, then countries), not something happening at the same time. 与此同时 also clashes with the sentence's own gloss (另一方面；而). 另一方面 is accurate and natural."
+    }
+   ]
+  },
+  {
+   "id": "k6",
+   "findings": [
+    {
+     "sent": 2,
+     "field": "zh",
+     "headword": "",
+     "current": "这个公式很奏效，但这并没有影响它受欢迎的程度。",
+     "proposed": "这个公式并不奏效，但这并没有影响它受欢迎的程度。",
+     "reason": "The negation is reversed. 'doesn't work' means it does not work. The ZH says it works very well (很奏效), which also clashes with the 'but' clause and with the summary.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "affect",
+     "current": "n. 影响",
+     "proposed": "v. 影响",
+     "reason": "Wrong part of speech. 'affected' in 'has not affected its popularity' is a verb (past participle in the present perfect), not a noun.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 3,
+     "field": "zh",
+     "headword": "",
+     "current": "而且，尽管减税崇拜招来了许多批评者，它却有很多明显的竞争对手。",
+     "proposed": "而且，尽管减税崇拜招来了许多批评者，它却缺少明显的竞争对手。",
+     "reason": "The meaning is reversed. 'lacks for obvious rivals' means it has no obvious rivals. The ZH says it has many obvious rivals, which contradicts the summary (缺少明显的竞争对手) and the argument of the passage.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 3,
+     "field": "gloss",
+     "headword": "lack for",
+     "current": "渴望；追求",
+     "proposed": "缺少；缺乏",
+     "reason": "Wrong meaning. 'lack for' means 缺少/缺乏 (lack, be without). It does not mean to desire or pursue.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "近几十年来的惨痛教训指向一个有希望的候选答案：降低税收。",
+     "proposed": "近几十年来的惨痛教训指向一个有希望的候选答案：提高工资。",
+     "reason": "Mistranslation. 'higher wages' is rendered as 降低税收 (cutting taxes), which is the opposite of the author's point. The vocabulary list for this sentence even glosses 'wages' as 工资.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 5,
+     "field": "zh",
+     "headword": "",
+     "current": "民主党人真的谈到促进经济增长时，听起来总是像共和党人。",
+     "proposed": "民主党人真的谈到促进经济增长时，听起来往往像共和党人。",
+     "reason": "Quantifier error. 'often' means 往往/常常 (often). 总是 means 'always' and overstates the claim.",
+     "severity": "medium",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. EN 'doesn't work' is negative, so 很奏效 reverses the meaning and makes the 'but' clause illogical. The proposal is accurate and natural."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'has not affected' is a present perfect verb, so the correct POS is v. 影响."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'lacks for obvious rivals' means it has no obvious rivals; 有很多明显的竞争对手 reverses this. 缺少明显的竞争对手 is exact and consistent with the summary."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'lack for' means to be without (缺少；缺乏). It does not mean 渴望；追求."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'higher wages' was mistranslated as 降低税收, which is the opposite of the author's argument. 提高工资 is correct and fits the title and sentence 9."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'often' means 往往/常常, and 总是 ('always') overstates the claim. The proposal keeps everything else unchanged."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "'doesn't work' means it does not work. 很奏效 reverses the meaning and clashes with 但这并没有影响它受欢迎的程度 and with the summary. 并不奏效 is accurate and natural."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "'has not affected' is a verb in the present perfect, so the gloss must be v. 影响, not n."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "'lacks for obvious rivals' means it has no obvious rivals. 有很多明显的竞争对手 is the opposite. 缺少明显的竞争对手 is correct and matches the summary."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "'lack for' means to be without something (缺少；缺乏). 渴望；追求 is simply wrong."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "'higher wages' means 提高工资, the article's central thesis and its title. 降低税收 says the opposite of the source."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "'often' is 往往/常常. 总是 means 'always' and overstates the claim. 往往 is precise and natural."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

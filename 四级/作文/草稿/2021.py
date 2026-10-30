@@ -1,0 +1,35 @@
+B = {
+'c2021-12-1': [
+ "To help freshmen adapt to their new environment and academic studies as quickly as possible, I would like to propose an orientation program for the coming semester.",
+ "The program will last one week, starting on the day after registration. It will be organized by the Student Affairs Office with the help of student volunteers, and all freshmen are expected to take part. Teachers from each department and senior students will also be invited.",
+ "The program will include a variety of activities. On the first two days, freshmen will take a guided tour of the campus to get familiar with the library, laboratories, canteens and medical center. Next, teachers will hold meetings to introduce the curriculum, credit requirements and effective study methods. Then senior students will share their experience in balancing study and social life and answer questions in small groups. Finally, a welcome party will be held to help freshmen make new friends.",
+ "I believe this program will help freshmen settle in smoothly and get off to a good start in college.",
+],
+'c2021-12-2': [
+ "Our student union is planning to hold a speech contest this semester. Here is my proposal for organizing it.",
+ "The topic of the contest could be “My Dream and My Responsibility,” which encourages students to think about their goals and the role they can play in society. The aim is to improve students’ public speaking skills, build their confidence and make campus life more vibrant.",
+ "As for the selection of contestants, the contest will be open to all students. Each department can hold a preliminary round and recommend two speakers for the final. The final will be held in the university auditorium in late November. Each contestant will give a five-minute prepared speech and then answer a question from the judges. A panel of teachers will score the speeches based on content, language and delivery, and the top three speakers will receive certificates and prizes.",
+ "I believe the contest will be a valuable opportunity for students to show their talents. I hope my proposal will be helpful.",
+],
+'c2021-12-3': [
+ "Last month, a used book collection project was carried out on our campus. I took part in it as a volunteer, and here is a brief report on the project.",
+ "The project was organized by the student union together with the university library. Its aim was to give used books a second life and to help students in need. Students and teachers from all departments were invited to take part, and more than two hundred volunteers helped with the work.",
+ "The activities lasted two weeks. During the first week, collection boxes were placed in every dormitory building and in the library, and volunteers went door to door to collect textbooks, novels and reference books. In the second week, the volunteers sorted the books into different categories. Some were sold at low prices at a campus book fair, and all the money raised was used to buy stationery for a primary school in a poor area. The rest were donated to the school directly.",
+ "The project was a great success. It not only made full use of resources but also helped participants develop a sense of social responsibility.",
+],
+'c2021-06-1': [
+ "Numerous studies claim that addiction to technology is real and that it affects the brain in the same way as drug addiction. Looking around us, it is hard to disagree: many people today are indeed becoming addicted to technology.",
+ "Signs of this addiction are everywhere. On the subway, almost everyone is staring at a phone screen. At dinner, friends check their messages instead of talking to each other. Many students scroll through short videos late into the night and feel anxious whenever their phones are out of reach. One reason is that apps are designed to keep users hooked with endless updates, likes and notifications, which give people constant small rewards.",
+ "However, technology itself is not the problem; the way we use it is. To avoid becoming its slaves, we should set limits on our screen time, turn off unnecessary notifications and spend more time on real-world activities such as reading, sports and face-to-face conversations. Only when we stay in control can technology truly serve us.",
+],
+'c2021-06-2': [
+ "Many studies claim that computers distract people, make them lazy thinkers and even lower their work efficiency. In my view, technology itself does not make people lazy; whether it does depends on how we use it.",
+ "It is true that technology can encourage laziness. With search engines at hand, some people no longer bother to remember facts or think problems through. Others rely on navigation apps for every trip and rarely try to find their own way. Constant messages and pop-up advertisements also interrupt their work, making it hard to concentrate.",
+ "On the other hand, technology can make people more productive when it is used wisely. It frees us from repetitive tasks such as calculating and copying, giving us more time for creative work. Online courses and digital libraries also allow us to learn new skills anytime and anywhere. The key, therefore, is self-discipline. If we treat technology as a tool rather than a crutch, it will make us smarter, not lazier.",
+],
+'c2021-06-3': [
+ "A growing body of research finds that violent video games can make kids act aggressively in their real-world relationships. In my opinion, although such games alone seldom turn a person violent, they can indeed encourage aggressive behavior, especially among children.",
+ "Children are still developing their sense of right and wrong. When they spend hours playing games in which fighting and killing are rewarded with points, they may come to see violence as an acceptable way to solve problems. Some may even copy the rude words and violent actions they see on the screen. Moreover, playing such games for long periods can make players less sensitive to the suffering of others.",
+ "Of course, violence has many causes, such as family problems and peer pressure, and not everyone who plays these games becomes violent. Still, the risks cannot be ignored. Parents should choose games suitable for their children’s age and limit their playing time, and game companies should take their social responsibility seriously. With such efforts, young people can enjoy games without being harmed by them.",
+],
+}
