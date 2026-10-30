@@ -2,8 +2,10 @@
 
 规则全部复用 tools/tts/gaokao_tts（只写一处）：每段 segment（段内电平统一 even + BS.1770 统一 level_clause + 淡入淡出）
 → 按稿子的停顿拼接 → master（压缩、按意群 clause_trim、−16 LUFS、限幅）→ final_check（含意群级，关不掉）→ 合格证。
-新增（这个模型才需要）：电磁音全频段扫描 tonal_scan——Kokoro 的 9 个固定频点（四级/tools/debuzz.py）不适用于别的声码器，
-2 kHz 以上任何窄带峰高出周围超过 +3 dB（铁律 10 的同一上限）就报错；有固定频点时按 debuzz 的做法（60 Hz 带宽单向陷波）去掉。
+电磁音（铁律 10）：Qwen3-TTS 声码器自己的固定频点（2026-10-30 统计 5 个音色 13 次合成：下列频点在 8—12 组里高出周围 3—6 dB，
+Kokoro 当年是 +11—12 dB）。做法与用户确认的 四级/tools/debuzz.py 相同：每段合成后只在这几个频点做 60 Hz 带宽单向陷波，
+检查也同样只在这些频点 ±8 Hz 量（成品语音部分，上限 +3 dB）。全频段扫描 tonal_scan 只作参考、不作判据：
+用户确认“完全没有电磁音”的 c40 用全频段扫描也有 +5.8 dB（语音本身的随机起伏），全频段 +3 dB 会把无电磁音的音频误判。
 
 意群：Qwen 每段整段合成、自己会停顿；段内静音（≥ 0.15 秒）把一段切成几个意群，交给 fine_check 与 clause_trim。
 用法：python 讲解音频.py --稿 稿.json --wav 原始目录 --out 成品.mp3 [--lead 1.5 --tail 2.0]
@@ -21,7 +23,7 @@ import gaokao_tts as G  # noqa: E402
 
 SR = G.SR
 BUZZ_MAX_DB = 3.0
-NOTCH = []          # 实测出固定频点再填（Hz）；空 = 不做陷波
+NOTCH = [5184, 5472, 8778, 10163, 10447, 10778, 10924, 11455]   # Qwen3-TTS 声码器固定频点（Hz）
 
 
 def load(path):
@@ -72,6 +74,19 @@ def notch(x, sr):
     return y
 
 
+def tone_check(a, sr, items):
+    """只在声码器固定频点 ±8 Hz 量（与 四级/tools/debuzz.measure 同一量法）。返回 (最强频点, dB)。"""
+    from scipy.ndimage import median_filter
+    from scipy.signal import welch
+    sp = np.concatenate([a[int(s['start'] * sr):int(s['end'] * sr)] for s in items]).astype(np.float64)
+    f, P = welch(sp, sr, nperseg=65536)
+    r = 10 * np.log10(P + 1e-20)
+    r = r - median_filter(r, 61)
+    m = {f0: float(r[(f > f0 - 8) & (f < f0 + 8)].max()) for f0 in NOTCH}
+    f0 = max(m, key=m.get)
+    return f0, round(m[f0], 1)
+
+
 def tonal_scan(a, sr, items, fmin=2000):
     """全频段窄带峰：语音部分的功率谱减去 61 点中值，2 kHz 以上的最大值（dB）及前 5 个峰。"""
     from scipy.ndimage import median_filter
@@ -116,11 +131,12 @@ def build(segs, wavdir, lead=1.5, tail=2.0):
 
 def render(segs, wavdir, out, lead=1.5, tail=2.0):
     a, items = build(segs, wavdir, lead, tail)
+    f0, db = tone_check(a, G.OUT_SR, items)
+    if db > BUZZ_MAX_DB:
+        raise RuntimeError(f'电磁音：{f0} Hz 高出周围 {db} dB（上限 +{BUZZ_MAX_DB} dB），未输出')
     mx, top = tonal_scan(a, G.OUT_SR, items)
-    if mx > BUZZ_MAX_DB:
-        raise RuntimeError(f'电磁音：窄带峰 {top}（上限 +{BUZZ_MAX_DB} dB），未输出')
     cert = G.save_checked(Path(out), a, items, -16.0)
-    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
+    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
             'clause_check': G.CHAIN}
     Path(out).with_suffix('.timings.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
     return meta
@@ -138,7 +154,7 @@ def main():
     m = render(segs, a.wav, a.out, a.lead, a.tail)
     c = m['certificate']['loudness']
     print(f"{a.out}：{m['duration']:.1f}s；整体 {c['integrated_lufs']} LUFS，句间 {c['sentence_max_dev_lu']}，短时 {c['short_term_std_lu']}，"
-          f"峰值 {c['peak_dbfs']}，意群 {c.get('clause_nb_min_lu')} / 段尾 {c.get('clause_tail_min_db')}；电磁音最强 {m['buzz_top'][0]}")
+          f"峰值 {c['peak_dbfs']}，意群 {c.get('clause_nb_min_lu')} / 段尾 {c.get('clause_tail_min_db')}；电磁音（固定频点）{m['buzz_tone']}，全频段参考 {m['buzz_top'][0]}")
 
 
 if __name__ == '__main__':

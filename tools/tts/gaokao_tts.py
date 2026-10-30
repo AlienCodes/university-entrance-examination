@@ -222,10 +222,11 @@ def even(x, sr=SR, tol=EVEN_TOL, gmax=EVEN_MAX):
     num = uniform_filter1d(np.where(v, e, 0.0), 31, mode='constant')
     den = uniform_filter1d(v.astype(float), 31, mode='constant')
     idx = np.where(den > 1e-6)[0]
-    E = np.interp(np.arange(n), idx, 10 * np.log10(num[idx] / den[idx]))       # 没有浊音的地方沿用相邻值
+    # 踩坑 88：uniform_filter1d 用累加和，数字静音（1e-20）与语音（约 1e-1）同在一段时浮点相消会出极小负数，log10 得 NaN、整段变 NaN（Qwen3-TTS 段首的纯零触发）
+    E = np.interp(np.arange(n), idx, 10 * np.log10(np.maximum(num[idx], 1e-20) / den[idx]))       # 没有浊音的地方沿用相邻值
     ref = 10 * np.log10(np.mean(e[v]))
     g = np.clip(ref - E - tol, 0.0, gmax)
-    Ls = 10 * np.log10(uniform_filter1d(e, 5, mode='nearest'))
+    Ls = 10 * np.log10(np.maximum(uniform_filter1d(e, 5, mode='nearest'), 1e-20))
     g = np.minimum(g, np.where(v, gmax, np.maximum(0.0, ref - Ls)))           # 清音帧补完不超过整段浊音平均
     g = uniform_filter1d(minimum_filter1d(g, 5, mode='nearest'), 7, mode='nearest')
     t = (np.arange(n) + 0.5) * H
@@ -268,7 +269,10 @@ def level_clause(x, sr=SR, target=CLAUSE_LUFS):
 def segment(x):
     """每段合成后的统一处理（规则只写一处，各项目的 synth_sentence 都调这里）：段内电平统一（even）→ 整段按 BS.1770 响度统一（level_clause）→ 边缘淡入淡出。
     踩坑 85 起取代各项目原来的“先 level 再 fade”（四级 make_audio 的 level_k 等不再用于分段）。"""
-    return fade(level_clause(even(x)))
+    y = fade(level_clause(even(x)))
+    if not np.isfinite(y).all():                       # 踩坑 88：任何 NaN / inf 当场报错，不往下传成“整体响度 −inf”
+        raise RuntimeError('segment 输出含 NaN / inf')
+    return y
 
 
 LIMITS = CERT.LIMITS

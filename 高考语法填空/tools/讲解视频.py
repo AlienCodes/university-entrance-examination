@@ -347,7 +347,7 @@ def encode(pngdir, ids, cuts, mp3, out):
 def verify(mp4, mp3, tm, pngdir, ids, fr):
     """成品核查，返回问题列表。"""
     import gaokao_tts as G
-    from 讲解音频 import tonal_scan, BUZZ_MAX_DB
+    from 讲解音频 import tone_check, BUZZ_MAX_DB
     errs = []
     pr = json.loads(subprocess.run(['ffprobe', '-v', 'error', '-show_streams', '-of', 'json', str(mp4)], capture_output=True, text=True).stdout)
     v = next(s for s in pr['streams'] if s['codec_type'] == 'video')
@@ -390,9 +390,9 @@ def verify(mp4, mp3, tm, pngdir, ids, fr):
     frep, fe = 响度细查.fine_check(a.astype(np.float64), 48000, items)
     errs += ['视频音轨 ' + x for x in fe]
     errs += ['合格证：' + x for x in G.certificate_problems(tm, Path(mp3))]
-    mx, top = tonal_scan(a, 48000, items)
+    f0, mx = tone_check(a, 48000, items)
     if mx > BUZZ_MAX_DB:
-        errs.append(f'电磁音 {top}')
+        errs.append(f'电磁音：{f0} Hz 高出周围 {mx} dB')
     # 逐屏抽帧（每屏中间一帧）与截图比较
     info = json.loads((Path(pngdir) / 'stills.json').read_text('utf-8'))
     from PIL import Image

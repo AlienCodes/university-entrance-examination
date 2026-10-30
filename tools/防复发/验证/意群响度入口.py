@@ -509,7 +509,9 @@ def main():
     case('别处把 G._VERIFY_CORE 换掉 → 报出', only('y.py', {'中考/tools/y.py': 'G._VERIFY_CORE = lambda *a, **k: ({}, [])\n'}), '重新赋值')
     case('别处把 G.final_check 换掉 → 报出', only('y.py', {'中考/tools/y.py': 'G.final_check = lambda *a, **k: ({}, [])\n'}), '重新赋值')
     g = rd('tools/tts/gaokao_tts.py')
-    case('segment 去掉 even → 报出', only('even', {'tools/tts/gaokao_tts.py': g.replace('return fade(level_clause(even(x)))', 'return fade(level_clause(x))')}), 'even')
+    no_even = g.replace('y = fade(level_clause(even(x)))', 'y = fade(level_clause(x))')
+    assert no_even != g, 'segment 的写法变了，这颗雷没埋进去（踩坑 88 改过一次）'
+    case('segment 去掉 even → 报出', only('even', {'tools/tts/gaokao_tts.py': no_even}), 'even')
     say_old = g.replace("    save_checked(out, a, items, vcfg.get('lufs', -16.0))\n", "    (write_wav if out.suffix.lower() == '.wav' else write_mp3)(out, a)\n")
     assert say_old != g
     case('gaokao_tts say 改回直接写文件（不检查、不写合格证）→ 报出', only('cmd_say', {'tools/tts/gaokao_tts.py': say_old}), 'cmd_say')

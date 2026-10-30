@@ -6,6 +6,8 @@
 原始 WAV 同时保留：本机可按改过的停顿重新拼接（仍走 讲解音频.render，同一条处理链）。
 模式：
   custom        预置音色（CustomVoice），instruct 控制语气；
+  clone_ref     用仓库里固定的设计音色参考音频（tts/音色/*.json，由 design_clone 生成一次后固定）以 Base 模型合成：
+                各分片、各次都是同一个声音，每台机器只加载一个模型（design_clone 两个 1.7B 同机加载，16 GB 机器上 2/3 被杀）；
   design_clone  先用 VoiceDesign 按文字描述设计一个音色（不是任何真人），再用 Base 模型以这段设计音频为提示合成全部段落，保证全片同一个声音。
 用法：python qwen_synth.py --task 任务.json --list            # 打印作业数（给工作流建矩阵）
       python qwen_synth.py --task 任务.json --shard 3 --out out/
@@ -63,13 +65,18 @@ def main():
         del dm
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         prompt = m.create_voice_clone_prompt(ref_audio=(w[0], sr), ref_text=c['design_text'])
+    elif c['mode'] == 'clone_ref':
+        v = json.loads((ROOT / c['voice']).read_text('utf-8'))
+        rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
+        m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
+        prompt = m.create_voice_clone_prompt(ref_audio=(rw, rsr), ref_text=v['ref_text'])
     else:
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         print('支持的音色', m.get_supported_speakers(), '语言', m.get_supported_languages(), flush=True)
     for s in segs:
         torch.manual_seed(take * 1000 + int(''.join(ch for ch in s['id'] if ch.isdigit()) or 0))
         ts = time.time()
-        if c['mode'] == 'design_clone':
+        if c['mode'] in ('design_clone', 'clone_ref'):
             w, sr = m.generate_voice_clone(text=s['text'], language=s['lang'], voice_clone_prompt=prompt, **gen)
         else:
             ins = task['instruct_en'] if s['lang'] == 'English' else task['instruct']
@@ -87,11 +94,12 @@ def main():
         import gaokao_tts as G
         import 讲解音频 as J
         a, items = J.build(segs, od)
+        f0, db = J.tone_check(a, G.OUT_SR, items)
         mx, top = J.tonal_scan(a, G.OUT_SR, items)
-        meta['buzz_top'] = top
+        meta['buzz_tone'], meta['buzz_top'] = [f0, db], top
         try:
-            if mx > J.BUZZ_MAX_DB:
-                raise RuntimeError(f'电磁音：窄带峰 {top}（上限 +{J.BUZZ_MAX_DB} dB）')
+            if db > J.BUZZ_MAX_DB:
+                raise RuntimeError(f'电磁音：{f0} Hz 高出周围 {db} dB（上限 +{J.BUZZ_MAX_DB} dB）')
             cert = G.save_checked(od / '成品.mp3', a, items, -16.0)
             meta['chain'] = {'passed': True, 'loudness': cert['loudness']}
             (od / '成品.timings.json').write_text(json.dumps({'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_top': top,
