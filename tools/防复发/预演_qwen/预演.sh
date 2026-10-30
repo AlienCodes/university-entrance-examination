@@ -10,8 +10,10 @@ T="高考语法填空/tts/$1"; shift
 N=$(python3 高考语法填空/tools/qwen_synth.py --task "$T" --list)
 echo "作业：$N"
 OUT=$(mktemp -d)
+# GitHub 上的合成机没有本机这些命令行工具（踩坑 91：本机有 ffmpeg、预演通过，Actions 上 6 台全部 No such file 'ffmpeg'）：预演时遮掉
+NOBIN=$(mktemp -d); for b in ffmpeg ffprobe; do printf '#!/bin/sh\necho "预演：GitHub 合成机上没有 %s" >&2; exit 127\n' "$b" > "$NOBIN/$b"; chmod +x "$NOBIN/$b"; done
 for s in "${@:-0}"; do
-  PYTHONPATH=tools/防复发/预演_qwen /opt/ttsenv/bin/python 高考语法填空/tools/qwen_synth.py --task "$T" --shard "$s" --out "$OUT"
+  PATH="$NOBIN:$PATH" PYTHONPATH=tools/防复发/预演_qwen /opt/ttsenv/bin/python 高考语法填空/tools/qwen_synth.py --task "$T" --shard "$s" --out "$OUT"
 done
 python3 - "$OUT" <<'PY'
 import json, sys

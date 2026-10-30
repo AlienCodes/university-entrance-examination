@@ -55,9 +55,18 @@ def build_ref(x, spans):
 
 
 def decode(p):
-    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(p), '-f', 'f32le', '-ac', '1', '-ar', str(SR), '-'],
-                         capture_output=True, check=True).stdout
-    return np.frombuffer(raw, np.float32).copy()
+    """录音 → 24 kHz 单声道 float32。WAV / FLAC 用 soundfile + soxr（GitHub 上的机器没有 ffmpeg；本机与 Actions 同一条路，样本位置一致），
+    其他格式才用 ffmpeg。"""
+    import soundfile as sf
+    import soxr
+    try:
+        x, sr = sf.read(str(p), dtype='float32')
+    except Exception:
+        raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(p), '-f', 'f32le', '-ac', '1', '-ar', str(SR), '-'],
+                             capture_output=True, check=True).stdout
+        return np.frombuffer(raw, np.float32).copy()
+    x = x.mean(1) if x.ndim > 1 else x
+    return soxr.resample(x, sr, SR, quality='VHQ').astype(np.float32) if sr != SR else x.astype(np.float32)
 
 
 def lufs(x):

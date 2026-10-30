@@ -3309,6 +3309,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "91",
+   "title": "本机预演通过、GitHub 合成机全部失败：挑参考.decode 用 ffmpeg 读录音，本机有 ffmpeg，Actions 的合成机没有（2026-10-30 用户声音第一次合成 12 台全挂）",
+   "stages": [
+    "音频",
+    "流程"
+   ],
+   "projects": [
+    "高考语法填空"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/预演_qwen/预演.sh 跑合成时遮掉 ffmpeg / ffprobe；挑参考.decode 读 WAV 用 soundfile + soxr；工作流装 ffmpeg 兜底",
+     "runs": "每次推送触发合成前的预演",
+     "evidence": "预演里调用 ffmpeg 就失败"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/预演无ffmpeg.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

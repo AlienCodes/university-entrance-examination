@@ -44,7 +44,7 @@ jobs:
           python-version: '3.11'
       - name: 安装
         run: |
-          sudo apt-get install -y -qq sox >/dev/null
+          sudo apt-get install -y -qq sox ffmpeg >/dev/null
           pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
           pip install -q qwen-tts==0.1.1 soundfile soxr pyloudnorm lameenc scipy num2words
       - name: 合成
