@@ -36,7 +36,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: 高考语法填空
+          sparse-checkout: |
+            高考语法填空
+            tools/tts
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -44,7 +46,7 @@ jobs:
         run: |
           sudo apt-get install -y -qq sox >/dev/null
           pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
-          pip install -q qwen-tts==0.1.1 soundfile
+          pip install -q qwen-tts==0.1.1 soundfile soxr pyloudnorm lameenc scipy
       - name: 合成
         run: python 高考语法填空/tools/qwen_synth.py --task "${{ needs.plan.outputs.task }}" --shard ${{ matrix.shard }} --out out
       - uses: actions/upload-artifact@v4

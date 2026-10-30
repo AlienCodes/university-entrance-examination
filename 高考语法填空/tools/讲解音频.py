@@ -120,7 +120,7 @@ def render(segs, wavdir, out, lead=1.5, tail=2.0):
     if mx > BUZZ_MAX_DB:
         raise RuntimeError(f'电磁音：窄带峰 {top}（上限 +{BUZZ_MAX_DB} dB），未输出')
     cert = G.save_checked(Path(out), a, items, -16.0)
-    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_top': top, 'certificate': cert,
+    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
             'clause_check': G.CHAIN}
     Path(out).with_suffix('.timings.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
     return meta

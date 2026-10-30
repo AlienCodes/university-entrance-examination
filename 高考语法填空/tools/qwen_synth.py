@@ -1,7 +1,9 @@
 """Qwen3-TTS 合成（在 GitHub Actions 上跑：本机代理拦 HuggingFace；Actions 能联网、多台并行，不靠本容器醒着）。
 
 任务清单（高考语法填空/tts/任务_*.json）：candidates × takes 组成作业，--shard 选一个作业；只输出原始 24 kHz WAV + meta，
-响度、去电磁音、合格证等完整处理链在本机做（tools/tts/gaokao_tts 的 segment / master / final_check）。
+每次（take）合成完立刻走完整处理链（讲解音频.build：每段 segment → 按稿子停顿拼接 → master；save_checked：含意群级的 final_check
+→ 合格证），通过才写出 成品.mp3；不通过不写，失败原因记进 meta（选型时也比“哪个候选更容易过响度检查”）。
+原始 WAV 同时保留：本机可按改过的停顿重新拼接（仍走 讲解音频.render，同一条处理链）。
 模式：
   custom        预置音色（CustomVoice），instruct 控制语气；
   design_clone  先用 VoiceDesign 按文字描述设计一个音色（不是任何真人），再用 Base 模型以这段设计音频为提示合成全部段落，保证全片同一个声音。
@@ -79,6 +81,25 @@ def main():
         meta['segments'].append({'id': s['id'], 'sec': round(len(x) / sr, 2), 'compute': round(el, 1), 'sr': sr})
         print(f"{c['id']} take{take} {s['id']} {len(x) / sr:.1f}s 音频，用时 {el:.0f}s", flush=True)
     meta['total_compute'] = round(time.time() - t0, 1)
+    if nparts == 1:                       # 整份稿在这一台机器上：就地走完整处理链
+        import sys
+        sys.path[:0] = [str(ROOT / 'tools/tts'), str(Path(__file__).parent)]
+        import gaokao_tts as G
+        import 讲解音频 as J
+        a, items = J.build(segs, od)
+        mx, top = J.tonal_scan(a, G.OUT_SR, items)
+        meta['buzz_top'] = top
+        try:
+            if mx > J.BUZZ_MAX_DB:
+                raise RuntimeError(f'电磁音：窄带峰 {top}（上限 +{J.BUZZ_MAX_DB} dB）')
+            cert = G.save_checked(od / '成品.mp3', a, items, -16.0)
+            meta['chain'] = {'passed': True, 'loudness': cert['loudness']}
+            (od / '成品.timings.json').write_text(json.dumps({'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_top': top,
+                                                          'certificate': cert, 'loudness': cert['loudness'], 'clause_check': G.CHAIN},
+                                                         ensure_ascii=False, indent=1), 'utf-8')
+        except RuntimeError as e:
+            meta['chain'] = {'passed': False, 'error': str(e)}
+        print('处理链：', meta['chain'], flush=True)
     (od / f'meta_part{part}.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
 
 

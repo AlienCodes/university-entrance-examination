@@ -347,7 +347,6 @@ def encode(pngdir, ids, cuts, mp3, out):
 def verify(mp4, mp3, tm, pngdir, ids, fr):
     """成品核查，返回问题列表。"""
     import gaokao_tts as G
-    import 合格证 as CERT
     from 讲解音频 import tonal_scan, BUZZ_MAX_DB
     errs = []
     pr = json.loads(subprocess.run(['ffprobe', '-v', 'error', '-show_streams', '-of', 'json', str(mp4)], capture_output=True, text=True).stdout)
@@ -390,12 +389,7 @@ def verify(mp4, mp3, tm, pngdir, ids, fr):
     import 响度细查
     frep, fe = 响度细查.fine_check(a.astype(np.float64), 48000, items)
     errs += ['视频音轨 ' + x for x in fe]
-    cert = json.loads(CERT.sidecar_of(Path(mp3)).read_text('utf-8'))
-    cp = CERT.cert_problems(cert)
-    if cp:
-        errs += ['合格证：' + x for x in cp]
-    if cert.get('mp3_sha256') != hashlib.sha256(Path(mp3).read_bytes()).hexdigest():
-        errs.append('合格证 sha256 与 MP3 不一致')
+    errs += ['合格证：' + x for x in G.certificate_problems(tm, Path(mp3))]
     mx, top = tonal_scan(a, 48000, items)
     if mx > BUZZ_MAX_DB:
         errs.append(f'电磁音 {top}')
@@ -476,6 +470,10 @@ def main():
     only = None
     if a.音频:
         tm = json.loads(Path(a.音频).with_suffix('.timings.json').read_text('utf-8'))
+        import gaokao_tts as G
+        cp = G.certificate_problems(tm, Path(a.音频))      # 生成前核对音频合格证（踩坑 85、87）：没有合格证、处理链不对、MP3 被改过都不许生成
+        if cp:
+            sys.exit('音频合格证不通过，不生成：' + '；'.join(cp))
         only = {'title'} | {it['id'] for it in tm['items']}
     ids, probs = stills(doc, png, only)
     print(f'截图 {len(ids)} 张，排版检查 {len(probs)} 处')
