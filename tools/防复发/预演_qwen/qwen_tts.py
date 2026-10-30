@@ -1,6 +1,6 @@
 """本机预演用的假 qwen_tts（铁律 15：推送触发 Actions 之前，先按工作流的命令在本机把 qwen_synth.py 整条跑一遍）。
-不下载模型：每次合成返回 预演/样本/ 里一段真实的 Qwen3-TTS 合成音频（按调用次数轮换），处理链、合格证照真的走。
-用法见 预演/预演.sh。"""
+不下载模型：每次合成返回 预演_qwen/样本/ 里一段真实的 Qwen3-TTS 合成音频（按调用次数轮换），处理链、合格证照真的走。
+用法见 预演.sh（放在 tools/防复发/：它是推送前的防复发预演，不是成品入口）。"""
 import itertools
 from pathlib import Path
 
@@ -13,7 +13,7 @@ _it = itertools.cycle(_S)
 class Qwen3TTSModel:
     @classmethod
     def from_pretrained(cls, *a, **k):
-        assert _S, '预演/样本/ 里没有 wav'
+        assert _S, '预演_qwen/样本/ 里没有 wav'
         return cls()
 
     def get_supported_speakers(self):

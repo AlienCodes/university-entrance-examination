@@ -31,3 +31,9 @@ CLAUDE.md 新加一条铁律，同一次提交要在 `规矩登记.json` 登记�
 ## 启用
 
 新开会话时 `.claude/settings.json` 的 SessionStart 钩子自动执行 `git config core.hooksPath .githooks`。手动：`git config core.hooksPath .githooks`。
+
+## 推送前预演（预演_qwen/）
+- `bash tools/防复发/预演_qwen/预演.sh <任务清单> [shard…]`：触发 GitHub 配音合成（tts-grammar-qwen.yml）之前，在本机按工作流同一条命令把 `高考语法填空/tools/qwen_synth.py` 整条跑一遍。
+  - 第一步先跑 `防复发自检.py --不查复盘 --测试 --ci`（与 GitHub fangfufa-check 相同），不过就停。
+  - 假 `qwen_tts` 只读 `样本/` 里的真实 Qwen 合成音频、返回数组；处理链和合格证由 qwen_synth 照真的走。
+- 2026-10-30 高考语法填空连着 4 次 CI 红、2 次 Actions 一开头就失败，之后定下这一步。
