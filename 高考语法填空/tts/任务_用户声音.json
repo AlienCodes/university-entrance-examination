@@ -1,5 +1,5 @@
 {
- "说明": "用户本人声音（录音里程序挑出的参考片段，tts/音色/用户本人.json）第 56 题样音：3 次，Actions 上直接走完整处理链（含去呼吸）",
+ "说明": "用户本人声音（录音里程序挑出的 2 段无接缝参考，tts/音色/用户本人_1/2.json）第 56 题样音：每个 3 次，Actions 上直接走完整处理链（含去呼吸 + 呼吸检查）",
  "script": "高考语法填空/tts/样稿_56.json",
  "takes": [
   1,
@@ -8,10 +8,16 @@
  ],
  "candidates": [
   {
-   "id": "user",
+   "id": "user1",
    "mode": "clone_ref",
    "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
-   "voice": "高考语法填空/tts/音色/用户本人.json"
+   "voice": "高考语法填空/tts/音色/用户本人_1.json"
+  },
+  {
+   "id": "user2",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json"
   }
  ]
 }
