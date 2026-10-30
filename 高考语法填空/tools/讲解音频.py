@@ -61,6 +61,34 @@ def inner_parts(x, sr=SR, min_sil=0.15, db=-42):
     return [(a * 0.01, b * 0.01) for a, b in merged]
 
 
+def per_clause(x, sr=SR, min_dur=0.5):
+    """每个意群各过一次 G.segment（段内电平统一 + BS.1770 统一 + 淡入淡出），意群之间的停顿原样保留。
+    与共用处理链的设计一致：Kokoro 按逗号逐个意群合成、每个意群过一次 segment；Qwen 一次合成一整段（含几个意群），
+    若整段只过一次 segment，意群之间的电平差没人管，母带的 clause_trim 补上的增益又会被限幅器吃掉（2026-10-30 男老师样音：
+    第 2 段英文句末意群低 1.7—3.4 LU，3 次合成、逐段换遍都过不了意群检查）。
+    不足 min_dur 的意群并入相邻意群（与 clause_trim 一样，太短的段 BS.1770 量不准）。返回 (音频, [(起, 止)…] 秒)。"""
+    P = [list(p) for p in inner_parts(x, sr)]
+    M = []
+    for p in P:
+        if M and (p[1] - p[0] < min_dur or M[-1][1] - M[-1][0] < min_dur):
+            M[-1][1] = p[1]
+        else:
+            M.append(p)
+    pad = 0.03
+    out, parts, t, prev = [], [], 0.0, 0
+    for a, b in M:
+        i0, i1 = max(prev, int((a - pad) * sr)), min(len(x), int((b + pad) * sr))
+        if i0 > prev:
+            out.append(np.zeros(i0 - prev, np.float32))
+            t += (i0 - prev) / sr
+        y = G.segment(x[i0:i1])
+        parts.append((t + pad if i0 > 0 else t, t + len(y) / sr - (pad if i1 < len(x) else 0)))
+        out.append(y)
+        t += len(y) / sr
+        prev = i1
+    return np.concatenate(out), [(round(p, 3), round(q, 3)) for p, q in parts]
+
+
 def notch(x, sr):
     if not NOTCH:
         return x
@@ -113,10 +141,8 @@ def build(segs, wavdir, lead=1.5, tail=2.0):
     pieces = [np.zeros(int(lead * SR), np.float32)]
     t, items = lead, []
     for k, s in enumerate(segs, 1):
-        x = G.trim(load(Path(wavdir) / f"{s['id']}.wav"))
-        x = notch(x, SR)
-        x = G.segment(x)
-        parts = inner_parts(x)
+        x = notch(G.trim(load(Path(wavdir) / f"{s['id']}.wav")), SR)
+        x, parts = per_clause(x)
         dur = len(x) / SR
         items.append({'k': k, 'id': s['id'], 'start': round(t, 3), 'end': round(t + dur, 3),
                       'parts': [[round(t + p, 3), round(t + q, 3)] for p, q in parts], 'text': s['text']})
