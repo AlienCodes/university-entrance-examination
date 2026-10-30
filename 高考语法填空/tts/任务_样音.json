@@ -1,0 +1,16 @@
+{
+ "说明": "配音选型：5 个候选 × 3 次（seed 1/2/3），同一份样稿。全部 Qwen3-TTS（Apache-2.0，预置音色或文字描述设计的音色，不克隆任何真人）",
+ "script": "高考语法填空/tts/样稿_56.json",
+ "takes": [1, 2, 3],
+ "instruct": "用自然的讲课语气，像一位经验丰富、亲切的高中英语老师在课堂上给学生讲题：语速适中，抑扬顿挫，有节奏感，关键词稍微加重，设问句用自然的疑问语调。英文单词和句子用标准地道的美式发音。",
+ "instruct_en": "Read this sentence clearly and naturally, like a friendly high school English teacher reading an example sentence to the class, with standard American pronunciation.",
+ "candidates": [
+  {"id": "fu", "mode": "custom", "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice", "speaker": "Uncle_Fu"},
+  {"id": "dylan", "mode": "custom", "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice", "speaker": "Dylan"},
+  {"id": "serena", "mode": "custom", "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice", "speaker": "Serena"},
+  {"id": "vivian", "mode": "custom", "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice", "speaker": "Vivian"},
+  {"id": "design_m", "mode": "design_clone", "design_model": "Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign", "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "design_instruct": "一位三十五岁左右的男性高中英语老师，普通话标准，声音温暖、明亮、有亲和力，英语是地道的美式发音。正在课堂上讲题，语气自然亲切，抑扬顿挫，节奏感强。",
+   "design_text": "同学们好，今天我们来讲语法填空。做这类题，第一件事，先看括号里有没有给词。比如这个词，hold，它是一个动词。"}
+ ]
+}

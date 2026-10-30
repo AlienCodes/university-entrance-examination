@@ -1,0 +1,75 @@
+name: 语法填空配音（Qwen3-TTS）
+# 推送 高考语法填空/tts/当前任务.txt（写任务清单文件名）就触发：每个“音色 × 第几次 × 分片”一台机器并行合成原始 WAV，
+# 汇总后提交到分支 gram-tts-out 的 runs/<任务>-<运行号>/（本机 git fetch 取回，做完整处理链与全部检查）。
+on:
+  push:
+    branches: [claude/epic-edison-4gkcfb]
+    paths: ['高考语法填空/tts/当前任务.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.p.outputs.shards }}
+      task: ${{ steps.p.outputs.task }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: 高考语法填空
+      - id: p
+        run: |
+          T="高考语法填空/tts/$(head -1 高考语法填空/tts/当前任务.txt | tr -d '\r\n ')"
+          test -f "$T"
+          echo "task=$T" >> "$GITHUB_OUTPUT"
+          echo "shards=$(python3 高考语法填空/tools/qwen_synth.py --task "$T" --list)" >> "$GITHUB_OUTPUT"
+  synth:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 18
+      matrix:
+        shard: ${{ fromJson(needs.plan.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: 高考语法填空
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: 安装
+        run: |
+          sudo apt-get install -y -qq sox >/dev/null
+          pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install -q qwen-tts==0.1.1 soundfile
+      - name: 合成
+        run: python 高考语法填空/tools/qwen_synth.py --task "${{ needs.plan.outputs.task }}" --shard ${{ matrix.shard }} --out out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wav-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+  collect:
+    needs: [plan, synth]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: arts
+      - name: 提交到 gram-tts-out
+        run: |
+          T=$(basename "${{ needs.plan.outputs.task }}" .json)
+          D="runs/${T}-${{ github.run_number }}"
+          mkdir repo && cd repo && git init -q
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth=1 origin gram-tts-out; then git checkout -q -b gram-tts-out FETCH_HEAD; else git checkout -q --orphan gram-tts-out; fi
+          mkdir -p "$D"
+          for a in ../arts/wav-*; do cp -r "$a"/. "$D"/; done
+          ls -R "$D" | head -50
+          git add "$D"
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "配音原始音频 $D"
+          for i in 1 2 3 4; do git push -q origin gram-tts-out && break; sleep $((2**i)); git pull -q --rebase origin gram-tts-out; done
