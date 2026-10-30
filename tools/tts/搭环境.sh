@@ -5,7 +5,7 @@
 set -e
 cd "$(dirname "$0")/../.."
 [ -x /opt/ttsenv/bin/python ] || python3.11 -m venv /opt/ttsenv
-P=/opt/ttsenv/bin/pip
+P="/opt/ttsenv/bin/pip --timeout 60 --retries 5"
 $P install -q -r .github/cet6-render-requirements.txt
 $P install -q "kokoro-onnx>=0.6.1" "misaki[en]>=0.9.4" num2words soundfile soxr pyloudnorm lameenc pypdf pyyaml \
   "torch==2.11.0" "torchaudio==2.11.0" \
