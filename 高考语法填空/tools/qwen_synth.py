@@ -47,6 +47,7 @@ def main():
     sys.path[:0] = [str(ROOT / 'tools/tts'), str(Path(__file__).parent)]
     import gaokao_tts as G          # 处理链的依赖开头就导入：缺什么第一秒就停，不等合成完（铁律 15）
     import 讲解音频 as J
+    import 去呼吸  # noqa: F401
     import pyloudnorm, soxr, lameenc, scipy.signal  # noqa: F401
     import torch
     from qwen_tts import Qwen3TTSModel
@@ -95,12 +96,10 @@ def main():
     meta['total_compute'] = round(time.time() - t0, 1)
     if nparts == 1:                       # 整份稿在这一台机器上：就地走完整处理链
         a, items = J.build(segs, od)
-        f0, db = J.tone_check(a, G.OUT_SR, items)
         mx, top = J.tonal_scan(a, G.OUT_SR, items)
-        meta['buzz_tone'], meta['buzz_top'] = [f0, db], top
+        meta['buzz_top'] = top
         try:
-            if db > J.BUZZ_MAX_DB:
-                raise RuntimeError(f'电磁音：{f0} Hz 高出周围 {db} dB（上限 +{J.BUZZ_MAX_DB} dB）')
+            meta['buzz_tone'] = list(J.checks(a, items))      # 电磁音 + 呼吸声（踩坑 89）
             cert = G.save_checked(od / '成品.mp3', a, items, -16.0)
             meta['chain'] = {'passed': True, 'loudness': cert['loudness']}
             (od / '成品.timings.json').write_text(json.dumps({'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_top': top,

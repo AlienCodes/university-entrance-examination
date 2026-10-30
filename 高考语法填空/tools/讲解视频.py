@@ -393,6 +393,10 @@ def verify(mp4, mp3, tm, pngdir, ids, fr):
     f0, mx = tone_check(a, 48000, items)
     if mx > BUZZ_MAX_DB:
         errs.append(f'电磁音：{f0} Hz 高出周围 {mx} dB')
+    import 去呼吸
+    br = 去呼吸.breath_check(a, 48000)
+    if br:
+        errs.append(f'视频音轨呼吸声 {len(br)} 处：{br[:6]}')
     # 逐屏抽帧（每屏中间一帧）与截图比较
     info = json.loads((Path(pngdir) / 'stills.json').read_text('utf-8'))
     from PIL import Image

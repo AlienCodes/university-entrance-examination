@@ -3255,6 +3255,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "89",
+   "title": "停顿里有明显的呼吸声（用户 2026-10-30 听高考语法填空样音 A）：Qwen3-TTS 合成的换气是停顿里的孤立非浊音鼓包，段内电平统一、意群统一又把它抬到 −22 dBFS；原检查（响度、意群、电磁音）都量不到",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考语法填空"
+   ],
+   "guards": [
+    {
+     "where": "tools/tts/去呼吸.py debreath（任何电平处理之前，只留含浊音的词核）；讲解音频.prep / checks（render、Actions 上 qwen_synth）；讲解视频.verify（视频音轨）",
+     "runs": "每段合成后、每个成品与视频",
+     "evidence": "breath_check：停顿里长 ≥ 0.1 秒、峰值 > −60 dBFS 的非浊音孤岛"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/呼吸声.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "别的项目（Kokoro）的成品还没接 breath_check；新声音（用户本人录音克隆）同样走 prep / checks",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

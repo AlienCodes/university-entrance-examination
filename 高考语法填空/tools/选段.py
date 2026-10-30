@@ -36,7 +36,7 @@ def pinyin_toks(s):
 def seg_score(x):
     """segment 之后：意群响度最大差（LU）、段尾 0.8 秒元音落差（dB，负数 = 变小）。"""
     import 响度细查 as RX
-    y, P = J.per_clause(J.notch(G.trim(x), G.SR))
+    y, P = J.per_clause(J.prep(x))
     L = [G.gated_lufs(y[int(a * G.SR):int(b * G.SR)], G.SR) for a, b in P if b - a >= 0.8]
     spread = float(max(L) - min(L)) if len(L) > 1 else 0.0
     Lv, ok = RX.vowel_frames(y.astype(np.float64), G.SR)

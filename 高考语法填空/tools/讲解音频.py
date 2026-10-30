@@ -20,6 +20,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/tts'))
 import gaokao_tts as G  # noqa: E402
+import 去呼吸 as BR  # noqa: E402  去呼吸声（踩坑 89），规则只写一处
 
 SR = G.SR
 BUZZ_MAX_DB = 3.0
@@ -144,12 +145,28 @@ def tonal_scan(a, sr, items, fmin=2000):
     return top[0][1], top
 
 
+def prep(x, sr=SR):
+    """原始合成 → 去呼吸（任何电平处理之前，踩坑 89）→ 去首尾静音 → 陷波。build 与 选段 都走这一个。"""
+    return notch(G.trim(BR.debreath(x, sr)[0]), sr)
+
+
+def checks(a, items):
+    """成品的电磁音（固定频点）与呼吸声检查；有问题抛 RuntimeError（render 与 Actions 上的 qwen_synth 共用）。返回 (f0, db)。"""
+    f0, db = tone_check(a, G.OUT_SR, items)
+    if db > BUZZ_MAX_DB:
+        raise RuntimeError(f'电磁音：{f0} Hz 高出周围 {db} dB（上限 +{BUZZ_MAX_DB} dB），未输出')
+    br = BR.breath_check(a, G.OUT_SR)
+    if br:
+        raise RuntimeError(f'呼吸声 {len(br)} 处（停顿里的非浊音孤岛，峰值 > {BR.CHK_FLOOR} dBFS）：{br[:6]}，未输出')
+    return f0, db
+
+
 def build(segs, wavdir, lead=1.5, tail=2.0):
     """返回 (48 kHz 成品, items)。items 每段一条：start/end/parts（秒，成品时间轴）、id、text。"""
     pieces = [np.zeros(int(lead * SR), np.float32)]
     t, items = lead, []
     for k, s in enumerate(segs, 1):
-        x = notch(G.trim(load(Path(wavdir) / f"{s['id']}.wav")), SR)
+        x = prep(load(Path(wavdir) / f"{s['id']}.wav"))
         x, parts = per_clause(x)
         dur = len(x) / SR
         items.append({'k': k, 'id': s['id'], 'start': round(t, 3), 'end': round(t + dur, 3),
@@ -165,13 +182,11 @@ def build(segs, wavdir, lead=1.5, tail=2.0):
 
 def render(segs, wavdir, out, lead=1.5, tail=2.0):
     a, items = build(segs, wavdir, lead, tail)
-    f0, db = tone_check(a, G.OUT_SR, items)
-    if db > BUZZ_MAX_DB:
-        raise RuntimeError(f'电磁音：{f0} Hz 高出周围 {db} dB（上限 +{BUZZ_MAX_DB} dB），未输出')
+    f0, db = checks(a, items)
     mx, top = tonal_scan(a, G.OUT_SR, items)
     cert = G.save_checked(Path(out), a, items, -16.0)
     meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
-            'clause_check': G.CHAIN}
+            'clause_check': G.CHAIN, 'breath': 0}
     Path(out).with_suffix('.timings.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
     return meta
 
