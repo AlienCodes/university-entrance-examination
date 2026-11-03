@@ -207,7 +207,7 @@ def _build_units(segs, wavdir, lead, tail):
                       'parts': [[round(t + p, 3), round(t + q, 3)] for p, q in parts], 'text': s['text']})
         pieces.append(x)
         t += dur
-        g = tail if k == len(segs) else s.get('gap', 0.6)
+        g = tail + 0.05 if k == len(segs) else s.get('gap', 0.6)     # 结尾多留 50 ms：成品实测结尾静音要 ≥ 2.0 秒（编码延迟会吃掉几毫秒，踩坑 10）
         pieces.append(np.zeros(int(round(g * SR)), np.float32))
         t += int(round(g * SR)) / SR
     a = G.master(np.concatenate(pieces), -16.0, parts=[p for it in items for p in it['parts']])

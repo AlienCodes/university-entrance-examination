@@ -85,20 +85,24 @@ def longest_silence(y, sr, t0, t1, ref_db):
 
 
 def tail_rise(y, sr, t_end):
-    """t_end 之前的浊音尾巴：末 100 ms 与前 200 ms 的音高中位数之差（半音）。返回 (半音, 尾巴结束时刻) 或 (None, None)。"""
+    """t_end 之前的浊音尾巴：末 100 ms 浊音的音高中位数，比它前面 500 ms 内（含前一个字）浊音的中位数高多少半音。
+    男声句末常是 60 Hz 上下的气泡音，所以 fmin = 45；超过 7 半音的差按八度误判折回（−11.6 → +0.4）。
+    返回 (半音, 尾巴结束时刻) 或 (None, None)。"""
     import librosa
-    a = y[max(0, int((t_end - 0.8) * sr)):int((t_end + 0.05) * sr)].astype(np.float32)
-    f0, v, _ = librosa.pyin(a, fmin=60, fmax=400, sr=sr, frame_length=2048, hop_length=int(0.01 * sr))
+    a = y[max(0, int((t_end - 1.2) * sr)):int((t_end + 0.05) * sr)].astype(np.float32)
+    f0, v, _ = librosa.pyin(a, fmin=45, fmax=400, sr=sr, frame_length=2048, hop_length=int(0.01 * sr))
     idx = np.where(v & ~np.isnan(f0))[0]
-    if len(idx) < 12:
+    if len(idx) < 8:
         return None, None
     last = idx[-1]
-    seg = [i for i in idx if i > last - 30]                     # 最后 300 ms 的浊音帧
-    a1 = [f0[i] for i in seg if i > last - 10]
-    a0 = [f0[i] for i in seg if i <= last - 10]
-    if len(a1) < 4 or len(a0) < 6:
+    a1 = [f0[i] for i in idx if i > last - 10]
+    a0 = [f0[i] for i in idx if last - 60 <= i <= last - 10]
+    if len(a1) < 4 or len(a0) < 4:
         return None, None
-    return float(12 * np.log2(np.median(a1) / np.median(a0))), (t_end - 0.8) + last * 0.01
+    d = float(12 * np.log2(np.median(a1) / np.median(a0)))
+    while abs(d) > 7:
+        d -= 12 * np.sign(d)
+    return d, (t_end - 1.2) + last * 0.01
 
 
 def item_audio(a, sr, it):
@@ -123,9 +127,12 @@ def check(a, sr, items, marked_text, al=None):
         for k, p in enumerate(pieces):
             n = len([t for t in toks(p) if t not in '？?'])
             if k + 1 < len(pieces) and n:
-                i_last, i_next = pos + n - 1, pos + n
-                if i_last in m and i_next in m:
-                    t0, t1 = hyp[m[i_last]][1], hyp[m[i_next]][1]
+                # 识别器对英文词（如 hold）偶尔对不上：取边界前后 2 个词以内最近的对上的词
+                i_last = next((i for i in range(pos + n - 1, pos + n - 4, -1) if i in m), None)
+                i_next = next((i for i in range(pos + n, pos + n + 3) if i in m), None)
+                if i_last is not None and i_next is not None:
+                    # 识别器给的是词的开始时刻、精度约 60 毫秒：窗口延到下一个词开始后 0.3 秒，免得把真静音截短
+                    t0, t1 = hyp[m[i_last]][1], hyp[m[i_next]][1] + 0.3
                     sil = longest_silence(y, sr, t0, t1, ref_db)
                     rep.append({'id': it['id'], '边界': f"{p.strip()[-6:]}‖{pieces[k + 1].strip()[:6]}", '停顿秒': round(sil, 2)})
                     if sil < PAUSE_MIN:
@@ -141,10 +148,12 @@ def check(a, sr, items, marked_text, al=None):
                     i = m[cnt - 1]
                     t_word = hyp[i][1]
                     t_next = hyp[i + 1][1] if i + 1 < len(hyp) else len(y) / sr
-                    rise, t_end = tail_rise(y, sr, min(t_next, t_word + 0.8))
+                    rise, t_end = tail_rise(y, sr, min(t_next, t_word + 0.55))   # 窗口从问句最后一个字的前一个字起
                     q = sub[j].strip()[-8:] + '？'
                     rep.append({'id': it['id'], '问句': q, '尾音半音': None if rise is None else round(rise, 2)})
-                    if rise is not None and rise > RISE_MAX:
+                    if rise is None:
+                        errs.append(f"{it['id']}：问句“{q}”尾音量不出音高（{it['start'] + t_word:.2f}s）")
+                    elif rise > RISE_MAX:
                         errs.append(f"{it['id']}：问句“{q}”尾音上扬 {rise:.1f} 半音（上限 {RISE_MAX}）（{it['start'] + t_word:.2f}s）")
             pos += n
     return rep, errs
