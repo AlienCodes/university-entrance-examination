@@ -1,0 +1,28 @@
+{
+ "说明": "续写整片补合成（英文发音）：纯英文识别（parakeet，词前后各 0.3 秒切出）核对——s3p1 的 towed 两次都识别成 Todd / told（take2 在缺的 part13），f03 的 lie / lay / laid 切出来识别不清，核实不了；各 6 次重合成，选段前再逐词核对。drove（s4b3）、warmth（f04）都有一次读对，锁定那一次（续写全片.sh LOCK）。",
+ "script": "高考语法填空/tts/稿_续写_2026_新课标Ⅰ卷.json",
+ "only": [
+  "s3p1",
+  "f03"
+ ],
+ "takes": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6
+ ],
+ "parts": 2,
+ "candidates": [
+  {
+   "id": "m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.45
+  }
+ ]
+}

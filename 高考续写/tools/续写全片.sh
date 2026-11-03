@@ -37,6 +37,11 @@ if [ -n "${OVERLAY_TASK:-}" ]; then              # 改了几段稿、只重合�
   for OT in $OVERLAY_TASK; do                     # 可以多个，按顺序覆盖
     bash 高考续写/tools/覆盖补合成.sh "$T/$RUN/$VOICE" "$VOICE" "$OT" "${OVERLAY_AFTER:-0}"
   done
+  for L in ${LOCK:-}; do                          # 锁定：某小段只用人工核对过读对的那一次（把它复制到其余各次，选段怎么换都是它）
+    u=${L%%=*}; k=${L#*=}; src="$T/$RUN/$VOICE/$k/$u.wav"; [ -f "$src" ] || { echo "锁定的 $src 不存在"; exit 1; }
+    for d in "$T/$RUN/$VOICE"/take*; do [ -f "$d/$u.wav" ] && [ "$d/$u.wav" != "$src" ] && cp "$src" "$d/$u.wav"; done
+    echo "锁定 $u = $k（人工核对读对的一次）" | tee -a "$T/$RUN/$VOICE/覆盖.txt"
+  done
   cp "$T/$RUN/$VOICE/覆盖.txt" "高考续写/audio/$NAME.覆盖.txt"
 fi
 # 候选的合成单位、段间停顿上限照任务清单传给选段（不传就按默认 mark+lang 展开，找错小段）
