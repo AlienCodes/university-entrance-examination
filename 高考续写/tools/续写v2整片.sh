@@ -10,8 +10,8 @@ D=高考续写/讲解/2026_新课标Ⅰ卷
 BR=claude/epic-edison-4gkcfb
 # v1 整片的叠加（交接_整片收尾.md）+ 逐句屏新段；s4b3 换了文字，原来锁定的 s4b3=take1 去掉
 export SYNTH_ALLOW_MISSING=m/take2/part13 KEEP_ORIG="a01~2" LOCK="f04=take1 s3p1~1=take5"
-export OVERLAY_TASK="任务_续写_补s1z.json 任务_续写_补拼接.json 任务_续写_补声调.json 任务_续写_补英文.json 任务_续写_补拼接2.json 任务_续写_补开头.json 任务_续写_补逐块.json 任务_续写_补逐块英文.json"
-export DROP_TASK="任务_续写_补逐块.json"
+export OVERLAY_TASK="任务_续写_补s1z.json 任务_续写_补拼接.json 任务_续写_补声调.json 任务_续写_补英文.json 任务_续写_补拼接2.json 任务_续写_补开头.json 任务_续写_补逐块.json 任务_续写_补逐块英文.json 任务_续写_补s7b2.json"
+export DROP_TASK="任务_续写_补逐块.json 任务_续写_补s7b2.json"
 export AFTER=0
 if [ "$STAGE" = preview ]; then
   IDS=$(python3 -c "
