@@ -36,6 +36,17 @@ for t in task['takes']:
 e0 = WZ.problems(run)
 shutil.rmtree(run / f"take{task['takes'][0]}")
 e1 = WZ.problems(run)
+# 整次缺失 + 显式放行这一次的唯一一片（第 6 轮 k2m take2 两次被收回）→ 放行；放错次照报
+import os  # noqa: E402
+t0, t1 = task['takes'][0], task['takes'][1]
+os.environ['SYNTH_ALLOW_MISSING'] = f"{c['id']}/take{t0}/part0"
+e1a = WZ.problems(run)
+os.environ['SYNTH_ALLOW_MISSING'] = f"{c['id']}/take{t1}/part0"
+e1b = WZ.problems(run)
+del os.environ['SYNTH_ALLOW_MISSING']
+print(f'①b 整次缺失放行这一片 {len(e1a)} 处（应 0）；放错次 {len(e1b)} 处（应报整次缺失）')
+if e1a or not any('整次缺失' in x for x in e1b):
+    bad.append('①b')
 d2 = run / f"take{task['takes'][1]}"
 (d2 / f'{units[-1]}.wav').unlink()
 e2 = WZ.problems(run)

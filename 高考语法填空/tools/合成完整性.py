@@ -65,6 +65,8 @@ def problems(run):
             print(f'⚠ 显式放行（SYNTH_ALLOW_MISSING）：{run.name}/{t} part{sorted(free)}，这一片的段只用其余几次的候选')
         d = run / t
         if not d.is_dir():
+            if set(parts) <= free:          # 这一次的每一片都点名放行（只有一片时整次 = 这一片）
+                continue
             errs.append(f'{run.name}/{t} 整次缺失（合成机被停或失败；重跑失败的作业）')
             continue
         for k in parts:
