@@ -28,10 +28,10 @@ def case(name, errs, want, has=''):
 case('现在的踩坑登记 → 0', zj.check_registry(reg, md)[0], False)
 case('现在的规矩登记 → 0', zj.check_laws(laws, md)[0], False)
 last_pit = md.rindex('\n| 75 |')
-md_pit = md[:last_pit] + '\n| 99 | 新踩的坑 | 新做法 | 某检查 |' + md[last_pit:]
-case('踩坑表多一行没登记 → 拦', zj.check_registry(reg, md_pit)[0], True, '踩坑 99')
+md_pit = md[:last_pit] + '\n| 9999 | 新踩的坑 | 新做法 | 某检查 |' + md[last_pit:]
+case('踩坑表多一行没登记 → 拦', zj.check_registry(reg, md_pit)[0], True, '踩坑 9999')
 r2 = copy.deepcopy(reg)
-r2['rows'].append({'id': '99', 'title': 'x', 'test': {}, 'status': '自动拦截（无双向验证）'})
+r2['rows'].append({'id': '9999', 'title': 'x', 'test': {}, 'status': '自动拦截（无双向验证）'})
 case('新坑登记了却没带双向验证 → 拦', zj.check_registry(r2, md_pit)[0], True, '必须带双向验证')
 r3 = copy.deepcopy(reg)
 for r in r3['rows']:
