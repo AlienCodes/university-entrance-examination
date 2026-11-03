@@ -45,7 +45,8 @@ def main():
                 t1 = hyp[j + 1][1] if j + 1 < len(hyp) else len(x) / G.SR
                 seg = x[max(0, int((t0 - 0.3) * G.SR)):int((t1 + 0.3) * G.SR)]
                 got.setdefault(word, []).append(ears.rec(ears.en, soxr.resample(seg, G.SR, 16000).astype(np.float32)))
-        ok = all(any(re.search(rf'\b{re.escape(wd)}\b', r, re.I) for r in got.get(wd, [])) for wd in words)
+        # 同一个词在这段里出现几次，每一次都要读对（s3b1 的 towed 两处：一处读成 told、另一处读对，旧写法“任一处对”就放过了）
+        ok = all(got.get(wd) and all(re.search(rf'\b{re.escape(wd)}\b', r, re.I) for r in got[wd]) for wd in words)
         print(f'{uid} {d.name}: {got} → {"读对" if ok else "不对"}', file=sys.stderr)
         if ok:
             print(d.name)
