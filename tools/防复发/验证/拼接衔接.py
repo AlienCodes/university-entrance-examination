@@ -32,6 +32,14 @@ e4 = PJ.problems(B, tgt)
 print(f'② 本人录音一段：{len(B)} 个边界，{len(e4)} 处 {e4}')
 if e4:
     bad.append('② 本人录音被判不合格')
+import 讲解音频 as J  # noqa: E402
+J.SPLIT, J.GAP_MAX = 'mark', 0.32
+us = J.expand([x for x in json.loads((S / '稿/2026_新课标Ⅰ卷.json').read_text('utf-8'))['segments'] if x['id'] == 'q56c'])
+marks = [u['gap'] for u in us if not u['seg_end']]
+print(f'④ 段间上限 0.32 时 ‖ 处停顿 {marks}（应全是 {J.PAUSE_MARK}；2026-11-03 曾被一起压成 0.32）')
+if any(g != J.PAUSE_MARK for g in marks) or not all(u['seg_end'] == (k == len(us) - 1) for k, u in enumerate(us)):
+    bad.append('④ 段间停顿上限压到了 ‖ 处')
+J.SPLIT, J.GAP_MAX = 'mark+lang', None
 if 'PJ.problems' not in (S / 'tools/讲解音频.py').read_text('utf-8'):
     bad.append('③ render 没接拼接检查')
 print('拼接衔接双向验证', '通过' if not bad else '失败：' + '、'.join(bad))

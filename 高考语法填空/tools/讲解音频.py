@@ -232,7 +232,7 @@ def units(seg):
     中间放按标点的短静音。没有 ‖、也没有可拆英文的段原样一个小段。"""
     mode = seg.get('split') or SPLIT          # 段上写了 split 就按段（选段 --退回：整段的停顿不够时只这一段退回拆段）
     if mode == 'none':                        # 整段一次合成（中英混说、‖ 都不拆；停顿用模型自然的停顿）
-        return [dict(seg, text=seg['text'].replace(MARK, ''))]
+        return [dict(seg, text=seg['text'].replace(MARK, ''), seg_end=True)]
     ps = [p.strip() for p in seg['text'].split(MARK) if p.strip()]
     sub = []
     for k, p in enumerate(ps, 1):
@@ -241,8 +241,9 @@ def units(seg):
         for j, (t, lang, g) in enumerate(parts):
             sub.append((t, lang, last_gap if j == len(parts) - 1 else g))
     if len(sub) <= 1:
-        return [dict(seg, text=seg['text'].replace(MARK, ''))]
-    return [dict(seg, id=f"{seg['id']}~{k}", text=t, lang=lang, parent=seg['id'], gap=g) for k, (t, lang, g) in enumerate(sub, 1)]
+        return [dict(seg, text=seg['text'].replace(MARK, ''), seg_end=True)]
+    return [dict(seg, id=f"{seg['id']}~{k}", text=t, lang=lang, parent=seg['id'], gap=g, seg_end=k == len(sub))
+            for k, (t, lang, g) in enumerate(sub, 1)]
 
 
 # 合成长度上限与超时（踩坑 95：2026-11-03 第 3 轮 15 台合成机里 1 台某一段生成停不下来，卡 60 分钟被超时杀掉，整台没有产物）。
@@ -317,7 +318,10 @@ def _build_units(segs, wavdir, lead, tail):
                       'parts': [[round(t + p, 3), round(t + q, 3)] for p, q in parts], 'text': s['text']})
         pieces.append(x)
         t += dur
-        g = tail + 0.05 if k == len(segs) else (s.get('gap', 0.6) if GAP_MAX is None else min(s.get('gap', 0.6), GAP_MAX))     # 结尾多留 50 ms：成品实测结尾静音要 ≥ 2.0 秒（编码延迟会吃掉几毫秒，踩坑 10）
+        g = s.get('gap', 0.6)
+        if GAP_MAX is not None and s.get('seg_end', True):    # 只压段与段之间；‖ 处（PAUSE_MARK）和中英切换处不动
+            g = min(g, GAP_MAX)
+        g = tail + 0.05 if k == len(segs) else g     # 结尾多留 50 ms：成品实测结尾静音要 ≥ 2.0 秒（编码延迟会吃掉几毫秒，踩坑 10）
         pieces.append(np.zeros(int(round(g * SR)), np.float32))
         t += int(round(g * SR)) / SR
     a = G.master(np.concatenate(pieces), -16.0, parts=[p for it in items for p in it['parts']])
