@@ -1,5 +1,6 @@
 """4K 成品 → 1080p 预览（发给用户看片用，不发布）。
 转之前：核对这份音频的合格证（timings + MP3，gaokao_tts.certificate_problems，踩坑 85、87），4K 必须是 3840×2160。
+timings：讲解音频是 MP3 同名的 .timings.json；精读音频是上一层 audio/timings.json 里 file 指向这份 MP3 的那一条（恰好一条）。
 转之后：1920×1080、音轨与 4K 逐包相同（-c:a copy，比 md5）、时长差 < 0.05 秒、文件 < 95 MB；有一项不过就删掉输出、退出码 1。
 用法：/opt/ttsenv/bin/python 高考续写/tools/转1080预览.py 4K.mp4 音频.mp3 输出.mp4"""
 import json
@@ -29,10 +30,25 @@ def audio_md5(p):
     return r.stdout.strip()
 
 
+def timings_entry(mp3):
+    """这份 MP3 的 timings：讲解音频是同名 .timings.json；精读音频是同层或上一层 timings.json 里 file 指向它的那一条。"""
+    own = mp3.with_suffix('.timings.json')
+    if own.exists():
+        return json.loads(own.read_text('utf-8'))
+    for t in (mp3.parent / 'timings.json', mp3.parent.parent / 'timings.json'):
+        if t.exists():
+            hits = [e for v in json.loads(t.read_text('utf-8')).values() if isinstance(v, dict) for e in v.values()
+                    if isinstance(e, dict) and e.get('file') and (t.parent / e['file']).resolve() == mp3.resolve()]
+            if len(hits) != 1:
+                sys.exit(f'{t} 里指向 {mp3.name} 的条目有 {len(hits)} 条（应恰好 1 条）')
+            return hits[0]
+    sys.exit(f'找不到 {mp3.name} 的 timings（同名 .timings.json，或同层 / 上一层的 timings.json）')
+
+
 def main(src, mp3, out):
     import gaokao_tts as G
     src, mp3, out = Path(src), Path(mp3), Path(out)
-    tm = json.loads(mp3.with_suffix('.timings.json').read_text('utf-8'))
+    tm = timings_entry(mp3)
     errs = ['合格证：' + x for x in G.certificate_problems(tm, mp3)]
     a = probe(src)
     if size_of(a) != (3840, 2160):
