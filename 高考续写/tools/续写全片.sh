@@ -75,7 +75,7 @@ if [ -n "${SYNTH_ALLOW_MISSING:-}" ]; then          # 显式放行（公开、�
 fi
 $PY 高考语法填空/tools/选段.py --稿 "$DIR/稿.json" --run "$T/$RUN/$VOICE" --out "高考续写/audio/$NAME.mp3" "${SEL[@]}" "${ONLY[@]}"
 $PY 高考语法填空/tools/讲解节奏.py "高考续写/audio/$NAME.mp3" > "高考续写/audio/$NAME.节奏.txt"
-[ -z "${AUDIO_ONLY:-}" ] || { rm -rf "$T"; echo "只出音频（AUDIO_ONLY）：高考续写/audio/$NAME.mp3"; exit 0; }
+[ -z "${AUDIO_ONLY:-}" ] && [ ! -f 高考续写/暂停出视频.txt ] || { rm -rf "$T"; echo "只出音频（AUDIO_ONLY 或 暂停出视频.txt）：高考续写/audio/$NAME.mp3"; exit 0; }
 # 踩坑 84：按工作流的检出路径建稀疏工作树，截图全部检查走一遍（只截这段音频用到的屏）
 WT=$T/wt
 git worktree add -q --no-checkout "$WT" HEAD

@@ -4,7 +4,7 @@
 set -euo pipefail
 # 暂停出视频（用户 2026-11-03：“把我的这些所有的建议听完之后再做视频，别那么着急”）：协调会话通知“开始出视频”、
 # 并逐条对照 高考续写/用户意见清单.md 之后，才用 RENDER_OK=1 跑
-[ -n "${RENDER_OK:-}" ] || { echo "暂停出视频：等协调会话通知“开始出视频”（RENDER_OK=1 才渲染）"; exit 3; }
+[ -n "${RENDER_OK:-}" ] && [ ! -f 高考续写/暂停出视频.txt ] || { echo "暂停出视频：等协调会话通知“开始出视频”（RENDER_OK=1 才渲染）"; exit 3; }
 cd /home/user/university-entrance-examination
 SP=${SP:-$(mktemp -d)}
 BR=claude/epic-edison-4gkcfb
