@@ -218,6 +218,46 @@ def units(seg):
     return [dict(seg, id=f"{seg['id']}~{k}", text=t, lang=lang, parent=seg['id'], gap=g) for k, (t, lang, g) in enumerate(sub, 1)]
 
 
+# 合成长度上限与超时（踩坑 95：2026-11-03 第 3 轮 15 台合成机里 1 台某一段生成停不下来，卡 60 分钟被超时杀掉，整台没有产物）。
+# Qwen3-TTS 12 Hz：每秒音频约 12.5 个 token；默认上限 2048（约 164 秒）。按文字估最长时长：汉字 0.45 秒、英文词 0.7 秒（都是
+# 正常语速的 2 倍以上），另加 3 秒，换算成 token。生成结果顶到上限（≥ 上限的 95%）或单段超时，就当作“停不下来”，换种子重来。
+TOK_PER_SEC = 12.5
+UNIT_TIMEOUT = 420     # 秒：单段合成最长用时（实测最长的小段约 90 秒）
+MAX_TRIES = 4
+
+
+def token_cap(text, lang='Chinese'):
+    zh = len(re.findall(r'[一-鿿]', text))
+    en = len(re.findall(r"[A-Za-z]+(?:['’][A-Za-z]+)?", text))
+    return int((zh * 0.45 + en * 0.7 + 3.0) * TOK_PER_SEC)
+
+
+def run_unit(gen1, seed, cap, timeout=UNIT_TIMEOUT, tries=MAX_TRIES):
+    """gen1(seed) → (音频, sr)。顶到上限或超时就换种子（seed + 7919·k）重来，最多 tries 次；都不行抛 RuntimeError。返回 (音频, sr, 第几次)。"""
+    import signal
+
+    def on_alarm(*_):
+        raise TimeoutError
+
+    last = None
+    for k in range(tries):
+        old = signal.signal(signal.SIGALRM, on_alarm)
+        signal.alarm(int(timeout))
+        try:
+            x, sr = gen1(seed + 7919 * k)
+        except TimeoutError:
+            last = f'超时 {timeout} 秒'
+            continue
+        finally:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, old)
+        if len(x) / sr * TOK_PER_SEC >= 0.95 * cap:
+            last = f'顶到上限 {cap} token（{len(x) / sr:.1f} 秒）'
+            continue
+        return x, sr, k + 1
+    raise RuntimeError(f'换了 {tries} 个种子仍停不下来：{last}')
+
+
 def expand(segs):
     return [u for s in segs for u in units(s)]
 

@@ -3424,6 +3424,32 @@
    "status": "自动拦截+有双向验证",
    "gap": "英文口音分（CommonAccent）只作选优参考分，不作关卡",
    "fix": ""
+  },
+  {
+   "id": "95",
+   "title": "第 3 轮合成（run 41587537407）15 台里 synth(3) 某一段生成停不下来（qwen_synth 没设 max_new_tokens，默认 2048 ≈ 164 秒音频，CPU 上很慢），卡约 60 分钟被超时杀掉，整台没有产物",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考语法填空"
+   ],
+   "guards": [
+    {
+     "where": "讲解音频.token_cap（按汉字 0.45 秒、英文词 0.7 秒 + 3 秒估最长时长换算 token）+ run_unit（顶到上限的 95% 或单段超时 420 秒就换种子，最多 4 次，仍不行报错）；qwen_synth 每次合成都经 run_unit、传 max_new_tokens；预演的假模型按上限截断",
+     "runs": "每次合成",
+     "evidence": "顶到上限、超时"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/合成上限.py",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

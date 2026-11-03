@@ -96,20 +96,26 @@ def main():
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         print('支持的音色', m.get_supported_speakers(), '语言', m.get_supported_languages(), flush=True)
     prompt_en = prompt_en or prompt
+    base_seed = lambda sid: take * 1000 + int(''.join(ch for ch in sid if ch.isdigit()) or 0)  # noqa: E731
     for s in J.expand(segs):              # 稿里 ‖ 处拆成小段分别合成（讲解音频.units）
-        torch.manual_seed(take * 1000 + int(''.join(ch for ch in s['id'] if ch.isdigit()) or 0))
         ts = time.time()
-        if c['mode'] in ('design_clone', 'clone_ref'):
-            w, sr = m.generate_voice_clone(text=s['text'], language=s['lang'],
-                                           voice_clone_prompt=prompt_en if s['lang'] == 'English' else prompt, **gen)
-        else:
-            ins = task['instruct_en'] if s['lang'] == 'English' else task['instruct']
-            w, sr = m.generate_custom_voice(text=s['text'], speaker=c['speaker'], language=s['lang'],
-                                            instruct=ins, **gen)
-        x = np.asarray(w[0], dtype=np.float32)
+        cap = J.token_cap(s['text'], s['lang'])
+
+        def gen1(seed, s=s, cap=cap):
+            torch.manual_seed(seed)
+            if c['mode'] in ('design_clone', 'clone_ref'):
+                w, sr = m.generate_voice_clone(text=s['text'], language=s['lang'], max_new_tokens=cap,
+                                               voice_clone_prompt=prompt_en if s['lang'] == 'English' else prompt, **gen)
+            else:
+                ins = task['instruct_en'] if s['lang'] == 'English' else task['instruct']
+                w, sr = m.generate_custom_voice(text=s['text'], speaker=c['speaker'], language=s['lang'], max_new_tokens=cap,
+                                                instruct=ins, **gen)
+            return np.asarray(w[0], dtype=np.float32), sr
+
+        x, sr, tries = J.run_unit(gen1, base_seed(s['id']), cap)    # 生成停不下来（顶到上限 / 超时）就换种子重来（踩坑 95）
         sf.write(str(od / f"{s['id']}.wav"), x, sr)
         el = time.time() - ts
-        meta['segments'].append({'id': s['id'], 'sec': round(len(x) / sr, 2), 'compute': round(el, 1), 'sr': sr})
+        meta['segments'].append({'id': s['id'], 'sec': round(len(x) / sr, 2), 'compute': round(el, 1), 'sr': sr, 'cap': cap, 'tries': tries})
         print(f"{c['id']} take{take} {s['id']} {len(x) / sr:.1f}s 音频，用时 {el:.0f}s", flush=True)
     meta['total_compute'] = round(time.time() - t0, 1)
     if nparts == 1:                       # 整份稿在这一台机器上：就地走完整处理链

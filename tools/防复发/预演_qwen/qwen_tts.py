@@ -22,15 +22,21 @@ class Qwen3TTSModel:
     def get_supported_languages(self):
         return ['chinese', 'english']
 
-    def _one(self):
+    def _one(self, max_new_tokens=None):
         x, sr = sf.read(str(next(_it)), dtype='float32')
+        if max_new_tokens:                # 真模型在上限内自然停：样本比上限长就截到上限的 80%（踩坑 95 的长度上限）
+            n = int(max_new_tokens * 0.8 / 12.5 * sr)
+            if len(x) > n:
+                x = x[:n].copy()
+                f = int(0.03 * sr)
+                x[-f:] *= __import__('numpy').linspace(1, 0, f, dtype='float32')
         return [x], sr
 
     def generate_custom_voice(self, **k):
-        return self._one()
+        return self._one(k.get('max_new_tokens'))
 
     def generate_voice_clone(self, **k):
-        return self._one()
+        return self._one(k.get('max_new_tokens'))
 
     def generate_voice_design(self, **k):
         return self._one()
