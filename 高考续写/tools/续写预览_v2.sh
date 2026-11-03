@@ -6,9 +6,10 @@ cd /home/user/university-entrance-examination
 SP=${SP:-$(mktemp -d)}
 BR=claude/epic-edison-4gkcfb
 D=高考续写/讲解/2026_新课标Ⅰ卷
-OUTN="2026 新课标Ⅰ卷 读后续写 讲解 开头预览 v2（高亮闪烁 + 中文意思）"
-MP3=""
+OUTN=${OUTN:-"2026 新课标Ⅰ卷 读后续写 讲解 开头预览 v2（高亮闪烁 + 中文意思）"}
+MP3=${MP3:-}                                   # 给了 MP3（v2 逐块屏新音频）就不等
 for k in $(seq 50); do
+  [ -z "$MP3" ] || break
   git fetch -q origin "$BR" || true
   f=$(git -c core.quotepath=false ls-tree -r --name-only "origin/$BR" 高考续写/audio/预览/ | grep '\.mp3$' | head -1 || true)
   [ -n "$f" ] && MP3=$f && break

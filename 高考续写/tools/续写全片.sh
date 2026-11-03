@@ -5,6 +5,8 @@
 #   → 等 Release 上出现成品 → 下载回来核对 sha256、3840×2160、时长。
 # 用法：bash 高考续写/tools/续写全片.sh <讲解目录> <任务文件名（高考语法填空/tts/ 下）> <音色 id> <成品名> <Release 标签> [段 id…（只做这几段）]
 #   环境变量 AFTER=运行号下限（只认比它新的合成结果）
+#   DROP_TASK=补合成任务文件名…（也要在 OVERLAY_TASK 里）：覆盖它之前，先把它 only 里的段在主合成和前面各补合成里的旧小段全部删掉（稿改了的段，旧文字的合成不许留作候选；
+#     不删的话，以前补合成多出来的 take4…6 里旧文字的小段会被选段当候选）；ENGINE=续写视频_v2.py：试排截图用 v2 引擎，render.txt 写第 5 行
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 DIR=$1; TASK=$2; VOICE=$3; NAME=$4; TAG=$5; shift 5
@@ -38,6 +40,13 @@ if [ -n "${OVERLAY_TASK:-}" ]; then              # 改了几段稿、只重合�
     for d in "$T/$RUN/$VOICE"/take*; do [ -f "$d/$u.wav" ] && mkdir -p "$T/orig/$(basename "$d")" && cp "$d/$u.wav" "$T/orig/$(basename "$d")/"; done
   done
   for OT in $OVERLAY_TASK; do                     # 可以多个，按顺序覆盖
+    if [[ " ${DROP_TASK:-} " == *" $OT "* ]]; then  # 稿改了的段：覆盖这个任务之前，删掉主合成和前面各补合成留下的旧小段
+      for u in $(python3 -c "import json,sys;print(' '.join(json.load(open(sys.argv[1],encoding='utf-8'))['only']))" "高考语法填空/tts/$OT"); do
+        n=$(find "$T/$RUN/$VOICE" -path '*/take*' \( -name "$u.wav" -o -name "$u~*.wav" \) | wc -l)
+        find "$T/$RUN/$VOICE" -path '*/take*' \( -name "$u.wav" -o -name "$u~*.wav" \) -delete
+        echo "删除 $u 的旧合成 $n 个小段（稿改了，$OT 重新合成）" >> "$T/$RUN/$VOICE/覆盖.txt"
+      done
+    fi
     bash 高考续写/tools/覆盖补合成.sh "$T/$RUN/$VOICE" "$VOICE" "$OT" "${OVERLAY_AFTER:-0}"
   done
   for u in ${KEEP_ORIG:-}; do
@@ -66,6 +75,7 @@ if [ -n "${SYNTH_ALLOW_MISSING:-}" ]; then          # 显式放行（公开、�
 fi
 $PY 高考语法填空/tools/选段.py --稿 "$DIR/稿.json" --run "$T/$RUN/$VOICE" --out "高考续写/audio/$NAME.mp3" "${SEL[@]}" "${ONLY[@]}"
 $PY 高考语法填空/tools/讲解节奏.py "高考续写/audio/$NAME.mp3" > "高考续写/audio/$NAME.节奏.txt"
+[ -z "${AUDIO_ONLY:-}" ] || { rm -rf "$T"; echo "只出音频（AUDIO_ONLY）：高考续写/audio/$NAME.mp3"; exit 0; }
 # 踩坑 84：按工作流的检出路径建稀疏工作树，截图全部检查走一遍（只截这段音频用到的屏）
 WT=$T/wt
 git worktree add -q --no-checkout "$WT" HEAD
@@ -76,9 +86,10 @@ git -C "$WT" checkout -q
 cp 高考续写/audio/"$NAME".* "$WT/高考续写/audio/" 2>/dev/null || { mkdir -p "$WT/高考续写/audio"; cp 高考续写/audio/"$NAME".* "$WT/高考续写/audio/"; }
 cp "$DIR"/*.json "$WT/$DIR/"
 ln -s "$PWD/tools/tts/models" "$WT/tools/tts/models" 2>/dev/null || true
-(cd "$WT" && $PY 高考续写/tools/续写视频.py --稿 "$DIR/稿.json" --音频 "高考续写/audio/$NAME.mp3" --stills --out "$T/st" --png "$T/st/png")
+(cd "$WT" && $PY 高考续写/tools/${ENGINE:-续写视频.py} --稿 "$DIR/稿.json" --音频 "高考续写/audio/$NAME.mp3" --stills --out "$T/st" --png "$T/st/png")
 git worktree remove --force "$WT"
 printf '# 高考续写视频清单（推送触发 render-gaokao-writing.yml）\n%s\n%s\n%s\n%s\n' "$TAG" "$DIR" "高考续写/audio/$NAME.mp3" "$NAME.mp4" > 高考续写/render.txt
+[ -z "${ENGINE:-}" ] || echo "$ENGINE" >> 高考续写/render.txt
 git add 高考续写/audio/ 高考续写/render.txt
 git commit -qm "高考续写：$NAME 音频（选段 + 完整处理链 + 合格证）；推清单在 GitHub 上生成视频并发布 Release $TAG"
 for i in 1 2 3 4; do git push -q origin "$BR" && break; sleep $((2**i)); done

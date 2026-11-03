@@ -27,6 +27,23 @@ SUB = ('~d', '~h')
 
 CSS2 = """
 .en { line-height: var(--plh, 1.55); }
+.ck { display: grid; grid-template-columns: minmax(0, 0.8fr) 60px minmax(0, 1.2fr); align-items: baseline; padding: 4px 16px; border-radius: 12px; margin: 2px 0; }
+.ck .ar, .rw2 .ar { text-align: center; color: var(--accent); font-weight: 800; font-size: 40px; }
+.ck .nt { grid-column: 1 / -1; }
+.nt { color: var(--muted); }
+.jn { padding: 6px 16px; border-radius: 12px; margin-top: 12px; }
+.jn .dg { vertical-align: 0.15em; margin-right: 14px; }
+.cmp1 .ck:not(.new) > .tx, .cmp1 .ck:not(.new) > .ar { display: none; }
+.cmp1 .ck:not(.new) { display: block; padding: 0 16px; }
+.cmp2 .jn.old { display: none; }
+.jn.old .en { color: var(--muted); }
+.ck.new, .jn.new { background: var(--hl); }
+.zhs { color: var(--muted); }
+.rw2 { display: grid; grid-template-columns: 1fr 70px 1fr; align-items: center; padding: 2px 10px; border-bottom: 2px solid #ddd6c6; }
+.rw2 .en, .rw2 .tx { line-height: 1.35; }
+.fu[data-tr="cur"] { line-height: 1.5; margin-bottom: 8px; }
+.rw2.new { background: var(--hl); border-radius: 12px; }
+.rw2.hd2 .tx { color: var(--muted); font-weight: 700; }
 .zhm { display: block; font-size: var(--zm, 40px); line-height: 1.25; margin: 0 0 2px; font-weight: 500; color: #b45309; }
 .zhm .zq { white-space: nowrap; }
 .zhm .zmi { display: inline-block; max-width: 100%; line-break: strict; word-break: normal; text-wrap: pretty;
@@ -48,7 +65,25 @@ def preflight(doc):
     marks = [m for s in doc['segments'] for m in s.get('mark', [])]
     bad = [f'高亮没有中文意思：{m}' for m in dict.fromkeys(marks) if m not in z]
     bad += [f'多余的中文条目（不是任何 mark）：{k}' for k in z if k not in marks]
-    for k, v in z.items():
+    try:
+        fb = fb_table(doc)
+    except FileNotFoundError:
+        fb = {}
+        bad.append('没有 伏笔中文.json')
+    try:
+        alt = alt_table(doc)
+    except FileNotFoundError:
+        alt = {}
+        bad.append('没有 可替换中文.json')
+    alts = [a for s in doc['segments'] for a in s.get('替换', [])]
+    bad += [f'可替换表达没有中文（可替换中文.json）：{a}' for a in alts if a not in alt]
+    bad += [f'多余的可替换中文条目：{k}' for k in alt if k not in alts]
+    fb_alt = list(alt.items())
+    rows = [s['row'] for s in doc['segments'] if s.get('row')]
+    bad += [f'伏笔表原文一栏没有中文（高亮中文.json）：{a}' for a, _ in rows if a not in z]
+    bad += [f'伏笔表续写一栏没有中文（伏笔中文.json）：{b}' for _, b in rows if b not in fb]
+    bad += [f'多余的伏笔中文条目：{k}' for k in fb if k not in [b for _, b in rows]]
+    for k, v in list(z.items()) + list(fb.items()) + fb_alt:
         if not v.strip() or not re.search(r'[一-鿿]', v) or re.search(r'[A-Za-z]', v):
             bad.append(f'中文意思不合格（空 / 没有汉字 / 有英文字母）：{k} → {v!r}')
     return bad
@@ -74,17 +109,142 @@ def frames(doc):
 
     X.hilite = hilite
     try:
-        base = X.frames(doc)
+        mine = SCREEN_RE.match
+        base = dict(X.frames(dict(doc, segments=[s for s in doc['segments'] if not mine(s['screen'])])))
+        base.update(own_frames(doc, t, z))
     finally:
         X.hilite = hl0
     marked = {s['id'] for s in doc['segments'] if s.get('mark')}
-    out = []
-    for fid, body in base:
+    flash = {s['id'] for s in doc['segments'] if s.get('ph') in ('chunk', 'join')}
+    out = [('title', base['title'])]
+    _, fw = X.load(doc)
+    for s in doc['segments']:
+        fid, body = s['id'], base[s['id']]
+        if s['screen'] in ('para1', 'para2'):          # 英文段落下面那张卡片就是整段中文
+            body = body.replace('<div class="fu">', '<div class="fu" data-tr="next">')
+        elif s['screen'] == 'full' and s.get('cur'):   # 完整范文：当前句的中文排在高亮下面（同高亮中文的做法）
+            pi, si = s['cur']
+            assert body.count('<span class="mk">') == 1, fid
+            body = body.replace('<span class="mk">', f'<span class="mk" data-zh="{X.esc(fw["paragraphs"][pi][si]["zh"])}">').replace('<div class="fu">', '<div class="fu" data-tr="cur">')
+        elif s['screen'] == 'full':                     # 收尾一句（没有当前句）：整篇范文的中文
+            body = X.head(t, X.SEC['full']) + X.card('<div class="ttl zh">完整范文（中文）</div>' + ''.join(
+                f'<div class="tx">{"".join(X.esc(x["zh"]) for x in p)}</div>' for p in fw['paragraphs']))
         out.append((fid, body))
-        if fid in marked:
-            assert body.count('data-zh=') == len([m for s in doc['segments'] if s['id'] == fid for m in s['mark']]), fid
-            out.append((fid + '~d', body + '<style>.mk[data-zh] { background: transparent !important; box-shadow: none !important; }</style>'))
+        if fid in marked or fid in flash:
+            if fid in marked:
+                assert body.count('data-zh=') == len(s['mark']), fid
+            else:
+                assert 'fl"' in body or 'fl ' in body, ('新块没有闪烁标记', fid)
+            out.append((fid + '~d', body + '<style>.mk[data-zh], .fl { background: transparent !important; box-shadow: none !important; }</style>'))
             out.append((fid + '~h', body))
+    return out
+
+
+SCREEN_RE = re.compile(r's\d+$|echo$')
+STEPN = [('zh', '① 中文构思'), ('chunk', '② 逐块翻'), ('join', '③ 连成一句'), ('pt', '④ 得分点')]
+
+
+def alt_table(doc):
+    return json.loads(((ROOT / doc['题目']).parent / '可替换中文.json').read_text('utf-8'))['可替换中文']
+
+
+def fb_table(doc):
+    return json.loads(((ROOT / doc['题目']).parent / '伏笔中文.json').read_text('utf-8'))['伏笔中文']
+
+
+def word_marks(text, marks):
+    """范文句里标出连接处：按整词找（and 取第一处，别的必须恰好一处，同 续写检查 ④）。"""
+    lab = [''] * len(text)
+    for m in marks:
+        hits = [x.start() for x in re.finditer(rf'(?<![A-Za-z’]){re.escape(m)}(?![A-Za-z’])', text)]
+        if not hits or (len(hits) > 1 and m != 'and'):
+            raise ValueError(f'连接处“{m}”在范文句里出现 {len(hits)} 次')
+        for j in range(hits[0], hits[0] + len(m)):
+            lab[j] = 'mk'
+    out, i = [], 0
+    while i < len(text):
+        j = i
+        while j < len(text) and lab[j] == lab[i]:
+            j += 1
+        out.append(f'<span class="mk">{X.esc(text[i:j])}</span>' if lab[i] else X.esc(text[i:j]))
+        i = j
+    return ''.join(out)
+
+
+def own_frames(doc, t, z):
+    """v2 自己画的屏：伏笔与呼应（两栏英文下面都配中文）、逐句讲范文（中文构思 → 逐块翻 → 连成一句 → 读句 → 得分点 → 可替换）。"""
+    _, fw = X.load(doc)
+    P = fw['paragraphs']
+    own = [(pi, si) for pi, p in enumerate(P) for si, s in enumerate(p) if not s.get('given')]
+    fb = fb_table(doc)
+    out, rows = {}, []
+    by = {}
+    for s in doc['segments']:
+        by.setdefault(s['screen'], []).append(s)
+    for s in doc['segments']:
+        scr, ph = s['screen'], s.get('ph')
+        if not SCREEN_RE.match(scr):
+            continue
+        if scr == 'echo':
+            if s.get('row'):
+                rows.append(s['row'])
+            cell = lambda en, zh: f'<div><div class="en">{X.esc(en)}</div><div class="tx zhs">{X.esc(zh)}</div></div>'  # noqa: E731
+            rs = ''.join(f'<div class="rw2{" new" if (s.get("row") and i == len(rows) - 1) else ""}">{cell(a, z[a])}<div class="ar">→</div>{cell(b, fb[b])}</div>'
+                         for i, (a, b) in enumerate(rows))
+            out[s['id']] = X.head(t, X.SEC[scr]) + X.card('<div class="ttl zh">伏笔与呼应：原文的线，续写都要收住</div>'
+                                                          '<div class="rw2 hd2"><div class="tx">原文</div><div class="ar"></div><div class="tx">续写</div></div>' + rs)
+            continue
+        k = int(scr[1:])
+        pi, si = own[k - 1]
+        sen = P[pi][si]
+        ss = by[scr]
+        ck = [x for x in ss if x.get('ph') == 'chunk']
+        jn = {x['step']: x for x in ss if x.get('ph') == 'join'}
+        stage = {'read': 'join', 'alt': 'pt'}.get(ph, ph)
+        order = [x for x, _ in STEPN]
+        bar = ''.join(f'<div class="st{" on" if x == stage else (" done" if order.index(x) < order.index(stage) else "")}">{lb}</div>' for x, lb in STEPN)
+        zh = X.hilite(sen['zh'], [s['hl']]).replace('<span class="mk">', '<span class="mk fl">') if ph == 'chunk' else X.esc(sen['zh'])
+        es = ''
+        if ph in ('pt', 'alt'):                  # 读句时下面就是连好的范文句，上面不再重复
+            pts = [x for x in ss if x.get('ph') == 'pt']
+            cur = [s['hl']] if ph == 'pt' else []
+            old = [x['hl'] for x in pts[:pts.index(s)]] if ph == 'pt' else ([x['hl'] for x in pts] if ph == 'alt' else [])
+            es = f'<div class="es">{X.hilite(sen["en"], cur, old)}</div>'
+        top = X.card(f'<div class="s5">{bar}</div><div class="tx zhl">中文：<b>{zh}</b></div>{es}')
+        if ph == 'zh':
+            low = X.card(f'<div class="ttl zh">先想中文：为什么要写这一句</div>{X.lines_html(s["ln"], len(s["ln"]))}')
+        elif ph in ('chunk', 'join', 'read'):
+            J = s['show'] if ph == 'chunk' else len(ck)
+            h = ''
+            for i, c in enumerate(ck[:J], 1):
+                new = ph == 'chunk' and i == J
+                h += (f'<div class="ck{" new fl" if new else ""}"><div class="tx">{X.esc(c["zh"])}</div><div class="ar">→</div><div class="en" data-tr="zh">{X.esc(c["en"])}</div>'
+                      + (f'<div class="tx nt">{X.esc(c["note"])}</div>' if new else '') + '</div>')
+            step = s.get('step') if ph == 'join' else ('done' if ph == 'read' else None)
+            if step and 'base' in jn:
+                b = jn['base']
+                now = step == 'base'                     # 讲到范文时，保底版留着（变灰、收起要点）；它就是顶上那句中文的直译
+                tr = '' if now else ' data-tr="zh"'
+                h += (f'<div class="jn{" new fl" if now else " old"}"><div class="en"{tr}><span class="dg">直接连（已经对了）</span>{X.esc(b["base"])}</div>'
+                      + (''.join(f'<div class="tx nt">{X.esc(x)}</div>' for x in b['ln']) if now else '') + '</div>')
+            if step in ('fan', 'done'):
+                f = jn['fan']
+                h += (f'<div class="jn{" new fl" if step == "fan" else ""}"><div class="es"><span class="dg">范文</span>{word_marks(sen["en"], f["marks"])}</div>'
+                      + ''.join(f'<div class="tx nt">{X.esc(x)}</div>' for x in f['ln']) + '</div>')
+            ttl = '逐块翻：按逗号切块，每块先翻成简单英文' if ph == 'chunk' else '连成一句：先写对，再写好'
+            low = X.card(f'<div class="ttl zh">{ttl}</div>{h}')
+        elif ph == 'pt':
+            pts = ('<div class="ptk">' + ''.join(f'<span class="dg">{X.DANGN[d]}</span>' for d in s['dang'])
+                   + X.lines_html(s['ln'], len(s['ln'])) + '</div>')
+            low = X.card(f'<div class="ttl zh">得分点（对应第五档）</div><div class="cols2"><div>{pts}</div>'
+                         f'<div class="srcb"><div class="lb zh">原文出处</div><div class="en">{X.hilite(s["src"], s["mark"])}</div></div></div>')
+        elif ph == 'alt':
+            alt = alt_table(doc)
+            low = X.card('<div class="ttl zh">可替换表达</div>' + ''.join(
+                f'<div class="nl new"><div class="tx">{X.esc(ln)}</div><div class="tx zhs">{X.esc(alt[a])}</div></div>' for ln, a in zip(s['ln'], s['替换'])))
+        else:
+            raise ValueError(f'{s["id"]}：v2 不认识的步骤 {ph}（旧讲法 v/s/r 已不用）')
+        out[s['id']] = X.head(t, f'逐句讲范文 · 第{X.CN[pi]}段 · 第 {k} / {len(own)} 句') + top + low
     return out
 
 
@@ -165,6 +325,27 @@ ZH_CHECK_JS = r"""(mins) => {
 }"""
 
 
+ENZH_JS = r"""() => {
+  // 全片英文配中文（用户 2026-11-03）：卡片里每个含英文（两个词以上）的文本块，本块、同一父元素里的兄弟文本块、或块里插的中文意思（.zhm）
+  // 至少要有两个汉字（开头“可替换：”这类不超过 8 个字的标签不算）；data-tr="next" 的块由下一张卡片整体翻译（段落连读屏）
+  const bad = [], BL = '.en, .es, .fu, .tx, .lb', HAN = /[\u4e00-\u9fff]/g;
+  const han = e => ((e.textContent.replace(/^[^：]{0,8}：/, '')).match(HAN) || []).length;
+  const own = e => { const c = e.cloneNode(true); c.querySelectorAll('.zhm').forEach(x => x.remove()); return c.textContent; };
+  for (const e of document.querySelectorAll('.card :is(' + BL + ')')) {
+    if (e.parentElement.closest(BL) || e.closest('.zpre')) continue;
+    const txt = own(e);
+    if (!/[A-Za-z]{2,}[^A-Za-z\u4e00-\u9fff]+[A-Za-z]{2,}/.test(txt)) continue;
+    const zhOf = x => { if (getComputedStyle(x).display === 'none') return 0; const c = x.cloneNode(true); c.querySelectorAll('.zhm, .dg').forEach(y => y.remove()); c.textContent = c.textContent; return han(c); };
+    let ok = zhOf(e) >= 2 || e.querySelector('.zhm .zmi');
+    if (!ok) ok = [...e.parentElement.children].some(x => x !== e && x.matches(BL) && !x.matches('.ttl') && zhOf(x) >= 2);
+    if (!ok && e.dataset.tr === 'zh') ok = [...document.querySelectorAll('.zhl')].some(x => han(x) >= 6);
+    if (!ok && e.dataset.tr === 'cur') ok = !!e.closest('.card').querySelector('.zhm .zmi');
+    if (!ok && e.dataset.tr === 'next') { const n = e.closest('.card').nextElementSibling; ok = !!n && n.matches('.card') && han(n) >= 10; }
+    if (!ok) bad.push('英文没有中文：' + txt.trim().slice(0, 40));
+  }
+  return bad;
+}"""
+
 ORIG = {}
 V0 = {k: getattr(V, k) for k in ('CHECK_JS', 'FIT_JS', 'frames', 'page', 'stills', 'timeline', 'verify')}   # 装之前的原样（可重复装）
 
@@ -176,7 +357,7 @@ def install():
     old = ".tx, .en, .es, .fu'"
     assert old in V.CHECK_JS, '续写引擎的断行选择器变了，v2 要跟着改'
     core = V.CHECK_JS.replace(old, ".tx, .en, .es, .fu, .zmi'")
-    V.CHECK_JS = f'(args) => {{ const a = ({core})(args); return a.concat(({ZH_CHECK_JS})({ZM_MIN})); }}'
+    V.CHECK_JS = f'(args) => {{ const a = ({core})(args); return a.concat(({ZH_CHECK_JS})({ZM_MIN}), ({ENZH_JS})()); }}'
     hook = 'for (let i = 0; i < 80; i++) { set(); if (layout())'
     assert hook in X.FIT_JS, '续写引擎的 FIT 变了，v2 要跟着改'
     # v1 的 FIT 每改一次字号重排一次；中文块的位置跟着换行变，所以每一轮先重新插中文再量
@@ -185,7 +366,10 @@ def install():
     # 字号都到下限还放不下（中文意思多占了行）：原文行距 1.55 往下收，最低 1.4
     V.FIT_JS = (X.FIT_JS.replace('() => {', '() => { const place = ' + ZH_PLACE + '; let plh = 1.55;', 1)
                 .replace(hook, hook.replace('set(); ', 'set(); place(); '))
-                .replace(last, "if (!k) { if (plh > 1.4 + 1e-6) { plh = +(plh - 0.03).toFixed(2); B.style.setProperty('--plh', plh); continue; } return v; }"))
+                .replace(last, "if (!k) { if (plh > 1.4 + 1e-6) { plh = +(plh - 0.03).toFixed(2); B.style.setProperty('--plh', plh); continue; } "
+                         # 字号、行距都到下限还放不下（逐句屏连成一句）：先把讲过的块收成只留英文（中文就在顶上那句），再收起变灰的保底版
+                         "if (document.querySelector('.jn') && !B.classList.contains('cmp1')) { B.classList.add('cmp1'); continue; } "
+                         "if (document.querySelector('.jn.old') && !B.classList.contains('cmp2')) { B.classList.add('cmp2'); continue; } return v; }"))
     ORIG.update(stills=V0['stills'], timeline=V0['timeline'], verify=V0['verify'])
     V.frames, V.page = frames, page
     V.stills, V.timeline, V.verify = stills, timeline, verify
@@ -292,13 +476,16 @@ def selftest():
         '中文没排出来': body('.zhm{display:none !important}'),
         '中文离高亮太远': body('.zhm{margin-top:90px !important}'),
         '中文在词中间换行': body('.zhm .zmi{max-width:300px !important} .zhm .zq{white-space:normal !important}'),
+        '英文没有中文': X.head(t, '可替换') + X.card('<div class="ttl zh">可替换表达</div><div class="nl new"><div class="tx">可替换：The nearest station was just a short drive away.</div></div>'),
+        '全文屏缺当前句中文': X.head(t, '完整范文') + X.card('<div class="ttl zh">完整范文</div><div class="fu" data-tr="cur">Three days later, Emily returned to get her car. The sky was clear now.</div>'),
     }
+    ok_alt = X.head(t, '可替换') + X.card('<div class="ttl zh">可替换表达</div><div class="nl new"><div class="tx">可替换：The nearest station was just a short drive away.</div><div class="tx zhs">最近的火车站开车过去只要一小会儿。</div></div>')
     res = {}
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(viewport={'width': V.W, 'height': V.H})
         tmp = Path(tempfile.mkdtemp())
-        for name, bd in [('正常', body())] + list(mines.items()):
+        for name, bd in [('正常', body()), ('正常（可替换带中文）', ok_alt)] + list(mines.items()):
             f = tmp / 'x.html'
             f.write_text(page(bd), 'utf-8')
             pg.goto(f.as_uri())
@@ -322,6 +509,18 @@ def selftest():
             res[name] = [x for x in preflight(doc) if '多余' not in x]
         finally:
             globals()['zh_table'] = old
+    # 真实稿：伏笔表、可替换的中文齐全（0 处）；拿掉一条必须报出
+    real = json.loads((ROOT / '高考续写/讲解/2026_新课标Ⅰ卷/稿.json').read_text('utf-8'))
+    res['正常（真实稿预检）'] = preflight(real)
+    for name, fn, key in [('数据：可替换缺中文', 'alt_table', 'free of snow'), ('数据：伏笔表缺中文', 'fb_table', 'lay quiet in the sunshine')]:
+        old = globals()[fn]
+        zz = dict(old(real))
+        zz.pop(key)
+        globals()[fn] = lambda d, zz=zz: zz
+        try:
+            res[name] = preflight(real)
+        finally:
+            globals()[fn] = old
     # 时间
     ids = ['title', 'a01', 'a01~d', 'a01~h', 'a02']
     try:
@@ -344,6 +543,7 @@ def selftest():
     res['抽帧：亮暗一样'] = [x for x in [flash_problem(own, own, own + 1)] if x]
     want = {'中文压住下一行英文': '压住英文', '中文出卡片': '出卡片内边距', '中文字号过小': '中文意思字号', '中文没排出来': '没排出来',
             '中文离高亮太远': '紧跟', '中文在词中间换行': '词中间换行', '数据：缺中文': '没有中文意思', '数据：英文没翻': '不合格', '数据：空': '不合格',
+            '英文没有中文': '英文没有中文', '全文屏缺当前句中文': '英文没有中文', '数据：可替换缺中文': '可替换表达没有中文', '数据：伏笔表缺中文': '伏笔表续写一栏没有中文',
             '时间：暗屏太长': '应为', '时间：闪完马上切走': '保持太短', '抽帧：拿成了另一张': '不像自己', '抽帧：亮暗一样': '几乎一样'}
     miss = [k for k, w in want.items() if not any(w in x for x in res[k])]   # 每颗雷必须被它对应的那条检查报出（不是碰巧别的检查报了）
     if miss:

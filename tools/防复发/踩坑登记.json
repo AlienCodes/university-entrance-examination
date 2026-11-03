@@ -3732,6 +3732,39 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "106",
+   "title": "读后续写 v2：伏笔表、可替换、完整范文的英文没有中文；逐句屏换新讲法后旧合成残留当候选（用户 2026-11-03）",
+   "stages": [
+    "稿",
+    "画面",
+    "音频"
+   ],
+   "projects": [
+    "高考续写"
+   ],
+   "guards": [
+    {
+     "where": "高考续写/tools/续写视频_v2.py preflight / ENZH_JS；高考续写/tools/续写检查.py ④；高考续写/tools/续写全片.sh DROP_TASK",
+     "runs": "每屏截图（本机与 Actions）、合成前续写检查、整片选段前",
+     "evidence": "英文没有中文、逐句屏结构、覆盖.txt 删除记录"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python 高考续写/tools/续写视频_v2.py --自检",
+     "expect": "exit 0",
+     "needs": "tts"
+    },
+    {
+     "cmd": "python3 高考续写/tools/续写检查.py --自检",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "DROP_TASK（删改稿段的旧合成）没有单独的双向验证",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
