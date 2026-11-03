@@ -36,6 +36,7 @@ CSS2 = """
 .cmp1 .ck:not(.new) > .tx, .cmp1 .ck:not(.new) > .ar { display: none; }
 .cmp1 .ck:not(.new) { display: block; padding: 0 16px; }
 .cmp2 .jn.old { display: none; }
+.jn .mk { background: transparent; box-shadow: none; color: #c2410c; border-bottom: 5px solid #f0a35e; }
 .jn.old .en { color: var(--muted); }
 .ck.new, .jn.new { background: var(--hl); }
 .zhs { color: var(--muted); }
@@ -343,6 +344,14 @@ ENZH_JS = r"""() => {
     if (!ok && e.dataset.tr === 'next') { const n = e.closest('.card').nextElementSibling; ok = !!n && n.matches('.card') && han(n) >= 10; }
     if (!ok) bad.push('英文没有中文：' + txt.trim().slice(0, 40));
   }
+  // 高亮要看得出来：高亮的底色、字色、下划线至少有一样和它所在的底不同（黄底行里的黄高亮 = 看不见）
+  for (const m of document.querySelectorAll('.mk')) {
+    const cs = getComputedStyle(m); let a = m.parentElement, bg = 'rgba(0, 0, 0, 0)';
+    for (; a; a = a.parentElement) { const b = getComputedStyle(a).backgroundColor; if (b !== 'rgba(0, 0, 0, 0)' && b !== 'transparent') { bg = b; break; } }
+    const own = cs.backgroundColor === 'rgba(0, 0, 0, 0)' ? bg : cs.backgroundColor;
+    if (own === bg && cs.color === getComputedStyle(m.parentElement).color && !(parseFloat(cs.borderBottomWidth) > 0))
+      bad.push('高亮看不出来（和所在的底一样）：' + m.textContent.slice(0, 20));
+  }
   return bad;
 }"""
 
@@ -477,6 +486,7 @@ def selftest():
         '中文离高亮太远': body('.zhm{margin-top:90px !important}'),
         '中文在词中间换行': body('.zhm .zmi{max-width:300px !important} .zhm .zq{white-space:normal !important}'),
         '英文没有中文': X.head(t, '可替换') + X.card('<div class="ttl zh">可替换表达</div><div class="nl new"><div class="tx">可替换：The nearest station was just a short drive away.</div></div>'),
+        '高亮和底一样（黄行里的黄高亮）': X.head(t, '连成一句') + X.card('<div class="ttl zh">连成一句</div><div class="nl new"><div class="tx">范文：<span class="mk">they explained</span> 插在中间，前后加逗号</div></div>'),
         '全文屏缺当前句中文': X.head(t, '完整范文') + X.card('<div class="ttl zh">完整范文</div><div class="fu" data-tr="cur">Three days later, Emily returned to get her car. The sky was clear now.</div>'),
     }
     ok_alt = X.head(t, '可替换') + X.card('<div class="ttl zh">可替换表达</div><div class="nl new"><div class="tx">可替换：The nearest station was just a short drive away.</div><div class="tx zhs">最近的火车站开车过去只要一小会儿。</div></div>')
@@ -543,7 +553,7 @@ def selftest():
     res['抽帧：亮暗一样'] = [x for x in [flash_problem(own, own, own + 1)] if x]
     want = {'中文压住下一行英文': '压住英文', '中文出卡片': '出卡片内边距', '中文字号过小': '中文意思字号', '中文没排出来': '没排出来',
             '中文离高亮太远': '紧跟', '中文在词中间换行': '词中间换行', '数据：缺中文': '没有中文意思', '数据：英文没翻': '不合格', '数据：空': '不合格',
-            '英文没有中文': '英文没有中文', '全文屏缺当前句中文': '英文没有中文', '数据：可替换缺中文': '可替换表达没有中文', '数据：伏笔表缺中文': '伏笔表续写一栏没有中文',
+            '英文没有中文': '英文没有中文', '全文屏缺当前句中文': '英文没有中文', '高亮和底一样（黄行里的黄高亮）': '高亮看不出来', '数据：可替换缺中文': '可替换表达没有中文', '数据：伏笔表缺中文': '伏笔表续写一栏没有中文',
             '时间：暗屏太长': '应为', '时间：闪完马上切走': '保持太短', '抽帧：拿成了另一张': '不像自己', '抽帧：亮暗一样': '几乎一样'}
     miss = [k for k, w in want.items() if not any(w in x for x in res[k])]   # 每颗雷必须被它对应的那条检查报出（不是碰巧别的检查报了）
     if miss:
