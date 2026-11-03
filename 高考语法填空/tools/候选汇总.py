@@ -47,17 +47,25 @@ def main():
         if s_en is None or s_en < 0.80:
             hard.append(f'英文部分相似度 {s_en}')
         hard += errs
-        rows.append({'name': p.name, 'native': round(float(np.mean(nat)), 3) if nat else None, 'wer': None if wer is None else round(wer, 3),
+        tm = json.loads(p.with_suffix('.timings.json').read_text('utf-8'))
+        tones = tm.get('tones') or []
+        kong = [t['降幅'] for t in tones if t['字'] == '空']
+        tone_txt = f"{len(tones)} 处已量；“空”降幅 {kong}" if tones else '—（旧成品没量）'
+        import 拼接检查 as PJ
+        jerr = PJ.problems(PJ.product_boundaries(p), json.loads(PJ.TARGET.read_text('utf-8')))
+        sel = json.loads(p.with_suffix('.选段.json').read_text('utf-8'))
+        fb = [k for k, v in (sel.get('modes') or {}).items() if v]
+        rows.append({'name': p.name, 'tone': tone_txt, 'junction': '通过' if not jerr else f'{len(jerr)} 处', 'fallback': '、'.join(fb) or '—', 'native': round(float(np.mean(nat)), 3) if nat else None, 'wer': None if wer is None else round(wer, 3),
                      'sim': s_all, 'sim_en': s_en, 'mos': mos, 'rate': m['rate'], 'f0sd': m['f0sd_median'], 'hard': hard})
     ok = [r for r in rows if not r['hard']]
     for r in rows:
         r['score'] = round((r['native'] or 0) - (r['wer'] or 0) + (r['sim'] or 0), 3)
     best = max(ok, key=lambda r: r['score']) if ok else None
     L = [f"# 第 56 题配音候选评分（用户录音：语速 {tgt['rate']:.2f} 字/秒，音高起伏各句中位 {tgt['f0sd_median']} 半音、75% 分位 {tgt['f0sd_p75']}）", '',
-         '| 候选 | 英文地道分（母语口音概率） | 英文词错率 | 相似度（整段） | 相似度（英文部分） | UTMOS 自然度 | 语速（字/秒） | 音高起伏（半音） | 不合格项 |',
-         '|---|---|---|---|---|---|---|---|---|']
+         '| 候选 | 英文地道分（母语口音概率） | 英文词错率 | 相似度（整段） | 相似度（英文部分） | UTMOS 自然度 | 语速（字/秒） | 音高起伏（半音） | 多音字声调 | 拼接检查 | 退回拆段的段 | 不合格项 |',
+         '|---|---|---|---|---|---|---|---|---|---|---|---|']
     for r in rows:
-        L.append(f"| {r['name']} | {r['native']} | {r['wer']} | {r['sim']} | {r['sim_en']} | {r['mos']} | {r['rate']:.2f} | {r['f0sd']} | {'；'.join(r['hard']) or '—'} |")
+        L.append(f"| {r['name']} | {r['native']} | {r['wer']} | {r['sim']} | {r['sim_en']} | {r['mos']} | {r['rate']:.2f} | {r['f0sd']} | {r['tone']} | {r['junction']} | {r['fallback']} | {'；'.join(r['hard']) or '—'} |")
     L += ['', f"推荐：{best['name'] if best else '没有满足全部硬条件的候选'}"]
     Path(a.out).write_text('\n'.join(L) + '\n', 'utf-8')
     print('\n'.join(L))
