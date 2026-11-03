@@ -10,7 +10,9 @@
 ⑤ 朗读文本：不许有 blank；中文段没有阿拉伯数字；英文段没有引号、括号、中文；问句干脆（不带 呢/吧/啊，后面接 ‖ 或段尾，踩坑 93）；
 ⑥ 合成用的副本（高考语法填空/tts/ 下，Actions 只检出那里，踩坑 84）与原稿逐字相同；
 ⑦ 新范文与旧范文（续写题汇总.json 同一题的“范文”，只由本程序读，只报百分比，不打印内容）5 词片段重合 > 3% 报错；
-⑧ 不读旧范文：题目.json 不许有 范文 键；稿源.py、续写视频.py 的源码里不许出现 续写题汇总（生成稿子和画面只读 题目.json）。
+⑧ 不读旧范文：题目.json 不许有 范文 键；稿源.py、续写视频.py 的源码里不许出现 续写题汇总（生成稿子和画面只读 题目.json）；
+⑨ 不念题号、满分、分值、范文词数（用户 2026-11-03 看开头预览：“不用说我们的范文多少个词……不用说第多少个题……也不用说满分多少分”）：
+   配音文字里不许有“第 N 题”“满分”“N 分”（得分点等除外）“范文 / 每段 / 合计 … N 个词”；画面引擎不许把题目.json 的 no、score 排到画面上（原题照原卷的文字不算）。
 用法：python3 续写检查.py 讲解目录 [--副本 高考语法填空/tts/稿_xxx.json]   |   --自检（双向验证：每颗雷必须报出，原稿 0 处）"""
 import copy
 import html
@@ -215,6 +217,24 @@ def leak_problems(d, t):
     return E
 
 
+TALK_BAD = [(re.compile(r'第[零一二三四五六七八九十百\d]+题'), '题号'), (re.compile(r'满分'), '满分'),
+            (re.compile(r'[零一二三四五六七八九十百\d]+分(?![点析清别开成钟号句段数])'), '分值'),
+            (re.compile(r'(范文|每段|合计|一共|共)[^。‖]{0,8}[零一二三四五六七八九十百\d]+个?词'), '范文词数')]
+
+
+def talk_problems(doc, engine_src):
+    E = []
+    for s in doc['segments']:
+        for rx, what in TALK_BAD:
+            m = rx.search(s['text'])
+            if m:
+                E.append(f"⑨ {s['id']}：配音念了{what}“{m.group(0)}”（用户：不用说题号、满分、范文词数）")
+    for k in ('no', 'score'):
+        if re.search(rf"t\[[\'\"]{k}[\'\"]\]", engine_src):
+            E.append(f'⑨ 续写视频.py 把题目.json 的 {k} 排到了画面上（不显示题号、分值）')
+    return E
+
+
 def check_dir(d, copy_path=None):
     d = Path(d)
     t = json.loads((d / '题目.json').read_text('utf-8'))
@@ -225,6 +245,7 @@ def check_dir(d, copy_path=None):
     if r > OVERLAP_MAX:
         E.append(f'⑦ 与旧范文 5 词片段重合 {r:.1%} > {OVERLAP_MAX:.0%}')
     E += leak_problems(d, t)
+    E += talk_problems(doc, (ROOT / '高考续写/tools/续写视频.py').read_text('utf-8'))
     if copy_path and Path(copy_path).read_text('utf-8') != (d / '稿.json').read_text('utf-8'):
         E.append(f'⑥ 合成副本 {copy_path} 与原稿不一致（重新复制）')
     return E, (t, fw, doc)
@@ -239,7 +260,7 @@ def selftest():
     def mine(f):
         a, b, c = copy.deepcopy(t), copy.deepcopy(fw), copy.deepcopy(doc)
         f(a, b, c)
-        return problems(a, b, c, docx)
+        return problems(a, b, c, docx) + talk_problems(c, '')
 
     seg = lambda c, i: next(s for s in c['segments'] if s['id'] == i)  # noqa: E731
     sen = lambda b, k: own_sents(b)[k - 1]  # noqa: E731
@@ -265,7 +286,10 @@ def selftest():
         '缺可替换': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['id'] != 's4h']), '④ s4'),
         '段落连读不全': (lambda a, b, c: seg(c, 'r2b').update(text=seg(c, 'r2b')['text'].rsplit('. ', 1)[0] + '.'), '④ 第 2 段'),
         '朗读念 blank': (lambda a, b, c: seg(c, 't02').update(text=seg(c, 't02')['text'] + 'blank'), '⑤ t02'),
-        '阿拉伯数字': (lambda a, b, c: seg(c, 't01').update(text=seg(c, 't01')['text'].replace('二十五分', '25分')), '⑤ t01'),
+        '阿拉伯数字': (lambda a, b, c: seg(c, 't02').update(text=seg(c, 't02')['text'].replace('一百五十', '150')), '⑤ t02'),
+        '念题号': (lambda a, b, c: seg(c, 't01').update(text=seg(c, 't01')['text'] + '第六十七题。'), '⑨ t01'),
+        '念满分': (lambda a, b, c: seg(c, 'g01').update(text=seg(c, 'g01')['text'] + '满分二十五分。'), '⑨ g01'),
+        '念范文词数': (lambda a, b, c: seg(c, 't02').update(text=seg(c, 't02')['text'] + '我们的范文，合计一百七十六个词。'), '⑨ t02'),
         '问句带呢': (lambda a, b, c: seg(c, 'a02').update(text=seg(c, 'a02')['text'].replace('哪里来？', '哪里来呢？')), '⑤ a02'),
         '英文段有引号': (lambda a, b, c: seg(c, 's2e').update(text='“' + seg(c, 's2e')['text']), '⑤ s2e'),
         '英式拼写': (lambda a, b, c: b['paragraphs'][1][2].update(en=b['paragraphs'][1][2]['en'].replace('garage', 'neighbour’s garage')), '① 英式拼写'),
@@ -288,6 +312,9 @@ def selftest():
     e2 = leak_problems(tmp, t)
     print(f'  题目.json 有范文键：{len(e1)} 处；稿源读汇总：{len(e2)} 处；现稿：{len(leak_problems(d, t))} 处')
     ok &= bool(e1) and bool(e2) and not leak_problems(d, t)
+    e3 = talk_problems({'segments': []}, 'f"第 {t[\"no\"]} 题 · {t[\"score\"]} 分"')
+    print(f'  画面排题号分值：{len(e3)} 处（应 2）')
+    ok &= len(e3) == 2
     print('自检', '通过' if ok else '失败')
     return ok
 

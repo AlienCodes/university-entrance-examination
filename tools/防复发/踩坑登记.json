@@ -3677,6 +3677,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "空位不跨分句时不管（using the “fair use” clause as：远处的 using 才对）；并列 so…, so…, that 两个都可以，已核登记 SLOT_REVIEWED",
    "fix": ""
+  },
+  {
+   "id": "104",
+   "title": "读后续写讲解念了题号、满分分值、范文词数，画面也排了第 N 题 · N 分（用户 2026-11-03 看开头预览：不用说，开场白要自然）",
+   "stages": [
+    "文字",
+    "画面"
+   ],
+   "projects": [
+    "高考续写"
+   ],
+   "guards": [
+    {
+     "where": "高考续写/tools/续写检查.py ⑨ talk_problems（配音文字正则 + 续写视频.py 源码不许用 t['no'] / t['score']）",
+     "runs": "每次续写检查（续写全片.sh、Actions 渲染前）",
+     "evidence": "题号、满分、分值、范文词数"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python 高考续写/tools/续写检查.py --自检",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

@@ -146,7 +146,7 @@ def frames(doc):
     P = fw['paragraphs']
     own = [(pi, si) for pi, p in enumerate(P) for si, s in enumerate(p) if not s.get('given')]
     out = [('title', f'<div class="title"><div class="y">{t["year"]}</div><div class="p zh">{esc(t["paper"])}</div>'
-                     f'<div class="s zh">{esc(t["section"])} · 思路与范文逐句讲解</div><div class="q zh">第 {t["no"]} 题 · {t["score"]} 分</div></div>')]
+                     f'<div class="s zh">{esc(t["section"])} · 思路与范文逐句讲解</div></div>')]
     notes, marks, cols, rows = {}, {}, {1: [], 2: []}, []
     sl = {}                                    # 逐句屏：每屏每阶段累加的行、讲过的得分点
     for s in doc['segments']:
@@ -159,7 +159,7 @@ def frames(doc):
                           f'<div class="en">{esc(g)}</div><div class="tx muted">{esc(t["开头语译文"][k])}</div></div>' for k, g in enumerate(t['开头语']))
             if scr == 'task':
                 req = ''.join(f'<div class="tx">{esc(x)}</div>' for x in [t['要求'].split('. ', 1)[-1]] + t['注意'])
-                body = head(t, SEC[scr]) + card(f'<div class="ttl zh">题目要求（第 {t["no"]} 题，{t["score"]} 分）</div>{req}{ops}')
+                body = head(t, SEC[scr]) + card(f'<div class="ttl zh">题目要求</div>{req}{ops}')
             else:
                 body = head(t, SEC[scr]) + card(f'<div class="ttl zh">两句开头语</div>{ops}') + card(f'<div class="ttl zh">怎么接</div>{lines_html(notes.get(scr, []), nn)}')
         elif scr in ('p1', 'p2', 'p3', 'p4'):
@@ -222,7 +222,7 @@ def frames(doc):
                 low = card(f'<div class="ttl zh">可替换表达</div>{lines_html(s["ln"], len(s["ln"]))}')
             body = head(t, f'逐句讲范文 · 第{CN[pi]}段 · 第 {k} / {len(own)} 句') + top + low
         elif scr == 'rubric':
-            body = head(t, SEC[scr]) + card(f'<div class="ttl zh">满分标准：第五档（二十一至二十五分）</div>{lines_html(notes.get(scr, []), nn)}')
+            body = head(t, SEC[scr]) + card(f'<div class="ttl zh">评分标准：最高一档</div>{lines_html(notes.get(scr, []), nn)}')
         elif scr in ('para1', 'para2'):
             pi = int(scr[-1]) - 1
             para = ' '.join(f'<span class="{"gv" if x.get("given") else ""}">{esc(x["en"])}</span>' for x in P[pi])
