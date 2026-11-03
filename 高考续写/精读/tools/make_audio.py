@@ -253,6 +253,25 @@ def trim_release(a, look=0.3, gap_db=45, min_gap=0.02):
     return a[:cut].copy(), (len(a) - cut) / G.SR
 
 
+# 由中考 / 考研作文 make_audio.py 移植（x11:23 句末 reading 之后模型多发气声，识别成 readings）：读音修正.json 的 tail_trim 登记的句子，剪掉句末最后一个浊音之后的气声
+TAIL_TRIM = json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8')).get('tail_trim', {})
+
+
+def trim_tail(a):
+    """剪掉句末最后一个浊音之后的气声（读音修正.json 的 tail_trim 登记的句子才用；正常以 s、t 结尾的词不受影响，因为只对人工确认过的句子使用）：
+    按 10 毫秒一帧算 100—1500 Hz 的能量，最后一帧高于最强帧 −30 dB 的位置之后留 30 毫秒，其余剪掉。"""
+    import numpy as np
+    w = int(0.01 * G.SR)
+    e = []
+    for i in range(0, len(a) - w, w):
+        X = np.abs(np.fft.rfft(a[i:i + w] * np.hanning(w)))
+        f = np.fft.rfftfreq(w, 1 / G.SR)
+        e.append(20 * np.log10(X[(f > 100) & (f < 1500)].mean() + 1e-9))
+    e = np.array(e)
+    last = np.where(e > e.max() - 30)[0][-1]
+    return a[:min(len(a), (last + 1) * w + int(0.03 * G.SR))]
+
+
 def synth_sentence(read, key, engine, pron, style, speed, cfg):
     cp = cfg.get('clause_pause', 0)
     # 原文破折号两侧不留空格（pesticides—in fact），高考的切分规则要求标点后有空格，会漏掉这里的停顿；先补一个空格再切
@@ -275,6 +294,8 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
         if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
             raise RuntimeError(f'{key} 合成文字残留引号：{x}')
         raw = engine.synth(pron.phonemes(x, key), style, speed)
+        if key in TAIL_TRIM and i == len(merged) - 1:      # 登记过的句子：剪掉句末多发的气声
+            raw = trim_tail(raw)
         if key in TAIL_RELEASE and i + 1 in TAIL_RELEASE[key]['段']:
             raw, cut = trim_release(raw)
             if not cut:

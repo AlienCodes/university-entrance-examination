@@ -79,8 +79,9 @@ def main():
         NAMES.update(re.sub(r"['’]s$", '', w.lower()) for w in json.loads(pf.read_text('utf-8')) if w[:1].isupper())
     reg_f = R / proj / 'audio' / '识别差异已核.json'                  # 人工确认无害、不用改的差异（句子编号 → {朗读文本里的词: 理由}），以后不再报
     reg = json.loads(reg_f.read_text('utf-8')) if reg_f.exists() else {}
-    rep = json.loads(read(f'{proj}/audio/qa_report.json'))['cet4_male']
-    T = json.loads(read(f'{proj}/audio/timings.json'))['cet4_male']
+    rep_all, T_all = json.loads(read(f'{proj}/audio/qa_report.json')), json.loads(read(f'{proj}/audio/timings.json'))
+    voice = 'cet4_male' if 'cet4_male' in T_all or len(T_all) != 1 else next(iter(T_all))      # 默认男声（铁律 8）；项目只有一种配音（高考续写精读 female）就用那一种
+    rep, T = rep_all[voice], T_all[voice]
     todo = []
     for pid in ids:
         tm = T[pid]

@@ -38,7 +38,8 @@ def rec(a):
 
 
 if mode == '截取':
-    T = json.loads((R / proj / 'audio' / 'timings.json').read_text('utf-8'))['cet4_male']
+    T_all = json.loads((R / proj / 'audio' / 'timings.json').read_text('utf-8'))
+    T = T_all['cet4_male' if 'cet4_male' in T_all or len(T_all) != 1 else next(iter(T_all))]      # 项目只有一种配音（高考续写精读 female）就用那一种
     cache = {}
     for item in rest:
         pid, k = item.split(':')
