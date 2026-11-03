@@ -13,11 +13,20 @@
       python qwen_synth.py --task 任务.json --shard 3 --out out/
 """
 import argparse
+import gc
 import json
 import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def rss_mb():
+    """当前常驻内存（MB）：每段合成后记一次（2026-11-03 两台合成机十几分钟后被停掉，查是不是逐段增长）。"""
+    try:
+        return round(int(open('/proc/self/statm').read().split()[1]) * 4096 / 2 ** 20)
+    except OSError:
+        return None
 
 
 def jobs(task):
@@ -120,8 +129,12 @@ def main():
         x, sr, tries = J.run_unit(gen1, base_seed(s['id']), cap)    # 生成停不下来（顶到上限 / 超时）就换种子重来（踩坑 95）
         sf.write(str(od / f"{s['id']}.wav"), x, sr)
         el = time.time() - ts
-        meta['segments'].append({'id': s['id'], 'sec': round(len(x) / sr, 2), 'compute': round(el, 1), 'sr': sr, 'cap': cap, 'tries': tries})
-        print(f"{c['id']} take{take} {s['id']} {len(x) / sr:.1f}s 音频，用时 {el:.0f}s", flush=True)
+        rss = rss_mb()
+        meta['segments'].append({'id': s['id'], 'sec': round(len(x) / sr, 2), 'compute': round(el, 1), 'sr': sr, 'cap': cap, 'tries': tries,
+                                 'rss_mb': rss})
+        del x
+        gc.collect()
+        print(f"{c['id']} take{take} {s['id']} {meta['segments'][-1]['sec']}s 音频，用时 {el:.0f}s，内存 {rss} MB", flush=True)
     meta['total_compute'] = round(time.time() - t0, 1)
     if nparts == 1:                       # 整份稿在这一台机器上：就地走完整处理链
         a, items = J.build(segs, od)
