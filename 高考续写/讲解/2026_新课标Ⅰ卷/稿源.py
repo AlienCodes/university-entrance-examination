@@ -154,8 +154,8 @@ sent([['Waving to them ', 4], ['through the frosty train window, ', 5], ['Emily 
       ['为什么：告别是情感高点——从无助、焦急到感激']),
      [('谓语是 could hardly hold back：情态动词加 hardly，表示几乎不能；hold back 是忍住的意思。', '谓语：could hardly hold back（几乎忍不住）'),
       ('主语：Emily。', '主语：Emily'),
-      ('忍住什么：her tears，泪水，作宾语。', '宾语：her tears'),
-      ('句首补上：Waving to them，现在分词作伴随状语。挥手和忍泪同时发生，动作的主语都是 Emily。', 'Waving to them：现在分词作伴随状语'),
+      ('忍住的是 her tears，也就是泪水，作宾语。', '宾语：her tears'),
+      ('句首再补上 Waving to them，现在分词作伴随状语。挥手和忍泪同时发生，动作的主语都是 Emily。', 'Waving to them：现在分词作伴随状语'),
       ('最后补上地点：through the frosty train window，隔着结了霜的车窗。', 'through the frosty train window：隔着结霜的车窗')],
      [('Waving to them', ['③', '①'], SEEING, 'Seeing no hope of immediate rescue',
        ['现在分词作状语：动作和情感同时呈现', '原文同样的句式：Seeing no hope of immediate rescue'],
@@ -188,7 +188,7 @@ sent([['The sky ', 2], ['was ', 1], ['clear now, ', 3], ['and ', 4], ['the road 
       ['为什么：先写环境——从暴风雪到晴天，映出心情的变化']),
      [('两个分句，两个谓语；插入语 they explained 不算主干。was，一般过去时；lay，是 lie 的过去式，躺着。', '谓语：was；lay（lie 的过去式）'),
       ('两个主语：The sky，天空；the road，那条路。', '主语：The sky；the road'),
-      ('补上表语：clear now，晴了；quiet，静静的。', '表语：clear now；quiet'),
+      ('再补上表语 clear now，意思是晴了；还有 quiet，意思是静静的。', '表语：clear now；quiet'),
       ('再补 and 连接两个分句，句尾补地点：in the sunshine。', 'and 连接分句；in the sunshine'),
       ('最后修饰 the road：that had trapped her，定语从句。困住她发生在三天前，比 lay 更早，用过去完成时。', '定语从句：that had trapped her（过去完成时）')],
      [('that had trapped her', ['③'], DITCH, 'a narrow stretch of road',
@@ -201,7 +201,7 @@ sent([['The sky ', 2], ['was ', 1], ['clear now, ', 3], ['and ', 4], ['the road 
       '可替换：The storm had passed，‖后面也可以写：the once dangerous road now looked peaceful。'))
 
 sent([['Parked outside the couple’s garage ', 3], ['was ', 1], ['her car, ', 2], ['cleaned of snow and ready to go.', 4]],
-     ('第二句，中文是：停在夫妇俩车库外面的，正是她的车，雪已经清干净，随时可以上路。‖丹尼尔的承诺兑现了。',
+     ('第二句，中文是：停在夫妇俩车库外面的，正是她的车，雪已经清干净，随时可以上路，丹尼尔的承诺兑现了。',
       ['为什么：兑现第一段丹尼尔的承诺——车真的拖出来、保管好了']),
      [('谓语是 was，用的是一般过去时。‖注意，这是倒装句，谓语会放在主语前面。', '谓语：was（一般过去时）——倒装句'),
       ('主语：her car，放在谓语后面。', '主语：her car（放在谓语后）'),
@@ -264,7 +264,7 @@ sent([['Driving away, ', 4], ['Emily ', 2], ['realized ', 1], ['that the storm h
        ['but 转折：暴风雪与陌生人，冷与暖对比', '最高级 the warmest 接住原文 genuine warmth，点题'],
        '得分点二：but 转折，前面是暴风雪，后面是陌生人，冷和暖形成对比。‖the warmest of her life，最高级，又接住原文的 genuine warmth，主题水到渠成，对应第三条和第四条。', [])],
      (['As she drove off', 'the kindness of strangers had turned it into an unforgettable one'],
-      '可替换：As she drove off，‖后半句也可以写：the kindness of strangers had turned it into an unforgettable one。'))
+      '可替换的写法是 As she drove off，‖后半句也可以写成 the kindness of strangers had turned it into an unforgettable one。'))
 
 # ---------- 写进 稿 ----------
 fw = json.loads((D / '范文.json').read_text('utf-8'))
@@ -279,7 +279,7 @@ def noq(s):
 def para_read(pi):
     p = fw['paragraphs'][pi]
     k = '一二'[pi]
-    add(f'r{pi + 1}a', f'para{pi + 1}', f'第{k}段写完了。我们把这一段连起来读一遍。', gap=0.5)
+    add(f'r{pi + 1}a', f'para{pi + 1}', f'好，第{k}段写完了。我们把这一段，从头到尾连起来读一遍。', gap=0.5)
     add(f'r{pi + 1}b', f'para{pi + 1}', ' '.join(noq(s['en']) for s in p), lang='English', gap=1.0)
 
 
@@ -311,7 +311,7 @@ add('m01', 'sum', '最后总结方法。第一步，读原文：抓人物、目�
 add('m02', 'sum', '第二步，读开头语：想清楚这一段要解决什么，怎么接下一段。', note='② 读开头语：这一段解决什么，怎么接下一段')
 add('m03', 'sum', '第三步，列提纲：每段三到四步，原文的伏笔都要收住。', note='③ 列提纲：每段三到四步，伏笔都收住')
 add('m04', 'sum', '第四步，逐句写：先想中文，再定谓语，补主语，补其余。', note='④ 逐句写：中文 → 谓语 → 主语 → 其余')
-add('m05', 'sum', '第五步，回头查：句式有没有变化，有没有呼应原文，结尾有没有点题。‖下面把完整范文读一遍。', note='⑤ 回头查：句式变化、呼应原文、结尾点题', gap=0.8)
+add('m05', 'sum', '第五步，回头查：句式有没有变化，有没有呼应原文，结尾有没有点题。‖下面，我们把完整的范文，从头到尾读一遍。', note='⑤ 回头查：句式变化、呼应原文、结尾点题', gap=0.8)
 n = 0
 for pi, p in enumerate(fw['paragraphs']):
     for si, s in enumerate(p):
