@@ -3,7 +3,9 @@ r2icl 只有 take2、take3，下游选段悄悄少一个候选）。规则只写
   任务清单里这个候选应有的每一次（takes）× 每一片（parts）都要有 meta_part<k>.json，每个小段（按候选的 split 展开）都要有 WAV；
   缺一个就报错，不往下走（重跑失败的作业后再选段）。
 任务清单按合成目录名找：runs/<任务>-<运行号>/<候选> → 高考语法填空/tts/<任务>.json。
-用法：python3 合成完整性.py runs/<任务>-<运行号>/<候选> …"""
+用法：python3 合成完整性.py runs/<任务>-<运行号>/<候选> …
+显式放行（公开、有记录的决定，只放行点名的那一片；2026-11-03 续写整片 m take2 part13 合成机两次内存顶满被收回）：
+  环境变量 SYNTH_ALLOW_MISSING="<候选>/take<k>/part<p>[,…]" → 这一次这一片的 meta 和这一片的段可以缺，别的缺口照拦；放行的内容打印出来。"""
 import json
 import re
 import sys
@@ -19,6 +21,12 @@ def task_of(run):
         return None
     p = ROOT / '高考语法填空/tts' / f'{m.group(1)}.json'
     return p if p.exists() else None
+
+
+def allowed():
+    import os
+    v = os.environ.get('SYNTH_ALLOW_MISSING', '').strip()
+    return {tuple(x.strip().split('/')) for x in v.split(',') if x.strip()}
 
 
 def problems(run):
@@ -40,6 +48,8 @@ def problems(run):
         old = J.SPLIT
         J.SPLIT = cand.get('split', task.get('split', 'mark+lang'))
         units = [u['id'] for u in J.expand(segs)]
+        nparts = task.get('parts', 1)
+        part_units = {k: {u['id'] for u in J.expand([x for i, x in enumerate(segs) if i % nparts == k])} for k in range(nparts)}
         J.SPLIT = old
         takes = [f'take{t}' for t in task['takes']]
         parts = range(task.get('parts', 1))
@@ -47,15 +57,23 @@ def problems(run):
         takes = sorted(p.name for p in run.glob('take*'))
         units = sorted({w.stem for t in run.glob('take*') for w in t.glob('*.wav') if w.stem != 'design_ref'})
         parts = [0]
+        part_units = {}
+    ok = allowed()
     for t in takes:
+        free = {int(p[4:]) for c, tk, p in ok if c == run.name and tk == t and p.startswith('part')}
+        if free:
+            print(f'⚠ 显式放行（SYNTH_ALLOW_MISSING）：{run.name}/{t} part{sorted(free)}，这一片的段只用其余几次的候选')
         d = run / t
         if not d.is_dir():
             errs.append(f'{run.name}/{t} 整次缺失（合成机被停或失败；重跑失败的作业）')
             continue
         for k in parts:
+            if k in free:
+                continue
             if not (d / f'meta_part{k}.json').exists():
                 errs.append(f'{run.name}/{t} 缺 meta_part{k}.json（这一片没跑完）')
-        miss = [u for u in units if not (d / f'{u}.wav').exists()]
+        skip = set().union(*(part_units.get(k, set()) for k in free)) if free else set()
+        miss = [u for u in units if u not in skip and not (d / f'{u}.wav').exists()]
         if miss:
             errs.append(f'{run.name}/{t} 缺 {len(miss)} 个小段：{miss[:5]}')
     return errs

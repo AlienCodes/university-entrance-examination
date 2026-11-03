@@ -33,7 +33,17 @@ done
 echo "合成结果：$RUN"
 git archive origin/gram-tts-out "$RUN" | tar -x -C "$T"
 mkdir -p 高考续写/audio
-$PY 高考语法填空/tools/选段.py --稿 "$DIR/稿.json" --run "$T/$RUN/$VOICE" --out "高考续写/audio/$NAME.mp3" "${ONLY[@]}"
+# 候选的合成单位、段间停顿上限照任务清单传给选段（不传就按默认 mark+lang 展开，找错小段）
+read -r SPLIT GAPMAX < <(python3 -c "
+import json,sys;t=json.load(open(sys.argv[1],encoding='utf-8'));c=next(c for c in t['candidates'] if c['id']==sys.argv[2])
+print(c.get('split',t.get('split','mark+lang')), c.get('gap_max',t.get('gap_max','')))" "高考语法填空/tts/$TASK" "$VOICE")
+SEL=(--拆分 "$SPLIT"); [ -z "$GAPMAX" ] || SEL+=(--停顿上限 "$GAPMAX")
+echo "选段：拆分 $SPLIT，段间停顿上限 ${GAPMAX:-默认}"
+if [ -n "${SYNTH_ALLOW_MISSING:-}" ]; then          # 显式放行（公开、有记录）：写进音频旁的记录，随音频提交
+  printf '显式放行缺片：%s\n合成结果：%s\n原因：合成机内存顶满被收回（两次），这一片的段只用其余几次的候选；其他缺口照拦（合成齐全.py、合成完整性.py）\n' "$SYNTH_ALLOW_MISSING" "$RUN" > "高考续写/audio/$NAME.放行.txt"
+  cat "高考续写/audio/$NAME.放行.txt"
+fi
+$PY 高考语法填空/tools/选段.py --稿 "$DIR/稿.json" --run "$T/$RUN/$VOICE" --out "高考续写/audio/$NAME.mp3" "${SEL[@]}" "${ONLY[@]}"
 $PY 高考语法填空/tools/讲解节奏.py "高考续写/audio/$NAME.mp3" > "高考续写/audio/$NAME.节奏.txt"
 # 踩坑 84：按工作流的检出路径建稀疏工作树，截图全部检查走一遍（只截这段音频用到的屏）
 WT=$T/wt

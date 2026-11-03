@@ -29,6 +29,11 @@ fm, ff = m.missing(fp, RUN, VOICE, TAKES, 20), m.missing(fp + [f'{RUN}/{VOICE}/t
 print(f'①b 整片缺一台：{fm}（应 [take2/part7]）；补齐后 {ff}（应 []）')
 if fm != ['take2/part7'] or ff:
     bad.append('①b')
+# 显式放行（SYNTH_ALLOW_MISSING）只放点名的那一片，放错片照拦
+fa, fw = m.missing(fp, RUN, VOICE, TAKES, 20, [('take2', 'part7')]), m.missing(fp, RUN, VOICE, TAKES, 20, [('take2', 'part8')])
+print(f'①c 放行 take2/part7：{fa}（应 []）；放行错片 part8：{fw}（应 [take2/part7]）')
+if fa or fw != ['take2/part7']:
+    bad.append('①c')
 sh = (ROOT / '高考续写/tools/续写全片.sh').read_text('utf-8')
 ok = re.search(r'miss=\$\(python3 高考续写/tools/合成齐全\.py[^\n]*\n\s*\[ -z "\$miss" \] && RUN=\$r && break', sh)
 print(f'② 续写全片.sh 等待循环接上检查：{bool(ok)}')
