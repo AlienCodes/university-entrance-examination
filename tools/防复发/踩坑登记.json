@@ -3863,6 +3863,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "NO_AUDIO_SHA 里 6 个旧工作流的项目音频还没有合格证，重做时补",
    "fix": ""
+  },
+  {
+   "id": "110",
+   "title": "高考续写精读 x20、x21、x27 呼吸声报错查明是段尾 /k/ 除阻（knock. / more work, / out to work,），不是换气；检查不放宽，登记的段从闭塞起点剪断",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考续写"
+   ],
+   "guards": [
+    {
+     "where": "高考续写/精读/tools/make_audio.py trim_release + 读音修正.json tail_release（登记的段剪不到就报错）；gaokao_tts.final_check 的 breath_check 照常拦",
+     "runs": "make_audio 每段合成",
+     "evidence": "合格证 breath_count 0"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/段尾除阻.py",
+     "expect": "exit 0",
+     "needs": "pip"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "呼吸检查对段尾塞音除阻偏敏感，协调会话定这批不改（铁律 14），以后再出现带双向验证再议",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
