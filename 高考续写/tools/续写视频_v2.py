@@ -136,7 +136,7 @@ def frames(doc):
                 assert body.count('data-zh=') == len(s['mark']), fid
             else:
                 assert 'fl"' in body or 'fl ' in body, ('新块没有闪烁标记', fid)
-            out.append((fid + '~d', body + '<style>.mk[data-zh], .fl { background: transparent !important; box-shadow: none !important; }</style>'))
+            out.append((fid + '~d', body + '<i class="flash-off" hidden></i><style>.mk[data-zh], .fl { background: transparent !important; box-shadow: none !important; }</style>'))
             out.append((fid + '~h', body))
     return out
 
@@ -345,7 +345,9 @@ ENZH_JS = r"""() => {
     if (!ok) bad.push('英文没有中文：' + txt.trim().slice(0, 40));
   }
   // 高亮要看得出来：高亮的底色、字色、下划线至少有一样和它所在的底不同（黄底行里的黄高亮 = 看不见）
+  const off = !!document.querySelector('.flash-off');      // 闪烁“暗”的那一张：闪的高亮本来就要看不见
   for (const m of document.querySelectorAll('.mk')) {
+    if (off && (m.matches('[data-zh]') || m.closest('.fl'))) continue;
     const cs = getComputedStyle(m); let a = m.parentElement, bg = 'rgba(0, 0, 0, 0)';
     for (; a; a = a.parentElement) { const b = getComputedStyle(a).backgroundColor; if (b !== 'rgba(0, 0, 0, 0)' && b !== 'transparent') { bg = b; break; } }
     const own = cs.backgroundColor === 'rgba(0, 0, 0, 0)' ? bg : cs.backgroundColor;
