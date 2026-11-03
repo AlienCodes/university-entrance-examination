@@ -2,7 +2,7 @@
 
 不重新合成：输入 = 选段记录（选段.py 写的 <成品>.选段.json）+ 原始合成小段（分支 gram-tts-out 的 runs/…，按 覆盖.txt 还原）；
 处理放在原始合成段上：去呼吸 → 去首尾静音 →【降音高（保共振峰）→ 音色还原（可选）】→ 陷波 → 段内电平 / 母带 / 合格证（讲解音频.render 原样，全部检查照跑）。
-只替换本进程里 讲解音频.prep（不改共用工具文件）；另加一项检查：成品浊音基频中位数与目标差 ≤ 1 半音（pitch_check，与处理不同的量法：librosa.pyin）。
+处理是 讲解音频.prep 的正式参数 PITCH_SEMIS / PITCH_METHOD / TIMBRE_EQ；另加一项检查：成品浊音基频中位数与目标差 ≤ 1 半音（pitch_check，与处理不同的量法：librosa.pyin）。
 
 用法：
   /opt/ttsenv/bin/python 高考续写/tools/声音浑厚.py --稿 稿.json --选段 X.选段.json --覆盖 X.覆盖.txt --out 成品.mp3 \
@@ -13,8 +13,8 @@ import argparse
 import json
 import re
 import subprocess
-import sys
 import tempfile
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -22,65 +22,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / '高考语法填空/tools'), str(ROOT / 'tools/tts')]
 import 讲解音频 as J  # noqa: E402
-import gaokao_tts as G  # noqa: E402
-import 去呼吸 as BR  # noqa: E402
 
 SR = J.SR
 PITCH_TOL = 1.0           # 半音
 BR_REF = 'origin/gram-tts-out'
-
-
-def shift_rubberband(x, sr, semis):
-    import soundfile as sf
-    with tempfile.TemporaryDirectory() as d:
-        i, o = Path(d) / 'i.wav', Path(d) / 'o.wav'
-        sf.write(str(i), x, sr, subtype='FLOAT')
-        subprocess.run(['rubberband', '-q', '-3', '--formant', '-p', f'{-semis:.4f}', str(i), str(o)], check=True, capture_output=True)
-        y, _ = sf.read(str(o), dtype='float32')
-    y = y if y.ndim == 1 else y.mean(1)
-    return y[:len(x)] if len(y) >= len(x) else np.pad(y, (0, len(x) - len(y)))
-
-
-def shift_world(x, sr, semis):
-    import pyworld as pw
-    d = x.astype(np.float64)
-    f0, t = pw.harvest(d, sr, f0_floor=60, f0_ceil=500, frame_period=5.0)
-    sp = pw.cheaptrick(d, f0, t, sr)
-    ap = pw.d4c(d, f0, t, sr)
-    y = pw.synthesize(f0 * 2 ** (-semis / 12), sp, ap, sr, frame_period=5.0).astype(np.float32)
-    return y[:len(x)] if len(y) >= len(x) else np.pad(y, (0, len(x) - len(y)))
-
-
-def eq_filter(x, sr, bands):
-    """bands：[[f_lo, f_hi, dB], …]（±3 dB 内）；线性相位 FIR，延时补偿，平滑过渡。"""
-    from scipy.signal import fftconvolve, firwin2
-    fs = [0.0]
-    gs = [1.0]
-    for lo, hi, db in sorted(bands):
-        assert abs(db) <= 3.0 + 1e-9, f'音色还原 {lo}-{hi} Hz {db} dB 超过 ±3 dB'
-        g = 10 ** (db / 20)
-        for f, gg in ((lo * 0.8, 1.0), (lo, g), (hi, g), (hi * 1.25, 1.0)):
-            if f > fs[-1]:
-                fs.append(f)
-                gs.append(gg)
-    fs += [sr / 2]
-    gs += [1.0]
-    h = firwin2(2049, fs, gs, fs=sr)
-    y = fftconvolve(x, h)[1024:1024 + len(x)]
-    return y.astype(np.float32)
-
-
-def make_prep(semis, method, eq):
-    def prep(x, sr=SR):
-        y = G.trim(BR.debreath(x, sr)[0])            # 去呼吸在任何电平处理之前（踩坑 89）
-        if J.TEMPO != 1.0:
-            y = G.trim(J.stretch(y, sr, J.TEMPO))
-        if semis:
-            y = (shift_rubberband if method == 'rubberband' else shift_world)(y, sr, semis)
-        if eq:
-            y = eq_filter(y, sr, eq)
-        return J.notch(y, sr)
-    return prep
 
 
 def f0_median(a, sr):
@@ -138,7 +83,7 @@ def main():
     a = ap.parse_args()
     J.SPLIT, J.GAP_MAX = a.拆分, a.停顿上限
     eq = json.loads(Path(a.音色还原).read_text('utf-8')) if a.音色还原 else None
-    J.prep = make_prep(a.降, a.方法, eq)
+    J.PITCH_SEMIS, J.PITCH_METHOD, J.TIMBRE_EQ = a.降, a.方法, eq   # 讲解音频.prep 里正式的可开关步（去呼吸之后、陷波与电平处理之前）
     segs = json.loads(Path(a.稿).read_text('utf-8'))['segments']
     if a.只:
         segs = [s for s in segs if s['id'] in a.只]

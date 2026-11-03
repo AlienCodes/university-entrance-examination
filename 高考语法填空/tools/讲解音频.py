@@ -162,11 +162,57 @@ def stretch(x, sr, tempo):
     return y if y.ndim == 1 else y.mean(1)
 
 
+PITCH_SEMIS = 0.0          # 降几个半音（保共振峰；用户 2026-11-03 嫌开头“太尖太细”，要浑厚）。0 = 不动（输出逐字节不变）
+PITCH_METHOD = 'rubberband'  # 'rubberband'（R3 --formant）或 'world'（pyworld：保持频谱包络只改基频）
+TIMBRE_EQ = None           # 音色还原：[[f_lo, f_hi, dB], …]（每段 ±3 dB 内，线性相位 FIR）；None = 不动
+
+
+def shift_pitch(x, sr, semis, method='rubberband'):
+    """降 semis 个半音、保共振峰，长度不变。"""
+    if method == 'world':
+        import pyworld as pw
+        from scipy.ndimage import maximum_filter1d
+        d = x.astype(np.float64)
+        f0, t = pw.harvest(d, sr, f0_floor=60, f0_ceil=500, frame_period=5.0)
+        sp, ap = pw.cheaptrick(d, f0, t, sr), pw.d4c(d, f0, t, sr)
+        y = pw.synthesize(f0 * 2 ** (-semis / 12), sp, ap, sr, frame_period=5.0).astype(np.float32)
+        y = y[:len(x)] if len(y) >= len(x) else np.pad(y, (0, len(x) - len(y)))
+        return y * maximum_filter1d((np.abs(x) > 1e-5).astype(np.float32), int(0.01 * sr))   # 真静音处保持真静音
+    import subprocess
+    import tempfile
+    import soundfile as sf
+    with tempfile.TemporaryDirectory() as d:
+        i, o = Path(d) / 'i.wav', Path(d) / 'o.wav'
+        sf.write(str(i), x, sr, subtype='FLOAT')
+        subprocess.run(['rubberband', '-q', '-3', '--formant', '-p', f'{-semis:.4f}', str(i), str(o)], check=True, capture_output=True)
+        y, _ = sf.read(str(o), dtype='float32')
+    y = y if y.ndim == 1 else y.mean(1)
+    return y[:len(x)] if len(y) >= len(x) else np.pad(y, (0, len(x) - len(y)))
+
+
+def timbre_eq(x, sr, bands):
+    from scipy.signal import fftconvolve, firwin2
+    fs, gs = [0.0], [1.0]
+    for lo, hi, db in sorted(bands):
+        assert abs(db) <= 3.0 + 1e-9, f'音色还原 {lo}-{hi} Hz {db} dB 超过 ±3 dB'
+        for f, g in ((lo * 0.8, 1.0), (lo, 10 ** (db / 20)), (hi, 10 ** (db / 20)), (hi * 1.25, 1.0)):
+            if f > fs[-1]:
+                fs.append(f)
+                gs.append(g)
+    h = firwin2(2049, fs + [sr / 2], gs + [1.0], fs=sr)
+    return fftconvolve(x, h)[1024:1024 + len(x)].astype(np.float32)
+
+
 def prep(x, sr=SR):
-    """原始合成 → 去呼吸（任何电平处理之前，踩坑 89）→ 去首尾静音 →（可选）提速 → 陷波。build 与 选段 都走这一个。"""
+    """原始合成 → 去呼吸（任何电平处理之前，踩坑 89）→ 去首尾静音 →（可选）提速 →（可选）降音高保共振峰 / 音色还原 → 陷波。
+    build 与 选段 都走这一个。"""
     y = G.trim(BR.debreath(x, sr)[0])
     if TEMPO != 1.0:
         y = G.trim(stretch(y, sr, TEMPO))
+    if PITCH_SEMIS:
+        y = shift_pitch(y, sr, PITCH_SEMIS, PITCH_METHOD)
+    if TIMBRE_EQ:
+        y = timbre_eq(y, sr, TIMBRE_EQ)
     return notch(y, sr)
 
 
