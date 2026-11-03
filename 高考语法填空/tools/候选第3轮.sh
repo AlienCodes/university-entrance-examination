@@ -26,7 +26,7 @@ IDS=$(python3 -c "import json; print(' '.join(c['id'] for c in json.load(open('$
 OUTS=()
 for id in $IDS; do
   o="高考语法填空/样音/${RN}_q56_$id.mp3"
-  OPT=$(python3 -c "import json; c=[c for c in json.load(open('$TASK'))['candidates'] if c['id']=='$id'][0]; print('--拆分', c.get('split','mark+lang'), *(['--停顿上限', c['gap_max']] if c.get('gap_max') else []))")
+  OPT=$(python3 -c "import json; c=[c for c in json.load(open('$TASK'))['candidates'] if c['id']=='$id'][0]; print('--拆分', c.get('split','mark+lang'), *(['--停顿上限', c['gap_max']] if c.get('gap_max') else []), *(['--退回', '$T/$R/'+c['fallback']] if c.get('fallback') else []))")
   if $PY 高考语法填空/tools/选段.py --稿 $GAO --run "$T/$R/$id" --out "$o" --only $Q $OPT > "$T/$id.log" 2>&1; then
     OUTS+=("$o"); $PY 高考语法填空/tools/讲解节奏.py "$o" > "${o%.mp3}.节奏.txt"
   else echo "候选 $id 没过整篇检查：$(tail -1 "$T/$id.log")"; fi

@@ -89,7 +89,7 @@ def candidates(segs, run, ears, only=None):
                 tone_bad = len(PY.tone_problems(y, G.SR, s['text'], ears.al)[1])
             score = (tone_bad * 40 + (0 if native is None else (1 - native) * 6) + err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
                      + (30 + 5 * rise if rise is not None and rise > NJ.RISE_MAX else 0))
-            rows.append({'take': t.name, 'err': err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
+            rows.append({'take': t.name, 'dir': str(t), 'err': err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
                          'dur': round(dur, 2), 'native': native, 'tone_bad': tone_bad, 'n_words': len(E.toks(s['text'])), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
                          'score': round(score, 2)})
         if rows:                                   # 读对的前提下偏向快的那次（用户 2026-11-03：语速太慢）：比最快那次每慢 10% 加 1 分（错 1 个字 10 分）
@@ -102,27 +102,39 @@ def candidates(segs, run, ears, only=None):
     return table
 
 
-def assemble(segs, U, run, table, out, lead, tail, max_rounds=12):
-    pick = {sid: 0 for sid in table}
+def assemble(segs, table, out, lead, tail, fallback=None, max_rounds=16):
+    """逐轮拼整篇、走 render（全部检查）；没过就把报错处的小段换成下一个候选。fallback（如 'mark'）：整段合成的某段在 ‖ 处
+    停顿不够（讲解节奏报“停顿”/“量不了停顿”）时，只把这一段退回拆段版本（另一组合成里同一参考的小段），其余段不动；不降低检查。
+    返回 (各小段选第几个, meta, 用到的小段, 各段的拆分方式)。"""
+    mode = {s['id']: None for s in segs}
+    pick = {}
     for rnd in range(max_rounds + 1):
+        segs2 = [dict(s, split=mode[s['id']]) if mode[s['id']] else s for s in segs]
+        U = J.expand(segs2)
         tmp = Path(tempfile.mkdtemp(prefix='xd_'))
         try:
-            for s in U:
-                r = table[s['id']][pick[s['id']]]
-                shutil.copy(Path(run) / r['take'] / f"{s['id']}.wav", tmp / f"{s['id']}.wav")
+            for u in U:
+                r = table[u['id']][pick.setdefault(u['id'], 0)]
+                shutil.copy(Path(r['dir']) / f"{u['id']}.wav", tmp / f"{u['id']}.wav")
             try:
-                meta = J.render(segs, tmp, out, lead, tail)
-                return pick, meta
+                meta = J.render(segs2, tmp, out, lead, tail)
+                return {u['id']: pick[u['id']] for u in U}, meta, U, mode
             except RuntimeError as e:
                 msg = str(e)
                 print(f'第 {rnd + 1} 轮整篇检查未过：{msg[:300]}', flush=True)
-                a, items = J.build(segs, tmp, lead, tail)
-                bad = blame(a, items, msg)
                 moved = False
-                for sid in bad:
-                    if pick[sid] + 1 < len(table[sid]):
-                        pick[sid] += 1
-                        moved = True
+                if fallback and msg.startswith('节奏：'):
+                    for sid in dict.fromkeys(re.findall(r'([A-Za-z]+\d+[a-z]?)：[^；]*?停顿', msg)):
+                        if sid in mode and mode[sid] is None:
+                            mode[sid] = fallback
+                            moved = True
+                            print(f'  {sid}：‖ 处自然停顿不够，只这一段退回 {fallback}', flush=True)
+                if not moved:
+                    a, items = J.build(segs2, tmp, lead, tail)
+                    for sid in blame(a, items, msg):
+                        if sid in pick and pick[sid] + 1 < len(table[sid]):
+                            pick[sid] += 1
+                            moved = True
                 if not moved:
                     raise RuntimeError('换遍候选仍过不了整篇检查（不放宽检查）：' + msg)
         finally:
@@ -161,6 +173,8 @@ def main():
     ap.add_argument('--tail', type=float, default=2.0)
     ap.add_argument('--拆分', default='mark+lang', choices=['mark+lang', 'mark', 'none'], help='合成单位（与任务清单候选的 split 相同）')
     ap.add_argument('--停顿上限', type=float, default=None, help='段间停顿上限（秒，讲解音频.GAP_MAX）')
+    ap.add_argument('--退回', help='拆段版的合成目录（runs/…/<候选>）：整段的 ‖ 处停顿不够时只这一段用它')
+    ap.add_argument('--退回拆分', default='mark')
     ap.add_argument('--提速', type=float, default=1.0, help='语音提速倍数（讲解音频.TEMPO；停顿不变）')
     a = ap.parse_args()
     J.TEMPO = a.提速
@@ -172,12 +186,14 @@ def main():
     ears = E.Ears()
     import 讲解节奏 as NJ
     ears.al = NJ.Aligner()
-    U = J.expand(segs)                    # 稿里 ‖ 处的小段各自选优（讲解音频.units）
-    table = candidates(U, a.run, ears)
-    pick, meta = assemble(segs, U, a.run, table, a.out, a.lead, a.tail)
+    table = candidates(J.expand(segs), a.run, ears)   # 稿里 ‖ 处的小段各自选优（讲解音频.units）
+    if a.退回:
+        extra = [u for u in J.expand([dict(s, split=a.退回拆分) for s in segs]) if u['id'] not in table]   # 没有 ‖ 的段两边同名：用整段版
+        table.update(candidates(extra, a.退回, ears))
+    pick, meta, U, mode = assemble(segs, table, a.out, a.lead, a.tail, a.退回拆分 if a.退回 else None)
     chosen = {sid: dict(table[sid][i], rank=i) for sid, i in pick.items()}
     out = Path(a.out)
-    out.with_suffix('.选段.json').write_text(json.dumps({'run': str(a.run), 'chosen': chosen, 'all': table}, ensure_ascii=False, indent=1), 'utf-8')
+    out.with_suffix('.选段.json').write_text(json.dumps({'run': str(a.run), 'fallback_run': a.退回, 'modes': mode, 'chosen': chosen, 'all': table}, ensure_ascii=False, indent=1), 'utf-8')
     lines = [f"# 识别差异（{out.name}）", '', '每段最终选用那次的识别差异（同音字已按拼音放过；剩下的逐条人工核对）。', '']
     for s in U:
         c = chosen[s['id']]

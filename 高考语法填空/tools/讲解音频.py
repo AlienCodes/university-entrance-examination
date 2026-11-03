@@ -230,13 +230,14 @@ def units(seg):
     """一段 → 小段：稿里 ‖ 标出必须停顿的边界（说完词义、说完一步推理、答案前、问句后），每个小段单独合成、单独选优，
     拼接时中间放 PAUSE_MARK 秒真静音（停顿由构造保证；讲解节奏.check 用识别对齐独立量）。中文小段里成句的英文再单独拆出（lang_split），
     中间放按标点的短静音。没有 ‖、也没有可拆英文的段原样一个小段。"""
-    if SPLIT == 'none':                       # 整段一次合成（中英混说、‖ 都不拆；停顿用模型自然的停顿）
+    mode = seg.get('split') or SPLIT          # 段上写了 split 就按段（选段 --退回：整段的停顿不够时只这一段退回拆段）
+    if mode == 'none':                        # 整段一次合成（中英混说、‖ 都不拆；停顿用模型自然的停顿）
         return [dict(seg, text=seg['text'].replace(MARK, ''))]
     ps = [p.strip() for p in seg['text'].split(MARK) if p.strip()]
     sub = []
     for k, p in enumerate(ps, 1):
         last_gap = PAUSE_MARK if k < len(ps) else seg.get('gap', 0.6)
-        parts = lang_split(p) if seg['lang'] == 'Chinese' and SPLIT == 'mark+lang' else [(p, seg['lang'], None)]
+        parts = lang_split(p) if seg['lang'] == 'Chinese' and mode == 'mark+lang' else [(p, seg['lang'], None)]
         for j, (t, lang, g) in enumerate(parts):
             sub.append((t, lang, last_gap if j == len(parts) - 1 else g))
     if len(sub) <= 1:
