@@ -7,6 +7,9 @@
 import json
 import re
 from pathlib import Path
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
+from text_rules import slot_gap_problem as _slot_gap  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                     # 中考/
@@ -165,6 +168,9 @@ def check(pid, path, R=None):
             if sp is None:
                 errs.append(f'第{k}句 找不到：{e["h"]}' + (f'{{{e["surf"]}}}' if e.get('surf') else '') + f'  ||  {en}')
                 continue
+            _sg = _slot_gap(e, en, sp, find)
+            if _sg:
+                errs.append(f'第{k}句 {_sg}')
             taken += sp
         miss = uncovered(en, taken, names)
         if miss:

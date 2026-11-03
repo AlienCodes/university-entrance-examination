@@ -3642,6 +3642,41 @@
    "status": "自动拦截+有双向验证",
    "gap": "别的检查若再出新的报错格式，blame 仍可能认不出（退回换意群最差的段）",
    "fix": ""
+  },
+  {
+   "id": "103",
+   "title": "带空位的短语（have…in order）没写原文词形时，前一段高亮落到远处别的分句里的同一个词形（x05 落到 She had prepared 的 had），复核员人眼才查出",
+   "stages": [
+    "文字"
+   ],
+   "projects": [
+    "高考续写",
+    "专八",
+    "中考",
+    "六级",
+    "六级作文",
+    "四级",
+    "四级作文",
+    "考研",
+    "考研作文"
+   ],
+   "guards": [
+    {
+     "where": "tools/text_rules.slot_gap_problem（各项目 ann_lib.check 调用）：空位跨分句（, ; : —）且从前一段之后能找到同一结尾、更近的落点就报",
+     "runs": "每次 check_ann / build_vocab",
+     "evidence": "前一段落到了远处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/短语空位远落.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "空位不跨分句时不管（using the “fair use” clause as：远处的 using 才对）；并列 so…, so…, that 两个都可以，已核登记 SLOT_REVIEWED",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

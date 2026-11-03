@@ -99,7 +99,8 @@ PROJECTS = {
     # paper “2026年高考 新课标Ⅰ卷”，passage “Continuation Writing”（斜体英文字体只放英文，踩坑 64）；文件名用数据里的 fname（“2026 新课标Ⅰ卷 读后续写”，铁律 6）
     '高考续写': {'dir': '高考续写/精读', 'voice': 'female', 'tag': 'GAOKAO · WRITING · CONTINUATION', 'top': 'GAOKAO CONTINUATION', 'exam': '', 'look': '1',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'tmp': 'gkxxvideo_',
-             'name_re': r'20\d\d (?:\S+ )?(?:新课标|新高考|浙江卷|T8联考|九省联考)\S* 读后续写 \S.*\.mp4', 'badge': r'续写\A精读'},
+             'name_re': r'20\d\d (?:\S+ )?(?:新课标|新高考|浙江卷|T8联考|九省联考)\S* 读后续写 \S.*\.mp4', 'badge': r'续写\A精读',
+             'sub_fit': True},      # 片头副标题（试卷名 · Continuation Writing）放不下一行就缩小字号（SUB_FIT_JS；x03 浙江卷（1月）折行压到图例）
     '专八听力': {'dir': '专八/听力/原文', 'audio': '原音', 'tag': 'TEM-8 · LISTENING · 2025', 'top': 'TEM-8 LISTENING', 'exam': '', 'look': '1',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
              'name_re': r'2025年专八听力 Section (A|B Part One|B Part Two) \S.*\.mp4', 'tmp': 'tem8lvideo_',
@@ -1166,6 +1167,7 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
     const ss = getComputedStyle(s), sr = parseFloat(ss.fontSize) / parseFloat(cs.fontSize);
     if (s.dataset.ml0 === undefined) s.dataset.ml0 = parseFloat(ss.marginLeft) / parseFloat(ss.fontSize);
     const ml = Math.max(+s.dataset.ml0, (0.03 - rsb - ls) / sr); s.style.marginLeft = ml.toFixed(3) + 'em'; }
+  phr();      // 徽章补了空隙，行宽变了：短语能不能断开要按现在的换行重新判断（高考续写 x09 第 3 句：判断时 been 还在第 1 行，补空隙后 been 掉到第 2 行，“been delayed by / an hour and a half” 第 2 行只占 46%，layoutcheck 英文短行查出）
   while (box.scrollHeight > main.clientHeight && fs > 30) { fs -= 2; r.setProperty('--fs', fs+'px'); phr(); }
   while (!sideFits() && vs > 16) { vs -= 1; r.setProperty('--vs', vs+'px'); }
   for (const e of document.querySelectorAll('.po')) { const k=e.closest('.zh, .v > div'), b=k.getBoundingClientRect();
@@ -1174,6 +1176,12 @@ FIT_JS = """(st) => { const r=document.documentElement.style, main=document.quer
       (x && g.toString() === '' ? x : e).before(document.createElement('br')); } }   // 括注开头的左括号：换行放在括注外面（括注是行内块，放在里面会空出一行）
   return [fs, vs, box.scrollHeight <= main.clientHeight && sideFits()]; }"""      # st = [英文, 词汇栏] 起始字号（分屏的句子统一字号用，见 layout）；不给就从 FS0/VS0 开始
 FIT = None          # set_style() 按画面填入起始字号
+# 片头副标题放不下一行就逐像素缩小字号（下限 30px），在浏览器里实测，不估算（踩坑 37；高考续写试卷名长：2025年1月 T8联考（2025届八省联考） · Continuation Writing）。
+# 放得下的页面什么也不改（x01、x02 截图逐字节不变）；缩到下限还放不下，片头排版检查（重叠）照样报。
+SUB_FIT_JS = """() => { const s = document.querySelector('.ttl .sub'); if (!s) return 0;
+  let fs = parseFloat(getComputedStyle(s).fontSize); s.style.whiteSpace = 'nowrap';
+  while (s.scrollWidth > s.clientWidth + 0.5 && fs > 30) { fs -= 1; s.style.fontSize = fs + 'px'; }
+  s.style.whiteSpace = ''; return fs; }"""
 # 原题屏的题目译文（四级作文）：落在行首的 .po 改成 .pl（去左半字），与上下行的字对齐，并在它前面固定换行（与 FIT_JS 末尾同一规则）
 PO_JS = """() => { for (const e of document.querySelectorAll('.pzh .po')) { const k=e.closest('.zh'), b=k.getBoundingClientRect();
     if (Math.abs(e.getClientRects()[0].left - (b.left + k.clientLeft + parseFloat(getComputedStyle(k).paddingLeft))) < 1) { e.className = 'pl'; e.before(document.createElement('br')); } } }"""
@@ -1301,6 +1309,8 @@ def layout(pg, p, f):
             pg.evaluate('document.fonts.ready')
             pg.wait_for_timeout(150)
             pg.evaluate(TITLE_JS)
+            if PJ.get('sub_fit'):
+                pg.evaluate(SUB_FIT_JS)
             if label == '原题' and PJ.get('prompt_zh'):
                 pg.evaluate(PZ_FIT, PJ['pz_k'])       # 作文原题屏：挑字最大的版式；行首左半空白标点去掉左半空白（PO_JS，与译文 FIT 同一规则）
             yield i, label, False, None
