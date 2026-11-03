@@ -37,6 +37,10 @@ if [ -n "${OVERLAY_TASK:-}" ]; then              # 改了几段稿、只重合�
   for OT in $OVERLAY_TASK; do                     # 可以多个，按顺序覆盖
     bash 高考续写/tools/覆盖补合成.sh "$T/$RUN/$VOICE" "$VOICE" "$OT" "${OVERLAY_AFTER:-0}"
   done
+  for V in ${VERIFY_EN:-}; do                     # 英文逐词核对（纯英文识别）：第一个全读对的那一次加进 LOCK；没有就记下来，不锁
+    u=${V%%:*}; ws=${V#*:}; k=$($PY 高考续写/tools/英文逐词核对.py "$T/$RUN/$VOICE" "$DIR/稿.json" "$u" ${ws//,/ } 2>>"高考续写/audio/$NAME.英文核对.txt" | tail -1)
+    if [ -n "$k" ]; then LOCK="${LOCK:-} $u=$k"; else echo "⚠ $u（${ws}）没有一次纯英文识别读对，未锁定，交人工核对" | tee -a "高考续写/audio/$NAME.英文核对.txt"; fi
+  done
   for L in ${LOCK:-}; do                          # 锁定：某小段只用人工核对过读对的那一次（把它复制到其余各次，选段怎么换都是它）
     u=${L%%=*}; k=${L#*=}; src="$T/$RUN/$VOICE/$k/$u.wav"; [ -f "$src" ] || { echo "锁定的 $src 不存在"; exit 1; }
     for d in "$T/$RUN/$VOICE"/take*; do [ -f "$d/$u.wav" ] && [ "$d/$u.wav" != "$src" ] && cp "$src" "$d/$u.wav"; done
