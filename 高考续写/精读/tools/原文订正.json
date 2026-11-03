@@ -1,0 +1,409 @@
+{
+ "_说明": "高考读后续写原文订正：每条恰好匹配一次（extract.py 校验），写明类型（OCR / 语法 / 用词 / 标点 / 排版）与理由。标准：认真的英语老师或专业编辑会判错的就改（踩坑 16），试卷原文如此不是保留错误的理由；合法的文学 / 口语写法不改。",
+ "x02": [
+  {
+   "old": "until unruly hours",
+   "new": "until ungodly hours",
+   "type": "用词",
+   "why": "熬到深夜的固定说法是 stay up until ungodly hours；unruly 意为“不守规矩的”，不能修饰 hours"
+  }
+ ],
+ "x03": [
+  {
+   "old": "“Dad, that cow is scared.” Emma said",
+   "new": "“Dad, that cow is scared,” Emma said",
+   "type": "标点",
+   "why": "引语后接说话人（Emma said）时，引语末尾用逗号，不用句号"
+  }
+ ],
+ "x04": [
+  {
+   "old": "paid little attention to the chill, As",
+   "new": "paid little attention to the chill. As",
+   "type": "OCR",
+   "why": "逗号后接大写 As 开头的新句子：句号被识别成逗号"
+  },
+  {
+   "old": "his spirits fairly good, Stepping",
+   "new": "his spirits fairly good. Stepping",
+   "type": "OCR",
+   "why": "逗号后接大写 Stepping 开头的新句子：句号被识别成逗号"
+  },
+  {
+   "old": "to Ms.\nWhite’s apartment",
+   "new": "to Ms. White’s apartment",
+   "type": "OCR",
+   "why": "OCR 把一段从缩写 Ms./Mr./Mrs. 后的换行处拆成两段（句子从中间断开），合并回一段"
+  }
+ ],
+ "x06": [
+  {
+   "old": "“What is your name? ” is",
+   "new": "“What is your name?” is",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "how others would think of me",
+   "new": "what others would think of me",
+   "type": "语法",
+   "why": "think of 的宾语用 what（what others would think of me）；how 与 think of 搭配是常见错误"
+  }
+ ],
+ "x07": [
+  {
+   "old": "a photograph of himself and Mr.\nHopkins taken",
+   "new": "a photograph of himself and Mr. Hopkins taken",
+   "type": "OCR",
+   "why": "OCR 把一段从缩写 Ms./Mr./Mrs. 后的换行处拆成两段（句子从中间断开），合并回一段"
+  },
+  {
+   "old": "drew a small, worn copy",
+   "new": "drew out a small, worn copy",
+   "type": "用词",
+   "why": "“从书架上抽出一本书”要用 draw out（或 draw … from the shelf）；单用 drew a copy 意思不完整"
+  }
+ ],
+ "x10": [
+  {
+   "old": "fell behind. ” It’s just the beginning, “she thought.” I’ll come in last for sure. “",
+   "new": "fell behind. “It’s just the beginning,” she thought. “I’ll come in last for sure.”",
+   "type": "排版",
+   "why": "左右引号全部颠倒、引号内外空格错位，按引语位置改正"
+  },
+  {
+   "old": "the word” mile. “Instead",
+   "new": "the word “mile.” Instead",
+   "type": "排版",
+   "why": "左右引号颠倒、空格错位"
+  }
+ ],
+ "x11": [
+  {
+   "old": "an immense-pressure",
+   "new": "an immense pressure",
+   "type": "OCR",
+   "why": "形容词与名词之间多出连字符（OCR 把空格识别成连字符）"
+  },
+  {
+   "old": "To balance his record in high school",
+   "new": "To match his record in high school",
+   "type": "用词",
+   "why": "“追平 / 赶上哥哥的成绩纪录”是 match his record；balance his record（使收支平衡）在此不通"
+  },
+  {
+   "old": "treadmill (跑步机) dedicating",
+   "new": "treadmill (跑步机), dedicating",
+   "type": "标点",
+   "why": "现在分词短语作伴随状语，前面应有逗号与主句隔开"
+  },
+  {
+   "old": "as T pursued",
+   "new": "as I pursued",
+   "type": "OCR",
+   "why": "大写 I 被识别成 T"
+  },
+  {
+   "old": "compressed_into",
+   "new": "compressed into",
+   "type": "OCR",
+   "why": "空格被识别成下划线"
+  },
+  {
+   "old": "“T needed an A,”",
+   "new": "“I needed an A,”",
+   "type": "OCR",
+   "why": "大写 I 被识别成 T"
+  },
+  {
+   "old": "Mrs.\nPhloem said",
+   "new": "Mrs. Phloem said",
+   "type": "OCR",
+   "why": "OCR 把一段从缩写 Ms./Mr./Mrs. 后的换行处拆成两段（句子从中间断开），合并回一段"
+  },
+  {
+   "old": "I shouted at him “How I wish",
+   "new": "I shouted at him, “How I wish",
+   "type": "标点",
+   "why": "说话人与直接引语之间应有逗号"
+  }
+ ],
+ "x12": [
+  {
+   "old": "I reached my flat’s lobby, and pressed the lift button and went in.",
+   "new": "I reached my flat’s lobby, pressed the lift button and went in.",
+   "type": "语法",
+   "why": "三个并列谓语（reached, pressed, went in）只在最后一项前用 and，原文“, and … and”多一个 and 且逗号位置不对"
+  }
+ ],
+ "x13": [
+  {
+   "old": "for her usual, underwater sweep",
+   "new": "for her usual underwater sweep",
+   "type": "标点",
+   "why": "usual 修饰 underwater sweep 整体，不是并列形容词，中间不能加逗号"
+  },
+  {
+   "old": "After what happened yesterday",
+   "new": "After what had happened the day before",
+   "type": "语法",
+   "why": "过去时叙事里指“前一天”发生的事：用过去完成时 had happened，yesterday 改为 the day before"
+  },
+  {
+   "old": "declared Hilda climbing out",
+   "new": "declared Hilda, climbing out",
+   "type": "标点",
+   "why": "分词短语 climbing out … 作伴随状语，前面应加逗号，否则像修饰 Hilda 的定语"
+  },
+  {
+   "old": "their watery, resting place",
+   "new": "their watery resting place",
+   "type": "标点",
+   "why": "watery 修饰 resting place 整体，不是并列形容词，中间不能加逗号"
+  }
+ ],
+ "x14": [
+  {
+   "old": "on April 18, 1775 to Lexington",
+   "new": "on April 18, 1775, to Lexington",
+   "type": "标点",
+   "why": "“月 日, 年”作句中成分时，年份后面也要有逗号"
+  }
+ ],
+ "x17": [
+  {
+   "old": "had tally given up",
+   "new": "had totally given up",
+   "type": "拼写",
+   "why": "tally 是 totally 的笔误（漏了 to）"
+  }
+ ],
+ "x20": [
+  {
+   "old": "the beak of her budgie’s.",
+   "new": "the beak of her budgie.",
+   "type": "语法",
+   "why": "双重所有格多余：the beak of her budgie（或 her budgie’s beak）"
+  },
+  {
+   "old": "A pleasant- looking",
+   "new": "A pleasant-looking",
+   "type": "OCR",
+   "why": "复合形容词连字符后多出空格"
+  },
+  {
+   "old": "“Tm Mrs Dodds",
+   "new": "“I’m Mrs Dodds",
+   "type": "OCR",
+   "why": "I’m 被识别成 Tm"
+  },
+  {
+   "old": "lives alone. ”",
+   "new": "lives alone.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "I’m worried about him.\nHe’s my only companion, you know. ”",
+   "new": "I’m worried about him. He’s my only companion, you know.”",
+   "type": "OCR",
+   "why": "同一段引语被拆成两段（OCR 分段错误），合并；并去掉引号内侧空格"
+  },
+  {
+   "old": "when they start chattering. ”",
+   "new": "when they start chattering.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "like having him with me. ”",
+   "new": "like having him with me.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "needs attention now. ”",
+   "new": "needs attention now.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "The way I was feeling this job",
+   "new": "The way I was feeling, this job",
+   "type": "标点",
+   "why": "状语 The way I was feeling 与主句之间应有逗号，否则会误读成 feeling this job"
+  },
+  {
+   "old": "hard of hearing, too. ”",
+   "new": "hard of hearing, too.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "“Well, look.” I said.",
+   "new": "“Well, look,” I said.",
+   "type": "标点",
+   "why": "引语后接说话人（I said）时，引语末尾用逗号"
+  },
+  {
+   "old": "Anything could happen. ”",
+   "new": "Anything could happen.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  },
+  {
+   "old": "the little thing. ”",
+   "new": "the little thing.”",
+   "type": "排版",
+   "why": "引号内侧多余空格"
+  }
+ ],
+ "x21": [
+  {
+   "old": "pointed at a weed which we missed",
+   "new": "pointed at a weed which we had missed",
+   "type": "语法",
+   "why": "漏掉杂草发生在农场主停车指出之前，用过去完成时 had missed"
+  }
+ ],
+ "x22": [
+  {
+   "old": "A MOTHER’S DAY SURPRISE",
+   "new": "A Mother’s Day Surprise",
+   "type": "排版",
+   "why": "篇名全大写会被朗读模型逐个字母念出，改为标题式大小写（与 x24 篇名 A Run to Remember 一致）"
+  },
+  {
+   "old": "in disappointment their father appeared",
+   "new": "in disappointment, their father appeared",
+   "type": "标点",
+   "why": "开头语：较长的状语从句（As the twins looked around them in disappointment）后应有逗号"
+  }
+ ],
+ "x23": [
+  {
+   "old": "advantage-I carried",
+   "new": "advantage—I carried",
+   "type": "标点",
+   "why": "这里是解释说明的破折号，不是连字符"
+  },
+  {
+   "old": "I said,and with",
+   "new": "I said, and with",
+   "type": "排版",
+   "why": "逗号后缺空格"
+  }
+ ],
+ "x24": [
+  {
+   "old": "Not only did I have to adapt to my changing body. I also",
+   "new": "Not only did I have to adapt to my changing body, but I also",
+   "type": "语法",
+   "why": "Not only … 是从句片段，不能单独成句；与后半句连成 Not only did I …, but I also …"
+  },
+  {
+   "old": "I couldn’t cat or sleep",
+   "new": "I couldn’t eat or sleep",
+   "type": "OCR",
+   "why": "eat 被识别成 cat"
+  },
+  {
+   "old": "My horse. Cowboy, was",
+   "new": "My horse, Cowboy, was",
+   "type": "OCR",
+   "why": "同位语 Cowboy 前的逗号被识别成句号"
+  },
+  {
+   "old": "beyond all reasons",
+   "new": "beyond all reason",
+   "type": "用词",
+   "why": "固定说法 beyond all reason（不可数）"
+  },
+  {
+   "old": "barrel racing (绕桶赛) ，an event",
+   "new": "barrel racing (绕桶赛), an event",
+   "type": "排版",
+   "why": "全角逗号改半角，去掉多余空格"
+  },
+  {
+   "old": "the arena (运动场地) ．We",
+   "new": "the arena (运动场地). We",
+   "type": "排版",
+   "why": "全角句点改半角"
+  },
+  {
+   "old": "finishing the course with case",
+   "new": "finishing the course with ease",
+   "type": "OCR",
+   "why": "ease 被识别成 case（with ease：轻松地）"
+  }
+ ],
+ "x25": [
+  {
+   "old": "Then he got a saw (锯子)\nfrom the truck",
+   "new": "Then he got a saw (锯子) from the truck",
+   "type": "OCR",
+   "why": "一句话被拆成两段（分段错误），合并"
+  }
+ ],
+ "x26": [
+  {
+   "old": "a single goal:to photograph",
+   "new": "a single goal: to photograph",
+   "type": "排版",
+   "why": "冒号后缺空格"
+  },
+  {
+   "old": "the polar bear capital of the world”-the town",
+   "new": "the polar bear capital of the world”—the town",
+   "type": "标点",
+   "why": "解释说明用破折号，不是连字符"
+  },
+  {
+   "old": "Polar bears-like all wild animals-should",
+   "new": "Polar bears—like all wild animals—should",
+   "type": "标点",
+   "why": "插入语两侧用破折号，不是连字符"
+  },
+  {
+   "old": "close encounter (相遇) ，I took",
+   "new": "close encounter (相遇), I took",
+   "type": "排版",
+   "why": "全角逗号改半角，去掉多余空格"
+  },
+  {
+   "old": "angry roar (吼叫) ，the bear",
+   "new": "angry roar (吼叫), the bear",
+   "type": "排版",
+   "why": "全角逗号改半角，去掉多余空格"
+  }
+ ],
+ "x27": [
+  {
+   "old": "The little boy -his name was Bernard-had",
+   "new": "The little boy—his name was Bernard—had",
+   "type": "标点",
+   "why": "插入语两侧用破折号，不是连字符"
+  },
+  {
+   "old": "also jumped up all attention",
+   "new": "also jumped up, all attention",
+   "type": "标点",
+   "why": "all attention 是独立的补充说明（全神贯注），前面要有逗号"
+  }
+ ],
+ "x28": [
+  {
+   "old": "turned to the dog, “Okay, Poppy",
+   "new": "turned to the dog and said, “Okay, Poppy",
+   "type": "语法",
+   "why": "turned to the dog 后面直接接引语缺少说话动词，补 and said"
+  },
+  {
+   "old": "Let’s get a little dog for Poppy.\n",
+   "new": "Let’s get a little dog for Poppy.”\n",
+   "type": "标点",
+   "why": "引语结尾缺右引号"
+  }
+ ]
+}

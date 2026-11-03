@@ -94,6 +94,12 @@ PROJECTS = {
     # 声音用听力原音（不是 TTS），句子起止由 专八/听力/原文/tools/原音音轨.py 对齐求出、长等待压到 2 秒。目录不在仓库顶层：dir。
     # 原音（audio='原音'）不适用 TTS 才有的几项：句间固定 0.8 秒停顿、停顿处数字静音、逐句响度偏差 / 短时波动、电磁音（声码器）、读完固定停留 0.5 秒——
     # 改为：换屏在两句之间（cut_check）、整体响度与峰值（loud_check）；其余成品核查照跑
+    # 高考读后续写原文精读（用户 2026-11-03：28 篇续写题的原文 + 两段开头语，与以前的精读一样逐句英文 + 中文 + 生词 + 朗读，用女声）：
+    # 篇目 x01—x28，目录 高考续写/精读/，配音 female（tools/tts/voices.json，高考 70 篇的女声），画面 1 晴空校园（与考研、专八同一主题）；
+    # paper “2026年高考 新课标Ⅰ卷”，passage “Continuation Writing”（斜体英文字体只放英文，踩坑 64）；文件名用数据里的 fname（“2026 新课标Ⅰ卷 读后续写”，铁律 6）
+    '高考续写': {'dir': '高考续写/精读', 'voice': 'female', 'tag': 'GAOKAO · WRITING · CONTINUATION', 'top': 'GAOKAO CONTINUATION', 'exam': '', 'look': '1',
+             'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'tmp': 'gkxxvideo_',
+             'name_re': r'20\d\d (?:\S+ )?(?:新课标|新高考|浙江卷|T8联考|九省联考)\S* 读后续写 \S.*\.mp4', 'badge': r'续写\A精读'},
     '专八听力': {'dir': '专八/听力/原文', 'audio': '原音', 'tag': 'TEM-8 · LISTENING · 2025', 'top': 'TEM-8 LISTENING', 'exam': '', 'look': '1',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
              'name_re': r'2025年专八听力 Section (A|B Part One|B Part Two) \S.*\.mp4', 'tmp': 'tem8lvideo_',
@@ -106,7 +112,7 @@ PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 
 
 def set_project(name, look=True):
     """切换项目：数据、音频、定稿登记、输出在 <项目>/（C4），分屏表、人名表、截图审阅登记在 <项目>/tools/（T）；look=True 时画面切到该项目的默认画面。"""
-    global PROJ, PJ, C4, T, SPLIT, NAMES, SAMPLE_REG, YP_REG
+    global PROJ, PJ, C4, T, SPLIT, NAMES, SAMPLE_REG, YP_REG, VOICE
     if name not in PROJECTS:
         raise SystemExit(f'--project 只能是 {"、".join(PROJECTS)}：{name}')
     PROJ, PJ, C4 = name, PROJECTS[name], ROOT / PROJECTS[name].get('dir', name)
@@ -116,6 +122,7 @@ def set_project(name, look=True):
             raise SystemExit(f'{name} 没有变体 {var}（可选：{"、".join(PJ.get("variants", {})) or "无"}）')
         PJ = {**PJ, **PJ['variants'][var], 'variant': var}
     T = C4 / 'tools'
+    VOICE = PJ.get('voice', 'cet4_male')          # 配音（timings.json 的键）：默认四六级男声（铁律 8）；高考续写用户指定女声 female
     SPLIT = {k: v for k, v in json.loads((T / PJ.get('split', '分屏.json')).read_text('utf-8')).items() if not k.startswith('_')}
     NAMES = json.loads((T / '人名.json').read_text('utf-8'))['names']        # 中文音译人名（整名不断行，见 name_spans）
     SAMPLE_REG = T / '画面核查' / PJ['reg']      # 截图审阅登记（专八：样片.py --approve；六级：大字版.py --approve 写入）
@@ -1402,6 +1409,8 @@ def video_name(p, look=None):
     """成品文件名；look（样片）在末尾加「（画面名称）」，如 2025年 Passage Three 与虎同舟熬过海上风暴（晴空校园）.mp4。"""
     title = (p.get('title') or '').translate(str.maketrans('/\\:*?"<>|', '／＼：＊？＂＜＞｜'))
     tag = f'（{LOOKS[look]}）' if look else ''
+    if p.get('fname'):                                         # 高考续写：文件名“2026 新课标Ⅰ卷 读后续写 题目”（铁律 6），与片头的 paper / passage 分开写
+        return f"{p['fname']} {title}{tag}.mp4"
     return f"{p['paper']} {p['passage']} {title}{tag}.mp4"     # 用户指定：年份月份 第几套 第几篇 题目，前面不加“四级”
 
 
