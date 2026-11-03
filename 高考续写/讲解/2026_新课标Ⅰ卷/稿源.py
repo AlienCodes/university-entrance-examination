@@ -101,7 +101,7 @@ sent([['There ', 3], ['was ', 1], ['a station ', 2], ['nearby, ', 3], ['they exp
 sent([['“But what about my car?” ', 3], ['Emily ', 2], ['asked ', 1], ['anxiously.', 4]],
      ('第二句，中文是：可是我的车怎么办？‖艾米丽焦急地问。‖人有办法走了，车还在沟里，这是她的第二个难题，让她自己说出来。',
       ['为什么：人能走了，车还在沟里——让她自己说出第二个难题']),
-     [('谓语：asked，问，一般过去时。', '谓语：asked（一般过去时）'),
+     [('谓语是 asked，意思是问，用的是一般过去时。', '谓语：asked（一般过去时）'),
       ('主语：Emily。', '主语：Emily'),
       ('问的内容用直接引语，放在句首：But what about my car？', '直接引语放句首：“But what about my car?”'),
       ('最后补一个副词：anxiously，焦急地。', '方式状语：anxiously')],
@@ -118,8 +118,8 @@ sent([['Daniel ', 2], ['promised ', 1], ['to have it towed ', 3], ['out of the d
      ('第三句，中文是：丹尼尔答应找人把车从沟里拖出来，放在他家车库，等她回来。‖它回答了上一句的担心，也给第二段回来取车埋下伏笔。',
       ['为什么：回答“车怎么办”；给第二段“回来取车”埋伏笔']),
      [('谓语：promised，答应，一般过去时，后面接不定式。', '谓语：promised（一般过去时）+ to do'),
-      ('主语：Daniel。', '主语：Daniel'),
-      ('答应什么？‖to have it towed：have 加宾语，再加过去分词，表示找人把车拖走；车是被拖的，所以用过去分词。', 'to have it towed：have + 宾语 + 过去分词（找人做）'),
+      ('主语是 Daniel，承诺是他做的。', '主语：Daniel'),
+      ('他答应的是 to have it towed：have 加宾语，再加过去分词，表示找人把车拖走；车是被拖的，所以用过去分词。', 'to have it towed：have + 宾语 + 过去分词（找人做）'),
       ('从哪里拖：out of the ditch。', 'out of the ditch：从沟里'),
       ('再并列一个过去分词：and kept in his garage，同样跟在 have it 后面，车被放在车库里。', 'and kept in his garage：与 towed 并列'),
       ('最后是时间状语从句：until she returned。‖讲的是过去的承诺，从句用一般过去时表示将来。', 'until she returned：时间状语从句（一般过去时表将来）')],
@@ -152,7 +152,7 @@ sent([['The couple ', 2], ['then ', 4], ['drove ', 1], ['her to the station ', 3
 sent([['Waving to them ', 4], ['through the frosty train window, ', 5], ['Emily ', 2], ['could hardly hold back ', 1], ['her tears.', 3]],
      ('第五句，中文是：隔着结霜的车窗向他们挥手，艾米丽几乎忍不住泪水。‖告别是这一段的情感高点，要写出她的感激。',
       ['为什么：告别是情感高点——从无助、焦急到感激']),
-     [('谓语：could hardly hold back。情态动词加 hardly，几乎不能；hold back，忍住。', '谓语：could hardly hold back（几乎忍不住）'),
+     [('谓语是 could hardly hold back：情态动词加 hardly，表示几乎不能；hold back 是忍住的意思。', '谓语：could hardly hold back（几乎忍不住）'),
       ('主语：Emily。', '主语：Emily'),
       ('忍住什么：her tears，泪水，作宾语。', '宾语：her tears'),
       ('句首补上：Waving to them，现在分词作伴随状语。挥手和忍泪同时发生，动作的主语都是 Emily。', 'Waving to them：现在分词作伴随状语'),
@@ -170,7 +170,7 @@ sent([['That evening, ', 4], ['she ', 2], ['fell ', 1], ['into her boyfriend’s
      ('第六句，中文是：那天晚上，她在多伦多扑进了男朋友的怀里，正好赶上圣诞节。‖第一段收尾，给原文的目标一个结果。',
       ['为什么：第一段收尾——原文的目标（到多伦多和男朋友过圣诞）有了结果']),
      [('谓语：fell，一般过去时。fall into one’s arms，扑进某人怀里。', '谓语：fell（一般过去时）', ['fall into one’s arms']),
-      ('主语：she。', '主语：she'),
+      ('主语是 she，也就是艾米丽。', '主语：she'),
       ('补上去向和地点：into her boyfriend’s arms in Toronto。', 'into her boyfriend’s arms in Toronto'),
       ('句首补时间：That evening，那天晚上。', '时间状语：That evening'),
       ('句尾补一句：just in time for Christmas，正好赶上圣诞。', 'just in time for Christmas：正好赶上')],
@@ -196,14 +196,14 @@ sent([['The sky ', 2], ['was ', 1], ['clear now, ', 3], ['and ', 4], ['the road 
        '得分点一：that had trapped her，定语从句加过去完成时。‖时间先后交代准确，对应第三条。‖这条路就是原文里那段窄路，读者一看就知道是同一个地方。', []),
       ('lay quiet in the sunshine', ['①', '②'], WHITE, 'The blinding whiteout',
        ['环境对比：茫茫大雪 → 阳光、安静', '环境一变，心情也变了'],
-       '得分点二：lay quiet in the sunshine。‖原文是茫茫大雪，几乎没法开车；现在阳光、安静，环境一变，心情也变了，对应第一条和第二条。', [])],
+       '得分点二是 lay quiet in the sunshine 这个短语。‖原文是茫茫大雪，几乎没法开车；现在阳光、安静，环境一变，心情也变了，对应第一条和第二条。', [])],
      (['The storm had passed', 'the once dangerous road now looked peaceful'],
       '可替换：The storm had passed，‖后面也可以写：the once dangerous road now looked peaceful。'))
 
 sent([['Parked outside the couple’s garage ', 3], ['was ', 1], ['her car, ', 2], ['cleaned of snow and ready to go.', 4]],
      ('第二句，中文是：停在夫妇俩车库外面的，正是她的车，雪已经清干净，随时可以上路。‖丹尼尔的承诺兑现了。',
       ['为什么：兑现第一段丹尼尔的承诺——车真的拖出来、保管好了']),
-     [('谓语：was，一般过去时。‖注意，这是倒装句，谓语会放在主语前面。', '谓语：was（一般过去时）——倒装句'),
+     [('谓语是 was，用的是一般过去时。‖注意，这是倒装句，谓语会放在主语前面。', '谓语：was（一般过去时）——倒装句'),
       ('主语：her car，放在谓语后面。', '主语：her car（放在谓语后）'),
       ('句首是过去分词短语：Parked outside the couple’s garage，表语提前，整句完全倒装。', 'Parked outside the couple’s garage：表语提前，完全倒装'),
       ('最后补上车的状态：cleaned of snow and ready to go。', 'cleaned of snow and ready to go：车的状态')],
@@ -242,7 +242,7 @@ sent([['“We just did what anyone would do,” ', 3], ['Rachel ', 2], ['said, '
       ('最后补上：giving her a warm hug，现在分词作伴随状语。', 'giving her a warm hug：现在分词作伴随状语')],
      [('We just did what anyone would do', ['①'], P3B, 'With genuine warmth in her voice',
        ['人物一致：帮了大忙，却说是“任何人都会做的事”', '和原文声音里透着温暖的瑞秋是同一个人'],
-       '得分点一：We just did what anyone would do。‖帮了大忙，却说只是做了任何人都会做的事，谦和、真诚，和原文里声音温暖的瑞秋是同一个人，对应第一条。', []),
+       '得分点一是 We just did what anyone would do 这句话。‖帮了大忙，却说只是做了任何人都会做的事，谦和、真诚，和原文里声音温暖的瑞秋是同一个人，对应第一条。', []),
       ('giving her a warm hug', ['③'], P3C, 'Rachel asked if she was okay',
        ['现在分词作伴随：说话和拥抱同时发生', '从原文问她好不好，到这里拥抱她，温暖一以贯之'],
        '得分点二：giving her a warm hug，现在分词作伴随状语。‖说话和拥抱同时发生，一句写两个动作。‖从原文里问她好不好，到这里拥抱她，瑞秋的温暖一以贯之，对应第三条。', [])],
@@ -317,7 +317,7 @@ for pi, p in enumerate(fw['paragraphs']):
     for si, s in enumerate(p):
         n += 1
         add(f'u{n:02d}', 'full', noq(s['en']), lang='English', cur=[pi, si], gap=1.0 if si == len(p) - 1 else 0.6)
-add('z01', 'full', '这就是本题的思路和范文。我们下次再见。', gap=0.6)
+add('z01', 'full', '以上，就是这道题的思路和范文。同学们，我们下次再见。', gap=0.6)
 
 (D / '范文.json').write_text(json.dumps(fw, ensure_ascii=False, indent=1) + '\n', 'utf-8')
 doc = {'说明': '2026 新课标Ⅰ卷 读后续写讲解稿（稿源.py 生成，勿手改）。逐句五步：中文构思 → 谓语 → 主语 → 其余 → 得分点（档 + 原文出处）→ 可替换。',

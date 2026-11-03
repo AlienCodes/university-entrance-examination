@@ -34,7 +34,9 @@ echo "合成结果：$RUN"
 git archive origin/gram-tts-out "$RUN" | tar -x -C "$T"
 mkdir -p 高考续写/audio
 if [ -n "${OVERLAY_TASK:-}" ]; then              # 改了几段稿、只重合成这几段：等补合成结果，覆盖到主合成上（记录随音频提交）
-  bash 高考续写/tools/覆盖补合成.sh "$T/$RUN/$VOICE" "$VOICE" "$OVERLAY_TASK" "${OVERLAY_AFTER:-0}"
+  for OT in $OVERLAY_TASK; do                     # 可以多个，按顺序覆盖
+    bash 高考续写/tools/覆盖补合成.sh "$T/$RUN/$VOICE" "$VOICE" "$OT" "${OVERLAY_AFTER:-0}"
+  done
   cp "$T/$RUN/$VOICE/覆盖.txt" "高考续写/audio/$NAME.覆盖.txt"
 fi
 # 候选的合成单位、段间停顿上限照任务清单传给选段（不传就按默认 mark+lang 展开，找错小段）

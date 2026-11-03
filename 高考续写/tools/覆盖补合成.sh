@@ -21,7 +21,7 @@ T=$(mktemp -d)
 git archive origin/gram-tts-out "$RUN/$VOICE" | tar -x -C "$T"
 n=0
 for d in "$T/$RUN/$VOICE"/take*; do
-  t=$(basename "$d"); [ -d "$MAIN/$t" ] || { echo "主目录没有 $t"; exit 1; }
+  t=$(basename "$d"); mkdir -p "$MAIN/$t"          # 补合成多出来的次数（take4…）只含这几段，选段把它们当多出来的候选
   for w in "$d"/*.wav; do
     b=$(basename "$w"); [ "$b" = design_ref.wav ] && continue
     cp "$w" "$MAIN/$t/$b"; echo "$t/$b ← $RUN" >> "$MAIN/覆盖.txt"; n=$((n+1))
