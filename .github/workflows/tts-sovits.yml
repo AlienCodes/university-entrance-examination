@@ -71,8 +71,10 @@ jobs:
           pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
           # 只装推理用得到的：GPU 版 onnxruntime 换 CPU 版；opencc 用现成的轮子（不从源码编）；去掉网页界面、识别、韩语
           grep -vE '^(--no-binary|onnxruntime|gradio|funasr|fastapi|ctranslate2|python_mecab_ko|tensorboard)' GPT-SoVITS/requirements.txt > req.txt
-          pip install -q -r req.txt onnxruntime huggingface_hub gdown soundfile soxr pyloudnorm lameenc num2words
+          pip install -q -r req.txt onnxruntime matplotlib huggingface_hub gdown soundfile soxr pyloudnorm lameenc num2words
           python -m nltk.downloader -q averaged_perceptron_tagger averaged_perceptron_tagger_eng cmudict
+          # 导入预检：缺包几秒就停（铁律 15），不等下载完底模
+          cd GPT-SoVITS && PYTHONPATH=.:GPT_SoVITS python -c "from TTS_infer_pack.TTS import TTS, TTS_Config; import text.chinese2, text.english; print('导入预检通过')"
       - name: 下载底模（Hugging Face lj1995/GPT-SoVITS）
         run: |
           python - <<'EOF'
