@@ -23,6 +23,7 @@ sys.path[:0] = [str(HERE), str(HERE.parents[1] / 'tools/tts')]
 import gaokao_tts as G  # noqa: E402
 import 讲解音频 as J  # noqa: E402
 import 选型评测 as E  # noqa: E402
+import 多音字 as PY  # noqa: E402
 
 
 def pinyin_toks(s):
@@ -82,11 +83,19 @@ def candidates(segs, run, ears, only=None):
             native = None
             if s['lang'] == 'English' and (t / '口音分.json').exists():     # Actions 上量的英文口音（口音分.py）：越像母语口音越优先
                 native = json.loads((t / '口音分.json').read_text('utf-8')).get(s['id'], {}).get('native')
-            score = ((0 if native is None else (1 - native) * 6) + err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
+            tone_bad = 0
+            if s['lang'] == 'Chinese' and PY.expected(s['text']):   # 多音字读错声调的那次不要（铁律 23）
+                y = J.prep(x)
+                tone_bad = len(PY.tone_problems(y, G.SR, s['text'], ears.al)[1])
+            score = (tone_bad * 40 + (0 if native is None else (1 - native) * 6) + err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
                      + (30 + 5 * rise if rise is not None and rise > NJ.RISE_MAX else 0))
             rows.append({'take': t.name, 'err': err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
-                         'dur': round(dur, 2), 'native': native, 'n_words': len(E.toks(s['text'])), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
+                         'dur': round(dur, 2), 'native': native, 'tone_bad': tone_bad, 'n_words': len(E.toks(s['text'])), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
                          'score': round(score, 2)})
+        if rows:                                   # 读对的前提下偏向快的那次（用户 2026-11-03：语速太慢）：比最快那次每慢 10% 加 1 分（错 1 个字 10 分）
+            dmin = min(r['dur'] for r in rows)
+            for r in rows:
+                r['score'] = round(r['score'] + (r['dur'] / dmin - 1) * 10, 2)
         rows.sort(key=lambda r: r['score'])
         table[s['id']] = rows
         print(s['id'], [(r['take'], r['score'], r['err']) for r in rows], flush=True)
@@ -131,7 +140,7 @@ def blame(a, items, msg):
         for i, it in enumerate(us):
             if it['start'] - 0.3 <= t <= it['end'] + 0.3:
                 out.append(it['id'])
-                if ('比相邻' in msg or '停顿' in msg) and i + 1 < len(us):
+                if ('比相邻' in msg or '停顿' in msg or '拼接' in msg) and i + 1 < len(us):
                     out.append(us[i + 1]['id'])      # 相邻意群小 / 停顿不够：也可能在后一小段
                 break
     if not out:
@@ -150,13 +159,19 @@ def main():
     ap.add_argument('--only', nargs='*')
     ap.add_argument('--lead', type=float, default=1.5)
     ap.add_argument('--tail', type=float, default=2.0)
+    ap.add_argument('--拆分', default='mark+lang', choices=['mark+lang', 'mark', 'none'], help='合成单位（与任务清单候选的 split 相同）')
+    ap.add_argument('--停顿上限', type=float, default=None, help='段间停顿上限（秒，讲解音频.GAP_MAX）')
     ap.add_argument('--提速', type=float, default=1.0, help='语音提速倍数（讲解音频.TEMPO；停顿不变）')
     a = ap.parse_args()
     J.TEMPO = a.提速
+    J.SPLIT = a.拆分
+    J.GAP_MAX = a.停顿上限
     segs = json.loads(Path(a.稿).read_text('utf-8'))['segments']
     if a.only:
         segs = [s for s in segs if s['id'] in a.only]
     ears = E.Ears()
+    import 讲解节奏 as NJ
+    ears.al = NJ.Aligner()
     U = J.expand(segs)                    # 稿里 ‖ 处的小段各自选优（讲解音频.units）
     table = candidates(U, a.run, ears)
     pick, meta = assemble(segs, U, a.run, table, a.out, a.lead, a.tail)

@@ -383,6 +383,24 @@
    ],
    "status": "自动拦截+有双向验证",
    "gap": "Kokoro 项目（高考、四六级、考研、专八、中考）的处理链还没接 debreath，只靠关口拦：出新音频若被拦，先给那条处理链接 debreath（样片先给用户听）"
+  },
+  {
+   "id": "23",
+   "title": "配音发音（含多音字声调）必须准确（用户 2026-11-03）",
+   "guards": [
+    "tools/tts/多音字.preflight（合成前几秒：讲解稿里每个易错多音字必须在 多音字表.json 登记读音，没登记的一次全部列出）",
+    "tools/tts/多音字.model_text + 读音修正_中文.json（只改送进模型的文字，如 空格→控格；qwen_synth 每段都走）",
+    "tools/tts/多音字.tone_problems / check_items（合成后：识别对齐取音节、pyin 量降幅；选段读错的那次不要，讲解音频.render 成品有一处就不输出）"
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/多音字声调.py",
+     "needs": "tts",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "声调核查只判可靠的对比（应读四声读成平 / 升调；应读一、二声读成降调）；三声、同调异音（行 xíng / háng、还 hái / huán）测不出，靠登记表 + 读音修正 + 识别"
   }
  ],
  "_没有测试的铁律基线": 5

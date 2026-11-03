@@ -26,13 +26,15 @@ IDS=$(python3 -c "import json; print(' '.join(c['id'] for c in json.load(open('$
 OUTS=()
 for id in $IDS; do
   o="高考语法填空/样音/${RN}_q56_$id.mp3"
-  if $PY 高考语法填空/tools/选段.py --稿 $GAO --run "$T/$R/$id" --out "$o" --only $Q > "$T/$id.log" 2>&1; then
+  OPT=$(python3 -c "import json; c=[c for c in json.load(open('$TASK'))['candidates'] if c['id']=='$id'][0]; print('--拆分', c.get('split','mark+lang'), *(['--停顿上限', c['gap_max']] if c.get('gap_max') else []))")
+  if $PY 高考语法填空/tools/选段.py --稿 $GAO --run "$T/$R/$id" --out "$o" --only $Q $OPT > "$T/$id.log" 2>&1; then
     OUTS+=("$o"); $PY 高考语法填空/tools/讲解节奏.py "$o" > "${o%.mp3}.节奏.txt"
   else echo "候选 $id 没过整篇检查：$(tail -1 "$T/$id.log")"; fi
 done
 [ ${#OUTS[@]} -gt 0 ] || { echo 所有候选都没过检查; exit 1; }
 $PY 高考语法填空/tools/像不像.py --录音 "$REC" --参考 高考语法填空/tts/音色/用户本人_2.json 高考语法填空/tts/音色/用户本人平实_*.json 高考语法填空/tts/音色/用户本人快_*.json \
     --样音 "${OUTS[@]}" ${EXTRA:-} --out 高考语法填空/样音/像不像_${RN}.md
+$PY 高考语法填空/tools/拼接检查.py "${OUTS[@]}" ${EXTRA:-} > 高考语法填空/样音/${RN}_q56_拼接.txt || true
 $PY 高考语法填空/tools/候选汇总.py --稿 $GAO --像不像 高考语法填空/样音/像不像_${RN}.md --out 高考语法填空/样音/${RN}_q56_评分.md "${OUTS[@]}" ${EXTRA:-}
 git add 高考语法填空/样音/${RN}_q56_* 高考语法填空/样音/像不像_${RN}.md
 git commit -qm "高考语法填空：第 56 题${RN}配音候选（英文单独合成去口音、不念 blank、语速与音高对照本人录音；评分与推荐）"

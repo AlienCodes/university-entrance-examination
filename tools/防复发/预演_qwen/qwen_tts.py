@@ -24,12 +24,17 @@ class Qwen3TTSModel:
 
     def _one(self, max_new_tokens=None):
         x, sr = sf.read(str(next(_it)), dtype='float32')
-        if max_new_tokens:                # 真模型在上限内自然停：样本比上限长就截到上限的 80%（踩坑 95 的长度上限）
-            n = int(max_new_tokens * 0.8 / 12.5 * sr)
-            if len(x) > n:
-                x = x[:n].copy()
-                f = int(0.03 * sr)
-                x[-f:] *= __import__('numpy').linspace(1, 0, f, dtype='float32')
+        if max_new_tokens:                # 真模型在上限内自然停：轮到的样本比上限的 80% 长，就换一段放得下的完整样本（都放不下才截断）
+            lim = max_new_tokens * 0.8 / 12.5
+            if len(x) / sr > lim:
+                fits = [p for p in _S if sf.info(str(p)).duration <= lim]
+                if fits:
+                    x, sr = sf.read(str(max(fits, key=lambda p: sf.info(str(p)).duration)), dtype='float32')
+                else:
+                    n = int(lim * sr)
+                    x = x[:n].copy()
+                    f = int(0.03 * sr)
+                    x[-f:] *= __import__('numpy').linspace(1, 0, f, dtype='float32')
         return [x], sr
 
     def generate_custom_voice(self, **k):

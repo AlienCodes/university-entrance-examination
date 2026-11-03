@@ -47,6 +47,7 @@ def main():
     sys.path[:0] = [str(ROOT / 'tools/tts'), str(Path(__file__).parent)]
     import gaokao_tts as G          # 处理链的依赖开头就导入：缺什么第一秒就停，不等合成完（铁律 15）
     import 讲解音频 as J
+    import 多音字 as PY               # 送进模型的文字走读音修正（铁律 23；画面与稿文字照旧）
     import 去呼吸  # noqa: F401
     import pyloudnorm, soxr, lameenc, scipy.signal  # noqa: F401
     import torch
@@ -57,6 +58,8 @@ def main():
     if task.get('only'):                  # 只合成这几段（如第 56 题样片 q56a—q56g）
         segs = [s for s in segs if s['id'] in task['only']]
         assert len(segs) == len(task['only']), '任务的 only 里有稿中没有的段'
+    J.SPLIT = c.get('split', task.get('split', 'mark+lang'))   # 合成单位（讲解音频.SPLIT）
+    J.GAP_MAX = c.get('gap_max', task.get('gap_max'))          # 段间停顿上限（讲解音频.GAP_MAX）
     nparts = task.get('parts', 1)
     segs = [s for i, s in enumerate(segs) if i % nparts == part]
     od = Path(a.out) / c['id'] / f'take{take}'
@@ -101,14 +104,16 @@ def main():
         ts = time.time()
         cap = J.token_cap(s['text'], s['lang'])
 
-        def gen1(seed, s=s, cap=cap):
+        mt = PY.model_text(s['text'])
+
+        def gen1(seed, s=s, cap=cap, mt=mt):
             torch.manual_seed(seed)
             if c['mode'] in ('design_clone', 'clone_ref'):
-                w, sr = m.generate_voice_clone(text=s['text'], language=s['lang'], max_new_tokens=cap,
+                w, sr = m.generate_voice_clone(text=mt, language=s['lang'], max_new_tokens=cap,
                                                voice_clone_prompt=prompt_en if s['lang'] == 'English' else prompt, **gen)
             else:
                 ins = task['instruct_en'] if s['lang'] == 'English' else task['instruct']
-                w, sr = m.generate_custom_voice(text=s['text'], speaker=c['speaker'], language=s['lang'], max_new_tokens=cap,
+                w, sr = m.generate_custom_voice(text=mt, speaker=c['speaker'], language=s['lang'], max_new_tokens=cap,
                                                 instruct=ins, **gen)
             return np.asarray(w[0], dtype=np.float32), sr
 

@@ -221,15 +221,22 @@ def lang_split(text):
     return [tuple(x) for x in out] or [(text, 'Chinese', None)]
 
 
+GAP_MAX = None        # 段间停顿上限（秒）；None = 按稿。用户本人录音句间停顿中位 0.31、90% 分位 0.47（拼接检查的停顿分布对照它）
+SPLIT = 'mark+lang'   # 合成单位：'mark+lang' = ‖ 处拆 + 中文段里成句的英文单独拆（第 3 轮）；'mark' = 只在 ‖ 处拆；
+#                       'none' = 整段一次合成（用户 2026-11-03：要流畅，少拼接）。任务清单的候选 split 设，选段 --拆分 同步
+
+
 def units(seg):
     """一段 → 小段：稿里 ‖ 标出必须停顿的边界（说完词义、说完一步推理、答案前、问句后），每个小段单独合成、单独选优，
     拼接时中间放 PAUSE_MARK 秒真静音（停顿由构造保证；讲解节奏.check 用识别对齐独立量）。中文小段里成句的英文再单独拆出（lang_split），
     中间放按标点的短静音。没有 ‖、也没有可拆英文的段原样一个小段。"""
+    if SPLIT == 'none':                       # 整段一次合成（中英混说、‖ 都不拆；停顿用模型自然的停顿）
+        return [dict(seg, text=seg['text'].replace(MARK, ''))]
     ps = [p.strip() for p in seg['text'].split(MARK) if p.strip()]
     sub = []
     for k, p in enumerate(ps, 1):
         last_gap = PAUSE_MARK if k < len(ps) else seg.get('gap', 0.6)
-        parts = lang_split(p) if seg['lang'] == 'Chinese' else [(p, seg['lang'], None)]
+        parts = lang_split(p) if seg['lang'] == 'Chinese' and SPLIT == 'mark+lang' else [(p, seg['lang'], None)]
         for j, (t, lang, g) in enumerate(parts):
             sub.append((t, lang, last_gap if j == len(parts) - 1 else g))
     if len(sub) <= 1:
@@ -309,7 +316,7 @@ def _build_units(segs, wavdir, lead, tail):
                       'parts': [[round(t + p, 3), round(t + q, 3)] for p, q in parts], 'text': s['text']})
         pieces.append(x)
         t += dur
-        g = tail + 0.05 if k == len(segs) else s.get('gap', 0.6)     # 结尾多留 50 ms：成品实测结尾静音要 ≥ 2.0 秒（编码延迟会吃掉几毫秒，踩坑 10）
+        g = tail + 0.05 if k == len(segs) else (s.get('gap', 0.6) if GAP_MAX is None else min(s.get('gap', 0.6), GAP_MAX))     # 结尾多留 50 ms：成品实测结尾静音要 ≥ 2.0 秒（编码延迟会吃掉几毫秒，踩坑 10）
         pieces.append(np.zeros(int(round(g * SR)), np.float32))
         t += int(round(g * SR)) / SR
     a = G.master(np.concatenate(pieces), -16.0, parts=[p for it in items for p in it['parts']])
@@ -324,9 +331,17 @@ def render(segs, wavdir, out, lead=1.5, tail=2.0, rhythm=True):
         rrep, rerr = NJ.check(a, G.OUT_SR, items, {s['id']: s['text'] for s in segs})
         if rerr:
             raise RuntimeError('节奏：' + '；'.join(rerr[:6]) + '，未输出')
+        import 拼接检查 as PJ        # 拼接衔接：音高跳变、响度台阶、相邻段语速差、停顿分布（门限取自本人录音）
+        jerr = PJ.problems(PJ.boundaries_of(a, G.OUT_SR, items), json.loads(PJ.TARGET.read_text('utf-8')))
+        if jerr:
+            raise RuntimeError('拼接：' + '；'.join(jerr[:6]) + '，未输出')
+        import 多音字 as PY          # 多音字声调（铁律 23；识别对齐 + 音高走向，独立量）
+        trep, terr = PY.check_items(a, G.OUT_SR, items)
+        if terr:
+            raise RuntimeError('声调：' + '；'.join(terr[:6]) + '，未输出')
     mx, top = tonal_scan(a, G.OUT_SR, items)
     cert = G.save_checked(Path(out), a, items, -16.0)
-    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'rhythm': rrep if rhythm else None, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
+    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'rhythm': rrep if rhythm else None, 'tones': trep if rhythm else None, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
             'clause_check': G.CHAIN, 'breath': 0}
     Path(out).with_suffix('.timings.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
     return meta
