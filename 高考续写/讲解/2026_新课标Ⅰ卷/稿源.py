@@ -42,7 +42,7 @@ add('g05', 'rubric', '第四，有效使用语句间的连接成分，结构紧�
 # ---------- 读原文 ----------
 add('a01', 'p1', '先读原文。第一段交代人物和目的：艾米丽，二十五岁，十二月二十三日出发，要赶到多伦多，和男朋友一起过圣诞。‖这是全文的目标，续写要给出结果。',
     mark=['Emily Sanders, a 25-year-old from Detroit, Michigan', 'reaching Toronto to meet her boyfriend for Christmas'], note='人物与目标：赶去多伦多，和男朋友过圣诞')
-add('a02', 'p1', '冲突从哪里来？‖她听到了暴风雪预警，却没当回事；雪越下越大，她被引下高速，开上一条陌生的路。',
+add('a02', 'p1', '冲突从哪里来？‖她听到了暴风雪预警，却没放在心上；雪越下越大，她被引下高速，开上一条陌生的路。',
     mark=['she didn’t give it much thought', 'Emily was directed off the highway'], note='冲突起点：轻视暴风雪，被引下高速', gap=0.8)
 add('a03', 'p2', '第二段，困境一步步升级：大雪茫茫，几乎没法开车；天黑了，她开始慌，车又滑进了沟里。',
     mark=['The blinding whiteout made driving nearly impossible', 'panic set in', 'her car slid into a ditch'], note='困境升级：大雪封路，车滑进沟里')
@@ -51,23 +51,23 @@ add('a04', 'p2', '手机没有信号，她只能裹着毯子，在车里过夜�
 add('a05', 'p3', '第三段是转机。丹尼尔和瑞秋夫妇在回家路上看到被困的车，停下来帮忙。‖注意这个短语：genuine warmth。真诚的温暖，全文的主题就落在这里：陌生人的善意。',
     mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：陌生夫妇停车相助，真诚温暖')
 add('a06', 'p3', '艾米丽又感激，又宽慰，接受了帮助。‖情感从无助转向温暖。', mark=['Grateful and relieved'], note='情感转折：感激、宽慰', gap=0.8)
-add('a07', 'p4', '第四段最关键。艾米丽说出了三个难处：离目的地还有一百英里，车完全困住了，整个假期计划可能泡汤。‖续写就要把这三个问题一一解决。',
+add('a07', 'p4', '第四段最关键。艾米丽说出了三个难题：离目的地还有一百英里，车完全困住了，整个假期计划可能泡汤。‖续写就要把这三个问题一一解决。',
     mark=['she was about a hundred miles from her destination', 'her car was completely stuck', 'her entire holiday plan could be ruined'],
-    note='三个难处：离目的地一百英里；车困住了；假期计划可能泡汤')
+    note='三个难题：离目的地一百英里；车困住了；假期计划可能泡汤')
 add('a08', 'p4', '还有一个细节：夫妇俩给她买了热巧克力，耐心听她说完。‖这份善意，续写的结尾要让艾米丽回报。',
     mark=['the couple bought Emily a hot chocolate and listened patiently'], note='伏笔：热巧克力、耐心倾听——结尾要有回报', gap=0.8)
 
 # ---------- 开头语、提纲、伏笔 ----------
-add('o01', 'open', '再看开头语。第一段开头：夫妇俩建议她坐火车。‖它解决了第一个难处：怎么去多伦多。‖可是车还在沟里，所以这一段必须安排好车，为第二段埋下伏笔。',
+add('o01', 'open', '再看开头语。第一段开头：夫妇俩建议她坐火车。‖它解决了第一个难题：怎么去多伦多。‖可是车还在沟里，所以这一段必须安排好车，给第二段埋下伏笔。',
     hi='o1', note='第一段：解决“怎么去多伦多”，还要安排好那辆车')
 add('o02', 'open', '第二段开头：三天后，她回来取车。‖说明第一段一定交代了车的去处。‖这一段写车怎么样了，写她怎么道谢，最后点明主题。',
     hi='o2', note='第二段：回来取车 → 车的结果、道谢回报、点明主题', gap=0.8)
-add('l01', 'outline', '按这个思路列提纲。第一段四步：讲清方案，附近就有车站；艾米丽担心车，丹尼尔答应拖车保管；夫妇送站，告别落泪；当晚赶到多伦多，赶上圣诞。',
-    col=1, lines=['① 讲清方案：附近有车站', '② 担心车 → 丹尼尔答应拖车、保管', '③ 送站告别，忍不住落泪', '④ 当晚到多伦多，赶上圣诞'])
+add('l01', 'outline', '按这个思路列提纲。第一段四步：讲清方案，附近就有车站；艾米丽担心车，丹尼尔答应拖车保管；夫妇送站，告别落泪；那晚赶到多伦多，赶上圣诞。',
+    col=1, lines=['① 讲清方案：附近有车站', '② 担心车 → 丹尼尔答应拖车、保管', '③ 送站告别，忍不住落泪', '④ 那晚到多伦多，赶上圣诞'])
 add('l02', 'outline', '第二段四步：先写环境，雪停天晴，和暴风雪形成对比；车已经拖出来、清好了雪，兑现承诺；艾米丽送上饼干和卡片，回报善意；最后点题：陌生人的善意，让这个圣诞节成了最温暖的一个。',
     col=2, lines=['① 环境对比：雪停天晴', '② 车已拖出、清好雪（兑现承诺）', '③ 回报：自制饼干和感谢卡', '④ 点题：陌生人让圣诞最温暖'], gap=0.8)
 add('e01', 'echo', '伏笔与呼应。原文说车完全困住了，续写就让丹尼尔找人把车拖出来。', row=['her car was completely stuck', 'have it towed out of the ditch'])
-add('e02', 'echo', '原文的目标是赶到多伦多见男朋友，续写让她当晚扑进男朋友的怀里。', row=['reaching Toronto to meet her boyfriend for Christmas', 'fell into her boyfriend’s arms in Toronto'])
+add('e02', 'echo', '原文的目标是赶到多伦多见男朋友，续写让她那晚扑进男朋友的怀里。', row=['reaching Toronto to meet her boyfriend for Christmas', 'fell into her boyfriend’s arms in Toronto'])
 add('e03', 'echo', '原文是茫茫大雪，第二段换成阳光，环境变了，心情也变了。', row=['The blinding whiteout made driving nearly impossible', 'lay quiet in the sunshine'])
 add('e04', 'echo', '原文担心假期计划泡汤，结尾用同一个词 ruin 收住：差点毁了，却成了最温暖的圣诞。', row=['her entire holiday plan could be ruined', 'nearly ruined her Christmas'])
 add('e05', 'echo', '原文写瑞秋声音里真诚的温暖，结尾落在最温暖上，主题首尾一贯。‖下面一句一句来写。', row=['With genuine warmth in her voice', 'the warmest of her life'], gap=0.8)
@@ -82,7 +82,7 @@ def sent(blocks, why, steps, pts, alt):
 
 
 sent([['There ', 3], ['was ', 1], ['a station ', 2], ['nearby, ', 3], ['they explained, ', 4], ['and ', 5], ['a train to Toronto ', 2], ['would leave ', 1], ['at noon.', 5]],
-     ('第一句，先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要这句？‖开头语只说了坐火车，方案得落到实处，读者才信。',
+     ('第一句，先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要这句？‖开头语只说了坐火车，方案必须落到实处，读者才信。',
       ['为什么：开头语只说“坐火车”，先把方案讲实（车站在哪、几点有车）']),
      [('汉译英，先定谓语。‖两个分句，两个谓语；插入语 they explained 不算主干。was，一般过去时；would leave，站在过去说将来，用过去将来时。', '谓语：was（一般过去时）；would leave（过去将来时）'),
       ('再补主语。这是存在句，真正的主语是：a station；后半句的主语：a train to Toronto。', '主语：a station；a train to Toronto'),
@@ -93,21 +93,21 @@ sent([['There ', 3], ['was ', 1], ['a station ', 2], ['nearby, ', 3], ['they exp
        ['插入语 they explained：不写 They explained that…，句式更灵活', '插入语不算主干，句子主干仍是两个分句'],
        '得分点一，插入语：they explained。‖不写成 they explained that，句式更灵活，对应第三条，语法结构丰富。', ['they explained that']),
       ('a train to Toronto would leave at noon', ['①'], P4, 'she was about a hundred miles from her destination',
-       ['地点、时间都具体：方案可信', '解决难处一：离目的地还有一百英里'],
+       ['地点、时间都具体：方案可信', '解决难题一：离目的地还有一百英里'],
        '得分点二：a train to Toronto would leave at noon。‖地点、时间都具体，回应原文的一百英里，怎么去的问题解决了，对应第一条，与原文融洽。', [])],
      (['The nearest station was just a short drive away.', 'a train would leave for Toronto at noon'],
       '可替换：The nearest station was just a short drive away。‖后半句也可以写：a train would leave for Toronto at noon。'))
 
 sent([['“But what about my car?” ', 3], ['Emily ', 2], ['asked ', 1], ['anxiously.', 4]],
-     ('第二句，中文是：可是我的车怎么办？‖艾米丽焦急地问。‖人有办法走了，车还在沟里，这是她的第二个难处，让她自己说出来。',
-      ['为什么：人能走了，车还在沟里——让她自己说出第二个难处']),
+     ('第二句，中文是：可是我的车怎么办？‖艾米丽焦急地问。‖人有办法走了，车还在沟里，这是她的第二个难题，让她自己说出来。',
+      ['为什么：人能走了，车还在沟里——让她自己说出第二个难题']),
      [('谓语：asked，问，一般过去时。', '谓语：asked（一般过去时）'),
       ('主语：Emily。', '主语：Emily'),
       ('问的内容用直接引语，放在句首：But what about my car？', '直接引语放句首：“But what about my car?”'),
       ('最后补一个副词：anxiously，焦急地。', '方式状语：anxiously')],
      [('“But what about my car?”', ['①', '④'], P4, 'her car was completely stuck',
-       ['直接引语：人物开口，比叙述更生动', '承上：原文的难处“车困住了”；启下：引出拖车的安排'],
-       '得分点一：直接引语。‖让人物自己开口，比叙述更生动；它接住原文的难处，车完全困住了，又引出下一句丹尼尔的安排，承上启下，对应第一条和第四条。', []),
+       ['直接引语：人物开口，比叙述更生动', '承上：原文的难题“车困住了”；启下：引出拖车的安排'],
+       '得分点一：直接引语。‖让人物自己开口，比叙述更生动；它接住原文的难题，车完全困住了，又引出下一句丹尼尔的安排，承上启下，对应第一条和第四条。', []),
       ('anxiously', ['①'], PANIC, 'panic set in',
        ['anxiously：一个副词写出焦急', '情感线：慌乱 → 焦急，后面再转成感激'],
        '得分点二：anxiously，一个副词写出焦急。‖原文写过她的慌乱：panic set in；这里的焦急接着这条情感线，后面再转成感激，对应第一条，与原文融洽。', [])],
@@ -133,7 +133,7 @@ sent([['Daniel ', 2], ['promised ', 1], ['to have it towed ', 3], ['out of the d
       '可替换：Daniel offered to get the car pulled out，‖后面也可以写：look after it until she came back。'))
 
 sent([['The couple ', 2], ['then ', 4], ['drove ', 1], ['her to the station ', 3], ['and ', 4], ['waited ', 1], ['with her ', 4], ['until the train arrived.', 5]],
-     ('第四句，中文是：接着，夫妇俩开车送她到车站，陪她一直等到火车进站。‖方案落了地，善意也写足了。',
+     ('第四句，中文是：接着，夫妇俩开车送她到车站，陪她一直等到火车进站。‖方案落实了，善意也写足了。',
       ['为什么：方案落地（从咖啡馆到车站），把夫妇的善意写足']),
      [('谓语有两个：drove，开车送；waited，等。都用一般过去时。', '谓语：drove；waited（并列，一般过去时）'),
       ('主语：The couple。用 the couple 指两个人，避免反复写名字。', '主语：The couple（指代夫妇俩，不重复名字）'),
@@ -167,12 +167,12 @@ sent([['Waving to them ', 4], ['through the frosty train window, ', 5], ['Emily 
       '可替换：As the train pulled away，用时间状语从句开头；后面也可以写：Emily felt tears of gratitude welling up in her eyes。'))
 
 sent([['That evening, ', 4], ['she ', 2], ['fell ', 1], ['into her boyfriend’s arms ', 3], ['in Toronto, ', 3], ['just in time for Christmas.', 5]],
-     ('第六句，中文是：当天晚上，她在多伦多扑进了男朋友的怀里，正好赶上圣诞节。‖第一段收尾，给原文的目标一个结果。',
+     ('第六句，中文是：那天晚上，她在多伦多扑进了男朋友的怀里，正好赶上圣诞节。‖第一段收尾，给原文的目标一个结果。',
       ['为什么：第一段收尾——原文的目标（到多伦多和男朋友过圣诞）有了结果']),
      [('谓语：fell，一般过去时。fall into one’s arms，扑进某人怀里。', '谓语：fell（一般过去时）', ['fall into one’s arms']),
       ('主语：she。', '主语：she'),
       ('补上去向和地点：into her boyfriend’s arms in Toronto。', 'into her boyfriend’s arms in Toronto'),
-      ('句首补时间：That evening，当天晚上。', '时间状语：That evening'),
+      ('句首补时间：That evening，那天晚上。', '时间状语：That evening'),
       ('句尾补一句：just in time for Christmas，正好赶上圣诞。', 'just in time for Christmas：正好赶上')],
      [('fell into her boyfriend’s arms', ['①'], P1A, 'reaching Toronto to meet her boyfriend for Christmas',
        ['目标实现：到多伦多，见到男朋友', '原文开头的 high hopes 有了结果，首尾呼应'],
