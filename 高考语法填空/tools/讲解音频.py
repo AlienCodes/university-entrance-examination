@@ -193,12 +193,18 @@ def shift_pitch(x, sr, semis, method='rubberband'):
 def timbre_eq(x, sr, bands):
     from scipy.signal import fftconvolve, firwin2
     fs, gs = [0.0], [1.0]
-    for lo, hi, db in sorted(bands):
+    bands = sorted(bands)
+    for k, (lo, hi, db) in enumerate(bands):
         assert abs(db) <= 3.0 + 1e-9, f'音色还原 {lo}-{hi} Hz {db} dB 超过 ±3 dB'
-        for f, g in ((lo * 0.8, 1.0), (lo, 10 ** (db / 20)), (hi, 10 ** (db / 20)), (hi * 1.25, 1.0)):
-            if f > fs[-1]:
-                fs.append(f)
-                gs.append(g)
+        g = 10 ** (db / 20)
+        if lo * 0.8 > fs[-1]:                       # 与前一段不相接：从 1 平滑过渡
+            fs.append(lo * 0.8)
+            gs.append(1.0)
+        fs += [lo, hi]                              # 相接处频率重复 = 台阶（firwin2 允许）
+        gs += [g, g]
+        if k + 1 == len(bands) or bands[k + 1][0] * 0.8 > hi * 1.25:
+            fs.append(hi * 1.25)
+            gs.append(1.0)
     h = firwin2(2049, fs + [sr / 2], gs + [1.0], fs=sr)
     return fftconvolve(x, h)[1024:1024 + len(x)].astype(np.float32)
 
