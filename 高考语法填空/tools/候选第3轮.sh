@@ -15,12 +15,16 @@ R=""
 for k in $(seq 90); do
   git fetch -q origin gram-tts-out || true
   r=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "任务_${RN}_q56-" | sort -V | tail -1 || true)
-  [ -n "$r" ] && [ "${r##*-}" -gt "$AFTER" ] && { R=$r; break; }
+  if [ -n "$r" ] && [ "${r##*-}" -gt "$AFTER" ]; then
+    rm -rf "$T/runs"; git archive origin/gram-tts-out "$r" | tar -x -C "$T"
+    # 合成机被收回时运行判失败、自动重跑失败的作业（tts-grammar-qwen-rerun.yml）补进同一个目录：不完整就接着等，不拿残缺的结果选段（踩坑 98—100）
+    if $PY 高考语法填空/tools/合成完整性.py "$T/$r"/* > "$T/wz.txt" 2>&1; then R=$r; break; fi
+    echo "$(date -u +%T) $r 还不完整，等重跑补齐：$(grep -c ✗ "$T/wz.txt") 处"
+  fi
   sleep 120
 done
-[ -n "$R" ] || { echo "3 小时内没等到合成结果"; exit 1; }
+[ -n "$R" ] || { echo "3 小时内没等到完整的合成结果"; cat "$T/wz.txt" 2>/dev/null; exit 1; }
 echo "合成结果：$R"
-git archive origin/gram-tts-out "$R" | tar -x -C "$T"
 Q=$(python3 -c "import json; print(' '.join(json.load(open('$TASK'))['only']))")
 IDS=$(python3 -c "import json; print(' '.join(c['id'] for c in json.load(open('$TASK'))['candidates']))")
 OUTS=()
