@@ -3,8 +3,10 @@
 ② 开头语：题目.json 的开头语 = 范文每段第一句（逐字）= 续写题汇编_高考真题.docx 里的那一句；题目原文每段与 docx 逐字相同；
 ③ 引用原文：原文屏 mark 的每个短语、伏笔表 row[0] 都在原文里（逐字）；row[1] 在范文里；
    中文段配音文字里成句的英文（≥ 2 个词）必须出自原文、范文，或写在本段的 替换（可替换表达）/ 例 里；替换、例 不许就是范文原句；原文屏上引的英文只许出自原文；
-④ 逐句五步（用户 2026-11-03）：每个范文句（开头语除外）都有 zh 中文构思 → v 谓语 → s 主语 → r 其余（≥ 1 步）→ read 读整句 → pt 得分点（≥ 1）→ alt 可替换，
-   顺序不乱；范文.json 每句的“块”拼起来 = 原句，块的步号 = 1..N 连续，v/s/r 段的 show 依次 = 1..N（v = 1 谓语，s = 2 主语）；read = 原句去引号；
+④ 逐句讲（用户 2026-11-03 第二版：一块一块翻、一气呵成）：每个范文句（开头语除外）都有 zh 中文构思 → chunk 逐块翻（≥ 1 块）→ join 连成一句
+   → read 读整句 → pt 得分点（≥ 1）→ alt 可替换，顺序不乱；chunk 的 show 依次 = 1..N，hl 是中文句的子串，en / note 非空，en 没有英式拼写；
+   join：有 base（保底版）就是 step=base、step=fan 两段，否则只有 fan 一段；marks 每个都按整词在范文句里（and 以外只出现一次）；
+   旧讲法（v/s/r、范文.json 的“块”）出现就报；read = 原句去引号；
    得分点：hl 在这句里、档 ⊆ ①②③④、src 是原文或开头语里的原句片段、mark 在 src 里、有画面文字；可替换有 替换 列表；
    每段讲完整段连读（para1 / para2 = 整段去引号）；全文通读按顺序读完全部句子；
 ⑤ 朗读文本：不许有 blank；中文段没有阿拉伯数字；英文段没有引号、括号、中文；问句干脆（不带 呢/吧/啊，后面接 ‖ 或段尾，踩坑 93）；
@@ -28,7 +30,7 @@ import 作文规则 as R  # noqa: E402
 
 DOCX = ROOT / '高考续写/续写题汇编_高考真题.docx'
 EN_RUN = re.compile(r"[A-Za-z][A-Za-z0-9 ,;:'’.-]*[A-Za-z]")
-PHASES = ['zh', 'v', 's', 'r', 'read', 'pt', 'alt']
+PHASES = ['zh', 'chunk', 'join', 'read', 'pt', 'alt']
 DANG = set('①②③④')
 OLD = ROOT / '高考续写/续写题汇总.json'
 OVERLAP_MAX = 0.03
@@ -117,23 +119,41 @@ def problems(t, fw, doc, docx=None):
             continue
         ph = [s.get('ph') for s in ss]
         if [p for i, p in enumerate(ph) if i == 0 or p != ph[i - 1]] != PHASES:
-            E.append(f'④ s{k}：步骤顺序 {ph} ≠ 中文构思→谓语→主语→其余→读句→得分点→可替换')
-        if ph.count('v') != 1 or ph.count('s') != 1 or ph.count('zh') != 1 or ph.count('read') != 1 or ph.count('alt') != 1:
-            E.append(f'④ s{k}：中文构思、谓语、主语、读句、可替换各要恰好一段')
-        bl = sen.get('块') or []
-        if ''.join(x[0] for x in bl).strip() != sen['en']:
-            E.append(f'④ s{k}：块拼起来 ≠ 原句')
-        steps = sorted({x[1] for x in bl})
-        if steps != list(range(1, len(steps) + 1)) or len(steps) < 3:
-            E.append(f'④ s{k}：块的步号 {steps} 不是 1..N（N ≥ 3）')
-        shows = [s.get('show') for s in ss if s.get('ph') in ('v', 's', 'r')]
-        if shows != steps:
-            E.append(f'④ s{k}：谓语/主语/其余的出现顺序 {shows} ≠ 块的步号 {steps}')
+            E.append(f'④ s{k}：步骤顺序 {ph} ≠ 中文构思→逐块翻→连成一句→读句→得分点→可替换')
+        if ph.count('zh') != 1 or ph.count('read') != 1 or ph.count('alt') != 1:
+            E.append(f'④ s{k}：中文构思、读句、可替换各要恰好一段')
+        if '块' in sen:
+            E.append(f'④ s{k}：范文.json 还有旧讲法的“块”')
+        ck = [s for s in ss if s.get('ph') == 'chunk']
+        if [s.get('show') for s in ck] != list(range(1, len(ck) + 1)) or not ck:
+            E.append(f"④ s{k}：逐块翻的 show {[s.get('show') for s in ck]} 不是 1..N（N ≥ 1）")
+        for s in ck:
+            if not s.get('hl') or s['hl'] not in sen['zh']:
+                E.append(f"④ {s['id']}：顶部高亮“{s.get('hl')}”不在中文句里")
+            if not s.get('zh') or not s.get('en', '').strip() or not s.get('note'):
+                E.append(f"④ {s['id']}：逐块翻缺 zh / en / note")
+            E += [f"④ {s['id']}：英式拼写 {w}" for w in R.spelling(s.get('en', ''))]
+        jn = [s for s in ss if s.get('ph') == 'join']
+        want = ['base', 'fan'] if jn and jn[0].get('base') else ['fan']
+        if [s.get('step') for s in jn] != want:
+            E.append(f"④ s{k}：连成一句的步骤 {[s.get('step') for s in jn]} ≠ {want}")
+        for s in jn:
+            for m in s.get('marks') or []:
+                n = len(re.findall(rf'(?<![A-Za-z’]){re.escape(m)}(?![A-Za-z’])', sen['en']))
+                if n == 0 or (n > 1 and m != 'and'):
+                    E.append(f"④ {s['id']}：连接处“{m}”在范文句里出现 {n} 次（应恰好 1 次，and 除外）")
+            if not s.get('marks'):
+                E.append(f"④ {s['id']}：连成一句没写 marks")
+            if s.get('base'):
+                if R.spelling(s['base']) or not re.fullmatch(r'[A-Z].*[.?!”]', s['base']):
+                    E.append(f"④ {s['id']}：保底版拼写 / 句首大写 / 句末标点不对：{s['base'][:30]}")
+                if noq(s['base']) == noq(sen['en']):
+                    E.append(f"④ {s['id']}：保底版就是范文句（不用分两步）")
         rd = [s for s in ss if s['lang'] == 'English']
         if len(rd) != 1 or rd[0]['text'] != noq(sen['en']) or rd[0].get('ph') != 'read':
             E.append(f'④ s{k}：读句（英文段）与范文句不一致')
         for s in ss:
-            if s.get('ph') in ('zh', 'v', 's', 'r', 'pt', 'alt') and not s.get('ln'):
+            if s.get('ph') in ('zh', 'chunk', 'join', 'pt', 'alt') and not s.get('ln'):
                 E.append(f"④ {s['id']}：没有画面文字")
             if s.get('ph') == 'pt':
                 if not s.get('hl') or s['hl'] not in sen['en']:
@@ -275,9 +295,15 @@ def selftest():
         '高亮不在原文': (lambda a, b, c: seg(c, 'a02')['mark'].__setitem__(0, 'she didn’t give it any thought'), '③ a02'),
         '引用编造原文': (lambda a, b, c: seg(c, 'a05').update(text=seg(c, 'a05')['text'].replace('genuine warmth', 'true warmth')), '③ a05'),
         '漏讲一句': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['screen'] != 's6']), '④ 范文第 6 句'),
-        '缺谓语一步': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['id'] != 's3b1']), '④ s3'),
-        '块拼不出原句': (lambda a, b, c: sen(b, 3)['块'][0].__setitem__(0, 'Dan '), '④ s3：块拼起来'),
-        '出现顺序乱': (lambda a, b, c: (seg(c, 's3b3').update(show=4), seg(c, 's3b4').update(show=3)), '④ s3：谓语/主语/其余'),
+        '缺一块': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['id'] != 's3b1']), '④ s3：逐块翻的 show'),
+        '逐块顺序乱': (lambda a, b, c: (seg(c, 's3b2').update(show=3), seg(c, 's3b3').update(show=2)), '④ s3：逐块翻的 show'),
+        '顶部高亮不在中文句': (lambda a, b, c: seg(c, 's7b2').update(hl='那条路静静地躺在阳光里'), '④ s7b2：顶部高亮'),
+        '连接处不在范文句': (lambda a, b, c: seg(c, 's9bf').update(marks=['which read']), '④ s9bf：连接处'),
+        '连接处出现两次': (lambda a, b, c: seg(c, 's11bf').update(marks=['her']), '④ s11bf：连接处'),
+        '保底版拼错': (lambda a, b, c: seg(c, 's5bj').update(base=seg(c, 's5bj')['base'].replace('window', 'windw').rstrip('.')), '④ s5bj：保底版'),
+        '保底版缺范文一步': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['id'] != 's8bf']), '④ s8：连成一句的步骤'),
+        '旧讲法（谓语一步）': (lambda a, b, c: seg(c, 's3b1').update(ph='v'), '④ s3：步骤顺序'),
+        '旧讲法（范文还有块）': (lambda a, b, c: sen(b, 3).__setitem__('块', [['Daniel ', 2]]), '④ s3：范文.json 还有旧讲法'),
         '得分点不在句中': (lambda a, b, c: seg(c, 's3p2').update(hl='was taken'), '④ s3p2'),
         '得分点没写档': (lambda a, b, c: seg(c, 's5p1').update(dang=['⑤']), '④ s5p1'),
         '配音的条与档不一致': (lambda a, b, c: seg(c, 's6p2').update(dang=['②']), '④ s6p2'),
