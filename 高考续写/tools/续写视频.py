@@ -24,8 +24,10 @@ import 讲解视频 as V  # noqa: E402
 MIN = {'zh': 40, 'pa': 36, 'en': 44, 'fu': 36}
 START = {'zh': 44, 'pa': 40, 'en': 50, 'fu': 40}
 SEC = {'task': '题目要求', 'p1': '读原文', 'p2': '读原文', 'p3': '读原文', 'p4': '读原文', 'open': '开头语分析', 'outline': '情节提纲',
-       'echo': '伏笔与呼应', 'fail': '常见失分点', 'sum': '方法总结', 'full': '完整范文'}
+       'echo': '伏笔与呼应', 'rubric': '评分标准', 'para1': '第一段连读', 'para2': '第二段连读', 'fail': '常见失分点', 'sum': '方法总结', 'full': '完整范文'}
 CN = '一二三四五六七八九十'
+STEP5 = [('zh', '① 中文构思'), ('v', '② 谓语'), ('s', '③ 主语'), ('r', '④ 其余'), ('pt', '⑤ 得分点')]
+DANGN = {'①': '① 融洽衔接', '②': '② 内容丰富', '③': '③ 语法词汇', '④': '④ 连接紧凑'}
 
 CSS = """
 .tx, .ttl { line-break: strict; word-break: normal; text-wrap: pretty; }
@@ -54,6 +56,19 @@ CSS = """
 .rw.hd2 .tx { color: var(--muted); font-weight: 700; }
 .rw.new { background: var(--hl); border-radius: 12px; }
 .note { white-space: nowrap; color: var(--muted); }
+.s5 { display: flex; gap: 12px; margin-bottom: 14px; }
+.s5 .st { font-size: 30px; padding: 6px 0; }
+.hid { visibility: hidden; }
+.bw { display: flex; flex-wrap: wrap; column-gap: 18px; }
+.bw .bi { width: fit-content; max-width: 100%; }
+.zhl { color: var(--muted); }
+.zhl b { color: var(--ink); font-weight: 600; }
+.dg { display: inline-block; white-space: nowrap; font-size: 30px; font-weight: 700; color: #fff; background: var(--blue); border-radius: 10px; padding: 0 12px; margin-right: 10px; }
+.cols2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 46px; }
+.srcb { border-left: 6px solid var(--line); padding-left: 24px; }
+.srcb .lb { font-size: 32px; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+.ptk { margin-bottom: 10px; }
+.ptk.old .tx { color: var(--muted); }
 """
 
 FIT_JS = r"""() => {
@@ -172,25 +187,47 @@ def frames(doc):
         elif scr.startswith('s') and scr[1:].isdigit():
             k = int(scr[1:])
             pi, si = own[k - 1]
-            sen = P[pi][si]['en']
-            st = sl.setdefault(scr, {'mean': [], 'pt': [], 'how': [], 'hl': []})
+            sen = P[pi][si]
+            st = sl.setdefault(scr, {'build': [], 'pts': []})
             ph = s['ph']
-            if s.get('ln'):
-                st[ph].append(s['ln'])
-            cur = [s['hl']] if s.get('hl') else []
-            old = [h for h in st['hl'] if h not in cur]
-            if s.get('hl'):
-                st['hl'].append(s['hl'])
-            es = hilite(sen, cur if ph == 'pt' else [], old if ph in ('pt', 'how') else [])
-            sec = f'逐句讲范文 · 第 {k} / {len(own)} 句'
-            top = card(f'<div class="ttl zh">范文第 {k} 句（第{CN[pi]}段）</div><div class="es">{es}</div>')
-            if ph == 'read':
-                para = ' '.join(f'<span class="{"gv" if x.get("given") else ("" if j == si else "dim")}">{esc(x["en"])}</span>' for j, x in enumerate(P[pi]))
-                low = card(f'<div class="ttl zh">第{CN[pi]}段范文（蓝色是题目给的开头语）</div><div class="en">{para}</div>')
+            shown = s['show'] if ph in ('v', 's', 'r') else (0 if ph == 'zh' else 99)
+            if ph in ('v', 's', 'r'):
+                st['build'] += s['ln']
+            if ph == 'pt':
+                st['pts'].append(s)
+            stage = {'read': 'r', 'alt': 'pt'}.get(ph, ph)
+            order = [x for x, _ in STEP5]
+            bar = ''.join(f'<div class="st{" on" if x == stage else (" done" if order.index(x) < order.index(stage) else "")}">{lb}</div>' for x, lb in STEP5)
+            if ph in ('pt', 'alt'):
+                cur = [s['hl']] if ph == 'pt' else []
+                old = [x['hl'] for x in st['pts'] if x is not s]
+                es = hilite(sen['en'], cur, old)
             else:
-                ttl = {'mean': '意思与作用', 'pt': '得分点', 'how': '怎么写 · 可替换'}[ph]
-                low = card(f'<div class="ttl zh">{ttl}</div>{lines_html(st[ph], 1 if s.get("ln") else 0)}')
-            body = head(t, sec) + top + low
+                es = ''.join(f'<span class="{"hid" if n > shown else ("mk" if n == shown and ph != "read" else "")}">{esc(x)}</span>' for x, n in sen['块'])
+            top = card(f'<div class="s5">{bar}</div>'
+                       f'<div class="tx zhl">中文：<b>{esc(sen["zh"])}</b></div><div class="es">{es}</div>')
+            if ph == 'zh':
+                low = card(f'<div class="ttl zh">先想中文：为什么要写这一句</div>{lines_html(s["ln"], len(s["ln"]))}')
+            elif ph in ('v', 's', 'r', 'read'):
+                n_new = 0 if ph == 'read' else 1
+                bl = ''.join(f'<div class="tx nl bi{" new" if i >= len(st["build"]) - n_new else ""}">{esc(x)}</div>' for i, x in enumerate(st['build']))
+                low = card(f'<div class="ttl zh">汉译英：先谓语，再主语，再其余</div><div class="bw">{bl}</div>')
+            elif ph == 'pt':
+                pts = ('<div class="ptk">' + ''.join(f'<span class="dg">{DANGN[d]}</span>' for d in s['dang'])
+                       + lines_html(s['ln'], len(s['ln'])) + '</div>')
+                src = hilite(s['src'], s['mark'])
+                low = card(f'<div class="ttl zh">得分点（对应第五档）</div><div class="cols2"><div>{pts}</div>'
+                           f'<div class="srcb"><div class="lb zh">原文出处</div><div class="en">{src}</div></div></div>')
+            else:
+                low = card(f'<div class="ttl zh">可替换表达</div>{lines_html(s["ln"], len(s["ln"]))}')
+            body = head(t, f'逐句讲范文 · 第{CN[pi]}段 · 第 {k} / {len(own)} 句') + top + low
+        elif scr == 'rubric':
+            body = head(t, SEC[scr]) + card(f'<div class="ttl zh">满分标准：第五档（二十一至二十五分）</div>{lines_html(notes.get(scr, []), nn)}')
+        elif scr in ('para1', 'para2'):
+            pi = int(scr[-1]) - 1
+            para = ' '.join(f'<span class="{"gv" if x.get("given") else ""}">{esc(x["en"])}</span>' for x in P[pi])
+            zh = ''.join(esc(x['zh']) for x in P[pi])
+            body = head(t, SEC[scr]) + card(f'<div class="ttl zh">第{CN[pi]}段范文（蓝色是题目给的开头语）</div><div class="fu">{para}</div>') + card(f'<div class="tx muted">{zh}</div>')
         elif scr in ('fail', 'sum'):
             ttl = '常见失分点' if scr == 'fail' else '方法总结：读后续写五步'
             body = head(t, SEC[scr]) + card(f'<div class="ttl zh">{ttl}</div>{lines_html(notes.get(scr, []), nn)}')

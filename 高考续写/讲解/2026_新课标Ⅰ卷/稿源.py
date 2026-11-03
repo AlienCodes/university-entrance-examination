@@ -10,8 +10,8 @@ D = Path(__file__).resolve().parent
 P3 = 'Standing outside were Daniel and his wife Rachel, who noticed the stranded (被困的) vehicle on their way home and stopped to see if they could help.'
 P3B = 'With genuine warmth in her voice, Rachel said they could take Emily to a nearby cafe they knew.'
 P3C = 'When Emily rolled down the window, Rachel asked if she was okay and told her it was not safe to stay overnight in the car.'
-P4 = ('In the cafe, the couple bought Emily a hot chocolate and listened patiently as she explained her desperate situation: she was about a hundred miles '
-      'from her destination, her car was completely stuck, and her entire holiday plan could be ruined.')
+P4A = 'In the cafe, the couple bought Emily a hot chocolate and listened patiently as she explained her desperate situation'   # 原文第四段这一句太长，出处只放用到的半句
+P4 = 'she was about a hundred miles from her destination, her car was completely stuck, and her entire holiday plan could be ruined.'
 P1A = ('Emily Sanders, a 25-year-old from Detroit, Michigan, set out on December 23rd with high hopes of reaching Toronto to meet her boyfriend '
        'for Christmas.')
 DITCH = 'While Emily was driving on a narrow stretch of road, her car slid into a ditch (沟).'
@@ -48,7 +48,7 @@ add('a03', 'p2', '第二段，困境一步步升级：大雪茫茫，几乎没�
     mark=['The blinding whiteout made driving nearly impossible', 'panic set in', 'her car slid into a ditch'], note='困境升级：大雪封路，车滑进沟里')
 add('a04', 'p2', '手机没有信号，她只能裹着毯子，在车里过夜。‖情感线很清楚：满怀希望，到慌乱，再到无助。',
     mark=['found no signal on her phone', 'She wrapped herself in a blanket'], note='情感线：希望 → 慌乱 → 无助', gap=0.8)
-add('a05', 'p3', '第三段是转机。丹尼尔和瑞秋夫妇在回家路上看到被困的车，停下来帮忙。‖注意这个词：genuine warmth。真诚的温暖，全文的主题就落在这里：陌生人的善意。',
+add('a05', 'p3', '第三段是转机。丹尼尔和瑞秋夫妇在回家路上看到被困的车，停下来帮忙。‖注意这个短语：genuine warmth。真诚的温暖，全文的主题就落在这里：陌生人的善意。',
     mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：陌生夫妇停车相助，真诚温暖')
 add('a06', 'p3', '艾米丽又感激，又宽慰，接受了帮助。‖情感从无助转向温暖。', mark=['Grateful and relieved'], note='情感转折：感激、宽慰', gap=0.8)
 add('a07', 'p4', '第四段最关键。艾米丽说出了三个难处：离目的地还有一百英里，车完全困住了，整个假期计划可能泡汤。‖续写就要把这三个问题一一解决。',
@@ -84,14 +84,14 @@ def sent(blocks, why, steps, pts, alt):
 sent([['There ', 3], ['was ', 1], ['a station ', 2], ['nearby, ', 3], ['they explained, ', 4], ['and ', 5], ['a train to Toronto ', 2], ['would leave ', 1], ['at noon.', 5]],
      ('第一句，先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要这句？‖开头语只说了坐火车，方案得落到实处，读者才信。',
       ['为什么：开头语只说“坐火车”，先把方案讲实（车站在哪、几点有车）']),
-     [('汉译英，先定谓语。‖两个分句，两个谓语：was，一般过去时；would leave，站在过去说将来，用过去将来时。', '谓语：was（一般过去时）；would leave（过去将来时）'),
+     [('汉译英，先定谓语。‖两个分句，两个谓语；插入语 they explained 不算主干。was，一般过去时；would leave，站在过去说将来，用过去将来时。', '谓语：was（一般过去时）；would leave（过去将来时）'),
       ('再补主语。这是存在句，真正的主语是：a station；后半句的主语：a train to Toronto。', '主语：a station；a train to Toronto'),
       ('补上 There 和 nearby：附近有个车站。', 'There 引出存在句；nearby 作地点状语'),
       ('中间插入一句：they explained，他们解释说。', '插入语：they explained'),
       ('最后用 and 连起两个分句，句尾补上时间：at noon。', 'and 连接分句；at noon 交代时间')],
      [('they explained', ['③'], P3B, 'Rachel said they could take Emily to a nearby cafe',
-       ['插入语 they explained：不写 They explained that…，句式更灵活', '原文用转述写夫妇的话，这里口吻一致'],
-       '得分点一，插入语：they explained。‖不写成 they explained that，句式更灵活，对应第三条，语法结构丰富。‖原文第三段就是用转述写夫妇的话，这里接着用，口吻一致。', ['they explained that']),
+       ['插入语 they explained：不写 They explained that…，句式更灵活', '插入语不算主干，句子主干仍是两个分句'],
+       '得分点一，插入语：they explained。‖不写成 they explained that，句式更灵活，对应第三条，语法结构丰富。', ['they explained that']),
       ('a train to Toronto would leave at noon', ['①'], P4, 'she was about a hundred miles from her destination',
        ['地点、时间都具体：方案可信', '解决难处一：离目的地还有一百英里'],
        '得分点二：a train to Toronto would leave at noon。‖地点、时间都具体，回应原文的一百英里，怎么去的问题解决了，对应第一条，与原文融洽。', [])],
@@ -108,9 +108,9 @@ sent([['“But what about my car?” ', 3], ['Emily ', 2], ['asked ', 1], ['anxi
      [('“But what about my car?”', ['①', '④'], P4, 'her car was completely stuck',
        ['直接引语：人物开口，比叙述更生动', '承上：原文的难处“车困住了”；启下：引出拖车的安排'],
        '得分点一：直接引语。‖让人物自己开口，比叙述更生动；它接住原文的难处，车完全困住了，又引出下一句丹尼尔的安排，承上启下，对应第一条和第四条。', []),
-      ('anxiously', ['③', '①'], PANIC, 'panic set in',
+      ('anxiously', ['①'], PANIC, 'panic set in',
        ['anxiously：一个副词写出焦急', '情感线：慌乱 → 焦急，后面再转成感激'],
-       '得分点二：anxiously，一个副词写出焦急。‖原文写过她的慌乱：panic set in；这里的焦急接着这条情感线，后面再转成感激。', [])],
+       '得分点二：anxiously，一个副词写出焦急。‖原文写过她的慌乱：panic set in；这里的焦急接着这条情感线，后面再转成感激，对应第一条，与原文融洽。', [])],
      (['What will happen to my car?', 'Emily asked with a worried frown'],
       '可替换：What will happen to my car？‖也可以写：Emily asked with a worried frown。'))
 
@@ -143,7 +143,7 @@ sent([['The couple ', 2], ['then ', 4], ['drove ', 1], ['her to the station ', 3
      [('drove her to the station and waited with her', ['③', '④'], P3, 'noticed the stranded (被困的) vehicle on their way home and stopped',
        ['并列谓语：一句两个动作，结构紧凑', '原文写这对夫妇，也是并列谓语：noticed … and stopped'],
        '得分点一：并列谓语，一句两个动作，结构紧凑，对应第三条和第四条。‖原文写这对夫妇，也是这样：注意到被困的车，停下来看能不能帮忙。', []),
-      ('waited with her until the train arrived', ['②'], P4, 'listened patiently',
+      ('waited with her until the train arrived', ['②'], P4A, 'listened patiently',
        ['细节：不是送到就走，而是陪着等车', '和原文 listened patiently 一样，写夫妇的耐心'],
        '得分点二：waited with her until the train arrived。‖不是送到就走，而是陪着等车，这个细节让善意更具体，对应第二条，内容丰富。‖和原文的耐心倾听一样，写的都是这对夫妇的耐心。', [])],
      (['saw her off at the station', 'stayed by her side until the train pulled in'],
@@ -162,14 +162,14 @@ sent([['Waving to them ', 4], ['through the frosty train window, ', 5], ['Emily 
        '得分点一：现在分词作状语，Waving to them。‖原文就有同样的结构：Seeing no hope of immediate rescue。‖续写模仿原文句式，语言风格统一，对应第三条和第一条。', []),
       ('could hardly hold back her tears', ['②', '①'], GRATE, 'Grateful and relieved',
        ['用动作写情感：不说“很感激”，写她忍不住流泪', '情感线：感激、宽慰 → 推到高点'],
-       '得分点二：could hardly hold back her tears。‖不直接说她很感激，而是写她忍不住流泪，用动作写情感。‖原文写她 grateful and relieved，这里把感激推到了高点。', [])],
-     (['As the train pulled away', 'tears of gratitude filled her eyes'],
-      '可替换：As the train pulled away，用时间状语从句开头；后面也可以写：tears of gratitude filled her eyes。'))
+       '得分点二：could hardly hold back her tears。‖不直接说她很感激，而是写她忍不住流泪，用动作写情感。‖原文写她 grateful and relieved，这里把感激推到了高点，对应第二条和第一条。', [])],
+     (['As the train pulled away', 'Emily felt tears of gratitude welling up in her eyes'],
+      '可替换：As the train pulled away，用时间状语从句开头；后面也可以写：Emily felt tears of gratitude welling up in her eyes。'))
 
 sent([['That evening, ', 4], ['she ', 2], ['fell ', 1], ['into her boyfriend’s arms ', 3], ['in Toronto, ', 3], ['just in time for Christmas.', 5]],
      ('第六句，中文是：当天晚上，她在多伦多扑进了男朋友的怀里，正好赶上圣诞节。‖第一段收尾，给原文的目标一个结果。',
       ['为什么：第一段收尾——原文的目标（到多伦多和男朋友过圣诞）有了结果']),
-     [('谓语：fell，一般过去时，扑进怀里的扑。', '谓语：fell（一般过去时）'),
+     [('谓语：fell，一般过去时。fall into one’s arms，扑进某人怀里。', '谓语：fell（一般过去时）', ['fall into one’s arms']),
       ('主语：she。', '主语：she'),
       ('补上去向和地点：into her boyfriend’s arms in Toronto。', 'into her boyfriend’s arms in Toronto'),
       ('句首补时间：That evening，当天晚上。', '时间状语：That evening'),
@@ -186,7 +186,7 @@ sent([['That evening, ', 4], ['she ', 2], ['fell ', 1], ['into her boyfriend’s
 sent([['The sky ', 2], ['was ', 1], ['clear now, ', 3], ['and ', 4], ['the road ', 2], ['that had trapped her ', 5], ['lay ', 1], ['quiet ', 3], ['in the sunshine.', 4]],
      ('第二段第一句，中文是：这时天已经放晴，那条曾经困住她的路，静静地躺在阳光里。‖先写环境，环境变了，心情也就变了。',
       ['为什么：先写环境——从暴风雪到晴天，映出心情的变化']),
-     [('两个分句，两个谓语：was，一般过去时；lay，是 lie 的过去式，躺着。', '谓语：was；lay（lie 的过去式）'),
+     [('两个分句，两个谓语；插入语 they explained 不算主干。was，一般过去时；lay，是 lie 的过去式，躺着。', '谓语：was；lay（lie 的过去式）'),
       ('两个主语：The sky，天空；the road，那条路。', '主语：The sky；the road'),
       ('补上表语：clear now，晴了；quiet，静静的。', '表语：clear now；quiet'),
       ('再补 and 连接两个分句，句尾补地点：in the sunshine。', 'and 连接分句；in the sunshine'),
@@ -224,14 +224,14 @@ sent([['Emily ', 2], ['handed ', 1], ['them a box of homemade cookies ', 3], ['a
       ('补上两个宾语：them，给他们；a box of homemade cookies，一盒自己烤的饼干。', '双宾语：them + a box of homemade cookies'),
       ('再并列一个宾语：and a card，一张卡片。', '并列宾语：and a card'),
       ('最后修饰卡片：that read，定语从句，read 在这里是写着；后面是卡片上的话。', '定语从句：that read（写着）+ 卡片上的话')],
-     [('homemade cookies', ['①', '②'], P4, 'the couple bought Emily a hot chocolate',
+     [('homemade cookies', ['①', '②'], P4A, 'the couple bought Emily a hot chocolate',
        ['回报：原文他们给她买热巧克力，她带着亲手烤的饼干回来', '一来一往，善意有了回应'],
        '得分点一：homemade cookies，亲手烤的饼干。‖原文里夫妇俩给她买了热巧克力；现在她带着自己做的饼干回来，一来一往，善意有了回应，对应第一条和第二条。', []),
       ('that read, “Thank you for saving my holiday.”', ['③', '①'], P4, 'her entire holiday plan could be ruined',
        ['read 作“写着”讲：词汇准确', '卡片上的 holiday 回应原文“假期计划可能泡汤”'],
-       '得分点二：a card that read，read 在这里的意思是写着。‖卡片上的话：Thank you for saving my holiday。‖holiday 这个词，正好回应原文：her entire holiday plan could be ruined。', [])],
-     (['a thank-you card', 'as a small token of her thanks'],
-      '可替换：a thank-you card，感谢卡；还可以加一句：as a small token of her thanks，聊表谢意。'))
+       '得分点二：a card that read，read 在这里的意思是写着。‖卡片上的话：Thank you for saving my holiday。‖holiday 这个词，正好回应原文：her entire holiday plan could be ruined，对应第三条和第一条。', [])],
+     (['a thank-you card', 'as a small token of her gratitude'],
+      '可替换：a thank-you card，感谢卡；还可以加一句：as a small token of her gratitude，聊表谢意。'))
 
 sent([['“We just did what anyone would do,” ', 3], ['Rachel ', 2], ['said, ', 1], ['giving her a warm hug.', 4]],
      ('第四句，中文是：我们只是做了任何人都会做的事，瑞秋说着，温暖地拥抱了她。‖瑞秋的回答轻描淡写，更显真诚。',
@@ -289,9 +289,10 @@ for k, ((pi, si), x) in enumerate(zip(own, S), 1):
     sc = f's{k}'
     why_text, why_ln = x['why']
     add(f's{k}z', sc, why_text, ph='zh', ln=why_ln)
-    for j, (text, ln) in enumerate(x['steps'], 1):
+    for j, step in enumerate(x['steps'], 1):
+        text, ln = step[:2]
         ph = 'v' if j == 1 else ('s' if j == 2 else 'r')
-        add(f's{k}b{j}', sc, text, ph=ph, show=j, ln=[ln])
+        add(f's{k}b{j}', sc, text, ph=ph, show=j, ln=[ln], **({'例': step[2]} if len(step) > 2 else {}))
     add(f's{k}e', sc, noq(sen['en']), lang='English', ph='read', gap=0.7)
     for j, (hl, dang, src, mark, ln, text, ex) in enumerate(x['pts'], 1):
         kw = {'例': ex} if ex else {}

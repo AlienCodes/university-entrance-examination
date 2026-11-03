@@ -138,6 +138,9 @@ def problems(t, fw, doc, docx=None):
                     E.append(f"④ {s['id']}：得分点短语“{s.get('hl')}”不在这句里")
                 if not s.get('dang') or not set(s['dang']) <= DANG:
                     E.append(f"④ {s['id']}：没写对应第五档哪一条（{s.get('dang')}）")
+                said = {'①②③④'['一二三四'.index(c)] for m in re.finditer(r'对应第([一二三四])条(?:和第([一二三四])条)?', s['text']) for c in m.groups() if c}
+                if said != set(s.get('dang') or []):
+                    E.append(f"④ {s['id']}：配音说的“对应第几条”{sorted(said)} ≠ 画面的档 {s.get('dang')}")
                 if not s.get('src') or s['src'] not in src_all:
                     E.append(f"④ {s['id']}：原文出处不是原文 / 开头语里的原句")
                 elif not s.get('mark') or any(m not in s['src'] for m in s['mark']):
@@ -256,6 +259,8 @@ def selftest():
         '出现顺序乱': (lambda a, b, c: (seg(c, 's3b3').update(show=4), seg(c, 's3b4').update(show=3)), '④ s3：谓语/主语/其余'),
         '得分点不在句中': (lambda a, b, c: seg(c, 's3p2').update(hl='was taken'), '④ s3p2'),
         '得分点没写档': (lambda a, b, c: seg(c, 's5p1').update(dang=['⑤']), '④ s5p1'),
+        '配音的条与档不一致': (lambda a, b, c: seg(c, 's6p2').update(dang=['②']), '④ s6p2'),
+        '配音没说第几条': (lambda a, b, c: seg(c, 's9p2').update(text=seg(c, 's9p2')['text'].replace('，对应第三条和第一条', '')), '④ s9p2'),
         '出处不是原文': (lambda a, b, c: seg(c, 's7p2').update(src='The heavy snow made driving impossible.'), '④ s7p2'),
         '缺可替换': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['id'] != 's4h']), '④ s4'),
         '段落连读不全': (lambda a, b, c: seg(c, 'r2b').update(text=seg(c, 'r2b')['text'].rsplit('. ', 1)[0] + '.'), '④ 第 2 段'),
