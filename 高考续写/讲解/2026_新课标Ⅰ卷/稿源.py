@@ -1,176 +1,325 @@
-# 稿.json 由本文件生成（改稿改这里，再在本目录运行 python3 稿源.py，并复制到 高考语法填空/tts/稿_续写_2026_新课标Ⅰ卷.json；续写检查.py ⑥ 核对副本）
-import json, sys
-fw = json.load(open('范文.json'))
-S = [s for p in fw['paragraphs'] for s in p]
-own = [s for s in S if not s.get('given')]
+"""2026 新课标Ⅰ卷 读后续写讲解稿（2026-11-03 新会话从零写，旧稿作废）→ 稿.json，并把每句的“块”写进 范文.json。
+逐句五步（用户 2026-11-03）：zh 中文构思 → v 谓语 → s 主语 → r 其余（逐块补齐）→ read 读整句 → pt 得分点（档 + 原文出处 src/mark）→ alt 可替换。
+块：[文字, 第几步出现]，1 = 谓语、2 = 主语、3 起 = 其余；拼起来 = 范文句（续写检查.py ④ 查）。
+朗读规则：中文段不写阿拉伯数字；问句不带 呢/吧/啊、后面接 ‖；成句英文前后用中文标点隔开（讲解音频.lang_split 单独按英文合成）。
+用法：python3 稿源.py"""
+import json
+from pathlib import Path
+
+D = Path(__file__).resolve().parent
+P3 = 'Standing outside were Daniel and his wife Rachel, who noticed the stranded (被困的) vehicle on their way home and stopped to see if they could help.'
+P3B = 'With genuine warmth in her voice, Rachel said they could take Emily to a nearby cafe they knew.'
+P3C = 'When Emily rolled down the window, Rachel asked if she was okay and told her it was not safe to stay overnight in the car.'
+P4 = ('In the cafe, the couple bought Emily a hot chocolate and listened patiently as she explained her desperate situation: she was about a hundred miles '
+      'from her destination, her car was completely stuck, and her entire holiday plan could be ruined.')
+P1A = ('Emily Sanders, a 25-year-old from Detroit, Michigan, set out on December 23rd with high hopes of reaching Toronto to meet her boyfriend '
+       'for Christmas.')
+DITCH = 'While Emily was driving on a narrow stretch of road, her car slid into a ditch (沟).'
+WHITE = 'The blinding whiteout made driving nearly impossible.'
+SEEING = 'Seeing no hope of immediate rescue, Emily decided to spend the night in her car.'
+GRATE = 'Grateful and relieved, Emily accepted the offer.'
+PANIC = 'As night fell, panic set in.'
+G2 = 'Three days later, Emily returned to get her car.'
+
 segs = []
-def Z(id, screen, text, gap=0.6, **kw): segs.append(dict(id=id, lang='Chinese', screen=screen, text=text, gap=gap, **kw))
-def E(id, screen, text, gap=0.7, **kw): segs.append(dict(id=id, lang='English', screen=screen, text=text, gap=gap, **kw))
-def noq(s): return s.replace('“', '').replace('”', '')
 
-# 一、题目要求
-Z('t01', 'task', '同学们好。今天讲二零二六年全国新课标一卷的读后续写。‖这道题二十五分：先读一篇三百多词的故事，再根据给出的两句开头语续写两段，一共一百五十词左右。')
-Z('t02', 'task', '要求有三条。‖第一，情节要接着原文往下走，人物和前因后果都不能改。‖第二，两段都给了开头语，写的内容必须紧扣开头语。‖第三，词数一百五十左右，开头语不算在内。我们这篇范文写了一百七十七词。', 0.7)
-Z('t03', 'task', '先听一遍两句开头语。第一段：', 0.4, hi='o1')
-E('t04', 'task', fw['paragraphs'][0][0]['en'], 0.5, hi='o1')
-Z('t05', 'task', '丹尼尔和瑞秋建议艾米丽坐火车，继续她的旅程。‖第二段：', 0.4, hi='o2')
-E('t06', 'task', fw['paragraphs'][1][0]['en'], 0.5, hi='o2')
-Z('t07', 'task', '三天后，艾米丽回来取她的车。', 0.8, hi='o2')
 
-# 二、读原文
-Z('r01', 'p1', '先读原文。‖读的时候盯住四样东西：人物、情节、冲突、情感线。同时把后面能用上的细节记下来。', 0.6)
-Z('r02', 'p1', '第一段交代人物和目的。‖艾米丽二十五岁，从底特律出发，要赶到多伦多，和男朋友一起过圣诞节。‖这是续写要收的第一条线：她到底能不能赶上圣诞节。', 0.6,
-  mark=['Emily Sanders, a 25-year-old from Detroit, Michigan', 'to meet her boyfriend for Christmas'], note='人物与目的：赶去多伦多，和男朋友过圣诞（12 月 23 日出发）')
-Z('r03', 'p1', '再看她的性格。‖她听到了暴风雪的警告，却没当回事，原文是：she didn’t give it much thought。‖这是一个伏笔：她有点大意。结局可以呼应它，让她吸取教训。', 0.6,
-  mark=['she didn’t give it much thought'], note='伏笔：不把暴风雪预警当回事 → 结局可以吸取教训')
-Z('r04', 'p1', '结果雪越下越大，她被引下高速，开上一条陌生的路，往一个加拿大小镇去。‖人生地不熟，危险已经开始了。', 0.7,
-  mark=['was directed off the highway', 'an unfamiliar road toward a Canadian town'], note='情节：被引下高速 → 陌生小路，人生地不熟')
-Z('r05', 'p2', '第二段，冲突一步步升级。‖大雪白茫茫一片，几乎没法开车；车先是卡住，好不容易挣脱；天黑了，她开始慌；最后车滑进了沟里，手机也没有信号。‖车掉进沟里，是续写里一定要交代的问题。', 0.6,
-  mark=['The blinding whiteout', 'Emily’s car got stuck', 'panic set in', 'her car slid into a ditch', 'found no signal on her phone'], note='冲突升级：卡住 → 天黑、慌 → 滑进沟里 → 没信号')
-Z('r06', 'p2', '她只能在车里过夜：裹着毯子，时不时发动引擎取暖。‖这里的情绪是孤独、寒冷、害怕。后面写温暖，就可以拿这里的冷来对比。', 0.7,
-  mark=['She wrapped herself in a blanket', 'ran her engine for a few minutes every now and then'], note='情绪：孤独、寒冷、害怕 → 后文用“暖”来对比')
-Z('r07', 'p3', '第三段是转折。‖她被轻轻的敲窗声叫醒，车外站着丹尼尔和他的妻子瑞秋。他们是回家路上看到这辆车，停下来帮忙的。‖原文有个短语：on their way home，可以推断他们就住在附近。这一点后面很有用：车留在这里有人照看，她回来也知道去哪儿找。', 0.6,
-  mark=['a gentle knock', 'Daniel and his wife Rachel', 'on their way home'], note='转折：好心夫妻 Daniel 和 Rachel，就住在附近')
-Z('r08', 'p3', '瑞秋说话的时候，原文用了：genuine warmth，真诚的温暖。‖艾米丽的心情也变了：grateful and relieved，感激又放心。‖情感线就出来了：从害怕，到被温暖，再到感激。', 0.7,
-  mark=['With genuine warmth in her voice', 'Grateful and relieved'], note='情感线：害怕 → 被温暖 → 感激')
-Z('r09', 'p4', '最后一段在咖啡馆。‖夫妻俩给她买了一杯热巧克力，耐心听她讲。热巧克力是个小道具，续写里可以再用一次。', 0.6,
-  mark=['bought Emily a hot chocolate', 'listened patiently'], note='小道具：一杯热巧克力 → 续写可以再用')
-Z('r10', 'p4', '原文停在三个难题上。‖离目的地还有一百英里左右；车彻底陷住了；整个假期计划可能泡汤。‖续写的任务很清楚：把这三个难题一个一个解决掉。', 0.8,
-  mark=['about a hundred miles from her destination', 'her car was completely stuck', 'her entire holiday plan could be ruined'], note='三个难题：还差 100 英里 · 车陷住 · 假期可能泡汤')
+def add(i, screen, text, lang='Chinese', gap=0.6, **kw):
+    segs.append(dict(id=i, screen=screen, lang=lang, gap=gap, text=text, **kw))
 
-# 三、开头语分析
-Z('o01', 'open', '再看两句开头语。‖第一段开头，夫妻俩建议她坐火车走。所以第一段要写：她怎么接受建议，怎么到车站，车怎么安排。', 0.6,
-  hi='o1', note='第一段：接受建议 → 怎么到车站 → 车怎么安排')
-Z('o02', 'open', '第二段开头，三天后，她回来取车。‖这句话透露了两件事。‖第一，第一段结束的时候，车还留在小镇。‖第二，她平安到了多伦多，过完节才回来。所以第二段要写：车怎么样了，她怎么感谢夫妻俩，最后点题。', 0.6,
-  hi='o2', note='第二段：车怎么样了 → 感谢夫妻俩 → 结尾点题')
-Z('o03', 'open', '两段怎么衔接？‖第一段结尾留一个钩子：丹尼尔答应帮她把车从沟里拖出来。这样第二段一开头回来取车，就顺理成章。', 0.8,
-  note='衔接：第一段埋“答应拖车”，第二段“回来取车”就顺理成章')
 
-# 四、提纲与呼应
-Z('u01', 'outline', '根据这些，列一个提纲。‖第一段四步。丹尼尔说明车站不远、火车还在开；艾米丽犹豫，但为了和男朋友过平安夜，下了决心；在夫妻俩家住一晚，天亮被送到车站，瑞秋塞给她一壶热巧克力，丹尼尔答应把车拖出来；火车开动，她含着泪挥手。', 0.6,
-  col=1, lines=['① 车站不远，火车还在开', '② 犹豫 → 为了过平安夜，下决心', '③ 住一晚，送站：热巧克力、答应拖车', '④ 火车开动，含泪挥手'])
-Z('u02', 'outline', '第二段也是四步。车已经被拖出来、刮干净了；她送上从多伦多带来的巧克力，道谢；瑞秋笑着提醒她，下次要听天气预警；她开车离开，想明白这场风暴带给她的东西。', 0.7,
-  col=2, lines=['① 车已拖出、刮干净', '② 送多伦多巧克力，道谢', '③ 瑞秋笑着提醒：听预警', '④ 晴空下离开，点题：陌生人的温暖'])
-Z('e01', 'echo', '再检查一遍：原文的伏笔，在提纲里都要有着落。', 0.4)
-Z('e02', 'echo', '一杯热巧克力，回来变成一盒巧克力。', 0.4, row=['a hot chocolate', 'a box of chocolates'])
-Z('e03', 'echo', '没当回事的预警，变成瑞秋的提醒。', 0.4, row=['didn’t give it much thought', 'listen to the weather warnings'])
-Z('e04', 'echo', '车滑进沟里，变成丹尼尔的承诺，第二段兑现。', 0.4, row=['slid into a ditch', 'pulled out of the ditch'])
-Z('e05', 'echo', '可能泡汤的假期，变成救回来的圣诞节。', 0.4, row=['holiday plan could be ruined', 'you saved my Christmas'])
-Z('e06', 'echo', '寒冷的雪夜，对应结尾的温暖。‖每一条线都收住，结局才完整。', 0.8, row=['the blinding whiteout', 'the warmth of strangers'])
+# ---------- 题目要求、评分标准 ----------
+add('t01', 'task', '同学们好。今天讲二零二六年新课标一卷的读后续写，第六十七题，满分二十五分。')
+add('t02', 'task', '题目要求：根据材料内容和所给的两段开头语，续写两段，词数一百五十个左右。‖我们的范文，每段八十八个词，合计一百七十六个词。')
+add('t03', 'task', '第一段开头：丹尼尔和瑞秋建议艾米丽坐火车，继续她的旅程。', hi='o1')
+add('t04', 'task', '第二段开头：三天后，艾米丽回来取她的车。', hi='o2', gap=0.8)
+add('g01', 'rubric', '先看满分要求。评分标准第五档，二十一到二十五分，有四条。')
+add('g02', 'rubric', '第一，与原文内容融洽，和两段开头语衔接合理。', note='① 与原文融洽，与开头语衔接合理')
+add('g03', 'rubric', '第二，内容丰富。', note='② 内容丰富')
+add('g04', 'rubric', '第三，语法结构和词汇丰富、准确。', note='③ 语法结构和词汇丰富、准确')
+add('g05', 'rubric', '第四，有效使用语句间的连接成分，结构紧凑。‖后面每一句的得分点，都会落到这四条上。', note='④ 有效使用连接成分，结构紧凑', gap=0.8)
 
-# 五、逐句讲范文
-def sent(k, intro, mean, role, pts, how):
-    s = f's{k}'
-    Z(f'{s}a', s, intro, 0.4, ph='read')
-    E(f'{s}b', s, noq(own[k - 1]['en']), 0.6, ph='read')
-    Z(f'{s}c', s, '意思是：' + mean[0], 0.5, ph='mean', ln='意思：' + own[k - 1]['zh'])
-    Z(f'{s}d', s, role[0], 0.6, ph='mean', ln='作用：' + role[1])
-    for j, (txt, hl, ln) in enumerate(pts, 1):
-        Z(f'{s}p{j}', s, txt, 0.5, ph='pt', hl=hl, ln=ln)
-    for j, (txt, ln, *alt) in enumerate(how, 1):
-        Z(f'{s}h{j}', s, txt, 0.5 if j < len(how) else 0.8, ph='how', ln=ln, **({'替换': alt[0]} if alt else {}))
+# ---------- 读原文 ----------
+add('a01', 'p1', '先读原文。第一段交代人物和目的：艾米丽，二十五岁，十二月二十三日出发，要赶到多伦多，和男朋友一起过圣诞。‖这是全文的目标，续写要给出结果。',
+    mark=['Emily Sanders, a 25-year-old from Detroit, Michigan', 'reaching Toronto to meet her boyfriend for Christmas'], note='人物与目标：赶去多伦多，和男朋友过圣诞')
+add('a02', 'p1', '冲突从哪里来？‖她听到了暴风雪预警，却没当回事；雪越下越大，她被引下高速，开上一条陌生的路。',
+    mark=['she didn’t give it much thought', 'Emily was directed off the highway'], note='冲突起点：轻视暴风雪，被引下高速', gap=0.8)
+add('a03', 'p2', '第二段，困境一步步升级：大雪茫茫，几乎没法开车；天黑了，她开始慌，车又滑进了沟里。',
+    mark=['The blinding whiteout made driving nearly impossible', 'panic set in', 'her car slid into a ditch'], note='困境升级：大雪封路，车滑进沟里')
+add('a04', 'p2', '手机没有信号，她只能裹着毯子，在车里过夜。‖情感线很清楚：满怀希望，到慌乱，再到无助。',
+    mark=['found no signal on her phone', 'She wrapped herself in a blanket'], note='情感线：希望 → 慌乱 → 无助', gap=0.8)
+add('a05', 'p3', '第三段是转机。丹尼尔和瑞秋夫妇在回家路上看到被困的车，停下来帮忙。‖注意这个词：genuine warmth。真诚的温暖，全文的主题就落在这里：陌生人的善意。',
+    mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：陌生夫妇停车相助，真诚温暖')
+add('a06', 'p3', '艾米丽又感激，又宽慰，接受了帮助。‖情感从无助转向温暖。', mark=['Grateful and relieved'], note='情感转折：感激、宽慰', gap=0.8)
+add('a07', 'p4', '第四段最关键。艾米丽说出了三个难处：离目的地还有一百英里，车完全困住了，整个假期计划可能泡汤。‖续写就要把这三个问题一一解决。',
+    mark=['she was about a hundred miles from her destination', 'her car was completely stuck', 'her entire holiday plan could be ruined'],
+    note='三个难处：离目的地一百英里；车困住了；假期计划可能泡汤')
+add('a08', 'p4', '还有一个细节：夫妇俩给她买了热巧克力，耐心听她说完。‖这份善意，续写的结尾要让艾米丽回报。',
+    mark=['the couple bought Emily a hot chocolate and listened patiently'], note='伏笔：热巧克力、耐心倾听——结尾要有回报', gap=0.8)
 
-Z('s0', 's1', '下面逐句讲范文。‖第一段的开头语给的是建议，第一句就让丹尼尔把建议说具体。', 0.4, ph='read')
-sent(1, '第一句。',
- ['车站只有十英里远，火车也还照常运行，丹尼尔说。'],
- ['它回答了读者心里的疑问：这么大的雪，火车还能坐吗？‖丹尼尔先把理由摆出来，建议才站得住。', '回答“这么大的雪，火车还能坐吗？”，让建议有理由'],
- [('得分点一，用人物对话推进情节。续写里有一两句对话，画面马上就活了。', 'Daniel said', '① 对话推进情节（直接引语）'),
-  ('得分点二，具体细节：only ten miles away，说明车站近。', 'only ten miles away', '② 细节一：only ten miles away（近）'),
-  ('得分点三，still running，说明火车还能坐。有了这两个细节，建议就不显得突兀。', 'still running', '③ 细节二：still running（可行）')],
- [('怎么写出来的？‖先想中文：车站不远，火车照常开。再把“不远”说具体，写成：only ten miles away。“照常开”就是：still running。', '车站不远 → only ten miles away；照常开 → still running'),
-  ('可替换的说法：a short drive away，开车一会儿就到；还有：the trains haven’t stopped，火车没停。', '可替换：a short drive away / the trains haven’t stopped', ['a short drive away', 'the trains haven’t stopped'])])
-sent(2, '第二句。',
- ['艾米丽犹豫了一下，可一想到能和男朋友一起过平安夜，她就下定了决心。'],
- ['这是心理描写：先犹豫，再下决心。犹豫的是车和陌生的小镇，下决心靠的是原文的目的：和男朋友过圣诞。‖她二十三号出发，第二天就是平安夜，时间线也对得上。', '心理变化：犹豫 → 下决心，呼应“和男朋友过圣诞”'],
- [('得分点一，心理描写，先抑后扬：hesitated，but，一转折，人物就有了起伏。', 'Emily hesitated, but', '① 心理描写，先抑后扬：hesitated, but …'),
-  ('得分点二，让抽象名词做主语：the thought of spending Christmas Eve，是“这个念头”帮她下了决心。比直接写她决定了，高级得多。', 'the thought of spending Christmas Eve', '② 抽象名词作主语：the thought of doing'),
-  ('得分点三，固定搭配：made up her mind，下定决心。', 'made up her mind', '③ 固定搭配：make up one’s mind')],
- [('怎么写出来的？‖中文是：她一想到……就下了决心。很多同学会写成：when she thought of it, she decided to go。意思没错，但很平。‖换个主语，让“念头”来做事，句子马上就有张力。', '“一想到……就决定” → 让 the thought 做主语'),
-  ('可替换的说法：the idea of a Christmas with her boyfriend，或者：she soon made her decision。', '可替换：the idea of … / she soon made her decision', ['the idea of a Christmas with her boyfriend', 'she soon made her decision'])])
-sent(3, '第三句，第一段信息量最大的一句。',
- ['在夫妻俩家里住了一晚后，艾米丽天一亮就被送到了车站。在那里，瑞秋把一保温壶热巧克力塞到她手里，丹尼尔答应找人把她的车从沟里拖出来。'],
- ['一句话解决了三件事。‖当晚住哪儿，呼应原文的“在车里过夜不安全”；怎么到车站；车怎么办，这是给第二段埋的钩子。', '解决“住哪儿、怎么到车站、车怎么办”，埋下第二段的钩子'],
- [('得分点一，完成式分词作状语：having spent the night，表示住一晚这件事发生在前。', 'Having spent the night', '① 完成式分词作状语：Having spent …（先发生）'),
-  ('得分点二，被动语态：was driven，被送去车站。主语始终是艾米丽，视角不乱。', 'was driven', '② 被动语态：was driven（主语始终是 Emily）'),
-  ('得分点三，where 引导非限制性定语从句，接着写车站里发生的事。', 'where Rachel pressed', '③ where 引导非限制性定语从句'),
-  ('得分点四，动作描写：pressed a thermos of hot chocolate into her hands，塞到她手里。热巧克力呼应原文。', 'pressed a thermos of hot chocolate into her hands', '④ 动作描写：press … into her hands（呼应 hot chocolate）'),
-  ('得分点五，使役结构：have her car pulled out，让别人把车拖出来。', 'have her car pulled out of the ditch', '⑤ have sth. done：have her car pulled out')],
- [('怎么写出来的？‖先列中文三件事：住一晚，被送去车站，在车站两个人各做一件事。‖先发生的放进分词，地点用 where 带出来，两个动作用 and 连起来。三个短句就合成了一个长句。', '三件事 → 分词（先发生）+ 主句 + where 从句'),
-  ('可替换的说法：after a night at their home；handed her a thermos；get her car towed out。', '可替换：after a night at their home / handed her … / get her car towed out', ['after a night at their home', 'handed her a thermos', 'get her car towed out'])])
-sent(4, '第四句，第一段的结尾。',
- ['火车开动时，她隔着结了霜的车窗挥手，眼里涌出感激的泪水。'],
- ['用一个画面收住情绪。人离开了小镇，车留在了这里，第二段回来取车就有了空间。', '用画面收尾：情绪落在“感激”，人走车留，给第二段留空间'],
- [('得分点一，as 引导时间状语从句：as the train pulled away，pull away 是车开走。', 'As the train pulled away', '① As 引导时间状语从句；pull away 驶离'),
-  ('得分点二，环境细节：the frosted window，结了霜的车窗，把风雪带进画面。', 'the frosted window', '② 环境细节：frosted window（结霜的车窗）'),
-  ('得分点三，独立主格：tears of gratitude welling up in her eyes，名词加现在分词，写出眼泪涌上来的样子。', 'tears of gratitude welling up in her eyes', '③ 独立主格：tears … welling up in her eyes')],
- [('怎么写出来的？‖中文是：眼里涌出感激的泪水。别只写 she cried。把眼泪当主角：tears of gratitude，再接一个正在发生的动作：welling up。', '“眼里涌出感激的泪水” → 名词 + doing 的独立主格'),
-  ('可替换的说法：with tears of gratitude in her eyes；或者：her eyes wet with tears。', '可替换：with tears of gratitude in her eyes / her eyes wet with tears', ['with tears of gratitude in her eyes', 'her eyes wet with tears'])])
-Z('s5o', 's5', '第二段。开头语说她回来取车，第一句就要回答读者最关心的：车怎么样了。', 0.4, ph='read')
-sent(5, '第五句。',
- ['让她惊讶的是，车就停在夫妻俩家门外，已经从沟里拖了出来，车上的雪也刮得干干净净。'],
- ['紧扣开头语，马上回答车怎么样了。也兑现了上一段丹尼尔的承诺，前后呼应。', '紧扣开头语回答“车怎么样了”，兑现上一段的承诺'],
- [('得分点一，to her surprise，用情绪开头。她惊讶的是：车不但拖出来了，还停在他们家门外，刮得干干净净。', 'To her surprise', '① To her surprise：情绪开头'),
-  ('得分点二，两个过去分词短语并列：already pulled out of the ditch，and scraped clean of snow，补充说明车的状态。', 'already pulled out of the ditch and scraped clean of snow', '② 过去分词短语并列作补充说明'),
-  ('得分点三，pulled out of the ditch，和上一段的承诺用的是同一个短语，前后呼应。', 'pulled out of the ditch', '③ 与上一段 pulled out of the ditch 呼应')],
- [('怎么写出来的？‖中文是：车已经被拖出来，雪也刮干净了。不必再写一个从句，直接接两个过去分词，句子更紧凑。‖scrape 是刮，scrape it clean，是刮干净。', '“已经被拖出来、刮干净了” → 两个过去分词并列'),
-  ('可替换的说法：much to her surprise；或者：cleared of snow。', '可替换：much to her surprise / cleared of snow', ['much to her surprise', 'cleared of snow'])])
-sent(6, '第六句。',
- ['艾米丽深受感动，把一盒从多伦多带来的巧克力递给他们，说：你们救的不只是我的车，还有我的圣诞节。'],
- ['这是感谢的高潮。巧克力呼应原文那杯热巧克力，一来一回；救了圣诞节，呼应原文的假期可能泡汤。', '感谢的高潮：巧克力一来一回，“救了圣诞节”呼应“假期可能泡汤”'],
- [('得分点一，形容词短语作状语：deeply moved，交代她的心情。', 'Deeply moved', '① 形容词短语作状语：Deeply moved'),
-  ('得分点二，现在分词引出直接引语：saying，动作和说话连在一起。', 'saying', '② 现在分词 saying 引出直接引语'),
-  ('得分点三，对比的说法：you didn’t just save my car，前后用分号隔开，后半句一下子把情感推上去。', 'You didn’t just save my car; you saved my Christmas', '③ 对比：didn’t just … ; you …')],
- [('怎么写出来的？‖中文是：你们救的不只是我的车，还有我的圣诞节。可以用 not only，but also，不过偏书面。口语里说 didn’t just，更自然。', '“不只是……还有……” → didn’t just … ; …（口语更自然）'),
-  ('可替换的说法：touched by their kindness；还有：you saved more than my car。', '可替换：Touched by their kindness / You saved more than my car', ['touched by their kindness', 'you saved more than my car'])])
-sent(7, '第七句。',
- ['瑞秋抱了抱她，眨眨眼说：下次可得听天气预警！'],
- ['呼应原文的伏笔：她当初没把预警当回事。用一句玩笑把教训点出来，不说教。', '呼应伏笔“没把预警当回事”，用玩笑点出教训'],
- [('得分点一，动作：hugged her，抱了抱她。', 'hugged her', '① 动作：hugged her'),
-  ('得分点二，神态：with a wink，眨眨眼，一下子就有了画面，也说明这是善意的玩笑。', 'with a wink', '② 神态：with a wink（善意的玩笑）'),
-  ('得分点三，用对话点题：listen to the weather warnings，和开头的伏笔对上。', 'listen to the weather warnings', '③ 对话点题，呼应 warnings')],
- [('怎么写出来的？‖中文是：眨眨眼说。用 with 加名词，表示怎么说：said with a wink，同样可以说：said with a smile。', '“眨眨眼说” → said with a wink（with + 名词）'),
-  ('也可以说：said playfully，开玩笑地说。', '可替换：said with a smile / said playfully', ['said with a smile', 'said playfully'])])
-sent(8, '第八句，全文的结尾。',
- ['在晴朗的蓝天下开车离开时，艾米丽意识到，这场暴风雪差点毁了她的假期，却也给她带来了更珍贵的东西：陌生人的温暖。'],
- ['点题升华。环境前后对比：暴风雪变成了晴空；情感从冷到暖，回到原文的 genuine warmth。', '点题：暴风雪 → 晴空，冷 → 暖，回到原文的 genuine warmth'],
- [('得分点一，现在分词作状语：driving away，交代动作的背景。', 'Driving away', '① 现在分词作状语：Driving away'),
-  ('得分点二，环境描写：under a clear blue sky，和原文的漫天大雪形成对比。', 'under a clear blue sky', '② 环境对比：clear blue sky ↔ 暴风雪'),
-  ('得分点三，过去完成时：had nearly ruined，差点毁了，说的是之前的事。', 'had nearly ruined her holiday', '③ that 宾语从句 + 过去完成时'),
-  ('得分点四，yet 转折，再用冒号引出主题：the warmth of strangers。far 修饰比较级，加强语气：far more precious。', 'something far more precious: the warmth of strangers', '④ yet 转折 + 冒号点题；far 修饰比较级 more precious')],
- [('怎么写出来的？‖中文是：差点毁了……却带来了……。先写失去的，再写得到的，中间用 yet 一转。主题词选 warmth，正好和开头的寒冷对上。', '“差点毁了……却带来了……” → nearly ruined …, yet brought …'),
-  ('可替换的说法：almost spoiled her holiday；something much more valuable；the kindness of strangers。', '可替换：almost spoiled / much more valuable / the kindness of strangers', ['almost spoiled her holiday', 'something much more valuable', 'the kindness of strangers'])])
+# ---------- 开头语、提纲、伏笔 ----------
+add('o01', 'open', '再看开头语。第一段开头：夫妇俩建议她坐火车。‖它解决了第一个难处：怎么去多伦多。‖可是车还在沟里，所以这一段必须安排好车，为第二段埋下伏笔。',
+    hi='o1', note='第一段：解决“怎么去多伦多”，还要安排好那辆车')
+add('o02', 'open', '第二段开头：三天后，她回来取车。‖说明第一段一定交代了车的去处。‖这一段写车怎么样了，写她怎么道谢，最后点明主题。',
+    hi='o2', note='第二段：回来取车 → 车的结果、道谢回报、点明主题', gap=0.8)
+add('l01', 'outline', '按这个思路列提纲。第一段四步：讲清方案，附近就有车站；艾米丽担心车，丹尼尔答应拖车保管；夫妇送站，告别落泪；当晚赶到多伦多，赶上圣诞。',
+    col=1, lines=['① 讲清方案：附近有车站', '② 担心车 → 丹尼尔答应拖车、保管', '③ 送站告别，忍不住落泪', '④ 当晚到多伦多，赶上圣诞'])
+add('l02', 'outline', '第二段四步：先写环境，雪停天晴，和暴风雪形成对比；车已经拖出来、清好了雪，兑现承诺；艾米丽送上饼干和卡片，回报善意；最后点题：陌生人的善意，让这个圣诞节成了最温暖的一个。',
+    col=2, lines=['① 环境对比：雪停天晴', '② 车已拖出、清好雪（兑现承诺）', '③ 回报：自制饼干和感谢卡', '④ 点题：陌生人让圣诞最温暖'], gap=0.8)
+add('e01', 'echo', '伏笔与呼应。原文说车完全困住了，续写就让丹尼尔找人把车拖出来。', row=['her car was completely stuck', 'have it towed out of the ditch'])
+add('e02', 'echo', '原文的目标是赶到多伦多见男朋友，续写让她当晚扑进男朋友的怀里。', row=['reaching Toronto to meet her boyfriend for Christmas', 'fell into her boyfriend’s arms in Toronto'])
+add('e03', 'echo', '原文是茫茫大雪，第二段换成阳光，环境变了，心情也变了。', row=['The blinding whiteout made driving nearly impossible', 'lay quiet in the sunshine'])
+add('e04', 'echo', '原文担心假期计划泡汤，结尾用同一个词 ruin 收住：差点毁了，却成了最温暖的圣诞。', row=['her entire holiday plan could be ruined', 'nearly ruined her Christmas'])
+add('e05', 'echo', '原文写瑞秋声音里真诚的温暖，结尾落在最温暖上，主题首尾一贯。‖下面一句一句来写。', row=['With genuine warmth in her voice', 'the warmest of her life'], gap=0.8)
 
-# 六、常见失分点
-Z('f01', 'fail', '常见失分点，说五个。‖第一，和开头语矛盾。第二段说三天后回来取车，第一段却写她开着车走了。', 0.5, note='① 与开头语矛盾（第一段写她开车走了）')
-Z('f02', 'fail', '第二，丢了原文的线索。车在沟里、离目的地还很远、圣诞节的约定，这些不交代，结局就是悬着的。', 0.5, note='② 丢线索：车、路程、圣诞约定没交代')
-Z('f03', 'fail', '第三，乱加情节。突然冒出小偷、车祸，和原文温暖的基调不符。', 0.5, note='③ 乱加情节：小偷、车祸，与温暖基调不符')
-Z('f04', 'fail', '第四，只讲道理，不写画面。结尾一大段大道理，不如一个动作、一句对话、一个环境细节。', 0.5, note='④ 只讲道理：用动作、对话、环境代替说教')
-Z('f05', 'fail', '第五，语法硬伤。时态乱跳，句式堆砌，词数超出太多。宁可句子少一点，但每句都对。', 0.8, note='⑤ 语法硬伤：时态乱、句式堆砌、词数超标')
+# ---------- 逐句五步 ----------
+# 每句：块、zh（为什么）、谓语/主语/其余各步、得分点 [hl, 档, src, mark, 画面行, 配音]、可替换 [画面行, 配音, 替换]
+S = []
 
-# 七、方法总结
-Z('m01', 'sum', '最后总结方法。‖第一步，读原文：找人物、冲突、情感线，把伏笔圈出来。', 0.5, note='① 读原文：人物、冲突、情感线，圈出伏笔')
-Z('m02', 'sum', '第二步，读开头语：推出每段写什么，第一段结尾给第二段留钩子。', 0.5, note='② 读开头语：定每段内容，第一段结尾留钩子')
-Z('m03', 'sum', '第三步，列提纲：每一个伏笔都要有着落。', 0.5, note='③ 列提纲：每个伏笔都有着落')
-Z('m04', 'sum', '第四步，逐句写：动作、心理、对话、环境搭配着用，高级句式用在要紧的地方。', 0.5, note='④ 逐句写：动作、心理、对话、环境，句式用在要紧处')
-Z('m05', 'sum', '第五步，结尾呼应主题，用画面点题。', 0.8, note='⑤ 结尾：呼应主题，用画面点题')
-Z('w00', 'full', '最后，把完整的范文读一遍。', 0.6)
-k = 0
+
+def sent(blocks, why, steps, pts, alt):
+    S.append(dict(blocks=blocks, why=why, steps=steps, pts=pts, alt=alt))
+
+
+sent([['There ', 3], ['was ', 1], ['a station ', 2], ['nearby, ', 3], ['they explained, ', 4], ['and ', 5], ['a train to Toronto ', 2], ['would leave ', 1], ['at noon.', 5]],
+     ('第一句，先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要这句？‖开头语只说了坐火车，方案得落到实处，读者才信。',
+      ['为什么：开头语只说“坐火车”，先把方案讲实（车站在哪、几点有车）']),
+     [('汉译英，先定谓语。‖两个分句，两个谓语：was，一般过去时；would leave，站在过去说将来，用过去将来时。', '谓语：was（一般过去时）；would leave（过去将来时）'),
+      ('再补主语。这是存在句，真正的主语是：a station；后半句的主语：a train to Toronto。', '主语：a station；a train to Toronto'),
+      ('补上 There 和 nearby：附近有个车站。', 'There 引出存在句；nearby 作地点状语'),
+      ('中间插入一句：they explained，他们解释说。', '插入语：they explained'),
+      ('最后用 and 连起两个分句，句尾补上时间：at noon。', 'and 连接分句；at noon 交代时间')],
+     [('they explained', ['③'], P3B, 'Rachel said they could take Emily to a nearby cafe',
+       ['插入语 they explained：不写 They explained that…，句式更灵活', '原文用转述写夫妇的话，这里口吻一致'],
+       '得分点一，插入语：they explained。‖不写成 they explained that，句式更灵活，对应第三条，语法结构丰富。‖原文第三段就是用转述写夫妇的话，这里接着用，口吻一致。', ['they explained that']),
+      ('a train to Toronto would leave at noon', ['①'], P4, 'she was about a hundred miles from her destination',
+       ['地点、时间都具体：方案可信', '解决难处一：离目的地还有一百英里'],
+       '得分点二：a train to Toronto would leave at noon。‖地点、时间都具体，回应原文的一百英里，怎么去的问题解决了，对应第一条，与原文融洽。', [])],
+     (['The nearest station was just a short drive away.', 'a train would leave for Toronto at noon'],
+      '可替换：The nearest station was just a short drive away。‖后半句也可以写：a train would leave for Toronto at noon。'))
+
+sent([['“But what about my car?” ', 3], ['Emily ', 2], ['asked ', 1], ['anxiously.', 4]],
+     ('第二句，中文是：可是我的车怎么办？‖艾米丽焦急地问。‖人有办法走了，车还在沟里，这是她的第二个难处，让她自己说出来。',
+      ['为什么：人能走了，车还在沟里——让她自己说出第二个难处']),
+     [('谓语：asked，问，一般过去时。', '谓语：asked（一般过去时）'),
+      ('主语：Emily。', '主语：Emily'),
+      ('问的内容用直接引语，放在句首：But what about my car？', '直接引语放句首：“But what about my car?”'),
+      ('最后补一个副词：anxiously，焦急地。', '方式状语：anxiously')],
+     [('“But what about my car?”', ['①', '④'], P4, 'her car was completely stuck',
+       ['直接引语：人物开口，比叙述更生动', '承上：原文的难处“车困住了”；启下：引出拖车的安排'],
+       '得分点一：直接引语。‖让人物自己开口，比叙述更生动；它接住原文的难处，车完全困住了，又引出下一句丹尼尔的安排，承上启下，对应第一条和第四条。', []),
+      ('anxiously', ['③', '①'], PANIC, 'panic set in',
+       ['anxiously：一个副词写出焦急', '情感线：慌乱 → 焦急，后面再转成感激'],
+       '得分点二：anxiously，一个副词写出焦急。‖原文写过她的慌乱：panic set in；这里的焦急接着这条情感线，后面再转成感激。', [])],
+     (['What will happen to my car?', 'Emily asked with a worried frown'],
+      '可替换：What will happen to my car？‖也可以写：Emily asked with a worried frown。'))
+
+sent([['Daniel ', 2], ['promised ', 1], ['to have it towed ', 3], ['out of the ditch ', 4], ['and kept in his garage ', 5], ['until she returned.', 6]],
+     ('第三句，中文是：丹尼尔答应找人把车从沟里拖出来，放在他家车库，等她回来。‖它回答了上一句的担心，也给第二段回来取车埋下伏笔。',
+      ['为什么：回答“车怎么办”；给第二段“回来取车”埋伏笔']),
+     [('谓语：promised，答应，一般过去时，后面接不定式。', '谓语：promised（一般过去时）+ to do'),
+      ('主语：Daniel。', '主语：Daniel'),
+      ('答应什么？‖to have it towed：have 加宾语，再加过去分词，表示找人把车拖走；车是被拖的，所以用过去分词。', 'to have it towed：have + 宾语 + 过去分词（找人做）'),
+      ('从哪里拖：out of the ditch。', 'out of the ditch：从沟里'),
+      ('再并列一个过去分词：and kept in his garage，同样跟在 have it 后面，车被放在车库里。', 'and kept in his garage：与 towed 并列'),
+      ('最后是时间状语从句：until she returned。‖讲的是过去的承诺，从句用一般过去时表示将来。', 'until she returned：时间状语从句（一般过去时表将来）')],
+     [('have it towed', ['③'], DITCH, 'her car slid into a ditch',
+       ['have it towed：使役结构，找人拖，不是自己拖——意思准确', '回应原文：车滑进了沟里（ditch）'],
+       '得分点一：have it towed，使役结构。‖不是丹尼尔自己去拖，而是找人拖，意思准确，对应第三条。‖它直接回应原文：her car slid into a ditch，车滑进了沟里，ditch 这个词也照应上了。', []),
+      ('until she returned', ['①', '④'], G2, 'returned to get her car',
+       ['伏笔：until she returned', '第二段开头 Emily returned to get her car：同一个动词，衔接严密'],
+       '得分点二：until she returned。‖这是给第二段埋的伏笔。第二段开头说：Three days later, Emily returned to get her car。‖用的是同一个动词 return，两段衔接严丝合缝，对应第一条和第四条。', [])],
+     (['Daniel offered to get the car pulled out', 'look after it until she came back'],
+      '可替换：Daniel offered to get the car pulled out，‖后面也可以写：look after it until she came back。'))
+
+sent([['The couple ', 2], ['then ', 4], ['drove ', 1], ['her to the station ', 3], ['and ', 4], ['waited ', 1], ['with her ', 4], ['until the train arrived.', 5]],
+     ('第四句，中文是：接着，夫妇俩开车送她到车站，陪她一直等到火车进站。‖方案落了地，善意也写足了。',
+      ['为什么：方案落地（从咖啡馆到车站），把夫妇的善意写足']),
+     [('谓语有两个：drove，开车送；waited，等。都用一般过去时。', '谓语：drove；waited（并列，一般过去时）'),
+      ('主语：The couple。用 the couple 指两个人，避免反复写名字。', '主语：The couple（指代夫妇俩，不重复名字）'),
+      ('drove 后面补上：her to the station，开车送她去车站。', 'drove her to the station：drive sb to 某地'),
+      ('再补连接成分：then 承接上文，and 连接两个谓语，with her，陪着她。', 'then 承接；and 连接谓语；with her'),
+      ('最后补时间状语从句：until the train arrived。', 'until the train arrived：一直等到火车进站')],
+     [('drove her to the station and waited with her', ['③', '④'], P3, 'noticed the stranded (被困的) vehicle on their way home and stopped',
+       ['并列谓语：一句两个动作，结构紧凑', '原文写这对夫妇，也是并列谓语：noticed … and stopped'],
+       '得分点一：并列谓语，一句两个动作，结构紧凑，对应第三条和第四条。‖原文写这对夫妇，也是这样：注意到被困的车，停下来看能不能帮忙。', []),
+      ('waited with her until the train arrived', ['②'], P4, 'listened patiently',
+       ['细节：不是送到就走，而是陪着等车', '和原文 listened patiently 一样，写夫妇的耐心'],
+       '得分点二：waited with her until the train arrived。‖不是送到就走，而是陪着等车，这个细节让善意更具体，对应第二条，内容丰富。‖和原文的耐心倾听一样，写的都是这对夫妇的耐心。', [])],
+     (['saw her off at the station', 'stayed by her side until the train pulled in'],
+      '可替换：saw her off at the station，送行；或者：stayed by her side until the train pulled in。'))
+
+sent([['Waving to them ', 4], ['through the frosty train window, ', 5], ['Emily ', 2], ['could hardly hold back ', 1], ['her tears.', 3]],
+     ('第五句，中文是：隔着结霜的车窗向他们挥手，艾米丽几乎忍不住泪水。‖告别是这一段的情感高点，要写出她的感激。',
+      ['为什么：告别是情感高点——从无助、焦急到感激']),
+     [('谓语：could hardly hold back。情态动词加 hardly，几乎不能；hold back，忍住。', '谓语：could hardly hold back（几乎忍不住）'),
+      ('主语：Emily。', '主语：Emily'),
+      ('忍住什么：her tears，泪水，作宾语。', '宾语：her tears'),
+      ('句首补上：Waving to them，现在分词作伴随状语。挥手和忍泪同时发生，动作的主语都是 Emily。', 'Waving to them：现在分词作伴随状语'),
+      ('最后补上地点：through the frosty train window，隔着结了霜的车窗。', 'through the frosty train window：隔着结霜的车窗')],
+     [('Waving to them', ['③', '①'], SEEING, 'Seeing no hope of immediate rescue',
+       ['现在分词作状语：动作和情感同时呈现', '原文同样的句式：Seeing no hope of immediate rescue'],
+       '得分点一：现在分词作状语，Waving to them。‖原文就有同样的结构：Seeing no hope of immediate rescue。‖续写模仿原文句式，语言风格统一，对应第三条和第一条。', []),
+      ('could hardly hold back her tears', ['②', '①'], GRATE, 'Grateful and relieved',
+       ['用动作写情感：不说“很感激”，写她忍不住流泪', '情感线：感激、宽慰 → 推到高点'],
+       '得分点二：could hardly hold back her tears。‖不直接说她很感激，而是写她忍不住流泪，用动作写情感。‖原文写她 grateful and relieved，这里把感激推到了高点。', [])],
+     (['As the train pulled away', 'tears of gratitude filled her eyes'],
+      '可替换：As the train pulled away，用时间状语从句开头；后面也可以写：tears of gratitude filled her eyes。'))
+
+sent([['That evening, ', 4], ['she ', 2], ['fell ', 1], ['into her boyfriend’s arms ', 3], ['in Toronto, ', 3], ['just in time for Christmas.', 5]],
+     ('第六句，中文是：当天晚上，她在多伦多扑进了男朋友的怀里，正好赶上圣诞节。‖第一段收尾，给原文的目标一个结果。',
+      ['为什么：第一段收尾——原文的目标（到多伦多和男朋友过圣诞）有了结果']),
+     [('谓语：fell，一般过去时，扑进怀里的扑。', '谓语：fell（一般过去时）'),
+      ('主语：she。', '主语：she'),
+      ('补上去向和地点：into her boyfriend’s arms in Toronto。', 'into her boyfriend’s arms in Toronto'),
+      ('句首补时间：That evening，当天晚上。', '时间状语：That evening'),
+      ('句尾补一句：just in time for Christmas，正好赶上圣诞。', 'just in time for Christmas：正好赶上')],
+     [('fell into her boyfriend’s arms', ['①'], P1A, 'reaching Toronto to meet her boyfriend for Christmas',
+       ['目标实现：到多伦多，见到男朋友', '原文开头的 high hopes 有了结果，首尾呼应'],
+       '得分点一：fell into her boyfriend’s arms。‖原文开头就说，她满怀希望，要去多伦多见男朋友过圣诞。这里让目标实现，首尾呼应，对应第一条。', ['fall into one’s arms']),
+      ('That evening', ['④'], G2, 'Three days later',
+       ['时间状语放句首：That evening', '与第二段开头 Three days later 连成清楚的时间线'],
+       '得分点二：That evening，时间状语放在句首。‖和第二段开头的 Three days later 连成一条清楚的时间线，对应第四条，连接成分。', [])],
+     (['By nightfall, she had reached Toronto', 'in time to spend Christmas with her boyfriend'],
+      '可替换：By nightfall, she had reached Toronto，‖后面也可以写：in time to spend Christmas with her boyfriend。'))
+
+sent([['The sky ', 2], ['was ', 1], ['clear now, ', 3], ['and ', 4], ['the road ', 2], ['that had trapped her ', 5], ['lay ', 1], ['quiet ', 3], ['in the sunshine.', 4]],
+     ('第二段第一句，中文是：这时天已经放晴，那条曾经困住她的路，静静地躺在阳光里。‖先写环境，环境变了，心情也就变了。',
+      ['为什么：先写环境——从暴风雪到晴天，映出心情的变化']),
+     [('两个分句，两个谓语：was，一般过去时；lay，是 lie 的过去式，躺着。', '谓语：was；lay（lie 的过去式）'),
+      ('两个主语：The sky，天空；the road，那条路。', '主语：The sky；the road'),
+      ('补上表语：clear now，晴了；quiet，静静的。', '表语：clear now；quiet'),
+      ('再补 and 连接两个分句，句尾补地点：in the sunshine。', 'and 连接分句；in the sunshine'),
+      ('最后修饰 the road：that had trapped her，定语从句。困住她发生在三天前，比 lay 更早，用过去完成时。', '定语从句：that had trapped her（过去完成时）')],
+     [('that had trapped her', ['③'], DITCH, 'a narrow stretch of road',
+       ['定语从句 + 过去完成时：时间先后准确', '这条路就是原文那段窄路'],
+       '得分点一：that had trapped her，定语从句加过去完成时。‖时间先后交代准确，对应第三条。‖这条路就是原文里那段窄路，读者一看就知道是同一个地方。', []),
+      ('lay quiet in the sunshine', ['①', '②'], WHITE, 'The blinding whiteout',
+       ['环境对比：茫茫大雪 → 阳光、安静', '环境一变，心情也变了'],
+       '得分点二：lay quiet in the sunshine。‖原文是茫茫大雪，几乎没法开车；现在阳光、安静，环境一变，心情也变了，对应第一条和第二条。', [])],
+     (['The storm had passed', 'the once dangerous road now looked peaceful'],
+      '可替换：The storm had passed，‖后面也可以写：the once dangerous road now looked peaceful。'))
+
+sent([['Parked outside the couple’s garage ', 3], ['was ', 1], ['her car, ', 2], ['cleaned of snow and ready to go.', 4]],
+     ('第二句，中文是：停在夫妇俩车库外面的，正是她的车，雪已经清干净，随时可以上路。‖丹尼尔的承诺兑现了。',
+      ['为什么：兑现第一段丹尼尔的承诺——车真的拖出来、保管好了']),
+     [('谓语：was，一般过去时。‖注意，这是倒装句，谓语会放在主语前面。', '谓语：was（一般过去时）——倒装句'),
+      ('主语：her car，放在谓语后面。', '主语：her car（放在谓语后）'),
+      ('句首是过去分词短语：Parked outside the couple’s garage，表语提前，整句完全倒装。', 'Parked outside the couple’s garage：表语提前，完全倒装'),
+      ('最后补上车的状态：cleaned of snow and ready to go。', 'cleaned of snow and ready to go：车的状态')],
+     [('Parked outside the couple’s garage was her car', ['③', '①'], P3, 'Standing outside were Daniel and his wife Rachel',
+       ['完全倒装：焦点放在句尾 her car', '原文同样的句式：Standing outside were Daniel and his wife Rachel'],
+       '得分点一：完全倒装。‖原文第三段就用了这个句式：Standing outside were Daniel and his wife Rachel。‖续写照着用，句式有变化，又和原文风格一致，对应第三条和第一条。‖焦点放在句尾：her car，读者等的就是这辆车。', []),
+      ('cleaned of snow and ready to go', ['①'], P4, 'her car was completely stuck',
+       ['兑现承诺：车拖出来了，雪也清了', '原文“车完全困住了”到这里彻底解决'],
+       '得分点二：cleaned of snow and ready to go。‖原文里车完全困住了，第一段丹尼尔答应拖车保管，这里兑现，伏笔收住了，对应第一条。', [])],
+     (['Her car was waiting outside the garage', 'free of snow'],
+      '可替换：Her car was waiting outside the garage，‖状态也可以写：free of snow。'))
+
+sent([['Emily ', 2], ['handed ', 1], ['them a box of homemade cookies ', 3], ['and a card ', 4], ['that read, “Thank you for saving my holiday.”', 5]],
+     ('第三句，中文是：艾米丽递给他们一盒自己烤的饼干和一张卡片，上面写着：谢谢你们挽救了我的假期。‖他们帮了她，她要回报这份善意。',
+      ['为什么：回报善意——原文他们给她买了热巧克力']),
+     [('谓语：handed，递给，一般过去时。hand 后面可以跟双宾语。', '谓语：handed（一般过去时，双宾语）'),
+      ('主语：Emily。', '主语：Emily'),
+      ('补上两个宾语：them，给他们；a box of homemade cookies，一盒自己烤的饼干。', '双宾语：them + a box of homemade cookies'),
+      ('再并列一个宾语：and a card，一张卡片。', '并列宾语：and a card'),
+      ('最后修饰卡片：that read，定语从句，read 在这里是写着；后面是卡片上的话。', '定语从句：that read（写着）+ 卡片上的话')],
+     [('homemade cookies', ['①', '②'], P4, 'the couple bought Emily a hot chocolate',
+       ['回报：原文他们给她买热巧克力，她带着亲手烤的饼干回来', '一来一往，善意有了回应'],
+       '得分点一：homemade cookies，亲手烤的饼干。‖原文里夫妇俩给她买了热巧克力；现在她带着自己做的饼干回来，一来一往，善意有了回应，对应第一条和第二条。', []),
+      ('that read, “Thank you for saving my holiday.”', ['③', '①'], P4, 'her entire holiday plan could be ruined',
+       ['read 作“写着”讲：词汇准确', '卡片上的 holiday 回应原文“假期计划可能泡汤”'],
+       '得分点二：a card that read，read 在这里的意思是写着。‖卡片上的话：Thank you for saving my holiday。‖holiday 这个词，正好回应原文：her entire holiday plan could be ruined。', [])],
+     (['a thank-you card', 'as a small token of her thanks'],
+      '可替换：a thank-you card，感谢卡；还可以加一句：as a small token of her thanks，聊表谢意。'))
+
+sent([['“We just did what anyone would do,” ', 3], ['Rachel ', 2], ['said, ', 1], ['giving her a warm hug.', 4]],
+     ('第四句，中文是：我们只是做了任何人都会做的事，瑞秋说着，温暖地拥抱了她。‖瑞秋的回答轻描淡写，更显真诚。',
+      ['为什么：瑞秋的回答——轻描淡写，更显真诚']),
+     [('谓语：said，一般过去时。', '谓语：said（一般过去时）'),
+      ('主语：Rachel。', '主语：Rachel'),
+      ('说的话用直接引语：We just did what anyone would do。what 引导宾语从句。', '直接引语：what 引导宾语从句'),
+      ('最后补上：giving her a warm hug，现在分词作伴随状语。', 'giving her a warm hug：现在分词作伴随状语')],
+     [('We just did what anyone would do', ['①'], P3B, 'With genuine warmth in her voice',
+       ['人物一致：帮了大忙，却说是“任何人都会做的事”', '和原文声音里透着温暖的瑞秋是同一个人'],
+       '得分点一：We just did what anyone would do。‖帮了大忙，却说只是做了任何人都会做的事，谦和、真诚，和原文里声音温暖的瑞秋是同一个人，对应第一条。', []),
+      ('giving her a warm hug', ['③'], P3C, 'Rachel asked if she was okay',
+       ['现在分词作伴随：说话和拥抱同时发生', '从原文问她好不好，到这里拥抱她，温暖一以贯之'],
+       '得分点二：giving her a warm hug，现在分词作伴随状语。‖说话和拥抱同时发生，一句写两个动作。‖从原文里问她好不好，到这里拥抱她，瑞秋的温暖一以贯之，对应第三条。', [])],
+     (['It was nothing', 'hugging her tightly'],
+      '可替换：It was nothing，‖动作也可以写：hugging her tightly。'))
+
+sent([['Driving away, ', 4], ['Emily ', 2], ['realized ', 1], ['that the storm had nearly ruined her Christmas, ', 3], ['but two strangers had made it the warmest of her life.', 5]],
+     ('最后一句，中文是：开车离开时，艾米丽意识到，暴风雪差点毁了她的圣诞节，而两个陌生人却让它成了她一生中最温暖的圣诞。‖全文结尾，要点明主题。',
+      ['为什么：全文结尾，点明主题——陌生人的善意']),
+     [('谓语：realized，意识到，一般过去时。', '谓语：realized（一般过去时）'),
+      ('主语：Emily。', '主语：Emily'),
+      ('意识到什么：that 引导宾语从句，the storm had nearly ruined her Christmas。暴风雪在她意识到之前，用过去完成时。', '宾语从句：that the storm had nearly ruined her Christmas（过去完成时）'),
+      ('句首补上：Driving away，现在分词作时间状语，开车离开时。', 'Driving away：现在分词作时间状语'),
+      ('最后用 but 转折：two strangers had made it the warmest of her life。make 加宾语加宾补，用最高级。', 'but 转折：make it the warmest（宾补，最高级）')],
+     [('had nearly ruined her Christmas', ['①'], P4, 'her entire holiday plan could be ruined',
+       ['ruin：原文用过的词，结尾收住', '原文的担心（假期泡汤）有了答案'],
+       '得分点一：had nearly ruined her Christmas。‖ruin 这个词，原文用过：her entire holiday plan could be ruined。‖结尾用同一个词收住，原文的担心有了答案，对应第一条。', []),
+      ('but two strangers had made it the warmest of her life', ['③', '④'], P3B, 'genuine warmth',
+       ['but 转折：暴风雪与陌生人，冷与暖对比', '最高级 the warmest 接住原文 genuine warmth，点题'],
+       '得分点二：but 转折，前面是暴风雪，后面是陌生人，冷和暖形成对比。‖the warmest of her life，最高级，又接住原文的 genuine warmth，主题水到渠成，对应第三条和第四条。', [])],
+     (['As she drove off', 'the kindness of strangers had turned it into an unforgettable one'],
+      '可替换：As she drove off，‖后半句也可以写：the kindness of strangers had turned it into an unforgettable one。'))
+
+# ---------- 写进 稿 ----------
+fw = json.loads((D / '范文.json').read_text('utf-8'))
+own = [(pi, si) for pi, p in enumerate(fw['paragraphs']) for si, s in enumerate(p) if not s.get('given')]
+assert len(own) == len(S), (len(own), len(S))
+
+
+def noq(s):
+    return s.replace('“', '').replace('”', '')
+
+
+def para_read(pi):
+    p = fw['paragraphs'][pi]
+    k = '一二'[pi]
+    add(f'r{pi + 1}a', f'para{pi + 1}', f'第{k}段写完了。我们把这一段连起来读一遍。', gap=0.5)
+    add(f'r{pi + 1}b', f'para{pi + 1}', ' '.join(noq(s['en']) for s in p), lang='English', gap=1.0)
+
+
+for k, ((pi, si), x) in enumerate(zip(own, S), 1):
+    sen = fw['paragraphs'][pi][si]
+    sen['块'] = x['blocks']
+    sc = f's{k}'
+    why_text, why_ln = x['why']
+    add(f's{k}z', sc, why_text, ph='zh', ln=why_ln)
+    for j, (text, ln) in enumerate(x['steps'], 1):
+        ph = 'v' if j == 1 else ('s' if j == 2 else 'r')
+        add(f's{k}b{j}', sc, text, ph=ph, show=j, ln=[ln])
+    add(f's{k}e', sc, noq(sen['en']), lang='English', ph='read', gap=0.7)
+    for j, (hl, dang, src, mark, ln, text, ex) in enumerate(x['pts'], 1):
+        kw = {'例': ex} if ex else {}
+        add(f's{k}p{j}', sc, text, ph='pt', hl=hl, dang=dang, src=src, mark=[mark], ln=ln, **kw)
+    alt_ln, alt_text = x['alt']
+    add(f's{k}h', sc, alt_text, ph='alt', ln=['可替换：' + a for a in alt_ln], 替换=alt_ln, gap=0.9)
+    if (pi, si) == own[-1] or own[k][0] != pi:
+        para_read(pi)
+
+# ---------- 失分点、方法、全文 ----------
+add('f01', 'fail', '常见失分点。第一，第一段只写坐火车，忘了安排那辆车，第二段回来取车就接不上。', note='① 只写坐火车、不安排车 → 第二段“回来取车”接不上')
+add('f02', 'fail', '第二，时态混乱。叙事用一般过去时，更早发生的用过去完成时，比如：the road that had trapped her。', note='② 时态：叙事用一般过去时，更早的动作用过去完成时')
+add('f03', 'fail', '第三，lie 和 lay 分不清。路静静地躺着，是 lie 的过去式 lay，不能写成 laid。', note='③ lie（躺）→ lay；lay（放）→ laid，不要混')
+add('f04', 'fail', '第四，结尾空喊大道理，不回到原文。主题要从情节里自然得出：回到 ruin，回到 warmth。', note='④ 结尾空喊口号 → 回到原文的词：ruin、warmth', gap=0.8)
+add('m01', 'sum', '最后总结方法。第一步，读原文：抓人物、目标、冲突、情感线和伏笔。', note='① 读原文：人物、目标、冲突、情感线、伏笔')
+add('m02', 'sum', '第二步，读开头语：想清楚这一段要解决什么，怎么接下一段。', note='② 读开头语：这一段解决什么，怎么接下一段')
+add('m03', 'sum', '第三步，列提纲：每段三到四步，原文的伏笔都要收住。', note='③ 列提纲：每段三到四步，伏笔都收住')
+add('m04', 'sum', '第四步，逐句写：先想中文，再定谓语，补主语，补其余。', note='④ 逐句写：中文 → 谓语 → 主语 → 其余')
+add('m05', 'sum', '第五步，回头查：句式有没有变化，有没有呼应原文，结尾有没有点题。‖下面把完整范文读一遍。', note='⑤ 回头查：句式变化、呼应原文、结尾点题', gap=0.8)
+n = 0
 for pi, p in enumerate(fw['paragraphs']):
     for si, s in enumerate(p):
-        k += 1
-        E(f'w{k:02d}', 'full', noq(s['en']), 0.9 if si == len(p) - 1 else 0.6, cur=[pi, si])
-Z('z01', 'full', '这篇读后续写就讲到这里。', 0.6)
+        n += 1
+        add(f'u{n:02d}', 'full', noq(s['en']), lang='English', cur=[pi, si], gap=1.0 if si == len(p) - 1 else 0.6)
+add('z01', 'full', '这就是本题的思路和范文。我们下次再见。', gap=0.6)
 
-doc = {'说明': '读后续写讲解稿（格式与 高考语法填空 的稿相同：配音工具直接用）。text = 送进配音的文字（中文里成句的英文前后用中文标点隔开，单独按英文合成；‖ 标必须停顿的边界）；screen = 画面；'
-             'mark = 原文屏高亮的原文短语；note / lines / row = 画面卡片新增的一行；ph = 逐句屏的阶段（read 读句 / mean 意思与作用 / pt 得分点 / how 怎么写与可替换）；hl = 范文句里标出的得分点短语；替换 = 本段说到的可替换英文表达（不在原文、范文里）；cur = 全文通读当前句。',
+(D / '范文.json').write_text(json.dumps(fw, ensure_ascii=False, indent=1) + '\n', 'utf-8')
+doc = {'说明': '2026 新课标Ⅰ卷 读后续写讲解稿（稿源.py 生成，勿手改）。逐句五步：中文构思 → 谓语 → 主语 → 其余 → 得分点（档 + 原文出处）→ 可替换。',
        '题目': '高考续写/讲解/2026_新课标Ⅰ卷/题目.json', '范文': '高考续写/讲解/2026_新课标Ⅰ卷/范文.json', 'segments': segs}
-json.dump(doc, open('稿.json', 'w'), ensure_ascii=False, indent=1)
-zh = sum(len([c for c in s['text'] if '一' <= c <= '鿿']) for s in segs if s['lang'] == 'Chinese')
-en = sum(len(s['text'].split()) for s in segs if s['lang'] == 'English')
-print(len(segs), '段；中文字', zh, '约', round(zh / 5.6), '秒；英文段词数', en, '约', round(en / 2.5), '秒')
-EX = {'s2h1': ['when she thought of it, she decided to go'], 's4p1': ['pull away'], 's4h1': ['she cried'], 's5h1': ['scrape it clean'],
-      's6h1': ['not only … but also'], 's7h1': ['said with a smile']}
-for s in segs:
-    if s['id'] in EX: s['例'] = EX[s['id']]
-doc['说明'] += '例 = 讲解里举的反例、泛例英文（不出自原文、范文）。'
-json.dump(doc, open('稿.json', 'w'), ensure_ascii=False, indent=1)
+(D / '稿.json').write_text(json.dumps(doc, ensure_ascii=False, indent=1) + '\n', 'utf-8')
+print(f'稿：{len(segs)} 段；范文 {len(own)} 句')
