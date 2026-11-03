@@ -1,35 +1,64 @@
 #!/bin/bash
-# 读后续写讲解：一条脚本流到底（出错即停）。等 Actions 合成结果（分支 gram-tts-out 的 runs/<任务>-<运行号>/）
-# → 选段（逐小段选优 + 完整处理链：去呼吸、陷波、意群、响度、合格证、节奏）→ 续写视频（截图排版检查 → 视频 → 成品核查）→ 提交推送。
-# 用法：bash 高考续写/tools/续写全片.sh <讲解目录> <任务文件名（高考语法填空/tts/ 下）> <音色 id> <成品名> [AFTER=运行号下限] [段 id…（只做这几段）]
+# 读后续写讲解：一条脚本流到底（出错即停）。视频在 GitHub Actions 上生成并发布 Release（render-gaokao-writing.yml），本机只出音频。
+#   等合成结果（分支 gram-tts-out 的 runs/<任务>-<运行号>/）→ 选段（逐小段选优 + 完整处理链：去呼吸、陷波、意群、响度、合格证、节奏）
+#   → 按工作流的检出路径建稀疏工作树试排截图（踩坑 84）→ 提交音频 + 清单 高考续写/render.txt 并推送（触发 Actions）
+#   → 等 Release 上出现成品 → 下载回来核对 sha256、3840×2160、时长。
+# 用法：bash 高考续写/tools/续写全片.sh <讲解目录> <任务文件名（高考语法填空/tts/ 下）> <音色 id> <成品名> <Release 标签> [段 id…（只做这几段）]
+#   环境变量 AFTER=运行号下限（只认比它新的合成结果）
 set -euo pipefail
 cd "$(dirname "$0")/../.."
-DIR=$1; TASK=$2; VOICE=$3; NAME=$4; shift 4
+DIR=$1; TASK=$2; VOICE=$3; NAME=$4; TAG=$5; shift 5
 AFTER=${AFTER:-0}
 ONLY=(); [ $# -eq 0 ] || ONLY=(--only "$@")
 PY=/opt/ttsenv/bin/python
 BR=claude/epic-edison-4gkcfb
+REPO=AlienCodes/university-entrance-examination
 export TMPDIR=${TMPDIR:-/tmp}
 T=$(mktemp -d)
-KEY="${TASK%.json}-"
 python3 高考续写/tools/续写检查.py "$DIR" --副本 高考语法填空/tts/稿_续写_$(basename "$DIR").json
+python3 .github/check-browser-match.py .github/workflows/render-gaokao-writing.yml      # 踩坑 78
 RUN=""
 for k in $(seq 100); do                        # 最多等约 3.3 小时
   git fetch -q origin gram-tts-out || true
-  r=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "$KEY" | sort -V | tail -1 || true)   # 中文路径不转义（踩坑 92）
+  r=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "${TASK%.json}-" | sort -V | tail -1 || true)   # 踩坑 92
   [ -n "$r" ] && [ "${r##*-}" -gt "$AFTER" ] && RUN=$r && break
   sleep 120
 done
-[ -n "$RUN" ] || { echo "没等到合成结果：$KEY"; exit 1; }
+[ -n "$RUN" ] || { echo "没等到合成结果：$TASK"; exit 1; }
 echo "合成结果：$RUN"
 git archive origin/gram-tts-out "$RUN" | tar -x -C "$T"
-mkdir -p 高考续写/audio 高考续写/最终视频
+mkdir -p 高考续写/audio
 $PY 高考语法填空/tools/选段.py --稿 "$DIR/稿.json" --run "$T/$RUN/$VOICE" --out "高考续写/audio/$NAME.mp3" "${ONLY[@]}"
-$PY 高考续写/tools/续写视频.py --稿 "$DIR/稿.json" --音频 "高考续写/audio/$NAME.mp3" --video \
-    --out 高考续写/最终视频 --png "$T/png" --name "$NAME.mp4"
 $PY 高考语法填空/tools/讲解节奏.py "高考续写/audio/$NAME.mp3" > "高考续写/audio/$NAME.节奏.txt"
-git add 高考续写/audio/ "高考续写/最终视频/$NAME.mp4"
-git commit -qm "高考续写：$NAME（选段 + 完整处理链 + 截图排版检查 + 成品核查全部通过）"
+# 踩坑 84：按工作流的检出路径建稀疏工作树，截图全部检查走一遍（只截这段音频用到的屏）
+WT=$T/wt
+git worktree add -q --no-checkout "$WT" HEAD
+git -C "$WT" sparse-checkout set --no-cone $(python3 -c "
+import yaml;w=yaml.safe_load(open('.github/workflows/render-gaokao-writing.yml'))
+print(' '.join(l.strip() for l in w['jobs']['render']['steps'][0]['with']['sparse-checkout'].splitlines() if l.strip()))")
+git -C "$WT" checkout -q
+cp 高考续写/audio/"$NAME".* "$WT/高考续写/audio/" 2>/dev/null || { mkdir -p "$WT/高考续写/audio"; cp 高考续写/audio/"$NAME".* "$WT/高考续写/audio/"; }
+cp "$DIR"/*.json "$WT/$DIR/"
+ln -s "$PWD/tools/tts/models" "$WT/tools/tts/models" 2>/dev/null || true
+(cd "$WT" && $PY 高考续写/tools/续写视频.py --稿 "$DIR/稿.json" --音频 "高考续写/audio/$NAME.mp3" --stills --out "$T/st" --png "$T/st/png")
+git worktree remove --force "$WT"
+printf '# 高考续写视频清单（推送触发 render-gaokao-writing.yml）\n%s\n%s\n%s\n%s\n' "$TAG" "$DIR" "高考续写/audio/$NAME.mp3" "$NAME.mp4" > 高考续写/render.txt
+git add 高考续写/audio/ 高考续写/render.txt
+git commit -qm "高考续写：$NAME 音频（选段 + 完整处理链 + 合格证）；推清单在 GitHub 上生成视频并发布 Release $TAG"
 for i in 1 2 3 4; do git push -q origin "$BR" && break; sleep $((2**i)); done
+# 等 Release 上出现成品，下载回来核对
+U="https://github.com/$REPO/releases/download/$TAG"
+EN=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$NAME.mp4")
+mkdir -p "$T/dl"
+for k in $(seq 90); do                          # 最多等约 3 小时
+  if curl -fsSL -o "$T/dl/sha" "$U/$EN.sha256" 2>/dev/null && grep -q . "$T/dl/sha"; then break; fi
+  sleep 120
+done
+curl -fsSL --retry 4 -o "$T/dl/$NAME.mp4" "$U/$EN"
+want=$(cut -d' ' -f1 "$T/dl/sha"); got=$(sha256sum "$T/dl/$NAME.mp4" | cut -d' ' -f1)
+[ "$want" = "$got" ] || { echo "sha256 不一致：$want ≠ $got"; exit 1; }
+info=$(ffprobe -v error -show_entries format=duration:stream=width,height -of csv=p=0 "$T/dl/$NAME.mp4" | tr '\n' ' ')
+echo "$info" | grep -q "3840,2160" || { echo "分辨率不对：$info"; exit 1; }
+echo "下载核对通过：$U/$EN  sha256 $got  $info"
 rm -rf "$T"
 echo "续写全片完成 exit 0"
