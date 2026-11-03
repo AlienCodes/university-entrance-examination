@@ -180,6 +180,10 @@ def main():
     J.TEMPO = a.提速
     J.SPLIT = a.拆分
     J.GAP_MAX = a.停顿上限
+    import 合成完整性 as WZ               # 缺 take / 缺小段就停（合成机被停时 collect 照样发布，候选会悄悄少掉）
+    werr = WZ.problems(a.run) + (WZ.problems(a.退回) if a.退回 else [])
+    if werr:
+        raise SystemExit('合成结果不完整，不选段（重跑失败的作业）：' + '；'.join(werr[:8]))
     segs = json.loads(Path(a.稿).read_text('utf-8'))['segments']
     if a.only:
         segs = [s for s in segs if s['id'] in a.only]
