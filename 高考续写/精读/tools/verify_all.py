@@ -1,6 +1,7 @@
-"""考研成品视频总核查（由专八 verify_all.py 复制）：对 考研/最终视频_校园/ 里的每个 MP4 重新实测，复用高考 verify_videos.check 的全部项目
+"""高考续写精读成品视频总核查（由考研 verify_all.py 复制）：对 高考续写/精读/最终视频_校园/ 里的每个 MP4 重新实测，复用高考 verify_videos.check 的全部项目
 （分辨率 ≥ 2K、16:9、30 帧恒定、声画等长、片头静音 1.5 秒、句间 0.8 秒、结尾静音 ≥ 2 秒、响度、朗读与画面逐句一致……），
-再加上文件名规则、文件名不重复、视频与音频是同一版本、成品体积 ≤ 95 MB。结果写到 考研/核查报告_校园.md。任何一项不通过，退出码非 0。可指定篇目：verify_all.py k01 k02 …
+再加上文件名规则、文件名不重复、视频与音频是同一版本、成品体积 ≤ 95 MB。结果写到 高考续写/精读/核查报告_校园.md。任何一项不通过，退出码非 0。可指定篇目：verify_all.py x01 x02 …
+文件名规则不另抄正则，直接用引擎 PROJECTS['高考续写']['name_re']（与 make_video 生成时同一个判断；踩坑 108）。
 """
 import json
 import re
@@ -12,7 +13,7 @@ C4 = HERE.parent
 ROOT = C4.parents[1]
 sys.path.insert(1, str(ROOT / '四级' / 'tools'))      # debuzz.py（电磁音检查）与四级共用
 sys.path[:0] = [str(HERE), str(ROOT / 'tools' / 'video'), str(ROOT / 'tools' / 'tts')]
-from make_video import video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
+from make_video import PJ, video_name, VOICE, SPLIT, split_parts, switch_check, switch_time, buzz_check        # noqa: E402
 from verify_videos import check, duplicate_names                  # noqa: E402
 
 FINAL = C4 / '最终视频_校园'                     # 晴空校园成品（大字版.py --video 写这里）
@@ -34,12 +35,12 @@ def main():
             print('缺少视频：', missing)
             return 1
         files = [f for f in files if f.name in want]
-    lines = ['# 考研最终视频核查报告', '', f'对 `考研/{FINAL.name}/` 里的 {len(files)} 个 MP4 成品逐个实测（解码音轨、读取每一帧时间戳），逐项核对。', '']
+    lines = ['# 高考续写精读最终视频核查报告', '', f'对 `高考续写/精读/{FINAL.name}/` 里的 {len(files)} 个 MP4 成品逐个实测（解码音轨、读取每一帧时间戳），逐项核对。', '']
     allok = True
     for mp4 in files:
         p = byname.get(mp4.name)
         if not p:
-            lines += [f'## ❌ {mp4.stem}', '', '- ❌ 文件名不符合“年份月份 第几套 Passage One/Two 题目”，或找不到对应文章', '']
+            lines += [f'## ❌ {mp4.stem}', '', '- ❌ 文件名不符合“年份 试卷 读后续写 题目”，或找不到对应文章', '']
             allok = False
             print('❌', mp4.name, flush=True)
             continue
@@ -56,7 +57,7 @@ def main():
         res.append(buzz_check(mp4, tm['sentences']))
         size = mp4.stat().st_size                      # 大字版：成品体积 ≤ 95 MB（GitHub 单个文件上限 100 MB），与生成时的检查相同
         res.append(('成品体积 ≤ 95 MB', size <= 95 * 2**20, f'{size / 2**20:.1f} MB'))
-        res.insert(0, ('文件名：年份考研英语一/二 Text N（或 Part B）题目', bool(re.fullmatch(r'20\d\d年考研英语[一二] (?:Text [1-4]|Part B) \S.*\.mp4', mp4.name)), mp4.name))      # 由专八复制时漏改了文件名规则（GitHub 试跑 k02 查出）
+        res.insert(0, ('文件名：年份 试卷 读后续写 题目', bool(re.fullmatch(PJ['name_re'], mp4.name)), mp4.name))      # 规则只写一处：引擎的 name_re（踩坑 108：由考研复制时漏改，GitHub 试跑 x01 查出）
         good = all(r[1] for r in res)
         allok &= good
         print(('✅ ' if good else '❌ ') + mp4.name, flush=True)

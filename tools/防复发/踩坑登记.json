@@ -3791,6 +3791,40 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "108",
+   "title": "高考续写精读 verify_all.py 由考研复制，文件名正则漏改（还是考研的），把正确的 x01 文件名判成不合格（GitHub 试跑 x01 查出；考研、六级作文、四级作文复制时犯过同一个坑）",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "高考续写",
+    "专八",
+    "六级",
+    "六级作文",
+    "四级作文",
+    "考研",
+    "考研作文",
+    "专八听力"
+   ],
+   "guards": [
+    {
+     "where": "高考续写/精读/tools/verify_all.py 文件名一项直接用引擎 PJ['name_re']；tools/防复发/验证/文件名规则一致.py problems（全项目：verify_all 的文件名正则 = 引擎 PROJECTS 同项目 name_re）",
+     "runs": "防复发自检 --测试（每次推送 fangfufa-check.yml）",
+     "evidence": "自检输出"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/文件名规则一致.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
