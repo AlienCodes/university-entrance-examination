@@ -146,6 +146,7 @@ def blame(a, items, msg):
     """从报错里的时间点找到对应的段（意群报 “（12.34s）” / “（12.34s 起）”）；短时波动等整体问题：段尾最差的段。"""
     import 响度细查 as RX
     ts = [float(x) for x in re.findall(r'（(\d+\.\d+)s', msg)]
+    ts += [float(x) for x in re.findall(r'\((\d+\.\d+), \d+\.\d+, -?\d+\.\d+\)', msg)]   # 呼吸声报 [(起, 止, 峰值)]（之前认不出，只会换不相干的段）
     out = []
     us = [u for it in items for u in it.get('units', [it])]
     for t in ts:
