@@ -33,6 +33,7 @@ import text_rules as TR                  # noqa: E402  词数规则只写一处�
 EDIT = json.loads((HERE / '原文订正.json').read_text('utf-8'))
 EDIT = {k: v for k, v in EDIT.items() if not k.startswith('_')}
 
+# 开头语句数存为 heads（不能叫 lead：引擎的 lead 是第一句开口时刻，x01 样片核查因此报“开头静音 2 秒”）
 # 2022 浙江卷：汇总按文件名写“7月”，原卷卷首只写“2022年普通高等学校招生全国统一考试(浙江卷)”，即 6 月夏季高考（2022 年高考 6 月 7—10 日如期举行），按 6 月写
 # 片头的试卷名（paper）与文件名前缀（fname，铁律 6：年份 试卷 读后续写 题目）；来源（高考 / T8联考 / 九省联考）写进 paper
 PAPER = {
@@ -88,7 +89,7 @@ def main():
             errs.append(f'{pid}：试卷名 {paper} 与年份 {x["年份"]} 不符')
         res.append({'id': pid, 'year': x['年份'], 'month': x.get('考试月份'), 'set': 1, 'passage': 'Continuation Writing',
                     'paper': paper, 'fname': fname(PAPER[n]), 'part': '续写', 'paras': paras, 'words': words,
-                    'lead': len(x['开头语']), 'source': x['题目来源文件'], 'category': x['类别']})
+                    'heads': len(x['开头语']), 'source': x['题目来源文件'], 'category': x['类别']})
     if len(res) != 28:
         errs.append(f'篇数 {len(res)}，应为 28')
     if set(EDIT) - {r['id'] for r in res}:
