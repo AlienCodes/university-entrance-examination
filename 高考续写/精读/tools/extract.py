@@ -83,11 +83,11 @@ def main():
                         + str(re.findall(r'.{0,12}(?:[（）：，．]|_|\s[,.;:!?]|[,;:](?=[A-Za-z“])).{0,12}', text)[:5]))
         if text.count('“') != text.count('”'):
             errs.append(f'{pid}：左右双引号数目不同（{text.count("“")} / {text.count("”")}）')
-        paper = PAPER[n]
+        paper = PAPER[n].replace('Ⅰ', 'I').replace('Ⅱ', 'II')     # 片头字体（思源宋体网页子集）没有罗马数字字形 Ⅰ Ⅱ（预检：回退到系统字体），片头用拉丁字母；文件名仍写 Ⅰ Ⅱ
         if not paper.startswith(str(x['年份'])):
             errs.append(f'{pid}：试卷名 {paper} 与年份 {x["年份"]} 不符')
         res.append({'id': pid, 'year': x['年份'], 'month': x.get('考试月份'), 'set': 1, 'passage': 'Continuation Writing',
-                    'paper': paper, 'fname': fname(paper), 'part': '续写', 'paras': paras, 'words': words,
+                    'paper': paper, 'fname': fname(PAPER[n]), 'part': '续写', 'paras': paras, 'words': words,
                     'lead': len(x['开头语']), 'source': x['题目来源文件'], 'category': x['类别']})
     if len(res) != 28:
         errs.append(f'篇数 {len(res)}，应为 28')
