@@ -18,6 +18,12 @@ import 讲解节奏 as NJ  # noqa: E402
 import 选型评测 as E  # noqa: E402
 
 
+def judge(got, words):
+    """got：{词: [这个词每一处切出来的纯英文识别结果]}。同一个词在段里出现几次，每一次都要读对（踩坑 107：s3b1 的两处 towed
+    一处识别成 told、一处读对，旧写法“任一处对”就锁定了）。"""
+    return all(got.get(wd) and all(re.search(rf'\b{re.escape(wd)}\b', r, re.I) for r in got[wd]) for wd in words)
+
+
 def main():
     run, script, uid, *words = sys.argv[1:]
     J.SPLIT = 'mark'
@@ -45,8 +51,7 @@ def main():
                 t1 = hyp[j + 1][1] if j + 1 < len(hyp) else len(x) / G.SR
                 seg = x[max(0, int((t0 - 0.3) * G.SR)):int((t1 + 0.3) * G.SR)]
                 got.setdefault(word, []).append(ears.rec(ears.en, soxr.resample(seg, G.SR, 16000).astype(np.float32)))
-        # 同一个词在这段里出现几次，每一次都要读对（s3b1 的 towed 两处：一处读成 told、另一处读对，旧写法“任一处对”就放过了）
-        ok = all(got.get(wd) and all(re.search(rf'\b{re.escape(wd)}\b', r, re.I) for r in got[wd]) for wd in words)
+        ok = judge(got, words)
         print(f'{uid} {d.name}: {got} → {"读对" if ok else "不对"}', file=sys.stderr)
         if ok:
             print(d.name)

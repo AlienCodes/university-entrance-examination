@@ -3765,6 +3765,32 @@
    "status": "自动拦截+有双向验证",
    "gap": "DROP_TASK（删改稿段的旧合成）没有单独的双向验证",
    "fix": ""
+  },
+  {
+   "id": "107",
+   "title": "英文逐词核对：同一个词出现两次只要任一处读对就锁定（续写整片 v2 s3b1 towed、s4b1 drove）",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考续写"
+   ],
+   "guards": [
+    {
+     "where": "高考续写/tools/英文逐词核对.py judge",
+     "runs": "续写全片.sh VERIFY_EN（选段前锁定读对的那一次）",
+     "evidence": ".英文核对.txt"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/英文逐词核对.py",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
