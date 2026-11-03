@@ -31,11 +31,11 @@ def source(path):
             mo = m.group(1) or m.group(2)
             return y, f'{y}年{mo}月浙江省普通高校招生考试（浙江卷·{mo}月）', '高考', '浙江', (y, 3 if mo == '1' else 4)
     if '九省联考' in p and '2024' in p:
-        return 2024, '2024年1月九省联考（普通高等学校招生全国统一考试适应性测试，2024届）', '八省/九省联考', '', (2024, 5)
+        return 2024, '2024年1月九省联考（普通高等学校招生全国统一考试适应性测试，2024届）', '九省联考', '', (2024, 5)
     if re.search(r'2025年1月.*适应性测试.*八省联考|2025.1.3-八省联考|八省联考\(2\)', p):
-        return 2025, '2025年1月八省联考（普通高等学校招生全国统一考试适应性测试，2025届）', '八省/九省联考', '云南、内蒙古、四川、河南、陕西、山西、宁夏、青海', (2025, 5)
+        return 2025, '2025年1月八省联考（普通高等学校招生全国统一考试适应性测试，2025届）', 'T8联考', '云南、内蒙古、四川、河南、陕西、山西、宁夏、青海', (2025, 5)
     if re.search(r'2021年1月.*八省联考', p):
-        return 2021, '2021年1月八省联考（普通高等学校招生全国统一考试适应性测试，2021届）', '八省/九省联考', '', (2021, 5)
+        return 2021, '2021年1月八省联考（普通高等学校招生全国统一考试适应性测试，2021届）', 'T8联考', '', (2021, 5)
     if 'T8' in p:
         for pat, y, name in [
             (r'2021-2022学年.*第一次联考', 2022, '2022届八省八校T8联考 高三第一次联考（2021—2022学年上学期）'),
@@ -46,10 +46,10 @@ def source(path):
             (r'2026届', 2026, '2026届八省八校T8联考 高三12月检测训练（2025年12月）'),
         ]:
             if re.search(pat, p):
-                return y, name, '其他（T8 等联考）', '', (y, 6)
+                return y, name, 'T8联考', '', (y, 6)
     if path in PATCH.get('来源', {}):
         s = PATCH['来源'][path]
-        return s['年份'], s['考试'], s['类别'], s.get('省份', ''), (s['年份'], s.get('序', 7))
+        return s['年份'], s['考试'], s['类别'].replace('其他（T8 等联考）', 'T8联考'), s.get('省份', ''), (s['年份'], s.get('序', 7))
     return None
 
 def key(s):
@@ -227,8 +227,52 @@ for r in recs:
             break
 
 recs.sort(key=lambda r: (-r['年份'], min(e['年份'] * 0 + s for e in r['试卷'] for s in [0]), r['来源']))
-order = {'高考': 0, '八省/九省联考': 1, '其他（T8 等联考）': 2}
-recs.sort(key=lambda r: (-r['年份'], order.get(r['类别'], 3), r['来源']))
+order = {'高考': 0, 'T8联考': 1, '九省联考': 2}
+# 标题、原卷标题、考试年月；OCR 错字校对
+def short(full):
+    m = re.search(r'（((?:新高考|新课标)[ⅠⅡ]卷)）', full)
+    if m:
+        return m.group(1)
+    m = re.search(r'浙江卷·(\d+)月', full)
+    return f'浙江卷（{m.group(1)}月）' if m else full
+
+def fixtext(x):
+    for a, b in PATCH.get('OCR校对', []):
+        x = x.replace(a, b)
+    return re.sub(r'\(\s*([\u4e00-\u9fff，、]+)\s*\)', r'(\1)', x)
+
+for r in recs:
+    t8 = PATCH.get('T8标题', {}).get(r['来源'])
+    if t8:
+        r['标题'], r['原卷标题'] = t8['标题'], t8['原卷标题']
+        r['年份'], r['考试月份'] = t8['年'], t8['月']
+    else:
+        if r['类别'] != '高考':
+            problems.append(f"{r['来源']}：联考没有登记统一标题（补录.json 的 T8标题）")
+        r['标题'] = f"{r['年份']}年 " + '；'.join(short(e['考试']) for e in r['试卷'])
+        r['原卷标题'] = '；'.join(e['考试'] for e in r['试卷'])
+        r['考试月份'] = 1 if '1月' in r['标题'] else 6
+    for k in ('原文', '开头语'):
+        r[k] = [fixtext(x) for x in r[k]]
+    # 英文里夹的全角标点改半角（中文注释不动）
+    en0 = lambda x: re.sub(r'．\s*$', '.', re.sub(r'(?<=[A-Za-z])．(?=[a-z])', ', ', x))
+    en1 = lambda x: re.sub(r'(?<=[A-Za-z0-9’”"])\s*([．，；：])\s*(?=[A-Za-z“"‘$])', lambda m: {'．': '. ', '，': ', ', '；': '; ', '：': ': '}[m.group(1)], x)
+    en = lambda x: en1(en0(x))
+    r['原文'] = [en(x) for x in r['原文'] if not (re.search('英语试题|试卷第|第.{0,3}页', x) and len(x) < 40)]
+    r['开头语'] = [en(x) for x in r['开头语']]
+    if r['范文']:
+        r['范文'] = [en(x) for x in r['范文']]
+    merged = []  # 换页处被拆开的段落接回去：上一段没以句末标点结束，下一段小写开头、或上一段以小写词 / 逗号结尾
+    for x in r['原文']:
+        if merged and len(merged[-1].split()) > 8 and not re.search(r'[.!?"”’)]\s*$', merged[-1]) and (re.match(r'[a-z]', x) or re.search(r'[a-z,]\s*$', merged[-1])):
+            merged[-1] += ' ' + x
+        else:
+            merged.append(x)
+    r['原文'] = merged
+    if r['范文']:
+        r['范文'] = [fixtext(x) for x in r['范文']]
+    r['原文首句'] = fixtext(r['原文首句'])
+recs.sort(key=lambda r: (-r['年份'], order.get(r['类别'], 3), -r['考试月份'], r['来源']))
 for i, r in enumerate(recs, 1):
     r['编号'] = i
 
@@ -288,7 +332,7 @@ for r in recs:
 stat = {
     '续写题（去重后）': len(recs),
     '按类别': dict(collections.Counter(r['类别'] for r in recs)),
-    '试卷套数（含共用同一篇续写的不同试卷）': dict(paper_cnt),
+    '试卷套数（共用同一篇续写的试卷分别计）': dict(paper_cnt),
     '按年份': {str(y): dict(c) for y, c in sorted(by_year.items(), reverse=True)},
     '有范文': sum(1 for r in recs if r['范文']),
 }
@@ -302,7 +346,7 @@ json.dump({'统计': stat, '检查问题': problems, '需人工核实': verify, 
           open(os.path.join(OUT, '续写题汇总.json'), 'w'), ensure_ascii=False, indent=1)
 
 # ---------- md ----------
-cats = ['高考', '八省/九省联考', '其他（T8 等联考）']
+cats = ['高考', 'T8联考', '九省联考']
 L = ['# 高考英语读后续写汇总', '',
      f"去重后共 **{len(recs)} 篇**续写题（同一篇被几套试卷共用只算一篇），"
      + '、'.join(f"{c} {stat['按类别'].get(c, 0)} 篇" for c in cats) + f"；其中 {stat['有范文']} 篇有原解析卷的参考范文。", '',
@@ -317,7 +361,7 @@ if verify:
     L += ['## 需人工核实', ''] + [f'- {p}' for p in verify] + ['']
 L += ['## 清单', '', '| # | 年份 | 类别 | 来源 | 题号 | 原文首句 | 开头语 1 | 开头语 2 | 范文 |', '|---|---|---|---|---|---|---|---|---|']
 for r in recs:
-    L.append(f"| {r['编号']} | {r['年份']} | {r['类别']} | {r['来源']} | {r['题号'] or ''} | {r['原文首句']} | {(r['开头语'] or ['（缺）'])[0]} | {(r['开头语'] or ['', '（缺）'])[1]} | {'有' if r['范文'] else '—'} |")
+    L.append(f"| {r['编号']} | {r['年份']} | {r['类别']} | {r['标题']}<br>原卷：{r['原卷标题']} | {r['题号'] or ''} | {r['原文首句']} | {(r['开头语'] or ['（缺）'])[0]} | {(r['开头语'] or ['', '（缺）'])[1]} | {'有' if r['范文'] else '—'} |")
 L += ['', '## 原始文件', '']
 for r in recs:
     L.append(f"- #{r['编号']} {r['来源']}：" + '；'.join(f'`{p}`' for p in r['原始文件'])
