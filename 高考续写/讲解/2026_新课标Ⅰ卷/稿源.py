@@ -40,7 +40,7 @@ add('g04', 'rubric', '第三，语法结构和词汇丰富、准确。', note='�
 add('g05', 'rubric', '第四，有效使用语句间的连接成分，结构紧凑。‖后面每一句的得分点，都会落到这四条上。', note='④ 有效使用连接成分，结构紧凑', gap=0.8)
 
 # ---------- 读原文 ----------
-add('a01', 'p1', '先读原文。第一段交代人物和目的：艾米丽，二十五岁，十二月二十三日出发，要赶到多伦多，和男朋友一起过圣诞。‖这是全文的目标，续写要给出结果。',
+add('a01', 'p1', '先读原文。第一段交代人物和目的：艾米丽，二十五岁，十二月二十三日出发，打算赶到多伦多，和男朋友一起过圣诞。‖这是全文的目标，续写要给出结果。',
     mark=['Emily Sanders, a 25-year-old from Detroit, Michigan', 'reaching Toronto to meet her boyfriend for Christmas'], note='人物与目标：赶去多伦多，和男朋友过圣诞')
 add('a02', 'p1', '冲突从哪里来？‖她听到了暴风雪预警，却没放在心上；雪越下越大，她被引下高速，开上一条陌生的路。',
     mark=['she didn’t give it much thought', 'Emily was directed off the highway'], note='冲突起点：轻视暴风雪，被引下高速', gap=0.8)
@@ -51,7 +51,7 @@ add('a04', 'p2', '手机没有信号，她只能裹着毯子，在车里过夜�
 add('a05', 'p3', '第三段是转机。丹尼尔和瑞秋夫妇在回家路上看到被困的车，停下来帮忙。‖注意这个短语：genuine warmth。真诚的温暖，全文的主题就落在这里：陌生人的善意。',
     mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：陌生夫妇停车相助，真诚温暖')
 add('a06', 'p3', '艾米丽又感激，又宽慰，接受了帮助。‖情感从无助转向温暖。', mark=['Grateful and relieved'], note='情感转折：感激、宽慰', gap=0.8)
-add('a07', 'p4', '第四段最关键。艾米丽说出了三个难题：离目的地还有一百英里，车完全困住了，整个假期计划可能泡汤。‖续写就要把这三个问题一一解决。',
+add('a07', 'p4', '第四段最关键。艾米丽说出了三个难题：离目的地还有一百英里，车完全困住了，整个假期计划可能泡汤。‖续写的任务，就是把这三个问题一一解决。',
     mark=['she was about a hundred miles from her destination', 'her car was completely stuck', 'her entire holiday plan could be ruined'],
     note='三个难题：离目的地一百英里；车困住了；假期计划可能泡汤')
 add('a08', 'p4', '还有一个细节：夫妇俩给她买了热巧克力，耐心听她说完。‖这份善意，续写的结尾要让艾米丽回报。',
