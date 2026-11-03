@@ -61,6 +61,10 @@ CFG = {
     '四级作文': {'look': 'C', 'work': '大字版', 'videos': '最终视频', 'art': 'cet4-writing', 'zip': 'CET4-writing-videos', 'n': 32,
              'head': ['大学英语四级 写作（Part I）满分范文逐句精读视频 · 四级杂志版，共 {n} 个：2021—2026 年 32 套真题，每套一篇（{parts} 个压缩包，解压即可）。',
                       '4K（3840×2160）、30 帧/秒恒定；开头展示原卷高清原题；英文 EB Garamond、中文思源宋体，生词墨绿、短语赭红，圆形编号注释；男声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
+    # 高考读后续写原文精读（用户 2026-11-03，女声 female）：目录 高考续写/精读/
+    '高考续写': {'dir': '高考续写/精读', 'voice': 'female', 'look': '1', 'work': '大字版', 'videos': '最终视频_校园', 'art': 'gaokao-xuxie', 'zip': 'GAOKAO-continuation-videos', 'n': 28,
+             'head': ['高考英语 读后续写 原文精读视频 · 晴空校园大字版，共 {n} 个：2020—2026 年高考真题 18 篇、T8联考 9 篇、九省联考 1 篇，每篇读原文全文 + 两段开头语，逐句英文、中文翻译、生词短语（{parts} 个压缩包，解压即可）。',
+                      '4K（3840×2160）、30 帧/秒恒定；英文、中文全部加粗，生词晴空蓝、短语草绿（黄色底纹）；女声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
 }[PROJECT]
 LOOK = CFG['look']
 D = CFG.get('dir', PROJECT)                      # 项目目录（专八水墨 → 专八）
@@ -74,7 +78,7 @@ def audio_need(pid):
     """这一篇现在的音频合格证要求的 MP3 sha256；旧成品（没有合格证）返回 None。"""
     if not TIMINGS.exists():
         sys.exit(f'打包要核对视频所用的音频，缺 {TIMINGS}（发布任务的 sparse-checkout 要带上它，踩坑 86）')
-    tm = json.loads(TIMINGS.read_text('utf-8')).get('cet4_male', {}).get(pid) or {}
+    tm = json.loads(TIMINGS.read_text('utf-8')).get(CFG.get('voice', 'cet4_male'), {}).get(pid) or {}      # 配音键（高考续写 female；写死 cet4_male 会让女声项目查不到合格证、绑定检查悄悄失效）
     c = tm.get('certificate') or {}
     if not c and not tm.get('clause_check'):
         return None

@@ -19,6 +19,7 @@ NOSPLIT = []     # 个别需要人工指定不切开的位置：(篇号, 原文�
 def split(p):
     q = re.sub(r'\b(' + ABBR + r')\.(?=\s+[a-z])|\b(' + ABBR + r')\.(?!\s*$)(?=\s+(?:[A-Z][a-z]+\s)?(?:[a-z]|coli))',
                lambda m: m.group(0).replace('.', '<DOT>'), p)
+    q = re.sub(r'(?<=\b[ap])<DOT>m<DOT>(?=\s+[A-Z][a-z]+\s[a-z])', '.m.', q)      # 读后续写 x07：“at 2:00 p.m. She wasted …” 是两句（时间缩写后接大写主语 + 小写谓语，不保护）
     q = re.sub(r'\b(Mr|Mrs|Ms|Dr|Prof|St|Jr|vs|e\.g|i\.e|Ph\.D)\.', lambda m: m.group(0).replace('.', '<DOT>'), q)
     q = re.sub(r'(?<![A-Za-z])([A-HJ-Z])\.(?=\s+[A-Z])', r'\1<DOT>', q)     # 人名首字母 G. K. Chesterton
     q = re.sub(r'(?<=\w )v\.(?=\s+[A-Z])', 'v<DOT>', q)     # 判例名 Sackett v. EPA（考研 k20）
