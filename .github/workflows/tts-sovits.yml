@@ -1,0 +1,128 @@
+name: 讲解配音（GPT-SoVITS 专属模型，CPU）
+# 老师用声音分身 VoiceTwin 训练的 GPT-SoVITS v2ProPlus 模型（或底模）在免费 CPU 机器上合成讲解配音。
+# 任务清单与 Qwen 同一格式（候选 mode: gptsovits），输出同一结构，提交到分支 gram-tts-out 的 runs/<任务>-sovits-<运行号>/。
+# 触发：推送 高考语法填空/tts/当前任务_sovits.txt（底模任务），或 workflow_dispatch（老师的模型：model_url 填云盘链接）。
+# 隐私：云盘链接第一步就 ::add-mask::；模型、老师素材只在 runner 本地（$SOVITS_DIR），不上传 artifact、不进仓库；
+#       上传的只有合成出来的配音小段、meta、成品与报告（取模型.py 结束前核对 out/ 里没有模型和素材）。
+on:
+  push:
+    branches: [claude/epic-edison-4gkcfb]
+    paths: ['高考语法填空/tts/当前任务_sovits.txt']
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 任务清单（高考语法填空/tts/ 下的文件名；空 = 当前任务_sovits.txt 里写的）
+        required: false
+      model_url:
+        description: 老师模型 zip 的云盘链接（只在 weights=teacher 时用；会被掩掉）
+        required: false
+permissions:
+  contents: write
+env:
+  GSV_COMMIT: abe984395cb6d8ed2055f5496d0bb26007f30365   # 老师电脑上的版本（VoiceTwin 注释 @ abe9843，20250606v2pro 之后）
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.p.outputs.shards }}
+      task: ${{ steps.p.outputs.task }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: 高考语法填空
+      - id: p
+        env:
+          IN_TASK: ${{ github.event.inputs.task }}
+        run: |
+          N="${IN_TASK:-$(head -1 高考语法填空/tts/当前任务_sovits.txt | tr -d '\r\n ')}"
+          T="高考语法填空/tts/$N"
+          test -f "$T"
+          echo "task=$T" >> "$GITHUB_OUTPUT"
+          echo "shards=$(python3 高考语法填空/tools/sovits_synth.py --task "$T" --list)" >> "$GITHUB_OUTPUT"
+  synth:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        shard: ${{ fromJson(needs.plan.outputs.shards) }}
+    steps:
+      - name: 掩掉云盘链接
+        env:
+          U: ${{ github.event.inputs.model_url }}
+        run: |
+          if [ -n "$U" ]; then echo "::add-mask::$U"; fi
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            高考语法填空
+            高考续写/讲解
+            tools/tts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: 安装 GPT-SoVITS（官方代码 + 依赖）
+        run: |
+          sudo apt-get install -y -qq sox ffmpeg >/dev/null
+          curl -sSfL --retry 5 -o gsv.tgz "https://codeload.github.com/RVC-Boss/GPT-SoVITS/tar.gz/$GSV_COMMIT"
+          mkdir GPT-SoVITS && tar -xzf gsv.tgz -C GPT-SoVITS --strip-components=1 && rm gsv.tgz
+          pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          # 只装推理用得到的：GPU 版 onnxruntime 换 CPU 版；opencc 用现成的轮子（不从源码编）；去掉网页界面、识别、韩语
+          grep -vE '^(--no-binary|onnxruntime|gradio|funasr|fastapi|ctranslate2|python_mecab_ko|tensorboard)' GPT-SoVITS/requirements.txt > req.txt
+          pip install -q -r req.txt onnxruntime huggingface_hub gdown soundfile soxr pyloudnorm lameenc num2words
+          python -m nltk.downloader -q averaged_perceptron_tagger averaged_perceptron_tagger_eng cmudict
+      - name: 下载底模（Hugging Face lj1995/GPT-SoVITS）
+        run: |
+          python - <<'EOF'
+          from huggingface_hub import snapshot_download
+          snapshot_download('lj1995/GPT-SoVITS', local_dir='GPT-SoVITS/GPT_SoVITS/pretrained_models',
+                            allow_patterns=['chinese-hubert-base/*', 'chinese-roberta-wwm-ext-large/*', 's1v3.ckpt',
+                                            'v2Pro/s2Gv2ProPlus.pth', 'sv/*'])
+          EOF
+          du -sh GPT-SoVITS/GPT_SoVITS/pretrained_models/*
+      - name: 取老师的模型（只在给了 model_url 时）
+        if: github.event.inputs.model_url != ''
+        env:
+          U: ${{ github.event.inputs.model_url }}
+          SOVITS_DIR: /mnt/sovits
+        run: |
+          sudo mkdir -p /mnt/dl /mnt/sovits && sudo chown "$USER" /mnt/dl /mnt/sovits
+          python 高考语法填空/tools/取模型.py --url-env U --dl /mnt/dl --out "$SOVITS_DIR"
+      - name: 合成
+        env:
+          MALLOC_ARENA_MAX: '2'
+          GSV_ROOT: GPT-SoVITS
+          SOVITS_DIR: /mnt/sovits
+        run: python 高考语法填空/tools/sovits_synth.py --task "${{ needs.plan.outputs.task }}" --shard ${{ matrix.shard }} --out out
+      - name: 隐私核对（out/ 里不许有模型和素材）
+        if: always()
+        run: python 高考语法填空/tools/取模型.py --check-out out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wav-${{ matrix.shard }}
+          path: out
+          retention-days: 7
+  collect:
+    needs: [plan, synth]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: arts
+      - name: 提交到 gram-tts-out
+        run: |
+          T=$(basename "${{ needs.plan.outputs.task }}" .json)
+          D="runs/${T}-sovits-${{ github.run_number }}"
+          mkdir repo && cd repo && git init -q
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth=1 origin gram-tts-out; then git checkout -q -b gram-tts-out FETCH_HEAD; else git checkout -q --orphan gram-tts-out; fi
+          mkdir -p "$D"
+          for a in ../arts/wav-*; do cp -r "$a"/. "$D"/; done
+          ls -R "$D" | head -50
+          git add "$D"
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "配音原始音频 $D"
+          for i in 1 2 3 4; do git push -q origin gram-tts-out && break; sleep $((2**i)); git pull -q --rebase origin gram-tts-out; done
