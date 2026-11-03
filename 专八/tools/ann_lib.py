@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 import sys as _sys
 _sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
-from text_rules import slot_gap_problem as _slot_gap  # noqa: E402
+from text_rules import slot_gap_problem as _slot_gap, subject_phrase_problem as _subj_phr  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ROOT = Path(os.environ['ZB_ROOT']).resolve() if os.environ.get('ZB_ROOT') else HERE.parent      # 专八/；ZB_ROOT 换成另一套同结构的数据（专八/听力/原文：阅读/sents.json、ann/、data/）
@@ -189,6 +189,9 @@ def check(pid, path, R=None):
             _sg = _slot_gap(e, en, sp, find)
             if _sg:
                 errs.append(f'第{k}句 {_sg}')
+            _sp = _subj_phr(e, en, sp)
+            if _sp:
+                errs.append(f'第{k}句 {_sp}')
             taken += sp
         miss = uncovered(en, taken, names)
         if miss:

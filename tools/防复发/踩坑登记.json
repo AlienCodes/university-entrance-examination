@@ -3890,6 +3890,41 @@
    "status": "自动拦截+有双向验证",
    "gap": "呼吸检查对段尾塞音除阻偏敏感，协调会话定这批不改（铁律 14），以后再出现带双向验证再议",
    "fix": ""
+  },
+  {
+   "id": "111",
+   "title": "短语高亮把主语也包进去（高考续写精读 x20：~be worried about{I’m worried about}、~be attached to{She’s that attached to}），只靠人眼看截图发现",
+   "stages": [
+    "标注"
+   ],
+   "projects": [
+    "专八",
+    "中考",
+    "六级",
+    "六级作文",
+    "四级",
+    "四级作文",
+    "考研",
+    "考研作文",
+    "高考续写"
+   ],
+   "guards": [
+    {
+     "where": "tools/text_rules.subject_phrase_problem（9 个项目的 ann_lib.check 都调用；整句固定说法 SUBJ_FIXED，已发布旧 4 处 SUBJ_REVIEWED 只许减少）",
+     "runs": "ann_lib.check（build_vocab / 封版）",
+     "evidence": "9 个项目 0 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/短语包主语.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只管主语缩写（I’m / She’s / it’s …）开头；不缩写的主语（I am worried about）、词条本身写了主语的不管",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

@@ -41,3 +41,42 @@ def slot_gap_problem(entry, sent, spans, find):
         return (f'短语 {entry["h"]} 的前一段落到了远处的“{sent[sp[0][0]:sp[0][1]]}”，'
                 f'后面还有更近的“{sent[a0:a0 + (sorted(sub)[0][1] - sorted(sub)[0][0])]}”：用 {{原文词形}} 指定同一分句里的那一处')
     return None
+
+
+# 短语高亮包进主语（踩坑 111，高考续写精读 x20：~be worried about{I’m worried about}、~be attached to{She’s that attached to}，
+# 画面上主语 I / She 也涂成短语色；正确写法 {worried about}、{that attached to}）。
+# 只管“词条本身不带主语、高亮却从 I’m / She’s / It’s … 开始”；词条本身以主语开头的（it's time to、I'm not saying）是有意的整句说法，不管。
+SUBJ_RE = re.compile(r"(I|you|he|she|it|we|they)['’](m|s|re|ve|d|ll)\b", re.I)
+SUBJ_WORDS = {'i', 'you', 'he', 'she', 'it', 'we', 'they'}
+# 整句固定说法：主语就是说法的一部分，高亮整句是对的
+SUBJ_FIXED = {"it’s over", "it’s time", "you’re right", "we’ve tried everything"}
+# 已人工核过的旧标注（2026-11-03 加检查时全项目扫出 4 处，中考、考研视频已发布，不追溯，只登记，只许减少）
+SUBJ_REVIEWED = {
+    ('be about', 'When asking yourself these que'),            # 中考 z22 第 22 句 it’s about
+    ('would like sb to do', 'There’s no harm in asking whet'),  # 中考 z38 第 14 句 they’d like you to
+    ('have got to', '“Otherwise, you miss the boat,'),         # 考研 k50 第 8 句 you’ve got to
+    ('be about', '“Yes, it’s about forests, but '),            # 考研 k50 第 26 句 it’s about
+}
+
+
+def _subj_norm(s):
+    return re.sub(r'\s+', ' ', s.replace("'", '’')).strip().lower()
+
+
+def subject_phrase_problem(entry, sent, spans):
+    """短语的高亮从主语缩写（I’m / She’s / They’re …）开始，而词条本身不带主语。返回问题描述或 None。"""
+    if not spans:
+        return None
+    a = min(x for x, _ in spans)
+    b = max(y for _, y in spans)
+    if not SUBJ_RE.match(sent, a):
+        return None
+    first = re.split(r"[\s'’]", entry.get('h', '').strip(), maxsplit=1)[0].lower()
+    if first in SUBJ_WORDS:
+        return None
+    if _subj_norm(sent[a:b]) in SUBJ_FIXED:
+        return None
+    if (entry.get('h'), sent[:30]) in SUBJ_REVIEWED:
+        return None
+    return (f'短语 {entry.get("h")} 的高亮“{sent[a:b]}”把主语也包进去了：用 {{原文词形}} 只写短语本身'
+            f'（如 {{worried about}}），整句固定说法才加进 text_rules.SUBJ_FIXED')

@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 import sys as _sys
 _sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
-from text_rules import slot_gap_problem as _slot_gap  # noqa: E402
+from text_rules import slot_gap_problem as _slot_gap, subject_phrase_problem as _subj_phr  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent                     # 中考/
@@ -171,6 +171,9 @@ def check(pid, path, R=None):
             _sg = _slot_gap(e, en, sp, find)
             if _sg:
                 errs.append(f'第{k}句 {_sg}')
+            _sp = _subj_phr(e, en, sp)
+            if _sp:
+                errs.append(f'第{k}句 {_sp}')
             taken += sp
         miss = uncovered(en, taken, names)
         if miss:
