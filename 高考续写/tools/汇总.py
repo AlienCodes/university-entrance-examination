@@ -129,6 +129,14 @@ for g in groups:
     rep, es = best(g, 'text'), best(g, 'essay')
     note = ''
     if rep is None:
+        sup = [x for x in g if x['path'] in PATCH.get('补开头语', {})]
+        if sup:
+            x = sup[0]
+            x['hit'] = dict(x['hit'], openings=PATCH['补开头语'][x['path']]['开头语'])
+            x['bad'] = False
+            rep = x
+            note = PATCH['补开头语'][x['path']]['备注']
+    if rep is None:
         known = [x for x in g if x['path'] in PATCH.get('已知缺开头语', {})]
         if not known or 'error' in known[0]['hit']:
             problems.append(f"{srcs[0][1]}：没有一个文件抽得出两段开头语（{g[0]['path']}）")

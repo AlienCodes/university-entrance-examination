@@ -147,6 +147,9 @@ def build(fname, title, cat):
             para(doc, o if o else MISS_NOTE, indent=True, color=None if o else RED, bold=not o)
             for _ in range(3):
                 para(doc, '_' * 62, color=(0xBB, 0xBB, 0xBB), after=0)
+        for part in (r.get('备注') or '').split('；'):
+            if part and 'OCR' not in part and '开头语已人工校对' not in part:
+                para(doc, '注：' + part + '。', size=9.5, color=GREY, after=4)
         if 'OCR' in (r.get('备注') or ''):
             para(doc, '注：' + OCR_NOTE, size=9.5, color=RED, after=4)
         if r['范文']:
