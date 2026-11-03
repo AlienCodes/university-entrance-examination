@@ -73,8 +73,8 @@ jobs:
           grep -vE '^(--no-binary|onnxruntime|gradio|funasr|fastapi|ctranslate2|python_mecab_ko|tensorboard)' GPT-SoVITS/requirements.txt > req.txt
           pip install -q -r req.txt onnxruntime matplotlib huggingface_hub gdown soundfile soxr pyloudnorm lameenc num2words
           python -m nltk.downloader -q averaged_perceptron_tagger averaged_perceptron_tagger_eng cmudict
-          # 导入预检：缺包几秒就停（铁律 15），不等下载完底模
-          cd GPT-SoVITS && PYTHONPATH=.:GPT_SoVITS python -c "from TTS_infer_pack.TTS import TTS, TTS_Config; import text.chinese2, text.english; print('导入预检通过')"
+          # 导入预检（只导入不加载模型的部分）：缺包几秒就停（铁律 15）
+          cd GPT-SoVITS && PYTHONPATH=.:GPT_SoVITS python -c "import AR.models.t2s_lightning_module, module.models, sv, feature_extractor.cnhubert; print('导入预检通过')"
       - name: 下载底模（Hugging Face lj1995/GPT-SoVITS）
         run: |
           python - <<'EOF'
@@ -84,6 +84,12 @@ jobs:
                                             'v2Pro/s2Gv2ProPlus.pth', 'sv/*'])
           EOF
           du -sh GPT-SoVITS/GPT_SoVITS/pretrained_models/*
+          cd GPT-SoVITS
+          for f in s1v3.ckpt v2Pro/s2Gv2ProPlus.pth sv/pretrained_eres2netv2w24s4ep4.ckpt chinese-roberta-wwm-ext-large/config.json chinese-hubert-base/config.json; do
+            test -s "GPT_SoVITS/pretrained_models/$f" || { echo "缺底模 $f"; exit 1; }; done
+          # 文本前端（中文 G2PW 首次导入时从 modelscope 下载到 GPT_SoVITS/text/G2PWModel；路径都相对仓库根目录）
+          PYTHONPATH=.:GPT_SoVITS python -c "from TTS_infer_pack.TTS import TTS, TTS_Config; import text.chinese2, text.english; print('文本前端预检通过')"
+          ls GPT_SoVITS/text/G2PWModel | head -5
       - name: 取老师的模型（只在给了 model_url 时）
         if: github.event.inputs.model_url != ''
         env:
