@@ -3794,7 +3794,7 @@
   },
   {
    "id": "108",
-   "title": "高考续写精读 verify_all.py 由考研复制，文件名正则漏改（还是考研的），把正确的 x01 文件名判成不合格（GitHub 试跑 x01 查出；考研、六级作文、四级作文复制时犯过同一个坑）",
+   "title": "高考续写精读 verify_all.py 由考研复制，文件名正则漏改（还是考研的），把正确的 x01 文件名判成不合格（GitHub 试跑 x01 查出；考研、六级作文、四级作文复制时犯过同一个坑）；另一半：引擎 name_re 自己不收真实文件名（场次括号里有空格，28 篇里 10 篇不合格，生成到最后才判不通过、删成品）",
    "stages": [
     "视频"
    ],
@@ -3813,6 +3813,11 @@
      "where": "高考续写/精读/tools/verify_all.py 文件名一项直接用引擎 PJ['name_re']；tools/防复发/验证/文件名规则一致.py problems（全项目：verify_all 的文件名正则 = 引擎 PROJECTS 同项目 name_re）",
      "runs": "防复发自检 --测试（每次推送 fangfufa-check.yml）",
      "evidence": "自检输出"
+    },
+    {
+     "where": "六级/tools/大字版.py name_problems（--preflight：每篇 video_name fullmatch 本项目 name_re、互不重名）；文件名规则一致.py data_problems（全项目每篇）",
+     "runs": "截图前 大字版.py --preflight / 阶段E_截图.sh；防复发自检 --测试",
+     "evidence": "预检日志"
     }
    ],
    "test": [

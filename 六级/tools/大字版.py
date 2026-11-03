@@ -163,12 +163,23 @@ def contact(d, pngs, sizes):
     return out
 
 
+def name_problems(P, ids, name_re, video_name):
+    """文件名预检（踩坑 108）：每篇成品文件名都要被本项目 name_re 接受（不然生成到最后才判“文件名不通过”、删掉成品），全部篇目互不重名（踩坑 11）。"""
+    import re
+    probs = [f'{pid} 文件名 {video_name(P[pid])!r} 不符合本项目文件名规则 {name_re!r}' for pid in ids if name_re and not re.fullmatch(name_re, video_name(P[pid]))]
+    seen = {}
+    for pid, p in P.items():
+        seen.setdefault(video_name(p), []).append(pid)
+    probs += [f'{"、".join(v)} 文件名重复：{k}' for k, v in seen.items() if len(v) > 1 and set(v) & set(ids)]
+    return probs
+
+
 def preflight(pg, td, P, ids, inject=False):
     """开画之前的快速预检（一篇几秒）：截图一画就是几十分钟，人名没登记、样式字体缺字、分屏方案不成立这类问题不该画完才发现
     （踩坑 73：专八水墨 t11–t27 画了 40 分钟才报出 56 个人名没登记、译文中文单引号缺字形、分屏方案没写进去）。全部列出来，有一处就不开画。
     字形：把这一篇的标题、全部译文、全部释义里出现过的每个字，分别放进一屏的译文和释义（同一套样式），问浏览器每个字用了哪个字体（与截图检查同一个函数）。
     inject=True 是双向验证：故意放进一个样式字体没有的字（藏文 ༀ）、从人名表里拿掉一个名字，必须报出来。"""
-    probs = []
+    probs = name_problems(P, ids, M.PJ.get('name_re'), M.video_name)
     names = list(M.NAMES)
     if inject and names:
         M.NAMES[:] = names[:-1]          # 拿掉最后一个登记的人名（这一批新登记的）

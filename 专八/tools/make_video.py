@@ -99,8 +99,8 @@ PROJECTS = {
     # paper “2026年高考 新课标Ⅰ卷”，passage “Continuation Writing”（斜体英文字体只放英文，踩坑 64）；文件名用数据里的 fname（“2026 新课标Ⅰ卷 读后续写”，铁律 6）
     '高考续写': {'dir': '高考续写/精读', 'voice': 'female', 'tag': 'GAOKAO · WRITING · CONTINUATION', 'top': 'GAOKAO CONTINUATION', 'exam': '', 'look': '1',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'tmp': 'gkxxvideo_',
-             'name_re': r'20\d\d (?:\S+ )?(?:新课标|新高考|浙江卷|T8联考|九省联考)\S* 读后续写 \S.*\.mp4', 'badge': r'续写\A精读',
-             'sub_fit': True},      # 片头副标题（试卷名 · Continuation Writing）放不下一行就缩小字号（SUB_FIT_JS；x03 浙江卷（1月）折行压到图例）
+             'name_re': r'20\d\d (?:\S+ )?(?:新课标|新高考|浙江卷|T8联考|九省联考)\S*?(?:（[^（）]*）)? 读后续写 \S.*\.mp4', 'badge': r'续写\A精读',
+             'sub_fit': True},      # name_re：场次括号里可以有空格（「T8联考（2026届阶段练习 4月）」，踩坑 108）；片头副标题（试卷名 · Continuation Writing）放不下一行就缩小字号（SUB_FIT_JS；x03 浙江卷（1月）折行压到图例）
     '专八听力': {'dir': '专八/听力/原文', 'audio': '原音', 'tag': 'TEM-8 · LISTENING · 2025', 'top': 'TEM-8 LISTENING', 'exam': '', 'look': '1',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json',
              'name_re': r'2025年专八听力 Section (A|B Part One|B Part Two) \S.*\.mp4', 'tmp': 'tem8lvideo_',
