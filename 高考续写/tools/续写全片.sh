@@ -23,15 +23,7 @@ for k in $(seq 100); do                        # 最多等约 3.3 小时
   r=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "${TASK%.json}-" | sort -V | tail -1 || true)   # 踩坑 92
   if [ -n "$r" ] && [ "${r##*-}" -gt "$AFTER" ]; then
     # 合成机中途被停（exit 143）时 collect 照样发布，只少一个 take：每个 take 都有 meta 才收，否则接着等重跑（不悄悄少候选）
-    miss=$(python3 - "$r" "$VOICE" "高考语法填空/tts/$TASK" <<'PY'
-import json, subprocess, sys
-run, voice, task = sys.argv[1:]
-have = subprocess.run(['git', '-c', 'core.quotepath=false', 'ls-tree', '-r', '--name-only', 'origin/gram-tts-out', f'{run}/{voice}/'],
-                      capture_output=True, text=True, check=True).stdout.split('\n')
-print(' '.join(f'take{k}' for k in json.load(open(task, encoding='utf-8'))['takes']
-               if not any(p.startswith(f'{run}/{voice}/take{k}/meta_part') for p in have)))
-PY
-)
+    miss=$(python3 高考续写/tools/合成齐全.py "$r" "$VOICE" "高考语法填空/tts/$TASK")
     [ -z "$miss" ] && RUN=$r && break
     echo "合成结果 $r 缺 $miss（合成机被停？），等重跑补齐"
   fi
