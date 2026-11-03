@@ -29,6 +29,11 @@ def allowed():
     return {tuple(x.strip().split('/')) for x in v.split(',') if x.strip()}
 
 
+def meta_ids(run, k):
+    """合成时第 k 片实际包含的小段（各次的 meta_part<k>.json 里记的 id）；没有就返回空集。"""
+    return {x['id'] for m in run.glob(f'take*/meta_part{k}.json') for x in json.loads(m.read_text('utf-8')).get('segments', [])}
+
+
 def problems(run):
     """run：某个候选的合成目录。返回问题列表（找不到任务清单时只查目录里已有的每次是否齐全）。"""
     sys.path[:0] = [str(HERE), str(ROOT / 'tools/tts')]
@@ -74,7 +79,8 @@ def problems(run):
                 continue
             if not (d / f'meta_part{k}.json').exists():
                 errs.append(f'{run.name}/{t} 缺 meta_part{k}.json（这一片没跑完）')
-        skip = set().union(*(part_units.get(k, set()) for k in free)) if free else set()
+        # 放行那一片里本来有哪些段：以合成时别的几次的 meta_part<k>.json 为准（稿后来改过、段数变了，按现在的稿取模会对不上）
+        skip = set().union(*((meta_ids(run, k) or part_units.get(k, set())) for k in free)) if free else set()
         miss = [u for u in units if u not in skip and not (d / f'{u}.wav').exists()]
         if miss:
             errs.append(f'{run.name}/{t} 缺 {len(miss)} 个小段：{miss[:5]}')
