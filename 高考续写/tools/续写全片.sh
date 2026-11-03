@@ -34,8 +34,14 @@ echo "合成结果：$RUN"
 git archive origin/gram-tts-out "$RUN" | tar -x -C "$T"
 mkdir -p 高考续写/audio
 if [ -n "${OVERLAY_TASK:-}" ]; then              # 改了几段稿、只重合成这几段：等补合成结果，覆盖到主合成上（记录随音频提交）
+  for u in ${KEEP_ORIG:-}; do                     # 文字没改、原合成读对的小段：先留一份，覆盖后放回原来的 take1…（补合成的多出来的次数照留）
+    for d in "$T/$RUN/$VOICE"/take*; do [ -f "$d/$u.wav" ] && mkdir -p "$T/orig/$(basename "$d")" && cp "$d/$u.wav" "$T/orig/$(basename "$d")/"; done
+  done
   for OT in $OVERLAY_TASK; do                     # 可以多个，按顺序覆盖
     bash 高考续写/tools/覆盖补合成.sh "$T/$RUN/$VOICE" "$VOICE" "$OT" "${OVERLAY_AFTER:-0}"
+  done
+  for u in ${KEEP_ORIG:-}; do
+    for d in "$T/orig"/take*; do cp "$d/$u.wav" "$T/$RUN/$VOICE/$(basename "$d")/$u.wav"; echo "$(basename "$d")/$u.wav ← 原合成（放回）" >> "$T/$RUN/$VOICE/覆盖.txt"; done
   done
   for V in ${VERIFY_EN:-}; do                     # 英文逐词核对（纯英文识别）：第一个全读对的那一次加进 LOCK；没有就记下来，不锁
     u=${V%%:*}; ws=${V#*:}; k=$($PY 高考续写/tools/英文逐词核对.py "$T/$RUN/$VOICE" "$DIR/稿.json" "$u" ${ws//,/ } 2>>"高考续写/audio/$NAME.英文核对.txt" | tail -1)
