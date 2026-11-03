@@ -1,0 +1,55 @@
+{
+ "说明": "第 56 题第 3 轮候选（用户 2026-11-03：英文去中式口音、不念 blank、语气成熟、语速稍快；英文也必须是本人音色）。中文段里成句的英文单独按 English 合成（讲解音频.lang_split）；en_mode xvec = 英文小段只用参考的说话人嵌入（音色是本人，口音不跟中文参考走），icl = 与中文同一个参考提示。参考：用户本人_2（第 2 版样片）与 用户本人平实_1 / 平实_2（挑参考 --平实：语速不低于录音中位数、语调起伏小）。每个候选 3 次，本机逐小段选优。",
+ "script": "高考语法填空/稿/2026_新课标Ⅰ卷.json",
+ "only": [
+  "q56a",
+  "q56b",
+  "q56c",
+  "q56d",
+  "q56e",
+  "q56f",
+  "q56g"
+ ],
+ "takes": [
+  1,
+  2,
+  3
+ ],
+ "candidates": [
+  {
+   "id": "r2xv",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "xvec"
+  },
+  {
+   "id": "r2icl",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "icl"
+  },
+  {
+   "id": "pxv",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人平实_1.json",
+   "en_mode": "xvec"
+  },
+  {
+   "id": "picl",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人平实_1.json",
+   "en_mode": "icl"
+  },
+  {
+   "id": "p2xv",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人平实_2.json",
+   "en_mode": "xvec"
+  }
+ ]
+}

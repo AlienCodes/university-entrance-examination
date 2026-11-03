@@ -22,8 +22,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(Path(__file__).parent), str(ROOT / 'tools/tts')]
 
 MARK = '‖'
-PAUSE_MARK = 0.55     # 处理：标记边界放的静音（秒）
-PAUSE_MIN = 0.45      # 检查：标记边界的最短静音（秒）
+PAUSE_MARK = 0.40     # 处理：标记边界放的静音（秒）；2026-11-03 由 0.55 缩短（用户嫌慢）
+PAUSE_MIN = 0.32      # 检查：标记边界的最短静音（秒）
 RISE_MAX = 2.0        # 检查：问句末尾 100 ms 比前 200 ms 高出的半音数上限（实测见 讲解节奏.md）
 
 

@@ -12,6 +12,7 @@ Kokoro 当年是 +11—12 dB）。做法与用户确认的 四级/tools/debuzz.p
 """
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -162,17 +163,59 @@ def checks(a, items):
 
 
 MARK = '‖'
-PAUSE_MARK = 0.55      # 稿里 ‖ 处的静音（秒）：用户录音句间停顿 10—90% 分位 0.18—0.46 秒，标记边界要明显停一下（讲解节奏.py）
+PAUSE_MARK = 0.40      # 稿里 ‖ 处的静音（秒）：用户录音句间停顿 10—90% 分位 0.18—0.46 秒、中位 0.28；第 2 版 0.55 用户嫌慢（2026-11-03），
+                       # 缩到 0.40（仍明显长于普通句间停顿；讲解节奏.PAUSE_MIN 同步）
+EN_RUN = re.compile(r"[A-Za-z][A-Za-z '’-]*[A-Za-z]")
+ZH_PUNCT = '，。：；？！、'
+EN_OF = {'，': ',', '。': '.', '：': ':', '；': ';', '？': '?', '！': '!', '、': ','}
+LANG_GAP = {'，': 0.18, '、': 0.15, '：': 0.22, '；': 0.25, '。': 0.30, '？': 0.30, '！': 0.30}   # 中英换语种处的静音（秒），按那里的标点；
+#                                    用户录音逗号处停顿约 0.15—0.25 秒、句号约 0.3 秒
+
+
+def lang_split(text):
+    """中文小段里成句的英文（≥ 2 个词、前后都是标点或段首段尾，如“It is common for them，”“答案就是：to be held。”）单独拆出来，
+    按 English 合成（用户 2026-11-03：英文中文口音太重；Qwen 用 Chinese 合成中英混说时英文带口音）。夹在中文里的单个词（hold、it）照旧。
+    返回 [(文字, 语种, 后面的静音秒或 None)]；没有可拆的返回一项。"""
+    out, pos = [], 0
+    for m in EN_RUN.finditer(text):
+        a, b = m.span()
+        before = text[:a].rstrip()
+        after = text[b:].lstrip()
+        if len(m.group().split()) < 2:
+            continue
+        if before and before[-1] not in ZH_PUNCT:
+            continue
+        if after and after[0] not in ZH_PUNCT:
+            continue
+        p = after[0] if after else ''
+        end = b + (len(text[b:]) - len(after)) + (1 if p else 0)
+        head = text[pos:a].strip()
+        if head:
+            out.append([head, 'Chinese', LANG_GAP.get(head[-1], 0.18)])
+        out.append([m.group() + EN_OF.get(p, ''), 'English', LANG_GAP.get(p, 0.18)])
+        pos = end
+    tail = text[pos:].strip()
+    if tail:
+        out.append([tail, 'Chinese', None])
+    elif out:
+        out[-1][2] = None
+    return [tuple(x) for x in out] or [(text, 'Chinese', None)]
 
 
 def units(seg):
     """一段 → 小段：稿里 ‖ 标出必须停顿的边界（说完词义、说完一步推理、答案前、问句后），每个小段单独合成、单独选优，
-    拼接时中间放 PAUSE_MARK 秒真静音（停顿由构造保证；讲解节奏.check 用识别对齐独立量）。没有 ‖ 的段原样一个小段。"""
+    拼接时中间放 PAUSE_MARK 秒真静音（停顿由构造保证；讲解节奏.check 用识别对齐独立量）。中文小段里成句的英文再单独拆出（lang_split），
+    中间放按标点的短静音。没有 ‖、也没有可拆英文的段原样一个小段。"""
     ps = [p.strip() for p in seg['text'].split(MARK) if p.strip()]
-    if len(ps) <= 1:
+    sub = []
+    for k, p in enumerate(ps, 1):
+        last_gap = PAUSE_MARK if k < len(ps) else seg.get('gap', 0.6)
+        parts = lang_split(p) if seg['lang'] == 'Chinese' else [(p, seg['lang'], None)]
+        for j, (t, lang, g) in enumerate(parts):
+            sub.append((t, lang, last_gap if j == len(parts) - 1 else g))
+    if len(sub) <= 1:
         return [dict(seg, text=seg['text'].replace(MARK, ''))]
-    return [dict(seg, id=f"{seg['id']}~{k}", text=p, parent=seg['id'],
-                 gap=PAUSE_MARK if k < len(ps) else seg.get('gap', 0.6)) for k, p in enumerate(ps, 1)]
+    return [dict(seg, id=f"{seg['id']}~{k}", text=t, lang=lang, parent=seg['id'], gap=g) for k, (t, lang, g) in enumerate(sub, 1)]
 
 
 def expand(segs):

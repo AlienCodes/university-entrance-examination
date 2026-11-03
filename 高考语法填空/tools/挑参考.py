@@ -166,6 +166,8 @@ def main():
     ap.add_argument('--秒', nargs=2, type=float, default=[4.5, 10])
     ap.add_argument('--个数', type=int, default=3)
     ap.add_argument('--补底噪', action='store_true', help='先把剪辑接缝填上底噪（只用于参考），再挑')
+    ap.add_argument('--平实', action='store_true',
+                    help='语气平实、语速不慢（用户 2026-11-03：嫌“哄小学生”、太慢）：窗口语速 ≥ 全录音中位数，打分时语调起伏越小越好')
     a = ap.parse_args()
     asr = ASR()
     U = []
@@ -228,6 +230,8 @@ def main():
             us = U[i:j + 1]
             if any(ok(u) for u in us):
                 continue
+            if a.平实 and sum(u['rate'] * (u['e'] - u['s']) for u in us) / (U[j]['e'] - U[i]['s']) < np.median(rates):
+                continue                                       # 平实：整个窗口（含句间停顿）的语速不低于全录音每句语速的中位数
             m = int(0.04 * SR)
             c = U[i]['cut']
             if c[min(len(c) - 1, U[j]['e'] + m)] - c[max(0, U[i]['s'] - m)]:
@@ -235,7 +239,7 @@ def main():
             text = ''.join(u['text'] for u in us)
             mix = bool(re.search(r'[A-Za-z]{2,}', text)) and bool(re.search(r'[一-鿿]', text))
             score = (-np.mean([u['floor'] for u in us]) / 10 - 2 * sum(u['breath'] for u in us)
-                     + float(np.mean([u['f0sd'] or 0 for u in us])) + (1.5 if mix else 0) - abs(dur - 8) / 10)
+                     + (-1 if a.平实 else 1) * float(np.mean([u['f0sd'] or 0 for u in us])) + (1.5 if mix else 0) - abs(dur - 8) / 10)
             W.append((round(float(score), 2), i, j, dur, text))
     if not W:
         rej = {}

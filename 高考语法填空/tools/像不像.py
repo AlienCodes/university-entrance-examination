@@ -66,11 +66,22 @@ def main():
     for p in a.样音:
         y, s = sf.read(p, dtype='float32')
         y = y.mean(1) if y.ndim > 1 else y
+        y_full = y
+        # 英文部分单独量（用户 2026-11-03：英文也必须是本人的音色，“还是一个人说的话”）：timings 里没有汉字的小段拼起来
+        tj = Path(p).with_suffix('.timings.json')
+        en_sim = None
+        if tj.exists():
+            us = [u for it in json.loads(tj.read_text('utf-8'))['items'] for u in it.get('units', [])
+                  if not any('一' <= ch <= '鿿' for ch in u['text'])]
+            if us:
+                ye = np.concatenate([y_full[int(u['start'] * s):int(u['end'] * s)] for u in us])
+                en_sim = float(np.mean([spk(ye, s) @ h for h in held[1:]]))
         y = y[int(1.5 * s):len(y) - int(2.0 * s)]                   # 去掉片头片尾静音
         e = spk(y, s)
-        rows.append((Path(p).name, float(np.mean([e @ h for h in held[1:]])), float(np.mean([utmos(y[i:i + 10 * s], s) for i in range(0, max(1, len(y) - 10 * s), 10 * s)]))))
-    lines = ['| 音频 | 说话人相似度（与真人，0.90≈同一人，0.39≈别人） | UTMOS 自然度 |', '|---|---|---|']
-    lines += [f'| {n} | {sim:.3f} | {u:.2f} |' for n, sim, u in rows]
+        rows.append((Path(p).name, float(np.mean([e @ h for h in held[1:]])), float(np.mean([utmos(y[i:i + 10 * s], s) for i in range(0, max(1, len(y) - 10 * s), 10 * s)])), en_sim))
+    rows[0] = rows[0] + (None,)
+    lines = ['| 音频 | 说话人相似度（与真人，0.90≈同一人，0.39≈别人） | UTMOS 自然度 | 英文部分相似度 |', '|---|---|---|---|']
+    lines += [f'| {n} | {sim:.3f} | {u:.2f} | {"—" if es is None else f"{es:.3f}"} |' for n, sim, u, es in rows]
     print('\n'.join(lines))
     if a.out:
         Path(a.out).write_text('\n'.join(lines) + '\n', 'utf-8')

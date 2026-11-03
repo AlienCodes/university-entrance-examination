@@ -6,7 +6,7 @@
 原始 WAV 同时保留：本机可按改过的停顿重新拼接（仍走 讲解音频.render，同一条处理链）。
 模式：
   custom        预置音色（CustomVoice），instruct 控制语气；
-  clone_ref     用仓库里固定的设计音色参考音频（tts/音色/*.json，由 design_clone 生成一次后固定）以 Base 模型合成：
+  clone_ref     （en_mode: xvec 时英文小段只用参考的说话人嵌入合成，去中式口音）用仓库里固定的设计音色参考音频（tts/音色/*.json，由 design_clone 生成一次后固定）以 Base 模型合成：
                 各分片、各次都是同一个声音，每台机器只加载一个模型（design_clone 两个 1.7B 同机加载，16 GB 机器上 2/3 被杀）；
   design_clone  先用 VoiceDesign 按文字描述设计一个音色（不是任何真人），再用 Base 模型以这段设计音频为提示合成全部段落，保证全片同一个声音。
 用法：python qwen_synth.py --task 任务.json --list            # 打印作业数（给工作流建矩阵）
@@ -65,6 +65,7 @@ def main():
     gen = dict(task.get('gen', {}))
     meta = {'candidate': c, 'take': take, 'part': part, 'segments': []}
     t0 = time.time()
+    prompt = prompt_en = None
     if c['mode'] == 'design_clone':
         dm = Qwen3TTSModel.from_pretrained(c['design_model'], **kw)
         torch.manual_seed(c.get('design_seed', 7))
@@ -89,14 +90,18 @@ def main():
             rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         prompt = m.create_voice_clone_prompt(ref_audio=(rw, rsr), ref_text=v['ref_text'])
+        if c.get('en_mode') == 'xvec':    # 英文小段只取参考的说话人嵌入（不带参考的语音与文字）：音色照旧，口音、语调不跟着中文参考走（2026-11-03 去中式口音）
+            prompt_en = m.create_voice_clone_prompt(ref_audio=(rw, rsr), x_vector_only_mode=True)
     else:
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
         print('支持的音色', m.get_supported_speakers(), '语言', m.get_supported_languages(), flush=True)
+    prompt_en = prompt_en or prompt
     for s in J.expand(segs):              # 稿里 ‖ 处拆成小段分别合成（讲解音频.units）
         torch.manual_seed(take * 1000 + int(''.join(ch for ch in s['id'] if ch.isdigit()) or 0))
         ts = time.time()
         if c['mode'] in ('design_clone', 'clone_ref'):
-            w, sr = m.generate_voice_clone(text=s['text'], language=s['lang'], voice_clone_prompt=prompt, **gen)
+            w, sr = m.generate_voice_clone(text=s['text'], language=s['lang'],
+                                           voice_clone_prompt=prompt_en if s['lang'] == 'English' else prompt, **gen)
         else:
             ins = task['instruct_en'] if s['lang'] == 'English' else task['instruct']
             w, sr = m.generate_custom_voice(text=s['text'], speaker=c['speaker'], language=s['lang'],

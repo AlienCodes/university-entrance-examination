@@ -1,6 +1,7 @@
 """讲解稿的程序检查（有一处就退出码 1）：
 ① 稿里的答案表 = 答案文件（官方答案，原文目录）；每题“答案”段的配音文字里含答案（63 题 that、which 都要有；62 题 Drawn 大写）；
-② 朗读段 en 是原文里连续的一段（逐字相同）；配音文字 = en 去掉中文注释、空格读作 blank（只比单词）；
+② 朗读段 en 是原文里连续的一段（逐字相同）；配音文字 = en 去掉中文注释、去掉空格（只比单词）；配音文字里不许有 blank
+   （用户 2026-11-03：读原句时空格处不要念 blank，只留短停顿——空格处写逗号，画面照旧）；
 ③ 每题的步骤 读句→提示→词性→成分→形式→答案→口诀 全部出现且顺序不乱；答案段之前空格不显示答案；
 ④ 全文通读 = 原文填上答案、去掉中文注释（逐词相同）；
 ⑤ 中文段的配音文字里没有阿拉伯数字（题号写汉字，防止读成 five six）；
@@ -33,12 +34,14 @@ def problems(doc):
     for s in segs:
         if s.get('q'):
             by_q.setdefault(s['q'], []).append(s)
+        if re.search(r'\bblank\b', s['text'], re.I):
+            errs.append(f"{s['id']} 配音文字里念了 blank（空格处只停顿、不念词）：{s['text'][:50]}")
         if s['lang'] == 'Chinese' and re.search(r'[0-9]', s['text']):
             errs.append(f"{s['id']} 中文配音文字里有阿拉伯数字：{s['text'][:30]}")
         if 'en' in s:
             if not any(s['en'] in p for p in P):
                 errs.append(f"{s['id']} 朗读的原句不是原文里连续的一段：{s['en'][:50]}")
-            exp = words(re.sub(r'___\d+___(\s*\([^()]*\))?', ' blank ', NOTE.sub('', s['en'])))
+            exp = words(re.sub(r'___\d+___(\s*\([^()]*\))?', ' ', NOTE.sub('', s['en'])))
             if words(s['text']) != exp:
                 errs.append(f"{s['id']} 配音文字与原句不一致：{' '.join(words(s['text']))} ≠ {' '.join(exp)}")
     for q in range(56, 66):
@@ -98,6 +101,7 @@ def selftest(doc):
     d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q56d')['text'] = '那它在这句话里是不是谓语呢？我们找一下主干。'; mines.append(('问句带呢、问句后没停顿', d))
     d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q56c')['text'] = '括号里给了一个词，hold，举办。给了词，一般都要变形。hold 是个动词。'; mines.append(('词义没单独成句', d))
     d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q59f')['text'] = '过去时，再加上复数，就是 were。答案：were。'; mines.append(('答案前没停顿', d))
+    d = copy.deepcopy(doc); next(s for s in d['segments'] if s['id'] == 'q56b')['text'] = 'It is also common for them, blank, during traditional Chinese holidays, such as the Spring Festival and the Mid-Autumn Festival.'; mines.append(('念 blank', d))
     ok = not problems(doc)
     for name, d in mines:
         e = problems(d)

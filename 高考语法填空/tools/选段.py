@@ -79,10 +79,13 @@ def candidates(segs, run, ears, only=None):
                 import 讲解节奏 as NJ
                 y = G.trim(x)
                 rise, _ = NJ.tail_rise(y, G.SR, len(y) / G.SR)
-            score = (err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
+            native = None
+            if s['lang'] == 'English' and (t / '口音分.json').exists():     # Actions 上量的英文口音（口音分.py）：越像母语口音越优先
+                native = json.loads((t / '口音分.json').read_text('utf-8')).get(s['id'], {}).get('native')
+            score = ((0 if native is None else (1 - native) * 6) + err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
                      + (30 + 5 * rise if rise is not None and rise > NJ.RISE_MAX else 0))
             rows.append({'take': t.name, 'err': err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
-                         'dur': round(dur, 2), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
+                         'dur': round(dur, 2), 'native': native, 'n_words': len(E.toks(s['text'])), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
                          'score': round(score, 2)})
         rows.sort(key=lambda r: r['score'])
         table[s['id']] = rows

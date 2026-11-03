@@ -49,6 +49,11 @@ jobs:
           pip install -q qwen-tts==0.1.1 soundfile soxr pyloudnorm lameenc scipy num2words
       - name: 合成
         run: python 高考语法填空/tools/qwen_synth.py --task "${{ needs.plan.outputs.task }}" --shard ${{ matrix.shard }} --out out
+      - name: 英文口音分（参考分，不作关卡）
+        continue-on-error: true
+        run: |
+          pip install -q speechbrain==1.0.3
+          python 高考语法填空/tools/口音分.py --task "${{ needs.plan.outputs.task }}" --out out
       - uses: actions/upload-artifact@v4
         if: always()
         with:
