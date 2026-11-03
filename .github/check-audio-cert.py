@@ -58,14 +58,24 @@ def check_dir(d, ci=False):
     if not d.is_absolute():
         d = ROOT / d
     tp = d / 'timings.json'
-    if not tp.exists():
-        return [f'{d}：没有 timings.json']
     errs, used = [], set()
-    for v, pid, tm in C.timings_entries(json.loads(tp.read_text('utf-8'))):
-        mp3 = d / tm['file']
-        used.add(mp3.resolve())
-        e = [] if C.is_legacy(tm) else mp3_problems(tm, mp3, ci)
-        errs += [f'{d.name}/{v}/{pid}（{tm["file"]}）：{x}' for x in e]
+    if tp.exists():
+        for v, pid, tm in C.timings_entries(json.loads(tp.read_text('utf-8'))):
+            mp3 = d / tm['file']
+            used.add(mp3.resolve())
+            e = [] if C.is_legacy(tm) else mp3_problems(tm, mp3, ci)
+            errs += [f'{d.name}/{v}/{pid}（{tm["file"]}）：{x}' for x in e]
+    else:
+        # 逐文件 timings（讲解配音：高考续写、高考语法填空）：每个 X.mp3 旁边一份 X.timings.json，规则同上
+        per = sorted(d.rglob('*.timings.json'))
+        if not per:
+            return [f'{d}：没有 timings.json（也没有逐文件的 *.timings.json）']
+        for t in per:
+            mp3 = t.with_name(t.name[:-len('.timings.json')] + '.mp3')
+            used.add(mp3.resolve())
+            tm = json.loads(t.read_text('utf-8'))
+            e = [] if C.is_legacy(tm) else mp3_problems(tm, mp3, ci)
+            errs += [f'{t.relative_to(d)}：{x}' for x in e]
     for m in sorted(git_mp3s(d) | set(d.rglob('*.mp3'))):
         if m.resolve() not in used and not (m.is_relative_to(ROOT) and m.relative_to(ROOT).as_posix() in ORPHANS):
             errs.append(f'{m.relative_to(d) if m.is_relative_to(d) else m}：timings.json 里没有这个 MP3 的条目（来路不明，不许打包）')
@@ -122,6 +132,34 @@ def selftest():
     run('GitHub 上没检出 MP3（--ci）、旁证 passed=False → 报', '不一致', data=None, ci=True, side=dict(cert, passed=False))
     run('本机磁盘和 git 里都没有 MP3 → 报', '找不到 MP3', data=None)
     run('自己写 source=原音 → 报', '不是当前处理链', tm={'file': 'v/x.mp3', 'source': '原音', 'duration': 1, 'sentences': [{'parts': []}]})
+
+    # 逐文件 timings（讲解配音：X.mp3 旁边 X.timings.json，没有目录级 timings.json；2026-11-03 续写整片发布时补）
+    def build_per(td, tm=tm, side=cert, data=mp3, extra=False, no_tm=False, sub=False):
+        d = Path(td) / 'audio'
+        dd = d / '预览' if sub else d
+        dd.mkdir(parents=True)
+        (dd / '讲解 甲.mp3').write_bytes(data)
+        if side is not None:
+            (dd / '讲解 甲.loudness.json').write_text(json.dumps(side), 'utf-8')
+        if not no_tm:
+            (dd / '讲解 甲.timings.json').write_text(json.dumps(tm), 'utf-8')
+        if extra:
+            (dd / '别的.mp3').write_bytes(b'x')
+        return check_dir(d)
+
+    def run_per(name, want, **kw):
+        with tempfile.TemporaryDirectory() as td:
+            case(name, build_per(td, **kw), want)
+
+    run_per('逐文件：合格 → 0', None)
+    run_per('逐文件：在子目录里（预览/）也照查 → 0', None, sub=True)
+    run_per('逐文件：旁证 passed=False → 报', '不一致', side=dict(cert, passed=False))
+    run_per('逐文件：子目录里旁证不对 → 报', '不一致', side=dict(cert, passed=False), sub=True)
+    run_per('逐文件：缺合格证文件 → 报', '缺少合格证文件', side=None)
+    run_per('逐文件：MP3 被改过 → 报', '被改过', data=mp3[:-5] + b'00000')
+    run_per('逐文件：旁边多一个没有 timings 的 MP3 → 报', '来路不明', extra=True)
+    run_per('逐文件：一份 timings 都没有 → 报', '没有 timings.json', no_tm=True)
+    run_per('逐文件：旧处理链（没有合格证）→ 报', '不是当前处理链', tm={k: v for k, v in tm.items() if k not in ('clause_check', 'certificate')})
     # 命令行退出码（协调会话复核补）：发布工作流靠退出码停下，不合格必须非 0、合格必须 0
     for name, want_bad, kw in (('命令行：不合格的目录 → 退出码非 0', True, {'side': dict(cert, passed=False)}), ('命令行：合格的目录 → 退出码 0', False, {})):
         with tempfile.TemporaryDirectory() as td:
