@@ -3830,6 +3830,39 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "109",
+   "title": "高考续写精读工作流 render 写 meta 漏了 audio_sha256（踩坑 86 的视频-音频绑定），x01 视频全部核查通过、打包却拒收（试跑 test-x01-3）",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "高考续写",
+    "四级作文",
+    "六级",
+    "六级作文",
+    "考研",
+    "考研作文",
+    "专八"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/仓库检查.py pack_meta_problems（用 cet6-chalk-pack.py 打包的工作流必须写 audio_sha256；旧的 6 个在 NO_AUDIO_SHA，只许减少）",
+     "runs": "每次提交前 + 每次推送（仓库检查）",
+     "evidence": "仓库检查输出"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "NO_AUDIO_SHA 里 6 个旧工作流的项目音频还没有合格证，重做时补",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

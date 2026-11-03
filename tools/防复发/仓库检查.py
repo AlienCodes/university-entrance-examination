@@ -23,6 +23,21 @@ BAN = [(r'softprops/action-gh-release', '踩坑 42：发布改用 gh release cre
 LEGACY = {'release-cet4-videos.yml', 'release-cet6-videos.yml', 'release-papers.yml', 'release-tem8-videos.yml',
           'release-videos.yml', 'release-zk-materials.yml', 'release-zk-videos.yml'}
 
+# 踩坑 109：用 cet6-chalk-pack.py 打包的生成工作流，render 写 meta 时必须带 audio_sha256（踩坑 86 视频与音频绑定；漏了，带合格证的篇目一律打包不收）。
+# 这几个旧工作流的项目音频还没有合格证（2026-10-29 前的成品），下次重做时补上并从这里删去（只许减少）
+NO_AUDIO_SHA = {'render-cet6-chalk.yml', 'render-cet6-writing.yml', 'render-kaoyan-campus.yml', 'render-kaoyan-writing.yml',
+                'render-tem8-campus.yml', 'render-tem8-ink.yml'}
+
+
+def pack_meta_problems(name, text):
+    if 'cet6-chalk-pack.py' not in text:
+        return []
+    has = "'audio_sha256'" in text
+    if name in NO_AUDIO_SHA:
+        return [f'{name} 已经写 audio_sha256 了，把它从 仓库检查.py 的 NO_AUDIO_SHA 删去（只许减少）'] if has else []
+    return [] if has else [f'{name}：用 cet6-chalk-pack.py 打包，但 render 的 meta 没写 audio_sha256（踩坑 109 / 86：打包会拒收带合格证的篇目）']
+
+
 # 踩坑 87：发布的包里有音频（MP3，或视频音轨）的工作流 → 要核对合格证的音频目录
 AUDIO_RELEASE = {
     'release-cet4-dictation.yml': ['四级/audio'], 'release-cet6-materials.yml': ['六级/audio'], 'release-dictation.yml': ['audio'],
@@ -98,6 +113,7 @@ def check_workflow(name, text):
                     errs.append(f'{name}：任务 {jn} 第 {i + 1} 步的字符串里藏着“- name: / - uses:”行，像是下一步骤被并进来了（踩坑 68：删行留下了缩进）')
                     break
     errs += audio_release_problems(name, y)
+    errs += pack_meta_problems(name, text)
     hits = [(pat, why) for pat, why in BAN if re.search(pat, text)]
     if name not in LEGACY:
         errs += [f'{name}：用了 {pat}（{why}）' for pat, why in hits]

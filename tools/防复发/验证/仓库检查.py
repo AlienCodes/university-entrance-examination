@@ -35,6 +35,10 @@ jobs:
         run: python3 x.py
 """
 case('正常工作流 → 0', ck.check_workflow('new.yml', GOOD), False)
+PACK = GOOD.replace('python3 x.py', "PROJECT=新 python3 .github/cet6-chalk-pack.py")
+case('用 cet6-chalk-pack 打包、meta 没写 audio_sha256 → 报（踩坑 109，高考续写试跑 x01 原样）', ck.check_workflow('render-new.yml', PACK), True, '踩坑 109')
+case('写了 audio_sha256 → 0', ck.check_workflow('render-new.yml', PACK.replace('run: PROJECT', "run: echo \"'audio_sha256'\"; PROJECT")), False)
+case('旧工作流登记在 NO_AUDIO_SHA 却已经写了 → 报（只许减少）', ck.check_workflow('render-tem8-ink.yml', PACK.replace('run: PROJECT', "run: echo \"'audio_sha256'\"; PROJECT")), True, 'NO_AUDIO_SHA')
 # 踩坑 68 原样重现：用字符串替换删掉“!/考研/真题/”这一行，只删了文字、留下缩进和换行之外的部分
 broken = GOOD.replace('!/考研/真题/\n', '')
 case('删行留缩进，下一步被并进字符串 → 报（踩坑 68）', ck.check_workflow('new.yml', broken), True, '踩坑 68')
