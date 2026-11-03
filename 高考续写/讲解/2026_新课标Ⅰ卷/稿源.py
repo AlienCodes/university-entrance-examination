@@ -82,7 +82,7 @@ def sent(blocks, why, steps, pts, alt):
 
 
 sent([['There ', 3], ['was ', 1], ['a station ', 2], ['nearby, ', 3], ['they explained, ', 4], ['and ', 5], ['a train to Toronto ', 2], ['would leave ', 1], ['at noon.', 5]],
-     ('第一句，先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要这句？‖开头语只说了坐火车，方案必须落到实处，读者才信。',
+     ('第一句，先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖这句不能少。‖开头语只说了坐火车，方案必须落到实处，读者才信。',
       ['为什么：开头语只说“坐火车”，先把方案讲实（车站在哪、几点有车）']),
      [('汉译英，先定谓语。‖两个分句，两个谓语；插入语 they explained 不算主干。was，一般过去时；would leave，站在过去说将来，用过去将来时。', '谓语：was（一般过去时）；would leave（过去将来时）'),
       ('再补主语。这是存在句，真正的主语是：a station；后半句的主语：a train to Toronto。', '主语：a station；a train to Toronto'),
