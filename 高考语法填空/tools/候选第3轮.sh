@@ -17,6 +17,13 @@ for k in $(seq 90); do
   r=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "任务_${RN}_q56-" | sort -V | tail -1 || true)
   if [ -n "$r" ] && [ "${r##*-}" -gt "$AFTER" ]; then
     rm -rf "$T/runs"; git archive origin/gram-tts-out "$r" | tar -x -C "$T"
+    # MERGE=任务_<补跑任务名>：补跑（只重合成缺的几次）的结果并进主目录（同名 take 以补跑为准），再查完整性
+    if [ -n "${MERGE:-}" ]; then
+      m=$(git -c core.quotepath=false ls-tree --name-only origin/gram-tts-out runs/ 2>/dev/null | grep "${MERGE}-" | sort -V | tail -1 || true)
+      if [ -n "$m" ]; then git archive origin/gram-tts-out "$m" | tar -x -C "$T"
+        for d in "$T/$m"/*/take*; do c=$(basename "$(dirname "$d")"); mkdir -p "$T/$r/$c"; rm -rf "$T/$r/$c/$(basename "$d")"; cp -r "$d" "$T/$r/$c/"; done
+      fi
+    fi
     # 合成机被收回时运行判失败、自动重跑失败的作业（tts-grammar-qwen-rerun.yml）补进同一个目录：不完整就接着等，不拿残缺的结果选段（踩坑 98—100）
     if $PY 高考语法填空/tools/合成完整性.py "$T/$r"/* > "$T/wz.txt" 2>&1; then R=$r; break; fi
     echo "$(date -u +%T) $r 还不完整，等重跑补齐：$(grep -c ✗ "$T/wz.txt") 处"
