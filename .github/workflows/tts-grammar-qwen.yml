@@ -48,6 +48,8 @@ jobs:
           pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
           pip install -q qwen-tts==0.1.1 soundfile soxr pyloudnorm lameenc scipy num2words
       - name: 合成
+        env:
+          MALLOC_ARENA_MAX: '2'   # 少开 malloc 分区，减少多线程内存碎片（踩坑 101：常驻 14.4 GB / 16 GB 被收回）
         run: python 高考语法填空/tools/qwen_synth.py --task "${{ needs.plan.outputs.task }}" --shard ${{ matrix.shard }} --out out
       - name: 英文口音分（参考分，不作关卡）
         continue-on-error: true

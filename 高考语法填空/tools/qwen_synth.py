@@ -21,6 +21,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 
+RSS_WARN_MB = 12000   # 合成机 16 GB；2026-11-03 第 6 轮 synth(12) 每段常驻 14.4 GB、被收回（踩坑 101）。超过就记进 meta 并在日志里报
+
+
+def trim_heap():
+    """把已释放的堆内存还给系统（glibc malloc_trim）：模型从 bf16 读进来转 float32 时的临时内存、录音解码的大数组，释放后仍挂在常驻内存里。
+    不改变任何计算结果。"""
+    try:
+        import ctypes
+        ctypes.CDLL('libc.so.6').malloc_trim(0)
+    except OSError:
+        pass
+
+
 def rss_mb():
     """当前常驻内存（MB）：每段合成后记一次（2026-11-03 两台合成机十几分钟后被停掉，查是不是逐段增长）。"""
     try:
@@ -100,7 +113,13 @@ def main():
             src.parent.rmdir()
         else:
             rw, rsr = sf.read(str(ROOT / v['wav']), dtype='float32')
+        gc.collect()
+        trim_heap()                       # 录音解码（约 0.5 GB）用完先还掉，再加载模型
         m = Qwen3TTSModel.from_pretrained(c['model'], **kw)
+        gc.collect()
+        trim_heap()
+        meta['rss_after_load_mb'] = rss_mb()
+        print('模型加载后常驻内存', meta['rss_after_load_mb'], 'MB', flush=True)
         prompt = m.create_voice_clone_prompt(ref_audio=(rw, rsr), ref_text=v['ref_text'])
         if c.get('en_mode') == 'xvec':    # 英文小段只取参考的说话人嵌入（不带参考的语音与文字）：音色照旧，口音、语调不跟着中文参考走（2026-11-03 去中式口音）
             prompt_en = m.create_voice_clone_prompt(ref_audio=(rw, rsr), x_vector_only_mode=True)
@@ -129,11 +148,16 @@ def main():
         x, sr, tries = J.run_unit(gen1, base_seed(s['id']), cap)    # 生成停不下来（顶到上限 / 超时）就换种子重来（踩坑 95）
         sf.write(str(od / f"{s['id']}.wav"), x, sr)
         el = time.time() - ts
+        gc.collect()
+        trim_heap()
         rss = rss_mb()
+        meta['rss_peak_mb'] = max(meta.get('rss_peak_mb') or 0, rss or 0)
+        if rss and rss > RSS_WARN_MB:
+            meta.setdefault('rss_over', []).append([s['id'], rss])
+            print(f'⚠ 常驻内存 {rss} MB 超过 {RSS_WARN_MB}（合成机 16 GB，可能被收回）', flush=True)
         meta['segments'].append({'id': s['id'], 'sec': round(len(x) / sr, 2), 'compute': round(el, 1), 'sr': sr, 'cap': cap, 'tries': tries,
                                  'rss_mb': rss})
         del x
-        gc.collect()
         print(f"{c['id']} take{take} {s['id']} {meta['segments'][-1]['sec']}s 音频，用时 {el:.0f}s，内存 {rss} MB", flush=True)
     meta['total_compute'] = round(time.time() - t0, 1)
     if nparts == 1:                       # 整份稿在这一台机器上：就地走完整处理链

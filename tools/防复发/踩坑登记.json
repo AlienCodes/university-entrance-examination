@@ -3587,6 +3587,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "101",
+   "title": "合成机常驻内存贴着上限被 GitHub 收回：第 6 轮 synth(12) 每段常驻约 14.4 GB / 16 GB（1.7B float32 约 7 GB，多出约一倍是 bf16→float32 转换和录音解码释放后没还给系统），不是逐段增长",
+   "stages": [
+    "音频"
+   ],
+   "projects": [
+    "高考语法填空",
+    "高考续写"
+   ],
+   "guards": [
+    {
+     "where": "qwen_synth.trim_heap（glibc malloc_trim）：录音解码后、模型加载后、每段合成后都还内存；rss_after_load_mb / rss_peak_mb 记进 meta，超过 RSS_WARN_MB 12000 记 rss_over 并在日志报；工作流合成步骤 MALLOC_ARENA_MAX=2",
+     "runs": "每次合成",
+     "evidence": "常驻内存超过 12 GB"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/合成内存.py",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "本机加载不了真模型，真实降幅看下一次合成 meta 的 rss_after_load_mb（目标 ≤ 10 GB）；超过只报警不拦（拦了就丢结果）",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
