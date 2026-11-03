@@ -21,10 +21,9 @@ python3 .github/check-audio-cert.py 高考续写/audio
 rm -rf $SP/pv && mkdir -p $SP/pv
 env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 高考续写/tools/续写视频_v2.py --稿 "$D/稿.json" --音频 "$MP3" --video --out $SP/pv --png $SP/pv/png --name "$OUTN 4K.mp4"
 O="高考续写/预览/$OUTN 1080p预览.mp4"
-ffmpeg -v error -y -i "$SP/pv/$OUTN 4K.mp4" -vf scale=1920:1080:flags=lanczos -c:v libx264 -preset slow -crf 20 -tune stillimage -pix_fmt yuv420p -c:a copy -movflags +faststart "$O"
-sz=$(stat -c %s "$O"); [ "$sz" -lt 95000000 ] || { echo "1080p 太大：$sz"; exit 1; }
-a=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$SP/pv/$OUTN 4K.mp4"); b=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$O")
-python3 -c "import sys;a,b=map(float,sys.argv[1:]);assert abs(a-b)<0.05,(a,b)" "$a" "$b"
+# 转 1080p：转前核对音频合格证，转后核对分辨率、音轨逐包相同、时长、大小（不过就删掉输出、停）
+/opt/ttsenv/bin/python 高考续写/tools/转1080预览.py "$SP/pv/$OUTN 4K.mp4" "$MP3" "$O"
+sz=$(stat -c %s "$O")
 (cd 高考续写/预览 && sha256sum "$OUTN 1080p预览.mp4" > "$OUTN 1080p预览.mp4.sha256")
 cp $SP/pv/png/stills.json "$SP/pv/stills.json"
 git add "$O" "$O.sha256"
@@ -33,4 +32,4 @@ git commit -qm "高考续写：开头预览 v2（高亮闪一下 + 高亮下面�
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01BA1TPGtns9US2Vd52Dgvkc"
 for i in 1 2 3 4; do git pull -q --rebase origin "$BR" && git push -q origin "$BR" && break; sleep $((2**i)); done
-echo "PREVIEW_DONE size=$sz dur=$b sha=$(cut -d' ' -f1 "$O.sha256")"
+echo "PREVIEW_DONE size=$sz sha=$(cut -d' ' -f1 "$O.sha256")"
