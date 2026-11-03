@@ -224,6 +224,35 @@ def strip_quotes(t):
 
 # 用户要求（2026-10-07）：冒号、分号、破折号处的停顿与逗号完全一样（高考版分号、冒号是逗号的 1.4 倍）。
 # 复制高考 synth_sentence，只去掉 1.4 倍，其余（分段、补标点、淡入淡出）不变。
+# 段尾 /k/ 除阻被呼吸声检查判成换气（x20 knock.、x21 more work,、x27 out to work,：闭塞 60 ms 静音之后 0.10—0.15 秒的鼓包，
+# 质心 3.0—3.3 kHz、5 kHz 以上约 20%；真换气 0.25—0.4 秒、质心 1.4—2.2 kHz）。检查不放宽：登记过的段从闭塞段起点剪断（不除阻的 k，停顿前自然）。
+# 读音修正.json 的 tail_release：{"篇:句": {"段": [第几段（从 1 数，合并后的合成段）], "理由": …}}；只剪登记的段，找不到闭塞段就报错。
+TAIL_RELEASE = {k: v for k, v in json.loads((C4 / 'tools' / '读音修正.json').read_text('utf-8')).get('tail_release', {}).items()}
+
+
+def trim_release(a, look=0.3, gap_db=45, min_gap=0.02):
+    """剪掉段尾孤立的除阻鼓包：段尾 look 秒内，从结尾往前：结尾静音 → 鼓包 → 一段比最响帧低 gap_db 以上、至少 min_gap 秒的近乎静音（塞音闭塞段）；
+    从这段静音起点后 10 毫秒剪断。返回 (剪后, 剪掉秒数)；没有这种结构返回剪掉 0。"""
+    w = int(0.005 * G.SR)
+    n = len(a) // w
+    e = np.array([10 * np.log10(np.mean(np.asarray(a[k * w:(k + 1) * w], np.float64) ** 2) + 1e-12) for k in range(n)])
+    quiet = e < e.max() - gap_db
+    k0 = max(0, n - int(look / 0.005))
+    k = n - 1
+    while k >= k0 and quiet[k]:
+        k -= 1
+    while k >= k0 and not quiet[k]:
+        k -= 1
+    end_gap = k
+    while k >= k0 and quiet[k]:
+        k -= 1
+    start_gap = k + 1
+    if end_gap < k0 or start_gap <= k0 or (end_gap - start_gap + 1) * 0.005 < min_gap:
+        return a, 0.0
+    cut = (start_gap + 2) * w
+    return a[:cut].copy(), (len(a) - cut) / G.SR
+
+
 def synth_sentence(read, key, engine, pron, style, speed, cfg):
     cp = cfg.get('clause_pause', 0)
     # 原文破折号两侧不留空格（pesticides—in fact），高考的切分规则要求标点后有空格，会漏掉这里的停顿；先补一个空格再切
@@ -245,7 +274,12 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
     for i, x in enumerate(merged):
         if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
             raise RuntimeError(f'{key} 合成文字残留引号：{x}')
-        seg = G.segment(engine.synth(pron.phonemes(x, key), style, speed))
+        raw = engine.synth(pron.phonemes(x, key), style, speed)
+        if key in TAIL_RELEASE and i + 1 in TAIL_RELEASE[key]['段']:
+            raw, cut = trim_release(raw)
+            if not cut:
+                raise RuntimeError(f'{key} 第 {i + 1} 段登记了 tail_release，段尾却找不到“闭塞静音 → 除阻鼓包”：{x}')
+        seg = G.segment(raw)
         spans.append((t, t + len(seg) / G.SR))
         out.append(seg)
         t += len(seg) / G.SR
