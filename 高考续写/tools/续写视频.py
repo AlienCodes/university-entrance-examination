@@ -34,6 +34,9 @@ CSS = """
 .es { font-size: var(--en, 50px); line-height: 1.5; font-weight: 600; }
 .fu { font-size: var(--fu, 40px); line-height: 1.6; margin-bottom: 18px; }
 .ttl { font-size: 54px; margin-bottom: 14px; }
+.card.stk { padding: 26px 50px; }
+.stk .ttl { font-size: 48px; margin-bottom: 8px; }
+.nl { padding: 2px 16px; margin: 2px 0; }
 .mk { background: var(--hl); border-radius: 6px; box-shadow: 0 0 0 3px var(--hl); }
 .u { border-bottom: 5px solid #f0a35e; }
 .dim { color: #a8a29e; }
@@ -180,7 +183,7 @@ def frames(doc):
                 st['hl'].append(s['hl'])
             es = hilite(sen, cur if ph == 'pt' else [], old if ph in ('pt', 'how') else [])
             sec = f'逐句讲范文 · 第 {k} / {len(own)} 句'
-            top = card(f'<div class="ttl zh">第{CN[pi]}段 · 第 {si + 1} 句</div><div class="es">{es}</div>')
+            top = card(f'<div class="ttl zh">范文第 {k} 句（第{CN[pi]}段）</div><div class="es">{es}</div>')
             if ph == 'read':
                 para = ' '.join(f'<span class="{"gv" if x.get("given") else ("" if j == si else "dim")}">{esc(x["en"])}</span>' for j, x in enumerate(P[pi]))
                 low = card(f'<div class="ttl zh">第{CN[pi]}段范文（蓝色是题目给的开头语）</div><div class="en">{para}</div>')
@@ -219,6 +222,7 @@ def install():
 
 def selftest():
     """双向验证：讲解视频 自带的雷 + 本引擎的雷（字号过小、贴边、选择器接上）都要报出；正常页 0 处。"""
+    base = V.selftest()                 # 讲解视频 自己的雷，用它原来的页面（本引擎的样式会改字号、断行）
     install()
     from playwright.sync_api import sync_playwright
     import tempfile
@@ -226,7 +230,7 @@ def selftest():
     mines = {
         '中文字号过小': card('<div class="tx" style="font-size:30px">小字</div>'),
         '范文句字号过小': card('<div class="es" style="font-size:36px">Small sentence.</div>'),
-        '孤字（.tx 接上断行检查）': card('<div class="tx" style="width:560px">一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十甲</div>', ' style="right:auto;width:700px"'),
+        '孤字（.tx 接上断行检查）': card('<div class="tx" style="width:560px;text-wrap:wrap">一二三四五六七八九十一二一二三四五六七八九十一二一二三四五六七八九十一二甲</div>', ' style="right:auto;width:700px"'),
         '卡片溢出': card(''.join('<div class="tx nl">很长的一行笔记很长的一行笔记</div>' for _ in range(30))),
     }
     res = {}
@@ -248,7 +252,7 @@ def selftest():
     for k, v in res.items():
         print(f'  {k}：{len(v)} 处' + (f'（{v[0][:40]}）' if v else ''))
     print('续写引擎自检', '通过' if good else '失败')
-    return good and V.selftest()
+    return good and base
 
 
 if __name__ == '__main__':
