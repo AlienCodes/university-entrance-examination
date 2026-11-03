@@ -146,9 +146,28 @@ def tonal_scan(a, sr, items, fmin=2000):
     return top[0][1], top
 
 
+TEMPO = 1.0     # 语音提速倍数（用户 2026-11-03 嫌慢；模型说得比参考慢）。1.0 = 不动；≠ 1 时用 Rubber Band R3（高质量、音高不变）只拉语音，
+                # 停顿另外按稿子放，不受影响。只在本机用（Actions 合成机上没装 rubberband）；提速版必须过 提速验证.py（前后识别、相似度、自然度）
+
+
+def stretch(x, sr, tempo):
+    import subprocess
+    import tempfile
+    import soundfile as sf
+    with tempfile.TemporaryDirectory() as d:
+        i, o = Path(d) / 'i.wav', Path(d) / 'o.wav'
+        sf.write(str(i), x, sr, subtype='FLOAT')
+        subprocess.run(['rubberband', '-q', '-3', '-T', str(tempo), str(i), str(o)], check=True, capture_output=True)
+        y, _ = sf.read(str(o), dtype='float32')
+    return y if y.ndim == 1 else y.mean(1)
+
+
 def prep(x, sr=SR):
-    """原始合成 → 去呼吸（任何电平处理之前，踩坑 89）→ 去首尾静音 → 陷波。build 与 选段 都走这一个。"""
-    return notch(G.trim(BR.debreath(x, sr)[0]), sr)
+    """原始合成 → 去呼吸（任何电平处理之前，踩坑 89）→ 去首尾静音 →（可选）提速 → 陷波。build 与 选段 都走这一个。"""
+    y = G.trim(BR.debreath(x, sr)[0])
+    if TEMPO != 1.0:
+        y = G.trim(stretch(y, sr, TEMPO))
+    return notch(y, sr)
 
 
 def checks(a, items):

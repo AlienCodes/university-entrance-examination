@@ -168,6 +168,7 @@ def main():
     ap.add_argument('--补底噪', action='store_true', help='先把剪辑接缝填上底噪（只用于参考），再挑')
     ap.add_argument('--平实', action='store_true',
                     help='语气平实、语速不慢（用户 2026-11-03：嫌“哄小学生”、太慢）：窗口语速 ≥ 全录音中位数，打分时语调起伏越小越好')
+    ap.add_argument('--语速分位', type=float, default=50, help='--平实 时窗口语速下限取全录音每句语速的这个分位（默认中位数）')
     a = ap.parse_args()
     asr = ASR()
     U = []
@@ -230,7 +231,7 @@ def main():
             us = U[i:j + 1]
             if any(ok(u) for u in us):
                 continue
-            if a.平实 and sum(u['rate'] * (u['e'] - u['s']) for u in us) / (U[j]['e'] - U[i]['s']) < np.median(rates):
+            if a.平实 and sum(u['rate'] * (u['e'] - u['s']) for u in us) / (U[j]['e'] - U[i]['s']) < np.percentile(rates, a.语速分位):
                 continue                                       # 平实：整个窗口（含句间停顿）的语速不低于全录音每句语速的中位数
             m = int(0.04 * SR)
             c = U[i]['cut']

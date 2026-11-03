@@ -150,7 +150,9 @@ def main():
     ap.add_argument('--only', nargs='*')
     ap.add_argument('--lead', type=float, default=1.5)
     ap.add_argument('--tail', type=float, default=2.0)
+    ap.add_argument('--提速', type=float, default=1.0, help='语音提速倍数（讲解音频.TEMPO；停顿不变）')
     a = ap.parse_args()
+    J.TEMPO = a.提速
     segs = json.loads(Path(a.稿).read_text('utf-8'))['segments']
     if a.only:
         segs = [s for s in segs if s['id'] in a.only]
