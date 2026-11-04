@@ -1,0 +1,12 @@
+{
+ "说明": "协调会话 2026-11-04：全稿 124 个中文段里 77 段夹英文，走 zh 模式，gen_en 管不到。小实验：4 个夹英文的中文段（s1b1 s1b3 s1h s1p2，稿 3c9011e）整段用 g1（top_k 15、温度 1.0）与 g1lt（top_k 10、温度 0.8）各合 3 次；比英文那几处的识别词错率（按对齐截出英文片段，parakeet + whisper）、中文多音字声调、相似度、拼接。g1lt 英文明显好、中文各项不差，整片中文段也用 g1lt。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["s1b1", "s1b3", "s1h", "s1p2"],
+ "takes": [1, 2, 3],
+ "split": "mark",
+ "gap_max": 0.45,
+ "candidates": [
+  {"id": "mx1", "mode": "gptsovits", "weights": "teacher"},
+  {"id": "mxlt", "mode": "gptsovits", "weights": "teacher", "gen": {"top_k": 10, "temperature": 0.8}}
+ ]
+}
