@@ -167,5 +167,11 @@ jobs:
           for a in ../arts/wav-*; do cp -r "$a"/. "$D"/; done
           ls -R "$D" | head -50
           git add "$D"
-          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "配音原始音频 $D"
-          for i in 1 2 3 4; do git push -q origin gram-tts-out && break; sleep $((2**i)); git pull -q --rebase origin gram-tts-out; done
+          git config user.name github-actions && git config user.email actions@github.com   # pull --rebase 也要身份（运行 #14：Committer identity unknown）
+          git commit -qm "配音原始音频 $D"
+          ok=0
+          for i in 1 2 3 4 5 6; do
+            if git push -q origin gram-tts-out; then ok=1; break; fi
+            sleep $((2**i)); git pull -q --rebase origin gram-tts-out || true   # 几个补合成同时推会抢 ref：拉下来再推
+          done
+          [ "$ok" = 1 ] || { echo "推 gram-tts-out 失败（重试 6 次）"; exit 1; }
