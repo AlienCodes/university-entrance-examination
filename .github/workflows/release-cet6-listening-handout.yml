@@ -32,7 +32,7 @@ jobs:
           from pathlib import Path
           src = Path('六级/听力/讲义/成品')
           files = ['六级听力真题30套精讲', '六级听力同义替换手册', '六级听力高频词手册', '六级听力听写本', '六级听力听写本（答案）', '六级听力30天刷题计划']
-          root = '六级听力真题30套精讲 全套讲义（2018—2026）'
+          root = '六级听力真题30套精讲 全套讲义（2026—2018）'
           Path('dist').mkdir()
           z = Path('dist/CET6-listening-handout.zip')
           items = [(f'{root}/{i} {f}.pdf', (src / f'{f}.pdf').read_bytes()) for i, f in enumerate(files, 1)]
@@ -54,7 +54,7 @@ jobs:
           print('打包核对通过：', z.stat().st_size)
           PY
           cat > notes.md <<'MD'
-          2018—2026 年大学英语六级听力真题 30 套全套讲义，`CET6-listening-handout.zip` 解压后是一个文件夹，6 份 PDF：
+          2026—2018 年大学英语六级听力真题 30 套全套讲义，`CET6-listening-handout.zip` 解压后是一个文件夹，6 份 PDF：
 
           1. **六级听力真题30套精讲**：原文逐句英汉对照（答案出处黄色标出、标题号）；每道题：选项中文、答案依据（逐字引原文）、思路、同义替换、错项排除；每套答案速查、本套高频词。
           2. **六级听力同义替换手册**：全部“正确选项 ⇄ 原文”的换说法，按五种类型分组、标出处。
@@ -68,7 +68,7 @@ jobs:
       - name: 发布
         run: |
           set -e
-          title="六级听力真题30套精讲 全套讲义（2018—2026）"
+          title="六级听力真题30套精讲 全套讲义（2026—2018）"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" dist/CET6-listening-handout.zip dist/CET6-listening-shop.zip --clobber
             gh release edit "$TAG" --title "$title" --notes-file notes.md
