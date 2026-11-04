@@ -3,6 +3,7 @@
 替换（正确选项的逐字片段 ↔ 依据句的逐字片段，类型在 TYPES 里）、错项（另外三个字母各一条，类别在 WRONG 里）、选项译。
 python3 解析检查.py [套 …]；--自检 双向验证（埋雷必须全部报出，正常数据 0）。"""
 import copy
+import hashlib
 import json
 import re
 import sys
@@ -15,12 +16,25 @@ import 材料 as M  # noqa: E402
 import 中文地道 as ZD  # noqa: E402
 
 J = HERE.parent / '解析'
+SPK_OK = json.loads((HERE / '说话人已核.json').read_text('utf-8'))  # 人看原文核过的报警（讲一改就失效）
 TYPES = ['同义改写', '词性句式转换', '正反转换', '概括归纳', '原词复现']
 WRONG = ['没提到', '张冠李戴', '偷换', '说反了', '过度推断']
 HAN = re.compile('[一-鿿]')
 ZH_HALF = re.compile(r'[一-鿿][,;:?!]|[,;:?!][一-鿿]')
 CAUSE = re.compile('因为|所以|因此|可见|说明|可知|既然|由此|这就是|也就是说|正对应|对应')
 ANS = re.compile(r'答案(?:是|选|为)\s*([A-D])')
+MAN, WOMAN = re.compile('男士|男的|男人|男子|男方'), re.compile('女士|女的|女人|女子|女方')
+Q_MAN, Q_WOMAN = re.compile(r'\b(?:the )?man\b', re.I), re.compile(r'\b(?:the )?woman\b', re.I)
+
+
+def speaker_problem(qtext, jiang):
+    """题干只问一方（the man / the woman），讲里只出现另一方的称呼 → 说话人很可能张冠李戴。"""
+    qm, qw = bool(Q_MAN.search(qtext)), bool(Q_WOMAN.search(qtext))
+    jm, jw = bool(MAN.search(jiang)), bool(WOMAN.search(jiang))
+    if qm and not qw and jw and not jm:
+        return '题干问的是男士，讲里只说了女士'
+    if qw and not qm and jm and not jw:
+        return '题干问的是女士，讲里只说了男士'
 
 
 def zh_ok(where, s, lo, hi, E):
@@ -74,6 +88,10 @@ def check(sid, data=None):
             m = ANS.findall(jiang)
             if not m or any(c != a for c in m):
                 E.append(f'{w} 讲：要写明“答案选 {a}”（现在 {m}）')
+            sp = speaker_problem(q['q'], jiang)
+            ok = SPK_OK.get(f'{sid}:{n}', {}).get('讲sha') == hashlib.sha256(jiang.encode()).hexdigest()[:16]
+            if sp and not ok:
+                E.append(f'{w} 讲：{sp}（对照原文定说话人）')
             if not CAUSE.search(jiang):
                 E.append(f'{w} 讲：没有因果 / 对应的说法（先依据、后结论）')
             rp = x.get('替换') or []
@@ -88,6 +106,8 @@ def check(sid, data=None):
                     E.append(f'{w}：替换右边“{r.get("原文")}”不是依据句的逐字片段')
                 if r.get('类型') == '原词复现' and r.get('选项', '').lower() != r.get('原文', '').lower():
                     E.append(f'{w}：标“原词复现”的两边要相同')
+                if r.get('类型') != '原词复现' and r.get('选项') and r.get('选项', '').lower() == r.get('原文', '').lower():
+                    E.append(f'{w}：替换“{r["选项"]}”两边只差大小写，类型应为“原词复现”（现在“{r.get("类型")}”）')
             wr = x.get('错项') or {}
             if set(wr) != set('ABCD') - {a}:
                 E.append(f'{w}：错项要正好是 {"".join(sorted(set("ABCD") - {a}))}（现在 {"".join(sorted(wr))}）')
@@ -116,6 +136,22 @@ def selftest():
     d = M.load(sid)
     a1 = d['questions'][1]['ans']
     other = next(c for c in 'ABCD' if c != a1)
+
+    def right_of(n):
+        q = d['questions'][n]
+        return q['opts']['ABCD'.index(q['ans'])]
+    # 说话人雷：找一道题干只问一方的题，把讲里的称呼全换成另一方
+    spk = None
+    for n, q in d['questions'].items():
+        qm, qw = bool(Q_MAN.search(q['q'])), bool(Q_WOMAN.search(q['q']))
+        if qm != qw:
+            spk = (str(n), 'man' if qm else 'woman')
+            break
+
+    def swap(j, who):
+        a, b = (MAN, '女士') if who == 'man' else (WOMAN, '男士')
+        j = a.sub(b, j)
+        return j if b in j else j + f'{b}说了这一点。'
     mines = {
         '答案字母错': lambda t: t['1'].__setitem__('答案', other),
         '讲里答案字母错': lambda t: t['1'].__setitem__('讲', t['1']['讲'].replace(f'答案选 {a1}', f'答案选 {other}').replace(f'答案选{a1}', f'答案选{other}').replace(f'答案是 {a1}', f'答案是 {other}').replace(f'答案为 {a1}', f'答案为 {other}')),
@@ -129,6 +165,8 @@ def selftest():
         '缺一题': lambda t: t.pop('9'),
         '中文不地道': lambda t: t['10'].__setitem__('讲', t['10']['讲'] + '这里对原文进行了分析。'),
         '讲没有因果': lambda t: t['11'].__setitem__('讲', f'答案选 {d["questions"][11]["ans"]}。原文里有这句话，选项里也有这层意思，两者一致。'),
+        '同形替换没标原词复现': lambda t: t['12']['替换'].append({'选项': right_of(12).split()[0], '原文': right_of(12).split()[0], '类型': '同义改写'}),
+        '说话人反了': lambda t: t[spk[0]].__setitem__('讲', swap(t[spk[0]]['讲'], spk[1])),
     }
     miss = []
     for name, f in mines.items():
