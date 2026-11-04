@@ -117,7 +117,7 @@ def main():
     segs = [s for i, s in enumerate(segs) if i % nparts == part]
     od = out / c['id'] / f'take{take}'
     od.mkdir(parents=True, exist_ok=True)
-    meta = {'candidate': c, 'take': take, 'part': part, 'segments': [], 'engine': 'GPT-SoVITS v2ProPlus @ abe9843 (CPU)'}
+    meta = {'candidate': c, 'take': take, 'part': part, 'split': J.SPLIT, 'segments': [], 'engine': 'GPT-SoVITS v2ProPlus @ abe9843 (CPU)'}
     t0 = time.time()
     REFS = references(c)
     meta['refs'] = {k: {'text_chars': len(v[1]), 'lang': v[2], 'aux': len(v[3]), 'speed': v[4]} for k, v in REFS.items()}

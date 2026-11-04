@@ -65,6 +65,11 @@ def f0_median(x, sr):
     return float(np.median(f)) if len(f) > 20 else None
 
 
+def split_of(td):
+    m = json.loads((Path(td) / 'meta_part0.json').read_text('utf-8'))
+    return m['candidate'].get('split', m.get('split', 'mark'))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--run', required=True)
@@ -108,6 +113,7 @@ def main():
     rows, detail = [], []
     for td in takes:
         cid, tk = td.parent.name, td.name
+        J.SPLIT = split_of(td)                # 与合成时同一种拆法（候选的 split，sovits_synth 默认 mark）
         out = mp3d / f'{run.name}_{cid}_{tk}.mp3'
         try:
             J.render(segs, td, out)
@@ -144,6 +150,7 @@ def main():
     best_rows = []
     for cid in sorted({r['cid'] for r in rows}):
         tmp = Path(tempfile.mkdtemp())
+        J.SPLIT = split_of(run / cid / 'take1')
         pick = {}
         for u in J.expand(segs):
             sc, tk = min((e + (w or 0), t) for c, t, uid, e, n, h, w in detail if c == cid and uid == u['id'])

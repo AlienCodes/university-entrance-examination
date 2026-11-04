@@ -1,0 +1,10 @@
+{
+ "说明": "老师 GPT-SoVITS 专属模型 8 句第 2 轮：中文段里夹的英文（成句的和单个词，如 waved / Waving / there be）都拆出来按 English（en 模式）合成（split: mark+word，讲解音频.lang_split words=True），看 s5bf 的 Waving 中文腔、s9e / s1b2 的识别有没有变好。其余与第 1 轮（任务_sovits_老师8句，运行 #6）相同。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["t01", "t02", "t03", "s1b1", "s1b2", "s1e", "s5bf", "s9e"],
+ "takes": [1, 2, 3],
+ "candidates": [
+  {"id": "g1w", "mode": "gptsovits", "weights": "teacher", "split": "mark+word"},
+  {"id": "g2w", "mode": "gptsovits", "weights": "teacher", "split": "mark+word", "voice": "高考语法填空/tts/音色/用户本人平实_1.json"}
+ ]
+}

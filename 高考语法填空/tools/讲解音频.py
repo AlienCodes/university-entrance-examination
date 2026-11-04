@@ -243,7 +243,10 @@ LANG_GAP = {'，': 0.18, '、': 0.15, '：': 0.22, '；': 0.25, '。': 0.30, '�
 #                                    用户录音逗号处停顿约 0.15—0.25 秒、句号约 0.3 秒
 
 
-def lang_split(text):
+WORD_GAP = 0.04       # mark+word：句中没有标点处中英切换的静音（秒），只够两段不粘连
+
+
+def lang_split(text, words=False):
     """中文小段里成句的英文（≥ 2 个词、前后都是标点或段首段尾，如“It is common for them，”“答案就是：to be held。”）单独拆出来，
     按 English 合成（用户 2026-11-03：英文中文口音太重；Qwen 用 Chinese 合成中英混说时英文带口音）。夹在中文里的单个词（hold、it）照旧。
     返回 [(文字, 语种, 后面的静音秒或 None)]；没有可拆的返回一项。"""
@@ -252,18 +255,19 @@ def lang_split(text):
         a, b = m.span()
         before = text[:a].rstrip()
         after = text[b:].lstrip()
-        if len(m.group().split()) < 2:
-            continue
-        if before and before[-1] not in ZH_PUNCT:
-            continue
-        if after and after[0] not in ZH_PUNCT:
-            continue
-        p = after[0] if after else ''
+        if not words:
+            if len(m.group().split()) < 2:
+                continue
+            if before and before[-1] not in ZH_PUNCT:
+                continue
+            if after and after[0] not in ZH_PUNCT:
+                continue
+        p = after[0] if after and after[0] in ZH_PUNCT else ''
         end = b + (len(text[b:]) - len(after)) + (1 if p else 0)
         head = text[pos:a].strip()
         if head:
-            out.append([head, 'Chinese', LANG_GAP.get(head[-1], 0.18)])
-        out.append([m.group() + EN_OF.get(p, ''), 'English', LANG_GAP.get(p, 0.18)])
+            out.append([head, 'Chinese', LANG_GAP.get(head[-1], WORD_GAP if words else 0.18)])
+        out.append([m.group() + EN_OF.get(p, ''), 'English', LANG_GAP.get(p, WORD_GAP if words else 0.18)])
         pos = end
     tail = text[pos:].strip()
     if tail:
@@ -275,6 +279,7 @@ def lang_split(text):
 
 GAP_MAX = None        # 段间停顿上限（秒）；None = 按稿。用户本人录音句间停顿中位 0.31、90% 分位 0.47（拼接检查的停顿分布对照它）
 SPLIT = 'mark+lang'   # 合成单位：'mark+lang' = ‖ 处拆 + 中文段里成句的英文单独拆（第 3 轮）；'mark' = 只在 ‖ 处拆；
+#                       'mark+word' = 再把中文段里夹的单个英文词也拆出来按 English 合成（GPT-SoVITS 试验，2026-11-04；默认不用）；
 #                       'none' = 整段一次合成（用户 2026-11-03：要流畅，少拼接）。任务清单的候选 split 设，选段 --拆分 同步
 
 
@@ -289,7 +294,8 @@ def units(seg):
     sub = []
     for k, p in enumerate(ps, 1):
         last_gap = PAUSE_MARK if k < len(ps) else seg.get('gap', 0.6)
-        parts = lang_split(p) if seg['lang'] == 'Chinese' and mode == 'mark+lang' else [(p, seg['lang'], None)]
+        parts = (lang_split(p, words=mode == 'mark+word') if seg['lang'] == 'Chinese' and mode in ('mark+lang', 'mark+word')
+                 else [(p, seg['lang'], None)])
         for j, (t, lang, g) in enumerate(parts):
             sub.append((t, lang, last_gap if j == len(parts) - 1 else g))
     if len(sub) <= 1:
