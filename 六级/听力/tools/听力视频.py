@@ -387,7 +387,7 @@ def selftest():
              ('正常（说明）', page({'kind': 'instr', 'sec': 'C'}), {'kind': 'instr', 'sec': 'C'}, False),
              ('考试画面混进参考答案标题', page(good).replace('Question 3', 'Question 3 参考答案：'), good, True),
              ('考试画面带答案样式', page(pl).replace('class="opt"', 'class="ok"', 1), pl, True),
-             ('选项太长溢出', page(good).replace(esc(a3), esc(a3) * 4, 1), good, True),
+             ('选项太长溢出', page(good).replace(esc(a3), ' '.join([esc(a3)] * (200 // len(a3) + 2)), 1), good, True),      # 按长度造（≥ 200 字母），短选项（The food.）重复 4 遍放得下
              ('选项一览题与题之间没分开（铁律 19）', page(pl).replace('class="qg"', 'class="x"'), pl, True),
              ('字体里没有的字', page(good).replace('Question 3', 'Question 3 𝄞 ꙮ'), good, True)]
     ok = True
