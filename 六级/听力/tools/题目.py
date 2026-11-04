@@ -27,11 +27,15 @@ def paper_txt(sid):
 
 
 def parse_options(txt):
-    part = txt[txt.index('Listening Comprehension'):]
-    part = part[:re.search(r'Part\s+III', part).start()]
+    i = txt.find('Listening Comprehension')
+    part = txt[i if i >= 0 else txt.index('Section A'):]          # 扫描版 OCR 标题可能是乱码（Li&iening）
+    part = part[:re.search(r'Part\s*(III|Ⅲ)\b|Reading\s*Comprehension', part).start()]
+    # 扫描版 OCR：“1 7 . A)”“8 . A)”“C ) They”
+    part = '\n'.join(re.sub(r'\b([A-D])\s+\)', r'\1)', re.sub(r'^(\s*\d{1,2})\s+\.', r'\1.', re.sub(r'^(\s*)(\d)\s(\d)\s*\.', r'\1\2\3.', ln)))
+                     for ln in part.splitlines())
     instr = {}
     for s in 'ABC':
-        m = re.search(rf'Section {s}\s*\n\s*Directions:(.*?)(?=\n\s*(Questions|Conversation|Passage|Recording|1\.))', part, re.S)
+        m = re.search(rf'Section {s}\s*\n\s*Directions\s*:(.*?)(?=\n\s*(Questions|Conversation|Passage|Recording|1\.))', part, re.S)
         instr[s] = re.sub(r'\s+', ' ', 'Directions:' + m.group(1)).strip() if m else None
     Q = {}
     cur = None

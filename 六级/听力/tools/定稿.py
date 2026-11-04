@@ -105,6 +105,8 @@ def run(sid):
             continue
         key = f'{i1}:{i2}'
         ctx = ' '.join(W[max(0, i1 - 6):i1]) + ' 【' + ' '.join(O) + '】 ' + ' '.join(W[i2:i2 + 6])
+        if any(k.startswith('改 ') and int(k[2:].split(':')[0]) <= i1 and i2 <= int(k.split(':')[1]) for k in rule):
+            cnt['已裁定'] += 1; continue          # 落在整段改写里
         if key in rule:
             edits[(i1, i2)] = rule[key].split(); cnt['已裁定'] += 1
         elif J(Rr) == J(Aa) and Rr:
@@ -120,6 +122,15 @@ def run(sid):
             edits[(i1, i2)] = []; cnt['按原文改'] += 1        # transcripts 多出来、原文和录音里都没有
         else:
             todo.append({'key': key, 'transcripts': ' '.join(O), '原文': ' '.join(Rr), '识别': ' '.join(Aa), '上下文': ctx}); cnt['待核'] += 1
+    # 整段改写（裁定文件里 "改 a:b": "文字"）：理顺待核裁定后前后词的标点、大小写；与别的改动重叠就停
+    for k, v in rule.items():
+        if k.startswith('改 '):
+            i1, i2 = map(int, k[2:].split(':'))
+            hit = [e for e in edits if e[0] < i2 and i1 < e[1] or e[0] == e[1] and i1 <= e[0] < i2]
+            for e in hit:
+                del edits[e]
+            print(f'  改写 {k}：「{" ".join(W[i1:i2])}」→「{v}」' + (f'（覆盖 {hit}）' if hit else ''))
+            edits[(i1, i2)] = v.split()
     same = {J(W[i1:i2]): v for (i1, i2), v in edits.items() if i2 > i1}
     for t in todo[:]:
         i1, i2 = map(int, t['key'].split(':'))
