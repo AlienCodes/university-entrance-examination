@@ -172,11 +172,15 @@ jobs:
               if a['name'] not in want:
                   subprocess.run(['gh', 'release', 'delete-asset', sys.argv[1], a['name'], '-y'], check=True); print('删掉旧资产', a['name'])
           EOF2
-          python3 -c "import json;[print(r['asset']+'\t'+r['label']) for r in json.load(open('up/plan.json'))]" | while IFS=$'\t' read -r a l; do
-            gh release upload $TAG "up/$a#$l" --clobber
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/cet6-listening-publish.py todo up/plan.json rel.json | while IFS=$'\t' read -r a l; do
+            gh release upload $TAG "up/$a#$l" --clobber; echo "上传 $a"
           done
-          gh release upload $TAG up/cet6-listening-filenames.txt --clobber
-          n=$(gh release view $TAG --json assets --jq '.assets|length'); [ "$n" = 31 ] || { echo "资产个数 $n ≠ 31"; exit 1; }
-          mkdir -p chk
-          gh release download $TAG -p 'cet6-listening-*.mp4' -D chk --clobber
-          python3 .github/cet6-listening-publish.py verify up/plan.json chk
+          gh release view $TAG --json assets --jq '.assets[].name' | grep -qx cet6-listening-filenames.txt || gh release upload $TAG up/cet6-listening-filenames.txt
+          python3 .github/cet6-listening-publish.py notes up/plan.json notes.md
+          gh release edit $TAG --notes-file notes.md
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/cet6-listening-publish.py verify-digest up/plan.json rel.json
+          mkdir -p chk                          # 再抽一个真下载核 sha256（202606-1：插了停顿的那套）
+          gh release download $TAG -p 'cet6-listening-202606-1.mp4' -D chk --clobber
+          python3 -c "import hashlib,json;r=[x for x in json.load(open('up/plan.json')) if x['套']=='202606-1'][0];assert hashlib.sha256(open('chk/'+r['asset'],'rb').read()).hexdigest()==r['sha256'];print('✅ 下载抽查',r['asset'])"

@@ -4247,9 +4247,9 @@
    ],
    "guards": [
     {
-     "where": ".github/cet6-listening-publish.py：资产一律 ASCII 名 cet6-listening-<套>.mp4（name_problems：非 ASCII 安全字符、重名就停），中文文件名写进资产 label，另附 cet6-listening-filenames.txt；下载按实际资产名核 sha256；不在清单里的旧资产先删",
+     "where": ".github/cet6-listening-publish.py：资产一律 ASCII 名 cet6-listening-<套>.mp4（name_problems），中文文件名写进资产 label，附 cet6-listening-filenames.txt，Release 说明写中文名 ↔ 资产名对照表；已在且 digest 对上的不重传（todo）；核对按资产名 + digest（verify_digest：digest = meta 的 mp4_sha256、大小、标签、个数），另真下载抽查一套",
      "runs": "render-cet6-listening.yml publish",
-     "evidence": "只重跑发布（collect 41871217619）"
+     "evidence": "cet6-listening-practice：31 个资产，digest 30/30 = meta sha256"
     }
    ],
    "test": [
