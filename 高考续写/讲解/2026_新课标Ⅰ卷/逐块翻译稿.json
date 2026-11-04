@@ -1,5 +1,5 @@
 {
- "说明": "逐句讲范文新讲法（用户 2026-11-03：原来“先谓语、再主语、再其余”太别扭、太零散，要一块一块翻、注意时态、一气呵成）。每句：① 中文构思（s{k}z 不变）→ ② 逐块翻：按逗号把中文切成小块，每块先翻成简单的英文（能成句就成句），讲时态和关键词 → ③ 连成一句：用 and / that / but 等接上，结构有升级的先给“直接连”的保底版（已经对了），再讲范文怎么改（插入语、分词、倒装、定语从句）→ 读整句（s{k}e 不变）→ 得分点、可替换（不变）。字段：chunk.zh 画面这一行的中文；chunk.hl 顶部中文整句里要高亮的片段（sen.zh 的子串，省略 = zh）；chunk.en 这一块的英文；chunk.note 画面一行要点；chunk.say 配音；chunk.例 / join.例 = 配音里不在原文、范文里的英文（续写检查 ③ 用）。join.base 直接连的保底版英文（可省）；join.ln 画面要点；join.marks 范文句里要标出的连接处。配音段内不用 ‖（审阅：候选 m 只在 ‖ 处拆，段内短小段容易语速突变；段与段之间本来有停顿）。",
+ "说明": "逐句讲范文新讲法（用户 2026-11-03：原来“先谓语、再主语、再其余”太别扭、太零散，要一块一块翻、注意时态、一气呵成）。每句：① 中文构思（s{k}z 不变）→ ② 逐块翻：按逗号把中文切成小块，每块先翻成简单的英文（能成句就成句），讲时态和关键词 → ③ 连成一句：用 and / that / but 等接上，结构有升级的先给“直接连”的保底版（已经对了），再讲范文怎么改（插入语、分词、倒装、定语从句）→ 读整句（s{k}e 不变）→ 得分点、可替换（不变）。字段：chunk.zh 画面这一行的中文；chunk.hl 顶部中文整句里要高亮的片段（sen.zh 的子串，省略 = zh）；chunk.en 这一块的英文；chunk.note 画面一行要点；chunk.say 配音；chunk.例 / join.例 = 配音里不在原文、范文里的英文（续写检查 ③ 用）。join.base 直接连的保底版英文（可省）；join.ln 画面要点；join.marks 范文句里要标出的连接处。配音 say 2026-11-04 按用户第 16 条重写讲法（该停就停：推理之后、答案“英文是”之前用 ‖；‖ 只放在标点后，两个 ‖ 之间不少于 7 音节，由 稿检查.py ⑧ 保证；英文、中文、要点不改）。",
  "复核": "2026-11-03 三方审阅（语法翻译准确 / 学生听不听得懂 / 配音稿规则）后定稿。改正：s7 过去完成时理由（原稿“比现在更早”是错的，改为过去的过去）；s3 until 从句用一般过去时的理由；s1 保底版补第二个 that；s9 read 过去式读音；s11 had made 的时态与 the warmest 省略 Christmas；s4“接着”并进第一块；s5、s11 补保底版；s7 第三块改成和 s9 同一套路（用 that 代替）；s10 点明“说着”= 伴随、和第五句 Waving 同一招；m04 不再说“每块都是简单句”。 2026-11-03 合成后改两处说法（意思不变）：s7 第二块“不要写成 laid”→“别写成 laid”、“，因为 lie 在这里像 be 一样”→“：lie 在这里像 be 一样”——补逐块 9 次合成里“不要”的“要”全部读不成四声（降幅 −4.3—0.8 半音，下限 2.0）、6 次“因为”的“为”也读平，声调核查过不了，选段换遍候选也不行。",
  "合成提醒": [
   "读错高风险的英文：towed（s3 第一块两次）、drove（s4、s11）、read 的过去式应读 /red/（s9 第二块；建议在 读音修正_中文.json 只对送模型的文字把这两处 read 改成 red，s9e 的 that read 同样要人工听）、lie / lay（s7 第二块，识别核对不了，要人工听）、quiet（别读成 quite）、tears（别读成撕开的 /terz/）。合成后都用 英文逐词核对.py 逐词核；towed、drove 沿用补英文的做法多合成几次锁定读对的。",
@@ -14,14 +14,14 @@
      "zh": "他们解释说",
      "en": "They explained (that) …",
      "note": "解释说 → explained（讲过去的事，用一般过去时）",
-     "say": "汉译英的时候，我们按逗号把中文切成小块，一块一块地翻，最后再连成一句。第一块：他们解释说。讲的是过去的事，用过去式。英文是：They explained。",
+     "say": "怎么把它翻成英文？‖我们按逗号，把中文切成几小块，一块一块地翻，最后再连成一句。‖第一块：他们解释说。讲的是过去的事，用过去式。‖英文是：They explained。",
      "例": []
     },
     {
      "zh": "附近就有一个火车站",
      "en": "There was a station nearby.",
      "note": "“有”→ there be；过去的事 → was；附近 nearby 放句尾",
-     "say": "第二块：附近就有一个火车站。有，用 there be，讲的是过去，所以用 was；附近，nearby，放在句尾。英文是：There was a station nearby。",
+     "say": "第二块：附近就有一个火车站。‖有，用 there be。讲的是过去，be 动词用 was。附近，就是 nearby，放在句尾。‖英文是：There was a station nearby。",
      "例": [
       "there be"
      ]
@@ -30,12 +30,12 @@
      "zh": "中午有一趟开往多伦多的火车",
      "en": "A train to Toronto would leave at noon.",
      "note": "开往多伦多的火车 → a train to Toronto；火车中午才开，站在过去说将来 → would leave（过去将来时）",
-     "say": "第三块：中午有一趟开往多伦多的火车。开往多伦多的火车，就是 a train to Toronto；火车中午才开，是站在过去说将来，用 would leave。英文是：A train to Toronto would leave at noon。",
+     "say": "第三块：中午有一趟开往多伦多的火车。‖开往多伦多的火车，就是 a train to Toronto。火车中午才开，这是站在过去说将来，所以用 would leave。‖英文是：A train to Toronto would leave at noon。",
      "例": []
     }
    ],
    "join": {
-    "say": "连成一句。最直接的连法，是用 they explained that 开头，后面两块用 and that 连起来，这样写已经对了。范文再改一步：去掉 that，把 they explained 挪到第一块后面，前后各加一个逗号，作插入语，这样最要紧的消息，附近就有火车站，就放在了句首。",
+    "say": "三块翻完了，连成一句。‖最直接的连法：用 they explained that 开头，后面两块用 and that 连起来。这样写，已经对了。范文在这个基础上，再改一步：去掉 that，把 they explained 挪到第一块后面，前后各加一个逗号，变成插入语。‖这样一来，最要紧的消息，附近就有火车站，就放在了句首。‖先写对，再写好，这就是升级的思路。",
     "ln": [
      "直接连：They explained that … and that …（已经对了）",
      "范文：去掉 that，they explained 挪到第一块后面，前后加逗号（插入语）"
@@ -58,19 +58,19 @@
      "zh": "可是我的车怎么办",
      "en": "But what about my car?",
      "note": "可是 → but；……怎么办 → what about …？（口语常用）",
-     "say": "第一块：可是我的车怎么办。可是，就是 but；问某样东西怎么办，英语口语常用 what about。英文是：But what about my car。",
+     "say": "第一块：可是我的车怎么办。‖可是，就是 but。问某样东西怎么办，英语口语常说 what about。‖英文是：But what about my car。",
      "例": []
     },
     {
      "zh": "艾米丽焦急地问",
      "en": "Emily asked anxiously.",
      "note": "焦急地 → anxiously（副词，放在 asked 后面）",
-     "say": "第二块：艾米丽焦急地问。焦急地，用副词 anxiously，放在 asked 后面。英文是：Emily asked anxiously。",
+     "say": "第二块：艾米丽焦急地问。‖焦急地，用副词 anxiously，放在 asked 后面。‖英文是：Emily asked anxiously。",
      "例": []
     }
    ],
    "join": {
-    "say": "连成一句：她问的话加上引号，放在前面，问号留在引号里面；后面接上 Emily asked anxiously，顺序和中文完全一样。",
+    "say": "两块连起来，顺序和中文完全一样。‖她问的话加上引号，放在前面，问号留在引号里；后面接上 Emily asked anxiously。",
     "ln": [
      "她问的话加引号放在前面，问号留在引号里",
      "后面接 Emily asked anxiously，顺序和中文一样"
@@ -88,7 +88,7 @@
      "zh": "丹尼尔答应找人把车从沟里拖出来",
      "en": "Daniel promised to have the car towed out of the ditch.",
      "note": "答应做某事 → promise to do；找人把车拖出来 → have the car towed（have + 物 + 过去分词）",
-     "say": "第一块：丹尼尔答应找人把车从沟里拖出来。答应做某事，promise to do；车不是他自己拖，是找人拖，用 have 加车，再加过去分词：have the car towed。英文是：Daniel promised to have the car towed out of the ditch。",
+     "say": "第一块：丹尼尔答应找人把车从沟里拖出来。‖答应做某事，用 promise to do。车不是他自己拖，是找人拖，所以用 have 加车，再加过去分词：have the car towed。‖英文是：Daniel promised to have the car towed out of the ditch。",
      "例": [
       "promise to do",
       "have the car towed",
@@ -99,19 +99,19 @@
      "zh": "放在他家车库里",
      "en": "(have the car) kept in his garage",
      "note": "也是找人把车放好 → 同样用过去分词 kept",
-     "say": "第二块：放在他家车库里。也是找人把车放好，所以同样用过去分词：kept in his garage。",
+     "say": "第二块：放在他家车库里。‖这也是找人把车放好，所以同样用过去分词：kept in his garage。",
      "例": []
     },
     {
      "zh": "等她回来",
      "en": "until she returned",
      "note": "一直放到她回来 → until；她回来是以后的事，但 until 后面不用 would → 一般过去时 returned",
-     "say": "第三块：等她回来，意思是一直放到她回来，用 until。她回来是以后的事，但是 until 后面不用 would，就像主将从现一样，放到过去就用一般过去时。英文是：until she returned。",
+     "say": "第三块：等她回来。‖意思是一直放到她回来，所以用 until。她回来是以后的事，但 until 后面不用 would。‖这和主将从现是一个道理，放到过去，就用一般过去时。‖英文是：until she returned。",
      "例": []
     }
    ],
    "join": {
-    "say": "连成一句：上一句已经说过车了，这里用 it 代替 the car；拖出来、放进车库，两个动作都跟在 have it 后面，中间用 and 连起来，句子更紧凑。",
+    "say": "三块连成一句，句子会很紧凑。‖上一句已经说过车了，这里用 it 代替 the car。拖出来、放进车库，两个动作都跟在 have it 后面，中间用 and 连起来。",
     "ln": [
      "上一句说过车 → 用 it 代替 the car",
      "拖出来、放进车库都跟在 have it 后面，用 and 连接"
@@ -130,7 +130,7 @@
      "zh": "接着，夫妇俩开车把她送到车站",
      "en": "The couple then drove her to the station.",
      "note": "接着 → then（放在动词前）；开车送某人去 → drive sb to …（过去式 drove）",
-     "say": "第一块：接着，夫妇俩开车把她送到车站。接着，就是 then，放在动词前面；开车送某人去，drive somebody to，过去式是 drove。英文是：The couple then drove her to the station。",
+     "say": "第一块：接着，夫妇俩开车把她送到车站。‖接着，就是 then，放在动词前面。开车送某人去，是 drive somebody to，过去式是 drove。‖英文是：The couple then drove her to the station。",
      "例": [
       "drive somebody to"
      ]
@@ -139,7 +139,7 @@
      "zh": "陪她一直等到火车进站",
      "en": "They waited with her until the train arrived.",
      "note": "陪她等 → wait with her；一直等到 → until",
-     "say": "第二块：陪她一直等到火车进站。陪她等，wait with her；一直等到，用 until。英文是：They waited with her until the train arrived。",
+     "say": "第二块：陪她一直等到火车进站。‖陪她等，是 wait with her；一直等到，用 until。‖英文是：They waited with her until the train arrived。",
      "例": [
       "wait with her",
       "They waited with her until the train arrived"
@@ -147,7 +147,7 @@
     }
    ],
    "join": {
-    "say": "连成一句：两个动作都是夫妇俩做的，用 and 连起来，后面的 they 就省掉。",
+    "say": "两个动作都是夫妇俩做的，所以用 and 连起来，后面的 they 就省掉。‖主语相同，就省掉后一个，这是连句最常用的一招。",
     "ln": [
      "两个动作都是夫妇俩做的 → 用 and 连接，省掉第二个 they"
     ],
@@ -164,7 +164,7 @@
      "zh": "隔着结了霜的车窗向他们挥手",
      "en": "Emily waved to them through the frosty train window.",
      "note": "中文没说谁挥手 → 英文补上主语 Emily；向某人挥手 → wave to sb；隔着 → through；结了霜的 → frosty",
-     "say": "第一块：隔着结了霜的车窗向他们挥手。中文没说谁挥手，英文要补上主语，是艾米丽。向某人挥手，wave to somebody；隔着车窗，用 through；结了霜的，frosty。英文是：Emily waved to them through the frosty train window。",
+     "say": "第一块：隔着结了霜的车窗，向他们挥手。‖中文没说谁挥手，英文要补上主语：艾米丽。‖向某人挥手，是 wave to somebody；隔着车窗，用 through；结了霜的，是 frosty。‖英文是：Emily waved to them through the frosty train window。",
      "例": [
       "wave to somebody",
       "Emily waved to them through the frosty train window"
@@ -174,12 +174,12 @@
      "zh": "艾米丽几乎忍不住泪水",
      "en": "Emily could hardly hold back her tears.",
      "note": "几乎不能 → could hardly；忍住 → hold back",
-     "say": "第二块：艾米丽几乎忍不住泪水。几乎不能，could hardly；忍住，hold back。英文是：Emily could hardly hold back her tears。",
+     "say": "第二块：艾米丽几乎忍不住泪水。‖几乎不能，是 could hardly；忍住，是 hold back。‖英文是：Emily could hardly hold back her tears。",
      "例": []
     }
    ],
    "join": {
-    "say": "连成一句。最直接的连法，是用 and 连起来，后面的 Emily 省掉，这样已经对了。范文再改一步：挥手和忍泪是同时发生的，做事的都是艾米丽，把 waved 改成 Waving，放在句首，作伴随状语，后面只留一个 Emily。",
+    "say": "现在把两块连成一句。‖最直接的连法，是用 and 连起来，后面的 Emily 省掉。这样写，已经对了。范文在这个基础上，再改一步。‖挥手和忍住眼泪，是同时发生的，做这两件事的都是艾米丽。所以把 waved 改成 Waving，放在句首，作伴随状语，后面只留一个 Emily。",
     "ln": [
      "直接连：用 and 连接，省掉第二个 Emily（已经对了）",
      "范文：挥手、忍泪同时发生 → waved 改成 Waving，放句首（现在分词作伴随状语）"
@@ -198,7 +198,7 @@
      "zh": "那天晚上，她在多伦多扑进了男朋友的怀里",
      "en": "That evening, she fell into her boyfriend’s arms in Toronto.",
      "note": "扑进某人怀里 → fall into one’s arms（过去式 fell）；在多伦多 → in Toronto，放在后面",
-     "say": "第一块：那天晚上，她在多伦多扑进了男朋友的怀里。扑进某人怀里，fall into one’s arms，过去式是 fell；在多伦多，in Toronto，放在后面。英文是：That evening, she fell into her boyfriend’s arms in Toronto。",
+     "say": "第一块：那天晚上，她在多伦多扑进了男朋友的怀里。‖扑进某人怀里，是 fall into one’s arms，过去式是 fell。在多伦多，in Toronto，放在后面。‖英文是：That evening, she fell into her boyfriend’s arms in Toronto。",
      "例": [
       "fall into one’s arms"
      ]
@@ -207,12 +207,12 @@
      "zh": "正好赶上圣诞节",
      "en": "just in time for Christmas",
      "note": "正好赶上 → just in time for（短语）",
-     "say": "第二块：正好赶上圣诞节。正好赶上，英语说 just in time for，后面接上圣诞节：just in time for Christmas。",
+     "say": "第二块：正好赶上圣诞节。‖正好赶上，英语说 just in time for，后面接上圣诞节：just in time for Christmas。",
      "例": []
     }
    ],
    "join": {
-    "say": "连成一句：第二块只是一个短语，不用再加主语和谓语，用逗号接在句尾就行。",
+    "say": "第二块只是一个短语，不用再加主语和谓语，用逗号接在句尾就行。",
     "ln": [
      "第二块只是短语，不用再写主语、谓语",
      "用逗号接在句尾"
@@ -230,14 +230,14 @@
      "zh": "这时天已经放晴",
      "en": "The sky was clear now.",
      "note": "放晴 → 天晴了：the sky was clear；这时 → now",
-     "say": "第一块：这时天已经放晴。放晴，就是天晴了，讲过去用 was。英文是：The sky was clear now。",
+     "say": "第一块：这时天已经放晴。‖放晴，就是天晴了；讲过去，用 was。‖英文是：The sky was clear now。",
      "例": []
     },
     {
      "zh": "那条路静静地躺在阳光里",
      "en": "The road lay quiet in the sunshine.",
      "note": "先去掉修饰，只说主干；躺 → lie，过去式 lay（不是 laid）；lie 在这里像 be，后接形容词 quiet，不用 quietly",
-     "say": "第二块，先去掉修饰，只说主干：那条路静静地躺在阳光里。躺，是 lie，过去式是 lay，别写成 laid；静静地，这里不用副词 quietly，用形容词 quiet：lie 在这里像 be 一样，表示处在安静的状态。英文是：The road lay quiet in the sunshine。",
+     "say": "第二块，先去掉修饰，只说主干：那条路静静地躺在阳光里。‖躺，是 lie，过去式是 lay，别写成 laid。‖静静地，这里不用副词 quietly，用形容词 quiet。lie 在这里像 be 一样，表示处在安静的状态。‖英文是：The road lay quiet in the sunshine。",
      "hl": "静静地躺在阳光里",
      "例": [
       "The road lay quiet in the sunshine"
@@ -247,7 +247,7 @@
      "zh": "那条路曾经困住了她",
      "en": "The road had trapped her.",
      "note": "困住她在她回来之前（过去的过去）→ 过去完成时 had trapped",
-     "say": "第三块：曾经困住她的路，意思是那条路曾经困住了她。困住她是三天前的事，比她回来的这个时候更早，是过去的过去，所以用过去完成时。英文是：The road had trapped her。",
+     "say": "第三块：曾经困住她的路。‖意思是，那条路曾经困住了她。困住她，是三天前的事，比她回来的时候更早，是过去的过去，所以用过去完成时。‖英文是：The road had trapped her。",
      "hl": "曾经困住她的",
      "例": [
       "The road had trapped her"
@@ -255,7 +255,7 @@
     }
    ],
    "join": {
-    "say": "连成一句：前两块用 and 连起来；第三块说的也是那条路，用 that 代替 the road，变成定语从句，紧跟在 the road 后面。中文的修饰语放在前面，英文的定语从句放在后面。",
+    "say": "现在把三块连成一句。‖前两块用 and 连起来。第三块说的也是那条路，就用 that 代替 the road，变成定语从句，紧跟在 the road 后面。‖记住：中文的修饰语放在前面，英文的定语从句放在后面。",
     "ln": [
      "前两块用 and 连接",
      "第三块说的也是那条路 → 用 that 代替 the road，变成定语从句，紧跟在 the road 后面"
@@ -274,7 +274,7 @@
      "zh": "她的车停在夫妇俩车库外面",
      "en": "Her car was parked outside the couple’s garage.",
      "note": "先按正常语序说；车是被停放的 → 被动 was parked",
-     "say": "第一块，先按正常的语序说：她的车停在夫妇俩的车库外面。车是被停放的，用被动。英文是：Her car was parked outside the couple’s garage。",
+     "say": "第一块，先按正常的语序说：她的车停在夫妇俩的车库外面。‖车是被停放的，用被动。‖英文是：Her car was parked outside the couple’s garage。",
      "hl": "停在夫妇俩车库外面的，正是她的车",
      "例": [
       "Her car was parked outside the couple’s garage"
@@ -284,7 +284,7 @@
      "zh": "雪已经清干净，随时可以上路",
      "en": "It was cleaned of snow and ready to go.",
      "note": "it 指车；车被清掉了雪 → 被动 was cleaned of snow；随时可以出发 → ready to go",
-     "say": "第二块：雪已经清干净，随时可以上路。这里说的还是车，用 it；车被清掉了雪，用被动 was cleaned of snow；随时可以出发，ready to go。英文是：It was cleaned of snow and ready to go。",
+     "say": "第二块：雪已经清干净，随时可以上路。‖这里说的还是车，用 it。车被清掉了雪，用被动：was cleaned of snow；随时可以出发，是 ready to go。‖英文是：It was cleaned of snow and ready to go。",
      "例": [
       "was cleaned of snow",
       "It was cleaned of snow and ready to go"
@@ -292,7 +292,7 @@
     }
    ],
    "join": {
-    "say": "连成一句。最直接的连法，是第二块去掉 It was，接在后面，这样已经对了。范文再改一步：把 parked outside the couple’s garage 提到句首，was 放到 her car 前面，这叫完全倒装，正好就是中文的顺序：停在车库外面的，正是她的车。",
+    "say": "现在把两块连成一句。‖最直接的连法：第二块去掉 It was，接在后面。这样写，已经对了。范文在这个基础上，再改一步。‖把 parked outside the couple’s garage 提到句首，was 放到 her car 前面。这叫完全倒装。‖它正好就是中文的顺序：停在车库外面的，正是她的车。",
     "ln": [
      "直接连：第二块去掉 It was，接在后面（已经对了）",
      "范文：Parked outside the couple’s garage 提到句首，was 放在 her car 前 → 完全倒装，正好是中文的顺序"
@@ -312,7 +312,7 @@
      "zh": "艾米丽递给他们一盒自己烤的饼干和一张卡片",
      "en": "Emily handed them a box of homemade cookies and a card.",
      "note": "递给某人某物 → hand sb sth（双宾语，过去式 handed）；自己烤的 → homemade",
-     "say": "第一块：艾米丽递给他们一盒自己烤的饼干和一张卡片。递给某人某物，hand somebody something，这里就是 handed them；自己烤的，homemade。英文是：Emily handed them a box of homemade cookies and a card。",
+     "say": "第一块：艾米丽递给他们一盒自己烤的饼干和一张卡片。‖递给某人某物，是 hand somebody something，这里就是 handed them。自己烤的，是 homemade。‖英文是：Emily handed them a box of homemade cookies and a card。",
      "例": [
       "hand somebody something"
      ]
@@ -321,7 +321,7 @@
      "zh": "上面写着：“谢谢你们挽救了我的假期。”",
      "en": "The card read, “Thank you for saving my holiday.”",
      "note": "上面写着 → read（过去式拼写不变，读音同 red）；谢谢你做某事 → thank you for doing",
-     "say": "第二块：上面写着，谢谢你们挽救了我的假期。写着，英文用 read，过去式拼写不变，读音和红色的 red 一样；谢谢你做某事，thank you for doing。英文是：The card read, Thank you for saving my holiday。",
+     "say": "第二块：上面写着，谢谢你们挽救了我的假期。‖写着，英文用 read，它的过去式拼写不变，读音和红色的 red 一样。‖谢谢你做某事，是 thank you for doing。‖英文是：The card read, Thank you for saving my holiday。",
      "例": [
       "thank you for doing",
       "The card read"
@@ -329,7 +329,7 @@
     }
    ],
    "join": {
-    "say": "连成一句：第二块说的就是那张卡片，用 that 代替 the card，变成定语从句，接在 a card 后面。",
+    "say": "第二块说的就是那张卡片，所以用 that 代替 the card，变成定语从句，接在 a card 后面。",
     "ln": [
      "第二块说的就是那张卡片 → 用 that 代替 the card",
      "变成定语从句，接在 a card 后面"
@@ -349,21 +349,21 @@
      "zh": "我们只是做了任何人都会做的事",
      "en": "We just did what anyone would do.",
      "note": "“……的事”→ 用 what 引出：what anyone would do（作 did 的宾语）",
-     "say": "第一块：我们只是做了任何人都会做的事。什么什么的事，用 what 引出：what anyone would do，放在 did 后面作宾语。英文是：We just did what anyone would do。",
+     "say": "第一块：我们只是做了任何人都会做的事。‖任何人都会做的事，用 what 引出：what anyone would do，放在 did 后面作宾语。‖英文是：We just did what anyone would do。",
      "例": []
     },
     {
      "zh": "瑞秋说着",
      "en": "Rachel said",
      "note": "说 → said（一般过去时）",
-     "say": "第二块：瑞秋说着。说，用过去式，英文是：Rachel said。",
+     "say": "第二块：瑞秋说着。说，用过去式 said。‖英文是：Rachel said。",
      "例": []
     },
     {
      "zh": "温暖地拥抱了她",
      "en": "She gave her a warm hug.",
      "note": "拥抱某人 → give sb a hug（过去式 gave）；温暖地 → 形容词 warm，放在 hug 前",
-     "say": "第三块：温暖地拥抱了她。拥抱某人，英语常说 give somebody a hug，过去式是 gave；温暖地，变成形容词 warm，放在 hug 前面。英文是：She gave her a warm hug。",
+     "say": "第三块：温暖地拥抱了她。‖拥抱某人，英语常说 give somebody a hug，过去式是 gave。温暖地，变成形容词 warm，放在 hug 前面。‖英文是：She gave her a warm hug。",
      "例": [
       "give somebody a hug",
       "She gave her a warm hug"
@@ -371,7 +371,7 @@
     }
    ],
    "join": {
-    "say": "连成一句：说的话加上引号，放在前面，句末的句号改成逗号，后面接 Rachel said。说着，就是一边说一边抱，去掉 she，把 gave 改成 giving，接在句尾，作伴随状语，和第五句的 Waving 是同一招。",
+    "say": "现在把三块连成一句。‖说的话加上引号，放在前面，句末的句号改成逗号，后面接 Rachel said。‖说着，就是一边说一边抱。所以去掉 she，把 gave 改成 giving，接在句尾，作伴随状语。‖这和第五句的 Waving，是同一招。",
     "ln": [
      "说的话加引号放前面，句末句号改成逗号，后面接 Rachel said",
      "“说着”= 一边说一边抱 → 去掉 she，gave 改成 giving，接在句尾（伴随状语，同第五句 Waving）"
@@ -389,7 +389,7 @@
      "zh": "开车离开时，艾米丽意识到",
      "en": "When Emily drove away, she realized (that) …",
      "note": "开车离开 → drive away；……时 → when；意识到 → realize（过去式 realized）",
-     "say": "第一块：开车离开时，艾米丽意识到。开车离开，drive away；什么什么的时候，用 when；讲的都是过去，用过去式。先写最简单的：When Emily drove away, she realized。",
+     "say": "第一块：开车离开时，艾米丽意识到。‖开车离开，是 drive away。什么什么的时候，用 when。讲的都是过去，用过去式。‖先写最简单的：When Emily drove away, she realized。",
      "例": [
       "drive away",
       "When Emily drove away",
@@ -400,21 +400,21 @@
      "zh": "这场暴风雪差点毁了她的圣诞节",
      "en": "The storm had nearly ruined her Christmas.",
      "note": "差点 → nearly；毁了 → ruin；发生在“意识到”之前（过去的过去）→ 过去完成时 had ruined",
-     "say": "第二块：这场暴风雪差点毁了她的圣诞节。差点，nearly；毁了，ruin。暴风雪发生在她意识到之前，是过去的过去，用过去完成时。英文是：The storm had nearly ruined her Christmas。",
+     "say": "第二块：这场暴风雪差点毁了她的圣诞节。‖差点，是 nearly；毁了，是 ruin。暴风雪发生在她意识到之前，是过去的过去，用过去完成时。‖英文是：The storm had nearly ruined her Christmas。",
      "例": []
     },
     {
      "zh": "而两个陌生人却让它成了她一生中最温暖的一个圣诞节",
      "en": "Two strangers had made it the warmest of her life.",
      "note": "它 = 圣诞节 → it；让它成为…… → make it + 宾补；一生中最温暖的（圣诞节）→ the warmest of her life（最高级，Christmas 承前省略）；也在“意识到”之前 → had made",
-     "say": "第三块：而两个陌生人，却让它成了她一生中最温暖的一个圣诞节。它，就是圣诞节，用 it；让它成为，用 make it；一生中最温暖的，用最高级 the warmest of her life，圣诞节前面说过，省掉。这件事也发生在她意识到之前，同样用过去完成时。英文是：Two strangers had made it the warmest of her life。",
+     "say": "第三块：而两个陌生人，却让它成了她一生中最温暖的一个圣诞节。‖它，就是圣诞节，用 it。让它成为，用 make it。一生中最温暖的，用最高级：the warmest of her life；圣诞节前面说过了，这里省掉。‖这件事也发生在她意识到之前，同样用过去完成时。‖英文是：Two strangers had made it the warmest of her life。",
      "例": [
       "make it"
      ]
     }
    ],
    "join": {
-    "say": "连成一句。最直接的连法，是把后两块放在 realized that 后面，中文的而、却，表示转折，用 but，这样已经对了。范文再改一步：开车的和意识到的都是艾米丽，可以把 When Emily drove away 改成 Driving away，作时间状语，后面的 she 换成 Emily，句子更简洁。",
+    "say": "现在把三块连成一句。‖最直接的连法：把后两块放在 realized that 后面。中文的而、却，表示转折，用 but。这样写，已经对了。范文在这个基础上，再改一步。‖开车的和意识到的，都是艾米丽。所以可以把 When Emily drove away 改成 Driving away，作时间状语，后面的 she 换成 Emily。句子更简洁。",
     "ln": [
      "直接连：后两块放在 realized that 后面，“而……却”→ but（已经对了）",
      "范文：开车的、意识到的都是 Emily → When Emily drove away 改成 Driving away（现在分词作时间状语），she 换成 Emily"
@@ -432,7 +432,7 @@
   }
  ],
  "m04": {
-  "say": "第四步，逐句写：先想好中文，按逗号切成几小块；每一块先翻成简单的英文，注意时态；最后连成一句，先写对，再写好。",
+  "say": "第四步，逐句写：先想好中文，按逗号切成几小块。‖每一块先翻成简单的英文，注意时态；最后连成一句。先写对，再写好。",
   "note": "④ 逐句写：中文切块 → 每块先翻成简单英文（注意时态）→ 连成一句（先写对，再写好）"
  },
  "统计": {

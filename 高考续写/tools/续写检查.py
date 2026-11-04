@@ -15,6 +15,7 @@
 ⑧ 不读旧范文：题目.json 不许有 范文 键；稿源.py、续写视频.py 的源码里不许出现 续写题汇总（生成稿子和画面只读 题目.json）；
 ⑨ 不念题号、满分、分值、范文词数（用户 2026-11-03 看开头预览：“不用说我们的范文多少个词……不用说第多少个题……也不用说满分多少分”）：
    配音文字里不许有“第 N 题”“满分”“N 分”（得分点等除外）“范文 / 每段 / 合计 … N 个词”；画面引擎不许把题目.json 的 no、score 排到画面上（原题照原卷的文字不算）。
+⑩ 口语（用户 2026-11-04 第 16 条：自然、不要过多语气词、该停就停、不要一口气说完）：高考语法填空/tools/稿检查.talk_problems（阈值取自老师录音）；
 用法：python3 续写检查.py 讲解目录 [--副本 高考语法填空/tts/稿_xxx.json]   |   --自检（双向验证：每颗雷必须报出，原稿 0 处）"""
 import copy
 import html
@@ -27,6 +28,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools'))
 import 作文规则 as R  # noqa: E402
+sys.path.insert(0, str(ROOT / '高考语法填空/tools'))
+import 稿检查 as GK  # noqa: E402
 
 DOCX = ROOT / '高考续写/续写题汇编_高考真题.docx'
 EN_RUN = re.compile(r"[A-Za-z][A-Za-z0-9 ,;:'’.-]*[A-Za-z]")
@@ -266,6 +269,7 @@ def check_dir(d, copy_path=None):
         E.append(f'⑦ 与旧范文 5 词片段重合 {r:.1%} > {OVERLAP_MAX:.0%}')
     E += leak_problems(d, t)
     E += talk_problems(doc, (ROOT / '高考续写/tools/续写视频.py').read_text('utf-8'))
+    E += GK.talk_problems(doc)
     if copy_path and Path(copy_path).read_text('utf-8') != (d / '稿.json').read_text('utf-8'):
         E.append(f'⑥ 合成副本 {copy_path} 与原稿不一致（重新复制）')
     return E, (t, fw, doc)
@@ -307,7 +311,7 @@ def selftest():
         '得分点不在句中': (lambda a, b, c: seg(c, 's3p2').update(hl='was taken'), '④ s3p2'),
         '得分点没写档': (lambda a, b, c: seg(c, 's5p1').update(dang=['⑤']), '④ s5p1'),
         '配音的条与档不一致': (lambda a, b, c: seg(c, 's6p2').update(dang=['②']), '④ s6p2'),
-        '配音没说第几条': (lambda a, b, c: seg(c, 's9p2').update(text=seg(c, 's9p2')['text'].replace('，对应第三条和第一条', '')), '④ s9p2'),
+        '配音没说第几条': (lambda a, b, c: seg(c, 's9p2').update(text=seg(c, 's9p2')['text'].replace('对应第三条和第一条', '')), '④ s9p2'),
         '出处不是原文': (lambda a, b, c: seg(c, 's7p2').update(src='The heavy snow made driving impossible.'), '④ s7p2'),
         '缺可替换': (lambda a, b, c: c.__setitem__('segments', [s for s in c['segments'] if s['id'] != 's4h']), '④ s4'),
         '段落连读不全': (lambda a, b, c: seg(c, 'r2b').update(text=seg(c, 'r2b')['text'].rsplit('. ', 1)[0] + '.'), '④ 第 2 段'),
