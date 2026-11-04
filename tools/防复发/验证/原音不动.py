@@ -2,6 +2,7 @@
 在 AAC 编码误差内才过。合成信号经真实 AAC 192k 编码：
   正常 0 处；音量改 0.2 dB、整体提到 −16 LUFS（+4 dB）、单声道变双声道、时间错开 10 毫秒都必须报出；
   静态：六级听力视频.py 开着 base.ORIGINAL、没开 base.LIMIT。
+  精读例外（只许删句间纯静音）：语音段改 0.3 dB、限幅必须报；删的段里有声音必须报；数字静音 + 编码毛刺不报。
     /opt/ttsenv/bin/python tools/防复发/验证/原音不动.py"""
 import ast, subprocess, sys, tempfile
 from pathlib import Path
@@ -49,7 +50,7 @@ st = 'base.ORIGINAL = True' in six and 'base.LIMIT = True' not in six
 print(('✅' if st else '❌'), '六级听力视频.py 开原音模式、不开限幅')
 if not st: bad.append('六级配置')
 # 铁律 25：还在给原声做增益 / 限幅的旧引擎只许减少；别的程序再调用原音音轨的 limit（或 limited）就报
-LEGACY = {'专八/听力/原文/tools/原音音轨.py': '专八听力原文精读、六级听力精读音轨：−16 LUFS + 限幅、24 kHz 单声道、压缩停顿（已发布不追溯）',
+LEGACY = {'专八/听力/原文/tools/原音音轨.py': '专八听力原文精读音轨（默认模式）：−16 LUFS + 限幅、24 kHz 单声道、压缩停顿（已发布不追溯）；六级精读 --cet6 已是原音模式（raw6）',
           '专八/听力/tools/听力视频.py': '默认模式（专八 2025 听力视频）整体增益到 −16、48 kHz；六级开 ORIGINAL'}
 
 
@@ -75,4 +76,31 @@ with tempfile.TemporaryDirectory() as d:          # 雷：新程序调用原音�
     got = raw_gain_users(Path(d)); ok = got == ['x/新引擎.py']
     print(('✅' if ok else '❌'), '雷：新程序调用原声限幅', '→', got)
     if not ok: bad.append('雷失效')
+
+# 铁律 25 唯一例外（总协调 2026-11-04）：六级精读可删句间纯静音、语音一点不许动——原音音轨.seg_match（语音段逐样本）、removed_check（删的段必须是纯静音）
+sys.path.insert(0, str(R / '专八/听力/原文/tools'))
+import 原音音轨 as YY
+sp = 0.3 * np.sin(2 * np.pi * 220 * t[:sr * 3]) * (1 + 0.3 * np.sin(2 * np.pi * 3 * t[:sr * 3]))
+st = np.stack([sp, 0.9 * sp], 1)
+with tempfile.TemporaryDirectory() as d:          # 真实 MP3 320k 编解码（与 原音音轨.raw6 同一条路）
+    w, m = Path(d) / 'a.wav', Path(d) / 'a.mp3'
+    sf.write(w, st.astype(np.float32), sr, subtype='FLOAT')
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(w), '-c:a', 'libmp3lame', '-b:a', '320k', str(m)], check=True)
+    dec = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', str(m), '-f', 'f32le', '-'], capture_output=True, check=True).stdout,
+                        dtype=np.float32).astype(np.float64).reshape(-1, 2)[:len(st)]
+for name, q, want in [('精读：语音段经 MP3 编解码（正常）', dec, False), ('精读雷：语音段改 0.3 dB', dec * 10 ** (0.3 / 20), True),
+                      ('精读雷：语音段限幅（削掉 1 dB 峰）', np.clip(dec, -0.3 * 0.89, 0.3 * 0.89), True)]:
+    got, meas = YY.seg_match([(st[:sr], q[:sr]), (st[sr:], q[sr:])], sr)
+    ok = bool(got) == want
+    print(('✅' if ok else '❌'), name, '→', got or meas)
+    if not ok: bad.append(name)
+db = np.full(1000, -240.0); db[300:302] = -97.0          # 10 秒的 10 毫秒帧：数字静音 + 编码毛刺
+for name, dd, want in [('精读：删的段是数字静音（带 −97 dB 毛刺）', db, False)]:
+    got = YY.removed_check('雷', dd, -225.0, [(2.0, 8.0)]); ok = bool(got) == want
+    print(('✅' if ok else '❌'), name, '→', got or '0 处')
+    if not ok: bad.append(name)
+db2 = db.copy(); db2[500:540] = -22.0                      # 删的段中间有 0.4 秒声音（202512-1 第 49、50 句之间没转写的那段就是这样）
+got = YY.removed_check('雷', db2, -225.0, [(2.0, 8.0)]); ok = bool(got)
+print(('✅' if ok else '❌'), '精读雷：删的段里有声音', '→', got)
+if not ok: bad.append('删的段里有声音没报')
 print('原音不动双向验证', '通过' if not bad else f'失败 {bad}'); sys.exit(1 if bad else 0)

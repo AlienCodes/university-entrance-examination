@@ -15,7 +15,9 @@
 六级听力原文精读（2026-11-04）也用本程序（原音的条目只许一个程序写，踩坑 87）：
     /opt/ttsenv/bin/python 专八/听力/原文/tools/原音音轨.py --cet6 202512-1 --mp3 /home/user/wav/cet6-202512-1.mp3
 文字 六级/听力/精读/原文.txt 的 ## <套>（切句.py 从练习会话的 定稿.json 生成），“识别词”= 定稿.json 的逐词时刻（同一份文字，几乎全对上）；
-原音 sha256 必须在 六级/听力/原始材料/SHA256SUMS；限幅上限 −2.5 dBFS（六级练习视频实测 AAC 编码后峰值反弹约 0.9 dB）；输出 六级/听力/精读/audio/。
+原音 sha256 必须在 六级/听力/原始材料/SHA256SUMS；输出 六级/听力/精读/audio/。
+六级是原音模式（raw6，铁律 25 精读例外，总协调 2026-11-04 定）：不增益、不限幅、不重采样、声道照原音，只把句间 > 2 秒的纯静音删到 2 秒
+（停顿里有声音就整段保留；删的段 removed_check 再核；MP3 256k 编码后语音段与原音逐样本比 seg_match，不过就停）。
 """
 import argparse
 import difflib
@@ -67,6 +69,9 @@ def norm(w):
 
 NUM = {'1': 'one', '2': 'two', '3': 'three', '4': 'four', '5': 'five', '6': 'six', '7': 'seven', '8': 'eight', '9': 'nine', '10': 'ten',
        '20': 'twenty', '24': 'twentyfour', '2025': 'twentytwentyfive', '19th': 'nineteenth'}
+
+
+FIXOLD = set()        # 六级：原文订正.json 里被替换掉的旧词（定稿的逐词时刻还是旧拼写，Thorn → Foreign），对不上不算漏转录
 
 
 def toks(s):
@@ -148,7 +153,7 @@ def align(pid, paras, R, y, sr):
     # 漏转录：识别出的词没有对上任何原文词，且落在两句之间（不在任何一句的时间范围内）
     spans = [(t[0], t[1]) for t in times if t]
     for j, x in enumerate(aw):
-        if j not in used_b and not any(s0 - 0.05 <= x[1] <= s1 + 0.05 for s0, s1 in spans):
+        if j not in used_b and x[0] not in FIXOLD and not any(s0 - 0.05 <= x[1] <= s1 + 0.05 for s0, s1 in spans):
             errs.append(f'{pid} {x[1]:.2f}s 识别出“{x[0]}”，不属于任何一句（漏转录？）')
     if errs:
         return None, errs
@@ -159,6 +164,8 @@ def align(pid, paras, R, y, sr):
     db = frames_db(y, sr)
     floor = np.percentile(db[int(a * 100):int(b * 100)], 10)
     thr = floor + 15
+    global DB, THR
+    DB, THR = db, thr
     out = []
     for k, (s0, s1, ratio) in enumerate(times):
         lo = times[k - 1][1] if k else max(a, s0 - 0.5)
@@ -184,7 +191,21 @@ def align(pid, paras, R, y, sr):
     return out, errs
 
 
-def build(pid, paras, R, y, sr):
+def gap_speech(db, thr, a, b):
+    """删掉的一段 [a, b) 秒里有没有声音：10 毫秒帧电平超过门限的帧数 ≥ 3 就算有。门限 = 对齐时的句子起止门限（噪声底 + 15 dB），
+    但不低于 −60 dBFS（六级原音句间多是数字静音，噪声底是 −240，−97 dB 的编码毛刺不是声音）。返回有声音的时刻或 None。"""
+    seg = db[int(a * 100):int(b * 100)]
+    hot = np.nonzero(seg > max(thr, -60.0))[0]
+    return round(a + hot[0] / 100, 2) if len(hot) >= 3 else None
+
+
+def removed_check(pid, db, thr, removed):
+    """原音模式：删掉的每一段 [a, b) 都必须是纯静音（gap_speech 为 None），有一段有声音就报。"""
+    return [f'{pid} 删掉的 {a:.2f}—{b:.2f}s 里 {t}s 有声音（只许删纯静音）' for a, b in removed if (t := gap_speech(db, thr, a, b)) is not None]
+
+
+def build(pid, paras, R, y, sr, src=None):
+    """src：成品用的原声（六级原音模式，原声道、原采样率、不增益）；不给就用单声道 y（专八旧做法）。"""
     al, errs = align(pid, paras, R, y, sr)
     if errs:
         return None, errs
@@ -193,39 +214,48 @@ def build(pid, paras, R, y, sr):
     fade_in = 0.04
     pos = al[0]['start'] - fade_in                    # 当前这一段在原音里的起点
     pieces, t_new, times, comp = [], LEAD - fade_in, [], []     # t_new：当前这一段起点在成品里的时刻
+    kept, removed = [], []
     for k, x in enumerate(al):
         if k:
             gap = x['start'] - al[k - 1]['end']
-            if gap > MAXGAP:                            # 压缩：保留上一句后 1 秒、下一句前 1 秒
-                cut_a = al[k - 1]['end'] + KEEP
+            cut_a = al[k - 1]['end'] + KEEP
+            if gap > MAXGAP and src is not None and gap_speech(DB, THR, cut_a + XF / 2, x['start'] - KEEP - XF / 2) is not None:
+                kept.append((k + 1, round(gap, 2)))     # 原音模式（铁律 25 唯一例外）：停顿里有声音（没转写的笑声、口语）就整段保留，只删纯静音
+            elif gap > MAXGAP:                          # 压缩：保留上一句后 1 秒、下一句前 1 秒
                 pieces.append((pos, cut_a + XF / 2))
                 t_new += (cut_a + XF / 2 - pos) - XF           # 下一段与这一段重叠 XF（交叉淡化）
                 pos = x['start'] - KEEP - XF / 2
                 comp.append((k + 1, round(gap, 2)))
+                removed.append((cut_a + XF / 2, x['start'] - KEEP - XF / 2))
         st = t_new + (x['start'] - pos)
         en = t_new + (x['end'] - pos)
         times.append({'k': k + 1, 'para': para_of[k], 'start': round(st, 3), 'end': round(en, 3), 'text': sents[k], 'read': sents[k],
                       'parts': [[round(st + p0 - x['start'], 3), round(st + p1 - x['start'], 3)] for p0, p1 in x['parts']],
                       'orig': [round(x['start'], 3), round(x['end'], 3)], 'match': x['ratio']})
+    if src is not None:
+        errs += removed_check(pid, DB, THR, removed)       # 独立再核：删掉的每一段都是纯静音
+    if errs:
+        return None, errs
+    build.kept = kept
     end_orig = al[-1]['end'] + 0.1
     pieces.append((pos, end_orig))
     # 拼接
-    mono = y if y.ndim == 1 else y.mean(axis=1)
+    mono = (y if y.ndim == 1 else y.mean(axis=1)) if src is None else src
     xf = int(XF * sr)
-    out = np.zeros(int(round((LEAD - fade_in) * sr)), dtype=np.float64)
+    out = np.zeros((int(round((LEAD - fade_in) * sr)),) + mono.shape[1:], dtype=np.float64)
     for n, (p0, p1) in enumerate(pieces):
         seg = mono[int(round(p0 * sr)):int(round(p1 * sr))].astype(np.float64)
         if n == 0:
             f = int(fade_in * sr)
-            seg[:f] *= np.linspace(0, 1, f)
+            seg[:f] *= np.linspace(0, 1, f).reshape((-1,) + (1,) * (seg.ndim - 1))
         if n and xf:
-            ramp = np.linspace(0, 1, xf)
+            ramp = np.linspace(0, 1, xf).reshape((-1,) + (1,) * (seg.ndim - 1))
             out[-xf:] = out[-xf:] * (1 - ramp) + seg[:xf] * ramp
             seg = seg[xf:]
         out = np.concatenate([out, seg])
     f = int(0.1 * sr)
-    out[-f:] *= np.linspace(1, 0, f)
-    out = np.concatenate([out, np.zeros(int(TAIL * sr))])
+    out[-f:] *= np.linspace(1, 0, f).reshape((-1,) + (1,) * (out.ndim - 1))
+    out = np.concatenate([out, np.zeros((int(TAIL * sr),) + out.shape[1:])])
     return (out, times, comp), []
 
 
@@ -263,6 +293,8 @@ def cet6_setup(sid, mp3):
     if d.get('待核'):
         raise SystemExit(f'{sid}：定稿.json 还有待核')
     W = [list(w[:3]) for w in d['词']]
+    fx = json.loads((C4 / '原文订正.json').read_text('utf-8')).get(sid, [])
+    FIXOLD.update(t for f in fx for t in set(toks(f[0])) - set(toks(f[1])))
     i = 0
     while i < len(W):                   # 解析补进来的词没有时刻：在前一个词的终点与后一个词的起点之间均分（句子起止随后按能量细化）
         if W[i][1] is None:
@@ -280,6 +312,76 @@ def cet6_setup(sid, mp3):
     WIN[sid] = (0.0, len(y) / sr + 1)
     yy, mm, n = sid[:4], int(sid[4:6]), sid[-1]
     return R, y, sr, (f'{yy}年{mm}月大学英语六级 第{n}套', 'Part II Listening', int(yy), mm, int(n))      # passage 用英文斜体字体，只放英文（踩坑 64）
+
+
+ORIG_MAX_GAIN_DB, ORIG_MIN_SNR_DB, ORIG_MAX_SEC_DB = 0.05, 30.0, 1.0     # 与 专八/听力/tools/听力视频.orig_match 同一套门限（MP3 256k 实测：语音段信噪比约 60 dB；192k 时 LAME 低通让增益差到 −0.27 dB，不用）
+
+
+def seg_match(pairs, sr):
+    """语音段与原音逐样本比（铁律 25 精读例外：只许删纯静音，语音一点不动）：pairs = [(原音这一句, 成品这一句), …]，
+    整体增益差 ≤ 0.05 dB、残差信噪比 ≥ 30 dB、逐秒电平差 ≤ 1 dB（> −50 dBFS 的秒）；返回 (问题列表, 测量值)。"""
+    ref = np.concatenate([p for p, _ in pairs]); dec = np.concatenate([q for _, q in pairs])
+    if ref.shape != dec.shape:
+        return [f'语音段形状 {dec.shape} ≠ 原音 {ref.shape}'], {}
+    ref = ref.reshape(len(ref), -1); dec = dec.reshape(len(dec), -1)
+    e = (ref * ref).sum()
+    g = 20 * np.log10(max((dec * ref).sum() / e, 1e-12)); r = dec - ref
+    snr = 10 * np.log10(e / max((r * r).sum(), 1e-30))
+    n = len(ref) // sr
+    ra = np.sqrt((ref[:n * sr] ** 2).reshape(n, -1).mean(1)); rd = np.sqrt((dec[:n * sr] ** 2).reshape(n, -1).mean(1))
+    m = ra > 10 ** (-50 / 20)
+    sec = float(np.abs(20 * np.log10(np.maximum(rd[m], 1e-12) / ra[m])).max()) if m.any() else 0.0
+    bad = []
+    if abs(g) > ORIG_MAX_GAIN_DB: bad.append(f'语音段与原音整体音量差 {g:+.3f} dB')
+    if snr < ORIG_MIN_SNR_DB: bad.append(f'语音段与原音残差信噪比 {snr:.1f} dB')
+    if sec > ORIG_MAX_SEC_DB: bad.append(f'语音段与原音逐秒电平差最多 {sec:.2f} dB')
+    return bad, {'gain_db': round(float(g), 4), 'snr_db': round(float(snr), 1), 'sec_db': round(sec, 3)}
+
+
+def raw6(pid, paras, R, mono, y, sr, allt, rep):
+    """六级精读原音模式（总协调 2026-11-04 定，铁律 25 唯一例外）：不增益、不压缩、不限幅、不重采样、声道照原音；
+    句间超过 2 秒的纯静音删到 2 秒（删的段里有声音就停），垫片头 1.5 秒、片尾 2.2 秒数字静音；
+    编码后解码，逐句与原音逐样本比（seg_match），不过就停、不写 timings。"""
+    res, errs = build(pid, paras, R, mono, sr, src=y)
+    if errs:
+        return errs
+    out, times, comp = res
+    if np.abs(out).max() > 1.0:
+        return [f'{pid} 拼接后样本超过满幅（原音不许限幅）']
+    dst = C4 / 'audio' / '原音'
+    dst.mkdir(parents=True, exist_ok=True)
+    wav, mp3 = dst / f'{pid}.wav', dst / f'{pid}.mp3'
+    sf.write(wav, out.astype(np.float32), sr, subtype='FLOAT')
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(wav), '-c:a', 'libmp3lame', '-b:a', '256k', str(mp3)], check=True)      # 256k：语音段信噪比实测见对齐报告（门限 30 dB）
+    wav.unlink()
+    ch = y.shape[1] if y.ndim == 2 else 1
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(mp3), '-f', 'f32le', '-ac', str(ch), '-ar', str(sr), '-'], capture_output=True, check=True).stdout
+    dec = np.frombuffer(raw, dtype=np.float32).astype(np.float64).reshape(-1, ch)
+    src = y.reshape(len(y), -1)
+    pairs = []
+    for t in times:
+        n = int(round((t['orig'][1] - t['orig'][0]) * sr))
+        a0, b0 = int(round(t['orig'][0] * sr)), int(round(t['start'] * sr))
+        pairs.append((src[a0:a0 + n], dec[b0:b0 + n]))
+    probs, meas = seg_match(pairs, sr)
+    if probs:
+        mp3.unlink()
+        return [f'{pid} ' + p for p in probs]
+    meter = pyln.Meter(sr)
+    lufs = meter.integrated_loudness(dec)
+    peak = 20 * np.log10(np.abs(dec).max())
+    dur = len(dec) / sr
+    allt['cet4_male'][pid] = {'file': f'原音/{pid}.mp3', 'duration': round(dur, 3), 'source': '原音', 'mode': '原音不动',
+                              'sample_rate': sr, 'channels': ch, 'raw_match': meas,
+                              'loudness': {'integrated_lufs': round(lufs, 2), 'peak_dbfs': round(peak, 2), '说明': '原音不增益，只记录'},
+                              'compressed_gaps': comp, 'kept_gaps': build.kept, 'sentences': times}
+    rep += [f'## {pid}', f'- {len(times)} 句，成品 {dur:.2f} 秒（原音 {times[-1]["orig"][1] - times[0]["orig"][0]:.1f} 秒），{sr} Hz {ch} 声道（照原音）',
+            f'- 删到 2 秒的纯静音 {len(comp)} 处：' + '，'.join(f'第 {k} 句前 {g_}s' for k, g_ in comp),
+            f'- 停顿里有声音、整段保留的 {len(build.kept)} 处：' + '，'.join(f'第 {k} 句前 {g_}s' for k, g_ in build.kept),
+            f'- 原音不动：语音段与原音逐样本比 增益差 {meas["gain_db"]:+.4f} dB、信噪比 {meas["snr_db"]} dB、逐秒电平差 ≤ {meas["sec_db"]} dB；整体 {lufs:.2f} LUFS、峰值 {peak:.2f} dBFS（只记录）',
+            f'- 对上比例最低的 5 句：' + '，'.join(f'第 {t["k"]} 句 {t["match"]:.0%}' for t in sorted(times, key=lambda t: t['match'])[:5]), '']
+    print(f'{pid}: {len(times)} 句 {dur:.1f}s，删纯静音 {len(comp)} 处，原音比对 {meas}，{lufs:.2f} LUFS，峰值 {peak:.2f} dBFS')
+    return []
 
 
 def main():
@@ -323,6 +425,11 @@ def main():
     rep = ['# 原音音轨对齐报告（程序生成）', '']
     bad = []
     for pid in a.ids:
+        if a.cet6:
+            r6 = raw6(pid, T[pid], R, mono, y, sr, allt, rep)
+            if r6:
+                bad += r6
+            continue
         res, errs = build(pid, T[pid], R, mono, sr)
         if errs:
             bad += errs

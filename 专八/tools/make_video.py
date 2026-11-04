@@ -1582,6 +1582,27 @@ def loud_check(mp4):
     return ('整体响度与峰值（原音）', bool(abs(lufs + 16) <= 0.7 and peak <= -1.0), f'{lufs:.2f} LUFS，峰值 {peak:.2f} dBFS')
 
 
+def raw_track_check(mp4, mp3, times):
+    """原音不动（六级精读，铁律 25）：成品视频音轨与这一套的原音音轨（原音音轨.py 已逐句与考试原音比过）逐句逐样本比——
+    不许整体增益、限幅、重采样、改声道；门限同 原音音轨.seg_match（增益差 ≤ 0.05 dB、信噪比 ≥ 30 dB、逐秒电平差 ≤ 1 dB）。"""
+    import numpy as np
+    sys.path.insert(0, str(ROOT / '专八' / '听力' / '原文' / 'tools'))
+    import 原音音轨 as YY
+    pr = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=sample_rate,channels', '-of', 'csv=p=0', str(mp3)],
+                        capture_output=True, text=True, check=True).stdout.strip().split(',')
+    sr, ch = int(pr[0]), int(pr[1])
+    pv = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'a:0', '-show_entries', 'stream=sample_rate,channels', '-of', 'csv=p=0', str(mp4)],
+                        capture_output=True, text=True, check=True).stdout.strip().split(',')
+    if [int(pv[0]), int(pv[1])] != [sr, ch]:
+        return ('原音不动（与原音音轨逐样本比）', False, f'视频音轨 {pv[0]} Hz {pv[1]} 声道 ≠ 原音 {sr} Hz {ch} 声道（不许重采样、改声道）')
+    dec = lambda f: np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', str(f), '-vn', '-f', 'f32le', '-'], capture_output=True, check=True).stdout,  # noqa: E731
+                                  dtype=np.float32).astype(np.float64).reshape(-1, ch)
+    a, v = dec(mp3), dec(mp4)
+    pairs = [(a[int(round(t['start'] * sr)):int(round(t['end'] * sr))], v[int(round(t['start'] * sr)):int(round(t['end'] * sr))]) for t in times]
+    bad, meas = YY.seg_match(pairs, sr)
+    return ('原音不动（与原音音轨逐样本比）', not bad, '；'.join(bad) or str(meas))
+
+
 def frame_check(mp4, frames, pngs):
     """成品逐屏画面核查：每屏中间取一帧（4K），与这一屏的 4K 截图比较（编码有轻微损失，按平均差和 99.9% 分位差判断），确认每屏放的是对的画面。"""
     import numpy as np
@@ -1762,7 +1783,8 @@ def main():
     if sw and not RAW:                            # 原音：分屏换屏时刻由 switch_time 按识别定，句间换屏由 cut_check 查、每屏画面由 frame_check 查；固定停留 0.5 秒不适用
         res.append(switch_check(out / name, times, sw))
     if RAW:
-        res += [cut_check(cuts, owner[intro(p):], times, intro(p)), loud_check(out / name)]
+        res += [cut_check(cuts, owner[intro(p):], times, intro(p)),
+                raw_track_check(out / name, audio, times) if tm.get('mode') == '原音不动' else loud_check(out / name)]
     else:
         res.append(buzz_check(out / name, times))
     res.append(('结尾静音 ≥ 2 秒', dur - ends[-1] >= TAIL - 0.05, f'{dur - ends[-1]:.2f} 秒'))
