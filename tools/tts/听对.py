@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[2]
 MIN_WORDS = 4          # 原文（不算数字）不到 4 个词的短句（Exactly.）识别常常差一两个词，不判
 MIN_RATIO = 0.5        # 原文的词听到不到一半就报；放错地方的句子 0.0—0.1
 
+PAD = 0.3              # 时间窗前后各多听 0.3 秒：窗口正好卡在开口时识别器会丢前半句（201906-2 第 113 句只听到后半句）；多听到的邻句词不扣分
+
 _ASR = []
 
 
@@ -59,7 +61,7 @@ def problems(a16, windows, texts):
         a = [w for w in norm(s) if not re.search(r'\d', w)]       # 数字识别成英文读法（2018 → twenty eighteen），不算
         if len(a) < MIN_WORDS:
             continue
-        b = norm(heard(a16, t0, t1))
+        b = norm(heard(a16, max(0.0, t0 - PAD), t1 + PAD))
         r = sum(m.size for m in difflib.SequenceMatcher(None, a, b, autojunk=False).get_matching_blocks()) / len(a)      # 原文的词听到了几成
         if r < MIN_RATIO:
             out.append((k, round(r, 2), s[:60], ' '.join(b)[:60]))
