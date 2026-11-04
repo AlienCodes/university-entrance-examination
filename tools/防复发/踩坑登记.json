@@ -3953,6 +3953,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "黑名单只管已知的生硬词和翻译腔；整体自然不自然交审阅员（带埋雷）",
    "fix": ""
+  },
+  {
+   "id": "113",
+   "title": "tts-sovits.yml collect 把结果写成 runs/<任务>-sovits-<号>，合成完整性.task_of 按“任务-运行号”认不出任务清单，退回只查已有各次，补合成的次数被当成缺片",
+   "stages": [
+    "配音"
+   ],
+   "projects": [
+    "高考续写",
+    "高考语法填空"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/仓库检查.gram_out_problems（推 gram-tts-out 的工作流：结果目录必须是 D=\"runs/${T}-${{ github.run_number }}\"，T=$(basename 任务清单 .json)）",
+     "runs": "tools/防复发/仓库检查.py（每次提交 + 推送）",
+     "evidence": "现在的 tts-sovits.yml、tts-grammar-qwen.yml 0 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只管工作流里的写法；本机手动改名的目录（如样段 v3 的 -sovits-10 改名）不管",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

@@ -79,5 +79,20 @@ with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as out:
     case('临时目录删了、软链接断了 → 报（踩坑 47）', ck.check_symlinks(root), True, '断掉')
 case('现在仓库里的软链接 → 0', ck.check_symlinks(), False)
 
+# 踩坑 113：推 gram-tts-out 的结果目录名（合成完整性.task_of 按“任务-运行号”找任务清单）
+WF = Path(__file__).resolve().parents[3] / '.github/workflows'
+for wf in ('tts-sovits.yml', 'tts-grammar-qwen.yml'):
+    cur = (WF / wf).read_text('utf-8')
+    case(f'现在的 {wf} → 0', ck.gram_out_problems(wf, cur), False)
+cur = (WF / 'tts-sovits.yml').read_text('utf-8')
+NEW_D = 'D="runs/${T}-${{ github.run_number }}"'
+assert NEW_D in cur
+case('旧 tts-sovits.yml（35ac82f8 之前：runs/${T}-sovits-<号>）→ 报（踩坑 113）',
+     ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'D="runs/${T}-sovits-${{ github.run_number }}"')), True, '踩坑 113')
+case('目录名只有任务、没有运行号 → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'D="runs/${T}"')), True, '踩坑 113')
+case('任务名没去掉 .json → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace('.json)\n', ')\n', 1)), True, '踩坑 113')
+case('推 gram-tts-out 却找不到结果目录写法 → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'OUT=runs/x')), True, '踩坑 113')
+case('不推 gram-tts-out 的工作流 → 0', ck.gram_out_problems('new.yml', GOOD), False)
+
 print('仓库检查双向验证：' + ('全部通过' if not bad else f'{len(bad)} 处失败\n  ' + '\n  '.join(bad)))
 sys.exit(1 if bad else 0)

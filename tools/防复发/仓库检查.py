@@ -38,6 +38,21 @@ def pack_meta_problems(name, text):
     return [] if has else [f'{name}：用 cet6-chalk-pack.py 打包，但 render 的 meta 没写 audio_sha256（踩坑 109 / 86：打包会拒收带合格证的篇目）']
 
 
+def gram_out_problems(name, text):
+    """踩坑 113：推到 gram-tts-out 的合成工作流，结果目录名必须是 runs/<任务>-<运行号>（合成完整性.task_of 靠它找任务清单）。"""
+    if 'gram-tts-out' not in text:
+        return []
+    ds = re.findall(r'\bD="runs/([^"]*)"', text)
+    if not ds:
+        return [f'{name}：推 gram-tts-out，但没找到 D="runs/<任务>-<运行号>" 的结果目录写法（踩坑 113）']
+    errs = [f'{name}：结果目录 runs/{d} 不是“任务-运行号”（应为 runs/${{T}}-${{{{ github.run_number }}}}；'
+            f'别的写法让 合成完整性.task_of 认不出任务清单，补合成的次数被当成缺片，踩坑 113）'
+            for d in ds if d != '${T}-${{ github.run_number }}']
+    if not re.search(r'\bT=\$\(basename "[^"]+" \.json\)', text):
+        errs.append(f'{name}：结果目录的任务名 T 不是 $(basename "<任务清单>" .json)（踩坑 113）')
+    return errs
+
+
 # 踩坑 87：发布的包里有音频（MP3，或视频音轨）的工作流 → 要核对合格证的音频目录
 AUDIO_RELEASE = {
     'release-cet4-dictation.yml': ['四级/audio'], 'release-cet6-materials.yml': ['六级/audio'], 'release-dictation.yml': ['audio'],
@@ -114,6 +129,7 @@ def check_workflow(name, text):
                     break
     errs += audio_release_problems(name, y)
     errs += pack_meta_problems(name, text)
+    errs += gram_out_problems(name, text)
     hits = [(pat, why) for pat, why in BAN if re.search(pat, text)]
     if name not in LEGACY:
         errs += [f'{name}：用了 {pat}（{why}）' for pat, why in hits]
