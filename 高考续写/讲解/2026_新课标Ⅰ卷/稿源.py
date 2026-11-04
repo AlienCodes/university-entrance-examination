@@ -43,14 +43,14 @@ add('g05', 'rubric', '第四条，有效使用语句间的连接成分，结构�
 # ---------- 读原文 ----------
 add('a01', 'p1', '先读原文。第一段，交代人物和目标。‖艾米丽，二十五岁，十二月二十三日出发，要赶到多伦多，和男朋友一起过圣诞。‖这就是全文的目标，续写一定要给它一个结果。',
     mark=['Emily Sanders, a 25-year-old from Detroit, Michigan', 'reaching Toronto to meet her boyfriend for Christmas'], note='人物与目标：赶去多伦多，和男朋友过圣诞')
-add('a02', 'p1', '冲突从哪里来？‖有两处。第一，她听到了暴风雪预警，却没放在心上。第二，雪越下越大，她被引下高速，开上了一条陌生的路。‖一个大意，一个路不熟，麻烦就这么来了。',
-    mark=['she didn’t give it much thought', 'Emily was directed off the highway'], note='冲突起点：轻视暴风雪，被引下高速', gap=0.8)
+add('a02', 'p1', '冲突从哪里来？‖有两处。第一，她听到了暴风雪预警，却没放在心上。第二，雪越下越大，她被分流下了高速，开上了一条陌生的路。‖一个大意，一个路不熟，麻烦就这么来了。',
+    mark=['she didn’t give it much thought', 'Emily was directed off the highway'], note='冲突起点：没把暴风雪当回事，被分流下了高速', gap=0.8)
 add('a03', 'p2', '第二段，困境一步一步升级。‖大雪茫茫，几乎没法开车；天黑了，她开始慌；车又滑进了沟里。',
     mark=['The blinding whiteout made driving nearly impossible', 'panic set in', 'her car slid into a ditch'], note='困境升级：大雪封路，车滑进沟里')
 add('a04', 'p2', '手机没有信号，她只能裹着毯子，在车里过夜。‖我们把情感线理一理：从满怀希望，到慌乱，再到无助。',
     mark=['found no signal on her phone', 'She wrapped herself in a blanket'], note='情感线：希望 → 慌乱 → 无助', gap=0.8)
 add('a05', 'p3', '第三段，是全文的转机。‖丹尼尔和瑞秋夫妇在回家的路上，看到被困的车，停下来帮忙。‖注意这个短语：genuine warmth，真诚的温暖。‖全文的主题就落在这里：陌生人的善意。',
-    mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：陌生夫妇停车相助，真诚温暖')
+    mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：一对陌生夫妇停车帮忙，真诚温暖')
 add('a06', 'p3', '艾米丽又感激，又宽慰，接受了帮助。‖她的情感，从无助转向了温暖。', mark=['Grateful and relieved'], note='情感转折：感激、宽慰', gap=0.8)
 add('a07', 'p4', '第四段最关键，艾米丽说出了三个难题。‖第一，离目的地还有一百英里；第二，车完全困住了；第三，整个假期计划可能泡汤。‖续写的任务，就是把这三个难题一个一个解决掉。',
     mark=['she was about a hundred miles from her destination', 'her car was completely stuck', 'her entire holiday plan could be ruined'],
@@ -63,8 +63,8 @@ add('o01', 'open', '再看开头语。第一段的开头，夫妇俩建议她坐
     hi='o1', note='第一段：解决“怎么去多伦多”，还要安排好那辆车')
 add('o02', 'open', '第二段的开头，三天后，她回来取车。‖这说明，第一段一定交代了车的去处。‖这一段要写三件事：车怎么样了，她怎么道谢，最后点明主题。',
     hi='o2', note='第二段：回来取车 → 车的结果、道谢回报、点明主题', gap=0.8)
-add('l01', 'outline', '按这个思路，列一个提纲。‖第一段，分四步。第一，讲清方案：附近就有车站。第二，艾米丽担心车，丹尼尔答应拖车、保管。‖第三，夫妇送她到车站，告别时她忍不住落泪。第四，那天晚上，她赶到多伦多，赶上了圣诞。',
-    col=1, lines=['① 讲清方案：附近有车站', '② 担心车 → 丹尼尔答应拖车、保管', '③ 送站告别，忍不住落泪', '④ 那晚到多伦多，赶上圣诞'])
+add('l01', 'outline', '按这个思路，列一个提纲。‖第一段，分四步。第一，讲清方案：附近就有车站。第二，艾米丽担心车，丹尼尔答应拖车、保管。‖第三，夫妇送她到车站，告别时她强忍着眼泪。第四，那天晚上，她赶到多伦多，赶上了圣诞。',
+    col=1, lines=['① 讲清方案：附近有车站', '② 担心车 → 丹尼尔答应拖车、保管', '③ 送站告别，强忍眼泪', '④ 那晚到多伦多，赶上圣诞'])
 add('l02', 'outline', '第二段，也分四步。第一，写环境：雪停了，天晴了，和暴风雪形成对比。第二，车已经拖出来，雪也清好了，丹尼尔兑现了承诺。‖第三，艾米丽送上自己烤的饼干和一张卡片，回报善意。第四，点题：陌生人的善意，让这个圣诞节成了最温暖的一个。',
     col=2, lines=['① 环境对比：雪停天晴', '② 车已拖出、清好雪（兑现承诺）', '③ 回报：自制饼干和感谢卡', '④ 点题：陌生人让圣诞最温暖'], gap=0.8)
 add('e01', 'echo', '下面看伏笔和呼应。‖原文说，车完全困住了；续写就让丹尼尔找人，把车从沟里拖出来。', row=['her car was completely stuck', 'have it towed out of the ditch'])
@@ -86,7 +86,7 @@ def sent(why, pts, alt):
 
 
 sent(('第一句。先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要写这句？‖开头语只说了坐火车。方案必须落到实处，读者才会信。',
-      ['为什么：开头语只说“坐火车”，先把方案讲实（车站在哪、几点有车）']),
+      ['为什么：开头语只说“坐火车”，先把方案说具体（车站在哪、几点有车）']),
      [('they explained', ['③'], P3B, 'Rachel said they could take Emily to a nearby cafe',
        ['插入语 they explained：不写 They explained that…，句式更灵活', '插入语不算主干，句子主干仍是两个分句'],
        '我们来看得分点。‖得分点一，插入语 they explained。‖不写成 they explained that，句式就更灵活。这一点对应第三条：语法结构丰富。', ['they explained that']),
@@ -129,14 +129,14 @@ sent(('第四句，中文是：接着，夫妇俩开车送她到车站，陪她�
      (['saw her off at the station', 'stayed by her side until the train pulled in'],
       '可替换的说法有两个。‖一个是 saw her off at the station，送她上车。另一个是 stayed by her side until the train pulled in，一直陪在她身边，等到火车进站。'))
 
-sent(('第五句，中文是：隔着结霜的车窗，向他们挥手，艾米丽几乎忍不住泪水。‖告别，是这一段的情感高点，要写出她的感激。',
+sent(('第五句，中文是：隔着结了霜的车窗，向他们挥手，艾米丽强忍着眼泪。‖告别，是这一段的情感高点，要写出她的感激。',
       ['为什么：告别是情感高点——从无助、焦急到感激']),
      [('Waving to them', ['③', '①'], SEEING, 'Seeing no hope of immediate rescue',
-       ['现在分词作状语：动作和情感同时呈现', '原文同样的句式：Seeing no hope of immediate rescue'],
+       ['现在分词作状语：一个动作、一种心情，一句写完', '原文同样的句式：Seeing no hope of immediate rescue'],
        '得分点一：现在分词作状语，Waving to them。‖原文就有同样的结构：Seeing no hope of immediate rescue。‖续写模仿原文的句式，语言风格就统一了。对应第三条和第一条。', []),
       ('could hardly hold back her tears', ['②', '①'], GRATE, 'Grateful and relieved',
-       ['用动作写情感：不说“很感激”，写她忍不住流泪', '情感线：感激、宽慰 → 推到高点'],
-       '得分点二：could hardly hold back her tears。‖不直接说她很感激，而是写她忍不住流泪。这叫用动作写情感。‖原文写她 grateful and relieved，又感激又宽慰；这里，把感激推到了最高点。对应第二条和第一条。', [])],
+       ['用动作写情感：不说“很感激”，写她强忍着眼泪', '情感线：感激、宽慰 → 推到高点'],
+       '得分点二：could hardly hold back her tears。‖不直接说她很感激，而是写她强忍着眼泪。这叫用动作写情感。‖原文写她 grateful and relieved，又感激又宽慰；这里，把感激推到了最高点。对应第二条和第一条。', [])],
      (['As the train pulled away', 'Emily felt tears of gratitude welling up in her eyes'],
       '这句也可以这样写。‖开头用时间状语从句：As the train pulled away，火车开动的时候。‖后面写：Emily felt tears of gratitude welling up in her eyes，感激的泪水涌上了眼眶。'))
 
@@ -152,7 +152,7 @@ sent(('第六句，中文是：那天晚上，她在多伦多扑进了男朋友�
       '这句也可以换个写法。‖前半句：By nightfall, she had reached Toronto，天黑前，她已经到了多伦多。‖后半句：in time to spend Christmas with her boyfriend，赶上和男朋友一起过圣诞。'))
 
 sent(('第二段第一句，中文是：这时天已经放晴，那条曾经困住她的路，静静地躺在阳光里。‖先写环境。环境变了，心情也就变了。',
-      ['为什么：先写环境——从暴风雪到晴天，映出心情的变化']),
+      ['为什么：先写环境——从暴风雪到晴天，心情也跟着变了']),
      [('that had trapped her', ['③'], DITCH, 'a narrow stretch of road',
        ['定语从句 + 过去完成时：时间先后准确', '这条路就是原文那段窄路'],
        '得分点一：that had trapped her，定语从句加过去完成时。‖时间先后，交代准确。对应第三条。‖这条路，就是原文里那段窄路，读者一看就知道是同一个地方。', []),
@@ -173,7 +173,7 @@ sent(('第二段第二句，中文是：停在夫妇俩车库外面的，正是�
      (['Her car was waiting outside the garage', 'free of snow'],
       '这句也可以这样写。‖主干写成：Her car was waiting outside the garage，她的车，就停在车库外面等她。‖雪清干净了，也可以说：free of snow。'))
 
-sent(('第二段第三句，中文是：艾米丽递给他们一盒自己烤的饼干，和一张卡片，上面写着：谢谢你们挽救了我的假期。‖他们帮了她，她要回报这份善意。',
+sent(('第二段第三句，中文是：艾米丽递给他们一盒自己烤的饼干，和一张卡片，上面写着：谢谢你们救了我的假期。‖他们帮了她，她要回报这份善意。',
       ['为什么：回报善意——原文他们给她买了热巧克力']),
      [('homemade cookies', ['①', '②'], P4A, 'the couple bought Emily a hot chocolate',
        ['回报：原文他们给她买热巧克力，她带着亲手烤的饼干回来', '一来一往，善意有了回应'],
@@ -184,13 +184,13 @@ sent(('第二段第三句，中文是：艾米丽递给他们一盒自己烤的�
      (['a thank-you card', 'as a small token of her gratitude'],
       '这句也可以换个说法。‖卡片可以说 a thank-you card，感谢卡。还可以加一句：as a small token of her gratitude，聊表谢意。'))
 
-sent(('第二段第四句，中文是：我们只是做了任何人都会做的事，瑞秋说着，温暖地拥抱了她。‖瑞秋的回答轻描淡写，反而更显真诚。',
-      ['为什么：瑞秋的回答——轻描淡写，更显真诚']),
+sent(('第二段第四句，中文是：我们只是做了任何人都会做的事，瑞秋说着，温暖地拥抱了她。‖瑞秋的回答轻描淡写，反而显得更真诚。',
+      ['为什么：瑞秋的回答——轻描淡写，反而显得更真诚']),
      [('We just did what anyone would do', ['①'], P3B, 'With genuine warmth in her voice',
        ['人物一致：帮了大忙，却说是“任何人都会做的事”', '和原文声音里透着温暖的瑞秋是同一个人'],
        '得分点一：We just did what anyone would do。‖帮了这么大的忙，却说只是做了任何人都会做的事。谦和，真诚。‖这和原文里声音温暖的瑞秋，是同一个人。对应第一条。', []),
       ('giving her a warm hug', ['③'], P3C, 'Rachel asked if she was okay',
-       ['现在分词作伴随：说话和拥抱同时发生', '从原文问她好不好，到这里拥抱她，温暖一以贯之'],
+       ['现在分词作伴随：说话和拥抱同时发生', '从原文问她好不好，到这里拥抱她，温暖从头到尾没变'],
        '得分点二：giving her a warm hug，现在分词作伴随状语。‖说话和拥抱同时发生，一句话写了两个动作。‖从原文里问她好不好，到这里拥抱她，瑞秋的温暖从头到尾都没变。对应第三条。', [])],
      (['It was nothing', 'hugging her tightly'],
       '这句也可以这样写。‖说的话可以是：It was nothing，没什么。‖动作也可以写：hugging her tightly，紧紧抱住她。'))
