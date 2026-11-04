@@ -2,8 +2,8 @@ name: 讲解配音（GPT-SoVITS 专属模型，CPU）
 # 老师用声音分身 VoiceTwin 训练的 GPT-SoVITS v2ProPlus 模型（或底模）在免费 CPU 机器上合成讲解配音。
 # 任务清单与 Qwen 同一格式（候选 mode: gptsovits），输出同一结构，提交到分支 gram-tts-out 的 runs/<任务>-sovits-<运行号>/。
 # 触发：推送 高考语法填空/tts/当前任务_sovits.txt（底模任务），或 workflow_dispatch（老师的模型：model_url 填云盘链接）。
-# 隐私：云盘链接第一步就 ::add-mask::；模型、老师素材只在 runner 本地（$SOVITS_DIR），不上传 artifact、不进仓库；
-#       上传的只有合成出来的配音小段、meta、成品与报告（取模型.py 结束前核对 out/ 里没有模型和素材）。
+# 模型 zip 只在 fetch 任务里取一次（Range 远程读，不行再整包下载），传成 artifact sovits-model 给合成分片（老师 2026-11-04：模型包是公共资源，可以公开）；
+#       gram-tts-out 只收合成结果（collect 只下 wav-*；合成后 取模型.py --check-out 核对 out/ 里没有模型、参考录音）。
 on:
   push:
     branches: [claude/epic-edison-4gkcfb]
@@ -39,8 +39,37 @@ jobs:
           test -f "$T"
           echo "task=$T" >> "$GITHUB_OUTPUT"
           echo "shards=$(python3 高考语法填空/tools/sovits_synth.py --task "$T" --list)" >> "$GITHUB_OUTPUT"
-  synth:
+  fetch:
+    # 老师的模型 zip（20.8 GB）只在这里取一次：先试 HTTP Range 远程读（只读中央目录和选中的权重、参考，几百 MB），
+    # 不行就整包下到 /mnt 解出再删；取出的东西传成 artifact（老师同意公开），合成分片去取，不各自下载（Drive 配额、磁盘）。
     needs: plan
+    if: github.event.inputs.model_url != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: 高考语法填空/tools
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: 取老师的模型
+        env:
+          U: ${{ github.event.inputs.model_url }}
+        run: |
+          pip install -q gdown requests
+          sudo mkdir -p /mnt/dl /mnt/sovits && sudo chown "$USER" /mnt/dl /mnt/sovits
+          python 高考语法填空/tools/取模型.py --url-env U --dl /mnt/dl --out /mnt/sovits
+          rm -rf /mnt/dl
+          (cd /mnt/sovits && sha256sum weights/* refs/* && du -sh .)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sovits-model
+          path: /mnt/sovits
+          retention-days: 3
+  synth:
+    needs: [plan, fetch]
+    if: always() && needs.plan.result == 'success' && needs.fetch.result != 'failure' && needs.fetch.result != 'cancelled'
     runs-on: ubuntu-latest
     timeout-minutes: 240
     strategy:
@@ -49,11 +78,6 @@ jobs:
       matrix:
         shard: ${{ fromJson(needs.plan.outputs.shards) }}
     steps:
-      - name: 掩掉云盘链接
-        env:
-          U: ${{ github.event.inputs.model_url }}
-        run: |
-          if [ -n "$U" ]; then echo "::add-mask::$U"; fi
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
@@ -102,19 +126,17 @@ jobs:
           print('文本前端预检通过')
           EOF
           ls GPT_SoVITS/text/G2PWModel | head -5
-      - name: 取老师的模型（只在给了 model_url 时）
-        if: github.event.inputs.model_url != ''
-        env:
-          U: ${{ github.event.inputs.model_url }}
-          SOVITS_DIR: /mnt/sovits
-        run: |
-          sudo mkdir -p /mnt/dl /mnt/sovits && sudo chown "$USER" /mnt/dl /mnt/sovits
-          python 高考语法填空/tools/取模型.py --url-env U --dl /mnt/dl --out "$SOVITS_DIR"
+      - name: 取老师的模型（fetch 传来的 artifact）
+        if: needs.fetch.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: sovits-model
+          path: /home/runner/sovits
       - name: 合成
         env:
           MALLOC_ARENA_MAX: '2'
           GSV_ROOT: GPT-SoVITS
-          SOVITS_DIR: /mnt/sovits
+          SOVITS_DIR: /home/runner/sovits
         run: python 高考语法填空/tools/sovits_synth.py --task "${{ needs.plan.outputs.task }}" --shard ${{ matrix.shard }} --out out
       - name: 隐私核对（out/ 里不许有模型和素材）
         if: always()
@@ -133,6 +155,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: arts
+          pattern: wav-*          # 只要合成结果；模型 artifact 不进 gram-tts-out
       - name: 提交到 gram-tts-out
         run: |
           T=$(basename "${{ needs.plan.outputs.task }}" .json)

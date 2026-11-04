@@ -106,11 +106,95 @@ def take(zpath, out):
           f"共 {sz / 2**20:.0f} MB；语速 {res['speed']}", flush=True)
 
 
+class RangeFile:
+    """按 HTTP Range 远程读的只读文件对象（zipfile 只读中央目录和要的成员，不下整包）。块缓存 8 MB。"""
+    BLOCK = 8 << 20
+
+    def __init__(self, url, session):
+        self.url, self.s, self.pos, self.cache = url, session, 0, {}
+        r = self.s.get(url, headers={'Range': 'bytes=0-0'}, stream=True, timeout=60)
+        if r.status_code != 206 or 'Content-Range' not in r.headers:
+            raise OSError(f'不支持 Range（HTTP {r.status_code}）')
+        self.size = int(r.headers['Content-Range'].split('/')[-1])
+        r.close()
+        self.fetched = 0
+
+    def seekable(self):
+        return True
+
+    def readable(self):
+        return True
+
+    def tell(self):
+        return self.pos
+
+    def seek(self, off, whence=0):
+        self.pos = off if whence == 0 else self.pos + off if whence == 1 else self.size + off
+        return self.pos
+
+    def _block(self, k):
+        if k not in self.cache:
+            a = k * self.BLOCK
+            b = min(self.size, a + self.BLOCK) - 1
+            for t in range(5):
+                try:
+                    r = self.s.get(self.url, headers={'Range': f'bytes={a}-{b}'}, timeout=120)
+                    if r.status_code == 206 and len(r.content) == b - a + 1:
+                        break
+                except Exception:   # noqa: BLE001  网络抖动重试
+                    pass
+            else:
+                raise OSError(f'Range 读失败 {a}-{b}')
+            if len(self.cache) > 64:
+                self.cache.pop(next(iter(self.cache)))
+            self.cache[k] = r.content
+            self.fetched += len(r.content)
+        return self.cache[k]
+
+    def read(self, n=-1):
+        if n is None or n < 0:
+            n = self.size - self.pos
+        n = max(0, min(n, self.size - self.pos))
+        out = bytearray()
+        while n > 0:
+            k, o = divmod(self.pos, self.BLOCK)
+            blk = self._block(k)[o:o + n]
+            out += blk
+            self.pos += len(blk)
+            n -= len(blk)
+        return bytes(out)
+
+    def close(self):
+        pass
+
+
+def file_id(url):
+    import re
+    m = re.search(r'/d/([A-Za-z0-9_-]+)', url) or re.search(r'[?&]id=([A-Za-z0-9_-]+)', url)
+    if not m:
+        raise SystemExit('认不出云盘文件 ID')
+    return m.group(1)
+
+
+def open_remote(url):
+    """先试 Range 远程读（只取需要的几百 MB）；不行返回 None，退回整包下载。"""
+    import requests
+    s = requests.Session()
+    u = f'https://drive.usercontent.google.com/download?id={file_id(url)}&export=download&confirm=t'
+    try:
+        f = RangeFile(u, s)
+    except OSError as e:
+        print('Range 远程读不可用：', e, flush=True)
+        return None
+    print(f'Range 远程读可用，zip {f.size / 2**30:.2f} GB', flush=True)
+    return f
+
+
 def download(url, dl):
     import gdown
     dl.mkdir(parents=True, exist_ok=True)
     p = dl / 'model.zip'
-    r = gdown.download(url, str(p), quiet=True, fuzzy=True)   # 处理云盘大文件的确认页；quiet 不打印链接
+    r = gdown.download(url, str(p), quiet=True, fuzzy=True)   # 处理云盘大文件的确认页
     if not r or not p.exists():
         raise SystemExit('云盘下载失败（链接权限要设成“知道链接的任何人”）')
     print(f'下载完成 {p.stat().st_size / 2**30:.2f} GB', flush=True)
@@ -149,13 +233,21 @@ def main():
         sys.exit(check_out(a.check_out) if Path(a.check_out).exists() else 0)
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    zp = Path(a.zip) if a.zip else download(os.environ[a.url_env], Path(a.dl))
+    if a.zip:
+        take(a.zip, out)
+        return
+    url = os.environ[a.url_env]
+    rf = open_remote(url)
+    if rf is not None:
+        take(rf, out)
+        print(f'Range 共读 {rf.fetched / 2**20:.0f} MB', flush=True)
+        return
+    zp = download(url, Path(a.dl))
     try:
         take(zp, out)
     finally:
-        if not a.zip:
-            zp.unlink(missing_ok=True)            # runner 磁盘有限：取完立刻删
-            print('zip 已删除', flush=True)
+        zp.unlink(missing_ok=True)            # runner 磁盘有限：取完立刻删
+        print('zip 已删除', flush=True)
 
 
 if __name__ == '__main__':
