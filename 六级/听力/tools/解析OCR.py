@@ -15,7 +15,12 @@ def sh(*a):
 n = int(re.search(r'Pages:\s+(\d+)', sh('pdfinfo', str(pdf))).group(1))
 layer = sh('pdftotext', '-layout', str(pdf), '-')
 txt = {}
-mode = 'text' if len(re.findall(r'[A-Za-z]{3,}', layer)) > 3000 else 'ocr'
+# 文字层要够干净才用：英文词里词典真词的比例 ≥ 0.95（202106、202606 的文字层本身是很差的机器识别：reaUy、rnight、ωωk；201912 是乱码）
+DICT = set(l.strip().lower() for l in open('/usr/share/dict/american-english', encoding='utf-8', errors='ignore'))
+ws = re.findall(r"[A-Za-z]{3,}", layer)
+good = sum(w.lower() in DICT or w.lower().rstrip('s') in DICT for w in ws) / max(len(ws), 1)
+mode = 'text' if len(ws) > 3000 and good >= 0.95 else 'ocr'
+print(pdf.name, f'文字层真词比例 {good:.3f}', mode)
 with tempfile.TemporaryDirectory() as td:
     td = Path(td)
     for p in range(1, n + 1):

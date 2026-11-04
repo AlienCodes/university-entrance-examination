@@ -57,7 +57,7 @@ def ocr_words(txt):
             continue
         line = re.sub(r'[\u4e00-\u9fff，。？！：；、“”（）]+', ' ', line)
         line = re.sub(r'\[\d+\]|^\s*[WM]\s*[:：]', ' ', line)
-        ws += [w for w in line.split() if re.search(r'[A-Za-z0-9]', w) and not re.fullmatch(r'[A-D]\)?|[A-D]\)\S*|\d+\.', w)]   # 详解里的选项标记、题号
+        ws += [w for w in line.split() if re.search(r'[A-Za-z0-9]', w) and not re.fullmatch(r'[A-D]\)?|[A-D]\)\S*|\d+\.|\(\d+(-\w+)?\)\S*|[IVXJ]{1,4}|\[\d+\]?', w)]   # 详解里的选项标记、题号
     return ws
 
 
