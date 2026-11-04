@@ -16,11 +16,13 @@ def wf_problems(s):
     if 'cet6-listening-publish.py plan' not in s: out.append('发布没走 cet6-listening-publish.py plan')
     if 'cet6-listening-publish.py verify' not in s: out.append('下载核对没走 cet6-listening-publish.py verify')
     if OLD in s or "/*.mp4 --clobber" in s: out.append('直接上传 meta 里的中文 mp4 名')
+    if 'delete-asset' in s: out.append('发布会删已上传的资产（老师：不删）')
+    if 'cet6-listening-publish.py pack' not in s or 'cet6-listening-publish.py checkzip' not in s: out.append('没有打中文名包、下载回来核')
     return out
 
 
 s = (R / '.github/workflows/render-cet6-listening.yml').read_text('utf-8')
-for name, txt, want in [('工作流 现在', s, False), ('放回旧写法', s.replace('cet6-listening-publish.py plan', 'x') + '\n' + OLD, True)]:
+for name, txt, want in [('工作流 现在', s, False), ('放回旧写法', s.replace('cet6-listening-publish.py plan', 'x') + '\n' + OLD, True), ('拿掉中文名包的核对', s.replace('cet6-listening-publish.py checkzip', 'x'), True), ('放回删资产', s + '\ngh release delete-asset $TAG x -y', True)]:
     got = wf_problems(txt); ok = bool(got) == want
     print(('✅' if ok else '❌'), name, '→', got or '0 处')
     if not ok: bad.append(name)

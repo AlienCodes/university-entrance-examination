@@ -4247,7 +4247,7 @@
    ],
    "guards": [
     {
-     "where": ".github/cet6-listening-publish.py：资产一律 ASCII 名 cet6-listening-<套>.mp4（name_problems），中文文件名写进资产 label，附 cet6-listening-filenames.txt，Release 说明写中文名 ↔ 资产名对照表；已在且 digest 对上的不重传（todo）；核对按资产名 + digest（verify_digest：digest = meta 的 mp4_sha256、大小、标签、个数），另真下载抽查一套",
+     "where": ".github/cet6-listening-publish.py：资产一律 ASCII 名 cet6-listening-<套>.mp4（name_problems），中文文件名写进资产 label，附 cet6-listening-filenames.txt，Release 说明写中文名 ↔ 资产名对照表；已在且 digest 对上的不重传（todo）；核对按资产名 + digest（verify_digest：digest = meta 的 mp4_sha256、大小、标签、个数），另真下载抽查一套；中文文件名包 pack（Python zipfile 不压缩、UTF-8 标记、固定时间戳，2 个各 15 套 < 2 GB）+ 下载回来 checkzip（中文名、UTF-8、不压缩、CRC、sha256 = meta）；规则：发布环节的问题只改发布，核过的视频不重做、已上传资产不删（老师 2026-11-04）",
      "runs": "render-cet6-listening.yml publish",
      "evidence": "cet6-listening-practice：31 个资产，digest 30/30 = meta sha256"
     }
