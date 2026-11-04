@@ -74,12 +74,14 @@ def main():
     ap.add_argument('--参考', nargs='*', default=[])
     ap.add_argument('--mp3', required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--gap-max', type=float, default=0.32, help='段间停顿上限（讲解音频.GAP_MAX；Qwen 第 6 轮同为 0.32，本人句间停顿中位 0.31）')
     a = ap.parse_args()
     import soundfile as sf
     import gaokao_tts as G
     import 讲解音频 as J
     from 像不像 import Spk
     J.SPLIT = 'mark'
+    J.GAP_MAX = a.gap_max
     segs = json.loads(Path(a.稿).read_text('utf-8'))['segments']
     run = Path(a.run)
     takes = sorted(run.glob('*/take*'))
@@ -137,6 +139,24 @@ def main():
                          st=12 * np.log2(f0 / real_f0) if f0 else None, st106=12 * np.log2(f0 / F0_TEACHER) if f0 else None,
                          sim=sim, en_sim=en_sim, err=E / max(N, 1), wer=Ew / max(Nw, 1) if Nw else None))
         print(rows[-1], flush=True)
+    # 每个候选每句挑最好的一次（识别错数 + 英文词错数最少，同分取前一次），拼成一份再走一遍完整处理链（另出合格证）
+    import tempfile
+    best_rows = []
+    for cid in sorted({r['cid'] for r in rows}):
+        tmp = Path(tempfile.mkdtemp())
+        pick = {}
+        for u in J.expand(segs):
+            sc, tk = min((e + (w or 0), t) for c, t, uid, e, n, h, w in detail if c == cid and uid == u['id'])
+            pick[u['id']] = tk
+            shutil.copy(run / cid / tk / f"{u['id']}.wav", tmp / f"{u['id']}.wav")
+        out = mp3d / f'{run.name}_{cid}_每句最好.mp3'
+        try:
+            J.render(segs, tmp, out)
+            chk = '全部通过'
+        except RuntimeError as e:
+            chk, out = str(e)[:160], None
+        best_rows.append((cid, chk, out.name if out else None, pick))
+        print(cid, '每句最好', chk, pick, flush=True)
     L = ['# 声音对比（GPT-SoVITS 专属模型）', '', f'运行：`{run.name}`；{len(segs)} 句（{" ".join(only)}）；真声：{Path(a.录音).name}',
          f'真声对照：相似度（真声两段之间）{real_sim:.3f}；真声浊音基频中位数 {real_f0:.1f} Hz（协调会话给的 {F0_TEACHER} Hz）', '',
          '| 候选 | 次 | 处理链与全部检查 | 基频 Hz | 与真声差（半音） | 与 106.2 Hz 差 | 相似度 | 英文部分相似度 | 识别错误率（SenseVoice） | 英文词错率（parakeet） |',
@@ -145,11 +165,13 @@ def main():
     for r in rows:
         L.append(f"| {r['cid']} | {r['take']} | {r['chk']} | {fm(r['f0'], '{:.1f}')} | {fm(r['st'], '{:+.2f}')} | {fm(r['st106'], '{:+.2f}')} | "
                  f"{fm(r['sim'])} | {fm(r['en_sim'])} | {fm(r['err'])} | {fm(r['wer'])} |")
+    L += ['', '## 每个候选每句最好的一次拼成一份', '', '| 候选 | 处理链与全部检查 | MP3 | 每句用的是哪一次 |', '|---|---|---|---|']
+    L += [f"| {c} | {k} | {m or '—'} | {' '.join(f'{u}:{t[4:]}' for u, t in p.items())} |" for c, k, m, p in best_rows]
     L += ['', '## 每个小段的识别', '', '| 候选 | 次 | 小段 | 错 / 字词数 | SenseVoice 识别 | parakeet 错词 |', '|---|---|---|---|---|---|']
     L += [f'| {c} | {t} | {u} | {e}/{n} | {h} | {"—" if w is None else w} |' for c, t, u, e, n, h, w in detail]
     Path(a.out).write_text('\n'.join(L) + '\n', 'utf-8')
     for p in mp3d.glob(f'{run.name}_*.mp3'):        # 没过检查的不留（render 不写文件；保险起见按表再核一遍）
-        if p.name not in {r['mp3'] for r in rows}:
+        if p.name not in {r['mp3'] for r in rows} | {b[2] for b in best_rows}:
             p.unlink()
     shutil.copy(a.out, mp3d / f'{run.name}_报告.md')
 
