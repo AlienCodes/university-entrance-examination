@@ -1263,7 +1263,7 @@ TITLE_JS = """() => { const h = document.querySelector('.ttl h1'), card = docume
   for (let n; (n = w.nextNode());) { const i = n.data.indexOf('：'); if (i >= 0 && i < n.data.length - 1) {
     const br = document.createElement('br'); br.className = 'tb'; n.splitText(i + 1).before(br); return 1; } }
   return -1; }"""
-set_style('C')      # 默认画面 C（书卷水墨）
+set_style(PJ['look'] if os.environ.get('DZB_PROJECT') and PJ.get('look') else 'C')      # 默认画面 C（书卷水墨）；DZB_PROJECT 指定了项目就用项目自己的画面（split_check、分屏手定助手的字号下限与成片一致：六级听力 画面 3 下限 64px，原来误用 C 的 79px）
 
 
 def screens(p):
