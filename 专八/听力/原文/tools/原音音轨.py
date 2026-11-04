@@ -11,6 +11,11 @@
 2. 句子起止用能量细化（10 毫秒帧，噪声底 + 15 dB）：起点往前、终点往后找到真正的静音，不越过相邻句（踩坑 77：识别的时刻比实际晚几十毫秒）。
 3. 句与句之间的静音 > 2 秒的，压到 2 秒（保留前 1 秒、后 1 秒，在静音里 20 毫秒交叉淡化）；≤ 2 秒的照原样。句子里面的声音一点不动。
 4. 片头 1.5 秒数字静音（第一句 40 毫秒淡入），读完后 0.1 秒淡出、再 2.2 秒数字静音；整体增益到 −16 LUFS，峰值 ≤ −1 dBFS（超过就停，不压缩、不限幅）。
+
+六级听力原文精读（2026-11-04）也用本程序（原音的条目只许一个程序写，踩坑 87）：
+    /opt/ttsenv/bin/python 专八/听力/原文/tools/原音音轨.py --cet6 202512-1 --mp3 /home/user/wav/cet6-202512-1.mp3
+文字 六级/听力/精读/原文.txt 的 ## <套>（切句.py 从练习会话的 定稿.json 生成），“识别词”= 定稿.json 的逐词时刻（同一份文字，几乎全对上）；
+原音 sha256 必须在 六级/听力/原始材料/SHA256SUMS；限幅上限 −2.5 dBFS（六级练习视频实测 AAC 编码后峰值反弹约 0.9 dB）；输出 六级/听力/精读/audio/。
 """
 import argparse
 import difflib
@@ -40,6 +45,8 @@ OVERRIDE = {('L1', 'This is the end of Section A, Mini-Lecture.'): (739.75, 742.
 def read_text():
     out, cur = {}, None
     for line in (C4 / '原文.txt').read_text('utf-8').split('\n'):
+        if line.startswith('# '):
+            continue
         if line.startswith('## '):
             cur = line[3:].strip()
             out[cur] = [[]]
@@ -238,29 +245,80 @@ def limit(x, sr):
     return y, {'max_db': round(float(-20 * np.log10(env.min())), 2), 'frac': round(float((env < 0.999).mean()), 5)}
 
 
+def cet6_setup(sid, mp3):
+    """六级模式：换成 六级/听力/精读 的目录、窗口、“识别词”（定稿逐词时刻）、限幅上限；返回 (R, y, sr, META 一条)。"""
+    global C4, CEIL
+    import hashlib
+    C4 = ROOT / '六级' / '听力' / '精读'
+    CEIL = 10 ** (-2.5 / 20)
+    h = hashlib.sha256(Path(mp3).read_bytes()).hexdigest()
+    sums = (ROOT / '六级' / '听力' / '原始材料' / 'SHA256SUMS').read_text('utf-8')
+    if f'{h}  cet6-{sid}.mp3' not in sums:
+        raise SystemExit(f'原音 sha256 不在 SHA256SUMS（cet6-{sid}.mp3）：{h}')
+    wav = Path('/tmp') / f'cet6raw-{sid}.wav'
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(mp3), str(wav)], check=True)
+    y, sr = sf.read(wav)
+    wav.unlink()
+    d = json.loads((ROOT / '六级' / '听力' / sid / '定稿.json').read_text('utf-8'))
+    if d.get('待核'):
+        raise SystemExit(f'{sid}：定稿.json 还有待核')
+    W = [list(w[:3]) for w in d['词']]
+    i = 0
+    while i < len(W):                   # 解析补进来的词没有时刻：在前一个词的终点与后一个词的起点之间均分（句子起止随后按能量细化）
+        if W[i][1] is None:
+            j = i
+            while j < len(W) and W[j][1] is None:
+                j += 1
+            t0 = W[i - 1][2] if i else 0.0
+            t1 = W[j][1] if j < len(W) else t0 + 0.4 * (j - i)
+            step = (t1 - t0) / (j - i)
+            for q in range(i, j):
+                W[q][1], W[q][2] = round(t0 + step * (q - i), 3), round(t0 + step * (q - i + 1), 3)
+            i = j
+        i += 1
+    R = [[t, w[1], w[2]] for w in W for t in toks(w[0])]
+    WIN[sid] = (0.0, len(y) / sr + 1)
+    yy, mm, n = sid[:4], int(sid[4:6]), sid[-1]
+    return R, y, sr, (f'{yy}年{mm}月大学英语六级 第{n}套', 'Part II Listening', int(yy), mm, int(n))      # passage 用英文斜体字体，只放英文（踩坑 64）
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('ids', nargs='*', default=list(WIN))
     ap.add_argument('--wav', default='/home/user/wav/tem8-2025.wav')
+    ap.add_argument('--cet6', help='六级听力原文精读的一套，如 202512-1')
+    ap.add_argument('--mp3', help='六级模式：这一套的原音 mp3')
     a = ap.parse_args()
     import hashlib
-    h = hashlib.sha256(Path(a.wav).read_bytes()).hexdigest()
-    if h != 'e7973102a3bba6358bc97e4a32af7efb20e1a871cbc8921fb8b325444bb7e1c7':
-        raise SystemExit(f'原音 sha256 不对：{h}')
-    y, sr = sf.read(a.wav)
+    if a.cet6:
+        R, y, sr, M6 = cet6_setup(a.cet6, a.mp3)
+        a.ids = [a.cet6]
+    else:
+        h = hashlib.sha256(Path(a.wav).read_bytes()).hexdigest()
+        if h != 'e7973102a3bba6358bc97e4a32af7efb20e1a871cbc8921fb8b325444bb7e1c7':
+            raise SystemExit(f'原音 sha256 不对：{h}')
+        y, sr = sf.read(a.wav)
     if y.ndim == 2:
         d = np.abs(y[:, 0] - y[:, 1]).max()
         print(f'左右声道最大差 {d:.4f}（取平均成单声道）')
     mono = y.mean(axis=1) if y.ndim == 2 else y
-    R = json.loads((SRC / '识别.json').read_text('utf-8'))
+    if not a.cet6:
+        R = json.loads((SRC / '识别.json').read_text('utf-8'))
     T = read_text()
     # 句子定稿（ann_lib / build_vocab 读 阅读/sents.json，ZB_ROOT=专八/听力/原文）：每次从 原文.txt 重写，保证与音轨同一份文字
     META = {'L1': ('Section A', 'A'), 'L2': ('Section B Part One', 'B'), 'L3': ('Section B Part Two', 'B')}
     (C4 / '阅读').mkdir(exist_ok=True)
-    (C4 / '阅读' / 'sents.json').write_text(json.dumps(
-        [{'id': k, 'year': 2025, 'month': 3, 'set': 1, 'passage': META[k][0], 'paper': '2025年专八听力', 'part': META[k][1], 'words': 0, 'sents': v}
-         for k, v in T.items()], ensure_ascii=False, indent=1), 'utf-8')
+    if a.cet6:              # 六级：sents.json 里每套一条，只换这一套
+        sj = C4 / '阅读' / 'sents.json'
+        rows = [r for r in (json.loads(sj.read_text('utf-8')) if sj.exists() else []) if r['id'] != a.cet6]
+        rows.append({'id': a.cet6, 'year': M6[2], 'month': M6[3], 'set': M6[4], 'passage': M6[1], 'paper': M6[0], 'part': 'L', 'words': 0, 'sents': T[a.cet6]})
+        sj.write_text(json.dumps(sorted(rows, key=lambda r: r['id']), ensure_ascii=False, indent=1), 'utf-8')
+    else:
+        (C4 / '阅读' / 'sents.json').write_text(json.dumps(
+            [{'id': k, 'year': 2025, 'month': 3, 'set': 1, 'passage': META[k][0], 'paper': '2025年专八听力', 'part': META[k][1], 'words': 0, 'sents': v}
+             for k, v in T.items()], ensure_ascii=False, indent=1), 'utf-8')
     tf = C4 / 'audio' / 'timings.json'
+    tf.parent.mkdir(parents=True, exist_ok=True)
     allt = json.loads(tf.read_text('utf-8')) if tf.exists() else {'cet4_male': {}}
     rep = ['# 原音音轨对齐报告（程序生成）', '']
     bad = []
@@ -280,7 +338,7 @@ def main():
         out, gr2 = limit(out, sr)
         peak = 20 * np.log10(np.abs(out).max())
         lufs3 = meter.integrated_loudness(out)
-        if peak > -1.0 or abs(lufs3 + 16) > 0.3:
+        if peak > 20 * np.log10(CEIL) + 0.5 or abs(lufs3 + 16) > 0.3:
             bad.append(f'{pid} 响度 {lufs3:.2f} LUFS、峰值 {peak:.2f} dBFS 不合格')
             continue
         dev = []
@@ -309,7 +367,7 @@ def main():
         print('停止：\n  ' + '\n  '.join(bad))
         sys.exit(1)
     tf.write_text(json.dumps(allt, ensure_ascii=False, indent=1), 'utf-8')
-    (C4 / 'audio' / '对齐报告.md').write_text('\n'.join(rep), 'utf-8')
+    (C4 / 'audio' / (f'对齐报告_{a.cet6}.md' if a.cet6 else '对齐报告.md')).write_text('\n'.join(rep), 'utf-8')
 
 
 if __name__ == '__main__':

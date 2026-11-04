@@ -107,6 +107,12 @@ PROJECTS = {
              'variants': {'水墨': {'look': 'C', 'stills': '大字版水墨/截图/{pid}', 'work': '大字版水墨', 'videos': '最终视频_水墨',
                                    'split': '分屏_水墨.json', 'css': '样式/C_水墨大字.css', 'font_css': 'fonts/eb-garamond-bold.css',
                                    'zh_scale': 1.1}}},
+    # 六级听力原文精读（用户 2026-11-04：30 套听力录音原文逐句精读，画面用六级教室黑板，声音用原音、长等待压到 2 秒——做法同 专八听力）：
+    # 篇目 = 套（202512-1 …），目录 六级/听力/精读/；文字 原文.txt 由 tools/切句.py 从练习会话的 定稿.json 生成，音轨由 专八/听力/原文/tools/原音音轨.py --cet6 写；
+    # paper “2025年12月大学英语六级 第1套”，passage “Part II Listening”（斜体英文字体只放英文，踩坑 64）
+    '六级听力': {'dir': '六级/听力/精读', 'audio': '原音', 'tag': 'CET-6 · LISTENING · PART II', 'top': 'CET-6 LISTENING', 'exam': '', 'look': '3',
+             'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'videos': '最终视频',
+             'name_re': r'20\d\d年(6|9|12)月大学英语六级 第[123]套 Part II Listening \S.*\.mp4', 'tmp': 'cet6lvideo_'},
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 

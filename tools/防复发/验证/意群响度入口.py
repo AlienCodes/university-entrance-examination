@@ -326,7 +326,7 @@ def load_cac():
 
 
 def product_check(root=R, ci=None):
-    """按产物查：所有 audio 目录下的 timings.json 每一条都合格（check-audio-cert 的同一套），原音条目只许在专八听力原文。"""
+    """按产物查：所有 audio 目录下的 timings.json 每一条都合格（check-audio-cert 的同一套），原音条目只许在 CERT.RAW_DIRS（专八听力原文、六级听力精读）。"""
     ci = CI if ci is None else ci
     cac = load_cac()
     errs = []
@@ -339,8 +339,8 @@ def product_check(root=R, ci=None):
         errs += cac.check_dir(d, ci)
         rel = d.relative_to(root).as_posix()
         for v, pid, tm in CERT.timings_entries(json.loads(tp.read_text('utf-8'))):
-            if tm.get('source') == '原音' and rel != '专八/听力/原文/audio':
-                errs.append(f'{rel}/{v}/{pid}：只有专八听力原文的 timings 能有 source=原音')
+            if tm.get('source') == '原音' and rel not in CERT.RAW_DIRS:
+                errs.append(f'{rel}/{v}/{pid}：只有 {"、".join(CERT.RAW_DIRS)} 的 timings 能有 source=原音')
     return errs, len(tps)
 
 
