@@ -4208,6 +4208,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "",
    "fix": ""
+  },
+  {
+   "id": "122",
+   "title": "六级听力练习视频一小时里 GitHub 触发 5 次、每次只暴露一个新问题（mp3 时长、ubuntu-latest、稀疏检出、自检雷、答案一览、限幅关口、单声道）：本机样片只跑部分阶段（前 4 题、只到截图），编码前的音频一步从没在本机跑过；工作流每套一台机器各自失败，问题一台一台冒出来",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "听力视频.py audio（专八引擎 audio_check：编码前整条音频处理 + 只编音频 + 原音逐样本比对，不截图不编码视频）；工作流 render-cet6-listening.yml 第一道关 precheck：每套 timeline → layout → 自检 → audio，任何一套不过 render 不开工",
+     "runs": "precheck（每次触发）；本机预演同一组命令",
+     "evidence": "本机 30 套预检 + 截图全检 0 处后才触发"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/听力预检.py",
+     "expect": "exit 0",
+     "needs": "ttsenv"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "截图（stills）不在预检里（太慢），只在本机预演和 render 里跑",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

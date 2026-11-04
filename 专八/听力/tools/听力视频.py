@@ -551,6 +551,26 @@ def audio_track(wav):
     return L, total, T, nfr, sr
 
 
+def audio_check(wav):
+    """只查音频（预检，踩坑 122）：编码前的整条音频处理（audio_track：插停顿、时长、响度 / 限幅关口或原音模式）→
+    按成品同样的参数只编音频（AAC 192k）→ 解码 → 原音模式逐样本比对、声画时长；有一处就停。几十秒一套，不截图、不编码视频"""
+    import numpy as np
+    L, total, T, nfr, sr = audio_track(wav)
+    w, m4a = OUT / 'audio.wav', OUT / 'audio_check.m4a'
+    cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(w), '-c:a', 'aac', '-b:a', '192k'] + ([] if ORIGINAL else ['-ar', '48000', '-af', 'aresample=48000']) + [str(m4a)]
+    subprocess.run(cmd, check=True)
+    ch, rate = (ORIG_REF.shape[1], ORIG_SR) if ORIGINAL else (2, 48000)
+    pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(m4a), '-f', 'f32le', '-ac', str(ch), '-ar', str(rate), '-'], capture_output=True, check=True).stdout
+    y = np.frombuffer(pcm, dtype=np.float32).reshape(-1, ch).astype(np.float64)
+    bad = []
+    if abs(len(y) / rate - nfr / FPS) > 0.05: bad.append(f'音轨时长 {len(y) / rate:.3f} ≠ 画面 {nfr / FPS:.3f}')
+    if ORIGINAL:
+        k = int(round(LEAD * rate)); bad += orig_match(ORIG_REF, y[k:k + len(ORIG_REF)], rate)
+    w.unlink(); m4a.unlink()
+    if bad: die(f'音频检查不通过：{bad}')
+    print('音频检查 0 处', {'采样率': sr, '声道': ch, '时长秒': round(len(y) / rate, 3)})
+
+
 def video(wav, fast=False):
     import numpy as np
     L, total, T, nfr, sr = audio_track(wav)

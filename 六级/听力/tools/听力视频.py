@@ -417,6 +417,10 @@ if __name__ == '__main__':
     elif c == 'timeline': timeline(sys.argv[3])
     elif c == 'layout': layout()
     elif c == 'stills': base.stills('--sample' in sys.argv)
+    elif c == 'audio':                  # 只查音频（预检，不编码视频）：工作流 precheck 与本机预演都跑
+        sha_ok(sys.argv[3])
+        if CUT: base.CUT_END = json.loads((D / '时间轴.json').read_text('utf-8'))['audioEnd']
+        base.audio_check(gapped(sys.argv[3]))
     elif c == 'video':
         sha_ok(sys.argv[3])
         if CUT: base.CUT_END = json.loads((D / '时间轴.json').read_text('utf-8'))['audioEnd']
