@@ -46,6 +46,32 @@ def numtok(n):
 # ───────────────────────── 时间轴 ─────────────────────────
 def timeline(wav):
     Wd = json.loads((D / '定稿.json').read_text('utf-8'))['词']
+    # 识别漏掉的一小段（几个词到一两句：念题号“Q”、Section B 说明）没有时间：在前后已知时刻之间按字数线性插值；
+    # 只补两头都有时间、≤ 40 词的段，补了多少打印出来（锚点落在插值段里，换屏误差在这一段的时长以内）
+    filled, i = 0, 0
+    while i < len(Wd):
+        if Wd[i][1] is not None: i += 1; continue
+        j = i
+        while j < len(Wd) and Wd[j][1] is None: j += 1
+        if 0 < i and j < len(Wd) and j - i <= 40:
+            t0, t1 = Wd[i - 1][2], Wd[j][1]
+            L = [len(x[0]) + 1 for x in Wd[i:j]]; tot = sum(L); acc = 0
+            need = 0.065 * tot                        # 约 0.065 秒 / 字母（念题语速）
+            if t1 - t0 > 1.5 * need:                  # 中间有停顿：念题号、Section 说明贴着后一个词，其余接着前一个词
+                if re.match(r'(Questions?|Section|Directions|Conversation|Passage|Recording)\b', Wd[i][0]): t0 = t1 - need
+                else: t1 = t0 + need
+            for k in range(i, j):
+                a0 = t0 + (t1 - t0) * acc / tot; acc += L[k - i]
+                Wd[k] = [Wd[k][0], round(a0, 2), round(t0 + (t1 - t0) * acc / tot, 2)] + Wd[k][3:]
+            filled += j - i
+        i = j
+    if filled: print(f'{SID} 插值补时间 {filled} 个词')
+    # 识别有时把停顿前最后一个词的结束拉进停顿里（202306-1 apartment? 4.96 秒）：单个词时长封顶，停顿从实际念完算起
+    capped = 0
+    for w in Wd:
+        if w[1] is not None and w[2] - w[1] > max(0.9, 0.12 * len(w[0])):
+            w[2] = round(w[1] + max(0.9, 0.12 * len(w[0])), 2); capped += 1
+    if capped: print(f'{SID} 词时长封顶 {capped} 个')
     words = [(norm(w[0]), w[1], w[2]) for w in Wd]
 
     def t_at(i):
