@@ -3,7 +3,7 @@
     python3 六级/听力/精读/tools/切句.py 202512-1 [202512-2 …]
 
 - 只收 定稿.json 待核为 0 的套（不是 0 就停）；文字一字不改，只做排版统一（直撇号 / 直引号 → 弯的，带空格的破折号 → 不带空格），
-  人工订正写在 原文订正.json（{套: [[原, 改为, 理由], …]}），每条必须恰好匹配一次（踩坑 17）。
+  人工订正写在 原文订正.json（{套: [[原, 改为, 理由], …]}），每条必须恰好匹配一次（第 4 项写了次数就恰好那么多次，踩坑 17）。
 - 切句：. ? ! 结尾（引号、括号跟着走）；Mr. Mrs. Ms. Dr. St. 和单个大写字母缩写、U.S. 句中不切（踩坑 6）。
 - 分段：说明、Conversation / Passage / Recording、“Questions … are based on …”、每道念题各起一段；对话里换说话人靠停顿，不在这里分。
 """
@@ -57,8 +57,13 @@ def one(sid, fixes):
     if d.get('待核'):
         raise SystemExit(f'{sid}：定稿.json 还有 {len(d["待核"])} 处待核（练习会话裁定后再做）')
     text = typo(' '.join(w[0] for w in d['词']))
-    for old, new, why in fixes.get(sid, []):
+    for fx in fixes.get(sid, []):
+        old, new, why = fx[:3]
+        want = fx[3] if len(fx) > 3 else 1          # 第 4 项：应匹配的次数（同一个人名全文统一，默认 1）
         n = text.count(old)
+        if n == want and want > 1:
+            text = text.replace(old, new)
+            continue
         if n == 0 and text.count(new) == 1 and old not in new:     # 练习会话已在 定稿.json 里改好（念题校对等）：跳过，打印出来
             print(f'{sid}：订正“{old[:30]}”定稿里已改好，跳过')
             continue
