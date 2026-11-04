@@ -1,0 +1,147 @@
+{
+ "candidate": {
+  "id": "g1enlt",
+  "mode": "gptsovits",
+  "weights": "teacher",
+  "en_ref": "tx",
+  "gen": {
+   "top_k": 10,
+   "temperature": 0.8
+  }
+ },
+ "take": 3,
+ "part": 0,
+ "split": "mark",
+ "segments": [
+  {
+   "id": "s1e",
+   "sec": 4.5,
+   "compute": 37.1,
+   "sr": 32000,
+   "cap": 177,
+   "tries": 1,
+   "rss_mb": 5131
+  },
+  {
+   "id": "s2e",
+   "sec": 2.62,
+   "compute": 9.6,
+   "sr": 32000,
+   "cap": 107,
+   "tries": 1,
+   "rss_mb": 5218
+  },
+  {
+   "id": "s3e",
+   "sec": 4.54,
+   "compute": 14.8,
+   "sr": 32000,
+   "cap": 195,
+   "tries": 1,
+   "rss_mb": 5380
+  },
+  {
+   "id": "s4e",
+   "sec": 4.26,
+   "compute": 12.8,
+   "sr": 32000,
+   "cap": 177,
+   "tries": 1,
+   "rss_mb": 5526
+  },
+  {
+   "id": "s5e",
+   "sec": 4.9,
+   "compute": 14.4,
+   "sr": 32000,
+   "cap": 168,
+   "tries": 1,
+   "rss_mb": 5699
+  },
+  {
+   "id": "s9e",
+   "sec": 5.54,
+   "compute": 15.6,
+   "sr": 32000,
+   "cap": 203,
+   "tries": 1,
+   "rss_mb": 5895
+  },
+  {
+   "id": "s10e",
+   "sec": 3.38,
+   "compute": 12.2,
+   "sr": 32000,
+   "cap": 160,
+   "tries": 1,
+   "rss_mb": 6008
+  },
+  {
+   "id": "s11e",
+   "sec": 7.58,
+   "compute": 20.4,
+   "sr": 32000,
+   "cap": 238,
+   "tries": 1,
+   "rss_mb": 6270
+  }
+ ],
+ "engine": "GPT-SoVITS v2ProPlus @ abe9843 (CPU)",
+ "refs": {
+  "Chinese": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  },
+  "English": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  }
+ },
+ "rss_after_load_mb": 3575,
+ "rss_peak_mb": 6270,
+ "total_compute": 147.3,
+ "buzz_top": [
+  [
+   13500,
+   9.6
+  ],
+  [
+   16500,
+   9.6
+  ],
+  [
+   19500,
+   9.6
+  ],
+  [
+   22500,
+   9.6
+  ],
+  [
+   12000,
+   9.3
+  ]
+ ],
+ "buzz_tone": [
+  10924,
+  1.4
+ ],
+ "chain": {
+  "passed": true,
+  "loudness": {
+   "integrated_lufs": -16.49,
+   "sentence_max_dev_lu": 0.23,
+   "short_term_std_lu": 0.85,
+   "peak_dbfs": -1.74,
+   "clause_nb_min_lu": -0.24,
+   "clause_tail_min_db": -2.68,
+   "breath_count": 0
+  }
+ }
+}
