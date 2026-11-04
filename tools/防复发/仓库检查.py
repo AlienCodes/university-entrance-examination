@@ -8,6 +8,7 @@
           unzip -l 判断包内容（中文名显示不出来）——新工作流一律不许用；旧的几个已完结项目登记在 LEGACY，只许减少。
   踩坑 87：发布音频 / 视频的工作流（AUDIO_RELEASE）必须在打包之前跑 .github/check-audio-cert.py <音频目录>，稀疏检出要带上
           tools/tts 与音频目录；每个 release-*.yml 都必须登记在 AUDIO_RELEASE 或 NO_AUDIO（写明理由）里，新发布流程不许漏。
+  踩坑 114：工作流调用的脚本读系统文件（如 /usr/share/dict/american-english），工作流必须 apt 装对应的包（SYSDEP）。
 软链接（踩坑 47）：仓库里的软链接不许指向仓库外（临时目录一删，模型就没了），也不许是断的。
 双向验证：python3 tools/防复发/验证/仓库检查.py"""
 import os
@@ -97,6 +98,23 @@ def audio_release_problems(name, y):
     return errs
 
 
+# 踩坑 114：GitHub 机器上没有的系统文件 → 工作流必须 apt 装的包（脚本里写了这个路径、工作流又调用了这个脚本）
+SYSDEP = {'/usr/share/dict/': 'wamerican'}
+
+
+def sysdep_problems(name, text, root=R):
+    errs = []
+    for sc in sorted(set(re.findall(r'[^\s\'"`;|&()]+\.py\b', text))):
+        f = root / sc
+        if not f.is_file():
+            continue
+        src = f.read_text('utf-8', errors='ignore')
+        for path, pkg in SYSDEP.items():
+            if path in src and not re.search(r'apt(-get)?\s+install[^\n]*\b' + re.escape(pkg) + r'\b', text):
+                errs.append(f'{name}：调用的 {sc} 读 {path}，工作流没有 apt install {pkg}（踩坑 114：GitHub 机器上没有）')
+    return errs
+
+
 def strings(x):
     if isinstance(x, str):
         yield x
@@ -130,6 +148,7 @@ def check_workflow(name, text):
     errs += audio_release_problems(name, y)
     errs += pack_meta_problems(name, text)
     errs += gram_out_problems(name, text)
+    errs += sysdep_problems(name, text)
     hits = [(pat, why) for pat, why in BAN if re.search(pat, text)]
     if name not in LEGACY:
         errs += [f'{name}：用了 {pat}（{why}）' for pat, why in hits]

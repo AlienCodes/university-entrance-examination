@@ -94,5 +94,12 @@ case('任务名没去掉 .json → 报', ck.gram_out_problems('tts-sovits.yml', 
 case('推 gram-tts-out 却找不到结果目录写法 → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'OUT=runs/x')), True, '踩坑 113')
 case('不推 gram-tts-out 的工作流 → 0', ck.gram_out_problems('new.yml', GOOD), False)
 
+# 踩坑 114：六级听力准备工作流调用读 /usr/share/dict 的脚本，必须 apt 装 wamerican
+cur = (WF / 'cet6-listening-prep.yml').read_text('utf-8')
+case('现在的 cet6-listening-prep.yml → 0', ck.sysdep_problems('cet6-listening-prep.yml', cur), False)
+assert ' wamerican' in cur
+case('去掉 wamerican（踩坑 114：运行 2 的写法）→ 报', ck.sysdep_problems('cet6-listening-prep.yml', cur.replace(' wamerican', '')), True, '踩坑 114')
+case('不调用读词典脚本的工作流 → 0', ck.sysdep_problems('new.yml', GOOD), False)
+
 print('仓库检查双向验证：' + ('全部通过' if not bad else f'{len(bad)} 处失败\n  ' + '\n  '.join(bad)))
 sys.exit(1 if bad else 0)

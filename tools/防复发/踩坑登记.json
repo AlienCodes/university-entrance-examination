@@ -3981,6 +3981,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "只管工作流里的写法；本机手动改名的目录（如样段 v3 的 -sovits-10 改名）不管",
    "fix": ""
+  },
+  {
+   "id": "114",
+   "title": "六级听力准备工作流运行 2：解析OCR.py、定稿.py 读 /usr/share/dict/american-english（文字层真词比例），GitHub 机器上没有，8 套准备失败",
+   "stages": [
+    "准备"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/仓库检查.sysdep_problems（工作流调用的脚本里写了 SYSDEP 的系统路径，工作流就必须 apt install 对应包：/usr/share/dict/ → wamerican）",
+     "runs": "tools/防复发/仓库检查.py（每次提交 + 推送）",
+     "evidence": "现在的 cet6-listening-prep.yml 0 处；去掉 wamerican 报 1 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只认工作流 run 里直接写出的 .py；被导入的模块、新的系统路径要加进 SYSDEP",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
