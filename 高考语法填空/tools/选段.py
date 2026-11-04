@@ -1,6 +1,6 @@
 """逐段选优 + 完整处理链（全片配音）：Actions 每段合成 N 次（runs/<任务>/<音色>/take*/<段>.wav），程序为每段挑一次：
-  ① 识别回转（SenseVoice 中英混合；英文段再用 parakeet）：真错误数最少——同音字（它/他、形/型……）不算错，
-     只比英文单词、以及中文按拼音（不计声调）比；
+  ① 识别回转（SenseVoice 中英混合；英文段再用 parakeet；中文段再用 Paraformer-zh，两个识别器的错都算——清晰度 2026-11-04）：
+     真错误数最少——同音字（它/他、形/型……）不算错，只比英文单词、以及中文按拼音（不计声调）比；
   ② 段内意群最匀：segment 之后各意群 BS.1770 响度的最大差、段尾 0.8 秒元音比本段低多少（与成品检查同一量法）；
   ③ 时长不离谱（语速：中文段每字 0.12—0.4 秒）。
 然后走 讲解音频.render（陷波 → segment → 拼接 → master → final_check（含意群级）→ 合格证）。整篇检查没过，
@@ -71,6 +71,9 @@ def candidates(segs, run, ears, only=None):
                 err = min(err, en_err)        # 两个识别器取较好的（识别器自己的错不算朗读的错）
                 if en_err <= E.ed(ref, h):
                     diff = E.diff(E.toks(s['text']), eh)
+            pf_err = None
+            if s['lang'] == 'Chinese' and getattr(ears, 'pf', None) is not None:   # 第二个中文识别器（清晰度，2026-11-04）：两个都听清才算清楚
+                pf_err = E.ed(pinyin_toks(s['text']), pinyin_toks(ears.rec(ears.pf, a16)))
             spread, tail = seg_score(x)
             n_zh = len(re.findall(r'[一-鿿]', s['text']))
             dur = len(x) / G.SR
@@ -87,9 +90,9 @@ def candidates(segs, run, ears, only=None):
             if s['lang'] == 'Chinese' and PY.expected(s['text']):   # 多音字读错声调的那次不要（铁律 23）
                 y = J.prep(x)
                 tone_bad = len(PY.tone_problems(y, G.SR, s['text'], ears.al)[1])
-            score = (tone_bad * 40 + (0 if native is None else (1 - native) * 6) + err * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
+            score = (tone_bad * 40 + (0 if native is None else (1 - native) * 6) + err * 10 + (pf_err or 0) * 10 + max(0.0, spread - 1.0) * 3 + max(0.0, -tail - 2.0) * 2 + (20 if pace_bad else 0)
                      + (30 + 5 * rise if rise is not None and rise > NJ.RISE_MAX else 0))
-            rows.append({'take': t.name, 'dir': str(t), 'err': err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
+            rows.append({'take': t.name, 'dir': str(t), 'err': err, 'pf_err': pf_err, 'diff': diff, 'spread': round(spread, 2), 'tail': round(tail, 2),
                          'dur': round(dur, 2), 'native': native, 'tone_bad': tone_bad, 'n_words': len(E.toks(s['text'])), 'pace_bad': bool(pace_bad), 'rise': None if rise is None else round(rise, 2),
                          'score': round(score, 2)})
         if rows:                                   # 读对的前提下偏向快的那次（用户 2026-11-03：语速太慢）：比最快那次每慢 10% 加 1 分（错 1 个字 10 分）
@@ -189,6 +192,8 @@ def main():
     if a.only:
         segs = [s for s in segs if s['id'] in a.only]
     ears = E.Ears()
+    import 清晰度 as QX
+    ears.pf = QX.Ears().pf            # Paraformer-zh（与 SenseVoice 独立的第二个中文识别器）
     import 讲解节奏 as NJ
     ears.al = NJ.Aligner()
     table = candidates(J.expand(segs), a.run, ears)   # 稿里 ‖ 处的小段各自选优（讲解音频.units）
