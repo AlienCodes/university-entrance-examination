@@ -9,7 +9,7 @@ CDP 字体回退、彩色像素、编码（video）、成品核查（verify）�
   python 听力视频.py <套> video 原音.mp3 [--试跑]
   python 听力视频.py <套> --自检                 双向验证（正常 0 处；混进答案、溢出、题间没分开、缺字都报）
 样片：环境变量 CET6_CUT=<题号> 只做到第 N 题作答结束（音频同样截断），其余流程不变。
-原音不适用 TTS 那几条检查（句间 0.8 秒、逐句响度、电磁音、合格证）：声音是考试原音，只做整体增益，峰值 ≤ −1 dBFS（同专八听力）。
+原音不适用 TTS 那几条检查（句间 0.8 秒、逐句响度、电磁音、合格证）：声音是考试原音，一点不动（不增益、不限幅、不重采样），成品音轨与原音逐样本比对。
 """
 import html, json, math, os, re, sys
 from pathlib import Path
@@ -324,7 +324,7 @@ def leak_check(s, htm):
 
 # 换上六级的部分，其余全用专八引擎
 base.D, base.OUT, base.NAME, base.Q = D, OUT, NAME, {'gap_answers': []}
-base.LIMIT = True                       # 六级原音约 −20 LUFS：整体增益到 −16 + 前瞻限幅（专八引擎里的通用功能）
+base.ORIGINAL = True                    # 老师 2026-11-04 定：一律原音，不调响度、不压缩、不限幅；成品与原音逐样本比对（专八引擎 orig_match，踩坑 121）
 
 
 GAPF = D / '插停顿.json'

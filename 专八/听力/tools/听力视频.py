@@ -491,7 +491,34 @@ def limited(a, sr, pl):
 INSERTS, INSERT_CHECK = [], None      # [(原音时刻, 插入秒)]：只有六级听力 插停顿.json 的套设置
 
 
-def video(wav, fast=False):
+ORIGINAL = False    # 六级听力（老师 2026-11-04 定）：一律原音——不增益、不限幅、不重采样、声道照原音，只垫开头 / 结尾静音（202606-1 另插作答停顿）；
+                    # 成品核查改为“成品音轨与原音逐样本比对，在 AAC 编码误差内”（orig_match）。专八默认 False，行为不变
+ORIG_REF, ORIG_SR = None, None     # 原音模式：编码前的原音（插停顿后）与采样率，verify 拿它逐样本比
+ORIG_MAX_GAIN_DB, ORIG_MIN_SNR_DB, ORIG_MAX_SEC_DB = 0.05, 30.0, 1.0   # AAC 192k 实测：增益差 −0.009 dB、信噪比 43.6 dB、逐秒电平差 ≤ 0.28 dB
+
+
+def orig_match(ref, dec, sr):
+    """成品音轨（解码、已去开头静音、与 ref 等长）与原音逐样本比：整体增益差、残差信噪比、逐秒电平差（> −50 dBFS 的秒）；返回问题列表"""
+    import numpy as np
+    if dec.shape != ref.shape: return [f'成品音轨形状 {dec.shape} ≠ 原音 {ref.shape}']
+    e = (ref * ref).sum()
+    g = 20 * np.log10(max((dec * ref).sum() / e, 1e-12)); r = dec - ref
+    snr = 10 * np.log10(e / max((r * r).sum(), 1e-30))
+    n = len(ref) // sr
+    ra = np.sqrt((ref[:n * sr] ** 2).reshape(n, -1).mean(1)); rd = np.sqrt((dec[:n * sr] ** 2).reshape(n, -1).mean(1))
+    m = ra > 10 ** (-50 / 20)
+    sec = float(np.abs(20 * np.log10(np.maximum(rd[m], 1e-12) / ra[m])).max()) if m.any() else 0.0
+    bad = []
+    if abs(g) > ORIG_MAX_GAIN_DB: bad.append(f'与原音整体音量差 {g:+.3f} dB')
+    if snr < ORIG_MIN_SNR_DB: bad.append(f'与原音残差信噪比 {snr:.1f} dB')
+    if sec > ORIG_MAX_SEC_DB: bad.append(f'与原音逐秒电平差最多 {sec:.2f} dB')
+    print('原音比对：', {'增益差dB': round(float(g), 4), '信噪比dB': round(float(snr), 1), '逐秒电平差dB': round(sec, 3)})
+    return bad
+
+
+def audio_track(wav):
+    """编码前的音轨：读原音 → 插停顿 → 截断（样片）→ 响度处理（原音模式不处理）→ 垫静音，写 OUT/audio.wav；返回 (L, total, T, nfr, sr)"""
+    global ORIG_REF, ORIG_SR
     import numpy as np, soundfile as sf, pyloudnorm as pl
     L, total, T = states()
     a, sr = sf.read(wav, dtype='float64', always_2d=True)
@@ -505,19 +532,28 @@ def video(wav, fast=False):
         a = y
     if CUT_END: a = a[:round(CUT_END * sr)]
     if abs(len(a) / sr - T['audioEnd']) > 0.01: die('原音时长与时间轴不符')
-    if LIMIT:
+    if ORIGINAL:
+        g = 1.0; ORIG_REF, ORIG_SR = a, sr
+    elif LIMIT:
         a, g = limited(a, sr, pl), 1.0
     else:
         gain_db = -16 - pl.Meter(sr).integrated_loudness(a)
         g = 10 ** (gain_db / 20)
-    if 20 * np.log10(np.abs(a).max() * g) > -1: die('整体增益后峰值超过 −1 dBFS（只许整体增益，不许压缩限幅）')
+    if not ORIGINAL and 20 * np.log10(np.abs(a).max() * g) > -1: die('整体增益后峰值超过 −1 dBFS（只许整体增益，不许压缩限幅）')
     nfr = round((total + LEAD) * FPS)
     # 声音总长 = 画面整帧数的时长（第一次成品 -shortest 按短 6 毫秒的声音把画面截掉一帧）
-    lead = np.zeros((int(round(LEAD * sr)), 2))
-    tail = np.zeros((int(round(nfr / FPS * sr)) - len(lead) - len(a), 2))
+    ch = a.shape[1] if ORIGINAL else 2
+    lead = np.zeros((int(round(LEAD * sr)), ch))
+    tail = np.zeros((int(round(nfr / FPS * sr)) - len(lead) - len(a), ch))
     y = np.concatenate([lead, a * g, tail])
     OUT.mkdir(parents=True, exist_ok=True)
-    sf.write(OUT / 'audio.wav', y, sr, subtype='PCM_24')
+    sf.write(OUT / 'audio.wav', y, sr, subtype='FLOAT' if ORIGINAL else 'PCM_24')     # 原音模式用浮点：解码出的峰值可能 > 0 dBFS，24 位会削顶
+    return L, total, T, nfr, sr
+
+
+def video(wav, fast=False):
+    import numpy as np
+    L, total, T, nfr, sr = audio_track(wav)
     # 每个状态的开始帧（录音时刻 + LEAD，取整到帧）
     fr = [(round((t + LEAD) * FPS), key(s)) for t, s in L]
     fr = [(f, k) for f, k in fr]
@@ -537,6 +573,7 @@ def video(wav, fast=False):
            '-fps_mode', 'cfr', '-r', str(FPS), '-frames:v', str(nfr), '-c:v', 'libx264', '-preset', 'medium', '-tune', 'stillimage', '-crf', '18',
            '-pix_fmt', 'yuv420p', '-g', '300', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-af', 'aresample=48000',
            '-movflags', '+faststart', str(out)]
+    if ORIGINAL: i = cmd.index('-ar'); cmd = cmd[:i] + cmd[i + 4:]        # 原音模式不重采样（去掉 -ar 48000 -af aresample）
     if fast:      # 试跑：480p 极速编码，只核对帧数与声画时长（几分钟），通过再正式编码
         cmd = [x for x in cmd]; i = cmd.index('-c:v'); cmd[i:i] = ['-vf', 'scale=480:270']
         cmd[cmd.index('medium')] = 'ultrafast'; cmd[-1] = str(OUT / 'fast.mp4')
@@ -583,14 +620,17 @@ def verify(out, T, total, fr):
     p = sorted(float(x) for x in pts)
     d = np.diff(p)
     if len(p) != round(want * FPS) or d.max() - d.min() > 1e-3: bad.append(f'帧时间戳不恒定（{len(p)} 帧）')
-    pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(out), '-f', 'f32le', '-ac', '2', '-ar', '48000', '-'], capture_output=True).stdout
-    y = np.frombuffer(pcm, dtype=np.float32).reshape(-1, 2).astype(np.float64)
-    sr = 48000
+    ch, sr = (ORIG_REF.shape[1], ORIG_SR) if ORIGINAL else (2, 48000)
+    pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(out), '-f', 'f32le', '-ac', str(ch), '-ar', str(sr), '-'], capture_output=True).stdout
+    y = np.frombuffer(pcm, dtype=np.float32).reshape(-1, ch).astype(np.float64)
     seg = y[int(LEAD * sr):int((LEAD + T['audioEnd']) * sr)]
     L = pl.Meter(sr).integrated_loudness(seg)
     peak = 20 * np.log10(np.abs(seg).max())
-    if abs(L - TARGET_LUFS) > 0.7 or TARGET_LUFS < LIMIT_FLOOR_LUFS: bad.append(f'整体响度 {L:.2f} LUFS（目标 {TARGET_LUFS}）')
-    if peak > -1: bad.append(f'峰值 {peak:.2f} dBFS')
+    if ORIGINAL:
+        k = int(round(LEAD * sr)); bad += orig_match(ORIG_REF, y[k:k + len(ORIG_REF)], sr)
+    else:
+        if abs(L - TARGET_LUFS) > 0.7 or TARGET_LUFS < LIMIT_FLOOR_LUFS: bad.append(f'整体响度 {L:.2f} LUFS（目标 {TARGET_LUFS}）')
+        if peak > -1: bad.append(f'峰值 {peak:.2f} dBFS')
     head = 20 * np.log10(np.abs(y[:int(LEAD * sr) - 480]).max() + 1e-9)
     tl = 20 * np.log10(np.abs(y[int((LEAD + T['audioEnd']) * sr) + 4800:]).max() + 1e-9)
     if head > -60: bad.append(f'开头静音 {head:.1f} dB')
