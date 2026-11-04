@@ -1,0 +1,98 @@
+# 六级听力准备：推送 .github/cet6-listening-prep.txt（每行一个套号，如 202512-1）时，每套一台机器：
+#   原音 → parakeet 逐词时间 + 静音段（专八/听力/tools/识别对齐.py，照用）
+#   解析 PDF → 听力部分文字（六级/听力/tools/解析OCR.py：有文字层直接取，扫描版 tesseract）
+# 材料从 Release 6-listening-test 下载并核 sha256（六级/听力/原始材料/SHA256SUMS）；最后一个任务把齐全的套提交到 六级/听力/<套>/，缺的列出来、整个运行判失败。
+name: 六级听力准备（识别 + OCR）
+on:
+  push:
+    paths: ['.github/cet6-listening-prep.txt']
+permissions:
+  contents: write
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    outputs:
+      ids: ${{ steps.l.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - id: l
+        run: echo "ids=$(grep -v '^\s*$' .github/cet6-listening-prep.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin]))')" >> "$GITHUB_OUTPUT"
+  prep:
+    needs: list
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            专八/听力/tools
+            六级/听力/tools
+            六级/听力/原始材料
+            tools/tts/download_models.py
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: 装依赖
+        run: |
+          set -euo pipefail
+          sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-eng tesseract-ocr-chi-sim poppler-utils >/dev/null
+          pip install -q sherpa-onnx==1.13.8 soundfile==0.14.0 soxr==1.1.0 numpy==2.4.6
+      - name: 识别模型（缓存）
+        uses: actions/cache@v4
+        with:
+          path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+          key: parakeet-tdt-0.6b-v2-int8
+      - name: 下模型
+        run: |
+          ls tools/tts/models/sherpa-onnx-nemo-parakeet*/encoder.int8.onnx 2>/dev/null || python -c "
+          import tarfile, urllib.request
+          from pathlib import Path
+          M = Path('tools/tts/models'); M.mkdir(parents=True, exist_ok=True)
+          urllib.request.urlretrieve('https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2', M / 'p.tar.bz2')
+          tarfile.open(M / 'p.tar.bz2').extractall(M)
+          "
+      - name: 下载材料、核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          mkdir -p in out
+          gh release download 6-listening-test -p "cet6-${{ matrix.id }}.mp3" -p "cet6-${{ matrix.id }}-jiexi.pdf" -D in
+          cd in && grep -E " cet6-${{ matrix.id }}(\.mp3|-jiexi\.pdf)$" ../六级/听力/原始材料/SHA256SUMS | sha256sum -c --quiet
+      - name: 识别 + OCR（两件事并行）
+        run: |
+          set -euo pipefail
+          python 专八/听力/tools/识别对齐.py in/cet6-${{ matrix.id }}.mp3 out > asr.log 2>&1 &
+          python 六级/听力/tools/解析OCR.py in/cet6-${{ matrix.id }}-jiexi.pdf out
+          wait $! || { cat asr.log; exit 1; }
+          tail -1 asr.log
+          for f in 识别.json 停顿.json 解析原文.txt 解析OCR.json; do [ -s out/$f ] || { echo "停止：缺 $f"; exit 1; }; done
+      - uses: actions/upload-artifact@v4
+        with: {name: 'prep-${{ matrix.id }}', path: out}
+  collect:
+    needs: [list, prep]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: '六级/听力'}
+      - uses: actions/download-artifact@v4
+        with: {path: art}
+      - name: 提交齐全的套
+        run: |
+          set -euo pipefail
+          miss=""
+          for id in $(echo '${{ needs.list.outputs.ids }}' | tr -d '[]",' ); do
+            d=art/prep-$id
+            if [ -s $d/识别.json ] && [ -s $d/停顿.json ] && [ -s $d/解析原文.txt ] && [ -s $d/解析OCR.json ]; then
+              mkdir -p 六级/听力/$id && cp $d/* 六级/听力/$id/
+            else miss="$miss $id"; fi
+          done
+          git config user.name github-actions; git config user.email github-actions@github.com
+          git add 六级/听力
+          git diff --cached --quiet || git commit -q -m "六级听力准备（运行 ${{ github.run_number }}）：识别 + 解析 OCR 结果${miss:+；缺$miss}"
+          for i in 1 2 3 4; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep $((i * 5)); done
+          [ -z "$miss" ] || { echo "停止：缺$miss"; exit 1; }
