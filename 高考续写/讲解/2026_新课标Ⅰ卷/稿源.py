@@ -49,7 +49,7 @@ add('a03', 'p2', '第二段，困境一步一步升级。‖大雪茫茫，几�
     mark=['The blinding whiteout made driving nearly impossible', 'panic set in', 'her car slid into a ditch'], note='困境升级：大雪封路，车滑进沟里')
 add('a04', 'p2', '手机没有信号，她只能裹着毯子，在车里过夜。‖我们把情感线理一理：从满怀希望，到慌乱，再到无助。',
     mark=['found no signal on her phone', 'She wrapped herself in a blanket'], note='情感线：希望 → 慌乱 → 无助', gap=0.8)
-add('a05', 'p3', '第三段是转机。丹尼尔和瑞秋夫妇在回家的路上，看到被困的车，停下来帮忙。‖注意这个短语：genuine warmth，真诚的温暖。‖全文的主题就落在这里：陌生人的善意。',
+add('a05', 'p3', '第三段，是全文的转机。‖丹尼尔和瑞秋夫妇在回家的路上，看到被困的车，停下来帮忙。‖注意这个短语：genuine warmth，真诚的温暖。‖全文的主题就落在这里：陌生人的善意。',
     mark=['Daniel and his wife Rachel', 'With genuine warmth in her voice'], note='转机：陌生夫妇停车相助，真诚温暖')
 add('a06', 'p3', '艾米丽又感激，又宽慰，接受了帮助。‖她的情感，从无助转向了温暖。', mark=['Grateful and relieved'], note='情感转折：感激、宽慰', gap=0.8)
 add('a07', 'p4', '第四段最关键，艾米丽说出了三个难题。‖第一，离目的地还有一百英里；第二，车完全困住了；第三，整个假期计划可能泡汤。‖续写的任务，就是把这三个难题一个一个解决掉。',
@@ -70,7 +70,7 @@ add('l02', 'outline', '第二段，也分四步。第一，写环境：雪停了
 add('e01', 'echo', '下面看伏笔和呼应。‖原文说，车完全困住了；续写就让丹尼尔找人，把车从沟里拖出来。', row=['her car was completely stuck', 'have it towed out of the ditch'])
 add('e02', 'echo', '原文的目标，是赶到多伦多见男朋友；续写就让她在那天晚上，扑进男朋友的怀里。', row=['reaching Toronto to meet her boyfriend for Christmas', 'fell into her boyfriend’s arms in Toronto'])
 add('e03', 'echo', '原文是茫茫大雪；第二段换成了阳光。环境变了，心情也跟着变了。', row=['The blinding whiteout made driving nearly impossible', 'lay quiet in the sunshine'])
-add('e04', 'echo', '原文担心，假期计划会泡汤；结尾就用同一个词 ruin 收住：圣诞节差点被毁了，最后却成了最温暖的一个。', row=['her entire holiday plan could be ruined', 'nearly ruined her Christmas'])
+add('e04', 'echo', '原文里，艾米丽担心假期计划会泡汤；结尾就用同一个词 ruin 收住：圣诞节差点被毁了，最后却成了最温暖的一个。', row=['her entire holiday plan could be ruined', 'nearly ruined her Christmas'])
 add('e05', 'echo', '原文写瑞秋的声音里，透着真诚的温暖；结尾就落在最温暖上。主题从头到尾，是一条线。‖原文读完了，下面我们一句一句来写。', row=['With genuine warmth in her voice', 'the warmest of her life'], gap=0.8)
 
 # ---------- 逐句讲范文 ----------
@@ -96,7 +96,7 @@ sent(('第一句。先用中文想好：他们解释说，附近就有个火车�
      (['The nearest station was just a short drive away.', 'a train would leave for Toronto at noon'],
       '这句话还有别的写法。‖前半句可以写：The nearest station was just a short drive away，最近的车站，开车一会儿就到。‖后半句也可以写：a train would leave for Toronto at noon。'))
 
-sent(('第二句，中文是：可是我的车怎么办？‖艾米丽焦急地问。‖这句写的是她的第二个难题：人能走了，车还在沟里。让她自己说出来，比旁白更有力。',
+sent(('第二句，中文是：可是我的车怎么办，艾米丽焦急地问。‖这句写的是她的第二个难题：人能走了，车还在沟里。让她自己说出来，比旁白更有力。',
       ['为什么：人能走了，车还在沟里——让她自己说出第二个难题']),
      [('“But what about my car?”', ['①', '④'], P4, 'her car was completely stuck',
        ['直接引语：人物开口，比叙述更生动', '承上：原文的难题“车困住了”；启下：引出拖车的安排'],
@@ -191,7 +191,7 @@ sent(('第二段第四句，中文是：我们只是做了任何人都会做的�
        '得分点一：We just did what anyone would do。‖帮了这么大的忙，却说只是做了任何人都会做的事。谦和，真诚。‖这和原文里声音温暖的瑞秋，是同一个人。对应第一条。', []),
       ('giving her a warm hug', ['③'], P3C, 'Rachel asked if she was okay',
        ['现在分词作伴随：说话和拥抱同时发生', '从原文问她好不好，到这里拥抱她，温暖一以贯之'],
-       '得分点二：giving her a warm hug，现在分词作伴随状语。‖说话和拥抱同时发生，一句话写了两个动作。‖从原文里问她好不好，到这里拥抱她，瑞秋的温暖一以贯之。对应第三条。', [])],
+       '得分点二：giving her a warm hug，现在分词作伴随状语。‖说话和拥抱同时发生，一句话写了两个动作。‖从原文里问她好不好，到这里拥抱她，瑞秋的温暖从头到尾都没变。对应第三条。', [])],
      (['It was nothing', 'hugging her tightly'],
       '这句也可以这样写。‖说的话可以是：It was nothing，没什么。‖动作也可以写：hugging her tightly，紧紧抱住她。'))
 
