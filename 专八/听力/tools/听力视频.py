@@ -474,10 +474,21 @@ def limited(a, sr, pl):
     return y
 
 
+INSERTS, INSERT_CHECK = [], None      # [(原音时刻, 插入秒)]：只有六级听力 插停顿.json 的套设置
+
+
 def video(wav, fast=False):
     import numpy as np, soundfile as sf, pyloudnorm as pl
     L, total, T = states()
     a, sr = sf.read(wav, dtype='float64', always_2d=True)
+    if INSERTS:          # 六级 202606-1：原音没有作答停顿，在给定时刻插数字静音（INSERT_CHECK 逐样本核对插入段之外与原音相同）
+        out, prev, cuts = [], 0, []
+        for t_ins, sec in INSERTS:
+            k, z = int(round(t_ins * sr)), int(round(sec * sr)); out += [a[prev:k], np.zeros((z, a.shape[1]))]; prev = k; cuts.append((k, z))
+        y = np.concatenate(out + [a[prev:]])
+        bad = INSERT_CHECK(a, y, cuts)
+        if bad: die('插停顿：' + bad)
+        a = y
     if CUT_END: a = a[:round(CUT_END * sr)]
     if abs(len(a) / sr - T['audioEnd']) > 0.01: die('原音时长与时间轴不符')
     if LIMIT:

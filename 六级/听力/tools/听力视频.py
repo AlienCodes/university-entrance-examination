@@ -357,21 +357,12 @@ def gap_identical(a, y, cuts):
 
 
 def gapped(mp3):
-    """原音 → 插好停顿的 wav（数字静音；其余一个采样不动），返回路径"""
-    if not GAP: return mp3
-    import numpy as np, soundfile as sf
-    T = json.loads((D / '时间轴.json').read_text('utf-8'))
-    a, sr = sf.read(mp3, dtype='float64', always_2d=True)
-    out, prev, cuts = [], 0, []
-    for t, L in zip(T['插停顿']['原音时刻'], T['插停顿']['插入秒']):
-        k = int(round(t * sr)); z = int(round(L * sr)); out += [a[prev:k], np.zeros((z, a.shape[1]))]; prev = k; cuts.append((k, z))
-    out.append(a[prev:])
-    y = np.concatenate(out); OUT.mkdir(parents=True, exist_ok=True)
-    bad = gap_identical(a, y, cuts)
-    if bad: die('插停顿：' + bad)
-    w = OUT / '插停顿.wav'; sf.write(w, y, sr, subtype='FLOAT')
-    if not CUT and abs(len(y) / sr - T['audioEnd']) > 0.01: die('插停顿后时长与时间轴不符')
-    return str(w)
+    """有 插停顿.json 的套：把插入点交给专八引擎，在内存里插（本文件不写音频）"""
+    if GAP:
+        T = json.loads((D / '时间轴.json').read_text('utf-8'))
+        base.INSERTS = list(zip(T['插停顿']['原音时刻'], T['插停顿']['插入秒']))
+        base.INSERT_CHECK = gap_identical
+    return mp3
 
 
 def sha_ok(mp3):
