@@ -130,6 +130,7 @@ def main():
     meta['rss_after_load_mb'] = rss_mb()
     print('模型加载后常驻内存', meta['rss_after_load_mb'], 'MB', flush=True)
     gen = {**INFER, **task.get('gen', {}), **c.get('gen', {})}
+    gen_en = {**gen, **c.get('gen_en', {})}   # 英文小段另用的采样参数（协调会话 2026-11-04：英文用 g1lt 的 top_k 10、温度 0.8，中文照旧）
     base_seed = lambda sid: take * 1000 + int(''.join(ch for ch in sid if ch.isdigit()) or 0)  # noqa: E731
     for s in J.expand(segs):
         ts = time.time()
@@ -145,7 +146,8 @@ def main():
                    'aux_ref_audio_paths': [str(x) for x in aux], 'prompt_text': ref_text, 'prompt_lang': plang,
                    'text_split_method': 'cut0', 'batch_size': 1, 'speed_factor': speed,
                    'fragment_interval': 0.3, 'seed': int(seed), 'parallel_infer': True, 'return_fragment': False,
-                   'streaming_mode': False, 'super_sampling': False, 'sample_steps': 32, **gen}
+                   'streaming_mode': False, 'super_sampling': False, 'sample_steps': 32,
+                   **(gen_en if s['lang'] == 'English' else gen)}
             chunks, sr = [], None
             for sr, w in tts.run(inp):
                 chunks.append(np.asarray(w))

@@ -1,0 +1,26 @@
+{
+ "说明": "样段 v3 补合成 s1e：英文段改用 g1lt 的采样参数（top_k 10、温度 0.8；英文专项运行 #9 whisper 词错率 0.11—0.18 对 g1 0.23—0.30），中文照旧（协调会话 2026-11-04 决定）。4 次，选段前删主合成里 s1e 的旧小段。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": [
+  "s1e"
+ ],
+ "takes": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "candidates": [
+  {
+   "id": "g1",
+   "mode": "gptsovits",
+   "weights": "teacher",
+   "split": "mark",
+   "gap_max": 0.45,
+   "gen_en": {
+    "top_k": 10,
+    "temperature": 0.8
+   }
+  }
+ ]
+}
