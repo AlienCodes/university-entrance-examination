@@ -454,13 +454,37 @@ def stills(sample=False):
 
 
 # ───────────────────────── 视频 ─────────────────────────
+LIMIT = False      # 六级听力用：原音普遍约 −20 LUFS、峰值近 0 dBFS，只整体增益到 −16 会削顶 → 增益后前瞻限幅（同专八精读 原音音轨.limit）。专八默认 False，行为不变
+CUT_END = None     # 只用原音前 CUT_END 秒（样片）；None = 整段
+LIMIT_CEIL_DB = -2.5   # 限幅上限：AAC 编码后峰值会反弹约 0.9 dB（六级 202512-1 样片：WAV −1.5 → 成品 −0.58，成品核查拦下），留到 −2.5
+
+
+def limited(a, sr, pl):
+    """整体增益到 −16 LUFS → 前瞻限幅 → 补增益 → 限幅（专八/听力/原文/tools/原音音轨.py 的 limit，规则只写一处）；压得太多就停"""
+    import importlib.util
+    sp = importlib.util.spec_from_file_location('yuanyin', ROOT / '专八/听力/原文/tools/原音音轨.py')
+    yy = importlib.util.module_from_spec(sp); sp.loader.exec_module(yy)
+    yy.CEIL = 10 ** (LIMIT_CEIL_DB / 20)
+    m = pl.Meter(sr)
+    y, gr = yy.limit(a * 10 ** ((-16 - m.integrated_loudness(a)) / 20), sr)
+    y, gr2 = yy.limit(y * 10 ** ((-16 - m.integrated_loudness(y)) / 20), sr)
+    st = {'限幅最多压低dB': max(gr['max_db'], gr2['max_db']), '被压时长比例': gr['frac']}
+    print('整体增益 + 前瞻限幅：', st)
+    if st['限幅最多压低dB'] > 8 or st['被压时长比例'] > 0.005: die(f'限幅压得太多（原音要人听）：{st}')
+    return y
+
+
 def video(wav, fast=False):
     import numpy as np, soundfile as sf, pyloudnorm as pl
     L, total, T = states()
     a, sr = sf.read(wav, dtype='float64', always_2d=True)
+    if CUT_END: a = a[:round(CUT_END * sr)]
     if abs(len(a) / sr - T['audioEnd']) > 0.01: die('原音时长与时间轴不符')
-    gain_db = -16 - pl.Meter(sr).integrated_loudness(a)
-    g = 10 ** (gain_db / 20)
+    if LIMIT:
+        a, g = limited(a, sr, pl), 1.0
+    else:
+        gain_db = -16 - pl.Meter(sr).integrated_loudness(a)
+        g = 10 ** (gain_db / 20)
     if 20 * np.log10(np.abs(a).max() * g) > -1: die('整体增益后峰值超过 −1 dBFS（只许整体增益，不许压缩限幅）')
     nfr = round((total + LEAD) * FPS)
     # 声音总长 = 画面整帧数的时长（第一次成品 -shortest 按短 6 毫秒的声音把画面截掉一帧）
@@ -501,6 +525,19 @@ def video(wav, fast=False):
         return
     subprocess.run(cmd, check=True)
     verify(out, T, total, fr)
+
+
+def preview(out=None):
+    """成品（4K）→ 1080p 预览（给老师看样片）；核帧数与声画时长与成品相同"""
+    src = out or OUT / NAME
+    dst = OUT / (Path(src).stem + '_1080p预览.mp4')
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-vf', 'scale=1920:1080:flags=lanczos', '-c:v', 'libx264', '-crf', '20',
+                    '-preset', 'medium', '-c:a', 'copy', '-movflags', '+faststart', str(dst)], check=True)
+    pr = lambda f, k: subprocess.run(['ffprobe', '-v', 'error', '-select_streams', k, '-show_entries', 'stream=duration,nb_frames,width',
+                                      '-of', 'csv=p=0', str(f)], capture_output=True, text=True).stdout.strip()
+    a, b = pr(src, 'v').split(','), pr(dst, 'v').split(',')
+    if a[2] != b[2] or abs(float(a[1]) - float(b[1])) > 0.05 or b[0] != '1920': die(f'预览与成品不符：{a} / {b}')
+    print('1080p 预览：', dst)
 
 
 def verify(out, T, total, fr):

@@ -283,6 +283,16 @@ def leak_check(s, htm):
 
 # 换上六级的部分，其余全用专八引擎
 base.D, base.OUT, base.NAME, base.Q = D, OUT, NAME, {'gap_answers': []}
+base.LIMIT = True                       # 六级原音约 −20 LUFS：整体增益到 −16 + 前瞻限幅（专八引擎里的通用功能）
+
+
+def sha_ok(mp3):
+    """原音只认老师那份（协调会话审 5）：sha256 必须在 原始材料/SHA256SUMS 里"""
+    import hashlib
+    sha = hashlib.sha256(Path(mp3).read_bytes()).hexdigest()
+    if sha not in {l.split()[0] for l in (HERE.parent / '原始材料/SHA256SUMS').read_text().splitlines() if l.strip()}:
+        die(f'{mp3} 的 sha256 不在 原始材料/SHA256SUMS 里')
+    return sha
 base.states, base.page, base.leak_check = states, page, leak_check
 
 
@@ -320,4 +330,8 @@ if __name__ == '__main__':
     elif c == 'timeline': timeline(sys.argv[3])
     elif c == 'layout': layout()
     elif c == 'stills': base.stills('--sample' in sys.argv)
-    elif c == 'video': base.video(sys.argv[3], '--试跑' in sys.argv)
+    elif c == 'video':
+        sha_ok(sys.argv[3])
+        if CUT: base.CUT_END = json.loads((D / '时间轴.json').read_text('utf-8'))['audioEnd']
+        base.video(sys.argv[3], '--试跑' in sys.argv)
+    elif c == 'preview': base.preview()
