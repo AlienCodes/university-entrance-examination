@@ -48,4 +48,31 @@ six = (R / '六级/听力/tools/听力视频.py').read_text('utf-8')
 st = 'base.ORIGINAL = True' in six and 'base.LIMIT = True' not in six
 print(('✅' if st else '❌'), '六级听力视频.py 开原音模式、不开限幅')
 if not st: bad.append('六级配置')
+# 铁律 25：还在给原声做增益 / 限幅的旧引擎只许减少；别的程序再调用原音音轨的 limit（或 limited）就报
+LEGACY = {'专八/听力/原文/tools/原音音轨.py': '专八听力原文精读、六级听力精读音轨：−16 LUFS + 限幅、24 kHz 单声道、压缩停顿（已发布不追溯）',
+          '专八/听力/tools/听力视频.py': '默认模式（专八 2025 听力视频）整体增益到 −16、48 kHz；六级开 ORIGINAL'}
+
+
+def raw_gain_users(root):
+    out = []
+    for f in root.rglob('*.py'):
+        rel = f.relative_to(root).as_posix()
+        if rel.startswith(('tools/防复发/', '.git/')) or '/scratch' in rel: continue
+        try: s = f.read_text('utf-8')
+        except Exception: continue
+        if '原音音轨' in s and re.search(r'\.limit\(|\blimited\(', s) and rel not in LEGACY: out.append(rel)
+    return out
+
+
+import re
+got = raw_gain_users(R); ok = not got
+print(('✅' if ok else '❌'), '铁律 25：除登记的旧引擎外，没有程序给原声做限幅', '→', got or '0 处')
+if not ok: bad.append('原声限幅新用户')
+for rel in LEGACY:
+    if not (R / rel).exists(): print('❌ LEGACY 里的文件已不存在（只许减少：从 LEGACY 删掉）', rel); bad.append('LEGACY 过期')
+with tempfile.TemporaryDirectory() as d:          # 雷：新程序调用原音音轨的 limit 必须报
+    (Path(d) / 'x').mkdir(); (Path(d) / 'x/新引擎.py').write_text("yy = load('原音音轨.py')\ny = yy.limit(a, sr)\n", 'utf-8')
+    got = raw_gain_users(Path(d)); ok = got == ['x/新引擎.py']
+    print(('✅' if ok else '❌'), '雷：新程序调用原声限幅', '→', got)
+    if not ok: bad.append('雷失效')
 print('原音不动双向验证', '通过' if not bad else f'失败 {bad}'); sys.exit(1 if bad else 0)
