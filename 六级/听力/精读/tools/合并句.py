@@ -116,9 +116,12 @@ def one(sid, fixes):
     moved = 0
     touched = {j for j in range(len(new)) if [i for i, o in enumerate(owner) if o == j] != [] and
                (sum(o == j for o in owner) > 1 or new[j] != old[owner.index(j)])}
-    for j, (_, zh, es) in enumerate(nb):
-        if zh is None:
-            raise SystemExit(f'{sid}：新第 {j + 1} 句没有对应的旧句（{new[j][:40]}）')
+    for j in range(len(nb)):
+        _, zh, es = nb[j]
+        if zh is None:                    # 一句拆成两句：后一半先写“（待译）”，词条按所在句挪过来，中文人工补（标注检查会拦）
+            nb[j][1] = zh = '（待译）'
+            touched |= {j, j - 1, j + 1}
+            print(f'{sid}：新第 {j + 1} 句是拆出来的，中文待补：{new[j][:60]}')
         if j not in touched:
             continue
         for e in list(es):
@@ -132,7 +135,7 @@ def one(sid, fixes):
                         break
     changes = [(j + 1, sorted(k + 1 for k, o in enumerate(owner) if o == j)) for j in range(len(new))]
     for j, ks in changes:
-        if len(ks) > 1 or new[j - 1] != old[ks[0] - 1]:
+        if len(ks) != 1 or new[j - 1] != old[ks[0] - 1]:
             print(f'{sid}：新 {j} ← 旧 {ks}：{new[j - 1][:70]}')
     txt = '\n'.join(head).rstrip('\n') + '\n' + ''.join(f'{k} {zh}\n= {" | ".join(es)}\n' for k, zh, es in nb)
     f.write_text(txt, 'utf-8')
