@@ -1,0 +1,99 @@
+{
+ "candidate": {
+  "id": "g1",
+  "mode": "gptsovits",
+  "weights": "teacher",
+  "split": "mark",
+  "gap_max": 0.45
+ },
+ "take": 12,
+ "part": 0,
+ "split": "mark",
+ "segments": [
+  {
+   "id": "s1z~1",
+   "sec": 6.14,
+   "compute": 35.2,
+   "sr": 32000,
+   "cap": 228,
+   "tries": 1,
+   "rss_mb": 5218
+  },
+  {
+   "id": "s1z~2",
+   "sec": 1.26,
+   "compute": 6.0,
+   "sr": 32000,
+   "cap": 76,
+   "tries": 1,
+   "rss_mb": 5252
+  },
+  {
+   "id": "s1z~3",
+   "sec": 4.54,
+   "compute": 12.6,
+   "sr": 32000,
+   "cap": 161,
+   "tries": 1,
+   "rss_mb": 5413
+  }
+ ],
+ "engine": "GPT-SoVITS v2ProPlus @ abe9843 (CPU)",
+ "refs": {
+  "Chinese": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  },
+  "English": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  }
+ },
+ "rss_after_load_mb": 3574,
+ "rss_peak_mb": 5413,
+ "total_compute": 61.0,
+ "buzz_top": [
+  [
+   21000,
+   9.2
+  ],
+  [
+   13500,
+   9.1
+  ],
+  [
+   18000,
+   9.1
+  ],
+  [
+   16500,
+   9.1
+  ],
+  [
+   15000,
+   9.1
+  ]
+ ],
+ "buzz_tone": [
+  10163,
+  1.4
+ ],
+ "chain": {
+  "passed": true,
+  "loudness": {
+   "integrated_lufs": -16.4,
+   "sentence_max_dev_lu": 0.0,
+   "short_term_std_lu": 0.97,
+   "peak_dbfs": -1.69,
+   "clause_nb_min_lu": -0.31,
+   "clause_tail_min_db": -0.64,
+   "breath_count": 0
+  }
+ }
+}
