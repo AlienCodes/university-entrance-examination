@@ -1,6 +1,6 @@
 name: 讲解配音（GPT-SoVITS 专属模型，CPU）
 # 老师用声音分身 VoiceTwin 训练的 GPT-SoVITS v2ProPlus 模型（或底模）在免费 CPU 机器上合成讲解配音。
-# 任务清单与 Qwen 同一格式（候选 mode: gptsovits），输出同一结构，提交到分支 gram-tts-out 的 runs/<任务>-sovits-<运行号>/。
+# 任务清单与 Qwen 同一格式（候选 mode: gptsovits），输出同一结构，提交到分支 gram-tts-out 的 runs/<任务>-<运行号>/。
 # 触发：推送 高考语法填空/tts/当前任务_sovits.txt（底模任务），或 workflow_dispatch（老师的模型：model_url 填云盘链接）。
 # 模型 zip 只在 fetch 任务里取一次（Range 远程读，不行再整包下载），传成 artifact sovits-model 给合成分片（老师 2026-11-04：模型包是公共资源，可以公开）；
 #       gram-tts-out 只收合成结果（collect 只下 wav-*；合成后 取模型.py --check-out 核对 out/ 里没有模型、参考录音）。
@@ -159,7 +159,7 @@ jobs:
       - name: 提交到 gram-tts-out
         run: |
           T=$(basename "${{ needs.plan.outputs.task }}" .json)
-          D="runs/${T}-sovits-${{ github.run_number }}"
+          D="runs/${T}-${{ github.run_number }}"      # 与 Qwen 同名格式：合成完整性.task_of 按“任务-运行号”找任务清单
           mkdir repo && cd repo && git init -q
           git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
           if git fetch -q --depth=1 origin gram-tts-out; then git checkout -q -b gram-tts-out FETCH_HEAD; else git checkout -q --orphan gram-tts-out; fi
