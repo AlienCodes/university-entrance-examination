@@ -234,6 +234,7 @@ def guide_chapter(n):
                                 '⑤ 回到“原文逐句对照”，边听录音边看黄色的答案出处，最后用《听写本》把关键词默写一遍。'])
             + f"<div class='box'><h3>同义替换的五种类型</h3>{syn}</div><div class='box'><h3>错误选项的五种陷阱</h3>{wr}</div>"
             + box('配套免费视频', ['每一套都有“视频版真题考试”（按考场节奏播放、题与题之间留出作答时间）和“逐句精读”视频，在 B 站（哔哩哔哩）搜索「朋克英语」免费观看，与本讲义的原文、译文完全一致。'])
+            + f"<p style='margin-top:6mm;text-align:center;font-weight:700;color:var(--blue)'>{esc(BRAND + '出品 · 配套视频 B 站（哔哩哔哩）搜索「' + BRAND + '」免费观看')}</p>"
             + '</section>')
 
 
@@ -358,17 +359,24 @@ def plan_body(ids, mainpages):
 
 
 # ------------------------------------------------------------------ 生成
+BRAND = '朋克英语'  # 老师 2026-11-04：讲义带品牌（封面“出品”、每页页脚、前言末一句、商品图）
+
+
 def cover(title, sub, note):
-    return J.cover(title, sub, note).replace('CET-6 ENGLISH WRITING', 'CET-6 LISTENING').replace('六级<br>作文', '六级<br>听力')
+    c = J.cover(title, sub, note).replace('CET-6 ENGLISH WRITING', 'CET-6 LISTENING').replace('六级<br>作文', '六级<br>听力')
+    brand = (f"<div style='position:absolute;left:34mm;bottom:30mm;font-size:16pt;font-weight:700;letter-spacing:.12em;color:var(--blue)'>"
+             f"{BRAND}<span style='font-weight:400;color:var(--ink2);margin-left:3mm'>出品</span></div>")
+    assert c.endswith('</div></div>')
+    return c[:-6] + brand + '</div>'
 
 
 def two_pass(pg, tmp, make, title, out_name):
     """目录页码两遍排版：第一遍量出各章起始页，带页码再排一遍，再量必须相同。"""
     body, entries, keys = make({})
-    J.render(pg, body, title, tmp / 'b.pdf', tmp)
+    J.render(pg, body, f'{title} · {BRAND}', tmp / 'b.pdf', tmp)
     p1, _ = J.page_of(tmp / 'b.pdf', keys)
     body, entries, keys = make(p1)
-    J.render(pg, body, title, tmp / 'b.pdf', tmp)
+    J.render(pg, body, f'{title} · {BRAND}', tmp / 'b.pdf', tmp)
     p2, n = J.page_of(tmp / 'b.pdf', keys)
     if p1 != p2 or len(p2) != len(keys):
         sys.exit(f'{title}：目录带页码后起始页变了或找不到：{p1} → {p2}')
@@ -421,7 +429,7 @@ def build(what, ids):
                 cov(NAMES[key].replace('六级听力', '六级听力 '), f'{y} · 共 {len(ids)} 套真题原文', '每句挖出一个关键词，边听边写' if not ans else '编号对应听写本里的横线')
                 two_pass(pg, tmp, lambda p, a=ans: dict_body(ids, a, p), NAMES[key], NAMES[key])
         if what in ('plan', 'all'):
-            J.render(pg, plan_body(ids, mainpages), NAMES['plan'], tmp / 'b.pdf', tmp)
+            J.render(pg, plan_body(ids, mainpages), f"{NAMES['plan']} · {BRAND}", tmp / 'b.pdf', tmp)
             out = OUT / f"{NAMES['plan']}.pdf"
             out.write_bytes((tmp / 'b.pdf').read_bytes())
             J.font_check(out)

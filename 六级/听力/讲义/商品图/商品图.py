@@ -132,7 +132,7 @@ x-nb{white-space:nowrap}
 
 
 def head(title, sub, y=44):
-    return (f'<div class="ab" style="left:50px;top:{y}px"><span class="top">六级听力真题 30 套精讲 · 全套讲义</span></div>'
+    return (f'<div class="ab" style="left:50px;top:{y}px"><span class="top">朋克英语 出品 · 六级听力真题 30 套精讲 · 全套讲义</span></div>'
             f'<div class="ab h1" data-k="h1" style="left:48px;top:{y + 50}px">{title}</div>'
             + (f'<div class="ab sub" data-k="sub" style="left:50px;top:{y + 122}px">{sub}</div>' if sub else ''))
 
@@ -184,6 +184,7 @@ def p_all():
 <div class="ab ck" data-k="six" data-min="{MIN_TITLE}" style="left:50px;top:52px;font:900 {fs(74)}/1.1 Black"><span style="color:{HOT}">六级</span>听力 真题<span style="color:{YEL}">{NS}</span>套</div>
 <div class="ab ck" data-k="hook" data-min="{MIN_HOOK}" style="left:54px;top:148px;font:900 {fs(40)}/1.2 Black">全套讲义 · 每道题都讲透</div>
 <div class="ab ck" data-k="list" data-min="{MIN_SELL}" style="left:54px;top:214px;font:700 {fs(25)}/1.2 Bold;color:#e9efe9">这一套里有 <span style="color:{YEL}">{len(FILES) + 1}</span> 样东西：</div>
+<div class="ab ck" data-k="brand" data-min="{MIN_SELL}" style="right:56px;top:214px;font:900 {fs(25)}/1.2 Black;color:{YEL}">朋克英语 出品</div>
 <div class="ab" data-k="seal" data-min="{MIN_SELL}" style="left:790px;top:40px;width:160px;height:160px;transform:rotate(8deg);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;color:#fff">
 <i style="position:absolute;inset:0;border-radius:50%;background:{RED};filter:url(#rough);box-shadow:0 8px 0 rgba(0,0,0,.3)"></i>
 <i style="position:absolute;inset:10px;border-radius:50%;border:4px dashed rgba(255,255,255,.75)"></i>
