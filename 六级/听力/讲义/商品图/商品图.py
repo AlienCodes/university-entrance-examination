@@ -40,6 +40,12 @@ _src = (REPO / '六级作文/讲义/商品图/商品图.py').read_text('utf-8')
 _lit = {t.id: n.value.value for n in ast.parse(_src).body if isinstance(n, ast.Assign) and isinstance(n.value, ast.Constant)
         for t in n.targets if isinstance(t, ast.Name)}
 CHECK_JS = _lit['CHECK_JS']
+# 书名等 .fit 元素的文字不许超出所在的书（封面）边框（2026-11-04：书名溢出封面，原检查没管）
+FIT_JS = r'''() => { const out = [];
+  document.querySelectorAll('.fit').forEach(e => { const p = e.parentElement.getBoundingClientRect(), r = document.createRange();
+    r.selectNodeContents(e); for (const b of r.getClientRects()) if (b.width && (b.left < p.left - 0.5 || b.right > p.right + 0.5 || b.top < p.top - 0.5 || b.bottom > p.bottom + 0.5)) {
+      out.push('文字超出封面：' + e.textContent.slice(0, 12)); break; } });
+  return out; }'''
 BANNED = ast.literal_eval(re.search(r'^BANNED = (\[.*\])$', _src, re.M).group(1))
 esc = J.esc
 
@@ -63,7 +69,7 @@ NV = sum(1 for e in VS.values() if len(e['sets']) >= 3)
 TIER = [sum(1 for e in VS.values() if lo <= len(e['sets']) <= hi) for _, lo, hi in K.TIERS]
 NB = sum(1 for s in SETS for g in M.load(s)['groups'] for b in K.blanks(g['sents'], K._zipf()) if b)
 BOOK = ['#ffe46b', '#ffb4cf', '#a8e6c8', '#bcd4ff', '#ffd2a8', '#f4f1e8']
-BOOKT = ['听力真题30套精讲', '同义替换手册', '高频词手册', '听写本', '听写本答案', '30天刷题计划']
+BOOKT = [('听力真题', f'{NS}套精讲'), ('同义替换', '手册'), ('高频词', '手册'), ('听写本',), ('听写本', '答案'), ('30天', '刷题计划')]  # 封面书名分行，放进书里（FIT_JS 查）
 FILES = [('main', '真题 30 套精讲'), ('syn', '同义替换手册'), ('vocab', '高频词手册'), ('dict', '听写本'), ('dans', '听写本答案'), ('plan', '30 天刷题计划')]
 
 
@@ -170,7 +176,7 @@ def p_all():
                    f'box-shadow:8px 10px 0 rgba(0,0,0,.4);transform:rotate({(-3, 2, -2, 3, -2, 2)[i]}deg);border-left:12px solid rgba(0,0,0,.22);'
                    f'display:flex;flex-direction:column;justify-content:center;padding:0 12px;color:{INK}">'
                    f'<div class="lat" style="font-size:15px;letter-spacing:.12em;color:{INK2}">CET-6</div>'
-                   f'<div style="font:900 31px/1.2 Black;margin-top:6px">{esc(BOOKT[i])}</div></div>')
+                   f'<div class="fit" style="font:900 31px/1.2 Black;margin-top:6px;white-space:nowrap">{"<br>".join(esc(t) for t in BOOKT[i])}</div></div>')
             sub = f'<span class="lat">{PG[k]}</span> 页'
         cards += (pic + f'<div class="ab ck" data-k="c{i}" style="left:{x}px;top:{y + 226}px;width:218px;text-align:center;font:900 24px/1.25 Black">{esc(name)}</div>'
                   f'<div class="ab" data-k="s{i}" style="left:{x}px;top:{y + 262}px;width:218px;text-align:center;font:700 20px/1 Bold;color:{YEL}">{sub}</div>')
@@ -297,7 +303,7 @@ def render(br, name, body, board, out=True):
     pg.evaluate('document.fonts.ready.then(() => [...document.fonts].forEach(f => f.load()))')
     pg.evaluate('document.fonts.ready')
     pg.wait_for_timeout(500)
-    bad = pg.evaluate(CHECK_JS, board) + pg.evaluate(J.WRAP_JS) + [f'禁用词「{w}」' for w in banned(body)]
+    bad = pg.evaluate(CHECK_JS, board) + pg.evaluate(FIT_JS) + pg.evaluate(J.WRAP_JS) + [f'禁用词「{w}」' for w in banned(body)]
     png = WORK / f'{name}.png'
     pg.screenshot(path=str(png))
     pg.close()
@@ -325,6 +331,9 @@ def selftest(br):
     res = render(br, '自检_编号', p_sets().replace('</body>', '<div class="ab" data-k="zz" style="left:400px;top:960px">02 / 09</div></body>'), False, out=False)
     if not any('页码式编号' in x for x in res):
         bad.append('“02 / 09”编号没报出')
+    res = render(br, '自检_溢出', p_all().replace('white-space:nowrap">', 'white-space:nowrap">很长很长很长的书名', 1), True, out=False)
+    if not any('文字超出封面' in x for x in res):
+        bad.append('书名溢出封面没报出')
     if not year_problems('2018—2026') or not year_problems('2026.6 已更新') or year_problems('2026—2018 · 2026 已更新'):
         bad.append('年份写法检查失效')
     if banned('全网第一 保过') != ['第一', '保过']:

@@ -57,7 +57,7 @@ J.CSS += r"""
 .rw>b{display:inline-block;min-width:17mm;font-size:8.8pt;color:#fff;border-radius:1.2mm;padding:0 1.6mm;margin-right:2mm;text-align:center}
 .yj>b{background:var(--blue)}.jg>b{background:var(--green)}.tb>b{background:#b7791f}.cw>b{background:var(--berry)}
 .yj .en{font-family:'EB Garamond','Noto Sans SC',serif;font-size:11pt;background:linear-gradient(var(--hy),var(--hy)) 0 89.7%/100% 42% no-repeat}
-.yj i{font-style:normal;font-size:8.4pt;color:var(--mute);margin-left:1mm}
+.yj i{font-style:normal;font-size:8.4pt;color:var(--mute);margin-left:1mm;white-space:nowrap}
 .jg span{font-family:Apos,'LXGW WenKai','Noto Sans SC';color:var(--ink)}
 .tb .p{display:block;margin:.3mm 0 .3mm 19mm;font-family:'EB Garamond','Noto Sans SC',serif;font-size:10.8pt}.tb .p u{text-decoration:none;color:var(--green);font-weight:600}.tb .p s{text-decoration:none;color:var(--blue)}
 .tag{display:inline-block;font-style:normal;font-size:8pt;border-radius:1.2mm;padding:0 1.4mm;margin:0 1mm;line-height:1.5;vertical-align:.08em}
