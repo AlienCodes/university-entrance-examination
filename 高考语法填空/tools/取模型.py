@@ -107,10 +107,19 @@ def take(zpath, out):
     import csv
     import io
     rows = list(csv.DictReader(io.StringIO((out / 'workspace/transcripts.csv').read_text('utf-8-sig'))))
-    en = [r for r in rows if r.get('lang') == 'en' and str(r.get('keep', '1')) == '1']
-    print('transcripts.csv 共', len(rows), '条，英文', len(en), '条', flush=True)
+    import re as _re
+
+    def latin(t):        # 按文字判：没有汉字、字母占非空白字符的九成以上（VoiceTwin 的 lang 列对中英混说不一定标 en）
+        t = t.strip()
+        return bool(t) and not _re.search(r'[一-鿿]', t) and len(_re.findall(r'[A-Za-z]', t)) >= 0.9 * len(_re.sub(r"[\s.,!?;:'’\"-]", '', t))
+    en = [r for r in rows if (r.get('lang') == 'en' or latin(r.get('text', ''))) and str(r.get('keep', '1')) == '1']
+    print('transcripts.csv 共', len(rows), '条，lang 列', dict(Counter(r.get('lang') for r in rows)), '；按文字是英文的', len(en), '条', flush=True)
     ok = [r for r in en if 3.5 <= float(r.get('duration') or 0) <= 9.0 and r['text'].strip().endswith('.')
           and not any(ch.isdigit() for ch in r['text']) and len(r['text'].split()) >= 6]
+    if not ok:            # 没有完全合要求的：放宽到 3—10 秒（官方参考上限）、≥ 4 个词、不限结尾标点
+        ok = [r for r in en if 3.0 <= float(r.get('duration') or 0) <= 10.0 and len(r['text'].split()) >= 4
+              and not any(ch.isdigit() for ch in r['text'])]
+        print('英文切片放宽条件后', len(ok), '条', flush=True)
     ok.sort(key=lambda r: abs(float(r['duration']) - 6.0))
     clips = {parts(n)[-1]: n for n in names if n.startswith(pref + 'clips/')}
     ent = []
