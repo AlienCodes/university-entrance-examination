@@ -309,6 +309,16 @@ def cet6_setup(sid, mp3):
             i = j
         i += 1
     R = [[t, w[1], w[2]] for w in W for t in toks(w[0])]
+    # 订正里一对一换掉的词（Sara → Sarah、Roger → Rogers、Thorn → Foreign）：“识别词”也照换，只换新文字里已经没有的旧词
+    T6 = {t for p in read_text().get(sid, []) for x in p for t in toks(x)}
+    for f in fx:
+        o_, n_ = toks(f[0]), toks(f[1])
+        if len(o_) == len(n_):
+            for a_, b_ in zip(o_, n_):
+                if a_ != b_ and a_ not in T6:
+                    for r in R:
+                        if r[0] == a_:
+                            r[0] = b_
     WIN[sid] = (0.0, len(y) / sr + 1)
     yy, mm, n = sid[:4], int(sid[4:6]), sid[-1]
     return R, y, sr, (f'{yy}年{mm}月大学英语六级 第{n}套', 'Part II Listening', int(yy), mm, int(n))      # passage 用英文斜体字体，只放英文（踩坑 64）
