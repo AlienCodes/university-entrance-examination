@@ -125,11 +125,24 @@ def run(sid):
             review.append(f'第 {n} 题 抽到 {ans}，答案句重合 {sc}：[{n}]{marks.get(n, "")[:120]}')
         out.append([stems.get(n, ''), [o[c] for c in 'ABCD'], ans])
     if len(out) != 25: bad.append(f'题数 {len(out)}')
+    # 套与音频按内容核（协调会话审 4）：每题 4 个选项的实词在本段原文里出现的比例；配错套时整套接近 0
+    blk_txt = {}
+    for b, (q1, q2) in enumerate(SEC):
+        lo = text.find(f'Questions {q1} to') if b == 0 else text.find(f'Questions {SEC[b - 1][0]} to')
+        hi = text.find(f'Questions {q1} to')
+        blk_txt[b] = toks(text[max(lo, 0) if b else 0:hi if hi > 0 else None])
+    score = []
+    for b, (q1, q2) in enumerate(SEC):
+        for q in range(q1, min(q2, len(out)) + 1):
+            w = set().union(*(toks(x) for x in out[q - 1][1]))
+            score.append(round(len(w & blk_txt[b]) / max(len(w), 1), 2))
+    med = sorted(score)[len(score) // 2] if score else 0
+    if med < 0.3: bad.append(f'选项实词在原文里出现的比例中位数 {med}（< 0.3，可能配错套）：{score}')
     bad += [f'待核答案 {r}' for r in review]
     if any(v is None for v in instr.values()): bad.append(f'说明缺 {instr}')
     (sd / '题目.json').write_text(json.dumps({'说明': {k: v for k, v in instr.items()}, 'sections': SEC, 'questions': out},
                                             ensure_ascii=False, indent=1), 'utf-8')
-    print(sid, '25 题' if not bad else '', f'{sum(1 for q in out if q[2])} 个答案', ''.join(q[2] for q in out))
+    print(sid, f'内容配对中位数 {med}', '25 题' if not bad else '', f'{sum(1 for q in out if q[2])} 个答案', ''.join(q[2] for q in out))
     for b in bad: print('  ', b)
     return 1 if bad else 0
 

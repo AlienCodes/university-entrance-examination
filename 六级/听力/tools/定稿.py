@@ -19,7 +19,24 @@ NUM = {w: str(i) for i, w in enumerate('zero one two three four five six seven e
                                        'fifteen sixteen seventeen eighteen nineteen twenty'.split())}
 
 
+EQ = {"okay": "ok", "were": "were"}
+CONTR = {"we're": "we are", "you're": "you are", "they're": "they are", "i'm": "i am", "it's": "it is", "that's": "that is",
+         "don't": "do not", "doesn't": "does not", "can't": "cannot", "won't": "will not", "isn't": "is not", "aren't": "are not",
+         "i've": "i have", "we've": "we have", "you've": "you have", "they've": "they have", "i'll": "i will", "we'll": "we will",
+         "there's": "there is", "what's": "what is", "let's": "let us", "didn't": "did not", "wasn't": "was not", "i'd": "i would"}
+DICT = set(l.strip().lower() for l in open('/usr/share/dict/american-english', encoding='utf-8', errors='ignore')) \
+    if Path('/usr/share/dict/american-english').exists() else None
+
+
+def realword(w):
+    w = re.sub(r"^[^A-Za-z]+|[^A-Za-z']+$", '', w.replace('’', "'")).lower()
+    return bool(w) and (w in DICT or w.rstrip('s') in DICT or w.replace("'", '') in DICT)
+
+
 def n(w):
+    k = re.sub(r"[^a-z']", '', w.lower().replace('’', "'"))
+    if k in CONTR: return CONTR[k].replace(' ', '')
+    w = EQ.get(k, w)
     w = re.sub(r"[^a-z0-9]", '', w.lower().replace('’', "'").replace('&', 'and').replace('%', 'percent'))
     return NUM.get(w, w)
 
@@ -66,7 +83,10 @@ def run(sid):
     A = json.loads((sd / '识别.json').read_text('utf-8'))
     R = ocr_words((sd / '解析原文.txt').read_text('utf-8'))
     amap, _ = mapping(W, [x[0] for x in A])
-    rule = json.loads((sd / '待核裁定.json').read_text('utf-8')) if (sd / '待核裁定.json').exists() else {}
+    global LAYER
+    LAYER = json.loads((sd / '解析OCR.json').read_text('utf-8'))['方式'] == 'text'
+    if DICT is None: sys.exit('停止：缺英文词典 /usr/share/dict/american-english（apt install wamerican）')
+    rule = {k: v for k, v in json.loads((sd / '待核裁定.json').read_text('utf-8')).items() if not k.startswith('_')} if (sd / '待核裁定.json').exists() else {}
 
     def aspan(i1, i2):
         """otter[i1:i2] 对应的识别词（按两端最近的已对齐词夹出来）"""
@@ -89,6 +109,9 @@ def run(sid):
             edits[(i1, i2)] = rule[key].split(); cnt['已裁定'] += 1
         elif J(Rr) == J(Aa) and Rr:
             edits[(i1, i2)] = Rr; cnt['按原文改'] += 1
+        elif J(O) == J(Aa) and Rr and (LAYER or (DICT is not None and all(realword(x) for x in Rr) and sim(J(Rr), J(Aa)) >= 0.6)):
+            # 两个识别器常犯同一种错（同音词、单复数、专名拼写）：原文是真词且拼写很近、或原文是文字层（没有 OCR 错）→ 不自动判，待核
+            todo.append({'key': key, 'transcripts': ' '.join(O), '原文': ' '.join(Rr), '识别': ' '.join(Aa), '上下文': ctx, '类': '二识别同原文异'}); cnt['待核'] += 1
         elif J(O) == J(Aa):
             cnt['原文OCR错'] += 1; kept.append({'transcripts': ' '.join(O), '原文': ' '.join(Rr)})
         elif Rr and Aa and sim(J(Rr), J(Aa)) >= 0.75 and sim(J(Rr), J(Aa)) > sim(J(O), J(Aa)) + 0.2:
