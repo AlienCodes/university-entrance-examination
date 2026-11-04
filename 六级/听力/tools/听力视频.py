@@ -194,10 +194,10 @@ CSS6 = """
 .pl .r{font-size:var(--pf,40px);line-height:calc(var(--pf,40px) * 1.32)}
 .ql .opt{font-size:var(--of,64px);line-height:calc(var(--of,64px) * 1.62)}
 .stem{font-size:var(--sf,66px)}
-.ans .qg{font-size:38px;line-height:50px;padding:4px 0 5px;flex-wrap:nowrap}
-.ans .n{min-width:64px}
-.ans .a{white-space:nowrap;overflow:hidden}
-.ans b{font-weight:700;width:52px;text-align:center;border:2px solid #000;line-height:42px;align-self:center;margin-right:14px;flex:none}
+.ans{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.ans .qg{font-size:var(--af,38px);line-height:calc(var(--af,38px) * 1.32);padding:calc(var(--af,38px) * 0.24) 0 calc(var(--af,38px) * 0.26);flex-wrap:nowrap}
+.ans .n{min-width:calc(var(--af,38px) * 1.5)}
+.ans b{font-weight:700;width:calc(var(--af,38px) * 1.37);text-align:center;border:2px solid #000;line-height:calc(var(--af,38px) * 1.1);align-self:flex-start;margin:calc(var(--af,38px) * 0.11 - 2px) 14px 0 0;flex:none}
 .ans{grid-template-rows:repeat(8,auto)}
 .ans.c10{grid-template-rows:repeat(5,auto)}
 .instr{font-size:var(--if,52px)}
@@ -259,6 +259,8 @@ def page(s):
         rng = range(1, 16) if k == 'ansA' else range(16, 26)
         lab = 'Section A · B（1—15）' if k == 'ansA' else 'Section C（16—25）'
         top = top.replace('</b>', f'</b><span class="st">参考答案：{lab}</span>', 1)
+        af = s.get('fit') or LAY['ans'][k]                   # 字号由 layout 实测选定（版式.json）
+        var = f'--af:{af}px'
         items = ''
         for i in rng:
             st, o, a = Q['questions'][i - 1]
@@ -271,14 +273,14 @@ def page(s):
 
 
 LAYF = D / '版式.json'
-LAY = json.loads(LAYF.read_text('utf-8')) if LAYF.exists() else {'plist': {}, 'q': {}}
+LAY = json.loads(LAYF.read_text('utf-8')) if LAYF.exists() else {'plist': {}, 'q': {}, 'ans': {}}
 
 
 def layout():
     """每段选项一览、每道题：从大字号往下试（选项一览每题先试两栏），专八排版检查 + 题间空隙 0 处的第一个方案写进 版式.json"""
     from playwright.sync_api import sync_playwright
     exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
-    res = {'plist': {}, 'q': {}}
+    res = {'plist': {}, 'q': {}, 'ans': {}}
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
         pg = br.new_page(viewport={'width': 1920, 'height': 1080})
@@ -300,9 +302,13 @@ def layout():
                         if not bad({'kind': 'q', 'n': n, 'st': '请在答题卡上作答', 'cd': 13, 'cdl': '作答', 'fit': [of, sf]})), None)
             if not got: die(f'第 {n} 题字号降到 40 还放不下')
             res['q'][str(n)] = got
+        for k in ('ansA', 'ansB'):                            # 答案一览：从大往下试，下限同选项一览（28）
+            got = next((af for af in range(46, 27, -1) if not bad({'kind': k, 'fit': af})), None)
+            if not got: die(f'答案一览 {k} 字号降到 28 还放不下')
+            res['ans'][k] = got
         br.close()
     LAYF.write_text(json.dumps(res, ensure_ascii=False), 'utf-8')
-    print(SID, '版式：选项一览字号', {k: v[0] for k, v in res['plist'].items()}, '单题选项字号', sorted({v[0] for v in res['q'].values()}))
+    print(SID, '版式：选项一览字号', {k: v[0] for k, v in res['plist'].items()}, '单题选项字号', sorted({v[0] for v in res['q'].values()}), '答案一览字号', res['ans'])
 
 
 def leak_check(s, htm):
@@ -385,6 +391,8 @@ def selftest():
     a3 = Q['questions'][2][1][0]
     cases = [('正常（单题）', page(good), good, False), ('正常（选项一览）', page(pl), pl, False),
              ('正常（说明）', page({'kind': 'instr', 'sec': 'C'}), {'kind': 'instr', 'sec': 'C'}, False),
+             ('正常（答案一览）', page({'kind': 'ansA'}), {'kind': 'ansA'}, False),
+             ('答案一览长答案出画面', page({'kind': 'ansA'}).replace(esc(Q['questions'][8][1]['ABCD'.index(Q['questions'][8][2])]), 'An extremely long answer that keeps going on and on. ' * 12, 1), {'kind': 'ansA'}, True),
              ('考试画面混进参考答案标题', page(good).replace('Question 3', 'Question 3 参考答案：'), good, True),
              ('考试画面带答案样式', page(pl).replace('class="opt"', 'class="ok"', 1), pl, True),
              ('选项太长溢出', page(good).replace(esc(a3), ' '.join([esc(a3)] * (200 // len(a3) + 2)), 1), good, True),      # 按长度造（≥ 200 字母），短选项（The food.）重复 4 遍放得下

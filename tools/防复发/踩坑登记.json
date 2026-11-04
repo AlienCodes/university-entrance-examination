@@ -4122,6 +4122,60 @@
    "status": "自动拦截+有双向验证",
    "gap": "mp3 时长那一半没有单独的双向验证（编码前 base.video 核时长会拦）",
    "fix": ""
+  },
+  {
+   "id": "119",
+   "title": "六级听力答案一览屏（ansA / ansB）没有 FIT：答案 nowrap + overflow:hidden、字号写死 38，长答案把两栏网格撑宽，右栏整栏出画面（运行 41842756660：22 套报 41 处），本机样片只跑前 4 题（CET6_CUT=4）没排到答案屏",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "六级/听力/tools/听力视频.layout（答案一览从 46 往下试到 28，CHECK_JS + QGAP_JS 0 处，写进 版式.json 的 ans）；page 答案可换行、两栏 minmax(0,1fr)、内边距随字号；--自检 加「正常（答案一览）」「答案一览长答案出画面」",
+     "runs": "听力视频.py layout / --自检 / stills",
+     "evidence": "30 套本机实测 ansA 34—43、ansB 39—46，0 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/答案一览字号.py",
+     "expect": "exit 0",
+     "needs": "ttsenv"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": ""
+  },
+  {
+   "id": "120",
+   "title": "六级听力自检的“选项太长溢出”雷按数据造（第 3 题 A 重复 4 遍）：202512-2 第 3 题 A 只有 The food.，重复 4 遍放得下，雷失效、自检退出 1（运行 41842756660 的 202506-1、202512-2、201906-1）",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "六级/听力/tools/听力视频.selftest：雷按长度造（≥ 200 字母），与题目数据无关",
+     "runs": "听力视频.py --自检（工作流每套都跑）",
+     "evidence": "202512-2 自检全过"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "CET6_OUT=/tmp/cet6selftest /opt/ttsenv/bin/python 六级/听力/tools/听力视频.py 202512-2 layout && CET6_OUT=/tmp/cet6selftest /opt/ttsenv/bin/python 六级/听力/tools/听力视频.py 202512-2 --自检; r=$?; rm -f 六级/听力/202512-2/版式.json; exit $r",
+     "expect": "exit 0",
+     "needs": "ttsenv"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "旧雷写法在 202512-2 报“❌ 选项太长溢出”的那一半只有运行记录，没有单独脚本",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
