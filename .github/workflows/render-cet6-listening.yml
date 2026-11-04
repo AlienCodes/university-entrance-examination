@@ -23,6 +23,7 @@ jobs:
         run: echo "ids=$(grep -v '^\s*$' .github/cet6-listening-render.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin]))')" >> "$GITHUB_OUTPUT"
   precheck:
     needs: list
+    if: needs.list.outputs.ids != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
@@ -71,6 +72,7 @@ jobs:
           $P $T $S audio $MP3
   render:
     needs: [list, precheck]
+    if: needs.list.outputs.ids != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     strategy:
@@ -140,6 +142,7 @@ jobs:
       - uses: actions/checkout@v4
         with: {sparse-checkout: .github}
       - uses: actions/download-artifact@v4
+        continue-on-error: true          # 只重跑发布时本次没有新 artifact；齐全与否由下面 plan 核对
         with: {path: art, pattern: 'cet6listen-*'}
       - name: 收之前运行里已通过的套（.github/cet6-listening-collect.txt 每行一个运行号；本次有的不覆盖）
         env: {GH_TOKEN: '${{ github.token }}'}
@@ -152,33 +155,28 @@ jobs:
               gh run download "$rid" -R "$GITHUB_REPOSITORY" -n "$n" -D "art/$n"; echo "收 $rid / $n"
             done
           done
-      - name: 核对 30 套齐全（.github/cet6-listening-all.txt）、发布、下载核 sha256
+      - name: 核对 30 套齐全（.github/cet6-listening-all.txt）、发布（ASCII 资产名 + 中文 label + 文件名清单，踩坑 123）、下载核 sha256
         env: {GH_TOKEN: '${{ github.token }}'}
         run: |
           set -euo pipefail
-          python3 - "$(python3 -c 'import json;print(json.dumps([l.strip() for l in open(".github/cet6-listening-all.txt") if l.strip()]))')" <<'EOF'
-          import hashlib, json, sys, pathlib
-          ids = json.loads(sys.argv[1]); bad = []; names = set()
-          miss = [i for i in ids if not (pathlib.Path('art') / f'cet6listen-{i}' / 'meta.json').exists()]
-          if miss: sys.exit(f'还缺 {len(miss)} 套（不发布）：{miss}')
-          for i in ids:
-              d = pathlib.Path('art') / f'cet6listen-{i}'
-              m = json.loads((d / 'meta.json').read_text('utf-8'))
-              f = d / m['mp4']
-              if hashlib.sha256(f.read_bytes()).hexdigest() != m['mp4_sha256']: bad.append(f'{i} sha256 不符')
-              if f.stat().st_size >= 2 * 1024 ** 3: bad.append(f'{i} 超过 2 GB')
-              if m['mp4'] in names: bad.append(f'{i} 文件名重复')
-              names.add(m['mp4'])
-          if bad: sys.exit('停止：' + '；'.join(bad))
-          print(f'{len(ids)} 套齐全')
-          EOF
+          python3 .github/cet6-listening-publish.py --自检
+          python3 .github/cet6-listening-publish.py plan "$(python3 -c 'import json;print(json.dumps([l.strip() for l in open(".github/cet6-listening-all.txt") if l.strip()]))')" art up
           TAG=cet6-listening-practice
-          gh release view $TAG >/dev/null 2>&1 || gh release create $TAG --target "$GITHUB_REF_NAME" -t "六级听力 视频版真题考试（练习视频）" -n "2018-12 至 2026-06 共 30 套，4K，原音。"
-          for d in art/cet6listen-*; do gh release upload $TAG "$d"/*.mp4 --clobber; done
-          mkdir -p chk && cd chk
-          for d in ../art/cet6listen-*; do
-            n=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['mp4'])" "$d/meta.json")
-            gh release download $TAG -p "$n" --clobber
-            python3 -c "import hashlib,json,sys;m=json.load(open(sys.argv[1]));h=hashlib.sha256(open(m['mp4'],'rb').read()).hexdigest();assert h==m['mp4_sha256'],m['mp4'];print('✅',m['mp4'])" "$d/meta.json"
-            rm -f "$n"
+          gh release view $TAG >/dev/null 2>&1 || gh release create $TAG --target "$GITHUB_REF_NAME" -t "六级听力 视频版真题考试（练习视频）" -n "2018-12 至 2026-06 共 30 套，4K，原音（不调响度、不压缩）。中文文件名见各资产的标签和 cet6-listening-filenames.txt。"
+          # 不在本次清单里的旧资产（如 GitHub 改写过名字的残缺资产）先删掉
+          python3 - "$TAG" <<'EOF2'
+          import json, subprocess, sys
+          want = {r['asset'] for r in json.load(open('up/plan.json'))} | {'cet6-listening-filenames.txt'}
+          have = json.loads(subprocess.run(['gh', 'release', 'view', sys.argv[1], '--json', 'assets'], capture_output=True, text=True, check=True).stdout)['assets']
+          for a in have:
+              if a['name'] not in want:
+                  subprocess.run(['gh', 'release', 'delete-asset', sys.argv[1], a['name'], '-y'], check=True); print('删掉旧资产', a['name'])
+          EOF2
+          python3 -c "import json;[print(r['asset']+'\t'+r['label']) for r in json.load(open('up/plan.json'))]" | while IFS=$'\t' read -r a l; do
+            gh release upload $TAG "up/$a#$l" --clobber
           done
+          gh release upload $TAG up/cet6-listening-filenames.txt --clobber
+          n=$(gh release view $TAG --json assets --jq '.assets|length'); [ "$n" = 31 ] || { echo "资产个数 $n ≠ 31"; exit 1; }
+          mkdir -p chk
+          gh release download $TAG -p 'cet6-listening-*.mp4' -D chk --clobber
+          python3 .github/cet6-listening-publish.py verify up/plan.json chk

@@ -4235,6 +4235,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "截图（stills）不在预检里（太慢），只在本机预演和 render 里跑",
    "fix": ""
+  },
+  {
+   "id": "123",
+   "title": "六级听力练习视频 run 41871217619：render 30/30 成功，publish 失败——GitHub 把 Release 资产名里的中文全去掉（2018年12月 六级听力 第1套 视频版真题考试.mp4 → 2018.12.1.mp4），随后按中文名 gh release download 报 no assets match",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": ".github/cet6-listening-publish.py：资产一律 ASCII 名 cet6-listening-<套>.mp4（name_problems：非 ASCII 安全字符、重名就停），中文文件名写进资产 label，另附 cet6-listening-filenames.txt；下载按实际资产名核 sha256；不在清单里的旧资产先删",
+     "runs": "render-cet6-listening.yml publish",
+     "evidence": "只重跑发布（collect 41871217619）"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/发布资产名.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "别的项目的发布工作流是否也直接上传中文资产名，没有逐个查（多数用 Python zipfile 打包，包名 ASCII）",
+   "fix": ""
   }
  ],
  "_复盘豁免": [
