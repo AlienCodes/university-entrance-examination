@@ -59,6 +59,9 @@ def one(sid, fixes):
     text = typo(' '.join(w[0] for w in d['词']))
     for old, new, why in fixes.get(sid, []):
         n = text.count(old)
+        if n == 0 and text.count(new) == 1 and old not in new:     # 练习会话已在 定稿.json 里改好（念题校对等）：跳过，打印出来
+            print(f'{sid}：订正“{old[:30]}”定稿里已改好，跳过')
+            continue
         if n != 1:
             raise SystemExit(f'{sid}：原文订正“{old}”匹配 {n} 次（必须恰好 1 次）')
         text = text.replace(old, new)
