@@ -72,6 +72,13 @@ def timeline(wav):
         if w[1] is not None and w[2] - w[1] > max(0.9, 0.12 * len(w[0])):
             w[2] = round(w[1] + max(0.9, 0.12 * len(w[0])), 2); capped += 1
     if capped: print(f'{SID} 词时长封顶 {capped} 个')
+    ins = gap_points(Wd)
+    if ins:                              # 录音没有作答停顿（202606-1）：每题念完插 GAP 秒静音，之后的词整体后移
+        for w in Wd:
+            if w[1] is not None:
+                sh = GAP * sum(1 for t in ins if t <= w[1] - 1e-6)
+                w[1], w[2] = round(w[1] + sh, 2), round(w[2] + sh, 2)
+        print(f'{SID} 插停顿 {len(ins)} 处 × {GAP} 秒')
     words = [(norm(w[0]), w[1], w[2]) for w in Wd]
 
     def t_at(i):
@@ -119,7 +126,9 @@ def timeline(wav):
     e = find([['thats', 'the', 'end'], ['this', 'is', 'the', 'end']], pos, N, "That's the end")
     T['end'] = t_at(e)
     import soundfile
-    T['audioEnd'] = soundfile.info(wav).duration
+    a_, sr_ = soundfile.read(wav, dtype='float32', always_2d=True)          # mp3 头里的时长不准（实测多 3—7 秒），按解码长度
+    T['audioEnd'] = len(a_) / sr_ + GAP * len(ins)
+    if ins: T['插停顿'] = {'秒': GAP, '原音时刻': ins}
     if CUT:
         T['audioEnd'] = T['pause'][CUT][1]
     seq = [T['title0'], T['secA']]
@@ -312,6 +321,40 @@ base.D, base.OUT, base.NAME, base.Q = D, OUT, NAME, {'gap_answers': []}
 base.LIMIT = True                       # 六级原音约 −20 LUFS：整体增益到 −16 + 前瞻限幅（专八引擎里的通用功能）
 
 
+GAPF = D / '插停顿.json'
+GAP = json.loads(GAPF.read_text('utf-8'))['秒'] if GAPF.exists() else 0
+
+
+def gap_points(Wd):
+    """插停顿的原音时刻：每道题（Question N: …?）念完那一刻；只有 <套>/插停顿.json 存在才插，要正好 25 处"""
+    if not GAP: return []
+    pts, i = [], 0
+    while i < len(Wd) - 1:
+        if norm(Wd[i][0]) == 'question' and (norm(Wd[i + 1][0]).isdigit() or norm(Wd[i + 1][0]) in NUMW + ['twentyone', 'twentytwo', 'twentythree', 'twentyfour', 'twentyfive']):
+            j = next((k for k in range(i + 2, min(i + 60, len(Wd))) if Wd[k][0].endswith('?')), None)
+            if j is None or Wd[j][2] is None: die(f'插停顿：第 {i} 个词起的题干找不到带时间的问号结尾')
+            pts.append(Wd[j][2]); i = j
+        i += 1
+    if len(pts) != 25: die(f'插停顿：找到 {len(pts)} 道题（应 25）')
+    return pts
+
+
+def gapped(mp3):
+    """原音 → 插好停顿的 wav（数字静音；其余一个采样不动），返回路径"""
+    if not GAP: return mp3
+    import numpy as np, soundfile as sf
+    T = json.loads((D / '时间轴.json').read_text('utf-8'))
+    a, sr = sf.read(mp3, dtype='float64', always_2d=True)
+    out, prev = [], 0
+    for t in T['插停顿']['原音时刻']:
+        k = int(round(t * sr)); out += [a[prev:k], np.zeros((int(round(GAP * sr)), a.shape[1]))]; prev = k
+    out.append(a[prev:])
+    y = np.concatenate(out); OUT.mkdir(parents=True, exist_ok=True)
+    w = OUT / '插停顿.wav'; sf.write(w, y, sr, subtype='FLOAT')
+    if not CUT and abs(len(y) / sr - T['audioEnd']) > 0.01: die('插停顿后时长与时间轴不符')
+    return str(w)
+
+
 def sha_ok(mp3):
     """原音只认老师那份（协调会话审 5）：sha256 必须在 原始材料/SHA256SUMS 里"""
     import hashlib
@@ -359,5 +402,5 @@ if __name__ == '__main__':
     elif c == 'video':
         sha_ok(sys.argv[3])
         if CUT: base.CUT_END = json.loads((D / '时间轴.json').read_text('utf-8'))['audioEnd']
-        base.video(sys.argv[3], '--试跑' in sys.argv)
+        base.video(gapped(sys.argv[3]), '--试跑' in sys.argv)
     elif c == 'preview': base.preview()
