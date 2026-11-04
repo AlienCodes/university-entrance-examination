@@ -92,7 +92,7 @@ sent(('第一句。先用中文想好：他们解释说，附近就有个火车�
        '我们来看得分点。‖得分点一，插入语 they explained。‖不写成 they explained that，句式就更灵活。这一点对应第三条：语法结构丰富。', ['they explained that']),
       ('a train to Toronto would leave at noon', ['①'], P4, 'she was about a hundred miles from her destination',
        ['地点、时间都具体：方案可信', '解决难题一：离目的地还有一百英里'],
-       '得分点二：a train to Toronto would leave at noon。‖地点、时间都具体，方案才可信。它回应了原文的一百英里：怎么去，这个问题解决了。对应第一条，与原文融洽。', [])],
+       '得分点二：a train to Toronto would leave at noon。‖地点、时间都具体，方案才可信。原文说，离目的地还有一百英里；‖这一句，就把怎么去的问题解决了。对应第一条，与原文融洽。', [])],
      (['The nearest station was just a short drive away.', 'a train would leave for Toronto at noon'],
       '这句话还有别的写法。‖前半句可以写：The nearest station was just a short drive away，最近的车站，开车一会儿就到。‖后半句也可以写：a train would leave for Toronto at noon。'))
 
