@@ -1342,6 +1342,8 @@ def asr_words(audio, it):
         return _WORDS[key]
     if str(audio) not in _A16:
         a, sr = sf.read(str(audio), dtype='float32')
+        if a.ndim == 2:                                 # 原音双声道（六级精读）：识别只用来定换屏时刻，混成单声道，成品音轨不动
+            a = a.mean(axis=1)
         _A16[str(audio)] = soxr.resample(a, sr, 16000).astype(np.float32)
     a16 = _A16[str(audio)]
     seg = a16[int(it['start'] * 16000): int(it['end'] * 16000)]
