@@ -15,7 +15,7 @@
      两个 ‖ 之间（段首段尾也算）≤ UNIT_MAX 音节（录音 0.40 秒以上停顿之间的中位数：讲解比聊天密，至少像老师一半时间那样常停）；
      一段 ≤ SEG_MAX 音节（0.40 秒停顿之间的 90% 分位）；
    ‖ 只放在标点后面（停在意思的边界，不切开意群）；两个 ‖ 之间不少于 UNIT_MIN 音节（问句、“英文是：……”答案除外，防一顿一顿）；
-   “英文是：”（答案）前面有 ‖ 或在段首。音节 = 汉字 + 英文词（与 语速语调.py 同一数法）。
+   “英文是：”（答案）前面有 ‖ 或在段首。--口语 同时跑 tools/中文地道（忍泪、挥别、翻译腔……，用户 2026-11-04）。音节 = 汉字 + 英文词（与 语速语调.py 同一数法）。
 用法：python 稿检查.py 稿.json [--自检]；python 稿检查.py --口语 稿.json [--自检 旧稿.json]"""
 import json
 import re
@@ -205,7 +205,9 @@ if __name__ == '__main__':
         if '--自检' in sys.argv:
             old = json.loads(Path(sys.argv[sys.argv.index('--自检') + 1]).read_text('utf-8'))
             sys.exit(0 if talk_selftest(doc, old) else 1)
-        e = talk_problems(doc)
+        sys.path.insert(0, str(ROOT / 'tools'))
+        import 中文地道 as ZD
+        e = talk_problems(doc) + ZD.problems(ZD.doc_items(doc))
         for x in e:
             print('✗', x)
         print(f'口语检查：{len(e)} 处')

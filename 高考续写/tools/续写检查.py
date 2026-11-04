@@ -16,6 +16,8 @@
 ⑨ 不念题号、满分、分值、范文词数（用户 2026-11-03 看开头预览：“不用说我们的范文多少个词……不用说第多少个题……也不用说满分多少分”）：
    配音文字里不许有“第 N 题”“满分”“N 分”（得分点等除外）“范文 / 每段 / 合计 … N 个词”；画面引擎不许把题目.json 的 no、score 排到画面上（原题照原卷的文字不算）。
 ⑩ 口语（用户 2026-11-04 第 16 条：自然、不要过多语气词、该停就停、不要一口气说完）：高考语法填空/tools/稿检查.talk_problems（阈值取自老师录音）；
+⑪ 中文地道（用户 2026-11-04：“忍泪……根本就不符合中国人的说话习惯……一般大家肯定会说他强忍住眼泪”）：tools/中文地道.problems，
+   查全课中文（配音 text、画面字、逐块翻译稿、范文中文、高亮 / 伏笔 / 可替换中文；题目原文与评分标准不查）。
 用法：python3 续写检查.py 讲解目录 [--副本 高考语法填空/tts/稿_xxx.json]   |   --自检（双向验证：每颗雷必须报出，原稿 0 处）"""
 import copy
 import html
@@ -28,6 +30,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools'))
 import 作文规则 as R  # noqa: E402
+import 中文地道 as ZD  # noqa: E402
 sys.path.insert(0, str(ROOT / '高考语法填空/tools'))
 import 稿检查 as GK  # noqa: E402
 
@@ -270,6 +273,7 @@ def check_dir(d, copy_path=None):
     E += leak_problems(d, t)
     E += talk_problems(doc, (ROOT / '高考续写/tools/续写视频.py').read_text('utf-8'))
     E += GK.talk_problems(doc)
+    E += ['⑪ ' + x for x in ZD.problems(ZD.lesson_items(d))]
     if copy_path and Path(copy_path).read_text('utf-8') != (d / '稿.json').read_text('utf-8'):
         E.append(f'⑥ 合成副本 {copy_path} 与原稿不一致（重新复制）')
     return E, (t, fw, doc)
@@ -345,6 +349,11 @@ def selftest():
     e3 = talk_problems({'segments': []}, 'f"第 {t[\"no\"]} 题 · {t[\"score\"]} 分"')
     print(f'  画面排题号分值：{len(e3)} 处（应 2）')
     ok &= len(e3) == 2
+    c = copy.deepcopy(doc)
+    seg(c, 's5bf')['ln'][0] = '范文：挥手、忍泪同时发生'
+    e4 = ZD.problems(ZD.doc_items(c))
+    print(f'  画面字写“忍泪”：{len(e4)} 处（应 ≥ 1）')
+    ok &= bool(e4)
     print('自检', '通过' if ok else '失败')
     return ok
 
