@@ -39,7 +39,7 @@ jobs:
       - name: 装依赖
         run: |
           set -euo pipefail
-          sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-eng tesseract-ocr-chi-sim poppler-utils >/dev/null
+          sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-eng tesseract-ocr-chi-sim poppler-utils wamerican >/dev/null
           pip install -q sherpa-onnx==1.13.8 soundfile==0.14.0 soxr==1.1.0 numpy==2.4.6
       - name: 识别模型（缓存）
         uses: actions/cache@v4
