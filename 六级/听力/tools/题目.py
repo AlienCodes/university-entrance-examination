@@ -14,6 +14,7 @@ HERE = Path(__file__).resolve().parent
 D = HERE.parent
 ROOT = HERE.parents[2]
 SEC = [(1, 4), (5, 8), (9, 11), (12, 15), (16, 18), (19, 21), (22, 25)]      # 六级听力固定 7 段
+DICT = set(l.strip().lower() for l in open('/usr/share/dict/american-english', encoding='utf-8', errors='ignore'))
 STOP = set('the a an of to and in is for on that what does do did be by with as it at from are was this his her their its about'.split())
 
 
@@ -86,10 +87,25 @@ def run(sid):
     sd = D / sid
     bad = []
     Q, instr = parse_options(paper_txt(sid))
+    if (sd / '选项.json').exists():          # 扫描版试卷：OCR 选项人工整理过（与 OCR 文字逐个比相似度，防止改写）
+        import difflib
+        raw = re.sub(r'\s+([.,?!;:’\'])', r'\1', re.sub(r'\s+', ' ', paper_txt(sid))).lower()
+        fixed = json.loads((sd / '选项.json').read_text('utf-8'))
+        for k, v in fixed.items():
+            if k.startswith('_'): continue
+            Q[int(k)] = dict(zip('ABCD', v))
+            for c, o in zip('ABCD', v):
+                ol = o.lower(); i = raw.find(ol[:12])
+                cand = ([i] if i >= 0 else []) + [m.start() for m in re.finditer(re.escape(ol.split()[0][:4]), raw)][:600]
+                lw = max(ol.split(), key=len).strip('.,?!')
+                cand += [m.start() - ol.find(lw) for m in re.finditer(re.escape(lw), raw)][:200]
+                best = max((difflib.SequenceMatcher(None, ol, raw[j + d:j + d + len(ol) + e]).ratio()
+                            for j in cand for d in (-2, 0) for e in (-2, 0, 2)), default=0)
+                if best < 0.8: bad.append(f'第 {k} 题 {c} 选项「{o}」在试卷 OCR 里找不到相近的文字（{best:.2f}）')
     words = [w[0] for w in json.loads((sd / '定稿.json').read_text('utf-8'))['词']]
     text = ' '.join(words)
     stems = {}
-    for m in re.finditer(r'[Qq]uestion (\d{1,2}|[a-z]+(?:-[a-z]+)?)[.:,]?\s+(.*?[?.])(?=\s+(?:[Qq]uestions?\b|Section|Passage|Recording|Conversation|That.s the end|$))', text):
+    for m in re.finditer(r'[Qq]uestion (\d{1,2}|[a-z]+(?:-[a-z]+)?)[.:,]?\s+(.*?[?.])(?=\s+(?:[Qq]uestions?\b|Section|Passage|Recording|Conversation|That.s the end|This is the end|$))', text):
         num = m.group(1)
         num = int(num) if num.isdigit() else {w: i + 1 for i, w in enumerate('one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five'.split())}.get(num.lower())
         if num and num not in stems: stems[num] = m.group(2).strip()
@@ -111,22 +127,22 @@ def run(sid):
     for i, (n, p) in enumerate(starts):
         o = Q.get(n, {})
         if sorted(o) != list('ABCD'): bad.append(f'第 {n} 题选项 {sorted(o)}'); continue
+        # 题干以念题为准；解析题干与念题逐词相同（不计标点、大小写、& / and、’s）才借它的标点
         js = ocr_stem(ocr, n)
-        nz = lambda x: re.sub(r'[^a-z0-9]', '', x.lower())
-        if not js: bad.append(f'第 {n} 题题干（解析）找不到')
+        nz = lambda x: re.findall(r'[a-z0-9]+', x.lower().replace('&', ' and ').replace('’', "'").replace("'s", ' s'))
+        fix = rule.get('题干', {}).get(str(n))
+        if fix: stems[n] = fix
         elif n not in stems: bad.append(f'第 {n} 题题干（念题）找不到')
-        elif nz(js) != nz(stems[n]) and str(n) not in rule.get('题干', {}):
-            bad.append(f'第 {n} 题题干 解析「{js}」≠ 念题「{stems[n]}」')
-        stems[n] = rule.get('题干', {}).get(str(n), js or stems.get(n, ''))
+        elif js and nz(js) == nz(stems[n]): stems[n] = js
+        elif n in rule.get('题干已核', []): pass             # 人看过：解析题干是 OCR 噪声，念题对
+        elif js and (set(nz(js)) - set(nz(stems[n]))) and (set(nz(stems[n])) - set(nz(js))) and len(set(nz(js)) ^ set(nz(stems[n]))) <= 4 \
+                and all(len(w) > 1 and w in DICT for w in set(nz(js)) - set(nz(stems[n]))):      # 解析一侧多出的都是真词才报（OCR 噪声不报）
+            bad.append(f'第 {n} 题题干 解析「{js}」≠ 念题「{stems[n]}」（词不同：{sorted(set(nz(js)) ^ set(nz(stems[n])))}）')
+        if n in stems and not stems[n].rstrip().endswith('?'): stems[n] = re.sub(r'[.,;:]?\s*$', '?', stems[n].rstrip())
         blk = flat[p:starts[i + 1][1]] if i + 1 < len(starts) else flat[p:p + 1500]
-        m = judge(blk)
-        ans = str(rule.get(str(n), m))
-        ans = ans if ans in 'ABCD' else ''
-        sc = {c: len(toks(o[c]) & toks(marks.get(n, ''))) for c in 'ABCD'}
-        best = max(sc.values())
-        if not ans: bad.append(f'第 {n} 题答案找不到')
-        elif str(n) not in rule and best > 0 and sc[ans] < best:
-            review.append(f'第 {n} 题 抽到 {ans}，答案句重合 {sc}：[{n}]{marks.get(n, "")[:120]}')
+        ans = str(rule.get(str(n), ''))       # 答案只认 答案裁定.json（两个独立来源一致才写进去）
+        ans = ans if len(ans) == 1 and ans in 'ABCD' else ''
+        if not ans: bad.append(f'第 {n} 题答案没有裁定（答案裁定.json）')
         out.append([stems.get(n, ''), [o[c] for c in 'ABCD'], ans])
     if len(out) != 25: bad.append(f'题数 {len(out)}')
     # 套与音频按内容核（协调会话审 4）：每题 4 个选项的实词在本段原文里出现的比例；配错套时整套接近 0

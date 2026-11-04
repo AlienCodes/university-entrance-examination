@@ -131,6 +131,7 @@ def run(sid):
                 del edits[e]
             print(f'  改写 {k}：「{" ".join(W[i1:i2])}」→「{v}」' + (f'（覆盖 {hit}）' if hit else ''))
             edits[(i1, i2)] = v.split()
+    whole = {tuple(map(int, k[2:].split(':'))) for k in rule if k.startswith('改 ')}
     same = {J(W[i1:i2]): v for (i1, i2), v in edits.items() if i2 > i1}
     for t in todo[:]:
         i1, i2 = map(int, t['key'].split(':'))
@@ -145,7 +146,7 @@ def run(sid):
             i1, i2 = starts[i]
             new = edits[(i1, i2)]
             changes.append({'位置': f'{i1}:{i2}', '原': ' '.join(W[i1:i2]), '改为': ' '.join(new)})
-            if len(new) == i2 - i1:      # 1:1 换词：保留 transcripts 原词前后的标点（Winnipeg. → Winopia.）
+            if len(new) == i2 - i1 and (i1, i2) not in whole:      # 1:1 换词（整段改写的标点照写的，不套）：保留 transcripts 原词前后的标点（Winnipeg. → Winopia.）
                 new = [re.match(r'^\W*', W[i1 + k]).group() + re.sub(r'^\W+|\W+$', '', w) + re.search(r'\W*$', W[i1 + k]).group() for k, w in enumerate(new)]
             for k, w in enumerate(new):
                 src = i1 + min(k, max(i2 - i1 - 1, 0)) if i2 > i1 else max(i1 - 1, 0)
