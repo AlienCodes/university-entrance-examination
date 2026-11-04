@@ -60,7 +60,7 @@ jobs:
           pip install -q gdown requests
           sudo mkdir -p /mnt/dl /mnt/sovits && sudo chown "$USER" /mnt/dl /mnt/sovits
           python 高考语法填空/tools/取模型.py --url-env U --dl /mnt/dl --out /mnt/sovits
-          rm -rf /mnt/dl
+          sudo rm -rf /mnt/dl          # /mnt 属 root；zip 已在 取模型.py 里删掉（Range 读时根本没下）
           (cd /mnt/sovits && sha256sum weights/* refs/* && du -sh .)
       - uses: actions/upload-artifact@v4
         with:

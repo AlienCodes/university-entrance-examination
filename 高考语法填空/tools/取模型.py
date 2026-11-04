@@ -85,6 +85,8 @@ def take(zpath, out):
         if n in infos:
             extract(z, infos[n], out / 'workspace' / f)
     refs = json.loads((out / 'workspace/references.json').read_text('utf-8-sig'))
+    from collections import Counter
+    print('references.json 各语言条数：', dict(Counter(r.get('lang') for r in refs)), flush=True)
     for lang in ('zh', 'en'):           # 同 data/references.py：主参考 = 该语言第一条陈述句；辅助 = 同语言另外两条陈述句
         same = [r for r in refs if r['lang'] == lang]
         if not same:
