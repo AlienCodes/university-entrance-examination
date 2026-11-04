@@ -85,7 +85,7 @@ def sent(why, pts, alt):
     S.append(dict(why=why, pts=pts, alt=alt))
 
 
-sent(('第一句。先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖为什么要写这句？‖开头语只说了坐火车。方案必须落到实处，读者才会信。',
+sent(('第一句。先用中文想好：他们解释说，附近就有个火车站，中午有一趟去多伦多的火车。‖这句不能少。开头语只说了坐火车，方案必须落到实处，读者才会信。',
       ['为什么：开头语只说“坐火车”，先把方案说具体（车站在哪、几点有车）']),
      [('they explained', ['③'], P3B, 'Rachel said they could take Emily to a nearby cafe',
        ['插入语 they explained：不写 They explained that…，句式更灵活', '插入语不算主干，句子主干仍是两个分句'],
