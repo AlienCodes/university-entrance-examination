@@ -2,7 +2,7 @@
 
     /opt/ttsenv/bin/python 六级/听力/封面/系列封面.py 草稿        # A/B/C 三个方向 16:9 + 4:3 只出 320×180、960×540 缩略图到 work/
     /opt/ttsenv/bin/python 六级/听力/封面/系列封面.py 定稿 A      # A 出 16:9 + 4:3（PNG + JPG）到 系列封面/，B、C 的 16:9 JPG 作备选
-    /opt/ttsenv/bin/python 六级/听力/封面/系列封面.py --自检      # 双向验证：字号×0.5 时每个 data-min 元素都要报，正常字号 0 处
+    /opt/ttsenv/bin/python 六级/听力/封面/系列封面.py --自检      # 双向验证：字号×0.4 时每个 data-min 元素都要报，正常字号 0 处
 
 老师要求（2026-11-04）：突出“六级听力真题”“彻底搞定六级听力”，大字为主；30 套、2018—2026 年写得非常明白；不写 4K、精读。
 套数、考试次数、起止年份全部从 六级/听力/<yyyymm-n>/ 目录现算（踩坑 70），并与 .github/cet6-listening-all.txt 核对；不印“02 / 09”编号。
@@ -194,7 +194,7 @@ def selftest(br):
     bad = []
     for k, f in DIRS.items():
         for w in (1920, 1440):
-            for kk in (1.0, 0.5):
+            for kk in (1.0, 0.4):           # 0.4：钩子放大后 ×0.5 仍高于下限（B 16:9 钩子 164px）
                 K = kk
                 body = f(w, 1080)
                 _, res = render(br, body, w, 1080, f'自检_{k}_{w}', WORK)
@@ -218,7 +218,7 @@ def main(args):
         if args[0] == '--自检':
             bad = selftest(br)
             br.close()
-            print('\n'.join(bad) or '自检通过：字号×0.5 时每个 data-min 元素全部报出，正常字号不报（A/B/C × 16:9、4:3）')
+            print('\n'.join(bad) or '自检通过：字号×0.4 时每个 data-min 元素全部报出，正常字号不报（A/B/C × 16:9、4:3）')
             return 1 if bad else 0
         final = args[1] if args[0] == '定稿' else None
         stem = f'六级听力真题{N}套_封面'
