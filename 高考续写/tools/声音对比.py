@@ -47,6 +47,14 @@ class Ears:
         self.en = sherpa_onnx.OfflineRecognizer.from_transducer(
             encoder=str(p / 'encoder.int8.onnx'), decoder=str(p / 'decoder.int8.onnx'), joiner=str(p / 'joiner.int8.onnx'),
             tokens=str(p / 'tokens.txt'), model_type='nemo_transducer', num_threads=4)
+        w = glob.glob(str(M / 'sherpa-onnx-whisper-*'))          # 英文第二个识别器（交叉比对；没有就不量）
+        self.wh = None
+        if w:
+            w = Path(w[0])
+            pre = w.name.replace('sherpa-onnx-whisper-', '')
+            self.wh = sherpa_onnx.OfflineRecognizer.from_whisper(
+                encoder=str(w / f'{pre}-encoder.int8.onnx'), decoder=str(w / f'{pre}-decoder.int8.onnx'),
+                tokens=str(w / f'{pre}-tokens.txt'), language='en', task='transcribe', num_threads=4)
 
     def __call__(self, r, x, sr):
         import soxr
@@ -128,7 +136,7 @@ def main():
         en_parts = [y[int(u['start'] * ysr):int(u['end'] * ysr)] for it in items for u in it['units']
                     if not any('一' <= ch <= '鿿' for ch in u['text'])]
         en_sim = float(spk(np.concatenate(en_parts), ysr) @ cen) if en_parts else None
-        E = N = Ew = Nw = 0
+        E = N = Ew = Nw = Wh = NWh = 0
         for u in J.expand(segs):
             w, wsr = sf.read(str(td / f"{u['id']}.wav"), dtype='float32')
             ref = toks(u['text'])
@@ -140,10 +148,14 @@ def main():
                 hw = toks(ears(ears.en, w, wsr))
                 enw = edits(ref, hw)
                 Ew, Nw = Ew + enw, Nw + len(ref)
+                if ears.wh:
+                    hh = toks(ears(ears.wh, w, wsr))
+                    Wh, NWh = Wh + edits(ref, hh), NWh + len(ref)
             detail.append((cid, tk, u['id'], e, len(ref), ' '.join(hyp), enw))
         rows.append(dict(cid=cid, take=tk, chk=chk, mp3=out.name if out else None, f0=f0,
                          st=12 * np.log2(f0 / real_f0) if f0 else None, st106=12 * np.log2(f0 / F0_TEACHER) if f0 else None,
-                         sim=sim, en_sim=en_sim, err=E / max(N, 1), wer=Ew / max(Nw, 1) if Nw else None))
+                         sim=sim, en_sim=en_sim, err=E / max(N, 1), wer=Ew / max(Nw, 1) if Nw else None,
+                         whw=Wh / NWh if NWh else None))
         print(rows[-1], flush=True)
     # 每个候选每句挑最好的一次（识别错数 + 英文词错数最少，同分取前一次），拼成一份再走一遍完整处理链（另出合格证）
     import tempfile
@@ -166,12 +178,12 @@ def main():
         print(cid, '每句最好', chk, pick, flush=True)
     L = ['# 声音对比（GPT-SoVITS 专属模型）', '', f'运行：`{run.name}`；{len(segs)} 句（{" ".join(only)}）；真声：{Path(a.录音).name}',
          f'真声对照：相似度（真声两段之间）{real_sim:.3f}；真声浊音基频中位数 {real_f0:.1f} Hz（协调会话给的 {F0_TEACHER} Hz）', '',
-         '| 候选 | 次 | 处理链与全部检查 | 基频 Hz | 与真声差（半音） | 与 106.2 Hz 差 | 相似度 | 英文部分相似度 | 识别错误率（SenseVoice） | 英文词错率（parakeet） |',
-         '|---|---|---|---|---|---|---|---|---|---|']
+         '| 候选 | 次 | 处理链与全部检查 | 基频 Hz | 与真声差（半音） | 与 106.2 Hz 差 | 相似度 | 英文部分相似度 | 识别错误率（SenseVoice） | 英文词错率（parakeet） | 英文词错率（whisper） |',
+         '|---|---|---|---|---|---|---|---|---|---|---|']
     fm = lambda v, f='{:.3f}': '—' if v is None else f.format(v)  # noqa: E731
     for r in rows:
         L.append(f"| {r['cid']} | {r['take']} | {r['chk']} | {fm(r['f0'], '{:.1f}')} | {fm(r['st'], '{:+.2f}')} | {fm(r['st106'], '{:+.2f}')} | "
-                 f"{fm(r['sim'])} | {fm(r['en_sim'])} | {fm(r['err'])} | {fm(r['wer'])} |")
+                 f"{fm(r['sim'])} | {fm(r['en_sim'])} | {fm(r['err'])} | {fm(r['wer'])} | {fm(r['whw'])} |")
     L += ['', '## 每个候选每句最好的一次拼成一份', '', '| 候选 | 处理链与全部检查 | MP3 | 每句用的是哪一次 |', '|---|---|---|---|']
     L += [f"| {c} | {k} | {m or '—'} | {' '.join(f'{u}:{t[4:]}' for u, t in p.items())} |" for c, k, m, p in best_rows]
     L += ['', '## 每个小段的识别', '', '| 候选 | 次 | 小段 | 错 / 字词数 | SenseVoice 识别 | parakeet 错词 |', '|---|---|---|---|---|---|']

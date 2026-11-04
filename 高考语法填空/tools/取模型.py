@@ -102,6 +102,30 @@ def take(zpath, out):
             extract(z, infos[n], dst)
             ent.append({'wav': str(dst.relative_to(out)), 'text': r['text'], 'sec': r.get('duration')})
         res['refs'][lang] = {'main': ent[0], 'aux': ent[1:]}
+    # 老师本人说英文的切片（references.json 只有 zh 时）：transcripts.csv 里 lang=en、keep=1、3.5—9 秒、陈述句（句号结尾、不带数字），
+    # 按时长离 6 秒最近挑 3 条（主参考 + 2 辅助），记在 refs['en_tx']；只有候选写 en_ref: tx 才用（g1 照旧用中文参考）
+    import csv
+    import io
+    rows = list(csv.DictReader(io.StringIO((out / 'workspace/transcripts.csv').read_text('utf-8-sig'))))
+    en = [r for r in rows if r.get('lang') == 'en' and str(r.get('keep', '1')) == '1']
+    print('transcripts.csv 共', len(rows), '条，英文', len(en), '条', flush=True)
+    ok = [r for r in en if 3.5 <= float(r.get('duration') or 0) <= 9.0 and r['text'].strip().endswith('.')
+          and not any(ch.isdigit() for ch in r['text']) and len(r['text'].split()) >= 6]
+    ok.sort(key=lambda r: abs(float(r['duration']) - 6.0))
+    clips = {parts(n)[-1]: n for n in names if n.startswith(pref + 'clips/')}
+    ent = []
+    for r in ok:
+        n = clips.get(base(r['audio']))
+        if not n:
+            continue
+        dst = out / 'refs' / f'en_tx_{len(ent)}.wav'
+        extract(z, infos[n], dst)
+        ent.append({'wav': str(dst.relative_to(out)), 'text': r['text'].strip(), 'sec': float(r['duration'])})
+        print('英文参考', len(ent), f"{float(r['duration']):.2f} 秒：", r['text'].strip(), flush=True)
+        if len(ent) == 3:
+            break
+    if ent:
+        res['refs']['en_tx'] = {'main': ent[0], 'aux': ent[1:]}
     (out / 'ref.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
     sz = sum(p.stat().st_size for p in out.rglob('*') if p.is_file())
     print(f"取出：模型 2 个、参考 {sum(1 + len(v['aux']) for v in res['refs'].values())} 条（{', '.join(res['refs'])}），"

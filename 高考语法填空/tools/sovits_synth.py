@@ -77,8 +77,9 @@ def references(c):
     sel = json.loads((d / 'ref.json').read_text('utf-8'))
     out = {}
     for lang, code in (('Chinese', 'zh'), ('English', 'en')):
-        r = sel['refs'].get(code) or sel['refs']['zh']
-        rc = code if code in sel['refs'] else 'zh'
+        key = 'en_tx' if code == 'en' and c.get('en_ref') == 'tx' else code   # en_ref: tx = 老师本人英文切片（取模型.py 从 transcripts.csv 挑）
+        r = sel['refs'].get(key) or sel['refs']['zh']
+        rc = ('en' if key == 'en_tx' else code) if key in sel['refs'] else 'zh'
         speed = float(c.get('speed', (sel.get('speed') or {}).get(rc, 1.0)))
         out[lang] = (d / r['main']['wav'], r['main']['text'], rc, [d / x['wav'] for x in r['aux']], speed)
     return out
@@ -120,7 +121,7 @@ def main():
     meta = {'candidate': c, 'take': take, 'part': part, 'split': J.SPLIT, 'segments': [], 'engine': 'GPT-SoVITS v2ProPlus @ abe9843 (CPU)'}
     t0 = time.time()
     REFS = references(c)
-    meta['refs'] = {k: {'text_chars': len(v[1]), 'lang': v[2], 'aux': len(v[3]), 'speed': v[4]} for k, v in REFS.items()}
+    meta['refs'] = {k: {'text_chars': len(v[1]), 'lang': v[2], 'aux': len(v[3]), 'speed': v[4], 'wav': Path(v[0]).name} for k, v in REFS.items()}
     gc.collect()
     trim_heap()
     import torch
@@ -136,6 +137,8 @@ def main():
         mt = PY.model_text(s['text'])
 
         ref, ref_text, plang, aux, speed = REFS[s['lang']]
+        if s['lang'] == 'English' and c.get('ref_free_en'):   # 无参考文本模式（官方 TTS.py：prompt_text 为空 → no_prompt_text；v2ProPlus 支持）
+            ref_text = ''
 
         def gen1(seed, s=s, mt=mt, ref=ref, ref_text=ref_text, plang=plang, aux=aux, speed=speed):
             inp = {'text': mt, 'text_lang': LANG[s['lang']], 'ref_audio_path': str(ref),

@@ -1,0 +1,15 @@
+{
+ "说明": "老师 2026-11-04：英文也用老师的模型，要非常流利、清晰、尽量像 native speaker（刚才的英文“稍微有点没那么清楚”）。英文专项对比，只用稿里的英文句（s1e s2e s3e s4e s5e s9e s10e s11e，含 Waving / towed / drove）。g1 = 现状（en 模式 + 中文参考）；g1rf = 英文句不给参考文本（ref_free）；g1en = 老师本人说英文的切片当参考（取模型.py 从 transcripts.csv 挑）；g1lt = top_k 10、温度 0.8；g1enlt = 英文参考 + 降温度。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["s1e", "s2e", "s3e", "s4e", "s5e", "s9e", "s10e", "s11e"],
+ "takes": [1, 2, 3],
+ "split": "mark",
+ "gap_max": 0.45,
+ "candidates": [
+  {"id": "g1", "mode": "gptsovits", "weights": "teacher"},
+  {"id": "g1rf", "mode": "gptsovits", "weights": "teacher", "ref_free_en": true},
+  {"id": "g1en", "mode": "gptsovits", "weights": "teacher", "en_ref": "tx"},
+  {"id": "g1lt", "mode": "gptsovits", "weights": "teacher", "gen": {"top_k": 10, "temperature": 0.8}},
+  {"id": "g1enlt", "mode": "gptsovits", "weights": "teacher", "en_ref": "tx", "gen": {"top_k": 10, "temperature": 0.8}}
+ ]
+}
