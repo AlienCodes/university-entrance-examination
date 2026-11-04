@@ -116,6 +116,9 @@ def main():
     cen = np.mean(held[1:], 0)
     cen /= np.linalg.norm(cen)
     ears = Ears()
+    import 讲解节奏 as NJ
+    al = NJ.Aligner()
+    mx_err = []
     mp3d = Path(a.mp3)
     mp3d.mkdir(parents=True, exist_ok=True)
     rows, detail = [], []
@@ -137,6 +140,7 @@ def main():
                     if not any('一' <= ch <= '鿿' for ch in u['text'])]
         en_sim = float(spk(np.concatenate(en_parts), ysr) @ cen) if en_parts else None
         E = N = Ew = Nw = Wh = NWh = 0
+        MXp = MXw = MXn = 0
         for u in J.expand(segs):
             w, wsr = sf.read(str(td / f"{u['id']}.wav"), dtype='float32')
             ref = toks(u['text'])
@@ -144,6 +148,37 @@ def main():
             e = edits(ref, hyp)
             E, N = E + e, N + len(ref)
             enw = None
+            if u['lang'] != 'English' and al is not None:     # 中文小段里夹的英文：对齐找到每段连续英文，前后多留 0.3 秒截出来，英文识别器再认
+                rt = [z for z in NJ.toks(u['text']) if z not in '？?']
+                runs, cur = [], []
+                for i, z in enumerate(rt):
+                    if z.isascii():
+                        cur.append(i)
+                    elif cur:
+                        runs.append(cur)
+                        cur = []
+                if cur:
+                    runs.append(cur)
+                if runs:
+                    x48 = J.load(td / f"{u['id']}.wav")
+                    hyp_al = al(x48, G.SR)
+                    mi = NJ.align_index(rt, hyp_al)
+                    for run_ in runs:
+                        words = [rt[i] for i in run_]
+                        js = [mi[i] for i in run_ if i in mi]
+                        if not js:
+                            mx_err.append((cid, tk, u['id'], ' '.join(words), len(words), len(words), '（对不上）', None))
+                            continue
+                        t0 = hyp_al[min(js)][1]
+                        t1 = hyp_al[max(js) + 1][1] if max(js) + 1 < len(hyp_al) else len(x48) / G.SR
+                        clip = x48[max(0, int((t0 - 0.3) * G.SR)):int((t1 + 0.3) * G.SR)]
+                        hp = toks(ears(ears.en, clip, G.SR))
+                        hw = toks(ears(ears.wh, clip, G.SR)) if ears.wh else []
+                        # 截出来的片段两头可能带上相邻的中文 / 别的词：只看参考词在识别结果里能对上多少（漏读 / 读错算错）
+                        ep = len(words) - sum(1 for k, wd in enumerate(words) if wd in hp)
+                        ew = len(words) - sum(1 for k, wd in enumerate(words) if wd in hw) if ears.wh else None
+                        mx_err.append((cid, tk, u['id'], ' '.join(words), ep, len(words), ' '.join(hp), ew))
+                        MXp, MXw, MXn = MXp + ep, MXw + (ew or 0), MXn + len(words)
             if u['lang'] == 'English':
                 hw = toks(ears(ears.en, w, wsr))
                 enw = edits(ref, hw)
@@ -155,7 +190,8 @@ def main():
         rows.append(dict(cid=cid, take=tk, chk=chk, mp3=out.name if out else None, f0=f0,
                          st=12 * np.log2(f0 / real_f0) if f0 else None, st106=12 * np.log2(f0 / F0_TEACHER) if f0 else None,
                          sim=sim, en_sim=en_sim, err=E / max(N, 1), wer=Ew / max(Nw, 1) if Nw else None,
-                         whw=Wh / NWh if NWh else None))
+                         whw=Wh / NWh if NWh else None,
+                         mxp=MXp / MXn if MXn else None, mxw=(MXw / MXn if MXn and ears.wh else None)))
         print(rows[-1], flush=True)
     # 每个候选每句挑最好的一次（识别错数 + 英文词错数最少，同分取前一次），拼成一份再走一遍完整处理链（另出合格证）
     import tempfile
@@ -178,14 +214,17 @@ def main():
         print(cid, '每句最好', chk, pick, flush=True)
     L = ['# 声音对比（GPT-SoVITS 专属模型）', '', f'运行：`{run.name}`；{len(segs)} 句（{" ".join(only)}）；真声：{Path(a.录音).name}',
          f'真声对照：相似度（真声两段之间）{real_sim:.3f}；真声浊音基频中位数 {real_f0:.1f} Hz（协调会话给的 {F0_TEACHER} Hz）', '',
-         '| 候选 | 次 | 处理链与全部检查 | 基频 Hz | 与真声差（半音） | 与 106.2 Hz 差 | 相似度 | 英文部分相似度 | 识别错误率（SenseVoice） | 英文词错率（parakeet） | 英文词错率（whisper） |',
-         '|---|---|---|---|---|---|---|---|---|---|---|']
+         '| 候选 | 次 | 处理链与全部检查 | 基频 Hz | 与真声差（半音） | 与 106.2 Hz 差 | 相似度 | 英文部分相似度 | 识别错误率（SenseVoice） | 英文词错率（parakeet） | 英文词错率（whisper） | 中文段里夹的英文 错词率（parakeet） | 同（whisper） |',
+         '|---|---|---|---|---|---|---|---|---|---|---|---|---|']
     fm = lambda v, f='{:.3f}': '—' if v is None else f.format(v)  # noqa: E731
     for r in rows:
         L.append(f"| {r['cid']} | {r['take']} | {r['chk']} | {fm(r['f0'], '{:.1f}')} | {fm(r['st'], '{:+.2f}')} | {fm(r['st106'], '{:+.2f}')} | "
-                 f"{fm(r['sim'])} | {fm(r['en_sim'])} | {fm(r['err'])} | {fm(r['wer'])} | {fm(r['whw'])} |")
+                 f"{fm(r['sim'])} | {fm(r['en_sim'])} | {fm(r['err'])} | {fm(r['wer'])} | {fm(r['whw'])} | {fm(r['mxp'])} | {fm(r['mxw'])} |")
     L += ['', '## 每个候选每句最好的一次拼成一份', '', '| 候选 | 处理链与全部检查 | MP3 | 每句用的是哪一次 |', '|---|---|---|---|']
     L += [f"| {c} | {k} | {m or '—'} | {' '.join(f'{u}:{t[4:]}' for u, t in p.items())} |" for c, k, m, p in best_rows]
+    if mx_err:
+        L += ['', '## 中文段里夹的英文（对齐截出，英文识别器再认）', '', '| 候选 | 次 | 小段 | 英文 | 错 / 词数（parakeet） | parakeet 识别 | 错（whisper） |', '|---|---|---|---|---|---|---|']
+        L += [f'| {c} | {t} | {u} | {w} | {e}/{n} | {h} | {"—" if ew is None else ew} |' for c, t, u, w, e, n, h, ew in mx_err]
     L += ['', '## 每个小段的识别', '', '| 候选 | 次 | 小段 | 错 / 字词数 | SenseVoice 识别 | parakeet 错词 |', '|---|---|---|---|---|---|']
     L += [f'| {c} | {t} | {u} | {e}/{n} | {h} | {"—" if w is None else w} |' for c, t, u, e, n, h, w in detail]
     Path(a.out).write_text('\n'.join(L) + '\n', 'utf-8')
