@@ -64,7 +64,7 @@ def read_text():
 
 def norm(w):
     w = w.lower().replace('’', "'")
-    return re.sub(r"[^a-z0-9']", '', w)
+    return re.sub(r"[^a-z0-9']", '', w).rstrip("'")      # 词尾所有格撇号（Higgins’ well）对齐时不计
 
 
 NUM = {'1': 'one', '2': 'two', '3': 'three', '4': 'four', '5': 'five', '6': 'six', '7': 'seven', '8': 'eight', '9': 'nine', '10': 'ten',
