@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MIN_WORDS = 4          # 原文（不算数字）不到 4 个词的短句（Exactly.）识别常常差一两个词，不判
 MIN_RATIO = 0.5        # 原文的词听到不到一半就报；放错地方的句子 0.0—0.1
 
-PAD = 0.3              # 时间窗前后各多听 0.3 秒：窗口正好卡在开口时识别器会丢前半句（201906-2 第 113 句只听到后半句）；多听到的邻句词不扣分
+PADS = (0.3, 0.0, 0.6)  # 时间窗前后多听几种长度，有一种听对就算对：窗口正好卡在开口时识别器会丢前半句（201906-2 第 113 句）；多听到的邻句词不扣分；放错地方的句子哪种都听不对
 
 _ASR = []
 
@@ -61,8 +61,14 @@ def problems(a16, windows, texts):
         a = [w for w in norm(s) if not re.search(r'\d', w)]       # 数字识别成英文读法（2018 → twenty eighteen），不算
         if len(a) < MIN_WORDS:
             continue
-        b = norm(heard(a16, max(0.0, t0 - PAD), t1 + PAD))
-        r = sum(m.size for m in difflib.SequenceMatcher(None, a, b, autojunk=False).get_matching_blocks()) / len(a)      # 原文的词听到了几成
+        r, b = 0.0, []
+        for pad in PADS:                                   # 识别器对窗口边缘敏感（202512-1 第 55 句：299.8—303.95 只听到 I will，300.0—303.7 整句都对），取最好的一次
+            hb = norm(heard(a16, max(0.0, t0 - pad), t1 + pad))
+            hr = sum(m.size for m in difflib.SequenceMatcher(None, a, hb, autojunk=False).get_matching_blocks()) / len(a)      # 原文的词听到了几成
+            if hr > r or not b:
+                r, b = hr, hb
+            if r >= MIN_RATIO:
+                break
         if r < MIN_RATIO:
             out.append((k, round(r, 2), s[:60], ' '.join(b)[:60]))
     return out
