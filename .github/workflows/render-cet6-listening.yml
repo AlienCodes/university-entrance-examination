@@ -48,8 +48,10 @@ jobs:
           python3 六级/听力/tools/定稿.py ${{ matrix.id }} > /dev/null
           python3 六级/听力/tools/题目.py ${{ matrix.id }}
           git diff --exit-code -- 六级/听力/${{ matrix.id }}/定稿.json 六级/听力/${{ matrix.id }}/题目.json
-      - name: 字体（原卷 PDF）
-        run: /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 字体（原卷 PDF；取字体要的包不在 cet6-render-requirements 里，与本机同版本另装）
+        run: |
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
       - name: 下载原音、核 sha256
         env: {GH_TOKEN: '${{ github.token }}'}
         run: |
