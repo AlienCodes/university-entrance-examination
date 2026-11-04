@@ -184,10 +184,13 @@ jobs:
           print(f'::{"error" if probs else "notice"} title={pid} 截图::{len(got)} 屏，程序检查问题 {len(probs)} 处 {probs[:5]}（{cpu}）')
           if probs:
               sys.exit('截图程序检查有问题')
-          if mode == 'video':
-              reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))[f'{pid}@3']
+          print('截图指纹（与 截图审阅通过.json 同格式）：' + json.dumps({'指纹': fp, '截图': got}, ensure_ascii=False, sort_keys=True))      # 日志里也留一份（本机下载不了 artifact 时用）
+          reg = json.loads(M.SAMPLE_REG.read_text('utf-8')).get(f'{pid}@3')
+          if reg or mode == 'video':                  # mode=stills 有登记时只报告（截图能否逐字节重现），mode=video 不一致就停
+              reg = reg or {'截图': {}, '指纹': None}
               bad = [k for k in sorted(set(reg['截图']) | set(got)) if reg['截图'].get(k) != got.get(k)]
-              print(f'::{"error" if bad else "notice"} title={pid} 比对::与截图审阅登记逐字节相同 {len(got) - len(bad)} 屏，不同 {len(bad)} 屏 {bad[:10]}')
+              print(f'::{"error" if bad and mode == "video" else "warning" if bad else "notice"} title={pid} 比对::与截图审阅登记逐字节相同 {len(got) - len(bad)} 屏，不同 {len(bad)} 屏 {bad[:10]}；指纹{"相同" if reg["指纹"] == fp else "不同"}')
+          if mode == 'video':
               if bad or reg['指纹'] != fp:
                   sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')
           PY
