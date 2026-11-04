@@ -18,11 +18,9 @@
    bash 高考续写/tools/覆盖补合成.sh <g1 目录> g1 任务_续写_样段v3_sovits_补s1p2.json 0（再 补s1e、补s1z2 各一次）；
    /opt/ttsenv/bin/python 高考语法填空/tools/选段.py --稿 高考续写/讲解/2026_新课标Ⅰ卷/稿.json --run <g1 目录> --out "<成品名>" --拆分 mark --停顿上限 0.45 --only t01 t02 t03 t04 s1z s1b1 s1b2 s1b3 s1bj s1bf s1e s1p1 s1p2 s1h
    ```
-2. **夹英文对比**（协调会话 2026-11-04 要的，结果用数字回它）：任务 `任务_sovits_夹英文.json`（s1b1 s1b3 s1h s1p2，mx1 = g1、mxlt = top_k 10 温度 0.8，各 3 次）已 dispatch。结果到了：
-   `/opt/ttsenv/bin/python 高考续写/tools/声音对比.py --run <runs/任务_sovits_夹英文-<号>> --稿 高考续写/讲解/2026_新课标Ⅰ卷/稿.json --录音 05.wav --参考 高考语法填空/tts/音色/用户本人平实_1.json --mp3 <临时目录> --out 报告.md`
-   比 ①“中文段里夹的英文 错词率”（parakeet + whisper）②处理链与全部检查（声调、拼接）③相似度。mxlt 英文明显好、中文各项不差 → 整片中文段也用 g1lt（候选加 `gen`）；否则保持现状。
+2. **夹英文对比（已做完，2026-11-04）**：运行 #17（s1b1 s1b3 s1h s1p2，各 3 次），3 次平均：mx1 检查通过 3/3、相似度 0.911、SenseVoice 0.159、夹英文错词率 parakeet 0.707 / whisper 0.447；mxlt 1/3（另 2 次拼接语速差 1.41、1.46 倍不过）、0.915、0.133、0.577 / 0.464。两个识别器结论相反、mxlt 拼接变差 → **保持现状**：整片中文段不加 `gen`，只英文段 `gen_en`。报告与两份“每句最好”MP3（带合格证）在 `高考续写/预览/声音对比/任务_sovits_夹英文-17_*`。
 3. 整片：新稿 + 英文做法定了、老师听过样段点头后才合成一次（`任务_续写_全片_sovits.json` 照新结论改，parts 10 × takes 3，并行 20）；选段、出视频交给 v2 会话的 `续写全片.sh`（VOICE=g1，不带旧 Qwen 的 OVERLAY_TASK / DROP_TASK / LOCK / KEEP_ORIG / SYNTH_ALLOW_MISSING）。
 
 ## 要用户 / 协调会话定的
 - 英文要更像 native：老师的素材里没有纯英文切片，最有效的是请老师录 2—3 句 5—8 秒的纯英文当英文参考（协调会话在问老师）；后备：英文用母语合成后做声音转换（先不做）。
-- 待补的防复发登记：sovits 结果目录名让 合成完整性.task_of 认不出任务清单（退回只查已有各次）——可加一条检查：工作流 collect 的目录名必须是“任务-运行号”（双向验证：旧 tts-sovits.yml 报、新的 0）。
+- 防复发登记已补：踩坑 113（`仓库检查.gram_out_problems`：推 gram-tts-out 的工作流结果目录必须是 runs/<任务>-<运行号>；双向验证 `python3 tools/防复发/验证/仓库检查.py`）。
