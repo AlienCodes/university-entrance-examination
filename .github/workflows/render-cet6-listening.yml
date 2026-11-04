@@ -8,6 +8,7 @@ on:
     paths: ['.github/cet6-listening-render.txt']
 permissions:
   contents: write
+  actions: read
 jobs:
   list:
     runs-on: ubuntu-24.04
@@ -83,19 +84,33 @@ jobs:
         with: {name: 'cet6listen-${{ matrix.id }}', path: up, compression-level: 0}
   publish:
     needs: [list, render]
+    if: always() && needs.list.result == 'success'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with: {sparse-checkout: .github}
       - uses: actions/download-artifact@v4
-        with: {path: art}
-      - name: 核对齐全、发布、下载核 sha256
+        with: {path: art, pattern: 'cet6listen-*'}
+      - name: 收之前运行里已通过的套（.github/cet6-listening-collect.txt 每行一个运行号；本次有的不覆盖）
         env: {GH_TOKEN: '${{ github.token }}'}
         run: |
           set -euo pipefail
-          python3 - '${{ needs.list.outputs.ids }}' <<'EOF'
+          mkdir -p art
+          for rid in $(grep -v '^\s*$' .github/cet6-listening-collect.txt 2>/dev/null || true); do
+            for n in $(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$rid/artifacts?per_page=100" --jq '.artifacts[] | select(.expired | not) | .name' | grep '^cet6listen-'); do
+              [ -d "art/$n" ] && continue
+              gh run download "$rid" -R "$GITHUB_REPOSITORY" -n "$n" -D "art/$n"; echo "收 $rid / $n"
+            done
+          done
+      - name: 核对 30 套齐全（.github/cet6-listening-all.txt）、发布、下载核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 - "$(python3 -c 'import json;print(json.dumps([l.strip() for l in open(".github/cet6-listening-all.txt") if l.strip()]))')" <<'EOF'
           import hashlib, json, sys, pathlib
           ids = json.loads(sys.argv[1]); bad = []; names = set()
+          miss = [i for i in ids if not (pathlib.Path('art') / f'cet6listen-{i}' / 'meta.json').exists()]
+          if miss: sys.exit(f'还缺 {len(miss)} 套（不发布）：{miss}')
           for i in ids:
               d = pathlib.Path('art') / f'cet6listen-{i}'
               m = json.loads((d / 'meta.json').read_text('utf-8'))
