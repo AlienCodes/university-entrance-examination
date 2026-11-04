@@ -1,0 +1,82 @@
+{
+ "candidate": {
+  "id": "g1",
+  "mode": "gptsovits",
+  "weights": "teacher",
+  "split": "mark",
+  "gap_max": 0.45
+ },
+ "take": 1,
+ "part": 0,
+ "split": "mark",
+ "segments": [
+  {
+   "id": "s1z~1",
+   "sec": 5.06,
+   "compute": 38.8,
+   "sr": 32000,
+   "cap": 228,
+   "tries": 1,
+   "rss_mb": 5169
+  },
+  {
+   "id": "s1z~2",
+   "sec": 5.46,
+   "compute": 16.4,
+   "sr": 32000,
+   "cap": 189,
+   "tries": 1,
+   "rss_mb": 5361
+  }
+ ],
+ "engine": "GPT-SoVITS v2ProPlus @ abe9843 (CPU)",
+ "refs": {
+  "Chinese": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  },
+  "English": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  }
+ },
+ "rss_after_load_mb": 3575,
+ "rss_peak_mb": 5361,
+ "total_compute": 63.9,
+ "buzz_top": [
+  [
+   15000,
+   8.9
+  ],
+  [
+   12000,
+   8.9
+  ],
+  [
+   18000,
+   8.8
+  ],
+  [
+   21000,
+   8.8
+  ],
+  [
+   16500,
+   8.5
+  ]
+ ],
+ "buzz_tone": [
+  10778,
+  0.1
+ ],
+ "chain": {
+  "passed": false,
+  "error": "成品.mp3 响度检查未通过，未输出文件：短时响度波动 1.09 LU（上限 1.0）"
+ }
+}
