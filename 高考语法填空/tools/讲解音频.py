@@ -402,7 +402,7 @@ def render(segs, wavdir, out, lead=1.5, tail=2.0, rhythm=True):
         trep, terr = PY.check_items(a, G.OUT_SR, items)
         if terr:
             raise RuntimeError('声调：' + '；'.join(terr[:6]) + '，未输出')
-        import 清晰度 as QX          # 清晰度（踩坑 114）：两个中文识别器 + 4 kHz 以上能量 + 擦音对元音，门槛以老师真声为基准
+        import 清晰度 as QX          # 清晰度（踩坑 115）：两个中文识别器 + 4 kHz 以上能量 + 擦音对元音，门槛以老师真声为基准
         crep, cerr = QX.check(a, G.OUT_SR, items)
         if cerr:
             raise RuntimeError('；'.join(cerr) + '，未输出')

@@ -1,7 +1,26 @@
 {
- "说明": "续写讲解 2026 新课标Ⅰ卷 v2 整片配音换成老师的 GPT-SoVITS v2ProPlus 专属模型（老师 2026-11-04 听了“忍泪”两段选 g1：老师模型 + VoiceTwin 挑的参考）。8 句第 2 轮把单个英文词拆出来按 en 模式合成（mark+word），拼接检查 6/6 不过（单词比周围中文慢 1.4—2.9 倍，一顿一顿）、识别也没变好，所以用 mark（只在 ‖ 处拆）。段间停顿上限 0.45 与 Qwen 整片（任务_续写_全片.json）相同。工作流 tts-sovits.yml（workflow_dispatch，model_url = 老师模型 zip）；结果在 gram-tts-out 的 runs/任务_续写_全片_sovits-sovits-<运行号>/，续写全片.sh 按任务名前缀找得到。",
+ "说明": "续写讲解 2026 新课标Ⅰ卷 v2 整片配音换成老师的 GPT-SoVITS v2ProPlus 专属模型（老师 2026-11-04 听了“忍泪”两段选 g1：老师模型 + VoiceTwin 挑的参考）。8 句第 2 轮把单个英文词拆出来按 en 模式合成（mark+word），拼接检查 6/6 不过（单词比周围中文慢 1.4—2.9 倍，一顿一顿）、识别也没变好，所以用 mark（只在 ‖ 处拆）。段间停顿上限 0.45 与 Qwen 整片（任务_续写_全片.json）相同。工作流 tts-sovits.yml（workflow_dispatch，model_url = 老师模型 zip）；结果在 gram-tts-out 的 runs/任务_续写_全片_sovits-sovits-<运行号>/，续写全片.sh 按任务名前缀找得到。 2026-11-04 清晰度：采样改 lt6（温度 0.6、top_p 0.8），6 次选优；选段加 --音色还原 [[60,500,-2.5],[5000,9000,2.0]]（见 高考续写/预览/声音对比/清晰度_v3对v4_报告.md）。",
  "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
- "takes": [1, 2, 3],
+ "takes": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6
+ ],
  "parts": 10,
- "candidates": [{"id": "g1", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45}]
+ "candidates": [
+  {
+   "id": "g1",
+   "mode": "gptsovits",
+   "weights": "teacher",
+   "split": "mark",
+   "gap_max": 0.45,
+   "gen": {
+    "temperature": 0.6,
+    "top_p": 0.8
+   }
+  }
+ ]
 }

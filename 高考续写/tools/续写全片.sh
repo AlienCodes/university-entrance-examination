@@ -67,7 +67,7 @@ fi
 read -r SPLIT GAPMAX < <(python3 -c "
 import json,sys;t=json.load(open(sys.argv[1],encoding='utf-8'));c=next(c for c in t['candidates'] if c['id']==sys.argv[2])
 print(c.get('split',t.get('split','mark+lang')), c.get('gap_max',t.get('gap_max','')))" "高考语法填空/tts/$TASK" "$VOICE")
-SEL=(--拆分 "$SPLIT"); [ -z "$GAPMAX" ] || SEL+=(--停顿上限 "$GAPMAX")
+SEL=(--拆分 "$SPLIT"); [ -z "$GAPMAX" ] || SEL+=(--停顿上限 "$GAPMAX"); [ -z "${TIMBRE:-}" ] || SEL+=(--音色还原 "$TIMBRE")   # 清晰度 v4：TIMBRE='[[60,500,-2.5],[5000,9000,2.0]]'
 echo "选段：拆分 $SPLIT，段间停顿上限 ${GAPMAX:-默认}"
 if [ -n "${SYNTH_ALLOW_MISSING:-}" ]; then          # 显式放行（公开、有记录）：写进音频旁的记录，随音频提交
   printf '显式放行缺片：%s\n合成结果：%s\n原因：合成机内存顶满被收回（两次），这一片的段只用其余几次的候选；其他缺口照拦（合成齐全.py、合成完整性.py）\n' "$SYNTH_ALLOW_MISSING" "$RUN" > "高考续写/audio/$NAME.放行.txt"

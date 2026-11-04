@@ -183,7 +183,7 @@ def summarize(rows, keys=('sv_cer', 'pf_cer', 'sv_pcer', 'pf_pcer', 'xcer', 'hf4
     return out
 
 
-# 清晰度关口（踩坑 114；门槛以老师真声为基准，2026-11-04 实测）：
+# 清晰度关口（踩坑 115；门槛以老师真声为基准，2026-11-04 实测）：
 #   识别：老师真声训练切片 30 条 拼音错误率 SenseVoice 0.015、Paraformer 0.015 → 成品中文小段合计 ≤ 3 倍 = 0.045（两个识别器各自）；
 #   频谱：老师真声 05.wav（讲课录音，按停顿切 60 段拼起来量）4 kHz 以上占比 0.035、擦音对元音 −5.8 dB（经 24 kHz 处理链 −6.0）；训练切片 0.042、−4.3 dB →
 #         成品有声帧 4 kHz 以上占比 ≥ 0.025、擦音对元音 ≥ −6.5 dB（发闷、清辅音被压低就过不了）。
@@ -219,7 +219,9 @@ def check(a, sr, items, ears=None):
             bad.append(f'清晰度：{nm} 拼音错误率 {rep[k]:.3f} > {PCER_MAX}（老师真声 0.015 的 3 倍），最差 {where}')
     if rep.get('hf4k') is not None and rep['hf4k'] < HF_MIN:
         bad.append(f"清晰度：4 kHz 以上能量占比 {rep['hf4k']:.3f} < {HF_MIN}（发闷；老师真声 0.035—0.042）")
-    if rep.get('cvr') is not None and rep['cvr'] < CVR_MIN:
+    if rep.get('cvr') is None:
+        bad.append('清晰度：量不到擦音（清辅音几乎没有 4 kHz 以上的能量，发闷）')
+    elif rep['cvr'] < CVR_MIN:
         bad.append(f"清晰度：擦音对元音 {rep['cvr']:.1f} dB < {CVR_MIN}（清辅音弱；老师真声 −5.8—−4.3）")
     return rep, bad
 
