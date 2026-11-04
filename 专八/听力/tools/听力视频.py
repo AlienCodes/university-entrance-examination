@@ -459,18 +459,32 @@ CUT_END = None     # 只用原音前 CUT_END 秒（样片）；None = 整段
 LIMIT_CEIL_DB = -2.5   # 限幅上限：AAC 编码后峰值会反弹约 0.9 dB（六级 202512-1 样片：WAV −1.5 → 成品 −0.58，成品核查拦下），留到 −2.5
 
 
+LIMIT_MAX_DB, LIMIT_MAX_FRAC = 8, 0.005   # 守门：限幅最多压低 8 dB、被压时长 ≤ 0.5%（原音要人听，不许放宽）
+LIMIT_FLOOR_LUFS = -19.0                 # 整体增益封顶的下限：降到这里还过不了守门就停
+TARGET_LUFS = -16.0                      # 本次实际的整体响度目标（limited 写入，verify 按它核 ±0.7）
+
+
 def limited(a, sr, pl):
-    """整体增益到 −16 LUFS → 前瞻限幅 → 补增益 → 限幅（专八/听力/原文/tools/原音音轨.py 的 limit，规则只写一处）；压得太多就停"""
+    """整体增益到 −16 LUFS → 前瞻限幅 → 补增益 → 限幅（专八/听力/原文/tools/原音音轨.py 的 limit，规则只写一处）。
+    限幅压得太多（守门不放宽）就把整体目标往下降（每步 0.25 LU，“整体增益封顶”）：宁可整体小一点，原音峰形不动；
+    降到 LIMIT_FLOOR_LUFS 还不行就停（踩坑 121）"""
+    global TARGET_LUFS
     import importlib.util
     sp = importlib.util.spec_from_file_location('yuanyin', ROOT / '专八/听力/原文/tools/原音音轨.py')
     yy = importlib.util.module_from_spec(sp); sp.loader.exec_module(yy)
     yy.CEIL = 10 ** (LIMIT_CEIL_DB / 20)
     m = pl.Meter(sr)
-    y, gr = yy.limit(a * 10 ** ((-16 - m.integrated_loudness(a)) / 20), sr)
-    y, gr2 = yy.limit(y * 10 ** ((-16 - m.integrated_loudness(y)) / 20), sr)
-    st = {'限幅最多压低dB': max(gr['max_db'], gr2['max_db']), '被压时长比例': gr['frac']}
-    print('整体增益 + 前瞻限幅：', st)
-    if st['限幅最多压低dB'] > 8 or st['被压时长比例'] > 0.005: die(f'限幅压得太多（原音要人听）：{st}')
+    L0 = m.integrated_loudness(a)
+    t = -16.0
+    while True:
+        y, gr = yy.limit(a * 10 ** ((t - L0) / 20), sr)
+        y, gr2 = yy.limit(y * 10 ** ((t - m.integrated_loudness(y)) / 20), sr)
+        st = {'目标LUFS': t, '限幅最多压低dB': max(gr['max_db'], gr2['max_db']), '被压时长比例': gr['frac']}
+        if st['限幅最多压低dB'] <= LIMIT_MAX_DB and st['被压时长比例'] <= LIMIT_MAX_FRAC: break
+        if t - 0.25 < LIMIT_FLOOR_LUFS - 1e-9: die(f'限幅压得太多（原音要人听），整体目标降到 {t} LUFS 还不行：{st}')
+        t = round(t - 0.25, 2)
+    TARGET_LUFS = t
+    print('整体增益 + 前瞻限幅：', st, '（整体增益封顶）' if t != -16.0 else '')
     return y
 
 
@@ -575,7 +589,7 @@ def verify(out, T, total, fr):
     seg = y[int(LEAD * sr):int((LEAD + T['audioEnd']) * sr)]
     L = pl.Meter(sr).integrated_loudness(seg)
     peak = 20 * np.log10(np.abs(seg).max())
-    if abs(L + 16) > 0.7: bad.append(f'整体响度 {L:.2f} LUFS')
+    if abs(L - TARGET_LUFS) > 0.7 or TARGET_LUFS < LIMIT_FLOOR_LUFS: bad.append(f'整体响度 {L:.2f} LUFS（目标 {TARGET_LUFS}）')
     if peak > -1: bad.append(f'峰值 {peak:.2f} dBFS')
     head = 20 * np.log10(np.abs(y[:int(LEAD * sr) - 480]).max() + 1e-9)
     tl = 20 * np.log10(np.abs(y[int((LEAD + T['audioEnd']) * sr) + 4800:]).max() + 1e-9)
@@ -592,7 +606,7 @@ def verify(out, T, total, fr):
         a = np.asarray(Image.open(io.BytesIO(raw)).convert('L'), dtype=float)
         b = np.asarray(Image.open(OUT / 'shots' / f'{k}.png').convert('L').resize((480, 270)), dtype=float)
         if np.abs(a - b).mean() > 3: bad.append(f'画面与截图不符 帧{f} {k} 差 {np.abs(a - b).mean():.1f}')
-    rep = {'时长秒': round(vd, 3), '整体响度LUFS': round(L, 2), '峰值dBFS': round(peak, 2), '画面状态': len(fr), '抽查切换点': len(chk),
+    rep = {'时长秒': round(vd, 3), '整体响度LUFS': round(L, 2), '目标LUFS': TARGET_LUFS, '峰值dBFS': round(peak, 2), '画面状态': len(fr), '抽查切换点': len(chk),
            '问题': bad}
     (D / '核查报告.json').write_text(json.dumps(rep, ensure_ascii=False, indent=1), 'utf-8')
     print(rep)
