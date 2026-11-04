@@ -1,0 +1,15 @@
+{
+ "说明": "清晰度对比（老师 2026-11-04 听 v3 样段：“很多发音都没有发清楚”）。同 v3 样段 14 段，7 个候选 × 3 次：g1 = v3 原样（对照）；lt6 = VoiceTwin 补救预设（温度 0.6、top_p 0.8）；k5 = VoiceTwin 第二组预设（top_k 5）；lt6a0 = lt6 + 不用辅助参考；lt6r1 = lt6 + 换第 2 条参考当主参考；lt6ml = lt6 + 成句英文单独按 English 合成（mark+lang，英文 g1lt 参数）；lt8 = 温度 0.8、top_k 10（g1lt 用到中文）。量法 tools/tts/清晰度.py + 高考续写/tools/声音对比.py；同时跑 baseline（老师真声 30 条切片的识别错误率）。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["t01", "t02", "t03", "t04", "s1z", "s1b1", "s1b2", "s1b3", "s1bj", "s1bf", "s1e", "s1p1", "s1p2", "s1h"],
+ "takes": [1, 2, 3],
+ "candidates": [
+  {"id": "g1", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45},
+  {"id": "lt6", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45, "gen": {"temperature": 0.6, "top_p": 0.8}},
+  {"id": "k5", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45, "gen": {"top_k": 5}},
+  {"id": "lt6a0", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45, "gen": {"temperature": 0.6, "top_p": 0.8}, "aux": 0},
+  {"id": "lt6r1", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45, "gen": {"temperature": 0.6, "top_p": 0.8}, "ref_pick": 1},
+  {"id": "lt6ml", "mode": "gptsovits", "weights": "teacher", "split": "mark+lang", "gap_max": 0.45, "gen": {"temperature": 0.6, "top_p": 0.8}, "gen_en": {"top_k": 10, "temperature": 0.8}},
+  {"id": "lt8", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45, "gen": {"top_k": 10, "temperature": 0.8}}
+ ]
+}

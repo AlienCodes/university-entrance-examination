@@ -5,6 +5,7 @@
 
   {"id": "g1", "mode": "gptsovits", "weights": "base"}                     底模（只证明环境可用）
   {"id": "g1", "mode": "gptsovits", "weights": "teacher", "voice": "…json"} 老师的模型（工作流从云盘取到 $SOVITS_DIR）
+  可选：gen / gen_en（采样参数）、aux（辅助参考条数，0 = 不用）、ref_pick（第几条参考当主参考）、speed、split、ref_free_en、en_ref
 
 voice：与 Qwen 同一种参考写法（Release 录音 + spans + ref_text）；weights=teacher 且没写 voice 时，
 用 $SOVITS_DIR/ref.json 里按 VoiceTwin 的做法挑好的参考（取模型.py 写）。
@@ -81,7 +82,11 @@ def references(c):
         r = sel['refs'].get(key) or sel['refs']['zh']
         rc = ('en' if key == 'en_tx' else code) if key in sel['refs'] else 'zh'
         speed = float(c.get('speed', (sel.get('speed') or {}).get(rc, 1.0)))
-        out[lang] = (d / r['main']['wav'], r['main']['text'], rc, [d / x['wav'] for x in r['aux']], speed)
+        pool = [r['main']] + list(r['aux'])
+        k = int(c.get('ref_pick', 0)) % len(pool)     # ref_pick：第几条当主参考（0 = 原主参考；清晰度对比 2026-11-04）
+        main, rest = pool[k], pool[:k] + pool[k + 1:]
+        rest = rest[:int(c['aux'])] if 'aux' in c else rest   # aux：辅助参考条数（0 = 不用；VoiceTwin identical 档试 3 和 0）
+        out[lang] = (d / main['wav'], main['text'], rc, [d / x['wav'] for x in rest], speed)
     return out
 
 

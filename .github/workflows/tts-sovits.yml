@@ -67,6 +67,41 @@ jobs:
           name: sovits-model
           path: /mnt/sovits
           retention-days: 3
+  baseline:
+    # 清晰度基准（2026-11-04）：老师真声中文切片（取模型.py 写的 tx/）用两个中文识别器（SenseVoice、Paraformer）量错误率和频谱，
+    # 只输出数字（--no-text：不含素材文字），作为 wav-baseline 进 gram-tts-out 的 runs/<任务>-<运行号>/真声基准.json
+    needs: fetch
+    if: needs.fetch.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools/tts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - uses: actions/download-artifact@v4
+        with:
+          name: sovits-model
+          path: /home/runner/sovits
+      - name: 量真声
+        run: |
+          pip install -q sherpa-onnx numpy soundfile soxr librosa pypinyin
+          B=https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models
+          mkdir -p tools/tts/models && cd tools/tts/models
+          for n in sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17 sherpa-onnx-paraformer-zh-2024-03-09; do
+            curl -sSfL --retry 5 "$B/$n.tar.bz2" | tar -xj; done
+          cd - >/dev/null
+          mkdir -p out
+          if [ -f /home/runner/sovits/tx/tx.json ]; then
+            python tools/tts/清晰度.py --tx /home/runner/sovits/tx/tx.json --no-text --out out/真声基准.json
+          else echo '没有 tx/（模型 zip 里没挑出真声切片）'; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wav-baseline
+          path: out
+          retention-days: 7
   synth:
     needs: [plan, fetch]
     if: always() && needs.plan.result == 'success' && needs.fetch.result != 'failure' && needs.fetch.result != 'cancelled'
@@ -148,7 +183,7 @@ jobs:
           path: out
           retention-days: 7
   collect:
-    needs: [plan, synth]
+    needs: [plan, synth, baseline]
     if: always()
     runs-on: ubuntu-latest
     steps:

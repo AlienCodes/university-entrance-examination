@@ -135,6 +135,22 @@ def take(zpath, out):
             break
     if ent:
         res['refs']['en_tx'] = {'main': ent[0], 'aux': ent[1:]}
+    # 清晰度基准（2026-11-04）：老师真声中文切片 30 条（lang≠en、keep=1、3—9 秒、≥ 8 个汉字、不是参考），按顺序均匀取，
+    # 写 tx/tx.json（wav + 文字），给 baseline 作业量“真声对识别器有多清楚”（清晰度.py --tx，只输出数字）
+    refpaths = {base(str(r.get('path', ''))) for r in refs}
+    zh = [r for r in rows if str(r.get('keep', '1')) == '1' and not latin(r.get('text', ''))
+          and 3.0 <= float(r.get('duration') or 0) <= 9.0 and len(_re.findall(r'[一-鿿]', r.get('text', ''))) >= 8
+          and base(r.get('audio', '')) not in refpaths and base(r.get('audio', '')) in clips]
+    pick = [zh[round(i * (len(zh) - 1) / 29)] for i in range(30)] if len(zh) >= 30 else zh
+    tx = []
+    for k, r in enumerate(pick):
+        extract(z, infos[clips[base(r['audio'])]], out / 'tx' / f'{k:02d}.wav')
+        tx.append({'wav': f'{k:02d}.wav', 'text': r['text'].strip()})
+    if tx:
+        (out / 'tx' / 'tx.json').write_text(json.dumps(tx, ensure_ascii=False), 'utf-8')
+    g_id = (g.get('identical') or {}).get('speed')
+    res['speed_identical'] = g_id
+    print('真声基准切片', len(tx), '条；identical.speed', g_id, flush=True)
     (out / 'ref.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
     sz = sum(p.stat().st_size for p in out.rglob('*') if p.is_file())
     print(f"取出：模型 2 个、参考 {sum(1 + len(v['aux']) for v in res['refs'].values())} 条（{', '.join(res['refs'])}），"
