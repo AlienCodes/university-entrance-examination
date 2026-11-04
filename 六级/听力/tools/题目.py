@@ -138,6 +138,7 @@ def run(sid):
         elif js and (set(nz(js)) - set(nz(stems[n]))) and (set(nz(stems[n])) - set(nz(js))) and len(set(nz(js)) ^ set(nz(stems[n]))) <= 4 \
                 and all(len(w) > 1 and w in DICT for w in set(nz(js)) - set(nz(stems[n]))):      # 解析一侧多出的都是真词才报（OCR 噪声不报）
             bad.append(f'第 {n} 题题干 解析「{js}」≠ 念题「{stems[n]}」（词不同：{sorted(set(nz(js)) ^ set(nz(stems[n])))}）')
+        if n in stems and len(stems[n].split()) > 40: bad.append(f'第 {n} 题题干 {len(stems[n].split())} 词，像是把后面的录音也截进来了：{stems[n][:80]}…')
         if n in stems and not stems[n].rstrip().endswith('?'): stems[n] = re.sub(r'[.,;:]?\s*$', '?', stems[n].rstrip())
         blk = flat[p:starts[i + 1][1]] if i + 1 < len(starts) else flat[p:p + 1500]
         ans = str(rule.get(str(n), ''))       # 答案只认 答案裁定.json（两个独立来源一致才写进去）

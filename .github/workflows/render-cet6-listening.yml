@@ -34,6 +34,7 @@ jobs:
             .github
             六级/听力
             专八/听力/tools
+            专八/听力/2025
             专八/听力/原文/tools
             四级/tools/fonts
             专八/真题/2025年 英语专业八级真题.pdf
@@ -52,8 +53,9 @@ jobs:
         run: |
           set -euo pipefail
           P=/opt/ttsenv/bin/python; T=六级/听力/tools/听力视频.py; S=${{ matrix.id }}; MP3=in/cet6-$S.mp3
-          $P $T $S --自检
           $P $T $S timeline $MP3
+          $P $T $S layout
+          $P $T $S --自检
           $P $T $S stills
           $P $T $S video $MP3 --试跑
           $P $T $S video $MP3
