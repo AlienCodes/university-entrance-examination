@@ -18,6 +18,8 @@
 ⑩ 口语（用户 2026-11-04 第 16 条：自然、不要过多语气词、该停就停、不要一口气说完）：高考语法填空/tools/稿检查.talk_problems（阈值取自老师录音）；
 ⑪ 中文地道（用户 2026-11-04：“忍泪……根本就不符合中国人的说话习惯……一般大家肯定会说他强忍住眼泪”）：tools/中文地道.problems，
    查全课中文（配音 text、画面字、逐块翻译稿、范文中文、高亮 / 伏笔 / 可替换中文；题目原文与评分标准不查）。
+⑫ 讲解推理说完整（用户 2026-11-04 第 19 条：“直接说是过去的事，要用过去式……应该这样说：因为这件事情发生在过去，所以……要用过去式”）：
+   tools/讲解推理.problems——每个语法 / 用词 / 位置的决定都要有因果（因为……所以……；如果要表示……就要……），不许“名词短语，用 X”。
 用法：python3 续写检查.py 讲解目录 [--副本 高考语法填空/tts/稿_xxx.json]   |   --自检（双向验证：每颗雷必须报出，原稿 0 处）"""
 import copy
 import html
@@ -31,6 +33,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools'))
 import 作文规则 as R  # noqa: E402
 import 中文地道 as ZD  # noqa: E402
+import 讲解推理 as TL  # noqa: E402
 sys.path.insert(0, str(ROOT / '高考语法填空/tools'))
 import 稿检查 as GK  # noqa: E402
 
@@ -274,6 +277,7 @@ def check_dir(d, copy_path=None):
     E += talk_problems(doc, (ROOT / '高考续写/tools/续写视频.py').read_text('utf-8'))
     E += GK.talk_problems(doc)
     E += ['⑪ ' + x for x in ZD.problems(ZD.lesson_items(d))]
+    E += ['⑫ ' + x for x in TL.problems(doc)]
     if copy_path and Path(copy_path).read_text('utf-8') != (d / '稿.json').read_text('utf-8'):
         E.append(f'⑥ 合成副本 {copy_path} 与原稿不一致（重新复制）')
     return E, (t, fw, doc)
