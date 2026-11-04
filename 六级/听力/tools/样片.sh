@@ -9,11 +9,9 @@ P=/opt/ttsenv/bin/python; T=六级/听力/tools/听力视频.py
 mkdir -p "$CET6_OUT"
 $P $T $SID --自检
 $P $T $SID timeline "$MP3"
-# 截断的原音：与识别同一个解码器（soundfile）读，取到第 N 题作答结束
-$P -c "
-import json,soundfile as sf,sys
-T=json.load(open('六级/听力/$SID/时间轴.json')); a,sr=sf.read('$MP3',always_2d=True)
-sf.write('$CET6_OUT/cut.wav', a[:round(T['audioEnd']*sr)], sr, subtype='PCM_24')"
+# 截断的原音（与识别同一个解码器 soundfile 读），整体增益到 −16 LUFS + 前瞻限幅（原音电平.py）
+END=$($P -c "import json;print(json.load(open('六级/听力/$SID/时间轴.json'))['audioEnd'])")
+$P 六级/听力/tools/原音电平.py "$MP3" "$CET6_OUT/cut.wav" "$END"
 $P $T $SID stills
 $P $T $SID video "$CET6_OUT/cut.wav" --试跑
 $P $T $SID video "$CET6_OUT/cut.wav"
