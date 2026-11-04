@@ -5,7 +5,7 @@
     /opt/ttsenv/bin/python 六级/听力/封面/系列封面.py --自检      # 双向验证：字号×0.5 时每个 data-min 元素都要报，正常字号 0 处
 
 老师要求（2026-11-04）：突出“六级听力真题”“彻底搞定六级听力”，大字为主；30 套、2018—2026 年写得非常明白；不写 4K、精读。
-套数、考试次数、起止年月全部从 六级/听力/<yyyymm-n>/ 目录现算（踩坑 70），并与 .github/cet6-listening-all.txt 核对；不印“02 / 09”编号。
+套数、考试次数、起止年份全部从 六级/听力/<yyyymm-n>/ 目录现算（踩坑 70），并与 .github/cet6-listening-all.txt 核对；不印“02 / 09”编号。
 渲染后程序自查（同 六级作文/封面/系列封面.py 的 CHECK_JS）：文字不出画、不压木框、不进 B 站底角遮挡区、互不重叠、字体全部加载；
 data-min 元素缩到高 180 后最小字号不低于下限（主标题 24、钩子 13、卖点 10 像素，踩坑 76）。
 """
@@ -48,8 +48,8 @@ M0, M1 = min(EXAMS[Y0]), max(EXAMS[Y1])
 N_EXAM = sum(len(v) for v in EXAMS.values())
 assert (N, N_EXAM, Y0, M0, Y1, M1) == (30, 16, 2018, 12, 2026, 6), (N, N_EXAM, Y0, M0, Y1, M1)   # 数据一变先核对封面说法
 assert YEARS == list(range(Y0, Y1 + 1))                        # 年份连续，“全部真题”的年份一排才成立
-SPAN = f'{Y0}.{M0}—{Y1}.{M1:02d}'                               # 2018.12—2026.06
-NEWEST = f'{Y1}.{M1}'
+SPAN = f'{Y1}—{Y0}'          # 2026—2018：新的年份在前、不写月份（老师 2026-11-04）
+NEWEST = f'{Y1}'
 
 CHALK, YEL, PNK, BLU, INK, HOT = L.CHALK, L.YEL, L.PNK, L.BLU, L.INK, L.HOT
 RED = W.RED
@@ -67,7 +67,7 @@ def y(t):
 
 
 def seal(x, y_, d, rot=8):
-    """“2026.6 已更新”粉笔红圆章。"""
+    """“2026 已更新”粉笔红圆章。"""
     return (f'<div class="ab" data-k="seal" data-min="{MIN_SELL}" style="left:{x}px;top:{y_}px;width:{d}px;height:{d}px;transform:rotate({rot}deg);'
             f'display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;color:#fff">'
             f'<i style="position:absolute;inset:0;border-radius:50%;background:{RED};filter:url(#rough);box-shadow:0 8px 0 rgba(0,0,0,.3)"></i>'
@@ -90,7 +90,7 @@ def phones(x, y_, s, rot=-8, k='deco'):
 def years(size, mr=10, pad=16, ys=None):
     """年份一排：2018 … 2026 全写出来，最新一年粉笔黄底（框的左右内边距收小，9 个年份一行放得下）。"""
     out, size = '', round(size * K, 1)
-    for yy in (ys or YEARS):
+    for yy in (ys or YEARS[::-1]):           # 2026 在前
         inner = f'<span class="lat" style="color:{INK}">{yy}</span>' if yy == Y1 else f'<span class="lat">{yy}</span>'
         b = L.badge(inner, size, border=YEL if yy == Y1 else CHALK, fill=YEL if yy == Y1 else 'rgba(0,0,0,.18)', mr=mr)
         out += b.replace('padding:8px 26px 10px', f'padding:6px {pad}px 8px', 1)
@@ -113,13 +113,13 @@ def A(w=1920, h=1080):
 <div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:54px;top:226px;font:900 {fs(220)}/1 Black;letter-spacing:-.02em">{SIX}听力<br><span style="color:{YEL}">真题</span></div>
 {phones(1010, 470, 1.15)}
 <div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:60px;top:700px;font:900 {fs(88)}/1.18 Black">
- <span class="lat">{y(SPAN)}</span><br>全部真题 {y(N)} 套</div>""")
+ <span class="lat" style="font-size:1.2em">{y(SPAN)}</span><br>全部真题 {y(N)} 套</div>""")
     return board(w, h, f"""
 <div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:72px;top:48px;font:900 {fs(126)}/1.2 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=28)}</div>
 {seal(1590, 46, 252, rot=6)}
 <div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:300px;font:900 {fs(256)}/1 Black;letter-spacing:-.02em">{SIX}听力<span style="color:{YEL}">真题</span></div>
 {phones(1580, 690, .86)}
-<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:604px;font:900 {fs(106)}/1.2 Black">
+<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:592px;font:900 {fs(122)}/1.2 Black">
  <span class="lat">{y(SPAN)}</span> 全部 {y(N)} 套</div>
 <div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:76px;top:784px;font:900 {fs(70)}/1.2 Black">{N_EXAM} 次考试 · 考试原音 · 题目同步</div>""")
 
@@ -129,8 +129,8 @@ def B(w=1920, h=1080):
     c = w / 2
     big = w >= 1900
     yr = years(60, mr=8, pad=14) if big else ''
-    yr43 = '' if big else (years(62, mr=10, pad=14, ys=[v for v in YEARS if v <= Y0 + 4]) + '<br>'
-                           + years(62, mr=10, pad=14, ys=[v for v in YEARS if v > Y0 + 4]))   # 4:3 一行放不下 9 个：分两行
+    yr43 = '' if big else (years(62, mr=10, pad=14, ys=YEARS[::-1][:5]) + '<br>'
+                           + years(62, mr=10, pad=14, ys=YEARS[::-1][5:]))   # 4:3 一行放不下 9 个：分两行
     return board(w, h, f"""
 <div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:{c}px;transform:translateX(-50%);top:50px;white-space:nowrap;font:900 {fs(120 if big else 100)}/1.15 Black">
  <span class="ck">彻底搞定</span><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
@@ -147,7 +147,7 @@ def C(w=1920, h=1080):
     rows = ''
     for yy in reversed(YEARS):
         ms = EXAMS[yy]
-        mon = ' · '.join(f'{m}月' for m in sorted(ms, reverse=True))
+        mon = f'{len(ms)} 次考试'                # 不写月份
         rows += (f'<div style="display:flex;align-items:baseline;gap:22px">'
                  f'<span class="lat" style="color:{YEL if yy == Y1 else CHALK};min-width:2.6em">{yy}</span>'
                  f'<span style="font-family:Black">{mon}</span>'
