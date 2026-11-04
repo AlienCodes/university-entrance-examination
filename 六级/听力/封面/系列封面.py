@@ -108,18 +108,18 @@ SELL = f'考试原音 · 题目同步 · {y("答案")}一目了然'
 def A(w=1920, h=1080):
     if w < 1900:
         return board(w, h, f"""
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:52px;font:900 {fs(100)}/1.2 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=24)}</div>
-{seal(1110, 40, 256, rot=6)}
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:46px;font:900 {fs(128)}/1.18 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=26)}</div>
+{seal(1160, 60, 240, rot=6)}
 <div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:54px;top:226px;font:900 {fs(220)}/1 Black;letter-spacing:-.02em">{SIX}听力<br><span style="color:{YEL}">真题</span></div>
 {phones(1010, 470, 1.15)}
 <div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:60px;top:700px;font:900 {fs(88)}/1.18 Black">
  <span class="lat" style="font-size:1.2em">{y(SPAN)}</span><br>全部真题 {y(N)} 套</div>""")
     return board(w, h, f"""
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:72px;top:48px;font:900 {fs(126)}/1.2 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=28)}</div>
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:74px;top:40px;font:900 {fs(172)}/1.18 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=32)}</div>
 {seal(1590, 46, 252, rot=6)}
-<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:300px;font:900 {fs(256)}/1 Black;letter-spacing:-.02em">{SIX}听力<span style="color:{YEL}">真题</span></div>
+<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:300px;font:900 {fs(250)}/1 Black;letter-spacing:-.02em">{SIX}听力<span style="color:{YEL}">真题</span></div>
 {phones(1580, 690, .86)}
-<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:592px;font:900 {fs(122)}/1.2 Black">
+<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:600px;font:900 {fs(118)}/1.2 Black">
  <span class="lat">{y(SPAN)}</span> 全部 {y(N)} 套</div>
 <div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:76px;top:784px;font:900 {fs(70)}/1.2 Black">{N_EXAM} 次考试 · 考试原音 · 题目同步</div>""")
 
@@ -132,12 +132,12 @@ def B(w=1920, h=1080):
     yr43 = '' if big else (years(62, mr=10, pad=14, ys=YEARS[::-1][:5]) + '<br>'
                            + years(62, mr=10, pad=14, ys=YEARS[::-1][5:]))   # 4:3 一行放不下 9 个：分两行
     return board(w, h, f"""
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:{c}px;transform:translateX(-50%);top:50px;white-space:nowrap;font:900 {fs(120 if big else 100)}/1.15 Black">
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:{c}px;transform:translateX(-50%);top:44px;white-space:nowrap;font:900 {fs(164 if big else 140)}/1.15 Black">
  <span class="ck">彻底搞定</span><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
-<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:{c}px;transform:translateX(-50%);top:{218 if big else 200}px;white-space:nowrap;font:900 {fs(250 if big else 210)}/1.2 Black">
+<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:{c}px;transform:translateX(-50%);top:{262 if big else 236}px;white-space:nowrap;font:900 {fs(236 if big else 200)}/1.2 Black">
  {L.hl(f'<span style="color:{INK}">六级听力真题</span>', YEL, px=30)}</div>
-<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:{c}px;transform:translateX(-50%);top:{590 if big else 500}px;white-space:nowrap;text-align:center;line-height:1.5">{yr or yr43}</div>
-<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:{c}px;transform:translateX(-50%);top:{790 if big else 800}px;white-space:nowrap;font:900 {fs(84 if big else 70)}/1.2 Black">
+<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:{c}px;transform:translateX(-50%);top:{620 if big else 530}px;white-space:nowrap;text-align:center;line-height:1.5">{yr or yr43}</div>
+<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:{c}px;transform:translateX(-50%);top:{800 if big else 812}px;white-space:nowrap;font:900 {fs(84 if big else 70)}/1.2 Black">
  <span class="lat">{SPAN}</span> · {N_EXAM} 次考试 {y(f'{N} 套')}</div>""")
 
 
@@ -154,21 +154,20 @@ def C(w=1920, h=1080):
                  f'<span style="margin-left:auto;color:{PNK};font-family:Black">{sum(ms.values())}套</span></div>')
     box = (f'<i style="position:absolute;inset:0;border:6px solid {CHALK};border-radius:22px;background:rgba(0,0,0,.20);filter:url(#line)"></i>'
            f'<div class="ck" style="position:relative;font:900 {fs(60)}/1.3 Black;color:{BLU};margin-bottom:6px"><span class="lat">{SPAN}</span>'
-           + ('' if big else f' 全部 {y(N)} 套') + f'</div><div class="ck" style="position:relative">{rows}</div>')
+           + f' 全部 {y(N)} 套' + f'</div><div class="ck" style="position:relative">{rows}</div>')
     if big:
         return board(w, h, f"""
 <div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:66px;line-height:1">
  <div class="ck" style="font:900 {fs(236)}/1 Black">{SIX}听力</div>
  <div class="ck" style="font:900 {fs(236)}/1 Black;color:{YEL};margin-top:24px">真题</div></div>
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:66px;top:586px;font:900 {fs(110)}/1.2 Black">
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:66px;top:584px;font:900 {fs(150)}/1.18 Black">
  <span class="ck">彻底搞定</span><br><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
-<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:70px;top:866px;font:900 {fs(62)}/1.2 Black">全部真题 {y(N)} 套</div>
 <div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:1130px;top:60px;width:720px;padding:22px 40px 26px;font:800 {fs(60)}/1.2 Inter">{box}</div>""")
     return board(w, h, f"""
 <div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:56px;top:56px;font:900 {fs(196)}/1.04 Black">{SIX}<br>听力<br><span style="color:{YEL}">真题</span></div>
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:854px;font:900 {fs(80)}/1.15 Black">
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:800px;font:900 {fs(110)}/1.15 Black">
  <span class="ck">彻底搞定</span><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
-<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:520px;top:50px;width:860px;padding:18px 40px 20px;font:800 {fs(60)}/1.16 Inter">{box}</div>""")
+<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:520px;top:44px;width:860px;padding:14px 40px 16px;font:800 {fs(60)}/1.08 Inter">{box}</div>""")
 
 
 DIRS = {'A': A, 'B': B, 'C': C}
