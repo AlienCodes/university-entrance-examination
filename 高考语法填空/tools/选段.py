@@ -180,8 +180,10 @@ def main():
     ap.add_argument('--退回', help='拆段版的合成目录（runs/…/<候选>）：整段的 ‖ 处停顿不够时只这一段用它')
     ap.add_argument('--退回拆分', default='mark')
     ap.add_argument('--提速', type=float, default=1.0, help='语音提速倍数（讲解音频.TEMPO；停顿不变）')
+    ap.add_argument('--音色还原', help='JSON [[f_lo, f_hi, dB], …]（讲解音频.TIMBRE_EQ；清晰度 v4：[[60,500,-2.5],[5000,9000,2.0]]）')
     a = ap.parse_args()
     J.TEMPO = a.提速
+    J.TIMBRE_EQ = json.loads(a.音色还原) if a.音色还原 else None
     J.SPLIT = a.拆分
     J.GAP_MAX = a.停顿上限
     import 合成完整性 as WZ               # 缺 take / 缺小段就停（合成机被停时 collect 照样发布，候选会悄悄少掉）

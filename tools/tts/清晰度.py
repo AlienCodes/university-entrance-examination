@@ -183,6 +183,47 @@ def summarize(rows, keys=('sv_cer', 'pf_cer', 'sv_pcer', 'pf_pcer', 'xcer', 'hf4
     return out
 
 
+# 清晰度关口（踩坑 114；门槛以老师真声为基准，2026-11-04 实测）：
+#   识别：老师真声训练切片 30 条 拼音错误率 SenseVoice 0.015、Paraformer 0.015 → 成品中文小段合计 ≤ 3 倍 = 0.045（两个识别器各自）；
+#   频谱：老师真声 05.wav（讲课录音，按停顿切 60 段拼起来量）4 kHz 以上占比 0.035、擦音对元音 −5.8 dB（经 24 kHz 处理链 −6.0）；训练切片 0.042、−4.3 dB →
+#         成品有声帧 4 kHz 以上占比 ≥ 0.025、擦音对元音 ≥ −6.5 dB（发闷、清辅音被压低就过不了）。
+#   v3 样段（老师说不清楚）：Paraformer 拼音错 0.067、4 kHz 以上 0.022、擦音 −8.3 dB → 三项都报。
+PCER_MAX = 0.045
+HF_MIN = 0.025
+CVR_MIN = -6.5
+
+
+def check(a, sr, items, ears=None):
+    """成品（任意采样率）+ items（每段 units 的起止与文字）→ (报告, 问题列表)。只量中文小段（≥ 4 个汉字）。"""
+    ears = ears or Ears()
+    rows, segs = [], []
+    for it in items:
+        for u in it.get('units') or [it]:
+            if len(han(u['text'])) < 4:
+                continue
+            y = a[int(u['start'] * sr):int(u['end'] * sr)]
+            r = {'id': u.get('id', it['id']), 't': round(u['start'], 2), **score_asr(ears, y, sr, u['text'])}
+            r.pop('sv_text', None)
+            r.pop('pf_text', None)
+            rows.append(r)
+            segs.append(y)
+    if not rows:
+        return {}, []
+    rep = summarize(rows, keys=('sv_cer', 'pf_cer', 'sv_pcer', 'pf_pcer', 'xcer'))
+    rep.update(spectral(np.concatenate(segs), sr))
+    bad = []
+    worst = sorted(rows, key=lambda r: -(r['sv_pcer'] + r['pf_pcer']) * r['n'])[:3]
+    where = '、'.join(f"{r['id']}（{r['t']:.2f}s）" for r in worst)
+    for k, nm in (('sv_pcer', 'SenseVoice'), ('pf_pcer', 'Paraformer')):
+        if rep.get(k, 0) > PCER_MAX:
+            bad.append(f'清晰度：{nm} 拼音错误率 {rep[k]:.3f} > {PCER_MAX}（老师真声 0.015 的 3 倍），最差 {where}')
+    if rep.get('hf4k') is not None and rep['hf4k'] < HF_MIN:
+        bad.append(f"清晰度：4 kHz 以上能量占比 {rep['hf4k']:.3f} < {HF_MIN}（发闷；老师真声 0.035—0.042）")
+    if rep.get('cvr') is not None and rep['cvr'] < CVR_MIN:
+        bad.append(f"清晰度：擦音对元音 {rep['cvr']:.1f} dB < {CVR_MIN}（清辅音弱；老师真声 −5.8—−4.3）")
+    return rep, bad
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--wav')

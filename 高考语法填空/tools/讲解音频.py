@@ -402,9 +402,13 @@ def render(segs, wavdir, out, lead=1.5, tail=2.0, rhythm=True):
         trep, terr = PY.check_items(a, G.OUT_SR, items)
         if terr:
             raise RuntimeError('声调：' + '；'.join(terr[:6]) + '，未输出')
+        import 清晰度 as QX          # 清晰度（踩坑 114）：两个中文识别器 + 4 kHz 以上能量 + 擦音对元音，门槛以老师真声为基准
+        crep, cerr = QX.check(a, G.OUT_SR, items)
+        if cerr:
+            raise RuntimeError('；'.join(cerr) + '，未输出')
     mx, top = tonal_scan(a, G.OUT_SR, items)
     cert = G.save_checked(Path(out), a, items, -16.0)
-    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'rhythm': rrep if rhythm else None, 'tones': trep if rhythm else None, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
+    meta = {'duration': round(len(a) / G.OUT_SR, 3), 'items': items, 'rhythm': rrep if rhythm else None, 'tones': trep if rhythm else None, 'clarity': crep if rhythm else None, 'buzz_tone': [f0, db], 'buzz_top': top, 'certificate': cert, 'loudness': cert['loudness'],
             'clause_check': G.CHAIN, 'breath': 0}
     Path(out).with_suffix('.timings.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
     return meta
