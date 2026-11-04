@@ -1,0 +1,77 @@
+{
+ "candidate": {
+  "id": "g1",
+  "mode": "gptsovits",
+  "weights": "teacher",
+  "split": "mark",
+  "gap_max": 0.45,
+  "gen_en": {
+   "top_k": 10,
+   "temperature": 0.8
+  }
+ },
+ "take": 4,
+ "part": 0,
+ "split": "mark",
+ "segments": [
+  {
+   "id": "s1e",
+   "sec": 4.7,
+   "compute": 32.2,
+   "sr": 32000,
+   "cap": 177,
+   "tries": 1,
+   "rss_mb": 5121
+  }
+ ],
+ "engine": "GPT-SoVITS v2ProPlus @ abe9843 (CPU)",
+ "refs": {
+  "Chinese": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  },
+  "English": {
+   "text_chars": 57,
+   "lang": "zh",
+   "aux": 2,
+   "speed": 1.0,
+   "wav": "zh_0.wav"
+  }
+ },
+ "rss_after_load_mb": 3577,
+ "rss_peak_mb": 5121,
+ "total_compute": 39.4,
+ "buzz_top": [
+  [
+   21000,
+   9.3
+  ],
+  [
+   18000,
+   9.3
+  ],
+  [
+   15000,
+   9.3
+  ],
+  [
+   17500,
+   9.2
+  ],
+  [
+   20500,
+   9.2
+  ]
+ ],
+ "buzz_tone": [
+  10163,
+  2.2
+ ],
+ "chain": {
+  "passed": false,
+  "error": "成品.mp3 响度检查未通过，未输出文件：短时响度波动 1.12 LU（上限 1.0）"
+ }
+}
