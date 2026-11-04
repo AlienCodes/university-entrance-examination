@@ -4068,6 +4068,60 @@
    "status": "自动拦截+有双向验证",
    "gap": "只认因果连接词，逻辑顺不顺、是不是最好懂的讲法交审阅员；得分点 / 可替换 / 伏笔呼应的评语段不查；高考语法填空的旧稿（2026_新课标Ⅰ卷.json）报 16 处，那边已出的音频不追溯，重做讲稿时一起改",
    "fix": ""
+  },
+  {
+   "id": "117",
+   "title": "六级听力练习视频运行 41836153360：render 写 runs-on: ubuntu-latest，GitHub 正把 ubuntu-latest 换成新镜像（apt 的 ffmpeg 8.0.1），抽到新镜像的 15 台在 cet6-chalk-env 的 ffmpeg 6.1.1 核对处失败",
+   "stages": [
+    "发布"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "tools/防复发/仓库检查.runner_problems（用 cet6-chalk-env 的任务 runs-on 必须 ubuntu-24.04）",
+     "runs": "tools/防复发/仓库检查.py（每次提交 + 推送）",
+     "evidence": "全仓库 0 处；改回 ubuntu-latest 报"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/仓库检查.py",
+     "expect": "exit 0",
+     "needs": "none"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "只管用 cet6-chalk-env 的任务；别的钉了 apt 版本的写法要另加",
+   "fix": ""
+  },
+  {
+   "id": "118",
+   "title": "六级听力 202606-1 老师给的原音题与题之间只停 1—2 秒（全长 21 分钟），练习视频没法作答；mp3 头里的时长比解码长度多 3—7 秒，按头里时长做的时间轴在编码时报时长不符",
+   "stages": [
+    "视频"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "六级/听力/tools/听力视频.gap_points / gap_identical（只有 插停顿.json 的套插；恰好 25 处、补到另 29 套实测中位数 作答停顿.py；插入段全 0、其余与原音逐样本相同）；timeline 的 audioEnd 按解码长度",
+     "runs": "听力视频.py timeline / video",
+     "evidence": "202606-1 每题总停顿 12.8—12.9 秒；比对 0 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/插停顿.py",
+     "expect": "exit 0",
+     "needs": "ttsenv"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "mp3 时长那一半没有单独的双向验证（编码前 base.video 核时长会拦）",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

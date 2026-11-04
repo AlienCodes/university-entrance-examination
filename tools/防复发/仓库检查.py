@@ -9,6 +9,8 @@
   踩坑 87：发布音频 / 视频的工作流（AUDIO_RELEASE）必须在打包之前跑 .github/check-audio-cert.py <音频目录>，稀疏检出要带上
           tools/tts 与音频目录；每个 release-*.yml 都必须登记在 AUDIO_RELEASE 或 NO_AUDIO（写明理由）里，新发布流程不许漏。
   踩坑 114：工作流调用的脚本读系统文件（如 /usr/share/dict/american-english），工作流必须 apt 装对应的包（SYSDEP）。
+  踩坑 117：用 .github/actions/cet6-chalk-env（环境里核 ffmpeg 6.1.1 等固定版本）的任务必须 runs-on: ubuntu-24.04，
+          ubuntu-latest 正在逐步换新镜像（apt 的 ffmpeg 8.0.1），抽到新镜像的机器整批失败。
 软链接（踩坑 47）：仓库里的软链接不许指向仓库外（临时目录一删，模型就没了），也不许是断的。
 双向验证：python3 tools/防复发/验证/仓库检查.py"""
 import os
@@ -115,6 +117,15 @@ def sysdep_problems(name, text, root=R):
     return errs
 
 
+def runner_problems(name, y):
+    errs = []
+    for jn, j in ((y or {}).get('jobs') or {}).items():
+        uses = [st.get('uses', '') for st in (j or {}).get('steps') or [] if isinstance(st, dict)]
+        if any('cet6-chalk-env' in u for u in uses) and (j or {}).get('runs-on') != 'ubuntu-24.04':
+            errs.append(f'{name}：任务 {jn} 用 cet6-chalk-env，runs-on 是 {j.get("runs-on")}，必须 ubuntu-24.04（踩坑 117）')
+    return errs
+
+
 def strings(x):
     if isinstance(x, str):
         yield x
@@ -149,6 +160,7 @@ def check_workflow(name, text):
     errs += pack_meta_problems(name, text)
     errs += gram_out_problems(name, text)
     errs += sysdep_problems(name, text)
+    errs += runner_problems(name, y)
     hits = [(pat, why) for pat, why in BAN if re.search(pat, text)]
     if name not in LEGACY:
         errs += [f'{name}：用了 {pat}（{why}）' for pat, why in hits]

@@ -101,5 +101,13 @@ assert ' wamerican' in cur
 case('去掉 wamerican（踩坑 114：运行 2 的写法）→ 报', ck.sysdep_problems('cet6-listening-prep.yml', cur.replace(' wamerican', '')), True, '踩坑 114')
 case('不调用读词典脚本的工作流 → 0', ck.sysdep_problems('new.yml', GOOD), False)
 
+# 踩坑 117：用 cet6-chalk-env 的任务必须 runs-on: ubuntu-24.04
+import yaml
+cur = (WF / 'render-cet6-listening.yml').read_text('utf-8')
+case('现在的 render-cet6-listening.yml → 0', ck.runner_problems('r.yml', yaml.safe_load(cur)), False)
+case('render 改回 ubuntu-latest（运行 41836153360 的写法）→ 报', ck.runner_problems('r.yml', yaml.safe_load(cur.replace('runs-on: ubuntu-24.04', 'runs-on: ubuntu-latest'))), True, '踩坑 117')
+case('不用 cet6-chalk-env 的 ubuntu-latest 任务 → 0', ck.runner_problems('g.yml', yaml.safe_load(GOOD)), False)
+case('全仓库工作流 → 0', [e for e in ck.check_workflows() if '踩坑 117' in e], False)
+
 print('仓库检查双向验证：' + ('全部通过' if not bad else f'{len(bad)} 处失败\n  ' + '\n  '.join(bad)))
 sys.exit(1 if bad else 0)

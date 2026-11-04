@@ -10,7 +10,7 @@ permissions:
   contents: write
 jobs:
   list:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       ids: ${{ steps.l.outputs.ids }}
     steps:
@@ -20,7 +20,7 @@ jobs:
         run: echo "ids=$(grep -v '^\s*$' .github/cet6-listening-render.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin]))')" >> "$GITHUB_OUTPUT"
   render:
     needs: list
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 150
     strategy:
       fail-fast: false
@@ -41,6 +41,12 @@ jobs:
             tools/题目间隔.py
       - uses: ./.github/actions/cet6-chalk-env
         with: {asr: 'false', browser: '153'}
+      - name: 关口：定稿 0 待核、题目检查 0 处（不许用没核完的原文出视频）
+        run: |
+          sudo apt-get install -y -q wamerican >/dev/null
+          python3 六级/听力/tools/定稿.py ${{ matrix.id }} > /dev/null
+          python3 六级/听力/tools/题目.py ${{ matrix.id }}
+          git diff --exit-code -- 六级/听力/${{ matrix.id }}/定稿.json 六级/听力/${{ matrix.id }}/题目.json
       - name: 字体（原卷 PDF）
         run: /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
       - name: 下载原音、核 sha256
@@ -74,7 +80,7 @@ jobs:
         with: {name: 'cet6listen-${{ matrix.id }}', path: up, compression-level: 0}
   publish:
     needs: [list, render]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with: {sparse-checkout: .github}
