@@ -4,7 +4,7 @@
 
 - 只收 定稿.json 待核为 0 的套（不是 0 就停）；文字一字不改，只做排版统一（直撇号 / 直引号 → 弯的，带空格的破折号 → 不带空格），
   人工订正写在 原文订正.json（{套: [[原, 改为, 理由], …]}），每条必须恰好匹配一次（第 4 项写了次数就恰好那么多次，踩坑 17）。
-- 切句：. ? ! 结尾（引号、括号跟着走）；Mr. Mrs. Ms. Dr. St. 和单个大写字母缩写、U.S. 句中不切（踩坑 6）。
+- 切句：. ? ! 结尾（引号、括号跟着走）；Mr. Mrs. Ms. Dr. St.（不分大小写，转写有小写 mr.，统一成大写）和单个大写字母缩写、U.S. 句中不切（踩坑 6）。
 - 分段：说明、Conversation / Passage / Recording、“Questions … are based on …”、每道念题各起一段；对话里换说话人靠停顿，不在这里分。
 """
 import json
@@ -15,7 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 C4 = HERE.parent                       # 六级/听力/精读
 SRC = C4.parent                        # 六级/听力/<套>/定稿.json
-ABBR = re.compile(r"(?:\b(?:Mr|Mrs|Ms|Dr|St|Prof|vs|etc|e\.g|i\.e)\.|\b[A-Z]\.|\bU\.S\.|\bU\.K\.|\ba\.m\.|\bp\.m\.)$")
+ABBR = re.compile(r"(?:\b(?i:Mr|Mrs|Ms|Dr|St|Prof|vs|etc|e\.g|i\.e)\.|\b[A-Z]\.|\bU\.S\.|\bU\.K\.|\ba\.m\.|\bp\.m\.)$")
 HEAD = re.compile(r"^(?:Part (?:I|II|III|Two)|Section [ABC]|Directions|Conversation (?:One|Two)|Passage (?:One|Two)|Recording (?:One|Two|Three)|"
                   r"Questions? \w+(?: to| and) \w+ (?:are|is) based|Question \w+[:.]|Now,? listen|This is the end)", re.I)
 
@@ -26,6 +26,7 @@ def typo(s):
     s = re.sub(r"\s*(?:--|[—–])\s*", '—', s)
     s = re.sub(r'"(?=\w)', '“', s).replace('"', '”')
     s = re.sub(r"'(?=\w)", '‘', s).replace("'", '’')
+    s = re.sub(r"\b(mr|mrs|ms|dr)\.", lambda m: m.group(1).capitalize() + '.', s)     # 转写里的小写称谓（mr. Sanchez）
     return s
 
 
