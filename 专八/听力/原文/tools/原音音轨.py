@@ -377,6 +377,12 @@ def raw6(pid, paras, R, mono, y, sr, allt, rep):
     if probs:
         mp3.unlink()
         return [f'{pid} ' + p for p in probs]
+    sys.path.insert(0, str(ROOT / 'tools' / 'tts'))
+    import 听对                         # 踩坑 124：每句的时间窗独立听一遍，与原文对不上 = 时刻放错了地方（对上比例是原文比原文，查不出）
+    heard = 听对.problems(听对.load16(mp3), [(t['start'], t['end']) for t in times], [s for p in paras for s in p])
+    if heard:
+        mp3.unlink()
+        return [f'{pid} 第 {k} 句听到的与原文对不上（相似度 {r}）：{s} ｜ 听到：{h}' for k, r, s, h in heard]
     meter = pyln.Meter(sr)
     lufs = meter.integrated_loudness(dec)
     peak = 20 * np.log10(np.abs(dec).max())
