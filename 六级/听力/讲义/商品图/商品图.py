@@ -54,7 +54,7 @@ SETS = M.SETS
 NS = len(SETS)
 NQ = sum(len(M.load(s)['questions']) for s in SETS)
 Y0, Y1 = M.V[SETS[-1]]['year'], M.V[SETS[0]]['year']
-NEWEST = f"{M.V[SETS[0]]['year']}.{M.V[SETS[0]]['month']}"
+NEWEST = f"{M.V[SETS[0]]['year']}"
 EXAMS = len({(M.V[s]['year'], M.V[s]['month']) for s in SETS})
 SYN = K.syn_rows(SETS) if all((K.JC.J / f'{s}.json').exists() for s in SETS) else {}
 NSYN = sum(len(v) for v in SYN.values())
@@ -62,6 +62,8 @@ VS = K.vocab_stats()
 NV = sum(1 for e in VS.values() if len(e['sets']) >= 3)
 TIER = [sum(1 for e in VS.values() if lo <= len(e['sets']) <= hi) for _, lo, hi in K.TIERS]
 NB = sum(1 for s in SETS for g in M.load(s)['groups'] for b in K.blanks(g['sents'], K._zipf()) if b)
+BOOK = ['#ffe46b', '#ffb4cf', '#a8e6c8', '#bcd4ff', '#ffd2a8', '#f4f1e8']
+BOOKT = ['听力真题30套精讲', '同义替换手册', '高频词手册', '听写本', '听写本答案', '30天刷题计划']
 FILES = [('main', '真题 30 套精讲'), ('syn', '同义替换手册'), ('vocab', '高频词手册'), ('dict', '听写本'), ('dans', '听写本答案'), ('plan', '30 天刷题计划')]
 
 
@@ -154,7 +156,6 @@ def band(y, text):
 # ---------------------------------------------------------------- 01 商品总图（黑板）
 def p_all():
     cards = ''
-    covers = {k: shot(k, 1, f'封面_{k}', r=40) for k, _ in FILES}
     for i, (k, name) in enumerate(FILES + [('paper', '六级历年真题原卷')]):
         col, row = i % 4, i // 4
         x, y = 44 + col * 232, 278 + row * 306
@@ -165,7 +166,11 @@ def p_all():
                    f'<div class="lat" style="font-size:18px;margin-top:10px;color:{BERRY}">CET-6</div></div>')
             sub = '原卷 PDF'
         else:
-            pic = page(covers[k], x + 34, y, 150, rot=(-3, 2, -2, 3, -2, 2)[i])
+            pic = (f'<div class="ab" style="left:{x + 24}px;top:{y}px;width:170px;height:212px;background:{BOOK[i]};border-radius:4px 10px 10px 4px;'
+                   f'box-shadow:8px 10px 0 rgba(0,0,0,.4);transform:rotate({(-3, 2, -2, 3, -2, 2)[i]}deg);border-left:12px solid rgba(0,0,0,.22);'
+                   f'display:flex;flex-direction:column;justify-content:center;padding:0 12px;color:{INK}">'
+                   f'<div class="lat" style="font-size:15px;letter-spacing:.12em;color:{INK2}">CET-6</div>'
+                   f'<div style="font:900 31px/1.2 Black;margin-top:6px">{esc(BOOKT[i])}</div></div>')
             sub = f'<span class="lat">{PG[k]}</span> 页'
         cards += (pic + f'<div class="ab ck" data-k="c{i}" style="left:{x}px;top:{y + 226}px;width:218px;text-align:center;font:900 24px/1.25 Black">{esc(name)}</div>'
                   f'<div class="ab" data-k="s{i}" style="left:{x}px;top:{y + 262}px;width:218px;text-align:center;font:700 20px/1 Bold;color:{YEL}">{sub}</div>')
@@ -179,7 +184,7 @@ def p_all():
 <span class="lat ck" style="position:relative;font-size:{fs(40)}">{NEWEST}</span><span class="ck" style="position:relative;font:900 {fs(38)}/1.15 Black">已更新</span></div>
 {cards}
 <div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:50%;transform:translateX(-50%);top:902px;font:900 {fs(28)}/1.2 Black">
-<span style="color:{YEL}">{Y0}—{Y1}</span> · {EXAMS} 次考试 · {NQ} 道题 · PDF 讲义共 <span style="color:{YEL}">{TOTAL}</span> 页</div>
+<span style="color:{YEL}">{Y1}—{Y0}</span> · {EXAMS} 次考试 · {NQ} 道题 · PDF 讲义共 <span style="color:{YEL}">{TOTAL}</span> 页</div>
 {L.frame(1000, 1000)}</body>"""
 
 
@@ -253,9 +258,9 @@ def p_sets():
         by.setdefault(M.V[s]['year'], []).append(s)
     rows = ''.join(f'<div class="ab" data-k="y{y}" style="left:{60 + (i % 2) * 450}px;top:{250 + (i // 2) * 128}px;width:420px;font:900 30px/1.2 Black">'
                    f'<span class="lat" style="color:{BLUE}">{y}</span> 年 <span style="font:700 22px/1.4 Bold;color:{INK2};display:block">'
-                   + ' · '.join(f'{M.V[s]["month"]}月第{M.V[s]["set"]}套' for s in sorted(by[y], reverse=True)) + '</span></div>'
+                   + ' · '.join(f'{"上半年" if m <= 6 else "下半年"} {n} 套' for m, n in sorted({M.V[s]['month']: sum(M.V[t]['month'] == M.V[s]['month'] for t in by[y]) for s in by[y]}.items(), reverse=True)) + '</span></div>'
                    for i, y in enumerate(sorted(by, reverse=True)))
-    return f"""<body><div class="dots"></div>{head(f'{Y0}—{Y1} 共 <span class="hy">{NS} 套</span>真题', f'{EXAMS} 次考试，{NQ} 道题，新的在前')}
+    return f"""<body><div class="dots"></div>{head(f'{Y1}—{Y0} 共 <span class="hy">{NS} 套</span>真题', f'{EXAMS} 次考试，{NQ} 道题，新的在前')}
 {rows}{band(900, f'{NS} 套 · {NQ} 题 · 每一题都有答案依据、思路、同义替换、错项排除')}
 </body>"""
 
@@ -265,9 +270,22 @@ PAGES = [('01_商品总图', p_all, True), ('02_每题讲透', p_q, False), ('03
          ('09_30套全收录', p_sets, False)]
 
 
+YEAR_BAD = re.compile(r'(20\d\d)\s*[—-]\s*(20\d\d)|20\d\d\.\d{1,2}(?!\d)|20\d\d\s*年\s*\d{1,2}\s*月')
+
+
+def year_problems(t):
+    """老师定：年份写 2026—2018（新的在前），不写月份（“2026.6”“2026年6月”都不行）。"""
+    out = []
+    for m in YEAR_BAD.finditer(t):
+        if m.group(1) and int(m.group(1)) > int(m.group(2)):
+            continue
+        out.append(f'年份写法「{m.group(0)}」：要写 2026—2018、不写月份')
+    return out
+
+
 def banned(text):
     t = re.sub(r'<[^>]+>', '', text)
-    return [w for w in BANNED if w in t]
+    return [w for w in BANNED if w in t] + year_problems(t)
 
 
 def render(br, name, body, board, out=True):
@@ -307,6 +325,8 @@ def selftest(br):
     res = render(br, '自检_编号', p_sets().replace('</body>', '<div class="ab" data-k="zz" style="left:400px;top:960px">02 / 09</div></body>'), False, out=False)
     if not any('页码式编号' in x for x in res):
         bad.append('“02 / 09”编号没报出')
+    if not year_problems('2018—2026') or not year_problems('2026.6 已更新') or year_problems('2026—2018 · 2026 已更新'):
+        bad.append('年份写法检查失效')
     if banned('全网第一 保过') != ['第一', '保过']:
         bad.append('禁用词检查失效')
     return bad

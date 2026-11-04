@@ -226,7 +226,7 @@ def guide_chapter(n):
     syn = ''.join(f"<p><i class='tag t'>{k}</i>{esc(v)}</p>" for k, v in TYPES_NOTE.items())
     wr = ''.join(f"<p><i class='tag w'>{k}</i>{esc(v)}</p>" for k, v in WRONG_NOTE.items())
     return ("<section class='chap guide' data-mark='GEN'><div class='band'><div><div class='no'>HOW TO USE</div><h1><span>怎么用这本讲义</span></h1></div>"
-            f"<div class='meta'><b>{n} 套真题</b>{M.V[M.SETS[-1]]['year']}—{M.V[M.SETS[0]]['year']}</div></div>"
+            f"<div class='meta'><b>{n} 套真题</b>{M.V[M.SETS[0]]['year']}—{M.V[M.SETS[-1]]['year']}</div></div>"
             + box('每一套怎么学', ['① 先不看讲义，用配套的“视频版真题考试”完整做一遍，像考场上一样只听一遍；',
                                 '② 对照“答案速查”打分，错的题在“逐题精讲”里找到：先看“答案依据”是原文哪一句，再看“思路”怎么从这句话推到答案；',
                                 '③ 看“同义替换”：选项和原文换了哪些说法——六级听力的正确答案很少照搬原文，听懂这些替换就是提分的关键；',
@@ -414,7 +414,7 @@ def build(what, ids):
             two_pass(pg, tmp, lambda p: syn_body(ids, p), NAMES['syn'], NAMES['syn'])
         if what in ('vocab', 'all'):
             nv = sum(1 for e in VS.values() if len(e['sets']) >= 3)
-            cov('六级听力 高频词手册', f'{M.V[M.SETS[-1]]["year"]}—{M.V[M.SETS[0]]["year"]} · {len(M.SETS)} 套真题原文统计 · {nv} 个词条', '按 30 套里考到的套数排序：必背 → 常考 → 高频<br>每个词都标出处，回到原文就能听到它')
+            cov('六级听力 高频词手册', f'{M.V[M.SETS[0]]["year"]}—{M.V[M.SETS[-1]]["year"]} · {len(M.SETS)} 套真题原文统计 · {nv} 个词条', '按 30 套里考到的套数排序：必背 → 常考 → 高频<br>每个词都标出处，回到原文就能听到它')
             two_pass(pg, tmp, lambda p: vocab_body(VS, p), NAMES['vocab'], NAMES['vocab'])
         if what in ('dict', 'all'):
             for ans, key in ((False, 'dict'), (True, 'dans')):

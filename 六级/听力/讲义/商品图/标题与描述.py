@@ -20,13 +20,13 @@ for n in ast.parse(_src).body:
         exec(ast.get_source_segment(_src, n), _ns)
 desc_len, desc_problems = _ns['desc_len'], _ns['desc_problems']
 
-NEW = f"{G.M.V[G.SETS[0]]['year']}年{G.M.V[G.SETS[0]]['month']}月"
-SHORT = f'六级听力真题{G.NS}套精讲 {G.Y0}-{G.Y1} 讲义+听写本'
-LONG = (f'六级听力真题{G.NS}套精讲 {G.Y0}-{G.Y1}大学英语六级听力 {NEW}已更新 原文逐句对照 答案依据 同义替换 错项排除 '
+NEW = f"{G.M.V[G.SETS[0]]['year']} 年"
+SHORT = f'六级听力真题{G.NS}套精讲 {G.Y1}-{G.Y0} 讲义+听写本'
+LONG = (f'六级听力真题{G.NS}套精讲 {G.Y1}-{G.Y0}大学英语六级听力 {NEW}已更新 原文逐句对照 答案依据 同义替换 错项排除 '
         f'高频词手册 听写本 30天计划 PDF')
 PG = G.PG
 DESC = f"""【六级听力真题 {G.NS} 套精讲 · 全套讲义】
-{G.Y0}—{G.Y1} 年 {G.EXAMS} 次考试、{G.NS} 套真题、{G.NQ} 道题全部收录，{NEW}真题已更新，新的在前。
+{G.Y1}—{G.Y0} 年 {G.EXAMS} 次考试、{G.NS} 套真题、{G.NQ} 道题全部收录，{NEW}真题已更新，新的在前。
 
 一、真题 {G.NS} 套精讲（{PG['main']} 页）
 · 原文逐句英汉对照：长对话、短文、讲座全部原文，每句配中文；答案出处在原文里黄色标出、标上题号；
@@ -52,7 +52,7 @@ PDF 电子讲义，共 {G.TOTAL} 页，手机、平板、电脑都能看，也�
 def main():
     bad = desc_problems(DESC)
     bad += [f'短标题 {len(SHORT)} 字 > 30' for _ in [0] if len(SHORT) > 30]
-    bad += [f'标题出现禁用词「{w}」' for w in G.BANNED if w in SHORT + LONG]
+    bad += [f'标题出现禁用词「{w}」' for w in G.BANNED if w in SHORT + LONG] + G.year_problems(SHORT + LONG + DESC)
     if bad:
         sys.exit('不写文件：\n  ' + '\n  '.join(bad))
     w = HERE / 'work'
