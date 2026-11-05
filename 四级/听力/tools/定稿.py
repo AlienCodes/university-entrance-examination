@@ -138,6 +138,16 @@ def sources(sid):
     return rid, P, O, R, info['文字来源'] == '文字层'
 
 
+def time_problems(W):
+    """有时刻的词必须按顺序（开始 ≤ 结束、开始不比前一个词早 0.05 秒以上）：补的词放错位置会倒序（202306-1 Question twenty four 放进作答停顿之前）"""
+    out, prev = [], None
+    for i, w in enumerate(W):
+        if w[1] is None: continue
+        if w[2] < w[1] or (prev is not None and w[1] < prev - 0.05): out.append((i, w[0], w[1], w[2]))
+        prev = w[1]
+    return out
+
+
 def run(sid, quiet=False, R_override=None, P_override=None):
     rid, P, O, R, layer = sources(sid)
     if R_override is not None: R = R_override
@@ -224,7 +234,11 @@ def run(sid, quiet=False, R_override=None, P_override=None):
             else:
                 if new and i2 > i1 and (i1, i2) not in whole:              # 保留尾标点（整段改写照写的，不套）
                     new = new[:-1] + [re.sub(r'\W+$', '', new[-1]) + re.search(r'\W*$', W[i2 - 1]).group()]
-                words += [[w, None, None, 0] for w in new]
+                nz_ = lambda x: re.sub(r'\W+', '', x).lower()
+                keep = i2 - i1 if i2 > i1 and len(new) > i2 - i1 and [nz_(w) for w in new[len(new) - (i2 - i1):]] == [nz_(w) for w in W[i1:i2]] else 0
+                # 补词在前、原识别词照旧在后（202306-1 “twenty four.” → “Question twenty four.”）：原词保留识别时刻，只有补的词留空
+                words += [[w, None, None, 0] for w in new[:len(new) - keep]]
+                words += [[w, P[i1 + k][1], P[i1 + k][2], 0] for k, w in enumerate(new[len(new) - keep:])]
             if i2 == i1:
                 words.append(list(P[i]) + [0]); i += 1
             else:
@@ -242,7 +256,9 @@ def run(sid, quiet=False, R_override=None, P_override=None):
         if 0 < k and j < len(words):
             t0, t1 = words[k - 1][2], words[j][1]
             long = [x for x in sil if x[1] - x[0] >= 8 and t0 - 0.5 <= x[0] and x[1] <= t1 + 0.5]
-            if long:
+            # 只补了题号（≤ 3 词，如 Question 24 漏了 Question）：念在停顿之后，留给引擎插值贴着后一个词；整句念题（202106-2）照旧放在停顿之前
+            label = j - k <= 3 and re.match(r'(Questions?|Section|Directions|News|Conversation|Passage)\b', words[k][0])
+            if long and not label:
                 a, b = t0 + 0.2, long[0][0]
                 L = [len(w[0]) + 1 for w in words[k:j]]; tot = sum(L); acc = 0
                 for m in range(k, j):
@@ -251,6 +267,8 @@ def run(sid, quiet=False, R_override=None, P_override=None):
                 placed += j - k
         k = j
     if placed and not quiet: print(f'  {sid} 补插的 {placed} 个词按作答停顿放在停顿之前')
+    tp = time_problems(words)
+    if tp: sys.exit(f'停止：{sid} 定稿词时刻倒序（补的词放错了位置，踩坑 129）：{tp[:5]}')
     res = {'来源': '二方' if two else '三方', '录音': rid, '词': words, '差异': cnt, '改动': changes, '保留': kept, '待核': todo,
            '对齐': {'识别词': len(W), '原文词': len(R) if R else 0, 'otter词': len(O) if O else 0,
                   '有时间的词': sum(1 for x in words if x[1] is not None)}}

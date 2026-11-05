@@ -4437,6 +4437,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "OCR 把一个词错成另一个真词（形近真词）、或把词拆成两段都像词的（vid eo）仍查不出，靠第二来源与做题",
    "fix": "看截图前先全项目跑同类检查"
+  },
+  {
+   "id": "129",
+   "title": "四级听力 34 套 GitHub precheck：202306-1、202112-2 时间轴“锚点 Question 24 找到 0 处”。定稿.py 把识别的“twenty four.”整段改成“Question twenty four.”时丢了原词时刻，补词又按“放在作答停顿之前”放，时刻倒序（1365.47→1365.32）；本机预演没跑 timeline（要原音），GitHub 上才暴露",
+   "stages": [
+    "定稿",
+    "时间轴"
+   ],
+   "projects": [
+    "四级听力"
+   ],
+   "guards": [
+    {
+     "where": "四级/听力/tools/定稿.py：改动保留末尾原识别词的时刻；只补题号（≤ 3 词）留给引擎贴着后一个词插值；time_problems 词时刻倒序就停",
+     "runs": "工作流 precheck / render 关口（定稿.py）",
+     "evidence": "35 套 0 处；202306-1、202112-2 本机 timeline → audio → stills --sample 全 0"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/补词时刻.py",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "补词的准确时刻仍靠插值（换屏误差在插值段时长以内）",
+   "fix": "本机预演必须连 timeline（取原音）一起跑，和工作流 precheck 同一组步骤"
   }
  ],
  "_复盘豁免": [
