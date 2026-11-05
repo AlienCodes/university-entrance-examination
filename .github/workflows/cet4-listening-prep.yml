@@ -40,6 +40,7 @@ jobs:
         run: |
           set -euo pipefail
           pip install -q sherpa-onnx==1.13.8 soundfile==0.14.0 soxr==1.1.0 numpy==2.4.6
+          command -v ffmpeg >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q ffmpeg >/dev/null; }
       - name: 识别模型（缓存）
         uses: actions/cache@v4
         with:
@@ -64,7 +65,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p out
-          python 专八/听力/tools/识别对齐.py in/cet4-${{ matrix.id }}.mp3 out > asr.log 2>&1 || { cat asr.log; exit 1; }
+          # 合集里有的 mp3 头前带大 ID3 标签，libsndfile 读不了：先用 ffmpeg 解码成 wav 给识别器（原文件不动）
+          ffmpeg -v error -i in/cet4-${{ matrix.id }}.mp3 -c:a pcm_s16le in/a.wav
+          python 专八/听力/tools/识别对齐.py in/a.wav out > asr.log 2>&1 || { cat asr.log; exit 1; }
           tail -1 asr.log
           for f in 识别.json 停顿.json; do [ -s out/$f ] || { echo "停止：缺 $f"; exit 1; }; done
       - uses: actions/upload-artifact@v4
