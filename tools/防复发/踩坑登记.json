@@ -4410,6 +4410,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "解析判读（按内容对应）是子代理读的，靠埋雷证明有效；没有官方解析的 6 套答案是两次独立做题",
    "fix": "见 交接.md"
+  },
+  {
+   "id": "128",
+   "title": "四级听力样片 202206-1：Section A 说明 OCR 残损“ne^s reports”“o f each”画进截图，排版检查 0 处、说明检查也没报——^ 把词切成两个“认识的词”；全项目再查出选项 6 处同类（far m、.dogs、 ,to、Saturday s、impracticable .、love. :）",
+   "stages": [
+    "题目"
+   ],
+   "projects": [
+    "四级听力"
+   ],
+   "guards": [
+    {
+     "where": "四级/听力/tools/题目.py instr_junk（字母间夹符号、单个小写字母成词、标点前空格、词首贴标点），说明和选项都查；说明有残损换干净版本，选项在 选项.json 订正",
+     "runs": "关卡 3（工作流 precheck / render 的“定稿 0 待核、题目 0 处”）",
+     "evidence": "35 套：说明 8 套换干净版本、选项 6 处订正后 0 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/四级听力关卡.py",
+     "expect": "exit 0",
+     "needs": "wamerican、poppler-utils"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "OCR 把一个词错成另一个真词（形近真词）、或把词拆成两段都像词的（vid eo）仍查不出，靠第二来源与做题",
+   "fix": "看截图前先全项目跑同类检查"
   }
  ],
  "_复盘豁免": [

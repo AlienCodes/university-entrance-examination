@@ -156,6 +156,15 @@ def stems_from(text):
 _CI = {}
 
 
+def instr_junk(v):
+    """OCR 残损（202206-1 说明“ne^s reports”“o f each”、选项“far m”“.dogs”“ ,to”“impracticable .”逐词查不出——都被切成“认识的词”）：
+    字母之间夹符号；单个小写字母成词（a、i、数字后的 s 除外；大写单字母是缩写 U.S.、360°C）；标点前有空格；词首贴着 . ,"""
+    j = re.findall(r'[A-Za-z][\^~|\\{}<>@#*_=+`][A-Za-z]', v)
+    j += [m.group(0) for m in re.finditer(r'(?<![A-Za-z0-9’\'-])[b-hj-z](?![A-Za-z’\')-])', v)]
+    j += re.findall(r'\S\s+[,.;:?!]', v) + re.findall(r'(?:^|\s)[.,][A-Za-z]+', v)
+    return j
+
+
 def clean_instr(sec):
     """所有试卷里这一节说明的干净版本（每个词都认识、以 centre. 结尾）"""
     if sec not in _CI:
@@ -164,7 +173,7 @@ def clean_instr(sec):
             v = parse_options(f.read_text('utf-8'))[1].get(sec)
             if v:
                 v = re.sub(r'\s+([.,])', r'\1', v); e = re.search(r'cent(?:re|er)\.', v); v = v[:e.end()] if e else v
-                if re.search(r'cent(?:re|er)\.$', v) and not re.search(r'[^\x20-\x7e]', v) and all(w.lower() in DICT or w in ('A', 'B', 'C', 'D') or w.isdigit()
+                if re.search(r'cent(?:re|er)\.$', v) and not re.search(r'[^\x20-\x7e]', v) and not instr_junk(v) and all(w.lower() in DICT or w in ('A', 'B', 'C', 'D') or w.isdigit()
                         for w in re.findall(r"[A-Za-z]+|\d+", v.replace("'ll", ''))):
                     out.add(v)
         _CI[sec] = sorted(out)
@@ -231,7 +240,7 @@ def run(sid, quiet=False, words=None, Qover=None):
         notes.append('选项只有一个来源（第二来源：内容配对 + 子代理做题）')
     for q in range(1, 26):
         for c in 'ABCD':
-            u = clean(Q.get(q, {}).get(c, ''))
+            u = clean(Q.get(q, {}).get(c, '')) + instr_junk(Q.get(q, {}).get(c, ''))
             if u: bad.append(f'第 {q} 题 {c} 选项有不认识的词 {u}：「{Q[q][c]}」')
     save = words is None
     if words is None:
@@ -275,13 +284,13 @@ def run(sid, quiet=False, words=None, Qover=None):
     med = sorted(score)[len(score) // 2] if score else 0
     if med < 0.3: bad.append(f'选项实词在本段原文里出现的比例中位数 {med}（< 0.3，可能配错套 / 错位）：{score}')
     for k, v in list(instr.items()):        # OCR 脏的说明：换成别的试卷里最接近的干净版本（四级说明各年只有几种措辞），相似度 ≥ 0.85
-        if v and (clean(v) or not re.search(r'cent(?:re|er)\.$', v)):
+        if v and (clean(v) or instr_junk(v) or not re.search(r'cent(?:re|er)\.$', v)):
             cands = clean_instr(k)
             best = max(cands, key=lambda c: difflib.SequenceMatcher(None, c, v).ratio(), default=None)
             r = difflib.SequenceMatcher(None, best, v).ratio() if best else 0
             if r >= 0.85: instr[k] = best; notes.append(f'说明 {k} OCR 脏，换成干净版本（{r:.2f}）')
     for k, v in instr.items():
-        if v and (clean(v) or not re.search(r'cent(?:re|er)\.$', v)): bad.append(f'说明 {k} 有不认识的词 {clean(v)} 或结尾不对：…{v[-40:]}')
+        if v and (clean(v) or instr_junk(v) or not re.search(r'cent(?:re|er)\.$', v)): bad.append(f'说明 {k} 有不认识的词 {clean(v) + instr_junk(v)} 或结尾不对：…{v[-40:]}')
     if any(v is None for v in instr.values()): bad.append(f'说明缺 {[k for k, v in instr.items() if v is None]}')
     res = {'说明': instr, 'sections': SEC, 'questions': out, '答案_程序': prog, '内容配对': score, '备注': notes}
     if save and Qover is None:
