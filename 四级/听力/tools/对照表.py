@@ -3,8 +3,11 @@
 ① 试卷 → 录音：试卷听力选项里有区分度的实词（按 35 份试卷算 IDF），在录音识别文字里出现的加权比例；取最高，并给与第二名的差距。
 ② 录音 ↔ 录音：识别文字的词 4 元组重合度（Jaccard）；≥ 0.5 判为同一份听力（不同剪辑 / 编码）。
 ③ 每段录音念到的题号（Question one … twenty-five）是否 1—25 齐全；开头有没有 “College English Test Band Four”。
-用法：python3 对照表.py [合集解压目录]（给了就顺带列出每份试卷的解析 PDF 与文字层情况）"""
-import json, math, re, subprocess, sys
+关卡（任何一处退出码 1）：每份试卷都有录音、得分 ≥ 0.3 且领先第二名 ≥ 0.15；每段录音同样；
+归到同一份试卷的几段录音文字必须相同（4 元组 Jaccard ≥ 0.5）；只认第 1、2 套试卷（第 3 套只是选项顺序不同，绝不能用）；otter 与识别一致度 ≥ 0.3。
+双向验证：CET4_SWAP=a:b 把两段录音的识别文字对调，必须报出（tools/防复发/验证/四级听力配对.py）。
+用法：python3 对照表.py"""
+import json, math, os, re, subprocess, sys
 from collections import Counter
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]; H = ROOT / '四级/听力'
@@ -36,13 +39,20 @@ def rec_text(rid):
     if o.exists(): return o.read_text('utf-8'), 'otter'
     return None, None
 papers = {f.stem: f.read_text('utf-8') for f in sorted((H / '试卷').glob('*.txt'))}
+if os.environ.get('CET4_DUP'):
+    a, b = os.environ['CET4_DUP'].split(':'); papers[b] = papers[a]
 recs = json.loads((H / '原始材料/音频清单.json').read_text('utf-8'))
 ptok = {k: set(w for w in words(re.sub(r'(?m)^#.*$', '', v)) if len(w) >= 4 and w.isalpha() and w not in STOP) for k, v in papers.items()}
 df = Counter(w for s in ptok.values() for w in s)
 idf = {w: math.log(len(ptok) / df[w]) for w in df}
+SWAP = dict([os.environ['CET4_SWAP'].split(':')]) if os.environ.get('CET4_SWAP') else {}
+SWAP.update({v: k for k, v in SWAP.items()})
+DROP = os.environ.get('CET4_DROP')          # 测试：去掉一段录音
+DUP = os.environ.get('CET4_DUP')            # 测试：a:b 让试卷 a 的文字冒充试卷 b
 R = {}
 for r in recs:
-    t, src = rec_text(r['id'])
+    if r['id'] == DROP: continue
+    t, src = rec_text(SWAP.get(r['id'], r['id']))
     if t is None: continue
     ws = words(t)
     R[r['id']] = {'src': src, 'set': set(ws), 'grams': set(zip(ws, ws[1:], ws[2:], ws[3:])), 'text': ' '.join(ws), 'meta': r}
@@ -72,6 +82,14 @@ for p in papers:
     members = sorted(r for r in R if rec_best[r][0] == p)
     res['papers'][p] = {'best': r1, 'score': s1, 'second': [r2, s2], 'recordings': members}
     if not members: prob.append(f'{p}：没有录音归到这份试卷')
+    if p[-1] not in '12': prob.append(f'{p}：用了第 3 套试卷（只是选项顺序不同，不能用）')
+    for a in members:
+        for b in members:
+            if a < b and not any(x[0] == b for x in same.get(a, [])): prob.append(f'{p}：{a} 与 {b} 都归到这份试卷，文字却不同')
+note = []
+def lab(rid): return rid[1:]
+for rid in R:
+    if rec_best[rid][0] != lab(rid): note.append(f'{rid}：文件名标的是 {lab(rid)}，内容是 {rec_best[rid][0]}（以内容为准）')
 for rid in R:
     q = qnums(rid); m = R[rid]['meta']
     res['recordings'][rid] = {'paper': rec_best[rid][0], 'score': rec_best[rid][1], 'margin': rec_best[rid][2],
@@ -80,8 +98,8 @@ for rid in R:
     oj = res['recordings'][rid]['otter_jaccard']
     if oj is not None and oj < 0.3: prob.append(f'{rid}：otter 转写与这段录音的识别对不上（{oj}）')
     if rec_best[rid][1] < 0.3 or rec_best[rid][2] < 0.15: prob.append(f'{rid}：配对不确定（得分 {rec_best[rid][1]}，领先 {rec_best[rid][2]}）')
-(H / '对照.json').write_text(json.dumps(res, ensure_ascii=False, indent=1), 'utf-8')
 print('\n'.join(prob) or '0 处配对问题')
+print('\n'.join('注意 ' + x for x in note))
 
 # ---------- 对照表.md ----------
 JX = json.loads((H / '原始材料/解析清单.json').read_text('utf-8'))
@@ -112,6 +130,9 @@ for r in recs:
     nm_ = r['原名'].split('/')[-1]
     if not x: L.append(f'| `{r["id"]}` | {nm_} | {fmt_t(r["decoded_dur"])} | {r["sr"]} / {r["channels"]} | 还没识别 | | | | |'); continue
     L.append(f'| `{r["id"]}` | {nm_} | {fmt_t(r["decoded_dur"])} | {r["sr"]} / {r["channels"]} | {x["paper"]} | {x["score"]} / {x["margin"]} | {"是" if x["intro"] else "**否**"} | {x["otter_jaccard"] if x["otter_jaccard"] is not None else "—"} | {x["src"]} |')
-L += ['', '## 三、要注意的', ''] + [f'- {x}' for x in prob] + ([] if prob else ['- 0 处'])
-(H / '对照表.md').write_text('\n'.join(L) + '\n', 'utf-8')
-(H / '对照.json').write_text(json.dumps({**res, 'choice': choice}, ensure_ascii=False, indent=1), 'utf-8')
+L += ['', '## 三、关卡结果', ''] + [f'- **{x}**' for x in prob] + ([] if prob else ['- 0 处（每份试卷都有录音、配对得分与领先都过门槛、同一试卷的录音文字相同、otter 都对得上）'])
+L += ['', '## 四、文件名标签与内容不一致的（以内容为准，下游一律按 对照.json 的 choice 取录音）', ''] + [f'- {x}' for x in note] + ([] if note else ['- 无'])
+if not SWAP:
+    (H / '对照表.md').write_text('\n'.join(L) + '\n', 'utf-8')
+    (H / '对照.json').write_text(json.dumps({**res, 'choice': choice}, ensure_ascii=False, indent=1), 'utf-8')
+sys.exit(1 if prob else 0)

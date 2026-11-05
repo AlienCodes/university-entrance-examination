@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]; H = ROOT / '四级/听力'
 def words(t): return re.findall(r"[a-z0-9]+(?:'[a-z]+)?", t.lower().replace('’', "'"))
 def grams(ws): return set(zip(ws, ws[1:], ws[2:], ws[3:]))
+JX = json.loads((H / '原始材料/解析清单.json').read_text('utf-8'))
 dz = json.loads((H / '对照.json').read_text('utf-8'))
 def rec_words(rid):
     f = H / '识别' / rid / '识别.json'
@@ -31,6 +32,6 @@ for d in sorted(Path(sys.argv[1]).iterdir()):
     lt = re.sub(r'[ \t]+', '', t[i: i + 50 + j.start()] if j else t)
     marks = len(re.findall(r'答案(?:为|是|[:：])?([A-D])|【答案】([A-D])|([A-D])\)?【(?:精析|解析|考点)', lt))
     out[p] = {'答案标记': marks, '答案': '有' if marks >= 20 else ('部分' if marks else '没有找到'), '录音': dz['choice'][p], '转写来源': src, '原文覆盖率': round(cov, 2), '听力原文': '有' if cov >= 0.4 else ('部分' if cov >= 0.15 else '没有'),
-              '题干出现': min(stems, 25), '文字来源': 'OCR' if (d / 'ocr').exists() else '文字层'}
+              '题干出现': min(stems, 25), '文字来源': 'OCR' if (d / 'ocr').exists() or JX[p]['text_chars'] < 5000 else '文字层'}
 (H / '原始材料/解析内容.json').write_text(json.dumps(out, ensure_ascii=False, indent=1), 'utf-8')
 for k, v in out.items(): print(k, v)
