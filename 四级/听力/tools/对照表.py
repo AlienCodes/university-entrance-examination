@@ -78,8 +78,9 @@ for rid in R:
 res = {'papers': {}, 'recordings': {}}
 prob = []
 for p in papers:
-    (s1, r1), (s2, r2) = S[p][0], S[p][1]
     members = sorted(r for r in R if rec_best[r][0] == p)
+    (s1, r1) = S[p][0]
+    s2, r2 = next(((s_, r_) for s_, r_ in S[p][1:] if r_ not in members), (0, '—'))
     res['papers'][p] = {'best': r1, 'score': s1, 'second': [r2, s2], 'recordings': members}
     if not members: prob.append(f'{p}：没有录音归到这份试卷')
     if p[-1] not in '12': prob.append(f'{p}：用了第 3 套试卷（只是选项顺序不同，不能用）')
@@ -120,8 +121,7 @@ for p, v in sorted(res['papers'].items()):
     ms = v['recordings']
     if not ms:
         L.append(f'| {ym(p)} | **没有录音** | | {v["second"][1]}（{v["second"][0]}） | | | | | |'); continue
-    good = [r for r in ms if not res['recordings'][r]['questions_missing']]
-    pick = sorted(good or ms, key=lambda r: (r[0] != 't', r))[0]; choice[p] = pick
+    pick = sorted(ms, key=lambda r: (r[0] != 't', r))[0]; choice[p] = pick   # 同内容时优先用老师给的 30 个
     rr = res['recordings'][pick]
     others = '、'.join(f'{r}（{"同文字" if any(x[0] == r for x in rr["same_text"]) else "文字不同"}）' for r in ms if r != pick) or '—'
     qm = '齐' if not rr['questions_missing'] else '缺 ' + ','.join(map(str, rr['questions_missing']))
@@ -137,7 +137,7 @@ for r in recs:
     L.append(f'| `{r["id"]}` | {nm_} | {fmt_t(r["decoded_dur"])} | {r["sr"]} / {r["channels"]} | {x["paper"]} | {x["score"]} / {x["margin"]} | {"是" if x["intro"] else "**否**"} | {x["otter_jaccard"] if x["otter_jaccard"] is not None else "—"} | {x["src"]} |')
 L += ['', '## 三、关卡结果', ''] + [f'- **{x}**' for x in prob] + ([] if prob else ['- 0 处（每份试卷都有录音、配对得分与领先都过门槛、同一试卷的录音文字相同、otter 都对得上）'])
 L += ['', '## 四、文件名标签与内容不一致的（以内容为准，下游一律按 对照.json 的 choice 取录音）', ''] + [f'- {x}' for x in note] + ([] if note else ['- 无'])
-if not SWAP:
+if not (SWAP or DROP or os.environ.get('CET4_DUP')):
     (H / '对照表.md').write_text('\n'.join(L) + '\n', 'utf-8')
     (H / '对照.json').write_text(json.dumps({**res, 'choice': choice}, ensure_ascii=False, indent=1), 'utf-8')
 sys.exit(1 if prob else 0)
