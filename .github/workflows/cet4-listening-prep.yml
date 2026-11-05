@@ -1,0 +1,95 @@
+# 四级听力准备：推送 .github/cet4-listening-prep.txt（每行一个录音 id，如 t202512-1、s202303-1）时，每段录音一台机器：
+#   原音 → parakeet 逐词时间 + 静音段（专八/听力/tools/识别对齐.py，照用）
+# 材料从老师上传的 Release 草稿（default.zip）取出并核 sha256（四级/听力/tools/取材料.py、四级/听力/原始材料/SHA256SUMS）；
+# 最后一个任务把齐全的提交到 四级/听力/识别/<id>/，缺的列出来、整个运行判失败。
+name: 四级听力准备（识别）
+on:
+  push:
+    paths: ['.github/cet4-listening-prep.txt']
+permissions:
+  contents: write
+jobs:
+  list:
+    runs-on: ubuntu-24.04
+    outputs:
+      ids: ${{ steps.l.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - id: l
+        run: echo "ids=$(grep -v '^\s*$' .github/cet4-listening-prep.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin]))')" >> "$GITHUB_OUTPUT"
+  prep:
+    needs: list
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            专八/听力/tools
+            四级/听力/tools
+            四级/听力/原始材料
+            tools/tts/download_models.py
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: 装依赖
+        run: |
+          set -euo pipefail
+          pip install -q sherpa-onnx==1.13.8 soundfile==0.14.0 soxr==1.1.0 numpy==2.4.6
+      - name: 识别模型（缓存）
+        uses: actions/cache@v4
+        with:
+          path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+          key: parakeet-tdt-0.6b-v2-int8
+      - name: 下模型
+        run: |
+          ls tools/tts/models/sherpa-onnx-nemo-parakeet*/encoder.int8.onnx 2>/dev/null || python -c "
+          import tarfile, urllib.request
+          from pathlib import Path
+          M = Path('tools/tts/models'); M.mkdir(parents=True, exist_ok=True)
+          urllib.request.urlretrieve('https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2', M / 'p.tar.bz2')
+          tarfile.open(M / 'p.tar.bz2').extractall(M)
+          "
+      - name: 取材料、核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 -I 四级/听力/tools/取材料.py in ${{ matrix.id }}
+          rm -f /tmp/cet4-default.zip /tmp/cet4-default.inner.zip
+      - name: 识别
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          python 专八/听力/tools/识别对齐.py in/cet4-${{ matrix.id }}.mp3 out > asr.log 2>&1 || { cat asr.log; exit 1; }
+          tail -1 asr.log
+          for f in 识别.json 停顿.json; do [ -s out/$f ] || { echo "停止：缺 $f"; exit 1; }; done
+      - uses: actions/upload-artifact@v4
+        with: {name: 'prep-${{ matrix.id }}', path: out}
+  collect:
+    needs: [list, prep]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: '四级/听力'}
+      - uses: actions/download-artifact@v4
+        with: {path: art}
+      - name: 提交齐全的
+        run: |
+          set -euo pipefail
+          miss=""
+          for id in $(echo '${{ needs.list.outputs.ids }}' | tr -d '[]",' ); do
+            d=art/prep-$id
+            if [ -s $d/识别.json ] && [ -s $d/停顿.json ]; then
+              mkdir -p 四级/听力/识别/$id && cp $d/* 四级/听力/识别/$id/
+            else miss="$miss $id"; fi
+          done
+          git config user.name github-actions; git config user.email github-actions@github.com
+          git add 四级/听力
+          git diff --cached --quiet || git commit -q -m "四级听力准备（运行 ${{ github.run_number }}）：识别结果${miss:+；缺$miss}"
+          for i in 1 2 3 4; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && break; sleep $((i * 5)); done
+          [ -z "$miss" ] || { echo "停止：缺$miss"; exit 1; }
