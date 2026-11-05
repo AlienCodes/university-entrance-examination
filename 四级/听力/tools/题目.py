@@ -51,6 +51,7 @@ def parse_options(txt):
         instr[s] = re.sub(r'\s+([.,])', r'\1', re.sub(r'\s+', ' ', 'Directions: ' + mm.group(1))).strip() if mm else None
         if instr[s]:
             e = re.search(r'cent(?:re|er)\.', instr[s]); instr[s] = instr[s][:e.end()] if e else instr[s]
+            instr[s] = re.sub(r'([,;])(?=[A-Za-z(])', r'\1 ', instr[s])      # “B),C)”：逗号后补空格（只是排版）
     Q, cur, last = {}, None, None
     for line in part.splitlines():
         line = line.replace('\f', '')
@@ -158,10 +159,11 @@ _CI = {}
 
 def instr_junk(v):
     """OCR 残损（202206-1 说明“ne^s reports”“o f each”、选项“far m”“.dogs”“ ,to”“impracticable .”逐词查不出——都被切成“认识的词”）：
-    字母之间夹符号；单个小写字母成词（a、i、数字后的 s 除外；大写单字母是缩写 U.S.、360°C）；标点前有空格；词首贴着 . ,"""
+    字母之间夹符号；单个小写字母成词（a、i、数字后的 s 除外；大写单字母是缩写 U.S.、360°C）；标点前有空格；词首贴着 . ,；逗号后紧贴字母"""
     j = re.findall(r'[A-Za-z][\^~|\\{}<>@#*_=+`][A-Za-z]', v)
     j += [m.group(0) for m in re.finditer(r'(?<![A-Za-z0-9’\'-])[b-hj-z](?![A-Za-z’\')-])', v)]
     j += re.findall(r'\S\s+[,.;:?!]', v) + re.findall(r'(?:^|\s)[.,][A-Za-z]+', v)
+    j += re.findall(r'[,;][A-Za-z(]', v)          # 逗号后紧贴字母（B),C)）
     return j
 
 

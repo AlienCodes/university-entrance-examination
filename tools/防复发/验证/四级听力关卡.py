@@ -49,7 +49,7 @@ T.second_txt = _s2
 check('关卡 3 选项 OCR 残损、没有第二来源 → 报', any('不认识' in x for x in b))
 # 踩坑 128：OCR 残损切成“认识的词”（说明 ne^s / o f、选项 far m / .dogs / ,to / impracticable .）
 for t, want in [('three ne^s reports. At the end o f each news report', True), ('They spent seven years replanting their far m', True),
-                ('The nature of relationships between .dogs.', True), ('Seeking new ways ,to increase its exports.', True), ('It is impracticable .', True),
+                ('The nature of relationships between .dogs.', True), ('Seeking new ways ,to increase its exports.', True), ('It is impracticable .', True), ('marked A), B),C) and D).', True),
                 ('Visit the U.S. and Canada, heated to 360°C in the 1970s. Mark A), B), C) and D). I have a pen.', False)]:
     check(f'关卡 3 OCR 残损{"报" if want else "不误报"}：{t[:40]}', bool(T.instr_junk(t)) == want)
 Q, _ = T.parse_options(T.paper_txt(S)); Q[3]['C'] = 'Identify the suspect on the security vide o.'
