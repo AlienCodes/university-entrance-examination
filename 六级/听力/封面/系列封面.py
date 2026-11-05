@@ -5,6 +5,8 @@
     /opt/ttsenv/bin/python 六级/听力/封面/系列封面.py --自检      # 双向验证：字号×0.4 时每个 data-min 元素都要报，正常字号 0 处
 
 老师要求（2026-11-04）：突出“六级听力真题”“彻底搞定六级听力”，大字为主；30 套、2018—2026 年写得非常明白；不写 4K、精读。
+老师补充（2026-11-05）：还有“听力原文解析”视频（原文逐句 + 中文翻译 + 生词），真题和原文解析都要突出。
+定稿 A：主标题“六级听力”下一行两个并列大块“真题 ＋ 原文解析”（data-k=tags，与主标题同一下限 24 像素）；只有真题的旧定稿留作 系列封面/…_旧版_仅真题_*。
 套数、考试次数、起止年份全部从 六级/听力/<yyyymm-n>/ 目录现算（踩坑 70），并与 .github/cet6-listening-all.txt 核对；不印“02 / 09”编号。
 渲染后程序自查（同 六级作文/封面/系列封面.py 的 CHECK_JS）：文字不出画、不压木框、不进 B 站底角遮挡区、互不重叠、字体全部加载；
 data-min 元素缩到高 180 后最小字号不低于下限（主标题 24、钩子 13、卖点 10 像素，踩坑 76）。
@@ -101,73 +103,72 @@ def board(w, h, inner):
     return f'<div class="board"></div><div class="grain"></div>{L.dust(w, h)}{inner}{L.frame(w, h)}'
 
 
-SELL = f'考试原音 · 题目同步 · {y("答案")}一目了然'
 
 
-# ───────── A：钩子红块 + 主标题特大 + 起止年月大字 + 耳机 ─────────
+PLUS = f'<span class="ck" style="color:{CHALK};margin:0 .12em">＋</span>'
+JX = '原文解析'                    # 老师的叫法（2026-11-05）：听力原文逐句 + 中文翻译 + 生词
+
+
+def tags(size, k='tags'):
+    """主卖点两个并列大标签：真题（黄块）＋ 原文解析（蓝块），与主标题同一字号下限。"""
+    return (f'<div class="ab" data-k="{k}" data-min="{MIN_TITLE}" style="{{pos}};white-space:nowrap;font:900 {fs(size)}/1.22 Black">'
+            f'{L.hl("真题", YEL, px=22)}{PLUS}{L.hl(JX, BLU, px=22)}</div>')
+
+
+# ───────── A：A 版原样式 + 主标题下一行“真题 ＋ 原文解析”两块并列 ─────────
 def A(w=1920, h=1080):
     if w < 1900:
         return board(w, h, f"""
 <div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:46px;font:900 {fs(128)}/1.18 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=26)}</div>
 {seal(1160, 60, 240, rot=6)}
-<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:54px;top:226px;font:900 {fs(220)}/1 Black;letter-spacing:-.02em">{SIX}听力<br><span style="color:{YEL}">真题</span></div>
-{phones(1010, 470, 1.15)}
-<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:60px;top:700px;font:900 {fs(88)}/1.18 Black">
+<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:54px;top:236px;font:900 {fs(230)}/1 Black;letter-spacing:-.02em">{SIX}听力</div>
+{tags(158).replace('{pos}', 'left:84px;top:486px')}
+{phones(1080, 700, .8)}
+<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:60px;top:698px;font:900 {fs(88)}/1.18 Black">
  <span class="lat" style="font-size:1.2em">{y(SPAN)}</span><br>全部真题 {y(N)} 套</div>""")
     return board(w, h, f"""
 <div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:74px;top:40px;font:900 {fs(172)}/1.18 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=32)}</div>
 {seal(1590, 46, 252, rot=6)}
-<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:300px;font:900 {fs(250)}/1 Black;letter-spacing:-.02em">{SIX}听力<span style="color:{YEL}">真题</span></div>
+<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:272px;font:900 {fs(230)}/1 Black;letter-spacing:-.02em">{SIX}听力</div>
+{tags(168).replace('{pos}', 'left:96px;top:520px')}
 {phones(1580, 690, .86)}
-<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:600px;font:900 {fs(118)}/1.2 Black">
- <span class="lat">{y(SPAN)}</span> 全部 {y(N)} 套</div>
-<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:76px;top:784px;font:900 {fs(70)}/1.2 Black">{N_EXAM} 次考试 · 考试原音 · 题目同步</div>""")
+<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:768px;font:900 {fs(108)}/1.2 Black">
+ <span class="lat">{y(SPAN)}</span> 全部 {y(N)} 套</div>""")
 
 
-# ───────── B：居中对称，年份一排全写出 ─────────
+# ───────── B：主标题一行“六级听力真题 + 原文解析”变成两张粉笔框大卡片，各带一行小说明 ─────────
+def card(word, col, note, size, wcard):
+    return (f'<div style="position:relative;display:inline-block;vertical-align:top;width:{wcard}px;padding:10px 0 18px;text-align:center;margin-right:36px">'
+            f'<i style="position:absolute;inset:0;border:7px solid {col};border-radius:26px;background:rgba(0,0,0,.20);filter:url(#line)"></i>'
+            f'<div class="ck" style="position:relative;font:900 {fs(size)}/1.15 Black;color:{col}">{word}</div>'
+            f'<div class="ck" data-k="note" data-min="{MIN_SELL}" style="position:relative;font:900 {fs(size * .42)}/1.2 Black;color:{CHALK}">{note}</div></div>')
+
+
 def B(w=1920, h=1080):
-    c = w / 2
     big = w >= 1900
-    yr = years(60, mr=8, pad=14) if big else ''
-    yr43 = '' if big else (years(62, mr=10, pad=14, ys=YEARS[::-1][:5]) + '<br>'
-                           + years(62, mr=10, pad=14, ys=YEARS[::-1][5:]))   # 4:3 一行放不下 9 个：分两行
+    sz = 176 if big else 150
+    c1 = card('真题', YEL, '视频版考试', sz, round(sz * 2.7))
+    c2 = card(JX, PNK, '逐句·翻译·生词', sz, round(sz * 4.7))
     return board(w, h, f"""
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:{c}px;transform:translateX(-50%);top:44px;white-space:nowrap;font:900 {fs(164 if big else 140)}/1.15 Black">
- <span class="ck">彻底搞定</span><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
-<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:{c}px;transform:translateX(-50%);top:{262 if big else 236}px;white-space:nowrap;font:900 {fs(236 if big else 200)}/1.2 Black">
- {L.hl(f'<span style="color:{INK}">六级听力真题</span>', YEL, px=30)}</div>
-<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:{c}px;transform:translateX(-50%);top:{620 if big else 530}px;white-space:nowrap;text-align:center;line-height:1.5">{yr or yr43}</div>
-<div class="ab ck" data-k="sell" data-min="{MIN_SELL}" style="left:{c}px;transform:translateX(-50%);top:{800 if big else 812}px;white-space:nowrap;font:900 {fs(84 if big else 70)}/1.2 Black">
- <span class="lat">{SPAN}</span> · {N_EXAM} 次考试 {y(f'{N} 套')}</div>""")
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:{74 if big else 60}px;top:{40 if big else 46}px;font:900 {fs(172 if big else 128)}/1.18 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=32 if big else 26)}</div>
+{seal(1590 if big else 1160, 46 if big else 60, 252 if big else 240, rot=6)}
+<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:{262 if big else 236}px;font:900 {fs(200 if big else 190)}/1 Black">{SIX}听力</div>
+<div class="ab" data-k="tags" data-min="{MIN_TITLE}" style="left:{70 if big else 60}px;top:{490 if big else 456}px;white-space:nowrap">{c1}{c2}</div>
+<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:{820 if big else 800}px;font:900 {fs(96 if big else 84)}/1.2 Black">
+ <span class="lat">{y(SPAN)}</span> 全部 {y(N)} 套</div>""")
 
 
-# ───────── C：左标题 + 右“年份清单”（每次考试都列出） ─────────
+# ───────── C：主标题两行“六级听力 / 真题＋原文解析”纯粉笔字（不加块），钩子红块压在下面 ─────────
 def C(w=1920, h=1080):
     big = w >= 1900
-    rows = ''
-    for yy in reversed(YEARS):
-        ms = EXAMS[yy]
-        mon = f'{len(ms)} 次考试'                # 不写月份
-        rows += (f'<div style="display:flex;align-items:baseline;gap:22px">'
-                 f'<span class="lat" style="color:{YEL if yy == Y1 else CHALK};min-width:2.6em">{yy}</span>'
-                 f'<span style="font-family:Black">{mon}</span>'
-                 f'<span style="margin-left:auto;color:{PNK};font-family:Black">{sum(ms.values())}套</span></div>')
-    box = (f'<i style="position:absolute;inset:0;border:6px solid {CHALK};border-radius:22px;background:rgba(0,0,0,.20);filter:url(#line)"></i>'
-           f'<div class="ck" style="position:relative;font:900 {fs(60)}/1.3 Black;color:{BLU};margin-bottom:6px"><span class="lat">{SPAN}</span>'
-           + f' 全部 {y(N)} 套' + f'</div><div class="ck" style="position:relative">{rows}</div>')
-    if big:
-        return board(w, h, f"""
-<div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:66px;line-height:1">
- <div class="ck" style="font:900 {fs(236)}/1 Black">{SIX}听力</div>
- <div class="ck" style="font:900 {fs(236)}/1 Black;color:{YEL};margin-top:24px">真题</div></div>
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:66px;top:584px;font:900 {fs(150)}/1.18 Black">
- <span class="ck">彻底搞定</span><br><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
-<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:1130px;top:60px;width:720px;padding:22px 40px 26px;font:800 {fs(60)}/1.2 Inter">{box}</div>""")
     return board(w, h, f"""
-<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:56px;top:56px;font:900 {fs(196)}/1.04 Black">{SIX}<br>听力<br><span style="color:{YEL}">真题</span></div>
-<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:60px;top:800px;font:900 {fs(110)}/1.15 Black">
- <span class="ck">彻底搞定</span><span class="ck" style="color:{RED}">六级听力</span><span class="ck">！</span></div>
-<div class="ab" data-k="years" data-min="{MIN_SELL}" style="left:520px;top:44px;width:860px;padding:14px 40px 16px;font:800 {fs(60)}/1.08 Inter">{box}</div>""")
+<div class="ab ck" data-k="title" data-min="{MIN_TITLE}" style="left:62px;top:50px;font:900 {fs(236 if big else 214)}/1 Black;letter-spacing:-.02em">{SIX}听力</div>
+{seal(1590 if big else 1160, 46 if big else 60, 252 if big else 240, rot=6)}
+<div class="ab ck" data-k="tags" data-min="{MIN_TITLE}" style="left:62px;top:{318 if big else 312}px;white-space:nowrap;font:900 {fs(190 if big else 156)}/1 Black">
+ <span style="color:{YEL}">真题</span><span style="color:{CHALK}">＋</span><span style="color:{BLU}">{JX}</span></div>
+<div class="ab ck" data-k="years" data-min="{MIN_SELL}" style="left:72px;top:{560 if big else 530}px;font:900 {fs(100 if big else 88)}/1.2 Black">
+ <span class="lat">{y(SPAN)}</span> 全部 {y(N)} 套</div>
+<div class="ab" data-k="hook" data-min="{MIN_HOOK}" style="left:{90 if big else 70}px;top:{760 if big else 720}px;font:900 {fs(160 if big else 126)}/1.18 Black">{L.hl('彻底搞定六级听力', RED, ink='#fff', px=30)}</div>""")
 
 
 DIRS = {'A': A, 'B': B, 'C': C}
@@ -200,7 +201,7 @@ def selftest(br):
                 _, res = render(br, body, w, 1080, f'自检_{k}_{w}', WORK)
                 hit = {x.split()[0] for x in res['problems'] if '缩略图字高' in x}
                 need = set(re.findall(r'data-k="(\w+)" data-min=', body)) if kk < 1 else set()
-                if kk < 1 and not {'hook', 'years', 'title'} <= need:
+                if kk < 1 and not {'hook', 'years', 'title', 'tags'} <= need:
                     bad.append(f'{k}{w} 缺少 data-min 元素：{sorted(need)}')
                 if hit != need:
                     bad.append(f'{k}{w} 字号×{kk}：报出 {sorted(hit)}，应为 {sorted(need)}')
@@ -221,7 +222,7 @@ def main(args):
             print('\n'.join(bad) or '自检通过：字号×0.4 时每个 data-min 元素全部报出，正常字号不报（A/B/C × 16:9、4:3）')
             return 1 if bad else 0
         final = args[1] if args[0] == '定稿' else None
-        stem = f'六级听力真题{N}套_封面'
+        stem = f'六级听力真题与原文解析{N}套_封面'
         jobs = []
         for k, f in DIRS.items():
             if final is None:
