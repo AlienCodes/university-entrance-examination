@@ -29,7 +29,7 @@ assert sum(1 for i in ids if i[0] == 't') == 30, len(ids)
 lines = []
 for x in sorted(items, key=lambda x: x['id']):
     f = fp[x['file']]
-    x.update({k: f[k] for k in ('sha256', 'bytes', 'sr', 'channels', 'bitrate', 'header_dur', 'decoded_dur', 'peak_db')})
+    x.update({k: f[k] for k in ('sha256', 'bytes', 'codec', 'sr', 'channels', 'bitrate', 'header_dur', 'decoded_dur', 'peak_db')})
     x['原名'] = x.pop('file').split('/', 1)[1]
     x['asset'] = f"cet4-{x['id']}.mp3"
     lines.append(f"{x['sha256']}  {x['asset']}")
