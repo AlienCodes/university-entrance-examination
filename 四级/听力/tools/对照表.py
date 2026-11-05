@@ -109,12 +109,17 @@ L = ['# 四级听力：录音 ↔ 试卷对照表（程序生成：`四级/听�
      f'- 老师上传的 default.zip：顶层 `audio files/` **30 个 mp3** + `Transcripts/` 30 个 otter 转写 + 合集 `解析 听力原文对照.zip`（2018-06—2026-06 每次考试的真题 PDF / Word、答案解析、听力音频 35 个）。',
      f'- 65 个 mp3 按能量包络去重后是 **{len(recs)} 段不同的录音**（`原始材料/音频清单.json`）；按识别文字归到试卷后，**实际不同的听力 = {sum(1 for p in res["papers"].values() if p["recordings"])} 份**（第 3 套试卷都写明“听力与前两套相同，只是选项顺序不同”，不单独算）。',
      '- 配对只看内容：试卷听力选项里有区分度的实词在录音识别文字里出现的加权比例（得分），括号里是第二名；文件名只当标签。', '']
-L += ['## 一、每份试卷用哪段录音', '', '| 试卷 | 采用的录音 | 解码时长 | 得分（第二名） | 同内容的其他录音 | 题号 1—25 | 试卷文字 | 解析 PDF |', '|---|---|---|---|---|---|---|---|']
+JN = json.loads((H / '原始材料/解析内容.json').read_text('utf-8')) if (H / '原始材料/解析内容.json').exists() else {}
+L += ['## 一、每份试卷用哪段录音', '', '| 试卷 | 采用的录音 | 解码时长 | 得分（第二名） | 同内容的其他录音 | 题号 1—25 | 试卷文字 | 解析 PDF | 解析里的官方听力原文（录音转写覆盖率） |', '|---|---|---|---|---|---|---|---|---|']
+def yw(p):
+    j = JN.get(p)
+    if not j: return '未查'
+    return ('有' if j['原文覆盖率'] >= 0.4 else '**没有**（解析只有答案与讲解）') + f'（{j["原文覆盖率"]}）'
 choice = {}
 for p, v in sorted(res['papers'].items()):
     ms = v['recordings']
     if not ms:
-        L.append(f'| {ym(p)} | **没有录音** | | {v["second"][1]}（{v["second"][0]}） | | | | |'); continue
+        L.append(f'| {ym(p)} | **没有录音** | | {v["second"][1]}（{v["second"][0]}） | | | | | |'); continue
     good = [r for r in ms if not res['recordings'][r]['questions_missing']]
     pick = sorted(good or ms, key=lambda r: (r[0] != 't', r))[0]; choice[p] = pick
     rr = res['recordings'][pick]
@@ -123,7 +128,7 @@ for p, v in sorted(res['papers'].items()):
     src = papers[p].splitlines()[0].replace('# 来源：', '')
     src = '仓库 .txt' if src.startswith('四级/真题') else ('合集 Word' if src.endswith('.docx') else '合集 PDF 文字层')
     j = JX.get(p); jx = f'{j["pages"]} 页，' + ('有文字层' if j['text_chars'] > 5000 else '扫描版（要 OCR）') if j else '**没有**'
-    L.append(f'| {ym(p)} | `{pick}`{"（老师给的 30 个）" if pick[0] == "t" else "（合集）"} | {fmt_t(rr["decoded_dur"])} | {rr["score"]}（{v["second"][1]}） | {others} | {qm} | {src} | {jx} |')
+    L.append(f'| {ym(p)} | `{pick}`{"（老师给的 30 个）" if pick[0] == "t" else "（合集）"} | {fmt_t(rr["decoded_dur"])} | {rr["score"]}（{v["second"][1]}） | {others} | {qm} | {src} | {jx} | {yw(p)} |')
 L += ['', '## 二、45 段录音逐个', '', '| 录音 | 原文件 | 解码时长 | 采样率 / 声道 | 归到试卷 | 得分 / 领先 | 开头有考试说明 | otter 与识别一致度 | 识别来源 |', '|---|---|---|---|---|---|---|---|---|']
 for r in recs:
     x = res['recordings'].get(r['id'])
