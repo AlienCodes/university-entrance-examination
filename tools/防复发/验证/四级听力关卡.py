@@ -22,7 +22,11 @@ base = G.run(S, quiet=True, P_override=copy.deepcopy(P))
 check('关卡 2 正常：0 待核', not base['待核'])
 # 识别里放错词：找一个三方都相同的实词
 W = [x[0] for x in P]
-k = next(i for i in range(200, len(W)) if W[i].lower() == 'students')
+import re as _re
+_n = lambda ws: ' '.join(_re.sub(r"[^a-z']", '', str(w).lower()) for w in ws)
+_Rt, _Ot = ' ' + _n(R) + ' ', ' ' + _n(O) + ' '
+# 三方（识别、官方原文、otter）都一致的地方：前后各 3 个词连着的 7 个词在原文和 otter 里都原样出现
+k = next(i for i in range(200, len(W) - 4) if W[i].lower().strip('.,?!') == 'students' and f' {_n(W[i - 3:i + 4])} ' in _Rt and f' {_n(W[i - 3:i + 4])} ' in _Ot)
 P2 = copy.deepcopy(P); P2[k][0] = 'stewards'
 r = G.run(S, quiet=True, P_override=P2)
 check(f'关卡 2 识别错词 students→stewards 按原文改回', any(c['位置'] == f'{k}:{k + 1}' and 'students' in c['改为'] for c in r['改动']))
@@ -37,8 +41,12 @@ Q, _ = T.parse_options(T.paper_txt('202306-2'))
 b, _ = T.run(S, quiet=True, words=words, Qover=Q)
 check('关卡 3 换成别的套的选项 → 内容配对报', any('内容配对' in x or '中位数' in x for x in b))
 Q, _ = T.parse_options(T.paper_txt(S)); Q[3]['C'] = 'Identify the suspect on the secunty video.'
-b, _ = T.run(S, quiet=True, words=words, Qover=Q)
-check('关卡 3 选项 OCR 残损 → 报', any('不认识' in x for x in b))
+b, n = T.run(S, quiet=True, words=words, Qover=copy.deepcopy(Q))      # run 会就地改回，雷每次用新拷贝
+check('关卡 3 选项 OCR 残损、第二来源干净 → 改用第二来源（3C）', not b and "'3C'" in str(n))
+_s2 = T.second_txt; T.second_txt = lambda sid: (None, None)
+b, _ = T.run(S, quiet=True, words=words, Qover=copy.deepcopy(Q))
+T.second_txt = _s2
+check('关卡 3 选项 OCR 残损、没有第二来源 → 报', any('不认识' in x for x in b))
 import 念题锚点 as N, re
 w2 = ' '.join(words).replace('Question five', 'Question fife', 1).replace('Question 5', 'Question fife', 1)
 d = json.loads((ROOT / f'四级/听力/{S}/定稿.json').read_text('utf-8'))
@@ -55,4 +63,15 @@ try:
     check('关卡 4 做题改一个答案 → 报不一致', any(n == '7' for n, _, _ in b))
 finally:
     f.write_text(old, 'utf-8')
+# 第三来源（做题3.json，三来源多数）：201806-2 第 10 题解析 C、两次做题 D → 定 D；拿掉做题3 就待定；做题3 改成第三个字母（三家各不同）也待定
+S3 = '201806-2'; f3 = ROOT / f'四级/听力/{S3}/做题3.json'; old3 = f3.read_text('utf-8')
+o, b = A.run(S3)
+check('关卡 4 三来源多数：201806-2 第 10 题定 D', o.get('10') == 'D' and not b)
+try:
+    f3.unlink(); o, b = A.run(S3)
+    check('关卡 4 拿掉第三来源 → 第 10 题待定', any(n == '10' for n, _, _ in b))
+    d = json.loads(old3); d['答案']['10'] = 'A'; f3.write_text(json.dumps(d, ensure_ascii=False), 'utf-8'); o, b = A.run(S3)
+    check('关卡 4 三来源各不相同 → 待定', any(n == '10' for n, _, _ in b))
+finally:
+    f3.write_text(old3, 'utf-8')
 sys.exit(0 if ok else 1)

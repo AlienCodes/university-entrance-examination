@@ -497,6 +497,16 @@ ORIG_REF, ORIG_SR = None, None     # 原音模式：编码前的原音（插停�
 ORIG_MAX_GAIN_DB, ORIG_MIN_SNR_DB, ORIG_MAX_SEC_DB = 0.05, 30.0, 1.0   # AAC 192k 实测：增益差 −0.009 dB、信噪比 43.6 dB、逐秒电平差 ≤ 0.28 dB
 
 
+def decoded(src, out_dir):
+    """原音 → 浮点 WAV（ffmpeg 解码，不改采样率、不改声道、不做任何处理）。供四级引擎调用：合集里有 .mp3 实为 AAC / 头前带大 ID3，
+    libsndfile 读不了；识别（cet4-listening-prep.yml）也是 ffmpeg 解码的，时间轴同一个时间基准。之后照原音模式逐样本比对（orig_match）"""
+    import subprocess
+    out_dir = Path(out_dir); out_dir.mkdir(parents=True, exist_ok=True)
+    w = out_dir / 'orig.wav'
+    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', str(src), '-map', '0:a:0', '-c:a', 'pcm_f32le', str(w)], check=True)
+    return str(w)
+
+
 def orig_match(ref, dec, sr):
     """成品音轨（解码、已去开头静音、与 ref 等长）与原音逐样本比：整体增益差、残差信噪比、逐秒电平差（> −50 dBFS 的秒）；返回问题列表"""
     import numpy as np

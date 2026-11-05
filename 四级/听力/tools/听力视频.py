@@ -404,13 +404,8 @@ base.states, base.page, base.leak_check = states, page, leak_check
 
 
 def decoded(mp3):
-    """原音 → 浮点 WAV（ffmpeg 解码，不改采样率、不改声道、不做任何处理）。合集里有 8 个 .mp3 实为 AAC / 头前带大 ID3，libsndfile 读不了；
-    识别（cet4-listening-prep.yml）也是 ffmpeg 解码的，时间轴与它同一个时间基准"""
-    import subprocess
-    OUT.mkdir(parents=True, exist_ok=True)
-    w = OUT / 'orig.wav'
-    subprocess.run(['ffmpeg', '-y', '-v', 'error', '-i', str(mp3), '-map', '0:a:0', '-c:a', 'pcm_f32le', str(w)], check=True)
-    return str(w)
+    """原音解码复用专八引擎（原音路径，本文件不写音频）"""
+    return base.decoded(mp3, OUT)
 
 
 def selftest():

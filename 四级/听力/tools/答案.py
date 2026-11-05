@@ -26,18 +26,22 @@ def run(sid, write=False):
         a = {} if sid in SHIFT else dict(load(sd / '解析答案.json').get('答案') or {})
         a.update({k: v for k, v in load(sd / '解析判读.json').items() if v in tuple('ABCD')})
     b = load(sd / '做题.json').get('答案', {})
+    c = load(sd / '做题3.json').get('答案', {})
+    maj = []
     hum = load(sd / '答案人核.json')
     rule = load(sd / '答案裁定.json')
     out, bad = {}, []
     for n in map(str, range(1, 26)):
         if n in hum: out[n] = hum[n]['答案']; continue
         x, y = a.get(n), b.get(n)
+        z = c.get(n)          # 第三来源：第三次独立做题（只对两来源定不了的题做）
         if x and x == y: out[n] = x
-        elif not x: bad.append((n, '来源 A 没有', y))
-        else: bad.append((n, f'来源 A {x} ≠ 做题 {y}', y))
+        elif z and [v for v in (x, y, z) if v].count(z) >= 2: out[n] = z; maj.append(n)
+        elif not x: bad.append((n, '来源 A 没有' + (f'，做题 {y} ≠ 做题3 {z}' if z else ''), y))
+        else: bad.append((n, f'来源 A {x} ≠ 做题 {y}' + (f' ≠ 做题3 {z}' if z else ''), y))
     if write:
         keep = {k: v for k, v in rule.items() if not re.fullmatch(r'\d+', k)}
-        keep.update(out); keep['_来源'] = '两个独立来源一致（' + ('两次独立做题' if sid in NOJX else '解析 PDF × 做题') + '）+ 答案人核.json'
+        keep.update(out); keep['_来源'] = '两个独立来源一致（' + ('两次独立做题' if sid in NOJX else '解析 PDF × 做题') + '）+ 答案人核.json' + (f'；第 {"、".join(maj)} 题两来源定不了，按三来源（加第三次独立做题 做题3.json）多数' if maj else '')
         (sd / '答案裁定.json').write_text(json.dumps(keep, ensure_ascii=False, indent=0), 'utf-8')
     return out, bad
 
