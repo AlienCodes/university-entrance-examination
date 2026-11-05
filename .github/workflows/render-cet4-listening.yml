@@ -1,0 +1,194 @@
+# 四级听力 视频版真题考试（练习视频）：推送 .github/cet4-listening-render.txt（每行一个套号）时：
+#   precheck（第一道关，几分钟）：每套 定稿 / 题目关口 → 时间轴 → 版式 → 自检 → 只查音频；任何一套不过，render 不开工（踩坑 122）
+#   render：每套一台机器：时间轴 → 版式 → 自检 → 截图（排版 + 题间空隙 + 字体回退 + 答案泄露）→ 试跑 → 编码（专八引擎成品核查，原音逐样本比对）
+#   publish：全部套齐了才发布 Release cet4-listening（ASCII 资产名 + 中文标签 + 中文名 zip，目标用分支名，踩坑 53、123）
+# 由 render-cet6-listening.yml 复制改成四级（四级/听力/tools/听力视频.py；原音从老师 Release 的 default.zip 取，取材料.py 核 sha256）。
+# 浏览器 Chrome 153（本机样片同一版本，踩坑 78）；runs-on 固定 ubuntu-24.04（踩坑 117）。
+name: 四级听力练习视频
+on:
+  push:
+    paths: ['.github/cet4-listening-render.txt']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  list:
+    runs-on: ubuntu-24.04
+    outputs:
+      ids: ${{ steps.l.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - id: l
+        run: echo "ids=$(grep -v '^\s*$' .github/cet4-listening-render.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin]))')" >> "$GITHUB_OUTPUT"
+  precheck:
+    needs: list
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            四级/听力
+            四级/真题/**/*.pdf
+            专八/听力/tools
+            专八/听力/2025
+            四级/tools/fonts
+            专八/真题/2025年 英语专业八级真题.pdf
+            tools/题目间隔.py
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 关口：定稿 0 待核、题目 0 处、锚点齐（不许用没核完的原文出视频）
+        run: |
+          sudo apt-get install -y -q wamerican poppler-utils >/dev/null
+          python3 四级/听力/tools/定稿.py ${{ matrix.id }} > /dev/null
+          python3 四级/听力/tools/题目.py ${{ matrix.id }}
+          python3 四级/听力/tools/念题锚点.py ${{ matrix.id }}
+          git diff --exit-code -- 四级/听力/${{ matrix.id }}/定稿.json 四级/听力/${{ matrix.id }}/题目.json
+      - name: 字体（原卷 PDF）
+        run: |
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 取原音、核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          R=$(python3 -c "import json;print(json.load(open('四级/听力/对照.json'))['choice']['${{ matrix.id }}'])")
+          python3 -I 四级/听力/tools/取材料.py in $R
+          rm -f /tmp/cet4-default.zip /tmp/cet4-default.inner.zip
+          mv in/cet4-$R.mp3 in/cet4.mp3
+      - name: 预检：时间轴 → 版式 → 自检 → 只查音频（不截图、不编码）
+        env: {CET4_OUT: '${{ runner.temp }}/out'}
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python; T=四级/听力/tools/听力视频.py; S=${{ matrix.id }}
+          $P $T $S timeline in/cet4.mp3
+          $P $T $S layout
+          $P $T $S --自检
+          $P $T $S audio in/cet4.mp3
+  render:
+    needs: [list, precheck]
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            四级/听力
+            四级/真题/**/*.pdf
+            专八/听力/tools
+            专八/听力/2025
+            四级/tools/fonts
+            专八/真题/2025年 英语专业八级真题.pdf
+            tools/题目间隔.py
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 关口：定稿 0 待核、题目 0 处
+        run: |
+          sudo apt-get install -y -q wamerican poppler-utils >/dev/null
+          python3 四级/听力/tools/定稿.py ${{ matrix.id }} > /dev/null
+          python3 四级/听力/tools/题目.py ${{ matrix.id }}
+          git diff --exit-code -- 四级/听力/${{ matrix.id }}/定稿.json 四级/听力/${{ matrix.id }}/题目.json
+      - name: 字体（原卷 PDF）
+        run: |
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 取原音、核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          R=$(python3 -c "import json;print(json.load(open('四级/听力/对照.json'))['choice']['${{ matrix.id }}'])")
+          python3 -I 四级/听力/tools/取材料.py in $R
+          rm -f /tmp/cet4-default.zip /tmp/cet4-default.inner.zip
+          mv in/cet4-$R.mp3 in/cet4.mp3
+      - name: 时间轴 → 版式 → 自检 → 截图 → 试跑 → 编码（出错即停）
+        env: {CET4_OUT: '${{ runner.temp }}/out'}
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python; T=四级/听力/tools/听力视频.py; S=${{ matrix.id }}
+          $P $T $S timeline in/cet4.mp3
+          $P $T $S layout
+          $P $T $S --自检
+          $P $T $S stills
+          $P $T $S video in/cet4.mp3 --试跑
+          $P $T $S video in/cet4.mp3
+          mkdir -p up
+          mv "$CET4_OUT"/*考试.mp4 up/
+          cp 四级/听力/$S/时间轴.json up/
+          $P - "$S" <<'PY'
+          import hashlib, json, sys, pathlib
+          up = pathlib.Path('up'); sid = sys.argv[1]
+          h = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          mp4 = next(up.glob('*.mp4'))
+          json.dump({'套': sid, 'kind': 'exam', 'mp4': mp4.name, 'mp4_sha256': h(mp4), 'mp4_bytes': mp4.stat().st_size,
+                     '原音_sha256': h(pathlib.Path('in/cet4.mp3'))}, open(up / 'meta.json', 'w'), ensure_ascii=False)
+          PY
+      - uses: actions/upload-artifact@v4
+        with: {name: 'cet4listen-${{ matrix.id }}', path: up, compression-level: 0}
+  publish:
+    needs: [list, render]
+    if: always() && needs.list.result == 'success'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            四级/听力/tools
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with: {path: art, pattern: 'cet4*-*'}
+      - name: 收之前运行里已通过的视频（.github/cet4-listening-collect.txt 每行一个运行号；本次有的不覆盖）
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          mkdir -p art
+          for rid in $(grep -v '^\s*$' .github/cet4-listening-collect.txt 2>/dev/null || true); do
+            for n in $(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$rid/artifacts?per_page=100" --jq '.artifacts[] | select(.expired | not) | .name' | grep -E '^cet4(listen|text)-'); do
+              [ -d "art/$n" ] && continue
+              gh run download "$rid" -R "$GITHUB_REPOSITORY" -n "$n" -D "art/$n"; echo "收 $rid / $n"
+            done
+          done
+      - name: 核对齐全（.github/cet4-listening-all.txt；第一行是必须齐的种类）、发布、下载核对
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/cet4-listening-publish.py --自检
+          K=$(head -1 .github/cet4-listening-all.txt)
+          python3 .github/cet4-listening-publish.py plan "$K" "$(tail -n +2 .github/cet4-listening-all.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')" art up
+          TAG=cet4-listening
+          gh release view $TAG >/dev/null 2>&1 || gh release create $TAG --target "$GITHUB_REF_NAME" -t "四级听力 视频版真题考试 + 原文精读" -n "见下方说明"
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/cet4-listening-publish.py todo up/plan.json rel.json | while IFS=$'\t' read -r a l; do
+            gh release upload $TAG "up/$a#$l" --clobber; echo "上传 $a"
+          done
+          gh release upload $TAG up/cet4-listening-filenames.txt --clobber
+          python3 .github/cet4-listening-publish.py notes up/plan.json notes.md
+          gh release edit $TAG --notes-file notes.md
+          python3 .github/cet4-listening-publish.py pack up/plan.json .
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          for z in $(python3 .github/cet4-listening-publish.py zips up/plan.json); do
+            d=$(python3 -c "import json,sys;print(next((a.get('digest') or '' for a in json.load(open('rel.json'))['assets'] if a['name']==sys.argv[1]),''))" $z)
+            [ "$d" = "sha256:$(sha256sum $z | cut -d' ' -f1)" ] && echo "已在 $z" || { gh release upload $TAG $z --clobber; echo "上传 $z"; }
+            rm -f $z; mkdir -p zchk
+            gh release download $TAG -p $z -D zchk --clobber
+            python3 .github/cet4-listening-publish.py checkzip up/plan.json zchk/$z
+            rm -f zchk/$z
+          done
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/cet4-listening-publish.py verify-digest up/plan.json rel.json

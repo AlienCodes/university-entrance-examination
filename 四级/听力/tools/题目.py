@@ -120,7 +120,7 @@ def col_answers(sid):
             c = m.start(1)
             for line2 in L[k + 1:k + 5]:
                 if re.search(r'(?:^|\s)\d{1,2}\s*[.．]\s*(?:What|Why|How|Who)', line2): break
-                hit = [mm for mm in re.finditer(r'(?:(?<=\s)|^)([A-D])\s*[)）](?=\s*\S)', line2) if abs(mm.start(1) - c) <= 14]
+                hit = [mm for mm in re.finditer(r'(?:(?<=\s)|^)([A-D])\s*[)）](?!\s*[A-Z]?[a-z]+[ ,.][a-z]*)(?=\s*\S)', line2) if abs(mm.start(1) - c) <= 14]   # 后面是英文句子 = 重印的选项，不是答案
                 if hit: out[n] = hit[0].group(1); break
     return out
 
@@ -141,7 +141,7 @@ STOPRE = r'(?=\s+(?:[Qq]uestions?\s+' + NUMRE + r'\b|Section [ABC]\b|News [Rr]ep
 def stems_from(text):
     """念题：Question N[.:] 题干 —— 到第一个问号；没有问号的到下一个念题 / 段标题为止"""
     st = {}
-    for m in re.finditer(r'\b[Qq]uestion (' + NUMRE + r')\b[.:,]?\s+', text):
+    for m in re.finditer(r'\b[Qq]uestion (' + NUMRE + r')\b[.:,]?\s+(?!(?:and|to) )', text):
         num = m.group(1).replace(' ', '-').lower()
         num = int(num) if num.isdigit() else NUMW.get(num)
         rest = text[m.end():]
@@ -255,6 +255,7 @@ def run(sid, quiet=False, words=None, Qover=None):
             diff = set(nz(js)) ^ set(nz(stem))
             if (set(nz(js)) - set(nz(stem))) and len(diff) <= 4 and all(len(w) > 1 and w in DICT for w in set(nz(js)) - set(nz(stem))):
                 bad.append(f'第 {n} 题题干 解析「{js}」≠ 念题「{stem}」（{sorted(diff)}）')
+        if stem and not stem.endswith('?'): stem = re.sub(r'[.,;:]?\s*$', '?', stem)
         if stem and len(stem.split()) > 40: bad.append(f'第 {n} 题题干 {len(stem.split())} 词，截进了后面的录音：{stem[:80]}…')
         prog[n] = cols.get(n) or judge(blocks.get(n, ''))
         ans = str(rule.get(str(n), ''))

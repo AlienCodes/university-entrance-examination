@@ -231,6 +231,26 @@ def run(sid, quiet=False, R_override=None, P_override=None):
                 i = i2
             continue
         words.append(list(P[i]) + [0]); i += 1
+    # 补插的词（识别整句漏掉，202106-2 第 16 题念题）没有时刻：前后词之间有 ≥ 8 秒的静音（作答停顿，停顿.json）时，
+    # 补的词放在静音之前那段话里（按字母数线性分），否则留空给引擎插值（插值不知道停顿在哪，会把念题放到停顿之后）
+    sil = json.loads((H / '识别' / rid / '停顿.json').read_text('utf-8'))['静音']
+    k, placed = 0, 0
+    while k < len(words):
+        if words[k][1] is not None: k += 1; continue
+        j = k
+        while j < len(words) and words[j][1] is None: j += 1
+        if 0 < k and j < len(words):
+            t0, t1 = words[k - 1][2], words[j][1]
+            long = [x for x in sil if x[1] - x[0] >= 8 and t0 - 0.5 <= x[0] and x[1] <= t1 + 0.5]
+            if long:
+                a, b = t0 + 0.2, long[0][0]
+                L = [len(w[0]) + 1 for w in words[k:j]]; tot = sum(L); acc = 0
+                for m in range(k, j):
+                    s0 = a + (b - a) * acc / tot; acc += L[m - k]
+                    words[m][1], words[m][2] = round(s0, 2), round(a + (b - a) * acc / tot, 2)
+                placed += j - k
+        k = j
+    if placed and not quiet: print(f'  {sid} 补插的 {placed} 个词按作答停顿放在停顿之前')
     res = {'来源': '二方' if two else '三方', '录音': rid, '词': words, '差异': cnt, '改动': changes, '保留': kept, '待核': todo,
            '对齐': {'识别词': len(W), '原文词': len(R) if R else 0, 'otter词': len(O) if O else 0,
                   '有时间的词': sum(1 for x in words if x[1] is not None)}}
