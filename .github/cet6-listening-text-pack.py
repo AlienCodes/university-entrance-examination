@@ -73,7 +73,8 @@ CFG = {
              'head': ['大学英语六级 听力（Part II Listening）原文逐句精读视频 · 教室黑板大字版，共 {n} 个：每套听力录音全文，逐句英文、中文翻译、生词短语（{parts} 个压缩包，解压即可）。',
                       '4K（3840×2160）、30 帧/秒恒定；英文 Inter 加粗、中文黑体，生词黄色、短语粉色；声音是考试原音（长等待压到 2 秒）；每个视频约 330 MB，按体积分包、每包 < 2 GB。']},
 }[PROJECT]
-LIMIT = CFG.get('max_mb', 95) * 2**20             # 单个视频体积上限（默认 95 MB；六级听力 1900 MB，与引擎 PROJECTS 的 max_mb 同值）
+SCALE = float(os.environ.get('PACK_SCALE', '1'))      # 只给本机预演用（tools/防复发/验证/精读发布预演.py：假视频按比例缩小，上限一起缩）；GitHub 上不设
+LIMIT = CFG.get('max_mb', 95) * 2**20 * SCALE      # 单个视频体积上限（默认 95 MB；六级听力 1900 MB，与引擎 PROJECTS 的 max_mb 同值）
 LOOK = CFG['look']
 D = CFG.get('dir', PROJECT)                      # 项目目录（专八水墨 → 专八）
 REG = json.loads(Path(f'{D}/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
@@ -237,7 +238,7 @@ def main():
         groups, cur, tot = [], [], 0
         for x in names:
             sz = (VID / x).stat().st_size
-            if cur and tot + sz > CFG['zip_mb'] * 2**20:
+            if cur and tot + sz > CFG['zip_mb'] * 2**20 * SCALE:
                 groups.append(cur); cur, tot = [], 0
             cur.append(x); tot += sz
         groups.append(cur)
@@ -260,7 +261,7 @@ def main():
                 assert i.compress_type == zipfile.ZIP_STORED, f'{z}：{i.filename} 被压缩了'
                 assert i.file_size == (VID / i.filename).stat().st_size, f'{z}：{i.filename} 大小不对'
             assert zf.testzip() is None, f'{z}：CRC 不对'
-        assert z.stat().st_size < 2 * 2**30, f'{z} 超过 2 GB'
+        assert z.stat().st_size < 2 * 2**30 * SCALE, f'{z} 超过 2 GB'
         zips.append(z.name)
         print(f'📦 {z.name}：{len(sl)} 个，{z.stat().st_size / 2**20:.0f} MB，zipfile 核对通过（文件名、顺序、UTF-8 标记、不压缩、大小、CRC）', flush=True)
     Path('zips.txt').write_text('\n'.join(zips) + '\n', 'utf-8')

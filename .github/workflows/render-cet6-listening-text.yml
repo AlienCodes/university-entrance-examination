@@ -213,10 +213,22 @@ jobs:
         if: env.MODE == 'video'
         run: |
           t0=$(date +%s)
-          rc=0; env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/听力/精读/tools/大字版_黑板.py --video "$ID" || rc=$?
+          rc=0; KEEP_FAILED=1 env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 六级/听力/精读/tools/大字版_黑板.py --video "$ID" || rc=$?
           echo "----- 日志 六级/听力/精读/大字版/日志/$ID.log -----"; cat "六级/听力/精读/大字版/日志/$ID.log" || true
           echo "VIDEO_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
           exit $rc
+      - name: 核查不过的成品也上传（标“未通过”，打包程序只收 cet6lt-<套>、不收这个；检查误判时改检查重核，不重新生成，踩坑 126）
+        if: ${{ failure() && env.MODE == 'video' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cet6lt-failed-${{ matrix.id }}
+          path: |
+            六级/听力/精读/最终视频/*.未通过.mp4
+            六级/听力/精读/大字版/成品核查/
+            六级/听力/精读/大字版/日志/
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: ignore
       - name: 整理要上传的文件（核查结果再核一遍）
         if: env.MODE == 'video'
         run: |
@@ -238,7 +250,7 @@ jobs:
           reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))[f'{pid}@3']
           assert r['ok'] and r['checks'] and all(c['ok'] for c in r['checks']), '核查结果不是全部通过'
           assert r['指纹'] == reg['指纹'] == M.fingerprint(pid, '3'), '指纹与审阅登记不一致'
-          assert r['size'] == mp4.stat().st_size <= 95 * 2**20, '体积不对'
+          assert r['size'] == mp4.stat().st_size <= M.PJ.get('max_mb', 95) * 2**20, '体积不对'      # 上限与引擎同一处（PROJECTS 的 max_mb，踩坑 126）
           tm = json.load(open(C / 'audio/timings.json', encoding='utf-8'))['cet4_male'][pid]      # 踩坑 86、109：视频与所用音频绑定
           asha = hashlib.sha256((C / 'audio' / tm['file']).read_bytes()).hexdigest()
           assert asha == os.environ['AUDIO_SHA'], '生成视频期间音频变了'

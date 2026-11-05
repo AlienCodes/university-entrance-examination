@@ -4348,6 +4348,11 @@
      "where": "专八/tools/make_video.cut_check（重叠里也算两句之间）、成品体积按 PROJECTS 的 max_mb；.github/cet6-listening-text-pack.py（LIMIT = CFG max_mb，按 zip_mb 分包）；render-cet6-listening-text.yml 发布后核对先记 sha256 再删本地文件",
      "runs": "make_video --video、publish",
      "evidence": "30 套真实时间轴新检查 0 处"
+    },
+    {
+     "where": "render-cet6-listening-text.yml：整理步骤体积上限取 M.PJ max_mb；KEEP_FAILED=1 生成，核查不过的成品改名“未通过”传 cet6lt-failed-<套>",
+     "runs": "render",
+     "evidence": "精读发布预演.py"
     }
    ],
    "test": [
@@ -4355,10 +4360,15 @@
      "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/换屏重叠.py",
      "expect": "exit 0",
      "needs": "tts"
+    },
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/精读发布预演.py",
+     "expect": "exit 0",
+     "needs": "tts"
     }
    ],
    "status": "自动拦截+有双向验证",
-   "gap": "打包分包与磁盘只在 GitHub publish 上真跑；本机只验证了上限一致",
+   "gap": "打包分包与磁盘、上传时间只在 GitHub publish 上真跑（磁盘按六级黑板实测清理后 107 GB 可用，需约 20 GB）；核查不过的成品还没有“下载回来重核”的工具",
    "fix": ""
   }
  ],

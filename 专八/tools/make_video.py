@@ -1813,6 +1813,9 @@ def main():
              'size': (out / name).stat().st_size, 'checks': [{'item': n_, 'ok': c, 'detail': d} for n_, c, d in res]},
             ensure_ascii=False, indent=1), 'utf-8')
     if fails:
+        if os.environ.get('KEEP_FAILED'):            # GitHub 上生成（踩坑 126）：核查不过也留下，改名“未通过”另传 artifact（打包程序不收）；检查误判时改检查、重核，不必重新生成
+            (out / name).rename(out / (Path(name).stem + '.未通过.mp4'))
+            raise SystemExit('核查未通过，成品已改名为“未通过”（不发布）：\n  ' + '\n  '.join(fails))
         (out / name).unlink()
         raise SystemExit('核查未通过，已删除成品：\n  ' + '\n  '.join(fails))
     print(f'  英文字号 {min(x[0] for x in sizes)}–{max(x[0] for x in sizes)}px，词汇栏字号 {min(x[1] for x in sizes)}–{max(x[1] for x in sizes)}px')
