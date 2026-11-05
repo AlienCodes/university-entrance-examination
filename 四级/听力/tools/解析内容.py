@@ -25,7 +25,12 @@ for d in sorted(Path(sys.argv[1]).iterdir()):
     for m in re.finditer(r'question (?:number )?(?:\w+(?: \w+)?)\s+(what|why|how|who|where|when|which|according)((?: [a-z0-9\']+){3,6})', txt):
         g = tuple((m.group(1) + m.group(2)).split()[:5])
         if any(g == tuple(jw[i:i + len(g)]) for i in range(len(jw) - len(g))): stems += 1
-    out[p] = {'录音': dz['choice'][p], '转写来源': src, '原文覆盖率': round(cov, 2), '听力原文': '有' if cov >= 0.4 else ('部分' if cov >= 0.15 else '没有'),
+    # 答案：只看听力部分（到 Reading / Part III 为止），数“答案为 X)”“【答案】X”“X)【精析】”这类标记
+    t = f.read_text('utf-8', 'ignore'); i = t.find('Listening')
+    j = re.search(r'Reading\s+Comprehension|Part\s*(III|Ⅲ)', t[i + 50:]) if i >= 0 else None
+    lt = re.sub(r'[ \t]+', '', t[i: i + 50 + j.start()] if j else t)
+    marks = len(re.findall(r'答案(?:为|是|[:：])?([A-D])|【答案】([A-D])|([A-D])\)?【(?:精析|解析|考点)', lt))
+    out[p] = {'答案标记': marks, '答案': '有' if marks >= 20 else ('部分' if marks else '没有找到'), '录音': dz['choice'][p], '转写来源': src, '原文覆盖率': round(cov, 2), '听力原文': '有' if cov >= 0.4 else ('部分' if cov >= 0.15 else '没有'),
               '题干出现': min(stems, 25), '文字来源': 'OCR' if (d / 'ocr').exists() else '文字层'}
 (H / '原始材料/解析内容.json').write_text(json.dumps(out, ensure_ascii=False, indent=1), 'utf-8')
 for k, v in out.items(): print(k, v)
