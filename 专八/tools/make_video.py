@@ -112,7 +112,9 @@ PROJECTS = {
     # paper “2025年12月大学英语六级 第1套”，passage “Part II Listening”（斜体英文字体只放英文，踩坑 64）
     '六级听力': {'dir': '六级/听力/精读', 'audio': '原音', 'tag': 'CET-6 · LISTENING · PART II', 'top': 'CET-6 LISTENING', 'exam': '', 'look': '3',
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'videos': '最终视频',
-             'name_re': r'20\d\d年(6|9|12)月大学英语六级 第[123]套 Part II Listening \S.*\.mp4', 'tmp': 'cet6lvideo_'},
+             'name_re': r'20\d\d年(6|9|12)月大学英语六级 第[123]套 Part II Listening \S.*\.mp4', 'tmp': 'cet6lvideo_',
+             'max_mb': 1900},        # 22 分钟、200 多屏的 4K 黑板约 330 MB（体积随屏数，粉笔颗粒每屏一个关键帧）；成品不进 git，进 Release 压缩包（单个附件 < 2 GB，踩坑 126）
+
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
 
@@ -1568,7 +1570,11 @@ def cut_check(cuts, owner, times, n0):
     """原音：每次换到下一句的时刻都在两句之间（不早于上一句读完、不晚于下一句开口）。"""
     bad = []
     for c, (i, j, _) in zip(cuts[n0:], owner):
-        if j == 0 and i and not (times[i - 1]['end'] - 1e-6 <= c <= times[i]['start'] + 1e-6):
+        if j or not i:
+            continue
+        e, s = times[i - 1]['end'], times[i]['start']
+        # 两句之间没有低于门限的停顿时，上一句的收尾与下一句的开头互相伸进对方（最多 0.3 秒，都在两句的词之间）：换屏落在重叠里也算两句之间（踩坑 126）
+        if not (min(e, s) - 1e-6 <= c <= max(e, s) + 1e-6):
             bad.append(i + 1)
     return ('换屏在两句之间（原音）', bool(not bad), f'不符合：第 {bad} 句' if bad else '全部在句间停顿里')
 
@@ -1792,7 +1798,8 @@ def main():
     res.append(('结尾静音 ≥ 2 秒', dur - ends[-1] >= TAIL - 0.05, f'{dur - ends[-1]:.2f} 秒'))
     res.append(frame_check(out / name, frames, [tmp / f'{i:03d}.png' for i in range(len(scr))]))
     size = (out / name).stat().st_size          # GitHub 单个文件上限 100 MB（教室黑板旧版 431 MB 推不上去，也超过发送上限）
-    res.append(('成品体积 ≤ 95 MB', size <= 95 * 2**20, f'{size / 2**20:.1f} MB'))
+    mx = PJ.get('max_mb', 95)                     # 默认 95 MB（成品进 git 的项目）；成品只进 Release 的项目按附件上限另定（PROJECTS 的 max_mb）
+    res.append((f'成品体积 ≤ {mx} MB', size <= mx * 2**20, f'{size / 2**20:.1f} MB'))
     ok_name = re.fullmatch(PJ['name_re'], name) and name == video_name(p, a.style if sample else None)
     res.append(('文件名', bool(ok_name), name))
     for n_, c, d in res:

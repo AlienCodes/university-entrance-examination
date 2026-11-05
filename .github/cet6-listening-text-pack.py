@@ -36,7 +36,6 @@ TAG = os.environ['TAG']
 TEST = TAG.startswith('test')
 REPO = os.environ['GITHUB_REPOSITORY']
 RUN = os.environ.get('GITHUB_RUN_ID', '')
-LIMIT = 95 * 2**20
 MAN = json.loads(Path('manifest/manifest.json').read_text('utf-8'))
 PROJECT = os.environ.get('PROJECT', '六级听力')
 CFG = {
@@ -70,9 +69,11 @@ CFG = {
                       '4K（3840×2160）、30 帧/秒恒定；英文、中文全部加粗，生词晴空蓝、短语草绿（黄色底纹）；女声朗读（已去电磁音），句与句之间停顿 0.8 秒；每个视频 ≤ 95 MB。']},
     # 六级听力原文精读（用户 2026-11-04）：目录 六级/听力/精读/，声音是考试原音（长等待压到 2 秒）
     '六级听力': {'dir': '六级/听力/精读', 'look': '3', 'work': '大字版', 'videos': '最终视频', 'art': 'cet6lt', 'zip': 'CET6-listening-text-videos', 'n': 30,
+             'max_mb': 1900, 'zip_mb': 1900,        # 每个约 330 MB（引擎 PROJECTS 的 max_mb 同值）：按体积分包，每包 < 2 GB（Release 单个附件上限，踩坑 126）
              'head': ['大学英语六级 听力（Part II Listening）原文逐句精读视频 · 教室黑板大字版，共 {n} 个：每套听力录音全文，逐句英文、中文翻译、生词短语（{parts} 个压缩包，解压即可）。',
-                      '4K（3840×2160）、30 帧/秒恒定；英文 Inter 加粗、中文黑体，生词黄色、短语粉色；声音是考试原音（长等待压到 2 秒）；每个视频 ≤ 95 MB。']},
+                      '4K（3840×2160）、30 帧/秒恒定；英文 Inter 加粗、中文黑体，生词黄色、短语粉色；声音是考试原音（长等待压到 2 秒）；每个视频约 330 MB，按体积分包、每包 < 2 GB。']},
 }[PROJECT]
+LIMIT = CFG.get('max_mb', 95) * 2**20             # 单个视频体积上限（默认 95 MB；六级听力 1900 MB，与引擎 PROJECTS 的 max_mb 同值）
 LOOK = CFG['look']
 D = CFG.get('dir', PROJECT)                      # 项目目录（专八水墨 → 专八）
 REG = json.loads(Path(f'{D}/tools/画面核查/截图审阅通过.json').read_text('utf-8'))
@@ -118,7 +119,7 @@ def report_problem(pid, name, rep, size, meta=None):
     if r.get('size') != size:
         return f'体积 {size} ≠ 核查时 {r.get("size")}'
     if size > LIMIT:
-        return f'体积 {size / 2**20:.1f} MB > 95 MB'
+        return f'体积 {size / 2**20:.1f} MB > {LIMIT / 2**20:.0f} MB'
     need = audio_need(pid)
     if need:
         ac = [c for c in r['checks'] if str(c.get('item', '')).startswith('音频合格证')]
@@ -232,11 +233,22 @@ def main():
     if not TEST:
         assert names == order and len(names) == CFG['n'], f'应有 {CFG["n"]} 个，实有 {len(names)} 个'
     n = len(names)
-    parts = (n + 19) // 20
+    if CFG.get('zip_mb'):                                   # 按体积分包（顺序不变，每包不超过 zip_mb）
+        groups, cur, tot = [], [], 0
+        for x in names:
+            sz = (VID / x).stat().st_size
+            if cur and tot + sz > CFG['zip_mb'] * 2**20:
+                groups.append(cur); cur, tot = [], 0
+            cur.append(x); tot += sz
+        groups.append(cur)
+    else:
+        groups = [names[p * 20:(p + 1) * 20] for p in range((n + 19) // 20)]
+    parts = len(groups)
+    part_of = {x: p + 1 for p, g in enumerate(groups) for x in g}
     zips = []
     for p in range(parts):
         z = Path(f'{CFG["zip"]}-part{p + 1}-of-{parts}.zip')
-        sl = names[p * 20:(p + 1) * 20]
+        sl = groups[p]
         with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED, allowZip64=True) as zf:
             for x in sl:
                 zf.write(VID / x, x)
@@ -255,7 +267,7 @@ def main():
     lines = [CFG['head'][0].format(n=n, parts=parts), '', CFG['head'][1], '',
              '每个视频都通过了引擎生成后自动跑的全部成品核查（分辨率、流畅度、声画等长、换屏时刻、逐屏与审过的截图一致、体积等），视频所用音频与仓库里的原音音轨逐字节相同。', '',
              '| # | 文件名 | 压缩包 |', '|---|---|---|']
-    lines += [f'| {i} | {x} | part{(i - 1) // 20 + 1} |' for i, x in enumerate(names, 1)]
+    lines += [f'| {i} | {x} | part{part_of[x]} |' for i, x in enumerate(names, 1)]
     Path('notes.md').write_text('\n'.join(lines) + '\n', 'utf-8')
     Path('timing.md').write_text('| 套 | 截图（秒） | 视频（秒） | 体积（MB） | CPU |\n|---|---|---|---|---|\n'
                                  + '\n'.join(timing) + '\n', 'utf-8')

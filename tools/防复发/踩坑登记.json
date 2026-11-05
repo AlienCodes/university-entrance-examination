@@ -4332,6 +4332,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "说话人检查只看题干与讲的称呼，讲里不写男女（用“她”“医生”）时查不到；靠复核埋雷（讲解男女对换雷 5/5 查出）",
    "fix": ""
+  },
+  {
+   "id": "126",
+   "title": "六级听力精读 mode=video 运行 41922681259：换屏在两句之间（原音）检查不认两句重叠（30 套 2741 处），成品体积上限沿用 95 MB（实际约 330 MB），打包每包 20 个超过 2 GB；video 阶段从没在本机或单套上跑过",
+   "stages": [
+    "视频",
+    "发布"
+   ],
+   "projects": [
+    "六级听力"
+   ],
+   "guards": [
+    {
+     "where": "专八/tools/make_video.cut_check（重叠里也算两句之间）、成品体积按 PROJECTS 的 max_mb；.github/cet6-listening-text-pack.py（LIMIT = CFG max_mb，按 zip_mb 分包）；render-cet6-listening-text.yml 发布后核对先记 sha256 再删本地文件",
+     "runs": "make_video --video、publish",
+     "evidence": "30 套真实时间轴新检查 0 处"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/换屏重叠.py",
+     "expect": "exit 0",
+     "needs": "tts"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "打包分包与磁盘只在 GitHub publish 上真跑；本机只验证了上限一致",
+   "fix": ""
   }
  ],
  "_复盘豁免": [

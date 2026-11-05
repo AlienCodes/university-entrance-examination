@@ -363,9 +363,9 @@ jobs:
       - name: 发布后核对（下载回来，与本地 zip 的大小、sha256 完全相同）
         if: ${{ !startsWith(needs.prep.outputs.tag, 'test') }}
         run: |
-          mkdir -p dl && gh release download "$RELEASE_TAG" -p 'CET6-listening-text-videos-part*.zip' -D dl --clobber
+          # 30 个视频约 10 GB：先记下本地 zip 的大小和 sha256，删掉视频与本地 zip 腾出磁盘，再下载回来比（踩坑 126）
           python3 - <<'PY'
-          import hashlib, os
+          import hashlib, json, os
           from pathlib import Path
           def sha(f):
               h = hashlib.sha256()
@@ -374,9 +374,23 @@ jobs:
                       h.update(b)
               return h.hexdigest()
           zips = Path('zips.txt').read_text('utf-8').split()
+          json.dump({z: [os.path.getsize(z), sha(z)] for z in zips}, open('zipsha.json', 'w'))
+          PY
+          rm -rf videos artifacts old-artifacts && rm -f CET6-listening-text-videos-part*.zip && df -h . | tail -1
+          mkdir -p dl && gh release download "$RELEASE_TAG" -p 'CET6-listening-text-videos-part*.zip' -D dl --clobber
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          def sha(f):
+              h = hashlib.sha256()
+              with open(f, 'rb') as fh:
+                  for b in iter(lambda: fh.read(1 << 20), b''):
+                      h.update(b)
+              return h.hexdigest()
+          want = json.load(open('zipsha.json'))
           got = sorted(x.name for x in Path('dl').glob('*.zip'))
-          assert got == sorted(zips), f'Release 附件与本地不一致：{got} ≠ {zips}'
-          for z in zips:
-              assert os.path.getsize(f'dl/{z}') == os.path.getsize(z) and sha(f'dl/{z}') == sha(z), f'{z}：下载回来与本地不同'
-          print(f'Release {os.environ["RELEASE_TAG"]}：{len(zips)} 个附件下载回来，大小与 sha256 都与本地 zip 相同')
+          assert got == sorted(want), f'Release 附件与本地不一致：{got} ≠ {sorted(want)}'
+          for z, (size, h) in want.items():
+              assert os.path.getsize(f'dl/{z}') == size and sha(f'dl/{z}') == h, f'{z}：下载回来与本地不同'
+          print(f'Release {os.environ["RELEASE_TAG"]}：{len(want)} 个附件下载回来，大小与 sha256 都与本地 zip 相同')
           PY
