@@ -415,7 +415,7 @@ def stills(sample=False):
         pick, seen = {}, set()
         for t, s in L:
             typ = s['kind'] + ('+cd' if 'cd' in s else '')
-            if typ not in seen and not (s['kind'] == 'instr' and s['hi'] < 2):
+            if typ not in seen and not (s['kind'] == 'instr' and s.get('hi', 2) < 2):
                 seen.add(typ); pick[key(s)] = s
         todo = pick
     shots = OUT / 'shots'; shots.mkdir(parents=True, exist_ok=True)
