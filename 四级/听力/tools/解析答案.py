@@ -55,7 +55,7 @@ def run(sid):
                 parts += [f'=== 第 {p} 页 左', l, f'=== 第 {p} 页 右', r]
             txt = '\n'.join(parts); cache.write_text(txt, 'utf-8')
     t = re.sub(r'(?<=[一-鿿])\s+(?=[一-鿿])', '', txt)
-    i = t.find('Listening'); i = i if i >= 0 else t.find('Section A')
+    i = t.find('Listening'); i = i if i >= 0 else t.find('Section A'); i = max(i, 0)        # 都找不到（OCR 没认出标题）：从头取，题号限 1—25
     j = re.search(r'Reading\s*Comprehension|Part\s*(III|Ⅲ)\b', t[i + 400:])
     L = t[i: i + 400 + j.start()] if j else t[i:]
     # 按题号就近配：阅读顺序里每个答案标记归给它前面最近的题干（n. What / Why …），每题只取第一个；
