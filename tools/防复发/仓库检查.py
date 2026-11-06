@@ -126,6 +126,14 @@ def runner_problems(name, y):
     return errs
 
 
+def duration_problems(name, text):
+    """踩坑 118 再犯（四级精读 201806-2，运行 42172057319）：拿 ffprobe format=duration（按帧头估算，比解码长 30—66 ms）去 assert 核对 timings。"""
+    for ln in text.splitlines():
+        if 'format=duration' in ln and ('subprocess' in ln or 'float(' in ln):
+            return [f'{name}：用 ffprobe format=duration 量音频时长去核对（踩坑 118：时长一律按解码长度，soundfile frames / samplerate）']
+    return []
+
+
 def strings(x):
     if isinstance(x, str):
         yield x
@@ -161,6 +169,7 @@ def check_workflow(name, text):
     errs += gram_out_problems(name, text)
     errs += sysdep_problems(name, text)
     errs += runner_problems(name, y)
+    errs += duration_problems(name, text)
     hits = [(pat, why) for pat, why in BAN if re.search(pat, text)]
     if name not in LEGACY:
         errs += [f'{name}：用了 {pat}（{why}）' for pat, why in hits]

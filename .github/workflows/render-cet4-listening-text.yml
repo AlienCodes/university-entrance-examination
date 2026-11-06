@@ -150,9 +150,9 @@ jobs:
           tm = json.loads((A / 'timings.json').read_text('utf-8'))['cet4_male'][pid]
           mp3 = A / tm['file']
           assert tm.get('source') == '原音' and mp3.is_file(), f'{pid}：timings 不是原音或没有 {mp3}'
-          dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(mp3)],
-                                     capture_output=True, text=True, check=True).stdout)
-          assert abs(dur - tm['duration']) <= 0.06, f'{pid}：mp3 实测 {dur:.3f} 秒 ≠ timings {tm["duration"]} 秒'
+          import soundfile as sf
+          inf = sf.info(str(mp3)); dur = inf.frames / inf.samplerate      # 时长一律按解码长度（踩坑 118）：ffprobe format=duration 按帧头估算，比解码长 30—66 ms（四级 201806-2 差 66 ms）
+          assert abs(dur - tm['duration']) <= 0.01, f'{pid}：mp3 实测 {dur:.3f} 秒 ≠ timings {tm["duration"]} 秒'
           t = [(s['start'], s['end']) for s in tm['sentences']]
           assert all(0 <= a < b <= tm['duration'] for a, b in t) and all(t[i][0] < t[i + 1][0] and t[i][1] < t[i + 1][1] for i in range(len(t) - 1)), f'{pid}：句子起止不在时长内或不递增'      # 原音的句子前后各留一点，相邻两句允许重叠 0.2—0.3 秒
           h = hashlib.sha256(mp3.read_bytes()).hexdigest()

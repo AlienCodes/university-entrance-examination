@@ -109,5 +109,12 @@ case('render 改回 ubuntu-latest（运行 41836153360 的写法）→ 报', ck.
 case('不用 cet6-chalk-env 的 ubuntu-latest 任务 → 0', ck.runner_problems('g.yml', yaml.safe_load(GOOD)), False)
 case('全仓库工作流 → 0', [e for e in ck.check_workflows() if '踩坑 117' in e], False)
 
+# 踩坑 118 再犯：工作流用 ffprobe format=duration 核对 timings（四级精读 201806-2 差 66 ms）
+cur = (WF / 'render-cet4-listening-text.yml').read_text('utf-8')
+OLDDUR = """          dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(mp3)],\n"""
+case('现在的 render-cet4-listening-text.yml → 0', ck.duration_problems('t.yml', cur), False)
+case('改回 ffprobe format=duration（运行 42172057319 的写法）→ 报', ck.duration_problems('t.yml', cur + OLDDUR), True, '踩坑 118')
+case('全仓库工作流 → 0', [e for e in ck.check_workflows() if '踩坑 118' in e], False)
+
 print('仓库检查双向验证：' + ('全部通过' if not bad else f'{len(bad)} 处失败\n  ' + '\n  '.join(bad)))
 sys.exit(1 if bad else 0)
