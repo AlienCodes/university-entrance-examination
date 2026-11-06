@@ -97,9 +97,13 @@ def one(sid, fixes):
         for t in range(blk.size):
             i, j = a[blk.a + t][1], b[blk.b + t][1]
             votes[i][j] = votes[i].get(j, 0) + 1
-    if sm.ratio() < 0.995:
+    if sm.ratio() < 0.97:          # 四级：订正里有专名拼写、拆并词（Hode → Houde、to day → today），词序会差一点；对齐仍按词投票
         raise SystemExit(f'{sid}：新旧词序差太多（{sm.ratio():.4f}），不是切句订正，停')
     owner = [max(v, key=lambda j: (v[j], -j)) if v else None for v in votes]
+    for i in range(len(owner)):           # 整句的词都被订正换掉了（Hm. → Hmm.）：夹在前后两句之间、正好空出一句时归那一句
+        if owner[i] is None and 0 < i < len(owner) - 1 and owner[i - 1] is not None and owner[i + 1] is not None \
+                and owner[i + 1] - owner[i - 1] == 2:
+            owner[i] = owner[i - 1] + 1
     f = C4 / 'ann' / f'{sid}.txt'
     head, blocks = parse_ann(f)
     if [k for k, _, _ in blocks] != list(range(1, len(old) + 1)):

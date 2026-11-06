@@ -56,6 +56,11 @@ def heads(text):
     return text
 
 
+def qmark(S):
+    """念题都是问句：识别给的句号改问号。"""
+    return [re.sub(r'\.$', '?', x) if re.match(r'Question [\w -]+: ', x) else x for x in S]
+
+
 def split(words):
     out, cur = [], []
     for w in words:
@@ -84,6 +89,7 @@ def one(sid, fixes):
     if d.get('待核'):
         raise SystemExit(f'{sid}：定稿.json 还有 {len(d["待核"])} 处待核（练习会话裁定后再做）')
     text = heads(typo(' '.join(w[0] for w in d['词'])))
+    text = ' '.join(qmark(split(text.split())))        # 念题句末补问号放在订正之前：订正（原文疑点照 原文.txt 写）与这里的文字是同一份
     for fx in fixes.get(sid, []):
         old, new, why = fx[:3]
         want = fx[3] if len(fx) > 3 else 1          # 第 4 项：应匹配的次数（同一个人名全文统一，默认 1）
@@ -97,7 +103,7 @@ def one(sid, fixes):
         if n != 1:
             raise SystemExit(f'{sid}：原文订正“{old}”匹配 {n} 次（必须恰好 1 次）')
         text = text.replace(old, new)
-    S = [re.sub(r'\.$', '?', x) if re.match(r'Question [\w -]+: ', x) else x for x in split(text.split())]     # 念题都是问句（识别给的句号改问号）
+    S = qmark(split(text.split()))
     P = paras(S)
     bad = [s for p in P for s in p if re.search(r' [—–] |\s--\s|"|\'', s)]
     if bad:
