@@ -1,0 +1,319 @@
+# 四级听力原文精读视频（紫黄撞色 画面 5 + 考试原音，项目 四级听力，目录 四级/听力/精读/）在 GitHub 上截图 / 生成：由 render-cet6-listening-text.yml 复制改成四级（2026-11-06）。
+# 触发：修改 .github/cet4-listening-text-render.txt 并推送。第 1 行 mode=stills 或 mode=video；第 2 行 = 运行标签；第 3 行起每行一个套（空行和 # 开头的行不算）。
+#   mode=stills：每套一台机器重画截图 + 全部程序检查（问题必须 0 处），日志里留截图指纹；汇总任务列出各套屏数与问题数。本机按日志登记后再 mode=video。
+#   mode=video ：截图逐张与仓库里的审阅登记比对，逐字节相同才 --video（4K + 引擎自带的全部成品核查，不过就删成品，核查不过的另传 cet4lt-failed-<套>）。
+#                成品按 四级/听力/tools/命名.label 改名（2022-6-1原文.mp4），artifact cet4text-<套>（meta = cet4-listening-publish.py 的格式，kind=text）。
+# 发布不在这里：由 render-cet4-listening.yml 的 publish（collect.txt 列本运行号、all.txt 第一行 exam,text）发进同一个 Release cet4-listening（只改发布，不重做考试视频，铁律 26）。
+# 音频：直接用仓库里提交的 audio/原音/<套>.mp3 与 timings.json（不在 GitHub 上重做音轨）。浏览器 Chrome 153（踩坑 78）；runs-on 固定 ubuntu-24.04（踩坑 117）。
+name: 生成四级听力原文精读视频（紫黄撞色，GitHub 上生成）
+on:
+  push:
+    paths: ['.github/cet4-listening-text-render.txt']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: render-cet4-listening-text
+  cancel-in-progress: false
+env:
+  RELEASE_TAG: cet4-listening
+
+jobs:
+  prep:
+    runs-on: ubuntu-24.04
+    outputs:
+      mode: ${{ steps.list.outputs.mode }}
+      tag: ${{ steps.list.outputs.tag }}
+      ids: ${{ steps.list.outputs.ids }}
+      n: ${{ steps.list.outputs.n }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /tools/
+            /四级/tools/
+            /中考/tools/
+            /中考/data/
+            /专八/tools/
+            /专八/data/
+            /六级/tools/
+            /四级/听力/tools/
+            /四级/听力/2*/定稿.json
+            /四级/听力/精读/
+            !/四级/听力/精读/最终视频/
+            !/四级/听力/精读/audio/原音/
+      - name: 读清单
+        id: list
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          lines = [x.strip() for x in open('.github/cet4-listening-text-render.txt', encoding='utf-8').read().splitlines()]
+          lines = [x for x in lines if x and not x.startswith('#')]
+          m = re.fullmatch(r'mode=(stills|video)', lines[0])
+          assert m, f'第 1 行要写 mode=stills 或 mode=video：{lines[0]}'
+          mode, tag, ids = m.group(1), lines[1], lines[2:]
+          assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', tag), f'标签不合法：{tag}'
+          P = [p['id'] for p in json.load(open('四级/听力/精读/data/vocab.json', encoding='utf-8'))['passages'] if p.get('done', True)]
+          bad = [x for x in ids if x not in P]
+          assert not bad, f'没有这些套（或还没定稿）：{bad}'
+          assert len(set(ids)) == len(ids), f'套重复：{ids}'
+          ids = [x for x in P if x in ids]                       # 按套的顺序
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'mode={mode}\ntag={tag}\nids={json.dumps(ids)}\nn={len(ids)}\n')
+          print(f'{mode}：标签 {tag}（{"只截图，不发布" if mode == "stills" else "试跑，不发布" if tag.startswith("test") else "发布 Release " + os.environ["RELEASE_TAG"]}），{len(ids)} 套：{" ".join(ids)}')
+          PY
+      - name: Release 目标检查（踩坑 53：不许钉在触发提交上，否则运行期间改过工作流就 403）
+        run: python3 .github/check-release-target.py
+      - uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '153'
+      - name: 核对审阅登记与现在的程序、数据一致（mode=video）；写 manifest
+        env:
+          IDS: ${{ steps.list.outputs.ids }}
+          TAG: ${{ steps.list.outputs.tag }}
+          MODE: ${{ steps.list.outputs.mode }}
+        run: |
+          mkdir -p manifest
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import json, os, re, sys
+          sys.path.insert(0, '专八/tools')
+          import make_video as M
+          M.set_project('四级听力')
+          P = [p for p in json.load(open('四级/听力/精读/data/vocab.json', encoding='utf-8'))['passages'] if p.get('done', True)]
+          ids = json.loads(os.environ['IDS'])
+          if os.environ['MODE'] == 'video':
+              reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))
+              bad = [f'{x}：{"没有审阅登记" if f"{x}@5" not in reg else "登记之后程序、样式或数据改过"}' for x in ids
+                     if reg.get(f'{x}@5', {}).get('指纹') != M.fingerprint(x, '5')]
+              if bad:
+                  sys.exit('这些套不能生成视频（截图审阅登记与现在的程序和数据不一致）：\n  ' + '\n  '.join(bad))
+          man = {'tag': os.environ['TAG'], 'mode': os.environ['MODE'], 'render': ids, 'passages': [{'id': p['id'], 'name': M.video_name(p)} for p in P]}
+          names = [e['name'] for e in man['passages']]
+          assert len(set(names)) == len(names), '文件名重复'
+          assert all(re.fullmatch(M.PJ['name_re'], x) for x in names), '文件名不合引擎 name_re'
+          json.dump(man, open('manifest/manifest.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+          print(f'{len(ids)} 套{"的审阅登记都与现在的程序和数据一致" if os.environ["MODE"] == "video" else "（只截图）"}；manifest {len(names)} 套')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manifest-cet4lt
+          path: manifest/manifest.json
+          if-no-files-found: error
+
+  render:
+    needs: prep
+    if: needs.prep.outputs.n != '0'
+    name: ${{ needs.prep.outputs.mode == 'video' && '生成' || '截图' }} ${{ matrix.id }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        id: ${{ fromJSON(needs.prep.outputs.ids) }}
+    env:
+      ID: ${{ matrix.id }}
+      MODE: ${{ needs.prep.outputs.mode }}
+      DZB_PROJECT: 四级听力
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /tools/
+            /四级/tools/
+            /中考/tools/
+            /中考/data/
+            /专八/tools/
+            /专八/data/
+            /六级/tools/
+            /四级/听力/tools/
+            /四级/听力/2*/定稿.json
+            /四级/听力/精读/
+            !/四级/听力/精读/最终视频/
+            /专八/听力/原文/tools/
+      - uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '153'
+      - name: 音轨核对（用仓库里提交的原音 mp3 与 timings.json）
+        run: |
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          pid = os.environ['ID']
+          A = Path('四级/听力/精读/audio')
+          tm = json.loads((A / 'timings.json').read_text('utf-8'))['cet4_male'][pid]
+          mp3 = A / tm['file']
+          assert tm.get('source') == '原音' and mp3.is_file(), f'{pid}：timings 不是原音或没有 {mp3}'
+          dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(mp3)],
+                                     capture_output=True, text=True, check=True).stdout)
+          assert abs(dur - tm['duration']) <= 0.06, f'{pid}：mp3 实测 {dur:.3f} 秒 ≠ timings {tm["duration"]} 秒'
+          t = [(s['start'], s['end']) for s in tm['sentences']]
+          assert all(0 <= a < b <= tm['duration'] for a, b in t) and all(t[i][0] < t[i + 1][0] and t[i][1] < t[i + 1][1] for i in range(len(t) - 1)), f'{pid}：句子起止不在时长内或不递增'      # 原音的句子前后各留一点，相邻两句允许重叠 0.2—0.3 秒
+          h = hashlib.sha256(mp3.read_bytes()).hexdigest()
+          with open(os.environ['GITHUB_ENV'], 'a') as f:
+              f.write(f'AUDIO_SHA={h}\n')
+          print(f'{pid}：{mp3.name} {dur:.2f} 秒 = timings，{len(t)} 句，sha256 {h}')
+          PY
+      - name: 截图预检 + 截图 + 全部程序检查（问题 0 处；mode=video 时与审阅登记逐张比对）
+        run: |
+          t0=$(date +%s)
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 四级/听力/精读/tools/大字版_紫黄.py --preflight "$ID"
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 四级/听力/精读/tools/大字版_紫黄.py --stills --force "$ID"
+          mkdir -p fp
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, '专八/tools')
+          import make_video as M
+          M.set_project('四级听力')
+          pid, mode = os.environ['ID'], os.environ['MODE']
+          d = Path('四级/听力/精读/大字版/截图')
+          rep = json.loads((d / '汇总.json').read_text('utf-8'))
+          probs = rep['_共同']['问题'] + rep[pid]['问题']
+          got = {x.name: M.file_hash(x) for x in M.still_files(d / pid)}
+          fp = M.fingerprint(pid, '5')
+          assert rep[pid]['指纹'] == fp and rep[pid]['截图'] == got, '汇总.json 与截图目录不一致'
+          cpu = next((l.split(':', 1)[1].strip() for l in open('/proc/cpuinfo') if l.startswith('model name')), '')
+          json.dump({'id': pid, '指纹': fp, '截图': got, '问题': probs, 'audio_sha256': os.environ['AUDIO_SHA'], 'cpu': cpu,
+                     'browser': os.popen('/opt/pw-browsers/chromium --version').read().strip()},
+                    open(f'fp/截图指纹_{pid}.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+          print(f'::{"error" if probs else "notice"} title={pid} 截图::{len(got)} 屏，程序检查问题 {len(probs)} 处 {probs[:5]}（{cpu}）')
+          if probs:
+              sys.exit('截图程序检查有问题')
+          print('截图指纹（与 截图审阅通过.json 同格式）：' + json.dumps({'指纹': fp, '截图': got}, ensure_ascii=False, sort_keys=True))      # 日志里也留一份（本机下载不了 artifact 时用）
+          reg = json.loads(M.SAMPLE_REG.read_text('utf-8')).get(f'{pid}@5')
+          if reg or mode == 'video':                  # mode=stills 有登记时只报告（截图能否逐字节重现），mode=video 不一致就停
+              reg = reg or {'截图': {}, '指纹': None}
+              bad = [k for k in sorted(set(reg['截图']) | set(got)) if reg['截图'].get(k) != got.get(k)]
+              print(f'::{"error" if bad and mode == "video" else "warning" if bad else "notice"} title={pid} 比对::与截图审阅登记逐字节相同 {len(got) - len(bad)} 屏，不同 {len(bad)} 屏 {bad[:10]}；指纹{"相同" if reg["指纹"] == fp else "不同"}')
+          if mode == 'video':
+              if bad or reg['指纹'] != fp:
+                  sys.exit('截图与审阅登记不一致（浏览器或环境与本机不同？），不生成视频')
+          PY
+          echo "STILLS_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+      - name: 上传截图与截图指纹（mode=stills；失败时也上传，诊断用）
+        if: ${{ always() && (env.MODE == 'stills' || failure()) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cet4lt-stills-${{ matrix.id }}
+          path: |
+            fp/
+            四级/听力/精读/大字版/截图/${{ matrix.id }}/
+            四级/听力/精读/大字版/截图/汇总.json
+            四级/听力/精读/大字版/日志/
+          retention-days: 14
+          compression-level: 0
+          if-no-files-found: ignore
+      - name: 生成 4K 视频 + 全部成品核查（引擎自带）
+        if: env.MODE == 'video'
+        run: |
+          t0=$(date +%s)
+          rc=0; KEEP_FAILED=1 env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python 四级/听力/精读/tools/大字版_紫黄.py --video "$ID" || rc=$?
+          echo "----- 日志 四级/听力/精读/大字版/日志/$ID.log -----"; cat "四级/听力/精读/大字版/日志/$ID.log" || true
+          echo "VIDEO_S=$(( $(date +%s) - t0 ))" >> "$GITHUB_ENV"
+          exit $rc
+      - name: 核查不过的成品也上传（标“未通过”，发布只收 cet4text-<套>、不收这个；检查误判时改检查重核，不重新生成，踩坑 126）
+        if: ${{ failure() && env.MODE == 'video' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cet4lt-failed-${{ matrix.id }}
+          path: |
+            四级/听力/精读/最终视频/*.未通过.mp4
+            四级/听力/精读/大字版/成品核查/
+            四级/听力/精读/大字版/日志/
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: ignore
+      - name: 整理要上传的文件（核查结果再核一遍）
+        if: env.MODE == 'video'
+        run: |
+          mkdir -p out
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python - <<'PY'
+          import hashlib, json, os, re, shutil, sys
+          from pathlib import Path
+          sys.path.insert(0, '专八/tools')
+          import make_video as M
+          M.set_project('四级听力')
+          pid = os.environ['ID']
+          C = Path('四级/听力/精读')
+          p = next(x for x in json.load(open(C / 'data/vocab.json', encoding='utf-8'))['passages'] if x['id'] == pid)
+          name = M.video_name(p)
+          assert re.fullmatch(M.PJ['name_re'], name), f'文件名不合 name_re：{name}'
+          mp4 = C / '最终视频' / name
+          rep = C / '大字版' / '成品核查' / (Path(name).stem + '_核查.json')
+          r = json.loads(rep.read_text('utf-8'))
+          reg = json.loads(M.SAMPLE_REG.read_text('utf-8'))[f'{pid}@5']
+          assert r['ok'] and r['checks'] and all(c['ok'] for c in r['checks']), '核查结果不是全部通过'
+          assert r['指纹'] == reg['指纹'] == M.fingerprint(pid, '5'), '指纹与审阅登记不一致'
+          assert r['size'] == mp4.stat().st_size <= M.PJ.get('max_mb', 95) * 2**20, '体积不对'      # 上限与引擎同一处（PROJECTS 的 max_mb，踩坑 126）
+          tm = json.load(open(C / 'audio/timings.json', encoding='utf-8'))['cet4_male'][pid]      # 踩坑 86、109：视频与所用音频绑定
+          asha = hashlib.sha256((C / 'audio' / tm['file']).read_bytes()).hexdigest()
+          assert asha == os.environ['AUDIO_SHA'], '生成视频期间音频变了'
+          c = tm.get('certificate') or {}
+          assert not c or c.get('mp3_sha256') == asha, '音频与合格证不符'
+          h = hashlib.sha256()
+          with open(mp4, 'rb') as fh:
+              for b in iter(lambda: fh.read(1 << 20), b''):
+                  h.update(b)
+          out = Path('out')
+          sys.path.insert(0, '四级/听力/tools')
+          import 命名
+          lab = 命名.label(pid, 'text')                 # 2022-6-1原文.mp4（B 站分集标题，发布用这个名字）
+          shutil.copy(mp4, out / lab)
+          shutil.copy(rep, out / rep.name)
+          shutil.copy(C / '大字版' / '日志' / f'{pid}.log', out / f'{pid}.log')
+          cpu = next((l.split(':', 1)[1].strip() for l in open('/proc/cpuinfo') if l.startswith('model name')), '')
+          rec = json.load(open(f'四级/听力/{pid}/定稿.json', encoding='utf-8'))['录音']
+          meta = {'套': pid, 'kind': 'text', 'mp4': lab, 'mp4_sha256': h.hexdigest(), 'mp4_bytes': mp4.stat().st_size, '录音': rec,
+                  'id': pid, 'name': name, 'size': mp4.stat().st_size, 'sha256': h.hexdigest(), '指纹': r['指纹'], '成品核查': '全部通过', 'audio_sha256': asha,
+                  '秒': {'截图': int(os.environ['STILLS_S']), '视频': int(os.environ['VIDEO_S'])},
+                  'cpu': cpu, 'run': f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"}
+          (out / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), 'utf-8')
+          print(f'{pid} {name}：{meta["size"] / 2**20:.1f} MB，sha256 {meta["sha256"][:16]}，用时 截图 {meta["秒"]["截图"]} 秒 / 视频 {meta["秒"]["视频"]} 秒（{cpu}）')
+          PY
+          ls -la out
+      - uses: actions/upload-artifact@v4
+        if: env.MODE == 'video'
+        with:
+          name: cet4text-${{ matrix.id }}
+          path: out/
+          compression-level: 0
+          if-no-files-found: error
+
+  summary:
+    needs: [prep, render]
+    if: ${{ !cancelled() && needs.prep.result == 'success' && needs.prep.outputs.mode == 'stills' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: cet4lt-stills-*
+          path: artifacts
+      - name: 汇总各套屏数与问题数
+        env:
+          IDS: ${{ needs.prep.outputs.ids }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          rows, bad = ['| 套 | 屏数 | 问题 | 浏览器 |', '|---|---|---|---|'], []
+          for pid in json.loads(os.environ['IDS']):
+              f = Path(f'artifacts/cet4lt-stills-{pid}/fp/截图指纹_{pid}.json')
+              if not f.exists():
+                  rows.append(f'| {pid} | — | 没有截图指纹（截图任务失败） | |'); bad.append(pid); continue
+              j = json.loads(f.read_text('utf-8'))
+              rows.append(f'| {pid} | {len(j["截图"])} | {len(j["问题"])} | {j.get("browser", "")} |')
+              if j['问题']:
+                  bad.append(pid)
+          s = '\n'.join(rows) + f'\n\n{"全部 0 处" if not bad else "有问题：" + " ".join(bad)}\n'
+          print(s)
+          open(os.environ['GITHUB_STEP_SUMMARY'], 'a').write(s)
+          sys.exit(1 if bad else 0)
+          PY
+
