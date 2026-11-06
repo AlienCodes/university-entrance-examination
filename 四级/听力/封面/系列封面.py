@@ -101,6 +101,18 @@ def headphones(x, y, s, rot=-10, v=None):
 </svg>'''
 
 
+TING_V = 2       # “听力”两个字的配色（老师 2026-11-06：要另一个颜色、非常引人注目；比过 1 墨绿 / 2 亮黄黑描边 / 3 白字绿描边，定稿 2）
+
+
+def ting(v=None):
+    v = v or TING_V
+    if v == 1:     # 墨绿
+        return f'color:{GREEN}'
+    if v == 2:     # 亮黄字 ＋ 黑描边 ＋ 墨绿错位投影
+        return f'color:{YEL};-webkit-text-stroke:14px {INK};paint-order:stroke fill;text-shadow:10px 10px 0 {GREEN}'
+    return f'color:#fff;-webkit-text-stroke:14px {GREEN};paint-order:stroke fill;text-shadow:10px 10px 0 {YEL}'   # 3：白字 ＋ 墨绿描边 ＋ 黄投影（缩略图里看不清，不用）
+
+
 def card(x, y, w, rot=3):
     return f'<img class="card" data-k="card" src="{SHOT.as_uri()}" style="left:{x}px;top:{y}px;width:{w}px;transform:rotate({rot}deg)">'
 
@@ -124,7 +136,7 @@ def A(w=1920, h=1080):
 <div class="ab" data-k="sell" data-min="{MIN_SELL}" style="left:{left}px;top:44px;font:900 {fs(64)}/1.2 SerifSC;color:{GREEN};letter-spacing:.02em">
  历年真题全收录 · <span style="color:{RED}">逐句精读</span></div>
 <div class="ab" data-k="title" data-min="{MIN_TITLE}" style="left:{left - 8}px;top:{128 if wide else 140}px;font:900 {fs(t)}/1.04 Black;color:{INK};letter-spacing:-.02em">
- <div>彻底搞定</div><div><span style="color:{RED}">四级</span>听力</div></div>
+ <div>彻底搞定</div><div><span style="color:{RED}">四级</span><span data-ting="1" style="{ting()}">听力</span></div></div>
 <div class="ab" data-k="sub" data-min="{MIN_TITLE}" style="left:{left}px;top:{t * 2.08 + (150 if wide else 168):.0f}px;{two(sub, 0)}</div>
 {card(1260, 560, 620, rot=3) if wide else card(1020, 850, 380, rot=4)}
 {seal(1520, 50, 340) if wide else seal(1080, 44, 300)}
