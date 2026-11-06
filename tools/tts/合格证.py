@@ -22,7 +22,7 @@ FINE_LIMITS = {'clause_nb': 1.2, 'clause_tail': 4.0}
 STD_LIMITS = dict(LIMITS, **FINE_LIMITS)
 LEGACY = HERE / '响度旧成品清单.json'
 RAW_WRITER = '专八/听力/原文/tools/原音音轨.py'      # 唯一允许写 source='原音' 的程序（踩坑 87）
-RAW_DIRS = ('专八/听力/原文/audio', '六级/听力/精读/audio')      # 原音条目只许在这两处（RAW_WRITER 写的：专八听力原文精读、六级听力原文精读 --cet6）
+RAW_DIRS = ('专八/听力/原文/audio', '六级/听力/精读/audio', '四级/听力/精读/audio')      # 原音条目只许在这三处（RAW_WRITER 写的：专八听力原文精读、六级 --cet6、四级 --cet4 听力原文精读）
 CORE = ('integrated_lufs', 'sentence_max_dev_lu', 'short_term_std_lu', 'peak_dbfs')
 FINE = ('clause_nb_min_lu', 'clause_tail_min_db')
 BREATH = 'breath_count'      # 铁律 22（2026-10-30）：成品停顿里的换气处数，必须为 0

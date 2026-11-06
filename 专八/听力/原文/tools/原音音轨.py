@@ -324,6 +324,16 @@ def cet6_setup(sid, mp3, lv='六级'):
                     for r in R:
                         if r[0] == a_:
                             r[0] = b_
+        elif ''.join(o_).replace("'", '') == ''.join(n_).replace("'", '') and o_:      # 四级：只是拆 / 并（That s → That’s、user friendly → user-friendly 不拆的写法）：识别词同样拆并，时刻取首尾
+            i = 0
+            while i + len(o_) <= len(R):
+                if [r[0] for r in R[i:i + len(o_)]] == o_:
+                    a_, b_ = R[i][1], R[i + len(o_) - 1][2]
+                    st = (b_ - a_) / len(n_)
+                    R[i:i + len(o_)] = [[t, round(a_ + st * q, 3), round(a_ + st * (q + 1), 3)] for q, t in enumerate(n_)]
+                    i += len(n_)
+                else:
+                    i += 1
     WIN[sid] = (0.0, len(y) / sr + 1)
     yy, mm, n = sid[:4], int(sid[4:6]), sid[-1]
     return R, y, sr, (f'{yy}年{mm}月大学英语{lv} 第{n}套', 'Part II Listening', int(yy), mm, int(n))      # passage 用英文斜体字体，只放英文（踩坑 64）
