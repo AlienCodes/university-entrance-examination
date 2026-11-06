@@ -319,6 +319,13 @@ def cet6_setup(sid, mp3, lv='六级'):
     for f in fx:
         o_, n_ = toks(f[0]), toks(f[1])
         if len(o_) == len(n_):
+            # 旧词在新文字别处还有（四级 202506-2 You two → You too，two 别处是正常的词）：只在旧的整串出现的位置就地换（新文字里没有这个整串才换）
+            SEQ6 = [t for p in read_text().get(sid, []) for x in p for t in toks(x)]
+            if not any(SEQ6[q:q + len(o_)] == o_ for q in range(len(SEQ6))):
+                for q in range(len(R) - len(o_) + 1):
+                    if [r[0] for r in R[q:q + len(o_)]] == o_:
+                        for r, b_ in zip(R[q:q + len(o_)], n_):
+                            r[0] = b_
             for a_, b_ in zip(o_, n_):
                 if a_ != b_ and a_ not in T6:
                     for r in R:
