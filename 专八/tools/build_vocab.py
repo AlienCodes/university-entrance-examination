@@ -60,7 +60,7 @@ if '--reseal' in sys.argv:
                                ensure_ascii=False, indent=1), 'utf-8')
 elif seal.exists():
     old = json.loads(seal.read_text('utf-8'))['指纹']
-    diff = sorted(k for k in set(old) | set(fp) if old.get(k) != fp.get(k))
+    diff = sorted(k for k in set(fp) | (set(old) & set(R)) if old.get(k) != fp.get(k))   # 登记了、但还没进 sents.json 的套（分批做音轨时）不算
     if diff:
         sys.exit(f'以下标注文件与复核定稿不一致（改动未经复核）：{diff}；复核后用 --reseal 重新登记。')
 (A.ROOT / 'data').mkdir(exist_ok=True)
