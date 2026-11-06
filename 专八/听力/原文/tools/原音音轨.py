@@ -275,21 +275,26 @@ def limit(x, sr):
     return y, {'max_db': round(float(-20 * np.log10(env.min())), 2), 'frac': round(float((env < 0.999).mean()), 5)}
 
 
-def cet6_setup(sid, mp3):
-    """六级模式：换成 六级/听力/精读 的目录、窗口、“识别词”（定稿逐词时刻）、限幅上限；返回 (R, y, sr, META 一条)。"""
+def cet6_setup(sid, mp3, lv='六级'):
+    """六级 / 四级模式（lv）：换成 <lv>/听力/精读 的目录、窗口、“识别词”（定稿逐词时刻）、限幅上限；返回 (R, y, sr, META 一条)。
+    四级（2026-11-06）与六级同一套做法，只换目录、原音文件名（cet4-<定稿.json 的 录音>.mp3，如 cet4-t202206-1、cet4-s202209-1）和试卷名。"""
     global C4, CEIL
     import hashlib
-    C4 = ROOT / '六级' / '听力' / '精读'
+    pre = {'六级': 'cet6', '四级': 'cet4'}[lv]
+    C4 = ROOT / lv / '听力' / '精读'
     CEIL = 10 ** (-2.5 / 20)
+    d = json.loads((ROOT / lv / '听力' / sid / '定稿.json').read_text('utf-8'))
+    want = f"{pre}-{d['录音']}.mp3" if lv == '四级' else f'{pre}-{sid}.mp3'     # 四级：定稿用的是哪一段录音（考试视频同一段）
+    if Path(mp3).name != want:
+        raise SystemExit(f'{sid} 的原音应是 {want}（定稿.json 的录音），给的是 {Path(mp3).name}')
     h = hashlib.sha256(Path(mp3).read_bytes()).hexdigest()
-    sums = (ROOT / '六级' / '听力' / '原始材料' / 'SHA256SUMS').read_text('utf-8')
-    if f'{h}  cet6-{sid}.mp3' not in sums:
-        raise SystemExit(f'原音 sha256 不在 SHA256SUMS（cet6-{sid}.mp3）：{h}')
-    wav = Path('/tmp') / f'cet6raw-{sid}.wav'
+    sums = (ROOT / lv / '听力' / '原始材料' / 'SHA256SUMS').read_text('utf-8')
+    if f'{h}  {want}' not in sums:
+        raise SystemExit(f'原音 sha256 不在 SHA256SUMS（{want}）：{h}')
+    wav = Path('/tmp') / f'{pre}raw-{sid}.wav'
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(mp3), str(wav)], check=True)
     y, sr = sf.read(wav)
     wav.unlink()
-    d = json.loads((ROOT / '六级' / '听力' / sid / '定稿.json').read_text('utf-8'))
     if d.get('待核'):
         raise SystemExit(f'{sid}：定稿.json 还有待核')
     W = [list(w[:3]) for w in d['词']]
@@ -321,7 +326,7 @@ def cet6_setup(sid, mp3):
                             r[0] = b_
     WIN[sid] = (0.0, len(y) / sr + 1)
     yy, mm, n = sid[:4], int(sid[4:6]), sid[-1]
-    return R, y, sr, (f'{yy}年{mm}月大学英语六级 第{n}套', 'Part II Listening', int(yy), mm, int(n))      # passage 用英文斜体字体，只放英文（踩坑 64）
+    return R, y, sr, (f'{yy}年{mm}月大学英语{lv} 第{n}套', 'Part II Listening', int(yy), mm, int(n))      # passage 用英文斜体字体，只放英文（踩坑 64）
 
 
 ORIG_MAX_GAIN_DB, ORIG_MIN_SNR_DB, ORIG_MAX_SEC_DB = 0.05, 30.0, 1.0     # 与 专八/听力/tools/听力视频.orig_match 同一套门限（MP3 256k 实测：语音段信噪比约 60 dB；192k 时 LAME 低通让增益差到 −0.27 dB，不用）
@@ -405,11 +410,15 @@ def main():
     ap.add_argument('ids', nargs='*', default=list(WIN))
     ap.add_argument('--wav', default='/home/user/wav/tem8-2025.wav')
     ap.add_argument('--cet6', help='六级听力原文精读的一套，如 202512-1')
-    ap.add_argument('--mp3', help='六级模式：这一套的原音 mp3')
+    ap.add_argument('--cet4', help='四级听力原文精读的一套，如 202206-1（与 --cet6 同一套做法）')
+    ap.add_argument('--mp3', help='六级 / 四级模式：这一套的原音 mp3')
     a = ap.parse_args()
     import hashlib
+    LV = '六级'
+    if a.cet4:
+        a.cet6, LV = a.cet4, '四级'      # 下面的六级分支四级照走（目录已由 cet6_setup 换成 四级/听力/精读）
     if a.cet6:
-        R, y, sr, M6 = cet6_setup(a.cet6, a.mp3)
+        R, y, sr, M6 = cet6_setup(a.cet6, a.mp3, LV)
         a.ids = [a.cet6]
     else:
         h = hashlib.sha256(Path(a.wav).read_bytes()).hexdigest()

@@ -114,6 +114,13 @@ PROJECTS = {
              'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'videos': '最终视频',
              'name_re': r'20\d\d年(6|9|12)月大学英语六级 第[123]套 Part II Listening \S.*\.mp4', 'tmp': 'cet6lvideo_',
              'max_mb': 1900},        # 22 分钟、200 多屏的 4K 黑板约 330 MB（体积随屏数，粉笔颗粒每屏一个关键帧）；成品不进 git，进 Release 压缩包（单个附件 < 2 GB，踩坑 126）
+    # 四级听力原文精读（2026-11-06，总协调转老师授权：照六级听力精读的做法，35 套）：主题紫黄撞色（画面 5），封面大圆贴纸「四级 / 听力」；
+    # 目录 四级/听力/精读/，文字 原文.txt 由 tools/切句.py 从 四级/听力/<套>/定稿.json 生成，音轨 原音音轨.py --cet4（原音模式，只删句间 > 2 秒纯静音）
+    '四级听力': {'dir': '四级/听力/精读', 'audio': '原音', 'tag': 'CET-4 · LISTENING · PART II', 'top': 'CET-4 LISTENING', 'exam': '', 'look': '5',
+             'stills': '大字版/截图/{pid}', 'work': '大字版', 'reg': '截图审阅通过.json', 'videos': '最终视频',
+             'name_re': r'20\d\d年(3|6|7|9|12)月大学英语四级 第[123]套 Part II Listening \S.*\.mp4', 'tmp': 'cet4lvideo_',
+             'badge_css': "body:has(.ttl)::after{content:'四级\\A听力';white-space:pre;font-family:'ZCOOL KuaiLe','Noto Sans SC';font-weight:400;font-size:128px;line-height:1.15;text-align:center}",
+             'max_mb': 1900},
 
 }
 PROJ = PJ = T = SPLIT = NAMES = SAMPLE_REG = YP_REG = None      # set_project() 设置
@@ -742,6 +749,8 @@ def page(body):
         theme = f'<style>{TH.css(STYLE)}\n{TH.vocab_gaps(".v div>span")}{GLOSS_PUNCT}\n{(HERE / "样式" / TH.THEMES[STYLE]["file"]).read_text("utf-8")}</style>'
         if PJ and PJ.get('badge'):            # 项目自己的封面贴纸文字（考研：「考研 / 精读」），追加在专八调整之后覆盖
             theme += f"<style>.ttl::after{{content:'{PJ['badge']}'}}</style>"
+        if PJ and PJ.get('badge_css'):        # 画面没有 .ttl::after 贴纸时（紫黄撞色是 body::after 的大圆「Aa」），项目整条覆盖：四级听力写「四级 / 听力」
+            theme += f"<style>{PJ['badge_css']}</style>"
     return (f'<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="{fonts}">{extra}<style>{CSS}</style>{theme}{size_css()}</head>'
             f'<body><div class="band"></div>{flat_nobr(body)}</body></html>')
 
@@ -1531,7 +1540,7 @@ def screen_checks(pg, label, fit, r):
 
 # 各项目封面装饰文字（::before / ::after 的 content，如右上角贴纸）里允许出现的考试名：别的项目的名字出现就报错
 # （考研 k02 截图试跑：共用的 样式/1_晴空校园.css 把贴纸写死成「专八 / 精读」，考研封面也成了“专八精读”）
-EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'], '六级作文': ['六级', 'CET-6', 'CET6'], '四级作文': ['四级', 'CET-4', 'CET4'],
+EXAM_WORDS = {'专八': ['专八', 'TEM-8', 'TEM8'], '专八听力': ['专八', 'TEM-8', 'TEM8'], '六级': ['六级', 'CET-6', 'CET6'], '考研': ['考研', 'KAOYAN'], '考研作文': ['考研', 'KAOYAN'], '六级作文': ['六级', 'CET-6', 'CET6'], '四级作文': ['四级', 'CET-4', 'CET4'], '四级听力': ['四级', 'CET-4', 'CET4'],
               '四级': ['四级', 'CET-4', 'CET4'], '中考': ['中考'], '高考': ['高考']}
 DECO_JS = """() => { const out = [];
   for (const el of document.querySelectorAll('*')) for (const p of ['::before', '::after']) {
