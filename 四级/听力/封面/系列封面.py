@@ -10,6 +10,7 @@
 - 两种视频都要突出：视频版真题考试（真题）＋ 原文逐句精读（原文解析）；手机信息流 320×180 一眼看清。
 程序自查：四级写作的 CHECK_JS（不出画、不进底角遮挡区、不重叠、不压截图、圆章字在圆内、字体加载、缩略图字高 主标题 24 / 钩子 13 / 卖点 10 像素）
 ＋ text_problems（每个字在所用字体 cmap 里；画面文字不许有任何数字——年份、套数都不许；“N 套”中文数字也报；必有的话都在）。
+耳机图标（老师 2026-11-06）：A 中间空白放自己画的 SVG 头戴式耳机（headphones，墨绿头梁＋红耳罩＋黄高光＋投影＋声波，倾斜 −10°），data-k=phones 一起查出画、重叠；4:3 红章缩到 300 移到右上角给耳机腾位置。
 素材：画面_原文解析.webp = 已发布的 cet4-listening-202506-1-text.mp4 第 200 秒一帧，裁掉顶部（印着年份月份）和底部（句号进度 “31 / 200”）。
 """
 import importlib.util
@@ -58,6 +59,48 @@ def seal(x, y, d, bg=RED, fg='#fff', rot=-8, ring='rgba(255,255,255,.8)'):
             f'<span style="font:900 {fs(d * SEAL_R)} Black">更新</span></div>')
 
 
+PHONES_V = 1     # 耳机配色方案（草稿比过 1/2，定稿用 1）
+
+
+def headphones(x, y, s, rot=-10, v=None):
+    """头戴式耳机（自己画的 SVG，老师 2026-11-06）：墨绿头梁 ＋ 红耳罩（厚度、内衬、黄高光、柔和投影）＋ 两侧声波，略微倾斜。
+    s = 宽（px），高 = s × 0.8；data-k 让 CHECK_JS 一起查出画、重叠。"""
+    v = v or PHONES_V
+    band, cup, cupd, pad = (GREEN, RED, '#7f1717', INK) if v == 1 else (RED, GREEN, '#0d3524', INK)
+    wave1, wave2 = (YEL, RED) if v == 1 else (YEL, GREEN)
+    def side(cx, m):      # m = 1 右、-1 左；耳罩朝里有厚度
+        return f'''
+  <rect x="{cx - 9}" y="112" width="18" height="34" rx="6" fill="{pad}"/>
+  <rect x="{cx - 4}" y="114" width="5" height="28" rx="2" fill="#fff" opacity=".25"/>
+  <ellipse cx="{cx - m * 13}" cy="172" rx="30" ry="45" fill="{pad}"/>
+  <ellipse cx="{cx - m * 7}" cy="172" rx="33" ry="47" fill="{cupd}"/>
+  <ellipse cx="{cx + m * 3}" cy="170" rx="33" ry="47" fill="url(#cg{v})"/>
+  <ellipse cx="{cx + m * 3}" cy="170" rx="22" ry="33" fill="none" stroke="{YEL}" stroke-width="4" opacity=".9"/>
+  <ellipse cx="{cx + m * 3}" cy="170" rx="9" ry="13" fill="{cupd}" opacity=".55"/>
+  <path d="M{cx + m * 3 - 20} {148} Q{cx + m * 3 - 12} {130} {cx + m * 3 + 4} {128}" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".75"/>'''
+    waves = ''.join(
+        f'<path d="M{150 + m * (130 + 14 * i)} {172 - 22 - 9 * i} Q{150 + m * (142 + 16 * i)} 172 {150 + m * (130 + 14 * i)} {172 + 22 + 9 * i}" '
+        f'stroke="{wave1 if i == 0 else wave2}" stroke-width="{7 - i}" stroke-linecap="round" fill="none" opacity="{1 - .25 * i}"/>'
+        for m in (1, -1) for i in (0, 1))
+    return f'''<svg class="ab" data-k="phones" viewBox="0 0 300 240" style="left:{x}px;top:{y}px;width:{s}px;height:{s * .8:.0f}px;overflow:visible">
+ <defs>
+  <radialGradient id="cg{v}" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".35" stop-color="{cup}"/><stop offset="1" stop-color="{cupd}"/></radialGradient>
+  <linearGradient id="bg{v}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset=".5" stop-color="{band}" stop-opacity="0"/></linearGradient>
+  <filter id="sh{v}" x="-20%" y="-20%" width="150%" height="160%"><feDropShadow dx="7" dy="12" stdDeviation="7" flood-color="#000" flood-opacity=".28"/></filter>
+ </defs>
+ <g transform="rotate({rot} 150 130)">
+  {waves}
+  <g filter="url(#sh{v})">
+   <path d="M86 128 C76 18, 224 18, 214 128" stroke="{pad}" stroke-width="31" stroke-linecap="round" fill="none"/>
+   <path d="M86 128 C76 18, 224 18, 214 128" stroke="{band}" stroke-width="23" stroke-linecap="round" fill="none"/>
+   <path d="M86 128 C76 18, 224 18, 214 128" stroke="url(#bg{v})" stroke-width="23" stroke-linecap="round" fill="none"/>
+   <path d="M104 64 C125 36, 175 36, 196 64" stroke="{YEL}" stroke-width="4" stroke-linecap="round" fill="none" opacity=".85"/>
+   {side(86, -1)}{side(214, 1)}
+  </g>
+ </g>
+</svg>'''
+
+
 def card(x, y, w, rot=3):
     return f'<img class="card" data-k="card" src="{SHOT.as_uri()}" style="left:{x}px;top:{y}px;width:{w}px;transform:rotate({rot}deg)">'
 
@@ -84,7 +127,8 @@ def A(w=1920, h=1080):
  <div>彻底搞定</div><div><span style="color:{RED}">四级</span>听力</div></div>
 <div class="ab" data-k="sub" data-min="{MIN_TITLE}" style="left:{left}px;top:{t * 2.08 + (150 if wide else 168):.0f}px;{two(sub, 0)}</div>
 {card(1260, 560, 620, rot=3) if wide else card(1020, 850, 380, rot=4)}
-{seal(1520, 50, 340) if wide else seal(1040, 170, 340)}
+{seal(1520, 50, 340) if wide else seal(1080, 44, 300)}
+{headphones(1068, 130, 420) if wide else headphones(1112, 375, 300)}
 {EXTRA}"""
 
 
