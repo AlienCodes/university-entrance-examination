@@ -211,7 +211,7 @@ def build(pid, paras, R, y, sr, src=None):
         return None, errs
     sents = [s for p in paras for s in p]
     para_of = [pi + 1 for pi, p in enumerate(paras) for _ in p]
-    fade_in = 0.04
+    fade_in = min(0.04, max(0.0, al[0]['start']))     # 录音第一个词就从 0 秒开始时（四级 202012-2）没有静音可淡入：不切出负起点、不往语音上加淡入
     pos = al[0]['start'] - fade_in                    # 当前这一段在原音里的起点
     pieces, t_new, times, comp = [], LEAD - fade_in, [], []     # t_new：当前这一段起点在成品里的时刻
     kept, removed = [], []

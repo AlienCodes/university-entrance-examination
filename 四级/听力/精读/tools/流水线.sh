@@ -23,7 +23,9 @@ case $step in
   截图|预检)
     python3 $T/切句.py $ids >> "$log" 2>&1 || stop "切句出错"
     for s in $ids; do grep -q "‖\|（待译）" $C/ann/$s.txt && stop "$s 标注里还有 ‖ / （待译）（合并句.py 之后补完）"; done
-    for s in $ids; do rec=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['录音'])" 四级/听力/$s/定稿.json); $PY 专八/听力/原文/tools/原音音轨.py --cet4 $s --mp3 $WAV/cet4-$rec.mp3 >> "$log" 2>&1 || stop "音轨出错 $s"
+    for s in $ids; do
+      if [ $step = 预检 ] && git ls-files --error-unmatch $C/audio/原音/$s.mp3 >/dev/null 2>&1 && git diff --quiet HEAD -- $C/audio/原音/$s.mp3 && grep -q "\"$s\"" $C/阅读/sents.json; then echo "$s 音轨已提交，跳过" >> "$log"; continue; fi   # 中断后续跑
+      rec=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['录音'])" 四级/听力/$s/定稿.json); $PY 专八/听力/原文/tools/原音音轨.py --cet4 $s --mp3 $WAV/cet4-$rec.mp3 >> "$log" 2>&1 || stop "音轨出错 $s"
       if [ $step = 预检 ]; then n=$((${n:-0}+1)); last=$s; [ $((n % 2)) = 0 ] && { push_audio "$s" || stop "音轨提交推送失败 $s"; }; fi; done
     [ $step = 预检 ] && [ $((${n:-0} % 2)) = 1 ] && { push_audio "$last" || stop "音轨提交推送失败 $last"; }
     $PY 专八/tools/build_vocab.py >> "$log" 2>&1 || stop "build_vocab（标注检查 / 复核定稿指纹）不通过"

@@ -317,3 +317,26 @@ jobs:
           sys.exit(1 if bad else 0)
           PY
 
+      - name: 截图指纹推到 cet4lt-fp 分支（本机 git fetch 后用程序登记，不用从日志抄；只推 0 处问题的套）
+        if: ${{ always() }}
+        env:
+          IDS: ${{ needs.prep.outputs.ids }}
+          TAG: ${{ needs.prep.outputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          mkdir fpb && cd fpb && git init -q && git config user.name github-actions && git config user.email github-actions@users.noreply.github.com
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}"
+          if git fetch -q --depth 1 origin cet4lt-fp; then git checkout -q -b cet4lt-fp FETCH_HEAD; else git checkout -q --orphan cet4lt-fp; fi
+          python3 - <<'PY'
+          import json, os, shutil
+          from pathlib import Path
+          n = 0
+          for pid in json.loads(os.environ['IDS']):
+              f = Path(f'../artifacts/cet4lt-stills-{pid}/fp/截图指纹_{pid}.json')
+              if f.exists() and not json.loads(f.read_text('utf-8'))['问题']:
+                  d = Path(os.environ['TAG']); d.mkdir(exist_ok=True); shutil.copy(f, d / f.name); n += 1
+          print(f'推 {n} 套截图指纹')
+          PY
+          git add -A && (git diff --cached --quiet || git commit -qm "截图指纹 ${TAG}（运行 ${{ github.run_id }}）")
+          for t in 2 4 8 16; do git push -q origin cet4lt-fp && exit 0; sleep $t; git fetch -q origin cet4lt-fp && git rebase -q FETCH_HEAD; done; exit 1
