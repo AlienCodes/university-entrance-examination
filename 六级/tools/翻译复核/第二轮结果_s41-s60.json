@@ -1,0 +1,592 @@
+{
+ "results": [
+  {
+   "id": "s41",
+   "findings": [
+    {
+     "sent": 2,
+     "field": "zh",
+     "headword": "",
+     "current": "但在许多课堂上，这却是个遭人忌讳的字眼。",
+     "proposed": "但在许多课堂上，这却可能是个遭人忌讳的字眼。",
+     "reason": "The English says \"this can be a dirty word\". The modal \"can\" says this is sometimes the case, but the ZH \"这却是个\" states it as a flat fact. Adding \"可能\" keeps the original hedge and still reads naturally.",
+     "severity": "low",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file, but it is not an error. Here \"can be\" means \"is sometimes\", and \"in many classrooms\" already carries that limit, so 在许多课堂上，这却是个遭人忌讳的字眼 says exactly what the English means. Sentence 3 then treats it as a fact (\"So much so that some teachers have had to sneak...\"). Adding 可能 makes it sound like the author is unsure whether it is taboo at all, which is less precise, not more. This is an optional refinement, not a definite error."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "Here 'can be' means 'is sometimes', not 'might be'. It describes something that really happens, and 在许多课堂上 already limits the scope. Chinese 可能 adds speculative doubt that the English does not have. It also clashes with sentence 3, which states as fact that some teachers 'have had to sneak' materials in; 这种忌讳之深 needs the taboo to be stated as real. The current ZH is accurate and natural; this is at most a matter of taste."
+    }
+   ]
+  },
+  {
+   "id": "s42",
+   "findings": [
+    {
+     "sent": 12,
+     "field": "add",
+     "headword": "",
+     "current": "",
+     "proposed": "consumer=n. 消费者",
+     "reason": "\"consumers\" has no gloss of its own. It is only covered because the phrase highlight 'presenting consumers with' wrongly includes the sb slot. The same sentence uses a gapped highlight for 'replacing … with', and [8] does the same for 'see … as', so this phrase should be highlighted as 'presenting … with' and consumer should get its own entry. It is a core word, and its counterpart 'consumption' is already glossed in [11].",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "The problem is real. 'consumers' is not on the basic word list, so the project's own coverage rule says it must be glossed. It only gets past that rule because the phrase highlight 'presenting consumers with' happens to cover it, and that phrase's gloss never gives the word's meaning. Other entries in this file gloss words at the same level (machine, tool, culture, visit), so 'consumer' should have its own entry. 'n. 消费者' is the correct sense here. The add will not work by itself, though: find() skips spans already taken, so the phrase highlight has to stop covering 'consumers' or the new entry won't match. The amendment gaps the phrase highlight the same way this file's 'replacing … with' entry and the earlier 'evaluate sb on sth{evaluate…on}' entry do.",
+     "amended_proposed": "Sentence 12: change the phrase entry to ~present sb with sth{presenting…with}=向某人呈现（提供）某物, so the highlight covers 'presenting … with' and leaves out 'consumers'. Then add consumer=n. 消费者 (highlight: 'consumers')."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "This is a real gap. 'consumer' is not in the shared basic word list (四级/tools/基础词.txt), and every other passage glosses it (s27, s38, s40, s57). Here it gets no gloss of its own only because the phrase highlight 'presenting consumers with' covers it. The add on its own would break the build, though. find() matches longer headwords first, so the phrase claims 'consumers' and the new 'consumer' entry then fails with 找不到. The phrase highlight therefore has to become gapped too, the same way 'see…as' and 'replace…with' are done. I checked that the gapped highlight still lands on the correct 'with', the first one after 'presenting'. The gloss itself (n. 消费者) is accurate."
+    }
+   ]
+  },
+  {
+   "id": "s43",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s44",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s45",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s46",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s47",
+   "findings": [
+    {
+     "sent": 10,
+     "field": "gloss",
+     "headword": "long-term",
+     "current": "adj. 较长远的；较长期的",
+     "proposed": "adj. 长远的；长期的",
+     "reason": "The headword is the base form long-term, which means 长远的/长期的. The 较 comes from the comparative form longer-term in the sentence and does not belong in a gloss for the base headword, so a learner would wrongly memorise long-term as 较长远的. The comparative sense is already conveyed by 较长远 in the ZH line.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file (s47 sent 10: long-term, adj. 较长远的；较长期的, highlighting \"longer-term\"). The gloss is for the base headword long-term, so the 较 meaning belongs only to the comparative form. Other comparatives in the set are glossed with their base meaning (stronger → strong 牢固的, healthier → healthy 健康的, broader → broad 宽泛的), and sent 12 in this same file glosses long-term as 长期的. The proposed adj. 长远的；长期的 is correct, and the ZH line already says 较长远后果."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The headword is the base form long-term, and its gloss should give the base meaning (长远的/长期的). The 较 comes from the comparative -er in the highlighted longer-term. The project glosses other inflected forms by their base meaning (include = 包括 for included, and long-term = 长期的 in sentence 12), and this is the only gloss in the set that carries a comparative 较, so it is a real headword/gloss mismatch. The ZH line already says 较长远的后果, so the proposed change loses nothing and adds no error."
+    }
+   ]
+  },
+  {
+   "id": "s48",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s49",
+   "findings": [
+    {
+     "sent": 6,
+     "field": "gloss",
+     "headword": "suggest",
+     "current": "v. 意思是；主张",
+     "proposed": "v. 暗示；意思是",
+     "reason": "In 'That is not to suggest that…', suggest means 'imply / mean' (这并不是说). '主张' (advocate) is a different, irrelevant dictionary sense and misleads the learner about how the word is used here.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "The current gloss matches the file. In \"That is not to suggest that…\", suggest means imply / mean, which is why the ZH line has 这并不是说. 主张 (advocate) is a different dictionary sense and would mislead learners, so it should go. Swapping in 暗示 is correct, but 意思是 should stay first because it is the sense the translation 说 actually uses.",
+     "amended_proposed": "v. 意思是；暗示"
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current gloss is right as it stands. In context (sentences 4-6 give advice to scientists), the second clause, 'but rather, that they consult with an expert', is a recommendation, so suggest here means 'propose / advocate' as well as 'mean'. The ZH reflects this with 应 and 应当 (只应……而是说……应当向专家请教). '意思是；主张' covers both senses. The proposed '暗示' (to hint indirectly) is not the sense used here, conflicts with the mandative reading in the translation, and would introduce an error."
+    }
+   ]
+  },
+  {
+   "id": "s50",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s51",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s52",
+   "findings": [
+    {
+     "sent": 11,
+     "field": "zh",
+     "headword": "",
+     "current": "我们不能想当然地认为其中任何一点是显而易见的。",
+     "proposed": "我们不能想当然地认为其中有任何一点是显而易见的。",
+     "reason": "In Chinese, 任何+名词 used as a subject normally needs 都 after it, or 有 in front of it. Without either, “其中任何一点是显而易见的” is grammatically off and reads as translationese. Adding 都 would be wrong here: under 不能认为 it would read as “not every point is obvious”, which changes the meaning. “有任何一点是……” works in this non-assertive context and keeps the exact sense of “any of this is obvious”, with 想当然地认为 and 显而易见 still recognisable.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In Chinese, 任何 used as a bare subject reads stiffly here (“认为其中任何一点是显而易见的”), and a native speaker would say “认为其中有任何一点……”. The proposal keeps the exact meaning of “any of this is obvious” under the negated “take for granted”. It also leaves the glossed words 想当然地认为 and 显而易见 unchanged, and it avoids the misleading “都” reading. It is at least as precise as the current line and more natural."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current line is accurate, but 任何一点 sits as a bare subject before 是…的 with neither 都 nor 有, which is awkward, translated-sounding Chinese. Adding 都 would wrongly turn it into 'not every point is obvious'. Adding 有 fixes the grammar without changing the meaning (none of this can be assumed obvious). It also keeps the glossed terms 想当然地认为 and 显而易见的 recognisable and introduces no new error."
+    }
+   ]
+  },
+  {
+   "id": "s53",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s54",
+   "findings": [
+    {
+     "sent": 2,
+     "field": "zh",
+     "headword": "",
+     "current": "广义上的技术，具体而言是自动化，正在极大地重塑我们的工作方式。",
+     "proposed": "宽泛地说是技术，具体地说是自动化，正在极大地重塑我们的工作方式。",
+     "reason": "The English pairs 'broadly' and 'specifically' in parallel. The current line breaks that parallel by mixing a noun phrase (广义上的技术) with a clause (具体而言是自动化), so it reads awkwardly and can suggest that automation is what 'technology in the broad sense' means. A parallel 宽泛地说……具体地说…… is natural Chinese, exactly as precise, and keeps the highlighted glosses recognisable (broadly: 宽泛地; specifically: 具体地).",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. In the English, 'Technology broadly and automation specifically' is a parallel pair meaning technology in general and automation in particular. The current line mixes a noun phrase (广义上的技术) with a clause (具体而言是自动化), which breaks that parallel and reads awkwardly. The proposed 宽泛地说是技术，具体地说是自动化 keeps the meaning and the predicate (正在极大地重塑我们的工作方式), matches the broadly/specifically glosses, and is more natural."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current line puts a noun phrase (广义上的技术) next to an inserted clause (具体而言是自动化). That reads clumsily, and it suggests that 'technology in the broad sense' specifically means automation. The English actually says 'technology in general, and automation in particular'. The parallel 宽泛地说是技术，具体地说是自动化 matches the English structure exactly, reads as natural Chinese and changes no meaning. It also lines up with the highlighted glosses (broadly 宽泛地, specifically 具体地), and it introduces no new error."
+    }
+   ]
+  },
+  {
+   "id": "s55",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s56",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s57",
+   "findings": [
+    {
+     "sent": 19,
+     "field": "zh",
+     "headword": "",
+     "current": "这种文字把戏除了很可能对销量造成长期的负面影响，还传递出农业和食品加工领域的创新不受欢迎的信息，终将导致效率降低、消费者的选择减少，并最终使食品更加昂贵。",
+     "proposed": "这种文字把戏除了很可能对销量造成长期的负面影响，还传递出不欢迎农业和食品加工领域创新的信息，终将导致效率降低、消费者的选择减少，并最终使食品更加昂贵。",
+     "reason": "“农业和食品加工领域的创新不受欢迎的信息”把一整个主谓小句塞进“信息”前面做定语，中间还有两个“的”，读起来拗口，是典型的翻译腔。改成“不欢迎……创新的信息”后只剩一个“的”，意思不变，也和概要里的说法一致。“传递出”“不受欢迎/不欢迎”这些对应高亮词的中文仍然认得出来。",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file. The English says the message is that \"innovations in farming and food processing are unwelcome\", and the current line, 传递出……创新不受欢迎的信息, says exactly that. 传递出X不受欢迎的信息/信号 is a normal Chinese pattern, not clear translationese, so the proposal is only a refinement of a line that is already accurate. It is also slightly less precise. It turns the passive adjective unwelcome (glossed adj. 不受欢迎的) into the active verb 不欢迎, which leaves unclear who does the not-welcoming. It also allows a misreading as 不欢迎[……创新的信息]. Under the final-check standard (when in doubt, do not report), keep the current line."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current line is accurate and acceptable Chinese. \"传递出……的信息\" with a clause in front of 信息 is a normal pattern in Chinese journalism, and it reads clearly here, so this is not definite translationese. The proposed line changes the adjective \"不受欢迎（的）\", which matches the gloss for unwelcome (adj. 不受欢迎的), into the verb \"不欢迎\". That weakens the link between the translation and the highlighted word. It also opens a misreading: \"不欢迎……创新的信息\" can be parsed as \"not welcoming information about innovation\". The gain is only a matter of taste."
+    }
+   ]
+  },
+  {
+   "id": "s58",
+   "findings": [
+    {
+     "sent": 26,
+     "field": "zh",
+     "headword": "",
+     "current": "但在雇主用社交媒体筛查求职者之前，为了遵守所有法律，咨询管理层和法务团队必不可少。",
+     "proposed": "但雇主在用社交媒体筛查求职者之前，必不可少的一步是咨询管理层和法务团队，以遵守所有法律。",
+     "reason": "The line follows the English word order. It stacks two adverbials, '在……之前' and '为了……', in front of a nominal subject ('咨询……必不可少'), and it tucks the real actor (雇主) inside the time clause. The rewrite makes 雇主 the subject, puts the purpose after the main clause with '以', and keeps 必不可少 so 'essential' is still recognisable. The meaning is unchanged.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file and is accurate in every clause: before employers screen candidates, consulting management and legal teams is essential, in order to comply with all laws. A Chinese reader would find it natural. Opening with '在……之前' and '为了……' and then using a verb phrase as the subject ('咨询……必不可少') is ordinary written Chinese, not clear translationese. The rewrite is a style preference, not a fix. It also adds '一步', which the English does not say. This is a final check, and the rule is to leave alone lines that are already accurate and natural."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current line stacks two fronted adverbials ('在……之前' and '为了……') in front of a bare verb-phrase subject ('咨询……必不可少'), copying the English word order. A native editor would rewrite that. The proposal makes 雇主 the topic, keeps 必不可少 for 'essential' and 遵守 for 'comply with', and moves the purpose to the end with '以'. The meaning is unchanged, it adds no error, and it still matches the glosses."
+    }
+   ]
+  },
+  {
+   "id": "s59",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "s60",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "k7",
+   "findings": [
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "端粒变得太短时，细胞就会加快分裂。",
+     "proposed": "端粒变得太短时，细胞就会完全停止分裂。",
+     "reason": "The English says 'the cell stops dividing altogether' (stops dividing completely). The ZH says the opposite, 加快分裂, and also leaves out altogether.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 9,
+     "field": "zh",
+     "headword": "",
+     "current": "这正是细胞会衰老的唯一原因——细胞还承受着其他一些我们尚不太了解的压力——但端粒短是人体细胞变老的主要原因之一。",
+     "proposed": "这并不是细胞会衰老的唯一原因——细胞还承受着其他一些我们尚不太了解的压力——但端粒短是人体细胞变老的主要原因之一。",
+     "reason": "The English 'This isn’t the only reason' is negative, but 这正是……唯一原因 makes it positive. That reverses the meaning and contradicts the rest of the sentence.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 17,
+     "field": "zh",
+     "headword": "",
+     "current": "敌意最强的男性，端粒短的可能性要高出13%。",
+     "proposed": "敌意最强的男性，端粒短的可能性要高出30%。",
+     "reason": "Wrong number: the English says 30%, not 13%.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 11,
+     "field": "zh",
+     "headword": "",
+     "current": "科学家们已经了解到，有几种思维模式不利于端粒健康，其中之一就是愤世嫉俗式敌意。",
+     "proposed": "科学家们已经了解到，有几种思维模式似乎不利于端粒健康，其中之一就是愤世嫉俗式敌意。",
+     "reason": "The hedge 'appear to be unhealthy' was dropped, so the ZH states as a fact what the English only says seems to be true. The phrase appear to is even glossed in this sentence. The summary correctly keeps 似乎.",
+     "severity": "medium",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "lie in",
+     "current": "躺在……里",
+     "proposed": "在于",
+     "reason": "Wrong sense. In 'the differences ... lie in the complex interactions', lie in means 在于 / 存在于, not physically lying in something. The ZH line itself correctly uses 在于.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 5,
+     "field": "gloss",
+     "headword": "segment",
+     "current": "v. 片段；部分",
+     "proposed": "n. 片段；部分",
+     "reason": "Wrong part of speech. 'repeating segments of noncoding DNA' uses segments as a noun, and the Chinese meaning given is a noun too.",
+     "severity": "medium",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says 'the cell stops dividing altogether', but 加快分裂 says the opposite. 完全停止分裂 is correct and also renders altogether."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. 'This isn’t the only reason' is negative, and 这正是……唯一原因 reverses it, which contradicts the 但 clause. 这并不是 fixes it."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says 30%, not 13%. This is a factual error."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches the file. The ZH drops the hedge 'appear to be' and states the claim as fact, even though appear to is glossed in this sentence. Adding 似乎 restores the precise meaning."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current gloss matches the file. Here 'differences ... lie in the complex interactions' is abstract, so lie in means 在于, not 躺在……里. The ZH line itself uses 在于."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "The current gloss matches the file. 'repeating segments of noncoding DNA' uses segments as a noun, and the Chinese meaning given is a noun. The POS should be n."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The English says 'stops dividing altogether', but 加快分裂 says the opposite. 完全停止分裂 fixes the meaning and restores 'altogether', which is glossed 完全；彻底 in this sentence."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "'isn't the only reason' is negative. 这正是……唯一原因 turns it positive and clashes with the 但 clause. 这并不是 is accurate and reads naturally."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "Wrong number: the English says 30%. The proposal changes only the number and keeps the rest of the line."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The ZH drops the hedge 'appear to', which is glossed in this very sentence. That turns a tentative finding into a fact. Adding 似乎 restores it and matches the summary."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "躺在……里 is the literal sense and wrong here. In this sentence 'lie in' means 在于, the word the ZH line itself uses."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "'segments' is a noun here, and the Chinese meaning given is a noun too, so the POS should be n."
+    }
+   ]
+  },
+  {
+   "id": "k8",
+   "findings": [
+    {
+     "sent": 8,
+     "field": "zh",
+     "headword": "",
+     "current": "三位研究人员分析了几十年来基于价值观的调查，发现文化价值观的差异只有26%到31%能用国家之间的差异来解释。",
+     "proposed": "三位研究人员分析了几十年来基于价值观的调查，发现文化价值观的差异只有16%到21%能用国家之间的差异来解释。",
+     "reason": "The numbers are wrong. EN says 'between 16% and 21%', but ZH says 26%到31%. The summary already has the correct 16%到21%.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 9,
+     "field": "zh",
+     "headword": "",
+     "current": "换句话说，让我们在文化上彼此有别的因素，绝大部分都取决于我们来自哪个国家。",
+     "proposed": "换句话说，让我们在文化上彼此有别的因素，绝大部分都与我们来自哪个国家毫无关系。",
+     "reason": "The meaning is reversed. EN 'has nothing to do with our homeland' means 与故土毫无关系, but ZH says 取决于 (depends on). This also contradicts the title and the gloss for 'have nothing to do with'.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 15,
+     "field": "zh",
+     "headword": "",
+     "current": "职业和社会经济地位的相关性最弱，这表明我们的价值观比我们通常认为的更受经济驱动。",
+     "proposed": "职业和社会经济地位的相关性最强，这表明我们的价值观比我们通常认为的更受经济驱动。",
+     "reason": "The meaning is reversed. 'the most strongly correlated' means 相关性最强, not 最弱. As written, the ZH clause also contradicts the conclusion that follows it and the summary.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 21,
+     "field": "zh",
+     "headword": "",
+     "current": "国家作为行使权力的单位，始终是笼统描述某一人群的便捷方式。",
+     "proposed": "国家作为行使权力的单位，往往是笼统描述某一人群的便捷方式。",
+     "reason": "The quantifier is wrong. EN 'often' means 往往/常常, but ZH 始终 means 'always', which overstates the claim.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 7,
+     "field": "gloss",
+     "headword": "overview",
+     "current": "v. 概括；概述",
+     "proposed": "n. 概括；概述",
+     "reason": "The POS is wrong. In 'such overviews', 'overviews' is a plural noun, not a verb.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 10,
+     "field": "gloss",
+     "headword": "prior",
+     "current": "adj. 优先的；更重要的",
+     "proposed": "adj. 先前的；以前的",
+     "reason": "Wrong sense. In '558 prior surveys', 'prior' means earlier or previous, and the ZH line correctly says 此前. The sense 'more important / taking precedence' does not apply here.",
+     "severity": "high",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches line 53. EN says 'between 16% and 21%', but ZH says 26%到31%, which is a factual error. The proposal fixes it and now agrees with the summary."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches line 65. EN 'has nothing to do with our homeland' means 与故土毫无关系, but ZH 取决于 says the opposite. The proposal restores the correct meaning, and it agrees with the title and the gloss."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches line 137. 'the most strongly correlated' means 相关性最强, so 最弱 reverses the meaning and contradicts the rest of the sentence. The proposal is correct."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches line 209. 'often' means 往往, while 始终 means 'always' and overstates the claim. The proposal matches the EN exactly."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current text matches line 51. 'such overviews' is a plural noun, so the POS must be n., not v."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "The current text matches line 83. In '558 prior surveys', 'prior' means earlier or previous, which agrees with ZH 此前. The current sense 优先的；更重要的 is wrong here."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "EN says 'between 16% and 21%', but ZH has 26%到31%, so the numbers are wrong. The proposed fix matches EN and the summary."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "ZH reverses the meaning. 'has nothing to do with our homeland' means 毫无关系, not 取决于. The fix is accurate and natural, and agrees with the title and the gloss."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "'the most strongly correlated' means 相关性最强. 最弱 reverses the meaning and contradicts the 'economically driven' conclusion."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "'often' means 往往, but 始终 means 'always', which overstates the claim. 往往 is precise and idiomatic here."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "In 'such overviews', overviews is a plural noun, so the POS must be n. 'v.' is wrong."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "'558 prior surveys' uses prior to mean earlier or previous (先前的), which matches 此前 in ZH. 优先的；更重要的 is the wrong sense."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

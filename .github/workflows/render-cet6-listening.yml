@@ -1,0 +1,189 @@
+# 六级听力 视频版真题考试（练习视频）：推送 .github/cet6-listening-render.txt（每行一个套号）时：
+#   precheck（第一道关，几分钟）：每套 时间轴 → 版式 → 自检 → 只查音频；任何一套不过，render 不开工（踩坑 122）
+#   render：每套一台机器：
+#   自检 → 时间轴 → 截图（每张排版检查 + 题间空隙 + 字体回退 + 答案泄露，一处就停）→ 试跑 → 编码（专八引擎成品核查）
+# 浏览器与本机相同（Chrome 153，样片 202512-1 就是它画的，踩坑 78）；原音从 Release 6-listening-test 下载并核 sha256。
+# 最后一个任务：全部套都通过才发布 Release cet6-listening-practice（目标用分支名，踩坑 53），逐个下载核 sha256。
+name: 六级听力练习视频
+on:
+  push:
+    paths: ['.github/cet6-listening-render.txt']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  list:
+    runs-on: ubuntu-24.04
+    outputs:
+      ids: ${{ steps.l.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - id: l
+        run: echo "ids=$(grep -v '^\s*$' .github/cet6-listening-render.txt | python3 -c 'import json,sys;print(json.dumps([l.strip() for l in sys.stdin]))')" >> "$GITHUB_OUTPUT"
+  precheck:
+    needs: list
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            六级/听力
+            六级/真题/**/*.txt
+            专八/听力/tools
+            专八/听力/2025
+            专八/听力/原文/tools
+            四级/tools/fonts
+            专八/真题/2025年 英语专业八级真题.pdf
+            tools/题目间隔.py
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 关口：定稿 0 待核、题目检查 0 处（不许用没核完的原文出视频）
+        run: |
+          sudo apt-get install -y -q wamerican >/dev/null
+          python3 六级/听力/tools/定稿.py ${{ matrix.id }} > /dev/null
+          python3 六级/听力/tools/题目.py ${{ matrix.id }}
+          git diff --exit-code -- 六级/听力/${{ matrix.id }}/定稿.json 六级/听力/${{ matrix.id }}/题目.json
+      - name: 字体（原卷 PDF；取字体要的包不在 cet6-render-requirements 里，与本机同版本另装）
+        run: |
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 下载原音、核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          gh release download 6-listening-test -p "cet6-${{ matrix.id }}.mp3" -D in
+          cd in && grep -E " cet6-${{ matrix.id }}\.mp3$" ../六级/听力/原始材料/SHA256SUMS | sha256sum -c --quiet
+      - name: 预检：时间轴 → 版式 → 自检 → 只查音频（不截图、不编码；任何一套不过，render 整个不开工，踩坑 122）
+        env: {CET6_OUT: '${{ runner.temp }}/out'}
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python; T=六级/听力/tools/听力视频.py; S=${{ matrix.id }}; MP3=in/cet6-$S.mp3
+          $P $T $S timeline $MP3
+          $P $T $S layout
+          $P $T $S --自检
+          $P $T $S audio $MP3
+  render:
+    needs: [list, precheck]
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            六级/听力
+            六级/真题/**/*.txt
+            专八/听力/tools
+            专八/听力/2025
+            专八/听力/原文/tools
+            四级/tools/fonts
+            专八/真题/2025年 英语专业八级真题.pdf
+            tools/题目间隔.py
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 关口：定稿 0 待核、题目检查 0 处（不许用没核完的原文出视频）
+        run: |
+          sudo apt-get install -y -q wamerican >/dev/null
+          python3 六级/听力/tools/定稿.py ${{ matrix.id }} > /dev/null
+          python3 六级/听力/tools/题目.py ${{ matrix.id }}
+          git diff --exit-code -- 六级/听力/${{ matrix.id }}/定稿.json 六级/听力/${{ matrix.id }}/题目.json
+      - name: 字体（原卷 PDF；取字体要的包不在 cet6-render-requirements 里，与本机同版本另装）
+        run: |
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 下载原音、核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          gh release download 6-listening-test -p "cet6-${{ matrix.id }}.mp3" -D in
+          cd in && grep -E " cet6-${{ matrix.id }}\.mp3$" ../六级/听力/原始材料/SHA256SUMS | sha256sum -c --quiet
+      - name: 自检 → 时间轴 → 截图 → 试跑 → 编码（出错即停）
+        env: {CET6_OUT: '${{ runner.temp }}/out'}
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python; T=六级/听力/tools/听力视频.py; S=${{ matrix.id }}; MP3=in/cet6-$S.mp3
+          $P $T $S timeline $MP3
+          $P $T $S layout
+          $P $T $S --自检
+          $P $T $S stills
+          $P $T $S video $MP3 --试跑
+          $P $T $S video $MP3
+          mkdir -p up
+          mv "$CET6_OUT"/*视频版真题考试.mp4 up/
+          cp 六级/听力/$S/时间轴.json up/
+          $P - "$S" <<'EOF'
+          import hashlib, json, sys, pathlib
+          up = pathlib.Path('up'); sid = sys.argv[1]
+          h = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          mp4 = next(up.glob('*.mp4'))
+          json.dump({'套': sid, 'mp4': mp4.name, 'mp4_sha256': h(mp4), 'mp4_bytes': mp4.stat().st_size,
+                     '原音_sha256': h(pathlib.Path(f'in/cet6-{sid}.mp3'))}, open(up / 'meta.json', 'w'), ensure_ascii=False)
+          EOF
+      - uses: actions/upload-artifact@v4
+        with: {name: 'cet6listen-${{ matrix.id }}', path: up, compression-level: 0}
+  publish:
+    needs: [list, render]
+    if: always() && needs.list.result == 'success'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - uses: actions/download-artifact@v4
+        continue-on-error: true          # 只重跑发布时本次没有新 artifact；齐全与否由下面 plan 核对
+        with: {path: art, pattern: 'cet6listen-*'}
+      - name: 收之前运行里已通过的套（.github/cet6-listening-collect.txt 每行一个运行号；本次有的不覆盖）
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          mkdir -p art
+          for rid in $(grep -v '^\s*$' .github/cet6-listening-collect.txt 2>/dev/null || true); do
+            for n in $(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$rid/artifacts?per_page=100" --jq '.artifacts[] | select(.expired | not) | .name' | grep '^cet6listen-'); do
+              [ -d "art/$n" ] && continue
+              gh run download "$rid" -R "$GITHUB_REPOSITORY" -n "$n" -D "art/$n"; echo "收 $rid / $n"
+            done
+          done
+      - name: 核对 30 套齐全（.github/cet6-listening-all.txt）、发布（ASCII 资产名 + 中文 label + 文件名清单，踩坑 123）、下载核 sha256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/cet6-listening-publish.py --自检
+          python3 .github/cet6-listening-publish.py plan "$(python3 -c 'import json;print(json.dumps([l.strip() for l in open(".github/cet6-listening-all.txt") if l.strip()]))')" art up
+          TAG=cet6-listening-practice
+          gh release view $TAG >/dev/null 2>&1 || gh release create $TAG --target "$GITHUB_REF_NAME" -t "六级听力 视频版真题考试（练习视频）" -n "2018-12 至 2026-06 共 30 套，4K，原音（不调响度、不压缩）。中文文件名见各资产的标签和 cet6-listening-filenames.txt。"
+          # 不删任何已上传的资产（老师 2026-11-04）；清单外多出来的资产由 verify-digest 报出
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/cet6-listening-publish.py todo up/plan.json rel.json | while IFS=$'\t' read -r a l; do
+            gh release upload $TAG "up/$a#$l" --clobber; echo "上传 $a"
+          done
+          gh release view $TAG --json assets --jq '.assets[].name' | grep -qx cet6-listening-filenames.txt || gh release upload $TAG up/cet6-listening-filenames.txt
+          python3 .github/cet6-listening-publish.py notes up/plan.json notes.md
+          gh release edit $TAG --notes-file notes.md
+          # 中文文件名的两个包（老师：下载解压就是中文名）：Python zipfile 不压缩、UTF-8 标记、固定时间戳；已在且 digest 相同的不重传
+          python3 .github/cet6-listening-publish.py pack up/plan.json .
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          for z in cet6-listening-practice-1.zip cet6-listening-practice-2.zip; do
+            d=$(python3 -c "import json,sys;print(next((a.get('digest') or '' for a in json.load(open('rel.json'))['assets'] if a['name']==sys.argv[1]),''))" $z)
+            [ "$d" = "sha256:$(sha256sum $z | cut -d' ' -f1)" ] && echo "已在 $z" || { gh release upload $TAG $z --clobber; echo "上传 $z"; }
+            rm -f $z; mkdir -p zchk
+            gh release download $TAG -p $z -D zchk --clobber
+            python3 .github/cet6-listening-publish.py checkzip up/plan.json zchk/$z
+            rm -f zchk/$z
+          done
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/cet6-listening-publish.py verify-digest up/plan.json rel.json
+          mkdir -p chk                          # 再抽一个真下载核 sha256（202606-1：插了停顿的那套）
+          gh release download $TAG -p 'cet6-listening-202606-1.mp4' -D chk --clobber
+          python3 -c "import hashlib,json;r=[x for x in json.load(open('up/plan.json')) if x['套']=='202606-1'][0];assert hashlib.sha256(open('chk/'+r['asset'],'rb').read()).hexdigest()==r['sha256'];print('✅ 下载抽查',r['asset'])"

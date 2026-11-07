@@ -1,0 +1,111 @@
+/* 中考 · 手账笔记本 (Z2_notebook): dot-grid notebook page, highlighter-pen vocabulary, index card + washi tape panel.
+   Appended after the production CSS; colours, fonts, decoration. Layout metrics tuned so no screen's font gets smaller:
+   English Nunito (wider than EB Garamond) -> line-height 1.37, letter-spacing -.015em, highlights 600, main 10px further left
+   and 40px wider (panel 20px narrower), Chinese line-height 1.5 and gap .36em. */
+:root{
+  --paper:#faf8f3; --dot:rgba(70,92,128,.19);
+  --ink:#1f2537; --ink2:#353c51; --mute:#5a6176; --faint:#a3a9b8; --rule:#c6d5ec;
+  --hy:#ffe46b;            /* 单词: yellow highlighter */
+  --hp:#ffaecb;            /* 短语: pink highlighter   */
+  --pb:#2456a6;            /* blue pen  : word numbers   */
+  --pr:#c0185a;            /* berry pen : phrase numbers */
+  --card:#ffffff;
+  --cover:#7db4e8;
+  --ring-b:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' preserveAspectRatio='none'><path d='M29 7.5C22 3.2 9.5 5 5.6 15.5 2.4 25 9 35.2 20.5 35.4 31 35.6 37.2 27.4 35.8 18.2 34.8 11.4 29 6.4 21.5 6' fill='%23ffffff' stroke='%232456a6' stroke-width='3.2' stroke-linecap='round'/></svg>");
+  --ring-r:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' preserveAspectRatio='none'><path d='M29 7.5C22 3.2 9.5 5 5.6 15.5 2.4 25 9 35.2 20.5 35.4 31 35.6 37.2 27.4 35.8 18.2 34.8 11.4 29 6.4 21.5 6' fill='%23ffffff' stroke='%23c0185a' stroke-width='3.2' stroke-linecap='round'/></svg>");
+}
+html,body{background:var(--paper);color:var(--ink);font-family:'Nunito','LXGW WenKai',sans-serif}
+/* dot-grid page, on a pseudo-element so every text element keeps a plain background colour */
+body::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 1.5px 1.5px,var(--dot) 1.3px,transparent 1.7px) 18px 18px/36px 36px}
+
+/* spiral binding on the left edge */
+.band{width:66px;background:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='66' height='54'><ellipse cx='46' cy='30' rx='7' ry='6.6' fill='%23e2ddd0'/><ellipse cx='46' cy='30.4' rx='5' ry='4.7' fill='%234a5162'/><path d='M3 25C12 17.5 30 17 41.5 26.5' fill='none' stroke='%237d8596' stroke-width='5.6' stroke-linecap='round'/><path d='M4.4 23.1C13 16.6 29 16.2 39.8 24.6' fill='none' stroke='%23f1f3f7' stroke-width='1.8' stroke-linecap='round'/></svg>") 0 0/66px 54px repeat-y}
+
+/* header: page title marked with the yellow highlighter */
+.top{left:100px;border-bottom:2px dashed #b9c4d8;padding-bottom:16px}
+.top b{font-family:'Nunito';font-weight:800;font-size:24px;letter-spacing:.12em;color:var(--ink);padding:0 .3em;margin-left:-.3em;
+  background:linear-gradient(transparent 50%,var(--hy) 50%,var(--hy) 94%,transparent 94%);background-color:rgba(255,228,107,0)}
+.top span{font-family:'Nunito','LXGW WenKai';font-size:25px;color:var(--mute)}
+
+/* English: the hero */
+.main{left:100px;width:1110px}
+.en{font-family:'Nunito','LXGW WenKai',sans-serif;font-weight:400;color:var(--ink);line-height:1.37;letter-spacing:-.015em}
+.en .w,.en .ph{font-weight:600;color:var(--ink);-webkit-box-decoration-break:clone;box-decoration-break:clone;
+  padding:0 .08em;margin:0 -.08em;border-radius:.2em .34em .26em .38em}
+/* marker swipe over the lower part of the letters (slightly tilted, like a hand stroke) */
+.en .w{background:linear-gradient(177deg,transparent 41%,var(--hy) 42%,var(--hy) 91%,transparent 92%);background-color:rgba(255,228,107,0)}
+.en .ph{background:linear-gradient(177deg,transparent 41%,var(--hp) 42%,var(--hp) 91%,transparent 92%);background-color:rgba(255,174,203,0)}
+/* numbers: circled by hand with a blue (word) or berry (phrase) pen */
+sup{font-family:'Nunito';font-weight:800;font-size:calc(var(--fs)*.46);color:var(--pb);line-height:1;letter-spacing:0;
+  padding:0 .33em;margin-left:.04em;vertical-align:.78em;border-radius:0;
+  background:var(--ring-b) center/100% 90% no-repeat;background-color:rgba(255,255,255,0)}
+.ph sup{color:var(--pr);background:var(--ring-r) center/100% 90% no-repeat;background-color:rgba(255,255,255,0)}
+
+/* Chinese translation: a margin note in handwriting-like kaiti */
+.zh{font-family:'LXGW WenKai';color:var(--ink2);border-left:5px solid var(--rule);line-height:1.5;margin-top:calc(var(--fs)*.36)}
+
+/* vocabulary: white index card held by a strip of washi tape */
+.side{width:580px;background:var(--card);border-radius:10px;
+  box-shadow:0 0 0 1px #ebe6da,0 3px 0 #ece7dc,0 10px 26px rgba(60,70,95,.10)}
+.side::before{content:'';position:absolute;top:-30px;left:64%;width:180px;height:40px;margin-left:-90px;transform:rotate(-2deg);
+  background:repeating-linear-gradient(135deg,rgba(150,214,236,.85) 0 11px,rgba(203,234,246,.85) 11px 22px);
+  clip-path:polygon(0 6%,3% 0,6% 8%,9% 0,12% 7%,15% 0,100% 0,100% 94%,97% 100%,94% 92%,91% 100%,88% 93%,85% 100%,0 100%)}
+/* dog-eared bottom corner */
+.side::after{content:'';position:absolute;right:0;bottom:0;width:40px;height:40px;border-radius:0 0 10px 0;
+  background:linear-gradient(315deg,var(--paper) 0 49%,transparent 50%),linear-gradient(315deg,transparent 0 50%,#e6e1d5 51%,#f4f1ea 100%);
+  border-top-left-radius:12px;box-shadow:-3px -3px 6px -4px rgba(60,70,95,.25)}
+.side h3{font-family:'Nunito';font-weight:800;font-size:20px;line-height:22px;letter-spacing:.2em;color:var(--pb);
+  padding-bottom:6px;margin-bottom:8px;border-bottom:2px solid #f4a9c3}
+.v.ph{font-weight:400}
+.v b{font-family:'Nunito';font-weight:700;font-size:calc(var(--vs)*1.12);color:var(--ink);
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .08em;margin:0 -.08em;border-radius:.2em .34em .26em .38em;
+  background:linear-gradient(177deg,transparent 41%,var(--hy) 42%,var(--hy) 92%,transparent 93%);background-color:rgba(255,228,107,0)}
+.v.ph b{color:var(--ink);background:linear-gradient(177deg,transparent 41%,var(--hp) 42%,var(--hp) 92%,transparent 93%);background-color:rgba(255,174,203,0)}
+.v em{font-family:'Nunito';font-weight:800;color:var(--pb);border-radius:0;background:var(--ring-b) center/100% 100% no-repeat;background-color:rgba(255,255,255,0)}
+.v.ph em{color:var(--pr);background:var(--ring-r) center/100% 100% no-repeat;background-color:rgba(255,255,255,0)}
+.v i{font-family:'Nunito';font-style:italic;color:var(--mute)}
+.v span{font-family:'LXGW WenKai';color:var(--ink2)}
+.cont{color:var(--faint)}
+
+/* footer: progress drawn with the yellow highlighter on a dotted line */
+.bot{left:100px;font-family:'Nunito';font-weight:800;color:var(--mute)}
+.bot span:last-child{font-family:'LXGW WenKai';font-weight:400;font-size:26px;letter-spacing:.2em}
+.bar{height:4px;background:radial-gradient(circle,#c2c9d7 1.6px,transparent 2px) 0 50%/10px 4px repeat-x}
+.bar i{height:14px;margin-top:-5px;border-radius:6px 9px 8px 5px;background:var(--hy);position:relative}
+.bar i::after{content:'';position:absolute;right:-17px;top:-10px;width:34px;height:34px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'><path d='M17 3.5l4 8.6 9.3 1.1-6.9 6.4 1.9 9.2L17 24.2l-8.3 4.6 1.9-9.2-6.9-6.4 9.3-1.1z' fill='%23ffe46b' stroke='%232456a6' stroke-width='2.4' stroke-linejoin='round'/></svg>") center/100% 100% no-repeat}
+
+/* ---------- cover: a sky-blue spiral notebook with a name label ---------- */
+body:has(.ttl){background:var(--cover)}
+body:has(.ttl)::before{background:
+  radial-gradient(circle at 1.5px 1.5px,rgba(255,255,255,.24) 1.3px,transparent 1.7px) 18px 18px/36px 36px}
+/* doodles drawn on the cover in white gel pen (corners only) */
+body:has(.ttl)::after{content:'';position:absolute;inset:0;pointer-events:none;background:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='160'><g fill='none' stroke='%23ffffff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' opacity='.85'><path d='M60 30l10 22 24 3-18 16 5 24-21-12-21 12 5-24-18-16 24-3z'/><path d='M150 96c8 0 14-6 14-14 0 8 6 14 14 14-8 0-14 6-14 14 0-8-6-14-14-14z'/></g></svg>") 150px 880px/220px 160px no-repeat}
+body:has(.ttl) .band{width:92px;background:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='60'><ellipse cx='64' cy='33' rx='9' ry='8.5' fill='%23223150'/><path d='M4 27C18 17 46 17 62 30' fill='none' stroke='%2350596e' stroke-width='8.5' stroke-linecap='round'/><path d='M6 24.4C19 16.2 45 16.4 59.5 27' fill='none' stroke='%23f2f4f8' stroke-width='2.6' stroke-linecap='round'/></svg>") 0 0/92px 60px repeat-y}
+.ttl{left:270px;right:210px;top:200px;bottom:230px;background:#fffdf8;border-radius:30px;padding:0 110px;
+  box-shadow:0 12px 0 -4px rgba(31,37,55,.10),0 22px 50px rgba(20,50,90,.22)}
+/* washi tape across the top-left corner */
+.ttl::before{content:'';position:absolute;left:-34px;top:-18px;width:240px;height:58px;transform:rotate(-9deg);
+  background:repeating-linear-gradient(135deg,rgba(255,182,208,.92) 0 14px,rgba(255,214,229,.92) 14px 28px);
+  clip-path:polygon(0 5%,3% 0,6% 7%,9% 0,100% 0,100% 95%,97% 100%,94% 93%,91% 100%,0 100%)}
+/* round sticker */
+.ttl::after{content:'逐句\A背单词';white-space:pre;position:absolute;right:-60px;top:-70px;width:178px;height:178px;border-radius:50%;
+  background:var(--hy);color:var(--ink);font-family:'LXGW WenKai';font-weight:700;font-size:36px;line-height:1.22;
+  display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(10deg);
+  box-shadow:0 6px 16px rgba(20,50,90,.24),inset 0 0 0 7px #fff3b3,inset 0 0 0 9px #f0cf45}
+.ttl .tag{font-family:'Nunito','LXGW WenKai';font-weight:800;font-size:28px;letter-spacing:.24em;color:var(--pb)}
+.ttl h1{font-family:'LXGW WenKai';font-weight:700;font-size:clamp(56px, calc(1160px / var(--n)), 132px);line-height:1.2;color:var(--ink);
+  margin:24px 0 20px -.12em;width:fit-content;white-space:nowrap;padding:0 .12em;letter-spacing:.02em;
+  background:linear-gradient(177deg,transparent 54%,var(--hy) 55%,var(--hy) 93%,transparent 94%)}
+.ttl .sub{font-family:'Nunito','LXGW WenKai';font-size:42px;color:var(--ink2)}
+.ttl .sub i{font-family:'Nunito';font-style:normal;font-weight:700;padding:0 .15em;
+  background:linear-gradient(177deg,transparent 42%,var(--hp) 43%,var(--hp) 92%,transparent 93%)}
+.ttl .meta{font-family:'Nunito','LXGW WenKai';font-size:30px;color:var(--mute);border-top:2px dashed #b9c4d8;margin-top:42px;padding-top:24px}
+.legend{right:210px;bottom:122px;font-family:'LXGW WenKai';font-size:28px;color:var(--ink);gap:18px}
+.legend span{background:#fffdf8;border-radius:999px;padding:8px 24px 8px 18px;box-shadow:0 6px 16px rgba(20,50,90,.18)}
+.legend em{width:46px;height:22px;border-radius:5px 9px 6px 10px;vertical-align:-3px;margin-right:10px}
+.legend .lw{background:var(--hy)}.legend .lp{background:var(--hp)}

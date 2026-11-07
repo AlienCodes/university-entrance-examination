@@ -1,0 +1,79 @@
+# 考研作文讲义发布（用户 2026-10-23）：修改 .github/kaoyan-writing-handout-release.txt（第一行写标签名）并推送时，
+# 把本机生成、核查通过后入库的三份 PDF（考研作文/讲义/：满分范文精讲、默写卡、默写卡答案）用 Python zipfile 打包
+# （不压缩；中文文件名要有 UTF-8 标记：踩坑 52）、逐个核对，发布 GitHub Release（gh，目标用分支名：踩坑 53），再下载核对。
+name: 发布考研作文讲义与默写卡
+on:
+  push:
+    paths: ['.github/kaoyan-writing-handout-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            考研作文/讲义
+      - name: Release 目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - name: 打包、逐个核对
+        run: |
+          set -e
+          tag=$(head -1 .github/kaoyan-writing-handout-release.txt | tr -d '[:space:]')
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          python3 - <<'PY'
+          import zipfile, zlib
+          from pathlib import Path
+          src = Path('考研作文/讲义')
+          files = [('1 考研英语写作满分范文精讲.pdf', '考研英语写作满分范文精讲.pdf'),
+                   ('2 考研作文默写卡.pdf', '考研作文默写卡.pdf'),
+                   ('3 考研作文默写卡（答案）.pdf', '考研作文默写卡（答案）.pdf')]
+          root = '考研英语写作满分范文精讲与默写卡（2021—2026 · 24篇）'
+          Path('dist').mkdir()
+          z = Path('dist/KAOYAN-writing-handout.zip')
+          with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED) as zf:
+              for name, f in files:
+                  data = (src / f).read_bytes()
+                  assert data[:5] == b'%PDF-' and len(data) > 100_000, f
+                  zf.writestr(f'{root}/{name}', data)
+          with zipfile.ZipFile(z) as zf:
+              info = zf.infolist()
+              assert [i.filename for i in info] == [f'{root}/{n}' for n, _ in files], [i.filename for i in info]
+              for i, (n, f) in zip(info, files):
+                  data = (src / f).read_bytes()
+                  assert i.flag_bits & 0x800, f'{i.filename} 没有 UTF-8 标记'
+                  assert i.compress_type == zipfile.ZIP_STORED
+                  assert i.file_size == len(data) and i.CRC == zlib.crc32(data), i.filename
+              assert zf.testzip() is None
+          print('打包核对通过：', z, z.stat().st_size)
+          PY
+          cat > notes.md <<'MD'
+          2021—2026 年考研英语一、英语二写作真题（小作文 Part A + 大作文 Part B）共 24 篇满分范文的配套资料，解压后是一个文件夹，三份 PDF：
+
+          1. **考研英语写作满分范文精讲**：写作总攻略（评分标准、书信格式、三段式结构、图表数据表达、中式英语黑名单），然后每篇按“原题 → 审题 → 写作思路 → 满分范文（附参考译文）→ 一步一步写 → 高分句式 → 亮点词汇”讲解；每个句式都写明它表达什么意思，给出公式、范文原句和译文、讲解、两个仿写例句（附中文）和替换说法；书末是全部句式的总表。
+          2. **考研作文默写卡**：每篇 A 部分句式填空、B 部分看中文默写整句，右侧提醒这一句练的是什么句式、为什么值得背。
+          3. **考研作文默写卡（答案）**。
+          MD
+          sed -i 's/^          //' notes.md
+      - name: 发布
+        run: |
+          set -e
+          z=dist/KAOYAN-writing-handout.zip
+          title="考研英语写作满分范文精讲 + 作文默写卡（2021—2026 · 24篇）"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$z" --clobber
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" "$z" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md
+          fi
+      - name: 下载核对
+        run: |
+          set -e
+          mkdir dl && gh release download "$TAG" -p KAOYAN-writing-handout.zip -D dl
+          cmp dl/KAOYAN-writing-handout.zip dist/KAOYAN-writing-handout.zip
+          python3 -c "import zipfile; z=zipfile.ZipFile('dl/KAOYAN-writing-handout.zip'); assert z.testzip() is None; print([i.filename for i in z.infolist()])"

@@ -1,0 +1,394 @@
+{
+  "summary": "中考 reading round 2: final check of the corrected passages (+canaries) in groups, 2 finders + 2 verifiers per group",
+  "agentCount": 8,
+  "logs": [
+    "done 8; findings 7"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "z21",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z22",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z23",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z94",
+        "findings": [
+          {
+            "pid": "z94",
+            "loc": "¶1 sentence 3",
+            "current": "everyone feel angry",
+            "proposed": "everyone feels angry",
+            "category": "grammar",
+            "reason": "Subject-verb agreement: 'everyone' takes a singular verb. The exam original reads 'everyone feels angry sometimes'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z94",
+            "loc": "¶1 last sentence",
+            "current": "although it can encourage",
+            "proposed": "because it can encourage",
+            "category": "logic",
+            "reason": "The clause gives the reason anger can be good. It does not contrast with that claim, so concessive 'although' contradicts the logic. The exam original reads 'because'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z94",
+            "loc": "¶3 last sentence",
+            "current": "make you angrily",
+            "proposed": "make you angry",
+            "category": "grammar",
+            "reason": "The pattern make + object + complement needs an adjective, not an adverb. The exam original reads 'make you angry'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z94",
+            "loc": "¶4 'Share your feelings…'",
+            "current": "Share your feelings to someone",
+            "proposed": "Share your feelings with someone",
+            "category": "grammar",
+            "reason": "Wrong preposition: the correct form is 'share something with someone'. The exam original reads 'with'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z94",
+            "loc": "¶1 last sentence",
+            "current": "good, although it can",
+            "proposed": "good, because it can",
+            "category": "logic",
+            "reason": "Wrong connector. Encouraging us to change things that make us unhappy is the reason anger can be good, not a contrast with it. The exam original (dump line 25) has 'because'.",
+            "lens": "B"
+          },
+          {
+            "pid": "z94",
+            "loc": "¶4 'Share your feelings…'",
+            "current": "feelings to someone",
+            "proposed": "feelings with someone",
+            "category": "word-choice",
+            "reason": "The correct collocation is 'share something with someone'; 'share … to someone' is wrong. The exam original (dump line 28) has 'with'.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The z94 text reads 'everyone feel angry sometimes'. 'Everyone' needs a singular verb, so 'feels' is right. Dump line 25 also has 'feels'."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The text matches exactly. The clause gives the reason anger can be good, so concessive 'although' is a logic error. 'because' is correct and is the exam's wording (dump line 25). This is the same fix as index 4."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "'make you angrily' is wrong because make + object needs an adjective complement. 'angry' is correct and minimal, and matches dump line 27."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "'Share your feelings to someone' uses the wrong preposition. The correct form is 'share … with someone', which matches dump line 28. This is the same fix as index 5."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "Same error as index 1 with a slightly longer 'current' string, which matches the text exactly ('good, although it can'). The fix to 'because' is correct (dump line 25). It duplicates index 1, so apply only once."
+          },
+          {
+            "index": 5,
+            "verdict": "accept",
+            "why": "Same error as index 3. 'feelings to someone' matches the text exactly, and 'with' is the correct preposition (dump line 28). It duplicates index 3, so apply only once."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "Definite subject-verb agreement error: 'everyone' takes a singular verb, so it should be 'everyone feels'. Dump line 25 of the exam reads 'feels'."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The clause explains why anger can be good, so it needs 'because'. Concessive 'although' contradicts the logic. Dump line 25 reads 'because'. Index 4 proposes the same fix."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "After make + object, the complement must be an adjective: 'make you angry'. An adverb there is ungrammatical. Dump line 27 reads 'angry'."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "The correct form is 'share something with someone'; 'share ... to someone' is wrong. Dump line 28 reads 'with'. Index 5 proposes the same fix."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "Same fix as index 1 (although -> because), with a slightly longer match string. It is correct and matches dump line 25. Apply it only once."
+          },
+          {
+            "index": 5,
+            "verdict": "accept",
+            "why": "Same fix as index 3 (to -> with), with a shorter match string. It is correct and matches dump line 28. Apply it only once."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z24",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z25",
+        "findings": [
+          {
+            "pid": "z25",
+            "loc": "¶4 last sentence",
+            "current": "so that more used plastic could be turned into something useful",
+            "proposed": "so that more used plastic can be turned into something useful",
+            "category": "grammar",
+            "reason": "The tenses don't match. The main clause is present ('hope … they can 3D print'), so the purpose clause after 'so that' needs present 'can', not past 'could'. Mixing 'can … could' in one sentence is the kind of slip a teacher would mark, and students will memorise this sentence.",
+            "lens": "A"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The 'current' text matches z25 ¶4 exactly, and the exam dump has 'could' too. The main clause is present and real ('The researchers hope that one day they can 3D print…'), not past or hypothetical. Standard usage (e.g. Swan) takes so that + can/will after a present main clause, and could/would after a past one. A teacher would mark the 'can … could' clash wrong, especially since students memorise these sentences. Changing 'could' to 'can' is the right, smallest fix."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The main clause is present ('hope … they can 3D print'), so the 'so that' purpose clause should use 'can'. Junior-high grammar teaches this agreement explicitly (present main clause takes can/may/will; past takes could/might/would). Mixing 'can … could' in one sentence is a tense-sequence slip that a strict teacher would mark, so it should not be memorised. The change keeps the meaning, and 'can' is clearly correct."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z26",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z27",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "finalA:Gz21",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a441c7b53983106dc",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944291003,
+      "queuedAt": 1791944290932,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full and checked every sentence. I…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944361219,
+      "tokens": 72588,
+      "toolCalls": 7,
+      "durationMs": 70215,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z94\",\"loc\":\"¶1 sentence 3\",\"current\":\"everyone feel angry\",\"proposed\":\"everyone feels angry\",\"category\":\"grammar\",\"reason\":\"Subject-verb agreement: 'everyone' takes a singular verb. The exam original reads 'everyone feels angry sometimes'.\"},{\"pid\":\"z94\",\"loc\":\"¶1 last sentence\",\"current\":\"although it can encourage\",\"proposed\":\"because it can encourage\",\"category\":\"logic\",\"rea…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "finalB:Gz21",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a9b0d81b973734925",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944291003,
+      "queuedAt": 1791944290960,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked every passage sentence by sentence against the ex…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944360264,
+      "tokens": 73456,
+      "toolCalls": 5,
+      "durationMs": 68754,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z94\",\"loc\":\"¶1 sentence 3\",\"current\":\"everyone feel angry\",\"proposed\":\"everyone feels angry\",\"category\":\"grammar\",\"reason\":\"'Everyone' takes a singular verb. The exam original (dump line 25) also has 'feels'.\"},{\"pid\":\"z94\",\"loc\":\"¶1 last sentence\",\"current\":\"good, although it can\",\"proposed\":\"good, because it can\",\"category\":\"logic\",\"reason\":\"Wrong connector. Encouraging us t…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "finalA:Gz24",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ae9d0af35c3ab4271",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944361845,
+      "queuedAt": 1791944291030,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full and checked every sentence ag…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944487456,
+      "tokens": 81468,
+      "toolCalls": 9,
+      "durationMs": 125610,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z25\",\"loc\":\"¶4 last sentence\",\"current\":\"so that more used plastic could be turned into something useful\",\"proposed\":\"so that more used plastic can be turned into something useful\",\"category\":\"grammar\",\"reason\":\"The tenses don't match. The main clause is present ('hope … they can 3D print'), so the purpose clause after 'so that' needs present 'can', not past 'could'. Mixing 'c…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "finalB:Gz24",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a92fa3cb45c43b8d5",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944362790,
+      "queuedAt": 1791944291030,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found no definite errors in z24–z27, and every correction…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944529715,
+      "tokens": 90180,
+      "toolCalls": 15,
+      "durationMs": 166925,
+      "resultPreview": "{\"findings\":[],\"notes\":\"I found no definite errors in z24–z27, and every correction already applied is right. I checked all four files sentence by sentence against the exam text in the dumps; the Chongqing page image also matches. Facts were checked online where I could.\\n\\nz24 (Shenzhen, reading C; no corrections applied). Sentences I examined most closely:\\n- \\\"fifteen international students … T…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "verify-acc:Gz21",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a360772e49d5052ed",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944489259,
+      "queuedAt": 1791944362832,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944500171,
+      "tokens": 63534,
+      "toolCalls": 3,
+      "durationMs": 10911,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The z94 text reads 'everyone feel angry sometimes'. 'Everyone' needs a singular verb, so 'feels' is right. Dump line 25 also has 'feels'.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The text matches exactly. The clause gives the reason anger can be good, so concessive 'although' is a logic error. 'because' is correct and is the exam's wording (dump line…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "verify-strict:Gz21",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a38ecb14dfe3a665a",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944501781,
+      "queuedAt": 1791944362832,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944512110,
+      "tokens": 63586,
+      "toolCalls": 3,
+      "durationMs": 10328,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"Definite subject-verb agreement error: 'everyone' takes a singular verb, so it should be 'everyone feels'. Dump line 25 of the exam reads 'feels'.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The clause explains why anger can be good, so it needs 'because'. Concessive 'although' contradicts the logic. Dump line 25 reads 'because'. Index 4 proposes the sa…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "verify-acc:Gz24",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a3154534095426734",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944531414,
+      "queuedAt": 1791944531408,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944546832,
+      "tokens": 62953,
+      "toolCalls": 3,
+      "durationMs": 15417,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The 'current' text matches z25 ¶4 exactly, and the exam dump has 'could' too. The main clause is present and real ('The researchers hope that one day they can 3D print…'), not past or hypothetical. Standard usage (e.g. Swan) takes so that + can/will after a present main clause, and could/would after a past one. A teacher would mark the 'can … could…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "verify-strict:Gz24",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a5b683eca6bc18eb6",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944531414,
+      "queuedAt": 1791944531408,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944546325,
+      "tokens": 63199,
+      "toolCalls": 3,
+      "durationMs": 14909,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The main clause is present ('hope … they can 3D print'), so the 'so that' purpose clause should use 'can'. Junior-high grammar teaches this agreement explicitly (present main clause takes can/may/will; past takes could/might/would). Mixing 'can … could' in one sentence is a tense-sequence slip that a strict teacher would mark, so it should not be m…"
+    }
+  ],
+  "totalTokens": 570964,
+  "totalToolCalls": 48
+}

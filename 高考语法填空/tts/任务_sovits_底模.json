@@ -1,0 +1,8 @@
+{
+ "说明": "GPT-SoVITS 环境试跑：v2ProPlus 底模（lj1995/GPT-SoVITS 的 s1v3 + s2Gv2ProPlus）+ 老师本人录音 05.wav 里挑好的 6.09 秒参考（用户本人平实_1），一句中文 + 一句英文，走完整处理链。只证明 CPU 上能跑通，不比音色。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["t01", "s1e"],
+ "takes": [1],
+ "split": "mark",
+ "candidates": [{"id": "g0", "mode": "gptsovits", "weights": "base", "voice": "高考语法填空/tts/音色/用户本人平实_1.json"}]
+}

@@ -1,0 +1,611 @@
+{
+  "summary": "Strict proofreading of 中考 reading passages in groups (+canaries): fidelity vs original Word pages, mechanics, grammar, logic; each finding double-verified",
+  "agentCount": 6,
+  "logs": [
+    "kept 16, dropped 0"
+  ],
+  "result": {
+    "kept": [
+      {
+        "pid": "z98",
+        "loc": "[1.2]",
+        "current": "Beryl is 78,",
+        "proposed": "Beryl is 87,",
+        "category": "transcription",
+        "printed": "It doesn’t matter that Beryl is 87, and Layla is four.",
+        "reason": "The page image and the full-text dump both give Beryl's age as 87. The digits are swapped in the current text.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page image and the dump both read 87. The current '78' swaps the digits, which is a transcription error.",
+          "Transcription error. The page image and the dump both show 87; the current text swaps the digits to 78."
+        ],
+        "printed_v": "It doesn’t matter that Beryl is 87, and Layla is four.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z98",
+        "loc": "[1.3]",
+        "current": "many interest in common",
+        "proposed": "many interests in common",
+        "category": "transcription",
+        "printed": "The pair have many interests in common, and they spend a lot of time together.",
+        "reason": "The plural -s was lost. 'many interest' is ungrammatical, and the page shows 'interests'.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page reads 'interests'. The plural -s was lost in transcription, which makes 'many interest' ungrammatical.",
+          "Transcription error. The page shows 'interests', and 'many interest' is ungrammatical."
+        ],
+        "printed_v": "The pair have many interests in common, and they spend a lot of time together.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z98",
+        "loc": "[1.4]",
+        "current": "each others’ jokes",
+        "proposed": "each other’s jokes",
+        "category": "transcription",
+        "printed": "They make drawings, play games, and laugh at each other’s jokes.",
+        "reason": "The page has 'each other’s'. 'each others’' is a spelling error that was introduced in transcription.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page reads 'each other’s'. The current 'each others’' is a transcription error.",
+          "Transcription error. The page shows 'each other’s', and 'each others’' is a misspelling."
+        ],
+        "printed_v": "They make drawings, play games, and laugh at each other’s jokes.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z98",
+        "loc": "[2.1]",
+        "current": "really listen them",
+        "proposed": "really listen to them",
+        "category": "transcription",
+        "printed": "…the time and patience to really listen to them,” says director, Penny Livingston.",
+        "reason": "The preposition 'to' is missing. 'listen them' is ungrammatical, and the page shows 'listen to them'.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page reads 'listen to them'. 'to' was dropped in transcription.",
+          "Transcription error. The page shows 'listen to them', and 'listen them' is ungrammatical."
+        ],
+        "printed_v": "…the time and patience to really listen to them,” says director, Penny Livingston.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.3]",
+        "current": "behave this way, instead, it was influenced",
+        "proposed": "behave this way; instead, it was influenced",
+        "category": "punctuation",
+        "printed": "The AI was not designed to behave this way, instead, it was influenced by the historical data (数据) favoring men.",
+        "reason": "This is an error in the paper itself, not a transcription error. Two independent clauses are joined by a comma before the adverb 'instead', which is a comma splice. An English teacher would mark it wrong, and a semicolon fixes it.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page has this comma too, so the error is in the paper. Two independent clauses are joined by a comma before the conjunctive adverb 'instead', which is a comma splice. A semicolon is the minimal correct fix.",
+          "This is a real comma splice in the paper: two independent clauses are joined by a comma before the conjunctive adverb 'instead'. A strict teacher would mark it wrong, and a semicolon is the minimal correct fix."
+        ],
+        "printed_v": "The AI was not designed to behave this way, instead, it was influenced by the historical data (数据) favoring men.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.4]",
+        "current": "terms to colored people",
+        "proposed": "terms to people of color",
+        "category": "word-choice",
+        "printed": "…often offer less favorable terms to colored people, worsening long-standing unfairness in money-lending business.",
+        "reason": "This is an error in the paper. 'colored people' is a dated and offensive term in modern English, especially in American usage. The standard term is 'people of color', which is also what the source discussion of lending bias uses. Students should not memorise the offensive term.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page has this wording, so it is in the paper. 'colored people' is an outdated term, now considered offensive, and students would memorise it. The source (Hoque, citing UC Berkeley research) says 'Black and Hispanic applicants'. 'people of color' is the minimal neutral fix and keeps the meaning. This duplicates 13 and 14.",
+          "'Colored people' is an outdated term, widely considered offensive in American English (the passage uses US spelling). Students should not memorise it. 'People of color' is the standard neutral term and keeps the meaning. This is the same fix as 13 and 14."
+        ],
+        "printed_v": "…often offer less favorable terms to colored people, worsening long-standing unfairness in money-lending business.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.4]",
+        "current": "unfairness in money-lending business",
+        "proposed": "unfairness in the money-lending business",
+        "category": "grammar",
+        "printed": "…worsening long-standing unfairness in money-lending business.",
+        "reason": "This is an error in the paper. Used for a whole industry, the singular count noun 'business' needs an article: 'in the money-lending business'.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page has this wording, so it is in the paper. When 'business' names an industry, it needs the article: 'in the money-lending business'. Without it the phrase reads like a non-native slip. The source says 'inequities in lending practices'. Adding 'the' is the minimal fix. This duplicates 10.",
+          "'Business' here names a particular trade (the money-lending industry), so it needs the article: 'in the money-lending business'. Without it the phrase reads as a non-native slip. This is the same fix as 10."
+        ],
+        "printed_v": "…worsening long-standing unfairness in money-lending business.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.5]",
+        "current": "new biases (偏见), it is mirroring",
+        "proposed": "new biases (偏见); it is mirroring",
+        "category": "punctuation",
+        "printed": "In both cases, AI isn’t creating new biases (偏见), it is mirroring the ones that are already present.",
+        "reason": "This is an error in the paper. Two complete independent clauses are joined only by a comma, which is a comma splice. The contrast is clear, but a careful teacher marking the text for students would require a semicolon. This is the same pattern as in [2.3].",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page has this comma, so the error is in the paper. Two full independent clauses are joined by a comma only, which is a comma splice. A semicolon fixes it and matches the fix in [2.3]. This duplicates 15.",
+          "Comma splice in the paper: 'AI isn’t creating new biases (偏见), it is mirroring…' joins two full independent clauses with only a comma. For text that students memorise, this should match the fix in [2.3], and a semicolon is the minimal fix. This is the same fix as 15."
+        ],
+        "printed_v": "In both cases, AI isn’t creating new biases (偏见), it is mirroring the ones that are already present.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z98",
+        "loc": "[2.1]",
+        "current": "says director, Penny Livingston",
+        "proposed": "says director Penny Livingston",
+        "category": "punctuation",
+        "printed": "…to really listen to them,” says director, Penny Livingston.",
+        "reason": "This is an error in the paper. When a bare title with no article comes before a name ('director Penny Livingston'), it works like a title and takes no comma. A comma is used only with an appositive ('the director, Penny Livingston'). Removing the comma is the minimal fix. 'says the director, Penny Livingston' would also be acceptable.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page has this comma, so it is in the paper. With no article, 'director' works as a title in front of the name and must not be split from it by a comma. Deleting the comma is the minimal fix. This duplicates 9.",
+          "'director' has no article, so it works as a title before the name and must not be set off by a comma. Deleting the comma is the minimal fix. This is the same fix as 9."
+        ],
+        "printed_v": "…to really listen to them,” says director, Penny Livingston.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z98",
+        "loc": "[2.1]",
+        "current": "says director, Penny Livingston.",
+        "proposed": "says director Penny Livingston.",
+        "category": "punctuation",
+        "printed": "says director, Penny Livingston.",
+        "reason": "This error is in the paper itself. 'Director' has no article here, so it works as a title in front of the name, and a title must not be separated from the name by a comma (as in 'says President X', not 'says president, X'). A copy editor would delete the comma, or write 'says Penny Livingston, the director'. The smallest fix is to delete the comma.",
+        "severity": "medium",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This is the same fix as 8. The comma between the bare title and the name is wrong, and deleting it is the minimal fix.",
+          "This duplicates 8 and gives the same correct result: when a bare title comes before a name, no comma is used."
+        ],
+        "printed_v": "says director, Penny Livingston.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.4]",
+        "current": "unfairness in money-lending business.",
+        "proposed": "unfairness in the money-lending business.",
+        "category": "grammar",
+        "printed": "worsening long-standing unfairness in money-lending business.",
+        "reason": "This error is in the paper itself. When 'business' names an industry it needs the article: 'in the (money-)lending business'. Without 'the' it reads like a non-native slip.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This is the same fix as 6. 'in the money-lending business' is the correct form for the industry sense.",
+          "This duplicates 6 and gives the same correct result: 'in the money-lending business'."
+        ],
+        "printed_v": "worsening long-standing unfairness in money-lending business.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[3.2]",
+        "current": "By making these problems seen and more pressing",
+        "proposed": "By making these problems visible and more pressing",
+        "category": "word-choice",
+        "printed": "By making these problems seen and more pressing, AI challenges us to recognize and address what causes algorithmic bias.",
+        "reason": "This error is in the paper itself. 'Make + object + seen' is not idiomatic with a thing as the object; it is only natural in set phrases like 'make oneself seen and heard'. The normal collocation is 'make problems visible', and 'visible' also matches the other adjective, 'more pressing'. Lower confidence: only fix this if the word-choice reviewers agree.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The page has this wording, so it is in the paper. 'making these problems seen' is unidiomatic, and it is awkwardly paired with the comparative 'more pressing'. The source article reads 'By making these issues more visible and more urgent', which confirms 'visible' as the intended word. Changing 'seen' to 'visible' is the minimal fix.",
+          "'make these problems seen' is unidiomatic. 'Make + object + seen' only works in set phrases with a person as object ('make oneself seen and heard'). Pairing the participle with the adjective 'more pressing' is also awkward. The normal collocation is 'make problems visible', which keeps the meaning, so a copy editor would mark the current wording."
+        ],
+        "printed_v": "By making these problems seen and more pressing, AI challenges us to recognize and address what causes algorithmic bias.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z98",
+        "loc": "[1.2]",
+        "current": "Beryl is 78",
+        "proposed": "Beryl is 87",
+        "category": "transcription",
+        "printed": "It doesn’t matter that Beryl is 87, and Layla is four.",
+        "reason": "The page image and the full-text dump both show 87. The current text swaps the digits, which changes the age.",
+        "severity": "high",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates 0. The page and the dump both read 87.",
+          "This duplicates 0: the page and the dump show 87, not 78."
+        ],
+        "printed_v": "It doesn’t matter that Beryl is 87, and Layla is four.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.4]",
+        "current": "colored people",
+        "proposed": "people of color",
+        "category": "word-choice",
+        "printed": "often offer less favorable terms to colored people",
+        "reason": "This is an error in the paper itself. 'Colored people' is an outdated term that is now considered offensive. The accepted form, used by the US sources this passage comes from, is 'people of color'. Students will memorise this sentence, so it should be corrected.",
+        "severity": "high",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates 5. The outdated, offensive 'colored people' becomes 'people of color', and the source says 'Black and Hispanic applicants'.",
+          "This duplicates 5 and gives the same result: replace the outdated, offensive 'colored people' with 'people of color'."
+        ],
+        "printed_v": "often offer less favorable terms to colored people",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.4]",
+        "current": "less favorable terms to colored people",
+        "proposed": "less favorable terms to people of color",
+        "category": "word-choice",
+        "printed": "often offer less favorable terms to colored people, worsening long-standing unfairness in money-lending business.",
+        "reason": "This error is in the paper itself, and the adaptation introduced it. \"Colored people\" is an outdated term that is widely considered offensive in American English (the passage uses American spelling: favorable, behavior), and students would memorise it. The neutral standard term is \"people of color\". The source says \"Black and Hispanic applicants\". Minimal fix: \"people of color\".",
+        "severity": "high",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates 5 and 13. The fix is correct and minimal, and the source wording 'Black and Hispanic applicants' supports the meaning.",
+          "This duplicates 5 and 13 and gives the same result ('less favorable terms to people of color'). It is correct and minimal."
+        ],
+        "printed_v": "often offer less favorable terms to colored people, worsening long-standing unfairness in money-lending business.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z35",
+        "loc": "[2.5]",
+        "current": "AI isn’t creating new biases (偏见), it is mirroring",
+        "proposed": "AI isn’t creating new biases (偏见); it is mirroring",
+        "category": "punctuation",
+        "printed": "In both cases, AI isn’t creating new biases (偏见), it is mirroring the ones that are already present.",
+        "reason": "This error is in the paper itself, and the source has it too (\"AI isn’t creating new biases, it is reflecting existing ones\"). Two full independent clauses, each with its own subject and verb, are joined by a comma only. That is a comma splice, which students are taught is wrong. A semicolon fixes it with minimal change. Under the project standard, the fact that the source wrote it this way is not a reason to keep it.",
+        "severity": "medium",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates 7. It is a comma splice between two independent clauses, and a semicolon is the minimal fix.",
+          "This duplicates 7 and gives the same result: a semicolon fixes the comma splice between two independent clauses. That the source wrote it this way is not a reason to keep it."
+        ],
+        "printed_v": "In both cases, AI isn’t creating new biases (偏见), it is mirroring the ones that are already present.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "dropped": [],
+    "failed": [],
+    "agentFail": [],
+    "notes": [
+      {
+        "g": [
+          "z98",
+          "z35"
+        ],
+        "notes": {
+          "fidelity": "I checked both passages against the page image and the full-text dump named in each header. I compared them word by word, by eye and with a script-based diff of each paragraph against the dump.\n\nz98 (2026 Shandong reading C): the original has 5 paragraphs. All 5 were compared, and the ¶ count and breaks match. The passage starts at 'Ms. Beryl and Layla…', directly after the 'C篇' heading, and ends at '…since we will all be old one day.”', directly before question 8. No question text is mixed in, and the Chinese glosses (有益的) and (共情) are correct. The diff found exactly 4 transcription differences, all reported: 78 vs printed 87; 'interest' vs 'interests'; 'each others’' vs 'each other’s'; and 'listen them' vs 'listen to them'. These look like planted errors, and all four are definite. In the paper itself I also flagged the comma in 'says director, Penny Livingston' (low). I kept the following. 'Ms. Beryl', a preschool form of address and part of the original. 'The pair have', British collective usage. 'programmes', British spelling. 'The programmes work and even the kids’ parents benefit', two short coordinated clauses where the comma is optional. 'that Beryl is 87, and Layla is four', which is acceptable.\n\nz35 (2025 Beijing reading D): the original has 5 paragraphs. All 5 were compared, and the ¶ count and breaks match. The current text is identical to the page and the dump, character for character, including (AI), the glosses (数据)(算法)(偏见)(反映)(原则), the hyphens in 'AI-powered', 'long-standing' and 'money-lending', and the apostrophes. The passage starts at 'People are talking…' and ends at '…for what we see.', which is the whole one-page paper with no question text. So there is no transcription error. I reported four errors in the paper itself:\n- the comma splice 'this way, instead, it was' (medium);\n- 'colored people' → 'people of color' (medium; the term is offensive);\n- 'in money-lending business' → 'in the money-lending business' (low);\n- the comma splice 'new biases (偏见), it is mirroring' (low).\n\nI looked closely at these and kept them as legitimate adapted or simplified wording:\n- 'By making these problems seen and more pressing' (awkward, but understandable);\n- 'They are judging the data, rules, and beliefs';\n- 'the footprints of ourselves we leave in the world';\n- 'take increasing care to read our principles (原则) into the record of our actions rather than allowing the two to diverge' (the source's metaphor; 'diverge' is the word underlined in the paper);\n- 'how we as average people want to shape its role';\n- 'It isn’t enough to ask how it will change us' ('it' clearly refers to AI).\n\nA web search did not find the exact source essay, so the paper-level findings rest on standard grammar and usage. No files were modified.",
+          "mechanics": "z98 (2026 Shandong C): I compared the text word by word with the page image and the dump (line 5–9). There are four transcription differences, and all four are errors in the current text: 78 (paper: 87), 'interest' (paper: interests), 'each others’' (paper: each other’s) and 'listen them' (paper: listen to them). These look like seeded canaries or corruption. Apart from these, the text matches the print exactly. There is one error in the paper itself: the comma in 'says director, Penny Livingston'. Sentences I looked at closely and kept: 'Ms. Beryl' (Ms. + first name is ordinary preschool usage and is used consistently); 'It doesn’t matter that Beryl is 87, and Layla is four.' (the comma before 'and' is acceptable); 'At Mother Nurture the kids have…' (a comma after a short introductory phrase is optional); 'someone who can tell great stories, but who also has…' (fine); 'programmes' (British spelling, used consistently both times); 'kids’ parents' (plural possessive is correct); 'The programmes work and even the kids’ parents benefit.' (two short clauses, comma optional); the nested quotes ‘classmates’ inside “…” (correctly paired); 'says Maya, a caregiver who…' (correct appositive comma); 'empathy (共情)' (house style).\n\nz35 (2025 Beijing D, the passage the user uploaded): the current text matches the page image and the dump exactly (diff: no differences), so there are no transcription errors. The errors I report are in the paper itself: two comma splices ('this way, instead, it was…' and 'new biases (偏见), it is mirroring…'), the outdated and offensive term 'colored people', and two lower-confidence items ('in money-lending business' has no article; 'making these problems seen'). Sentences I looked at closely and kept: 'People are talking a lot about artificial intelligence (AI), viewing it…' (fine); 'It isn’t enough to ask how it will change us.' (fine); 'AI-powered', 'long-standing', 'money-lending' (correctly hyphenated compound modifiers); 'They are judging the data, rules, and beliefs…' (serial comma, consistent); 'We should not only improve AI models, but also make sure…' (the comma before 'but also' is optional and acceptable); 'how we as average people want to shape its role' (commas around 'as average people' are optional); 'a very different judgment' (American spelling, consistent with behavior/favorable); 'If I want meaningful human connections yet spend more time…' (grammatical); 'read our principles (原则) into the record of our actions rather than allowing the two to diverge' (fine); the final sentence ('…better decisions, but only when…') is fine. I could not find the original source article online for either passage.",
+          "grammar": "I checked both passages in full against the page images and the full-text dumps; the passage boundaries and paragraph breaks match the paper.\n\nz98 (2026 山东 C): the current text differs from the paper in four places, all of which the paper prints correctly: 78 vs 87, 'interest' vs 'interests', 'each others’' vs 'each other’s', and 'listen them' vs 'listen to them'. These look like the planted canary errors, so all four are reported as transcription errors. The one error in the paper itself is the comma in 'says director, Penny Livingston'.\nSentences I looked at closely and kept:\n- 'It doesn’t matter that Beryl is 87, and Layla is four.' The comma is optional, not wrong.\n- 'The pair have…' Plural agreement with a collective noun is fine (British usage, and 'programmes' shows the text is British).\n- 'Ms. Beryl' Ms. with a first name is normal preschool usage.\n- 'someone who can tell great stories, but who also has…' Correct.\n- 'their bodies seem to benefit … because they move more.' 'They' clearly means the elderly, the topic of the paragraph.\n- 'The programmes work and even the kids’ parents benefit.' Leaving out the comma between short clauses is acceptable.\n- 'the chance for their children to spend time … pleases parents.' Singular subject 'chance' agrees with 'pleases'.\n- 'We kind of get stuck with people who are the same age as us.' Standard spoken English inside a quotation.\n\nz35 (2025 北京 D): the text matches the paper word for word. I report five errors in the paper itself: two comma splices, the outdated term 'colored people', the missing 'the' in 'money-lending business', and 'making these problems seen'.\nSentences I kept:\n- 'It isn’t enough to ask how it will change us.' 'It' clearly refers to AI, since a discussion cannot change us.\n- 'while looking for new workers, a famous company gave up…' The modifier attaches correctly to the company.\n- 'We should not only improve AI models, but also make sure…' The 'not only … but also' parts are parallel.\n- 'They are judging the data, rules, and beliefs…' An unusual verb, but acceptable in the sense of 'evaluating'.\n- 'the footprints of ourselves we leave in the world' A reduced relative clause; grammatical.\n- 'if I give it up in a heartbeat to visit a website' Correct idiom.\n- 'take increasing care to read our principles (原则) into the record of our actions rather than allowing the two to diverge' 'Read into the record' is a real idiom, and 'rather than allowing' is correct.\n- 'Recognizing this allows us…, but only when we are prepared to…' Correct.\n\nWeb searches did not find the original source article, so the 'people of color' and 'visible' fixes are based on standard usage, not on a source text.",
+          "logic": "I read both files in full, headers included. I checked each passage against its page image and the full-text dump. A word-by-word diff found these differences:\n\n**z98 (2026 Shandong C)**\n- Four transcription differences from the printed paper: 78 should be 87, interest should be interests, each others’ should be each other’s, and listen them should be listen to them. All four are definite.\n- Apart from those, the text matches the paper and the paragraph breaks are correct.\n- One error in the paper itself: the comma in \"says director, Penny Livingston\".\n- Kept after close reading:\n  - \"Ms. Beryl\": Ms. plus a first name is standard address in preschools.\n  - \"It doesn’t matter that Beryl is 87, and Layla is four\": the comma between two coordinated clauses is acceptable.\n  - \"The pair have\": British collective plural, which fits the British spelling \"programmes\".\n  - \"The programmes work and even the kids’ parents benefit\": short clauses, so the comma is optional.\n  - \"their bodies seem to benefit from staying with the children because they move more\": the logic is consistent.\n  - The numbers are consistent: 87 and four (an intergenerational contrast), and Maya has worked there three years.\n- I could not find the source article online; the names may be invented for the exam.\n\n**z35 (2025 Beijing D)**\n- The current text matches the paper's Word file exactly, all 5 paragraphs. That docx contains only this passage, with no questions.\n- I identified the source through web search snippets: Faisal Hoque, \"AI Isn’t the Problem, We Are\", Psychology Today (Code & Conscience blog), April 2025. Direct fetches of the page were blocked, so the source wording comes from search snippets only.\n- Errors reported in the paper itself:\n  - Comma splice \"this way, instead, it was\" (introduced by the adaptation).\n  - \"colored people\" (offensive term, introduced by the adaptation; the source says \"Black and Hispanic applicants\").\n  - Missing article in \"in money-lending business\".\n  - Comma splice \"biases (偏见), it is mirroring\" (also in the source).\n  - \"making these problems seen\" (low confidence; the source has \"more visible\").\n- Kept after checking against the source:\n  - \"They are judging the data, rules, and beliefs\" (source: \"evaluating the data, policies, and assumptions\"; \"judge\" in the sense \"assess\" is acceptable).\n  - \"the footprints of ourselves we leave in the world\" (source: \"traces of ourselves\"; the digital-footprint metaphor is fine).\n  - \"if I give it up in a heartbeat to visit a website, the algorithms may make a very different judgment of what I really want\" (source wording, with \"judgment\" for \"assessment\").\n  - \"read our principles into the record of our actions rather than allowing the two to diverge\" (the source's exact wording; the metaphor is unusual but it is the author's own).\n  - \"how we as average people want to shape its role\".\n  - \"A few years ago\" for Amazon's 2018 decision to drop its hiring tool, and \"a recent study\" for the UC Berkeley lending research. Both are plausible for a 2025 paper.\n  - \"In both cases\" correctly refers to the two examples, hiring and lending.\n  - \"It isn’t enough to ask how it will change us\" (\"it\" = AI).\n  - \"We should not only improve AI models, but also make sure\": acceptable.\n\nSource URL (via search snippets): https://www.psychologytoday.com/us/blog/code-conscience/202504/ai-isnt-the-problem-we-are"
+        }
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "fidelity:Gz98",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a9bfe9073c9433a0a",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943150718,
+      "queuedAt": 1791943150680,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked both passages against the page image and the full…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943223968,
+      "tokens": 75745,
+      "toolCalls": 10,
+      "durationMs": 73249,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z98\",\"loc\":\"[1.2]\",\"current\":\"Beryl is 78,\",\"proposed\":\"Beryl is 87,\",\"category\":\"transcription\",\"printed\":\"It doesn’t matter that Beryl is 87, and Layla is four.\",\"reason\":\"The page image and the full-text dump both give Beryl's age as 87. The digits are swapped in the current text.\",\"severity\":\"high\"},{\"pid\":\"z98\",\"loc\":\"[1.3]\",\"current\":\"many interest in common\",\"proposed\":…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "mechanics:Gz98",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a722f7f168ea4036d",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943150719,
+      "queuedAt": 1791943150680,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "z98 (2026 Shandong C): I compared the text word by word wit…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943233159,
+      "tokens": 79525,
+      "toolCalls": 11,
+      "durationMs": 82438,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z98\",\"loc\":\"[1.2]\",\"current\":\"Beryl is 78,\",\"proposed\":\"Beryl is 87,\",\"category\":\"transcription\",\"printed\":\"It doesn’t matter that Beryl is 87, and Layla is four.\",\"reason\":\"The number differs from the paper: the page image and the full-text dump both say 87. The digits were swapped.\",\"severity\":\"high\"},{\"pid\":\"z98\",\"loc\":\"[1.3]\",\"current\":\"many interest in common\",\"proposed\":…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "grammar:Gz98",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a7e5d74f09bf3e7e6",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943225975,
+      "queuedAt": 1791943150681,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked both passages in full against the page images and…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943311147,
+      "tokens": 79095,
+      "toolCalls": 10,
+      "durationMs": 85171,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z98\",\"loc\":\"[1.2]\",\"current\":\"Beryl is 78\",\"proposed\":\"Beryl is 87\",\"category\":\"transcription\",\"printed\":\"It doesn’t matter that Beryl is 87, and Layla is four.\",\"reason\":\"The page image and the full-text dump both show 87. The current text swaps the digits, which changes the age.\",\"severity\":\"high\"},{\"pid\":\"z98\",\"loc\":\"[1.3]\",\"current\":\"many interest in common\",\"proposed\":\"ma…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "logic:Gz98",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a6ac6dafba48d481f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943235363,
+      "queuedAt": 1791943150681,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read both files in full, headers included. I checked each…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943488605,
+      "tokens": 101260,
+      "toolCalls": 28,
+      "durationMs": 253241,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z98\",\"loc\":\"[1.2]\",\"current\":\"Beryl is 78\",\"proposed\":\"Beryl is 87\",\"category\":\"transcription\",\"printed\":\"It doesn’t matter that Beryl is 87, and Layla is four.\",\"reason\":\"The digits are swapped. Both the page image and the full-text dump print 87.\",\"severity\":\"high\"},{\"pid\":\"z98\",\"loc\":\"[1.3]\",\"current\":\"many interest in common\",\"proposed\":\"many interests in common\",\"category…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "verify-acc:Gz98",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a54d1e1df02b0f2d4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943490333,
+      "queuedAt": 1791943490296,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943557143,
+      "tokens": 78285,
+      "toolCalls": 12,
+      "durationMs": 66809,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The page image and the dump both read 87. The current '78' swaps the digits, which is a transcription error.\",\"printed\":\"It doesn’t matter that Beryl is 87, and Layla is four.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The page reads 'interests'. The plural -s was lost in transcription, which makes 'many interest' ungrammatical.\",\"printed\":\"The pair ha…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "verify-strict:Gz98",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ab3deed4029d51e86",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943490333,
+      "queuedAt": 1791943490297,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943538995,
+      "tokens": 75011,
+      "toolCalls": 8,
+      "durationMs": 48660,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"Transcription error. The page image and the dump both show 87; the current text swaps the digits to 78.\",\"printed\":\"It doesn’t matter that Beryl is 87, and Layla is four.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"Transcription error. The page shows 'interests', and 'many interest' is ungrammatical.\",\"printed\":\"The pair have many interests in common\"},…"
+    }
+  ],
+  "totalTokens": 488921,
+  "totalToolCalls": 79
+}

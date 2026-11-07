@@ -1,0 +1,1075 @@
+{
+  "summary": "Strict proofreading of 中考 reading passages in groups (+canaries): fidelity vs original Word pages, mechanics, grammar, logic; each finding double-verified",
+  "agentCount": 12,
+  "logs": [
+    "kept 27, dropped 1"
+  ],
+  "result": {
+    "kept": [
+      {
+        "pid": "z23",
+        "loc": "[2.3]",
+        "current": "even with no food reward at once",
+        "proposed": "even with no immediate food reward",
+        "category": "word-choice",
+        "printed": "Most of the ravens chose the tool, even with no food reward at once.",
+        "reason": "This is an error in the printed paper, not a transcription error. 'At once' is an adverb meaning 'immediately' and normally modifies a verb ('come at once'). Attached to the noun phrase 'no food reward', it reads awkwardly and is unidiomatic. The intended meaning is 'with no immediate reward'. A careful teacher would mark it. Borderline, so low severity; the grammar reviewers should decide.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription is correct (checked against the p1 image and the dump), so this is an error in the paper itself. 'At once' is a verb-modifying adverbial meaning 'immediately'. Attached to the noun phrase 'no food reward' it is unidiomatic, and it can also be misread as 'simultaneously'. 'No immediate food reward' is the standard wording, is minimal and keeps the meaning (a delayed reward).",
+          "'At once' is an adverb for verbs (come at once). Putting it after the noun phrase 'no food reward' is unidiomatic, a word-for-word rendering of 马上没有食物奖励, and a strict teacher would mark it. 'With no immediate food reward' is the standard minimal fix and keeps the meaning, and the treat still comes 'later'."
+        ],
+        "printed_v": "Most of the ravens chose the tool, even with no food reward at once.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z22",
+        "loc": "[2.4]",
+        "current": "For voluntourists, they get free meals",
+        "proposed": "As for voluntourists, they get free meals",
+        "category": "grammar",
+        "printed": "For voluntourists, they get free meals and housing when volunteering.",
+        "reason": "This is an error in the printed paper, not a transcription error. 'For X, they…' uses 'for' as a topic marker and then repeats the subject as a pronoun. This is the familiar Chinglish pattern ('For me, I think…') that English teachers mark as redundant. 'As for X, they…' is the standard way to introduce a topic and keeps the contrast with 'For local communities' in the previous sentence. Borderline, so low severity.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription is correct, so this is an error in the paper. Using 'For X' as a topic marker and then repeating the subject as 'they' is the familiar Chinglish pattern ('For me, I think…') that teachers mark as redundant. 'As for voluntourists, they get…' is the standard way to introduce a topic, needs only a minimal change and keeps the contrast with the 'For local communities' sentence.",
+          "'For voluntourists, they get…' is the classic redundant topic-plus-pronoun pattern ('For me, I think…') that teachers mark wrong. 'As for voluntourists, they get…' is standard English, is the minimal fix, and keeps the contrast with the previous sentence."
+        ],
+        "printed_v": "For voluntourists, they get free meals and housing when volunteering.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z23",
+        "loc": "[2.4]",
+        "current": "how to use the tools and plan ahead",
+        "proposed": "how to use the tool and plan ahead",
+        "category": "grammar",
+        "printed": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "reason": "The paragraph mentions only one tool. The ravens were trained to use \"a tool\" [2.1] and chose \"the tool\" [2.2], [2.3]. The definite plural \"the tools\" has no antecedent, and a copy editor would bring it into line with the singular tool used in the experiment. This is a one-letter fix.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The printed text matches. The paragraph has a single tool throughout ('a tool', 'the tool', 'chose the tool'), so the definite plural 'the tools' has no antecedent and is inconsistent. Changing it to 'the tool' is a one-letter fix that keeps the meaning. Index 5 makes the same change, so it should be applied only once.",
+          "Up to this point the paragraph speaks of a single tool ('use a tool', 'including the tool', 'chose the tool', even with the plural subject 'most of the ravens'). The sudden 'the tools' has no antecedent and is inconsistent. A copy editor would make it 'the tool', a one-letter fix. The dump confirms the paper prints 'tools', so this is a paper error, not a transcription error."
+        ],
+        "printed_v": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z23",
+        "loc": "[2.2]",
+        "current": "including the tool and other useless objects",
+        "proposed": "including the tool and some useless objects",
+        "category": "logic",
+        "printed": "Later, they were given a choice among several things, including the tool and other useless objects.",
+        "reason": "\"X and other Ys\" puts X in the class Y, so this wording calls the tool useless too. That contradicts the point of the experiment: the tool is the useful choice. Replacing \"other\" with \"some\" removes the contradiction and keeps the meaning (Q16 A also contrasts the tool with \"useless small objects\").",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The printed text matches. 'X and other Ys' places X in class Y, so the sentence calls the tool useless. That contradicts the experiment, where the tool is the useful choice (Q16A contrasts it with 'useless small objects'). Changing 'other' to 'some' is minimal and removes the logical slip.",
+          "'X and other Ys' puts X in the class Y, so 'the tool and other useless objects' literally calls the tool useless. That contradicts the experiment, where the tool is the one useful choice (Q16A also contrasts it with 'useless small objects'). Editors routinely fix this misuse of 'other'. Changing it to 'some useless objects' is minimal and removes the contradiction."
+        ],
+        "printed_v": "Later, they were given a choice among several things, including the tool and other useless objects.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z22",
+        "loc": "[2.2]",
+        "current": "volunteers bring them energy, skills and kindness",
+        "proposed": "volunteers bring energy, skills and kindness",
+        "category": "grammar",
+        "printed": "For local communities, volunteers bring them energy, skills and kindness.",
+        "reason": "'them' repeats 'local communities', which is already stated in the fronted 'For local communities,' phrase. It is the same redundant Chinese-style resumptive pronoun as in [2.4] (对于当地社区，志愿者给他们带来…). Dropping 'them' leaves a correct sentence that means the same.",
+        "severity": "medium",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The printed text matches. 'For local communities' already marks who benefits, so 'them' repeats the same recipient. This is the redundant resumptive-pronoun pattern a careful editor would delete. 'Volunteers bring energy, skills and kindness' is correct, minimal and means the same.",
+          "The fronted 'For local communities' already marks who benefits, so 'them' repeats it (Chinese-style resumptive pronoun, 对于当地社区，志愿者给他们带来…). A strict editor would delete 'them'. 'For local communities, volunteers bring energy, skills and kindness' is correct and means the same."
+        ],
+        "printed_v": "For local communities, volunteers bring them energy, skills and kindness.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z23",
+        "loc": "[2.4]",
+        "current": "how to use the tools",
+        "proposed": "how to use the tool",
+        "category": "logic",
+        "printed": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "reason": "The paragraph refers to the object three times in the singular ('use a tool', 'including the tool', 'chose the tool') and then switches to 'the tools' without reason. The plural can be defended as 'each raven's tool', but in a text that students memorise the change reads as a slip and blurs the point that the birds chose that one tool from among useless objects. Using the singular makes the paragraph consistent.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This is the same correction as index 2 and yields the same text ('the tools' → 'the tool'), so it should be applied only once. On the substance, the singular tool is used everywhere else in the paragraph, so the plural is an inconsistency worth fixing.",
+          "This is the same fix as index 2 ('the tools' changed to 'the tool' at [2.4]), so apply it only once. The reasoning holds: three singular references to the one tool, then an unmotivated plural with no antecedent."
+        ],
+        "printed_v": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z27",
+        "loc": "[3.2]",
+        "current": "the servers won’t run well or even break down",
+        "proposed": "the servers won’t run well and may even break down",
+        "category": "grammar",
+        "printed": "If the heat isn’t taken away in time, the servers won’t run well or even break down.",
+        "reason": "Error in the paper. The negative \"won’t\" applies to both verbs joined by \"or\", so the sentence literally says the servers will not break down, which is the opposite of what is meant. It needs its own positive verb phrase: \"won’t run well and may even break down\". The transcription matches the page.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. The paper is wrong because the negative 'won’t' scopes over both verbs, so the sentence literally says the servers won't break down. The fix gives the second verb its own positive modal, is minimal and keeps the meaning (无法正常运行甚至损坏).",
+          "With 'won't X or even Y', the negation covers both verbs, so the sentence literally says the servers won't break down, which is the opposite of what is meant. 'won't run well and may even break down' is the minimal fix. The transcription matches the dump."
+        ],
+        "printed_v": "If the heat isn’t taken away in time, the servers won’t run well or even break down.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z29",
+        "loc": "[3.4]",
+        "current": "knocker-uppers also known as wake-up helpers appeared",
+        "proposed": "knocker-uppers, also known as wake-up helpers, appeared",
+        "category": "punctuation",
+        "printed": "To make sure people didn’t oversleep, knocker-uppers also known as wake-up helpers appeared.",
+        "reason": "Error in the paper. \"also known as wake-up helpers\" is a non-restrictive appositive, so it must be set off by commas. Without them the sentence is hard to parse (\"knocker-uppers also known as … appeared\"). The transcription matches the page and the dump.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p2. 'also known as wake-up helpers' is a non-restrictive appositive and needs paired commas. Without them the sentence is hard to parse.",
+          "'also known as wake-up helpers' is a non-restrictive appositive and needs commas on both sides. Without them the sentence is hard to parse. Confirmed on the page image (p2)."
+        ],
+        "printed_v": "To make sure people didn’t oversleep, knocker-uppers also known as wake-up helpers appeared.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z25",
+        "loc": "[1.2]",
+        "current": "more than three times the size of the Amazon rainforest may be cut",
+        "proposed": "forests more than three times the size of the Amazon rainforest may be cut down",
+        "category": "grammar",
+        "printed": "if people use wood to make so many homes, more than three times the size of the Amazon rainforest may be cut.",
+        "reason": "Error in the paper. The subject is a bare measurement (\"more than three times the size of …\") with no head noun, so literally a \"size\" is what gets cut. Adding \"forests\" fixes it, and forests are \"cut down\". The MIT source says \"clear-cut the equivalent of the Amazon rainforest three times over\". The transcription matches the page.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "amend",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. The subject is a bare measure phrase with no head noun, so literally a 'size' is cut, which is a real error. Plural 'forests … the size of' can read as each forest being that big, so 'an area of forest' is the cleaner head noun. 'cut down' is the standard verb for forests. The MIT quote says 'clear-cut the equivalent of the Amazon rainforest three times over'.",
+          "The subject has no head noun, so literally a 'size' is what gets cut. Adding 'forests' and using 'cut down' gives a correct, minimal sentence. The transcription matches the dump."
+        ],
+        "printed_v": "if people use wood to make so many homes, more than three times the size of the Amazon rainforest may be cut.",
+        "amended": [
+          "an area of forest more than three times the size of the Amazon rainforest may be cut down",
+          ""
+        ]
+      },
+      {
+        "pid": "z27",
+        "loc": "[4.5]",
+        "current": "In this way, the electricity is saved.",
+        "proposed": "In this way, electricity is saved.",
+        "category": "grammar",
+        "printed": "In this way, the electricity is saved.",
+        "reason": "Error in the paper. \"electricity\" is used generically here and no specific amount has been mentioned before, so the definite article is wrong (a Chinglish pattern). The transcription matches the page.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. The statement is general and no specific electricity has just been mentioned (the 40% figure is a paragraph earlier), so 'the' is a non-native article error. 'electricity is saved' is the minimal fix.",
+          "'electricity' is generic here, so the definite article is wrong (a Chinglish article). 'In this way, electricity is saved.' Same fix as #17."
+        ],
+        "printed_v": "In this way, the electricity is saved.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z28",
+        "loc": "[4.6]",
+        "current": "These are important signs for a healthy forest.",
+        "proposed": "These are important signs of forest health.",
+        "category": "word-choice",
+        "printed": "These are important signs for a healthy forest.",
+        "reason": "Error in the paper. The idiom is \"signs of\" something. \"signs for a healthy forest\" reads as \"good omens for\" a forest, which is not what is meant. The Google source has \"key indicators of forest health\". This is inside a quotation, but the quote is adapted, not natural speech. The transcription matches the page.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. The collocation is 'signs of', and 'signs for' is wrong. 'signs of forest health' is better than 'signs of a healthy forest' because the changes in species’ presence and behaviour are neutral indicators of forest health, not proof that the forest is healthy. It also matches the source idea ('indicators of forest health').",
+          "'signs for a healthy forest' uses the wrong preposition. The idiom is 'a sign of'. 'signs of forest health' also fits the meaning: changes in species are indicators of health, not proof that the forest is healthy. This matches the source ('indicators of forest health'). #6 is aligned to this wording."
+        ],
+        "printed_v": "These are important signs for a healthy forest.”",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z29",
+        "loc": "[4.2]",
+        "current": "sleeping quality goes down",
+        "proposed": "sleep quality goes down",
+        "category": "word-choice",
+        "printed": "Falling asleep becomes hard and sleeping quality goes down.",
+        "reason": "Error in the paper. The standard English term is \"sleep quality\" (or \"quality of sleep\"). \"sleeping quality\" is a non-standard calque. The transcription matches the page.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p2. 'sleep quality' is the standard term, and 'sleeping quality' is a calque of 睡眠质量 that an editor would correct. The passage elsewhere uses the noun 'sleep'.",
+          "'sleep quality' is the standard term. 'sleeping quality' is a calque that an editor would correct. Same fix as #20."
+        ],
+        "printed_v": "Falling asleep becomes hard and sleeping quality goes down.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z28",
+        "loc": "[4.6]",
+        "current": "important signs for a healthy forest",
+        "proposed": "important signs of a healthy forest",
+        "category": "word-choice",
+        "printed": "These are important signs for a healthy forest.”",
+        "reason": "The collocation is 'a sign of' something, meaning an indicator of it. 'Signs for a healthy forest' is not idiomatic, and students would memorise a wrong preposition. The error is in the paper.",
+        "severity": "medium",
+        "lens": [
+          "mechanics",
+          "logic"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "This is the same error as #4, where 'signs for' should be 'signs of'. 'signs of a healthy forest' would make small changes in species’ presence look like evidence that the forest is healthy, which is a logical slip. Use #4's wording ('signs of forest health') so the two fixes agree.",
+          "The preposition error is real ('signs of', not 'signs for'). The wording is aligned with #4: the 'small changes in species’ presence and behavior' are indicators of forest health, not necessarily signs that the forest is healthy, so 'signs of forest health' is more accurate than 'signs of a healthy forest'."
+        ],
+        "printed_v": "These are important signs for a healthy forest.”",
+        "amended": [
+          "important signs of forest health",
+          "important signs of forest health"
+        ]
+      },
+      {
+        "pid": "z26",
+        "loc": "[1.1]",
+        "current": "yet the change of seasons",
+        "proposed": "yet the change in the seasons",
+        "category": "word-choice",
+        "printed": "yet the change of seasons—warmer winters and hotter summers—may not be noticed",
+        "reason": "'The change of seasons' means the normal yearly passage from one season to the next, which is very noticeable. The passage means a change in the seasons themselves over the years (warmer winters, hotter summers). 'the change in the seasons' keeps the singular 'it happens'.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p2. 'the change of seasons' is the fixed phrase for moving from one season to the next, which everyone notices. Here the meaning is a change IN the seasons (warmer winters, hotter summers), so the wrong phrase gives the wrong meaning. 'the change in the seasons' is minimal and keeps the singular 'it'.",
+          "'the change of seasons' is the set phrase for one season turning into the next, which everyone notices. The appositive 'warmer winters and hotter summers' shows the meaning is a change in the seasons themselves. 'the change in the seasons' keeps the singular 'it happens'. Same fix as #11."
+        ],
+        "printed_v": "Climate change is often talked about, yet the change of seasons—warmer winters and hotter summers—may not be noticed because it happens very slowly.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z28",
+        "loc": "[3.3]",
+        "current": "whether you can tell that animal call or not, or if you’re not sure",
+        "proposed": "whether you can hear that animal call, can’t hear it or aren’t sure",
+        "category": "grammar",
+        "printed": "decide for each one whether you can tell that animal call or not, or if you’re not sure.",
+        "reason": "The three-way choice (yes / no / not sure) is coordinated badly. 'decide … whether X or not, or if you’re not sure' makes 'decide if you’re not sure' a complement, which is illogical. 'tell that animal call' (tell + call as object, meaning recognise) is also not idiomatic. The game asks whether you heard the call. The proposed text is a minimal parallel rewrite. If the reviewers prefer to keep 'tell', the coordination still needs fixing.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. The three-way choice 'whether … or not, or if you’re not sure' is garbled coordination ('decide if you’re not sure' is illogical). 'tell that animal call' without 'from' is not idiomatic. In the source game, users say whether they hear the call. The proposed parallel 'can hear …, can’t hear it or aren’t sure' is short and correct, and has no Oxford comma, which matches the passage style.",
+          "'decide whether X or not, or if you’re not sure' is broken coordination, because it makes 'decide if you’re not sure' a complement. 'tell that animal call' is also not idiomatic. The real task asks whether you hear the call (yes / no / not sure). The proposed three-way parallel is grammatical and keeps the meaning."
+        ],
+        "printed_v": "The next step is to listen to real forest recordings (there are more than 1.2 million of them), and decide for each one whether you can tell that animal call or not, or if you’re not sure.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z29",
+        "loc": "[4.4]",
+        "current": "reduce the nearby noise",
+        "proposed": "reduce nearby noise",
+        "category": "grammar",
+        "printed": "Keep a comfortable bedroom temperature, avoid bright light and reduce the nearby noise.",
+        "reason": "These are general tips with generic nouns. The parallel item 'avoid bright light' has no article, and 'the nearby noise' wrongly points to some specific noise. Dropping 'the' matches the parallel item.",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p2. This is generic advice parallel to 'avoid bright light', and 'the nearby noise' wrongly points to a specific noise (a Chinglish article). Dropping 'the' is minimal.",
+          "These are general tips with generic nouns, parallel to 'avoid bright light'. 'the nearby noise' wrongly points to a specific noise. Dropping 'the' is the minimal fix."
+        ],
+        "printed_v": "Keep a comfortable bedroom temperature, avoid bright light and reduce the nearby noise.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z26",
+        "loc": "¶1 s1",
+        "current": "the change of seasons",
+        "proposed": "the change in the seasons",
+        "category": "word-choice",
+        "printed": "yet the change of seasons—warmer winters and hotter summers—may not be noticed",
+        "reason": "'The change of seasons' is the fixed phrase for the passing from one season to the next (spring to summer), which everyone notices. The appositive 'warmer winters and hotter summers' shows the meaning is a change IN the seasons themselves, so the wrong phrase gives a wrong meaning.",
+        "severity": "medium",
+        "lens": [
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #8 with the same replacement. The fixed phrase 'the change of seasons' means the normal seasonal turnover, but here it should mean a change in the seasons themselves.",
+          "Same issue and same fix as #8: change of seasons (the normal transition) vs change in the seasons (warmer winters, hotter summers)."
+        ],
+        "printed_v": "yet the change of seasons—warmer winters and hotter summers—may not be noticed",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z28",
+        "loc": "¶4 s1",
+        "current": "to tell what animals they are by their sounds",
+        "proposed": "to identify animals by their sounds",
+        "category": "grammar",
+        "printed": "The answers people give are then used to train AI to tell what animals they are by their sounds.",
+        "reason": "'they'/'their' have no antecedent. The only plural nouns before them are 'answers' and 'people', so 'what animals they are' reads as if the answers or the people were animals. The fix keeps the meaning (the AI learns to recognise animals from their calls) without the dangling pronoun.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. 'they'/'their' have no proper antecedent: the nearest plural nouns are 'answers' and 'people', so it reads as if those were animals. 'to identify animals by their sounds' keeps the meaning and removes the dangling pronoun.",
+          "'what animals they are' has no proper antecedent; the nearest plurals are 'answers' and 'people'. It is a Chinglish structure (辨别它们是什么动物). 'to identify animals by their sounds' is clear, minimal and keeps the meaning."
+        ],
+        "printed_v": "The answers people give are then used to train AI to tell what animals they are by their sounds.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z27",
+        "loc": "¶6 s2",
+        "current": "The act not only helps",
+        "proposed": "The move not only helps",
+        "category": "word-choice",
+        "printed": "The act not only helps reduce the environmental influence of AI, but also could set a new standard",
+        "reason": "'act' means a single deed (or a law, 'the Act'), so it does not fit China's ongoing 'efforts in developing underwater data centers' (这一举措). The standard noun is 'move'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. 'act' means a single deed (or a law, 'the Act') and does not fit an ongoing national programme (这一举措). 'The move' is the standard noun and is a one-word fix.",
+          "'act' means a single deed (or a law) and is not used for an ongoing policy or effort (举措). 'The move' is the standard noun here."
+        ],
+        "printed_v": "The act not only helps reduce the environmental influence of AI, but also could set a new standard for sustainable computing (可持续算力) worldwide.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z28",
+        "loc": "¶4 s5",
+        "current": "allowing us to find out small changes",
+        "proposed": "allowing us to detect small changes",
+        "category": "word-choice",
+        "printed": "allowing us to find out small changes in species’ presence and behavior.",
+        "reason": "'find out' takes facts or information as its object (find out the truth / find out what happened). It does not mean perceive or notice a change. Noticing small changes calls for 'detect' or 'spot'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "amend"
+        ],
+        "why": [
+          "The transcription matches page p1. 'find out' takes information as its object, so 'find out small changes' is a Chinglish rendering of 发现变化. 'detect' fits AI-assisted acoustic monitoring precisely and is a one-word fix.",
+          "'find out' takes information as its object, not a perceptible change (Chinglish 发现). This is a real error. The verb is aligned with #19 ('notice'), which is simpler for 中考 and is the verb used for 'small/slow changes' in z26."
+        ],
+        "printed_v": "allowing us to find out small changes in species’ presence and behavior.",
+        "amended": [
+          "",
+          "allowing us to notice small changes"
+        ]
+      },
+      {
+        "pid": "z29",
+        "loc": "¶3 s3",
+        "current": "start their job at a certain time",
+        "proposed": "start work at a certain time",
+        "category": "word-choice",
+        "printed": "People had to get up and start their job at a certain time.",
+        "reason": "'start one’s job' means taking up a new job. Beginning the working day is 'start work'. As written, the sentence can be read as starting a new job on a set date.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p2. The idiom for beginning the working day is 'start work'. 'start their job' suggests taking up a new job, which an editor would correct.",
+          "'start their job' suggests taking up a new job. Beginning the working day is 'start work'. This is a real collocation error."
+        ],
+        "printed_v": "People had to get up and start their job at a certain time.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z27",
+        "loc": "[3.2]",
+        "current": "won’t run well or even break down",
+        "proposed": "won’t run well and may even break down",
+        "category": "logic",
+        "printed": "the servers won’t run well or even break down",
+        "reason": "\"Won't\" covers both verbs, so the sentence literally says the servers will not run well and will not even break down. That is the opposite of the intended warning, \"无法正常运行甚至会损坏\". The second verb needs its own modal.",
+        "severity": "medium",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #0 with the same replacement. The negative 'won’t' scopes over 'break down', which reverses the intended warning.",
+          "Same as #0: the negation scope makes the sentence say the opposite. The fix is 'won't run well and may even break down'."
+        ],
+        "printed_v": "the servers won’t run well or even break down",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z27",
+        "loc": "[4.5]",
+        "current": "the electricity is saved",
+        "proposed": "electricity is saved",
+        "category": "grammar",
+        "printed": "In this way, the electricity is saved.",
+        "reason": "No particular electricity has been mentioned for \"the\" to refer to. The statement is general, so it takes no article: \"In this way, electricity is saved.\"",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #3 with the same replacement. The statement is generic, so no article is needed.",
+          "Same as #3: generic 'electricity' takes no article."
+        ],
+        "printed_v": "In this way, the electricity is saved.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z27",
+        "loc": "[6.2]",
+        "current": "environmental influence of AI",
+        "proposed": "environmental impact of AI",
+        "category": "word-choice",
+        "printed": "The act not only helps reduce the environmental influence of AI",
+        "reason": "An effect on the environment is collocated as \"environmental impact\". \"Environmental influence\" usually means the influence that the environment has on something, as in genetics versus environment. That reverses the direction of the meaning here.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p1. The standard collocation for an effect on the environment is 'environmental impact'. 'environmental influence' usually means influence from the environment, so the direction is confused. It is a one-word fix.",
+          "The effect of something on the environment is 'environmental impact'. 'environmental influence(s)' normally means influences from the environment, which reverses the meaning. This is a collocation error a copy editor would fix."
+        ],
+        "printed_v": "The act not only helps reduce the environmental influence of AI",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z28",
+        "loc": "[4.5]",
+        "current": "find out small changes",
+        "proposed": "notice small changes",
+        "category": "word-choice",
+        "printed": "allowing us to find out small changes in species’ presence and behavior",
+        "reason": "\"Find out\" takes information as its object (find out the truth, find out what happened). It does not take a perceptible change; this is a Chinglish rendering of 发现. Changes are noticed, detected or spotted. The source describes using sound to monitor subtle changes.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "amend",
+          "accept"
+        ],
+        "why": [
+          "The error is real ('find out' + a perceptible change is not idiomatic). This overlaps #14, which targets the same words, so use the same replacement ('detect'). That keeps the two fixes from conflicting, and 'detect' fits AI analysis of recordings better than 'notice'.",
+          "'find out small changes' is wrong (find out + information). 'notice small changes' is the simple, correct verb. #14 is aligned to this."
+        ],
+        "printed_v": "allowing us to find out small changes in species’ presence and behavior",
+        "amended": [
+          "detect small changes",
+          ""
+        ]
+      },
+      {
+        "pid": "z29",
+        "loc": "[4.2]",
+        "current": "sleeping quality",
+        "proposed": "sleep quality",
+        "category": "word-choice",
+        "printed": "Falling asleep becomes hard and sleeping quality goes down.",
+        "reason": "The standard term is \"sleep quality\" (or \"the quality of sleep\"). \"Sleeping quality\" is a calque of 睡眠质量 and a copy editor would change it. The passage itself uses noun \"sleep\" throughout (Good sleep, our sleep).",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This duplicates #5 with the same replacement. 'sleep quality' is the standard term.",
+          "Same as #5: 'sleep quality' is the standard term. The passage itself uses the noun 'sleep' elsewhere."
+        ],
+        "printed_v": "Falling asleep becomes hard and sleeping quality goes down.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z29",
+        "loc": "[2.1]",
+        "current": "people sleep for a whole night",
+        "proposed": "people sleep through the night",
+        "category": "logic",
+        "printed": "Today, people sleep for a whole night.",
+        "reason": "The contrast in this paragraph is continuity: one unbroken sleep today versus two sleeps with a waking period in between. It is not duration, since the old pattern also lasted from 9–11 pm until morning. \"Sleep for a whole night\" states only duration, so the \"However … differently\" contrast does not hold. \"Sleep through the night\" is the idiom for sleeping without waking.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The transcription matches page p2. The paragraph contrasts unbroken sleep with the old two-part sleep, and both lasted until morning. 'sleep for a whole night' states only duration, and 'for a whole night' is also unidiomatic (睡一整夜). 'sleep through the night' is the idiom for sleeping without waking and matches 'they slept until morning'.",
+          "For a habitual action, 'sleep for a whole night' is unidiomatic. It also states duration, not continuity, which weakens the 'However … differently' contrast with the two-part sleep. 'sleep through the night' is the idiom for unbroken sleep and is the minimal fix."
+        ],
+        "printed_v": "Today, people sleep for a whole night.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "dropped": [
+      {
+        "pid": "z27",
+        "loc": "[4.4]",
+        "current": "15℃",
+        "proposed": "15°C",
+        "category": "typography",
+        "printed": "15℃ (single CJK compatibility glyph U+2103)",
+        "reason": "U+2103 '℃' is a CJK compatibility character. English typesetting writes the degree sign U+00B0 followed by a capital C ('15°C'), and Unicode advises against U+2103. It is also the only non-Latin symbol in the passage, so it may not be handled by the reading normaliser.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "reject",
+          "reject"
+        ],
+        "why": [
+          "This is a glyph choice that renders the same as °C, not a spelling, grammar or meaning error. The project already uses ℃ consistently (z13 has 7℃ and 0.5~1.5℃), and 中考/tools/make_audio.py line 55 explicitly normalises ℃ to °C for reading, so the TTS concern does not hold.",
+          "This is a glyph choice, not an English error. The project already handles ℃ on purpose: 中考/tools/make_audio.py replaces ℃ with °C for reading, and other 中考 passages keep ℃ (7℃, 1 ~ 3℃). Changing only this one would make the texts inconsistent, and it does not affect correctness."
+        ],
+        "printed_v": "15℃",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "failed": [],
+    "agentFail": [],
+    "notes": [
+      {
+        "g": [
+          "z20",
+          "z21",
+          "z22",
+          "z23",
+          "z24"
+        ],
+        "notes": {
+          "fidelity": "FIDELITY RESULT: I found no transcription or paragraphing errors in z20–z24. For each passage I opened every listed page image and the full dump, and I also ran a word-by-word programmatic diff of each ¶ against the dump lines. The diff normalised only the house-style items (①–⑤ paragraph numbers, spaced em dashes, extra whitespace). Every paragraph matched exactly. The only difference was the deliberate ▲ fill in z23. I then checked each paragraph against the page images by eye, including the numbers, names, hyphens, apostrophes, capitals and the Chinese glosses.\n\nz20 (湖南 C), p1: the original has 5 paragraphs (①–⑤), and I compared all 5. The passage starts at \"AI is used…\" and ends at \"…make wise choices.\", just before question 28; no question text is mixed in. Glosses 空调/数据/人造卫星 are correct, and so is \"19 a month to zero\". \"Efficiently\" is bold on the page, which is a formatting difference only. Sentences I looked at closely and kept: \"the ocean is too wide\" (plain but acceptable), \"none of these benefits come for free\" (plural verb after none is standard), \"the past hunting events\".\n\nz21 (长沙 B), p1: the original has 5 paragraphs, and I compared all 5. It starts at \"Do you read fairy tales\" (after the map image) and ends at \"unforgettable journey!\", just before question 3. Glosses 童话/城堡/路线/刊登/雕塑 are correct. Book titles are italic on the page, which cannot be shown. \"well-known\" is broken across a line in the image but is one hyphenated word in the dump, so it is correct. \"600-kilometer\", 1975, Hanau, Steinau, Marburg, Alsfeld, Hamelin and Bremen all match. Facts checked: the route was founded in 1975, is about 600 km long, and Wilhelm is the younger brother. Kept: \"movies, folk festivals, storytelling evenings, to name but a few\" (an open list with no 'and' is fine before 'to name but a few'); \"her red hat\"; \"unusual villages\".\n\nz22 (长沙 D), p2–p3: the original has 5 paragraphs; it continues from p2 onto p3, and I compared all 5. It starts at \"Now picture this:\" and ends at \"…when you started.\", just before question 7. Glosses 混合/积极的/收入/负责任的机构/可持续的 are correct. On the page, \"feeling good — it’s\" has a spaced dash, which the house style normalises. Kept: the capital \"You\" after the colon (a full sentence follows); the full stop outside the quotation mark in \"“tourism”.\" (British style); \"you feeling good\" (informal but standard); \"For local communities, volunteers bring them energy\" (grammatical). I reported only \"For voluntourists, they get…\", at low severity.\n\nz23 (深圳 B), p1: the original has 5 paragraphs, and I compared all 5. ¶3 starts with the ▲ gap on the page. It starts at \"Many people think birds…\" and ends at \"…protect them.\", just before question 16. The gap fill is checked. The current ¶3 begins with exactly \"Ravens are good at solving real-life problems. They use sticks…\", as the header says. Option B is correct: it is the topic sentence for the stick, nut-cracking and multi-step examples. A, C and D do not fit, and ¶4 begins \"Their intelligence isn’t just about solving problems\", which confirms B. Glosses 渡鸦/坚果/栖息地 are correct. \"Hold grudges against\" is underlined on the page, which is a formatting difference only. Kept: \"how to use the tools\" (plural across ravens is acceptable); \"As we learn more…, scientists hope…\". I reported only \"at once\", at low severity.\n\nz24 (深圳 C), p2: the original has 6 paragraphs, and I compared all 6. It starts at \"This March, fifteen international students…\" and ends at \"…youthful energy with the world.\", just before question 21. Glosses 鸢尾花/记录/部分 are correct. On the page the dashes around the list are spaced (\"(部分) — Master Garden … Floral Market —\"), which the house style normalises. Fifteen, 2026, April 6, four sections, eight mini-gardens, over 30, Dapeng, Nanshan and Turkmenistan all match. Kept: \"calling it shiny and bright\" (odd for a garden but not wrong); \"key places of Shenzhen’s APEC-themed activities\"; \"ran through April 6\".",
+          "mechanics": "I read all five files in full, headers included, and compared each passage with its page image and the full-paper text dump. The texts match the print, apart from the normalisations listed in the headers (①–⑤ paragraph numbers removed in Hunan C; spaced em dashes closed up in Changsha D and Shenzhen C). I found no transcription differences and no paragraph-break or boundary problems. A script scan of every passage body found no straight quotes, double spaces, spaces before punctuation, missing spaces after punctuation, unpaired brackets, spaced dashes or doubled words. Quotation marks pair up in z22 (3/3), z23 (1/1) and z24 (4/4), and parentheses pair up in all five passages. I listed every distinct word in each passage and checked the list: no misspellings and no homophone errors.\n\nz20 (Hunan C): no spelling, punctuation or typography errors. Sentences I looked at most closely and kept: \"This helps clean up the ocean much more efficiently, because the ships...\" (a comma before a trailing because-clause is acceptable); \"none of these benefits come for free\" (none with a plural verb is standard); the numerals in \"from 19 a month to zero\" are fine; the serial comma in \"save energy, protect animals, and reduce pollution\" is fine.\n\nz21 (Changsha B): no errors. Kept: \"Grimm’s Fairy Tales\". The plural possessive Grimms’ is the stricter form, but \"Grimm’s Fairy Tales\" is a long-established published English title (e.g. Pantheon's \"The Complete Grimm’s Fairy Tales\"), so it is not a definite error. The hyphens in \"600-kilometer\", \"well-known\" and \"much-loved\" are correct. The serial comma before \"and Sleeping Beauty\" is needed because \"Hansel and Gretel\" contains \"and\". The paired em dash phrase and \"storytelling evenings, to name but a few\" are fine. Hamelin and Bremen are spelled the same way throughout.\n\nz22 (Changsha D): no errors in my lens. Kept: capitals after colons (\"Now picture this: You…\", \"consider the value of what you do: Does it…\", \"always remember: Helping…\"), which follow an accepted American convention and are used consistently. Kept the full stop outside the quotes in “tourism”., which is accepted logical/British placement for a word cited as a word. \"short-term\" is hyphenated correctly. In \"fail to meet expectations, and even do harm…\" a comma before an emphatic second predicate is acceptable. Outside my lens, the doubled pronouns in \"For local communities, volunteers bring them…\" and \"For voluntourists, they get…\" are for the grammar reviewers to judge.\n\nz23 (Shenzhen B): the gap-fill \"Ravens are good at solving real-life problems.\" is the right choice (option B). It is grammatical, \"real-life\" is hyphenated correctly, and it fits as the topic sentence: the paragraph goes on to examples of solving problems, and ¶4 opens with \"Their intelligence isn’t just about solving problems.\" I reported two issues in ¶2: \"the tools\" should be \"the tool\", and \"the tool and other useless objects\" implies the tool is useless. Outside my lens: \"even with no food reward at once\" (better \"no immediate food reward\") is understandable but awkward, so I left it to the grammar and word-choice reviewers.\n\nz24 (Shenzhen C): no errors. Kept: lowercase \"Dapeng garden\" and \"Nanshan garden\" next to the capitalised section names (Master Garden, Bay Area Garden, City Garden, Floral Market, City Garden of Shenzhen). A lowercase descriptive \"garden\" after a district name is acceptable, so this is not a definite error. Kept the mixed number style (\"fifteen\" spelled out, \"over 30\" in numerals), which is a style choice, not an error. The paired em dashes around the four section names are correct; the hyphens in \"eco-friendly\", \"mini-gardens\" and \"APEC-themed\" are correct; \"creatively designed\" correctly has no hyphen. The quotation punctuation (\"…development,” one member said. “We…world.”) is correct. American spellings (colors, honored) are used consistently.",
+          "grammar": "I read all five passages in full, header lines included, and checked each against its page image and the full-text dump. The transcriptions match exactly for z20, z21, z22, z23 and z24. In z23 the filled gap 'Ravens are good at solving real-life problems.' is grammatical, is the right choice (B), and works as the topic sentence of ¶3. I made no file changes.\n\nz20 (Hunan C): no grammar errors. Sentences I looked at closely and kept:\n- 'Another problem is about hunting wild animals': loose but grammatical.\n- 'collect all the data (数据) to learn from the past hunting events': 'the' is defensible because the modifier defines the set.\n- 'it's difficult because the ocean is too wide': 'so wide/vast' would be more precise, but native speakers say this informally, so it is not a definite error.\n- 'because the ships can be sent': the cleanup ships are implied by 'clean up the ocean', so 'the' is acceptable.\n- 'none of these benefits come for free': a plural verb after 'none of' + plural noun is standard.\n- 'However, … But with satellites': two contrasts in a row, but each is logical.\n\nz21 (Changsha B): no errors. Kept:\n- 'Do you read fairy tales?'\n- 'a 600-kilometer road, was set up in 1975 to remember the Brothers Grimm': the facts are right (route set up in 1975, about 600 km; Hanau, Steinau, Marburg, Alsfeld, Hamelin and Bremen are all correct).\n- 'Visitors can enjoy movies, folk festivals, storytelling evenings, to name but a few': a list with no 'and' is standard before 'to name but a few'.\n- The switch between 'visitors' and 'you' in ¶3: normal in a travel guide, since both are generic.\n- 'her red hat': acceptable.\n\nz22 (Changsha D): two real errors reported, the redundant pronouns in ¶2. Kept:\n- 'Now picture this: You are…': a capital after a colon is acceptable before a full sentence.\n- 'Besides, consider the value…': 'Besides' as an adding connector is acceptable.\n- 'Helping isn't just about you feeling good': 'you' + -ing is accepted in modern usage.\n- 'Voluntourism could be a wonderful experience if done right. However, if it is done wrong, things will be different.'\n- 'they may fail to meet expectations, and even do harm to both…'\n- Outside my grammar lens: 'they get free meals and housing' is a questionable claim, since voluntourists usually pay. I did not report it.\n\nz23 (Shenzhen B): three findings reported in ¶2. Kept:\n- 'Their intelligence has long been compared to that of monkeys and even humans'.\n- 'so cars can crack them open': 'so' without 'that' is acceptable.\n- 'like using a short stick to get a longer one, then using the long stick to reach food'.\n- 'As we learn more about their intelligence, scientists hope people will…': the shift from 'we' to 'scientists' is grammatical because the 'as' clause has its own subject, so nothing dangles.\n- Fact note, not reported: digging insects out with sticks and dropping nuts for cars are classic examples for New Caledonian crows and carrion crows, not ravens specifically. Whoever checks facts may want to look at this.\n\nz24 (Shenzhen C): no grammar errors. Kept:\n- 'said that being in nature brings peace': present tense for a general truth is correct.\n- 'The flower show ran through April 6, bringing together … , showing over 30 fantastic creations': long but grammatical. The facts match the Shenzhen Daily source: the show ran March 27 to April 6 with over 30 gardens in four zones, and the iris was the theme flower.\n- 'visit key places of Shenzhen's APEC-themed activities': acceptable.\n- 'Besides enjoying the views, the students also documented…'\n- Word-choice note, not reported: 'calling it shiny and bright' simplifies the source's 'shining and brightening'. 'Shiny' is odd for a garden but not a definite error.\n\nSources: https://giis.gdufs.edu.cn/info/1733/18295.htm , https://www.sz.gov.cn/en_szgov/news/latest/content/post_12709823.html",
+          "logic": "I read every file in full, including the headers, and checked each passage line by line against its Word page image and the paper's text dump. I found no transcription errors in any of the five passages: paragraph breaks, Chinese glosses and punctuation all match. Removing the ①–⑤ paragraph numbers (z20) and closing up the spaced em dashes (z22, z24) are expected normalisations.\n\nz20 (Hunan C, AI): no errors found. Sentences I looked at most closely, and why I kept them:\n- 'However, it's difficult because the ocean is too wide.' 'Too' carries the sense of 'too big for the task', which fits 'difficult because'. It is plain simplified English, not an error.\n- 'However… But with satellites…' The two connectors in a row are both genuine contrasts.\n- 'AI can collect all the data (数据) to learn from the past hunting events' is grammatical.\n- 'dropped from 19 a month to zero' matches the Air Shepherd anti-poaching figures as they are commonly reported. The figure is plausible, though I could not find a source for the exact number.\n- '¶5 none of these benefits come for free' uses plural agreement with 'none', which is acceptable.\n- 'Training AI also uses a lot of energy' is the intended contrast with 'save energy' in ¶1; it is not a contradiction.\n\nz21 (Changsha B, Fairy Tale Route): no errors found. I checked the facts against Wikipedia and germany.travel:\n- The route was founded in 1975, is about 600 km long, and runs north from Hanau to Bremen.\n- The Grimms were born in Hanau, grew up in Steinau and studied in Marburg.\n- Alsfeld is the gateway to Little Red Riding Hood country (the Schwalm).\n- Hamelin is the Pied Piper's town, and Bremen has the Town Musicians statue.\n- Jacob was indeed the older brother.\nThings I kept:\n- 'unusual villages' is an odd choice but not wrong.\n- 'in her red hat': the Grimms' Rotkäppchen wears a red cap, and a cap is a hat.\n- 'Visitors can enjoy movies, folk festivals, storytelling evenings, to name but a few': the official sources name plays, festivals and storytelling evenings rather than movies, but film screenings are not impossible, so it is not a definite error. The list without 'and' is fine before 'to name but a few'.\n- The gloss 'published (刊登)' is the exam's own; 出版 would suit a book better, but the brief says to keep exam glosses.\n\nz22 (Changsha D, voluntourism): two grammar findings, reported above. Things I kept:\n- 'Now picture this:'\n- 'helping local kids with Chinese'\n- 'Besides, consider…', used as 'in addition'.\n- 'Helping isn't just about you feeling good', a standard informal gerund construction.\n- 'Voluntourism could be a wonderful experience if done right', where 'could' is acceptable as a tentative possibility.\n- 'they get free meals and housing': many voluntourism programmes actually charge fees, but this is the exam's own claim, framed as an advantage, so it is not a definite factual error.\n\nz23 (Shenzhen B, ravens): two low-severity findings, reported above. The filled gap 'Ravens are good at solving real-life problems.' (option B) is correct. It is the topic sentence for the stick, nut and multi-step examples and leads into ¶4, 'Their intelligence isn't just about solving problems'. It is grammatical and placed correctly at the start of ¶3. Points I noted but did not report:\n- 'compared to that of monkeys and even humans': the 2017 Lund raven study compares ravens with great apes and says monkeys failed such tasks. 'Compared to' is not false, however, and question 16D builds a distractor on 'monkeys', so I kept it.\n- ¶3 credits ravens with behaviour best documented in other corvids: stick tools for insects and short-stick-to-long-stick tasks in New Caledonian crows, and dropping nuts for cars to crack in Japanese carrion crows. The claims are hedged ('some even') and not impossible for ravens, and any fix would mean rewriting the paragraph, so I report this only here for the orchestrator to weigh.\n- 'many kinds of ravens are suffering from habitat loss' is the exam's claim and is not definitely false.\n- 'As we learn…, scientists hope…' has a mild shift of subject but is grammatical.\n\nz24 (Shenzhen C, GBA Flower Show): no errors found. I checked it against the Shenzhen Daily source report ('Gen Z APEC reporters explore green GBA at flower show', 30 March 2026) through web-search summaries. The following all match the source:\n- 15 international students, and the first youth communication activity of the APEC 'China Year in Shenzhen'.\n- Two Russian students, the iris as theme flower, and the Dapeng garden praised for its colours.\n- The Turkmenistan student on the Nanshan garden ('shining and brightening' in the source, adapted to 'shiny and bright').\n- The Russian student's blog post on the City Garden and the other's short videos.\n- The four sections (Master Garden, Bay Area Garden, City Garden, Floral Market), more than 30 displays, and the show running to April 6.\n- The team continuing to visit key venues.\nPoints I could not confirm or chose to keep:\n- 'A French student loved the flowers' simplifies 'praised the tulips', which is fine.\n- I could not confirm 'eight mini-gardens' or 'APEC member economies' from the search results, but nothing contradicts them.\n- 'key places of Shenzhen's APEC-themed activities' is plain wording, not wrong.\n\nI could not open the source articles directly: WebFetch DNS failed for sz.gov.cn, szdaily.com and newsgd.com, so the source comparison relies on search-result summaries.\n\nFiles reviewed:\n/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z20.txt\n/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z21.txt\n/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z22.txt\n/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z23.txt\n/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z24.txt"
+        }
+      },
+      {
+        "g": [
+          "z25",
+          "z26",
+          "z27",
+          "z28",
+          "z29"
+        ],
+        "notes": {
+          "fidelity": "LENS: fidelity to the printed page. I opened every page image in the headers: 广西 p1 and p2, 重庆 p1, 成都 p1 and p2. Each passage ends before the next image, or on the image itself. I also read all three full-text dumps. As a second check I wrote a script to compare each current ¶ with the dump, normalising quotes only (/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/cmp_tools/cmp2529.py). Every paragraph of all five passages matches a dump line EXACTLY, and I confirmed each one visually against the page images. That covers words, numbers, names, punctuation, hyphens, apostrophes, ℃ and the Chinese glosses. RESULT: no transcription or paragraphing errors in any of the five passages. All six findings above are errors in the paper itself (category B).\n\nz25 (广西 阅读). The original has 4 paragraphs and the text has 4; all compared. Start: after the diagram ([IMG]). End: \\\"…turned into something useful.\\\" It stops before \\\"根据语篇内容，选择最佳选项。\\\" Glosses (估计) and (桁架) match. Checked against the MIT News source (Feb 2026): 13 lb ≈ 6 kg, over 4,000 lb ≈ 1,800 kg, and 1 billion homes by 2050 are all right. Kept: \\\"they 3D printed\\\" (the unhyphenated verb is acceptable and \\\"3D print\\\" is used consistently); \\\"slowly added heavy weights on the floor\\\" (acceptable); \\\"so that more used plastic could be turned\\\" (\\\"could\\\" works as a tentative modal, so not flagged).\n\nz26 (广西 任务型阅读). The original has 4 paragraphs and the text has 4; all compared. Start: right after the heading \\\"任务型阅读\\\". End: \\\"…notice them.\\\", which is the end of the paper. Glosses (图表), (虚构的) and (趋势) match. Kept: \\\"made the volunteers feel differently\\\" (an idiom meaning they had a different impression); \\\"the lake seldom freezes, so people cannot skate on it every winter\\\" (understated but not wrong); \\\"didn’t connect\\\" (past tense is fine).\n\nz27 (重庆 阅读D). The original has 6 paragraphs and the text has 6; all compared. Start: after \\\"D篇\\\". End: \\\"…worldwide.\\\" It stops before the diagram and Q56. Glosses (数据), (先进的), (输送), (评估), (潮汐), (低碳数字基础设施) and (可持续算力) match, and so does ℃. Source check: the CAICT figure of at least 30% less electricity is confirmed by press reports (Scientific American and others). \\\"more than 95%\\\" from wind fits reports of about 97%. Kept: \\\"The act not only helps … but also could set\\\" (the parallel verb phrases are grammatical); the two sentences that start with \\\"And\\\" (journalistic style).\n\nz28 (成都 阅读C). The original has 4 paragraphs and the text has 4; all compared. Start: after \\\"C篇\\\". End: \\\"…healthy forest.”\\\" It stops before Q31. The underlined \\\"that\\\" in ¶1 is plain text, which follows the house style. Glosses (虚拟的), (物种) and (贴标签) match. \\\"1.2 million\\\" is confirmed by coverage of Google’s Forest Listeners. Kept: \\\"birdsong but an unhealthy forest\\\" (no comma before but; acceptable journalistic style); \\\"whether you can tell that animal call or not, or if you’re not sure\\\" (informal but follows the source); \\\"find out small changes\\\" (a slightly weak collocation, but understandable; not flagged).\n\nz29 (成都 任务型阅读). The original has 4 paragraphs and the text has 4; all compared. Start: after \\\"任务型阅读\\\" on p2. End: \\\"…for the night.\\\" Gloss (工业革命) matches. Kept: \\\"reducing pains\\\" (plural pains is acceptable); \\\"start their job\\\" (distributive singular); \\\"reduce the nearby noise\\\" (the article is slightly odd; mentioned here but not flagged). ¶4 goes straight from the problem (\\\"…sleeping quality goes down.\\\") to commands (\\\"Put screens away…\\\") with no linking sentence. The page prints it this way and it is not definitely wrong, so it is not flagged; an editor could add a link such as \\\"To sleep better, put screens away…\\\".\n\nSources: https://news.mit.edu/2026/your-future-home-might-be-framed-with-printed-plastic-0203 ; https://blog.google/outreach-initiatives/arts-culture/forest-listeners/ ; https://www.techbuzz.ai/articles/google-launches-forest-listeners-crowdsourced-ai-for-rainforest-conservation ; https://www.scientificamerican.com/article/china-powers-ai-boom-with-undersea-data-centers/ ; https://getcoai.com/news/china-launches-223m-wind-powered-underwater-data-center-off-shanghai",
+          "mechanics": "I read all five files in full, including the headers. For each passage I checked every paragraph character by character against the Word-derived dump (each ¶ string is present verbatim in the dump) and against the page images. I found no transcription errors: no missing or extra paragraphs, paragraph breaks match the print, and the Chinese glosses match. A character scan shows only curly ’ (no straight apostrophes), balanced “ ” and ( ), em dashes with no spaces, and no double spaces or space-before-punctuation problems. The only unusual glyph is ℃ (U+2103) in z27. All findings above are errors in the papers themselves.\n\nItems I looked at closely and KEPT:\nz25: 'they 3D printed four trusses' (verb use, no hyphen; the adjective '3D-printed' appears only in the questions, correctly hyphenated); '6 kg—lighter than a comparable wooden truss' and '1,800 kg—about the weight of a car' (number formats OK, and 4,000 lb ≈ 1,814 kg is consistent with the MIT source); 'added heavy weights on the floor' (slightly loose preposition, acceptable); 'hope that one day they can … so that more used plastic could be turned' (acceptable).\nz26: 'often talked about, yet …' (comma before yet is correct); 'they made the volunteers feel differently' (idiomatic 'feel differently' = have different feelings/views); 'Lake Carnegie' / 'Princeton' (correct names); comma before 'because' twice (acceptable). Only the 'change of seasons' wording is reported.\nz27: 'On-land data centers' (correct hyphenation); 'China Academy of Information and Communications Technology' (correct official name of CAICT); 'another benefit: it will get …' (lowercase after colon is fine); 'not only helps …, but also could set' (parallel verb phrases, optional comma; I kept it). 'The act' is an odd noun for 'these efforts', but that is a style/word-choice matter for other lenses. I did not verify the December 2022 Hainan date (fact lens).\nz28: 'birdsong but an unhealthy forest' and 'recordings but then someone' (no comma before 'but' joining clauses: common in British journalism, does not garble the meaning, kept); 'What if that someone is an AI though?' (a comma before final 'though' would be usual in edited prose but is not a definite error, kept); 'recordings (there are … of them), and decide' (comma after a parenthesis in a compound predicate is arguable, kept); 'Forest Listeners' capitalised as a project name vs 'a forest listener' lowercase as a common noun (consistent); 'species’ presence' (correct plural possessive); 'models,” the scientists said.' (punctuation inside quotes is correct); 'find out small changes' ('detect/notice' would be better, but this is style); 'Scientists tell how healthy rainforests are' ('can tell' would be more natural, but the present tense is acceptable). I could not reach the source pages to check wording (the proxy blocks owlconnected.com and blog.google).\nz29: '9 pm and 11 pm' (consistent time format); 'any more' (British spelling); 'knocker-uppers' spelled and hyphenated consistently; 'wake-up helpers' (correctly hyphenated compound); 'reducing pains' (acceptable); 'Falling asleep becomes hard and sleeping quality goes down' (no comma needed between such short clauses; only 'sleeping quality' is reported). The z29 commas (missing pair around 'also known as wake-up helpers') and the z27 negation-scope error are the two definite, high-priority fixes.\n\nFiles: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z25.txt … z29.txt",
+          "grammar": "I read all five files whole, including the headers. I checked each passage against its page image and the full-text dump. Transcription matches the printed pages exactly in all five; no missing paragraphs or words, and no question text mixed in. No corrections were listed as already made. Below is what I looked at most closely and kept.\n\nz25 (广西 阅读):\n- 'Each truss weighed only about 6 kg—lighter than a comparable wooden truss': correct; the source says 13 lb, about 5.9 kg.\n- 'slowly added heavy weights on the floor': kept. 'add' with a place phrase ('on the floor', meaning putting more weights on it) is acceptable, though 'to' or 'put … on' would be safer.\n- 'objects weighing more than 1,800 kg—about the weight of a car': matches the source's 'more than 4,000 pounds'.\n- 'hope that one day they can 3D print …, so that more used plastic could be turned into something useful': 'could' is a tentative modal in a purpose clause. It is acceptable, though 'can' would match 'can' earlier in the sentence.\n- Fact note (not reported): the source says 'three times over', not 'more than three times'.\n\nz26 (广西 任务型):\n- 'skate on the thick ice through winter': no article before a season is acceptable.\n- 'Now, the lake seldom freezes, so people cannot skate on it every winter. But most people there didn’t connect this with climate change': the past tense is acceptable as a report of what people thought at the time.\n- 'made the volunteers feel differently': 'feel differently' is the idiom for having a different view.\n- 'didn’t freeze every year like before': informal but standard.\n- 'slow changes in our daily life brought by climate change': the modifier is a little loose but grammatical; the same pattern appears in ¶3.\n\nz27 (重庆 D):\n- 'It forces countries to look for new ways to solve the big problem': 'the' refers back to the doubling of electricity use.\n- 'show its promise to create': 'promise to do' is a valid pattern (a pledge).\n- 'not only helps …, but also could set': kept. 'but also' is commonly kept together as a correlative unit; 'but could also set' would be smoother but is not required.\n- 'And the use of tidal and wave energy is also taken into consideration': acceptable.\n- Facts in this passage (95%, 30%, 80%) differ from some news reports, but I found no definite source to contradict the exam, so I did not report them.\n\nz28 (成都 C):\n- 'However, that is a big job': 'that' is underlined in the paper and refers to checking forest health by listening.\n- 'What if that someone is an AI though?': informal and correct.\n- 'Scientists say … the scientists said': the tense change in the quote tag is normal.\n\nz29 (成都 任务型):\n- 'Today, people sleep for a whole night': grammatical.\n- 'reducing pains': plural 'pains' (aches) is acceptable.\n- 'for the second sleep': 'the' works because it is the second of two sleeps.\n- 'the invention of the light bulb in 1879': standard date.\n- 'moved from the countryside to the city to work in the factories': the generic 'the' is acceptable.\n- 'weren’t needed any more': British spelling, kept.\n- The switch to direct advice ('Put screens away …') suits a task-reading text.\n\nSources checked: MIT news coverage of the recycled-plastic trusses (climate.mit.edu, interestingengineering.com); Google Arts & Culture Forest Listeners pages (users click Yes if they hear the call, No if not).",
+          "logic": "I checked the transcription against the page images and the full-text dumps. A script confirmed that every paragraph of z25–z29 matches the paper word for word, with the same paragraph breaks and start/end points. I found no transcription (type A) errors; all findings above are errors in the paper itself.\n\nz25 (Guangxi, MIT trusses), checked against MIT News and press coverage:\n- The figures match the source: 1 billion homes by 2050; 13 lb ≈ 6 kg per truss; >4,000 lb ≈ 1,814 kg (\"more than 1,800 kg\", about the weight of a car); the strength met US HUD standards (\"strong enough … in America\").\n- Kept \"slowly added heavy weights on the floor\": \"on\" here gives the location and is acceptable.\n- Kept \"they 3D printed four trusses\": the verb is correctly unhyphenated.\n- Kept \"so that more used plastic could be turned into something useful\". \"Can\" would agree better with \"hope … can\", but \"could\" for a tentative possibility is acceptable. Not reported, but worth a look.\n- Only the [1.2] subject/\"cut down\" issue is reported.\n\nz26 (Guangxi, Lake Carnegie), checked against Grist, Princeton and the Liu/Snell/Griffiths/Dubey 2025 study in Nature Human Behaviour:\n- Facts are consistent: winters warmed since about 1970; the lake now rarely freezes; a fictional town's temperature graph versus a lake-froze graph showing the same trend. The study actually used two separate groups, but \"showed volunteers two different graphs\" is an acceptable simplification.\n- Kept \"seldom freezes, so people cannot skate on it every winter\": weaker than it could be, but not contradictory.\n- Kept \"made the volunteers feel differently\": idiomatic.\n- Kept \"the influence of climate change\".\n- Only \"the change of seasons\" is reported.\n\nz27 (Chongqing, underwater data centers), source is Scientific American, \"China Is Putting Data Centers in the Ocean\":\n- These figures match the source: seawater pumped through radiators on the back of the servers; about 40% of electricity spent on cooling; \"at least 30% less electricity\" from the CAICT assessment; wind supplying 97% (consistent with \"more than 95%\").\n- I could not verify \"December 2022\" for Hainan or \"reduce land usage by 80%\". Other reports say over 90%, but nothing definite, so I left both.\n- Kept \"show its promise to create\": \"promise\" can also be read as potential.\n- Kept \"The act not only helps … but also could set\": unidiomatic but not wrong. \"This move\" would be smoother; not reported.\n- Kept \"It forces countries to look for new ways to solve the big problem\".\n\nz28 (Chengdu, Forest Listeners, Google Arts & Culture / DeepMind / WildMon, Nov 2025):\n- The 1.2 million recordings figure matches one report.\n- Kept \"However, that is a big job.\": the contrast connector works, and Q32 depends on \"that\".\n- Kept the missing commas before \"but\" in [1.2] and [1.4]: optional for short clauses.\n- Kept \"train AI to tell what animals they are by their sounds\": loose pronoun, but understandable.\n\nz29 (Chengdu, sleep):\n- Kept \"reducing pains\": plural \"pains\" exists, as in \"aches and pains\"; \"pain\" would be better. Not reported.\n- Kept \"start their job at a certain time\": \"start work\" would be more idiomatic; borderline, not reported.\n- Kept \"moved … to the city to work in the factories\": generic \"the\" is acceptable.\n- Kept \"light bulb in 1879\" (Edison, the standard school fact), \"Starting in the 18th century\" (Industrial Revolution) and \"alarm clocks … 1930s and 1940s\": all plausible and consistent with each other.\n- Kept the abrupt switch to imperative tips in ¶4: matches the paper, and it is a style matter, not an error.\n\nSources (web search): https://meche.mit.edu/node/4402 ; https://www.dezeen.com/2026/02/16/mit-recycled-plastic-floor-trusses/ ; https://grist.org/science/break-through-climate-apathy-data-visualization-lake-freezing-study/ ; https://ideas.repec.org/a/nat/nathum/v9y2025i7d10.1038_s41562-025-02183-9.html ; https://www.scientificamerican.com/article/china-powers-ai-boom-with-undersea-data-centers/ ; https://english.shanghai.gov.cn/en-Strength-Scitechcenter/20250611/c60460fe62e440d08b62be991cade0c9.html ; https://artsandculture.google.com/experiment/forest-listeners/jAHbryPWSLc1rA ; https://blog.google/outreach-initiatives/arts-culture/forest-listeners/"
+        }
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "fidelity:Gz20",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ae08221ef077e79dd",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942312093,
+      "queuedAt": 1791942312068,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "FIDELITY RESULT: I found no transcription or paragraphing e…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942426782,
+      "tokens": 88245,
+      "toolCalls": 17,
+      "durationMs": 114238,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z23\",\"loc\":\"[2.3]\",\"current\":\"even with no food reward at once\",\"proposed\":\"even with no immediate food reward\",\"category\":\"word-choice\",\"printed\":\"Most of the ravens chose the tool, even with no food reward at once.\",\"reason\":\"This is an error in the printed paper, not a transcription error. 'At once' is an adverb meaning 'immediately' and normally modifies a verb ('come at o…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "mechanics:Gz20",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "adea392da3e37a32f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942312094,
+      "queuedAt": 1791942312068,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all five files in full, headers included, and compar…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942443625,
+      "tokens": 95690,
+      "toolCalls": 17,
+      "durationMs": 131080,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z23\",\"loc\":\"[2.4]\",\"current\":\"how to use the tools and plan ahead\",\"proposed\":\"how to use the tool and plan ahead\",\"category\":\"grammar\",\"printed\":\"This showed they could remember how to use the tools and plan ahead to get the treat later.\",\"reason\":\"The paragraph mentions only one tool. The ravens were trained to use \\\"a tool\\\" [2.1] and chose \\\"the tool\\\" [2.2], [2.3]. The de…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "grammar:Gz20",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a70199b0de98394b9",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942428929,
+      "queuedAt": 1791942312068,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all five passages in full, header lines included, an…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942604194,
+      "tokens": 96712,
+      "toolCalls": 16,
+      "durationMs": 175265,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z22\",\"loc\":\"[2.4]\",\"current\":\"For voluntourists, they get free meals\",\"proposed\":\"As for voluntourists, they get free meals\",\"category\":\"grammar\",\"printed\":\"For voluntourists, they get free meals and housing when volunteering.\",\"reason\":\"A fronted 'For X,' phrase followed by a pronoun that repeats X as the subject ('For voluntourists, they get…') is the textbook 'For me, I thi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "logic:Gz20",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a8154db951112d201",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942445584,
+      "queuedAt": 1791942312068,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read every file in full, including the headers, and check…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942721223,
+      "tokens": 115128,
+      "toolCalls": 31,
+      "durationMs": 275637,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z22\",\"loc\":\"[2.4]\",\"current\":\"For voluntourists, they get free meals\",\"proposed\":\"As for voluntourists, they get free meals\",\"category\":\"grammar\",\"printed\":\"For voluntourists, they get free meals and housing when volunteering.\",\"reason\":\"This is the double-subject pattern English teachers routinely mark wrong in Chinese learners' writing (the same as 'For me, I think…'). After…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "fidelity:Gz25",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a8a0586575e3938f0",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942605315,
+      "queuedAt": 1791942312094,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "LENS: fidelity to the printed page. I opened every page ima…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942781395,
+      "tokens": 99700,
+      "toolCalls": 20,
+      "durationMs": 176079,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z27\",\"loc\":\"[3.2]\",\"current\":\"the servers won’t run well or even break down\",\"proposed\":\"the servers won’t run well and may even break down\",\"category\":\"grammar\",\"printed\":\"If the heat isn’t taken away in time, the servers won’t run well or even break down.\",\"reason\":\"Error in the paper. The negative \\\"won’t\\\" applies to both verbs joined by \\\"or\\\", so the sentence literally s…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "mechanics:Gz25",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "abfac5f1bca08d7ca",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942721987,
+      "queuedAt": 1791942312094,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all five files in full, including the headers. For e…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942958369,
+      "tokens": 103629,
+      "toolCalls": 26,
+      "durationMs": 236381,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z29\",\"loc\":\"[3.4]\",\"current\":\"knocker-uppers also known as wake-up helpers appeared\",\"proposed\":\"knocker-uppers, also known as wake-up helpers, appeared\",\"category\":\"punctuation\",\"printed\":\"knocker-uppers also known as wake-up helpers appeared\",\"reason\":\"'also known as wake-up helpers' is a non-restrictive appositive and must be set off by a pair of commas. Without them the se…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "grammar:Gz25",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a47a96e95ba3d4ad7",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942782247,
+      "queuedAt": 1791942312095,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all five files whole, including the headers. I check…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943028364,
+      "tokens": 102191,
+      "toolCalls": 20,
+      "durationMs": 246117,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z27\",\"loc\":\"¶3 s2\",\"current\":\"the servers won’t run well or even break down\",\"proposed\":\"the servers won’t run well and may even break down\",\"category\":\"logic\",\"printed\":\"If the heat isn’t taken away in time, the servers won’t run well or even break down.\",\"reason\":\"Negation scope error. 'won’t' governs both verbs joined by 'or', so the sentence literally says the servers will…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "logic:Gz25",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a1a358e4f596b908f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942960625,
+      "queuedAt": 1791942312095,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked the transcription against the page images and the…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943321419,
+      "tokens": 128414,
+      "toolCalls": 36,
+      "durationMs": 360794,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z25\",\"loc\":\"[1.2]\",\"current\":\"more than three times the size of the Amazon rainforest may be cut\",\"proposed\":\"forests more than three times the size of the Amazon rainforest may be cut down\",\"category\":\"grammar\",\"printed\":\"more than three times the size of the Amazon rainforest may be cut\",\"reason\":\"The subject has no head noun. \\\"More than three times the size of X\\\" is a mea…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "verify-acc:Gz20",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a41f72b297319b142",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943030506,
+      "queuedAt": 1791942722046,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943080296,
+      "tokens": 73546,
+      "toolCalls": 5,
+      "durationMs": 49789,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"Most of the ravens chose the tool, even with no food reward at once.\",\"why\":\"The transcription is correct (checked against the p1 image and the dump), so this is an error in the paper itself. 'At once' is a verb-modifying adverbial meaning 'immediately'. Attached to the noun phrase 'no food reward' it is unidiomatic, and it can also be misread …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "verify-strict:Gz20",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ad08cc145159a66ea",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943082353,
+      "queuedAt": 1791942722046,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943115434,
+      "tokens": 66949,
+      "toolCalls": 3,
+      "durationMs": 33080,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"'At once' is an adverb for verbs (come at once). Putting it after the noun phrase 'no food reward' is unidiomatic, a word-for-word rendering of 马上没有食物奖励, and a strict teacher would mark it. 'With no immediate food reward' is the standard minimal fix and keeps the meaning, and the treat still comes 'later'.\",\"printed\":\"Most of the ravens chose the t…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "verify-acc:Gz25",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a39b7af40473bb151",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943323923,
+      "queuedAt": 1791943323918,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943468490,
+      "tokens": 95711,
+      "toolCalls": 16,
+      "durationMs": 144566,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"If the heat isn’t taken away in time, the servers won’t run well or even break down.\",\"why\":\"The transcription matches page p1. The paper is wrong because the negative 'won’t' scopes over both verbs, so the sentence literally says the servers won't break down. The fix gives the second verb its own positive modal, is minimal and keeps the meanin…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "verify-strict:Gz25",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a0ce411fc56c145fc",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943323924,
+      "queuedAt": 1791943323919,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943414892,
+      "tokens": 78771,
+      "toolCalls": 6,
+      "durationMs": 90967,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"With 'won't X or even Y', the negation covers both verbs, so the sentence literally says the servers won't break down, which is the opposite of what is meant. 'won't run well and may even break down' is the minimal fix. The transcription matches the dump.\",\"printed\":\"If the heat isn’t taken away in time, the servers won’t run well or even break dow…"
+    }
+  ],
+  "totalTokens": 1144686,
+  "totalToolCalls": 213
+}

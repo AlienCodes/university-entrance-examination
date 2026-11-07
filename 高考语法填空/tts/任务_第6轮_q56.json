@@ -1,0 +1,50 @@
+{
+ "说明": "第 56 题第 6 轮：第 5 轮 m 的做法不变（只按 ‖ 拆、读音修正、段间停顿上限 0.45），只换语速更快的本人参考（ICL），看能否在相似度 ≥ 0.80 下到 5.2 字/秒（m 4.51；变速被提速验证与节奏检查否决）。 等续写整片的合成作业全部开工后才触发（协调会话 2026-11-03）。 段间停顿上限 0.32 秒（本人句间停顿中位 0.31；含停顿的总语速 本人 5.18、第 5 轮 m 3.88 字/秒，停顿占比偏大；‖ 处仍 ≥ 0.40）。",
+ "script": "高考语法填空/稿/2026_新课标Ⅰ卷.json",
+ "only": [
+  "q56a",
+  "q56b",
+  "q56c",
+  "q56d",
+  "q56e",
+  "q56f",
+  "q56g"
+ ],
+ "takes": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6
+ ],
+ "candidates": [
+  {
+   "id": "p1m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人平实_1.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.32
+  },
+  {
+   "id": "k1m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人快_1.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.32
+  },
+  {
+   "id": "k2m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人快_2.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.32
+  }
+ ]
+}

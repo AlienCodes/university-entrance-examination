@@ -1,0 +1,151 @@
+{
+ "results": [
+  {
+   "id": "y4",
+   "findings": [
+    {
+     "screen": 1,
+     "sentence": 0,
+     "kind": "title",
+     "severity": "high",
+     "description": "The title on the cover is far too large to fit. Only \"跨代幼儿园\" and part of \"让\" fit inside the white card. The rest of \"跨代幼儿园让老人和孩子都受益\" runs past the card's right border and yellow shadow onto the purple background, behind the yellow \"Aa\" circle and off the right edge of the frame, so \"老人和孩子都受益\" cannot be read. The 14-character title should be auto-fitted on one line inside the card. The other cover items match the reference: tag 中考英语 · 阅读理解, 2026年 山东 with the 阅读C pill, 说明文 · 社会与生活, and 全文 303 词 (recounted from the reference: 303).",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The English font is much too large, about twice the size on the other screens. The first line \"The pair¹ have many\" rises into the purple header band and crosses the yellow rule. The highlight box behind the phrase piece \"have\" is drawn as a pale rectangle over the header band (y≈60–190 at 1920×1080) and covers part of the header and its yellow line.",
+     "lens": "visual"
+    },
+    {
+     "screen": 4,
+     "sentence": 3,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The Chinese translation is also too large, and its second line \"时间待在一起。\" (with the pink bar) is drawn over the footer. It covers the \"SENTENCE 3 / 18\" label and the progress bar and knob, so the footer cannot be read. The translation should stay above the footer.",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "high",
+     "description": "The vocabulary panel font is much too large (about 1.5×) and the six entries do not fit. Entry 1 \"programme n. 项目；计划\" is pushed above the panel's top border: its badge \"1\" is hidden behind the yellow VOCABULARY tag and the top of the headword is cut off. Entry 6 \"benefit v. 受益\" is drawn below the panel's bottom border, over the yellow shadow, and overlaps the footer progress bar, knob and \"逐句精读\".",
+     "lens": "visual"
+    },
+    {
+     "screen": 8,
+     "sentence": 7,
+     "kind": "glyph",
+     "severity": "high",
+     "description": "In the Chinese translation \"“在‘母亲养育’，孩子们…\", the opening single quote ‘ between 在 and 母 is drawn as an empty box (a missing-glyph rectangle with a ? pattern) instead of ‘. The closing ’ after 育 displays correctly.",
+     "lens": "visual"
+    },
+    {
+     "screen": 12,
+     "sentence": 11,
+     "kind": "layout",
+     "severity": "medium",
+     "description": "English line 1 holds only \"The elderly¹\", and it starts at x≈610 instead of the left margin (x≈90), leaving a blank gap of about 520 px on the left. Line 2 \"report feeling less lonely.\" starts at the margin as normal. The first line should also start at the left margin.",
+     "lens": "visual"
+    },
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "glyph",
+     "severity": "low",
+     "description": "Panel entry 6, \"spend v. 度过；花（时间）\": the brackets are set narrow and tight (it looks like \"花(时间)\", with no space before the opening bracket). Elsewhere this bracket keeps its normal full-width spacing: on the line just above (\"生活（复数 lives）\") and in the same meaning on screen 4 (\"花（时间）；\"). Here the bracket is not next to another full-width mark, so the compact setting does not apply.",
+     "lens": "visual"
+    },
+    {
+     "screen": 15,
+     "sentence": 14,
+     "kind": "layout",
+     "severity": "low",
+     "description": "Panel entry 5 \"parent n. 父母（之一）\" wraps \"（之一）\" onto a new line, but the opening bracket does not sit flush with the meaning's left edge: the glyph starts about 35–40 px to the right of the text column (x≈1398 vs ≈1360). Brackets at the start of a line on screens 9 and 11 sit flush.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    19
+   ],
+   "notes": [
+    "I opened all 19 screens in order (1 cover + 18 sentences, as the reference expects; no sentence is split and no PART label appears) and zoomed in on details with ImageMagick, since PIL is not installed. Numbering and footers are correct on every screen. English badges are listed left to right, then panel entries, then footer: S1 1,2 / 1–2 / 1/18; S2 1 / 1 / 2/18; S3 1,3,2(on 'common', the last piece of have…in common),4,5,6 / 1–6 / 3/18; S4 1,2,3,4 / 1–4 / 4/18; S5 1,2,3,4 / 1–4 / 5/18; S6 2,3,1(on 'together'),4 / 1–4 / 6/18; S7 1–7 / 1–7 (kid, someone, great, patience, really, listen to, director, in order of first appearance) / 7/18; S8 1–9 / 1–9 / 8/18; S9 1–3 / 1–3 / 9/18; S10 2,3,4,1(on 'into'),5,6,7,8,9 / 1–9 / 10/18; S11 1–4 / 1–4 / 11/18; S12 1–7 / 1–7 / 12/18; S13 1–6 / 1–6 / 13/18; S14 1–6 / 1–6 (badge 1 hidden, see finding) / 14/18; S15 1–7 / 1–7 / 15/18; S16 1–4 / 1–4 / 16/18; S17 1–5 / 1–5 / 17/18; S18 1–4 / 1–4 / 18/18. Each progress bar matches k/18 within about 0.3%. Highlight colours match their entry types throughout. The English, Chinese and vocabulary meanings on screen match the reference, apart from the missing glyph on screen 8. Every Chinese ellipsis (……) is drawn centred. The header on every sentence screen reads 2026年 山东 · 阅读C 跨代幼儿园让老人和孩子都受益. The defects are on the cover (title overflow), screen 4 (oversized English and Chinese running into the header and footer), screen 15 (oversized vocabulary panel spilling past the panel and into the footer), screen 8 (missing-glyph box), screen 12 (first line misplaced), and two minor bracket-spacing issues on screens 11 and 15. Crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/y4crops/."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Screen 1: the title is set far too large. Only '跨代幼儿园' and part of '让' fit inside the white card. The rest of the title runs past the card border onto the purple background, behind the yellow 'Aa' circle and off the right edge of the frame. The other cover items (tag, 2026年 山东 with the 阅读C pill, 说明文 · 社会与生活, 全文 303 词) look correct."
+    },
+    {
+     "index": 1,
+     "real": true,
+     "why": "Screen 4: the English is set at roughly double the normal size. The first line 'The pair¹ have many' rises into the purple header band. A pale rectangle behind the phrase piece 'have' (x≈585–827, y≈60–190) covers part of the header band and its yellow rule."
+    },
+    {
+     "index": 2,
+     "real": true,
+     "why": "Screen 4: the Chinese translation is oversized. Its second line '时间待在一起。' and the pink bar are drawn over the footer, covering 'SENTENCE 3 / 18', the progress bar and the knob, which cannot be read."
+    },
+    {
+     "index": 3,
+     "real": true,
+     "why": "Screen 15: the panel text is much too large. Entry 1 'programme n.' is pushed above the panel's top border: its badge is hidden behind the VOCABULARY tag and the top of the headword is cut off. Entry 6 'benefit v. 受益' sits below the panel's bottom border, over the yellow shadow, and overlaps the progress knob and '逐句精读'."
+    },
+    {
+     "index": 4,
+     "real": true,
+     "why": "Zoomed crop of screen 8: between 在 and 母 there is a missing-glyph box (a rectangle with a ? pattern) where '‘' should be. The closing ’ after 育 renders correctly."
+    },
+    {
+     "index": 5,
+     "real": true,
+     "why": "Screen 12: line 1 holds only 'The elderly¹' and starts at x≈610, not the left margin at x≈90. Line 2 'report feeling less lonely.' starts at the margin, so a blank gap of about 520 px is left on line 1."
+    },
+    {
+     "index": 6,
+     "real": true,
+     "why": "Screen 11, entry 6 reads '度过；花(时间)' with narrow, tight brackets and no space before the opening bracket. The line above, '生活（复数 lives）', and the same meaning on screen 4, '花（时间）；', keep normal full-width bracket spacing. The bracket here is not next to another full-width mark, so the compact setting should not apply."
+    },
+    {
+     "index": 7,
+     "real": true,
+     "why": "Measured on screen 15: the text column (parent, 项目, 起作用) starts at x≈1361, but the wrapped '（之一）' bracket's ink starts at x≈1402, about 41 px to the right, so it is not flush. On screens 8 and 11 the line-start brackets ('（这里指园长）', '（这里指童年）') sit at x≈1335–1338 against a column at ≈1330, i.e. flush. The item cites screens 9 and 11 for comparison; the flush brackets are actually on screens 8 and 11, but the defect on screen 15 is real."
+    }
+   ]
+  },
+  {
+   "id": "z10",
+   "findings": [
+    {
+     "screen": 11,
+     "sentence": 10,
+     "kind": "glyph",
+     "severity": "low",
+     "description": "Vocabulary entry 6 (spend v. 度过；花（时间）): the full-width opening bracket after 花 is drawn without its left half-space in the middle of the line, so it looks like a half-width \"(\". Measured at 1920 px: 花 ends at x=1643 and （ starts at x=1653, a 10 px gap. The reference text has a full-width （ here, and every other mid-line （ in this video keeps the full gap of about 30 px: 生活（复数 lives） on the same screen, 花（时间） on screen 4 (sentence 3), 上（学） on screen 6 and 父母（之一） on screens 15 and 16. The same gloss text is therefore set two different ways. It should look like screen 4, where 花 and （ have the normal full-width gap. The left half-space should only be dropped when the bracket starts a line or a gloss.",
+     "lens": "visual"
+    }
+   ],
+   "opened": [
+    19
+   ],
+   "notes": [
+    "I opened all 19 screens and the reference file. I also zoomed in on the English of screens 3, 9 and 19, the Chinese of screen 8, and the vocabulary panels of screens 4, 5, 9, 11 and 13. I measured the glyph spacing around brackets and quotes on screens 4, 6, 8, 9, 11, 13, 17 and 19.\n\nStructure: 19 screens as expected (cover plus 18 sentences), no splits, and no PART label on any screen.\n\nCover: all items match the reference.\n- Title 跨代幼儿园让老人和孩子都受益, on one line.\n- 中考英语 2026年 山东 · with the 阅读C pill, and the tag 中考英语 · 阅读理解.\n- Genre 说明文 · 社会与生活.\n- 全文 303 词: my independent count of the reference English, leaving out the Chinese glosses (有益的) and (共情), is also 303.\n\nNumbering per sentence (English badges / panel entries / footer): every sentence screen has matching badges, consecutive panel entries and the right footer number.\n- S1 1–2, S2 1, S3 1–6, S4 1–4, S5 1–4, S6 1–4, S7 1–7, S8 1–9, S9 1–3, S10 1–9, S11 1–4, S12 1–7, S13 1–6, S14 1–6, S15 1–7, S16 1–4, S17 1–5, S18 1–4.\n- In every case the panel runs 1..n in order of first appearance, the set of English badges equals the panel set, and the footer reads SENTENCE k / 18 with the right k.\n- Split phrases carry their number only on the last piece: have…in common (S3), bring…together (S6), bring…into (S10).\n- Phrases broken by a line wrap (make it possible for / them to, the rest / of, one / day) have one badge, on the last piece.\n- The progress knob matches k/18 on every screen, ending at the bar's end on S18.\n\nVisual checks: highlight colours match the entry types (words purple with round badges; phrases magenta on yellow with rounded-square badges in the English and round badges in the panel). The Chinese gloss annotations (有益的) and (共情) are not broken across lines. The ellipses in 因……而, 把……叫作, 做……, ……之一 and 被困在……中间 are all drawn centred, the same way everywhere. Adjacent full-width marks are compact (’，  ，”  ）；  ，“). Wrapped lines starting with （ sit flush left. I found no overflow, overlap, clipping, tofu or replacement characters, and no font size looks abnormal.\n\nThe only defect is the low-severity bracket spacing on screen 11."
+   ],
+   "failed": 0,
+   "verdicts": [
+    {
+     "index": 0,
+     "real": true,
+     "why": "Confirmed on screen 11 (sentence 10), vocabulary entry 6 'spend v. 度过；花（时间）'. The opening bracket after 花 sits tight against the character. Pixel ink runs on that line: 花 ends at x=1643 and （ starts at x=1653, a 10 px gap. On the same screen, 生活（复数 lives） has 活 ending at x=1514 and （ starting at x=1543 (29 px). On screen 4 (sentence 3), 花（时间） has 花 ending at x=1541 and （ starting at x=1571 (30 px). Screen 6 上（学） and screens 15/16 父母（之一） also visibly keep the full gap. The bracket here is mid-line and not next to another full-width mark, so the compact-punctuation rule does not cover it. The same gloss text 花（时间） is set inconsistently, as described."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

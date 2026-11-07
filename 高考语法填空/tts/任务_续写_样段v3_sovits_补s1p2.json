@@ -1,0 +1,22 @@
+{
+ "说明": "样段 v3 补合成 s1p2：中文地道化改稿（提交 4153aa58）只改了 s1p2，重合 4 次；选段前先删主合成里 s1p2 的旧小段。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": [
+  "s1p2"
+ ],
+ "takes": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "candidates": [
+  {
+   "id": "g1",
+   "mode": "gptsovits",
+   "weights": "teacher",
+   "split": "mark",
+   "gap_max": 0.45
+  }
+ ]
+}

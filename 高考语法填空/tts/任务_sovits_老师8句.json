@@ -1,0 +1,11 @@
+{
+ "说明": "老师的 GPT-SoVITS v2ProPlus 专属模型（声音分身 VoiceTwin 训练、models.json 选中的组合）试听 8 句（高考续写/声音对比/测试句.txt）。g1：VoiceTwin 挑好的参考（每种语言主参考 + 2 条辅助参考、models.json 的各语言语速）；g2：同一模型 + 05.wav 的“用户本人平实_1”参考（与 Qwen 第 6 轮同一参考，便于对比）。每个 3 次，各在一台机器上走完整处理链。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["t01", "t02", "t03", "s1b1", "s1b2", "s1e", "s5bf", "s9e"],
+ "takes": [1, 2, 3],
+ "split": "mark",
+ "candidates": [
+  {"id": "g1", "mode": "gptsovits", "weights": "teacher"},
+  {"id": "g2", "mode": "gptsovits", "weights": "teacher", "voice": "高考语法填空/tts/音色/用户本人平实_1.json"}
+ ]
+}

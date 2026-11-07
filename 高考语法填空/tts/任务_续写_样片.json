@@ -1,0 +1,52 @@
+{
+ "说明": "读后续写 2026 新课标Ⅰ卷 样片：最难的第 11 句（最长、五步全）。用户本人声音 r2icl（用户 2026-11-03 选定第 3 轮 r2icl；第 4 轮定稿写进 高考语法填空/tts/声音_用户本人.json 后只换音频）。稿是 高考续写/讲解/2026_新课标Ⅰ卷/稿.json 的副本（续写检查.py ⑥ 保证逐字相同）。 2026-11-03：r2icl 拆段合成过不了拼接检查（踩坑 97，相邻段语速差 1.87 倍），改用第 5 轮候选 w（同一 r2icl 参考，整段合成）/ wx / m，一次合成，第 5 轮定哪个都现成。",
+ "script": "高考语法填空/tts/稿_续写_2026_新课标Ⅰ卷.json",
+ "only": [
+  "s11z",
+  "s11b1",
+  "s11b2",
+  "s11b3",
+  "s11b4",
+  "s11b5",
+  "s11e",
+  "s11p1",
+  "s11p2",
+  "s11h"
+ ],
+ "takes": [
+  1,
+  2,
+  3
+ ],
+ "candidates": [
+  {
+   "id": "w",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "icl",
+   "split": "none",
+   "gap_max": 0.45,
+   "fallback": "m"
+  },
+  {
+   "id": "wx",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "xvec",
+   "split": "none",
+   "gap_max": 0.45,
+   "fallback": "m"
+  },
+  {
+   "id": "m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.45
+  }
+ ]
+}
