@@ -65,7 +65,7 @@ AUDIO_RELEASE = {
 }
 NO_AUDIO = {     # 发布的东西里没有本仓库 TTS 音频：理由
     'release-papers.yml': '原卷 PDF', 'release-cet4-writing-handout.yml': '讲义 PDF', 'release-cet6-writing-handout.yml': '讲义 PDF',
-    'release-kaoyan-writing-handout.yml': '讲义 PDF', 'release-cet6-listening-handout.yml': '讲义 PDF + 商品图',
+    'release-kaoyan-writing-handout.yml': '讲义 PDF', 'release-cet6-listening-handout.yml': '讲义 PDF + 商品图', 'release-cet4-listening-handout.yml': '讲义 PDF + 商品图',
     'release-tem8-listening.yml': '专八听力考试原声视频（听力视频.py，不是 TTS，没有 timings；用户 2026-10-29 定为不在范围内）',
 }
 

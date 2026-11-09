@@ -1,0 +1,87 @@
+# 四级听力讲义套装发布（2026-11-09，照六级听力讲义）：修改 .github/cet4-listening-handout-release.txt（第一行写标签名）并推送时，
+# 把本机生成、全部检查通过后入库的 6 份 PDF（四级/听力/讲义/成品/）用 Python zipfile 打包（不压缩，中文名 UTF-8 标记：踩坑 52），
+# 资产名只用 ASCII（踩坑 123），逐个核对后发布 GitHub Release（目标用分支名：踩坑 53），再下载核对。发布出问题只改这一步（铁律 26）。
+name: 发布四级听力讲义套装
+on:
+  push:
+    paths: ['.github/cet4-listening-handout-release.txt']
+permissions:
+  contents: write
+concurrency:
+  group: cet4-listening-handout-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            四级/听力/讲义/成品
+            四级/听力/讲义/商品图
+      - name: Release 目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - name: 打包、逐个核对
+        run: |
+          set -e
+          tag=$(head -1 .github/cet4-listening-handout-release.txt | tr -d '[:space:]')
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+          python3 - <<'PY'
+          import zipfile, zlib
+          from pathlib import Path
+          src = Path('四级/听力/讲义/成品')
+          files = ['四级听力真题35套精讲', '四级听力同义替换手册', '四级听力高频词手册', '四级听力听写本', '四级听力听写本（答案）', '四级听力35天刷题计划']
+          root = '四级听力真题35套精讲 全套讲义（2026—2018）'
+          Path('dist').mkdir()
+          z = Path('dist/CET4-listening-handout.zip')
+          items = [(f'{root}/{i} {f}.pdf', (src / f'{f}.pdf').read_bytes()) for i, f in enumerate(files, 1)]
+          with zipfile.ZipFile(z, 'w', zipfile.ZIP_STORED) as zf:
+              for n, data in items:
+                  assert data[:5] == b'%PDF-' and len(data) > 50_000, n
+                  zf.writestr(zipfile.ZipInfo(n, (2026, 11, 4, 0, 0, 0)), data)
+          with zipfile.ZipFile(z) as zf:
+              info = zf.infolist()
+              assert [i.filename for i in info] == [n for n, _ in items]
+              for i, (n, data) in zip(info, items):
+                  assert i.flag_bits & 0x800, f'{n} 没有 UTF-8 标记'
+                  assert i.compress_type == zipfile.ZIP_STORED and i.file_size == len(data) and i.CRC == zlib.crc32(data), n
+              assert zf.testzip() is None
+          shop = Path('四级/听力/讲义/商品图/四级听力讲义_小店上传包.zip')
+          with zipfile.ZipFile(shop) as zf:
+              assert zf.testzip() is None and all(i.flag_bits & 0x800 for i in zf.infolist() if not i.filename.isascii())
+          (Path('dist') / 'CET4-listening-shop.zip').write_bytes(shop.read_bytes())
+          print('打包核对通过：', z.stat().st_size)
+          PY
+          cat > notes.md <<'MD'
+          2026—2018 年大学英语四级听力真题 35 套全套讲义，`CET4-listening-handout.zip` 解压后是一个文件夹，6 份 PDF：
+
+          1. **四级听力真题35套精讲**：原文逐句英汉对照（答案出处黄色标出、标题号）；每道题：选项中文、答案依据（逐字引原文）、思路、同义替换、错项排除；每套答案速查、本套高频词。
+          2. **四级听力同义替换手册**：全部“正确选项 ⇄ 原文”的换说法，按五种类型分组、标出处。
+          3. **四级听力高频词手册**：35 套原文逐词统计，按考到的套数排序，标出处。
+          4. **四级听力听写本**、5. **听写本（答案）**：每句挖一个关键词。
+          6. **四级听力35天刷题计划**。
+
+          目录可点击跳转、带书签、“已读”方框可打勾保存。`CET4-listening-shop.zip` 是小店上传包（商品图、标题、简介）。
+          MD
+          sed -i 's/^          //' notes.md
+      - name: 发布
+        run: |
+          set -e
+          title="四级听力真题35套精讲 全套讲义（2026—2018）"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/CET4-listening-handout.zip dist/CET4-listening-shop.zip --clobber
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" dist/CET4-listening-handout.zip dist/CET4-listening-shop.zip --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md
+          fi
+      - name: 下载核对
+        run: |
+          set -e
+          mkdir dl && gh release download "$TAG" -D dl
+          cmp dl/CET4-listening-handout.zip dist/CET4-listening-handout.zip
+          cmp dl/CET4-listening-shop.zip dist/CET4-listening-shop.zip
+          python3 -c "import zipfile; z=zipfile.ZipFile('dl/CET4-listening-handout.zip'); assert z.testzip() is None; print([i.filename for i in z.infolist()])"
