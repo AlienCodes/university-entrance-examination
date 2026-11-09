@@ -5,11 +5,12 @@ python3 解析检查.py [套 …]；--自检 双向验证（埋雷必须全部�
 import copy
 import hashlib
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(os.path.abspath(__file__)).parent   # 不解析软链接：四级 tools 是指向这里的软链接，按所在目录取项目
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parents[3] / 'tools'))
 import 材料 as M  # noqa: E402

@@ -4,11 +4,12 @@ python3 复核埋雷.py 对照 <目录> 意见.json → 雷查出几颗；其余
 雷都是程序检查查不出、只有看懂内容才看得出的：依据换成别题的句子、两个选项译文对调、错因类别改错、讲解里“男士 / 女士”对换、两题的替换对调。"""
 import copy
 import json
+import os
 import random
 import sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(os.path.abspath(__file__)).parent   # 不解析软链接：四级 tools 是指向这里的软链接，按所在目录取项目
 sys.path.insert(0, str(HERE))
 import 材料 as M  # noqa: E402
 import 解析检查 as JC  # noqa: E402

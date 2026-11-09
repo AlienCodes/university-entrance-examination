@@ -1,4 +1,4 @@
-"""六级听力讲义套装 小店商品图（1:1，2000×2000）。老师 2026-11-04：第 1 张 = 商品总图，展示卖的所有文件（含六级历年真题原卷）。
+"""六级 / 四级听力讲义套装 小店商品图（1:1，2000×2000；项目配置 讲义/项目.json，四级共用本程序）。老师 2026-11-04：第 1 张 = 商品总图，展示卖的所有文件（含六级历年真题原卷）。
 
     python3 六级/听力/讲义/商品图/商品图.py           # 先 build 讲义（成品/ 里 6 个 PDF），再出图到 成品/
     python3 六级/听力/讲义/商品图/商品图.py --自检    # 双向验证：字号×0.5 报缩略图字高、禁用词、编号都要报
@@ -10,6 +10,7 @@
 import ast
 import importlib.util
 import json
+import os
 import re
 import subprocess
 import sys
@@ -17,7 +18,7 @@ from pathlib import Path
 
 from PIL import Image
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(os.path.abspath(__file__)).parent   # 不解析软链接：四级 商品图 的程序是指向这里的软链接
 REPO = HERE.parents[3]
 T = HERE.parent / 'tools'
 PDF = HERE.parent / '成品'
@@ -26,6 +27,7 @@ OUT = HERE / '成品'
 sys.path.insert(0, str(T))
 import 讲义 as K  # noqa: E402
 M, J = K.M, K.J
+P, LV = K.P, K.LV
 
 
 def _load(name, f):
@@ -69,8 +71,8 @@ NV = sum(1 for e in VS.values() if len(e['sets']) >= 3)
 TIER = [sum(1 for e in VS.values() if lo <= len(e['sets']) <= hi) for _, lo, hi in K.TIERS]
 NB = sum(1 for s in SETS for g in M.load(s)['groups'] for b in K.blanks(g['sents'], K._zipf()) if b)
 BOOK = ['#ffe46b', '#ffb4cf', '#a8e6c8', '#bcd4ff', '#ffd2a8', '#f4f1e8']
-BOOKT = [('听力真题', f'{NS}套精讲'), ('同义替换', '手册'), ('高频词', '手册'), ('听写本',), ('听写本', '答案'), ('30天', '刷题计划')]  # 封面书名分行，放进书里（FIT_JS 查）
-FILES = [('main', '真题 30 套精讲'), ('syn', '同义替换手册'), ('vocab', '高频词手册'), ('dict', '听写本'), ('dans', '听写本答案'), ('plan', '30 天刷题计划')]
+BOOKT = [('听力真题', f'{NS}套精讲'), ('同义替换', '手册'), ('高频词', '手册'), ('听写本',), ('听写本', '答案'), (f'{NS}天', '刷题计划')]  # 封面书名分行，放进书里（FIT_JS 查）
+FILES = [('main', f'真题 {NS} 套精讲'), ('syn', '同义替换手册'), ('vocab', '高频词手册'), ('dict', '听写本'), ('dans', '听写本答案'), ('plan', f'{NS} 天刷题计划')]
 
 
 def npages(key):
@@ -132,7 +134,7 @@ x-nb{white-space:nowrap}
 
 
 def head(title, sub, y=44):
-    return (f'<div class="ab" style="left:50px;top:{y}px"><span class="top">朋克英语 出品 · 六级听力真题 30 套精讲 · 全套讲义</span></div>'
+    return (f'<div class="ab" style="left:50px;top:{y}px"><span class="top">朋克英语 出品 · {LV}听力真题 {NS} 套精讲 · 全套讲义</span></div>'
             f'<div class="ab h1" data-k="h1" style="left:48px;top:{y + 50}px">{title}</div>'
             + (f'<div class="ab sub" data-k="sub" style="left:50px;top:{y + 122}px">{sub}</div>' if sub else ''))
 
@@ -162,26 +164,26 @@ def band(y, text):
 # ---------------------------------------------------------------- 01 商品总图（黑板）
 def p_all():
     cards = ''
-    for i, (k, name) in enumerate(FILES + [('paper', '六级历年真题原卷')]):
+    for i, (k, name) in enumerate(FILES + [('paper', f'{LV}历年真题原卷')]):
         col, row = i % 4, i // 4
         x, y = 44 + col * 232, 278 + row * 306
         if k == 'paper':
             pic = (f'<div class="ab" style="left:{x + 34}px;top:{y}px;width:150px;height:212px;background:#fbf8ef;border-radius:3px;'
                    f'box-shadow:8px 10px 0 rgba(0,0,0,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;color:{INK}">'
                    f'<div data-k="pp" style="font:900 30px/1.25 Black;text-align:center">历年<br>真题<br>原卷</div>'
-                   f'<div class="lat" style="font-size:18px;margin-top:10px;color:{BERRY}">CET-6</div></div>')
+                   f'<div class="lat" style="font-size:18px;margin-top:10px;color:{BERRY}">{P["CET"]}</div></div>')
             sub = '原卷 PDF'
         else:
             pic = (f'<div class="ab" style="left:{x + 24}px;top:{y}px;width:170px;height:212px;background:{BOOK[i]};border-radius:4px 10px 10px 4px;'
                    f'box-shadow:8px 10px 0 rgba(0,0,0,.4);transform:rotate({(-3, 2, -2, 3, -2, 2)[i]}deg);border-left:12px solid rgba(0,0,0,.22);'
                    f'display:flex;flex-direction:column;justify-content:center;padding:0 12px;color:{INK}">'
-                   f'<div class="lat" style="font-size:15px;letter-spacing:.12em;color:{INK2}">CET-6</div>'
+                   f'<div class="lat" style="font-size:15px;letter-spacing:.12em;color:{INK2}">{P["CET"]}</div>'
                    f'<div class="fit" style="font:900 31px/1.2 Black;margin-top:6px;white-space:nowrap">{"<br>".join(esc(t) for t in BOOKT[i])}</div></div>')
             sub = f'<span class="lat">{PG[k]}</span> 页'
         cards += (pic + f'<div class="ab ck" data-k="c{i}" style="left:{x}px;top:{y + 226}px;width:218px;text-align:center;font:900 24px/1.25 Black">{esc(name)}</div>'
                   f'<div class="ab" data-k="s{i}" style="left:{x}px;top:{y + 262}px;width:218px;text-align:center;font:700 20px/1 Bold;color:{YEL}">{sub}</div>')
     return f"""<body>{L.SVG_DEFS}<div class="board"></div><div class="grain"></div>{L.dust(1000, 1000)}
-<div class="ab ck" data-k="six" data-min="{MIN_TITLE}" style="left:50px;top:52px;font:900 {fs(74)}/1.1 Black"><span style="color:{HOT}">六级</span>听力 真题<span style="color:{YEL}">{NS}</span>套</div>
+<div class="ab ck" data-k="six" data-min="{MIN_TITLE}" style="left:50px;top:52px;font:900 {fs(74)}/1.1 Black"><span style="color:{HOT}">{LV}</span>听力 真题<span style="color:{YEL}">{NS}</span>套</div>
 <div class="ab ck" data-k="hook" data-min="{MIN_HOOK}" style="left:54px;top:148px;font:900 {fs(40)}/1.2 Black">全套讲义 · 每道题都讲透</div>
 <div class="ab ck" data-k="list" data-min="{MIN_SELL}" style="left:54px;top:214px;font:700 {fs(25)}/1.2 Bold;color:#e9efe9">这一套里有 <span style="color:{YEL}">{len(FILES) + 1}</span> 样东西：</div>
 <div class="ab ck" data-k="brand" data-min="{MIN_SELL}" style="right:56px;top:214px;font:900 {fs(25)}/1.2 Black;color:{YEL}">朋克英语 出品</div>
@@ -210,14 +212,14 @@ def p_text():
     src = shot('main', find_page('main', 'LISTENING SET 01'), '原文页')
     return f"""<body><div class="dots"></div>{head('原文<span class="hy">逐句英汉对照</span>', '黄色 = 答案出处，右上角就是题号')}
 {page(src, 330, 230, 600, rot=1.2, crop=(0, 1.2))}
-{pts(52, 280, 260, ['长对话、短文、讲座全部原文', '每句英文下面一句中文', '本套 25 题答案速查', '本套内容一段话概括', '本套高频词，标出 30 套里考过几套'])}
+{pts(52, 280, 260, [f"{P['篇型列举']}全部原文", '每句英文下面一句中文', f'本套 {NQ // NS} 题答案速查', '本套内容一段话概括', f'本套高频词，标出 {NS} 套里考过几套'])}
 </body>"""
 
 
 def p_syn():
     src = shot('syn', find_page('syn', 'SYNONYM 01'), '替换页')
     rows = ''.join(f'<div><span>{esc(t)}：<b class="lat">{len(SYN.get(t, []))}</b> 组</span></div>' for t in K.JC.TYPES)
-    return f"""<body><div class="dots"></div>{head(f'同义替换手册：<span class="hy">{NSYN} 组</span>', '听懂“换说法”，就听懂了六级听力的出题规律')}
+    return f"""<body><div class="dots"></div>{head(f'同义替换手册：<span class="hy">{NSYN} 组</span>', f'听懂“换说法”，就听懂了{LV}听力的出题规律')}
 {page(src, 420, 240, 520, rot=1.5, crop=(0, 1.15))}
 <div class="ab pt" data-k="pts" style="left:52px;top:290px;width:340px">{rows}</div>
 <div class="ab pt" data-k="note" style="left:52px;top:600px;width:340px;font-size:21px;color:{MUTE}">正确选项的说法 ⇄ 原文的说法，按五种类型分组，每组标出处（哪一年、哪一套、第几题）</div>
@@ -230,7 +232,7 @@ def p_vocab():
     return f"""<body><div class="dots"></div>{head(f'高频词手册：<span class="hy">{NV} 个</span>词条', f'{NS} 套真题原文逐词统计，按考到的套数排序')}
 {page(src, 420, 240, 520, rot=1.5, crop=(0, 1.15))}
 <div class="ab pt" data-k="pts" style="left:52px;top:290px;width:340px">{t}</div>
-<div class="ab pt" data-k="note" style="left:52px;top:520px;width:340px;font-size:21px;color:{MUTE}">每个词标出 30 套里考到几套、出现在哪几篇，回到原文就能听到它</div>
+<div class="ab pt" data-k="note" style="left:52px;top:520px;width:340px;font-size:21px;color:{MUTE}">每个词标出 {NS} 套里考到几套、出现在哪几篇，回到原文就能听到它</div>
 </body>"""
 
 
@@ -245,7 +247,7 @@ def p_dict():
 
 def p_plan():
     src = shot('plan', 1, '计划页')
-    return f"""<body><div class="dots"></div>{head('<span class="hy">30 天</span>刷题计划', '每天一套，五项任务做完一项勾一项')}
+    return f"""<body><div class="dots"></div>{head(f'<span class="hy">{NS} 天</span>刷题计划', '每天一套，五项任务做完一项勾一项')}
 {page(src, 330, 230, 600, rot=1, crop=(0, 1.25))}
 {pts(52, 290, 250, ['完整做一遍', '看精讲', '听写', '背高频词', '复听错题', '写下每天做对几题', '页码直接对到精讲'])}
 </body>"""
@@ -273,8 +275,8 @@ def p_sets():
 
 
 PAGES = [('01_商品总图', p_all, True), ('02_每题讲透', p_q, False), ('03_原文逐句对照', p_text, False), ('04_同义替换手册', p_syn, False),
-         ('05_高频词手册', p_vocab, False), ('06_听写本', p_dict, False), ('07_30天刷题计划', p_plan, False), ('08_目录书签已读', p_toc, False),
-         ('09_30套全收录', p_sets, False)]
+         ('05_高频词手册', p_vocab, False), ('06_听写本', p_dict, False), (f'07_{NS}天刷题计划', p_plan, False), ('08_目录书签已读', p_toc, False),
+         (f'09_{NS}套全收录', p_sets, False)]
 
 
 YEAR_BAD = re.compile(r'(20\d\d)\s*[—-]\s*(20\d\d)|20\d\d\.\d{1,2}(?!\d)|20\d\d\s*年\s*\d{1,2}\s*月')

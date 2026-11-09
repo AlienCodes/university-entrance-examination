@@ -2,17 +2,20 @@
 load(套) → {id, year, month, set, groups: [{sec, name, qs: [题号…], sents: [{sid, en, zh}]}], questions: {题号: {q, opts, ans}}}
 python3 材料.py 套 … → 写给解析作者的材料（scratch 里），python3 材料.py --统计 → 各套句数 / 词数。"""
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
-L = Path(__file__).resolve().parents[2]          # 六级/听力
+L = Path(os.path.abspath(__file__)).parents[2]   # 六级/听力 或 四级/听力（不解析软链接）
 V = {p['id']: p for p in json.loads((L / '精读' / 'data' / 'vocab.json').read_text('utf-8'))['passages']}
 SETS = sorted(V, reverse=True)                   # 新的在前（老师定）
 QB = re.compile(r'^Questions? .{1,30}? (?:are|is) based on', re.I)
-QS = re.compile(r'^Question \w+[:.]', re.I)
+QS = re.compile(r'^Question \w+(?:[ -]\w+)?[:.]', re.I)   # Question 21: / twenty-one: / twenty one:
+END = re.compile(r'^That[’\']s the end of', re.I)
 NUM = 'one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty'.split()
-HEAD = re.compile(r'^(Conversation|Passage|Recording) (one|two|three|1|2|3)\b[.:]?\s*', re.I)
+HEAD = re.compile(r'^(News Report|Conversation|Passage|Recording) (one|two|three|1|2|3)\b[.:]?\s*', re.I)
+P = json.loads((L / '讲义' / '项目.json').read_text('utf-8'))   # 项目配置（六级 / 四级）
 
 
 def load(sid):
@@ -33,28 +36,41 @@ def load(sid):
     groups, gi = [], 0
     secs = t['sections']
     for pi, para in enumerate(paras):
-        if len(para) == 1 and QB.match(para[0]['en']):
-            prev = paras[pi - 1]
-            base = sum(len(x) for x in paras[:pi - 1])
-            sents = [{'sid': base + j + 1, 'en': s['en'], 'zh': s['zh'], 'w': s['w']} for j, s in enumerate(prev)]
-            m = HEAD.match(sents[0]['en'])
-            if not m:
-                raise SystemExit(f'{sid}：第 {pi} 段之前找不到 Conversation/Passage/Recording 开头：{sents[0]["en"][:60]}')
-            name = m.group(0).strip()
-            if m.end() >= len(sents[0]['en']):
-                sents = sents[1:]              # “Conversation one.” 单独一句：不算正文
-            a, b = secs[gi]
-            kind = m.group(1).lower()
-            qsent, j = {}, pi + 1
-            while j < len(paras) and len(paras[j]) == 1 and QS.match(paras[j][0]['en']):
-                w = paras[j][0]['en'].split()[1].rstrip(':.').lower()
-                n = int(w) if w.isdigit() else NUM.index(w) + 1
-                if not a <= n <= b:
-                    raise SystemExit(f'{sid}：念题句题号 {n} 不在第 {a}—{b} 题')
-                qsent[n] = paras[j][0]
-                j += 1
-            groups.append({'kind': kind, 'name': name, 'qs': list(range(a, b + 1)), 'sents': sents, 'qsent': qsent})
-            gi += 1
+        # 一组 = 篇名开头的一段 + 念题句。念题句通常各占一段跟在后面（前面可有“Questions … are based on”）；
+        # 四级有的录音没念“based on”句，有的念题句并进了正文段末尾（202412-2 Passage Three）——都剥出来。
+        if not HEAD.match(para[0]['en']):
+            continue
+        isq = lambda x: QS.match(x['en']) or QB.match(x['en'])
+        body, tail = list(para), []
+        if len(body) > 2 and END.match(body[-1]['en']) and isq(body[-2]):
+            body.pop()                         # 念题句后面的“That’s the end of …”
+        while len(body) > 1 and isq(body[-1]):
+            tail.insert(0, body.pop())
+        j = pi + 1
+        while j < len(paras) and len(paras[j]) == 1 and isq(paras[j][0]):
+            tail.append(paras[j][0])
+            j += 1
+        if not tail:
+            continue
+        base = sum(len(x) for x in paras[:pi])
+        sents = [{'sid': base + k + 1, 'en': s['en'], 'zh': s['zh'], 'w': s['w']} for k, s in enumerate(body)]
+        m = HEAD.match(sents[0]['en'])
+        name = m.group(0).strip()
+        if m.end() >= len(sents[0]['en']):
+            sents = sents[1:]              # “Conversation one.” 单独一句：不算正文
+        a, b = secs[gi]
+        kind = m.group(1).lower()
+        qsent = {}
+        for x in tail:
+            if not QS.match(x['en']):
+                continue
+            w = re.match(r'Question ([\w -]+?)[:.]', x['en'], re.I).group(1).lower()
+            n = int(w) if w.isdigit() else sum(NUM.index(y) + 1 for y in re.split('[ -]', w))   # twenty-one / twenty one = 20 + 1
+            if not a <= n <= b:
+                raise SystemExit(f'{sid}：念题句题号 {n} 不在第 {a}—{b} 题')
+            qsent[n] = x
+        groups.append({'kind': kind, 'name': name, 'qs': list(range(a, b + 1)), 'sents': sents, 'qsent': qsent})
+        gi += 1
     if gi != len(secs) or sum(len(g['qs']) for g in groups) != len(qs):
         raise SystemExit(f'{sid}：找到 {gi} 组，题目.json 有 {len(secs)} 组')
     return {'id': sid, 'year': p['year'], 'month': p['month'], 'set': p['set'], 'groups': groups, 'questions': qs, 'summary': p.get('summary', ''), 'paras': paras}

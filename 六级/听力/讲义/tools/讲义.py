@@ -1,19 +1,20 @@
-"""六级听力真题 30 套 · 付费讲义套装（2026-11-04）。
+"""六级 / 四级听力真题 N 套 · 付费讲义套装（2026-11-04；四级 2026-11-09 共用本程序，项目配置在 讲义/项目.json）。
 版式、断行检查（WRAP_JS）、可点目录 + 书签 + “已读”复选框（toc_check）全部沿用 六级作文/tools/讲义.py（同一系列）。
 数据：原文与译文 = 精读已复核的 vocab.json；答案 = 答案裁定.json；解析 = 讲义/解析/<套>.json（解析检查.py 先过）。
 
-python3 讲义.py build [main|syn|vocab|dict|plan|all] [套 …]   不写套 = 30 套
+python3 讲义.py build [main|syn|vocab|dict|plan|all] [套 …]   不写套 = 全部套
 所有数字（套数、题数、词数、页数）都由程序现算。"""
 import collections
 import html
 import importlib.util
 import json
+import os
 import re
 import sys
 import tempfile
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(os.path.abspath(__file__)).parent   # 不解析软链接：四级 tools 是指向这里的软链接
 OUT = HERE.parent / '成品'
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(HERE))
@@ -25,8 +26,10 @@ J = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(J)
 esc = J.esc
 
-NAMES = {'main': '六级听力真题30套精讲', 'syn': '六级听力同义替换手册', 'vocab': '六级听力高频词手册',
-         'dict': '六级听力听写本', 'dans': '六级听力听写本（答案）', 'plan': '六级听力30天刷题计划'}
+P = M.P                      # 项目配置
+LV, NS = P['级'], len(M.SETS)  # 六级 / 四级；套数（现算）
+NAMES = {'main': f'{LV}听力真题{NS}套精讲', 'syn': f'{LV}听力同义替换手册', 'vocab': f'{LV}听力高频词手册',
+         'dict': f'{LV}听力听写本', 'dans': f'{LV}听力听写本（答案）', 'plan': f'{LV}听力{NS}天刷题计划'}
 
 J.CSS += r"""
 /* 六级听力讲义 */
@@ -120,7 +123,12 @@ def short(sid):
 def gname(g):
     w = g['name'].rstrip('.:').split()
     num = {'1': 'One', '2': 'Two', '3': 'Three'}
-    return f"{w[0].capitalize()} {num.get(w[1], w[1].capitalize())}"
+    return ' '.join(x.capitalize() for x in w[:-1]) + f" {num.get(w[-1], w[-1].capitalize())}"
+
+
+def gno(g):
+    """第几篇（1/2/3）：Conversation One → 1、News Report 3 → 3。"""
+    return {'one': '1', 'two': '2', 'three': '3'}.get(gname(g).split()[-1].lower(), gname(g).split()[-1])
 
 
 def jx(sid):
@@ -152,12 +160,12 @@ def _zipf():
     return lambda h: wordfreq.zipf_frequency(h, 'en')
 
 
-KIND = {'conversation': '对话', 'passage': '短文', 'recording': '讲座'}
-BASIC = {'passage', 'conversation', 'recording', 'lecture', 'in fact', 'according to', 'for example', 'at the end of', 'such as', 'a lot of', 'as well as', 'more than', 'at least', 'so that', 'because of', 'in order to', 'a few', 'kind of', 'lots of', 'as well', 'of course', 'each other', 'even though', 'even if', 'rather than', 'instead of', 'as long as', 'thanks to'}
+KIND = P['篇型']
+BASIC = {'news report', 'passage', 'conversation', 'recording', 'lecture', 'in fact', 'according to', 'for example', 'at the end of', 'such as', 'a lot of', 'as well as', 'more than', 'at least', 'so that', 'because of', 'in order to', 'a few', 'kind of', 'lots of', 'as well', 'of course', 'each other', 'even though', 'even if', 'rather than', 'instead of', 'as long as', 'thanks to'}
 
 
 def vocab_stats():
-    """30 套原文（只算正文，不算说明和念题）里每个词条：出现在哪几套、哪几篇、释义。"""
+    """全部套原文（只算正文，不算说明和念题）里每个词条：出现在哪几套、哪几篇、释义。"""
     zipf = _zipf()
     st = {}
     for sid in M.SETS:
@@ -172,7 +180,7 @@ def vocab_stats():
                     e['n'] += 1
                     if sid not in e['sets']:
                         e['sets'].append(sid)
-                    wh = f'{short(sid)} {KIND[g["kind"]]}{gname(g).split()[1][0].replace("O", "1").replace("T", "2" if gname(g).split()[1] == "Two" else "3")}'
+                    wh = f'{short(sid)} {KIND[g["kind"]]}{gno(g)}'
                     if wh not in e['where']:
                         e['where'].append(wh)
     return st
@@ -183,7 +191,7 @@ def set_chapter(i, sid, VS):
     d, T = M.load(sid), jx(sid)
     words = sum(len(s['en'].split()) for g in d['groups'] for s in g['sents'])
     out = [f"<section class='chap' data-mark='CH{i:02d}'><div class='band'><div><div class='no'>LISTENING SET {i:02d}</div>"
-           f"<h1><span>{esc(code(sid))}</span></h1></div><div class='meta'><b>大学英语六级 听力真题</b>{len(d['questions'])} 题 · 原文 {words} 词</div></div>"]
+           f"<h1><span>{esc(code(sid))}</span></h1></div><div class='meta'><b>{P['全称']} 听力真题</b>{len(d['questions'])} 题 · 原文 {words} 词</div></div>"]
     ak = ''.join(f"<div>{n}<b>{q['ans']}</b></div>" for n, q in d['questions'].items())
     out.append(f"<div class='ov'><div class='sm'><b>本套内容：</b>{esc(d['summary'])}</div><div class='ak'><div class='t'>答案速查</div>{ak}</div></div>")
     for g in d['groups']:
@@ -215,7 +223,7 @@ def set_chapter(i, sid, VS):
                        f"<div class='rw cw'><b>错项排除</b>{cw}</div></div>")
     hv = sorted({w['h'] for g in d['groups'] for s in g['sents'] for w in s['w'] if w['h'] in VS and len(VS[w['h']]['sets']) >= 3},
                 key=lambda h: (-len(VS[h]['sets']), h))[:30]
-    out.append(f"<div class='gh'><b>本套高频词</b><span>{len(hv)} 个</span><i>右边数字 = 30 套里有几套考到</i></div><div class='hv'>"
+    out.append(f"<div class='gh'><b>本套高频词</b><span>{len(hv)} 个</span><i>右边数字 = {NS} 套里有几套考到</i></div><div class='hv'>"
                + ''.join(f"<div><b>{esc(h)}</b><i>{len(VS[h]['sets'])} 套</i><span>{esc(VS[h]['m'])}</span></div>" for h in hv) + '</div></section>')
     return ''.join(out)
 
@@ -229,7 +237,7 @@ def guide_chapter(n):
             f"<div class='meta'><b>{n} 套真题</b>{M.V[M.SETS[0]]['year']}—{M.V[M.SETS[-1]]['year']}</div></div>"
             + box('每一套怎么学', ['① 先不看讲义，用配套的“视频版真题考试”完整做一遍，像考场上一样只听一遍；',
                                 '② 对照“答案速查”打分，错的题在“逐题精讲”里找到：先看“答案依据”是原文哪一句，再看“思路”怎么从这句话推到答案；',
-                                '③ 看“同义替换”：选项和原文换了哪些说法——六级听力的正确答案很少照搬原文，听懂这些替换就是提分的关键；',
+                                f'③ 看“同义替换”：选项和原文换了哪些说法——{LV}听力的正确答案很少照搬原文，听懂这些替换就是提分的关键；',
                                 '④ 看“错项排除”：每个错误选项属于哪一种陷阱，下次听到类似的说法就能直接排除；',
                                 '⑤ 回到“原文逐句对照”，边听录音边看黄色的答案出处，最后用《听写本》把关键词默写一遍。'])
             + f"<div class='box'><h3>同义替换的五种类型</h3>{syn}</div><div class='box'><h3>错误选项的五种陷阱</h3>{wr}</div>"
@@ -281,7 +289,7 @@ def vocab_body(VS, pages={}):
         entries.append((f'V{k}', f'{t}词（{lo}{"套以上" if hi == 99 else "—" + str(hi) + " 套"}）', f'{len(ws)} 个'))
         keys[f'V{k}'] = f'WORDS · TIER {k}'
         body += (f"<section class='chap' data-mark='V{k}'><div class='band'><div><div class='no'>WORDS · TIER {k}</div><h1><span>{esc(t)}词</span></h1></div>"
-                 f"<div class='meta'><b>{len(ws)} 个</b>30 套里有 {lo}{'套以上' if hi == 99 else '—' + str(hi) + ' 套'}考到</div></div>"
+                 f"<div class='meta'><b>{len(ws)} 个</b>{NS} 套里有 {lo}{'套以上' if hi == 99 else '—' + str(hi) + ' 套'}考到</div></div>"
                  "<div class='vw th'><div>词条</div><div>释义</div><div>套数</div><div>出处（年.月-套 篇目）</div></div>"
                  + ''.join(f"<div class='vw'><div class='w'>{esc(e['h'])}</div><div>{esc(e['m'])}</div><div class='n'>{len(e['sets'])}</div>"
                            f"<div class='s'>{esc(' · '.join(e['where'][:3]) + (f' 等 {len(e["where"])} 处' if len(e['where']) > 3 else ''))}</div></div>" for e in ws)
@@ -344,17 +352,17 @@ def dict_body(ids, answers, pages={}):
     return body, entries, keys
 
 
-# ------------------------------------------------------------------ 30 天计划
+# ------------------------------------------------------------------ N 天计划（一天一套）
 def plan_body(ids, mainpages):
     order = list(reversed(ids))           # 从最早的一套做起，最后几天留给最新真题
     rows = ''.join(f"<div class='pl'><div class='d'>{k:02d}</div><div>{esc(code(sid))}</div>"
                    "<div class='t'><span>完整做一遍</span><span>看精讲</span><span>听写</span><span>背高频词</span><span>复听错题</span></div>"
                    f"<div class='sc'>对 ___ /{len(M.load(sid)['questions'])}</div><div class='pg'>P{mainpages.get(sid, '')}</div></div>"
                    for k, sid in enumerate(order, 1))
-    return ("<section data-mark='PLAN'><div class='band'><div><div class='no'>30-DAY PLAN</div><h1><span>30 天刷题计划</span></h1></div>"
+    return (f"<section data-mark='PLAN'><div class='band'><div><div class='no'>{len(ids)}-DAY PLAN</div><h1><span>{len(ids)} 天刷题计划</span></h1></div>"
             f"<div class='meta'><b>每天一套</b>从 {M.V[order[0]]['year']} 年做到 {M.V[order[-1]]['year']} 年</div></div>"
             "<div class='how'><b>怎么用</b><br>每天做一套真题，五项任务做完一项勾一项；“对 ___ 题”写下这一套做对几道，看得见自己在进步。"
-            "从最早的一套做起，越往后越新，最后几天用最新真题模拟考试。右边页码是《30 套精讲》里这一套的起始页。</div>"
+            f"从最早的一套做起，越往后越新，最后几天用最新真题模拟考试。右边页码是《{NS} 套精讲》里这一套的起始页。</div>"
             "<div class='pl th'><div>天</div><div>真题</div><div>任务（做完打勾）</div><div>成绩</div><div>精讲页</div></div>" + rows + '</section>')
 
 
@@ -363,7 +371,7 @@ BRAND = '朋克英语'  # 老师 2026-11-04：讲义带品牌（封面“出品�
 
 
 def cover(title, sub, note):
-    c = J.cover(title, sub, note).replace('CET-6 ENGLISH WRITING', 'CET-6 LISTENING').replace('六级<br>作文', '六级<br>听力')
+    c = J.cover(title, sub, note).replace('CET-6 ENGLISH WRITING', f"{P['CET']} LISTENING").replace('六级<br>作文', f'{LV}<br>听力')
     brand = (f"<div style='position:absolute;left:34mm;bottom:30mm;font-size:16pt;font-weight:700;letter-spacing:.12em;color:var(--blue)'>"
              f"{BRAND}<span style='font-weight:400;color:var(--ink2);margin-left:3mm'>出品</span></div>")
     assert c.endswith('</div></div>')
@@ -408,7 +416,7 @@ def build(what, ids):
             J.render(pg, cover(title, sub, note), '封面', tmp / 'c.pdf', tmp, footer=False)
 
         if what in ('main', 'all', 'plan'):
-            cov('六级听力真题 30 套精讲' if len(ids) == 30 else '六级听力真题精讲', f'{y} · 大学英语六级 · 共 {len(ids)} 套 {nq} 题',
+            cov(f'{LV}听力真题 {NS} 套精讲' if len(ids) == NS else f'{LV}听力真题精讲', f"{y} · {P['全称']} · 共 {len(ids)} 套 {nq} 题",
                 '原文逐句英汉对照 → 答案依据 → 思路<br>同义替换 → 错项排除 → 本套高频词<br>每道题都讲清“答案从哪句来、为什么选它、别的为什么错”')
 
             def mk(p):
@@ -418,15 +426,15 @@ def build(what, ids):
             mainpages = {s: p[f'CH{i:02d}'] + 1 for i, s in enumerate(ids, 1)}     # + 封面 1 页
         if what in ('syn', 'all'):
             n = sum(len(v) for v in syn_rows(ids).values())
-            cov('六级听力 同义替换手册', f'{y} · 共 {len(ids)} 套真题 · {n} 组替换', '正确选项的说法 ⇄ 原文的说法，按五种替换类型分组<br>听懂“换说法”，就听懂了六级听力的出题规律')
+            cov(f'{LV}听力 同义替换手册', f'{y} · 共 {len(ids)} 套真题 · {n} 组替换', f'正确选项的说法 ⇄ 原文的说法，按五种替换类型分组<br>听懂“换说法”，就听懂了{LV}听力的出题规律')
             two_pass(pg, tmp, lambda p: syn_body(ids, p), NAMES['syn'], NAMES['syn'])
         if what in ('vocab', 'all'):
             nv = sum(1 for e in VS.values() if len(e['sets']) >= 3)
-            cov('六级听力 高频词手册', f'{M.V[M.SETS[0]]["year"]}—{M.V[M.SETS[-1]]["year"]} · {len(M.SETS)} 套真题原文统计 · {nv} 个词条', '按 30 套里考到的套数排序：必背 → 常考 → 高频<br>每个词都标出处，回到原文就能听到它')
+            cov(f'{LV}听力 高频词手册', f'{M.V[M.SETS[0]]["year"]}—{M.V[M.SETS[-1]]["year"]} · {len(M.SETS)} 套真题原文统计 · {nv} 个词条', f'按 {NS} 套里考到的套数排序：必背 → 常考 → 高频<br>每个词都标出处，回到原文就能听到它')
             two_pass(pg, tmp, lambda p: vocab_body(VS, p), NAMES['vocab'], NAMES['vocab'])
         if what in ('dict', 'all'):
             for ans, key in ((False, 'dict'), (True, 'dans')):
-                cov(NAMES[key].replace('六级听力', '六级听力 '), f'{y} · 共 {len(ids)} 套真题原文', '每句挖出一个关键词，边听边写' if not ans else '编号对应听写本里的横线')
+                cov(NAMES[key].replace(f'{LV}听力', f'{LV}听力 '), f'{y} · 共 {len(ids)} 套真题原文', '每句挖出一个关键词，边听边写' if not ans else '编号对应听写本里的横线')
                 two_pass(pg, tmp, lambda p, a=ans: dict_body(ids, a, p), NAMES[key], NAMES[key])
         if what in ('plan', 'all'):
             J.render(pg, plan_body(ids, mainpages), f"{NAMES['plan']} · {BRAND}", tmp / 'b.pdf', tmp)

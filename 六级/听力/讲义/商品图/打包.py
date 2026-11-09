@@ -1,14 +1,16 @@
-"""六级听力讲义套装 小店上传包（Python zipfile，不压缩，中文名带 UTF-8 标记：踩坑 52；打完逐个核对）。
+"""六级 / 四级听力讲义套装 小店上传包（Python zipfile，不压缩，中文名带 UTF-8 标记：踩坑 52；打完逐个核对）。
     python3 标题与描述.py && python3 打包.py   → 六级听力讲义_小店上传包.zip"""
+import os
 import sys
 import zipfile
 import zlib
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-OUT = HERE / '六级听力讲义_小店上传包.zip'
+HERE = Path(os.path.abspath(__file__)).parent   # 不解析软链接：四级 商品图 的程序是指向这里的软链接
 sys.path.insert(0, str(HERE))
 import 标题与描述 as T  # noqa: E402
+P, LV = T.P, T.LV
+OUT = HERE / P['上传包']
 
 
 def main():
@@ -22,11 +24,11 @@ def main():
         bad.append('work/简介.txt 与现算的简介不同：先跑 标题与描述.py')
     if bad:
         sys.exit('不打包：\n  ' + '\n  '.join(bad))
-    readme = '\n'.join(['六级听力讲义套装 · 小店上传说明', '',
+    readme = '\n'.join([f'{LV}听力讲义套装 · 小店上传说明', '',
                         f'1. 商品图：打开「1 商品图（按顺序上传）」，按序号 01 → {len(imgs):02d} 依次上传；01 是商品总图（列出套装里所有文件）。规格 1:1，2000×2000，JPG。',
                         f'2. 商品标题：「2 商品标题.txt」短版 ≤ 30 字；平台允许长标题时用长版。',
                         f'3. 商品简介：「3 商品描述.txt」整篇复制粘贴（{T.desc_len(desc)} 字，上限 1000），已含虚拟商品不退款说明。',
-                        '商品本身（6 份 PDF）在 GitHub Release「cet6-listening-handout」；历年真题原卷由老师自备。', ''])
+                        f"商品本身（6 份 PDF）在 GitHub Release「{P['release']}」；历年真题原卷由老师自备。", ''])
     items = [('0 上传说明.txt', readme.encode('utf-8'))] + [(f'1 商品图（按顺序上传）/{p.name}', p.read_bytes()) for p in imgs] + \
             [('2 商品标题.txt', (HERE / 'work' / '标题.txt').read_bytes()), ('3 商品描述.txt', (desc + '\n').encode('utf-8'))]
     with zipfile.ZipFile(OUT, 'w', zipfile.ZIP_STORED) as z:
