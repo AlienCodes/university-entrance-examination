@@ -241,7 +241,16 @@ def states():
 # ───────────────────────── 画面 ─────────────────────────
 INSTR = {1: ('第一节', '听下面5段对话。每段对话后有一个小题，从题中所给的A、B、C三个选项中选出最佳选项。听完每段对话后，你都有10秒钟的时间来回答有关小题和阅读下一小题。每段对话仅读一遍。'),
          2: ('第二节', '听下面5段对话或独白。每段对话或独白后有几个小题，从题中所给的A、B、C三个选项中选出最佳选项。听每段对话或独白前，你将有时间阅读各个小题，每小题5秒钟；听完后，各小题将给出5秒钟的作答时间。每段对话或独白读两遍。')}
+RN = {'Ⅰ': 'I', 'Ⅱ': 'II', 'Ⅲ': 'III'}
+
+
+def paper_html():
+    """片头卷名：原卷字体（只含原卷用过的字）没有罗马数字 ⅠⅡⅢ，片头会回退到别的字体；改用 Times New Roman 的大写字母排（字形相同），data-p 仍是原名供核对"""
+    return re.sub('[ⅠⅡⅢ]', lambda m: f'<x-rn>{RN[m.group()]}</x-rn>', esc(PAPER))
+
+
 CSSG = """
+.ttl .pp x-rn{font-family:'TNR','Liberation Serif';font-weight:700}
 .top b{font-family:'TNR','Noto Serif SC'}
 .zhs{font-family:'Noto Serif SC','TNR'}
 .instr.zhs{font-style:normal;font-weight:700;line-height:1.7}
@@ -309,7 +318,7 @@ def page(s):
     body, var = '', ''
     if k == 'title':
         top = ''
-        body = (f'<div class="ttl blk"><div class="yr" data-y="{Y}">{Y}年</div><div class="pp" data-p="{esc(PAPER)}">{esc(PAPER)}</div>'
+        body = (f'<div class="ttl blk"><div class="yr" data-y="{Y}">{Y}年</div><div class="pp" data-p="{esc(PAPER)}">{paper_html()}</div>'
                 f'<div class="zh">高考英语听力　视频版真题考试</div>'
                 '<div class="note">原题原音</div><div class="note">请备好纸笔作答，参考答案将在考试结束后给出。</div></div>')
     elif k == 'instr':
@@ -426,7 +435,7 @@ def struct_check(s, htm):
     """老师要求 3、7：每屏题号 = 该段材料说明里的题号范围；片头年份、卷名 = 数据"""
     bad = []
     if s['kind'] == 'title':
-        if f'data-y="{Y}">{Y}年<' not in htm or f'data-p="{esc(PAPER)}">{esc(PAPER)}<' not in htm: bad.append('片头年份卷名与数据不符')
+        if f'data-y="{Y}">{Y}年<' not in htm or f'data-p="{esc(PAPER)}">{paper_html()}<' not in htm: bad.append('片头年份卷名与数据不符')
     m = re.search(r'data-ns="([\d,]+)"', htm)
     if s['kind'] in ('q1', 'grp', 'sha'):
         if not m: return bad + ['题目屏没有题号范围']
@@ -487,7 +496,7 @@ def selftest():
              ('选项太长溢出', gs, page(gs).replace('<b>A.</b>', '<b>A.</b>' + 'Wwww ' * 60, 1), True),      # 与题目数据无关的确定错误（踩坑 120）
              ('题与题之间没分开（铁律 19）', gs, page(gs).replace('class="qg', 'class="x'), True),
              ('少一题（组不对）', gs, re.sub(r'<div class="qg[^"]*"><div class="h"><span class="n"><span>\d+\.</span>.*?</div></div>', '', page(gs), count=1), True),
-             ('片头卷名不对', {'kind': 'title'}, page({'kind': 'title'}).replace(f'>{esc(PAPER)}<', '>未知卷<'), True),
+             ('片头卷名不对', {'kind': 'title'}, page({'kind': 'title'}).replace(f'>{paper_html()}<', '>未知卷<'), True),
              ('字号低于下限', gs, page(gs).replace(f'--f:{LAY["grp0"][0]}px', '--f:20px'), True),
              ('字体里没有的字', gs, page(gs).replace('第二节' if not SH else 'Section B', '𝄞 ꙮ', 1), True)]
     ok = True
