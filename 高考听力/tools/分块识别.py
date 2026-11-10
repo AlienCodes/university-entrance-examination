@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """高考听力原音 → 语音块（按 ≥0.35 秒静音切开）+ 每块 SenseVoice 识别（自动判中 / 英，带文字）。只读原音。
 中文说明（“听第6段材料，回答第6、7题”“第一节”）就靠它定位：开头剪切锚点、每组题的切屏点。
-用法：python 分块识别.py 原音.wav 输出目录  → 分块.json [[开始, 结束, 语言, 文字], ...]"""
+用法：python 分块识别.py 原音.mp3 输出目录  → 分块.json [[开始, 结束, 语言, 文字], ...]"""
 import glob, json, sys
 from pathlib import Path
-import numpy as np, soundfile as sf, soxr
+import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 src, out = Path(sys.argv[1]), Path(sys.argv[2])
-a, sr = sf.read(src, dtype='float32', always_2d=True)
-a = soxr.resample(a.mean(1), sr, 16000)
+import subprocess                              # 原音直接管道解码成 16 kHz 单声道浮点（只读，不写任何音频文件）
+a = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', str(src), '-map', '0:a:0', '-ac', '1', '-ar', '16000', '-f', 'f32le', '-'],
+                                 capture_output=True, check=True).stdout, dtype=np.float32)
 H = 320
 n = len(a) // H
 db = 10 * np.log10((a[:n * H].reshape(n, H) ** 2).mean(1) + 1e-12)

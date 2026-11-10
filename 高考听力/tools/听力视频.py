@@ -396,21 +396,15 @@ def sha_ok(mp3):
 
 
 def cut_wav(mp3):
-    """原音解码（专八 decoded：不改采样率、声道）→ 剪掉开头到锚点（老师要求 6）→ 逐样本核对保留部分与原音相同"""
-    import numpy as np, soundfile as sf
-    w = base.decoded(mp3, OUT)
-    T = json.loads((D / '时间轴.json').read_text('utf-8'))
-    a, sr = sf.read(w, dtype='float32', always_2d=True)
-    k = int(round(T['cut'] * sr))
-    if not 0 <= T['cut'] < 600: die('剪切点不合理')
-    c = OUT / 'cut.wav'
-    sf.write(c, a[k:], sr, subtype='FLOAT')
-    b, sr2 = sf.read(c, dtype='float32', always_2d=True)
+    """原音解码（专八 decoded：不改采样率、声道）；开头剪切在专八底座 audio_track 里做（CUT_START），
+    剪开头.check 逐样本核对保留部分 = 原音剪切点之后、剪切点不晚于锚点（老师要求 6，铁律 25 唯一例外）"""
     sys.path.insert(0, str(HERE)); import 剪开头
-    bad = 剪开头.check(a, b, k, int(round((T['cut'] + T.get('anchorAfterCut', 0.0)) * sr))) + ([] if sr2 == sr else ['采样率变了'])
-    if bad: die('剪开头：' + '；'.join(bad))
-    print('剪开头：', T['cut'], '秒（保留部分与原音逐样本相同）')
-    return str(c)
+    T = json.loads((D / '时间轴.json').read_text('utf-8'))
+    if not 0 <= T['cut'] < 600: die('剪切点不合理')
+    base.CUT_START = T['cut']
+    base.CUT_CHECK = lambda a, y, k, sr: 剪开头.check(a, y, k, int(round((T['cut'] + T.get('anchorAfterCut', 0.0)) * sr)))
+    print('剪开头：', T['cut'], '秒')
+    return base.decoded(mp3, OUT)
 
 
 def selftest():

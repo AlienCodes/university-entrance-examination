@@ -5,9 +5,9 @@
 上海：含 “section a” 的块用 SenseVoice 逐字时刻找到 section 一词，剪在它之前最安静的 20 毫秒处。
 剪切点都在静音里：在锚点开口前 1 秒内取最安静的一帧（不早于上一块结束）。
 用法：/opt/ttsenv/bin/python 锚点.py <解压目录> [套 ...]"""
-import glob, json, re, subprocess, sys, tempfile
+import glob, json, re, subprocess, sys
 from pathlib import Path
-import numpy as np, soundfile as sf
+import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 K = ROOT / '高考听力/识别'
@@ -25,9 +25,9 @@ def main():
         if only and d.name not in only: continue
         B = json.loads((d / '分块.json').read_text('utf-8'))
         f = raw / (d / '原音.sha256').read_text('utf-8').split('  ', 1)[1].strip()
-        with tempfile.TemporaryDirectory() as t:
-            subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(f), '-ac', '1', '-ar', '16000', '-c:a', 'pcm_f32le', f'{t}/a.wav'], check=True)
-            a, sr = sf.read(f'{t}/a.wav', dtype='float32')
+        sr = 16000                                   # 管道解码（只读，不写音频文件）
+        a = np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', str(f), '-map', '0:a:0', '-ac', '1', '-ar', '16000', '-f', 'f32le', '-'],
+                                         capture_output=True, check=True).stdout, dtype=np.float32)
         n = len(a) // 320
         db = 10 * np.log10((a[:n * 320].reshape(n, 320) ** 2).mean(1) + 1e-12)
         if '上海' in d.name:

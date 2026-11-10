@@ -455,6 +455,7 @@ def stills(sample=False):
 
 # ───────────────────────── 视频 ─────────────────────────
 LIMIT = False      # 六级听力用：原音普遍约 −20 LUFS、峰值近 0 dBFS，只整体增益到 −16 会削顶 → 增益后前瞻限幅（同专八精读 原音音轨.limit）。专八默认 False，行为不变
+CUT_START, CUT_CHECK = None, None   # 只剪原音开头 CUT_START 秒（高考听力）；None = 不剪（其余项目行为不变）
 CUT_END = None     # 只用原音前 CUT_END 秒（样片）；None = 整段
 LIMIT_CEIL_DB = -2.5   # 限幅上限：AAC 编码后峰值会反弹约 0.9 dB（六级 202512-1 样片：WAV −1.5 → 成品 −0.58，成品核查拦下），留到 −2.5
 
@@ -532,6 +533,11 @@ def audio_track(wav):
     import numpy as np, soundfile as sf, pyloudnorm as pl
     L, total, T = states()
     a, sr = sf.read(wav, dtype='float64', always_2d=True)
+    if CUT_START:        # 高考听力（老师要求 6）：只剪开头到锚点；CUT_CHECK 逐样本核对保留部分 = 原音剪切点之后（高考听力/tools/剪开头.check）
+        k = int(round(CUT_START * sr)); y = a[k:]
+        bad = CUT_CHECK(a, y, k, sr) if CUT_CHECK else ['没有剪切核对']
+        if bad: die('剪开头：' + '；'.join(bad))
+        a = y
     if INSERTS:          # 六级 202606-1：原音没有作答停顿，在给定时刻插数字静音（INSERT_CHECK 逐样本核对插入段之外与原音相同）
         out, prev, cuts = [], 0, []
         for t_ins, sec in INSERTS:
