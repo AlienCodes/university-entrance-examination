@@ -45,7 +45,9 @@ def main():
     allv = {}
     for f in sorted(src.glob('包*.json')):
         for k, srcs in json.loads(f.read_text('utf-8')).items():
-            allv[k] = srcs
+            for s, v in (srcs or {}).items():
+                if v: allv.setdefault(k, {})[s] = v
+            allv.setdefault(k, {})
     out, bad = {}, 0
     for k, srcs in allv.items():
         vs = {s: v for s, v in srcs.items() if v}
@@ -67,15 +69,26 @@ def main():
         if len(vs) == 1:                       # 另一份原文字里找
             others = [p for p in txt.glob(f'{k}__*.txt') if not p.stem.endswith(base)]
             body = nz(' '.join(p.read_text('utf-8') for p in others))
+            miss = []
             if body:
                 for n, q in (B.get('题') or {}).items():
                     for L, x in [('干', q.get('干'))] + list((q.get('选项') or {}).items()):
-                        if x and nz(x) not in body: diff.append(f'{n}{L}?')
+                        if x and nz(x) not in body: miss.append(f'{n}{L}?')
+            tot = sum(1 + len(q.get('选项') or {}) for q in (B.get('题') or {}).values())
+            if len(miss) * 2 < tot: diff += miss          # 另一来源大半都找不到 = 它没印题目，不算不一致
         ans = {}
         for s, v in vs.items():
             for n, x in (v.get('答案') or {}).items():
                 if ans.get(n, x) != x: diff.append(f'答案{n}')
                 ans[n] = x
+        if len(ans) < 20:                          # 程序补：答案表“1~5. CBAAB 6~10. …”
+            for p in txt.glob(f'{k}__*.txt'):
+                for a, b, L in re.findall(r'(?<!\d)(\d{1,2})\s*[~`\-—–至]\s*(\d{1,2})\s*[\.．:：、]?\s*([A-D]{2,10})(?![A-Za-z])', p.read_text('utf-8')):
+                    a, b = int(a), int(b)
+                    if 1 <= a < b <= 20 and b - a + 1 == len(L):
+                        for i, x in enumerate(L):
+                            if ans.get(str(a + i), x) != x: diff.append(f'答案{a + i}')
+                            ans.setdefault(str(a + i), x)
         out[k] = {'来源': base, '组': B.get('组'), '题': B.get('题'), '解析答案': ans, '备注': [v.get('备注') for v in vs.values() if v.get('备注')]}
         if msg or diff:
             bad += 1
