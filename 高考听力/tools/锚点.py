@@ -33,6 +33,9 @@ def main():
         if '上海' in d.name:
             hit = [i for i, b in enumerate(B) if b[0] < 200 and re.search(r'section\s*a\b', b[3], re.I)]
             hit = hit[:1]                                  # 第一处（说明里会再提一次 Section A）
+            if not hit and B[0][0] < 3 and re.match(r'\W*(1|one)\b|you have heard', B[1][3] if len(B[0][3]) < 20 else B[0][3], re.I):
+                (d / '锚点.json').write_text(json.dumps({'cut': 0.0, 'anchor': B[0][0], '依据': '录音本身从 Section A 第 1 段对话开始'}, ensure_ascii=False), 'utf-8')
+                print(d.name, 0.0, '录音本身从 Section A 开始'); continue
             if not hit: print(d.name, '停止：没有 Section A 块'); continue
             b = B[hit[0]]
             if rec is None:
@@ -42,9 +45,12 @@ def main():
             s0 = max(0, b[0] - 0.1)
             st = rec.create_stream(); st.accept_waveform(sr, a[int(s0 * sr):int((b[1] + 0.1) * sr)]); rec.decode_stream(st)
             tk = [(x.strip().lower(), s0 + ts) for x, ts in zip(st.result.tokens, st.result.timestamps)]
-            j = [i for i in range(len(tk) - 1) if tk[i][0] == 'section' and tk[i + 1][0] == 'a']
-            if not j: print(d.name, '停止：逐字时刻里没有 section A'); continue
-            ts = tk[j[0]][1]
+            cat, pos = '', []                              # 逐字拼起来找 “section a”（分词方式不定：sec/tion、a/A.）
+            for x, t0 in tk:
+                for ch in re.sub(r'[^a-z]', '', x): cat += ch; pos.append(t0)
+            j = cat.find('sectiona')
+            if j < 0: print(d.name, '停止：逐字时刻里没有 section A'); continue
+            ts = pos[j]
             prev = B[hit[0] - 1][1] if hit[0] else 0
             cut = quiet(db, max(prev, ts - 1.0), ts - 0.05)
             why = f'Section A（{b[3][:40]}…）section 开口 {ts:.2f}'
@@ -54,8 +60,9 @@ def main():
             for i in zh:
                 if cl and B[i][0] - B[cl[-1][-1]][1] < 6: cl[-1].append(i)
                 else: cl.append([i])
-            if len(cl) == 0 and re.search(r'第(一|1)小题|现在', B[0][3]) and B[0][0] < 3:
-                cut, ts, why = 0.0, B[0][0], f'录音本身从第一节开始（{B[0][3]}{B[1][3]}）'
+            z0 = next((b for b in B if b[2] == 'zh'), None)
+            if len(cl) == 0 and z0 and z0[0] < 15 and re.search(r'第(一|1)小题|例|你将听到', z0[3]):
+                cut, ts, why = 0.0, B[0][0], f'录音本身从第一节开始（{z0[3]}）'
             elif len(cl) != 1:
                 print(d.name, '停止：“第一节”找到', len(cl), '处', [B[c[0]][3] for c in cl]); continue
             else:
