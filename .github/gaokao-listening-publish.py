@@ -50,7 +50,8 @@ def plan(kinds, ids, art, up):
     if bad: sys.exit('停止：' + '；'.join(bad))
     (up / LIST).write_text('资产名\t中文文件名\tsha256\t字节数\n' + ''.join(f"{r['asset']}\t{r['label']}\t{r['sha256']}\t{r['bytes']}\n" for r in rows), 'utf-8')
     (up / 'plan.json').write_text(json.dumps(rows, ensure_ascii=False, indent=1), 'utf-8')
-    print(f'{len(rows)} 个视频齐全（{", ".join(f"{k} {sum(r["kind"] == k for r in rows)}" for k in ART)}），资产名全部 ASCII')
+    cnt = ', '.join(f'{k} {sum(r["kind"] == k for r in rows)}' for k in ART)
+    print(f'{len(rows)} 个视频齐全（{cnt}），资产名全部 ASCII')
 
 
 def parts(rows):

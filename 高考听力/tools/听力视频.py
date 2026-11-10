@@ -331,7 +331,7 @@ def page(s):
         var = f'--af:{af}px'
         items = ''.join(f'<div class="qg"><span class="n">{i}.</span><b>{ANS.get(str(i), "?")}</b>'
                         f'<span class="a">{esc(fix(QS[i]["选项"].get(ANS.get(str(i), "A"), "")))}</span></div>' for i in rng)
-        body = f'<div class="main"><div class="sec blk zhs">参考答案</div><div class="ans blk" data-min="{MIN_FONT['ans']}">{items}</div></div>'
+        body = f'<div class="main"><div class="sec blk zhs">参考答案</div><div class="ans blk" data-min="{MIN_FONT["ans"]}">{items}</div></div>'
     css = base.CSS.replace('FL/', base.FL.as_uri() + '/') + CSSG.replace('NOPT', str(NOPT))
     css = "@import url('" + (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri() + "');" + css
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{css}</style></head><body style="{var}">{top}{body}'
