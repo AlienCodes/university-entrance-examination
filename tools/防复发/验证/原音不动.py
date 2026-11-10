@@ -103,4 +103,15 @@ db2 = db.copy(); db2[500:540] = -22.0                      # 删的段中间有 
 got = YY.removed_check('雷', db2, -225.0, [(2.0, 8.0)]); ok = bool(got)
 print(('✅' if ok else '❌'), '精读雷：删的段里有声音', '→', got)
 if not ok: bad.append('删的段里有声音没报')
+# 铁律 25 例外（老师 2026-11-10，高考听力要求 6）：只许剪开头到“第一节 / Section A”锚点，保留部分逐样本相同——高考听力/tools/剪开头.check
+sys.path.insert(0, str(R / '高考听力/tools'))
+import 剪开头 as GK
+x = np.random.default_rng(1).standard_normal((sr * 4, 1)).astype(np.float32) * 0.1
+k0, an = sr, sr + 800
+for name, y, k, want in [('高考：剪开头到锚点前（正常）', x[k0:], k0, False), ('高考雷：剪到锚点之后', x[an + sr // 2:], an + sr // 2, True),
+                         ('高考雷：剪了中间一段', np.concatenate([x[k0:2 * sr], x[3 * sr:]]), k0, True),
+                         ('高考雷：保留部分改了 0.1 dB', x[k0:] * 10 ** (0.1 / 20), k0, True), ('高考雷：声道变了', np.repeat(x[k0:], 2, 1), k0, True)]:
+    got = GK.check(x, y, k, an); ok = bool(got) == want
+    print(('✅' if ok else '❌'), name, '→', got or '0 处')
+    if not ok: bad.append(name)
 print('原音不动双向验证', '通过' if not bad else f'失败 {bad}'); sys.exit(1 if bad else 0)
