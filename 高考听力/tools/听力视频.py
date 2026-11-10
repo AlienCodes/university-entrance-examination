@@ -40,7 +40,7 @@ ANSF = P / '答案.json'
 ANS = (json.loads(ANSF.read_text('utf-8')) if ANSF.exists() else {}).get(SID, {})
 die = base.die
 KEY_SEC = 20.0                                    # 每屏参考答案停留（静音）
-MIN_FONT = {'q1': 40, 'grp': 40, 'sha': 44, 'ans': 32}   # 字高下限（按 1920×1080 量，老师要求 1）
+MIN_FONT = {'q1': 40, 'grp': 36 if SH else 40, 'sha': 44, 'ans': 32}   # 字高下限（按 1920×1080 量，老师要求 1）；上海 Section B 一组 3—4 题、四个长选项要同屏（老师要求 3），下限 36
 STRUCT = [(i, i) for i in range(1, 11)] + [(11, 13), (14, 16), (17, 20)] if SH else \
          [(i, i) for i in range(1, 6)]
 
@@ -256,6 +256,10 @@ CSSG = """
 .qs .os.row{grid-template-columns:repeat(NOPT,minmax(0,max-content))}
 .qs .os.two{grid-template-columns:repeat(2,minmax(0,max-content))}
 .qs .os.col{grid-template-columns:minmax(0,max-content)}
+.qs .qg.ns{display:grid;grid-template-columns:calc(var(--f) * 1.7) minmax(0,1fr)}
+.qs .qg.ns .os{padding-left:0}
+.qs .os.col .opt{display:flex;white-space:normal}
+.qs .qg.ns .sm{display:none}
 .qs .opt{white-space:nowrap}
 .qs .opt b{font-weight:700;margin-right:calc(var(--f) * 0.35)}
 .qs .qg.dim{color:#8a8a8a;border-bottom-color:#dcdcdc}
@@ -288,6 +292,7 @@ def qblock(n, how, cls=''):
     os_ = ''.join(f'<span class="opt"><b>{L}.</b>{esc(fix(q["选项"][L]))}</span>' for L in LET)
     if how == 'two' and NOPT == 3:   # A B / C
         pass
+    if not stem: cls += ' ns'          # 卷面没印题干（上海卷）：题号与选项同一行起，不单占一行
     return (f'<div class="qg{cls}"><div class="h"><span class="n"><span>{n}.</span></span><span class="sm">{stem}</span></div>'
             f'<div class="os {how}">{os_}</div></div>')
 
@@ -342,7 +347,7 @@ LAYF = D / '版式.json'
 LAY = json.loads(LAYF.read_text('utf-8')) if LAYF.exists() else {}
 
 FIT_JS = r"""() => { const r = []; for (const e of document.querySelectorAll('.qs .opt, .ans .qg')) {
-  const lh = parseFloat(getComputedStyle(e).lineHeight), an = e.matches('.ans .qg');      // 答案屏：上海卷长选项可在选项文字里折成两行（悬挂缩进），多于两行才报
+  const lh = parseFloat(getComputedStyle(e).lineHeight), an = e.matches('.ans .qg, .qs .os.col .opt');     // 一栏排法的长选项也可折成两行（悬挂缩进）      // 答案屏：上海卷长选项可在选项文字里折成两行（悬挂缩进），多于两行才报
   if (e.getClientRects().length > 1 || e.getBoundingClientRect().height > lh * (an ? 2.6 : 1.6)) r.push('折行 ' + e.textContent.slice(0, 30));
   if (e.scrollWidth > e.clientWidth + 1) r.push('溢出选项框 ' + e.textContent.slice(0, 30)); }      // 网格固定了框宽，文字伸出框外量 rect 量不到
   return r; }"""
