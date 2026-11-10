@@ -29,8 +29,8 @@ Y, PAPER = NAMEK.split(' ', 1)
 SH = '上海' in PAPER
 D = P / '数据' / SID
 OUT = Path(os.environ.get('GK_OUT', f'/tmp/gklisten/{SID}'))
-NAME_RE = r'^(20\d\d)年 (\S+) 高考英语听力 视频版真题考试\.mp4$'
-NAME = f'{Y}年 {PAPER} 高考英语听力 视频版真题考试.mp4'
+sys.path.insert(0, str(HERE)); import 命名           # 文件名规则只写一处（发布同一份）
+NAME_RE, NAME = 命名.NAME_RE, 命名.label(SID)
 QD = json.loads((P / '抽取/定稿题.json').read_text('utf-8'))[S.get('题目', NAMEK)]
 GROUPS = [tuple(g) for g in QD['组']]
 QS = {int(k): v for k, v in QD['题'].items()}
@@ -88,45 +88,69 @@ def timeline(wav):
         if (db[max(0, i - 1):i + 2] > thr).any(): die(f'剪切点 {cut} 秒不在静音里（{db[max(0, i - 1):i + 2].round(1)} > {thr:.1f}）')
     B = [[max(0.0, s - cut), e - cut, l, t] for s, e, l, t in B if e > cut + 0.05]      # 锚点所在的块（上海：说明 + 第 1 段对话连在一起）从 0 起
     T = {'cut': cut, 'audioEnd': round(len(a) / sr - cut, 4), 'anchorAfterCut': round(json.loads((K / '锚点.json').read_text('utf-8')).get('anchor', cut) - cut, 3)}
-    zh = lambda b: b[2] == 'zh' or re.search(r'[一-鿿]{3}', b[3])
+    ZHW = r'听|段|题|节|秒|分钟|时间|回答|阅读|现在|选|对话|独白|录音|结束|试卷|答案|例|衬衫|价格|内容|读'
+    zh = lambda b: re.search(r'[一-鿿]{2}', b[3]) and re.search(ZHW, b[3])     # 考试说明：两个汉字以上且有说明用词（英文被误识成“是他”“Oh。”，2025-xkb2、2024-xkb1）
+    noise = lambda b: b[1] - b[0] <= 1.3 and re.fullmatch(r'\W*(yeah|i|the|oh|ah|uh|um|hmm|mm|我|嗯|啊|一|是)?\W*', b[3], re.I)   # 提示音 / 杂音被识成的单个虚词（2025-xkb2：Yeah. The. 我.）
     one = lambda xs, what: xs[0] if len(xs) == 1 else die(f'{what} 找到 {len(xs)} 处（必须恰好一处）')
     endb = [b for b in B if re.search(r'听力(部分|考试)?到此结束|end of (the )?listening', b[3], re.I)]
+    if len(endb) > 1 and endb[-1][0] - endb[0][0] < 10: endb = endb[:1]     # “That's the end of listening” + “听力部分到此结束”：作答到前一句为止
     if not SH:
-        endb += [b for b in B if '第二节到此结束' in b[3]]
-        s1e = one([b for b in B if re.search(r'第一节到此结束', b[3])] or [b for b in B if re.match(r'^第二节', b[3])][:1], '第一节结束')
-        intro = [b for b in B if zh(b) and re.search(r'听下面一段|听第\s*\S{1,3}\s*段', b[3]) and b[0] > s1e[0]]
+        endb += [b for b in B if '第二节到此结束' in b[3] or re.match(r'^第二节\W*$', b[3]) and any(re.match(r'^到此结束', x[3]) and 0 <= x[0] - b[1] < 1.5 for x in B)]   # “第二节。”“到此结束。”拆成两块（2020-zj7）
+        INTRO = r'听下面(一|的)|回答第|听第\s*\S{1,3}\s*段'
+        g6 = [b for b in B if zh(b) and re.search(INTRO, b[3]) and re.search(r'第(六|6)', b[3])][:1]       # 没有“第一节到此结束”“第二节”（2021-zj6）：第二节从第 6 题说明起
+        s1e = one([b for b in B if re.search(r'第一节到此结束', b[3])] or [b for b in B if re.match(r'^第二节(?!到此)', b[3])][:1] or g6, '第一节结束')
+        while g6 and s1e is g6[0] and (pv := [b for b in B if zh(b) and 0 <= s1e[0] - b[1] < 1.5]): s1e = g6[0] = pv[-1]
+        intro = [b for b in B if zh(b) and re.search(INTRO, b[3]) and b[0] >= s1e[0] and not re.search(r'五段', b[3])]
         icl = clusters(intro, 3.0)
+        for c in icl:                                       # 说明的前半句识别错（“拼下面一段对话”）：并进紧挨着的前一个中文块
+            pv = [b for b in B if zh(b) and 0 <= c[0][0] - b[1] < 1.5 and b[0] >= s1e[0] and not re.search(r'五段|第二节', b[3])]
+            if pv: c.insert(0, pv[-1])
         if len(icl) != 5: die(f'第二节材料说明找到 {len(icl)} 段（应为 5）：' + str([c[0][3] for c in icl]))
         s1 = [b for b in B if b[1] <= s1e[0]]
         zh1 = [b for b in s1 if zh(b)]
-        rd = zh1[-1]                                        # 第一节最后一句中文说明 = “阅读第一小题”
-        if not re.search(r'第(一|1)小题', rd[3]): die(f'第一节阅读提示没找到：{rd[3]}')
-        chime = lambda c: sum(x[1] - x[0] for x in c) < 2.5 and len(''.join(x[3] for x in c)) <= 4     # 只有提示音的一簇
-        dl = [c for c in clusters([b for b in s1 if b[0] > rd[1] and not zh(b)], 5.0) if not chime(c)]
+        rd = ([b for b in zh1 if re.search(r'阅读第(一|1)小题', b[3])] or [die('第一节阅读提示没找到')])[-1]     # “现在你有 5 秒钟的时间阅读第一小题”
+        chime = lambda c: (sum(x[1] - x[0] for x in c) < 2.5 and (len(''.join(x[3] for x in c)) <= 4 or all(noise(x) for x in c))
+                           or all(not re.search(r'[A-Za-z0-9一-鿿]', x[3]) for x in c))     # 只有提示音的一簇（纯标点块不论长短，2025-xkb2 3 秒的“.”）
+        dl = [c for c in clusters([b for b in s1 if b[0] > rd[1] and not zh(b) and not noise(b)], 5.0) if not chime(c)]
+        for c in dl:                                        # 对话后隔 2 秒以上的提示音（“The.” 1.6 秒，2026-xkb1）不算对话
+            while len(c) > 1 and chime([c[-1]]) and c[-1][0] - c[-2][1] >= 2.0: c.pop()
         if len(dl) != 5: die(f'第一节对话找到 {len(dl)} 段（应为 5）')
         T['instr1'] = 0.0
         T['read1'] = [rd[1], dl[0][0][0]]
         T['dlg'] = [[c[0][0], c[-1][1]] for c in dl]
-        T['dlgEnd'] = [T['dlg'][i + 1][0] for i in range(4)] + [next((b[0] for b in s1 if b[0] > T['dlg'][4][1] and chime([b])), s1e[0])]
+        nz = lambda a, b: next((x[0] for x in s1 if zh(x) and a <= x[0] < b), b)      # 下一段前的“听下面的录音，回答第 N 小题”（2026）：作答到它为止
+        T['dlgEnd'] = [nz(T['dlg'][i][1], T['dlg'][i + 1][0]) for i in range(4)] + [next((b[0] for b in s1 if b[0] > T['dlg'][4][1] and chime([b])), s1e[0])]
         T['instr2'] = s1e[0]
         T['grp'] = []
         for g, c in enumerate(icl):
             q1, q2 = GROUPS[5 + g]
             zc = [b for b in B if c[0][0] <= b[0] and zh(b) and (b[0] - c[-1][1] < 3.0 or b in c)]
             zc = clusters([b for b in B if zh(b) and b[0] >= c[0][0]], 3.0)[0]
-            m = re.search(r'阅读这(两|二|三|四|[234])个', ''.join(b[3] for b in zc))
+            m = re.search(r'阅读(?:这|着)(两|二|三|四|[234])个', ''.join(b[3] for b in zc))
             if not m or ZHN[m.group(1)] != q2 - q1 + 1: die(f'第 {q1}—{q2} 题说明的题数对不上：{"".join(b[3] for b in zc)}')
-            nxt = icl[g + 1][0][0] if g < 4 else min([b[0] for b in endb if b[0] > c[0][0]] or [die('第二节结束说明没找到')])
+            nxt = icl[g + 1][0][0] if g < 4 else min([b[0] for b in endb if b[0] > c[0][0]] or [T['audioEnd']])     # 没有结束说明（2021-xgk1）：到录音结束
             en = [b for b in B if zc[-1][1] < b[0] < nxt and not zh(b)]
             tail = nxt
-            while en and chime([en[-1]]): tail = en.pop()[0]           # 下一段前的提示音：作答到提示音响为止
+            popped = []
+            while en and chime([en[-1]]): popped.append(en.pop())
+            if popped and nxt - popped[0][0] <= 4.0: tail = popped[0][0]     # 下一段前的提示音：作答到提示音响为止（离下一段说明远的是作答停顿里的杂音，2025-xkb2）
+            en = [b for b in en if not noise(b)]
+            while len(en) > 1 and re.search(r'[一-鿿]', en[-1][3]) and en[-1][0] - en[-2][1] >= 3.0: en.pop()     # 材料念完隔 3 秒以上的中文杂音（2025-xkb2 录音末尾）
             if not en: die(f'第 {q1}—{q2} 题没有材料')
             T['grp'].append({'start': c[0][0], 'read': [zc[-1][1], en[0][0]], 'play': en[0][0], 'ans': [en[-1][1], tail]})
+        g, (q1, q2) = T['grp'][-1], GROUPS[-1]
+        want, have = 5.0 * (q2 - q1 + 1), nxt - g['ans'][0]               # 卷面：每小题 5 秒作答时间（量到结束说明 / 录音末尾，提示音也算在内）
+        if have < want - 1.0:                               # 录音最后被剪短（2025-xkb2）：在这段静音中间插数字静音补足（铁律 25 只许插作答停顿）
+            t_ins, sec = round(g['ans'][0] + min(have / 2, 2.0), 3), round(want - have, 3)
+            T['插停顿'] = [[t_ins, sec]]
+            g['ans'][1] = round(g['ans'][1] + sec, 4); T['audioEnd'] = round(T['audioEnd'] + sec, 4)
+            print(SID, f'最后一组作答停顿只有 {have:.1f} 秒：在 {t_ins} 秒插 {sec} 秒数字静音（补到 {want:.0f} 秒）')
         T['end'] = T['grp'][-1]['ans'][1]
     else:
-        en = [b for b in B if b[0] < (endb[0][0] if endb else 1e9)]
-        sb = one([b for b in en if re.search(r'section\s*b', b[3], re.I)], 'Section B')
-        A = [c for c in clusters([b for b in en if b[0] < sb[0]], 4.0) if not (sum(x[1] - x[0] for x in c) < 2.5 and len(''.join(x[3] for x in c)) <= 4)]
+        en = [b for b in B if b[0] < (endb[0][0] if endb else 1e9) and re.search(r'[A-Za-z0-9]', b[3])]     # 只有标点的杂音块（2023-shc 把两段对话连成一段）不参与分段
+        sbs = [b for b in en if re.search(r'section\s*b', b[3], re.I)]
+        sb = one(sbs[:1] if sbs and sbs[-1][0] - sbs[0][0] < 10 else sbs, 'Section B')      # “Section B.” + “In Section B, …”：取前一句
+        A = [c for c in clusters([b for b in en if b[0] < sb[0] and not noise(b)], 4.0) if not (sum(x[1] - x[0] for x in c) < 2.5 and len(''.join(x[3] for x in c)) <= 4)]
         if len(A) != 10: die(f'Section A 对话找到 {len(A)} 段（应为 10）')
         T['dlg'] = [[0.0 if i == 0 else c[0][0], c[-1][1]] for i, c in enumerate(A)]
         T['instrB'] = sb[0]
@@ -137,14 +161,30 @@ def timeline(wav):
             hit = [b for b in en if b[0] >= sb[0] and re.search(rf'questions?\W+({q1}|{W[q1]})\W+(through|to|and)', b[3], re.I)]
             T['grp'].append({'start': one(hit, f'Questions {q1} through {q2}')[0]})
         T['grp'][0]['start'] = sb[0]
-        ends = [g['start'] for g in T['grp'][1:]] + [one(endb, '听力结束')[0]]
+        ends = [g['start'] for g in T['grp'][1:]] + [one(endb, '听力结束')[0] if endb else T['audioEnd']]
         for g, e in zip(T['grp'], ends):
-            blk = [b for b in en if g['start'] <= b[0] < e]
+            blk = [b for b in en if g['start'] <= b[0] < e and not noise(b)]
             g['ans'] = [blk[-1][1], e]
+        # 最后一题念完就宣布结束（2021 春 / 秋录音被剪过，只剩 1.5—3 秒）：在这段静音中间插数字静音，补到本组前几题的停顿中位数（铁律 25 只许插作答停顿）
+        qb = [b for b in blk if re.match(r'^\W*(questions?\W+)?(1[7-9]|20)\b', b[3], re.I)]
+        gaps = sorted(b[0] - blk[blk.index(b) - 1][1] for b in qb[1:])      # 第 18、19、20 题题号前的静音 = 上一题的作答停顿
+        want = gaps[len(gaps) // 2] if len(gaps) >= 2 else 0
+        have = g['ans'][1] - g['ans'][0]
+        if want and have < want - 1.0:
+            t_ins, sec = round(g['ans'][0] + have / 2, 3), round(want - have, 3)
+            T['插停顿'] = [[t_ins, sec]]
+            g['ans'][1] = round(g['ans'][1] + sec, 4); ends[-1] = g['ans'][1]; T['audioEnd'] = round(T['audioEnd'] + sec, 4)
+            print(SID, f'最后一题作答停顿只有 {have:.1f} 秒：在 {t_ins} 秒插 {sec} 秒数字静音（补到 {want:.1f} 秒）')
         T['end'] = ends[-1]
     seq = [0.0] + (T['read1'] + sum(T['dlg'], []) + [T['instr2']] if not SH else sum(T['dlg'], []) + [T['instrB']])
     for g in T['grp']: seq += [g['start']] + g.get('read', []) + ([g['play']] if 'play' in g else []) + g['ans']
     seq += [T['end'], T['audioEnd']]
+    if T.get('插停顿'):              # 插入点必须在静音里（同剪切点的量法）
+        m = a.mean(1); h = int(0.02 * sr); n = len(m) // h
+        db = 10 * np.log10((m[:n * h].reshape(n, h) ** 2).mean(1) + 1e-12); thr = max(np.percentile(db, 10) + 12, -50.0)
+        for t_ins, _ in T['插停顿']:
+            i = int((t_ins + cut) / 0.02)
+            if (db[max(0, i - 5):i + 6] > thr).any(): die(f'插停顿点 {t_ins} 秒不在静音里')
     if any(y < x for x, y in zip(seq, seq[1:])):
         die('锚点不是按考试顺序递增：' + str([(i, x, y) for i, (x, y) in enumerate(zip(seq, seq[1:])) if y < x]))
     D.mkdir(parents=True, exist_ok=True)
@@ -231,10 +271,21 @@ def esc(s):
     return html.escape(str(s).strip(), quote=False)
 
 
+def fix(t):
+    """题目文字的排版残损（Word 转文字）：全角 ？：， → 英文标点、﹣ → 连字符、﹩ → $、数字千分位、à → a、modem → modern（2021 上海春 17、19）。
+    中文注释（恐惧的）照原卷不动。画面与答案屏都经过这里（规则只写一处）"""
+    t = t.replace('﹣', '-').replace('﹩', '$')
+    t = re.sub(r'(\d)\s*，\s*(\d)', r'\1,\2', t); t = re.sub(r'([¥£$])\s+(\d)', r'\1\2', t)
+    t = re.sub(r'(\d)：(\d)', r'\1:\2', t)
+    t = re.sub(r'\s*？', '?', t); t = re.sub(r'\s*，\s*', ', ', t); t = re.sub(r'(?<=[A-Za-z])\s*：\s*', ': ', t)
+    t = re.sub(r'\bà\b', 'a', t); t = re.sub(r'\bmodem\b', 'modern', t)
+    return re.sub(r'\s+([,.?!:;])', r'\1', re.sub(r'\s{2,}', ' ', t)).strip()
+
+
 def qblock(n, how, cls=''):
     q = QS[n]
-    stem = esc(q.get('干', ''))
-    os_ = ''.join(f'<span class="opt"><b>{L}.</b>{esc(q["选项"][L])}</span>' for L in LET)
+    stem = esc(fix(q.get('干', '')))
+    os_ = ''.join(f'<span class="opt"><b>{L}.</b>{esc(fix(q["选项"][L]))}</span>' for L in LET)
     if how == 'two' and NOPT == 3:   # A B / C
         pass
     return (f'<div class="qg{cls}"><div class="h"><span class="n"><span>{n}.</span></span><span class="sm">{stem}</span></div>'
@@ -279,7 +330,7 @@ def page(s):
         af = s.get('fit') or LAY[k]
         var = f'--af:{af}px'
         items = ''.join(f'<div class="qg"><span class="n">{i}.</span><b>{ANS.get(str(i), "?")}</b>'
-                        f'<span class="a">{esc(QS[i]["选项"].get(ANS.get(str(i), "A"), ""))}</span></div>' for i in rng)
+                        f'<span class="a">{esc(fix(QS[i]["选项"].get(ANS.get(str(i), "A"), "")))}</span></div>' for i in rng)
         body = f'<div class="main"><div class="sec blk zhs">参考答案</div><div class="ans blk" data-min="{MIN_FONT['ans']}">{items}</div></div>'
     css = base.CSS.replace('FL/', base.FL.as_uri() + '/') + CSSG.replace('NOPT', str(NOPT))
     css = "@import url('" + (ROOT / '四级' / 'tools' / 'fonts' / 'fonts.css').as_uri() + "');" + css
@@ -291,7 +342,9 @@ LAYF = D / '版式.json'
 LAY = json.loads(LAYF.read_text('utf-8')) if LAYF.exists() else {}
 
 FIT_JS = r"""() => { const r = []; for (const e of document.querySelectorAll('.qs .opt, .ans .qg')) {
-  const lh = parseFloat(getComputedStyle(e).lineHeight); if (e.getClientRects().length > 1 || e.getBoundingClientRect().height > lh * 1.6) r.push('折行 ' + e.textContent.slice(0, 30)); }
+  const lh = parseFloat(getComputedStyle(e).lineHeight), an = e.matches('.ans .qg');      // 答案屏：上海卷长选项可在选项文字里折成两行（悬挂缩进），多于两行才报
+  if (e.getClientRects().length > 1 || e.getBoundingClientRect().height > lh * (an ? 2.6 : 1.6)) r.push('折行 ' + e.textContent.slice(0, 30));
+  if (e.scrollWidth > e.clientWidth + 1) r.push('溢出选项框 ' + e.textContent.slice(0, 30)); }      // 网格固定了框宽，文字伸出框外量 rect 量不到
   return r; }"""
 SIZE_JS = r"""() => { const r = []; for (const m of document.querySelectorAll('.qs, .ans')) { const lo = parseFloat(m.dataset.min || 0);
   for (const e of m.querySelectorAll('.opt, .sm, .a')) { const f = parseFloat(getComputedStyle(e).fontSize); if (e.textContent.trim() && f < lo) { r.push('字号 ' + f + ' < 下限 ' + lo); return r; } } }
@@ -336,7 +389,7 @@ def layout():
                 for j in range(ns):          # 每题挑最紧凑的、不折行的选项排法（别的题先按一栏）
                     for h in ('row', 'two', 'col'):
                         trial = hows + [h] + ['col'] * (ns - j - 1)
-                        if not [x for x in bad(dict(s, fit=[f, trial])) if x.startswith('折行')]:
+                        if not [x for x in bad(dict(s, fit=[f, trial])) if x.startswith(('折行', '溢出选项框'))]:
                             hows.append(h); break
                     else: hows.append('col')
                 if not bad(dict(s, fit=[f, hows])):
@@ -402,6 +455,12 @@ def cut_wav(mp3):
     T = json.loads((D / '时间轴.json').read_text('utf-8'))
     if not 0 <= T['cut'] < 600: die('剪切点不合理')
     base.CUT_START = T['cut']
+    if T.get('插停顿'):          # 剪开头之后的时间基准；插入段之外与原音逐样本相同（规则只写一处：六级听力引擎的 gap_identical）
+        import ast
+        src = (ROOT / '六级/听力/tools/听力视频.py').read_text('utf-8')
+        fn = next(n for n in ast.parse(src).body if isinstance(n, ast.FunctionDef) and n.name == 'gap_identical')
+        ns = {}; exec(compile(ast.Module([fn], []), 'gap_identical', 'exec'), ns)
+        base.INSERTS = [tuple(x) for x in T['插停顿']]; base.INSERT_CHECK = ns['gap_identical']
     base.CUT_CHECK = lambda a, y, k, sr: 剪开头.check(a, y, k, int(round((T['cut'] + T.get('anchorAfterCut', 0.0)) * sr)))
     print('剪开头：', T['cut'], '秒')
     return base.decoded(mp3, OUT)
@@ -415,13 +474,12 @@ def selftest():
     g0 = next(v for k, v in sc.items() if k.startswith('grp'))
     first = sc.get('q11') or sc.get('sha1')
     gs = dict(g0, st='回答', cd=9, cdl='作答')
-    a3 = QS[GROUPS[-1][0]]['选项']['A']
     cases = [('正常（题组）', gs, page(gs), False), ('正常（首屏）', first, page(first), False),
              ('正常（片头）', {'kind': 'title'}, page({'kind': 'title'}), False),
              ('正常（答案一览）', {'kind': 'ansA'}, page({'kind': 'ansA'}), False),
-             ('考试画面混进参考答案', gs, page(gs).replace('</span></div></div></body>', '参考答案</span></div></div></body>'), True),
+             ('考试画面混进参考答案', gs, page(gs).replace('</body>', '<div>参考答案</div></body>', 1), True),
              ('考试画面带答案样式', gs, page(gs).replace('class="qs blk"', 'class="qs blk"><i class="ans"></i><i', 1), True),
-             ('选项太长溢出', gs, page(gs).replace(esc(a3), ' '.join([esc(a3)] * (200 // max(1, len(a3)) + 2)), 1), True),
+             ('选项太长溢出', gs, page(gs).replace('<b>A.</b>', '<b>A.</b>' + 'Wwww ' * 60, 1), True),      # 与题目数据无关的确定错误（踩坑 120）
              ('题与题之间没分开（铁律 19）', gs, page(gs).replace('class="qg', 'class="x'), True),
              ('少一题（组不对）', gs, re.sub(r'<div class="qg[^"]*"><div class="h"><span class="n"><span>\d+\.</span>.*?</div></div>', '', page(gs), count=1), True),
              ('片头卷名不对', {'kind': 'title'}, page({'kind': 'title'}).replace(f'>{esc(PAPER)}<', '>未知卷<'), True),
