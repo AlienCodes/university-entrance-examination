@@ -238,6 +238,13 @@ def gaps(s):
     return re.sub(r'\{(\d+)\}', lambda m: f'<span class="gap">({m.group(1)}) _______</span>', esc(s))
 
 
+
+def fonts_loaded(pg):
+    """等网页字体加载完。不用 wait_for_function：它按 requestAnimationFrame 轮询，偶尔字体早已 loaded 却卡几秒到 30 秒以上
+    （高考听力 GitHub precheck 3 套超时，踩坑 130）；直接 evaluate 等 document.fonts.ready，再核状态"""
+    st = pg.evaluate('document.fonts.ready.then(() => document.fonts.status)')
+    if st != 'loaded': raise RuntimeError(f'网页字体没有加载完：{st}')
+
 def page(s):
     k = s['kind']
     top = '<div class="top"><b><em>PART I</em>LISTENING COMPREHENSION</b>'
@@ -430,8 +437,7 @@ def stills(sample=False):
             png = shots / f'{k}.png'
             htm = page(s)
             tmp.write_text(htm, 'utf-8')
-            pg.goto(tmp.as_uri()); pg.evaluate('document.fonts.ready')
-            pg.wait_for_function('document.fonts.status === "loaded"')
+            pg.goto(tmp.as_uri()); fonts_loaded(pg)
             bad = pg.evaluate(CHECK_JS) + pg.evaluate(QGAP_JS, MIN_GAP) + font_check(pg, cdp) + leak_check(s, htm)
             if bad:
                 errs += 1
@@ -707,7 +713,7 @@ def selftest():
         tmp = OUT / 'selftest.html'; OUT.mkdir(parents=True, exist_ok=True)
 
         def run(htm, s):
-            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); pg.wait_for_function('document.fonts.status === "loaded"')
+            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); fonts_loaded(pg)
             return pg.evaluate(CHECK_JS) + pg.evaluate(QGAP_JS, MIN_GAP) + font_check(pg, cdp) + leak_check(s, htm)
         cases = [('正常（单题 + 答题卡）', page(good), good, False), ('正常', page(sheet), sheet, False),
                  ('答题卡里混进答案', page(sheet).replace('and knowledge', 'and knowledge long-term memory'), sheet, True),
@@ -721,7 +727,7 @@ def selftest():
         # 彩色像素：正常画面 0，放一个红块必须报出
         for name, htm, want in (('正常画面无彩色', page(good), False),
                                 ('放进一个红块', page(good).replace('</body>', '<div style="position:absolute;left:10px;top:10px;width:30px;height:30px;background:#c00"></div></body>'), True)):
-            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); pg.wait_for_function('document.fonts.status === "loaded"')
+            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); fonts_loaded(pg)
             png = OUT / 'selftest.png'; pg.screenshot(path=str(png)); got = color_check(png)
             print(('✅' if bool(got) == want else '❌'), name, '→', got or '0 处'); ok &= bool(got) == want
         br.close()

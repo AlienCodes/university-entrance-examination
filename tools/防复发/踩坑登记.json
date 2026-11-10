@@ -4464,6 +4464,34 @@
    "status": "自动拦截+有双向验证",
    "gap": "补词的准确时刻仍靠插值（换屏误差在插值段时长以内）",
    "fix": "本机预演必须连 timeline（取原音）一起跑，和工作流 precheck 同一组步骤"
+  },
+  {
+   "id": "130",
+   "title": "高考听力 GitHub precheck（run 42918571749）2019-shc、2019-xkb3、2020-shc 在 layout 里 pg.wait_for_function('document.fonts.status === \"loaded\"') 超时 30 秒；本机实测卡住时状态早已是 loaded，慢的是 wait_for_function 本身（偶尔 3—11 秒）",
+   "stages": [
+    "版式",
+    "截图"
+   ],
+   "projects": [
+    "高考听力",
+    "专八听力"
+   ],
+   "guards": [
+    {
+     "where": "专八/听力/tools/听力视频.fonts_loaded：evaluate 等 document.fonts.ready 再核 loaded；底座与高考引擎不许用 wait_for_function 等字体",
+     "runs": "工作流 precheck / render（layout、--自检、stills）",
+     "evidence": "本机 49 套 时间轴 → layout → 自检 → audio 0 处；版式结果不变，一套 layout 约 1 分钟（原 3—4 分钟）"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/字体等待.py",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "六级 / 四级听力引擎、make_dictation 自己还有 wait_for_function（已发布，没出过事，未改）",
+   "fix": "GitHub 上的超时先在本机计时复现、找到慢在哪一步再改，不拉长超时"
   }
  ],
  "_复盘豁免": [

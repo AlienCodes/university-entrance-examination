@@ -391,7 +391,7 @@ def layout():
         tmp = OUT / 'layout.html'; OUT.mkdir(parents=True, exist_ok=True)
 
         def bad(st):
-            h = page(st); tmp.write_text(h, 'utf-8'); pg.goto(tmp.as_uri()); pg.wait_for_function('document.fonts.status === "loaded"')
+            h = page(st); tmp.write_text(h, 'utf-8'); pg.goto(tmp.as_uri()); base.fonts_loaded(pg)
             return checks(pg, h, st)
         for key, s in screens().items():
             n = len(s.get('fit', [0, [0] * 5])[1]) if 'fit' in s else None
@@ -505,7 +505,7 @@ def selftest():
         pg = br.new_page(viewport={'width': 1920, 'height': 1080}); cdp = pg.context.new_cdp_session(pg)
         tmp = OUT / 'selftest.html'; OUT.mkdir(parents=True, exist_ok=True)
         for name, s, htm, want in cases:
-            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); pg.wait_for_function('document.fonts.status === "loaded"')
+            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); base.fonts_loaded(pg)
             got = checks(pg, htm, s, cdp)
             print(('✅' if bool(got) == want else '❌'), name, '→', got[:2] or '0 处'); ok &= bool(got) == want
         br.close()
