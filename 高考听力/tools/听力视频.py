@@ -477,7 +477,7 @@ def selftest():
     if not LAY: die('先跑 layout')
     sc = screens()
     g0 = next(v for k, v in sc.items() if k.startswith('grp'))
-    first = sc.get('q11') or sc.get('sha1')
+    first = sc.get('q1') or sc.get('q11') or sc.get('sha1')
     gs = dict(g0, st='回答', cd=9, cdl='作答')
     cases = [('正常（题组）', gs, page(gs), False), ('正常（首屏）', first, page(first), False),
              ('正常（片头）', {'kind': 'title'}, page({'kind': 'title'}), False),
