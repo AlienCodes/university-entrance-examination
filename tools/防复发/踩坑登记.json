@@ -4497,6 +4497,33 @@
    "status": "自动拦截+有双向验证",
    "gap": "六级 / 四级听力引擎、make_dictation 自己还有 wait_for_function（已发布，没出过事，未改）",
    "fix": "GitHub 上的超时先在本机计时复现、找到慢在哪一步再改，不拉长超时"
+  },
+  {
+   "id": "131",
+   "title": "高考听力 run 42932631483：2019-shq、2021-shq 的 render 编码前停“画面状态时长 ≤ 0 帧”——录音里没有“听力结束”说明，结束屏落在录音末尾、与答案屏同一时刻；新检查又查出 2025-xkb2（同样）与 2021-zj6（录音没有“第二节”说明，说明屏 0 秒）；precheck 没有一步把全部画面状态按帧排一遍",
+   "stages": [
+    "时间轴",
+    "编码"
+   ],
+   "projects": [
+    "高考听力"
+   ],
+   "guards": [
+    {
+     "where": "高考听力/tools/听力视频.py：结束屏至少停 END_MIN=2 秒（录音之后补静音，原音不动），答案屏顺延；说明屏 0 秒就不放；frame_check（layout 开头，precheck 跑）任何状态 ≤ 0 帧就停",
+     "runs": "工作流 precheck（layout）/ render",
+     "evidence": "49 套 0 处；其余 45 套状态时刻与修正前逐个相同；2019-shq 本机全流程出片"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/结束屏时长.py",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "",
+   "fix": "precheck 要把 render 里编码前的纯计算检查（画面状态按帧排）也跑一遍"
   }
  ],
  "_复盘豁免": [

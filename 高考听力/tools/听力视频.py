@@ -39,6 +39,7 @@ LET = 'ABCD'[:NOPT]
 ANSF = P / '答案.json'
 ANS = (json.loads(ANSF.read_text('utf-8')) if ANSF.exists() else {}).get(SID, {})
 die = base.die
+END_MIN = 2.0                                     # 结束屏（“听力部分到此结束”）至少停留秒数
 KEY_SEC = 20.0                                    # 每屏参考答案停留（静音）
 MIN_FONT = {'q1': 40, 'grp': 36 if SH else 40, 'sha': 44, 'ans': 32}   # 字高下限（按 1920×1080 量，老师要求 1）；上海 Section B 一组 3—4 题、四个长选项要同屏（老师要求 3），下限 36
 STRUCT = [(i, i) for i in range(1, 11)] + [(11, 13), (14, 16), (17, 20)] if SH else \
@@ -214,7 +215,8 @@ def states():
             add(s, kind='q1', cur=i + 1, st=f'第 {i + 1} 段对话（只读一遍）')
             nx = T['dlg'][i + 1][0] if i < 4 else T['instr2']
             countdown(e, T['dlgEnd'][i], '作答', kind='q1', cur=i + 1, st=f'回答第 {i + 1} 小题' + (f'，阅读第 {i + 2} 小题' if i < 4 else ''))
-        add(T['instr2'], kind='instr', sec=2)
+        if T['instr2'] < T['grp'][0]['start']:     # 2021 浙江 6 月：录音没有“第二节”说明，直接“听下面一段对话”，这一屏 0 秒就不放
+            add(T['instr2'], kind='instr', sec=2)
         for g, G in enumerate(T['grp']):
             q1, q2 = GROUPS[5 + g]
             add(G['start'], kind='grp', g=g, st=f'第 {g + 6} 段材料')
@@ -230,13 +232,24 @@ def states():
             q1, q2 = GROUPS[10 + g]
             add(G['start'], kind='grp', g=g, st=f'Questions {q1}—{q2}')
             countdown(*G['ans'], '作答', kind='grp', g=g, st=f'回答第 {q1}—{q2} 题')
+    # 录音里没有“听力结束”说明的卷（2019 / 2021 上海秋、2025 新课标Ⅱ），结束屏落在录音末尾、与答案屏同一时刻（0 帧，render 停）：
+    # 结束屏至少停 END_MIN 秒，不够的部分是录音之后补的静音（原音不动），答案屏顺延；其余各套结束屏本来就 ≥ 2.7 秒，不变
+    pad = max(0.0, END_MIN - (T['audioEnd'] - T['end']))
     add(T['end'], kind='end')
-    add(T['audioEnd'], kind='ansA')
-    add(T['audioEnd'] + KEY_SEC, kind='ansB')
-    total = T['audioEnd'] + 2 * KEY_SEC
+    add(T['audioEnd'] + pad, kind='ansA')
+    add(T['audioEnd'] + pad + KEY_SEC, kind='ansB')
+    total = T['audioEnd'] + pad + 2 * KEY_SEC
     L.sort(key=lambda x: x[0])
     return L, total, T
 
+
+
+def frame_check():
+    """每个画面状态至少 1 帧（render 编码前会停“画面状态时长 ≤ 0 帧”，踩坑 131）；precheck 的 layout 先查"""
+    L, total, T = base.states()
+    fr = [round((t + base.LEAD) * base.FPS) for t, s in L] + [round((total + base.LEAD) * base.FPS)]
+    bad = [f'{L[i][1]["kind"]}@{L[i][0]:.2f}' for i in range(len(L)) if fr[i + 1] <= fr[i]]
+    if bad: die(f'画面状态时长 ≤ 0 帧：{bad}')
 
 # ───────────────────────── 画面 ─────────────────────────
 INSTR = {1: ('第一节', '听下面5段对话。每段对话后有一个小题，从题中所给的A、B、C三个选项中选出最佳选项。听完每段对话后，你都有10秒钟的时间来回答有关小题和阅读下一小题。每段对话仅读一遍。'),
@@ -517,7 +530,7 @@ if __name__ == '__main__':
     check_data()
     if c == '--自检': selftest()
     elif c == 'timeline': sha_ok(sys.argv[3]); timeline(base.decoded(sys.argv[3], OUT))
-    elif c == 'layout': layout()
+    elif c == 'layout': frame_check(); layout()
     elif c == 'stills':
         if len(ANS) != 20: die('答案不齐 20 个（答案.json），不出图')
         base.stills('--sample' in sys.argv)
