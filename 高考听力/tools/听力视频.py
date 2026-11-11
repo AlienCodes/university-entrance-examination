@@ -387,12 +387,12 @@ def layout():
     res = {}
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
-        pg = br.new_page(viewport={'width': 1920, 'height': 1080})
+        P = base.Pager(br, viewport={'width': 1920, 'height': 1080})
         tmp = OUT / 'layout.html'; OUT.mkdir(parents=True, exist_ok=True)
 
         def bad(st):
-            h = page(st); tmp.write_text(h, 'utf-8'); pg.goto(tmp.as_uri()); base.fonts_loaded(pg)
-            return checks(pg, h, st)
+            h = page(st); tmp.write_text(h, 'utf-8')
+            return checks(P.load(tmp.as_uri()), h, st)
         for key, s in screens().items():
             n = len(s.get('fit', [0, [0] * 5])[1]) if 'fit' in s else None
             ns = 5 if s['kind'] == 'q1' else (1 if s['kind'] == 'sha' else GROUPS[(10 if SH else 5) + s['g']][1] - GROUPS[(10 if SH else 5) + s['g']][0] + 1)
@@ -502,11 +502,11 @@ def selftest():
     ok = True
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
-        pg = br.new_page(viewport={'width': 1920, 'height': 1080}); cdp = pg.context.new_cdp_session(pg)
+        P = base.Pager(br, viewport={'width': 1920, 'height': 1080})
         tmp = OUT / 'selftest.html'; OUT.mkdir(parents=True, exist_ok=True)
         for name, s, htm, want in cases:
-            tmp.write_text(htm, 'utf-8'); pg.goto(tmp.as_uri()); base.fonts_loaded(pg)
-            got = checks(pg, htm, s, cdp)
+            tmp.write_text(htm, 'utf-8')
+            got = checks(P.load(tmp.as_uri()), htm, s, P.cdp)
             print(('✅' if bool(got) == want else '❌'), name, '→', got[:2] or '0 处'); ok &= bool(got) == want
         br.close()
     sys.exit(0 if ok else 1)

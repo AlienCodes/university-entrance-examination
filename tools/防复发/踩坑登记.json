@@ -4467,7 +4467,7 @@
   },
   {
    "id": "130",
-   "title": "高考听力 GitHub precheck（run 42918571749）2019-shc、2019-xkb3、2020-shc 在 layout 里 pg.wait_for_function('document.fonts.status === \"loaded\"') 超时 30 秒；本机实测卡住时状态早已是 loaded，慢的是 wait_for_function 本身（偶尔 3—11 秒）",
+   "title": "高考听力 GitHub precheck（run 42918571749）2019-shc、2019-xkb3、2020-shc 在 layout 里 pg.wait_for_function('document.fonts.status === \"loaded\"') 超时 30 秒；本机实测卡住时状态早已是 loaded，慢的是 wait_for_function 本身（偶尔 3—11 秒）；修了之后 run 42929283819 的 2019-shq 又在 goto 等 load 超时 30 秒（约 4.5 万次加载里 1 次浏览器整页卡住）",
    "stages": [
     "版式",
     "截图"
@@ -4481,11 +4481,16 @@
      "where": "专八/听力/tools/听力视频.fonts_loaded：evaluate 等 document.fonts.ready 再核 loaded；底座与高考引擎不许用 wait_for_function 等字体",
      "runs": "工作流 precheck / render（layout、--自检、stills）",
      "evidence": "本机 49 套 时间轴 → layout → 自检 → audio 0 处；版式结果不变，一套 layout 约 1 分钟（原 3—4 分钟）"
+    },
+    {
+     "where": "专八/听力/tools/听力视频.Pager.load：goto + 等字体超时就关掉标签页、换新的重来（最多 3 次）；高考 layout、--自检、底座 stills 都用它",
+     "runs": "工作流 precheck / render",
+     "evidence": "卡死网页实测：卡一次重来 1 次成功、一直卡 3 次后停下"
     }
    ],
    "test": [
     {
-     "cmd": "python3 tools/防复发/验证/字体等待.py",
+     "cmd": "/opt/ttsenv/bin/python tools/防复发/验证/字体等待.py",
      "expect": "exit 0"
     }
    ],

@@ -242,8 +242,39 @@ def gaps(s):
 def fonts_loaded(pg):
     """等网页字体加载完。不用 wait_for_function：它按 requestAnimationFrame 轮询，偶尔字体早已 loaded 却卡几秒到 30 秒以上
     （高考听力 GitHub precheck 3 套超时，踩坑 130）；直接 evaluate 等 document.fonts.ready，再核状态"""
-    st = pg.evaluate('document.fonts.ready.then(() => document.fonts.status)')
+    st = pg.evaluate('Promise.race([document.fonts.ready.then(() => document.fonts.status), new Promise(r => setTimeout(() => r("timeout"), 30000))])')
+    if st == 'timeout':
+        from playwright.sync_api import TimeoutError as PWTimeout
+        raise PWTimeout('document.fonts.ready 30 秒没好')
     if st != 'loaded': raise RuntimeError(f'网页字体没有加载完：{st}')
+
+
+class Pager:
+    """一个标签页 + CDP 会话。load：打开网页并等字体；浏览器偶尔整页卡住（高考听力 4.5 万次加载里 1 次 goto 30 秒超时，踩坑 130），
+    超时就关掉这个标签页、换新的重来，最多 3 次（同一网页、同一浏览器，画面不变）"""
+    TRIES = 3
+
+    def __init__(self, br, **kw):
+        self.br, self.kw, self.retries = br, kw, 0
+        self.new()
+
+    def new(self):
+        self.pg = self.br.new_page(**self.kw)
+        self.cdp = self.pg.context.new_cdp_session(self.pg)
+
+    def load(self, uri):
+        from playwright.sync_api import TimeoutError as PWTimeout
+        for k in range(self.TRIES):
+            try:
+                self.pg.goto(uri); fonts_loaded(self.pg)
+                return self.pg
+            except PWTimeout as e:
+                self.retries += 1
+                print(f'网页第 {k + 1} 次没响应（{str(e).splitlines()[0][:80]}），换新标签页重来', file=sys.stderr)
+                try: self.pg.close()
+                except Exception: pass
+                self.new()
+        die(f'网页连续 {self.TRIES} 次没响应：{uri}')
 
 def page(s):
     k = s['kind']
@@ -430,14 +461,13 @@ def stills(sample=False):
     exe = '/opt/pw-browsers/chromium' if Path('/opt/pw-browsers/chromium').exists() else None
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path=exe) if exe else pw.chromium.launch()
-        pg = br.new_page(viewport={'width': 1920, 'height': 1080}, device_scale_factor=2)
-        cdp = pg.context.new_cdp_session(pg)
+        P = Pager(br, viewport={'width': 1920, 'height': 1080}, device_scale_factor=2)
         tmp = OUT / 'page.html'
         for i, (k, s) in enumerate(todo.items()):
             png = shots / f'{k}.png'
             htm = page(s)
             tmp.write_text(htm, 'utf-8')
-            pg.goto(tmp.as_uri()); fonts_loaded(pg)
+            pg = P.load(tmp.as_uri()); cdp = P.cdp
             bad = pg.evaluate(CHECK_JS) + pg.evaluate(QGAP_JS, MIN_GAP) + font_check(pg, cdp) + leak_check(s, htm)
             if bad:
                 errs += 1
