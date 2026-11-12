@@ -80,17 +80,28 @@ def main():
     else:
         r=json.loads(found.stdout);assert r['name']==title and r['isDraft'],'Refusing to replace an existing published release.'
         run('gh','release','edit',a.tag,'--repo',a.repo,'--notes-file',str(nf),'--target',a.branch)
-    # Upload larger archives first; run one at a time to avoid proxy request bursts.
+    # Drafts have no published tag yet. Resolve their numeric release endpoint.
+    api_url=run('gh','release','view',a.tag,'--repo',a.repo,'--json','apiUrl','--jq','.apiUrl')
+    prior=json.loads(run('gh','api',api_url))
+    existing={x['name']:x for x in prior['assets']}
+    # Keep already uploaded, byte-identical assets when resuming publication.
     for path in sorted(paths,key=lambda p:p.stat().st_size,reverse=True):
+        old=existing.get(path.name)
+        if old:
+            assert old['state']=='uploaded' and old['digest']=='sha256:'+expected[path.name] and old['size']==path.stat().st_size, 'Existing asset differs: '+path.name
+            print('Already verified',path.name,flush=True)
+            continue
         print('Uploading',path.name,flush=True)
-        run('gh','release','upload',a.tag,str(path),'--repo',a.repo,'--clobber')
-    r=json.loads(run('gh','api',f'repos/{a.repo}/releases/tags/{a.tag}'))
+        run('gh','release','upload',a.tag,str(path),'--repo',a.repo)
+    r=json.loads(run('gh','api',api_url))
     actual={x['name']:x for x in r['assets']}
     assert set(actual)==set(expected),(set(actual),set(expected))
     for name,checksum in expected.items():
         assert actual[name]['state']=='uploaded'
         assert actual[name]['digest']=='sha256:'+checksum,(name,actual[name]['digest'])
-    if a.publish:run('gh','release','edit',a.tag,'--repo',a.repo,'--draft=false','--latest=false')
+    if a.publish:
+        run('gh','release','edit',a.tag,'--repo',a.repo,'--draft=false','--latest=false')
+        r=json.loads(run('gh','api',api_url))
     print(json.dumps({'url':r['html_url'],'published':a.publish,'verified_assets':len(actual)},ensure_ascii=False),flush=True)
 
 if __name__=='__main__':main()
