@@ -64,6 +64,7 @@ AUDIO_RELEASE = {
     'release-videos.yml': ['audio'], 'release-zk-videos.yml': ['中考/audio'], 'release-tem8-listening-text.yml': ['专八/听力/原文/audio'],
 }
 NO_AUDIO = {     # 发布的东西里没有本仓库 TTS 音频：理由
+    'release-cet4-shop.yml': '四级听力考试原声与原音精读（不是TTS）；复用已发布包，发布前核对3个包和70个视频的SHA256，另附PDF与原版商品图',
     'release-papers.yml': '原卷 PDF', 'release-cet4-writing-handout.yml': '讲义 PDF', 'release-cet6-writing-handout.yml': '讲义 PDF',
     'release-kaoyan-writing-handout.yml': '讲义 PDF', 'release-cet6-listening-handout.yml': '讲义 PDF + 商品图', 'release-cet4-listening-handout.yml': '讲义 PDF + 商品图',
     'release-tem8-listening.yml': '专八听力考试原声视频（听力视频.py，不是 TTS，没有 timings；用户 2026-10-29 定为不在范围内）',
