@@ -4605,6 +4605,32 @@
    ],
    "status": "自动拦截+有双向验证",
    "gap": ""
+  },
+  {
+   "id": "135",
+   "title": "合法MP3浮点原声过冲被错误拒绝",
+   "stages": [
+    "音频预检"
+   ],
+   "projects": [
+    "高考听力原文精读"
+   ],
+   "guards": [
+    {
+     "where": "高考听力/精读/tools/数据.py:write_float_wav、prepare；生成.py:audio_check、verify",
+     "runs": "保留原始有限float样本，AAC与成品独立原声比对",
+     "evidence": "真实2019-xkb1、2026-xkb1完整AAC通过；合成±1.13样本保存读取完全相同"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/高考精读门禁.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": ""
   }
  ],
  "_复盘豁免": [

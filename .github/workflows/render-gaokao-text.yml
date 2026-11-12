@@ -55,8 +55,8 @@ jobs:
     timeout-minutes: 55
     strategy:
       fail-fast: false
-      # 首套编码与自动CI各预留1个，跨工作流合计不超过20；正式编码仍最多20。
-      max-parallel: 18
+      # 给自动CI预留1个，跨工作流合计不超过20；正式编码仍最多20。
+      max-parallel: 19
       matrix:
         id: ${{ fromJson(needs.list.outputs.ids) }}
     steps:

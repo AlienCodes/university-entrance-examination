@@ -156,7 +156,8 @@ def prepare(sid, original, out, draft=False):
     content_end = min(len(x)/sr, d['sentences'][-1]['end']+.30)
     first = max(0, round(cut*sr)); last = min(len(x), round(content_end*sr))
     ref = x[first:last]
-    assert len(ref) > sr and np.abs(ref).max() <= 1
+    # MP3浮点解码可有略超±1的原始峰值；FLOAT WAV原样保留，不能归一化或限幅。
+    assert len(ref) > sr and np.isfinite(ref).all()
     duration = math.ceil((LEAD+len(ref)/sr+TAIL)*FPS)/FPS
     audio = np.zeros((round(duration*sr), x.shape[1]), np.float32)
     k0 = round(LEAD*sr); audio[k0:k0+len(ref)] = ref

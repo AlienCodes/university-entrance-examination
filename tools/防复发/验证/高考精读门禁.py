@@ -24,6 +24,7 @@ with tempfile.TemporaryDirectory() as td:
     td=Path(td)
     x=(np.sin(np.arange(44100,dtype=np.float32)*.013)*.1)[:,None]
     x=np.concatenate((x,-x),axis=1)
+    x[50]=[1.13,-1.13]  # MP3浮点解码的真实过冲必须逐样本保留，不能压回±1。
     a,b=td/'a.wav',td/'b.wav'
     D.write_float_wav(a,x,44100);D.write_float_wav(b,x,44100)
     assert a.read_bytes()==b.read_bytes() and b'PEAK' not in a.read_bytes()[:100]
