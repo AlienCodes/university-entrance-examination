@@ -1,0 +1,99 @@
+name: 高考英语原文精读准备
+on:
+  push:
+    paths: ['.github/gaokao-listening-text-prep.txt']
+permissions:
+  contents: read
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      shards: ${{ steps.plan.outputs.shards }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/gaokao-listening-text-prep.txt
+            /高考听力/套.json
+      - id: plan
+        name: 核对卷别清单
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, re
+          ids = [s.strip() for s in pathlib.Path('.github/gaokao-listening-text-prep.txt').read_text().splitlines() if s.strip()]
+          papers = json.loads(pathlib.Path('高考听力/套.json').read_text())
+          if len(ids) != len(set(ids)) or set(ids) != set(papers) or not all(re.fullmatch(r'20\d{2}-[a-z0-9]+', s) for s in ids):
+              raise SystemExit('精读套号清单与数据不一致')
+          groups = [ids[i::19] for i in range(19)]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              print('shards=' + json.dumps([{'name': f'{i + 1:02d}', 'ids': ' '.join(g)} for i, g in enumerate(groups) if g]), file=out)
+          print(f'{len(ids)} 套，{len(groups)} 组')
+          PY
+  words:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 17
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    name: 逐词复核 ${{ matrix.shard.name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /高考听力/套.json
+            /高考听力/原始材料/清单.json
+            /高考听力/识别/
+            /高考听力/tools/取原音.py
+            /高考听力/精读/tools/逐词复核.py
+            /专八/听力/tools/识别对齐.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.15'
+      - name: 安装识别依赖
+        run: |
+          python -m pip install -q --disable-pip-version-check numpy==2.4.6 soundfile==0.14.0 soxr==1.1.0 sherpa-onnx==1.13.8
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -q
+            sudo apt-get install -y --no-install-recommends ffmpeg
+          fi
+      - uses: actions/cache@v4
+        id: model
+        with:
+          path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+          key: parakeet-tdt-0.6b-v2-int8
+      - name: 取逐词识别模型
+        if: steps.model.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p tools/tts/models
+          curl -fsSL --retry 4 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar -xj -C tools/tts/models
+      - name: 取原始材料，核对整包 SHA-256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          gh api -H 'Accept: application/octet-stream' "repos/$GITHUB_REPOSITORY/releases/assets/732507489" > "$RUNNER_TEMP/default.zip"
+          echo "9270b3f93995cfbddf77793e7d6ba4cd2b6464c2e9ae8100c1dab3acc1dc00a2  $RUNNER_TEMP/default.zip" | sha256sum -c -
+      - name: 核对原音，识别词时刻，对照 Otter 和 SenseVoice
+        env:
+          IDS: ${{ matrix.shard.ids }}
+        run: |
+          set -euo pipefail
+          for sid in $IDS; do
+            mkdir -p "results/$sid"
+            python -I 高考听力/tools/取原音.py "$sid" "$RUNNER_TEMP/in.mp3" "$RUNNER_TEMP/default.zip"
+            ffmpeg -y -v error -i "$RUNNER_TEMP/in.mp3" -map 0:a:0 -c:a pcm_f32le "$RUNNER_TEMP/in.wav"
+            python 专八/听力/tools/识别对齐.py "$RUNNER_TEMP/in.wav" "results/$sid"
+            python 高考听力/精读/tools/逐词复核.py "$sid" "$RUNNER_TEMP/default.zip" "results/$sid"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gaokao-text-sources-${{ matrix.shard.name }}
+          path: results
+          if-no-files-found: warn
