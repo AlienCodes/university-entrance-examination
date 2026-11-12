@@ -161,12 +161,16 @@ jobs:
           TAG=gaokao-listening
           gh release view $TAG >/dev/null 2>&1 || gh release create $TAG --target "$GITHUB_REF_NAME" -t "高考英语听力 视频版真题考试" -n "见下方说明"
           gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          python3 .github/gaokao-listening-publish.py relabel up/plan.json rel.json | while IFS=$'\t' read -r aid label; do
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/assets/$aid" -f "label=$label" >/dev/null
+          done
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
           python3 .github/gaokao-listening-publish.py todo up/plan.json rel.json | while IFS=$'\t' read -r a l; do
             gh release upload $TAG "up/$a#$l" --clobber; echo "上传 $a"
           done
           gh release upload $TAG up/gaokao-listening-filenames.txt --clobber
           python3 .github/gaokao-listening-publish.py notes up/plan.json notes.md
-          gh release edit $TAG --notes-file notes.md
+          gh release edit $TAG -t "高考英语真题 视频版考试（50套）" --notes-file notes.md
           python3 .github/gaokao-listening-publish.py pack up/plan.json .
           gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
           for z in $(python3 .github/gaokao-listening-publish.py zips up/plan.json); do

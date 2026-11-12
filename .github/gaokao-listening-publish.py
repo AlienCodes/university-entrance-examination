@@ -38,13 +38,14 @@ def plan(kinds, ids, art, up):
         m = json.loads((d / 'meta.json').read_text('utf-8'))
         f = d / m['mp4']
         if m.get('kind', 'exam') != k or m['套'] != i: bad.append(f'{i} {k} meta 不符')
-        if m['mp4'] != 命名.label(i, k): bad.append(f'{i} {k} 文件名 {m["mp4"]} ≠ {命名.label(i, k)}')
+        if m['mp4'] not in (命名.label(i, k), 命名.legacy_label(i, k)):
+            bad.append(f'{i} {k} 文件名不属于本套当前或已核旧命名：{m["mp4"]}')
         if sha(f) != m['mp4_sha256']: bad.append(f'{i} {k} sha256 不符')
         if f.stat().st_size >= MAXZ: bad.append(f'{i} {k} 超过 1.9 GB')
         a = 命名.asset(i, k)
         if (up / a).exists(): (up / a).unlink()
         os.link(f, up / a)
-        rows.append({'套': i, 'kind': k, 'asset': a, 'label': m['mp4'], 'sha256': m['mp4_sha256'], 'bytes': f.stat().st_size})
+        rows.append({'套': i, 'kind': k, 'asset': a, 'label': 命名.label(i,k), 'sha256': m['mp4_sha256'], 'bytes': f.stat().st_size})
     bad += 命名.problems([r['label'] for r in rows])
     bad += [f'资产名不是 ASCII：{r["asset"]}' for r in rows if not r['asset'].isascii()]
     if bad: sys.exit('停止：' + '；'.join(bad))
@@ -115,6 +116,16 @@ def todo(planf, relf):
             print(r['asset'] + '\t' + r['label'])
 
 
+def relabel(planf, relf):
+    """内容和大小一致时只PATCH中文标签，保留已上传视频及资产ID。"""
+    rows=json.loads(Path(planf).read_text())
+    have={a['name']:a for a in json.loads(Path(relf).read_text())['assets']}
+    for r in rows:
+        x=have.get(r['asset'])
+        if x and x.get('digest')=='sha256:'+r['sha256'] and x['size']==r['bytes'] and x.get('label')!=r['label']:
+            print(str(x['id'])+'\t'+r['label'])
+
+
 def notes(planf, out):
     rows = json.loads(Path(planf).read_text('utf-8'))
     ps = parts(rows)
@@ -152,7 +163,7 @@ def selftest():
         t = Path(t); art = t / 'art'
         for i, n in zip(ids, [3000, 2000, 1000]):
             d = art / f'{ART["exam"]}{i}'; d.mkdir(parents=True)
-            f = d / 命名.label(i, 'exam'); f.write_bytes(os.urandom(n))
+            f = d / (命名.legacy_label(i,'exam') if i==ids[0] else 命名.label(i,'exam')); f.write_bytes(os.urandom(n))
             (d / 'meta.json').write_text(json.dumps({'套': i, 'kind': 'exam', 'mp4': f.name, 'mp4_sha256': sha(f), 'mp4_bytes': n}, ensure_ascii=False))
         plan(['exam'], ids, art, t / 'up')
         rows = json.loads((t / 'up/plan.json').read_text('utf-8'))
@@ -173,6 +184,7 @@ if __name__ == '__main__':
     if c == '--自检': selftest()
     elif c == 'plan': plan(sys.argv[2].split(','), json.loads(sys.argv[3]), Path(sys.argv[4]), Path(sys.argv[5]))
     elif c == 'todo': todo(sys.argv[2], sys.argv[3])
+    elif c == 'relabel': relabel(sys.argv[2],sys.argv[3])
     elif c == 'notes': notes(sys.argv[2], sys.argv[3])
     elif c == 'pack': pack(sys.argv[2], sys.argv[3])
     elif c == 'zips': zips(sys.argv[2])
