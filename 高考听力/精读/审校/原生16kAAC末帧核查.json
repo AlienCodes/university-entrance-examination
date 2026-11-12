@@ -1,0 +1,23 @@
+{
+ "id": "2020-shc",
+ "说明": "原生16kHz AAC一帧64ms；容器948.3s准确，解码补832个静音样本（52ms）为合法末帧补齐。容器时长仍严格50ms、解码补齐须0—1024样本且静音。人为100ms真偏差必须拒绝。",
+ "positive": {
+  "ok": true,
+  "problems": [],
+  "source_sha256": "4625d61f0c2c9eefae04cf8fba28f4e319e2a8f6f13e3561cd715c62c1ad78e6",
+  "audio_sha256": "b7094c01109ed2f9996b54b86fd834e0a8c03ac884d406fd41a63552f8efb15e",
+  "container_duration": 948.3,
+  "decoded_padding_samples": 832
+ },
+ "negative_100ms": {
+  "ok": false,
+  "problems": [
+   "AAC容器时长偏差超过50毫秒",
+   "AAC末帧补齐不符：-768样本，须≤1024且全为静音"
+  ],
+  "source_sha256": "4625d61f0c2c9eefae04cf8fba28f4e319e2a8f6f13e3561cd715c62c1ad78e6",
+  "audio_sha256": "b7094c01109ed2f9996b54b86fd834e0a8c03ac884d406fd41a63552f8efb15e",
+  "container_duration": 948.3,
+  "decoded_padding_samples": -768
+ }
+}

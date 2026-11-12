@@ -28,16 +28,52 @@ def workflow_script(path, args):
         sys.argv = previous
 
 
-def fingerprint(m, p, tm):
+def fingerprint(m, p, tm, generator_bytes=None):
+    import re
     h = hashlib.sha256()
     files = [Path(__file__), HERE/'数据.py', HERE/'片头检查.py', HERE/'审校登记.py', HERE/'覆盖检查.py',
              Path(m.__file__), m.QA/'layoutcheck.py', m.QA/'zh_bind.py',
              m.QA/'分词补充.txt', ROOT/'专八/tools/字号.json', ROOT/'四级/tools/fonts/fonts.css',
              *m.look_files('6')]
+    if generator_bytes is None:
+        css=ROOT/'四级/tools/fonts/fonts.css'
+        files+=sorted({(css.parent/name).resolve() for name in
+            re.findall(r'url\([\'\"]?([^\'\"\)]+)',css.read_text())
+            if name.endswith(('.woff2','.woff','.ttf'))})
     for f in files:
-        h.update(str(f.relative_to(ROOT)).encode()); h.update(f.read_bytes())
+        h.update(str(f.relative_to(ROOT)).encode())
+        h.update(generator_bytes if f==Path(__file__) and generator_bytes is not None else f.read_bytes())
     h.update(json.dumps([p, tm, m.SPLIT.get(p['id'], {})], ensure_ascii=False, sort_keys=True).encode())
     return h.hexdigest()
+
+
+def screens_fingerprint_ok(m,p,tm,value):
+    if value==fingerprint(m,p,tm):return True
+    # 音频预检误报修复不改变截图。兼容仅限这个已通过版本；任何视觉函数或其他输入改变都拒绝。
+    import ast
+    path=C/'审校/截图指纹兼容_e2e9918.json'
+    if not path.exists():return False
+    old=json.loads(path.read_text());source=old['source'].encode()
+    assert hashlib.sha256(source).hexdigest()==old['生成_sha256']
+    before=ast.parse(source);after=ast.parse(Path(__file__).read_text())
+    qa={'fingerprint','screens_fingerprint_ok','audio_check','cached_check','verify','encode','main'}
+    approved=old.get('新检查函数_AST_sha256',{})
+    if set(approved)!=qa:return False
+    for name in qa:
+        matches=[n for n in after.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name==name]
+        if len(matches)!=1 or not isinstance(matches[0],ast.FunctionDef):return False
+        fn=matches[0]
+        # 本机3.12比Actions3.11多出type_params字段；统一规范后再锁定函数。
+        for node in ast.walk(fn):
+            if hasattr(node,'type_params'):delattr(node,'type_params')
+        if hashlib.sha256(ast.dump(fn,include_attributes=False).encode()).hexdigest()!=approved[name]:return False
+    raster=lambda tree:ast.Module(body=[n for n in tree.body if not
+        (isinstance(n,ast.FunctionDef) and n.name in qa)],type_ignores=[])
+    if ast.dump(raster(before),include_attributes=False)!=ast.dump(raster(after),include_attributes=False):return False
+    fonts=old.get('字体旧基线',{})
+    if hashlib.sha256(json.dumps(fonts,sort_keys=True).encode()).hexdigest()!='4e3631435202f0bab77299e8883d25828242ed5ebfa4ef809e77c9cd9362bb7d':return False
+    if any(not (ROOT/name).is_file() or sha(ROOT/name)!=value for name,value in fonts.items()):return False
+    return value==fingerprint(m,p,tm,source)
 
 
 def input_snapshot(m, p, tm):
@@ -164,12 +200,19 @@ def audio_check(tm, out):
     if sr!=tm['sample_rate'] or y.shape[1]!=tm['channels']:
         bad.append('AAC改变原采样率/声道')
     bad+=base_engine().orig_match(ref,y[offset:offset+len(ref)],sr)
-    if abs(len(y)/sr-tm['duration'])>.05:bad.append('AAC时长偏差超过50毫秒')
+    info=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-of','json',str(encoded)]))
+    stream=next(s for s in info['streams'] if s['codec_type']=='audio')
+    if abs(float(stream['duration'])-tm['duration'])>.05:bad.append('AAC容器时长偏差超过50毫秒')
+    # 原生16kHz的AAC一帧为64ms。解码末尾可补齐到一整帧；这不是音轨漂移，须逐样本为静音。
+    expected=round(tm['duration']*sr);padding=len(y)-expected
+    if not 0<=padding<=1024 or (padding and np.abs(y[expected:]).max()>=.001):
+        bad.append(f'AAC末帧补齐不符：{padding}样本，须≤1024且全为静音')
     if np.abs(y[:offset-480]).max()>=.001:bad.append('片头静音不符')
     if len(y)-offset-len(ref)<2*sr or np.abs(y[offset+len(ref)+round(.05*sr):]).max()>=.001:
         bad.append('片尾静音不符')
     dump(out/'audio-precheck.json',{'ok':not bad,'problems':bad,
-        'source_sha256':tm['source_sha256'],'audio_sha256':tm['audio_sha256']})
+        'source_sha256':tm['source_sha256'],'audio_sha256':tm['audio_sha256'],
+        'container_duration':float(stream['duration']),'decoded_padding_samples':padding})
     encoded.unlink(missing_ok=True);decoded.unlink(missing_ok=True)
     assert not bad, f'音频预检失败：{bad}'
     print('原声AAC完整往返预检通过',flush=True)
@@ -214,7 +257,8 @@ def verify(m, original, p, tm, out, mp4, states, fast=False):
     check(name,ok,detail)
     check('成品体积',0<mp4.stat().st_size<1900*2**20,str(mp4.stat().st_size))
     rep={'id':p['id'],'ok':all(c['ok'] for c in checks),'checks':checks,'sha256':sha(mp4),
-         'bytes':mp4.stat().st_size,'fingerprint':fingerprint(m,p,tm),'states':len(states)}
+         'bytes':mp4.stat().st_size,'fingerprint':fingerprint(m,p,tm),'states':len(states),
+         'screens_fingerprint':json.loads((out/'screens.json').read_text())['fingerprint']}
     dump(out/('fast-verification.json' if fast else 'verification.json'),rep)
     decoded.unlink(missing_ok=True)
     if not rep['ok']:
@@ -228,13 +272,7 @@ def encode(m, original, p, tm, out, fast=False):
     if not fast:
         from 审校登记 import check as check_review
         check_review(p['id'])
-    report=json.loads((out/'screens.json').read_text())
-    assert report['fingerprint']==fingerprint(m,p,tm) and not report['problems'], '截图后输入已变'
-    assert json.dumps(json.loads((out/'screens-input.json').read_text()),sort_keys=True)==json.dumps(input_snapshot(m,p,tm),sort_keys=True), '截图输入内容已变'
-    audio_report=json.loads((out/'audio-precheck.json').read_text())
-    assert audio_report['ok'] and audio_report['audio_sha256']==tm['audio_sha256'], '缺少当前音轨的AAC预检'
-    for s in report['shots']:
-        assert sha(out/'shots'/s['file'])==s['sha256'],'截图内容已变'
+    cached_check(m,p,tm,out)
     states=json.loads((out/'states.json').read_text());frames=round(tm['duration']*FPS)
     rows=[]
     for (a,key),b in zip(states,[s[0] for s in states[1:]]+[frames]):
@@ -256,12 +294,34 @@ def encode(m, original, p, tm, out, fast=False):
                              'mp4_sha256':rep['sha256'],'mp4_bytes':rep['bytes'],'原音_sha256':tm['source_sha256'],
                              '定稿_sha256':sha(C/'定稿'/f'{p["id"]}.json'),
                              '译注_sha256':sha(C/'ann'/f'{p["id"]}.txt'),
-                             'fingerprint':rep['fingerprint'],'成品核查':'全部通过'})
+                             'fingerprint':rep['fingerprint'],'screens_fingerprint':rep['screens_fingerprint'],
+                             '成品核查':'全部通过'})
+
+
+def cached_check(m,p,tm,out):
+    from 审校登记 import check as review_check
+    review_check(p['id'])
+    report=json.loads((out/'screens.json').read_text())
+    assert report['id']==p['id'] and not report['problems']
+    assert screens_fingerprint_ok(m,p,tm,report['fingerprint']), '截图后视觉代码或输入已变'
+    assert report['frames']==round(tm['duration']*FPS)
+    assert json.dumps(json.loads((out/'screens-input.json').read_text()),sort_keys=True)==json.dumps(input_snapshot(m,p,tm),sort_keys=True), '截图输入内容已变'
+    audio_report=json.loads((out/'audio-precheck.json').read_text())
+    assert audio_report['ok'] and audio_report['audio_sha256']==tm['audio_sha256'] and audio_report['source_sha256']==tm['source_sha256'], '缺少当前音轨的AAC预检'
+    labels=m.screens(p)
+    expected={f'screen{i+1:03d}.png' for i in range(len(labels))}|{'hint.png','end.png'}
+    actual=[s['file'] for s in report['shots']]
+    assert len(actual)==len(expected) and set(actual)==expected,'截图登记数量/文件集合不符'
+    for s in report['shots']:
+        assert sha(out/'shots'/s['file'])==s['sha256'],'截图内容已变'
+    d=json.loads((C/'定稿'/f'{p["id"]}.json').read_text())
+    assert build_states(m,p,d,tm,labels)==json.loads((out/'states.json').read_text()), '换屏状态不符'
+    print(f'{p["id"]}：已通过预检的全部PNG、代码、数据、原声、时间与状态再次核对一致',flush=True)
 
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('sid');ap.add_argument('action',choices=['prepare','audio','precheck','stills','video','fast','all'])
+    ap.add_argument('sid');ap.add_argument('action',choices=['prepare','audio','precheck','stills','cached','video','fast','all'])
     ap.add_argument('--original',type=Path,required=True);ap.add_argument('--out',type=Path,required=True)
     ap.add_argument('--draft',action='store_true',help='只用于未审预览，不准发布')
     args=ap.parse_args();out=args.out.resolve();out.mkdir(parents=True,exist_ok=True)
@@ -275,6 +335,8 @@ def main():
     if args.action=='audio':return
     m=engine();m.NAMES=d.get('names',[])
     m.check_names(p)
+    if args.action=='cached':
+        cached_check(m,p,tm,out);return
     os.environ['DZB_PROJECT']='高考原文精读'
     suggestion=out/'split-suggestions.json'
     if args.action in ('precheck','all'):

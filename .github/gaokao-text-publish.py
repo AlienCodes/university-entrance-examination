@@ -36,6 +36,10 @@ def plan(kinds, ids, art, up):
         if v.get('id')!=i or not v['ok'] or v['sha256']!=m['mp4_sha256'] or v['fingerprint']!=m['fingerprint']:
             bad.append(f'{i} 成品核查与meta不符')
         if i not in TEST_IDS:
+            screens=json.loads((d/'screens.json').read_text())
+            if screens['id']!=i or screens['problems'] or screens['fingerprint']!=v.get('screens_fingerprint',v['fingerprint']):
+                bad.append(f'{i} 成品与实际核查截图来源不符')
+        if i not in TEST_IDS:
             from 审校登记 import check as review_check
             row=review_check(i)
             if any(m.get(x)!=row[x] for x in ('定稿_sha256','译注_sha256')):bad.append(f'{i} 不是当前复核定稿')

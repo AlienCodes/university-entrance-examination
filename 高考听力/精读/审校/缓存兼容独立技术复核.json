@@ -1,0 +1,111 @@
+{
+ "审阅人": "review_4",
+ "审阅时间_UTC": "2026-11-12T22:04:50.519767+00:00",
+ "状态": "通过；两项既存发现均已关闭",
+ "范围": "只读复核截图兼容的 QA 函数唯一性、352 个字体二进制依赖与旧基线，并静态确认单套即时编码工作流；仅写此审校报告",
+ "所审文件_SHA256": {
+  "高考听力/精读/tools/生成.py": "4e4196a3ba752ecb64c84f4d42e9f038be8858afbe4bed0b70ad90fdc08ca34e",
+  "高考听力/精读/审校/截图指纹兼容_e2e9918.json": "0fdcf7c0a26427cc07204ad6aaa9a89d290e799db3ce4a2f1e3043a4526f1624",
+  ".github/workflows/render-gaokao-text.yml": "e76989f7bd65e543057370a8ddf5713c677d4b4814d6873e0ba6420a27633e2b"
+ },
+ "Python": "3.12.14",
+ "关闭项": [
+  {
+   "问题": "QA 同名后定义绕过首定义 AST 校验",
+   "结论": "已关闭",
+   "证据": "每个 QA 名称顶层 FunctionDef/AsyncFunctionDef 合计必须恰好一个且为同步；实际兼容函数的全部 14 种同步/异步重复定义反例均拒绝；单个 async 替换也拒绝",
+   "反例结果": [
+    {
+     "name": "audio_check",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "audio_check",
+     "duplicate_type": "async def",
+     "rejected": true
+    },
+    {
+     "name": "cached_check",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "cached_check",
+     "duplicate_type": "async def",
+     "rejected": true
+    },
+    {
+     "name": "encode",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "encode",
+     "duplicate_type": "async def",
+     "rejected": true
+    },
+    {
+     "name": "fingerprint",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "fingerprint",
+     "duplicate_type": "async def",
+     "rejected": true
+    },
+    {
+     "name": "main",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "main",
+     "duplicate_type": "async def",
+     "rejected": true
+    },
+    {
+     "name": "screens_fingerprint_ok",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "screens_fingerprint_ok",
+     "duplicate_type": "async def",
+     "rejected": true
+    },
+    {
+     "name": "verify",
+     "duplicate_type": "def",
+     "rejected": true
+    },
+    {
+     "name": "verify",
+     "duplicate_type": "async def",
+     "rejected": true
+    }
+   ]
+  },
+  {
+   "问题": "fonts.css 引用的字体二进制遗漏指纹",
+   "结论": "已关闭",
+   "证据": "新 fingerprint 纳入所有 352 个引用字体；实际 fingerprint 中纯内存改动 EB Garamond 600-latin 字节使新指纹变化。旧指纹本身仍按历史算法计算，但兼容函数同时拒绝该字体 SHA 变化。",
+   "引用字体数": 352,
+   "旧基线字体数": 352,
+   "与_e2e9918_真实_git_blob_SHA_一致数": 352,
+   "旧基线表_SHA256": "4e3631435202f0bab77299e8883d25828242ed5ebfa4ef809e77c9cd9362bb7d",
+   "当前字体_SHA_全匹配": true,
+   "基线覆盖CSS引用集合完全相同": true
+  }
+ ],
+ "补充验证": {
+  "旧生成脚本与_e2e9918_git_blob_字节一致": true,
+  "当前未变代码兼容正例": true,
+  "七项规范化QA_AST_SHA均等于锁值": true,
+  "type_params": "本机 Python 3.12 上按实现删除新增 type_params 后复算七个函数 SHA 全部一致；此次未执行 Python 3.11",
+  "工作流": "20 路单套 render 矩阵依赖 list 与 ci_gate；本套缓存检查/重做预检后直接执行编码；不存在跨套 precheck/sample_gate 屏障"
+ },
+ "未闭环阻断项": [],
+ "限制": "未在本次复核中运行正式 4K 编码或读取真实 GitHub 缓存 artifact；此前内容/时间/状态/PNG/原音证据的检查结论沿用上次只读审校。本次测试为实际兼容函数的纯内存源码及 SHA 反例，未改仓库文件。"
+}

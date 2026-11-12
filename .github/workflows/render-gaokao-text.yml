@@ -48,85 +48,28 @@ jobs:
           print(mode,len(ids),ids)
           PY
       - run: python3 .github/check-release-target.py
-  precheck:
+  ci_gate:
     needs: list
     if: needs.list.outputs.ids != '[]'
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
-    strategy:
-      fail-fast: false
-      # 给自动CI预留1个，跨工作流合计不超过20；正式编码仍最多20。
-      max-parallel: 19
-      matrix:
-        id: ${{ fromJson(needs.list.outputs.ids) }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /.github/
-            /高考听力/
-            /高考精读/主题方案/
-            /专八/tools/
-            /专八/听力/tools/
-            /专八/听力/2025/
-            /四级/tools/
-            /中考/tools/
-            /tools/
-      - uses: ./.github/actions/cet6-chalk-env
-        with: {asr: 'false', browser: '153'}
-      - name: 取原音并核对SHA256
-        env: {GH_TOKEN: '${{ github.token }}'}
-        run: |
-          python3 -I 高考听力/tools/取原音.py ${{ matrix.id }} in/original.mp3
-          rm -f /tmp/gaokao-default.zip
-      - name: 全套语义登记、AAC原声、分屏和逐张4K排版预检
-        run: |
-          set -euo pipefail
-          P=/opt/ttsenv/bin/python
-          $P 高考听力/精读/tools/审校登记.py ${{ matrix.id }}
-          $P 高考听力/精读/tools/生成.py ${{ matrix.id }} precheck --original in/original.mp3 --out out
-          $P - '${{ matrix.id }}' <<'PY'
-          import json,sys
-          from pathlib import Path
-          d=json.loads(Path('高考听力/精读/tools/分屏.json').read_text())
-          Path('out/split-final.json').write_text(json.dumps({sys.argv[1]:d.get(sys.argv[1],{})},ensure_ascii=False))
-          PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: gktext-precheck-${{ matrix.id }}
-          compression-level: 0
-          if-no-files-found: error
-          retention-days: 7
-          path: |
-            out/shots/*.png
-            out/*.json
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: gktext-precheck-failed-${{ matrix.id }}
-          retention-days: 7
-          path: |
-            out/*.json
-            out/shots/*.bad.png
-  sample_gate:
-    needs: [list, precheck]
-    if: needs.list.outputs.ids != '[]'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with: {sparse-checkout: .github}
-      - name: 首套完整4K与全部成品核查通过才放行批量编码
-        if: needs.list.outputs.mode == 'batch'
+      - name: 等本提交自动检查通过，再把20个名额全部给视频任务
         env: {GH_TOKEN: '${{ github.token }}'}
         run: |
           set -euo pipefail
-          rid=$(cat .github/gaokao-text-sample-run.txt)
+          rid=''
+          for i in 1 2 3 4 5 6; do
+            rid=$(gh run list --workflow fangfufa-check.yml --commit "$GITHUB_SHA" --limit 5 --json databaseId --jq '.[0].databaseId // empty')
+            [ -n "$rid" ] && break
+            sleep 5
+          done
+          [ -n "$rid" ] || { echo '没有找到本提交的自动检查'; exit 1; }
           gh run watch "$rid" --interval 20 --exit-status
   render:
-    needs: [list, precheck, sample_gate]
+    needs: [list, ci_gate]
     if: needs.list.outputs.ids != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -152,25 +95,60 @@ jobs:
             /tools/
       - uses: ./.github/actions/cet6-chalk-env
         with: {asr: 'false', browser: '153'}
-      - uses: actions/download-artifact@v4
-        with: {name: 'gktext-precheck-${{ matrix.id }}', path: out}
-      - name: 取原音并恢复已核分屏
+      - name: 取原音并核对SHA256
         env: {GH_TOKEN: '${{ github.token }}'}
         run: |
           set -euo pipefail
           python3 -I 高考听力/tools/取原音.py ${{ matrix.id }} in/original.mp3
           rm -f /tmp/gaokao-default.zip
-          python3 - <<'PY'
+      - name: 取已通过预检（只核对复用；不等其他套）
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          mkdir -p out
+          for rid in $(cat .github/gaokao-text-precheck-collect.txt); do
+            if gh run download "$rid" -n 'gktext-precheck-${{ matrix.id }}' -D out >cache-download.log 2>&1; then break; fi
+          done
+          if [ -f out/split-final.json ]; then
+            python3 - <<'PY2'
           import json
           from pathlib import Path
           f=Path('高考听力/精读/tools/分屏.json');d=json.loads(f.read_text())
           d.update(json.loads(Path('out/split-final.json').read_text()))
           f.write_text(json.dumps(d,ensure_ascii=False))
-          PY
-      - name: 首套完整试跑（核对全部状态和原声）
+          PY2
+          fi
+      - name: 本套独立审校、原声和画面预检；通过后立即编码
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python
+          $P 高考听力/精读/tools/审校登记.py ${{ matrix.id }}
+          $P 高考听力/精读/tools/高亮附着检查.py ${{ matrix.id }}
+          if [ -f out/screens.json ] && $P 高考听力/精读/tools/生成.py ${{ matrix.id }} cached --original in/original.mp3 --out out; then
+            echo '定稿、字体、全部PNG、原音、时间、状态与已通过预检一致，直接进入编码'
+          else
+            rm -rf out/shots
+            $P 高考听力/精读/tools/生成.py ${{ matrix.id }} precheck --original in/original.mp3 --out out
+          fi
+          $P - '${{ matrix.id }}' <<'PY2'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path('高考听力/精读/tools/分屏.json').read_text())
+          Path('out/split-final.json').write_text(json.dumps({sys.argv[1]:d.get(sys.argv[1],{})},ensure_ascii=False))
+          PY2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gktext-precheck-${{ matrix.id }}
+          compression-level: 0
+          overwrite: true
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            out/shots/*.png
+            out/*.json
+      - name: 首套完整试跑
         if: needs.list.outputs.mode == 'sample'
         run: /opt/ttsenv/bin/python 高考听力/精读/tools/生成.py ${{ matrix.id }} fast --original in/original.mp3 --out out
-      - name: 生成4K、核对全部画面与完整原声
+      - name: 本套4K编码并独立核对全部画面和完整原声
         run: |
           set -euo pipefail
           /opt/ttsenv/bin/python 高考听力/精读/tools/生成.py ${{ matrix.id }} video --original in/original.mp3 --out out
@@ -178,15 +156,16 @@ jobs:
           mv out/*原文精读.mp4 up/
           cp out/meta.json out/verification.json out/prepared.json out/screens.json up/
       - uses: actions/upload-artifact@v4
-        with: {name: 'gktext-${{ matrix.id }}', path: up, compression-level: 0, if-no-files-found: error, retention-days: 14}
+        with: {name: 'gktext-${{ matrix.id }}', path: up, compression-level: 0, retention-days: 14, if-no-files-found: error}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: gktext-failed-${{ matrix.id }}
-          retention-days: 7
+          name: gktext-failed-${{ matrix.id }}-${{ github.run_attempt }}
           compression-level: 0
+          retention-days: 7
           path: |
             out/*.json
+            out/shots/*.bad.png
             out/*.未通过.mp4
   publish:
     needs: [list, render]

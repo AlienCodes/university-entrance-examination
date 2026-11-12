@@ -54,4 +54,11 @@ with tempfile.TemporaryDirectory() as td:
     approved=json.loads(decision.read_text());approved['逐词_sha256']='0'*64
     decision.write_text(json.dumps(approved));rejects(lambda:V.check(sid,d))
     D.C=C;D.P=P;V.C=C
-print('精读门禁通过：WAV字节稳定且样本无损；真实175句正常；漏首/中/尾句、改时间/原音/核定来源6类错误均拦截')
+from 高亮附着检查 import problems as attached_problems
+_,p,_=D.load_text('2019-xkb1');s=copy.deepcopy(p['paras'][0][136]);assert not attached_problems(s)
+w=next(w for w in s['w'] if w['h']=='youngster');a,b=w['sp'][0];w['sp'][0]=(a,b-1);assert attached_problems(s)
+_,p,_=D.load_text('2026-xkb2');s=copy.deepcopy(p['paras'][0][146]);assert not attached_problems(s)
+a,b=s['w'][0]['sp'][0];s['w'][0]['sp'][0]=(a,b-2);assert attached_problems(s)
+_,p,_=D.load_text('2024-zj1');s=copy.deepcopy(p['paras'][0][13]);assert not attached_problems(s)
+s['en']=s['en'].replace('travel’s',"travel's");assert attached_problems(s)
+print('精读门禁通过：浮点WAV无损稳定；真实源覆盖、时间及来源正反例通过；3类真实附着标点错误均拦截')

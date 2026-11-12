@@ -1,0 +1,129 @@
+{
+ "reviewer": "review_6",
+ "reviewed_at_utc": "2026-11-12T21:47:06.736318+00:00",
+ "input": {
+  "path": "高考听力/精读/审校/附着撇号补充修正.json",
+  "sha256": "25f9de1ca2c723b296c6a35d75780b85c312665481fb57bf5fbad56845454152"
+ },
+ "scope": "只复核2项限定补修（共3句），未改任何源文件；仅执行现有sentence_html函数及真实helper检查HTML后缀/编号，不渲染或重画其余预检屏。",
+ "summary": {
+  "sets": 2,
+  "sentences_checked": 3,
+  "A_check_errors": 0,
+  "findings": 0,
+  "conclusion": "全部通过，最终双SHA见reviewed，可继续更新相应seal。"
+ },
+ "reviewed": [
+  {
+   "id": "2024-zj1",
+   "before_sha256": {
+    "ann": "51d3c5fea4a24597843266e67c6105d42f5ff4f42b20f3e72445e927d26dab68",
+    "final": "5f16d7adb62d2fe0aa837bb83c3371313afd114a611abf56ef1989f51b38abf8"
+   },
+   "after_sha256": {
+    "ann": "51d3c5fea4a24597843266e67c6105d42f5ff4f42b20f3e72445e927d26dab68",
+    "final": "b337b4783756ce076bece08c3318ef879a00aa86512aba20bcf614fdb3ac0138"
+   },
+   "matches_change_log": true,
+   "before_reconstructed_and_sha_verified": true,
+   "A_check": {
+    "errors": [],
+    "tiers": [],
+    "entries": 324
+   },
+   "status": "通过"
+  },
+  {
+   "id": "2026-xkb2",
+   "before_sha256": {
+    "ann": "8fa40eb5d5961e0d5b95979eda974c639e7c6eb874f93674892473f66fb4bc66",
+    "final": "9bb82c6d43ca670ac2f715161df185b89c733a7a59095d202cf5f979eddc9d72"
+   },
+   "after_sha256": {
+    "ann": "244e03832488e51b8b3cccc40688e035c4b825979c0945a533988f5bf873e524",
+    "final": "9bb82c6d43ca670ac2f715161df185b89c733a7a59095d202cf5f979eddc9d72"
+   },
+   "matches_change_log": true,
+   "before_reconstructed_and_sha_verified": true,
+   "A_check": {
+    "errors": [],
+    "tiers": [],
+    "entries": 315
+   },
+   "status": "通过"
+  }
+ ],
+ "checks": [
+  {
+   "id": "2024-zj1",
+   "sentence": 14,
+   "before_en": "Air travel's more tiring than driving, I'm sure.",
+   "after_en": "Air travel’s more tiring than driving, I'm sure.",
+   "semantic_review": "本句travel’s是travel is的缩约；坐飞机比开车更累的比较义未变，仅U+0027改为U+2019，不是新增所有格。",
+   "translation": "我敢说，坐飞机比开车还累。",
+   "air_travel_highlight_sp": [
+    [
+     0,
+     10
+    ]
+   ],
+   "prior_html": "<span class=\"ph\">Air travel<sup>1</sup></span>&#x27;s more <span class=\"w\">tiring<sup>2</sup></span> than driving, I&#x27;m sure.",
+   "after_html": "<span class=\"ph\">Air travel<x-ps>’s</x-ps><sup>1</sup></span> more <span class=\"w\">tiring<sup>2</sup></span> than driving, I&#x27;m sure.",
+   "actual_shared_engine_check": "实际sentence_html及其原有helper执行结果为Air travel<x-ps>’s</x-ps><sup>1</sup>；编号在完整’s之后。x-ps由引擎既有正文颜色/字重规则管理，本次未改变渲染引擎。",
+   "unchanged": "ann、词条、译文、ASR范围、绝对时间及JSON其余字段逐项相等。"
+  },
+  {
+   "id": "2026-xkb2",
+   "sentence": 147,
+   "english": "No, we can't.",
+   "translation": "不，不能那样。",
+   "before_entry": "can=v. 能够；可以",
+   "after_entry": "can{can't}=v. 能够（本句can't表示不能）",
+   "before_sp": [
+    [
+     7,
+     10
+    ]
+   ],
+   "after_sp": [
+    [
+     7,
+     12
+    ]
+   ],
+   "highlighted_text": "can't",
+   "actual_shared_engine_html": "No, we <span class=\"w\">can&#x27;t<sup>1</sup></span>.",
+   "semantic_review": "对前句简化玩具屋方案作否定回应，并用下句已向Sophia承诺与旧屋一致解释原因；中文“不，不能那样”保留否定。词头can仍为原形，现surface涵盖完整can’t，括注明确本句不能义，不再把只高亮can与肯定义单独展示。",
+   "unchanged": "原文、译文、ASR、时间及其余ann内容均相等。"
+  },
+  {
+   "id": "2026-xkb2",
+   "sentence": 169,
+   "english": "No, we can't.",
+   "translation": "不，不能那样。",
+   "before_entry": "can=v. 能够；可以",
+   "after_entry": "can{can't}=v. 能够（本句can't表示不能）",
+   "before_sp": [
+    [
+     7,
+     10
+    ]
+   ],
+   "after_sp": [
+    [
+     7,
+     12
+    ]
+   ],
+   "highlighted_text": "can't",
+   "actual_shared_engine_html": "No, we <span class=\"w\">can&#x27;t<sup>1</sup></span>.",
+   "semantic_review": "对前句简化玩具屋方案作否定回应，并用下句已向Sophia承诺与旧屋一致解释原因；中文“不，不能那样”保留否定。词头can仍为原形，现surface涵盖完整can’t，括注明确本句不能义，不再把只高亮can与肯定义单独展示。",
+   "unchanged": "原文、译文、ASR、时间及其余ann内容均相等。"
+  }
+ ],
+ "findings": [],
+ "notes": [
+  "2024-zj1整文件缩进diff已逆向重构并验证before SHA，再按JSON逐字段确认只改第14句一个撇号码位；没有重新审整卷。",
+  "x-ps保留正文颜色及字重的既有规则已查阅；本次报告确认真实HTML标签和编号顺序，未宣称进行了新的浏览器截图审阅。"
+ ]
+}
