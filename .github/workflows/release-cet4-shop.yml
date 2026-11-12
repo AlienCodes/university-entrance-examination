@@ -1,0 +1,42 @@
+name: Publish CET4 listening shop kit
+
+on:
+  push:
+    branches: [codex/cet4-listening-shop-complete-20261112]
+    paths:
+      - .github/workflows/release-cet4-shop.yml
+      - 四级/听力/上架交付/发布附件/**
+      - 四级/听力/上架交付/publish_release.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cet4-listening-shop-release-20261112
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: 四级/听力/上架交付
+      - name: Download existing verified video archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/cet4-videos"
+          gh release download cet4-listening --repo "$GITHUB_REPOSITORY" --dir "$RUNNER_TEMP/cet4-videos" --pattern 'cet4-listening-?.zip'
+      - name: Verify all attachments and publish the draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python '四级/听力/上架交付/publish_release.py' \
+            --repo "$GITHUB_REPOSITORY" \
+            --branch "$GITHUB_REF_NAME" \
+            --tag cet4-listening-shop-20261112 \
+            --dest '四级/听力/上架交付/发布附件' \
+            --video-dir "$RUNNER_TEMP/cet4-videos" \
+            --publish
