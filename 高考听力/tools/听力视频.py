@@ -75,6 +75,26 @@ def clusters(bl, gap):
     return out
 
 
+def shanghai_a(blocks):
+    """先沿用停顿分组；短作答停顿把两题连在一起时，用九个唯一且递增的念题编号拆开。
+    2023 上海秋考第4题之后只有3.70秒，不能通过降低全项目停顿阈值来猜。
+    """
+    groups = [c for c in clusters(blocks, 4.0)
+              if not (sum(x[1] - x[0] for x in c) < 2.5 and len(''.join(x[3] for x in c)) <= 4)]
+    if len(groups) == 10:
+        return groups
+    names = 'zero one two three four five six seven eight nine ten'.split()
+    cuts = [0]
+    for n in range(2, 11):
+        hits = [i for i, b in enumerate(blocks)
+                if re.match(rf'^\W*(?:{n}|{names[n]})(?:\W|$)', b[3], re.I)]
+        if len(hits) != 1 or hits[0] <= cuts[-1]:
+            raise ValueError(f'Section A 停顿分组{len(groups)}段，第{n}题编号不能唯一递增定位：{hits}')
+        cuts.append(hits[0])
+    cuts.append(len(blocks))
+    return [blocks[a:b] for a, b in zip(cuts, cuts[1:])]
+
+
 def timeline(wav):
     import numpy as np, soundfile as sf
     K = P / '识别' / S['识别']
@@ -151,7 +171,10 @@ def timeline(wav):
         en = [b for b in B if b[0] < (endb[0][0] if endb else 1e9) and re.search(r'[A-Za-z0-9]', b[3])]     # 只有标点的杂音块（2023-shc 把两段对话连成一段）不参与分段
         sbs = [b for b in en if re.search(r'section\s*b', b[3], re.I)]
         sb = one(sbs[:1] if sbs and sbs[-1][0] - sbs[0][0] < 10 else sbs, 'Section B')      # “Section B.” + “In Section B, …”：取前一句
-        A = [c for c in clusters([b for b in en if b[0] < sb[0] and not noise(b)], 4.0) if not (sum(x[1] - x[0] for x in c) < 2.5 and len(''.join(x[3] for x in c)) <= 4)]
+        try:
+            A = shanghai_a([b for b in en if b[0] < sb[0] and not noise(b)])
+        except ValueError as e:
+            die(str(e))
         if len(A) != 10: die(f'Section A 对话找到 {len(A)} 段（应为 10）')
         T['dlg'] = [[0.0 if i == 0 else c[0][0], c[-1][1]] for i, c in enumerate(A)]
         T['instrB'] = sb[0]
