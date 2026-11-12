@@ -1,0 +1,83 @@
+# 修改 .github/zk-materials-release.txt 并推送时：把 中考/听写卡/ 下每篇一个文件夹（逐句精读 + 三份听写卡 PDF）加上该篇的朗读音频，打包成 zip，生成 GitHub Release
+# 清单格式：第一行标签名（如 zk-materials）；之后每行“文件夹名|朗读音频（相对 中考/audio/）”，顺序与 B 站 40P 相同（中考/tools/封面/make_post.py 的 BILIBILI）
+# 压缩包里的文件夹前面加序号 1、2、3……（不补零，与 B 站 P1—P40 一致；用户 2026-10-15）
+# 发布用 GitHub 自带的 gh（第三方 softprops/action-gh-release 曾连续 403，CLAUDE.md 踩坑 42）
+name: 发布中考学习资料压缩包
+on:
+  push:
+    paths: ['.github/zk-materials-release.txt']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 音频合格证核对（踩坑 87：每条 timings 都是旧成品或带 clause-v1 合格证、MP3 与合格证一致，不合格不发布）
+        run: python3 .github/check-audio-cert.py 中考/audio
+      - name: 组装文件夹并打包
+        run: |
+          set -e
+          tag=$(head -1 .github/zk-materials-release.txt | tr -d '[:space:]')
+          top="中考英语阅读40篇学习资料"
+          python3 - "$top" <<'PY'
+          import shutil, sys
+          from pathlib import Path
+          top = sys.argv[1]
+          lines = [l for l in Path('.github/zk-materials-release.txt').read_text('utf-8').split('\n')[1:] if l.strip()]
+          out = Path('dist') / top
+          out.mkdir(parents=True)
+          rows, order = [], []
+          for i, l in enumerate(lines, 1):
+              name, audio = l.split('|')
+              src = Path('中考/听写卡') / name
+              pdfs = sorted(x.name for x in src.glob('*.pdf'))
+              assert pdfs == [f'{name} - {k}.pdf' for k in ('0 逐句精读', '1 汉译英', '2 英译汉', '3 文章填空')], (name, pdfs)
+              dst = out / f'{i} {name}'
+              shutil.copytree(src, dst)
+              # 压缩包里的文件顺序和名字（用户 2026-10-21）：序号从 1 开始；长难句分析排第一；三份听写卡名字后面加“听写卡”；逐句精读放在朗读音频上面
+              KORD = ['4 长难句分析', '1 汉译英', '2 英译汉', '3 文章填空', '0 逐句精读']
+              KNEW = {'4 长难句分析': '长难句分析', '1 汉译英': '汉译英听写卡', '2 英译汉': '英译汉听写卡', '3 文章填空': '文章填空听写卡', '0 逐句精读': '逐句精读'}
+              have = {x.name.rsplit(' - ', 1)[1][:-4]: x for x in dst.glob('*.pdf')}
+              kseq = [k for k in KORD if k in have]
+              assert len(kseq) == len(have), sorted(have)
+              for n, k in enumerate(kseq, 1):
+                  have[k].rename(dst / f"{have[k].name.rsplit(' - ', 1)[0]} - {n} {KNEW[k]}.pdf")
+              shutil.copy(Path('中考/audio') / audio, dst / f'{name} - {len(pdfs) + 1} 朗读音频.mp3')
+              rows.append(f'| {i} | {name} |')
+              order.append(f'{top}/{i} {name}')
+          assert len(lines) == 40, len(lines)
+          papers = sorted(Path('中考/真题').glob('*.docx'))                      # 附送：中考英语真题原卷（用户上传的 Word 原卷）
+          assert len(papers) == 23, len(papers)
+          pname = f'中考英语真题原卷（{len(papers)}份）'
+          (out / pname).mkdir()
+          for f in papers:
+              shutil.copy(f, out / pname / f.name)
+          order.append(f'{top}/{pname}')
+          Path('order.txt').write_text('\n'.join(order) + '\n', 'utf-8')
+          Path('notes.md').write_text(
+              f'中考英语阅读真题学习资料，共 {len(lines)} 篇，与 B 站 40P 合集一一对应：文件夹前的序号就是 P 号（1—40）。每篇一个文件夹，5 个文件：\n\n'
+              '- 1 汉译英听写卡.pdf：看中文写英文\n- 2 英译汉听写卡.pdf：看英文写中文\n'
+              '- 3 文章填空听写卡.pdf：原文挖空（试卷的中文注释已去掉），附整句翻译和每空释义\n'
+              '- 4 逐句精读.pdf：与视频画面一模一样（片头 + 每句一页：英文高亮、中文翻译、生词编号注释；特别长的句子分两页）\n'
+              '- 5 朗读音频.mp3：男声逐句朗读（四六级同款声音，与视频是同一份朗读，已去除电磁音）\n\n'
+              f'另附 {pname}：{len(papers)} 份中考英语试卷原卷（Word），与 40 篇阅读的出处对应。\n\n'
+              '三份听写卡 PDF 的最后一页是答案；A4 纸，可直接打印。\n\n| # | 篇目 |\n|---|---|\n' + '\n'.join(rows) + '\n', 'utf-8')
+          PY
+          zipname="ZHONGKAO-reading-materials-${tag}.zip"
+          python3 .github/pack-zip.py "${zipname}" dist $((40 * 5 + 23)) order.txt
+          echo "ZIPNAME=${zipname}" >> "$GITHUB_ENV"
+          echo "TAG=${tag}" >> "$GITHUB_ENV"
+      - name: 发布
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -e
+          title="中考英语阅读40篇 学习资料（逐句精读 + 听写卡 + 朗读音频）"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$ZIPNAME" --clobber
+            gh release edit "$TAG" --title "$title" --notes-file notes.md
+          else
+            gh release create "$TAG" "$ZIPNAME" --target "$GITHUB_REF_NAME" --title "$title" --notes-file notes.md
+          fi

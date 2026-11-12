@@ -1,0 +1,397 @@
+{
+  "summary": "中考 reading round 2: final check of the corrected passages (+canaries) in groups, 2 finders + 2 verifiers per group",
+  "agentCount": 8,
+  "logs": [
+    "done 8; findings 7"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "z01",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z02",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z03",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z98",
+        "findings": [
+          {
+            "pid": "z98",
+            "loc": "¶2 s1",
+            "current": "offering few protection",
+            "proposed": "offering little protection",
+            "category": "grammar",
+            "reason": "'protection' is uncountable, so it takes 'little', not 'few'. The exam text has 'little protection'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z98",
+            "loc": "¶2 s2",
+            "current": "much lighter and more strong than before",
+            "proposed": "much lighter and stronger than before",
+            "category": "grammar",
+            "reason": "'strong' is a one-syllable adjective, so its comparative is 'stronger', not 'more strong'. The exam text has 'stronger'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z98",
+            "loc": "¶3 last sentence",
+            "current": "riders can avoid strong light and see worse.",
+            "proposed": "riders can avoid strong light and see better.",
+            "category": "logic",
+            "reason": "Visors that darken in strong light help riders see better, not worse. The exam text has 'see better'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z98",
+            "loc": "¶4 last sentence",
+            "current": "gets too closely to a car",
+            "proposed": "gets too close to a car",
+            "category": "grammar",
+            "reason": "After the linking verb 'get', English uses the adjective 'close (to)', not the adverb 'closely'. The exam text has 'too close'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z98",
+            "loc": "¶3 last sentence",
+            "current": "avoid strong light and see worse",
+            "proposed": "avoid strong light and see better",
+            "category": "logic",
+            "reason": "This says the opposite of what the passage means. Visors that darken against glare help riders see better, not worse. The exam original has 'see better'.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The text matches z98 ¶2 s1. 'Protection' is uncountable, so 'few protection' is ungrammatical and needs 'little'. The exam dump (line 22) has 'offering little protection'."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The text matches z98 ¶2 s2. The comparative of 'strong' is 'stronger', not 'more strong'. The exam dump (line 22) has 'much lighter and stronger than before'."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "The text matches z98 ¶3 last sentence. Visors that darken against glare help riders see better, so 'see worse' contradicts the passage. The exam dump (line 23) has 'see better'."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "The text matches z98 ¶4 last sentence. Linking 'get' takes the adjective 'close (to)', not the adverb 'closely'. The exam dump (line 24) has 'gets too close to a car'."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This repeats index 2 with a shorter quote of the same span. The text matches exactly and the fix 'see better' is correct (exam dump line 23). Apply it only once."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "'protection' is uncountable, so 'few protection' is wrong and must be 'little protection'. The exam text (dump line 22) reads 'offering little protection'."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "'strong' is one syllable, so its comparative is 'stronger'; 'more strong' is a definite error. The exam text reads 'much lighter and stronger than before'."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "'see worse' reverses the meaning: visors that darken against glare help riders see better. The exam text reads 'see better'. This duplicates index 4, so apply the fix once."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "After the linking verb 'get', the adjective 'close (to)' is needed. 'too closely to a car' is ungrammatical. The exam text reads 'gets too close to a car'."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This is the same fix as index 2: 'see worse' contradicts the context and should be 'see better', as in the exam original. It duplicates index 2, so apply it only once."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z04",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z05",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z06",
+        "findings": [
+          {
+            "pid": "z06",
+            "loc": "¶3 sentence 1",
+            "current": "in Paris, which was completed in 1989.",
+            "proposed": "in Paris. It was completed in 1989.",
+            "category": "grammar",
+            "reason": "Misplaced relative clause: 'which' should refer to 'the glass pyramid', but it comes right after 'the Louvre Museum ... in Paris', so it reads as if the Louvre Museum (or Paris) was completed in 1989. That is a false statement, since the Louvre opened as a museum in 1793, and students will memorise this sentence. The applied correction 'designed → completed' is factually right (Britannica and Wikipedia both give completion in 1989, with the opening on 29/30 March 1989), but the clause still attaches to the wrong noun. Splitting it into its own sentence fixes this. Another fix that keeps one sentence: 'the glass pyramid, completed in 1989, in front of the Louvre Museum (卢浮宫) in Paris'.",
+            "lens": "A"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The 'current' text matches z06 ¶3 exactly. The non-restrictive 'which' is separated from 'the glass pyramid' by 'in front of the Louvre Museum (卢浮宫) in Paris'. 'Paris' cannot be the antecedent, so the nearest one that makes sense is the Louvre Museum. A student memorising the sentence would then learn the false fact that the Louvre was completed in 1989. A careful editor would fix this remote, ambiguous relative clause. The applied correction 'designed → completed' is right in itself, since the pyramid was completed and opened in 1989. Splitting the clause into 'It was completed in 1989.' removes the ambiguity, keeps the wording, and reads naturally before 'It showed his idea…'."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The non-restrictive 'which' comes right after 'Paris' and the Louvre Museum, but it is meant to refer to 'the glass pyramid', which is further back. This is a classic remote-antecedent error. A careful editor would mark it, especially because the nearest reading (that the Louvre Museum or Paris was completed in 1989) is false. The exam dump shows the same structure with 'designed', so the first-round change to 'completed' fixed the fact but not the attachment. Splitting it into 'in Paris. It was completed in 1989.' is correct, simple and fits the junior-high style. The next sentence, 'It showed his idea…', still refers clearly to the pyramid. Note for the pipeline: the new short sentence will need its own annotated word (for example 'completed') to satisfy the one-word-per-sentence rule."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z07",
+        "findings": [
+          {
+            "pid": "z07",
+            "loc": "¶4, last sentence",
+            "current": "a shared hope in the far future",
+            "proposed": "a shared hope for the far future",
+            "category": "word-choice",
+            "reason": "The standard collocation is 'hope for the future'. 'A hope in X' means trust or faith in X. Read as a time phrase on 'can turn', it says the scientists will do the turning in the far future, which is not the intended meaning. The intended meaning is that the stored seeds become a hope that is shared for the distant future. Changing 'in' to 'for' fixes it.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The 'current' text matches z07 ¶4 exactly. The intended meaning is hope about the distant future, and the standard collocation for that is 'hope for the future'. 'A hope in X' means trust or faith in X. Read as a time phrase on 'can turn', 'in the far future' wrongly says the turning will happen in the distant future. Changing 'in' to 'for' is the correct, minimal fix."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "'A hope in X' means faith or trust in X. If 'in the far future' is read as a time phrase on 'can turn', it says the scientists do the turning in the distant future. Neither is the intended meaning. The idiomatic collocation is 'hope for the (far/distant) future'. Changing 'in' to 'for' is a minimal fix to a definite usage error, and it keeps the meaning of the exam's title answer 'Seeds of hope'."
+          }
+        ],
+        "failed": 0
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "finalA:Gz01",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a4ad1c5afdfaaba5a",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944091411,
+      "queuedAt": 1791944091378,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full, every sentence, and compared…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944233020,
+      "tokens": 84380,
+      "toolCalls": 11,
+      "durationMs": 141608,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z98\",\"loc\":\"¶2 s1\",\"current\":\"offering few protection\",\"proposed\":\"offering little protection\",\"category\":\"grammar\",\"reason\":\"'protection' is uncountable, so it takes 'little', not 'few'. The exam text has 'little protection'.\"},{\"pid\":\"z98\",\"loc\":\"¶2 s2\",\"current\":\"much lighter and more strong than before\",\"proposed\":\"much lighter and stronger than before\",\"category\":\"grammar…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "finalB:Gz01",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a1fbc7251bbe593fa",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944091412,
+      "queuedAt": 1791944091379,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Method: I read each file in full and word-diffed every pass…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944209866,
+      "tokens": 84846,
+      "toolCalls": 11,
+      "durationMs": 117931,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z98\",\"loc\":\"¶2 sentence 1\",\"current\":\"offering few protection\",\"proposed\":\"offering little protection\",\"category\":\"grammar\",\"reason\":\"'protection' is uncountable, so it takes 'little', not 'few'. The exam original (dump line 22) has 'offering little protection', and this change is not in the list of applied corrections.\"},{\"pid\":\"z98\",\"loc\":\"¶2 sentence 2\",\"current\":\"much ligh…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "finalA:Gz04",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a4117523ce495ce3a",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944211801,
+      "queuedAt": 1791944091446,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found one definite error, in z06. The other three passage…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944372736,
+      "tokens": 87352,
+      "toolCalls": 11,
+      "durationMs": 160935,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z06\",\"loc\":\"¶3 sentence 1\",\"current\":\"in Paris, which was completed in 1989.\",\"proposed\":\"in Paris. It was completed in 1989.\",\"category\":\"grammar\",\"reason\":\"Misplaced relative clause: 'which' should refer to 'the glass pyramid', but it comes right after 'the Louvre Museum ... in Paris', so it reads as if the Louvre Museum (or Paris) was completed in 1989. That is a false stat…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "finalB:Gz04",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a6af4cc6e8ca83688",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944234769,
+      "queuedAt": 1791944091447,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files line by line against the exam dumps a…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944447580,
+      "tokens": 91006,
+      "toolCalls": 14,
+      "durationMs": 212810,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z07\",\"loc\":\"¶4, last sentence\",\"current\":\"a shared hope in the far future\",\"proposed\":\"a shared hope for the far future\",\"category\":\"word-choice\",\"reason\":\"The standard collocation is 'hope for the future'. 'A hope in X' means trust or faith in X. Read as a time phrase on 'can turn', it says the scientists will do the turning in the far future, which is not the intended meanin…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "verify-acc:Gz01",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ace9715257f172e30",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944374506,
+      "queuedAt": 1791944234799,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944385223,
+      "tokens": 63623,
+      "toolCalls": 3,
+      "durationMs": 10717,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The text matches z98 ¶2 s1. 'Protection' is uncountable, so 'few protection' is ungrammatical and needs 'little'. The exam dump (line 22) has 'offering little protection'.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The text matches z98 ¶2 s2. The comparative of 'strong' is 'stronger', not 'more strong'. The exam dump (line 22) has 'much lighter and str…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "verify-strict:Gz01",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a6ff0b719b3bb0d5c",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944386974,
+      "queuedAt": 1791944234799,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944397490,
+      "tokens": 63606,
+      "toolCalls": 3,
+      "durationMs": 10516,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"'protection' is uncountable, so 'few protection' is wrong and must be 'little protection'. The exam text (dump line 22) reads 'offering little protection'.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"'strong' is one syllable, so its comparative is 'stronger'; 'more strong' is a definite error. The exam text reads 'much lighter and stronger than before'.…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "verify-acc:Gz04",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a950a2316326a610e",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944449305,
+      "queuedAt": 1791944449301,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944482147,
+      "tokens": 66314,
+      "toolCalls": 3,
+      "durationMs": 32842,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The 'current' text matches z06 ¶3 exactly. The non-restrictive 'which' is separated from 'the glass pyramid' by 'in front of the Louvre Museum (卢浮宫) in Paris'. 'Paris' cannot be the antecedent, so the nearest one that makes sense is the Louvre Museum. A student memorising the sentence would then learn the false fact that the Louvre was completed in…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "verify-strict:Gz04",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "aeeb824fe593af975",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944449305,
+      "queuedAt": 1791944449301,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944482644,
+      "tokens": 67280,
+      "toolCalls": 4,
+      "durationMs": 33338,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The non-restrictive 'which' comes right after 'Paris' and the Louvre Museum, but it is meant to refer to 'the glass pyramid', which is further back. This is a classic remote-antecedent error. A careful editor would mark it, especially because the nearest reading (that the Louvre Museum or Paris was completed in 1989) is false. The exam dump shows t…"
+    }
+  ],
+  "totalTokens": 608407,
+  "totalToolCalls": 60
+}

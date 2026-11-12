@@ -1,0 +1,77 @@
+/* Z4 单词卡 / Word Flashcards — cobalt + tangerine
+   sentence = the front of a big white flashcard (English front, dashed fold line, Chinese back);
+   vocabulary = a neat stack of word cards with coloured number tabs (cobalt = word, tangerine = phrase);
+   cover = a ring-bound flashcard deck fanned out on a cobalt desk. */
+:root{
+  --ink:#141c3a; --ink2:#363f5e; --mute:#4b5779;
+  --cob:#1a45c8; --cob-d:#13308f; --cob-l:#dfe7fb;
+  --tan:#ff8a1f; --tan-l:#ffd3a3; --tan-d:#2b1300;
+  --page:#e8edf9; --card:#ffffff; --edge:#d2dbf1;
+}
+html{background-color:var(--page);background-image:
+  radial-gradient(900px 600px at 100% 100%,rgba(255,138,31,.10),transparent 70%),
+  radial-gradient(900px 700px at 0% 0%,rgba(26,69,200,.08),transparent 70%)}
+html,body{color:var(--ink);font-family:'Noto Sans SC',sans-serif}
+body{background:transparent}
+.band{display:none}
+
+/* header */
+.top{border-bottom:none;padding-bottom:0;top:62px;align-items:flex-end;z-index:1}   /* the label is a tab on the card's top edge */
+.top b{font-family:'Baloo 2','Noto Sans SC';font-weight:700;font-size:24px;letter-spacing:.08em;color:#fff;background:var(--cob);padding:9px 24px 6px;border-radius:14px 14px 0 0;line-height:1.35}
+.top span{font-family:'Noto Sans SC';color:var(--mute);font-size:23px;padding-bottom:10px}
+
+/* the sentence = front of a big flashcard */
+.main{z-index:0}
+.main::before{content:'';position:absolute;left:-44px;right:-24px;top:-30px;bottom:-26px;z-index:-1;background:var(--card);border-radius:30px;
+  box-shadow:0 4px 0 var(--edge),0 20px 44px rgba(26,69,200,.10)}
+#box{background:var(--card)}
+.en{font-family:'Baloo 2',sans-serif;font-weight:400;line-height:1.28;letter-spacing:-.01em;word-spacing:.02em;color:var(--ink)}
+.w{font-weight:600;color:var(--cob)}
+.ph{font-weight:600;color:var(--ink);background-color:rgba(255,211,163,0);background-image:linear-gradient(transparent 0 34%,var(--tan-l) 34% 85%,transparent 85%);
+  border-radius:.14em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+sup{font-family:'Nunito';font-weight:800;font-size:calc(var(--fs)*.38);background:var(--cob);color:#fff;padding:.1em .36em .08em;vertical-align:.9em}
+.ph sup{background:var(--tan);color:var(--tan-d)}
+.zh{font-family:'Noto Sans SC';font-weight:400;color:var(--ink2);line-height:1.52;margin-top:calc(var(--fs)*.32);padding-left:0;border-left:none;
+  border-top:2px dashed #c3cfec;padding-top:calc(var(--fs)*.24)}
+.cont{color:#8792b0;font-weight:400;background:none}
+
+/* vocabulary = a neat stack of word cards */
+.side{background:transparent;padding:22px 0;border-radius:0}
+.side h3{font-family:'Baloo 2';font-weight:700;font-size:21px;line-height:1.3;letter-spacing:.16em;color:#fff;background:var(--cob-d);align-self:flex-start;padding:7px 18px 4px;border-radius:12px 12px 0 0;margin-bottom:0}
+#list .v:first-child{border-top-left-radius:0}
+#list{gap:calc(var(--vs)*.18)}
+.v{background:var(--card);border-radius:12px;padding:calc(var(--vs)*.12) calc(var(--vs)*.5) calc(var(--vs)*.12) 0;column-gap:14px;
+  grid-template-columns:calc(var(--vs)*1.3) 1fr;box-shadow:0 2px 0 var(--edge);overflow:hidden}
+.v.ph{font-weight:400;color:var(--ink);background:var(--card)}
+.v em{font-family:'Nunito';font-weight:800;font-size:calc(var(--vs)*.72);background:var(--cob);color:#fff;border-radius:0;width:auto;height:auto;
+  align-self:stretch;margin:calc(var(--vs)*-.12) 0;padding:0;align-items:center}
+.v.ph em{background:var(--tan);color:var(--tan-d)}
+.v b{font-family:'Baloo 2';font-weight:600;font-size:calc(var(--vs)*1.25);color:var(--cob)}
+.v.ph b{color:var(--ink);background-color:rgba(255,211,163,0);background-image:linear-gradient(transparent 0 32%,var(--tan-l) 32% 84%,transparent 84%);border-radius:.14em}
+.v i{font-style:normal;font-family:'Nunito';font-weight:700;font-size:calc(var(--vs)*.72);color:var(--mute);background:#eef2fb;border-radius:6px;padding:.05em .4em;margin-left:8px;vertical-align:.12em}
+.v span{color:var(--ink2);margin-left:8px}
+
+/* footer */
+.bot{font-family:'Baloo 2','Noto Sans SC';font-weight:600;font-size:22px;color:var(--mute);bottom:22px}
+.bot>span:first-child{color:var(--cob-d)}
+.bar{height:10px;border-radius:99px;background:#d3dcf2}.bar i{border-radius:99px;background:linear-gradient(90deg,var(--tan),#ffa64d)}
+.bot>span:last-child{font-family:'Noto Sans SC';font-weight:500}
+
+/* ===== cover = a ring-bound flashcard deck ===== */
+html:has(.ttl){background-color:#1d45c4;background-image:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1920' height='1080'><g fill='none' stroke='white' stroke-opacity='.13' stroke-width='4'><g transform='translate(120 120) rotate(-14)'><rect width='170' height='110' rx='16'/><path d='M28 40h90M28 64h60' stroke-linecap='round'/></g><g transform='translate(1700 90) rotate(12)'><rect width='150' height='100' rx='16'/><path d='M26 38h80M26 60h50' stroke-linecap='round'/></g><g transform='translate(110 860) rotate(9)'><rect width='150' height='100' rx='16'/><path d='M26 38h80M26 60h50' stroke-linecap='round'/></g><g transform='translate(1660 830) rotate(-10)'><rect width='180' height='120' rx='18'/><path d='M30 44h96M30 70h64' stroke-linecap='round'/></g></g><g fill='white' fill-opacity='.18'><circle cx='240' cy='560' r='7'/><circle cx='1720' cy='520' r='9'/><circle cx='1820' cy='420' r='5'/><circle cx='90' cy='420' r='5'/></g><g fill='%23ffa24d'><path d='M300 330l9 22 22 9-22 9-9 22-9-22-22-9 22-9z'/><path d='M1640 650l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/></g></svg>"),
+  radial-gradient(1200px 800px at 50% 50%,#2a5ae6,transparent 75%)}
+body:has(.ttl)::before,body:has(.ttl) .band{content:'';display:block;position:absolute;left:330px;right:330px;top:170px;bottom:170px;width:auto;border-radius:44px;transform-origin:80px 80px}
+body:has(.ttl)::before{background:var(--tan);transform:rotate(7deg);box-shadow:0 30px 60px rgba(8,20,70,.25)}
+body:has(.ttl) .band{background:#cfdcfb;transform:rotate(3.5deg)}
+.ttl{left:330px;right:330px;top:170px;bottom:170px;background:var(--card);border-radius:44px;padding:0 100px 0 110px;box-shadow:0 6px 0 #c9d4f2,0 30px 70px rgba(8,20,70,.30)}
+.ttl::after{content:'';position:absolute;left:58px;top:58px;width:44px;height:44px;border-radius:50%;background:#1a3fb8;box-shadow:inset 0 5px 7px rgba(0,0,0,.4)}
+.ttl::before{content:'';position:absolute;left:62px;top:-58px;width:36px;height:140px;border-radius:18px 18px 0 0;border:10px solid #dfe5f2;border-bottom:none;box-sizing:border-box;box-shadow:inset 3px 0 0 #fff,4px 0 0 rgba(8,20,70,.15)}
+.ttl .tag{position:absolute;left:150px;top:-58px;font-family:'Noto Sans SC';font-weight:700;letter-spacing:.2em;font-size:28px;line-height:1.4;color:var(--tan-d);background:var(--tan);padding:9px 30px 9px;border-radius:18px 18px 0 0}
+.ttl h1{font-family:'Noto Sans SC';font-weight:700;color:var(--ink);font-size:clamp(44px,calc(1000px / var(--n)),128px);white-space:nowrap;margin:0 0 26px;line-height:1.2}
+.ttl .sub{font-family:'Noto Sans SC';font-size:40px;color:var(--ink2)}
+.ttl .sub i{font-style:normal;font-family:'Baloo 2','Noto Sans SC';font-weight:700;color:var(--cob)}
+.ttl .meta{border-top:3px dashed #c3cfec;color:var(--mute);font-size:28px;margin-top:46px;padding-top:24px}
+.legend{right:auto;left:440px;bottom:206px;color:var(--ink2);font-family:'Noto Sans SC';font-size:26px;gap:44px}
+.legend .lw{background:var(--cob);border-radius:6px}
+.legend .lp{background:var(--tan-l);width:44px;height:20px;border-radius:5px;vertical-align:-3px}

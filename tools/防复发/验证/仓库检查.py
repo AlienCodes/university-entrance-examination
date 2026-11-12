@@ -1,0 +1,120 @@
+"""双向验证：仓库检查（踩坑 42、43、52、68 工作流；47 软链接）。埋雷必须报出，现在的仓库与正常写法必须为 0。
+    python3 tools/防复发/验证/仓库检查.py"""
+import importlib.util
+import os
+import sys
+import tempfile
+from pathlib import Path
+
+H = Path(__file__).resolve().parents[1] / '仓库检查.py'
+spec = importlib.util.spec_from_file_location('ck', H)
+ck = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(ck)
+bad = []
+
+
+def case(name, errs, want, has=''):
+    ok = bool(errs) == want and (not want or not has or any(has in e for e in errs))
+    print(f"  {'✅' if ok else '❌'} {name}（{len(errs)} 处）")
+    if not ok:
+        bad.append(f'{name}：{errs[:2]}')
+
+
+GOOD = """name: t
+on: push
+jobs:
+  a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/
+            !/考研/真题/
+      - name: build
+        run: python3 x.py
+"""
+case('正常工作流 → 0', ck.check_workflow('new.yml', GOOD), False)
+PACK = GOOD.replace('python3 x.py', "PROJECT=新 python3 .github/cet6-chalk-pack.py")
+case('用 cet6-chalk-pack 打包、meta 没写 audio_sha256 → 报（踩坑 109，高考续写试跑 x01 原样）', ck.check_workflow('render-new.yml', PACK), True, '踩坑 109')
+case('写了 audio_sha256 → 0', ck.check_workflow('render-new.yml', PACK.replace('run: PROJECT', "run: echo \"'audio_sha256'\"; PROJECT")), False)
+case('旧工作流登记在 NO_AUDIO_SHA 却已经写了 → 报（只许减少）', ck.check_workflow('render-tem8-ink.yml', PACK.replace('run: PROJECT', "run: echo \"'audio_sha256'\"; PROJECT")), True, 'NO_AUDIO_SHA')
+# 踩坑 68 原样重现：用字符串替换删掉“!/考研/真题/”这一行，只删了文字、留下缩进和换行之外的部分
+broken = GOOD.replace('!/考研/真题/\n', '')
+case('删行留缩进，下一步被并进字符串 → 报（踩坑 68）', ck.check_workflow('new.yml', broken), True, '踩坑 68')
+case('YAML 坏了 → 报', ck.check_workflow('new.yml', GOOD + '  bad: [\n'), True, 'YAML')
+case('新工作流用 softprops → 报（踩坑 42）', ck.check_workflow('new.yml', GOOD.replace('python3 x.py', 'echo') + '      - uses: softprops/action-gh-release@v2\n'), True, '踩坑 42')
+case('新工作流用 zip -0 → 报（踩坑 52）', ck.check_workflow('new.yml', GOOD.replace('python3 x.py', 'zip -0 -r a.zip d')), True, '踩坑 52')
+case('新工作流用 unzip -l → 报（踩坑 43）', ck.check_workflow('new.yml', GOOD.replace('python3 x.py', 'unzip -l a.zip | grep x')), True, '踩坑 43')
+legacy = sorted(ck.LEGACY - set(ck.AUDIO_RELEASE))[0]      # release-papers.yml（不发音频，踩坑 87 的规则不管它）
+case('登记的旧流程用 zip -0 → 放', ck.check_workflow(legacy, GOOD.replace('python3 x.py', 'zip -0 -r a.zip d')), False)
+case('登记的旧流程已改好却还在 LEGACY → 报（只许减少）', ck.check_workflow(legacy, GOOD), True, 'LEGACY')
+# 踩坑 87：发布音频 / 视频前核对合格证
+W = R0 = Path(__file__).resolve().parents[3] / '.github' / 'workflows'
+zk = (W / 'release-zk-videos.yml').read_text('utf-8')
+step = """      - name: 音频合格证核对（踩坑 87：每条 timings 都是旧成品或带 clause-v1 合格证、MP3 与合格证一致，不合格不发布）
+        run: python3 .github/check-audio-cert.py 中考/audio
+"""
+assert step in zk
+case('中考视频发布流程现在 → 0', ck.check_workflow('release-zk-videos.yml', zk), False)
+case('去掉合格证核对步骤 → 报（踩坑 87）', ck.check_workflow('release-zk-videos.yml', zk.replace(step, '')), True, 'check-audio-cert')
+case('核的音频目录不对 → 报', ck.check_workflow('release-zk-videos.yml', zk.replace('check-audio-cert.py 中考/audio', 'check-audio-cert.py 四级/audio')), True, '没核')
+moved = zk.replace(step, '').replace('      - name: 发布（gh', step + '      - name: 发布（gh')
+case('合格证核对挪到打包之后 → 报', ck.check_workflow('release-zk-videos.yml', moved), True, '之后')
+km = (W / 'release-kaoyan-materials.yml').read_text('utf-8')
+case('稀疏检出去掉 tools/tts → 报', ck.check_workflow('release-kaoyan-materials.yml', km.replace('            tools/tts\n', '')), True, '稀疏检出')
+case('新的发布流程没登记 → 报', ck.check_workflow('release-new-videos.yml', GOOD), True, 'AUDIO_RELEASE')
+case('现在仓库里的全部工作流 → 0', ck.check_workflows(), False)
+
+with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as out:
+    root = Path(d)
+    (root / 'tools').mkdir()
+    (root / 'tools' / 'real.onnx').write_text('x')
+    (root / 'tools' / 'inner').symlink_to(root / 'tools' / 'real.onnx')
+    case('仓库内的软链接 → 0', ck.check_symlinks(root), False)
+    Path(out, 'm.onnx').write_text('x')
+    (root / 'tools' / 'outer').symlink_to(Path(out, 'm.onnx'))
+    case('软链接指向临时目录 → 报（踩坑 47）', ck.check_symlinks(root), True, '仓库外')
+    os.remove(Path(out, 'm.onnx'))
+    case('临时目录删了、软链接断了 → 报（踩坑 47）', ck.check_symlinks(root), True, '断掉')
+case('现在仓库里的软链接 → 0', ck.check_symlinks(), False)
+
+# 踩坑 113：推 gram-tts-out 的结果目录名（合成完整性.task_of 按“任务-运行号”找任务清单）
+WF = Path(__file__).resolve().parents[3] / '.github/workflows'
+for wf in ('tts-sovits.yml', 'tts-grammar-qwen.yml'):
+    cur = (WF / wf).read_text('utf-8')
+    case(f'现在的 {wf} → 0', ck.gram_out_problems(wf, cur), False)
+cur = (WF / 'tts-sovits.yml').read_text('utf-8')
+NEW_D = 'D="runs/${T}-${{ github.run_number }}"'
+assert NEW_D in cur
+case('旧 tts-sovits.yml（35ac82f8 之前：runs/${T}-sovits-<号>）→ 报（踩坑 113）',
+     ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'D="runs/${T}-sovits-${{ github.run_number }}"')), True, '踩坑 113')
+case('目录名只有任务、没有运行号 → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'D="runs/${T}"')), True, '踩坑 113')
+case('任务名没去掉 .json → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace('.json)\n', ')\n', 1)), True, '踩坑 113')
+case('推 gram-tts-out 却找不到结果目录写法 → 报', ck.gram_out_problems('tts-sovits.yml', cur.replace(NEW_D, 'OUT=runs/x')), True, '踩坑 113')
+case('不推 gram-tts-out 的工作流 → 0', ck.gram_out_problems('new.yml', GOOD), False)
+
+# 踩坑 114：六级听力准备工作流调用读 /usr/share/dict 的脚本，必须 apt 装 wamerican
+cur = (WF / 'cet6-listening-prep.yml').read_text('utf-8')
+case('现在的 cet6-listening-prep.yml → 0', ck.sysdep_problems('cet6-listening-prep.yml', cur), False)
+assert ' wamerican' in cur
+case('去掉 wamerican（踩坑 114：运行 2 的写法）→ 报', ck.sysdep_problems('cet6-listening-prep.yml', cur.replace(' wamerican', '')), True, '踩坑 114')
+case('不调用读词典脚本的工作流 → 0', ck.sysdep_problems('new.yml', GOOD), False)
+
+# 踩坑 117：用 cet6-chalk-env 的任务必须 runs-on: ubuntu-24.04
+import yaml
+cur = (WF / 'render-cet6-listening.yml').read_text('utf-8')
+case('现在的 render-cet6-listening.yml → 0', ck.runner_problems('r.yml', yaml.safe_load(cur)), False)
+case('render 改回 ubuntu-latest（运行 41836153360 的写法）→ 报', ck.runner_problems('r.yml', yaml.safe_load(cur.replace('runs-on: ubuntu-24.04', 'runs-on: ubuntu-latest'))), True, '踩坑 117')
+case('不用 cet6-chalk-env 的 ubuntu-latest 任务 → 0', ck.runner_problems('g.yml', yaml.safe_load(GOOD)), False)
+case('全仓库工作流 → 0', [e for e in ck.check_workflows() if '踩坑 117' in e], False)
+
+# 踩坑 118 再犯：工作流用 ffprobe format=duration 核对 timings（四级精读 201806-2 差 66 ms）
+cur = (WF / 'render-cet4-listening-text.yml').read_text('utf-8')
+OLDDUR = """          dur = float(subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(mp3)],\n"""
+case('现在的 render-cet4-listening-text.yml → 0', ck.duration_problems('t.yml', cur), False)
+case('改回 ffprobe format=duration（运行 42172057319 的写法）→ 报', ck.duration_problems('t.yml', cur + OLDDUR), True, '踩坑 118')
+case('全仓库工作流 → 0', [e for e in ck.check_workflows() if '踩坑 118' in e], False)
+
+print('仓库检查双向验证：' + ('全部通过' if not bad else f'{len(bad)} 处失败\n  ' + '\n  '.join(bad)))
+sys.exit(1 if bad else 0)

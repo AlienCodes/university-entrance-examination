@@ -1,0 +1,454 @@
+{
+  "summary": "中考 reading round 2: final check of the corrected passages (+canaries) in groups, 2 finders + 2 verifiers per group",
+  "agentCount": 8,
+  "logs": [
+    "done 8; findings 10"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "z08",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z09",
+        "findings": [
+          {
+            "pid": "z09",
+            "loc": "¶1 sentence 3",
+            "current": "Last year, about 1,872 riders in the US were saved",
+            "proposed": "In 2017, about 1,872 riders in the US were saved",
+            "category": "fact",
+            "reason": "The 1,872 figure is NHTSA's estimate of lives saved by helmets in 2017 (NHTSA statistical summary, December 2019, also cited by the CDC). In a 2026 text, 'Last year' means 2025, so the time reference is factually wrong. The number and the point of the sentence stay the same, so exam question 12 about '1872' is not affected.",
+            "lens": "A"
+          },
+          {
+            "pid": "z09",
+            "loc": "¶1, sentence 3",
+            "current": "Last year, about 1,872 riders",
+            "proposed": "In 2017, about 1,872 riders",
+            "category": "fact",
+            "reason": "1,872 is NHTSA's estimate of lives saved by helmets in 2017 (NHTSA statistical summary of December 2019; the CDC cites the same figure). In a 2026 passage, 'Last year' states a false date. Q12 asks only about the number, so changing the time phrase does not affect the questions.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The current text matches z09 ¶1 exactly. NHTSA's estimate that helmets saved 1,872 riders is for 2017 (NHTSA brief statistical summary, Dec 2019; the CDC repeats it). In a 2026 passage, 'Last year' therefore gives a false date. 'In 2017' fixes it with one changed phrase. Q12 asks only why the number 1872 is mentioned (answer: the importance of helmets), so the question still works."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "Same edit as index 0 (z09 ¶1: 'Last year' becomes 'In 2017', because NHTSA's 1,872 figure is for 2017). It is correct, but it duplicates index 0, so apply it only once. The text matches exactly once, so applying it a second time would fail."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "Checked: NHTSA's December 2019 brief 'Lives and Costs Saved by Motorcycle Helmets, 2017' puts the lives saved by helmets in 2017 at an estimated 1,872. In a 2026 exam text, 'Last year' would mean 2025, so it states a false date, and a copy editor would fix it. Q12 asks only why the writer mentions '1872' (answer: to show that helmets matter), so the change does not affect it. This is the same proposal as index 4."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "Same proposal as index 0. NHTSA's figure of 1,872 lives saved by helmets is for 2017, so 'Last year' in a 2026 text is false. 'In 2017' fixes the date without touching the number that Q12 asks about."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z10",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z11",
+        "findings": [
+          {
+            "pid": "z11",
+            "loc": "¶3, sentence 1",
+            "current": "small packets called data (数据)",
+            "proposed": "small packets of data (数据)",
+            "category": "fact",
+            "reason": "This defines 'data' as the name of the packets, which is wrong. Data is the information itself; it travels in small packets (data packets). Students memorising the sentence would learn a wrong definition. The fix changes one word and keeps the gloss, and it stays consistent with the following sentences ('the question … becomes data', 'sends this data').",
+            "lens": "B"
+          },
+          {
+            "pid": "z11",
+            "loc": "¶3, 'The faster the search engine works, …'",
+            "current": "the bigger the use of electricity",
+            "proposed": "the greater the use of electricity",
+            "category": "word-choice",
+            "reason": "Wrong collocation. 'Use' meaning an amount consumed takes greater/higher, not 'bigger'. 'The greater the use of …' is the idiomatic form, and 'bigger use' is a calque of 用电量更大.",
+            "lens": "B"
+          },
+          {
+            "pid": "z11",
+            "loc": "¶4, 'So again, the use of electricity is bigger.'",
+            "current": "the use of electricity is bigger",
+            "proposed": "the use of electricity is greater",
+            "category": "word-choice",
+            "reason": "Same collocation error as in ¶3: the use of electricity is 'greater' (or 'higher'), not 'bigger'. This also keeps it consistent with the ¶3 fix, which the word 'again' points back to.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The current text matches z11 ¶3 exactly. 'small packets called data' makes 'data' the name of the packets, which is a wrong definition: data is the information, and it travels in data packets. 'small packets of data (数据)' is correct and minimal, keeps the gloss, and still fits 'becomes data' and 'sends this data' later in the paragraph. No question depends on the wording."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The current text matches z11 ¶3 exactly ('the bigger the use of electricity'). 'Use', meaning an amount consumed, collocates with greater, higher or heavier, not 'bigger'. 'Bigger use' is a calque of 用电量更大 that an editor would mark wrong, and students would memorise it. 'the greater the use of electricity' is the idiomatic, minimal fix."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "The current text matches z11 ¶4 exactly. This is the same collocation error as index 2: the use of electricity is 'greater', not 'bigger'. Fixing it keeps the 'So again' callback consistent with the ¶3 fix."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "'small packets called data' says the packets are named 'data', which is a wrong definition: data is the information, and the packets carry it. Students would memorise that wrong definition. 'small packets of data (数据)' changes one word, keeps the gloss, and still fits 'becomes data' and 'sends this data'. No exam question depends on the wording."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "'Use' meaning the amount consumed takes greater/higher, not 'bigger'. 'The bigger the use of electricity' is a non-native collocation that a demanding teacher would mark. 'The greater the use of electricity' is the standard form and changes only one word."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "Same collocation error as in ¶3: 'the use of electricity is bigger' should be 'greater'. The fix also keeps the wording consistent with the corrected ¶3 sentence, which 'So again' points back to."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z12",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z13",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z14",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z99",
+        "findings": [
+          {
+            "pid": "z99",
+            "loc": "¶2 sentence 1",
+            "current": "Look around you, patterns are everywhere.",
+            "proposed": "Look around you. Patterns are everywhere.",
+            "category": "punctuation",
+            "reason": "Comma splice: an imperative clause and an independent clause are joined only by a comma. The exam original has two sentences: \"Look around you. Patterns are everywhere.\"",
+            "lens": "A"
+          },
+          {
+            "pid": "z99",
+            "loc": "¶2 last sentence",
+            "current": "Some leaves always has five points",
+            "proposed": "Some leaves always have five points",
+            "category": "grammar",
+            "reason": "Subject-verb agreement: the plural subject \"leaves\" needs \"have\". The exam original reads \"have\".",
+            "lens": "A"
+          },
+          {
+            "pid": "z99",
+            "loc": "¶3 last sentence",
+            "current": "the fewer chirps a cricket will make",
+            "proposed": "the more chirps a cricket will make",
+            "category": "fact",
+            "reason": "This is factually wrong. Crickets chirp faster as the temperature rises (Dolbear's law), so the hotter it is, the MORE chirps a cricket makes. The exam original reads \"the more chirps\".",
+            "lens": "A"
+          },
+          {
+            "pid": "z99",
+            "loc": "¶4 sentence 6",
+            "current": "the baby learn to lift its head",
+            "proposed": "the baby learns to lift its head",
+            "category": "grammar",
+            "reason": "Subject-verb agreement: the singular subject \"the baby\" needs \"learns\", which also matches the parallel \"and learns to roll over\" and the next sentence's \"the baby learns to stand up\". The exam original reads \"learns\".",
+            "lens": "A"
+          },
+          {
+            "pid": "z99",
+            "loc": "¶2 last sentence",
+            "current": "Some leaves always has five points on them.",
+            "proposed": "Some leaves always have five points on them.",
+            "category": "grammar",
+            "reason": "Subject–verb agreement: the plural subject 'leaves' needs 'have'. The exam text has 'have'.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "Comma splice: an imperative and an independent clause are joined by only a comma. Splitting them into two sentences fixes it, and the exam dump reads \"Look around you. Patterns are everywhere.\""
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The plural subject \"leaves\" takes \"have\", so \"has\" is a definite agreement error. The exam dump reads \"have\". This duplicates index 4, so apply only one of them."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "This is a factual error that also makes the paragraph say the opposite of the source. Crickets chirp faster as the temperature rises (Dolbear's law). The exam dump reads \"the more chirps a cricket will make\"."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "The singular subject \"the baby\" takes \"learns\", which matches the parallel \"learns to roll over\" and the next sentence. The exam dump reads \"the baby learns to lift its head\"."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This is the same correct fix as index 1, with \"has\" changed to \"have\" for the plural subject. The exam dump reads \"have\". It is a duplicate of index 1, so apply it once only."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "This is a comma splice: an imperative and an independent clause are joined only by a comma. The exam source (dump line 4) has two sentences, \"Look around you. Patterns are everywhere.\""
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "This is a definite subject-verb agreement error: the plural \"leaves\" needs \"have\". The exam source reads \"have\"."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "This is a definite factual error that reverses the meaning. Crickets chirp more often as the temperature rises (Dolbear's law), and the exam source reads \"the more chirps\"."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "This is a definite agreement error: the singular \"the baby\" needs \"learns\", which matches the parallel \"and learns to roll over\". The exam source reads \"learns\"."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This duplicates index 1 with the same correct fix: plural \"leaves\" needs \"have\", as in the exam source. Apply it once."
+          }
+        ],
+        "failed": 0
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "finalA:Gz08",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ab29403bcb7da5832",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944091519,
+      "queuedAt": 1791944091498,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full and checked them against the …",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944267700,
+      "tokens": 84104,
+      "toolCalls": 9,
+      "durationMs": 175764,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z09\",\"loc\":\"¶1 sentence 3\",\"current\":\"Last year, about 1,872 riders in the US were saved\",\"proposed\":\"In 2017, about 1,872 riders in the US were saved\",\"category\":\"fact\",\"reason\":\"The 1,872 figure is NHTSA's estimate of lives saved by helmets in 2017 (NHTSA statistical summary, December 2019, also cited by the CDC). In a 2026 text, 'Last year' means 2025, so the time reference…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "finalB:Gz08",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a4a217492b67e8eb4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944091519,
+      "queuedAt": 1791944091499,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared all four passages sentence by sentence with the …",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944263315,
+      "tokens": 90325,
+      "toolCalls": 9,
+      "durationMs": 171379,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z11\",\"loc\":\"¶3, sentence 1\",\"current\":\"small packets called data (数据)\",\"proposed\":\"small packets of data (数据)\",\"category\":\"fact\",\"reason\":\"This defines 'data' as the name of the packets, which is wrong. Data is the information itself; it travels in small packets (data packets). Students memorising the sentence would learn a wrong definition. The fix changes one word and keeps …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "finalA:Gz12",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a5b453f16071a3011",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944264987,
+      "queuedAt": 1791944091520,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found 4 errors, all in z99. z12, z13 and z14 have none, a…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944363124,
+      "tokens": 77876,
+      "toolCalls": 7,
+      "durationMs": 98136,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z99\",\"loc\":\"¶2 sentence 1\",\"current\":\"Look around you, patterns are everywhere.\",\"proposed\":\"Look around you. Patterns are everywhere.\",\"category\":\"punctuation\",\"reason\":\"Comma splice: an imperative clause and an independent clause are joined only by a comma. The exam original has two sentences: \\\"Look around you. Patterns are everywhere.\\\"\"},{\"pid\":\"z99\",\"loc\":\"¶2 last senten…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "finalB:Gz12",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a89323bbb02a4e0a6",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944269222,
+      "queuedAt": 1791944091520,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked every sentence of z12, z13, z14 and z99 against t…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944373813,
+      "tokens": 78135,
+      "toolCalls": 7,
+      "durationMs": 104590,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z99\",\"loc\":\"¶2 sentence 1\",\"current\":\"Look around you, patterns are everywhere.\",\"proposed\":\"Look around you. Patterns are everywhere.\",\"category\":\"punctuation\",\"reason\":\"Comma splice: an imperative clause and an independent clause are joined by a comma alone. The exam text has a full stop here ('Look around you. Patterns are everywhere.').\"},{\"pid\":\"z99\",\"loc\":\"¶2 last senten…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "verify-acc:Gz08",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a0f88eacafbaa7b67",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944364759,
+      "queuedAt": 1791944269255,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944457338,
+      "tokens": 74763,
+      "toolCalls": 9,
+      "durationMs": 92579,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The current text matches z09 ¶1 exactly. NHTSA's estimate that helmets saved 1,872 riders is for 2017 (NHTSA brief statistical summary, Dec 2019; the CDC repeats it). In a 2026 passage, 'Last year' therefore gives a false date. 'In 2017' fixes it with one changed phrase. Q12 asks only why the number 1872 is mentioned (answer: the importance of helm…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "verify-strict:Gz08",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "af4552f41a1411bbd",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944375524,
+      "queuedAt": 1791944269256,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944426068,
+      "tokens": 70356,
+      "toolCalls": 6,
+      "durationMs": 50543,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"Checked: NHTSA's December 2019 brief 'Lives and Costs Saved by Motorcycle Helmets, 2017' puts the lives saved by helmets in 2017 at an estimated 1,872. In a 2026 exam text, 'Last year' would mean 2025, so it states a false date, and a copy editor would fix it. Q12 asks only why the writer mentions '1872' (answer: to show that helmets matter), so th…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "verify-acc:Gz12",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ad462c9bba6a5b1be",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944427655,
+      "queuedAt": 1791944375562,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944437989,
+      "tokens": 63221,
+      "toolCalls": 3,
+      "durationMs": 10334,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"Comma splice: an imperative and an independent clause are joined by only a comma. Splitting them into two sentences fixes it, and the exam dump reads \\\"Look around you. Patterns are everywhere.\\\"\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The plural subject \\\"leaves\\\" takes \\\"have\\\", so \\\"has\\\" is a definite agreement error. The exam dump reads \\\"have\\…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "verify-strict:Gz12",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ad0195bdf2ad603f2",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944439665,
+      "queuedAt": 1791944375562,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944449063,
+      "tokens": 63224,
+      "toolCalls": 3,
+      "durationMs": 9397,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"This is a comma splice: an imperative and an independent clause are joined only by a comma. The exam source (dump line 4) has two sentences, \\\"Look around you. Patterns are everywhere.\\\"\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"This is a definite subject-verb agreement error: the plural \\\"leaves\\\" needs \\\"have\\\". The exam source reads \\\"have\\\".\"},{\"i…"
+    }
+  ],
+  "totalTokens": 602004,
+  "totalToolCalls": 53
+}

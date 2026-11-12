@@ -1,0 +1,35 @@
+{
+ "说明": "第 56 题第 4 轮（第 3 轮推荐 pxv 语速 4.87 仍低于本人 5.61；Rubber Band 提速 1.18 倍被 提速验证 否决：UTMOS 3.72→2.45、错词 2→6）。沿用 pxv 的做法（英文 xvec），换语速更快、语调平实的参考：用户本人快_1（7.5 字/秒、起伏 2.9 半音）、快_2（6.9、3.9）。每个 4 次。",
+ "script": "高考语法填空/稿/2026_新课标Ⅰ卷.json",
+ "only": [
+  "q56a",
+  "q56b",
+  "q56c",
+  "q56d",
+  "q56e",
+  "q56f",
+  "q56g"
+ ],
+ "takes": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "candidates": [
+  {
+   "id": "k1xv",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人快_1.json",
+   "en_mode": "xvec"
+  },
+  {
+   "id": "k2xv",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人快_2.json",
+   "en_mode": "xvec"
+  }
+ ]
+}

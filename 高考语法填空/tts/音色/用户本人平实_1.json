@@ -1,0 +1,20 @@
+{
+ "说明": "用户本人录音（Release user-voice 的 05.wav）里程序挑出的参考片段（挑参考.py：无削波、全是语音、没有剪辑接缝、没有呼吸、底噪低、基频一致、语速正常，按底噪、语调起伏、中英混说打分）。不另存音频：合成时 qwen_synth 从 Release 下载录音，用 挑参考.build_ref 按 spans 取原始连续音频（不剪不拼）。用户 2026-10-30 同意声音克隆与公开使用。 ref_text 由识别结果人工改正（识别把 when 听成“问”、where 听成“维尔”）；用于第 3 轮（--平实：语速不低于录音中位数、语调起伏小）。",
+ "source": "05.wav",
+ "source_url": "https://github.com/aliencodes/university-entrance-examination/releases/download/user-voice/05.wav",
+ "spans": [
+  [
+   4213680,
+   4359840
+  ]
+ ],
+ "ref_text": "那现在我们就把这个关系副词 when 还原成一个包含先行词的介词短语，那就是 in the year。",
+ "fill_seams": true,
+ "window_sec": [
+  175.6,
+  181.63
+ ],
+ "score": 3.87,
+ "sec": 6.09,
+ "ref_text_asr": "那现在我们就把这个关系复词问还原成一个包含先行词的介词短语，那就是in the year。"
+}

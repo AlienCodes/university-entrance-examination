@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:'SC';src:url('../video/fonts/NotoSansSC-Bold.ttf');font-weight:700}
+@font-face{font-family:'SC';src:url('../video/fonts/NotoSansSC-Medium.ttf');font-weight:500}
+@font-face{font-family:'Serif';src:url('../video/fonts/SourceSerif4-Semibold.otf');font-weight:600}
+@font-face{font-family:'Serif';src:url('../video/fonts/SourceSerif4-Regular.otf');font-weight:400}
+:root{--y:#FFD23F;--r:#FF4B3E;--b:#0B1E3F;--c:#2EC4B6}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:var(--w);height:1080px;overflow:hidden;background:var(--b);font-family:'SC',sans-serif;color:#fff}
+body.w169{--w:1920px} body.w43{--w:1440px}
+.bg{position:absolute;inset:0;background:
+  radial-gradient(1200px 700px at 85% 15%,#1E4C8F 0%,transparent 60%),
+  radial-gradient(900px 600px at 0% 100%,#3A1450 0%,transparent 60%),
+  linear-gradient(160deg,#0B1E3F,#081429)}
+.grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px}
+.wrap{position:absolute;inset:0;padding:64px 80px}
+.tag{display:inline-block;background:var(--r);color:#fff;font-weight:700;font-size:44px;padding:8px 28px;border-radius:12px;transform:rotate(-2deg);box-shadow:0 8px 0 rgba(0,0,0,.25)}
+.h1{margin-top:26px;font-weight:700;line-height:1.02;letter-spacing:-2px}
+.h1 .n{color:var(--y);font-size:250px;text-shadow:0 10px 0 rgba(0,0,0,.35)}
+.h1 .t{font-size:118px;margin-left:16px}
+.h2{font-weight:700;font-size:150px;line-height:1.05;letter-spacing:-2px;color:#fff;text-shadow:0 8px 0 rgba(0,0,0,.35)}
+.h2 em{font-style:normal;color:var(--y)}
+.badge{display:inline-flex;align-items:center;gap:18px;margin-top:30px;background:var(--y);color:var(--b);border-radius:999px;padding:12px 40px;font-weight:700;font-size:58px;box-shadow:0 10px 0 rgba(0,0,0,.3)}
+.badge small{font-size:40px;font-weight:500}
+.feat{display:flex;flex-wrap:wrap;gap:16px;margin-top:34px;max-width:1080px}
+.feat span{border:3px solid rgba(255,255,255,.55);border-radius:14px;padding:6px 20px;font-size:40px;font-weight:700;color:#fff}
+.feat span.hl{border-color:var(--c);color:var(--c)}
+/* B 站信息流里封面底部会叠加播放量和时长，底部 120px 只放背景 */
+.card{position:absolute;background:#FBF8F1;color:#1d2433;border-radius:24px;box-shadow:0 30px 60px rgba(0,0,0,.45);padding:34px 40px;transform:rotate(3deg)}
+.card .en{font-family:'Serif',serif;font-size:36px;line-height:1.5}
+.card mark{background:none;color:#B4231A;font-weight:600;border-bottom:4px solid #F2B705}
+.card .zh{margin-top:18px;font-size:30px;color:#3a4357;font-weight:500;line-height:1.5}
+.chips{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:#EEF2F8;border-radius:10px;padding:6px 14px;font-size:24px;font-weight:500;color:#2a3242}
+.chip b{font-family:'Serif';font-weight:600;color:#B4231A;margin-right:8px}
+.yrs{position:absolute;font-weight:700;color:var(--c);font-size:46px;letter-spacing:4px}
+/* 16:9 布局：左文右卡 */
+.w169 .card{right:70px;top:150px;width:700px}
+.w169 .yrs{right:90px;top:72px}
+/* 4:3 布局：卡片缩小放到右下 */
+.w43 .wrap{padding:56px 64px}
+.w43 .h1 .n{font-size:220px}.w43 .h1 .t{font-size:104px}
+.w43 .h2{font-size:132px}
+.w43 .card{right:46px;bottom:120px;width:640px;transform:rotate(3deg) scale(.86);transform-origin:bottom right}
+.w43 .yrs{right:64px;top:64px}
+.w43 .badge{font-size:52px}
+.w43 .feat{max-width:760px;gap:12px;margin-top:26px}.w43 .feat span{font-size:34px;padding:4px 16px}
+.w43 .card{bottom:140px}
+</style></head>
+<body>
+<div class="bg"></div><div class="grid"></div>
+<div class="yrs">2022–2026</div>
+<div class="wrap">
+  <div class="tag">高考英语真题 · 阅读理解</div>
+  <div class="h1"><span class="n">70</span><span class="t">篇阅读CD篇</span></div>
+  <div class="h2">背诵<em>高考单词</em></div>
+  <div class="badge">3600+ <small>课标词 · 超纲词 · 短语</small></div>
+  <div class="feat"><span class="hl">逐句精读</span><span>中英对照</span><span>生词全标注</span><span class="hl">美音朗读</span><span>4K</span></div>
+</div>
+<div class="card">
+  <div class="en"><mark>In line with</mark> <mark>longstanding</mark> <mark>initiatives</mark> to <mark>expand</mark> its green spaces, New York City is <mark>planting</mark> <mark>tens of thousands of</mark> trees each year.</div>
+  <div class="zh">纽约市按照其长期以来推行的扩大绿地计划，每年都种植数以万计的树木。</div>
+  <div class="chips">
+    <span class="chip"><b>initiative</b>n. 倡议；计划</span>
+    <span class="chip"><b>expand</b>v. 扩大</span>
+    <span class="chip"><b>tens of thousands of</b>数以万计的</span>
+  </div>
+</div>
+</body></html>

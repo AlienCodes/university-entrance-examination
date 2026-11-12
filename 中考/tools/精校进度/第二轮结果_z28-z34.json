@@ -1,0 +1,395 @@
+{
+  "summary": "中考 reading round 2: final check of the corrected passages (+canaries) in groups, 2 finders + 2 verifiers per group",
+  "agentCount": 6,
+  "logs": [
+    "done 8; findings 9"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "z28",
+        "findings": [
+          {
+            "pid": "z28",
+            "loc": "¶4 last sentence (applied correction 'signs for' → 'signs of')",
+            "current": "These are important signs of a healthy forest.",
+            "proposed": "These are important signs of forest health.",
+            "category": "bad-correction",
+            "reason": "\"These\" refers to the \"small changes in species' presence and behavior\" just mentioned. Such changes show what condition a forest is in, often that it is getting worse. They are not signs that a forest is healthy, so \"signs of a healthy forest\" says the opposite of what is meant. The source text (Google Arts & Culture, Forest Listeners) calls them \"critical indicators of forest health\". Changing \"for\" to \"of\" fixed the preposition but left the logic wrong. \"Signs of forest health\" (or \"of a forest's health\") fixes it with a minimal change.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "amend",
+            "amended_proposed": "These are important signs of how healthy a forest is.",
+            "why": "The error is real. 'These' points back to 'small changes in species' presence and behavior', and such changes show what condition a forest is in. They are not evidence that it is healthy, so 'signs of a healthy forest' says something the passage does not mean. The proposed 'signs of forest health' can still be read as 'signs that the forest is healthy', and a student translating it as 森林健康的迹象 would make the same mistake. 'Signs of how healthy a forest is' cannot be misread, and it repeats the wording of ¶1 ('tell how healthy rainforests are')."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "amend",
+            "amended_proposed": "These are important signs of how healthy a forest is.",
+            "why": "The criticism is right. 'These' refers to 'small changes in species' presence and behavior'. Those changes show what condition a forest is in, and often that it is getting worse, so calling them 'signs of a healthy forest' is a logic error a careful editor would mark. The proposed 'signs of forest health' can still be read the same positive way (compare 'X is a sign of forest health'). 'Signs of how healthy a forest is' is unambiguous and neutral, and it echoes ¶1's 'tell how healthy rainforests are'."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z29",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z30",
+        "findings": [
+          {
+            "pid": "z30",
+            "loc": "¶3 corrected sentence (applied correction about the cliff)",
+            "current": "His horse fell off the cliff (悬崖), and",
+            "proposed": "His horse fell off a cliff (悬崖), and",
+            "category": "grammar",
+            "reason": "This is the first time a cliff is mentioned. Nothing earlier introduces one (only \"the snow mountains\"), so the first mention takes \"a\". The next mention, \"the edge of the cliff\", then correctly uses \"the\". The sentence was rewritten in round 1 and kept the article from the exam's \"from the cliff\". The rewrite is otherwise accurate and fits the context.",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The text matches. Nothing earlier introduces a cliff, only 'the snow mountains', so the first mention should be 'a cliff'. The next mention, 'the edge of the cliff', then correctly uses 'the'. The rest of the round-1 rewrite is correct, and the gloss (悬崖) stays where it is."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "No cliff is mentioned before this sentence; the only earlier setting is 'the snow mountains'. A first mention therefore needs 'a cliff'. The definite article was carried over from the exam's 'from the cliff' when the sentence was rewritten in round 1. The later 'the edge of the cliff' then correctly refers back with 'the'."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z96",
+        "findings": [
+          {
+            "pid": "z96",
+            "loc": "¶2 sentence 1",
+            "current": "his elder brother Wilhelm",
+            "proposed": "his younger brother Wilhelm",
+            "category": "fact",
+            "reason": "Jacob Grimm (born 1785) was the elder brother and Wilhelm (born 1786) the younger. The exam text (dump line 5) also reads 'his younger brother Wilhelm', so 'elder' is a factual error that was introduced into this file.",
+            "lens": "A"
+          },
+          {
+            "pid": "z96",
+            "loc": "¶3 sentence 1",
+            "current": "the Brothers Grimm was born",
+            "proposed": "the Brothers Grimm were born",
+            "category": "grammar",
+            "reason": "Subject–verb agreement: 'the Brothers Grimm' is plural (two people), so the verb must be 'were'. The exam reads 'were born'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z96",
+            "loc": "¶3 sentence 2",
+            "current": "it winds south",
+            "proposed": "it winds north",
+            "category": "fact",
+            "reason": "The route starts in Hanau, near Frankfurt in the south, and ends in Bremen in the far north, passing Steinau, Marburg, Alsfeld and Hamelin on the way. So it runs north, not south. The exam reads 'winds north'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z96",
+            "loc": "¶4 sentence 1",
+            "current": "Route host many events",
+            "proposed": "Route hosts many events",
+            "category": "grammar",
+            "reason": "Subject–verb agreement: the singular subject 'the German Fairy Tale Route' in the present tense needs 'hosts'. The exam reads 'hosts'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z96",
+            "loc": "¶2 sentence 1",
+            "current": "Jacob Grimm and his elder brother Wilhelm",
+            "proposed": "Jacob Grimm and his younger brother Wilhelm",
+            "category": "fact",
+            "reason": "Jacob (born 1785) was the older brother and Wilhelm (born 1786) the younger. The exam page image and the dump both print \"his younger brother Wilhelm\". This changed word is not in the header's list of corrections, so it looks like an error that was introduced.",
+            "lens": "B"
+          },
+          {
+            "pid": "z96",
+            "loc": "¶3 sentence 2",
+            "current": "it winds south through",
+            "proposed": "it winds north through",
+            "category": "fact",
+            "reason": "The route starts in Hanau in southern Hesse and ends in Bremen in northern Germany, passing Steinau, Marburg, Alsfeld and Hamelin on the way, so it runs north. \"South\" contradicts the passage's own start and end points. The exam prints \"winds north\".",
+            "lens": "B"
+          },
+          {
+            "pid": "z96",
+            "loc": "¶4 sentence 1",
+            "current": "the German Fairy Tale Route host many events",
+            "proposed": "the German Fairy Tale Route hosts many events",
+            "category": "grammar",
+            "reason": "The subject \"the German Fairy Tale Route\" is singular, so the present-tense verb needs -s. The exam prints \"hosts\".",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The text matches. Jacob (1785) was older than Wilhelm (1786), so 'elder' is a factual error. The exam dump (line 5) reads 'his younger brother Wilhelm', and the header lists no correction for this word, so the error was introduced. This duplicates index 4."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The text matches. 'The Brothers Grimm' means two people, so the verb must be 'were'. The exam dump (line 6) reads 'were born'."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "The text matches. The passage itself says the route goes from Hanau (south) through Marburg and Hamelin to Bremen (far north), so 'south' contradicts it. The exam dump reads 'winds north'. This duplicates index 5."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "The text matches. The singular subject 'the German Fairy Tale Route' needs 'hosts'. The exam dump (line 7) reads 'hosts'. This duplicates index 6."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This is the same as index 0 and the text matches: Wilhelm was the younger brother, and the exam prints 'younger'. The fix is correct and minimal."
+          },
+          {
+            "index": 5,
+            "verdict": "accept",
+            "why": "This is the same as index 2 and the text matches: going from Hanau to Bremen means going north, and the exam prints 'winds north'."
+          },
+          {
+            "index": 6,
+            "verdict": "accept",
+            "why": "This is the same as index 3 and the text matches: subject–verb agreement needs 'hosts', which is what the exam prints."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "This is a definite factual error. Jacob (b. 1785) was the elder brother and Wilhelm (b. 1786) the younger. The exam dump, line 5, reads 'his younger brother Wilhelm', and no applied correction in the header covers this change. Index 4 proposes the same fix."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "'The Brothers Grimm' names two people and needs a plural verb, so 'was born' is wrong and should be 'were born'. The exam dump, line 6, reads 'were born'."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "The route runs from Hanau, near Frankfurt, to Bremen in the far north, so 'south' contradicts the passage's own start and end points. The exam dump, line 6, reads 'winds north'. Index 5 proposes the same fix."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "'The German Fairy Tale Route' is a singular subject, so the present-tense verb must be 'hosts'. The exam dump, line 7, reads 'hosts'. Index 6 proposes the same fix."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This duplicates index 0 and is correct: Wilhelm was the younger brother, and the exam prints 'younger'."
+          },
+          {
+            "index": 5,
+            "verdict": "accept",
+            "why": "This duplicates index 2 and is correct: Hanau to Bremen runs north, and the exam prints 'winds north'."
+          },
+          {
+            "index": 6,
+            "verdict": "accept",
+            "why": "This duplicates index 3 and is correct: the singular subject needs 'hosts', and the exam prints 'hosts'."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z31",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z32",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z33",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z34",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "finalA:Gz28",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "af0e065601977b686",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944291137,
+      "queuedAt": 1791944291114,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found four definite errors, all in z96. I diffed each fil…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944412294,
+      "tokens": 80843,
+      "toolCalls": 10,
+      "durationMs": 120783,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z96\",\"loc\":\"¶2 sentence 1\",\"current\":\"his elder brother Wilhelm\",\"proposed\":\"his younger brother Wilhelm\",\"category\":\"fact\",\"reason\":\"Jacob Grimm (born 1785) was the elder brother and Wilhelm (born 1786) the younger. The exam text (dump line 5) also reads 'his younger brother Wilhelm', so 'elder' is a factual error that was introduced into this file.\"},{\"pid\":\"z96\",\"loc\":\"¶3 s…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "finalB:Gz28",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a346f61543eeff3f0",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944291137,
+      "queuedAt": 1791944291114,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "z96 has no corrections listed, but a word-by-word compariso…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944427711,
+      "tokens": 84697,
+      "toolCalls": 11,
+      "durationMs": 136199,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z96\",\"loc\":\"¶2 sentence 1\",\"current\":\"Jacob Grimm and his elder brother Wilhelm\",\"proposed\":\"Jacob Grimm and his younger brother Wilhelm\",\"category\":\"fact\",\"reason\":\"Jacob (born 1785) was the older brother and Wilhelm (born 1786) the younger. The exam page image and the dump both print \\\"his younger brother Wilhelm\\\". This changed word is not in the header's list of correction…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "finalA:Gz31",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a686c22aeb711ed3b",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944413963,
+      "queuedAt": 1791944291138,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full and compared each one with it…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944532922,
+      "tokens": 80624,
+      "toolCalls": 7,
+      "durationMs": 118958,
+      "resultPreview": "{\"findings\":[],\"notes\":\"I read all four files in full and compared each one with its exam dump. Every sentence was checked for spelling, punctuation, agreement, tense, articles, pronoun reference, parallelism, prepositions and modifiers. I found no definite errors in any of them, and all applied corrections are right.\\n\\nz31 (云南 D)\\n- Corrections:\\n  - \\\"seriously affected\\\": correct (adverse effe…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "finalB:Gz31",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a920bbf8d1db8c31e",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944429437,
+      "queuedAt": 1791944291138,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found no definite errors in z31, z32, z33 or z34. I read …",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944670725,
+      "tokens": 96656,
+      "toolCalls": 22,
+      "durationMs": 241287,
+      "resultPreview": "{\"findings\":[],\"notes\":\"I found no definite errors in z31, z32, z33 or z34. I read every sentence of all four files and compared each with the exam page images and the dump text. All the existing corrections are right, minimal and fit their sentences.\\n\\nz31 (Yunnan D)\\n- Corrections checked:\\n  - \\\"seriously affected\\\": correct.\\n  - \\\"By November 2024, China had built ... which caught the world'…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "verify-acc:Gz28",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ad5a3b19a1f336027",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944534816,
+      "queuedAt": 1791944429478,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944569557,
+      "tokens": 67749,
+      "toolCalls": 3,
+      "durationMs": 34741,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The text matches. Jacob (1785) was older than Wilhelm (1786), so 'elder' is a factual error. The exam dump (line 5) reads 'his younger brother Wilhelm', and the header lists no correction for this word, so the error was introduced. This duplicates index 4.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The text matches. 'The Brothers Grimm' means two peopl…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "verify-strict:Gz28",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a019d43f35b2954a5",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944571146,
+      "queuedAt": 1791944429478,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944610773,
+      "tokens": 71059,
+      "toolCalls": 5,
+      "durationMs": 39627,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"This is a definite factual error. Jacob (b. 1785) was the elder brother and Wilhelm (b. 1786) the younger. The exam dump, line 5, reads 'his younger brother Wilhelm', and no applied correction in the header covers this change. Index 4 proposes the same fix.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"'The Brothers Grimm' names two people and needs a plu…"
+    }
+  ],
+  "totalTokens": 481628,
+  "totalToolCalls": 58
+}

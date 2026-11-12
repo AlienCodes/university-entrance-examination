@@ -1,0 +1,47 @@
+# 六级听力原始材料：推送 .github/cet6-listening-materials.py 或 六级/听力/原始材料/SHA256SUMS 时，
+# 从 user-upload-3/default.zip 整理出 121 个文件（30 原音 + 30 transcripts + 60 PDF + SHA256SUMS），发布到 Release 6-listening-test（目标用分支名，踩坑 53），下载回来核对。
+name: 整理六级听力原始材料
+on:
+  push:
+    paths: ['.github/cet6-listening-materials.py', '六级/听力/原始材料/SHA256SUMS']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  materials:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            六级/听力/原始材料
+      - name: 发布目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - name: 下载、核对、整理
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download user-upload-3 -p default.zip -D /tmp/src
+          python3 .github/cet6-listening-materials.py /tmp/src/default.zip rel
+          rm /tmp/src/default.zip
+          cp 六级/听力/原始材料/SHA256SUMS rel/
+      - name: 发布 Release 6-listening-test
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view 6-listening-test >/dev/null 2>&1; then
+            gh release upload 6-listening-test rel/* --clobber
+          else
+            gh release create 6-listening-test rel/* --target "$GITHUB_REF_NAME" --title "六级听力原始材料（30 套原音 + transcripts + 真题 / 解析 PDF）" \
+              --notes "老师 2026-11-04 上传（user-upload-3/default.zip）整理：按 cet6-年月-套 统一命名，sha256 见 SHA256SUMS。说明见仓库 六级/听力/原始材料/README.md。"
+          fi
+      - name: 下载回来核对
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir dl && gh release download 6-listening-test -D dl
+          cd dl && sha256sum -c SHA256SUMS --quiet && n=$(ls | wc -l) && [ "$n" = 121 ] && echo "下载核对通过：$n 个文件"

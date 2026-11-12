@@ -1,0 +1,53 @@
+{
+ "说明": "清晰度对比第 2 批：运行 #19 选出的 lt6（温度 0.6、top_p 0.8）与 lt6ml（同 + 成句英文单独合成）各再合成 3 次（take4—6），与 #19 的 take1—3 合起来每小段 6 次选优（VoiceTwin 每句 6—12 个候选）。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": [
+  "t01",
+  "t02",
+  "t03",
+  "t04",
+  "s1z",
+  "s1b1",
+  "s1b2",
+  "s1b3",
+  "s1bj",
+  "s1bf",
+  "s1e",
+  "s1p1",
+  "s1p2",
+  "s1h"
+ ],
+ "takes": [
+  4,
+  5,
+  6
+ ],
+ "candidates": [
+  {
+   "id": "lt6",
+   "mode": "gptsovits",
+   "weights": "teacher",
+   "split": "mark",
+   "gap_max": 0.45,
+   "gen": {
+    "temperature": 0.6,
+    "top_p": 0.8
+   }
+  },
+  {
+   "id": "lt6ml",
+   "mode": "gptsovits",
+   "weights": "teacher",
+   "split": "mark+lang",
+   "gap_max": 0.45,
+   "gen": {
+    "temperature": 0.6,
+    "top_p": 0.8
+   },
+   "gen_en": {
+    "top_k": 10,
+    "temperature": 0.8
+   }
+  }
+ ]
+}

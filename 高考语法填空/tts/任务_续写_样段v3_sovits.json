@@ -1,0 +1,7 @@
+{
+ "说明": "续写讲解 2026 新课标Ⅰ卷 讲稿重写后（v3 讲法，提交 4cb5619）的样段：t01—t04 + s1z s1b1 s1b2 s1b3 s1bj s1bf s1e s1p1 s1p2 s1h（14 段）。声音 g1（老师 GPT-SoVITS 专属模型 + VoiceTwin 参考，split mark，gap_max 0.45，同 任务_续写_全片_sovits.json）。4 次，选段逐小段选优后走完整处理链。老师点头前只做样段。",
+ "script": "高考续写/讲解/2026_新课标Ⅰ卷/稿.json",
+ "only": ["t01", "t02", "t03", "t04", "s1z", "s1b1", "s1b2", "s1b3", "s1bj", "s1bf", "s1e", "s1p1", "s1p2", "s1h"],
+ "takes": [1, 2, 3, 4],
+ "candidates": [{"id": "g1", "mode": "gptsovits", "weights": "teacher", "split": "mark", "gap_max": 0.45}]
+}

@@ -1,0 +1,29 @@
+{
+ "说明": "第 6 轮补跑：run 20（旧代码 cf5477d9，无内存修复）里 k2m（快_2）的 take1、take2、take5 合成机被收回 / 卡死（2026-11-03），用含 malloc_trim 的新代码只补这三次，顺带在真模型上验证每段常驻内存是否走平（踩坑 101）。结果在本机并入 runs/任务_第6轮_q56-20 再选段。",
+ "script": "高考语法填空/稿/2026_新课标Ⅰ卷.json",
+ "only": [
+  "q56a",
+  "q56b",
+  "q56c",
+  "q56d",
+  "q56e",
+  "q56f",
+  "q56g"
+ ],
+ "takes": [
+  1,
+  2,
+  5
+ ],
+ "candidates": [
+  {
+   "id": "k2m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人快_2.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.32
+  }
+ ]
+}

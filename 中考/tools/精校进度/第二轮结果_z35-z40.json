@@ -1,0 +1,345 @@
+{
+  "summary": "中考 reading round 2: final check of the corrected passages (+canaries) in groups, 2 finders + 2 verifiers per group",
+  "agentCount": 6,
+  "logs": [
+    "done 7; findings 7"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "z35",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z36",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z37",
+        "findings": [
+          {
+            "pid": "z37",
+            "loc": "¶2 sentence 3",
+            "current": "the future of sustainable construction could progress",
+            "proposed": "sustainable construction could progress",
+            "category": "logic",
+            "reason": "Illogical comparison. The sentence says 'the future' could progress faster 'than in the past', but the future has no progress in the past to compare with. What progresses is sustainable construction. Deleting 'the future of' gives the intended meaning. Treat this as a judgment call: it is the least certain finding in this report.",
+            "lens": "A"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "reject",
+            "why": "This is not a definite error. 'The future of X' is a common journalistic way of saying 'the development of X' (compare 'the future of work is changing faster than ever'). The same idiom appears in ¶2 ('may lie with AI') and in ¶4 ('speed up the future of sustainable construction'), and both are being kept. The exam paper reads the same way. This is a style preference, and the proposer called it the least certain finding."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "reject",
+            "why": "Using 'the future of X' to mean how X develops is a standard journalistic metonymy, and the same pattern appears in ¶4 ('speed up the future of sustainable construction'). The sentence matches the exam and apparently the original Inhabitat article, and the comparison is easy to understand. The proposer calls this a judgment call, and it is a style tightening rather than a definite error."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z95",
+        "findings": [
+          {
+            "pid": "z95",
+            "loc": "¶3 sentence 2",
+            "current": "which are this year’s theme flower",
+            "proposed": "which is this year’s theme flower",
+            "category": "grammar",
+            "reason": "Subject-verb agreement. 'the iris' is singular (and 'theme flower' is singular), so the verb must be 'is'. The exam paper itself reads 'which is', so this is an unlisted change that introduced an error.",
+            "lens": "A"
+          },
+          {
+            "pid": "z95",
+            "loc": "¶3 sentence 4",
+            "current": "calling them shiny and bright",
+            "proposed": "calling it shiny and bright",
+            "category": "grammar",
+            "reason": "Pronoun agreement. The antecedent is 'the Nanshan garden', which is singular, so the pronoun must be 'it'. The exam paper reads 'calling it'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z95",
+            "loc": "¶5 quotation, sentence 1",
+            "current": "Gardens are small, so they carry",
+            "proposed": "Gardens are small, but they carry",
+            "category": "logic",
+            "reason": "Wrong connective. Carrying big ideas is a contrast with being small, not a result of it, so 'so' makes the sentence illogical. The exam paper reads 'but'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z95",
+            "loc": "¶6 sentence 1",
+            "current": "April 31",
+            "proposed": "April 6",
+            "category": "fact",
+            "reason": "April has only 30 days, so 'April 31' cannot be a date. The exam paper says the show 'ran through April 6'.",
+            "lens": "A"
+          },
+          {
+            "pid": "z95",
+            "loc": "¶3 sentence 2",
+            "current": "which are this",
+            "proposed": "which is this",
+            "category": "grammar",
+            "reason": "Subject–verb agreement: the antecedent \"the iris\" is singular and so is the complement \"this year’s theme flower\". The exam paper itself reads \"which is\".",
+            "lens": "B"
+          },
+          {
+            "pid": "z95",
+            "loc": "¶3 sentence 4",
+            "current": "calling them shiny",
+            "proposed": "calling it shiny",
+            "category": "grammar",
+            "reason": "Wrong pronoun reference: the antecedent \"the Nanshan garden\" is singular. The exam paper reads \"calling it\".",
+            "lens": "B"
+          }
+        ],
+        "va": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "The current text matches exactly. 'the iris ... which are this year's theme flower' is wrong because the antecedent and the complement are both singular, so the verb must be 'is'. The exam dump (line 32) reads 'which is'. Same fix as index 5, so apply it only once."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The current text matches exactly. 'the Nanshan garden, calling them shiny and bright' is wrong because the antecedent is one garden, so the pronoun must be 'it'. The exam dump reads 'calling it'. Same fix as index 6, so apply it only once."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "The current text matches exactly. 'Gardens are small, so they carry big ideas' is illogical, because carrying big ideas contrasts with being small; it does not follow from it. 'but' is the correct, minimal fix, and the exam dump (line 34) reads 'but'."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "'April 31' cannot be a date because April has only 30 days. The exam dump (line 35) reads 'ran through April 6', so 'April 6' is the correct, minimal fix."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "Same as index 0. 'which are this' matches the text, the antecedent 'the iris' is singular, and the exam reads 'which is'. Apply the fix only once."
+          },
+          {
+            "index": 5,
+            "verdict": "accept",
+            "why": "Same as index 1. 'calling them shiny' matches the text, the antecedent 'the Nanshan garden' is singular, and the exam reads 'calling it'. Apply the fix only once."
+          }
+        ],
+        "vb": [
+          {
+            "index": 0,
+            "verdict": "accept",
+            "why": "'the iris ... which are this year's theme flower' breaks subject-verb agreement, since both the antecedent and the complement are singular. The exam dump reads 'which is', so the file has picked up an error the paper does not have."
+          },
+          {
+            "index": 1,
+            "verdict": "accept",
+            "why": "The antecedent 'the Nanshan garden' is singular, so the pronoun must be 'it'. The exam dump reads 'calling it shiny and bright'."
+          },
+          {
+            "index": 2,
+            "verdict": "accept",
+            "why": "'small, so they carry big ideas' is illogical because carrying big ideas contrasts with being small; it does not follow from it. The exam dump reads 'but'."
+          },
+          {
+            "index": 3,
+            "verdict": "accept",
+            "why": "April 31 does not exist. The exam dump reads 'ran through April 6'."
+          },
+          {
+            "index": 4,
+            "verdict": "accept",
+            "why": "This duplicates index 0. It is a real agreement error, and the exam dump confirms 'which is'."
+          },
+          {
+            "index": 5,
+            "verdict": "accept",
+            "why": "This duplicates index 1. The pronoun for the singular 'the Nanshan garden' must be 'it', and the exam dump confirms 'calling it'."
+          }
+        ],
+        "failed": 0
+      },
+      {
+        "id": "z38",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z39",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      },
+      {
+        "id": "z40",
+        "findings": [],
+        "va": [],
+        "vb": [],
+        "failed": 0
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "finalA:Gz35",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ac8b181875120f65d",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944291235,
+      "queuedAt": 1791944291208,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all four files in full and checked every sentence. I…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944471727,
+      "tokens": 89677,
+      "toolCalls": 17,
+      "durationMs": 180216,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z95\",\"loc\":\"¶3 sentence 2\",\"current\":\"which are this year’s theme flower\",\"proposed\":\"which is this year’s theme flower\",\"category\":\"grammar\",\"reason\":\"Subject-verb agreement. 'the iris' is singular (and 'theme flower' is singular), so the verb must be 'is'. The exam paper itself reads 'which is', so this is an unlisted change that introduced an error.\"},{\"pid\":\"z95\",\"loc\":\"¶3…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "finalB:Gz35",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a9be53bc404939a17",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944291235,
+      "queuedAt": 1791944291209,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared every passage word by word with the exam text in…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944451957,
+      "tokens": 89433,
+      "toolCalls": 17,
+      "durationMs": 160445,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z95\",\"loc\":\"¶3 sentence 2\",\"current\":\"which are this\",\"proposed\":\"which is this\",\"category\":\"grammar\",\"reason\":\"Subject–verb agreement: the antecedent \\\"the iris\\\" is singular and so is the complement \\\"this year’s theme flower\\\". The exam paper itself reads \\\"which is\\\".\"},{\"pid\":\"z95\",\"loc\":\"¶3 sentence 4\",\"current\":\"calling them shiny\",\"proposed\":\"calling it shiny\",\"categor…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "finalA:Gz38",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a5a904fbf401eade4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944453812,
+      "queuedAt": 1791944291236,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all three passages in full, sentence by sentence, an…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944535287,
+      "tokens": 78616,
+      "toolCalls": 5,
+      "durationMs": 81475,
+      "resultPreview": "{\"findings\":[],\"notes\":\"I read all three passages in full, sentence by sentence, and compared them with the exam text in the dumps and with the z40 page image (p2). I found no definite errors left, and every applied correction checks out.\\n\\nz38 (Jinan 2025, seven-choose-five):\\n- The five filled sentences (B, C, F, G, E) read smoothly and fit their context. In particular, the \\\"trap\\\" sentence → …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "finalB:Gz38",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ae3bb639aa4e1e38f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944473436,
+      "queuedAt": 1791944291236,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found no definite errors left in z38, z39 or z40, and eve…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944649991,
+      "tokens": 88924,
+      "toolCalls": 15,
+      "durationMs": 176554,
+      "resultPreview": "{\"findings\":[],\"notes\":\"I found no definite errors left in z38, z39 or z40, and every correction in the three headers is correct, minimal and fits its sentence. I checked the texts against the exam dump; z38 was also checked against the page image.\\n\\nz38 (Jinan 2025, 七选五):\\n- The five inserted answer sentences (B, C, F, G, E) all fit their context and connectors. \\\"This is not actually useful for…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "verify-acc:Gz35",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a338b91b65d12cc5c",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944536962,
+      "queuedAt": 1791944473474,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944563332,
+      "tokens": 66375,
+      "toolCalls": 4,
+      "durationMs": 26369,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"The current text matches exactly. 'the iris ... which are this year's theme flower' is wrong because the antecedent and the complement are both singular, so the verb must be 'is'. The exam dump (line 32) reads 'which is'. Same fix as index 5, so apply it only once.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The current text matches exactly. 'the Nansha…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "verify-strict:Gz35",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a471d58b24fa06ae7",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791944564980,
+      "queuedAt": 1791944473474,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam) English papers, 2024-2026. They are written or adapted for 14-15-year-olds: short, simple sentences and a plain style are intended — never flag simplicity. Junior-high students will study and memorise them sentence by sentence, so the English must be COMPLETELY CORRECT. The texts were already proofread once; the correctio…",
+      "promptFramed": true,
+      "lastProgressAt": 1791944601870,
+      "tokens": 68771,
+      "toolCalls": 6,
+      "durationMs": 36890,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"why\":\"'the iris ... which are this year's theme flower' breaks subject-verb agreement, since both the antecedent and the complement are singular. The exam dump reads 'which is', so the file has picked up an error the paper does not have.\"},{\"index\":1,\"verdict\":\"accept\",\"why\":\"The antecedent 'the Nanshan garden' is singular, so the pronoun must be 'it'. T…"
+    }
+  ],
+  "totalTokens": 481796,
+  "totalToolCalls": 64
+}

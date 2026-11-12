@@ -1,0 +1,1587 @@
+{
+  "summary": "Strict proofreading of 中考 reading passages in groups (+canaries): fidelity vs original Word pages, mechanics, grammar, logic; each finding double-verified",
+  "agentCount": 12,
+  "logs": [
+    "kept 37, dropped 10"
+  ],
+  "result": {
+    "kept": [
+      {
+        "pid": "z40",
+        "loc": "[2.5]",
+        "current": "Ravens are good at looking for food alone, too.",
+        "proposed": "Ravens are good at solving real-life problems.",
+        "category": "transcription",
+        "printed": "▲ They use sticks to dig insects out of trees… (gap; Q17 option B = “Ravens are good at solving real-life problems.”, option C = “Ravens are good at looking for food alone, too.”)",
+        "reason": "The header says the gap was filled with option B, but the current text has option C. C does not fit: the paragraph is about solving problems (sticks for insects, cars cracking nuts, multi-step problems), and ¶4 opens with “Their intelligence isn’t just about solving problems”, which looks back to B. Nothing in the passage is about feeding alone. So the documented correction was not applied, and a wrong sentence went in instead.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The header says the gap was filled with option B, but the text has option C. B is the topic sentence for the sticks, nuts and multi-step examples, and ¶4 ('isn't just about solving problems') refers back to it. Nothing in the passage is about feeding alone, so the documented correction was not applied.",
+          "The page and the dump both confirm the gap. The header says option B was filled in, but the text has option C. Only B fits as the topic sentence of the problem-solving paragraph, and ¶4 later refers back to it ('isn't just about solving problems')."
+        ],
+        "printed_v": "▲ They use sticks to dig insects out of trees… (gap). Q17 B = 'Ravens are good at solving real-life problems.', C = 'Ravens are good at looking for food alone, too.'",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[1.2]",
+        "current": "compared to those of monkeys",
+        "proposed": "compared to that of monkeys",
+        "category": "transcription",
+        "printed": "Their intelligence has long been compared to that of monkeys and even humans.",
+        "reason": "The word differs from the page. “that” (singular) correctly refers back to “intelligence”, and “those” is a grammar error that was introduced here.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error, confirmed on the page image and in the dump. The singular 'that' refers to 'intelligence'.",
+          "Transcription error, confirmed on the page. 'that' refers back to the singular 'intelligence'."
+        ],
+        "printed_v": "Their intelligence has long been compared to that of monkeys and even humans.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[2.3]",
+        "current": "Most of the raven chose the tool",
+        "proposed": "Most of the ravens chose the tool",
+        "category": "transcription",
+        "printed": "Most of the ravens chose the tool, even with no food reward at once.",
+        "reason": "The plural -s is missing. “Most of the raven” is ungrammatical, and the page has “ravens”.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error: the plural -s was dropped. Confirmed on the page and in the dump.",
+          "Transcription error, confirmed on the page. The plural -s is missing."
+        ],
+        "printed_v": "Most of the ravens chose the tool, even with no food reward at once.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[3.3]",
+        "current": "They remembers different faces",
+        "proposed": "They remember different faces",
+        "category": "transcription",
+        "printed": "They remember different faces, including those of other ravens and humans.",
+        "reason": "An extra -s was added, which breaks subject–verb agreement. The page has “remember”.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Transcription error: an extra -s was added. Confirmed on the page and in the dump.",
+          "Transcription error, confirmed on the page. The extra -s breaks agreement."
+        ],
+        "printed_v": "They remember different faces, including those of other ravens and humans.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[4.1]",
+        "current": "habitat (栖息池)",
+        "proposed": "habitat (栖息地)",
+        "category": "transcription",
+        "printed": "habitat (栖息地)",
+        "reason": "The Chinese footnote character is wrong. The page has 栖息地 (habitat). 栖息池 is not a word.",
+        "severity": "high",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Wrong Chinese footnote character. The page has 栖息地.",
+          "The footnote character is wrong. The page has 栖息地."
+        ],
+        "printed_v": "habitat (栖息地)",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[2.2]",
+        "current": "including the tool and other useless objects",
+        "proposed": "including the tool and some useless objects",
+        "category": "logic",
+        "printed": "including the tool and other useless objects",
+        "reason": "Error in the paper itself: “other useless objects” implies the tool is also useless, which contradicts the experiment (the tool is the useful item ravens chose).",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'X and other useless Ys' puts the tool among the useless objects. The experiment and Q16 ('seldom chose useless small objects') contrast the tool with the distractors. 'some useless objects' is a minimal fix that removes the contradiction.",
+          "Error in the paper. 'X and other useless Y' presupposes that X is also useless, but the tool is the useful item the ravens kept for later. 'some useless objects' is a minimal fix that keeps the meaning (compare Q16 A, 'useless small objects')."
+        ],
+        "printed_v": "including the tool and other useless objects",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[2.3]",
+        "current": "even with no food reward at once",
+        "proposed": "even with no food reward right away",
+        "category": "word-choice",
+        "printed": "even with no food reward at once",
+        "reason": "Error in the paper itself: “at once” is a verb adverb (= immediately, do something at once) and is unidiomatic after a noun phrase. The intended meaning is “even though no food reward came right away”. This is a borderline case, offered as a minimal fix.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "amend"
+        ],
+        "why": [
+          "'at once' modifies a dynamic verb ('come at once') and is unidiomatic as the predicate of 'no food reward'. It can also be misread as 'simultaneously'. 'right away' is natural in a with-absolute ('there was no reward right away'), stays at junior level and keeps the meaning.",
+          "'at once' after a noun phrase is unidiomatic, and it is ambiguous because it can also mean 'at the same time'. The proposed 'right away' is still an adverb hanging off a noun phrase. 'no immediate food reward' is the clean, standard minimal fix."
+        ],
+        "printed_v": "even with no food reward at once",
+        "amended": [
+          "",
+          "even with no immediate food reward"
+        ]
+      },
+      {
+        "pid": "z12",
+        "loc": "[2.3]",
+        "current": "Unlike other hobbies that require expensive materials or training, you can start collaging with just",
+        "proposed": "Unlike other hobbies that require expensive materials or training, collaging can be started with just",
+        "category": "grammar",
+        "printed": "Unlike other hobbies that require expensive materials or training, you can start collaging with just a magazine, glue, and a pair of scissors.",
+        "reason": "Error in the paper itself: a dangling comparison. “Unlike other hobbies” is attached to “you”, so the sentence compares hobbies with a person. A careful editor would mark this (same kind as the 悬垂结构 in pitfall #16). The fix makes collaging the subject.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The faulty comparison is real: 'other hobbies' is set against 'you'. The passive 'collaging can be started' is stiff, so this uses the same active fix as index 26 to keep the two consistent.",
+          "This is a real dangling comparison: hobbies are contrasted with 'you' (pitfall #16 type). The passive 'collaging can be started' is stiff, so I used the more natural wording from #26 so that both fixes give the same result."
+        ],
+        "printed_v": "Unlike other hobbies that require expensive materials or training, you can start collaging with just a magazine, glue, and a pair of scissors.",
+        "amended": [
+          "Unlike other hobbies that require expensive materials or training, collaging lets you start with just",
+          "Unlike other hobbies that require expensive materials or training, collaging lets you start with just"
+        ]
+      },
+      {
+        "pid": "z12",
+        "loc": "[5.3–5.5]",
+        "current": "enjoy yourself,” as Drewett shares.",
+        "proposed": "enjoy yourself,” Drewett shares.",
+        "category": "grammar",
+        "printed": "Just follow your heart and enjoy yourself,” as Drewett shares.",
+        "reason": "Error in the paper itself: a stand-alone direct quotation cannot be followed by an “as”-clause tag (“…,” as Drewett shares.). The reporting clause should be a plain tag (Drewett shares / says Drewett), like the other quotes in the passage (“says Ms. Drewett”, “Drewett says”).",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "An 'as X says' tag after a quote fits a known saying, not the speaker's own first-person, multi-sentence statement. Here it is awkward. A plain tag ('Drewett shares') matches the other quotes in the passage ('says Ms. Drewett', 'Drewett says').",
+          "An 'as'-clause cannot serve as the attribution tag after a full multi-sentence direct quote. A plain tag ('Drewett shares') matches the passage's other attributions."
+        ],
+        "printed_v": "Just follow your heart and enjoy yourself,” as Drewett shares.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[4.3]",
+        "current": "1 ~ 3℃",
+        "proposed": "1–3℃",
+        "category": "typography",
+        "printed": "Since cities are usually 1 ~ 3℃ hotter than nearby countryside areas",
+        "reason": "Typography in the paper: in English a range is written with an en dash (or “1 to 3”). “~” means “approximately” in English. The spacing is also inconsistent with “0.5~1.5℃” in the same sentence.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "amend"
+        ],
+        "why": [
+          "The tilde as a range mark is Chinese convention. In English '~' means 'approximately'. English uses an en dash. The spacing is also inconsistent with '0.5~1.5℃'. Note that 中考/tools/make_audio.py already reads a digit–digit en dash as 'to'.",
+          "In English '~' means 'approximately', not a range, so an en dash is correct. I also changed ℃ to °C to match #15/#16 so the passage stays consistent (make_audio.py reads digit–digit en dashes as 'to')."
+        ],
+        "printed_v": "Since cities are usually 1 ~ 3℃ hotter than nearby countryside areas",
+        "amended": [
+          "",
+          "1–3°C"
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[4.3]",
+        "current": "0.5~1.5℃",
+        "proposed": "0.5–1.5℃",
+        "category": "typography",
+        "printed": "trees can lower temperatures by about 0.5~1.5℃ in many places",
+        "reason": "Same problem as above: the range should use an en dash, and the two ranges in this sentence should look the same.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "amend"
+        ],
+        "why": [
+          "Same problem as index 9: the range should use an en dash, consistent with the corrected '1–3℃'.",
+          "Same as #9: an en dash for the range, and °C for consistency with #15/#17."
+        ],
+        "printed_v": "trees can lower temperatures by about 0.5~1.5℃ in many places",
+        "amended": [
+          "",
+          "0.5–1.5°C"
+        ]
+      },
+      {
+        "pid": "z14",
+        "loc": "[1.1]",
+        "current": "China’s third and fourth-largest deserts",
+        "proposed": "China’s third- and fourth-largest deserts",
+        "category": "typography",
+        "printed": "is sandwiched between China’s third and fourth-largest deserts",
+        "reason": "Typography in the paper: the compound “third-largest” is shortened before “and”, so it needs a suspended hyphen (third- and fourth-largest). Fact check: the Badain Jaran and Tengger deserts are the 3rd and 4th largest, so the content is correct.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'third-largest' is a compound shortened before 'and', so it needs a suspended hyphen ('third- and fourth-largest'). The facts are right: Badain Jaran and Tengger are the 3rd and 4th largest.",
+          "Standard style needs a suspended hyphen here: 'third- and fourth-largest'. The fact is correct (Badain Jaran is 3rd, Tengger 4th)."
+        ],
+        "printed_v": "is sandwiched between China’s third and fourth-largest deserts",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z11",
+        "loc": "[3.4]",
+        "current": "They then process (处理) the question and send it back",
+        "proposed": "They then process (处理) the question and send the answer back",
+        "category": "logic",
+        "printed": "They then process (处理) the question and send it back to our computers as data.",
+        "reason": "Possible logic slip in the paper: “it” can only refer to “the question”, but servers send back the result or answer, not the question. This is borderline, so it is low severity. The parent may keep it.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'it' can only mean 'the question', but servers send back results, not the question. 'send the answer back' is a minimal fix for this logic slip in the paper.",
+          "Logic slip in the paper: 'it' = the question, but the servers send back the result. 'the answer' fixes this with minimal change."
+        ],
+        "printed_v": "They then process (处理) the question and send it back to our computers as data.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "¶2/¶3",
+        "current": "Ravens are good at",
+        "proposed": "Start a new paragraph before this sentence. In the print, the ▲ sentence plus 'They use sticks… reach food.' is a separate, indented paragraph, which gives the passage 5 paragraphs, not 4.",
+        "category": "paragraphing",
+        "printed": "(new indented paragraph) ▲ They use sticks to dig insects out of trees, and some even drop nuts (坚果) on roads so cars can crack them open. They can solve problems… reach food.",
+        "reason": "A paragraph break was lost. The page image and the dump both start a new paragraph at the ▲ gap, but the current text joins it to the experiment paragraph.",
+        "severity": "high",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "A paragraph break was lost, confirmed on the page image and in the dump (lines 5/6). The break goes before the filled sentence 'Ravens are good at solving real-life problems.'",
+          "Confirmed by the page image and the dump (line 6 is a separate paragraph). The current text merges it into the experiment paragraph."
+        ],
+        "printed_v": "After '…get the treat later.' a new indented paragraph starts: '▲ They use sticks to dig insects out of trees… reach food.' The passage has 5 paragraphs.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[4.3]",
+        "current": "usually 1 ~ 3℃ hotter",
+        "proposed": "usually 1–3°C hotter",
+        "category": "typography",
+        "printed": "Since cities are usually 1 ~ 3℃ hotter than nearby countryside areas,",
+        "reason": "The tilde '~' marks a range only in Chinese typography. In English a range takes an en dash (or 'to'). The spacing is also inconsistent with the same construction later in the sentence ('0.5~1.5℃', no spaces). make_audio.py reads a digit–digit en dash as 'to', but it cannot read '~' or ℃.",
+        "severity": "medium",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "amend",
+          "accept"
+        ],
+        "why": [
+          "The tilde-to-en-dash fix is right (same as index 9). The ℃ → °C change is not needed (see index 15), and make_audio.py already handles ℃.",
+          "A tilde range is Chinese typography. English uses an en dash and °C. (The claim that make_audio cannot read it is wrong, but the fix is right.)"
+        ],
+        "printed_v": "Since cities are usually 1 ~ 3℃ hotter than nearby countryside areas,",
+        "amended": [
+          "usually 1–3℃ hotter",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[4.3]",
+        "current": "about 0.5~1.5℃ in many places",
+        "proposed": "about 0.5–1.5°C in many places",
+        "category": "typography",
+        "printed": "trees can lower temperatures by about 0.5~1.5℃ in many places,",
+        "reason": "Same as above: a Chinese-style tilde range plus the CJK ℃ character. English uses an en dash and °C. It must match the corrected '1–3°C'.",
+        "severity": "medium",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "amend",
+          "accept"
+        ],
+        "why": [
+          "The en-dash fix is right (same as index 10). Keep ℃ for consistency with index 15 and with other passages such as z27's '15℃'.",
+          "Same as #16. It also makes the two ranges consistent."
+        ],
+        "printed_v": "trees can lower temperatures by about 0.5~1.5℃ in many places,",
+        "amended": [
+          "about 0.5–1.5℃ in many places",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[4.1]",
+        "current": "from nearly 9,000 cities and the findings were surprising",
+        "proposed": "from nearly 9,000 cities, and the findings were surprising",
+        "category": "punctuation",
+        "printed": "…tree cover data (数据) from nearly 9,000 cities and the findings were surprising.",
+        "reason": "Two independent clauses with different subjects are joined by 'and' after a long first clause. Without the comma, readers first parse 'cities and the findings' as one compound object (a garden-path reading). A copy editor would add the comma.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "This joins two long independent clauses with different subjects. Without the comma, 'cities and the findings' reads as one compound object (a garden path). The standard comma before 'and' fixes it.",
+          "These are two independent clauses after a long first clause. Without the comma, 'cities and the findings' reads at first as a compound object (a garden path). A copy editor would add the comma."
+        ],
+        "printed_v": "…tree cover data (数据) from nearly 9,000 cities and the findings were surprising.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[2.2]",
+        "current": "slowly give out the stored heat back into the air",
+        "proposed": "slowly give the stored heat back into the air",
+        "category": "word-choice",
+        "printed": "Instead of cooling quickly after sunset, these materials slowly give out the stored heat back into the air.",
+        "reason": "The verb has two particles: 'give out … back into' mixes 'give out' (emit) with 'give … back'. A teacher would mark this. Dropping 'out' is the smallest fix ('release' instead of 'give out' would also work).",
+        "severity": "low",
+        "lens": [
+          "mechanics",
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "amend"
+        ],
+        "why": [
+          "'give out … back into' stacks two particles and mixes 'give out' (emit) with 'give … back'. Dropping 'out' leaves the natural 'give the stored heat back into the air' and keeps the sense of return.",
+          "'give out … back into' stacks two conflicting directional particles, and a teacher would mark it. Dropping 'back' is just as minimal as dropping 'out'. It keeps the curriculum phrase 'give out' (散发), and it avoids 'give … back', which implies returning heat the air never gave."
+        ],
+        "printed_v": "these materials slowly give out the stored heat back into the air.",
+        "amended": [
+          "",
+          "slowly give out the stored heat into the air"
+        ]
+      },
+      {
+        "pid": "z14",
+        "loc": "[1.5]",
+        "current": "also called GenZers",
+        "proposed": "also called Gen Zers",
+        "category": "spelling",
+        "printed": "most of whom were aged between 18 and 30, also called GenZers.",
+        "reason": "'GenZers' written closed up is not a standard spelling. Dictionaries (Merriam-Webster, Cambridge, Collins) list 'Gen Zer', and China Daily's own reports on the Minqin volunteers write 'Gen-Zers'. The collection's z24 (深圳 C) writes 'Gen Z' with a space. The second occurrence in ¶5 needs the same fix.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The dictionary form is 'Gen Zer' (Merriam-Webster, Cambridge, Collins; AP 'Gen Zers'). The closed 'GenZers' is non-standard, and students will memorise the spelling. Apply it to both occurrences.",
+          "The closed form 'GenZer' is not standard. Dictionaries (Merriam-Webster, Cambridge, Dictionary.com) give 'Gen Zer'."
+        ],
+        "printed_v": "most of whom were aged between 18 and 30, also called GenZers.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z14",
+        "loc": "[5.2]",
+        "current": "“GenZers are more confident",
+        "proposed": "“Gen Zers are more confident",
+        "category": "spelling",
+        "printed": "Ma Junhe said, “GenZers are more confident in achieving their dreams.",
+        "reason": "Same as ¶1: the standard spelling is 'Gen Zers'. Keep both occurrences consistent.",
+        "severity": "low",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same as index 20, so both occurrences match.",
+          "Same spelling fix as #20. The two occurrences must be consistent."
+        ],
+        "printed_v": "Ma Junhe said, “GenZers are more confident in achieving their dreams.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "¶2/¶3",
+        "current": "Ravens are good at looking",
+        "proposed": "Start a new paragraph before this sentence (the filled gap sentence). After the fix the paragraph begins 'Ravens are good at solving real-life problems. They use sticks…'",
+        "category": "paragraphing",
+        "printed": "The ▲ gap begins a new indented paragraph: '▲ They use sticks to dig insects out of trees, …'",
+        "reason": "In the paper the gap sentence plus 'They use sticks… reach food.' is its own paragraph (¶3). The current text merges it into the experiment paragraph, so the passage has 4 paragraphs instead of 5.",
+        "severity": "high",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of index 14, confirmed on the page image: the passage has 5 paragraphs. The new paragraph should begin 'Ravens are good at solving real-life problems. They use sticks…'",
+          "Duplicate of #14, confirmed on the page. The paragraph break was lost (the paper has 5 paragraphs, the current text 4)."
+        ],
+        "printed_v": "The ▲ gap begins a new indented paragraph: '▲ They use sticks to dig insects out of trees, … reach food.'",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[2.4]",
+        "current": "how to use the tools",
+        "proposed": "how to use the tool",
+        "category": "grammar",
+        "printed": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "reason": "This is an error in the paper itself. The experiment mentions only one tool ('use a tool', 'including the tool', 'chose the tool'), so the plural 'the tools' has no antecedent and the number is inconsistent.",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "The experiment mentions only one tool ('a tool', 'the tool', 'chose the tool'), so the definite plural 'the tools' has no antecedent. This is a number error in the paper.",
+          "Only one tool appears in the experiment ('a tool', 'the tool' ×2), so the definite plural 'the tools' has no antecedent. This is a number inconsistency in the paper."
+        ],
+        "printed_v": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z11",
+        "loc": "[1.1]",
+        "current": "send an email, a message, a photo or post something on the Internet",
+        "proposed": "send an email, a message or a photo, or post something on the Internet",
+        "category": "grammar",
+        "printed": "Every time you send an email, a message, a photo or post something on the Internet, you save paper.",
+        "reason": "The parallelism is faulty. The list mixes noun objects of 'send' (an email, a message, a photo) with a second verb phrase (post something) in one series. The nouns need their own conjunction ('a message or a photo'), followed by ', or post something'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Faulty parallelism: 'or' joins the noun 'a photo' to the verb phrase 'post something'. 'send an email, a message or a photo, or post something' is the minimal correct form.",
+          "Faulty parallelism: the noun objects of 'send' and a second verb phrase are mixed into one series. The proposed punctuation and conjunctions are the standard minimal fix."
+        ],
+        "printed_v": "Every time you send an email, a message, a photo or post something on the Internet, you save paper.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z11",
+        "loc": "[5.3]",
+        "current": "think before we see a film online: do you really need",
+        "proposed": "think before you see a film online: do you really need",
+        "category": "grammar",
+        "printed": "Another way is to think before we see a film online: do you really need to see it for the tenth time?",
+        "reason": "The person shifts from 'we' to 'you' within one sentence. The paragraph addresses 'you' ('update your apps'), so 'we' should be 'you'.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'we' and 'you' name the same viewer in one sentence. The paragraph addresses 'you' ('update your apps'), so 'you' is the minimal fix.",
+          "Pronoun shift from 'we' to 'you' inside one sentence, which teachers routinely mark. The paragraph addresses 'you' ('update your apps'), so 'you' is right."
+        ],
+        "printed_v": "Another way is to think before we see a film online: do you really need to see it for the tenth time?",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z12",
+        "loc": "[2.3]",
+        "current": "you can start collaging with just a magazine",
+        "proposed": "collaging lets you start with just a magazine",
+        "category": "grammar",
+        "printed": "Unlike other hobbies that require expensive materials or training, you can start collaging with just a magazine, glue, and a pair of scissors.",
+        "reason": "This is a faulty comparison (a dangling 'unlike'). As written, 'other hobbies' is contrasted with 'you'. It should be contrasted with collaging: 'Unlike other hobbies that require…, collaging lets you start with just a magazine, glue, and a pair of scissors.'",
+        "severity": "medium",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Faulty 'unlike' comparison: hobbies are compared with 'you'. 'collaging lets you start with just…' fixes it with a small change and keeps the meaning.",
+          "A real dangling 'unlike' comparison. 'collaging lets you start with just…' fixes it naturally and keeps the meaning."
+        ],
+        "printed_v": "Unlike other hobbies that require expensive materials or training, you can start collaging with just a magazine, glue, and a pair of scissors.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[5.5]",
+        "current": "ways of cutting greenhouse gas (气体) remain necessary",
+        "proposed": "ways of cutting greenhouse gases (气体) remain necessary",
+        "category": "grammar",
+        "printed": "At the same time, ways of cutting greenhouse gas (气体) remain necessary.",
+        "reason": "'greenhouse gas' is a countable noun (Cambridge, Collins [C]), and the bare singular 'cutting greenhouse gas' is ungrammatical. Use the plural 'greenhouse gases' (or 'greenhouse gas emissions').",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "'greenhouse gas' is a countable noun, so the bare singular after 'cutting' is wrong. 'greenhouse gases (气体)' is correct, and the gloss still fits.",
+          "'greenhouse gas' is countable, so the bare singular is non-native. 'greenhouse gases' is the standard minimal fix, and the gloss still fits."
+        ],
+        "printed_v": "At the same time, ways of cutting greenhouse gas (气体) remain necessary.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[4.3]",
+        "current": "1 ~ 3℃ hotter than nearby countryside areas, trees can lower temperatures by about 0.5~1.5℃",
+        "proposed": "1–3℃ hotter than nearby countryside areas, trees can lower temperatures by about 0.5–1.5℃",
+        "category": "typography",
+        "printed": "Since cities are usually 1 ~ 3℃ hotter than nearby countryside areas, trees can lower temperatures by about 0.5~1.5℃ in many places",
+        "reason": "English marks numeric ranges with an en dash (or 'to'), not a tilde, and the two ranges are spaced inconsistently ('1 ~ 3' vs '0.5~1.5'). The tilde may also be read aloud wrongly.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "accept",
+          "amend"
+        ],
+        "why": [
+          "Combined form of indexes 9 and 10. It uses an en dash for both ranges and keeps ℃, consistent with the amended 16/17.",
+          "En-dash ranges are correct. I amended this to °C so it matches #15–#17 and the whole passage stays consistent."
+        ],
+        "printed_v": "Since cities are usually 1 ~ 3℃ hotter than nearby countryside areas, trees can lower temperatures by about 0.5~1.5℃ in many places",
+        "amended": [
+          "",
+          "1–3°C hotter than nearby countryside areas, trees can lower temperatures by about 0.5–1.5°C"
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[5.5]",
+        "current": "cutting greenhouse gas (气体) remain necessary",
+        "proposed": "cutting greenhouse gases (气体) remain necessary",
+        "category": "grammar",
+        "printed": "ways of cutting greenhouse gas (气体) remain necessary",
+        "reason": "\"Greenhouse gas\" is a countable noun, so \"cutting greenhouse gas\" with no article and no plural is non-native. The standard forms are \"greenhouse gases\" or \"greenhouse gas emissions\". The gloss (气体) still fits.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of index 27: the countable noun needs the plural 'greenhouse gases'.",
+          "Duplicate of #27. The bare singular count noun is wrong."
+        ],
+        "printed_v": "ways of cutting greenhouse gas (气体) remain necessary",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z40",
+        "loc": "[2.4]",
+        "current": "remember how to use the tools and plan ahead",
+        "proposed": "remember how to use the tool and plan ahead",
+        "category": "logic",
+        "printed": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "reason": "Inconsistent number: the experiment involves a single tool (\"use a tool\", \"the tool\", \"chose the tool\"), and then the plural \"the tools\" appears with no antecedent. Error in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Duplicate of index 23: there is only one tool in the experiment, so it should be 'the tool'.",
+          "Duplicate of #23. Only one tool is mentioned."
+        ],
+        "printed_v": "This showed they could remember how to use the tools and plan ahead to get the treat later.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z11",
+        "loc": "[5.3]",
+        "current": "think before we see a film online",
+        "proposed": "think before you watch a film online",
+        "category": "word-choice",
+        "printed": "Another way is to think before we see a film online: do you really need to see it for the tenth time?",
+        "reason": "The person shifts within one sentence (\"before we see… do you really need…\"), and the paragraph addresses \"you\" (\"update your apps\"). Also, the passage itself uses \"watch a video online\", and \"watch\" is the natural verb with \"online\". Minor error in the paper itself.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "amend",
+          "amend"
+        ],
+        "why": [
+          "The we/you shift is real (same as index 25). Changing 'see' to 'watch' is only a style preference: 'see a film' is idiomatic, the same sentence says 'see it', and Q15 says 'Seeing a film online'.",
+          "The we/you pronoun shift is a real error (same as #25). Changing 'see' to 'watch' is only a style preference, because 'see a film' is idiomatic and matches 'see it for the tenth time' later in the sentence. So I made only the pronoun fix."
+        ],
+        "printed_v": "Another way is to think before we see a film online: do you really need to see it for the tenth time?",
+        "amended": [
+          "think before you see a film online",
+          "think before you see a film online"
+        ]
+      },
+      {
+        "pid": "z17",
+        "loc": "¶4 last sentence",
+        "current": "proud of our culture.” Li added.",
+        "proposed": "proud of our culture,” Li added.",
+        "category": "punctuation",
+        "printed": "I felt very proud of our culture.” Li added.",
+        "reason": "Error in the paper itself. A quotation followed by a speech tag (Li added) must end with a comma inside the closing quote, not a full stop. As printed, “Li added.” is a fragment standing on its own. The paragraph's first quotation already uses the correct pattern (…a smooth feeling,” said Li Ran.).",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Checked against the page image and the dump: the paper prints it this way, so this is an error in the paper. When a speech tag follows a quote, the quote must close with a comma. As printed, “Li added.” is a fragment. The paragraph's own “…a smooth feeling,” said Li Ran. uses the correct pattern. The fix is correct and minimal. It is the same fix as index 5.",
+          "Confirmed on the page image. When a speech tag follows the quotation, the quote must end with a comma inside the closing mark. As printed, “Li added.” is a fragment. The same paragraph uses the correct pattern (…smooth feeling,” said Li Ran). This duplicates #5."
+        ],
+        "printed_v": "…I felt very proud of our culture.” Li added.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z19",
+        "loc": "¶7 first sentence",
+        "current": "a volunteer, Paul Green started",
+        "proposed": "a volunteer, Paul Green, started",
+        "category": "punctuation",
+        "printed": "To know more about the ocean, a volunteer, Paul Green started the Big Bag Project in 2025.",
+        "reason": "Error in the paper itself. “Paul Green” is a non-restrictive appositive to “a volunteer”, so it needs a comma on both sides. With only the opening comma, the sentence reads as if the subject were split off by a single comma. A minimal fix is to add the closing comma (another option is “volunteer Paul Green started”).",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Confirmed in the page image. “Paul Green” is a non-restrictive appositive, and its commas must come in pairs. Adding the closing comma before “started” is the minimal correct fix. It is the same fix as index 6.",
+          "Confirmed on the page image. “Paul Green” is a non-restrictive appositive, so it needs a comma on both sides. Without the closing comma, a single comma separates the subject from its verb. Adding the closing comma is the minimal fix. This duplicates #6."
+        ],
+        "printed_v": "To know more about the ocean, a volunteer, Paul Green started the Big Bag Project in 2025.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z15",
+        "loc": "¶7 first sentence",
+        "current": "introducing the man-made bacteria into the environment",
+        "proposed": "introducing the bacteria into the environment",
+        "category": "logic",
+        "printed": "Some scientists advise against introducing the man-made bacteria into the environment at present, which could be harmful.",
+        "reason": "Error in the paper itself. The passage says the bacterium is a naturally occurring soil bacterium that researchers discovered (¶1 “discovered a new bacterium”; ¶2 “found the new soil bacterium. It was found in an area with a lot of plastic wastes”). Nothing says it was engineered or made by people, so “man-made” contradicts the rest of the text. The source (VOA Learning English, 2020, Pseudomonas putida found at a plastic-waste site) also describes a natural strain. Dropping “man-made” fixes the contradiction without changing the meaning.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Confirmed in the dump. The passage says the bacterium was found in soil at a plastic-waste site, so “the man-made bacteria” contradicts the text. The source VOA article (2020) has a general warning about “man-made enzymes or microorganisms”. The adaptation narrowed this to “the man-made bacteria”, which wrongly calls the discovered bacterium man-made. Deleting “man-made” is minimal and keeps the meaning.",
+          "Confirmed on the page image. ¶1–2 say the bacterium was discovered and found in soil at a plastic-waste site, so it is natural. Calling it “man-made” contradicts the passage and gives students a false fact. Dropping “man-made” is minimal and keeps the meaning. No exam question depends on the word (Q15 options do not)."
+        ],
+        "printed_v": "Some scientists advise against introducing the man-made bacteria into the environment at present, which could be harmful.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z17",
+        "loc": "¶3 last sentence",
+        "current": "met their teenager fans",
+        "proposed": "met their teenage fans",
+        "category": "word-choice",
+        "printed": "students made the club a fun place where ancient poets met their teenager fans.",
+        "reason": "Error in the paper itself. The standard adjective form before a noun is “teenage” (teenage fans, teenage readers). Using the noun “teenager” as a modifier is non-standard, and a teacher would correct it. Students are memorising this text, so the standard form matters.",
+        "severity": "medium",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Confirmed in the page image. The standard attributive form is “teenage fans”. A teacher or editor would mark “teenager fans”. The fix is a one-word change.",
+          "Confirmed on the page image. The standard attributive form is “teenage” (teenage fans). Using “teenager” as a modifier is a learner error that a teacher would correct, and students memorise this text."
+        ],
+        "printed_v": "…where ancient poets met their teenager fans.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z18",
+        "loc": "¶5 first sentence",
+        "current": "this old great nation",
+        "proposed": "this great old nation",
+        "category": "grammar",
+        "printed": "China’s postal history shows how this old great nation has developed and progressed.",
+        "reason": "Error in the paper itself. Standard English adjective order puts an opinion adjective (great) before an age adjective (old), so “this great old nation” is correct (“this great and ancient nation” would also work). “Old great nation” sounds wrong to a native speaker. Adjective order is taught at junior-high level. Low severity because the meaning is clear.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "mechanics",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Confirmed in the dump. “old great nation” breaks the normal adjective order (opinion before age) and sounds non-native. “this great old nation” is the minimal reorder and keeps the meaning.",
+          "Confirmed on the page image. “Old great” breaks normal adjective order: opinion and size come before age. That is a rule taught at this level, and “old great nation” sounds wrong to native speakers. Reordering to “this great old nation” is the minimal fix."
+        ],
+        "printed_v": "China’s postal history shows how this old great nation has developed and progressed.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z17",
+        "loc": "¶4 last sentence",
+        "current": "I felt very proud of our culture.” Li added.",
+        "proposed": "I felt very proud of our culture,” Li added.",
+        "category": "punctuation",
+        "printed": "I felt very proud of our culture.” Li added.",
+        "reason": "When a quotation is followed by a speech tag (Li added), the quoted sentence must end with a comma inside the quotes, not a full stop. The full stop splits the tag off as a fragment, \"Li added.\" Earlier in the same passage the paper does it correctly (…lines,” said Alice / …feeling,” said Li Ran).",
+        "severity": "high",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same real error as index 0, confirmed in the page image. Before a speech tag, the comma goes inside the closing quote. The replacement is correct. It duplicates index 0, so apply it once.",
+          "This duplicates #0 with the same fix. The full stop before a speech tag must be a comma inside the quotes. Confirmed on the page image."
+        ],
+        "printed_v": "…I felt very proud of our culture.” Li added.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z19",
+        "loc": "¶7 first sentence",
+        "current": "a volunteer, Paul Green started the Big Bag Project",
+        "proposed": "a volunteer, Paul Green, started the Big Bag Project",
+        "category": "punctuation",
+        "printed": "To know more about the ocean, a volunteer, Paul Green started the Big Bag Project in 2025.",
+        "reason": "The appositive \"Paul Green\" opens with a comma but has no closing comma, so the sentence reads \"a volunteer, Paul Green started…\". Commas around a non-restrictive appositive must come in pairs, so the closing comma goes before the verb.",
+        "severity": "medium",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "accept",
+          "accept"
+        ],
+        "why": [
+          "Same real error as index 1, confirmed in the page image. The appositive needs a closing comma. The replacement is correct. It duplicates index 1, so apply it once.",
+          "This duplicates #1 with the same fix. Commas around a non-restrictive appositive come in pairs, so the closing comma goes before “started”. Confirmed on the page image."
+        ],
+        "printed_v": "To know more about the ocean, a volunteer, Paul Green started the Big Bag Project in 2025.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "dropped": [
+      {
+        "pid": "z14",
+        "loc": "[2.4]",
+        "current": "planting trees with stylish sports sunglasses",
+        "proposed": "planting trees wearing stylish sports sunglasses",
+        "category": "word-choice",
+        "printed": "She filmed a group of young volunteers, including herself, planting trees with stylish sports sunglasses",
+        "reason": "Possible error in the paper: after the verb phrase “planting trees”, “with sunglasses” reads as the instrument (planting trees using sunglasses). “wearing” (or “in”) gives the intended meaning. This is borderline, so it is low severity.",
+        "severity": "low",
+        "lens": [
+          "fidelity",
+          "grammar",
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "'with' meaning 'having on or wearing' is standard English ('a man with a hat', 'dancing with sunglasses'), and the meaning is clear. Changing it would be a style preference, not a correction.",
+          "After the verb phrase, 'with sunglasses' reads as the instrument of planting. 'wearing' makes it clear that the volunteers have the sunglasses on. It is a one-word, minimal fix."
+        ],
+        "printed_v": "planting trees with stylish sports sunglasses, enjoying local noodles in their tent",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z13",
+        "loc": "[1.3]",
+        "current": "as much as 7℃ hotter",
+        "proposed": "as much as 7°C hotter",
+        "category": "typography",
+        "printed": "Some cities can be as much as 7℃ hotter.",
+        "reason": "℃ (U+2103) is a CJK compatibility character. English typesetting writes degree sign + C (°C). The project's reading normaliser (中考/tools/make_audio.py) converts only '°C' to 'degrees Celsius'. The shared gaokao_tts read_text does not recognise ℃ and reports it as a leftover symbol, so this has to be fixed anyway. z27 (重庆 D, '15℃') has the same issue.",
+        "severity": "medium",
+        "lens": [
+          "mechanics"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "℃ is a valid Unicode character for degrees Celsius and is not an English error. The technical claim is also false: 中考/tools/make_audio.py read_text already replaces ℃ with °C and reads it as 'degrees Celsius'.",
+          "℃ (U+2103) is a CJK compatibility character. In a Latin font it falls back to a wide CJK glyph, and English typesetting uses °C. Note that the stated reading problem is false: 中考/tools/make_audio.py already maps ℃ to °C and '~' to 'to'. So this is a typographic fix only, but still correct."
+        ],
+        "printed_v": "Some cities can be as much as 7℃ hotter.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z14",
+        "loc": "[1.5]",
+        "current": "most of whom were aged between 18 and 30, also called GenZers",
+        "proposed": "most of whom were young people aged between 18 and 30, also called GenZers",
+        "category": "grammar",
+        "printed": "Last year, more than 6,000 volunteers planted suosuo trees there, most of whom were aged between 18 and 30, also called GenZers.",
+        "reason": "The appositive 'also called GenZers' has no noun to attach to: it follows the adjective phrase 'aged between 18 and 30'. Adding a head noun ('young people aged between 18 and 30, also called GenZers') gives it one.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "amend"
+        ],
+        "why": [
+          "The participle phrase 'also called GenZers' attaches to the clause subject 'most of whom' (people). That is a grammatical, common journalistic construction, so adding 'young people' is a style choice.",
+          "'also called …' has no noun head after the adjective phrase. Adding 'young people' gives it one. I included the 'Gen Zers' spelling from #20 so the two overlapping fixes don't conflict."
+        ],
+        "printed_v": "Last year, more than 6,000 volunteers planted suosuo trees there, most of whom were aged between 18 and 30, also called GenZers.",
+        "amended": [
+          "",
+          "most of whom were young people aged between 18 and 30, also called Gen Zers"
+        ]
+      },
+      {
+        "pid": "z15",
+        "loc": "[1.2]",
+        "current": "ending up in the landfills (垃圾填埋场) and polluting oceans",
+        "proposed": "ending up in landfills (垃圾填埋场) and polluting oceans",
+        "category": "grammar",
+        "printed": "a flood of plastics that are ending up in the landfills (垃圾填埋场) and polluting oceans.",
+        "reason": "This is a generic statement, so the plural takes no article: 'end up in landfills', parallel to the bare 'oceans' in the same phrase and to 'sent to landfills' in ¶3. 'The landfills' implies particular landfills that were never mentioned.",
+        "severity": "low",
+        "lens": [
+          "grammar"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Generic “the landfills” is acceptable English, like the generic “the oceans” (compare “keep it out of the landfills”). The source has “the world’s landfills”. Dropping the article is a style preference, not the correction of a definite error.",
+          "Confirmed on the page image. This is a generic statement, and “the landfills” clashes with the bare “oceans” it is coordinated with and with “sent to landfills” in ¶3. No particular landfills were mentioned before. A copy editor would make it “in landfills”, which is also the wording of the VOA source as I remember it (the source site was unreachable). Low severity."
+        ],
+        "printed_v": "a flood of plastics that are ending up in the landfills (垃圾填埋场) and polluting oceans.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z18",
+        "loc": "[5.2]",
+        "current": "fly to the moon and other planets in outer space",
+        "proposed": "fly to the moon and planets in outer space",
+        "category": "fact",
+        "printed": "Looking forward, will China’s postal service fly to the moon and other planets in outer space?",
+        "reason": "'X and other Ys' says X is a Y. Here it suggests the moon is a planet, but the moon is a satellite. Dropping 'other' keeps the meaning and removes the false implication. Low severity because 'other planets' can also be read as 'planets other than Earth'.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "“other planets” is the idiomatic way to say planets other than Earth. The paper's own Q29 option A uses it the same way (“live on other planets”). The phrase is not a factual error. The proposed “the moon and planets in outer space” reads worse.",
+          "Confirmed on the page image. “The moon and other planets” implies the moon is a planet, which is a factual slip that teachers routinely correct. “The moon and planets in outer space” removes the false implication and keeps the meaning."
+        ],
+        "printed_v": "Looking forward, will China’s postal service fly to the moon and other planets in outer space?",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z15",
+        "loc": "[3.1]",
+        "current": "3.5 million tons of Europe’s plastics last year",
+        "proposed": "3.5 million tons of Europe’s plastics in 2015",
+        "category": "fact",
+        "printed": "It was reported that polyurethane made up 3.5 million tons of Europe’s plastics last year.",
+        "reason": "The source (VOA Learning English 2020, citing AFP and the Frontiers in Microbiology study) gives the 3.5-million-ton figure for 2015. The adaptation changed the year to 'last year', which in a 2026 paper means 2025 (or 2019 even relative to the 2020 article), so the date is wrong. Low severity: the passage is internally consistent and no question depends on the year.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "The source (VOA, citing AFP) gives the figure for 2015. But the passage tells its story in an undated present (“Recently, researchers have discovered…”), so “last year” is relative to that and the passage is consistent with itself. The figure is also roughly in line with current European polyurethane volumes. This is not a definite error, and adding “in 2015” next to “Recently” is a content change rather than a correction.",
+          "Confirmed on the page image. The 3.5-million-ton figure comes from the 2020 Helmholtz/Frontiers study, reported by AFP and VOA, which gives it for 2015. In a 2026 paper, “last year” states something false (2025). A study published in 2020 cannot report that figure. “In 2015” is a minimal factual fix, and no question depends on the year. I checked the year from memory only: web search budget was exhausted and the VOA site could not be reached."
+        ],
+        "printed_v": "It was reported that polyurethane made up 3.5 million tons of Europe’s plastics last year.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z16",
+        "loc": "[1.1]",
+        "current": "Did you notice how nature sometimes repeats itself?",
+        "proposed": "Have you noticed how nature sometimes repeats itself?",
+        "category": "grammar",
+        "printed": "Did you notice how nature sometimes repeats itself? Something that repeats is called a pattern.",
+        "reason": "This opening question asks about general experience up to now. There is no specific past occasion to refer back to, so standard usage (and what Chinese junior-high teachers teach) needs the present perfect: 'Have you (ever) noticed…'. Plain past 'Did you notice' without 'ever' refers to one particular past moment. Low severity because informal American English sometimes allows the simple past here.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "In American English the simple past is standard in an experience question like this (“Did you notice/ever notice…?”). The header says to keep American usage. Changing it to the present perfect is a preference, not the fix of an error.",
+          "Confirmed on the page image. This is narrative prose, not a quotation. The question asks about the reader's general experience up to now, with no past time frame, so standard written English and the junior-high curriculum call for the present perfect, “Have you noticed”. Simple past without “ever” is colloquial American English that points to one particular past moment. The fix introduces no risk. Low severity."
+        ],
+        "printed_v": "Did you notice how nature sometimes repeats itself? Something that repeats is called a pattern.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z17",
+        "loc": "[3.1]",
+        "current": "Besides, they used simple instruments",
+        "proposed": "Besides, students used simple instruments",
+        "category": "logic",
+        "printed": "Besides, they used simple instruments like drums to experience the rhythm (节奏) of the poems.",
+        "reason": "The previous sentence's subject 'They' means the cards (Q22 tests exactly this; answer A Cards). The very next 'they' switches to the students without a new antecedent, so grammatically it points back to the cards, which cannot play drums. Naming 'students' (as the paragraph's last sentence does) removes the faulty reference.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Readers easily resolve the pronoun. The nearest human antecedent is “the exchange students” at the end of the previous sentence, and the next sentence quotes Alice, an exchange student. Cards cannot play drums, so nobody misreads it. Two “they”s with different referents is at most a style matter.",
+          "Confirmed on the page image. The sentence just before has subject “They” = the cards, and Q22 makes students identify exactly that. The next sentence opens with “they” meaning the students, with no new antecedent. That is an unclear pronoun reference a careful editor would fix. “Students” matches the paragraph's last sentence (students made the club…). It is minimal and does not change the meaning."
+        ],
+        "printed_v": "Besides, they used simple instruments like drums to experience the rhythm (节奏) of the poems.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z17",
+        "loc": "[1.2]",
+        "current": "it became an amazing trip",
+        "proposed": "it became an amazing journey",
+        "category": "word-choice",
+        "printed": "But for a group of exchange students in China, it became an amazing trip.",
+        "reason": "'it' means learning Chinese poems, an experience rather than physical travel. The usual figurative word is 'journey' (旅程). 'trip' means actual travel or, informally, a drug trip or an ego trip. Low severity: informal 'what a trip' exists.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "Figurative “trip” for an exciting experience is acceptable, and these students are in fact on a stay abroad. “journey” is a style preference, not the fix of a wrong word.",
+          "Confirmed on the page image. “It” here is learning Chinese poems, a process rather than travel. The standard figurative word is “journey”. “Trip” for an experience is slang (“what a trip”) and is the wrong word in a passage students will memorise. Low severity."
+        ],
+        "printed_v": "But for a group of exchange students in China, it became an amazing trip.",
+        "amended": [
+          "",
+          ""
+        ]
+      },
+      {
+        "pid": "z18",
+        "loc": "[2.6]",
+        "current": "send packages on festivals",
+        "proposed": "send packages during festivals",
+        "category": "grammar",
+        "printed": "Friends and relatives could send packages on festivals to greet each other.",
+        "reason": "'on festivals' is a non-native preposition choice. With festival periods, standard English uses 'during festivals' or 'at festival time' ('on' goes with a named day, e.g. 'on Christmas Day'). Low severity.",
+        "severity": "low",
+        "lens": [
+          "logic"
+        ],
+        "votes": [
+          "reject",
+          "accept"
+        ],
+        "why": [
+          "“on festivals” works like “on holidays” (on festival days). It may be less idiomatic than “during festivals”, but it is not a definite error a teacher would mark. This is a style preference.",
+          "Confirmed on the page image. “On festivals” is a non-native preposition choice: “on” goes with a named day, and festival periods take “during” (or “at festival time”). A copy editor would mark it, and “during festivals” is the minimal fix. Low severity."
+        ],
+        "printed_v": "Friends and relatives could send packages on festivals to greet each other.",
+        "amended": [
+          "",
+          ""
+        ]
+      }
+    ],
+    "failed": [],
+    "agentFail": [],
+    "notes": [
+      {
+        "g": [
+          "z11",
+          "z12",
+          "z40",
+          "z13",
+          "z14"
+        ],
+        "notes": {
+          "fidelity": "Method: for each passage I read the whole file (header + text), looked at the listed page image, and compared the text with the full-text dump of the paper. The comparison was done by script, character by character and word by word, after normalising only curly/straight quotes. I also checked each passage visually against the image. I checked the start and end points, the paragraph count and breaks, the numbers, names, footnote characters and special characters (℃, ~, %, —).\n\nz11 (山东 D): the original has 5 paragraphs (D篇, p2, ending before Q12), and all 5 were compared. The text matches the page and the dump exactly. Paragraphing, start and end are correct. Sentences I kept after close checks: “Every time you send an email, a message, a photo or post something…” (the list is loose but grammatical); “they need to be cool” (acceptable); “All information, pictures and music … travel” (plural agreement is fine); “The faster the search engine works, the bigger the use of electricity” (fine); the two “So again,” sentences (style only); “think before we see a film online: do you really need…” (we/you shift is acceptable). The only possible issue is the low-severity “send it back” logic point reported above. I could not find the original source online.\n\nz12 (济南 C): the original has 6 paragraphs (C篇, p1), and all 6 were compared. The text matches exactly, including “Ms. Drewett”, (拼贴画), (慈善商店) and (包装). Paragraphing, start and end are correct. Two errors in the paper are reported: the dangling “Unlike other hobbies … you can start”, and the quote tag “…,” as Drewett shares. Kept: “This art form, including cutting pictures … is full of fun” (acceptable); “What you need to do is to cut out…” (correct); “your works”/“their own works” (countable “works” of art is correct); “Then consider having a theme to plan your pictures” (acceptable). I found the source (AOL, “Magazine Collages Are Back…”, artist Alison Drewett) but could not fetch its full text.\n\nz13 (济南 D): the original has 6 paragraphs (D篇, p2), and all 6 were compared. The text matches exactly, including 7℃, “1 ~ 3℃”, “0.5~1.5℃”, 9,000, 50%, “transpiration—water” and every gloss. Paragraphing, start and end are correct; the passage ends at the bottom of p2. Only the low-severity range typography is reported. Kept: “these materials slowly give out the stored heat back into the air” (slightly redundant but acceptable); “ways of cutting greenhouse gas (气体) remain necessary” (“cut greenhouse gas” as a mass noun is common in journalism, though “greenhouse gases” would be smoother); “may cut down only a bit of heat” (plain style, kept); the missing comma before “and the findings were surprising” (journalistic style).\n\nz14 (烟台 C): the original has 5 paragraphs (C篇, p1, ending before Q8), and all 5 were compared. The text matches exactly, including 2007, 26-year-old, 17 years, 60, 6,000, 18 and 30, Xi’an, Lee Ting-Hsuan, Macao, 80,000 and 1.52 million. Paragraphing, start and end are correct. Two low-severity items are reported: the suspended hyphen and “with … sunglasses”. Kept: “most of whom were aged between 18 and 30, also called GenZers”; the semicolon in “isn’t just for Minqin; it’s for all of China”; “over 1.52 million trees”. I found the China Daily Minqin coverage but could not locate this exact article.\n\nz40 (深圳 B): the original has 5 paragraphs (B篇, p1, ending before Q16), and all 5 were compared. This passage has SIX differences from the page (possibly planted canaries): (1) “those of monkeys” should be “that of”; (2) “Most of the raven” should be “ravens”; (3) the gap was filled with option C, “Ravens are good at looking for food alone, too.”, instead of the documented option B, “Ravens are good at solving real-life problems.”; (4) the ▲ gap paragraph was merged into ¶2, so there are 4 paragraphs instead of 5; (5) “They remembers” should be “remember”; (6) the gloss reads 栖息池 instead of 栖息地. After the fixes, the passage should read: ¶1 Many people… ¶2 In one experiment… treat later. ¶3 Ravens are good at solving real-life problems. They use sticks… reach food. ¶4 Their intelligence isn’t just… ¶5 Sadly… protect them. B is the right answer for the gap: ¶4 opens with “Their intelligence isn’t just about solving problems.”. The page has no answer key. I also reported two low-severity points in the paper itself (“the tool and other useless objects”, “no food reward at once”). Kept: “how to use the tools” (plural ravens, plural tools is acceptable); “As we learn more…, scientists hope…” (acceptable).\n\nNo files were modified.",
+          "mechanics": "I compared every paragraph of all five files with the full-text dump, using exact line matching plus a word-level difflib diff for z40. I also checked the page images for z40, z13 and z14. z11, z12, z13 and z14 match the print exactly: no transcription differences, and the paragraph counts are right (z11 5, z12 6, z13 6, z14 5). All 13 findings are listed above.\n\nz40 has the problems:\n- Four word/character changes that are not in the print: those/that, raven/ravens, remembers/remember, 栖息池/栖息地.\n- A lost paragraph break: in the print the ▲ sentence starts its own paragraph.\n- The filled gap uses option C ('looking for food alone, too'), even though the header and 原文订正.json both say option B ('solving real-life problems') was inserted. B is the correct answer.\n\nz11 (山东 D): no errors found. Sentences I looked at closely and kept:\n- 'send an email, a message, a photo or post something': the list structure is acceptable.\n- 'All information, pictures and music … travel': the compound plural subject takes a plural verb.\n- 'heats up our earth': lower-case earth after 'our' is acceptable.\n- 'because instead of saving your material on your computer, you store it': the single comma after an introductory phrase is fine.\n- 'an old word processing tool': the open compound is acceptable, and the questions use the same spelling.\n- 'think before we see a film online: do you really need…': lower case after the colon is fine. The we/you shift and 'see' versus 'watch' are mild; I left them to the grammar lens.\n\nz12 (济南 C): no errors found. Kept:\n- The Oxford commas ('a magazine, glue, and a pair of scissors'; 'junk mail, stamps, and even packaging') are used consistently.\n- '“These things can make your works more personalized,” says Ms. Drewett': quote punctuation is correct, and 'works' as a count noun is fine.\n- '“… enjoy yourself,” as Drewett shares.': the 'as X says/puts it' attribution after a quote is an accepted construction, and the quote marks pair correctly.\n- 'This is a fluid process and you might move things around': a comma is optional with short clauses.\n\nz13 (济南 D): '“urban heat island” effect' and 'transpiration—water…' (closed dash, house style) are fine. 'tree cover data' is acceptable as an open compound. 'long hot summer' is a set phrase, so no comma is needed. 'cut down only a bit of heat' and 'cutting greenhouse gas' are collocation questions outside my lens. z27 (重庆 D, 'about 15℃') has the same ℃ problem; it is not in this batch.\n\nz14 (烟台 C), kept:\n- 'then 26-year-old Ma Junhe' (journalistic style).\n- 'Heilongjiang province': lower-case province is China Daily house style.\n- 'Xi’an', 'Macao', 'Northwest China'.\n- 'Lee Ting-Hsuan': the common English convention is 'Ting-hsuan' (compare Tsai Ing-wen), but people often write their own names with a capital H, so this is not a definite error.\n- The semicolon in 'isn’t just for Minqin; it’s for all of China' is correct.\n- The comma in 'enjoy meaningful public activities, and help a lot': it falls inside spoken quotation and is acceptable.\n\nOutside my lens, for the grammar reviewers:\n- z14 [1.5] 'most of whom were aged between 18 and 30, also called GenZers': the appositive dangles.\n- z14 [2.4] 'planting trees with stylish sports sunglasses': 'wearing … sunglasses' is meant.\n- z40 [2.4] 'how to use the tools': plural, while the experiment describes 'a tool' / 'the tool'. It is printed that way, so this is a possible but not definite error.\n\nSources checked (web): https://regional.chinadaily.com.cn/gansu/2026-05/27/c_1186357.htm and https://subsites.chinadaily.com.cn/gansu/2026-05/27/c_1186357.htm (China Daily, 'Planting hope in the sands', spelling 'Gen-Zers'); https://en.prnasia.com/releases/apac/global-times-young-volunteers-turn-tree-planting-into-rising-public-welfare-trend-showcasing-nationwide-commitment-to-building-a-beautiful-china-533259.shtml; https://us.cnn.com/2008/WORLD/asiapcf/07/23/oly.fightingdeserts/index.html.\n\nFiles read: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z11.txt, z12.txt, z13.txt, z14.txt, z40.txt; their dumps in …/proof1/dump/; images …/proof1/images/2026年广东省深圳市中考英语试题_p1.png, 2026年山东省烟台市中考英语试题_p1.png, 2026年山东省济南市中考英语试题_p2.png; /home/user/university-entrance-examination/中考/tools/make_audio.py and 中考/tools/原文订正.json.",
+          "grammar": "I read all 5 files completely, including headers, and compared each one with its page image and with the full-text dump.\n\nz11, z12, z13 and z14 match the paper word for word, so every finding for those four is an error in the paper itself.\n\nz40 has 6 serious departures from the paper:\n- 'those' should be 'that'.\n- 'raven' should be 'ravens'.\n- 'remembers' should be 'remember'.\n- The gloss 栖息池 should be 栖息地.\n- The gap was filled with option C ('Ravens are good at looking for food alone, too.'), although the header says option B ('Ravens are good at solving real-life problems.') was filled in. B is the correct answer.\n- The paragraph break before the gap sentence is lost (in the paper, ▲ starts its own paragraph). These look like planted test errors or a bad merge.\n\nSentences I checked closely and kept:\n- z11: 'All information, pictures and music on the Internet travel' (compound subject, so plural is fine); 'they need to be cool' (grammatical); 'The faster the search engine works, the bigger the use of electricity' (correct correlative comparative); 'an old word processing tool needs four times more energy… than a new one' (fine); 'see a film online' (acceptable, so I fixed only the person shift).\n- z12: 'This art form, including cutting pictures… and putting them…, is full of fun' (I kept 'including', since an art form can include steps as its parts; 'which involves' would be smoother but is a style choice); 'your works' (works of art, countable); 'Once you have materials ready to go' (grammatical); 'Magazine collaging is less about perfection and more about…' (parallel); 'anyone can create their own works' (singular 'they' is fine).\n- z13: 'cities remain warm for a lot longer' (implied comparison, fine); 'researchers studied… from nearly 9,000 cities and the findings were surprising' (acceptable coordination); 'urban trees may cut down only a bit of heat' (transitive 'cut down' = reduce, fine); 'ways of cutting… remain' (agreement correct).\n- z14: 'then 26-year-old Ma Junhe' (journalistic, kept); 'most of whom' after 'trees there' (the antecedent is clear because 'whom' can only mean people); 'Li Xiuniang… also posted her volunteer work online' (metonymic but acceptable); 'Around 20 young volunteers from Macao also joined' (past tense fine); 'GenZers are more confident in achieving their dreams' (implied comparison inside a quotation).\n- z40 ¶3 fill: once B is in place and the break is restored, the paragraph reads correctly and logically.\n\nI searched the web for the z11 and z14 source articles but did not find them; no finding depends on the original source.",
+          "logic": "I read all five files completely (headers and text), viewed each page image, and diffed each passage against the full-text dump. z11, z12, z13 and z14 match the printed papers exactly, so their findings are errors in the papers themselves. z40 differs from the paper in five places. Four are word or character errors: those/that, raven/ravens, remembers/remember, and 栖息池/栖息地. The fifth is the gap fill. The header says option B was inserted, but the text contains option C (\"looking for food alone, too\"), and the fill was joined onto ¶2 instead of standing as its own paragraph. This looks like a planted test; all of it is reported above.\n\nSource checks by web search (WebFetch could not resolve hosts, so I used search snippets):\n- z13 matches The Conversation / Nature Communications 2026 study: 7°C, 1–3°C, nearly 9,000 cities, almost 50%, 0.5–1.5°C, and trees offsetting only about 10–20% of mid-century warming. No factual problem.\n- z14 matches Xinhua (12 Mar 2025, \"Sowing seeds of desertification combat among Gen-Z youngsters\"): 2007, then 26-year-old Ma Junhe, the newspaper report, 17 years, about 60 volunteers, sports sunglasses, noodles in the tent, dancing. I could not confirm 80,000 volunteers or 1.52 million trees from the source, but they are not internally inconsistent, so they were not flagged.\n- z12 is adapted from Goodnet, \"The Simple Art of Magazine Collaging\". The faulty \"Unlike other hobbies…, you\" comparison is in the source. The source says the art form \"consists of\" cutting pictures out of magazines; the exam changed this to \"including\". I kept that as borderline acceptable rather than reporting it; \"which involves\" would be better.\n- z11: I could not find the source.\n\nSentences checked closely and kept:\n- z11: \"you save paper\"; \"they need to be cool\" (acceptable); \"However, the production of electricity…\" (a valid contrast: we cool the servers, but this warms the earth); \"The faster the search engine works, the bigger the use of electricity\"; \"bigger use\" (awkward but not wrong); \"four times more energy… than\"; \"travel in small packets called data\" (a simplification).\n- z12: \"is full of fun\"; \"your works\"; \"cut out all the pictures… Then consider having a theme\" (Q13 tests this order); \"Other times we talk about our daily life\" (quotation); \"use the glue to stick them\".\n- z13: \"give out the stored heat back into the air\" (emit back into, acceptable); \"the findings were surprising\" with no comma before \"and\" (optional); \"cut down only a bit of heat by the middle of this century\" (a fair simplification of the source).\n- z14: \"GenZers\" (the closed spelling is Xinhua's house style and is also used in the questions); \"aged between 18 and 30, also called GenZers\" (loose journalistic use); \"This idea came from…\" (inside a quotation); \"Heilongjiang province\" (lowercase is China Daily/Xinhua style); \"are more confident\" (inside a quotation).\n- z40: \"even with no food reward at once\" (unidiomatic but understandable as \"immediately\"); \"many kinds of ravens are suffering…\".\n\nFiles: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/zk/proof1/z11.txt, z12.txt, z13.txt, z14.txt, z40.txt. No files were modified."
+        }
+      },
+      {
+        "g": [
+          "z15",
+          "z16",
+          "z17",
+          "z18",
+          "z19"
+        ],
+        "notes": {
+          "fidelity": "FIDELITY CHECK. For all five passages I compared every paragraph character by character with the full-text dump of the paper; all match exactly, apart from the intended ★ fill in z19. I also checked each paragraph against the page image by eye, including every number, name, footnote character, quote mark, dash and paragraph break. I found no transcription or paragraphing errors. Each passage starts right after its 篇 heading and ends right before the first question. No question text is mixed in, and nothing is missing or duplicated.\n\n- z15 (烟台 D, p2): the original has 7 paragraphs; all 7 compared, and the breaks match. The whole passage is on p2 and ends with “a scientist said.”, followed by question 12 in the dump. Footnotes 细菌/垃圾填埋场/聚氨酯/酶 match. Kept: “plastic wastes” (accepted technical plural); “ending up in the landfills”; the full stop after the closing quote in ¶5 (“products”.), which is how the paper prints it and is acceptable when a quotation is a fragment; “learn more about it” in ¶7 (it = the bacterium discussed throughout). Reported: “man-made bacteria” contradicts the natural soil bacterium. I could not reach the VOA page itself, only search summaries of it.\n- z16 (河南 D, p1): the original has 6 paragraphs; all 6 compared, and the breaks match. The honeycomb picture and its caption “a honeycomb” sit between ¶2 and ¶3 and were correctly left out. The underlined “it” in ¶5 is formatting only. Footnotes 蟋蟀/啁啾叫/种子 match. No errors found. Looked closely at and kept: “Did you notice…?” (acceptable American usage); “at 7:00 every morning … at 7:30 a.m.”; “So is going to school five days a week and having Saturday and Sunday off.” (correct inversion); “Just think—without patterns…”.\n- z17 (湖北 B, p1): the original has 5 paragraphs; all 5 compared, and the breaks match. The passage ends with “…cultures together.”, followed by question 21. The underlined “They” in ¶2 is formatting only. Footnotes 主题/节奏/意境 and “水 (shui)” match. Reported: “Li added.” punctuation and “teenager fans”. Kept: “could be boring”; “Besides, they used…” (they = the students; acceptable); “they both benefited greatly”; “Cards about Li Bai’s moon, Du Fu’s mountains, and Wang Wei’s desert were popular.”\n- z18 (湖北 C, p2): the original has 5 paragraphs; all 5 compared, and the breaks match. The passage ends with “…in outer space?”, followed by question 26. The underlined “stretched to” is formatting only. Footnotes 包裹/分支/快递 match, and so do the numbers 1896, 1949, 1990s, 2025, 6,000, 500 million, 180 billion and 800 million. The numbers are consistent with each other: 6,000 per second is about 518 million per day, which is about 189 billion per year. Reported: “old great nation” (word order, low). Kept: “the moon and other planets” (common native usage, with “other” meaning other than Earth); “a new branch of postal service” (an article would be nicer, but this is acceptable as a sector name); “send packages on festivals”; “smart in our life” (awkward but not wrong); “Common people could hardly afford it.”\n- z19 (武汉 C, p1): the original has 7 paragraphs; all 7 compared, and the breaks match. ¶4 ends with “in four steps:” and the steps form a separate ¶5, as printed. In the image, ¶5 is laid out with a hanging line starting “—tiny pieces”, but it is one paragraph, which the dump confirms. The coral-gardening diagram was correctly left out. The ★ fill is correct: the current text reads “But many scientists are taking on this challenge. One of their most important goals…”, which is exactly option C plus a full stop, with no doubled full stop. It is the only option that fits: it follows “Exploring the ocean is a really hard job…”, and it supplies the antecedent of “their”. The big number 1,400,000,000,000,000,000,000 equals 1.4 billion trillion (1.4×10^21), so it is correct. Footnotes 探索/升/珊瑚礁/珊瑚虫/苗圃 match; on the page “( 升 )” only looks spaced because the line is justified. Reported: the missing appositive comma after “Paul Green”. Kept: “To know more about the ocean”; “connected with an app”; “They are called “architects” in the ocean.”; “where tiny pieces are taken good care of”; ¶6 “A typical example is the L-shaped Reef. Since 1982…” (it is loosely linked to coral gardening, but it follows from “man-made reefs” at the end of ¶5, and the facts cannot be checked).",
+          "mechanics": "I compared all five passages (z15–z19) with the page images and the full-text dumps. The boundaries, paragraph breaks and wording match the papers, with no transcription differences. Quotes, apostrophes and parentheses all pair correctly (checked with a script), and there are no stray spaces, straight quotes or doubled words. In z19 I checked the number 1,400,000,000,000,000,000,000: it has 22 digits, which is exactly 1.4 billion trillion. The ★ fill in z19 is correct: option C, \\\"But many scientists are taking on this challenge.\\\", ends with a full stop, and \\\"their\\\" in the next sentence refers back to the scientists.\n\nSentences I checked closely and kept:\nz15: \\\"Helmholtz Center\\\" (the institute's own name is \\\"Centre\\\", but the VOA source uses \\\"Center\\\", which fits US spelling). \\\"plastic wastes\\\" (acceptable technical plural). The full stop after the closing quote in \\\"…hard-to-recycle products”.\\\" is logical punctuation for a quoted fragment, and z17 places it the same way (“Poetry Gathering”.).\nz16: No errors found. I looked closely at \\\"Did you notice how…?\\\" (acceptable in US English), \\\"Listening carefully, you will find…\\\" (the subject \\\"you\\\" fits the participle, so it does not dangle), \\\"it, too, forms\\\" (commas correctly paired), \\\"7:00 every morning / 7:30 a.m.\\\" (acceptable) and \\\"Just think—without patterns…\\\".\nz17: The serial comma is used in some lists and not others (\\\"poems, paintings and the rhythm\\\" vs \\\"beauty, sweetness, and a smooth feeling\\\"). This is a style inconsistency, not an error. \\\"水 (shui)\\\" is printed that way in the paper; the TTS will need its own reading rule for the Chinese character.\nz18: \\\"a new branch (分支) of postal service\\\" (\\\"of the postal service\\\" would read better but is not definitely wrong). \\\"the quietest, farthest villages\\\" (coordinate adjectives, comma correct). \\\"key word\\\". \\\"6,000 / 500 million / 180 billion / 800 million\\\" (roughly consistent with each other). \\\"the moon and other planets\\\" (\\\"other planets\\\" can mean planets other than Earth, so I kept it). \\\"Looking forward,\\\" (a set sentence adverb).\nz19: \\\"litres\\\" is British and \\\"subway cars\\\" is US, both allowed. \\\"Here’s how it works in four steps:\\\" (colon before the steps paragraph is fine). \\\"the L-shaped Reef\\\" and \\\"Since 1982\\\". As a possible fact or logic point for other reviewers: subway-car reefs are artificial reefs, not coral gardening, and the best-known one (Redbird Reef) dates from 2001. The paper may have adapted this on purpose, so I did not report it.\n\nSources checked for z15: VOA Learning English, \\\"Scientists Discover New Bacteria that Feeds on Plastic\\\" (https://learningenglish.voanews.com/a/scientists-discover-new-bacteria-that-feeds-on-plastic/5357715.html), and Food Packaging Forum, \\\"Bacterium found to degrade polyurethane\\\" (https://foodpackagingforum.org/news/bacterium-found-to-degrade-polyurethane). Both describe the strain as a natural soil isolate.",
+          "grammar": "I compared all five passages against the page images and the full-text dumps; the text matches the printed papers (no transcription differences, paragraph breaks correct). Every finding above is an error in the paper itself.\n\nz15 (Yantai D): Kept: 'plastic wastes' / 'polyurethane-based wastes' (the countable plural 'wastes' for kinds of waste is accepted, technical usage, and Q12 also uses it); 'enzymes that could eat polyurethane' (standard journalistic 'plastic-eating' metaphor); 'a flood of plastics that are ending up' (agreement correct); 'He said that the finding “marks an important step…”' (present tense inside a direct quotation is fine); ', which could be harmful' (a which-clause referring back to the whole act of introducing the bacteria; it is acceptable once 'man-made' is fixed). Possible content slip, not reported: 'made up 3.5 million tons of Europe’s plastics last year'. The VOA source gives this as a 2015 figure, but the passage has no date, so it is not definitely wrong. I could not open the VOA page (proxy blocked); search snippets confirm the bacterium is a naturally occurring soil strain, which supports the 'man-made' finding.\n\nz16 (Henan D): no errors found. Looked closely at: 'Did you notice how nature sometimes repeats itself?' (simple past for a general-experience question is normal American usage; 'Have you noticed' would be the British form, so it is not an error); 'Listening carefully, you will find a noisy world' (the participle's subject is 'you', so it is not dangling); 'Try to find out how living things grow around you' ('around you' = in your surroundings, acceptable); 'So is going to school five days a week and having Saturday and Sunday off' (one combined routine, so singular 'is' is correct); 'it, too, forms a pattern' (must stay, because Q34 asks what 'it' refers to); 'The hotter it is, the more chirps a cricket will make' (correct comparative structure).\n\nz17 (Hubei B): apart from the two findings, kept: 'Besides, they used simple instruments' ('they' comes after 'They' = the cards, but context and the nearer antecedent 'the exchange students' make it clear it means the students); 'By putting poems, paintings and the rhythm together' ('the rhythm' points back to 'the rhythm of the poems'); 'On the cards were famous poems and theme paintings' (inversion with correct plural agreement); 'helped the exchange students know how…'; 'I have to do some closer reading' (present tense inside a quotation); 'not only offer … but also bring' (parallel).\n\nz18 (Hubei C): apart from the adjective-order finding, kept: 'Common people could hardly afford it' (informal 'it' = this service, idiomatic); 'With a small stamp on the cover, people…' (a with + noun + phrase construction, so it is not a dangling modifier); 'a new branch of postal service' ('postal service' used as an uncountable noun is acceptable); 'send packages on festivals' ('during festivals' would be smoother, but 'on' with festival days is acceptable, so I did not report it); 'smart in our life'; 'the moon and other planets' ('other planets' = planets other than Earth, a set phrase); 'Looking forward, will…' (accepted sentence adverbial, like 'Looking ahead'). The 2025 figures are consistent with each other (about 190 billion a year ≈ 6,000 per second ≈ 520 million per day).\n\nz19 (Wuhan C): the filled sentence 'But many scientists are taking on this challenge.' is correct: 'this challenge' picks up 'Exploring the ocean is a really hard job', and 'their' in the next sentence needs 'scientists'. Options A, B and D (from the dump) do not fit, and the sentence is grammatical. 1.4 billion trillion litres = 1.4×10^21, which matches 1,400,000,000,000,000,000,000 and the real ocean volume. Kept: 'where tiny pieces are taken good care of' (the passive of 'take good care of' is grammatical); 'once strong enough, they are planted' (the omitted subject is the pieces, which is also the passive subject, so not dangling); 'They are called “architects” in the ocean'; 'a bag which is connected with an app'; 'To know more about the ocean'; 'Since 1982, scientists have placed…' (present perfect with 'since' is correct). The 'L-shaped Reef' and the 1982 date could not be checked and are not grammar issues.\n\nSources: [VOA Learning English – Scientists Discover New Bacteria that Feeds on Plastic](https://learningenglish.voanews.com/a/scientists-discover-new-bacteria-that-feeds-on-plastic/5357715.html), [VOA News – German scientists identify new strain of plastic-eating bacteria](https://www.voanews.com/a/science-health_german-scientists-identify-new-strain-plastic-eating-bacteria/6186670.html)",
+          "logic": "I compared all five passages word for word with the rendered page images and the full-text dumps (z15 Yantai D p2, z16 Henan D p1, z17 Hubei B p1, z18 Hubei C p2, z19 Wuhan C p1). Text, paragraph breaks and Chinese glosses all match the paper; I found no transcription errors. The findings above are all errors in the papers themselves.\n\nz15 (plastic-eating bacterium). Source: VOA Learning English, 'Scientists Discover New Bacteria that Feeds on Plastic' (2020); WebFetch could not reach the site, so I used web-search quotes. The quote I relied on: the original says scientists warn against 'man-made enzymes or microorganisms'. The exam's 'the man-made bacteria' therefore contradicts ¶2 ('found the new soil bacterium… found in an area with a lot of plastic wastes'). Kept, with reasons:\n- 'plastic wastes' / 'polyurethane-based wastes': the plural 'wastes' is accepted in technical usage (Collins: 'industrial wastes'). The source has 'waste', but this is not wrong.\n- 'ending up in the landfills': the article is not needed, but it is not an error.\n- 'enzymes that could eat polyurethane': 'plastic-eating enzymes' is standard popular-science wording.\n- 'a science magazine': the result actually appeared in the journal Frontiers in Microbiology, but 'magazine' is a tolerable simplification.\n- The quote ending '…products”.' with the full stop outside: logical (British) punctuation, acceptable.\n\nz16 (patterns). Source not found. Fact checks:\n- Crickets chirp with their wings, and chirp faster in heat: correct (Dolbear's law).\n- Honeycomb cells are hexagons: correct.\nKept, with reasons:\n- 'Listening carefully, you will find a noisy world': the participle's subject is 'you', so it is not dangling.\n- 'So is going to school five days a week and having Saturday and Sunday off': singular, because it is one routine.\n- '7:00' then '7:30 a.m.': inconsistent, but not an error.\nOnly finding: 'Did you notice' (low).\n\nz17 (poetry club). Kept, with reasons:\n- 'could be boring': a tentative modal, fine.\n- 'Besides,' as a connector: standard.\n- 'the rhythm' in the list: refers back to 'the rhythm of the poems'.\n- 水 'shows beauty, sweetness…': exam content.\n- Facts: Li Bai's moon, Du Fu's mountains, Wang Wei's desert are plausible.\n\nz18 (postal history). Fact checks:\n- 1896: the Great Qing Post was established that year, so it is acceptable.\n- 2025 express-delivery numbers are mutually consistent. Over 180 billion a year is about 493 million a day and 5,700 a second; the real 2025 total of about 190–200 billion supports 'more than 500 million a day' and 'over 6,000 a second'.\nKept, with reasons:\n- 'Common people could hardly afford it': 'it' is vague but understandable.\n- 'stamp on the cover': 'cover' is the philatelic term for an envelope.\n- 'a new branch of postal service': 'postal service' can be used as a mass noun.\n- 'quietest, farthest villages': fine.\n- 'There’s no doubt that delivery services are smart in our life…': awkward, but it carries the 'Smarter' idea that Q28 tests, and there is no minimal fix.\n- 'Looking forward,': a sentence adverbial, acceptable.\n\nz19 (ocean/coral). Checks on the header's fill and the facts:\n- The fill 'But many scientists are taking on this challenge.' is correct and fits: 'their' in the next sentence needs scientists, and 'this challenge' picks up 'a really hard job'. The other options do not fit.\n- The number 1,400,000,000,000,000,000,000 = 1.4 × 10^21 litres = 1.4 billion trillion. This is correct and matches the real ocean volume (about 1.33 × 10^21 L).\n- 'better maps of Mars than of the ocean floor': a standard NOAA claim.\n- 'tiny pieces grow faster': true (microfragmentation).\nKept, with reasons:\n- 'L-shaped Reef… Since 1982, scientists have placed old subway cars into the sea': this does not match the real New York subway-car reefs (sunk 2001–2010, Redbird Reef). But 'L-shaped Reef' cannot be found anywhere, so the example seems invented by the exam. I did not report it as a definite error.\n- 'To know more about': common and acceptable.\n- 'connected with an app' and 'architects in the ocean': acceptable.\nOnly finding: the missing appositive comma after 'Paul Green'."
+        }
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Find"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "fidelity:Gz11",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a614b23b695476c0f",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942312026,
+      "queuedAt": 1791942312000,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Method: for each passage I read the whole file (header + te…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942539915,
+      "tokens": 106248,
+      "toolCalls": 28,
+      "durationMs": 227413,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z40\",\"loc\":\"[2.5]\",\"current\":\"Ravens are good at looking for food alone, too.\",\"proposed\":\"Ravens are good at solving real-life problems.\",\"category\":\"transcription\",\"printed\":\"▲ They use sticks to dig insects out of trees… (gap; Q17 option B = “Ravens are good at solving real-life problems.”, option C = “Ravens are good at looking for food alone, too.”)\",\"reason\":\"The header …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "mechanics:Gz11",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a3f75093f63d2c12c",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942312027,
+      "queuedAt": 1791942312000,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared every paragraph of all five files with the full-…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942659370,
+      "tokens": 106784,
+      "toolCalls": 29,
+      "durationMs": 346826,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z40\",\"loc\":\"[1.2]\",\"current\":\"compared to those of monkeys\",\"proposed\":\"compared to that of monkeys\",\"category\":\"transcription\",\"printed\":\"Their intelligence has long been compared to that of monkeys and even humans.\",\"reason\":\"The current text differs from the print, and the change is ungrammatical: 'those' cannot stand for the singular noun 'intelligence'. The page image and…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "grammar:Gz11",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ab6534162b2cc45b2",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942543388,
+      "queuedAt": 1791942312001,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all 5 files completely, including headers, and compa…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942764278,
+      "tokens": 101787,
+      "toolCalls": 22,
+      "durationMs": 220889,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z40\",\"loc\":\"[1.2]\",\"current\":\"compared to those of monkeys\",\"proposed\":\"compared to that of monkeys\",\"category\":\"transcription\",\"printed\":\"Their intelligence has long been compared to that of monkeys and even humans.\",\"reason\":\"The paper prints 'that'. 'those' does not agree with the singular antecedent 'intelligence'. This is a transcription error that also breaks the grammar…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "logic:Gz11",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a1d7d6ae9789cd5c7",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942660887,
+      "queuedAt": 1791942312001,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I read all five files completely (headers and text), viewed…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943014450,
+      "tokens": 124995,
+      "toolCalls": 40,
+      "durationMs": 353563,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z40\",\"loc\":\"[2.5]\",\"current\":\"Ravens are good at looking for food alone, too.\",\"proposed\":\"Ravens are good at solving real-life problems.\",\"category\":\"transcription\",\"printed\":\"▲ They use sticks to dig insects out of trees… (gap; Q17 option B = Ravens are good at solving real-life problems.)\",\"reason\":\"The header says the ▲ gap was filled with option B, \\\"Ravens are good at so…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "fidelity:Gz15",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "ae530c6f393266bf6",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942765081,
+      "queuedAt": 1791942312027,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "FIDELITY CHECK. For all five passages I compared every para…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791942946194,
+      "tokens": 99218,
+      "toolCalls": 23,
+      "durationMs": 181113,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z17\",\"loc\":\"¶4 last sentence\",\"current\":\"proud of our culture.” Li added.\",\"proposed\":\"proud of our culture,” Li added.\",\"category\":\"punctuation\",\"printed\":\"I felt very proud of our culture.” Li added.\",\"reason\":\"Error in the paper itself. A quotation followed by a speech tag (Li added) must end with a comma inside the closing quote, not a full stop. As printed, “Li added.” is…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "mechanics:Gz15",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a0926229eed754991",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791942949521,
+      "queuedAt": 1791942312027,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared all five passages (z15–z19) with the page images…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943113795,
+      "tokens": 101640,
+      "toolCalls": 24,
+      "durationMs": 164273,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z17\",\"loc\":\"¶4 last sentence\",\"current\":\"I felt very proud of our culture.” Li added.\",\"proposed\":\"I felt very proud of our culture,” Li added.\",\"category\":\"punctuation\",\"printed\":\"I felt very proud of our culture.” Li added.\",\"reason\":\"When a quotation is followed by a speech tag (Li added), the quoted sentence must end with a comma inside the quotes, not a full stop. The ful…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "grammar:Gz15",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a9987501ae0c85f35",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943016618,
+      "queuedAt": 1791942312028,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared all five passages against the page images and th…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943275602,
+      "tokens": 105038,
+      "toolCalls": 23,
+      "durationMs": 258984,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z15\",\"loc\":\"[7.1]\",\"current\":\"introducing the man-made bacteria into the environment\",\"proposed\":\"introducing the bacterium into the environment\",\"category\":\"logic\",\"printed\":\"Some scientists advise against introducing the man-made bacteria into the environment at present, which could be harmful.\",\"reason\":\"The passage says the bacterium was discovered: it is a natural soil ba…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "logic:Gz15",
+      "phaseIndex": 1,
+      "phaseTitle": "Find",
+      "agentId": "a7325f1660eeb91c4",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943117537,
+      "queuedAt": 1791942312028,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared all five passages word for word with the rendere…",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943446944,
+      "tokens": 113260,
+      "toolCalls": 31,
+      "durationMs": 329406,
+      "resultPreview": "{\"findings\":[{\"pid\":\"z15\",\"loc\":\"[7.1]\",\"current\":\"introducing the man-made bacteria into the environment\",\"proposed\":\"introducing the bacterium into the environment\",\"category\":\"logic\",\"printed\":\"Some scientists advise against introducing the man-made bacteria into the environment at present, which could be harmful.\",\"reason\":\"The passage contradicts itself here. ¶2 says the bacterium was found i…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "verify-acc:Gz11",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a09131638595098ea",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943280513,
+      "queuedAt": 1791943016679,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943511462,
+      "tokens": 105846,
+      "toolCalls": 21,
+      "durationMs": 230949,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"▲ They use sticks to dig insects out of trees… (gap). Q17 B = 'Ravens are good at solving real-life problems.', C = 'Ravens are good at looking for food alone, too.'\",\"why\":\"The header says the gap was filled with option B, but the text has option C. B is the topic sentence for the sticks, nuts and multi-step examples, and ¶4 ('isn't just about…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "verify-strict:Gz11",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ac0ff0aa459ec05f9",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943449543,
+      "queuedAt": 1791943016680,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943611094,
+      "tokens": 94773,
+      "toolCalls": 10,
+      "durationMs": 161550,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"▲ They use sticks to dig insects… ; Q17 B = Ravens are good at solving real-life problems. C = Ravens are good at looking for food alone, too.\",\"why\":\"The page and the dump both confirm the gap. The header says option B was filled in, but the text has option C. Only B fits as the topic sentence of the problem-solving paragraph, and ¶4 later ref…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "verify-acc:Gz15",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "af3aef92fe8d50256",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943513056,
+      "queuedAt": 1791943449591,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943657812,
+      "tokens": 92338,
+      "toolCalls": 13,
+      "durationMs": 144755,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"…I felt very proud of our culture.” Li added.\",\"why\":\"Checked against the page image and the dump: the paper prints it this way, so this is an error in the paper. When a speech tag follows a quote, the quote must close with a comma. As printed, “Li added.” is a fragment. The paragraph's own “…a smooth feeling,” said Li Ran. uses the correct pat…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "verify-strict:Gz15",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a4d57e521a20ac689",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791943612784,
+      "queuedAt": 1791943449592,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "Context: reading passages from Chinese 中考 (senior-high-school entrance exam; students aged 14-15) English papers, 2024-2026, from many provinces. Junior-high students will study these texts sentence by sentence in vocabulary videos and memorise them, so the English must be COMPLETELY CORRECT. The text was extracted directly from the Word (.docx) files of the papers (digital text, no OCR), so lette…",
+      "promptFramed": true,
+      "lastProgressAt": 1791943732102,
+      "tokens": 90103,
+      "toolCalls": 11,
+      "durationMs": 119317,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"verdict\":\"accept\",\"printed\":\"I felt very proud of our culture.” Li added.\",\"why\":\"Confirmed on the page image. When a speech tag follows the quotation, the quote must end with a comma inside the closing mark. As printed, “Li added.” is a fragment. The same paragraph uses the correct pattern (…smooth feeling,” said Li Ran). This duplicates #5.\"},{\"index\":1,\"verdict\":\"accept…"
+    }
+  ],
+  "totalTokens": 1242030,
+  "totalToolCalls": 275
+}

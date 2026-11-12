@@ -1,0 +1,196 @@
+{
+  "summary": "TEM-8 finished-video screen QA: every screen of every video inspected by 3 reviewers (layout/numbering, English, Chinese), each finding adversarially verified",
+  "agentCount": 4,
+  "logs": [
+    "done 1; findings 6"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "t10",
+        "findings": [
+          {
+            "screen": 20,
+            "sentence": 19,
+            "kind": "layout",
+            "severity": "low",
+            "description": "Progress marker moves backwards between sentences. On the split screens (20 = PART 1/2 and 21 = PART 2/2), the longer footer label 'SENTENCE 19 / 32 · PART x/2' pushes the start of the progress track from x≈370 to x≈505–509, so the 19/32 marker lands at x≈1200. On screen 22 (SENTENCE 20 / 32, normal label) the marker is at x≈1186. Measured sequence: s19 (sentence 18) 1103 → s20/s21 (sentence 19) 1199/1201 → s22 (sentence 20) 1186 → s23 1225. Each marker is in the right place on its own shorter track, but on screen the marker jumps right and then steps back about 14 px. The track should start at the same x on every screen (or the marker should be placed on the same absolute scale).",
+            "lens": "visual"
+          },
+          {
+            "screen": 10,
+            "sentence": 9,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The plural possessive is broken up by the badge: the line reads 'servants⑦’ cottages'. Badge 7 sits between 'servants' and its apostrophe, which then hangs on its own after the circle and before 'cottages'. The highlight and badge are correct ('servants' = 7, matching the panel), but the apostrophe should stay with the word: either inside the highlight before the badge, or the badge placed after the ’.",
+            "lens": "visual"
+          },
+          {
+            "screen": 8,
+            "sentence": 7,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The Chinese gloss '(杨树)' inside the English sentence is split across lines: line 4 ends 'poplars⑨ (杨' and line 5 starts with '树).' alone. The two-character word and its parentheses should stay together, e.g. by moving the whole '(杨树).' to the next line.",
+            "lens": "visual"
+          },
+          {
+            "screen": 2,
+            "sentence": 1,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "Vocabulary entry 3 draws the same English ellipsis in two different styles. The headword 'not alone...but' has low, baseline Latin dots, while the gloss '（= not only···but also）' has raised, centred CJK-style dots. In the reference both are the English '…' (not alone…but / not only…but also). The English phrase inside the Chinese gloss should use the same baseline ellipsis as the headword.",
+            "lens": "visual"
+          },
+          {
+            "screen": 6,
+            "sentence": 5,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "In the kaiti translation '人们管这里叫“米勒法官府”。' the Chinese quotation marks are drawn as narrow, proportional Western-style quotes. The opening “ almost touches 叫 and the closing ” is squeezed against 府 and 。, where full-width Chinese quotes are expected. This is the only screen in this video with Chinese quotes.",
+            "lens": "visual"
+          },
+          {
+            "screen": 8,
+            "sentence": 7,
+            "kind": "layout",
+            "description": "The Chinese gloss \"(杨树)\" that follows \"poplars\" is broken across two lines. Line 4 ends with \"poplars⁹ (杨\" and line 5 is just \"树).\", so the two-character gloss and its brackets are separated. The text itself matches the reference; only the line break is awkward. The gloss should stay together on one line, as \"(自用地)\" does on screen 12 and \"(饱享的)\" on screen 26.",
+            "severity": "low",
+            "lens": "english"
+          }
+        ],
+        "opened": [
+          34,
+          34,
+          34
+        ],
+        "notes": [
+          "I opened all 34 screens in order: title card plus 33 sentence screens. That matches the expected structure: 32 sentences, with sentence 19 split into 2 screens after 'fire; …', the second part starting at 'he carried the Judge’s grandsons'. I zoomed into crops wherever something was tight or unclear.\n\nTitle card: title 巴克的王者生活与酝酿中的麻烦 is on one line; '英语专业八级 2022年 · Passage One', the 'TEM-8 · READING · SECTION A' tag, genre 记叙文 · 动物与命运, the seal (专八/精读) and the legend are all correct. '全文 762 词' equals the whitespace word count of the reference English.\n\nNumbering: on every sentence screen, the English badge set equals the panel set, and the panel runs consecutively from 1. Split phrases carry their number on the last piece, so the English order is legitimately non-monotonic on s09 (1,3,4,2,5 for 'on … scale'), s12 (2,1 for 'over … ruled'), s15 (1,3,2,4 for 'so … a'), s18 (2,1,3 for 'neither … nor') and s25 (…9,11,12,10 for 'in … fashion'). Sentence 19 continues 1–10 → 11–19 across its two parts. The footer k runs 1–32 with no gaps, PART 1/2 and 2/2 appear only on s20/s21, and every marker sits in the right place on its own track (the only problem is the backwards step on the split screens, reported above).\n\nColours: every phrase is red with a square badge and every single word is indigo with a round badge, matching the panel entries. POS labels are present for words and absent for phrases. The Chinese translations and glosses on screen match the reference.\n\nPanels nearly full but not clipped: s10 (16 entries, auto-shrunk), s17, s25, s28; I zoomed into the top and bottom of these. No missing glyphs, replacement characters, tofu or overlaps.\n\nMinor CJK spacing I did not report as defects: in s13 and s24, '）；' leaves half-em gaps, and on s13 a line that wraps to start with '（' looks indented by about half an em. This is standard unsqueezed SC punctuation. Also, s27 breaks 'house-|dog' at its hyphen across lines, which is acceptable typesetting; the badge is on 'dog'.",
+          "I opened all 34 screens: the title card, 32 sentences, and sentence 19 split into two parts on screens 20 and 21. That matches the expected screen count in the reference. Every sentence appears exactly once and in order, and the footers run from SENTENCE 1/32 to 32/32. Sentence 19 shows PART 1/2 and 2/2, and the cut is at \"fire; …\" / \"… he carried the Judge's grandsons\", which is the split point in the reference. The title card and every header show the reference title 巴克的王者生活与酝酿中的麻烦, 2022年 and Passage One. The title card also shows the genre 记叙文 · 动物与命运. I compared the English of every sentence with the reference word by word, including punctuation such as \"hairless,—strange\", \"king,—king\", \"large,—he … pounds,—for\", \"weakness—faith\", \"servants’\", \"gardener’s\" and \"(自用地)\", and found no differences. Every vocabulary headword and part-of-speech label matches the reference, and phrases correctly have no part of speech. Every highlighted span matches its 高亮原文, including the split phrases \"not alone … but\", \"glimpses … caught of\", \"on … scale\", \"over … ruled\", \"so … a\", \"neither … nor\" and \"in … fashion\", which carry their number on the last piece only. Numbering is sequential, and on the split sentence it continues from 1–10 on part 1 to 11–19 on part 2. I zoomed in on the dense vocabulary panels (screens 17, 25 and 28): their last entries fit inside the panel and nothing is cut off. The only issue is the low-severity line break inside the \"(杨树)\" gloss on screen 8. Crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/t10crop_*.png.",
+          "I found no Chinese-text differences on any of the 34 screens of t10 (2022 Passage One).\n\n**What I compared**\n- **Title card (screen 01):** the title 巴克的王者生活与酝酿中的麻烦 and the genre 记叙文·动物与命运 both match the reference.\n- **Header:** the Chinese title in the header matches on every sentence screen.\n- **Sentences:** I transcribed the Chinese of all 32 sentences (screens 02–34) character by character and compared it, punctuation included, with the reference ZH. None stops early or belongs to another sentence.\n- **Split sentence 19:** screens 20–21 split exactly where the reference says, and each part's Chinese matches the reference text for that part.\n- **Vocabulary panels:** every Chinese meaning in every panel matches its reference meaning, including the 16-entry panel on screen 10, which I checked at 2x zoom.\n\n**Look-alike characters checked at pixel level**\n- **己 not 已/巳** in 自己 on screens 02, 26 and 27.\n- **杈 not 权** in 枝杈 on screen 08. I rendered both characters in LXGW WenKai and compared them with the screen glyph; 杈 fits clearly better (difference 52k against 98k for 权).\n- **入 not 人** in 涌入 on screen 03.\n\n**Things that look odd but are not defects**\n- In 如此……的（一个）（so + 形容词…） on screen 15, the second （ sits close to the ）before it, so it looks half-width. It has exactly the same ink and size as the other full-width brackets, so it is the browser's spacing between adjacent brackets, not a different character.\n- The semicolon after a closing bracket in 重（若干）；体重为 (screen 24) and similar spots has the same shape and size as the semicolons elsewhere, so it is the correct full-width ；.\n- The ellipses …… render as centred dots. They are the same characters as in the reference.\n\nNothing in the Chinese text or the vocabulary panels is cut off or overlapping. The zoomed crops are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/t10crops/."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "I measured the red marker centre with pixel scans. Screen 19 (s18) is at x≈1103.5, screen 20 (s19 PART 1/2) at ≈1199.5, screen 21 (s19 PART 2/2) at ≈1201.5, screen 22 (s20) at ≈1186.5 and screen 23 at ≈1225.5. The blue track starts at x≈505/509 on the two split screens and at ≈369–374 on the normal ones. So the marker jumps forward on sentence 19 and then moves back about 14 px on sentence 20, exactly as described."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Screen 10, line 3, zoomed, reads 'servants⑦’ cottages': badge 7 sits between 'servants' and its possessive apostrophe, which hangs after the circle. On screens 30 and 34 the same kind of possessive ('gardener’s') keeps the ’s inside the highlight before the badge, so the split here is a real typographic defect."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Screen 8: line 4 ends 'poplars⑨ (杨' and line 5 is only '树).'. The two-character gloss and its brackets are broken across lines. The text matches the reference; only the line break is defective."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Screen 2, vocabulary entry 3, zoomed: the red headword 'not alone...but' uses low baseline dots, while 'not only···but also' in the gloss uses raised, centred CJK dots. The reference has '…' in both. The same English ellipsis is drawn in two different styles."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Screen 6, zoomed: in '人们管这里叫“米勒法官府”。' the quotes are narrow proportional glyphs. “ sits tight against 叫, and ” is squeezed between 府 and 。, while the other Chinese punctuation is full-width. Sentence 5 is the only ZH line in the reference with Chinese quotes."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Same defect as index 2, and it is confirmed. Screen 8 line 4 ends 'poplars⑨ (杨' and line 5 is '树).'. The comparisons also check out: '(自用地)' stays on one line on screen 12, and so does '(饱享的)' on screen 26."
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Inspect"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "visual:t10",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a0c17d113624ee7da",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914527066,
+      "lastProgressAt": 1791914527066,
+      "cached": true,
+      "resultPreview": "{\"findings\":[{\"screen\":20,\"sentence\":19,\"kind\":\"layout\",\"severity\":\"low\",\"description\":\"Progress marker moves backwards between sentences. On the split screens (20 = PART 1/2 and 21 = PART 2/2), the longer footer label 'SENTENCE 19 / 32 · PART x/2' pushes the start of the progress track from x≈370 to x≈505–509, so the 19/32 marker lands at x≈1200. On screen 22 (SENTENCE 20 / 32, normal label) the …",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t10/screen01.png is the title card, screen02.png is se…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "english:t10",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "abf36e71c23d26ecb",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914527066,
+      "lastProgressAt": 1791914527066,
+      "cached": true,
+      "resultPreview": "{\"findings\":[{\"screen\":8,\"sentence\":7,\"kind\":\"layout\",\"description\":\"The Chinese gloss \\\"(杨树)\\\" that follows \\\"poplars\\\" is broken across two lines. Line 4 ends with \\\"poplars⁹ (杨\\\" and line 5 is just \\\"树).\\\", so the two-character gloss and its brackets are separated. The text itself matches the reference; only the line break is awkward. The gloss should stay together on one line, as \\\"(自用地)\\\" doe…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t10/screen01.png is the title card, screen02.png is se…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "chinese:t10",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "aceb7febf20d42844",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791914527105,
+      "queuedAt": 1791914527067,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I found no Chinese-text differences on any of the 34 screen…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t10/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791917804698,
+      "tokens": 515861,
+      "toolCalls": 1377,
+      "durationMs": 3276895,
+      "resultPreview": "{\"screens_opened\":34,\"findings\":[],\"notes\":\"I found no Chinese-text differences on any of the 34 screens of t10 (2022 Passage One).\\n\\n**What I compared**\\n- **Title card (screen 01):** the title 巴克的王者生活与酝酿中的麻烦 and the genre 记叙文·动物与命运 both match the reference.\\n- **Header:** the Chinese title in the header matches on every sentence screen.\\n- **Sentences:** I transcribed the Chinese of all 32 sent…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "verify:t10",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a4f5839aaffce33ef",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791917805941,
+      "queuedAt": 1791917805907,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t10/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791917929753,
+      "tokens": 187781,
+      "toolCalls": 50,
+      "durationMs": 123811,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"I measured the red marker centre with pixel scans. Screen 19 (s18) is at x≈1103.5, screen 20 (s19 PART 1/2) at ≈1199.5, screen 21 (s19 PART 2/2) at ≈1201.5, screen 22 (s20) at ≈1186.5 and screen 23 at ≈1225.5. The blue track starts at x≈505/509 on the two split screens and at ≈369–374 on the normal ones. So the marker jumps forward on sentence 19 and then…"
+    }
+  ],
+  "totalTokens": 703642,
+  "totalToolCalls": 1427
+}

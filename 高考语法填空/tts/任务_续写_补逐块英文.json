@@ -1,0 +1,31 @@
+{
+ "说明": "续写 v2 逐块屏英文难读词多合成几次（第 4—9 次）：towed（s3b1）、drove（s4b1、s11b1）、lie / lay（s7b2）、read 过去式 /red/（s9b2）。选段前 英文逐词核对.py 逐词核，锁定读对的那次。",
+ "script": "高考语法填空/tts/稿_续写_2026_新课标Ⅰ卷.json",
+ "only": [
+  "s3b1",
+  "s4b1",
+  "s11b1",
+  "s7b2",
+  "s9b2"
+ ],
+ "takes": [
+  4,
+  5,
+  6,
+  7,
+  8,
+  9
+ ],
+ "parts": 2,
+ "candidates": [
+  {
+   "id": "m",
+   "mode": "clone_ref",
+   "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+   "voice": "高考语法填空/tts/音色/用户本人_2.json",
+   "en_mode": "icl",
+   "split": "mark",
+   "gap_max": 0.45
+  }
+ ]
+}

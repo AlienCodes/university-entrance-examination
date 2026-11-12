@@ -1,0 +1,654 @@
+{
+ "results": [
+  {
+   "id": "z7",
+   "findings": [
+    {
+     "sent": 1,
+     "field": "zh",
+     "headword": "",
+     "current": "到19世纪20年代，纽约已是美国首屈一指的商业城市。",
+     "proposed": "到19世纪40年代，纽约已是美国首屈一指的商业城市。",
+     "reason": "EN says “By the 1840s”, but ZH has the 1820s, which is the wrong decade.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 4,
+     "field": "zh",
+     "headword": "",
+     "current": "便士报最初就是在波士顿取得成功的。",
+     "proposed": "便士报最初就是在纽约取得成功的。",
+     "reason": "EN says “in New York”, but ZH has Boston, which is the wrong place.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 11,
+     "field": "zh",
+     "headword": "",
+     "current": "贝内特于1835年创办了《纽约先驱报》，距《太阳报》问世已有十多年。",
+     "proposed": "贝内特于1835年创办了《纽约先驱报》，距《太阳报》问世还不到两年。",
+     "reason": "EN says “less than two years after”, but ZH says 十多年 (more than ten years). The number and the direction are both wrong.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "outpace",
+     "current": "v. 落后于；被……超过",
+     "proposed": "v. 超过；赶超",
+     "reason": "The meaning is reversed. In “had outpaced Philadelphia” New York overtook Philadelphia, as the ZH line itself says (超过费城).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "cultural",
+     "current": "adj. 经济的",
+     "proposed": "adj. 文化的",
+     "reason": "The meaning is wrong: cultural = 文化的 (“cultural capital” = 文化之都).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "venerate",
+     "current": "n. 尊崇；敬重",
+     "proposed": "v. 尊崇；敬重",
+     "reason": "The POS is wrong. venerate is a verb, and here it is used in the passive “be venerated as”.",
+     "severity": "medium",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says \"By the 1840s\", so 20年代 is a factual error and 40年代 is correct."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says \"in New York\", so 波士顿 is wrong and 纽约 is correct."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The current text matches the file. The EN says \"less than two years after the appearance of the Sun\", so 已有十多年 is wrong and 还不到两年 is exact."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current text matches the file. \"had outpaced Philadelphia\" means New York overtook Philadelphia, so the gloss 落后于；被……超过 reverses the meaning. v. 超过；赶超 is correct."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "The current text matches the file. In \"cultural capital\", cultural means 文化的, so the gloss 经济的 is wrong."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "The current text matches the file. \"venerated\" is a passive verb (be venerated as), so the POS must be v., not n."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The EN says “By the 1840s”, but the ZH has 20年代. That is a real factual error, and the summary also says 40年代."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The EN says “in New York”, but the ZH says 波士顿. That is a definite error, and 纽约 fixes it."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The EN says “less than two years after”. The current 十多年 is wrong. The proposed 距…问世还不到两年 is accurate and natural."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "The current gloss reverses the meaning. In “outpaced Philadelphia”, outpace means 超过, which matches the ZH line."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "cultural means 文化的, not 经济的. The proposed gloss matches 文化之都 in the ZH line."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "venerate is a verb, used here in the passive “be venerated as”. The POS should be v., not n."
+    }
+   ]
+  },
+  {
+   "id": "t11",
+   "findings": [
+    {
+     "sent": 29,
+     "field": "zh",
+     "headword": "",
+     "current": "另一个积极的进展是：收费较低的运营商正在让珠峰上的登山人群更加多元，它们以低价攻势吸引来自中国和印度日益壮大的中产阶层的登山者。",
+     "proposed": "另一个积极的进展是：收费较低的运营商正在让珠峰上的登山人群更加多元，它们以低价攻势，从中国和印度日益壮大的中产阶层中吸引登山者。",
+     "reason": "“来自……日益壮大的中产阶层的登山者”是一长串“的”字定语，读起来拗口；改成“从……中吸引登山者”，意思不变，也更顺。",
+     "severity": "low",
+     "lens": "chinese"
+    },
+    {
+     "sent": 24,
+     "field": "headword",
+     "headword": "collapse onto",
+     "current": "collapse onto",
+     "proposed": "collapse",
+     "reason": "“collapse onto” is a free combination (verb + directional preposition), not a fixed phrase, so it should not be labelled 短语. Annotate the single word instead: collapse (单词), highlight “collapsed”, with the gloss given in the next finding.",
+     "severity": "low",
+     "lens": "gloss"
+    },
+    {
+     "sent": 24,
+     "field": "gloss",
+     "headword": "collapse onto",
+     "current": "崩塌后砸落到……上",
+     "proposed": "v. 崩塌；倒塌",
+     "reason": "Once the headword becomes the single word “collapse”, the gloss needs a POS and the plain sense used in this sentence. The “砸落到……上” part comes from the free preposition “onto”, not from a fixed phrase.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current text matches the file and is accurate: lower-cost operators attract climbers from the middle classes with aggressive pricing. \"吸引来自中国和印度日益壮大的中产阶层的登山者\" is ordinary Chinese, not translationese. The proposal is no more precise, and its comma after \"低价攻势\" makes the line choppier. This is a refinement, not an error."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current headword matches the file. \"collapse onto\" is a free verb + directional preposition, not a set phrase, so the item to learn is \"collapse\". Round 1 accepted this change but it was applied wrongly (\"~collapse{collapsed onto}\") and then reverted. Apply it properly this time: type 单词, highlight only \"collapsed\", not \"collapsed onto\". In ann syntax that is `collapse=v. 崩塌；倒塌`, with no ~ and no {…}."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "This goes with index 1. In this sentence the serac collapsed, so \"v. 崩塌；倒塌\" gives the right POS and the exact sense. The current \"崩塌后砸落到……上\" has no POS and paraphrases the context, because the \"onto\" part comes from the free preposition."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "reject",
+     "why": "The current line is accurate and reads naturally; “吸引来自……中产阶层的登山者” is ordinary Chinese, not translationese. The change is a matter of taste, and the comma it adds after “以低价攻势” splits the adverbial from its verb a little awkwardly."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "“collapse onto” is a free combination (collapse plus a directional onto), not a set phrase. Labelling it 短语 suggests a fixed expression that doesn't exist. The word a learner needs to memorise is “collapse”, so annotate it as a single word and highlight “collapsed”."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "This follows from index 1: a single-word headword needs a POS and the sense used in this sentence. “v. 崩塌；倒塌” is exact for a serac collapsing. “砸落到……上” is a contextual reading of onto, not part of the word's meaning, and the ZH translation already conveys it."
+    }
+   ]
+  },
+  {
+   "id": "t12",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t13",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t14",
+   "findings": [
+    {
+     "sent": 69,
+     "field": "add",
+     "headword": "",
+     "current": "",
+     "proposed": "story=n. （楼房的）层；楼层",
+     "reason": "“two- and three-story shops” 中 story 是“（楼房的）层”这一义项（美式拼法，英式作 storey），不同于常见的“故事”义，专八考生需要记，目前没有词条。高亮的是 three-story 里的 story，前面的 two- 也省略了它。",
+     "severity": "medium",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "amended_proposed": "story{three-[story]}=n. （楼房的）层；楼层",
+     "why": "The entry is right. In \"two- and three-story shops\", story is a noun meaning a floor of a building. This sense is a common polysemy trap, it differs from the usual meaning 故事, and it fits ZH 两三层. The current line has no entry for it. One fix is needed: ann_lib's matcher uses (?<![\\w-]) boundaries, so a bare \"story\" will not match inside \"three-story\". The surface form has to use the [ ] syntax, three-[story], so that only story is highlighted."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "The note is needed. Here story means 楼层, not 故事, and learners often misread it, yet the sentence has no entry for it. But highlighting only 'story' would split the hyphenated word three-story, which goes against the rule that hyphenated words are never broken (layoutcheck 连字符). It would also clash with the existing practice in t21 [12], which annotates 'six-story' as adj. 六层的 with the whole compound highlighted. So annotate the whole compound in the same way.",
+     "amended_proposed": "three-story=adj. 三层（楼）的   ← 高亮原文: \"three-story\""
+    }
+   ]
+  },
+  {
+   "id": "t15",
+   "findings": [
+    {
+     "sent": 29,
+     "field": "headword",
+     "headword": "be borne by",
+     "current": "be borne by",
+     "proposed": "bear",
+     "reason": "'was borne by' is just the passive of bear + a by-agent, so it is a free combination and not a fixed phrase. The word learners need is bear in the sense 'to have or hold a feeling' (bear ill feeling / a grudge). Make it a 单词 entry 'bear', with the highlight on 'borne' only and the gloss 'v. 怀有（某种感情）'. The current gloss '由……怀有（承受）' is awkward, and the bracketed 承受 points to a different sense of bear.",
+     "severity": "medium",
+     "lens": "gloss"
+    },
+    {
+     "sent": 29,
+     "field": "gloss",
+     "headword": "be borne by",
+     "current": "由……怀有（承受）",
+     "proposed": "v. 怀有（某种感情）",
+     "reason": "Goes with the headword fix above (bear, 单词, highlight 'borne'). Here bear means 'to have a feeling' (ill feeling borne by the former = 心怀怨恨的是前者). It does not mean 承受 (to endure).",
+     "severity": "medium",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current entry matches the file. 'was borne by the former' is just the passive of bear (to hold a feeling: bear ill feeling / a grudge) plus a by-agent, so it is not a fixed phrase. The word to learn is bear, with the irregular past participle 'borne'. Making it a 单词 entry 'bear' with the highlight on 'borne' is correct."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current gloss matches the file. Its bracketed '（承受）' points to the 'endure' sense of bear, which is wrong for this sentence and misleads learners. Here the meaning is 'to hold a feeling' (心怀怨恨的是前者). 'v. 怀有（某种感情）' gives the exact sense and POS and fits the ZH translation."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "'was borne by the former' is just the passive of bear plus the agent 'by', so it is not a fixed phrase. The word the learner needs is bear in the sense 'to have or hold a feeling' (bear ill feeling / a grudge). Change the entry to a 单词 entry 'bear' and highlight only 'borne'. 'borne' occurs once in the sentence, so the highlight is unambiguous."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The current gloss '由……怀有（承受）' is a real error: 承受 means 'endure', which is a different sense of bear and misleads the learner. Here the sense is 'to have a feeling', which matches the ZH 心怀怨恨的也是前者. 'v. 怀有（某种感情）' gives the correct POS and sense."
+    }
+   ]
+  },
+  {
+   "id": "t16",
+   "findings": [
+    {
+     "sent": 54,
+     "field": "gloss",
+     "headword": "beanie",
+     "current": "n. 无檐小便帽",
+     "proposed": "n. 无檐小帽",
+     "reason": "“无檐小便帽”虽然是词典里的写法，但在画面上很容易被读成“小便 / 帽”，学生会误会。原文括注写的是“无檐小帽”，释义和它统一就清楚了。",
+     "severity": "low",
+     "lens": "fidelity"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "Current matches the file (line 379). In this sentence, beanie is the small brimless cap a college freshman wore. \"无檐小便帽\" is a real dictionary entry, but on screen it can easily be misread as \"小便/帽\". \"无檐小帽\" is just as precise and matches the passage's own gloss in parentheses, \"(无檐小帽)\", and the ZH line."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "“无檐小便帽”是词典写法（小+便帽），但在画面上会被读成“小便/帽”，让学生误解，确实应该改。“无檐小帽”意思准确（beanie 就是贴头的无檐小帽），也和句子里的括注“（无檐小帽）”一致，没有带进新的错误。"
+    }
+   ]
+  },
+  {
+   "id": "t17",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t18",
+   "findings": [
+    {
+     "sent": 38,
+     "field": "gloss",
+     "headword": "nearly as much as",
+     "current": "几乎和……一样多",
+     "proposed": "几乎和……程度相当；几乎不亚于",
+     "reason": "Here as much as describes how much something sustains people, not an amount: 'sustains us nearly as much as it did…'. 一样多 suggests a quantity, and the ZH line itself uses 几乎不亚于. The gloss should give the degree sense used in this sentence.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current gloss matches the file. In 'sustains us nearly as much as it did…', 'as much as' modifies the verb and describes degree, not amount, so '几乎和……一样多' is misleading here. The proposed gloss gives the degree sense and matches the ZH line's '几乎不亚于'."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "amended_proposed": "几乎和……一样；几乎不亚于",
+     "why": "Here \"as much as\" modifies the verb \"sustains\", so it means \"to the same degree\", not \"the same amount\". 一样多 suggests quantity, so it is imprecise for this sentence. Adding 几乎不亚于 is right and matches the ZH line. 程度相当 reads clunky in a gloss, so a plain 一样 is clearer."
+    }
+   ]
+  },
+  {
+   "id": "t19",
+   "findings": [
+    {
+     "sent": 12,
+     "field": "drop",
+     "headword": "Italy",
+     "current": "Italy  (单词)  n. 意大利",
+     "proposed": "",
+     "reason": "This is a country name every learner already knows, so the entry teaches nothing. The sentence still has six other entries (source, migrant, manage to, attract, for some years, a large number of).",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current line matches the file (sentence 12). 'Italy' is a basic country name with nothing to memorise, and it is the only plain country or nationality name annotated in t19: Greeks, Germans and Australia are not. Dropping it makes the file consistent, and sentence 12 still has six correct entries."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "'Italy = 意大利' is accurate, but it is not something a TEM-8 learner needs to memorise. It also clashes with the rest of the list: Greeks, Germans, Australians and British are not glossed anywhere in this passage. A demanding teacher would cut it as clutter. The cut is safe. Sentence 12 keeps six real entries (for some years, source, migrant, manage to, attract, a large number of), so the rule that every sentence needs at least one entry still holds, and no meaning or translation changes."
+    }
+   ]
+  },
+  {
+   "id": "t20",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t21",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t22",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t23",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t24",
+   "findings": [
+    {
+     "sent": 23,
+     "field": "add",
+     "headword": "",
+     "current": "",
+     "proposed": "~be to do=（用于 if 从句）要想；若要",
+     "reason": "“if … are to keep the faith” 里的 be to do 在条件句中表示“要想（做到）”，学生常看错，也是专八阅读要记的句型。现在没有词条，学生看不出“要让……就必须”这层意思是从哪里来的。高亮原文为 \"are to\"。",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "I agree this needs an entry. In [23], \"essential if ... are to keep the faith\" uses be to do in an if-clause to mean 要想/若要, and the ZH line (要让……就必须) depends on it. The same construction in t23 [37] (\"an essential requirement if they are to engage…\") already has the entry \"be to do (短语) （用于条件句）要想；若要 ← are to\". I changed only the gloss wording to match that existing entry, and made the highlight explicit with the ann syntax. \"are to\" appears exactly once in the EN sentence.",
+     "amended_proposed": "~be to do{are to}=（用于条件句）要想；若要"
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "amend",
+     "why": "Worth adding. In 'if … are to keep the faith', the conditional be to do means 'if they are to…'. It is a fixed pattern in reading passages and learners often misread it. t23 [37] already gives it a vocabulary entry with the same highlighted words 'are to', so leaving it out here makes the two passages inconsistent. Copy t23's exact headword and gloss: drop the '~' and use '条件句' rather than 'if 从句'. The translation 要让……就必须 is accurate and needs no change.",
+     "amended_proposed": "be to do（短语）（用于条件句）要想；若要 ← 高亮原文: \"are to\""
+    }
+   ]
+  },
+  {
+   "id": "t25",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "t26",
+   "findings": [
+    {
+     "sent": 32,
+     "field": "headword",
+     "headword": "better-organised",
+     "current": "better-organised",
+     "proposed": "well-organised",
+     "reason": "A headword should be the dictionary form. better-organised is the comparative of well-organised, just as this file lists smart for Smarter, wide for Wider and grave for gravest. The existing gloss, 'adj. 组织严密的（此处为比较级 better-organised：组织更严密的）', already fits well-organised and can stay; the highlight stays better-organised.",
+     "severity": "low",
+     "lens": "gloss"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current headword matches the file (line 351). better-organised is the comparative of well-organised. The existing gloss already gives the base sense (组织严密的) and puts the comparative in brackets, so a headword in base form makes the entry consistent. It also matches how the file handles smart←Smarter, wide←Wider and grave←gravest. The gloss and the highlight 'better-organised' stay as they are."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The current headword is wrong. better-organised is the comparative form, not a dictionary entry. The existing gloss, 'adj. 组织严密的（此处为比较级 better-organised：组织更严密的）', already describes well-organised and notes the comparative, so it reads oddly under a better-organised headword. Changing the headword to well-organised follows the file's own convention (smart←Smarter, wide←Wider, grave←gravest). The meaning, POS, gloss and highlight all stay the same, so the change adds no new error."
+    }
+   ]
+  },
+  {
+   "id": "t27",
+   "findings": [],
+   "failed": 0,
+   "va": [],
+   "vb": []
+  },
+  {
+   "id": "z8",
+   "findings": [
+    {
+     "sent": 1,
+     "field": "zh",
+     "headword": "",
+     "current": "整个冬天，每到夜里，我邻居家都有音乐声传出。",
+     "proposed": "整个夏天，每到夜里，我邻居家都有音乐声传出。",
+     "reason": "EN says 'through the summer nights'; ZH has 冬天 (winter), so the season is wrong.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 6,
+     "field": "zh",
+     "headword": "",
+     "current": "每个星期五，都有十五箱橙子和柠檬从纽约一家水果店送来；每个星期一，还是这些橙子和柠檬，却已成了一个个没有果肉的半边果皮，堆成金字塔，从他家后门运出去。",
+     "proposed": "每个星期五，都有五箱橙子和柠檬从纽约一家水果店送来；每个星期一，还是这些橙子和柠檬，却已成了一个个没有果肉的半边果皮，堆成金字塔，从他家后门运出去。",
+     "reason": "EN says 'five crates', but ZH says 十五箱 (fifteen crates).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 7,
+     "field": "zh",
+     "headword": "",
+     "current": "厨房里有一台机器，只要男管家用大拇指把一个小按钮按上两百下，半小时内就能榨出二十个橙子的汁。",
+     "proposed": "厨房里有一台机器，只要男管家用大拇指把一个小按钮按上两百下，半小时内就能榨出两百个橙子的汁。",
+     "reason": "EN says 'the juice of two hundred oranges', but ZH says 二十个 (twenty).",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "moth",
+     "current": "n. 蝴蝶",
+     "proposed": "n. 飞蛾；蛾",
+     "reason": "moth means 蛾 (moth), not 蝴蝶 (butterfly). The ZH line itself correctly says 飞蛾.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 2,
+     "field": "gloss",
+     "headword": "champagne",
+     "current": "n. 啤酒",
+     "proposed": "n. 香槟酒",
+     "reason": "champagne is 香槟, not 啤酒 (beer). The ZH line correctly says 香槟美酒.",
+     "severity": "high",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 3,
+     "field": "gloss",
+     "headword": "dive",
+     "current": "adj. 跳水",
+     "proposed": "v. 跳水",
+     "reason": "In 'guests diving from the tower' the word is a verb (-ing form), so the POS should be v., not adj.",
+     "severity": "medium",
+     "lens": "fidelity"
+    },
+    {
+     "sent": 5,
+     "field": "zh",
+     "headword": "",
+     "current": "而每逢星期一，八个仆人，包括一个临时加雇的园丁，就拿着拖把、板刷、锤子和园艺剪辛苦劳作一整天，收拾前一夜留下的一片狼藉。",
+     "proposed": "而每逢星期一，八个仆人——其中包括一个临时加雇的园丁——拿着拖把、板刷、锤子和园艺剪辛苦劳作一整天，收拾前一夜留下的一片狼藉。",
+     "reason": "Wedging the bare “包括……” clause between the subject and the verb with commas, followed by 就, copies the English parenthetical. This is a typical Europeanised structure. Using 其中包括 set off by dashes is the natural Chinese way to handle the aside. The meaning is unchanged and 包括 is still easy to recognise.",
+     "severity": "low",
+     "lens": "chinese"
+    }
+   ],
+   "failed": 0,
+   "va": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The EN says 'through the summer nights', but the ZH has 冬天, so the season is wrong. 夏天 is correct, and the title and summary also say 夏夜."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The EN says 'five crates', but the ZH has 十五箱. The number is wrong; 五箱 is correct."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The EN says 'the juice of two hundred oranges', but the ZH has 二十个. The number is wrong; 两百个 is correct."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "moth means 蛾, not 蝴蝶. The ZH line itself already says 飞蛾. 'n. 飞蛾；蛾' is correct."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "champagne means 香槟酒, not 啤酒. The ZH line itself says 香槟美酒."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "In 'watched his guests diving from the tower', diving is the -ing form of the verb (the object complement of watched), so the POS is v. The sense 跳水 is correct."
+    },
+    {
+     "index": 6,
+     "verdict": "reject",
+     "why": "The current line is accurate and acceptable Chinese. '八个仆人，包括一个临时加雇的园丁，就……' is a common, natural pattern, and 每逢……就 reads well. The proposed version with dashes is no more natural (dashes are just as Western) and leaves out 就. This is a refinement, not a definite error."
+    }
+   ],
+   "vb": [
+    {
+     "index": 0,
+     "verdict": "accept",
+     "why": "The English says 'summer nights', but the ZH has 冬天. That is a real factual error, and 夏天 fixes it."
+    },
+    {
+     "index": 1,
+     "verdict": "accept",
+     "why": "The English says 'five crates', but the ZH has 十五箱. That is a definite numeric error."
+    },
+    {
+     "index": 2,
+     "verdict": "accept",
+     "why": "The English says 'two hundred oranges', but the ZH has 二十个. That is a definite numeric error."
+    },
+    {
+     "index": 3,
+     "verdict": "accept",
+     "why": "moth means 蛾, not 蝴蝶 (butterfly). The gloss is wrong and also contradicts the 飞蛾 in the ZH line."
+    },
+    {
+     "index": 4,
+     "verdict": "accept",
+     "why": "champagne means 香槟酒, not 啤酒 (beer). The gloss is wrong."
+    },
+    {
+     "index": 5,
+     "verdict": "accept",
+     "why": "'diving' here is a verb form (watched his guests diving), so the POS must be v., not adj."
+    },
+    {
+     "index": 6,
+     "verdict": "reject",
+     "why": "Setting off 包括…… with commas inside a Chinese sentence is normal, natural Chinese. 巫宁坤's published translation uses the same structure: 八个仆人，包括一个临时园丁，整整苦干一天. The current line is accurate and idiomatic, so switching to dashes is only a matter of taste."
+    }
+   ]
+  }
+ ],
+ "incomplete": [],
+ "missing": []
+}

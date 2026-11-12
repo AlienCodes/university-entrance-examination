@@ -1,0 +1,147 @@
+# 高考读后续写精读：把某次 render-gaokao-xuxie 运行里已经全部核查通过的 4K 成品转成 1080p 预览，提交回本分支（给老师看片用，不发布）。
+# 为什么在 GitHub 上转：本机下载 artifact 被代理拦截（blob.core.windows.net 403，同 stills-tem8-ink.yml），转好提交回来，本机 git pull 即得；不用重新生成 4K。
+# 触发：修改 .github/xuxie-preview.txt 并推送。第 1 行 = render-gaokao-xuxie 的运行号（run id）；第 2 行起每行一个篇目（x01 …）。
+# 核对（有一项不过就整批不提交）：那次运行里“生成 <篇目>”任务成功；artifact 的 meta（sha256 与文件相同、verify_all 全部通过）；核查结果（全部通过、文件名与体积一致）；
+#   视频与所用音频绑定（踩坑 86、109）：meta.audio_sha256 = 现在合格证的 MP3；更早的运行 meta 没记这一项，就核对那次运行检出的 MP3 与现在的是同一个 git 对象（逐字节相同）；
+#   转码与转后核对：高考续写/tools/转1080预览.py（合格证、4K 分辨率、1920×1080、音轨与 4K 逐包相同、时长差 < 0.05 秒、< 95 MB）。
+name: 高考读后续写精读 1080p 预览（取已核查的 4K 成品转码，提交回本分支）
+on:
+  push:
+    paths: ['.github/xuxie-preview.txt']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: preview-gaokao-xuxie
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /tools/tts/
+            /高考续写/tools/
+            /高考续写/精读/audio/
+            /高考续写/精读预览/
+      - name: 读清单，查那次运行
+        id: list
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          lines = [x.strip() for x in open('.github/xuxie-preview.txt', encoding='utf-8').read().splitlines()]
+          lines = [x for x in lines if x and not x.startswith('#')]
+          run, ids = lines[0], lines[1:]
+          assert re.fullmatch(r'\d+', run), f'第 1 行要是 render-gaokao-xuxie 的运行号：{run}'
+          assert ids and all(re.fullmatch(r'x\d\d', x) for x in ids) and len(set(ids)) == len(ids), f'篇目不对：{ids}'
+          info = json.loads(subprocess.run(['gh', 'api', f'repos/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{run}'],
+                                           capture_output=True, text=True, check=True).stdout)
+          assert info['path'].split('@')[0] == '.github/workflows/render-gaokao-xuxie.yml', f'运行 {run} 不是 render-gaokao-xuxie：{info["path"]}'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'run={run}\nids={json.dumps(ids)}\nsha={info["head_sha"]}\n')
+          print(f'运行 {run}（提交 {info["head_sha"][:8]}，{info["conclusion"]}）：转 {" ".join(ids)}')
+          PY
+      - name: 装转码要的程序（ffmpeg；gaokao_tts 只要 numpy、num2words）
+        run: |
+          command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q ffmpeg; }
+          python3 -m venv /tmp/pv && /tmp/pv/bin/pip install -q numpy num2words
+          ffmpeg -version | head -1
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gaokao-xuxie-x*
+          path: artifacts
+          run-id: ${{ steps.list.outputs.run }}
+          github-token: ${{ github.token }}
+      - name: 核对成品与音频绑定，转 1080p 预览
+        env:
+          IDS: ${{ steps.list.outputs.ids }}
+          RUN: ${{ steps.list.outputs.run }}
+          RUN_SHA: ${{ steps.list.outputs.sha }}
+        run: |
+          /tmp/pv/bin/python - <<'PY'
+          import hashlib, json, os, subprocess, sys
+          from pathlib import Path
+
+          def sha(p):
+              h = hashlib.sha256()
+              with open(p, 'rb') as fh:
+                  for b in iter(lambda: fh.read(1 << 20), b''):
+                      h.update(b)
+              return h.hexdigest()
+
+          def git_obj(rev, path):
+              r = subprocess.run(['git', 'rev-parse', f'{rev}:{path}'], capture_output=True, text=True)
+              return r.stdout.strip() if r.returncode == 0 else ''
+
+          tm_all = json.load(open('高考续写/精读/audio/timings.json', encoding='utf-8'))['female']
+          jobs = {j['name']: j['conclusion'] for j in json.loads(subprocess.run(
+              ['gh', 'api', f'repos/{os.environ["GITHUB_REPOSITORY"]}/actions/runs/{os.environ["RUN"]}/jobs?per_page=100'],
+              capture_output=True, text=True, check=True).stdout)['jobs']}
+          out_dir = Path('高考续写/精读预览')
+          out_dir.mkdir(exist_ok=True)
+          bad, made = [], []
+          for pid in json.loads(os.environ['IDS']):
+              d = Path('artifacts') / f'gaokao-xuxie-{pid}'
+              if jobs.get(f'生成 {pid}') != 'success':
+                  bad.append(f'{pid}：那次运行里“生成 {pid}”不是 success（{jobs.get(f"生成 {pid}")}）')
+                  continue
+              m = json.loads((d / 'meta.json').read_text('utf-8'))
+              f = d / m['name']
+              rep = json.loads((d / (Path(m['name']).stem + '_核查.json')).read_text('utf-8'))
+              e = tm_all[pid]
+              need, mp3 = e['certificate']['mp3_sha256'], Path('高考续写/精读/audio') / e['file']
+              why = []
+              if m.get('verify_all') != '全部通过':
+                  why.append('verify_all 没有通过')
+              if sha(f) != m['sha256']:
+                  why.append('视频 sha256 与生成时不同')
+              if not (rep.get('ok') and rep.get('checks') and all(c.get('ok') for c in rep['checks'])):
+                  why.append('核查结果不是全部通过')
+              if rep.get('video') != m['name'] or rep.get('size') != f.stat().st_size:
+                  why.append('核查结果的文件名或体积对不上')
+              if sha(mp3) != need:
+                  why.append('仓库里的 MP3 与合格证不符')
+              if 'audio_sha256' in m:
+                  how = 'meta 记的 audio_sha256 = 合格证'
+                  if m['audio_sha256'] != need:
+                      why.append(f'视频所用音频 {str(m["audio_sha256"])[:12]} ≠ 现在合格证的 MP3 {need[:12]}')
+              else:
+                  old, now = git_obj(os.environ['RUN_SHA'], mp3.as_posix()), git_obj('HEAD', mp3.as_posix())
+                  how = f'那次运行检出的 MP3 与现在的是同一个 git 对象 {now[:12]}'
+                  if not old or old != now:
+                      why.append(f'这次运行的 meta 没记 audio_sha256，那次运行检出的 MP3（{old[:12] or "没有"}）与现在的（{now[:12]}）不同')
+              if why:
+                  bad.append(f'{pid}：' + '；'.join(why))
+                  continue
+              out = out_dir / f'{Path(m["name"]).stem} 1080p预览.mp4'
+              if subprocess.run(['/tmp/pv/bin/python', '高考续写/tools/转1080预览.py', str(f), str(mp3), str(out)]).returncode:
+                  bad.append(f'{pid}：转1080预览.py 不通过')
+                  continue
+              (out_dir / (out.name + '.sha256')).write_text(f'{sha(out)}  {out.name}\n', 'utf-8')
+              made.append(f'{pid}（{how}）')
+          print('做好：' + ('、'.join(made) or '没有'))
+          if bad:
+              sys.exit('有一篇不过，整批不提交：\n  ' + '\n  '.join(bad))
+          PY
+      - name: 提交回本分支
+        env:
+          RUN: ${{ steps.list.outputs.run }}
+          IDS: ${{ steps.list.outputs.ids }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A 高考续写/精读预览/
+          git -c core.quotepath=false status --short
+          if git diff --cached --quiet; then echo "没有新预览（同样的文件已经提交过）"; exit 0; fi
+          git commit -q -m "高考续写精读 1080p 预览：$(echo "$IDS" | tr -d '[]"' | tr ',' ' ')（取运行 $RUN 已全部核查的 4K 成品转码，音轨原样复制）"
+          for i in 1 2 3 4; do git pull -q --rebase origin "$GITHUB_REF_NAME" && git push -q origin "HEAD:$GITHUB_REF_NAME" && exit 0; sleep $((i * 5)); done
+          echo "::error::推送 4 次都失败"; exit 1

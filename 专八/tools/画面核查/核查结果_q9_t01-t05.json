@@ -1,0 +1,1801 @@
+{
+  "summary": "TEM-8 finished-video screen QA: every screen of every video inspected by 3 reviewers (layout/numbering, English, Chinese), each finding adversarially verified",
+  "agentCount": 24,
+  "logs": [
+    "done 6; findings 88"
+  ],
+  "result": {
+    "results": [
+      {
+        "id": "q9",
+        "findings": [
+          {
+            "screen": 1,
+            "sentence": 0,
+            "kind": "title",
+            "description": "The title card reads '英语专业八级 2024年 · Passage Three'. The reference header says '2024年 Passage Two', and the header of every sentence screen also says '2024年 · Passage Two'. The cover shows the wrong passage number. Title, genre (记叙文 · 考古与历史), tag and seal are otherwise correct.",
+            "severity": "high",
+            "lens": "visual"
+          },
+          {
+            "screen": 21,
+            "sentence": 20,
+            "kind": "english",
+            "description": "The English ends with '...the actual discovery of the wreck took just a few minute.' Confirmed by zooming in. The reference reads '...took just a few minutes.': the plural 's' is missing on screen.",
+            "severity": "high",
+            "lens": "visual"
+          },
+          {
+            "screen": 29,
+            "sentence": 27,
+            "kind": "chinese",
+            "description": "The Chinese on Sentence 27 PART 2/2 is cut short. The screen shows only '潜水装备、压缩机、录制设备、勘测工具。'. The reference part-2 Chinese is '潜水装备、压缩机、录制设备、勘测工具，以及20个用来收集饮用淡水的桶。'. The clause '，以及20个用来收集饮用淡水的桶' is missing and a full stop has been put after 勘测工具, even though the English on the same screen still has 'and 20 barrels for collecting fresh drinking water' with entries 15–18.",
+            "severity": "high",
+            "lens": "visual"
+          },
+          {
+            "screen": 37,
+            "sentence": 35,
+            "kind": "english",
+            "description": "Sentence 35 PART 1/2 reads '...that was intended to keep this ship watertight— …'. Confirmed by zooming in. The reference reads 'intended to keep the ship watertight': 'the' has been replaced by 'this'.",
+            "severity": "high",
+            "lens": "visual"
+          },
+          {
+            "screen": 13,
+            "sentence": 12,
+            "kind": "highlight",
+            "description": "The phrase 'copper sheathing' (entry 7, shown in the panel as a red phrase with a square badge) is highlighted in the English in indigo/blue (the single-word colour), and both pieces are blue. 'copper' is at the end of line 3 and 'sheathing' is at the start of line 4, which carries a ROUND blue badge 7. It should be cinnabar red with a square badge, as on screen 36 (sentence 34), where the same phrase is drawn correctly.",
+            "severity": "medium",
+            "lens": "visual"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "glyph",
+            "description": "In panel entry 12 (HMS), the gloss '（His/Her Majesty’s Ship的缩写）' is drawn as 'Majesty’ s Ship…'. The apostrophe is rendered as a full-width CJK right quote, which leaves a visible blank gap inside the word 'Majesty’s'.",
+            "severity": "medium",
+            "lens": "visual"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "layout",
+            "description": "The vocabulary panel (16 entries) is filled to its outline with almost no padding. The red 'VOCABULARY' label starts about 4 px below the panel's top border (y≈145 vs border y≈140). The descender of 'bay' in the last entry (16) comes down to y≈981, about 1–2 px above the bottom border (y≈983), and practically touches it.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 36,
+            "sentence": 34,
+            "kind": "layout",
+            "description": "Same cramped vocabulary panel as screen 07. The 'VOCABULARY' label is about 6 px from the top border, and the 'g' descender of 'iceberg' (entry 13) reaches y≈981, practically touching the panel's bottom outline (y≈983).",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 16,
+            "sentence": 15,
+            "kind": "layout",
+            "description": "In panel entry 5 'Sir n.', the whole Chinese gloss '爵士（用于有爵位者姓名前的尊称）' is pushed onto a second line, leaving 'Sir n.' alone with a large blank gap after it. The wrapped line also starts about 10 px to the right of the headword column (x≈1322 vs 1312), unlike the other wrapped entries, which are flush with the headword.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 18,
+            "sentence": 17,
+            "kind": "layout",
+            "description": "The top hook of a final 'f' runs into the number badge that follows it. On this screen the 'f' of 'relief' touches badge 10. The same collision appears on screen 19 ('much of' badge 1, 'threat of' badge 4), screen 27 ('staff' badge 11), screens 30 and 33 ('number of' badges 7 and 2) and screen 38 ('out of' badge 10).",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 30,
+            "sentence": 28,
+            "kind": "layout",
+            "description": "A line break falls between 'polar bears' and its badge 5 on one side and the following em dash on the other, so line 3 starts with '—but they…'. An em dash at the start of a line, separated from the word it follows, looks unpolished.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 1,
+            "sentence": 0,
+            "kind": "title",
+            "description": "The title card shows '英语专业八级 2024年 · Passage Three', but the reference (and every sentence-screen header) says Passage Two.",
+            "severity": "high",
+            "lens": "english"
+          },
+          {
+            "screen": 21,
+            "sentence": 20,
+            "kind": "english",
+            "description": "The English ends 'took just a few minute.' The reference reads 'took just a few minutes.' (plural -s is missing).",
+            "severity": "high",
+            "lens": "english"
+          },
+          {
+            "screen": 37,
+            "sentence": 35,
+            "kind": "english",
+            "description": "Part 1/2 reads 'that was intended to keep this ship watertight—'. The reference reads 'keep the ship watertight' ('this' should be 'the').",
+            "severity": "high",
+            "lens": "english"
+          },
+          {
+            "screen": 29,
+            "sentence": 27,
+            "kind": "chinese",
+            "description": "In part 2/2 the Chinese is cut short: the screen shows only '潜水装备、压缩机、录制设备、勘测工具。'. The reference part 2 is '潜水装备、压缩机、录制设备、勘测工具，以及20个用来收集饮用淡水的桶。'. The clause '，以及20个用来收集饮用淡水的桶' is missing, and the sentence ends early with a 。. The English on this screen does include 'and 20 barrels for collecting fresh drinking water'.",
+            "severity": "high",
+            "lens": "english"
+          },
+          {
+            "screen": 13,
+            "sentence": 12,
+            "kind": "highlight",
+            "description": "The phrase 'copper sheathing' (vocab #7, a 短语 that the panel correctly shows as a red headword with a square badge) is highlighted in the English in indigo/blue with a ROUND blue badge 7, as if it were a single word. It should be cinnabar-red with a square badge. The same phrase is rendered correctly in red on screen 36.",
+            "severity": "medium",
+            "lens": "english"
+          },
+          {
+            "screen": 6,
+            "sentence": 5,
+            "kind": "numbering",
+            "description": "'murky' is highlighted bold blue in the English but has no number badge: the text reads 'the murky, near-freezing⁴ waters⁵'. The panel lists it as entry 3 (murky adj.), so the round badge 3 after 'murky' is missing.",
+            "severity": "medium",
+            "lens": "english"
+          },
+          {
+            "screen": 30,
+            "sentence": 28,
+            "kind": "layout",
+            "description": "The line breaks between 'polar bears⁵' and the em dash, so line 3 starts with '—but they weren’t prepared for'. The em dash should stay attached to the end of the previous line, as it does on other screens (e.g. 'shoreline⁵—the only').",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 27,
+            "sentence": 26,
+            "kind": "layout",
+            "description": "The top of the final 'f' runs into the number badge after it: in 'staff¹¹' the ff terminal touches or overlaps badge 11. The same small collision appears on screen 18 ('relief¹⁰'), screen 19 ('much of¹', 'threat of⁴') and screen 35 ('off¹').",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "glyph",
+            "description": "In the HMS gloss '(His/Her Majesty’s Ship的缩写)', the apostrophe is drawn as a full-width CJK glyph, so it shows as 'Majesty’ s Ship' with a visible gap before the s.",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 29,
+            "sentence": 27,
+            "kind": "chinese",
+            "severity": "high",
+            "description": "The Chinese for part 2/2 of sentence 27 stops early. The screen shows only 「潜水装备、压缩机、录制设备、勘测工具。」. The reference part 2 is 「潜水装备、压缩机、录制设备、勘测工具，以及20个用来收集饮用淡水的桶。」. The clause 「，以及20个用来收集饮用淡水的桶」 is missing, and the 「，」 after 勘测工具 became 「。」. The English on this screen still covers 'and 20 barrels for collecting fresh drinking water', and barrel, collect, fresh and drinking water are glossed, but none of that has a translation. Glyph alignment matched only 19 of the 35 expected characters.",
+            "lens": "chinese"
+          },
+          {
+            "screen": 1,
+            "sentence": 0,
+            "kind": "title",
+            "severity": "high",
+            "description": "The cover subtitle reads '英语专业八级 2024年 · Passage Three'. This passage is Passage Two: the reference header says 2024年 Passage Two, and every sentence screen header says '2024年 · Passage Two'. The cover should read 'Passage Two'. The Chinese title 北极沉船“调查者”号的考古与打捞, the genre 记叙文·考古与历史, '全文 944 词 · 逐句精读' and the 专八/精读 seal all match.",
+            "lens": "chinese"
+          },
+          {
+            "screen": 13,
+            "sentence": 12,
+            "kind": "highlight",
+            "severity": "medium",
+            "description": "In the English sentence, 'copper sheathing' is styled as a single word: indigo bold with a ROUND badge 7. The vocabulary panel lists it as phrase 7 (red headword, square badge), and the reference marks it 短语. It should be cinnabar-red with a square badge.",
+            "lens": "chinese"
+          },
+          {
+            "screen": 6,
+            "sentence": 5,
+            "kind": "numbering",
+            "severity": "medium",
+            "description": "'murky' is highlighted in indigo bold but has no number badge. The panel lists it as entry 3 (murky adj. 浑浊的；昏暗的), but the sentence shows 'Night and day¹ … relevance² … the murky, near-freezing⁴ waters⁵'. Badge 3 is missing.",
+            "lens": "chinese"
+          },
+          {
+            "screen": 21,
+            "sentence": 20,
+            "kind": "english",
+            "severity": "medium",
+            "description": "The English ends 'took just a few minute.'. The reference and sents.json have 'took just a few minutes.' (plural).",
+            "lens": "chinese"
+          },
+          {
+            "screen": 37,
+            "sentence": 35,
+            "kind": "english",
+            "severity": "medium",
+            "description": "The English on part 1/2 reads 'that was intended to keep this ship watertight—'. The reference reads 'keep the ship watertight'.",
+            "lens": "chinese"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "In the vocabulary meaning for HMS, '英国皇家海军舰艇（His/Her Majesty’s Ship的缩写）', the curly apostrophe renders as a full-width CJK quote mark. It leaves a visible gap: 'Majesty’ s Ship'. It should read 'Majesty’s Ship' with no gap. The characters match the reference.",
+            "lens": "chinese"
+          }
+        ],
+        "opened": [
+          39,
+          39,
+          39
+        ],
+        "notes": [
+          "I opened all 39 screens in order (title card plus 38 sentence screens), as the reference expects: s27 is split over screens 28–29 and s35 over screens 37–38, each starting at the stated split point ('diving gear, compressors' / 'Harris fashioned a cover'), with correct PART 1/2 and 2/2 labels. PART labels are absent on all unsplit sentences.\n\nFor every sentence screen I recorded the circle numbers in the English, the panel numbers and the footer. Panel numbers are consecutive everywhere, and the circle set equals the panel set on every screen (split phrases carry their badge on the last piece, e.g. s7 hold…place in = 7, s13 leave…behind = 1, s18 under…threat of = 4, s23 it would be…before = 1 and have a…look = 6, s33 rip…off = 1, s35 fashion…out of = 10 and sandwich…between = 17). Numbering continues correctly across the splits (s27: 1–9 then 10–18; s35: 1–9 then 10–21). The footer k runs 1→36 with the progress marker in proportion, and every header shows '2024年 · Passage Two'.\n\nI compared every panel gloss with the reference and found no differences. 麂皮 in the s35 chamois entry was checked by zooming in and is correct. Apart from the four text defects reported (cover passage number, 'minute', truncated s27 part-2 Chinese, 'this ship'), every English sentence and Chinese translation matches the reference.\n\nNot reported: the cover's '全文 944 词' cannot be checked against the reference, which gives no word count; a simple count of the reference English gives about 948–950 words, depending on how numbers and hyphenated words are counted.",
+          "I opened all 39 screens and the reference q9.txt. The structure is correct: screen01 is the cover, screens 02–39 cover sentences 1–36 once each and in order, and the only splits are sentence 27 (screens 28/29) and sentence 35 (screens 37/38). Both split exactly at the reference split points, with '…' markers and PART x/2 footers. Every sentence-screen header shows '2024年 · Passage Two 北极沉船“调查者”号的考古与打捞'. The cover title matches the reference, but the cover says Passage Three.\n\nI read the English on every screen word by word against the reference and zoomed in where needed (/tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/q9crops/). Only two English differences turned up: 'minute' for 'minutes' (screen 21) and 'this ship' for 'the ship' (screen 37). All other sentences match exactly.\n\nEvery vocabulary headword and POS matches the reference. The highlighted words match each entry's 高亮原文, except 'copper sheathing' on screen 13, which is coloured as a single word. Panel entries are numbered by first appearance in the sentence and so sometimes differ from the order in the reference list; that is the intended design.\n\nOutside my English remit, I also noticed the Chinese of sentence 27 part 2 is truncated on screen 29. The vocabulary panel's top padding is tight on some screens (screens 07, 13, 14, 16, 25, 26, 36), but nothing is cut off.",
+          "I opened all 39 screens (title card, 36 sentences, plus 2 extra screens because sentences 27 and 35 are split). I compared every Chinese translation to the reference in two ways. First, I read zoomed crops of each screen. Second, a script redrew each expected sentence in the video's own font (LXGW WenKai) and compared it with the screen character by character. Before trusting the script, I planted four look-alike swaps (已→己, 古→吉, 本→木, 人→入) and it caught all four. Apart from screen 29, every Chinese translation matches the reference, including both parts of sentence 35 and part 1 of sentence 27. That covers the hard characters too: 胁, 麂, 骸, 搁, 躺, 舰, 铰. I also checked every vocabulary-panel meaning by eye. The words, part-of-speech labels, Chinese meanings and order of appearance all match, except the apostrophe spacing on screen 7. The Chinese title in the header is correct on every screen. Screens 6, 13, 21, 29 and 37 were rendered slightly differently from the rest (a few pixels differ in the header and background), and each of those five screens has one of the defects above. Files are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/q9zh/: zoomed crops comp02.png–comp39.png, and the comparison results align2.json, align3.json and panel2.log."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Screen 01 cover reads '英语专业八级 2024年 · Passage Three'. The reference header and every sentence-screen header say 'Passage Two'."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Screen 21 (sentence 20) ends 'took just a few minute.' The reference has 'minutes'."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Screen 29 (S27 part 2/2) Chinese is only '潜水装备、压缩机、录制设备、勘测工具。'. The clause '，以及20个用来收集饮用淡水的桶' is missing, but the English and entries 15–18 still cover it."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Screen 37 (S35 part 1/2) reads 'keep this ship watertight—'. The reference reads 'keep the ship watertight'."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Zoomed screen 13: 'copper' and 'sheathing' are both indigo, and 'sheathing' carries a round blue badge 7. The panel shows entry 7 as a red phrase with a square badge, and screen 36 draws the same phrase correctly in red."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Zoomed screen 07 entry 12: the gloss is drawn as 'Majesty’　s Ship'. The apostrophe takes a full-width CJK glyph and leaves a visible gap before 's'."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "Measured screen 07: the panel's bottom border is at y=983, and the 'y' descender of 'bay' (entry 16) has dark pixels on rows 981–983, so it touches the outline. The 'VOCABULARY' label sits only about 5–7 px below the top border. The panel is visibly cramped."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Measured screen 36: the top border is at y=140 and the label starts at y=147. The 'g' descender of 'iceberg' ends at y=981, with the bottom border at y=983. The text practically touches the outline, as described."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Screen 16 entry 5: 'Sir n.' stands alone and the whole gloss '爵士（用于有爵位者姓名前的尊称）' wraps to the next line. It starts at x≈1325, while the headword is at x≈1313. Other wrapped entries (e.g. mid-morning, copper sheathing) start flush with the headword."
+          },
+          {
+            "index": 9,
+            "real": true,
+            "why": "Zoomed in. The final 'f' hook merges into the next badge on all the cited screens: relief/10 (s18), much of/1 and threat of/4 (s19), staff/11 (s27), number of/7 (s30), number of/2 (s33) and out of/10 (s38)."
+          },
+          {
+            "index": 10,
+            "real": true,
+            "why": "Screen 30: line 2 ends 'polar bears' with badge 5, and line 3 begins '—but they weren’t prepared for'. The closed em dash is cut off from the word it follows."
+          },
+          {
+            "index": 11,
+            "real": true,
+            "why": "Same as index 0: the cover says 'Passage Three', and the reference and headers say 'Passage Two'."
+          },
+          {
+            "index": 12,
+            "real": true,
+            "why": "Same as index 1: screen 21 shows 'a few minute.' where the reference has 'minutes'."
+          },
+          {
+            "index": 13,
+            "real": true,
+            "why": "Same as index 3: screen 37 shows 'keep this ship watertight'. The reference has 'the ship'."
+          },
+          {
+            "index": 14,
+            "real": true,
+            "why": "Same as index 2: the S27 part-2 Chinese on screen 29 is cut short after 勘测工具 and ends with 。 instead of continuing with '，以及20个用来收集饮用淡水的桶。'."
+          },
+          {
+            "index": 15,
+            "real": true,
+            "why": "Same as index 4: on screen 13, 'copper sheathing' is indigo with a round badge 7, but it should be cinnabar with a square badge. Screen 36 draws it correctly."
+          },
+          {
+            "index": 16,
+            "real": true,
+            "why": "Zoomed screen 06: 'murky' is bold indigo with no badge. The text reads 'the murky, near-freezing4 waters5', while the panel lists 'murky adj.' as entry 3."
+          },
+          {
+            "index": 17,
+            "real": true,
+            "why": "Screen 30 line 3 does start with '—but they'. The comparison with 'shoreline5—the only' on screen 04 is weak, because that dash falls mid-line, but the defect itself is present."
+          },
+          {
+            "index": 18,
+            "real": true,
+            "why": "Confirmed: staff/11 on s27, relief/10 on s18, much of/1 and threat of/4 on s19, and off/1 on s35 all show the 'f' terminal touching or overlapping the badge."
+          },
+          {
+            "index": 19,
+            "real": true,
+            "why": "Same as index 5: the HMS gloss on screen 07 renders as 'Majesty’　s Ship', with a full-width apostrophe gap."
+          },
+          {
+            "index": 20,
+            "real": true,
+            "why": "Same as index 2: the screen 29 Chinese ends '勘测工具。'. The barrel clause is missing, and the ， after 勘测工具 has become 。."
+          },
+          {
+            "index": 21,
+            "real": true,
+            "why": "Same as index 0: the cover subtitle says 'Passage Three' where the reference says 'Passage Two'. The other cover elements match."
+          },
+          {
+            "index": 22,
+            "real": true,
+            "why": "Same as index 4: on screen 13 the 短语 'copper sheathing' is styled as a single word, indigo with a round badge 7."
+          },
+          {
+            "index": 23,
+            "real": true,
+            "why": "Same as index 16: on screen 06 'murky' is highlighted but badge 3 is missing."
+          },
+          {
+            "index": 24,
+            "real": true,
+            "why": "Same as index 1: screen 21 shows 'took just a few minute.' where the reference has 'minutes'."
+          },
+          {
+            "index": 25,
+            "real": true,
+            "why": "Same as index 3: screen 37 shows 'keep this ship watertight' where the reference has 'the ship'."
+          },
+          {
+            "index": 26,
+            "real": true,
+            "why": "Same as index 5: on screen 07 the curly apostrophe in 'Majesty’s' renders as a full-width glyph with a visible gap before 's'."
+          }
+        ]
+      },
+      {
+        "id": "t01",
+        "findings": [
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In the vocabulary panel, entry 14 'as a whole' wraps differently from every other entry. Its whole gloss '作为一个整体；整个（……）' drops to a second line, indented about 10px to the right of the headword, and the rest of the headword line is left empty. Other long entries (e.g. screen 2 entry 5, screen 8 entry 6) start the gloss right after the headword and wrap inside it. Because of the extra line, the gloss sits only about 8px above the panel's bottom border. Nothing is cut off, but the entry looks broken. It should be laid out like the other entries.",
+            "lens": "visual"
+          },
+          {
+            "screen": 18,
+            "sentence": 17,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In 'all drivers’ needs', the round badge 12 is placed between 'drivers' and its possessive apostrophe, so the line reads 'drivers⑫’ needs'. The apostrophe almost touches the badge and looks separated from its word. The highlight 'drivers' matches the reference; this is only how the badge and apostrophe are placed.",
+            "lens": "visual"
+          },
+          {
+            "screen": 26,
+            "sentence": 25,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "Panel entry 13's headword 'meet one's needs' uses a straight apostrophe ('). All running text in the video uses curly apostrophes (people’s, it’s, There’s), so this one stands out. The reference text also has a straight apostrophe here, so the screen matches the reference, but it breaks the project's rule that apostrophes inside words are curly.",
+            "lens": "visual"
+          },
+          {
+            "screen": 18,
+            "sentence": 17,
+            "kind": "highlight",
+            "description": "In \"all drivers' needs\" the round badge 12 sits between \"drivers\" and its possessive apostrophe, so the screen reads \"drivers⑫' needs\". The apostrophe is cut off from its word and looks like a stray closing quotation mark. The words are correct and the highlight matches the reference (\"drivers\"), but the badge should go after the whole possessive form \"drivers'\".",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 31,
+            "sentence": 30,
+            "kind": "layout",
+            "description": "Line 1 ends with \"access②\" and line 2 starts with \"—reliable③\". The em dash in \"access—reliable\" is pushed to the start of the next line, away from the word it belongs to (the badge creates a break point before the dash). No text is missing. Usual typesetting keeps the dash on the earlier line, giving \"access—\" / \"reliable\".",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 22,
+            "sentence": 21,
+            "kind": "layout",
+            "description": "The vocabulary panel is filled right to its bottom edge. The descenders of the last entry, \"16 charging infrastructure 充电基础设施\" (the g's in \"charging\"), touch the panel's bottom border line. The \"VOCABULARY\" label also sits only about 10px below the top border. Nothing is cut off, but there is no bottom padding.",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 22,
+            "sentence": 21,
+            "kind": "layout",
+            "description": "The 16-entry VOCABULARY panel for sentence 21 is filled to the edges with no margin. The 'VOCABULARY' label sits only about 4 px below the panel's top border. The descenders of the last entry, '16 charging infrastructure 充电基础设施', reach the bottom border line: red glyph pixels run down to y=983, the same row as the border, so the 'g' loops sit on or touch the frame. Nothing is lost, but the last line looks jammed against the frame. It should have the same inner padding as the other screens (screen 2 is the next tightest at about 3 px).",
+            "severity": "low",
+            "lens": "chinese"
+          }
+        ],
+        "opened": [
+          35,
+          35,
+          35
+        ],
+        "notes": [
+          "I opened all 35 screens in order, read the reference, and zoomed in wherever text was small or tight against an edge (panel bottoms on screens 2/7/22/34, Chinese punctuation on 5/9/10/31/35, badges on 18/26). The structure matches the reference: screen 1 is the title card, screens 2–35 are sentences 1–34 one per screen, no splits and no PART labels, which is what the reference expects.\n\nTitle card: all fields match the reference — the title 哪些基础设施改进最能推动电动汽车普及 (on one line), '英语专业八级 2025年 · Passage One', the tag 'TEM-8 · READING · SECTION A', the genre 说明文 · 科技与环境, and the seal (专八 on the right, 精读 on the left). '全文 973 词' is correct; I counted 973 words in the reference English.\n\nNumbering: on every sentence screen I wrote down the badge numbers in the English and in the panel. Each panel runs 1..n with no gap, repeat or swap, and the English badges are the same set. Phrases split into pieces carry their number only on the last piece, as the design says: make…available to (s3, s28), make…a reality (s8), build…understanding of (s9), both…and (s12), make a trip (s15), get…right (s19), play a part in (s22), find it…to (s24), either…or / meet one's needs / increase from…to (s25). Colours match entry types throughout: single words are blue with round badges, phrases red with square badges.\n\nPanel order: for s27 the panel numbers entries by first appearance (off-street 6, key 7, across 8, scenario 9), not in the reference's listing order. That is the intended numbering. Footer 'SENTENCE k / 34' is right on every screen. I measured the red progress marker programmatically: it moves about 38px per sentence, from x≈392 at k=1 to x≈1675 at k=34, so it matches k/N everywhere.\n\nNo text is cut off or overlapping, there are no tofu boxes or replacement characters, and the Chinese ellipses (……), quotes and dashes are drawn the same way on every screen. The three findings are all minor cosmetic issues.",
+          "I opened all 35 screens of t01 in order (2025年 Passage One, 哪些基础设施改进最能推动电动汽车普及) and compared each with ref/t01.txt. I zoomed in on screens 7, 18, 22 and 31.\n\nStructure matches: screen 1 is the cover and screens 2–35 show sentences 1–34 once each, in order. There are no split screens, which matches the reference (34 sentences, 35 screens). Every footer reads SENTENCE k / 34.\n\nCover and headers match: the title is on one line, the header reads 2025年 · Passage One with the reference title on every screen, the genre is 说明文 · 科技与环境, and the word count of 973 matches the reference EN.\n\nEnglish: every sentence matches the reference EN word for word, including word forms, punctuation and order. That includes the curly apostrophes and quotation marks, the em dashes in s30, the parentheses in s27, and hyphenated words that wrap at their own hyphen (single-charge, off-street).\n\nVocabulary: every panel entry matches the reference headword and POS (phrases carry no POS). Every highlight covers exactly its 高亮原文. Split phrases carry their number only on the last piece: making…available to (s3, s28), make…a reality (s8), building…understanding of (s9), both…and (s12), make…trips (s15), play…part in (s22), find it…to (s24), either…or, meet their…needs and increased from…to (s25). Numbering follows first appearance, which is why the panel order differs from the reference list order in s27 and why badges in the English can look out of sequence in s3, s19 and s25. That is intended.\n\nI found no errors in the English text, the vocabulary headwords, POS, highlight spans or screen structure. The only findings are the three low-severity visual issues listed above.",
+          "I compared the Chinese on every screen with ref/t01.txt by eye, character by character, using enlarged crops: the title card, the header title, all 34 sentence translations (screens 2–35) and every vocabulary meaning (381 entries). No OCR tool was available. All the Chinese matches the reference. I found no look-alike wrong characters (for example 已 on screens 23 and 30 is correct, not 己 or 巳), nothing missing or extra, no translation cut short or swapped with another sentence, and no wrong punctuation. The title card has the title on one line, the seal reads 专八/精读 in the intended order, and the genre is 说明文 · 科技与环境. There are 35 screens as expected and no split sentences. A few things look odd on the screen but match the source, so they are not defects: the middle dot in 《自然·能源》 and 杰西卡·特兰西克 on screen 5 (U+00B7 in both source and reference); the narrow '：“' after 魏伟说 on screen 14 (the source has a full-width colon, which the browser compresses next to the opening quote); the wide gap in '过夜），' on screen 31 (two full-width marks, as in the source); and the dash pair starting a line on screen 35 (allowed in Chinese typesetting). On screen 7 the meaning for 'as a whole' wraps onto its own line, but it is fully visible and inside the panel. Apart from the screen 22 crowding reported above, no text on any screen is cut off or overlapping."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed on screen07 (sentence 6). Entry 14 'as a whole' has its whole gloss '作为一个整体；整个（……）' on a second line, and the rest of the headword line is empty. The headword starts at x=1313 and the gloss at x=1323, so the gloss is indented 10px. The gloss ink ends at y=977 and the panel border is at y=983. Other long entries (screen02 entry 5, screen08 entry 6) start the gloss right after the headword and wrap inside it. Nothing is cut off, but the entry is laid out differently from the rest."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Confirmed on screen18 (sentence 17). The line reads 'drivers⑫’ needs': the round badge 12 sits between 'drivers' and the possessive apostrophe, and the apostrophe is almost touching the badge. The highlight 'drivers' matches the reference, so this is only how the badge and apostrophe are placed, as described."
+          },
+          {
+            "index": 2,
+            "real": false,
+            "why": "The headword 'meet one's needs' on screen26 does use a straight apostrophe. However, line 312 of the reference also has a straight ASCII apostrophe, so the screen matches the approved reference, which the verification rules count as not a screen defect. The fix belongs in the source gloss data (upstream typography), not in the rendering."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Same defect as item 1, confirmed on screen18. Badge 12 is inserted between 'drivers' and its curly possessive apostrophe ’. The apostrophe is detached from its word and looks like a closing single quote. The highlight matches the reference ('drivers'); the problem is only where the badge sits."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Confirmed on screen31 (sentence 30). Line 1 ends with 'access②' and line 2 starts with '—reliable③'. The em dash of 'access—reliable' is wrapped to the start of the next line, away from 'access'. No text is missing."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Confirmed on screen22 (sentence 21). Red glyph pixels from the g descenders in 'charging' (x≈1361–1412) run down to y=983, which is the panel's bottom border row, so they touch the frame with no bottom padding. One detail is off: the VOCABULARY label is about 4–5px below the top border (border y=140, label ink from y=145), not about 10px as stated. The main claim is correct."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "Confirmed by pixel measurement on screen22. The top border is at y=140 and the VOCABULARY label ink starts at y=145 (about 4px). Red descender pixels of 'charging' in entry 16 reach y=983, the same row as the bottom border. The comparison also holds: screen02's last ink row is 980, about 3px above the border, so it is the next tightest."
+          }
+        ]
+      },
+      {
+        "id": "t02",
+        "findings": [
+          {
+            "screen": 39,
+            "sentence": 38,
+            "kind": "layout",
+            "description": "The phrase badge is placed so close that the top hook of the final 'f' in 'getting on and off' runs into the left edge of the red square badge ②. Glyph and badge are the same red, so at 8x zoom they merge into one shape. The badge should leave a small gap after the letter.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 63,
+            "sentence": 62,
+            "kind": "layout",
+            "description": "The overhanging hook of the 'ff' in 'stuff' runs into the blue round badge ②. They are the same dark blue and merge into one blob. The badge should not touch the glyph.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 6,
+            "sentence": 5,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'none of' runs into the left edge of the red square badge ②, and they merge in the same colour.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 21,
+            "sentence": 20,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'state of' (phrase 'in a … state of') touches and merges into the red square badge ②.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 30,
+            "sentence": 29,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'were fond of' touches and merges into the red square badge ②.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 31,
+            "sentence": 30,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'Out of' touches and merges into the red square badge ①.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 37,
+            "sentence": 36,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'At the end of' touches and merges into the red square badge ①.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 45,
+            "sentence": 44,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'state of' (phrase 'in a … state of', start of line 3) touches and merges into the red square badge ④.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 54,
+            "sentence": 53,
+            "kind": "layout",
+            "description": "The top hook of the final 'f' in 'a lot of' touches and merges into the red square badge ①.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 13,
+            "sentence": 12,
+            "kind": "glyph",
+            "description": "In the English line, the Chinese gloss '(供列车员休息的车厢)' after 'caboose' uses a heavy sans-serif CJK fallback font. It matches neither the serif English nor the kaiti Chinese used everywhere else, so it looks bold and out of place in the sentence. It should use the serif/kaiti CJK face.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 16,
+            "sentence": 15,
+            "kind": "glyph",
+            "description": "Vocabulary gloss '应在（某处）；适合待在': the full-width '）' and '；' are not compressed. This leaves a wide blank gap on both sides of '；' (about one em between '）' and '；', plus another gap after it), which looks like a stray space inside the line.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 41,
+            "sentence": 40,
+            "kind": "glyph",
+            "description": "Vocabulary gloss for 'order' ('点（餐）；订购'): the same uncompressed '）；' sequence leaves a large blank gap around '；' inside the line.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 51,
+            "sentence": 50,
+            "kind": "glyph",
+            "description": "Vocabulary gloss for 'ride' ('乘（车）；随车行进'): the same uncompressed '）；' sequence leaves a large blank gap around '；' inside the line.",
+            "severity": "low",
+            "lens": "visual"
+          }
+        ],
+        "opened": [
+          63,
+          63,
+          63
+        ],
+        "notes": [
+          "I opened all 63 screens plus the reference text. Structure is correct: the title card plus 62 sentence screens, as expected. No sentence is split and no PART label appears anywhere. The title card matches the reference: title 女制动员的铁路入行记 on one line; 英语专业八级 2025年 · Passage Two; the TEM-8 · READING · SECTION A tag; genre 记叙文 · 人物与经历; seal 专八/精读 in the correct column order; legend.\n\nFor every screen I wrote down the circle numbers in the English, the panel numbers and the footer. Panel numbers are always consecutive from 1, and the set of badges always equals the set in the panel. Each split phrase carries its number only on its last piece: hang around…with, think of…as, keep…from, get…done, give…advice, either…or, join…together, from…away, in a … state of, let…go, roll…down, so…that, suggest…that, couldn't have…better and drive…crazy. Colours and shapes (blue round for 单词, red square for 短语) match every panel entry.\n\nSENTENCE k / 62 runs from 1 to 62 with no gap. I measured the progress marker on every screen by pixel scan, and it matches k/62 to within 0.001.\n\nNothing is cut off or overlaps the header, footer or panel. This includes the full panels on screen 18 (12 entries) and screen 39 (13 entries). Font sizes are consistent. There is no tofu or replacement characters, and the Chinese ellipses (……) render the same way everywhere.\n\nThe only defects are cosmetic: the f-hook running into the badge on every word ending in f, a CJK fallback font in the inline gloss on screen 13, and uncompressed '）；' spacing in three panel glosses. Panel headwords \"couldn't\" and \"one's\" use straight apostrophes while the English uses curly ones. This matches the reference, so I did not report it.",
+          "I opened all 63 screens in order (screen01 is the title card, screen02 to screen63 are sentences 1 to 62) and checked them against ref/t02.txt. I zoomed into screen39, screen47 and screen13 to look at the tight vocabulary panel and the quote and bracket punctuation.\n\nStructure: the reference expects 63 screens with no split sentences, and that is what the folder has. The footers run SENTENCE 1/62 to 62/62 in order, with nothing missing, repeated or out of place. The title card shows 女制动员的铁路入行记, 英语专业八级 2025年 · Passage Two and 记叙文 · 人物与经历. Every sentence header shows \"2025年 · Passage Two 女制动员的铁路入行记\".\n\nEnglish: I read all 62 sentences word by word and they match the reference EN exactly, including word forms, articles, punctuation and the curly apostrophes and quotes. Some cases I checked specifically:\n- s6: em dashes around BRAKEMEN WANTED.\n- s12: the parenthetical (供列车员休息的车厢) uses ASCII brackets, as in the reference.\n- s17: three-hundred-page breaks at its own hyphen.\n- s28: “Brownies,” is punctuated correctly.\n- s33: “derail.” is punctuated correctly.\n- s45: has only an opening quote, as in the reference.\n- s46: ends with dummy?” as in the reference.\n- s60: full-crew breaks at its own hyphen.\n\nVocabulary: every panel entry matches the reference headword, and every POS matches (n., v., adj., adv., prep., conj., pron.; phrases have none). Entries are numbered by first appearance, single words are blue with round badges and phrases are red with square badges. Each highlighted span equals its 高亮原文 exactly. In split phrases the number sits only on the last piece, for example hanging around…with¹, in a…state of, either…or, so…that, couldn’t have…better, from…away, suggested…that, let…go and roll…down. Where a word appears twice in a sentence, only the instance in the reference is highlighted, for example the second \"crossed out\" in s23 and the second \"cars\" in s38.\n\nCosmetic observations I did not report as defects:\n- (a) The vocabulary panels on screen18 (12 entries) and screen39 (13 entries) are filled almost to the top and bottom edges, but nothing is cut off.\n- (b) On screen13, the Chinese gloss inside the English sentence of s12 is drawn in a sans-serif CJK fallback font. It differs from the serif English and kaiti Chinese elsewhere, but it is legible and correct.\n- (c) On screen47, there is a visible gap between the full-width ？ and the closing ” in the Chinese line. This is normal spacing for full-width punctuation.",
+          "t02 (2025 Passage Two, 女制动员的铁路入行记) has 63 screens: 1 title card plus 62 sentence screens, with no split sentences. That matches the reference's expected 63.\n\nHow I checked:\n- I opened every screen. For each sentence screen I made an enlarged crop (1.6–2x) of the Chinese translation and the full VOCABULARY panel, then read the Chinese character by character against the reference ZH and the reference glosses.\n- Screen n shows sentence n-1, in order, for every n from 2 to 63. Each screen's translation is complete and belongs to its own sentence.\n- I looked for look-alike characters in every occurrence of 己 (s7, 13, 15, 19, 47, 49) and 已 (s1, 44), and checked 入 (s47, 59), 未/末 and 人/入. All are correct.\n- Punctuation matches the reference everywhere, including the full-width quotes and dashes in s6, 28, 33, 35, 45 and 46, the colons in s17, 23 and 60, and the semicolon in s35.\n- All 278 vocabulary meanings match the reference, including the bracketed notes (e.g. 布朗尼（此处指记过记录，得名于其设计者布朗）, 建议（that 从句中动词用原形）, 溜放车厢（推动车厢后摘钩，让其自行滑行）).\n- Badge numbering, shapes and colours are consistent.\n- As a separate read-only cross-check, the source data (专八/data/vocab.json, t02) matches the reference exactly: all 62 ZH lines and all 278 glosses.\n\nTitle and header:\n- The title card reads 女制动员的铁路入行记 on one line, 英语专业八级 2025年 · Passage Two, 记叙文 · 人物与经历 and 全文 984 词 · 逐句精读. The seal reads 专八/精读 in the intended column order, and the legend is present.\n- The header (2025年 · Passage Two 女制动员的铁路入行记) is pixel-identical on screens 2–63.\n\nLayout: the most crowded panels (12 entries on screen 18, 13 on screen 39) fit inside the panel outline. Nothing is cut off and nothing overlaps.\n\nNo defects found."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Screen 39 at 8x zoom: the top hook of the second 'f' in 'off' runs straight into the left edge of red square badge 2. Both are the same red, so they read as one shape with no gap."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Screen 63 zoomed: the overhanging top of the 'ff' in 'stuff' touches blue round badge 2 and merges with it in the same dark blue."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Screen 6 at 8x zoom: the top hook of the 'f' in 'none of' joins the left edge of red square badge 2 with no gap, in the same red."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Screen 21 at 8x zoom: the top hook of the 'f' in 'state of' touches and merges into red square badge 2."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Screen 30 at 8x zoom: the top hook of the 'f' in 'were fond of' merges into red square badge 2."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Screen 31 at 8x zoom: the top hook of the 'f' in 'Out of' runs into red square badge 1 with no gap."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "Screen 37 at 8x zoom: the top hook of the 'f' in 'At the end of' merges into red square badge 1."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Screen 45 at 8x zoom: 'of' at the start of line 3 has its 'f' hook touching red square badge 4, merged in the same red."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Screen 54 at 8x zoom: the top hook of the 'f' in 'a lot of' merges into red square badge 1."
+          },
+          {
+            "index": 9,
+            "real": true,
+            "why": "Screen 13: the in-line gloss '(供列车员休息的车厢)' after 'caboose' is set in a sans-serif (heiti-style) CJK fallback face. It clashes with the serif English and with the kaiti Chinese translation below, and looks visibly heavier than the text around it. The wording matches the reference; only the font is wrong."
+          },
+          {
+            "index": 10,
+            "real": true,
+            "why": "Screen 16 zoomed: in '应在（某处）；适合待在' there is about 0.7 em of blank space between '）' and '；' and roughly as much after '；'. Uncompressed full-width punctuation leaves a visible gap in the line."
+          },
+          {
+            "index": 11,
+            "real": true,
+            "why": "Screen 41 zoomed: in '点（餐）；订购' there is the same wide blank space on both sides of '；' after '）'."
+          },
+          {
+            "index": 12,
+            "real": true,
+            "why": "Screen 51 zoomed: in '乘（车）；随车行进' there is the same wide blank space around '；' after '）'."
+          }
+        ]
+      },
+      {
+        "id": "t03",
+        "findings": [
+          {
+            "screen": 33,
+            "sentence": 32,
+            "kind": "layout",
+            "severity": "medium",
+            "description": "The inline gloss '(防水布)' after 'tarpaulin⁵' is broken in the middle of the word. Line 2 of the English ends with '(防' and line 3 starts with '水布) and unrolled…', so the opening bracket and the first character are left hanging at the line end. The gloss should stay together on one line, the way '(用压条固定)' does on screen 39.",
+            "lens": "visual"
+          },
+          {
+            "screen": 59,
+            "sentence": 58,
+            "kind": "layout",
+            "severity": "medium",
+            "description": "The same break happens inside the gloss '(反复猛击)' after 'pummelled²'. Line 1 ends with '(反' and line 2 starts with '复猛击) by a great fist³.' The four-character gloss is split between characters 1 and 2 and should not be broken.",
+            "lens": "visual"
+          },
+          {
+            "screen": 61,
+            "sentence": 60,
+            "kind": "layout",
+            "severity": "medium",
+            "description": "The line break in the Chinese translation splits the name 理查德·帕克. Line 1 ends with '…确切知道道理查德' and line 2 starts with the separator dot: '·帕克在哪里；防水布下面一片漆黑——但还'. The name separator should never start a line, and the name should not be split.",
+            "lens": "visual"
+          },
+          {
+            "screen": 29,
+            "sentence": 28,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "In 理查德·帕克 the name separator is drawn as a narrow half-width Latin middle dot pressed against both characters, so it reads like a bullet ('德•帕') with no spacing. A proper full-width Chinese 间隔号 should be used. The same rendering appears on screens 33 (s32), 61 (s60) and 65 (s64).",
+            "lens": "visual"
+          },
+          {
+            "screen": 42,
+            "sentence": 41,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In the vocabulary entry 'gunnel n.' (entry 2), the whole meaning '船舷上缘（同 gunwale）' drops to a second line and leaves 'gunnel n.' alone on the first line with empty space after it. The wrapped line is also indented about 10 px further (x≈1327) than every other wrapped line in the panel (x≈1317), which looks like a stray leading space. Every other entry wraps inside the meaning and stays flush with the headword.",
+            "lens": "visual"
+          },
+          {
+            "screen": 4,
+            "sentence": 3,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "Phrase headwords in the panel use a straight typewriter apostrophe: take one's cue (screen 04), make sb's heart sink (05), do one's job (20), keep one's balance (38) and come one's way (60). The English sentences use curly apostrophes (swell’s on screen 58, Parker’s on screen 65), so the two styles appear side by side. The reference text also has straight apostrophes here, so this is a typographic inconsistency only (the project rule is to use curly apostrophes inside words).",
+            "lens": "visual"
+          },
+          {
+            "screen": 33,
+            "sentence": 32,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The inline Chinese gloss '(防水布)' after 'tarpaulin' breaks across two lines inside the parentheses: '(防' ends line 2 and '水布)' starts line 3. The text is correct and nothing is cut off, but the gloss is split. On other screens the inline glosses '(用压条固定)' (screen 39) and '(船舷边缘)' (screen 42) stay on one line, so this one should be kept together too.",
+            "lens": "english"
+          },
+          {
+            "screen": 59,
+            "sentence": 58,
+            "kind": "layout",
+            "severity": "low",
+            "description": "Same issue: the inline gloss '(反复猛击)' after 'pummelled' is split across lines, with '(反' at the end of line 1 and '复猛击)' at the start of line 2. The text matches the reference, but the parenthetical should not break inside.",
+            "lens": "english"
+          },
+          {
+            "screen": 42,
+            "sentence": 41,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In the vocabulary panel, entry 2 'gunnel n.' sits alone on its line and the whole meaning '船舷上缘（同 gunwale）' wraps to the next line with a slightly larger indent than other wrapped entries (it starts at x≈1328 instead of x≈1317). Every other entry starts its meaning on the headword line. Headword, POS and meaning are correct; this is only an alignment inconsistency.",
+            "lens": "english"
+          },
+          {
+            "screen": 61,
+            "sentence": 60,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In the Chinese translation the name 理查德·帕克 is split across lines: line 1 ends with '理查德' and line 2 starts with the interpunct '·帕克在哪里…'. A line should not start with '·', and the name should stay together. The text itself matches the reference.",
+            "lens": "english"
+          },
+          {
+            "screen": 61,
+            "sentence": 60,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The Chinese text matches the reference character for character, but the line break splits the name 理查德·帕克. Line 1 ends with 「…知道理查德」 and line 2 starts with the middle dot: 「·帕克在哪里；防水布下面一片漆黑——但还」. Under Chinese line-breaking rules (避头点) a 间隔号 must not start a line, and a name should stay on one line. 「理查德·帕克」 should be kept together, for example by moving 「德」 to line 2 or keeping the dot at the end of line 1.",
+            "lens": "chinese"
+          }
+        ],
+        "opened": [
+          70,
+          70,
+          70
+        ],
+        "notes": [
+          "I opened all 70 screens in order. Screen 01 is the title card and screens 02–70 are sentences 1–69, which matches the reference (70 screens, no splits). No screen shows a PART label, which is correct because no sentence is split. Title card: title 与虎同舟熬过海上风暴, the tag 'TEM-8 · READING · SECTION A', '英语专业八级 2025年 · Passage Three', the genre 记叙文 · 海上求生, the 专八精读 seal and the legend are all correct. '全文 947 词' matches a word count of the reference English (947). For every sentence screen I wrote down the badge numbers in the English, the panel numbers and the footer. Every panel runs 1..n with no gaps, the set of badges in the English equals the set in the panel, and each highlight's colour and badge shape match its entry type. Split phrases carry their number only on the last piece: pulled…through, pulling…down, taking…along, battened…down, not so…as to, With…done, not…but, preventing…from, had no…idea of, one…the other. Their badge order in the English (for example 2,3,1,4,5 on screen 43) follows the first-appearance rule. The footer k runs 1..69 with N=69 throughout. I measured the red progress marker by pixel on every screen: it advances about 19 px per sentence and reaches the end of the track at 69/69. I found no text cut off and no overlap with the header rule, footer or panel; the closest English badge to the panel stops at x≈1180. I saw no tofu, replacement characters or abnormal font sizes. The Chinese ellipsis (……) is drawn the same way (centred dots) in every panel entry. The only defects found are the line breaks and typography issues listed above.",
+          "I opened all 70 screens: screen01 is the title card and screens 02–70 are sentences 1–69. That matches the reference's expected 70 screens, and no sentence is split. Every sentence appears exactly once, in order, and every footer reads SENTENCE k / 69.\n\nThe title card and every header show the reference title (与虎同舟熬过海上风暴), 2025年 and Passage Three. The genre (记叙文 · 海上求生) is also correct.\n\nI compared the English on every screen word by word with the reference EN and found no differences in words, word forms, punctuation (dashes, semicolons, colons, the curly apostrophes in swell’s and Parker’s, and the parenthetical Chinese glosses) or word order.\n\nVocabulary panels: every headword and POS matches the reference, phrases carry no POS, and the numbering runs 1, 2, 3 … in order of first appearance. Every highlight covers exactly its 高亮原文. Badge shapes and colours are right (round blue for single words, square red for phrases). Split phrases carry their number only on the last piece: pulled…through, pulling…down, taking…along, battened…down, not so…as to, With…done, not…but, preventing…from, had no…idea of and one…the other.\n\nThe only findings are four low-severity typesetting issues, listed above. Nothing is cut off or overlapping.\n\nThe cover's word count (947) is not given in the reference, so I could not check it. A rough regex count of the reference English gives 948; that is within tokenization differences, so I did not report it.",
+          "I checked all 70 screens: the cover plus 69 sentence screens, with no split sentences, as the reference expects. For every sentence screen I compared the Chinese translation and every vocabulary meaning against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t03.txt using enlarged crops (the crops are in scratchpad/zoom_t03/). The Chinese title is correct on the cover and in every header: 与虎同舟熬过海上风暴. The cover also shows the expected genre 记叙文 · 海上求生, 全文 947 词, and the 专八精读 seal in the right order. I zoomed in on the look-alike characters. 己 in s51 (自己) and 已 in s39, s57 and s61 are the right characters. 叹号 in s6, 冒号 in s11 and s30, and the double dashes in s19 and s61 all match. I also confirmed that the source data (专八/data/vocab.json, passage t03) matches the reference exactly for all 69 ZH lines and every meaning. I found no wrong, missing or extra characters and no wrong punctuation. The only defect is the line break on screen 61, where the middle dot of 理查德·帕克 starts a line."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed on screen 33 (s32): line 2 of the English ends with 'tarpaulin⁵ (防' and line 3 starts with '水布) and unrolled⁶…', so the gloss is broken inside its brackets. On screen 39, '(用压条固定)' stays on one line, and on screen 42, '(船舷边缘)' does too."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Confirmed on screen 59 (s58): line 1 ends with 'pummelled² (反' and line 2 starts with '复猛击) by a great fist³.' The four-character gloss is split after its first character."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Confirmed on screen 61 (s60): Chinese line 1 ends with '…我并不确切知道理查德' and line 2 starts with '·帕克在哪里；防水布下面一片漆黑——但还'. The name is split and a line starts with the separator dot. The reviewer quoted '知道道', which is a slip; the screen correctly shows '知道理查德'."
+          },
+          {
+            "index": 3,
+            "real": false,
+            "why": "The screen matches the reference. The reference uses U+00B7 '·' in every 理查德·帕克, and that is the standard GB/T 15834-2011 间隔号. Zoomed in on screen 29, the dot sits centred, takes about half a character width (≈23 px against a ≈47 px character pitch) and has small gaps on both sides. That is how this mark normally renders in Chinese text. It is not a wrong glyph or a defect, and changing to a full-width dot is a style preference."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Confirmed on screen 42 (s41): entry 2 shows 'gunnel n.' alone on its line, and the whole meaning '船舷上缘（同 gunwale）' starts on the next line. I measured the leftmost ink: the wrapped line starts at x=1328, while wrapped lines elsewhere start at x=1318 (screen 04) and x=1319 (screens 11 and 40). The extra indent of about 10 px is real."
+          },
+          {
+            "index": 5,
+            "real": false,
+            "why": "The panels on screens 04, 05, 20, 38 and 60 do show straight apostrophes (take one's cue, make sb's heart sink, do one's job, keep one's balance, come one's way), while screens 58 and 65 show curly ones (swell’s, Parker’s). However, the reference text has U+0027 straight apostrophes in exactly these headwords, so the screens match the reference. This is a source-data typography matter, not a screen rendering defect. If it should change, fix it in the gloss data, not in the renderer."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "Same as item 0, confirmed on screen 33: '(防' ends line 2 and '水布)' starts line 3. The text matches the reference, but the parenthetical gloss is split, unlike the glosses on screens 39 and 42."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Same as item 1, confirmed on screen 59: '(反' ends line 1 and '复猛击)' starts line 2."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Same as item 4, confirmed on screen 42. The meaning drops entirely below 'gunnel n.', and the wrapped line starts at x≈1328 instead of x≈1318 for other wrapped entries. Headword, POS and meaning match the reference."
+          },
+          {
+            "index": 9,
+            "real": true,
+            "why": "Confirmed on screen 61: line 1 ends with '理查德' and line 2 starts with '·帕克在哪里…'. The text matches the reference, but the name is split and a line starts with the 间隔号."
+          },
+          {
+            "index": 10,
+            "real": true,
+            "why": "Confirmed on screen 61: the line break falls between 理查德 and ·帕克, so line 2 begins with the 间隔号, which breaks 避头点 and splits the name. The Chinese text otherwise matches the reference character for character."
+          }
+        ]
+      },
+      {
+        "id": "t04",
+        "findings": [
+          {
+            "screen": 37,
+            "sentence": 36,
+            "kind": "glyph",
+            "severity": "medium",
+            "description": "In the VOCABULARY panel, entry 6 (seem to) reads '似乎；好像（don’t seem to 似乎不……）' in the reference, but the screen draws '（don’ t'. The curly apostrophe inside the Chinese gloss falls back to a full-width CJK glyph, which leaves a blank gap of about half a character between ’ and t, so the word looks broken. The same word in the English line above ('don’t') renders correctly.",
+            "lens": "visual"
+          },
+          {
+            "screen": 0,
+            "sentence": 0,
+            "kind": "layout",
+            "severity": "low",
+            "description": "When a highlighted item ends in the letter 'f', the hook of the f runs into the badge after it. With red phrases, the f and the red square merge. Affected: s03 'as if'(4), s11 'as if'(8), s16 'deaf'(6), s22 'a set of'(6) and 'for the purpose of'(9), s24 'that of'(5), s26 'a set of'(6), s27 'a large number of'(2) and 'was capable of'(5), s28 'capable of'(1), s29 'as if'(13), s30 'a type of'(7), s33 'capable of'(1), s41 'a set of'(12). On other words there is a small gap before the badge. These need the same small gap.",
+            "lens": "visual"
+          },
+          {
+            "screen": 0,
+            "sentence": 0,
+            "kind": "layout",
+            "severity": "low",
+            "description": "Line wraps in the panel glosses and the translation split words and transliterated names, often leaving one character alone on a line. Panel: s04 '口头语|言' and '以|为', s11 '凯|瑟琳…' and '夫|妇）', s13 '吐|字', s15 '人|选', '比阿特|丽克斯' and '夫|妇）', s21 '创造|性', s22 '安·普|雷马克' and '夫|妇）', s24 '名|词）', s25 '联|系', s27/s28/s33 '能|力', s30 '态度|的', s35 '可|与', s36 '一|样', s40 '交|流'. Translation: s11 '（凯瑟琳·海|斯和基思·海斯）', s15 '艾伦·加德|纳）', s22 line ends on '戴维·' with the next line starting '普雷马克'. Nothing is cut off, but the names and words read as broken.",
+            "lens": "visual"
+          },
+          {
+            "screen": 13,
+            "sentence": 12,
+            "kind": "layout",
+            "severity": "low",
+            "description": "Two full-width punctuation marks in a row are not compressed, so a blank gap of about one character appears between them. In the translation: '（妈妈） 、' and '（杯子） 。', where the final 。 floats far from the bracket. The same gap appears on s21 '（指天鹅） ；' and s27 '形） ，'. In the panel: s12 '发出（声音） ；产生' and s35 '进而（做） ；接着（做）'.",
+            "lens": "visual"
+          },
+          {
+            "screen": 0,
+            "sentence": 0,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "Chinese meanings in the panel use two different font weights. Phrase entries are set in a heavier, semibold Song face (e.g. s09 '和……一起', s22 '在……的同时', s04 '毕竟'). Single-word entries are regular weight (e.g. s09 '幼小的；婴儿的'). The design spec does not describe this, so if it is not intended, the meanings should use one weight.",
+            "lens": "visual"
+          },
+          {
+            "screen": 30,
+            "sentence": 29,
+            "kind": "highlight",
+            "severity": "low",
+            "description": "The highlight is 'chimpanzees' (without the possessive apostrophe), so badge 4 sits between the word and its apostrophe: 'chimpanzees❹’ behavior'. The ’ is left floating after the badge and looks like a stray quotation mark. Screen 40 handles this better by highlighting the whole possessive (two-year-old’s❷).",
+            "lens": "visual"
+          },
+          {
+            "screen": 37,
+            "sentence": 36,
+            "kind": "glyph",
+            "description": "Vocabulary entry 6 (seem to): in the meaning text the reference has 'don’t seem to 似乎不……', but the curly apostrophe is drawn with the full-width CJK glyph, so the screen shows 'don’ t' with a wide gap, as if it were two words. The main English line on the same screen shows 'don’t' correctly. Confirmed in an enlarged crop.",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 30,
+            "sentence": 29,
+            "kind": "highlight",
+            "description": "The highlight for 'chimpanzees' matches the reference's 高亮原文 exactly, but the round badge ④ is placed between the word and its possessive apostrophe, so the screen reads 'chimpanzees④’ behavior' and the ’ hangs off after the badge. The reference text is 'the chimpanzees’ behavior'. Sentence 39 (screen 40) handles this differently: its highlight 'two-year-old’s' includes the ’s, so the badge comes after it. This is only a readability issue. No word is missing or changed.",
+            "severity": "low",
+            "lens": "english"
+          },
+          {
+            "screen": 37,
+            "sentence": 36,
+            "kind": "glyph",
+            "description": "In vocabulary entry 6 (seem to), the meaning should read “似乎；好像（don’t seem to 似乎不……）”. On screen the apostrophe in “don’t” uses the full-width CJK glyph, so it shows as “don’ t” with a wide gap before the t. The characters match the reference; the defect is how the apostrophe is drawn. The English words inside the Chinese meaning should use the Latin font, or a narrow apostrophe.",
+            "severity": "low",
+            "lens": "chinese"
+          }
+        ],
+        "opened": [
+          43,
+          43,
+          43
+        ],
+        "notes": [
+          "I opened all 43 screens in order (screen01 is the cover, screens 02–43 are the sentences) and zoomed into many regions with ImageMagick crops. PIL is not installed in any Python on this machine.\n\nStructure: 43 screens as expected. Sentence 39 is split across s40 (PART 1/2) and s41 (PART 2/2). The split comes after 'structures, …', part 2 starts '… plus a set of computational', and the Chinese of each part matches the reference.\n\nCover: title, 'TEM-8 · READING · SECTION A', '英语专业八级 2024年 · Passage One' and the genre '说明文 · 语言与动物' all match. The seal reads 专八/精读, which is the intended order.\n\nNumbering: on every screen the panel numbers run 1..n with no gap, repeat or swap, and on the split they continue 11..23 on s41. On every screen the badge numbers in the English are the same set as the panel numbers. Split phrases carry their badge on the last piece only (direct…to s04, treat…as s06, get…to s12, associate…with s25, It is…that s43). Sentence numbers k run 1–41 with no skip, the PART labels are correct and appear only on s40/s41, and the progress marker matches k/41 everywhere (checked by pixel position).\n\nHighlight colours and badge shapes match each entry's type throughout. I found no tofu, replacement characters, clipped text, or text running into the header rule or footer.\n\nPanel fonts are smaller on the busiest screens (s14, s21, s29, s30, s41). This is the auto-fit, so I did not report it. On s14 and s21 the panel content sits close to the panel's top and bottom edges but is not clipped.\n\nThe only medium-severity defect is the broken 'don’ t' on s37. Everything else is low-severity typography.",
+          "I opened and checked all 43 screens against /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/ref/t04.txt.\n\nStructure: screen01 is the title card. It shows 教黑猩猩使用语言的尝试与启示, 英语专业八级 2024年 · Passage One, the genre 说明文 · 语言与动物 and 全文 891 词, which matches a recount of the 41 reference sentences. Screens 02–39 are sentences 1–38. Screens 40–41 are sentence 39 in two parts, with footers PART 1/2 and PART 2/2. Screen 40 ends 'structures, …' and screen 41 starts '… plus a set of computational', exactly as the reference says. Screens 42–43 are sentences 40–41, for 43 screens in total as expected. No sentence is missing, repeated or out of order. Every header shows '2024年 · Passage One' and the reference title.\n\nEnglish text: I read every sentence word by word against the reference EN, checking word forms, plurals, -ed/-ing endings, articles, curly quotes and apostrophes, parentheses and final punctuation. All 41 sentences are identical to the reference, and the two parts of sentence 39 together give the whole sentence with nothing missing or repeated.\n\nVocabulary: every panel entry has the right headword and POS, with no POS on phrases. Entries are numbered by first appearance, and numbering continues 11–23 on the second part of sentence 39. Each highlight covers exactly its 高亮原文, including split phrases where only the last piece carries the number: directed … to, treat … as, get … to, associate … with, It is … that.\n\nOnly the two low-severity visual items listed above were found.",
+          "I opened all 43 screens: the title card plus 41 sentences, with sentence 39 split across screens 40 and 41 (PART 1/2 and 2/2). That matches the 43 screens the reference expects. For every sentence screen I enlarged the Chinese translation and compared it character by character with the reference ZH. For sentence 39 I compared each part with the given Chinese of that part. Every translation matches: no look-alike wrong characters, no missing or extra characters, no translation from another sentence, and no wrong punctuation. The Chinese title 教黑猩猩使用语言的尝试与启示 is correct on the title card and in every header. I enlarged and checked every Chinese meaning in the vocabulary panels against the reference; all match. The only defect is the apostrophe glyph in “don’t” on screen 37. Nothing is cut off or overlapping, including the full panels on screens 14, 21, 29, 30 and 41."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Confirmed in an enlarged crop of screen37. Vocab entry 6 reads '似乎；好像（don’ t seem to 似乎不……）'. The ’ is drawn as a full-width CJK glyph, which leaves a wide gap before the t. The English line on the same screen renders 'don’t' correctly."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Checked in enlarged crops: s03 and s11 'as if', s16 'deaf', s22 'a set of' and 'for the purpose of', s24 'that of', s26 'a set of', s27 'number of' and 'capable of', s28 'capable of', s29 'as if'(13), s30 'a type of', s33 'capable of', s41 'a set of'(12). In every case the hook of the final f touches or merges into the badge. Other words leave a small gap before their badge."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "All the listed splits are on screen. Panel: s04 口头语|言 and 以|为, s11 凯|瑟琳 and 夫|妇）, s13 吐|字, s15 人|选, 比阿特|丽克斯 and 夫|妇）, s21 创造|性, s22 安·普|雷马克 and 夫|妇）, s24 名|词）, s25 联|系, s27/s28/s33 能|力, s30 态度|的, s35 可|与, s36 一|样, s40 交|流. Translation: s11 海|斯, s15 加德|纳）, s22 a line ending on 戴维·. Several leave a single character on a line. The project's own style notes (样式.css) say to avoid mid-word breaks and lines left with one or two characters."
+          },
+          {
+            "index": 3,
+            "real": true,
+            "why": "Confirmed in crops. Translation: s13 '（妈妈） 、' and '（杯子） 。', s21 '（指天鹅） ；', s27 '形） ，'. Panel: s12 '发出（声音） ；产生', s35 '进而（做） ；接着（做）'. Each pair has an uncompressed full-width gap of about one character between the two marks."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Crops show phrase meanings (据报道, 能够, 和……一起, 毕竟) set heavier than single-word meanings (黑猩猩, 幼小的；婴儿的). The cause is in make_video.py: the in-text rule '.ph{font-weight:600}' also matches the panel's 'v ph' entry div, so phrase meanings inherit semibold. This is an unintended class collision, not part of the design."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Enlarged crop of screen30 shows 'chimpanzees④’ behavior': the badge sits between the word and its possessive apostrophe, and the dark ’ hangs after the badge. Screen40 highlights the whole possessive (two-year-old’s②), so its badge comes after the ’s."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "Same defect as index 0, confirmed on screen37: the panel meaning shows 'don’ t' with a full-width apostrophe gap, while the English line shows 'don’t' correctly."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Same as index 5, confirmed on screen30. The highlight matches the reference ('chimpanzees'), but the badge splits off the possessive ’, which hangs after the badge. This is a real readability defect even though no word is changed."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Same as index 0, confirmed on screen37: vocab entry 6 renders 'don’ t' with a wide full-width apostrophe gap. The characters match the reference; the defect is how the apostrophe is drawn."
+          }
+        ]
+      },
+      {
+        "id": "t05",
+        "findings": [
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "glyph",
+            "description": "Vocabulary entry 12 (HMS): the gloss reads \"Majesty’ s Ship的缩写\". The curly apostrophe is drawn as a full-width CJK quote with a wide blank gap after it, so the word looks like \"Majesty’ s\". It should be set tight as \"Majesty’s\", the way it appears in the English text.",
+            "severity": "medium",
+            "lens": "visual"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "layout",
+            "description": "The VOCABULARY panel is overfilled. The red 'VOCABULARY' label starts about 4px below the panel's top border (y≈144 against a border at y≈140). The descender of 'y' in the last entry '16 bay n. 海湾' reaches y≈983 and touches the panel's bottom border, so there is no bottom padding. Other full panels (screens 13, 14, 16, 25, 26) keep about 10px clear at both ends.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "layout",
+            "description": "Badge collision. The hooked top of the final 'f' in 'chief' runs into the round badge ②, so the letter and the badge touch or overlap.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "layout",
+            "description": "The Chinese translation breaks the name 马克-安德烈·贝尼耶 across two lines. Line 1 ends with a dangling '安德烈·' and '贝尼耶一起' starts line 2. The name separator should not be left at the end of a line.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 10,
+            "sentence": 9,
+            "kind": "layout",
+            "description": "Badge ⑤ sits between 'officers' and its possessive apostrophe, so the line renders as \"officers⑤’ cabins\". The apostrophe is left detached after the badge and looks like a stray mark. By contrast, screen 3 keeps \"bay’s\" together before its badge.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 13,
+            "sentence": 12,
+            "kind": "layout",
+            "description": "Badge collision. The hooked top of the final 'f' in the red phrase 'the number of' touches the left edge of the square badge ③.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 16,
+            "sentence": 15,
+            "kind": "layout",
+            "description": "Vocabulary entry 5 (Sir): 'Sir n.' stands alone on its line with a large blank space after it. The whole meaning '爵士（用于有爵位者姓名前的尊称）' wraps to the next line, and that line starts about 10px to the right of the headword column. Every other wrapped gloss continues on the same line and its continuation line is flush with the headword.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 18,
+            "sentence": 17,
+            "kind": "layout",
+            "description": "Badge overlap. The top hook of the final 'f' in 'relief' runs into the round badge ⑩, so the letter overlaps the badge.",
+            "severity": "medium",
+            "lens": "visual"
+          },
+          {
+            "screen": 19,
+            "sentence": 18,
+            "kind": "layout",
+            "description": "Badge collisions. The top hook of the final 'f' touches the square badge in both 'much of①' and 'threat of④'.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 27,
+            "sentence": 26,
+            "kind": "layout",
+            "description": "Badge overlap. The top hook of the final 'f' in 'staff' runs into the round badge ⑪, so the letter overlaps the badge.",
+            "severity": "medium",
+            "lens": "visual"
+          },
+          {
+            "screen": 30,
+            "sentence": 28,
+            "kind": "layout",
+            "description": "The em dash after 'polar bears⑤' wraps to the start of line 3, which begins \"—but they …\". The dash should stay at the end of the previous line. Separately, the 'f' of 'number of' touches the square badge ⑦.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 33,
+            "sentence": 31,
+            "kind": "layout",
+            "description": "Badge collision. The top hook of the final 'f' in 'number of' touches the left edge of the square badge ②.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 35,
+            "sentence": 33,
+            "kind": "layout",
+            "description": "Badge collision. The top hook of the final 'f' in 'off' (the last piece of rip…off) touches the square badge ①.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 36,
+            "sentence": 34,
+            "kind": "layout",
+            "description": "The VOCABULARY panel is overfilled. The 'VOCABULARY' label starts about 7px below the top border, and the descender of 'g' in the last entry '13 iceberg n. 冰山' ends 1px above the bottom border (y≈981 against a border at y≈983). There is effectively no padding at either end.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 38,
+            "sentence": 35,
+            "kind": "layout",
+            "description": "Badge collision. The top hook of the final 'f' in 'out of' (the last piece of fashioned…out of) touches the square badge ⑩.",
+            "severity": "low",
+            "lens": "visual"
+          },
+          {
+            "screen": 18,
+            "sentence": 17,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "The number badge sits on top of the hooked end of a word-final 'f', so the two touch or merge. On this screen the blue badge 10 covers the top of the 'f' in 'relief'. The same thing happens wherever a highlighted word ends in f: screen 7 'chief' (2), screen 13 'number of' (3), screen 19 'much of' (1) and 'threat of' (4), screen 27 'staff' (11), screen 30 'number of' (7), screen 33 'number of' (2), screen 35 'off' (1) and screen 38 'out of' (10). The text is still readable, but the badge should sit clear of the letter.",
+            "lens": "english"
+          },
+          {
+            "screen": 30,
+            "sentence": 28,
+            "kind": "layout",
+            "severity": "low",
+            "description": "The line breaks between 'polar bears' (badge 5) and the em dash, so the third English line starts with '—but they weren't prepared for the'. In the source, 'bears—but' has no space, so the dash should stay with 'bears' at the end of the line (as 'shoreline—the' on screen 4 and 'saw—muskets' on screen 13 do). The badge has created a break point before the dash.",
+            "lens": "english"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "glyph",
+            "severity": "low",
+            "description": "In the HMS entry of the vocabulary panel, the meaning '（His/Her Majesty’s Ship的缩写）' shows the curly apostrophe as a full-width CJK glyph. It reads 'Majesty’ s Ship', with a visible gap between the apostrophe and 's'.",
+            "lens": "english"
+          },
+          {
+            "screen": 16,
+            "sentence": 15,
+            "kind": "layout",
+            "severity": "low",
+            "description": "In vocabulary entry 5, 'Sir n.' stands alone on its line and the whole meaning '爵士（用于有爵位者姓名前的尊称）' drops to the next line, slightly indented compared with other wrapped glosses (it starts at about x=1322 instead of 1318). Every other entry starts its meaning on the headword line and wraps only the rest.",
+            "lens": "english"
+          },
+          {
+            "screen": 26,
+            "sentence": 25,
+            "kind": "layout",
+            "severity": "low",
+            "description": "With 17 entries, the vocabulary panel is auto-fitted to a much smaller font than on other screens: headwords are about 24 px tall at 1080p, against about 34 px elsewhere, and the Chinese meanings are smaller still. Nothing is cut off, but this panel is noticeably harder to read on a phone than the rest of the video.",
+            "lens": "english"
+          },
+          {
+            "screen": 7,
+            "sentence": 6,
+            "kind": "glyph",
+            "description": "In the vocabulary entry for HMS (no. 12), the apostrophe in the gloss is drawn as a full-width CJK glyph. The text matches the reference '英国皇家海军舰艇（His/Her Majesty’s Ship的缩写）' character for character, but on screen it reads 'Majesty’ s Ship' with a wide gap between the apostrophe and the s. It should look like the tight Latin 'Majesty’s', as in the English sentence text.",
+            "severity": "low",
+            "lens": "chinese"
+          }
+        ],
+        "opened": [
+          39,
+          39,
+          39
+        ],
+        "notes": [
+          "I opened and checked all 39 screens: the title card plus 38 sentence screens. The structure matches the reference: 36 sentences, with sentence 27 split over screens 28–29 and sentence 35 over screens 37–38, giving 39 screens. Both splits break at the expected points ('diving gear, compressors…' and '… Harris fashioned a cover'), the Chinese of each part matches the reference, and the footers read PART 1/2 and 2/2 correctly. Unsplit screens have no PART label.\n\nTitle card: the title, '英语专业八级 2024年 · Passage Two', 'TEM-8 · READING · SECTION A', the genre '记叙文 · 考古与历史' and the seal (专八 / 精读) are all correct. '全文 944 词' matches a whitespace word count of the reference English.\n\nNumbering, per screen as circles in the English (left to right) / panel numbers (top to bottom) / footer:\n- s2 1-6/1-6/1\n- s3 1-11/1-11/2\n- s4 1-6/3\n- s5 1-5/4\n- s6 1-5/5\n- s7 1-16/6 (sit is 14 by first appearance)\n- s8 1-10/7 (split phrase holds…place in, badge 7 on 'place in')\n- s9 1-6/8\n- s10 1-9/9\n- s11 1-8/10\n- s12 1-4/11\n- s13 1-14/12\n- s14 English 2,1,3…13 (Leaving…behind is 1), panel 1-13/13\n- s15 1-9/14\n- s16 1-14/15\n- s17 1-5/16\n- s18 1-10/17\n- s19 1-8/18 (under…threat of is 4)\n- s20 1-2/19\n- s21 1-6/20\n- s22 1-7/21\n- s23 1-9/22\n- s24 English 1-5,7,6 (have a…look is 6), panel 1-7/23\n- s25 1-13/24\n- s26 1-17/25\n- s27 1-11/26\n- s28 1-9/27 P1\n- s29 10-18/27 P2\n- s30 1-9/28\n- s31 1-12/29\n- s32 1-12/30\n- s33 1-6/31\n- s34 1-2/32\n- s35 English 2,3,1,4…11, panel 1-11/33\n- s36 1-13/34\n- s37 1-9/35 P1\n- s38 English 11,10,12…16,18,17,19,20,21, panel 10-21/35 P2\n- s39 1-9/36\n\nEvery panel is consecutive with no gaps. On each screen the circle numbers match the panel numbers, the colours and badge shapes match the entry type, and split phrases carry their badge only on the last piece. I measured the progress-bar marker on every screen and it matches k/36 within 1px, including both parts of each split. The English, the Chinese and the glosses on screen match the reference.\n\nDefects found:\n- Screen 7 (medium): a CJK-width apostrophe leaves a gap in 'Majesty’ s'.\n- Systemic: the final 'f' of a highlighted word collides with its badge on 9 screens (7, 13, 18, 19, 27, 30, 33, 35, 38). It is a clear overlap on 'relief' (screen 18, medium) and 'staff' (screen 27, medium); on the other screens the letter touches the badge.\n- Screens 7 and 36: the vocabulary panel is overfilled, so the text touches or nearly touches the panel's top and bottom borders.\n- Minor line-break issues:\n  - screen 16: the 'Sir' gloss wraps whole to the next line with an extra indent.\n  - screen 30: a line starts with an em dash.\n  - screen 7: the name 安德烈·贝尼耶 is split across lines at the separator.\n  - screen 10: the possessive apostrophe in 'officers’' is detached after its badge.\n\nI found no tofu, replacement characters or truncated text. The ellipses (……) are drawn the same centred way everywhere.",
+          "The English text, vocabulary and structure all match the reference; the only problems are 5 low-severity visual ones.\n\n- **Screens:** I opened all 39 in order: the title card plus 36 sentences. Sentences 27 and 35 are each split across 2 screens, as the reference says. Each sentence appears exactly once and in order, and the footers read SENTENCE k / 36 with PART 1/2 and 2/2 on the split screens.\n- **Split sentences:** Sentence 27 (screens 28–29) breaks after 'two boats, …' and continues '… diving gear, compressors'. Sentence 35 (screens 37–38) breaks after 'watertight— …' and continues '… Harris fashioned a cover'. Nothing is missing or repeated, and the vocabulary numbering carries on across the parts (10–18 and 10–21).\n- **English:** All 36 sentences match the reference EN word for word, including word endings, articles and punctuation. I zoomed in to confirm the names and numbers: Marc-Andre, Aulavik, Inuvialuit, Sachs Harbour, McClure, 8,820, 74th, 4,000-mile, and the '(火枪)' and '(鹿皮)' glosses.\n- **Vocabulary:** Every headword and part of speech matches the reference, as does every highlighted word. Phrases have no part of speech, and split phrases carry their number only on the last piece: hold…place in, leave…behind, under…threat of, it would be…before, have a…look, rip…off, fashion…out of and sandwich…between.\n- **Title card and headers:** The title card shows '北极沉船“调查者”号的考古与打捞', '英语专业八级 2024年 · Passage Two', '记叙文 · 考古与历史' and '全文 944 词'. 944 matches a recount of the reference EN. Every header shows '2024年 · Passage Two' and the same title.\n\nTwo layout points I did not report: the VOCABULARY label sits close to the panel top on the crowded panels (screens 7, 13, 16, 25, 26 and 36), but nothing is cut off. Badge numbers that look out of order in the English (e.g. 'critical⁸ place in⁷') follow the rule that a phrase is numbered by its first appearance.\n\nScreens are in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t05/ and the zoomed crops in /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/crops5/.",
+          "I opened all 39 screens in order: screen01 is the title card, screens 02–39 cover sentences 1–36. Sentence 27 is split across screens 28 and 29 (PART 1/2 and 2/2), and sentence 35 across screens 37 and 38. That gives 39 screens, as the reference expects. For every sentence screen I cropped and enlarged the Chinese translation and the vocabulary panel (scripts and crops are in scratchpad/t05zh/; the system Python has no PIL, so I used /opt/ttsenv/bin/python). I then compared them with ref/t05.txt character by character.\n\nTitle: the cover title 北极沉船“调查者”号的考古与打捞 and the header title on every screen match the reference. Genre 记叙文 · 考古与历史 is correct, and the seal reads 专八精读.\n\nChinese translations: all 36 sentences match the reference exactly, including punctuation (the ；, the ——, the full-width parentheses in sentence 35 part 1, and the “” quotes). The split points match the reference's Chinese for each part: sentence 27 breaks after 两艘小船、 and sentence 35 after 保持水密），. No look-alike wrong characters, missing or extra characters, or truncation.\n\nVocabulary meanings: every entry matches the reference in meaning and order. I zoomed in on likely trouble spots: 麂皮 vs 鹿皮 in the chamois entry on screen 38 (麂 is correct, distinct from the 鹿 in 软鹿皮), 威胁 wrapping across lines on screen 19, and the long glosses for Sir, resting place and come into range. All correct, and nothing is cut off or overlapping.\n\nThe only defect is cosmetic: on screen 07 the apostrophe in the HMS gloss is spaced like a CJK character."
+        ],
+        "failed": 0,
+        "verdicts": [
+          {
+            "index": 0,
+            "real": true,
+            "why": "Zoomed screen 7, entry 12: the gloss line reads 'Majesty’ s Ship的缩写）'. The ’ is drawn as a full-width CJK glyph with a wide gap before the s."
+          },
+          {
+            "index": 1,
+            "real": true,
+            "why": "Pixel check on screen 7: the panel border is at y=140/983. The VOCABULARY ink starts at y=145, and the descender of 'y' in '16 bay' runs down to row 983, where it touches the bottom border. Screens 13/14/16/25/26 leave about 8–16px at both ends."
+          },
+          {
+            "index": 2,
+            "real": true,
+            "why": "Zoomed screen 7: the hooked top of the final f in 'chief' runs straight into the left edge of round badge ②."
+          },
+          {
+            "index": 3,
+            "real": false,
+            "why": "Line 1 does end with '马克-安德烈·' and '贝尼耶一起' starts line 2, but this is an allowed break. Chinese line-breaking rules only forbid the 间隔号 at the start of a line, not at the end. The text matches the reference and nothing is cut off or overlapping, so this is ordinary wrapping, not a defect."
+          },
+          {
+            "index": 4,
+            "real": true,
+            "why": "Screen 10 renders 'officers⑤’ cabins': the possessive apostrophe sits after the badge, cut off from its word, and looks like a stray mark. Screen 3 keeps 'bay’s' together before its badge."
+          },
+          {
+            "index": 5,
+            "real": true,
+            "why": "Zoomed screen 13: the top hook of the f in 'number of' touches the left edge of square badge ③."
+          },
+          {
+            "index": 6,
+            "real": true,
+            "why": "Screen 16, entry 5: 'Sir n.' stands alone and the whole meaning drops to the next line. Measured, the meaning starts at x≈1325 while the headword column is at x≈1313, so it is indented about 12px. Other wrapped glosses (screens 7, 36, 38) continue flush with the headword."
+          },
+          {
+            "index": 7,
+            "real": true,
+            "why": "Zoomed screen 18: the f hook in 'relief' runs into round badge ⑩, and the two merge."
+          },
+          {
+            "index": 8,
+            "real": true,
+            "why": "Zoomed screen 19: in both 'much of①' and 'threat of④' the top hook of the f touches the square badge."
+          },
+          {
+            "index": 9,
+            "real": true,
+            "why": "Zoomed screen 27: the hook of the final f in 'staff' runs into round badge ⑪."
+          },
+          {
+            "index": 10,
+            "real": true,
+            "why": "Screen 30: line 2 ends 'polar bears⑤' and line 3 starts '—but they'. The zoom also shows the f in 'number of' touching square badge ⑦."
+          },
+          {
+            "index": 11,
+            "real": true,
+            "why": "Zoomed screen 33: the top hook of the f in 'number of' touches square badge ②."
+          },
+          {
+            "index": 12,
+            "real": true,
+            "why": "Zoomed screen 35: the hook of the last f in 'off' touches square badge ①."
+          },
+          {
+            "index": 13,
+            "real": true,
+            "why": "Pixel check on screen 36: VOCABULARY ink starts at y=147 (border at 140), and the 'g' descender of 'iceberg' ends at y=981 (border at 983). That leaves 7px at the top and 1px at the bottom."
+          },
+          {
+            "index": 14,
+            "real": true,
+            "why": "Zoomed screen 38: the top hook of the f in 'out of' touches square badge ⑩."
+          },
+          {
+            "index": 15,
+            "real": true,
+            "why": "Checked every listed case (screens 7, 13, 18, 19×2, 27, 30, 33, 35, 38). In each, a word-final f's top hook touches or merges with its badge. The worst is 'relief⑩' on screen 18."
+          },
+          {
+            "index": 16,
+            "real": true,
+            "why": "Screen 30: the line breaks between 'polar bears⑤' and the em dash, so line 3 starts '—but they weren’t prepared for the'. The reference has 'bears—but' with no space, and 'shoreline—the' (screen 4) and 'saw—muskets' (screen 13) stay together."
+          },
+          {
+            "index": 17,
+            "real": true,
+            "why": "Same HMS gloss on screen 7: the curly apostrophe is a full-width CJK glyph, so it reads 'Majesty’ s Ship' with a visible gap."
+          },
+          {
+            "index": 18,
+            "real": true,
+            "why": "Screen 16: 'Sir n.' is alone on its line and '爵士（用于有爵位者姓名前的尊称）' is on the next line, indented compared with the headword. The exact x values cited are a bit off: I measured ≈1325 against the 1313 headword column, which is larger than the 4px offset claimed. The defect itself is as described."
+          },
+          {
+            "index": 19,
+            "real": false,
+            "why": "The panel is auto-fitted, which the stated design allows: sizes may differ between screens as long as nothing is cut off or overlapping, and nothing is. The reduction is also not unique to this screen: 'wreck' measures 69px wide here against 72px on screen 7 (16 entries)."
+          },
+          {
+            "index": 20,
+            "real": true,
+            "why": "Same HMS gloss defect on screen 7. The text matches the reference character for character, but ’ is drawn as a full-width CJK apostrophe, so the line shows 'Majesty’ s Ship' with a wide gap."
+          }
+        ]
+      }
+    ],
+    "incomplete": [],
+    "missing": []
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Inspect"
+    },
+    {
+      "type": "workflow_phase",
+      "index": 2,
+      "title": "Verify"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "visual:q9",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "adf371ade0ced4576",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791664752305,
+      "queuedAt": 1791664752255,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 39 screens in order (title card plus 38 senten…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q9/screen01.png is the title card, screen02.png is sen…",
+      "promptFramed": true,
+      "lastProgressAt": 1791665159859,
+      "tokens": 231265,
+      "toolCalls": 82,
+      "durationMs": 407551,
+      "resultPreview": "{\"screens_opened\":39,\"findings\":[{\"screen\":1,\"sentence\":0,\"kind\":\"title\",\"description\":\"The title card reads '英语专业八级 2024年 · Passage Three'. The reference header says '2024年 Passage Two', and the header of every sentence screen also says '2024年 · Passage Two'. The cover shows the wrong passage number. Title, genre (记叙文 · 考古与历史), tag and seal are otherwise correct.\",\"severity\":\"high\"},{\"screen\":21,…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "english:q9",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a92fd906333a4f497",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791664752306,
+      "queuedAt": 1791664752256,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 39 screens and the reference q9.txt. The struc…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q9/screen01.png is the title card, screen02.png is sen…",
+      "promptFramed": true,
+      "lastProgressAt": 1791665016169,
+      "tokens": 217367,
+      "toolCalls": 72,
+      "durationMs": 263226,
+      "resultPreview": "{\"screens_opened\":39,\"findings\":[{\"screen\":1,\"sentence\":0,\"kind\":\"title\",\"description\":\"The title card shows '英语专业八级 2024年 · Passage Three', but the reference (and every sentence-screen header) says Passage Two.\",\"severity\":\"high\"},{\"screen\":21,\"sentence\":20,\"kind\":\"english\",\"description\":\"The English ends 'took just a few minute.' The reference reads 'took just a few minutes.' (plural -s is missi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "chinese:q9",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a7ae79a0822aac5c0",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791665018405,
+      "queuedAt": 1791664752256,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 39 screens (title card, 36 sentences, plus 2 e…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q9/screen01.png is the title card, screen02.png is sen…",
+      "promptFramed": true,
+      "lastProgressAt": 1791667632121,
+      "tokens": 406710,
+      "toolCalls": 414,
+      "durationMs": 2613716,
+      "resultPreview": "{\"screens_opened\":39,\"findings\":[{\"screen\":29,\"sentence\":27,\"kind\":\"chinese\",\"severity\":\"high\",\"description\":\"The Chinese for part 2/2 of sentence 27 stops early. The screen shows only 「潜水装备、压缩机、录制设备、勘测工具。」. The reference part 2 is 「潜水装备、压缩机、录制设备、勘测工具，以及20个用来收集饮用淡水的桶。」. The clause 「，以及20个用来收集饮用淡水的桶」 is missing, and the 「，」 after 勘测工具 became 「。」. The English on this screen still covers 'and 20 barr…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "visual:t01",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a8faae642d65761b5",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791665161738,
+      "queuedAt": 1791664752388,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 35 screens in order, read the reference, and z…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t01/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791665447450,
+      "tokens": 209245,
+      "toolCalls": 72,
+      "durationMs": 285712,
+      "resultPreview": "{\"screens_opened\":35,\"findings\":[{\"screen\":7,\"sentence\":6,\"kind\":\"layout\",\"severity\":\"low\",\"description\":\"In the vocabulary panel, entry 14 'as a whole' wraps differently from every other entry. Its whole gloss '作为一个整体；整个（……）' drops to a second line, indented about 10px to the right of the headword, and the rest of the headword line is left empty. Other long entries (e.g. screen 2 entry 5, screen …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "english:t01",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a58986717feb47cd8",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791665449857,
+      "queuedAt": 1791664752389,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 35 screens of t01 in order (2025年 Passage One…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t01/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791665611038,
+      "tokens": 191442,
+      "toolCalls": 55,
+      "durationMs": 161180,
+      "resultPreview": "{\"screens_opened\":35,\"findings\":[{\"screen\":18,\"sentence\":17,\"kind\":\"highlight\",\"description\":\"In \\\"all drivers' needs\\\" the round badge 12 sits between \\\"drivers\\\" and its possessive apostrophe, so the screen reads \\\"drivers⑫' needs\\\". The apostrophe is cut off from its word and looks like a stray closing quotation mark. The words are correct and the highlight matches the reference (\\\"drivers\\\"), …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "chinese:t01",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a9766954795475f46",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791665613313,
+      "queuedAt": 1791664752389,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I compared the Chinese on every screen with ref/t01.txt by …",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t01/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791667171998,
+      "tokens": 354829,
+      "toolCalls": 628,
+      "durationMs": 1558684,
+      "resultPreview": "{\"screens_opened\":35,\"findings\":[{\"screen\":22,\"sentence\":21,\"kind\":\"layout\",\"description\":\"The 16-entry VOCABULARY panel for sentence 21 is filled to the edges with no margin. The 'VOCABULARY' label sits only about 4 px below the panel's top border. The descenders of the last entry, '16 charging infrastructure 充电基础设施', reach the bottom border line: red glyph pixels run down to y=983, the same row …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "visual:t02",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a7c9e4a98b56a9216",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791667173922,
+      "queuedAt": 1791664752389,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 63 screens plus the reference text. Structure …",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t02/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791667565984,
+      "tokens": 287925,
+      "toolCalls": 137,
+      "durationMs": 392060,
+      "resultPreview": "{\"screens_opened\":63,\"findings\":[{\"screen\":39,\"sentence\":38,\"kind\":\"layout\",\"description\":\"The phrase badge is placed so close that the top hook of the final 'f' in 'getting on and off' runs into the left edge of the red square badge ②. Glyph and badge are the same red, so at 8x zoom they merge into one shape. The badge should leave a small gap after the letter.\",\"severity\":\"low\"},{\"screen\":63,\"se…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "english:t02",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a1cca030e7eeee724",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791667567751,
+      "queuedAt": 1791664752389,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 63 screens in order (screen01 is the title car…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t02/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791667744709,
+      "tokens": 268697,
+      "toolCalls": 77,
+      "durationMs": 176957,
+      "resultPreview": "{\"screens_opened\":63,\"findings\":[],\"notes\":\"I opened all 63 screens in order (screen01 is the title card, screen02 to screen63 are sentences 1 to 62) and checked them against ref/t02.txt. I zoomed into screen39, screen47 and screen13 to look at the tight vocabulary panel and the quote and bracket punctuation.\\n\\nStructure: the reference expects 63 screens with no split sentences, and that is what …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "chinese:t02",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "afd8eacbfff040fb1",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791667634111,
+      "queuedAt": 1791664752389,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "t02 (2025 Passage Two, 女制动员的铁路入行记) has 63 screens…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t02/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791668234517,
+      "tokens": 269482,
+      "toolCalls": 283,
+      "durationMs": 600405,
+      "resultPreview": "{\"screens_opened\":63,\"findings\":[],\"notes\":\"t02 (2025 Passage Two, 女制动员的铁路入行记) has 63 screens: 1 title card plus 62 sentence screens, with no split sentences. That matches the reference's expected 63.\\n\\nHow I checked:\\n- I opened every screen. For each sentence screen I made an enlarged crop (1.6–2x) of the Chinese translation and the full VOCABULARY panel, then read the Chinese character by char…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "visual:t03",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "aa38d2017ed96fbd7",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791667746701,
+      "queuedAt": 1791664752390,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 70 screens in order. Screen 01 is the title ca…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t03/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791668015164,
+      "tokens": 298656,
+      "toolCalls": 97,
+      "durationMs": 268463,
+      "resultPreview": "{\"screens_opened\":70,\"findings\":[{\"screen\":33,\"sentence\":32,\"kind\":\"layout\",\"severity\":\"medium\",\"description\":\"The inline gloss '(防水布)' after 'tarpaulin⁵' is broken in the middle of the word. Line 2 of the English ends with '(防' and line 3 starts with '水布) and unrolled…', so the opening bracket and the first character are left hanging at the line end. The gloss should stay together on one line, th…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "english:t03",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "ae35f91c1a2c8317c",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791668017123,
+      "queuedAt": 1791664752390,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 70 screens: screen01 is the title card and scr…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t03/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791668192336,
+      "tokens": 284331,
+      "toolCalls": 81,
+      "durationMs": 175212,
+      "resultPreview": "{\"screens_opened\":70,\"findings\":[{\"screen\":33,\"sentence\":32,\"kind\":\"layout\",\"severity\":\"low\",\"description\":\"The inline Chinese gloss '(防水布)' after 'tarpaulin' breaks across two lines inside the parentheses: '(防' ends line 2 and '水布)' starts line 3. The text is correct and nothing is cut off, but the gloss is split. On other screens the inline glosses '(用压条固定)' (screen 39) and '(船舷边缘)' (screen 42) …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "chinese:t03",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "ac0039f2f9377210a",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791668194102,
+      "queuedAt": 1791664752390,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I checked all 70 screens: the cover plus 69 sentence screen…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t03/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791670725649,
+      "tokens": 511041,
+      "toolCalls": 1329,
+      "durationMs": 2531545,
+      "resultPreview": "{\"findings\":[{\"screen\":61,\"sentence\":60,\"kind\":\"layout\",\"severity\":\"low\",\"description\":\"The Chinese text matches the reference character for character, but the line break splits the name 理查德·帕克. Line 1 ends with 「…知道理查德」 and line 2 starts with the middle dot: 「·帕克在哪里；防水布下面一片漆黑——但还」. Under Chinese line-breaking rules (避头点) a 间隔号 must not start a line, and a name should stay on one line. 「理查德·帕克」 sh…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "visual:t04",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a5c063aa9d32f630b",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791668236413,
+      "queuedAt": 1791664752415,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 43 screens in order (screen01 is the cover, sc…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t04/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791668550001,
+      "tokens": 234192,
+      "toolCalls": 90,
+      "durationMs": 313587,
+      "resultPreview": "{\"findings\":[{\"screen\":37,\"sentence\":36,\"kind\":\"glyph\",\"severity\":\"medium\",\"description\":\"In the VOCABULARY panel, entry 6 (seem to) reads '似乎；好像（don’t seem to 似乎不……）' in the reference, but the screen draws '（don’ t'. The curly apostrophe inside the Chinese gloss falls back to a full-width CJK glyph, which leaves a blank gap of about half a character between ’ and t, so the word looks broken. The …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "english:t04",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a65894fe3712228fb",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791668551901,
+      "queuedAt": 1791664752415,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened and checked all 43 screens against /tmp/claude-0/-…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t04/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791668682268,
+      "tokens": 208117,
+      "toolCalls": 56,
+      "durationMs": 130367,
+      "resultPreview": "{\"screens_opened\":43,\"findings\":[{\"screen\":37,\"sentence\":36,\"kind\":\"glyph\",\"description\":\"Vocabulary entry 6 (seem to): in the meaning text the reference has 'don’t seem to 似乎不……', but the curly apostrophe is drawn with the full-width CJK glyph, so the screen shows 'don’ t' with a wide gap, as if it were two words. The main English line on the same screen shows 'don’t' correctly. Confirmed in an e…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 15,
+      "label": "chinese:t04",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "aafe459fd31f17efb",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791668684038,
+      "queuedAt": 1791664752415,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 43 screens: the title card plus 41 sentences, …",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t04/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791669162061,
+      "tokens": 240497,
+      "toolCalls": 237,
+      "durationMs": 478022,
+      "resultPreview": "{\"screens_opened\":43,\"findings\":[{\"screen\":37,\"sentence\":36,\"kind\":\"glyph\",\"description\":\"In vocabulary entry 6 (seem to), the meaning should read “似乎；好像（don’t seem to 似乎不……）”. On screen the apostrophe in “don’t” uses the full-width CJK glyph, so it shows as “don’ t” with a wide gap before the t. The characters match the reference; the defect is how the apostrophe is drawn. The English words insid…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 16,
+      "label": "visual:t05",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a0ff3f380f8d140ad",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791669163869,
+      "queuedAt": 1791664752416,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened and checked all 39 screens: the title card plus 38…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t05/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791669513366,
+      "tokens": 226919,
+      "toolCalls": 88,
+      "durationMs": 349496,
+      "resultPreview": "{\"screens_opened\":39,\"findings\":[{\"screen\":7,\"sentence\":6,\"kind\":\"glyph\",\"description\":\"Vocabulary entry 12 (HMS): the gloss reads \\\"Majesty’ s Ship的缩写\\\". The curly apostrophe is drawn as a full-width CJK quote with a wide blank gap after it, so the word looks like \\\"Majesty’ s\\\". It should be set tight as \\\"Majesty’s\\\", the way it appears in the English text.\",\"severity\":\"medium\"},{\"screen\":7,\"se…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 17,
+      "label": "english:t05",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "a6d945356e1396848",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791669515228,
+      "queuedAt": 1791664752416,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The English text, vocabulary and structure all match the re…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t05/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791669741930,
+      "tokens": 215941,
+      "toolCalls": 66,
+      "durationMs": 226700,
+      "resultPreview": "{\"screens_opened\":39,\"findings\":[{\"screen\":18,\"sentence\":17,\"kind\":\"glyph\",\"severity\":\"low\",\"description\":\"The number badge sits on top of the hooked end of a word-final 'f', so the two touch or merge. On this screen the blue badge 10 covers the top of the 'f' in 'relief'. The same thing happens wherever a highlighted word ends in f: screen 7 'chief' (2), screen 13 'number of' (3), screen 19 'much…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 18,
+      "label": "chinese:t05",
+      "phaseIndex": 1,
+      "phaseTitle": "Inspect",
+      "agentId": "ab4ce77955dd7f3d8",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791669743944,
+      "queuedAt": 1791664752416,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "I opened all 39 screens in order: screen01 is the title car…",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t05/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791670614292,
+      "tokens": 228878,
+      "toolCalls": 447,
+      "durationMs": 870348,
+      "resultPreview": "{\"screens_opened\":39,\"findings\":[{\"screen\":7,\"sentence\":6,\"kind\":\"glyph\",\"description\":\"In the vocabulary entry for HMS (no. 12), the apostrophe in the gloss is drawn as a full-width CJK glyph. The text matches the reference '英国皇家海军舰艇（His/Her Majesty’s Ship的缩写）' character for character, but on screen it reads 'Majesty’ s Ship' with a wide gap between the apostrophe and the s. It should look like t…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 19,
+      "label": "verify:t01",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "abf0ff57ea7228409",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791670616273,
+      "queuedAt": 1791667173977,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t01/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791670747530,
+      "tokens": 189520,
+      "toolCalls": 51,
+      "durationMs": 131255,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed on screen07 (sentence 6). Entry 14 'as a whole' has its whole gloss '作为一个整体；整个（……）' on a second line, and the rest of the headword line is empty. The headword starts at x=1313 and the gloss at x=1323, so the gloss is indented 10px. The gloss ink ends at y=977 and the panel border is at y=983. Other long entries (screen02 entry 5, screen08 entry …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 20,
+      "label": "verify:q9",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "aae6847ecc310450d",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791670727774,
+      "queuedAt": 1791667634161,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/q9/screen01.png is the title card, screen02.png is sen…",
+      "promptFramed": true,
+      "lastProgressAt": 1791670930813,
+      "tokens": 215873,
+      "toolCalls": 72,
+      "durationMs": 203038,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Screen 01 cover reads '英语专业八级 2024年 · Passage Three'. The reference header and every sentence-screen header say 'Passage Two'.\"},{\"index\":1,\"real\":true,\"why\":\"Screen 21 (sentence 20) ends 'took just a few minute.' The reference has 'minutes'.\"},{\"index\":2,\"real\":true,\"why\":\"Screen 29 (S27 part 2/2) Chinese is only '潜水装备、压缩机、录制设备、勘测工具。'. The clause '，以及20个…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 21,
+      "label": "verify:t02",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ad3ef1fb4ebc84417",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791670749252,
+      "queuedAt": 1791668236452,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t02/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791670928823,
+      "tokens": 275355,
+      "toolCalls": 90,
+      "durationMs": 179571,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Screen 39 at 8x zoom: the top hook of the second 'f' in 'off' runs straight into the left edge of red square badge 2. Both are the same red, so they read as one shape with no gap.\"},{\"index\":1,\"real\":true,\"why\":\"Screen 63 zoomed: the overhanging top of the 'ff' in 'stuff' touches blue round badge 2 and merges with it in the same dark blue.\"},{\"index\":2,\"r…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 22,
+      "label": "verify:t04",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "ad23157ed13f6c446",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791670930516,
+      "queuedAt": 1791669163913,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t04/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791671123459,
+      "tokens": 223656,
+      "toolCalls": 78,
+      "durationMs": 192942,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed in an enlarged crop of screen37. Vocab entry 6 reads '似乎；好像（don’ t seem to 似乎不……）'. The ’ is drawn as a full-width CJK glyph, which leaves a wide gap before the t. The English line on the same screen renders 'don’t' correctly.\"},{\"index\":1,\"real\":true,\"why\":\"Checked in enlarged crops: s03 and s11 'as if', s16 'deaf', s22 'a set of' and 'for the …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 23,
+      "label": "verify:t05",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a90b1119867b69d90",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791670932535,
+      "queuedAt": 1791670616315,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t05/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791671165698,
+      "tokens": 216846,
+      "toolCalls": 69,
+      "durationMs": 233161,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Zoomed screen 7, entry 12: the gloss line reads 'Majesty’ s Ship的缩写）'. The ’ is drawn as a full-width CJK glyph with a wide gap before the s.\"},{\"index\":1,\"real\":true,\"why\":\"Pixel check on screen 7: the panel border is at y=140/983. The VOCABULARY ink starts at y=145, and the descender of 'y' in '16 bay' runs down to row 983, where it touches the bottom b…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 24,
+      "label": "verify:t03",
+      "phaseIndex": 2,
+      "phaseTitle": "Verify",
+      "agentId": "a3d499d843246ee8e",
+      "model": "claude-opus-5-5",
+      "state": "done",
+      "startedAt": 1791671125255,
+      "queuedAt": 1791670727831,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are checking a FINISHED study video for Chinese university students majoring in English, preparing for TEM-8 (英语专业八级, Part II Reading Comprehension, Section A; the passages include literary excerpts). The video was cut into still screens, in playing order: /tmp/claude-0/-home-user/8ecea899-aaa9-5a52-878f-ec29bb403c87/scratchpad/tem8/frames/t03/screen01.png is the title card, screen02.png is se…",
+      "promptFramed": true,
+      "lastProgressAt": 1791671283564,
+      "tokens": 285885,
+      "toolCalls": 82,
+      "durationMs": 158309,
+      "resultPreview": "{\"verdicts\":[{\"index\":0,\"real\":true,\"why\":\"Confirmed on screen 33 (s32): line 2 of the English ends with 'tarpaulin⁵ (防' and line 3 starts with '水布) and unrolled⁶…', so the gloss is broken inside its brackets. On screen 39, '(用压条固定)' stays on one line, and on screen 42, '(船舷边缘)' does too.\"},{\"index\":1,\"real\":true,\"why\":\"Confirmed on screen 59 (s58): line 1 ends with 'pummelled² (反' and line 2 star…"
+    }
+  ],
+  "totalTokens": 6292669,
+  "totalToolCalls": 4753
+}

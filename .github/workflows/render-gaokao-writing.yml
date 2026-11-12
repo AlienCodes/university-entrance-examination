@@ -1,0 +1,93 @@
+# 高考读后续写讲解视频：在 GitHub 上生成 4K 视频并发布 Release（本机只出 MP3 + 合格证 + timings，提交后推清单触发）。
+# 清单 高考续写/render.txt（# 开头是注释）：第 1 行标签（test-… 只试跑、成品放 artifact；其余发布到该标签的 Release），
+#   第 2 行讲解目录，第 3 行音频（高考续写/audio/<名>.mp3，旁边要有 timings 与合格证），第 4 行成品文件名（.mp4），
+#   第 5 行（可选）画面引擎：续写视频.py（v1，默认）或 续写视频_v2.py（高亮闪一下 + 下面出中文意思）。
+# 一次启动、自己流到底：续写检查 → 合格证 → 截图（每屏排版检查）→ 编码 → 成品核查（讲解视频.verify 全部）→ 发布（target 用分支名，踩坑 53）
+# → 下载回来核对 sha256。浏览器与本机一致（踩坑 78）由本机 续写全片.sh 触发前检查。检出路径改了，先在本机按同样路径建稀疏工作树试排（踩坑 84）。
+name: 生成高考续写讲解视频（GitHub 上生成并发布）
+on:
+  push:
+    paths: ['高考续写/render.txt']
+permissions:
+  contents: write
+concurrency:
+  group: render-gaokao-writing
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /tools/
+            /高考续写/
+            !/高考续写/最终视频/
+            /高考语法填空/tools/
+            /中考/tools/fonts/
+            /专八/tools/fonts/
+      - name: 读清单
+        run: |
+          python3 - <<'PY'
+          import os, re
+          L = [x.strip() for x in open('高考续写/render.txt', encoding='utf-8').read().splitlines()]
+          L = [x for x in L if x and not x.startswith('#')]
+          tag, d, mp3, name = L[:4]
+          eng = L[4] if len(L) > 4 else '续写视频.py'
+          assert eng in ('续写视频.py', '续写视频_v2.py'), f'画面引擎不对：{eng}'
+          assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]*', tag), f'标签不合法：{tag}'
+          assert os.path.isfile(os.path.join(d, '稿.json')), f'没有讲解目录：{d}'
+          assert os.path.isfile(mp3) and mp3.endswith('.mp3'), f'没有音频：{mp3}'
+          assert name.endswith('.mp4') and '/' not in name, f'成品名不对：{name}'
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as f:
+              f.write(f'TAG={tag}\nDIR={d}\nMP3={mp3}\nNAME={name}\nENGINE={eng}\n')
+          print(f'标签 {tag}（{"试跑，不发布" if tag.startswith("test") else "发布 Release"}）；{d}；{mp3} → {name}（{eng}）')
+          PY
+      - name: Release 目标检查（踩坑 53）
+        run: python3 .github/check-release-target.py
+      - uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '153'
+          asr: 'false'
+      - name: 讲解配音检查要的包与识别模型（SenseVoice：讲解节奏的识别对齐）
+        run: |
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check librosa==0.11.0 numba==0.68.1 llvmlite==0.50.0 onnxruntime==1.31.1
+          mkdir -p tools/tts/models
+          curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.tar.bz2 | tar xj -C tools/tts/models
+          ls tools/tts/models
+      - name: 续写检查（范文、五步讲解、5 词重合、不读旧范文）
+        run: python3 高考续写/tools/续写检查.py "$DIR"
+      - name: 音频合格证（踩坑 87）
+        run: python3 .github/check-audio-cert.py 高考续写/audio
+      - name: 截图（每屏排版检查）+ 4K 视频 + 成品核查
+        run: |
+          mkdir -p out
+          env -u LANG -u LC_ALL -u LANGUAGE /opt/ttsenv/bin/python "高考续写/tools/$ENGINE" --稿 "$DIR/稿.json" --音频 "$MP3" --video \
+            --out out --png /tmp/png --name "$NAME"
+          ls -l out
+          (cd out && sha256sum "$NAME" > "$NAME.sha256" && cat "$NAME.sha256")
+          ffprobe -v error -show_entries format=duration:stream=width,height -of default=nw=1 "out/$NAME"
+      - name: 试跑：成品放 artifact
+        if: startsWith(env.TAG, 'test')
+        uses: actions/upload-artifact@v4
+        with:
+          name: gaokao-writing-${{ env.TAG }}
+          path: out/
+          retention-days: 14
+      - name: 发布 Release（target 用分支名，踩坑 53）并下载回来核对 sha256
+        if: ${{ !startsWith(env.TAG, 'test') }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          printf '高考读后续写讲解视频（4K，用户本人声音配音）。每个视频都通过全部核查：截图排版、响度与意群、合格证、无呼吸声、无电磁音、停顿、声画等长。\n' > notes.md
+          gh release view "$TAG" > /dev/null 2>&1 || gh release create "$TAG" --target "$GITHUB_REF_NAME" --title "高考读后续写讲解视频（$TAG）" --notes-file notes.md
+          gh release upload "$TAG" "out/$NAME" "out/$NAME.sha256" --clobber
+          mkdir -p dl && gh release download "$TAG" --pattern "$NAME" --dir dl --clobber
+          (cd dl && cp "../out/$NAME.sha256" . && sha256sum -c "$NAME.sha256")
+          echo "::notice title=已发布::$TAG / $NAME（下载回来 sha256 一致）"
