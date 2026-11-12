@@ -1,0 +1,1224 @@
+{
+ "reviewer": "review_5",
+ "status": "complete_all_findings_resolved",
+ "sets": [
+  {
+   "id": "2022-yi",
+   "ann_sha256": "03c57f030617a174616e14754243053094d681c93d9bbd6c417cacef11d574f2",
+   "final_sha256": "9fe999e87b37a3d167c6019f0c7a00a1068ae87fe354d4e0ff7e299e07bddc67",
+   "sentence_count": 178,
+   "reviewed_unique_units": 112,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      383,
+      394
+     ],
+     "start": 240.17,
+     "end": 243.85,
+     "first_word": [
+      "Excuse",
+      240.17,
+      240.73
+     ],
+     "last_word": [
+      "is?",
+      243.45,
+      243.85
+     ],
+     "match": true
+    },
+    {
+     "sentence": 90,
+     "en": "So, Mr. Peter Sayles, I'd be curious to know what were the early connections in your life that led you into the art field.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1188,
+      1212
+     ],
+     "start": 824.58,
+     "end": 834.9,
+     "first_word": [
+      "So,",
+      824.58,
+      824.98
+     ],
+     "last_word": [
+      "field?",
+      834.34,
+      834.9
+     ],
+     "match": true
+    },
+    {
+     "sentence": 178,
+     "en": "Take everything and show it to the world.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2168,
+      2176
+     ],
+     "start": 1361.24,
+     "end": 1364.76,
+     "first_word": [
+      "Take",
+      1361.24,
+      1361.48
+     ],
+     "last_word": [
+      "world.",
+      1364.12,
+      1364.76
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [
+    {
+     "severity": "minor",
+     "category": "translation_time_reference",
+     "sentences": [
+      113,
+      133
+     ],
+     "en": "A few weeks before, I had started writing my term paper.",
+     "before": "几周前，我已经开始写学期论文了。",
+     "finding": "before以此前提及的去年三月开始兼职为参照；原译几周前容易被理解为相对说话时刻的ago，弱化了过去完成时的先后关系。",
+     "suggestion": "在那之前几周，我就已经开始写学期论文了。",
+     "status": "resolved_by_author_and_rechecked",
+     "after": "在那之前几周，我就已经开始写学期论文了。"
+    }
+   ],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "已逐字复看113/133两处译文修订；原文、词条均不变。另核旧例题fifteen边界待核已由作者用真实局部补识别关闭。",
+   "random_boundary_samples": [
+    {
+     "sentence": 55,
+     "en": "I think July would be the best time.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      804,
+      812
+     ],
+     "start": 621.44,
+     "end": 624.48,
+     "first_word": [
+      "I",
+      621.44,
+      621.52
+     ],
+     "last_word": [
+      "time.",
+      624.08,
+      624.48
+     ],
+     "match": true
+    },
+    {
+     "sentence": 132,
+     "en": "Well, early last March I started doing a part-time job in a law firm.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1623,
+      1637
+     ],
+     "start": 1057.11,
+     "end": 1063.19,
+     "first_word": [
+      "Well,",
+      1057.11,
+      1057.75
+     ],
+     "last_word": [
+      "firm.",
+      1062.31,
+      1063.19
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2025-zj1",
+   "ann_sha256": "5c987cd8726bcc19bf139ebc92b265d8da23cf74c884a7ecaa1608b815b626ff",
+   "final_sha256": "737dfa7db889137f6f9ee9e67558a8ad23b193b4231295fb9b82c463eb366bdc",
+   "sentence_count": 220,
+   "reviewed_unique_units": 119,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      317,
+      328
+     ],
+     "start": 225.2,
+     "end": 228.96,
+     "first_word": [
+      "Excuse",
+      225.2,
+      225.76
+     ],
+     "last_word": [
+      "is?",
+      228.64,
+      228.96
+     ],
+     "match": true
+    },
+    {
+     "sentence": 111,
+     "en": "Hello.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1228,
+      1229
+     ],
+     "start": 826.03,
+     "end": 826.83,
+     "first_word": [
+      "Hello.",
+      826.03,
+      826.83
+     ],
+     "last_word": [
+      "Hello.",
+      826.03,
+      826.83
+     ],
+     "match": true
+    },
+    {
+     "sentence": 220,
+     "en": "It could be convenient to employ bird watchers to do the initial studies.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2156,
+      2168
+     ],
+     "start": 1325.12,
+     "end": 1330.08,
+     "first_word": [
+      "It",
+      1325.12,
+      1325.2
+     ],
+     "last_word": [
+      "studies.",
+      1329.12,
+      1330.08
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "当前双SHA与实读快照一致。",
+   "random_boundary_samples": [
+    {
+     "sentence": 54,
+     "en": "Thanks for joining us, Mark.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      770,
+      775
+     ],
+     "start": 580.74,
+     "end": 582.66,
+     "first_word": [
+      "Thanks",
+      580.74,
+      580.98
+     ],
+     "last_word": [
+      "Mark.",
+      581.94,
+      582.66
+     ],
+     "match": true
+    },
+    {
+     "sentence": 99,
+     "en": "You also need to have a smartphone for communication.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1162,
+      1171
+     ],
+     "start": 790.52,
+     "end": 793.8,
+     "first_word": [
+      "You",
+      790.52,
+      790.6
+     ],
+     "last_word": [
+      "communication.",
+      792.92,
+      793.8
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2024-jia",
+   "ann_sha256": "7c002d37fd3acd8ab4bb8670949eb2a8670a33292b5275a1b8d9a18d42ce4127",
+   "final_sha256": "78c50efd6e54c2907cf1f1937a3d82ba58d0c382c2c652813ee0a37f4b230465",
+   "sentence_count": 177,
+   "reviewed_unique_units": 112,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Excuse me, can you tell me how much this shirt is?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      334,
+      345
+     ],
+     "start": 214.97,
+     "end": 217.77,
+     "first_word": [
+      "Excuse",
+      214.97,
+      215.45
+     ],
+     "last_word": [
+      "is?",
+      217.53,
+      217.77
+     ],
+     "match": true
+    },
+    {
+     "sentence": 89,
+     "en": "Then, since my father worked for an international trade company, we moved all over the place.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1155,
+      1171
+     ],
+     "start": 746.44,
+     "end": 752.28,
+     "first_word": [
+      "Then,",
+      746.44,
+      746.84
+     ],
+     "last_word": [
+      "place.",
+      751.88,
+      752.28
+     ],
+     "match": true
+    },
+    {
+     "sentence": 177,
+     "en": "Students who do not wish to take part in the event for religious or other reasons should inform their teacher, and they will be allowed to stay in the office until after the event.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2047,
+      2081
+     ],
+     "start": 1189.95,
+     "end": 1210.5,
+     "first_word": [
+      "Students",
+      1189.95,
+      1190.43
+     ],
+     "last_word": [
+      "event.",
+      1200.34,
+      1210.5
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "当前双SHA与实读快照一致。",
+   "random_boundary_samples": [
+    {
+     "sentence": 65,
+     "en": "Listen to see if you can hear the difference.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      926,
+      935
+     ],
+     "start": 615.01,
+     "end": 617.49,
+     "first_word": [
+      "Listen",
+      615.01,
+      615.33
+     ],
+     "last_word": [
+      "difference.",
+      616.61,
+      617.49
+     ],
+     "match": true
+    },
+    {
+     "sentence": 157,
+     "en": "Apollo 13 is probably my top one, and my sons love Blue Earth.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1651,
+      1664
+     ],
+     "start": 997.77,
+     "end": 1003.37,
+     "first_word": [
+      "Apollo",
+      997.77,
+      998.33
+     ],
+     "last_word": [
+      "Earth.",
+      1002.81,
+      1003.37
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2021-shq",
+   "ann_sha256": "94962f6a0bc72f4f8f1a5c665626bbdbab92dd334076a6da5648e8a7456ae556",
+   "final_sha256": "62f5c409f68fec0ee01dd52248c04161fc24a055d8c449cd998b5e3b33bd097e",
+   "sentence_count": 208,
+   "reviewed_unique_units": 155,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Section A.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      30,
+      32
+     ],
+     "start": 12.54,
+     "end": 13.1,
+     "first_word": [
+      "Section",
+      12.54,
+      12.94
+     ],
+     "last_word": [
+      "A",
+      13.02,
+      13.1
+     ],
+     "match": true
+    },
+    {
+     "sentence": 105,
+     "en": "They're fast, easy and great, but there are so many questions you can't look up online.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1011,
+      1027
+     ],
+     "start": 529.2,
+     "end": 536.29,
+     "first_word": [
+      "They're",
+      529.2,
+      529.6
+     ],
+     "last_word": [
+      "online.",
+      535.41,
+      536.29
+     ],
+     "match": true
+    },
+    {
+     "sentence": 208,
+     "en": "Why does the man recommend the woman to work at a summer camp?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1952,
+      1965
+     ],
+     "start": 941.82,
+     "end": 945.82,
+     "first_word": [
+      "Why",
+      941.82,
+      942.06
+     ],
+     "last_word": [
+      "camp?",
+      945.26,
+      945.82
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "当前双SHA与实读快照一致。",
+   "random_boundary_samples": [
+    {
+     "sentence": 31,
+     "en": "Oh, it looks like the traffic is really bad.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      226,
+      235
+     ],
+     "start": 124.4,
+     "end": 128.08,
+     "first_word": [
+      "Oh",
+      124.4,
+      124.48
+     ],
+     "last_word": [
+      "bad.",
+      127.12,
+      128.08
+     ],
+     "match": true
+    },
+    {
+     "sentence": 197,
+     "en": "I will try.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1897,
+      1900
+     ],
+     "start": 898.09,
+     "end": 898.97,
+     "first_word": [
+      "I",
+      898.09,
+      898.17
+     ],
+     "last_word": [
+      "try.",
+      898.65,
+      898.97
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2020-xkb2",
+   "ann_sha256": "b8c15258c5502b7a2d1ac8f83e559063e60e0b5513fadf70553cc40f23b9bc30",
+   "final_sha256": "f523e9e6ce0ea4674209c9df00b356b0991bab52fd60b843b255a11836834a30",
+   "sentence_count": 175,
+   "reviewed_unique_units": 102,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      130,
+      141
+     ],
+     "start": 77.4,
+     "end": 80.6,
+     "first_word": [
+      "Excuse",
+      77.4,
+      78.04
+     ],
+     "last_word": [
+      "is?",
+      80.28,
+      80.6
+     ],
+     "match": true
+    },
+    {
+     "sentence": 88,
+     "en": "Only four hundred and seventy euros, and it includes…",
+     "asr_source": "识别.json",
+     "asr_range": [
+      920,
+      929
+     ],
+     "start": 585.66,
+     "end": 589.26,
+     "first_word": [
+      "Only",
+      585.66,
+      585.9
+     ],
+     "last_word": [
+      "includes",
+      588.7,
+      589.26
+     ],
+     "match": true
+    },
+    {
+     "sentence": 175,
+     "en": "If you appear interested in what people are saying, they feel more comfortable talking with you.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1933,
+      1949
+     ],
+     "start": 1108.97,
+     "end": 1114.97,
+     "first_word": [
+      "If",
+      1108.97,
+      1109.05
+     ],
+     "last_word": [
+      "you.",
+      1114.25,
+      1114.97
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "86/111句补回Well，中文同步补嗯；现有补识别真实时间已采用，译文与词条复核通过。",
+   "random_boundary_samples": [
+    {
+     "sentence": 64,
+     "en": "Can I help you, sir?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      768,
+      773
+     ],
+     "start": 523.02,
+     "end": 524.46,
+     "first_word": [
+      "Can",
+      523.02,
+      523.26
+     ],
+     "last_word": [
+      "sir?",
+      524.06,
+      524.46
+     ],
+     "match": true
+    },
+    {
+     "sentence": 114,
+     "en": "A big dog celebrates a big birthday this year.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1097,
+      1106
+     ],
+     "start": 713.89,
+     "end": 718.13,
+     "first_word": [
+      "A",
+      713.89,
+      713.97
+     ],
+     "last_word": [
+      "year.",
+      717.65,
+      718.13
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2020-xkb3",
+   "ann_sha256": "b8c15258c5502b7a2d1ac8f83e559063e60e0b5513fadf70553cc40f23b9bc30",
+   "final_sha256": "ba7eab1a540834ded49fd43f34bee0d757b26591f185891b7f5473241fe3d3f5",
+   "sentence_count": 175,
+   "reviewed_unique_units": 102,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      130,
+      141
+     ],
+     "start": 77.4,
+     "end": 80.6,
+     "first_word": [
+      "Excuse",
+      77.4,
+      78.04
+     ],
+     "last_word": [
+      "is?",
+      80.28,
+      80.6
+     ],
+     "match": true
+    },
+    {
+     "sentence": 88,
+     "en": "Only four hundred and seventy euros, and it includes…",
+     "asr_source": "识别.json",
+     "asr_range": [
+      920,
+      929
+     ],
+     "start": 585.66,
+     "end": 589.26,
+     "first_word": [
+      "Only",
+      585.66,
+      585.9
+     ],
+     "last_word": [
+      "includes",
+      588.7,
+      589.26
+     ],
+     "match": true
+    },
+    {
+     "sentence": 175,
+     "en": "If you appear interested in what people are saying, they feel more comfortable talking with you.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1933,
+      1949
+     ],
+     "start": 1108.97,
+     "end": 1114.97,
+     "first_word": [
+      "If",
+      1108.97,
+      1109.05
+     ],
+     "last_word": [
+      "you.",
+      1114.25,
+      1114.97
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。",
+    "与2020-xkb2全部语义单元（英文、译文、词条、重复位置）逐字一致，经程序证明后复用完整实读；ASR边界仍单独抽查。"
+   ],
+   "diff_recheck": "86/111句补回Well，中文同步补嗯；现有补识别真实时间已采用，译文与词条复核通过。",
+   "random_boundary_samples": [
+    {
+     "sentence": 47,
+     "en": "Okay, let me take this down.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      675,
+      681
+     ],
+     "start": 443.61,
+     "end": 446.17,
+     "first_word": [
+      "Okay,",
+      443.61,
+      444.17
+     ],
+     "last_word": [
+      "down.",
+      445.45,
+      446.17
+     ],
+     "match": true
+    },
+    {
+     "sentence": 93,
+     "en": "They are all digital.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      950,
+      954
+     ],
+     "start": 601.32,
+     "end": 603.08,
+     "first_word": [
+      "They",
+      601.32,
+      601.4
+     ],
+     "last_word": [
+      "digital.",
+      602.04,
+      603.08
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2023-shc",
+   "ann_sha256": "ab0be8415e89c74cbf724ec6c99a91e8a4482148c7eea69054880189b862df3a",
+   "final_sha256": "45aa1ba9175142f2f3bfbca12dcfa6b74a44bf2db8c7bbc1c893b909c8c7eb17",
+   "sentence_count": 194,
+   "reviewed_unique_units": 144,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Section A.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      32,
+      34
+     ],
+     "start": 14.74,
+     "end": 15.38,
+     "first_word": [
+      "Section",
+      14.74,
+      15.14
+     ],
+     "last_word": [
+      "A",
+      15.3,
+      15.38
+     ],
+     "match": true
+    },
+    {
+     "sentence": 98,
+     "en": "Thirteen.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      955,
+      956
+     ],
+     "start": 498.99,
+     "end": 499.95,
+     "first_word": [
+      "13.",
+      498.99,
+      499.95
+     ],
+     "last_word": [
+      "13.",
+      498.99,
+      499.95
+     ],
+     "match": true
+    },
+    {
+     "sentence": 194,
+     "en": "That's the end of listening comprehension.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1889,
+      1895
+     ],
+     "start": 955.79,
+     "end": 959.23,
+     "first_word": [
+      "That's",
+      955.79,
+      956.27
+     ],
+     "last_word": [
+      "comprehension.",
+      957.63,
+      959.23
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "当前双SHA与实读快照一致。",
+   "random_boundary_samples": [
+    {
+     "sentence": 124,
+     "en": "And healthier dogs may earn their owners a lower pet insurance fee.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1285,
+      1297
+     ],
+     "start": 657.48,
+     "end": 662.68,
+     "first_word": [
+      "And",
+      657.48,
+      657.56
+     ],
+     "last_word": [
+      "fee.",
+      661.96,
+      662.68
+     ],
+     "match": true
+    },
+    {
+     "sentence": 141,
+     "en": "They're popular here.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1493,
+      1496
+     ],
+     "start": 770.08,
+     "end": 771.6,
+     "first_word": [
+      "They're",
+      770.08,
+      770.4
+     ],
+     "last_word": [
+      "here.",
+      771.2,
+      771.6
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2019-shc",
+   "ann_sha256": "fe66dd28bdf88a904e692889a9b56b48a1e212dfa1517367210186af83aca4d4",
+   "final_sha256": "a4408ce83acfc9a7715c8c103be13cd429a5301c8150078e9536abaa983a1ed2",
+   "sentence_count": 173,
+   "reviewed_unique_units": 136,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Section A.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2,
+      4
+     ],
+     "start": 14.64,
+     "end": 15.36,
+     "first_word": [
+      "section",
+      14.64,
+      14.96
+     ],
+     "last_word": [
+      "A",
+      15.28,
+      15.36
+     ],
+     "match": true
+    },
+    {
+     "sentence": 87,
+     "en": "Twelve.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      866,
+      867
+     ],
+     "start": 443.6,
+     "end": 444.32,
+     "first_word": [
+      "12.",
+      443.6,
+      444.32
+     ],
+     "last_word": [
+      "12.",
+      443.6,
+      444.32
+     ],
+     "match": true
+    },
+    {
+     "sentence": 173,
+     "en": "That's the end of listening comprehension.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1851,
+      1857
+     ],
+     "start": 951.37,
+     "end": 954.01,
+     "first_word": [
+      "That's",
+      951.37,
+      951.77
+     ],
+     "last_word": [
+      "comprehension.",
+      952.97,
+      954.01
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。"
+   ],
+   "diff_recheck": "已复看65句a→the及相应来源/待核说明收敛；定稿句数与原文内容未删。",
+   "random_boundary_samples": [
+    {
+     "sentence": 55,
+     "en": "I don't need a calculator, mum.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      385,
+      391
+     ],
+     "start": 226.46,
+     "end": 228.38,
+     "first_word": [
+      "I",
+      226.46,
+      226.54
+     ],
+     "last_word": [
+      "mum.",
+      227.9,
+      228.38
+     ],
+     "match": true
+    },
+    {
+     "sentence": 61,
+     "en": "The passages and the conversation will be read twice, but the questions will be spoken only once.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      425,
+      442
+     ],
+     "start": 252.28,
+     "end": 259.0,
+     "first_word": [
+      "The",
+      252.28,
+      252.36
+     ],
+     "last_word": [
+      "once.",
+      258.36,
+      259.0
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。"
+  },
+  {
+   "id": "2025-xkb2",
+   "ann_sha256": "7bbf8d574b913b9ec0c8746a3b4c1a544235aecc1f13eb21bf0bcbb4bce3881e",
+   "final_sha256": "fcbf27b1f9175e25023f6a9b3c95fd49b11b1f845a1dc9e0628ead732d26b261",
+   "sentence_count": 194,
+   "reviewed_unique_units": 121,
+   "manual_review": "complete",
+   "boundary_samples": [
+    {
+     "sentence": 1,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_source": "识别.json",
+     "asr_range": [
+      0,
+      11
+     ],
+     "start": 15.97,
+     "end": 19.73,
+     "first_word": [
+      "Excuse",
+      15.97,
+      16.53
+     ],
+     "last_word": [
+      "is?",
+      19.33,
+      19.73
+     ],
+     "match": true
+    },
+    {
+     "sentence": 98,
+     "en": "Billy suggested we go rock climbing instead.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      612,
+      619
+     ],
+     "start": 553.59,
+     "end": 557.11,
+     "first_word": [
+      "Billy",
+      553.59,
+      553.99
+     ],
+     "last_word": [
+      "instead.",
+      555.99,
+      557.11
+     ],
+     "match": true
+    },
+    {
+     "sentence": 194,
+     "en": "Now, let's watch a five-minute film about last year's programs.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1568,
+      1579
+     ],
+     "start": 1114.06,
+     "end": 1119.98,
+     "first_word": [
+      "Now,",
+      1114.06,
+      1114.62
+     ],
+     "last_word": [
+      "programs.",
+      1118.62,
+      1119.98
+     ],
+     "match": true
+    }
+   ],
+   "existing_pending": [],
+   "findings": [],
+   "notes": [
+    "逐句实读去重英文、译文、所有词条，核查数字、否定、比较、时态、情态和具体语境词义；重复出现但译文或词条不同者单独复核。",
+    "与Otter作差异核查，人工区分专名/拼写/口语停顿与中文误识别；未把程序检查当作语义审阅。",
+    "街名Mavis由主流程根据新增large-v3-turbo、Otter、SenseVoice共同证据裁定。上传独立稿Madison与公开索引Maida仍保留为来源异文；未取得公众号正文，不宣称读过全文，不声称人耳裁定。"
+   ],
+   "diff_recheck": "已实际阅读street-adjudication-diff.json与无预期词提示的large-v3-turbo真实识别文件。新增整句明确Mavis Street（Mavis 66.24—66.70秒），与Otter/SenseVoice一致，主流程据此采用Mavis并清待核。全量194句英文与先前实读快照逐字一致，ann的前后SHA256一致，译文/词条未改，既有5处本套边界样本也完全未变；所给元数据diff只涉及待核清空和sources_reviewed说明。",
+   "random_boundary_samples": [
+    {
+     "sentence": 113,
+     "en": "Oh, change of plan.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      736,
+      740
+     ],
+     "start": 607.22,
+     "end": 609.3,
+     "first_word": [
+      "Oh,",
+      607.22,
+      607.62
+     ],
+     "last_word": [
+      "plan.",
+      608.5,
+      609.3
+     ],
+     "match": true
+    },
+    {
+     "sentence": 129,
+     "en": "I put in effort for five years to gain more experience, but there seems no hope of being promoted.",
+     "asr_source": "识别.json",
+     "asr_range": [
+      890,
+      909
+     ],
+     "start": 726.79,
+     "end": 734.31,
+     "first_word": [
+      "I",
+      726.79,
+      726.87
+     ],
+     "last_word": [
+      "promoted.",
+      733.51,
+      734.31
+     ],
+     "match": true
+    }
+   ],
+   "boundary_sample_method": "原先首/中/尾三处为分层抽查；另以固定随机种子20261112随机抽两句，并逐条实读源ASR首末词与英文。",
+   "previous_reviewed_final_sha256": "ca9c3b34a0cff296df941e09cdf500548cc12ed13a4cdd74eb45d6c384c9e2f2",
+   "evidence_recheck": [
+    {
+     "path": "高考听力/精读/准备/2025-xkb2/独立Whisper_街名_turbo.json",
+     "sha256": "7830ae0a87ac97e02f4510d0120bea38a04220c872fa5df2bac033d92940d2c0",
+     "model": "faster-whisper large-v3-turbo",
+     "window": [
+      62,
+      70
+     ],
+     "source_hash": "835a2c18b1d64e73d8b1d66552245913170e9063fb4630f9f81f9ae8258bf749",
+     "actual_text": "See the yellow taxi on the corner? Turn left there to Mavis Street and take bus number 4."
+    },
+    {
+     "path": "/workspace/work/review-6/street-adjudication-diff.json",
+     "sha256": "d2bedc067edcfb9ed414478fadbd4d4379a53515811dc9c76f31297a4ec70191",
+     "scope": "待核与sources_reviewed差异"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "sets": 9,
+  "sentences": 1694,
+  "reviewed_semantic_units_including_identical_pair": 1103,
+  "new_finding_groups": 1,
+  "new_affected_sentences": 2,
+  "unresolved_new_findings": 0,
+  "existing_source_pending": 0,
+  "stratified_boundary_samples": 27,
+  "random_boundary_samples": 18
+ },
+ "limits": "未重新人工耳听全卷；真实局部ASR及原始ASR仅作为可追溯证据，未伪称人工耳听。"
+}

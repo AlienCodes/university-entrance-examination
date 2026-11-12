@@ -1,0 +1,283 @@
+{
+ "reviewer": "review_5",
+ "expected": "2023年 上海卷（秋考）；年份卷名最大，原文精读从属；热气球书本，无树苗",
+ "key": [
+  {
+   "file": "check01.png",
+   "type": "wrong-number",
+   "screen": 76
+  },
+  {
+   "file": "check02.png",
+   "type": "real",
+   "screen": 175
+  },
+  {
+   "file": "check03.png",
+   "type": "real",
+   "screen": 1
+  },
+  {
+   "file": "check04.png",
+   "type": "real",
+   "screen": 76
+  },
+  {
+   "file": "check05.png",
+   "type": "real",
+   "screen": 36
+  },
+  {
+   "file": "check06.png",
+   "type": "real",
+   "screen": 116
+  },
+  {
+   "file": "check07.png",
+   "type": "wrong-year",
+   "screen": 1
+  },
+  {
+   "file": "check08.png",
+   "type": "real",
+   "screen": 104
+  },
+  {
+   "file": "check09.png",
+   "type": "real",
+   "screen": 150
+  },
+  {
+   "file": "check10.png",
+   "type": "real",
+   "screen": 2
+  },
+  {
+   "file": "check11.png",
+   "type": "real",
+   "screen": 16
+  }
+ ],
+ "review": {
+  "reviewer": "review_5",
+  "status": "complete_visual_review",
+  "method": "逐张使用view_image实际查看check01.png—check11.png；未读取同目录key或wrong*.png，也未将layout检查结果当作视觉审阅。",
+  "expected": {
+   "year": "2023年",
+   "paper": "上海卷（秋考）",
+   "title_hierarchy": "原文精读为从属字号",
+   "illustration": "柔彩热气球与书本，无树苗"
+  },
+  "images": [
+   {
+    "file": "check01.png",
+    "sha256": "53b31b8f555753d0486bed86df4984f92b10e7ed1a6912028065d68032c1139f",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "needs_fix",
+    "observations": "正文75/175：prepared¹、desserts²、dishes³均清楚；右栏prepare误标99，其余2、3及词形对应正常。",
+    "findings": [
+     {
+      "id": "VIS-01",
+      "severity": "error",
+      "category": "numbering_mismatch",
+      "location": "右侧VOCABULARY中prepare左边的紫色圆形编号",
+      "observed": "99",
+      "expected": "1",
+      "problem": "正文prepared的上标为1，而对应词条prepare显示99；两边编号不一致。",
+      "suggestion": "把prepare的词条编号恢复为1，保留dessert 2与dish 3。"
+     }
+    ],
+    "style_preferences": []
+   },
+   {
+    "file": "check02.png",
+    "sha256": "0cd85cf7671c67deba298e32991f4913cd31b9dd51c928cbfe6ab2c9d870a1c4",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文172/175：choose¹与thoughts²分别对应右栏choose 1、thought 2；中英文、词性及释义可读，无遮挡或截断。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check03.png",
+    "sha256": "42cfbe20939e5cc9e4e52ca62e9630a67192cfcc7e860bf74394c097745ae87d",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "title",
+    "status": "pass",
+    "observations": "片头：2023年、上海卷（秋考）正确；原文精读明显小于高考英语真题，热气球与打开的书本完整可见，无树苗。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check04.png",
+    "sha256": "ee7052bc0045b52d3f4e4537b21a6404545df419a54e23dbd848cc9936718791",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文75/175：prepared¹→prepare 1、desserts²→dessert 2、dishes³→dish 3全部一致；文字和背景高亮清晰，无重叠。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check05.png",
+    "sha256": "7682b8e969a564bdc95750df8177288d7588ddb62d13b27ae6c4c30ebd6bdf49",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文37/175：橙色keep up with¹与右栏同色词条1对应，紫色latest²与词条2对应；右栏中文释义换行完整，正文、译文不与词汇栏相撞。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check06.png",
+    "sha256": "ec0c237627c63c66c7bce99969ec55e27f3bb8cebecedc848c492ab8e5508f35",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文114/175：左侧8个编号与右侧1—8依次对应，橙色短语in the form of为8；长句和两行中文译文均完整，8条词条没有底部截断。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check07.png",
+    "sha256": "e4510dcc572aea0cfe4295e3d807eead32b923c2a3f79cfe54bc76d0b5407937",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "title",
+    "status": "needs_fix",
+    "observations": "片头：年份实际显示2029年，与期望2023年不符；上海卷（秋考）、从属字号、热气球书本及无树苗均正常。",
+    "findings": [
+     {
+      "id": "VIS-02",
+      "severity": "error",
+      "category": "wrong_year",
+      "location": "片头左上大号年份",
+      "observed": "2029年",
+      "expected": "2023年",
+      "problem": "片头年份与本套2023年上海卷（秋考）不符。",
+      "suggestion": "改回2023年；卷别和原文精读字号层级保持当前方案。"
+     }
+    ],
+    "style_preferences": []
+   },
+   {
+    "file": "check08.png",
+    "sha256": "67ae7db3a77917d815937f3551c7d70e6dbacc40b26ce3db782ab3ce40541d60",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文103/175·PART 1/2：ads¹、proven²、engaging³、traditional⁴、buys⁵对应右侧ad/prove/engaging/traditional/buy 1—5；末尾逗号与省略号、中文逗号和PART 1/2一致，属于明确分屏延续，不是裁切。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check09.png",
+    "sha256": "6afcbf3125adf833ee09becd047488debdac9af8f40f2fd97714ba8d8ffb06f2",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文147/175：again¹与右栏again 1一致；短句及中文现在再听一遍字号清楚，没有文字遮挡。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check10.png",
+    "sha256": "2e3133df9de2ded1b3082452ca6bd5594cc26688c267354e2b617af37f016b9f",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文1/175：Section¹、Directions²与右栏section 1、direction 2一致；A节说明中英文和编号均清楚、完整。",
+    "findings": [],
+    "style_preferences": []
+   },
+   {
+    "file": "check11.png",
+    "sha256": "7515d1a890d3229d3554b2471bc02d5e047d5bc5a9a76512f8ec9299c3d842c2",
+    "dimensions": [
+     3840,
+     2160
+    ],
+    "reviewed_with": "view_image",
+    "actually_viewed": true,
+    "kind": "sentence",
+    "status": "pass",
+    "observations": "正文15/175：橙色are responsible for¹对应be responsible for 1，紫色lamps²对应lamp 2；词汇释义换行完整，中英文无碰撞。",
+    "findings": [],
+    "style_preferences": []
+   }
+  ],
+  "summary": {
+   "images_reviewed": 11,
+   "images_with_errors": 2,
+   "error_count": 2,
+   "errors": [
+    "check01.png：词条prepare编号99应为1。",
+    "check07.png：年份2029年应为2023年。"
+   ]
+  },
+  "style_preferences": [
+   {
+    "files": [
+     "check09.png",
+     "check10.png"
+    ],
+    "observation": "短句与少量词条使右栏留白较多。",
+    "classification": "统一模板下的风格/留白选择，不是错误",
+    "action": "不要求修改，不擅改既定方案。"
+   }
+  ],
+  "general_visual_result": "除上述两处外，已看图片中的英文、中文、词条字体均可清楚辨识，编号和两侧高亮对应；未见文字重叠、缺字、被边框裁切或原文精读抢占主标题字号。"
+ },
+ "root_check": "测试图两处：词汇编号99和片头2029年，审阅员均独立指出；实际截图未见视觉问题。"
+}

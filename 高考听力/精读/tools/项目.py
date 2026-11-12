@@ -54,8 +54,9 @@ def engine():
     def cover(p):
         name = p.get('paper_title') or p['paper'].replace(' 高考英语真题', '')
         year, paper = name.split(' ', 1)
+        paper_class='gk-paper gk-paper-short' if len(paper)<=4 else 'gk-paper'
         return page(f'<div class="ttl gk-cover">'
-                    f'<h1><span class="gk-year">{m.esc(year)}</span><span class="gk-paper">{m.esc(paper)}</span></h1>'
+                    f'<h1><span class="gk-year">{m.esc(year)}</span><span class="{paper_class}">{m.esc(paper)}</span></h1>'
                     '<div class="sub">高考英语真题<b>原文精读</b></div>'
                     '<div class="meta">真题原声 · 逐句翻译 · 词汇短语</div></div>' +
                     '<script>document.fonts.ready.then(' + m.GK_COVER_FIT + ');</script>')

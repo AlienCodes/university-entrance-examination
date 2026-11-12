@@ -24,15 +24,7 @@
     "安德森高科技公司",
     "创意日校"
   ],
-  "待核": [
-    {
-      "类型": "街名异文",
-      "句号": [
-        6
-      ],
-      "说明": "上传独立稿Madison Street；Otter、SenseVoice均为Mavis Street；真实原音56.2—71.5秒局部Parakeet仍为make the street，未能终裁。当前采用Mavis，但该街名仍需人工耳听确认，不能把局部ASR当作已确定的Mavis。"
-    }
-  ],
+  "待核": [],
   "sources_reviewed": [
     "准备/2025-xkb2/识别.json（Parakeet逐词及绝对时间）",
     "准备/2025-xkb2/Otter.txt",
@@ -40,8 +32,11 @@
     "准备/解析文本/2025新高考Ⅱ卷真题听力原文.txt（完整独立听力稿）",
     "准备/解析文本/精品解析：2025年全国高考二卷英语真题（解析版）.txt：听力题目及专名交叉核对",
     "准备/2025-xkb2/补识别_Jillian首遍.json、补识别_Jillian重读.json：两次真实原音局部输出均明确Jillian，和Otter、SenseVoice一致，独立稿Julia据此订为Jillian。",
-    "准备/2025-xkb2/补识别_巴士目的地与街名.json：实际原音局部识别；Baxley按上传独立稿，街名仍有Mavis/Madison异文，保留待核。",
-    "人名裁定：剧作家Stoppard采用规范姓名，独立稿Stopper’s视为同音误拼；Sonny采用上传听力稿拼写；I wish I didn’t touch it为上传稿及三份转写共同内容，忠实保留，不按语法擅改hadn’t。"
+    "准备/2025-xkb2/补识别_巴士目的地与街名.json：实际原音局部识别；Baxley按上传独立稿。该小模型街名make the属于未识出的近音，不作专名依据；街名已按新增large-v3-turbo、Otter及SenseVoice的共同Mavis结果由主流程裁定。",
+    "人名裁定：剧作家Stoppard采用规范姓名，独立稿Stopper’s视为同音误拼；Sonny采用上传听力稿拼写；I wish I didn’t touch it为上传稿及三份转写共同内容，忠实保留，不按语法擅改hadn’t。",
+    "准备/2025-xkb2/独立Whisper_街名.json：实际读取的独立模型结果，仍为make the street，未当成明确专名。",
+    "准备/2025-xkb2/街名待核依据.json：保留完整来源异文及最终裁定。上传独立稿Madison、公开索引Maida仍留档；公众号全文未取得，不宣称已读正文，不把搜索摘要当权威全文。",
+    "准备/2025-xkb2/独立Whisper_街名_turbo.json：已实际读取无预期词提示的faster-whisper large-v3-turbo真实原音62—70秒识别，整句明确为“Turn left there to Mavis Street and take bus number 4.”，与Otter及SenseVoice一致。主流程据当前证据明确裁定Mavis，正文与中文“梅维斯街”维持不变；不是人工耳听裁定。"
   ],
   "sentences": [
     {

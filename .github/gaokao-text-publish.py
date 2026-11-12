@@ -33,12 +33,15 @@ def plan(kinds, ids, art, up):
         if m.get('kind') != k or m['套'] != i: bad.append(f'{i} {k} meta 不符')
         if m['mp4'] != 命名.label(i,k): bad.append(f'{i} 中文文件名不符')
         v=json.loads((d/'verification.json').read_text())
-        if not v['ok'] or v['sha256']!=m['mp4_sha256'] or v['fingerprint']!=m['fingerprint']:
+        if v.get('id')!=i or not v['ok'] or v['sha256']!=m['mp4_sha256'] or v['fingerprint']!=m['fingerprint']:
             bad.append(f'{i} 成品核查与meta不符')
         if i not in TEST_IDS:
             from 审校登记 import check as review_check
             row=review_check(i)
             if any(m.get(x)!=row[x] for x in ('定稿_sha256','译注_sha256')):bad.append(f'{i} 不是当前复核定稿')
+            source=json.loads((Path(__file__).resolve().parents[1]/'高考听力/精读/定稿'/f'{i}.json').read_text())
+            if m.get('原音_sha256')!=source['source_hash']:bad.append(f'{i} 原音不是当前已核来源')
+        if m.get('mp4_bytes')!=f.stat().st_size:bad.append(f'{i} meta字节数不符')
         if sha(f) != m['mp4_sha256']: bad.append(f'{i} {k} sha256 不符')
         if f.stat().st_size >= MAXZ: bad.append(f'{i} {k} 超过 1.9 GB')
         a = 命名.asset(i, k)
@@ -155,7 +158,7 @@ def selftest():
             f=d/命名.label(sid);f.write_bytes(os.urandom(n))
             m={'套':sid,'kind':'text','mp4':f.name,'mp4_sha256':sha(f),'mp4_bytes':n,'fingerprint':'test'}
             (d/'meta.json').write_text(json.dumps(m,ensure_ascii=False))
-            (d/'verification.json').write_text(json.dumps({'ok':True,'sha256':sha(f),'fingerprint':'test'}))
+            (d/'verification.json').write_text(json.dumps({'id':sid,'ok':True,'sha256':sha(f),'fingerprint':'test'}))
         plan(['text'],ids,art,t/'up')
         rows=json.loads((t/'up/plan.json').read_text())
         assert [r['套'] for r in rows]==['2019-xkb1','2019-shc','2020-zj1']

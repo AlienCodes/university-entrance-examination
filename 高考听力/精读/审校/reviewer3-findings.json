@@ -1,0 +1,1211 @@
+{
+ "reviewer": "reviewer3",
+ "reviewed_author": "review_4",
+ "completed_at_utc": "2026-11-12T20:35:44.197206+00:00",
+ "scope": [
+  "2020-xgk1",
+  "2024-xkb2",
+  "2019-zj6",
+  "2020-xkb1",
+  "2022-xgk2",
+  "2020-js",
+  "2019-shq"
+ ],
+ "status": "semantic_review_complete_all_four_new_findings_resolved",
+ "summary": {
+  "sets": 7,
+  "sentences": 1306,
+  "unique_en_zh_entry_groups_read": 773,
+  "asr_boundary_samples": 49,
+  "new_findings": 4,
+  "resolved_findings": 4,
+  "unresolved_new_findings": 0
+ },
+ "method": "自制配对文件逐条阅读英文、译文与词条；相同三元组按上下文确认后复用。未以ann_lib通过代替实质审读。只向作者反馈建议，未修改其定稿或ann。修改后重新读取diff并记录实际审过的SHA256。",
+ "asr_omission_check": {
+  "method": "对7套cut后至正文结尾的原ASR范围作覆盖核查，并与SenseVoice英文区间交叉定位遗漏候选，再逐条排除中文伪英文。",
+  "unexplained_english_gaps_found": 0,
+  "excluded_candidate": {
+   "sid": "2019-zj6",
+   "asr_range": [
+    675,
+    676
+   ],
+   "primary": "Fuji",
+   "time": [
+    437.27,
+    439.59
+   ],
+   "reason": "夹在两句中文说明之间，SenseVoice该区间文本为“我.”而被误标en；Otter亦没有真实英文，对照中文说明上下文确认为伪英文，不应补成字幕。"
+  }
+ },
+ "targeted_source_checks": [
+  {
+   "sid": "2022-xgk2",
+   "text": "National History Museum",
+   "result": "上传解析第94行原文为national history museum，Otter及SenseVoice两遍亦一致。未凭常识擅改为Natural，现英文和“国家历史博物馆”译文有实际来源依据。"
+  },
+  {
+   "sid": "2019-shq",
+   "text": "adding and reading / production of the unfamiliar / That’s it",
+   "result": "逐项对照上传答案卷、Otter与SenseVoice，一致；That’s it在上传材料中属同一女士话语，译作“够了”合上下文。未以书面语偏好改动实际说法。"
+  },
+  {
+   "sid": "2019-zj6",
+   "text": "Like what I'd probably do.",
+   "result": "已实际读取独立Whisper_缩约1.json、独立Whisper_缩约2.json，两遍faster-whisper small.en真实无提示结果均含I’d；对照Otter两遍并复看第112句I→I’d及其译文diff。原ASR[1622,1627]、1027.07–1028.67秒未改，最后待核已清。并未将模型识别称为人耳听验。"
+  }
+ ],
+ "findings": [
+  {
+   "id": "R3-01",
+   "sid": "2020-xkb1",
+   "sentences": [
+    33,
+    47
+   ],
+   "type": "word_pos",
+   "severity": "medium",
+   "en": "I'm afraid I'll be a little late tonight.",
+   "before": "late=adv. 迟；晚",
+   "issue": "late在be后作表语，表示晚到的，应标形容词。",
+   "suggested": "late=adj. 迟到的；晚到的",
+   "verified_after": "late=adj. 迟到的；晚到的",
+   "status": "resolved_by_author_and_diff_reviewed"
+  },
+  {
+   "id": "R3-02",
+   "sid": "2020-xkb1",
+   "sentences": [
+    156,
+    170
+   ],
+   "type": "translation_scope",
+   "severity": "medium",
+   "en": "They shout and scream in sadness when their team loses a goal, or with joy when there is a moment of success.",
+   "before": "球队失球时，他们悲伤地喊叫；球队取得胜利时，他们则欢呼雀跃。",
+   "issue": "a moment of success包括得分等局部成功，原译将其收窄为比赛取得胜利。",
+   "suggested": "将“取得胜利”改为“取得成功”或不限定整场胜负的表达。",
+   "verified_after": "球队失球时，他们悲伤地喊叫；球队取得成功时，他们则欢呼雀跃。",
+   "status": "resolved_by_author_and_diff_reviewed"
+  },
+  {
+   "id": "R3-03",
+   "sid": "2024-xkb2",
+   "sentences": [
+    127,
+    152
+   ],
+   "type": "translation_quantification",
+   "severity": "minor",
+   "en": "For the last three years I have never missed it.",
+   "before": "过去三年，我一场都没错过。",
+   "issue": "后文明确为每年持续一周的公园演出；it指这一年度音乐活动，“一场都没错过”额外强化为其中每场演出均出席。",
+   "suggested": "过去三年，我每年都去听他们的演出。",
+   "verified_after": "过去三年，我每年都去听他们的演出。",
+   "status": "resolved_by_author_and_diff_reviewed"
+  },
+  {
+   "id": "R3-04",
+   "sid": "2019-zj6",
+   "sentences": [
+    83,
+    96
+   ],
+   "type": "translation_logic",
+   "severity": "medium",
+   "en": "He used to tell me that readers were leaders, and encouraged me to read all I could.",
+   "before": "他常说，爱读书的人才能引领别人，还鼓励我尽可能多读书。",
+   "issue": "readers were leaders是对读书者的肯定陈述，译文“才”额外加入只有读书才能引领他人的必要条件。",
+   "suggested": "去掉“才”，例如“读书的人能引领别人”或“读书的人就是引领者”。",
+   "verified_after": "他常说，读书的人能引领别人，还鼓励我尽可能多读书。",
+   "status": "resolved_by_author_and_diff_reviewed"
+  }
+ ],
+ "sets": [
+  {
+   "sid": "2020-xgk1",
+   "initial_sha256": {
+    "定稿/2020-xgk1.json": "c20a5789e9ce671e1b6a26553976d444e1021f321436d8d935c1dce3729b945a",
+    "ann/2020-xgk1.txt": "4312e4c86d12b7ee9030a6baa2f731491f162cdb7cd7ff5653976bb9b36b018a"
+   },
+   "reviewed_sha256": {
+    "定稿/2020-xgk1.json": "b75a4d53fc7af399bf05e9363601267a6e205b4a24981cd86e0a09cf0a7b2cb4",
+    "ann/2020-xgk1.txt": "4312e4c86d12b7ee9030a6baa2f731491f162cdb7cd7ff5653976bb9b36b018a"
+   },
+   "sentence_count": 228,
+   "unique_en_zh_entry_groups_read": 125,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      388,
+      399
+     ],
+     "start": 209.5,
+     "end": 212.7,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_text": "Excuse me, can you tell me how much the shirt is?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 58,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      845,
+      851
+     ],
+     "start": 506.7,
+     "end": 508.7,
+     "en": "It's the traveling season, you know.",
+     "asr_text": "It's the traveling season, you know.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 115,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1249,
+      1254
+     ],
+     "start": 723.79,
+     "end": 725.71,
+     "en": "Lisa's got plenty of that.",
+     "asr_text": "Lisa's got plenty of that.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 172,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1632,
+      1634
+     ],
+     "start": 913.32,
+     "end": 914.12,
+     "en": "Hi, Ricky.",
+     "asr_text": "Hi, Ricky.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 228,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2187,
+      2200
+     ],
+     "start": 1154.17,
+     "end": 1157.93,
+     "en": "The more you read about it, the more interesting the visit will be.",
+     "asr_text": "The more you read about it, the more interesting the visit will be.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 141,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1409,
+      1413
+     ],
+     "start": 788.7,
+     "end": 790.3,
+     "en": "Well, let's tell Lisa.",
+     "asr_text": "Well, let's tell Lisa.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 217,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2064,
+      2086
+     ],
+     "start": 1110.28,
+     "end": 1117.56,
+     "en": "We'll leave at eight o'clock, so plan to be there at least fifteen minutes before that, seven forty-five at the latest.",
+     "asr_text": "We'll leave at eight o'clock, so plan to be there at least fifteen minutes before that, seven forty five at the latest.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": true,
+    "english_changes": [
+     {
+      "sentence": 19,
+      "before": "I'm going to Professor Wong's calligraphy class.",
+      "after": "I'm going to Professor Wang's calligraphy class."
+     },
+     {
+      "sentence": 204,
+      "before": "The Welcome Wing has three galleries which deal only with contemporary science.",
+      "after": "The Wellcome Wing has three galleries which deal only with contemporary science."
+     },
+     {
+      "sentence": 220,
+      "before": "The Welcome Wing has three galleries which deal only with contemporary science.",
+      "after": "The Wellcome Wing has three galleries which deal only with contemporary science."
+     }
+    ],
+    "ann_changes": [],
+    "other_json_changes": [
+     "sources_reviewed",
+     "待核"
+    ],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "未发现明确需要修改的翻译、词义、数字或否定问题"
+  },
+  {
+   "sid": "2024-xkb2",
+   "initial_sha256": {
+    "定稿/2024-xkb2.json": "d13d4335821a5154afc8be7dbe021eaa71ed32500c894a145e4f75703c772591",
+    "ann/2024-xkb2.txt": "706fd136e5a58d82dec0bf4bf6ba357dc890e0f8d085761009bb4f63573017cc"
+   },
+   "reviewed_sha256": {
+    "定稿/2024-xkb2.json": "40dd5486b3d5ef612a90b6c7cb587f887771e251a3d53dc938e11aa3386b0c6b",
+    "ann/2024-xkb2.txt": "c85c816d69208cf5b8de653ed10741bb61a2c4202c727de9d6eac022eaba94c2"
+   },
+   "sentence_count": 205,
+   "unique_en_zh_entry_groups_read": 112,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      315,
+      326
+     ],
+     "start": 210.86,
+     "end": 214.14,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_text": "Excuse me, can you tell me how much the shirt is?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 52,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      798,
+      803
+     ],
+     "start": 584.6,
+     "end": 586.6,
+     "en": "Let's say at six thirty.",
+     "asr_text": "Let's say at six thirty.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 103,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1091,
+      1092
+     ],
+     "start": 759.2,
+     "end": 760.08,
+     "en": "Sure.",
+     "asr_text": "Sure.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 154,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1448,
+      1455
+     ],
+     "start": 947.76,
+     "end": 950.0,
+     "en": "I think it was five years ago.",
+     "asr_text": "I think it was five years ago.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 205,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2069,
+      2079
+     ],
+     "start": 1246.75,
+     "end": 1249.95,
+     "en": "I think that's one of the secrets of his success.",
+     "asr_text": "I think that's one of the secrets of his success.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 159,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1500,
+      1508
+     ],
+     "start": 966.87,
+     "end": 970.07,
+     "en": "I like all kinds of music, especially jazz.",
+     "asr_text": "I like all kinds of music, especially jazz.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 194,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1913,
+      1916
+     ],
+     "start": 1182.7,
+     "end": 1183.9,
+     "en": "She said yes.",
+     "asr_text": "She said yes.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [
+    "R3-03"
+   ],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": true,
+    "english_changes": [],
+    "ann_changes": [
+     {
+      "sentence": 127,
+      "before": [
+       "过去三年，我一场都没错过。",
+       "= ~for the last three years{For the last three years}=过去三年来 | miss=v. 错过"
+      ],
+      "after": [
+       "过去三年，我每年都去听他们的演出。",
+       "= ~for the last three years{For the last three years}=过去三年来 | miss=v. 错过"
+      ]
+     },
+     {
+      "sentence": 152,
+      "before": [
+       "过去三年，我一场都没错过。",
+       "= ~for the last three years{For the last three years}=过去三年来 | miss=v. 错过"
+      ],
+      "after": [
+       "过去三年，我每年都去听他们的演出。",
+       "= ~for the last three years{For the last three years}=过去三年来 | miss=v. 错过"
+      ]
+     }
+    ],
+    "other_json_changes": [
+     "sources_reviewed",
+     "待核"
+    ],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "所列4项修改均复看；无新增未处理的语义发现"
+  },
+  {
+   "sid": "2019-zj6",
+   "initial_sha256": {
+    "定稿/2019-zj6.json": "239cf8cf55ca05691c8d262921c336834038ecd495c61867c94a0da69c9e1cbe",
+    "ann/2019-zj6.txt": "14a956c45e05840c077c6342ba3301355e155a3020a735871d9c09da61e3c472"
+   },
+   "reviewed_sha256": {
+    "定稿/2019-zj6.json": "91653aa39a25c5efc280e43057dd0bee97cdf3239fd53b13b1c6bcfafd1d7e32",
+    "ann/2019-zj6.txt": "6603918e2d131afb5567d8c347e8b1e9577daa42e331e090cb375613b601e79d"
+   },
+   "sentence_count": 149,
+   "unique_en_zh_entry_groups_read": 86,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      341,
+      352
+     ],
+     "start": 221.03,
+     "end": 224.71,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_text": "Excuse me, can you tell me how much the shirt is?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 38,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      782,
+      785
+     ],
+     "start": 506.1,
+     "end": 507.06,
+     "en": "When was that?",
+     "asr_text": "When was that?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 75,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1129,
+      1140
+     ],
+     "start": 748.24,
+     "end": 752.0,
+     "en": "She has been a radio TV reporter for many years.",
+     "asr_text": "She has been a radio T V reporter for many years.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 112,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1622,
+      1627
+     ],
+     "start": 1027.07,
+     "end": 1028.67,
+     "en": "Like what I'd probably do.",
+     "asr_text": "Like what I probably do.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 149,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      2077,
+      2110
+     ],
+     "start": 1285.74,
+     "end": 1299.99,
+     "en": "Biologist Christen says the plan is to see how the birds respond to the multi-colored road this summer, and, if it works, the idea could spread to other parts of the country.",
+     "asr_text": "Biologist Christin says the plan is to see how the birds respond to the multi coloured road this summer. and, if it works, the idea could spread to other parts of the country.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 62,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      965,
+      973
+     ],
+     "start": 637.06,
+     "end": 640.58,
+     "en": "My mother's decided to go back to school.",
+     "asr_text": "My mother's decided to go back to school.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 134,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1853,
+      1866
+     ],
+     "start": 1179.58,
+     "end": 1184.86,
+     "en": "They hope to discourage the sea birds from wandering on to the highway.",
+     "asr_text": "They hope to discourage the sea birds from wandering on to the highway.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [
+    "R3-04"
+   ],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": true,
+    "english_changes": [
+     {
+      "sentence": 112,
+      "before": "Like what I probably do.",
+      "after": "Like what I'd probably do."
+     }
+    ],
+    "ann_changes": [
+     {
+      "sentence": 83,
+      "before": [
+       "他常说，爱读书的人才能引领别人，还鼓励我尽可能多读书。",
+       "= ~used to=过去常常 | reader=n. 读者；读书的人 | leader=n. 领导者 | encourage=v. 鼓励"
+      ],
+      "after": [
+       "他常说，读书的人能引领别人，还鼓励我尽可能多读书。",
+       "= ~used to=过去常常 | reader=n. 读者；读书的人 | leader=n. 领导者 | encourage=v. 鼓励"
+      ]
+     },
+     {
+      "sentence": 96,
+      "before": [
+       "他常说，爱读书的人才能引领别人，还鼓励我尽可能多读书。",
+       "= ~used to=过去常常 | reader=n. 读者；读书的人 | leader=n. 领导者 | encourage=v. 鼓励"
+      ],
+      "after": [
+       "他常说，读书的人能引领别人，还鼓励我尽可能多读书。",
+       "= ~used to=过去常常 | reader=n. 读者；读书的人 | leader=n. 领导者 | encourage=v. 鼓励"
+      ]
+     },
+     {
+      "sentence": 112,
+      "before": [
+       "比如我，大概就是这样的运动量。",
+       "= probably=adv. 大概；可能"
+      ],
+      "after": [
+       "比如我可能会做的那点运动量。",
+       "= probably=adv. 大概；可能"
+      ]
+     }
+    ],
+    "other_json_changes": [
+     "sources_reviewed",
+     "待核"
+    ],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "所列4项修改均复看；无新增未处理的语义发现"
+  },
+  {
+   "sid": "2020-xkb1",
+   "initial_sha256": {
+    "定稿/2020-xkb1.json": "468a56d69e4e2bcd2beba15235b85cf0e30faacc545fc4c364c148a0b61a6b73",
+    "ann/2020-xkb1.txt": "3940b2b180cc4d20c787f14a61d919af6e220d5e57a8d0108aa5814cbeefc3d5"
+   },
+   "reviewed_sha256": {
+    "定稿/2020-xkb1.json": "4c6f9315ca1ead982c97e0636adce5ddb11758d5d3b9d78824868c0dc24c9433",
+    "ann/2020-xkb1.txt": "5a505c4abfed7ad56f27d7c4709ccfc6e45acbe1e987ce54cf90e2116f6eb3e8"
+   },
+   "sentence_count": 177,
+   "unique_en_zh_entry_groups_read": 104,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      319,
+      330
+     ],
+     "start": 225.06,
+     "end": 228.58,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_text": "Excuse me, can you tell me how much the shirt is?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 45,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      620,
+      622
+     ],
+     "start": 509.34,
+     "end": 510.06,
+     "en": "What's up?",
+     "asr_text": "What's up?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 89,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      976,
+      989
+     ],
+     "start": 731.36,
+     "end": 735.92,
+     "en": "But you did so well to get second place in today's car race.",
+     "asr_text": "But you did so well to get second place in today's car race",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 133,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1357,
+      1362
+     ],
+     "start": 931.4,
+     "end": 933.32,
+     "en": "I just found it online.",
+     "asr_text": "I just found it online.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 177,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1988,
+      2010
+     ],
+     "start": 1253.35,
+     "end": 1261.75,
+     "en": "As often this would lead to a long dialogue in which someone would begin telling you why you should support their team.",
+     "asr_text": "As often this would lead to a long dialogue in which someone would begin telling you why you should support their team.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 87,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      972,
+      973
+     ],
+     "start": 727.87,
+     "end": 728.83,
+     "en": "Tired.",
+     "asr_text": "Tired.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 155,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1581,
+      1595
+     ],
+     "start": 1082.53,
+     "end": 1086.93,
+     "en": "Of course they are covered head to toe in the colours of their team.",
+     "asr_text": "Of course they are covered head to toe in the colours of their team.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [
+    "R3-01",
+    "R3-02"
+   ],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": true,
+    "english_changes": [],
+    "ann_changes": [
+     {
+      "sentence": 33,
+      "before": [
+       "恐怕我今晚会晚一点到。",
+       "= afraid=adj. 恐怕 | late=adv. 迟；晚"
+      ],
+      "after": [
+       "恐怕我今晚会晚一点到。",
+       "= afraid=adj. 恐怕 | late=adj. 迟到的；晚到的"
+      ]
+     },
+     {
+      "sentence": 47,
+      "before": [
+       "恐怕我今晚会晚一点到。",
+       "= afraid=adj. 恐怕 | late=adv. 迟；晚"
+      ],
+      "after": [
+       "恐怕我今晚会晚一点到。",
+       "= afraid=adj. 恐怕 | late=adj. 迟到的；晚到的"
+      ]
+     },
+     {
+      "sentence": 156,
+      "before": [
+       "球队失球时，他们悲伤地喊叫；球队取得胜利时，他们则欢呼雀跃。",
+       "= shout=v. 喊叫 | scream=v. 尖叫 | sadness=n. 悲伤 | goal=n. 进球；得分 | joy=n. 喜悦"
+      ],
+      "after": [
+       "球队失球时，他们悲伤地喊叫；球队取得成功时，他们则欢呼雀跃。",
+       "= shout=v. 喊叫 | scream=v. 尖叫 | sadness=n. 悲伤 | goal=n. 进球；得分 | joy=n. 喜悦"
+      ]
+     },
+     {
+      "sentence": 170,
+      "before": [
+       "球队失球时，他们悲伤地喊叫；球队取得胜利时，他们则欢呼雀跃。",
+       "= shout=v. 喊叫 | scream=v. 尖叫 | sadness=n. 悲伤 | goal=n. 进球；得分 | joy=n. 喜悦"
+      ],
+      "after": [
+       "球队失球时，他们悲伤地喊叫；球队取得成功时，他们则欢呼雀跃。",
+       "= shout=v. 喊叫 | scream=v. 尖叫 | sadness=n. 悲伤 | goal=n. 进球；得分 | joy=n. 喜悦"
+      ]
+     }
+    ],
+    "other_json_changes": [
+     "sources_reviewed",
+     "待核"
+    ],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "所列4项修改均复看；无新增未处理的语义发现"
+  },
+  {
+   "sid": "2022-xgk2",
+   "initial_sha256": {
+    "定稿/2022-xgk2.json": "05131fe4106080d5d595470777c0754a97ae640e6eba9edb2212ac55b08d53f6",
+    "ann/2022-xgk2.txt": "5a6c8a82d1651dd8885d21cfed799fc30b83fad00ca85489f0e74efdaabf0823"
+   },
+   "reviewed_sha256": {
+    "定稿/2022-xgk2.json": "05131fe4106080d5d595470777c0754a97ae640e6eba9edb2212ac55b08d53f6",
+    "ann/2022-xgk2.txt": "5a6c8a82d1651dd8885d21cfed799fc30b83fad00ca85489f0e74efdaabf0823"
+   },
+   "sentence_count": 176,
+   "unique_en_zh_entry_groups_read": 105,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      116,
+      127
+     ],
+     "start": 68.18,
+     "end": 72.26,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_text": "Excuse me, can you tell me how much the shirt is?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 45,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      527,
+      530
+     ],
+     "start": 374.73,
+     "end": 376.41,
+     "en": "Yes, they are.",
+     "asr_text": "Yes, they are.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 89,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      890,
+      897
+     ],
+     "start": 636.71,
+     "end": 640.15,
+     "en": "It's about a girl named Tracy Woods.",
+     "asr_text": "It's about a girl named Tracy Woods.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 133,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1292,
+      1308
+     ],
+     "start": 886.0,
+     "end": 893.2,
+     "en": "It was also great to work in various labs such as directors, writers, and so on.",
+     "asr_text": "It was also great to work in various labs such as directors, writers, and so on.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 176,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1877,
+      1881
+     ],
+     "start": 1232.63,
+     "end": 1235.67,
+     "en": "Let's welcome Emma Wilson.",
+     "asr_text": "Let's welcome Emma Wilson.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 7,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      212,
+      215
+     ],
+     "start": 123.16,
+     "end": 124.44,
+     "en": "I checked it.",
+     "asr_text": "I checked it.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 130,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1252,
+      1259
+     ],
+     "start": 866.82,
+     "end": 869.7,
+     "en": "I work on anything that excites me.",
+     "asr_text": "I work on anything that excites me.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": false,
+    "english_changes": [],
+    "ann_changes": [],
+    "other_json_changes": [],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "未发现明确需要修改的翻译、词义、数字或否定问题"
+  },
+  {
+   "sid": "2020-js",
+   "initial_sha256": {
+    "定稿/2020-js.json": "2950151fb39b6c15734d0206f817303d4634605b780e9ef2afc1ddb485961240",
+    "ann/2020-js.txt": "58d0257fe52fb9827393f4363d4b63dde9b3b6a44ed37bc51302ee916dd897c7"
+   },
+   "reviewed_sha256": {
+    "定稿/2020-js.json": "7b8c3201133f36db48aff8970ff3ead04907554053cbd9599374aca32d94c915",
+    "ann/2020-js.txt": "58d0257fe52fb9827393f4363d4b63dde9b3b6a44ed37bc51302ee916dd897c7"
+   },
+   "sentence_count": 174,
+   "unique_en_zh_entry_groups_read": 100,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      104,
+      115
+     ],
+     "start": 77.37,
+     "end": 80.57,
+     "en": "Excuse me, can you tell me how much the shirt is?",
+     "asr_text": "Excuse me, can you tell me how much the shirt is?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 44,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      594,
+      602
+     ],
+     "start": 434.0,
+     "end": 436.72,
+     "en": "I'm afraid he's not available at the moment.",
+     "asr_text": "I'm afraid he's not available at the moment.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 88,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      859,
+      864
+     ],
+     "start": 583.31,
+     "end": 585.39,
+     "en": "It's excellent for the price.",
+     "asr_text": "It's excellent for the price.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 131,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1252,
+      1257
+     ],
+     "start": 794.92,
+     "end": 796.92,
+     "en": "But it was just luck.",
+     "asr_text": "But it was just luck.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 174,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1880,
+      1896
+     ],
+     "start": 1108.95,
+     "end": 1114.95,
+     "en": "If you appear interested in what people are saying, they feel more comfortable talking with you.",
+     "asr_text": "If you appear interested in what people are saying, they feel more comfortable talking with you.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 34,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      521,
+      532
+     ],
+     "start": 371.76,
+     "end": 376.8,
+     "en": "Well, I love seeing musical plays on Broadway with my friends.",
+     "asr_text": "Well, I love seeing musical plays on Broadway with my friends.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 93,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      885,
+      894
+     ],
+     "start": 596.9,
+     "end": 601.06,
+     "en": "We have ordinary cameras, movie cameras, and video cameras.",
+     "asr_text": "We have ordinary cameras, movie cameras, and video cameras.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": true,
+    "english_changes": [],
+    "ann_changes": [],
+    "other_json_changes": [
+     "sources_reviewed",
+     "待核"
+    ],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "未发现明确需要修改的翻译、词义、数字或否定问题"
+  },
+  {
+   "sid": "2019-shq",
+   "initial_sha256": {
+    "定稿/2019-shq.json": "0d612cd416b24e85f0868bd4bbdba52f63e88d4e0199fca98886855ef6861a46",
+    "ann/2019-shq.txt": "462702182f406dc48cd1f3cc7e8a06c604c5d29092d85be2c6d8ffd549148077"
+   },
+   "reviewed_sha256": {
+    "定稿/2019-shq.json": "0d612cd416b24e85f0868bd4bbdba52f63e88d4e0199fca98886855ef6861a46",
+    "ann/2019-shq.txt": "fb7515aaec3a65c92726e9c09fcc26e52a7dec02d2ab38cf96deebca7efd604f"
+   },
+   "sentence_count": 197,
+   "unique_en_zh_entry_groups_read": 141,
+   "semantic_review": [
+    "全部逐句英文与中文译文配对实读",
+    "逐句词条词性、本句义与原文词形实读",
+    "数字、否定、比较、时态情态、指代与语境范围核查",
+    "保留重复朗读，确认相同英文及相同译注后复用阅读结果"
+   ],
+   "asr_samples": [
+    {
+     "sentence": 1,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      25,
+      28
+     ],
+     "start": 32.27,
+     "end": 34.51,
+     "en": "Section A. Directions.",
+     "asr_text": "Section A Directions",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 50,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      361,
+      369
+     ],
+     "start": 249.51,
+     "end": 251.91,
+     "en": "It takes only five minutes to drive there.",
+     "asr_text": "It takes only five minutes to drive there",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 99,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      939,
+      976
+     ],
+     "start": 515.5,
+     "end": 530.87,
+     "en": "The accepted definition of creativity is production of something original and useful, and it is commonly thought that creativity occurs on the right side of the brain, and the arts play an important role in enhancing it.",
+     "asr_text": "The accepted definition of creativity is production of something original and useful, and it is commonly thought that creativity occurs on the right side of the brain. and the arts play an important role in enhancing it.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 148,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1538,
+      1546
+     ],
+     "start": 796.78,
+     "end": 798.94,
+     "en": "Was it a full-time job for him?",
+     "asr_text": "Was it a full time job for him?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 197,
+     "sampling": "spread",
+     "asr_source": "识别.json",
+     "asr_range": [
+      1853,
+      1868
+     ],
+     "start": 955.13,
+     "end": 961.21,
+     "en": "According to the man, which of the following is the most important for a volunteer?",
+     "asr_text": "According to the man, which of the following is the most important for a volunteer?",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 5,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      65,
+      97
+     ],
+     "start": 49.32,
+     "end": 59.72,
+     "en": "After you hear a conversation and the question about it, read the four possible answers on your paper and decide which one is the best answer to the question you have heard.",
+     "asr_text": "After you hear a conversation and the question about it, read the four possible answers on your paper and decide which one is the best answer to the question you have heard.",
+     "bounds_exact": true
+    },
+    {
+     "sentence": 53,
+     "sampling": "random_seed_3319",
+     "asr_source": "识别.json",
+     "asr_range": [
+      385,
+      386
+     ],
+     "start": 266.89,
+     "end": 267.53,
+     "en": "Ten.",
+     "asr_text": "10.",
+     "bounds_exact": true
+    }
+   ],
+   "findings": [],
+   "existing_pending_at_final_review": [],
+   "hash_changes_reviewed": {
+    "changed": true,
+    "english_changes": [],
+    "ann_changes": [
+     {
+      "sentence": 8,
+      "before": [
+       "是的，那里有很多很好的二十世纪小说。",
+       "= novel=n. 小说 | twentieth=num. 第二十 | century=n. 世纪"
+      ],
+      "after": [
+       "是的，那里有很不错的二十世纪小说。",
+       "= novel=n. 小说 | twentieth=num. 第二十 | century=n. 世纪"
+      ]
+     }
+    ],
+    "other_json_changes": [],
+    "sentence_range_or_time_changes": false,
+    "diff_reviewed": true
+   },
+   "conclusion": "未发现明确需要修改的翻译、词义、数字或否定问题"
+  }
+ ],
+ "post_review_updates": [
+  {
+   "sid": "2019-zj6",
+   "change": "仅第112句I统一为I’d，译文改为“比如我可能会做的那点运动量。”；第128句原本已是I’d。",
+   "before_sha256": {
+    "定稿": "1fffa585e970cdaf44e5970db1a8fe580ce3179c45f95a743ad9451d86866d30",
+    "ann": "da991a4b3bb4b4bfabfaed28acdde90ce9f58a4dfb01ad2b4f1a1eaae5591c54"
+   },
+   "after_sha256": {
+    "定稿": "91653aa39a25c5efc280e43057dd0bee97cdf3239fd53b13b1c6bcfafd1d7e32",
+    "ann": "6603918e2d131afb5567d8c347e8b1e9577daa42e331e090cb375613b601e79d"
+   },
+   "diff_reviewed": true,
+   "remaining_pending": 0
+  }
+ ]
+}
