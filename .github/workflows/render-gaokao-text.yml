@@ -6,7 +6,8 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: gaokao-text-production
+  # 与已启动的首套样片使用不同组，允许先并行预检；正式编码由sample_gate守门。
+  group: gaokao-text-batch
   cancel-in-progress: false
 jobs:
   list:
@@ -109,8 +110,23 @@ jobs:
           path: |
             out/*.json
             out/shots/*.bad.png
-  render:
+  sample_gate:
     needs: [list, precheck]
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - name: 首套完整4K与全部成品核查通过才放行批量编码
+        if: needs.list.outputs.mode == 'batch'
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          rid=$(cat .github/gaokao-text-sample-run.txt)
+          gh run watch "$rid" --interval 20 --exit-status
+  render:
+    needs: [list, precheck, sample_gate]
     if: needs.list.outputs.ids != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -154,13 +170,6 @@ jobs:
       - name: 首套完整试跑（核对全部状态和原声）
         if: needs.list.outputs.mode == 'sample'
         run: /opt/ttsenv/bin/python 高考听力/精读/tools/生成.py ${{ matrix.id }} fast --original in/original.mp3 --out out
-      - name: 批量正式编码必须等首套完整4K验证成功
-        if: needs.list.outputs.mode == 'batch'
-        env: {GH_TOKEN: '${{ github.token }}'}
-        run: |
-          set -euo pipefail
-          rid=$(cat .github/gaokao-text-sample-run.txt)
-          gh run watch "$rid" --interval 20 --exit-status
       - name: 生成4K、核对全部画面与完整原声
         run: |
           set -euo pipefail
