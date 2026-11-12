@@ -22,7 +22,7 @@ FINE_LIMITS = {'clause_nb': 1.2, 'clause_tail': 4.0}
 STD_LIMITS = dict(LIMITS, **FINE_LIMITS)
 LEGACY = HERE / '响度旧成品清单.json'
 RAW_WRITER = '专八/听力/原文/tools/原音音轨.py'      # 唯一允许写 source='原音' 的程序（踩坑 87）
-RAW_DIRS = ('专八/听力/原文/audio', '六级/听力/精读/audio', '四级/听力/精读/audio')      # 原音条目只许在这三处（RAW_WRITER 写的：专八听力原文精读、六级 --cet6、四级 --cet4 听力原文精读）
+RAW_DIRS = ('专八/听力/原文/audio', '六级/听力/精读/audio', '四级/听力/精读/audio', '高考听力/精读/audio')  # 高考：用户2026-11-12要求考试原声；独立原音逐样本比对，不走TTS响度处理
 CORE = ('integrated_lufs', 'sentence_max_dev_lu', 'short_term_std_lu', 'peak_dbfs')
 FINE = ('clause_nb_min_lu', 'clause_tail_min_db')
 BREATH = 'breath_count'      # 铁律 22（2026-10-30）：成品停顿里的换气处数，必须为 0
@@ -48,7 +48,13 @@ def is_raw(tm):
     """专八听力考试原声（不是 TTS）：只认 原音音轨.py 写出的样子——file 在 原音/ 下、有 compressed_gaps、每句都有原音对应的 orig，
     没有合格证 / clause_check。别处自己写一个 source='原音' 不算（防复发验证里静态检查只有 RAW_WRITER 能写这个字段）。"""
     S = tm.get('sentences') or []
-    return (tm.get('source') == '原音' and str(tm.get('file', '')).startswith('原音/') and 'compressed_gaps' in tm
+    old=(str(tm.get('file', '')).startswith('原音/') and 'compressed_gaps' in tm)
+    sha_ok=lambda x:isinstance(x,str) and len(x)==64 and all(c in '0123456789abcdef' for c in x)
+    gaokao=(tm.get('mode')=='原音不动' and sha_ok(tm.get('source_sha256')) and sha_ok(tm.get('audio_sha256'))
+            and isinstance(tm.get('window'),list) and len(tm['window'])==2
+            and tm.get('sample_rate') in (16000,22050,24000,32000,44100,48000)
+            and tm.get('channels') in (1,2) and bool(S) and all(s.get('word_alignment') for s in S))
+    return (tm.get('source') == '原音' and (old or gaokao)
             and 'clause_check' not in tm and 'certificate' not in tm and bool(S) and all('orig' in s for s in S))
 
 

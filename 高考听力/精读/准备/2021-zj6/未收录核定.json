@@ -1,0 +1,64 @@
+{
+  "逐词_sha256": "76540c63dd2b9291f58fbdb184786be424fbb97801029c02207eb58beb8f986e",
+  "原音_sha256": "64247796763caaecc3353cada4df07481e45bee10ede758ec496a13c50ca557e",
+  "审阅人": "review_1",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        0,
+        20
+      ],
+      "text": "Shenzhai, Ni yo Wu Miao Jung da shi jian, Yue du Ti yi xiao ti de yo guan nei rong.",
+      "理由": "原音开头为中文现在有5秒阅读第一小题有关内容；Shenzhai、Ni yo等为中文拼音误识别，不补成英语说明。"
+    },
+    {
+      "range": [
+        222,
+        250
+      ],
+      "text": "Ting Shia Ming Yi Duan Tui Hua Hui Da Di Liu He Di Chi Liang Shao Ti Sienzai Niya Shimyao Tung Da Shutian, Ye Tu Tanga Shao Tiki,",
+      "理由": "中文长对话引导、回答第六和第七题及10秒读题说明；同窗SenseVoice为中文。"
+    },
+    {
+      "range": [
+        404,
+        417
+      ],
+      "text": "Xianzai, Niyo Shi Wu Miao Jungda Shi Jian, Yui Duje Sang Xiao Tiki,",
+      "理由": "中文现在有15秒阅读这三个小题的提示；原始ASR全部为对应中文音节。"
+    },
+    {
+      "range": [
+        658,
+        677
+      ],
+      "text": "Ting Xia Mian Yi Duan Tui Hua Hui Da Di Shu Yi Chu Di Shu San Sang Xiao Ti",
+      "理由": "中文听下面一段对话、回答11至13题材料引导；没有英语正文被排除。"
+    },
+    {
+      "range": [
+        1019,
+        1024
+      ],
+      "text": "King Shami Itwan Tree Far",
+      "理由": "中文听下面一段对话提示；King Shami Itwan Tree Far虽含像英语的词形，实际与完整中文识别对应。"
+    },
+    {
+      "range": [
+        1350,
+        1385
+      ],
+      "text": "Ting Xia Mian Yi Duan Du Bai Gui Da Di Si Ba Ji Di A Shi Sang Xiaoti Qianzai Niyo Shu Wu Miao Jung Da Shi Jian Yu Du Ju Sang Xiao Ti Xiao Ti",
+      "理由": "中文独白、题号和15秒读题说明；Xiao Ti等为中文小题的音近拼写，与其后英语讲座分开处理。"
+    },
+    {
+      "range": [
+        1711,
+        1739
+      ],
+      "text": "The R Dauphy at all. Shienzai, Ni Yong Liang Feng Jung the Shi Tian Jiang Si Juan Shang the Da an Juan Tu Dao Da Ti Ka Sang",
+      "理由": "原始ASR末尾完整检查：中文第二节到此结束、两分钟转涂答题卡说明。The R Dauphy at all对应中文结束语，不是英语句子；最后实际英语every day已在定稿末句补齐。"
+    }
+  ]
+}

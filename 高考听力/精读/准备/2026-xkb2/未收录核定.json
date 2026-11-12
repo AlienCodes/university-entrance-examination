@@ -1,0 +1,72 @@
+{
+  "逐词_sha256": "7c35c4f153d537ea61b9dcdf3fcd9095c0c412496fad24e398bbded07891c1c2",
+  "原音_sha256": "584927f30749f89aeb416e551e32ecef60a7c581b4d161d7de6bf4c20234f1c5",
+  "审阅人": "review_1",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        273,
+        330
+      ],
+      "text": "Mei Duan Du Yin Ho Yo Yiga Shao Ti Chong Ti Jung Suke D A B C Shuen Shang Jong Chuan Chu Sui Jia Chuen Sha Ting Wan Mei Duang Du Yin Ho Yo Shi Miao Jung Shi Jian Lai Hui Da Yo Guan Shao Ti Kue Du Sha Yi Shoti Tien Shana Lu yin, we dati",
+      "理由": "第一节中文规则、每段两遍、5秒读题和回答第一题的提示。198.78—200.42秒的孤立I为约2038Hz提示音（峰值附近功率92.8%），不属于英语正文。"
+    },
+    {
+      "range": [
+        401,
+        411
+      ],
+      "text": "Tin Shamina Lu Yin, Hui Ta Di Ar Sha Ti",
+      "理由": "中文听下面的录音、回答第二小题的提示；Tin Shamina Lu Yin与SenseVoice中文一致。"
+    },
+    {
+      "range": [
+        477,
+        486
+      ],
+      "text": "Tin shamina lu yin, huita ti san shot ti.",
+      "理由": "中文回答第三小题的引导。邻接英文What is for dinner tonight从302.76秒才开始，已在其后的英语定稿收录，不在本排除范围内。"
+    },
+    {
+      "range": [
+        644,
+        726
+      ],
+      "text": "D E J dot se chie shu D R Jin Sha mien wu duan ru yin, me duan ru yin ho yo chi ka cha ti tong ti jung swo g da A B Cang Chuen chiang jung, chen chu tui cha chen sha. Ting Mei Duan Lu Yin Tian, Ni Jiang Yo Shi Jien Yu Du Ga Sha Ti Mai Sha Ti Wu Mia Jung Ting Wan Ho Mi Sha Ti Do Yo Wu Mia Jung the Zua Da Shi Jien.",
+      "理由": "中文第一节结束和第二节录音、ABC选择、每题5秒的说明；原始ASR中的D E J等是中文音节。"
+    },
+    {
+      "range": [
+        882,
+        891
+      ],
+      "text": "Pinxia Minu Yin, Ye Du Cha Sang Sha Ti,",
+      "理由": "中文回答第八至第十小题以及15秒读题提示；不将Pinxia Minu Yin等拼音误写作为英语字幕。"
+    },
+    {
+      "range": [
+        1058,
+        1074
+      ],
+      "text": "Tin Xia Mian Lu Yin, Kui Da Ti Shi Yi Jie Ti Shi San Shao Ti",
+      "理由": "中文回答第11至第13小题的材料提示；同窗SenseVoice为完整中文。"
+    },
+    {
+      "range": [
+        1312,
+        1324
+      ],
+      "text": "Tianxia Minnadu Yin, the first time I was in the city of",
+      "理由": "这是中文听下面的录音、回答第十四至第十六小题。原始英文模型将中文题号尾段幻听成the first time I was in the city of；SenseVoice整窗为对应中文，Otter该处也仅为中文音节，不是夹入的真实英语。"
+    },
+    {
+      "range": [
+        1937,
+        1944
+      ],
+      "text": "I think it's a very good thing.",
+      "理由": "已核源ASR末尾：SenseVoice为第二节到此结束，Otter尾部也为中文结束音节。I think it is a very good thing七词仅被压在1231.16—1231.40秒，属英文模型对中文尾音的幻听，不是真实英语结束语。"
+    }
+  ]
+}

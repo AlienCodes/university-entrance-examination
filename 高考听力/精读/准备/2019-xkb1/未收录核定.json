@@ -1,0 +1,48 @@
+{
+  "逐词_sha256": "066ad231423fd2b4cd3be38b97e0adf4ed30fb373db566b1b4a8f6062e394668",
+  "原音_sha256": "b5f24ed9d390e0689514c7b22e471efa220688c8e0a11a1b4584a545ddb0ecee",
+  "审阅人": "review_3",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        251,
+        326
+      ],
+      "text": "qing kan ting li bufen di yi jie B C Sang Shuen Shang Jung Shuen Chu Zhui Jia Shuen Shiang Hing Wan Mei Tuan Tu Hua Ho Ni Do You Shi Miao Jung Da Shi Jian Lai Hui Da Yo Guan Shao Ti Gue Du Xia Yi Sia Tieni Mei Tuan Tui Hua, Jin Du Yi Bien Zo Chin Sai Ni Yo Wu Miao Zhong Da Shi Jian Kan Shi Juen Shang Da Li Ti",
+      "理由": "第一节中文说明及例题5秒阅读提示；SV逐句为“请看听力部分第一节、听下面五段对话、从ABC选项中……”等中文。英文例题从后面的Excuse me独立保留，未被此例外吞掉。"
+    },
+    {
+      "range": [
+        341,
+        404
+      ],
+      "text": "Nijiang You Wu Miao Zhengda Shi Jian, Jiang Cheng Chi Da Ran, Baozai Shi Juan Shanghai, Chuen Shen Da Jia Ge Wei Jiou Bang Shi Wu Bian Shi Sui Yi Ni Shuenze Si Xia, Bing Tiang Chi Hua Tai Shi Juan Sha Chien Tai Ni Yo Wu Miao Chung Da Shi Jien, Yu Du Ti Yi Siao Ti Da Yo Guan Nei Rong",
+      "理由": "英语例题后的中文标答、九磅十五便士说明、选择C项与第一小题阅读提示。源词Chuen Shen、Jiou Bang等对应中文音节，不是再次用英语念价格。"
+    },
+    {
+      "range": [
+        566,
+        638
+      ],
+      "text": "T Y jie Dao She Shu T R Jin Sham Yen Wu Tuan Tree Hua Hu Tu Bai Mei Tuan Tree Hua Hu Tu Bai Ho Yao Chi Kia Ti Tong Ti Jung Su K Da A B C Sang Shen Shang Jung Shen Chu Zhui Chia Shen Shiang King Mei Tuan Tui Hua Hu Du Bai Tian Sien Sai, Niyo Shi Miao Chung Da Shu Sian, Yui Toucha Ganga Shao Tiki,",
+      "理由": "第一节结束、第二节中文规则及第六/七题阅读提示。437.6–438.7秒实测主要能量为约2038Hz提示音，SV误标en却输出“我.”，不能把该处补成英语I；其余源词均与同窗中文播题说明对应。"
+    },
+    {
+      "range": [
+        1373,
+        1380
+      ],
+      "text": "Qing Siang Yang Yi Tuan Tui Hua.",
+      "理由": "第九段对话前中文“听下面一段对话”，与SV918.32–920.34秒完整中文一致；Qing Siang Yang等为此句拼音化误转。随后We all know等英语已收录。"
+    },
+    {
+      "range": [
+        1991,
+        2004
+      ],
+      "text": "E R tie Hao T Shu. Qing Li Bufen, Dao Se Jie Shu",
+      "理由": "正文结束后的中文“第二节到此结束”、两分钟答题卡转涂说明，以及末尾“听力部分到此结束”。1448.2–1449.5秒实测约2038Hz提示音被SV误成“我.”，不是英语I；已核到最后一词Shu，无未收录英语结束语。"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "逐词_sha256": "590c9fcc2200d7a8bcac8586cab6e51f3c9fbf30d902d2596d55a4ab60752c50",
+  "原音_sha256": "365b10539631bcdef5f83a4b197c9273636aea809833ea85eb90fa93eb4674e9",
+  "审阅人": "review_1",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        12,
+        58
+      ],
+      "text": "Qing Kan Ting Li Bufen Di Yi Ji Di Yi Ji Ping Shamian wu duan tu yi hua mei duan tui hua hou yao yi ka shiao ti, tong ti jung souke da A, B, C, Sanga Shen Shang Chung, Shuen Tu Tui Ja Shen Shia",
+      "理由": "中文请看听力第一节、听五段对话及ABC三项选择规则；Qing Kan等原始英文ASR串为中文音近拼写。"
+    },
+    {
+      "range": [
+        73,
+        115
+      ],
+      "text": "Chen Shan the Jia Ge Wei Jiou Bang Shu Bian Shi. Sui Yi Ni Shenzhi Xia, Bing Jiang Chi Biao Zai Shi Juan Sha. Xianzai, Niyo Wu Miao Chung Dhi Jian, Yu Du Di Yi Xiao Ti Da Yo Kuan Nei Rong",
+      "理由": "中文例题答案九磅十五便士、选择C项及5秒阅读第一题提示；英语价格末词fifteen已在前句收录。"
+    },
+    {
+      "range": [
+        291,
+        346
+      ],
+      "text": "D E J D Shu D R Ju Tuan Tui Hua Hu Tu Bai Mei Tuan Tui Hua Huo Tu Bai Ho Yo Chi Ga Shao Technique Ping Xia me Tuan Tui Hua, Hui Ta Ti Liou He Ti Chi Diang Xiaoti Sin Sai, Ni Yo Shin Miao Jungda Shi Jian Yu Duja Liang Xiaoti",
+      "理由": "中文第一节结束、第二节规则和第六第七题读题提示。295.94—297.50秒的孤立I是约2038Hz提示音（峰值附近功率92.0%），不应生成英语句子。"
+    },
+    {
+      "range": [
+        482,
+        513
+      ],
+      "text": "Ting Xiaomi Yituan Tu Yi Hua, Hui Ta Ti Pa, Ji Di Shi San Ga Xiaoti, Sen Sa, Niyo Shi Wumiao Jungda Shi Jian, Yui Duja, Sanka Xiaoti, and the Spanish.",
+      "理由": "中文下一段对话、题号范围及15秒阅读三题提示。ASR尾部and the Spanish是对阅读这三个小题中文音节的幻听；同窗SenseVoice全为中文，Otter无该英语短语。"
+    },
+    {
+      "range": [
+        797,
+        829
+      ],
+      "text": "Ping Xia Ming Yi Duan Tu Yua, Hui Da Ti Shi Yi, Ji Di Shi San, Sang Xiaoti Shen Sai, Ni Yo Shi Wu Miao Zhengda Shi Jian, Yue Duja, Sang Xiaoti,",
+      "理由": "中文11至13题材料引导及15秒阅读三题提示；本段不含英语对话或英文题号。"
+    },
+    {
+      "range": [
+        1091,
+        1111
+      ],
+      "text": "Ping Xia Miang Yi Tuan Tui Hua Hui Ta Ti Shi Si J Ti Shi Chi Si Ga Shao Ti",
+      "理由": "中文14至17题对话材料引导；Ping Xia Miang等音近串不是英语句子。"
+    },
+    {
+      "range": [
+        1472,
+        1477
+      ],
+      "text": "Ye to ja sankiao tiki.",
+      "理由": "中文现在有15秒阅读这三个小题的末段；Ye to ja sankiao tiki与同窗中文语音识别对应。"
+    },
+    {
+      "range": [
+        1805,
+        1835
+      ],
+      "text": "DRT Tao Ziexu Shenza, Niyo Liang Feng Chung Da Shuji, Tiang Shi Juan Shang Da Da Ra Juan Tu Da Da Ti Ka Shai Ping libu fen, dao tie shu.",
+      "理由": "源ASR末尾已核：中文第二节结束、两分钟转涂与最后听力结束，中间为作答静音。1384.90—1386.46秒的I.为约2038Hz提示音（峰值附近功率91.5%），没有英语词。"
+    }
+  ]
+}

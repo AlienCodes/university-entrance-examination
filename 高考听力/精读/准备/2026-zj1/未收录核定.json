@@ -1,0 +1,72 @@
+{
+  "逐词_sha256": "fa1d57a29ca43bd589608938808306dee19d56c8d37e42e3d86a803ea3a8d7d6",
+  "原音_sha256": "0e9e473568f60319cb3bab9b42bac406d4398fe19475ee5e2886bb27074409ba",
+  "审阅人": "review_3",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        236,
+        310
+      ],
+      "text": "Ting Kan, Ting Li Pofen, D E Jesus, and the Ministry of the United States. Mei Duan du Yin ho yo yig sha ti Tung Ti Jung so g da A B C Sang Shen Shang Jung Chuen Chu Tui Jia Shen Shang Ting Wan Mei Duan Lu Yin Ho Dou Yo Shi Miao Jung the Shi Jie, Lai Hui Da Yo Guan Sha Ti Tien Shanien d Lu yin, huita ti shot ti",
+      "理由": "开头第一节中文规则、五段录音、ABC选择、每题10秒及第一小题阅读/播题提示。Jesus、the Ministry of the United States等英语外形嵌在同一中文音节串中，SV完整对应中文考试说明；199.95–201.1秒约2038Hz提示音被SV写成The，非英语The。"
+    },
+    {
+      "range": [
+        420,
+        428
+      ],
+      "text": "Tian Shamian Luyin, Huida Ti San Shao Tiki,",
+      "理由": "第三小题前的中文“听下面的录音，回答第三小题”提示，SV同窗有完整中文；Tian Shamian Luyin等为此句误转，第三段英语对话另已保留。"
+    },
+    {
+      "range": [
+        604,
+        688
+      ],
+      "text": "D E Got She Shu D R Din Shamien Wu Duan Lu Yin Mei Duan Lu Yin Ho Yo Chi Kha Ti Tong Ti Jung Suke the A, B, C Sang Chuen Chang Jun, Chen Chu Chui Cha Chen Cha. Ping Mi Duan Lu Yin Chien, Ni Jiang Yo Shi Jien Yu Tu Ke Ga Sha Ti May Zia Ti Wu Mia Chung Ting Wan Ho Me Sha Ti Do Yo Wu Mia Chung De Zua Dashie May Duan Lu Yin Pofang Liang Yen",
+      "理由": "第一节结束、第二节五段录音与作答时间的中文规则，直到“每段录音播放两遍”。ASR中的A/B/C是中文说明引用的选项字母，May Zia Ti等是“每小题”等中文音节，不生成伪英文说明。"
+    },
+    {
+      "range": [
+        876,
+        903
+      ],
+      "text": "Tin Shamin Lu Yin, Guita Ti Ba Chi Ti Shi Sha Ti, Senza, Nio Shi Wu Miao Jungde Shi Jian Ye Du Cha Sang Sha Ti Shaw,",
+      "理由": "第八至第十题前的中文播题、15秒阅读提示；同窗SV实际中文与Tin Shamin Lu Yin等音节逐项对应，后续Fenny英语对话已完整收录。"
+    },
+    {
+      "range": [
+        1094,
+        1121
+      ],
+      "text": "Tien Shamana Lu Yin Kui da Ti Shi Yi Chi Ti Shi San Sha Ti Chenza Nio Shi Wumia Junga Shi Jian Ye Tu Cho Sang Shoti,",
+      "理由": "第十一至第十三题前的中文录音/题号与15秒阅读提示；SV明确为该中文说明，Tien Shamana、Shi Wumia等不是英文材料。"
+    },
+    {
+      "range": [
+        1407,
+        1415
+      ],
+      "text": "Tien Sha Mina Lu Yin, Kuida Tyo Chaoti.",
+      "理由": "第十四至第十六题前的中文“听下面的录音，回答第十四至第十六小题”。Parakeet压缩成Kuida Tyo Chaoti等音节，SV同窗给完整中文，不是漏掉的课程对话英文。"
+    },
+    {
+      "range": [
+        1723,
+        1751
+      ],
+      "text": "Tien Shamian Lu Yin, Wida, D Shi Xi Chi T R Shi Sha Ti Chenza, Niyo Ar Shemiao Jong the Shi Jian, Yu Du Jose, and the Spanish.",
+      "理由": "第十七至第二十题前的中文播题与20秒阅读提示。尾部Yu Du Jose, and the Spanish对应SV中文“阅读这四个小题”的位置，整段是中文提示的英语模型误转，没有真实西班牙语/Spanish话题英文尾句。"
+    },
+    {
+      "range": [
+        2097,
+        2102
+      ],
+      "text": "And what are the other",
+      "理由": "片尾中文“将试卷上的答案转涂到答题卡上”的末尾被误写为And what are the other；SV在1235.68–1243.42秒给完整中文。另实测1243.49–1245.41秒原音样本全0，the/other落在数字静音中，不能补成英语尾句。已检查至源ASR最后一词other。"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "逐词_sha256": "afc6ee065d510c46a03a9460a9b29510de2b1fa75f22522adf96dddc2b456afb",
+  "原音_sha256": "7cf9fc30bf597bda1ea2045b9175f98ba0051d1f50d6fe3edc4587eb1a668709",
+  "审阅人": "review_5",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        9,
+        57
+      ],
+      "text": "Ching Kan Ting Li Bufen Di Yi Ji Di Yi Ji Ping Shamian wu duan tu yi hua mei duan tu y hua ho yao yi ka xiao ti tong ti jung sou ke da A B C Sanga shen shang jung shuen chu zui ja chuen shia.",
+      "理由": "中文第一节题型、每段一个小题及ABC选项说明。"
+    },
+    {
+      "range": [
+        71,
+        72
+      ],
+      "text": "fifteen,",
+      "理由": "已用补识别覆盖的主ASR异常时间：原ASR fifteen的end为80.34秒，拖入中文提示；定稿第2句实际英文“Yes, it's nine fifteen.”已用补识别_例题金额.json的words[0:4]对齐，句时间73.36—76.16秒，末词fifteen实际补识别时间74.96—76.16秒。不是中文，也不是未收录英语，不重复添加。",
+      "类型": "已用补识别覆盖的主ASR异常时间",
+      "对应定稿句": 2,
+      "asr_source": "补识别_例题金额.json",
+      "补识别范围": [
+        0,
+        4
+      ],
+      "实际秒数": [
+        73.36,
+        76.16
+      ],
+      "末词": {
+        "text": "fifteen.",
+        "start": 74.96,
+        "end": 76.16
+      }
+    },
+    {
+      "range": [
+        72,
+        116
+      ],
+      "text": "chiang cheng chui da ran, diao zai shi chuen sha. Chen Shan the Jia Gei Jiou Bang Shu Bian Shi Sui Ni Shenzhi Xia, Bing Jiang Chi Biao Zai Shi Juan Sha Xian Zai, Ni Yo Wu Miao Chung Dhi Jian, Yokuan Nei Rong",
+      "理由": "中文例题五秒作答提示、衬衫价格和C项解析、第一小题五秒读题说明；英文fifteen已在上一条单独映射，不将它归为中文。"
+    },
+    {
+      "range": [
+        317,
+        366
+      ],
+      "text": "D Yi Jie Dao C Chie Shu D Rjie Ting Shamien Wu Tuan Tui Hua Hu Tu Bai Ping Xiaomi Yi Tuan Tu Yi Hua, Hui Ta Di Liu, He Di Qi, Dianga Shao Ti Sin Sai, Ni Yo Shin Miao Zhengda Shi Jian, Yue Duja, Dianka Shao Ti",
+      "理由": "中文第一节结束、第二节题型和规则、第六/七题的十秒读题提示。"
+    },
+    {
+      "range": [
+        526,
+        542
+      ],
+      "text": "Ting Xia Mien Yuan Tui Hua, Hui Ta Ti Pa, Ji Di Shi Sang Xiao Ti,",
+      "理由": "中文第八至第十题题组提示，未夹入英文。"
+    },
+    {
+      "range": [
+        784,
+        801
+      ],
+      "text": "Ping Xiaomi Yituan Tui Hua, Hui Ta Di Shi Yi, Ji Di Shi San, Sanga Shao Ti",
+      "理由": "中文第十一至第十三三个小题的题组提示。"
+    },
+    {
+      "range": [
+        1143,
+        1163
+      ],
+      "text": "Ping Xia Myan Y Tuan Tui Hua Hui Da Ti Shi Si, J Di Shi Chi, Si Ga Shao Ti",
+      "理由": "中文第十四至第十七四个小题的题组提示。"
+    },
+    {
+      "range": [
+        1492,
+        1525
+      ],
+      "text": "Ping Xia My Duan Tu Bai Hui Da Di Shi Pa Ji Di R Shi Sang Siao Ti Sin Sai Ni Yo Shi Wu Miao Jungda Shi Jin. Ye to ja sankiao tiki.",
+      "理由": "中文独白题组及十五秒读题提示；Ye to ja sankiao tiki对应“阅读这三个小题”。"
+    },
+    {
+      "range": [
+        1851,
+        1877
+      ],
+      "text": "DRT Tao Zu Sen Sai, Niyo Liang Feng Chung Da Shu Ji, Tiang Shi Juan Shang Da Da Ga, Juan Tu Da Da Ti Ka Sha,",
+      "理由": "源ASR尾部中文“第二节到此结束，现在你有两分钟……转涂到答题卡上”，不是英语结束语。"
+    }
+  ]
+}

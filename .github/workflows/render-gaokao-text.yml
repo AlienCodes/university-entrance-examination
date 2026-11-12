@@ -1,0 +1,232 @@
+name: 高考英语原文精读视频
+on:
+  push:
+    paths: ['.github/gaokao-text-render.txt']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: gaokao-text-production
+  cancel-in-progress: false
+jobs:
+  list:
+    runs-on: ubuntu-24.04
+    outputs:
+      ids: ${{ steps.list.outputs.ids }}
+      mode: ${{ steps.list.outputs.mode }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /高考听力/套.json
+            /高考听力/精读/ann/
+            /高考听力/精读/定稿/
+      - id: list
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          lines=[x.strip() for x in Path('.github/gaokao-text-render.txt').read_text().splitlines() if x.strip() and not x.startswith('#')]
+          mode=lines[0];ids=lines[1:]
+          assert mode in ('mode=sample','mode=batch','mode=publish')
+          assert len(set(ids))==len(ids)
+          papers=json.loads(Path('高考听力/套.json').read_text())
+          assert set(ids)<=set(papers)
+          assert mode!='mode=sample' or len(ids)==1
+          assert mode!='mode=publish' or not ids
+          C=Path('高考听力/精读')
+          seals=json.loads((C/'ann/复核通过.json').read_text())
+          for sid in ids:
+              d=json.loads((C/'定稿'/f'{sid}.json').read_text());assert not d['待核'],sid
+              for key,path in [('定稿_sha256',C/'定稿'/f'{sid}.json'),('译注_sha256',C/'ann'/f'{sid}.txt')]:
+                  assert seals[sid][key]==hashlib.sha256(path.read_bytes()).hexdigest(),f'{sid}审校后已变'
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('ids='+json.dumps(ids)+'\nmode='+mode[5:]+'\n')
+          print(mode,len(ids),ids)
+          PY
+      - run: python3 .github/check-release-target.py
+  precheck:
+    needs: list
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /高考听力/
+            /高考精读/主题方案/
+            /专八/tools/
+            /专八/听力/tools/
+            /专八/听力/2025/
+            /四级/tools/
+            /中考/tools/
+            /tools/
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 取原音并核对SHA256
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          python3 -I 高考听力/tools/取原音.py ${{ matrix.id }} in/original.mp3
+          rm -f /tmp/gaokao-default.zip
+      - name: 全套语义登记、AAC原声、分屏和逐张4K排版预检
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python
+          $P 高考听力/精读/tools/审校登记.py ${{ matrix.id }}
+          $P 高考听力/精读/tools/生成.py ${{ matrix.id }} precheck --original in/original.mp3 --out out
+          $P - '${{ matrix.id }}' <<'PY'
+          import json,sys
+          from pathlib import Path
+          d=json.loads(Path('高考听力/精读/tools/分屏.json').read_text())
+          Path('out/split-final.json').write_text(json.dumps({sys.argv[1]:d.get(sys.argv[1],{})},ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gktext-precheck-${{ matrix.id }}
+          compression-level: 0
+          if-no-files-found: error
+          path: |
+            out/shots/*.png
+            out/*.json
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: gktext-precheck-failed-${{ matrix.id }}
+          path: |
+            out/*.json
+            out/shots/*.bad.png
+  render:
+    needs: [list, precheck]
+    if: needs.list.outputs.ids != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        id: ${{ fromJson(needs.list.outputs.ids) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /高考听力/
+            /高考精读/主题方案/
+            /专八/tools/
+            /专八/听力/tools/
+            /专八/听力/2025/
+            /四级/tools/
+            /中考/tools/
+            /tools/
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - uses: actions/download-artifact@v4
+        with: {name: 'gktext-precheck-${{ matrix.id }}', path: out}
+      - name: 取原音并恢复已核分屏
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 -I 高考听力/tools/取原音.py ${{ matrix.id }} in/original.mp3
+          rm -f /tmp/gaokao-default.zip
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          f=Path('高考听力/精读/tools/分屏.json');d=json.loads(f.read_text())
+          d.update(json.loads(Path('out/split-final.json').read_text()))
+          f.write_text(json.dumps(d,ensure_ascii=False))
+          PY
+      - name: 首套完整试跑（核对全部状态和原声）
+        if: needs.list.outputs.mode == 'sample'
+        run: /opt/ttsenv/bin/python 高考听力/精读/tools/生成.py ${{ matrix.id }} fast --original in/original.mp3 --out out
+      - name: 生成4K、核对全部画面与完整原声
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python 高考听力/精读/tools/生成.py ${{ matrix.id }} video --original in/original.mp3 --out out
+          mkdir up
+          mv out/*原文精读.mp4 up/
+          cp out/meta.json out/verification.json out/prepared.json out/screens.json up/
+      - uses: actions/upload-artifact@v4
+        with: {name: 'gktext-${{ matrix.id }}', path: up, compression-level: 0, if-no-files-found: error}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: gktext-failed-${{ matrix.id }}
+          compression-level: 0
+          path: |
+            out/*.json
+            out/*.未通过.mp4
+  publish:
+    needs: [list, render]
+    if: always() && needs.list.result == 'success' && needs.list.outputs.mode == 'publish'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /高考听力/
+            /专八/tools/ann_lib.py
+            /专八/tools/词表.py
+            /专八/tools/超纲词.json
+            /专八/tools/高考词表.txt
+            /四级/tools/基础词.txt
+            /tools/
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 只收各次已通过的成品
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          mkdir art
+          for rid in $(cat .github/gaokao-text-collect.txt); do
+            for n in $(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$rid/artifacts?per_page=100" --jq '.artifacts[] | select(.expired | not) | .name' | grep -E '^gktext-20[0-9]{2}-[a-z0-9]+$'); do
+              [ -d "art/$n" ] && continue
+              gh run download "$rid" -n "$n" -D "art/$n"
+            done
+          done
+      - name: 50套齐全与审校指纹一致才发布，逐包下载校验
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python
+          S=.github/gaokao-text-publish.py
+          $P $S --自检
+          IDS=$(python3 -c 'import json;print(json.dumps([x.strip() for x in open(".github/gaokao-text-all.txt") if x.strip()]))')
+          $P $S plan text "$IDS" art up
+          TAG=gaokao-text
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --target "$GITHUB_REF_NAME" -t '高考英语真题 原文精读（50套）' -n '正在核对成品'
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          $P $S todo up/plan.json rel.json | while IFS=$'\t' read -r a l; do
+            gh release upload "$TAG" "up/$a#$l" --clobber
+          done
+          gh release upload "$TAG" up/gaokao-text-filenames.txt --clobber
+          $P $S notes up/plan.json notes.md
+          gh release edit "$TAG" --notes-file notes.md
+          for z in $($P $S zips up/plan.json); do
+            $P $S pack-one up/plan.json . "$z"
+            h=$(sha256sum "$z" | cut -d' ' -f1)
+            gh release upload "$TAG" "$z" --clobber
+            rm "$z"
+            mkdir -p downloaded
+            gh release download "$TAG" -p "$z" -D downloaded --clobber
+            [ "$h" = "$(sha256sum "downloaded/$z" | cut -d' ' -f1)" ]
+            $P $S checkzip up/plan.json "downloaded/$z"
+            rm "downloaded/$z"
+          done
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" > rel.json
+          $P $S verify-digest up/plan.json rel.json

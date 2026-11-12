@@ -1,0 +1,64 @@
+{
+  "逐词_sha256": "722c5513c50eb1c2a503c904a04ac8e9843021ccf85e5c6f4fdce0c1a382d27f",
+  "原音_sha256": "e8347b9cd129daeb3d011ffb8e720dda86c0bfbbe1cd3f1887b4f789de336a6d",
+  "审阅人": "review_6",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        310,
+        383
+      ],
+      "text": "Qing Han Ping Di Bufen Di Yi Jie Di Yi Jie Ting Shamian Wu Duan Dui Hua Mei Duan Tui Hua Hou Yao Yi Ga Shia Tieni, Chong Ti Jung Suo K Da A B C Sanga Shen Shang Chung Shuen Chu Zhui Jia Shuen Shia Li Ru Xin Za, Ni Yo Wu Miao Zheng Da Shi Jian Kan Shi Juen Shang Da Li Ti Ni Jiang Ting Dao Yi Shia Nei Rong",
+      "理由": "此段逐词为“请看听力部分第一节……你将听到以下内容”的中文说明音译；同窗逐段中文内容从第一节说明、例题阅读到即将听到内容，没有夹带真实英语例句。英语例题从383另行收录。"
+    },
+    {
+      "range": [
+        397,
+        433
+      ],
+      "text": "fifteen, Jiang Chang Chui Da Ran, Biao Tai Shi Jiuen Sha. Chen Shan Da Jia ge Wei Jio Bang Shu Bien Shi Su Yi Ni Shuenze Sei Shia Bing Jiang Chi Biao Tai Shi Juan Sha",
+      "理由": "开头fifteen是真英语，已由补识别_例题价格.json的真实[0,3]词段完整收入第2句；旧词397的end延到251.61落入中文，所以不重复使用该旧边界。其余Jiang…Sha为“你将有5秒钟……衬衫价格为九磅十五便士……选择C项”的中文提示音译。"
+    },
+    {
+      "range": [
+        591,
+        609
+      ],
+      "text": "Di Yi Jie Dao Cie Shu D Rjie King Sham Yen Wu Tuan Tui Hua Hu Tu Pai",
+      "理由": "中文“第一节到此结束、第二节、听下面五段对话或独白”的音译，所见D Rjie不是英语词。"
+    },
+    {
+      "range": [
+        761,
+        792
+      ],
+      "text": "Ping Xiaomi Yi Tuan Tui Hua Hui Da Ti Ba He Ti Chiou Diang Xiao Ti Xian Zai Ni You Shu Miao Jungda Shi Jian Ye Du Cha Diang Xiao Ti",
+      "理由": "中文“听下面一段对话，回答第八和第九两个小题，现在你有10秒钟……”的音译；开场We已从原下标792补入后一英语句。"
+    },
+    {
+      "range": [
+        972,
+        1008
+      ],
+      "text": "Ting Xia Mien Yi Duan Tui Hua Hui Ta Di Si Ji Di Shi R Sang G Xiao Ti Sien Ti, Ni Yao Shi Wu Miao Jung Da Shi Jian, Yue Duja Sang Ga Xiao Tiki,",
+      "理由": "中文第十至第十二题的读题说明，Sien Ti…Wu Miao Jung为“现在你有15秒钟”，不是真英语。"
+    },
+    {
+      "range": [
+        1369,
+        1408
+      ],
+      "text": "Ping Xia Mian Yi Duan Tu Yi Hua. Hui Ta Di Shi San Ji Di Shi Liu Si Kiao Ti Xi and Tai Ni Yo A Shi Miao Chung Da Shi Jian Yu Du Cha Su G Xiao Ti",
+      "理由": "中文第十三至十六题的读题说明；中间and来自“现在”附近的英化，不成英语插话；同窗中文完整对应20秒读题提示。"
+    },
+    {
+      "range": [
+        2176,
+        2199
+      ],
+      "text": "DRT Dao C Jie Shu. Since I yo liang fen zhong da shu tian Jiang Shujan Data Juan Tu Dao Ta Ti Kasha",
+      "理由": "从第二节结束到“现在你有两分钟……转涂到答题卡”的中文收尾；Since I是“现在”的误识别，不能作为英文Since I收入。真实英语末词world已在2175收录。"
+    }
+  ]
+}

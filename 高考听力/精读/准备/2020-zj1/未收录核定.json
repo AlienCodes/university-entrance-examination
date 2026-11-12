@@ -1,0 +1,72 @@
+{
+  "逐词_sha256": "76ed29dd0a5e86ba725426a74ad46ee1a5b70df61f36d7bf0ff5c9b19b0622c9",
+  "原音_sha256": "5cfc2d694ece9be3be1d6be270ad18f4ce8a60a77f876f19c80078f37430e8a7",
+  "审阅人": "review_1",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        268,
+        333
+      ],
+      "text": "Chung Ti Jung Shogeta, A B C Sang Shuen Xiang Jong Shuen Tru Chui Jia Shuen Siang Bing Biao Tai Shi Juan Da Siang Ying Wei Ji. Ting Wan Mei Duan Tui Hua Ho, Ni Dou Yo Shi Miao Jung De Shi Tian, Lai Hui Da Yo Guan Siao Ti, He Yu Du Sia Yi Siao Ti Mei Duan Tui Hua, Tin Tu Yi Bien",
+      "理由": "同窗SenseVoice为从ABC三项中选择、标在试卷、每段后10秒答题及每段只读一遍的中文说明；Chung Ti Jung等逐词串是中文拼音误识别，ABC属于中文选项说明。"
+    },
+    {
+      "range": [
+        348,
+        393
+      ],
+      "text": "Ni chang yo wu meao jung di shi jien jiang chung chi da an biao zai shi juen sha. Chen Shan De Jia Gewei Chiou Bang Shi Wu Bien Shi Sui Yi Ni Suen Ze Si Siang Bing Jiang Chi Biao Tai Shu Juan Shang",
+      "理由": "此段是中文例题讲解：5秒标答案、衬衫九磅十五便士、选C项。英语例句与Yes, it is nine fifteen已在相邻定稿收录，本段不重复构成英文。"
+    },
+    {
+      "range": [
+        543,
+        687
+      ],
+      "text": "D E Jie Dao Si Jie Shu D R G T M Wu Duan Tui Hua Hu Du Bai Mai Duan Tui Hua Hu Du Bai Hou, Yo Chi Ga Xiao Ti Chung Ti Jung Su Ge Ta A B C Sanga Suen Xiang Jung Shuan Chu Chui Jia Suen Xiang Bing Biao Jai Si Chuanda Xiang Ying Wei Ji. Ting Mei Duan Dui Hua Ho Du Bai Tian Ni Cheng Yo Shi Jian Yue Du Ge Ge Shao Ti Mei Xiaoti Wu Miao Jung Ting Wan Hou. Ge Xiao Ti, Jiang Gei Chu, Wu Miao Jung Da Zu Da Shi Chian, Mei Tuan Tui Hua Hu Du Bai Du Liang Bien Ting Xia Miang Yi Tuan Tui Hua, Hui Da Di Liu He Ti Chi Liang Shia Ti Shenzhai Ni Yo Shi Miao Chung Da Shi Jian Yue Du Cha Liang Xiao Ti",
+      "理由": "中文第一节结束、第二节完整规则，以及首段长对话的题号和10秒读题提示。SenseVoice夹出的I来自420.90—422.42秒约2038Hz提示音（峰值附近功率92.2%），不是英语人称代词。"
+    },
+    {
+      "range": [
+        841,
+        871
+      ],
+      "text": "Ting Xia Mieng Yi Duan Tui Hua Hui Da Di Pa Ji Di Shi Sang Sia Tieni Shenzhai, Di Yo Shi Wumiao Jungda Shi Tian Yu Duj Sang Sia Tieni",
+      "理由": "同窗为下一段对话前的中文听题、题号范围与15秒阅读提示；Ting Xia Mieng等与中文发音对应，无英文对话被排除。"
+    },
+    {
+      "range": [
+        1105,
+        1124
+      ],
+      "text": "Ting Xia Mian Yi Tuan Dui Hua Kui Da Di Shu Yi Ju Di Shu San Sang Siao Ti",
+      "理由": "中文听下面一段对话、回答11至13题的材料引导语；SenseVoice整窗为中文，不是英语正文。"
+    },
+    {
+      "range": [
+        1470,
+        1475
+      ],
+      "text": "King Shami Yituan Tuyo Fuji",
+      "理由": "中文听下面一段对话的开场提示；King Shami Yituan Tuyo Fuji是该短提示的拼音误识别。"
+    },
+    {
+      "range": [
+        1908,
+        1940
+      ],
+      "text": "Ting Xia Mian Yi Duan Du Bai Kui Da Di Shi Ba Ji Di Ar Shi Sang Xiaoti Xianzai, Niyo Shu Wu Miao Zheng Da Shi Jian Yu Du Ji Sang Xiaoti",
+      "理由": "中文独白材料引导、题号说明及15秒读题时间；同窗SenseVoice为中文，不把Ting Xia Mian等拼音串当英文。"
+    },
+    {
+      "range": [
+        2254,
+        2280
+      ],
+      "text": "TRTE TALT TIA SUNY I Shen Zai, Ni yo Liang Feng Rung the Su Tian Jiang Su Chuen Shang Da Ta an Gland would heek fashion",
+      "理由": "源ASR末尾已逐词检查：中文第二节到此结束及两分钟转涂答题卡说明；TRTE、heek fashion等系对应中文的英文化误识别，没有英语结束语。"
+    }
+  ]
+}

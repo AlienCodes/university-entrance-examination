@@ -1,0 +1,72 @@
+{
+  "逐词_sha256": "a970774a6b53cee9ab87b0b844f483d859b004171af1307c59f811658a5497f5",
+  "原音_sha256": "c04098edcaa54dc8cb4f4da6ea17379902d3d234d590084289aa952f1cfcd736",
+  "审阅人": "review_6",
+  "完整检查至源ASR末尾": true,
+  "例外": [
+    {
+      "range": [
+        310,
+        334
+      ],
+      "text": "Li Ru, Shinzai, Niyo Wu Miao Zhengda Shi Jian, Kan Shi Juan Shang Da Li Ti Ni Jiang Ting Dao Yi Shia Nei Rong",
+      "理由": "中文例题提示“例如，现在你有5秒钟……你将听到以下内容”的音译；英语Excuse me从334起单独收录。"
+    },
+    {
+      "range": [
+        349,
+        391
+      ],
+      "text": "Chen Shan Da Jia Gui Jio Bang Shu Bian Shi Sui Ni Shuenzi Xia Bing Jiang Chi Biao Tai Shi Juan Sha Shenzai Ni You Wu Miao Zheng Da Shi Jian Yu Du Di Yi Shao Ti Da Yo Guan Ne Rong",
+      "理由": "中文例题答案、选择C项及阅读第一小题说明的音译；例题Yes it’s nine fifteen已在345—348收录。"
+    },
+    {
+      "range": [
+        589,
+        639
+      ],
+      "text": "D Yi Jie Dao She Shu D R Tie King Sham Yen Wu Tuan Ti Hua Hu Tu Bai Mai Tuan Tui Hua Hu Tu Bai Hao Yeo Chi Ka Shia Ti Tong Ti Jung Suke Da A B C Sanga Shen Shang Jung Shen Chu Zui Jia Shen Shia.",
+      "理由": "中文第一节结束及第二节说明的音译，涉及从ABC三个选项选择，未把ABC夹在中文中的念法伪造为英语句。"
+    },
+    {
+      "range": [
+        783,
+        815
+      ],
+      "text": "Ting Xia Mia Yi Tuan Tui Hua Hui Ta Ti Pa Ji T Si Sang Shia Ti Shenza, Niyo Shi Wu Miao Jungda Shi Jian, Yue Duja Sanka Xiaoti, and the Chinese.",
+      "理由": "主体为中文第八至第十题的15秒读题提示；尾and the Chinese的源时间550.46—557.18是数值静音（实测RMS -205.75 dBFS、peak -162.51 dBFS），不是英语人声；不能凭ASR补入。"
+    },
+    {
+      "range": [
+        1055,
+        1086
+      ],
+      "text": "Ping Xia Mian Yi Duan Tui Hua Hui Da Di Shi Yi Ji Di Shi San Sanke Xiaoti Shenzai, Ni Yo Shi Wu Miao Jungda Shi Jian, Yue Duja Sanke Xiaoti",
+      "理由": "中文“听下面一段对话，回答第十一至第十三三个小题……15秒钟”的音译，无夹带英语对话。"
+    },
+    {
+      "range": [
+        1380,
+        1399
+      ],
+      "text": "Ping Shammiang Yi Tuan Tui Hua Hui Ta Di Si Si, Ji Di Shi Lio, Sang Ga Siao Ti",
+      "理由": "中文“听下面一段对话，回答第十四至第十六三个小题”的音译；后一英语Good morning从1399起收入。"
+    },
+    {
+      "range": [
+        1676,
+        1721
+      ],
+      "text": "Qing Xia Mia Yi Duan Du Bai Hui Da Di Shi Qi Ji Di R Shi Suka Shao Tieni Sen Sai, Ni Yo Ar Shu Miao Zhengda Shi Jian Yue Duja Suka Shao Tiki, and the first time the city is a very good thing.",
+      "理由": "主体为中文第十七至二十题、20秒读题提示。尾and the first time…very good thing落在1040.95—1041.40及1049.90—1050.40的数值静音（RMS分别-185.27、-184.22 dBFS），无英语声，是英化幻觉。"
+    },
+    {
+      "range": [
+        2081,
+        2095
+      ],
+      "text": "DRT Dao C Jie Shu. Since I yo liang fen zhong da shu tian.",
+      "理由": "中文“第二节到此结束；现在你有两分钟……”的音译，Since I是“现在”的英化；英语event已在2080收录。"
+    }
+  ]
+}
