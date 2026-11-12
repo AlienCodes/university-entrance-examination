@@ -2,7 +2,7 @@
 run 42932631483：2019-shq、2021-shq 的 render 在编码前停“画面状态时长 ≤ 0 帧”（2025-xkb2 同样）——录音里没有“听力结束”说明，
 时间轴的结束屏落在录音末尾，与答案屏同一时刻。修正：结束屏至少停 END_MIN 秒（录音之后补静音，原音不动），答案屏顺延。
 precheck 只跑 时间轴 / 版式 / 自检 / 音频，没有一步把全部画面状态按帧排一遍，所以到 render 编码前才暴露。
-  ① 现在的引擎：49 套 states() 按帧排，每个状态 ≥ 1 帧、结束屏 ≥ END_MIN 秒，其余 46 套的状态时刻与修正前逐个相同；
+  ① 现在的引擎：49 套 states() 按帧排，每个状态 ≥ 1 帧、结束屏 ≥ END_MIN 秒，其余 45 套的状态时刻与修正前逐个相同；
   ② 修正前的引擎（d336b29）必须报出 2019-shq、2021-shq、2025-xkb2，以及 2021-zj6（录音没有“第二节”说明，说明屏 0 秒）；
   ③ 引擎 layout（precheck 跑）开头调 frame_check：任何状态 ≤ 0 帧就停，不留到 render 编码前。
     /opt/ttsenv/bin/python tools/防复发/验证/结束屏时长.py"""
@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 ENG = ROOT / '高考听力/tools/听力视频.py'
-IDS = [l.strip() for l in (ROOT / '.github/gaokao-listening-render.txt').read_text('utf-8').splitlines() if l.strip()]
+IDS = [l.strip() for l in (ROOT / '.github/gaokao-listening-all.txt').read_text('utf-8').splitlines() if l.strip()]
 
 
 def load(src, sid):
