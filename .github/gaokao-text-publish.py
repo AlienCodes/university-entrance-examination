@@ -31,7 +31,7 @@ def plan(kinds, ids, art, up):
         m = json.loads((d / 'meta.json').read_text('utf-8'))
         f = d / m['mp4']
         if m.get('kind') != k or m['套'] != i: bad.append(f'{i} {k} meta 不符')
-        if m['mp4'] != 命名.label(i,k): bad.append(f'{i} 中文文件名不符')
+        if m['mp4'] not in 命名.accepted_labels(i,k): bad.append(f'{i} 中文文件名不符')
         v=json.loads((d/'verification.json').read_text())
         if v.get('id')!=i or not v['ok'] or v['sha256']!=m['mp4_sha256'] or v['fingerprint']!=m['fingerprint']:
             bad.append(f'{i} 成品核查与meta不符')

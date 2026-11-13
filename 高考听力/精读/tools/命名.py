@@ -4,12 +4,21 @@ import re
 from pathlib import Path
 
 SETS=json.loads((Path(__file__).resolve().parents[2]/'套.json').read_text())
-NAME_RE=r'^20\d\d年 \S+ 高考英语真题 原文精读\.mp4$'
+NAME_RE=r'^20\d\d年 \S+ 原文精读\.mp4$'
 
 
 def label(sid,kind='text'):
     y,paper=SETS[sid]['名'].split(' ',1)
+    return f'{y}年 {paper} 原文精读.mp4'
+
+
+def previous_label(sid,kind='text'):
+    y,paper=SETS[sid]['名'].split(' ',1)
     return f'{y}年 {paper} 高考英语真题 原文精读.mp4'
+
+
+def accepted_labels(sid,kind='text'):
+    return {label(sid,kind),previous_label(sid,kind)}
 
 
 def asset(sid,kind='text'):

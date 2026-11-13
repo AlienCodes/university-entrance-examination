@@ -38,7 +38,7 @@ def plan(kinds, ids, art, up):
         m = json.loads((d / 'meta.json').read_text('utf-8'))
         f = d / m['mp4']
         if m.get('kind', 'exam') != k or m['套'] != i: bad.append(f'{i} {k} meta 不符')
-        if m['mp4'] not in (命名.label(i, k), 命名.legacy_label(i, k)):
+        if m['mp4'] not in 命名.accepted_labels(i, k):
             bad.append(f'{i} {k} 文件名不属于本套当前或已核旧命名：{m["mp4"]}')
         if sha(f) != m['mp4_sha256']: bad.append(f'{i} {k} sha256 不符')
         if f.stat().st_size >= MAXZ: bad.append(f'{i} {k} 超过 1.9 GB')

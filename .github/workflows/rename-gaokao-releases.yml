@@ -1,0 +1,46 @@
+name: 高考视频只改名并重新打包发布
+on:
+  push:
+    branches: ['**']
+    paths: ['.github/gaokao-video-names.txt']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: gaokao-video-name-publish
+  cancel-in-progress: false
+jobs:
+  rename:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        kind: [exam, text]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /高考听力/套.json
+            /高考听力/tools/命名.py
+            /高考听力/精读/tools/命名.py
+      - name: 命名与复用成品正反例
+        run: python3 .github/rename-gaokao-releases.py --selftest
+      - name: 复用既有Release视频，只改名称，逐包回下载校验
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/rename-gaokao-releases.py --kind '${{ matrix.kind }}' --out rename-out
+      - name: 保存新名称和视频字节不变的核验记录
+        uses: actions/upload-artifact@v4
+        with:
+          name: gaokao-short-names-${{ matrix.kind }}
+          retention-days: 30
+          overwrite: true
+          if-no-files-found: error
+          path: |
+            rename-out/*.json
+            rename-out/*.txt
+            rename-out/*.md
