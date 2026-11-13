@@ -70,14 +70,12 @@ def align_words(s):
     elif s.get('words'):
         tokens=list(TOKEN.finditer(s['en']))
         words=[(m.group(),a,b) for w,a,b in s['words'] for m in TOKEN.finditer(w)]
-        norm=lambda x:re.sub(r'[^a-z0-9]','',x.lower().replace('’',"'"))
+        norm=lambda x:x.casefold().replace('’',"'")
         sm=difflib.SequenceMatcher(None,[norm(m.group()) for m in tokens],[norm(w) for w,_,_ in words],autojunk=False)
         match={}
         for block in sm.get_matching_blocks():
             for j in range(block.size):match[block.a+j]=block.b+j
-        # OCR/拼写订正一对一、词数不变时才准按原词下标对应。
-        if len(tokens)==len(words):
-            for j in range(len(tokens)):match.setdefault(j,j)
+        # 只接受真实逐词相同（忽略大小写/弯撇号）；同词数不代表同词义，不作同序补造。
         assert len(match)==len(tokens),'原文与逐词时刻存在无法核定的差异：'+s['en']
         out=[{'char':m.start(),'char_end':m.end(),'start':words[match[j]][1],'end':words[match[j]][2]} for j,m in enumerate(tokens)]
     else:

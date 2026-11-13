@@ -198,9 +198,10 @@ def verify(m,p,tm,out,mp4,draft=False):
     check('30帧恒定/帧数',v['r_frame_rate']=='30/1' and int(v['nb_frames'])==frames,[v['r_frame_rate'],v['nb_frames']])
     check('声画等长',abs(float(v['duration'])-float(a['duration']))<.05,[v['duration'],a['duration']])
     check('原采样率与声道',int(a['sample_rate'])==tm['sample_rate'] and a['channels']==tm['channels'],[a['sample_rate'],a['channels']])
-    if tm.get('protected_source_intervals'):
-        intact=not any(u<b and v>a for u,v in tm['compressed_gaps'] for a,b in tm['protected_source_intervals'])
-        check('2022低电平信号保护段完整保留',intact,tm['protected_source_intervals'])
+    active_protected=[[max(tm['window'][0],x),min(tm['window'][1],y)] for x,y in tm.get('protected_source_intervals',[]) if x<tm['window'][1] and y>tm['window'][0]]
+    if active_protected:
+        intact=not any(u<y and v>x for u,v in tm['compressed_gaps'] for x,y in active_protected)
+        check('2022窗口内低电平信号保护段完整保留',intact,active_protected)
     decoded=out/'decoded.wav';subprocess.run(['ffmpeg','-y','-v','error','-i',str(mp4),'-vn','-c:a','pcm_f32le',str(decoded)],check=True)
     y,sr=sf.read(decoded,dtype='float32',always_2d=True)
     ref,sr2=sf.read(out/'audio'/tm['file'],dtype='float32',always_2d=True)

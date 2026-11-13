@@ -144,6 +144,18 @@ def dependencies(kind):
     return sorted(set(paths))
 
 
+def annotation_semantics(unit):
+    """逐单元比较定稿，防插说明或并行审校把已修词句退回旧版本。"""
+    return {'title':unit['title'],'names':unit.get('names',[]),
+            'sentences':[{key:sentence[key] for key in ['en','zh','w']}
+                         for sentence in unit['sentences']]}
+
+
+def validate_annotation_snapshot(final, mother):
+    assert annotation_semantics(final)==annotation_semantics(mother), '精听输入未同步当前母稿英文/中文/词注/标题；须刷新或重新对齐，不能发布旧版'
+    return hash_json(annotation_semantics(mother))
+
+
 def payload(kind, ident):
     paths = input_paths(kind, ident)
     for p in paths:
@@ -152,8 +164,14 @@ def payload(kind, ident):
         assert not value.get('待核'), '输入有待核项：' + str(p)
     dep = dependencies(kind)
     assert all(p.is_file() for p in dep), '渲染依赖未完整检出：' + str([relative(p) for p in dep if not p.is_file()][:10])
-    return {'kind': kind, 'id': str(ident), 'inputs': {relative(p): sha(p) for p in paths},
+    result={'kind': kind, 'id': str(ident), 'inputs': {relative(p): sha(p) for p in paths},
             'render_sources': {relative(p): sha(p) for p in dep}}
+    if kind=='intensive':
+        mother_path=D/'译注草稿'/f'{str(ident)[:4]}.json'
+        mother=next(u for u in read(mother_path)['units'] if u['id']==str(ident))
+        result['annotation_source']={'file':relative(mother_path),
+                                     'unit_sha256':validate_annotation_snapshot(read(paths[0]),mother)}
+    return result
 
 
 def candidate(kind, ident, work=None):
@@ -608,6 +626,13 @@ def selftest():
             try: fn()
             except (AssertionError, KeyError, FileNotFoundError): return
             raise AssertionError('负例未拦：' + label)
+        import copy
+        unit={'title':'正文','names':[],'sentences':[{'en':'Good morning.','zh':'早上好。','w':[{'h':'morning','sp':[[5,12]]}]}]}
+        assert validate_annotation_snapshot(copy.deepcopy(unit),unit)==hash_json(annotation_semantics(unit))
+        changed=copy.deepcopy(unit);changed['sentences'][0]['en']='Good evening.'
+        rejected(lambda: validate_annotation_snapshot(unit,changed),'母稿已改英文而输入退回旧稿')
+        changed=copy.deepcopy(unit);changed['sentences'][0]['w'][0]['h']='evening'
+        rejected(lambda: validate_annotation_snapshot(unit,changed),'母稿词注修正未同步')
         def test_prep(year):
             rows = [{**r, 'audio':{'sample_rate':44100,'channels':2}} for r in selected_sources(year)]
             prep = {'year':year,'canonical':{'sha256':'7'*64,'sample_rate':44100,'channels':2},

@@ -1,0 +1,42 @@
+{
+  "scope": "正式精听renderer代码冻结；不等于任何未定稿视频已批准发布",
+  "tests": {
+    "command": "python 专八/听力/批量/tools/精听自检.py",
+    "passed": 9
+  },
+  "files": [
+    {
+      "path": "专八/听力/批量/tools/精听.py",
+      "sha256": "21757304fb1bf21552636a4b0f5713ebe9f14262d844a61c8f0ce0d3c1d42755"
+    },
+    {
+      "path": "专八/听力/批量/tools/精听数据.py",
+      "sha256": "009ea8bb182d81d2edd050d5f91df5f029a0996a7ad3880cd48047e2933391a3"
+    },
+    {
+      "path": "专八/听力/批量/tools/精听自检.py",
+      "sha256": "94b7cec655ede400c130d77855ac5505d09b5e014a08bb89dfcca15232e31579"
+    }
+  ],
+  "2022_protection_registration": {
+    "path": "核验/2022-停顿边界复核.json",
+    "sha256": "746b6f0565c1d7ac7efcf5fc58c15126695b71c980b26378b36a9e94bbe54b23",
+    "registered_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9"
+  },
+  "guards": [
+    "正式输入须review approved+当前内容SHA；待核不准正式编码",
+    "换屏首词必须有真实ASR对应，不跳后词、不造时间",
+    "2022源SHA绑定三段低电平周期信号完整保留，其余14年处理行为保持",
+    "原采样率/声道/增益及逐样本原音/AAC核对",
+    "水墨73px英文/34px词汇下限（1080基准），长句须拆屏",
+    "当前PNG/字体/分屏/数据/代码/2022登记指纹；失效必重审",
+    "4K30fps/AV等长/逐屏解码比图/原声/头尾静音/Release尺寸独立核验"
+  ],
+  "fallback_guards": [
+    "相同词数但morning/evening内容变化拒绝",
+    "相同词数cannot/can否定反转拒绝",
+    "we’ll/well保留词内撇号区分拒绝",
+    "逐词exact正常通过",
+    "弯/直撇号正字法等价正常通过"
+  ]
+}

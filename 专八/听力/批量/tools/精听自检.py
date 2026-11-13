@@ -106,5 +106,19 @@ class Checks(unittest.TestCase):
         d['audio']['protected_source_intervals']=intervals
         with self.assertRaisesRegex(AssertionError,'非2022'):audio_protection(d)
 
+    def test_exact_fallback_words_and_semantic_reversal(self):
+        exact={'en':'Good morning.','start':0.,'end':1.,'words':[['Good',.1,.3],['morning',.4,.9]]}
+        self.assertEqual([(w['char'],w['char_end']) for w in align_words(exact)],[(0,4),(5,12)])
+        # 同词数但内容不同：不得利用数组长度制造同序时间对应。
+        reversed_word={'en':'Good morning.','start':0.,'end':1.,'words':[['Good',.1,.3],['evening',.4,.9]]}
+        with self.assertRaises(AssertionError):align_words(reversed_word)
+        negation={'en':'She cannot go.','start':0.,'end':1.,'words':[['She',.1,.2],['can',.3,.5],['go',.7,.9]]}
+        with self.assertRaises(AssertionError):align_words(negation)
+        # 弯/直撇号可正字法等价；we'll与well仍是不同的真实词。
+        apostrophe={'en':'We’ll go.','start':0.,'end':1.,'words':[["We'll",.1,.4],['go',.6,.9]]}
+        self.assertEqual(len(align_words(apostrophe)),2)
+        apostrophe['words'][0][0]='Well'
+        with self.assertRaises(AssertionError):align_words(apostrophe)
+
 
 if __name__=='__main__':unittest.main()
