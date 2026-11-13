@@ -36,7 +36,7 @@ def probe_unit(snapshot,out,browser,screens=False):
     out=Path(out).resolve();out.mkdir(parents=True,exist_ok=True)
     d=json.loads(Path(snapshot).read_text());p=passage(d);pid=p['id'];flat=p['paras'][0];n=len(flat)
     source_title=p['title']
-    p['title']=re.sub(r'（新题型优化版所供原文）$','',p['title'])
+    assert p['title']==d['title'],'版式预检不得替换/缩短来源题名'
     texts='\n'.join([s['zh']+' '+' '.join(w['m'] for w in s['w']) for s in flat])
     proposed_names=list(dict.fromkeys(d.get('names',[])+[name for name in KNOWN_NAMES if name in texts]))
     for folder in ['tools/画面核查','data','阅读','shots']:(out/folder).mkdir(exist_ok=True,parents=True)
