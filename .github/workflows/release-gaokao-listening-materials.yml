@@ -1,0 +1,68 @@
+name: 发布高考听力电子资料与小店商品图
+on:
+  push:
+    branches: ['codex/gaokao-listening-intensive']
+    paths: ['.github/gaokao-handout-release.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: gaokao-listening-materials-release
+  cancel-in-progress: false
+jobs:
+  release:
+    # token 预算：约 0 万；已核对文件的打包、发布及回下载核验。
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
+            高考听力/讲义
+      - name: 核对目标与打包
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 高考听力/讲义/tools/打包.py
+          cp 高考听力/讲义/下载包/GAOKAO-listening-materials.zip /tmp/GAOKAO-listening-materials.zip
+          cp 高考听力/讲义/下载包/GAOKAO-listening-shop.zip /tmp/GAOKAO-listening-shop.zip
+          cp 高考听力/讲义/下载包/SHA256SUMS /tmp/SHA256SUMS
+      - name: 发布资料与上传素材
+        run: |
+          set -euo pipefail
+          tag=$(head -1 .github/gaokao-handout-release.txt | tr -d '[:space:]')
+          test "$tag" = gaokao-listening-materials
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" /tmp/GAOKAO-listening-materials.zip /tmp/GAOKAO-listening-shop.zip /tmp/SHA256SUMS --clobber
+            gh release edit "$tag" --title '高考英语听力电子资料与B站小店素材' --notes-file 高考听力/讲义/发布说明.md
+          else
+            gh release create "$tag" /tmp/GAOKAO-listening-materials.zip /tmp/GAOKAO-listening-shop.zip /tmp/SHA256SUMS --target "$GITHUB_REF_NAME" --title '高考英语听力电子资料与B站小店素材' --notes-file 高考听力/讲义/发布说明.md
+          fi
+      - name: 从Release回下载核验
+        run: |
+          set -euo pipefail
+          mkdir /tmp/gaokao-materials-download
+          gh release download gaokao-listening-materials -D /tmp/gaokao-materials-download
+          cd /tmp/gaokao-materials-download
+          sha256sum -c /tmp/SHA256SUMS
+          cmp SHA256SUMS /tmp/SHA256SUMS
+          python3 - <<'PY'
+          import zipfile
+          for name in ['GAOKAO-listening-materials.zip','GAOKAO-listening-shop.zip']:
+              with zipfile.ZipFile(name) as z:
+                  assert z.testzip() is None
+                  assert all(i.filename.isascii() or i.flag_bits & 0x800 for i in z.infolist())
+                  print(name, len(z.infolist()), '个文件，CRC与UTF-8文件名核验通过')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gaokao-materials-release-audit
+          path: |
+            高考听力/讲义/下载包/打包核验.json
+            高考听力/讲义/下载包/SHA256SUMS
+            高考听力/讲义/成品/文件清单与核验.json
+            高考听力/讲义/商品图/图文核对.json
+          retention-days: 30
