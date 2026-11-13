@@ -1,0 +1,60 @@
+{
+  "year": 2018,
+  "archive_sha256": "919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925",
+  "archive_verified_here": true,
+  "source_release": "tem8-listening-raw",
+  "source_asset": "default.zip",
+  "source_entries": [
+    {
+      "file": "2018专八笔试真题和答案/2018TEM8-mini-lecture.mp3",
+      "bytes": 11711580,
+      "sha256": "79070314c10f09738c1ecb1340ca09bc5f3114152920acb58d4f76cf1eaf85d8",
+      "suffix": ".mp3",
+      "audio": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2,
+        "channel_layout": "stereo",
+        "container_duration": 730.112
+      },
+      "decoded_pcm_sha256": "4cc47ff1a20e162ce4de3497804cb4fe906bfe2082ddec9efda0a277598b42ec",
+      "decoded_frames": 35044992,
+      "canonical_start": 0.0,
+      "canonical_end": 730.104
+    },
+    {
+      "file": "2018专八笔试真题和答案/2018TEM8-interview.mp3",
+      "bytes": 10463580,
+      "sha256": "4ec2a6047d86a55ec3984036ade2c7137738abf4ab211355128d78c29773598c",
+      "suffix": ".mp3",
+      "audio": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2,
+        "channel_layout": "stereo",
+        "container_duration": 652.112
+      },
+      "decoded_pcm_sha256": "32d16720b9476d2e61a0a82fecbf20fd1cee55a42c8aad2c60422f353da2dc3d",
+      "decoded_frames": 31300992,
+      "canonical_start": 730.104,
+      "canonical_end": 1382.208
+    }
+  ],
+  "canonical": {
+    "file": "原音.wav",
+    "sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8",
+    "bytes": 530767930,
+    "sample_rate": 48000,
+    "channels": 2,
+    "frames": 66345984,
+    "duration": 1382.208,
+    "pcm_format": "float32le",
+    "pcm_sha256": "3cfd243e77f87bbcef76cabf735a0d0a9164cb5e876a0745ac571c279364cfcf"
+  },
+  "processing": "仅解码为float32 PCM；原采样率、声道、增益保持；2018按讲座→采访无损顺接，PCM逐样本哈希一致。",
+  "intro_trim": {
+    "applied": false,
+    "status": "片头音乐起点待原文/原音核实，本预处理未裁切"
+  },
+  "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+}
