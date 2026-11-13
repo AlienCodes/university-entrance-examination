@@ -23,7 +23,7 @@
     "status": "approved",
     "source": "核验/2024-B1-源文审核.json",
     "scope": "source text and real original audio anchors; complete production screenshots remain pending",
-    "content_sha256": "b849df1ec12cdd0fc4a39f6aee2bf41ac3e10b838ce73298a730a0a22567b79d"
+    "content_sha256": "27951c4886712b88ab46ffc3741ab81ed39efb1769da1c8a30acb3b025c55e4c"
   },
   "instruction_review": {
     "source": "说明语句/2024.json",
@@ -10653,5 +10653,29 @@
     }
   ],
   "alignment_report": "核验/原文对齐/2024/对齐报告.json",
-  "alignment_tool_version": "1.0"
+  "alignment_tool_version": "1.0",
+  "manual_splits": [
+    {
+      "en": "I am attracted to very different genres, for example, the magic realism of South America, the literature of ancient China and Central Europe, the Gothic novels, and certain works of science fiction, and it is often minor novels which have impressed me the longest.",
+      "at": [
+        "the Gothic novels"
+      ],
+      "zh": [
+        "我喜欢的体裁差异很大，例如南美的魔幻现实主义、古代中国和中欧的文学、",
+        "哥特式小说，以及某些科幻作品；但往往是那些不那么著名的小说，给我留下最持久的印象。"
+      ],
+      "evidence": "run43505168962实看screen039/040：Gothic英文在第二屏，原自动ZH却留第一屏；仅移动屏间中文边界，整句中文逐字拼回，不改原文/译文/词注/原音时刻。"
+    }
+  ],
+  "splits": {
+    "37": {
+      "at": [
+        "the Gothic novels"
+      ],
+      "zh": [
+        "我喜欢的体裁差异很大，例如南美的魔幻现实主义、古代中国和中欧的文学、",
+        "哥特式小说，以及某些科幻作品；但往往是那些不那么著名的小说，给我留下最持久的印象。"
+      ]
+    }
+  }
 }
