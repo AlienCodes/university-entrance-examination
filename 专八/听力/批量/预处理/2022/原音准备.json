@@ -1,43 +1,75 @@
 {
   "year": 2022,
-  "archive_sha256": "919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925",
-  "archive_verified_here": true,
-  "source_release": "tem8-listening-raw",
-  "source_asset": "default.zip",
+  "archive_sha256": null,
+  "archive_verified_here": false,
+  "source_release": "tem8-listening-raw-supplement",
+  "source_asset": "TEM8-2022-complete.m4a",
   "source_entries": [
     {
-      "file": "2022年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
-      "bytes": 9590026,
-      "sha256": "693415abb8b51cc1660eb2506b1a762b7bceaece604559321f5624bb46a87801",
-      "suffix": ".mp3",
+      "file": "TEM8-2022-complete.m4a",
+      "suffix": ".m4a",
+      "bytes": 12523048,
+      "sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+      "origin": {
+        "kind": "public_educational_audio_supplement",
+        "provider": "新东方在线（考研四六级专四专八公开教学页面）",
+        "page_url": "https://tem.koolearn.com/20250401/824726.html",
+        "download_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3",
+        "retrieved_utc": "2026-11-13T18:57:00Z",
+        "release_tag": "tem8-listening-raw-supplement",
+        "release_asset": "TEM8-2022-complete.m4a",
+        "release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw-supplement/TEM8-2022-complete.m4a",
+        "file_naming_note": "公开直链扩展名为.mp3，ffprobe确定实际容器M4A，codec=HE-AAC；仅给原字节副本正确.m4a名称，未转码/增益/裁切/声道/采样率处理",
+        "public_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3"
+      },
       "audio": {
-        "codec": "mp3",
+        "codec": "aac",
         "sample_rate": 44100,
         "channels": 2,
         "channel_layout": "stereo",
-        "container_duration": 1465.364898
+        "container_duration": 1546.79
       },
-      "decoded_pcm_sha256": "11b3341a359477458f4a9609369cc4be1826cf8cd2eb38cd104e0c4b31834f8b",
-      "decoded_frames": 64622592,
+      "supplement_registration_sha256": "fd4fd05904aa78dcc5da6fb88539d355f023950335495cd4189420f1f982149d",
+      "decoded_pcm_sha256": "0c39fafbf4573b9e610b569349675445eb6f2c682e66e4bd2b46a541ee781cd9",
+      "decoded_frames": 68213822,
       "canonical_start": 0.0,
-      "canonical_end": 1465.3648979591837
+      "canonical_end": 1546.7986848072562
     }
   ],
   "canonical": {
     "file": "原音.wav",
-    "sha256": "300c2ae206e15ce54e46c8ab0c004ce6a775ab6e5954aaa48b8867542ed48942",
-    "bytes": 516980794,
+    "sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+    "bytes": 545710634,
     "sample_rate": 44100,
     "channels": 2,
-    "frames": 64622592,
-    "duration": 1465.3648979591837,
+    "frames": 68213822,
+    "duration": 1546.7986848072562,
     "pcm_format": "float32le",
-    "pcm_sha256": "11b3341a359477458f4a9609369cc4be1826cf8cd2eb38cd104e0c4b31834f8b"
+    "pcm_sha256": "0c39fafbf4573b9e610b569349675445eb6f2c682e66e4bd2b46a541ee781cd9"
   },
   "processing": "仅解码为float32 PCM；原采样率、声道、增益保持；2018按讲座→采访无损顺接，PCM逐样本哈希一致。",
   "intro_trim": {
     "applied": false,
     "status": "片头音乐起点待原文/原音核实，本预处理未裁切"
   },
-  "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+  "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+  "base_archive_context": {
+    "sha256": "919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925",
+    "bytes": 1339407935,
+    "role": "原包清单核对上下文；此2022实际音源不来自该ZIP"
+  },
+  "source_supplement_sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+  "source_supplement_registration_sha256": "fd4fd05904aa78dcc5da6fb88539d355f023950335495cd4189420f1f982149d",
+  "source_origin": {
+    "kind": "public_educational_audio_supplement",
+    "provider": "新东方在线（考研四六级专四专八公开教学页面）",
+    "page_url": "https://tem.koolearn.com/20250401/824726.html",
+    "download_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3",
+    "retrieved_utc": "2026-11-13T18:57:00Z",
+    "release_tag": "tem8-listening-raw-supplement",
+    "release_asset": "TEM8-2022-complete.m4a",
+    "release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw-supplement/TEM8-2022-complete.m4a",
+    "file_naming_note": "公开直链扩展名为.mp3，ffprobe确定实际容器M4A，codec=HE-AAC；仅给原字节副本正确.m4a名称，未转码/增益/裁切/声道/采样率处理",
+    "public_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3"
+  }
 }

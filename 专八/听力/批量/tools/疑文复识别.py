@@ -8,6 +8,11 @@ import numpy as np
 import sherpa_onnx
 
 B=Path(__file__).resolve().parents[1]
+OVERRIDES={(2012,'being observing'):[121,137],
+ (2014,'a displaced unstable population'):[1142,1166],
+ (2015,'da da DA'):[190,215],(2021,'Emm'):[1315,1336],
+ (2022,'stating once again the anthropology'):[138,156],
+ (2024,'that is a language translation'):[448,465]}
 QUERIES={
  2010:['Has the idea of being different','interesting age gap'],
  2011:['meaning onto itself','or as before as I said','direct methods'],
@@ -43,9 +48,14 @@ def main():
   rows=[];out=B/'核验'/'疑文复识别'/f'{y}.json'
   if out.exists():rows=json.loads(out.read_text())['windows']
   for query in queries:
-   if any(x['query']==query for x in rows):continue
-   score,i,j=locate(query,w);start=max(0,w[i][1]-4);end=min(prep['canonical']['duration'],w[j][2]+6)
-   assert 0<end-start<45,(query,start,end)
+   previous=next((x for x in rows if x['query']==query),None)
+   override=OVERRIDES.get((y,query))
+   if previous and (not override or previous['window']==override):continue
+   if previous:rows.remove(previous)
+   if override:start,end=override;score=None
+   else:
+    score,i,j=locate(query,w);start=max(0,w[i][1]-4);end=min(prep['canonical']['duration'],w[j][2]+6)
+   assert 0<end-start<30,(query,start,end)
    pcm=subprocess.check_output(['ffmpeg','-v','error','-ss',str(start),'-t',str(end-start),'-i',str(src),'-f','f32le','-ac','1','-ar','16000','-'])
    a=np.frombuffer(pcm,dtype='<f4');stream=asr.create_stream();stream.accept_waveform(16000,a);t=time.monotonic();asr.decode_stream(stream);r=stream.result
    row={'query':query,'window':[round(start,3),round(end,3)],'locator_similarity':score,'primary_text':' '.join(x[0] for x in w if start<=x[1]<end),'secondary_text':r.text,'tokens':r.tokens,'timestamps':r.timestamps,'elapsed_seconds':round(time.monotonic()-t,3),'status':'independent_machine_evidence_requires_adjudication'};rows.append(row)
