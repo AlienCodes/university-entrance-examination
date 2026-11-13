@@ -1,0 +1,53 @@
+{
+  "year": 2013,
+  "source_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+  "asr_sha256": "4aadcd3161f759af7df5fead5d03492633efa039b2ac1bcef235690c7ad5f2e2",
+  "input_asr": "核验/原文对齐/2013/含说明识别.json",
+  "draft_sha256_at_review": "a7e8ab9689e7391a0928dbcaa797e8d072736d5b9c64fc1d72d365b2cdd20e1a",
+  "bindings": [
+    {
+      "unit": "2013-A",
+      "sentence": 19,
+      "char": [
+        97,
+        137
+      ],
+      "text": "read — quote and unquote — an assignment",
+      "asr_indices": [
+        221,
+        222,
+        223
+      ],
+      "asr_text": [
+        "read",
+        "an",
+        "assignment,"
+      ],
+      "evidence": "核验/正文清理/2013-双模型.json，实际窗口[149, 165]。核验/疑文复识别/2012-2014-正文独立复核.json 149—165窗Whisper明确quote and unquote；印本一致。主ASR read与an assignment之间实际留1.84秒空白正含该插语，按整段短语真实首尾锚共享时间，不给quote等漏识词按长度猜秒。",
+      "source_asr_rows": [
+        [
+          "read",
+          149.61,
+          149.69
+        ],
+        [
+          "an",
+          151.53,
+          151.61
+        ],
+        [
+          "assignment,",
+          151.77,
+          152.57
+        ]
+      ],
+      "source_window": [
+        149.61,
+        152.57
+      ],
+      "source_sentence_en": "However, I am sure that some of you have been in a situation, probably more than once, where you read — quote and unquote — an assignment, closed the text and thought “what the world was that about?”"
+    }
+  ],
+  "remaining_proper_names": [],
+  "scope": "权威专名与明列机构缩写的人工整体词锚；不校写原音，无比例估时。"
+}

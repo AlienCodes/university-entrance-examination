@@ -147,6 +147,7 @@ def dependencies(kind):
 def annotation_semantics(unit):
     """逐单元比较定稿，防插说明或并行审校把已修词句退回旧版本。"""
     return {'title':unit['title'],'names':unit.get('names',[]),
+            'manual_splits':[{k:r[k] for k in ['en','at','zh']} for r in unit.get('manual_splits',[])],
             'sentences':[{key:sentence[key] for key in ['en','zh','w']}
                          for sentence in unit['sentences']]}
 

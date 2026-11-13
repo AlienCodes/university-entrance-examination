@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib
 import subprocess
 
-FILLERS = {'ah', 'oh', 'mm', 'mmm', 'hmm', 'um', 'umm', 'urmm', 'uh', 'er', 'yeah', 'yes', 'no', 'okay', 'ok', 'right', 'well', 'emm'}
+FILLERS = {'ah', 'oh', 'eh', 'mm', 'mmm', 'hmm', 'um', 'umm', 'urmm', 'uh', 'er', 'yeah', 'yes', 'no', 'okay', 'ok', 'right', 'well', 'emm'}
 VERIFIED = set()
 
 

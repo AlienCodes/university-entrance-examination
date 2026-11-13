@@ -4,11 +4,11 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2017.json",
-    "draft_sha256": "5bd90f1ca64aef6a7b23eace058a2d46d15311f052181e38ff3093da76a7b4ff",
-    "asr": "核验/补词锚/2017/优选识别.json",
-    "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
-    "input_asr": "核验/补词锚/2017/优选识别.json",
-    "input_asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+    "draft_sha256": "6f8df441cc8e8916a4a7d36b9bf01974353c3a08c46f12ebef7d8d666b18e353",
+    "asr": "核验/补词锚/2017/已核局部识别.json",
+    "asr_sha256": "7fc7abe9165cfd50dfa52e3a03907fe5edad30b21ff9d7a01ebb08bc290c0720",
+    "input_asr": "核验/补词锚/2017/已核局部识别.json",
+    "input_asr_sha256": "7fc7abe9165cfd50dfa52e3a03907fe5edad30b21ff9d7a01ebb08bc290c0720",
     "prepare": "预处理/2017/原音准备.json",
     "prepare_sha256": "4aac377fad4aa1cb19b5506d337f206675f2a9807c344f776a7fd6097dbaf7ad",
     "canonical_source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e"
@@ -17,101 +17,34 @@
   "machine_result_only": true,
   "human_review_status": "draft",
   "supplied_sentence_ASR": [],
+  "decision_inputs": [],
+  "decision_rebinding": [],
   "filler_acoustic_evidence": [],
+  "reviewed_whole_audio_anchors": [],
+  "reviewed_nonverbal_events": [],
   "ASR_provenance": {
-    "file": "核验/补词锚/2017/优选ASR核验.json",
-    "sha256": "0c6aed8483167e0c36e0c8985c2634da734cc00b8643e770eda68311603cc7ea",
+    "file": "核验/补词锚/2017/已核局部ASR核验.json",
+    "sha256": "1901821daa77560e0861a38071a82455bb2b351f2c1fc83c0e072e71dda854f1",
     "canonical_and_ASR_sha_verified": true,
-    "status": "机器优选逐词ASR候选；未审，不修改主ASR或正式原音。",
+    "status": "已核局部逐词识别合并候选，最终字幕/音轨/画面审校尚须登记。",
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
-    "source_lexemes": 2575,
-    "source_mapped": 2546,
-    "source_ratio": 0.98873786407767,
-    "asr_lexemes": 2572,
-    "asr_mapped": 2545,
-    "asr_ratio": 0.98950233281493,
+    "source_lexemes": 2572,
+    "source_mapped": 2571,
+    "source_ratio": 0.999611197511664,
+    "asr_lexemes": 2580,
+    "asr_mapped": 2568,
+    "asr_ratio": 0.9953488372093023,
     "all_source_mapped": false,
     "all_asr_mapped": false,
-    "all_boundaries_anchored": false,
-    "literal_complete": false
+    "all_boundaries_anchored": true,
+    "literal_complete": false,
+    "source_lexical_lexemes": 2572,
+    "external_reviewed_ASR_lexemes": 0,
+    "nonverbal_not_word_lexemes": 0
   },
   "differences": [
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 15,
-          "char": [
-            61,
-            64
-          ],
-          "text": "our"
-        }
-      ],
-      "asr_indices": [
-        127
-      ],
-      "asr_text": [
-        "a"
-      ],
-      "window": [
-        99.34,
-        99.42
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 22,
-          "char": [
-            111,
-            114
-          ],
-          "text": "now"
-        },
-        {
-          "unit": "2017-A",
-          "sentence": 22,
-          "char": [
-            115,
-            120
-          ],
-          "text": "exist"
-        }
-      ],
-      "asr_indices": [
-        246
-      ],
-      "asr_text": [
-        "is"
-      ],
-      "window": [
-        151.66,
-        151.74
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        248
-      ],
-      "asr_text": [
-        "existent"
-      ],
-      "window": [
-        152.14,
-        152.7
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
     {
       "kind": "insert",
       "source": [],
@@ -143,37 +76,10 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 37,
-          "char": [
-            131,
-            133
-          ],
-          "text": "in"
-        },
-        {
-          "unit": "2017-A",
-          "sentence": 37,
-          "char": [
-            134,
-            135
-          ],
-          "text": "a"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        540
+        542
       ],
       "asr_text": [
         "a"
@@ -185,139 +91,10 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 42,
-          "char": [
-            27,
-            29
-          ],
-          "text": "on"
-        },
-        {
-          "unit": "2017-A",
-          "sentence": 42,
-          "char": [
-            30,
-            34
-          ],
-          "text": "line"
-        }
-      ],
-      "asr_indices": [
-        602
-      ],
-      "asr_text": [
-        "online,"
-      ],
-      "window": [
-        309.66,
-        310.46
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 47,
-          "char": [
-            15,
-            17
-          ],
-          "text": "of"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 49,
-          "char": [
-            139,
-            140
-          ],
-          "text": "a"
-        },
-        {
-          "unit": "2017-A",
-          "sentence": 49,
-          "char": [
-            141,
-            146
-          ],
-          "text": "smart"
-        },
-        {
-          "unit": "2017-A",
-          "sentence": 49,
-          "char": [
-            147,
-            152
-          ],
-          "text": "phone"
-        }
-      ],
-      "asr_indices": [
-        729
-      ],
-      "asr_text": [
-        "smartphone."
-      ],
-      "window": [
-        362.78,
-        364.14
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-A",
-          "sentence": 50,
-          "char": [
-            104,
-            106
-          ],
-          "text": "on"
-        },
-        {
-          "unit": "2017-A",
-          "sentence": 50,
-          "char": [
-            107,
-            111
-          ],
-          "text": "line"
-        }
-      ],
-      "asr_indices": [
-        750
-      ],
-      "asr_text": [
-        "online"
-      ],
-      "window": [
-        370.1,
-        370.58
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        855
+        857
       ],
       "asr_text": [
         "Texas."
@@ -332,7 +109,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1027
+        1029
       ],
       "asr_text": [
         "frequent"
@@ -344,224 +121,24 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 12,
-          "char": [
-            60,
-            69
-          ],
-          "text": "community"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 12,
-          "char": [
-            74,
-            79
-          ],
-          "text": "quote"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 14,
-          "char": [
-            46,
-            61
-          ],
-          "text": "nongovernmental"
-        }
-      ],
-      "asr_indices": [
-        1287
-      ],
-      "asr_text": [
-        "non-governmental"
-      ],
-      "window": [
-        817.87,
-        818.83
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 18,
-          "char": [
-            0,
-            5
-          ],
-          "text": "Thank"
-        },
-        {
-          "unit": "2017-B1",
-          "sentence": 18,
-          "char": [
-            6,
-            9
-          ],
-          "text": "you"
-        },
-        {
-          "unit": "2017-B1",
-          "sentence": 18,
-          "char": [
-            11,
-            15
-          ],
-          "text": "Jack"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 25,
-          "char": [
-            65,
-            67
-          ],
-          "text": "is"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 35,
-          "char": [
-            20,
-            26
-          ],
-          "text": "health"
-        },
-        {
-          "unit": "2017-B1",
-          "sentence": 35,
-          "char": [
-            27,
-            31
-          ],
-          "text": "care"
-        }
-      ],
-      "asr_indices": [
-        1582
-      ],
-      "asr_text": [
-        "healthcare"
-      ],
-      "window": [
-        937.31,
-        937.79
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1653,
-        1654,
-        1655,
-        1656
+        1662,
+        1663,
+        1664,
+        1665
       ],
       "asr_text": [
-        "part",
-        "of",
         "the",
-        "USA"
+        "USA",
+        "Part",
+        "of"
       ],
       "window": [
-        965.35,
-        965.83
+        965.75,
+        966.19
       ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-B1",
-          "sentence": 46,
-          "char": [
-            70,
-            72
-          ],
-          "text": "is"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1754
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        1001.51,
-        1001.59
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2017-B2",
-          "sentence": 3,
-          "char": [
-            18,
-            22
-          ],
-          "text": "that"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
       "decision": "machine_candidate_unreviewed"
     },
     {
@@ -571,64 +148,14 @@
           "unit": "2017-B2",
           "sentence": 3,
           "char": [
-            28,
-            33
+            329,
+            334
           ],
           "text": "Havas"
         }
       ],
       "asr_indices": [
-        1890
-      ],
-      "asr_text": [
-        "Havis"
-      ],
-      "window": [
-        1124.02,
-        1124.58
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-B2",
-          "sentence": 3,
-          "char": [
-            161,
-            169
-          ],
-          "text": "futurist"
-        }
-      ],
-      "asr_indices": [
-        1914
-      ],
-      "asr_text": [
-        "future."
-      ],
-      "window": [
-        1132.18,
-        1132.5
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-B2",
-          "sentence": 3,
-          "char": [
-            334,
-            339
-          ],
-          "text": "Havas"
-        }
-      ],
-      "asr_indices": [
-        1946
+        1954
       ],
       "asr_text": [
         "Havis"
@@ -643,47 +170,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1954
-      ],
-      "asr_text": [
-        "So,"
-      ],
-      "window": [
-        1149.02,
-        1149.34
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-B2",
-          "sentence": 5,
-          "char": [
-            29,
-            34
-          ],
-          "text": "Havas"
-        }
-      ],
-      "asr_indices": [
-        1961
-      ],
-      "asr_text": [
-        "Havis?"
-      ],
-      "window": [
-        1151.02,
-        1152.14
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1977
+        1985
       ],
       "asr_text": [
         "understanding."
@@ -695,42 +182,17 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2017-B2",
-          "sentence": 17,
-          "char": [
-            84,
-            86
-          ],
-          "text": "vs"
-        }
-      ],
-      "asr_indices": [
-        2175
-      ],
-      "asr_text": [
-        "versus"
-      ],
-      "window": [
-        1239.1,
-        1239.5
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        2356
+        2365
       ],
       "asr_text": [
-        "possible."
+        "Possible"
       ],
       "window": [
-        1307.34,
-        1307.58
+        1307.86,
+        1308.18
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -808,6 +270,44 @@
       "source": [
         {
           "unit": "2017-A",
+          "sentence": 42,
+          "char": [
+            27,
+            29
+          ],
+          "text": "on"
+        },
+        {
+          "unit": "2017-A",
+          "sentence": 42,
+          "char": [
+            30,
+            34
+          ],
+          "text": "line"
+        }
+      ],
+      "asr_indices": [
+        604
+      ],
+      "asr_text": [
+        "online,"
+      ],
+      "window": [
+        309.66,
+        310.46
+      ],
+      "canonical": [
+        "line",
+        "on"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2017-A",
           "sentence": 44,
           "char": [
             13,
@@ -826,7 +326,7 @@
         }
       ],
       "asr_indices": [
-        627
+        629
       ],
       "asr_text": [
         "there's"
@@ -846,6 +346,44 @@
       "source": [
         {
           "unit": "2017-A",
+          "sentence": 50,
+          "char": [
+            104,
+            106
+          ],
+          "text": "on"
+        },
+        {
+          "unit": "2017-A",
+          "sentence": 50,
+          "char": [
+            107,
+            111
+          ],
+          "text": "line"
+        }
+      ],
+      "asr_indices": [
+        752
+      ],
+      "asr_text": [
+        "online"
+      ],
+      "window": [
+        370.1,
+        370.58
+      ],
+      "canonical": [
+        "line",
+        "on"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2017-A",
           "sentence": 61,
           "char": [
             0,
@@ -855,7 +393,7 @@
         }
       ],
       "asr_indices": [
-        1008
+        1010
       ],
       "asr_text": [
         "Okay,"
@@ -874,6 +412,35 @@
       "source": [
         {
           "unit": "2017-B1",
+          "sentence": 14,
+          "char": [
+            46,
+            61
+          ],
+          "text": "nongovernmental"
+        }
+      ],
+      "asr_indices": [
+        1290
+      ],
+      "asr_text": [
+        "non-governmental"
+      ],
+      "window": [
+        817.87,
+        818.83
+      ],
+      "canonical": [
+        "governmental",
+        "non"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2017-B1",
           "sentence": 20,
           "char": [
             0,
@@ -883,7 +450,7 @@
         }
       ],
       "asr_indices": [
-        1347
+        1353
       ],
       "asr_text": [
         "Okay,"
@@ -911,7 +478,7 @@
         }
       ],
       "asr_indices": [
-        1565
+        1572
       ],
       "asr_text": [
         "ten"
@@ -939,7 +506,7 @@
         }
       ],
       "asr_indices": [
-        1572
+        1579
       ],
       "asr_text": [
         "Okay."
@@ -958,6 +525,44 @@
       "source": [
         {
           "unit": "2017-B1",
+          "sentence": 35,
+          "char": [
+            20,
+            26
+          ],
+          "text": "health"
+        },
+        {
+          "unit": "2017-B1",
+          "sentence": 35,
+          "char": [
+            27,
+            31
+          ],
+          "text": "care"
+        }
+      ],
+      "asr_indices": [
+        1589
+      ],
+      "asr_text": [
+        "healthcare"
+      ],
+      "window": [
+        937.31,
+        937.79
+      ],
+      "canonical": [
+        "care",
+        "health"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2017-B1",
           "sentence": 52,
           "char": [
             9,
@@ -967,7 +572,7 @@
         }
       ],
       "asr_indices": [
-        1810
+        1818
       ],
       "asr_text": [
         "one:"
@@ -995,7 +600,7 @@
         }
       ],
       "asr_indices": [
-        1837
+        1845
       ],
       "asr_text": [
         "three:"
@@ -1023,7 +628,7 @@
         }
       ],
       "asr_indices": [
-        1851
+        1859
       ],
       "asr_text": [
         "four:"
@@ -1051,7 +656,7 @@
         }
       ],
       "asr_indices": [
-        1862
+        1870
       ],
       "asr_text": [
         "five:"
@@ -1070,6 +675,34 @@
       "source": [
         {
           "unit": "2017-B2",
+          "sentence": 17,
+          "char": [
+            84,
+            86
+          ],
+          "text": "vs"
+        }
+      ],
+      "asr_indices": [
+        2183
+      ],
+      "asr_text": [
+        "versus"
+      ],
+      "window": [
+        1239.1,
+        1239.5
+      ],
+      "canonical": [
+        "versus"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2017-B2",
           "sentence": 27,
           "char": [
             163,
@@ -1079,7 +712,7 @@
         }
       ],
       "asr_indices": [
-        2373
+        2381
       ],
       "asr_text": [
         "four"
@@ -1098,6 +731,34 @@
       "source": [
         {
           "unit": "2017-B2",
+          "sentence": 28,
+          "char": [
+            99,
+            100
+          ],
+          "text": "à"
+        }
+      ],
+      "asr_indices": [
+        2403
+      ],
+      "asr_text": [
+        "vis-a-vis"
+      ],
+      "window": [
+        1320.74,
+        1321.38
+      ],
+      "canonical": [
+        "a"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2017-B2",
           "sentence": 30,
           "char": [
             0,
@@ -1107,7 +768,7 @@
         }
       ],
       "asr_indices": [
-        2451
+        2459
       ],
       "asr_text": [
         "Okay,"
@@ -1135,7 +796,7 @@
         }
       ],
       "asr_indices": [
-        2491
+        2499
       ],
       "asr_text": [
         "seven."
@@ -1163,7 +824,7 @@
         }
       ],
       "asr_indices": [
-        2502
+        2510
       ],
       "asr_text": [
         "eight:"
@@ -1191,7 +852,7 @@
         }
       ],
       "asr_indices": [
-        2514
+        2522
       ],
       "asr_text": [
         "nine:"
@@ -1219,7 +880,7 @@
         }
       ],
       "asr_indices": [
-        2530
+        2538
       ],
       "asr_text": [
         "ten:"
@@ -1235,48 +896,6 @@
     }
   ],
   "uncovered_asr": [
-    {
-      "asr_indices": [
-        127
-      ],
-      "asr_text": [
-        "a"
-      ],
-      "window": [
-        99.34,
-        99.42
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        246
-      ],
-      "asr_text": [
-        "is"
-      ],
-      "window": [
-        151.66,
-        151.74
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        248
-      ],
-      "asr_text": [
-        "existent"
-      ],
-      "window": [
-        152.14,
-        152.7
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
     {
       "asr_indices": [
         396
@@ -1307,7 +926,7 @@
     },
     {
       "asr_indices": [
-        540
+        542
       ],
       "asr_text": [
         "a"
@@ -1321,49 +940,7 @@
     },
     {
       "asr_indices": [
-        602
-      ],
-      "asr_text": [
-        "online,"
-      ],
-      "window": [
-        309.66,
-        310.46
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        729
-      ],
-      "asr_text": [
-        "smartphone."
-      ],
-      "window": [
-        362.78,
-        364.14
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        750
-      ],
-      "asr_text": [
-        "online"
-      ],
-      "window": [
-        370.1,
-        370.58
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        855
+        857
       ],
       "asr_text": [
         "Texas."
@@ -1377,7 +954,7 @@
     },
     {
       "asr_indices": [
-        1027
+        1029
       ],
       "asr_text": [
         "frequent"
@@ -1391,97 +968,27 @@
     },
     {
       "asr_indices": [
-        1287
+        1662,
+        1663,
+        1664,
+        1665
       ],
       "asr_text": [
-        "non-governmental"
-      ],
-      "window": [
-        817.87,
-        818.83
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1582
-      ],
-      "asr_text": [
-        "healthcare"
-      ],
-      "window": [
-        937.31,
-        937.79
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1653,
-        1654,
-        1655,
-        1656
-      ],
-      "asr_text": [
-        "part",
-        "of",
         "the",
-        "USA"
+        "USA",
+        "Part",
+        "of"
       ],
       "window": [
-        965.35,
-        965.83
+        965.75,
+        966.19
       ],
       "lexeme_count": 4,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     },
     {
       "asr_indices": [
-        1754
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        1001.51,
-        1001.59
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1890
-      ],
-      "asr_text": [
-        "Havis"
-      ],
-      "window": [
-        1124.02,
-        1124.58
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1914
-      ],
-      "asr_text": [
-        "future."
-      ],
-      "window": [
-        1132.18,
-        1132.5
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1946
+        1954
       ],
       "asr_text": [
         "Havis"
@@ -1495,35 +1002,7 @@
     },
     {
       "asr_indices": [
-        1954
-      ],
-      "asr_text": [
-        "So,"
-      ],
-      "window": [
-        1149.02,
-        1149.34
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1961
-      ],
-      "asr_text": [
-        "Havis?"
-      ],
-      "window": [
-        1151.02,
-        1152.14
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1977
+        1985
       ],
       "asr_text": [
         "understanding."
@@ -1537,28 +1016,14 @@
     },
     {
       "asr_indices": [
-        2175
+        2365
       ],
       "asr_text": [
-        "versus"
+        "Possible"
       ],
       "window": [
-        1239.1,
-        1239.5
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2356
-      ],
-      "asr_text": [
-        "possible."
-      ],
-      "window": [
-        1307.34,
-        1307.58
+        1307.86,
+        1308.18
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
@@ -1566,737 +1031,6 @@
   ],
   "human_decisions": [],
   "rerecognition_windows": [
-    {
-      "unit": "2017-A",
-      "window": [
-        361.04,
-        365.96
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 49,
-          "source_text": "a smart phone",
-          "source_chars": [
-            [
-              139,
-              140
-            ],
-            [
-              141,
-              146
-            ],
-            [
-              147,
-              152
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 3,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 49,
-            "text": "or",
-            "asr_indices": [
-              728
-            ],
-            "asr_text": [
-              "or"
-            ],
-            "window": [
-              362.54,
-              362.62
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 50,
-            "text": "And",
-            "asr_indices": [
-              730
-            ],
-            "asr_text": [
-              "And"
-            ],
-            "window": [
-              364.38,
-              364.46
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 3,
-      "boundary_sentences": [
-        49
-      ],
-      "duration": 4.92
-    },
-    {
-      "unit": "2017-B1",
-      "window": [
-        835.41,
-        840.33
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 18,
-          "source_text": "Thank you Jack",
-          "source_chars": [
-            [
-              0,
-              5
-            ],
-            [
-              6,
-              9
-            ],
-            [
-              11,
-              15
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 3,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 17,
-            "text": "us",
-            "asr_indices": [
-              1328
-            ],
-            "asr_text": [
-              "us."
-            ],
-            "window": [
-              836.91,
-              837.15
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 19,
-            "text": "How",
-            "asr_indices": [
-              1329
-            ],
-            "asr_text": [
-              "How"
-            ],
-            "window": [
-              838.67,
-              838.83
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 3,
-      "boundary_sentences": [
-        18
-      ],
-      "duration": 4.92
-    },
-    {
-      "unit": "2017-B2",
-      "window": [
-        1149.36,
-        1154.36
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 5,
-          "source_text": "Havas",
-          "source_chars": [
-            [
-              29,
-              34
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B2",
-            "sentence": 5,
-            "text": "at",
-            "asr_indices": [
-              1960
-            ],
-            "asr_text": [
-              "at"
-            ],
-            "window": [
-              1150.86,
-              1150.94
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B2",
-            "sentence": 6,
-            "text": "Well",
-            "asr_indices": [
-              1962
-            ],
-            "asr_text": [
-              "Well,"
-            ],
-            "window": [
-              1152.38,
-              1152.86
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        5
-      ],
-      "duration": 5.0
-    },
-    {
-      "unit": "2017-A",
-      "window": [
-        150.0,
-        153.48
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 22,
-          "source_text": "now exist",
-          "source_chars": [
-            [
-              111,
-              114
-            ],
-            [
-              115,
-              120
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 22,
-            "text": "which",
-            "asr_indices": [
-              245
-            ],
-            "asr_text": [
-              "which"
-            ],
-            "window": [
-              151.5,
-              151.58
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 22,
-            "text": "only",
-            "asr_indices": [
-              247
-            ],
-            "asr_text": [
-              "only"
-            ],
-            "window": [
-              151.9,
-              151.98
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 3.48
-    },
-    {
-      "unit": "2017-A",
-      "window": [
-        368.36,
-        372.56
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 50,
-          "source_text": "on line",
-          "source_chars": [
-            [
-              104,
-              106
-            ],
-            [
-              107,
-              111
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 50,
-            "text": "of",
-            "asr_indices": [
-              749
-            ],
-            "asr_text": [
-              "of"
-            ],
-            "window": [
-              369.86,
-              369.94
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 50,
-            "text": "written",
-            "asr_indices": [
-              751
-            ],
-            "asr_text": [
-              "written"
-            ],
-            "window": [
-              370.66,
-              371.06
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.2
-    },
-    {
-      "unit": "2017-A",
-      "window": [
-        264.56,
-        269.04
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 37,
-          "source_text": "in a",
-          "source_chars": [
-            [
-              131,
-              133
-            ],
-            [
-              134,
-              135
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 37,
-            "text": "said",
-            "asr_indices": [
-              502
-            ],
-            "asr_text": [
-              "said."
-            ],
-            "window": [
-              266.06,
-              266.46
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 37,
-            "text": "letter",
-            "asr_indices": [
-              503
-            ],
-            "asr_text": [
-              "Letter"
-            ],
-            "window": [
-              267.38,
-              267.54
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.48
-    },
-    {
-      "unit": "2017-B1",
-      "window": [
-        935.65,
-        940.25
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 35,
-          "source_text": "health care",
-          "source_chars": [
-            [
-              20,
-              26
-            ],
-            [
-              27,
-              31
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 35,
-            "text": "the",
-            "asr_indices": [
-              1581
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              937.15,
-              937.23
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 35,
-            "text": "infrastructures",
-            "asr_indices": [
-              1583
-            ],
-            "asr_text": [
-              "infrastructures"
-            ],
-            "window": [
-              937.87,
-              938.75
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.6
-    },
-    {
-      "unit": "2017-B2",
-      "window": [
-        1121.8,
-        1126.48
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 3,
-          "source_text": "that",
-          "source_chars": [
-            [
-              18,
-              22
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B2",
-            "sentence": 3,
-            "text": "understand",
-            "asr_indices": [
-              1888
-            ],
-            "asr_text": [
-              "understand"
-            ],
-            "window": [
-              1123.3,
-              1123.38
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B2",
-            "sentence": 3,
-            "text": "when",
-            "asr_indices": [
-              1889
-            ],
-            "asr_text": [
-              "when"
-            ],
-            "window": [
-              1123.86,
-              1123.94
-            ]
-          }
-        },
-        {
-          "sentence": 3,
-          "source_text": "Havas",
-          "source_chars": [
-            [
-              28,
-              33
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B2",
-            "sentence": 3,
-            "text": "when",
-            "asr_indices": [
-              1889
-            ],
-            "asr_text": [
-              "when"
-            ],
-            "window": [
-              1123.86,
-              1123.94
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B2",
-            "sentence": 3,
-            "text": "Media",
-            "asr_indices": [
-              1891
-            ],
-            "asr_text": [
-              "Media"
-            ],
-            "window": [
-              1124.66,
-              1124.98
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.68
-    },
-    {
-      "unit": "2017-A",
-      "window": [
-        307.52,
-        312.28
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 42,
-          "source_text": "on line",
-          "source_chars": [
-            [
-              27,
-              29
-            ],
-            [
-              30,
-              34
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 42,
-            "text": "created",
-            "asr_indices": [
-              601
-            ],
-            "asr_text": [
-              "created"
-            ],
-            "window": [
-              309.02,
-              309.5
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 42,
-            "text": "it",
-            "asr_indices": [
-              603
-            ],
-            "asr_text": [
-              "it"
-            ],
-            "window": [
-              310.7,
-              310.78
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.76
-    },
-    {
-      "unit": "2017-B1",
-      "window": [
-        801.05,
-        806.21
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 12,
-          "source_text": "community",
-          "source_chars": [
-            [
-              60,
-              69
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 12,
-            "text": "community",
-            "asr_indices": [
-              1248
-            ],
-            "asr_text": [
-              "community"
-            ],
-            "window": [
-              802.55,
-              802.95
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 12,
-            "text": "had",
-            "asr_indices": [
-              1249
-            ],
-            "asr_text": [
-              "had"
-            ],
-            "window": [
-              804.15,
-              804.23
-            ]
-          }
-        },
-        {
-          "sentence": 12,
-          "source_text": "quote",
-          "source_chars": [
-            [
-              74,
-              79
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 12,
-            "text": "had",
-            "asr_indices": [
-              1249
-            ],
-            "asr_text": [
-              "had"
-            ],
-            "window": [
-              804.15,
-              804.23
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 12,
-            "text": "failed",
-            "asr_indices": [
-              1250
-            ],
-            "asr_text": [
-              "failed"
-            ],
-            "window": [
-              804.39,
-              804.71
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 5.16
-    },
-    {
-      "unit": "2017-A",
-      "window": [
-        336.28,
-        339.6
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 47,
-          "source_text": "of",
-          "source_chars": [
-            [
-              15,
-              17
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 47,
-            "text": "all",
-            "asr_indices": [
-              663
-            ],
-            "asr_text": [
-              "all"
-            ],
-            "window": [
-              337.78,
-              337.86
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 47,
-            "text": "these",
-            "asr_indices": [
-              664
-            ],
-            "asr_text": [
-              "these"
-            ],
-            "window": [
-              338.02,
-              338.1
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.32
-    },
     {
       "unit": "2017-B2",
       "window": [
@@ -2310,8 +1044,8 @@
           "source_text": "Havas",
           "source_chars": [
             [
-              334,
-              339
+              329,
+              334
             ]
           ],
           "boundary_missing": false,
@@ -2321,7 +1055,7 @@
             "sentence": 3,
             "text": "give",
             "asr_indices": [
-              1945
+              1953
             ],
             "asr_text": [
               "give"
@@ -2336,7 +1070,7 @@
             "sentence": 3,
             "text": "and",
             "asr_indices": [
-              1947
+              1955
             ],
             "asr_text": [
               "and"
@@ -2351,380 +1085,53 @@
       "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 4.12
-    },
-    {
-      "unit": "2017-B2",
-      "window": [
-        1130.52,
-        1134.68
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 3,
-          "source_text": "futurist",
-          "source_chars": [
-            [
-              161,
-              169
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B2",
-            "sentence": 3,
-            "text": "or",
-            "asr_indices": [
-              1913
-            ],
-            "asr_text": [
-              "or"
-            ],
-            "window": [
-              1132.02,
-              1132.1
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B2",
-            "sentence": 3,
-            "text": "in",
-            "asr_indices": [
-              1915
-            ],
-            "asr_text": [
-              "In"
-            ],
-            "window": [
-              1133.1,
-              1133.18
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.16
-    },
-    {
-      "unit": "2017-A",
-      "window": [
-        97.68,
-        101.88
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 15,
-          "source_text": "our",
-          "source_chars": [
-            [
-              61,
-              64
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-A",
-            "sentence": 15,
-            "text": "of",
-            "asr_indices": [
-              126
-            ],
-            "asr_text": [
-              "of"
-            ],
-            "window": [
-              99.18,
-              99.26
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-A",
-            "sentence": 15,
-            "text": "semiotic",
-            "asr_indices": [
-              128
-            ],
-            "asr_text": [
-              "semiotic"
-            ],
-            "window": [
-              99.5,
-              100.38
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.2
-    },
-    {
-      "unit": "2017-B1",
-      "window": [
-        879.25,
-        883.61
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 25,
-          "source_text": "is",
-          "source_chars": [
-            [
-              65,
-              67
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 25,
-            "text": "being",
-            "asr_indices": [
-              1440
-            ],
-            "asr_text": [
-              "being"
-            ],
-            "window": [
-              880.75,
-              880.83
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 25,
-            "text": "slowing",
-            "asr_indices": [
-              1441
-            ],
-            "asr_text": [
-              "slowing?"
-            ],
-            "window": [
-              881.47,
-              882.11
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.36
-    },
-    {
-      "unit": "2017-B2",
-      "window": [
-        1236.88,
-        1241.32
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 17,
-          "source_text": "vs",
-          "source_chars": [
-            [
-              84,
-              86
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B2",
-            "sentence": 17,
-            "text": "results",
-            "asr_indices": [
-              2174
-            ],
-            "asr_text": [
-              "results"
-            ],
-            "window": [
-              1238.38,
-              1238.86
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B2",
-            "sentence": 17,
-            "text": "being",
-            "asr_indices": [
-              2176
-            ],
-            "asr_text": [
-              "being"
-            ],
-            "window": [
-              1239.74,
-              1239.82
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.44
-    },
-    {
-      "unit": "2017-B1",
-      "window": [
-        816.05,
-        820.97
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 14,
-          "source_text": "nongovernmental",
-          "source_chars": [
-            [
-              46,
-              61
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 14,
-            "text": "few",
-            "asr_indices": [
-              1286
-            ],
-            "asr_text": [
-              "few"
-            ],
-            "window": [
-              817.55,
-              817.79
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 14,
-            "text": "groups",
-            "asr_indices": [
-              1288
-            ],
-            "asr_text": [
-              "groups"
-            ],
-            "window": [
-              818.91,
-              819.47
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.92
-    },
-    {
-      "unit": "2017-B1",
-      "window": [
-        996.33,
-        1001.33
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 46,
-          "source_text": "is",
-          "source_chars": [
-            [
-              70,
-              72
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2017-B1",
-            "sentence": 46,
-            "text": "being",
-            "asr_indices": [
-              1748
-            ],
-            "asr_text": [
-              "being"
-            ],
-            "window": [
-              997.83,
-              997.91
-            ]
-          },
-          "right_anchor": {
-            "unit": "2017-B1",
-            "sentence": 46,
-            "text": "outpacing",
-            "asr_indices": [
-              1749
-            ],
-            "asr_text": [
-              "outpacing"
-            ],
-            "window": [
-              999.11,
-              999.83
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 5.0
     }
   ],
   "units": [
     {
       "id": "2017-A",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2017/未导出单元/2017-A.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2017-A.json",
       "sentences": 70,
-      "source_lexemes": 1136,
-      "missing_source_lexemes": 13,
-      "missing_boundary_sentences": [
-        49
-      ],
+      "source_lexemes": 1133,
+      "missing_source_lexemes": 0,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 7,
-      "audio_window": null
+      "rerecognition_window_count": 0,
+      "audio_window": [
+        3.2675,
+        715.22
+      ]
     },
     {
       "id": "2017-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2017/未导出单元/2017-B1.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2017-B1.json",
       "sentences": 56,
       "source_lexemes": 756,
-      "missing_source_lexemes": 10,
-      "missing_boundary_sentences": [
-        18
-      ],
+      "missing_source_lexemes": 0,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 6,
-      "audio_window": null
+      "rerecognition_window_count": 0,
+      "audio_window": [
+        715.8575,
+        1102.9
+      ]
     },
     {
       "id": "2017-B2",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2017/未导出单元/2017-B2.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2017-B2.json",
       "sentences": 40,
       "source_lexemes": 683,
-      "missing_source_lexemes": 6,
-      "missing_boundary_sentences": [
-        5
-      ],
+      "missing_source_lexemes": 1,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 5,
-      "audio_window": null
+      "rerecognition_window_count": 1,
+      "audio_window": [
+        1112.3275,
+        1446.49
+      ]
     }
   ]
 }

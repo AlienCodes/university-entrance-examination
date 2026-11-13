@@ -1,0 +1,124 @@
+{
+  "status": "rejected_for_split_semantics",
+  "source_unchanged": true,
+  "renderer_unchanged": true,
+  "run": 43500403977,
+  "commit": "016c18e4d560dfd5ecf90faaf98ef426ec3f22a6",
+  "archive": "TEM8-review-intensive-2024-A-548d311bcbe0271b.zip",
+  "archive_sha256": "9d39ee80cddf2c680d1b273a4d1da07c5d326f60eb0148af4412bf57f6532229",
+  "payload_sha256": "548d311bcbe0271bc9660fcbcd4c2c46a9b6a77808be789a79d23a40b86e4d41",
+  "mechanical": "ZIP CRC/当前input及母稿semantic/完整83张4K PNG SHA与字号73/34关卡全部通过",
+  "audio": {
+    "ok": true,
+    "audio_sha256": "37a06c7c20467a7b021da044694edec5a6694812c4ed3fee455f397702269cce",
+    "source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+    "raw_exact_before_encoding": true,
+    "raw_match": {
+      "gain_db": -0.0066,
+      "snr_db": 43.7,
+      "sec_db": 0.035
+    },
+    "sample_rate": 24000,
+    "channels": 2
+  },
+  "faults": [
+    {
+      "k_hint": 27,
+      "en_anchor": "For example, if the first language is English and the target language is Korean, a second-language learner might position the Korean verb between the subject and the object of the sentence, using the English word order, rather than placing the verb after the object, which is the correct Korean word order.",
+      "zh": "例如，第一语言是英语、目标语是韩语时，学习者可能沿用英语语序，把韩语动词放在主语和宾语之间，而不是放在宾语之后；后者才是正确的韩语语序。",
+      "actual_pngs": [
+        "screen033.png",
+        "screen034.png"
+      ],
+      "reason": "using the English word order在第三屏，中文沿用英语语序在第二屏；第三切点应后移至rather than placing。",
+      "old_plan": {
+        "at": [
+          "a second-language learner might",
+          "using the English word"
+        ],
+        "zh": [
+          "例如，第一语言是英语、目标语是韩语时，",
+          "学习者可能沿用英语语序，把韩语动词放在主语和宾语之间，",
+          "而不是放在宾语之后；后者才是正确的韩语语序。"
+        ]
+      },
+      "proposed_plan": {
+        "at": [
+          "a second-language learner",
+          "rather than placing"
+        ],
+        "zh": [
+          "例如，第一语言是英语、目标语是韩语时，",
+          "学习者可能沿用英语语序，把韩语动词放在主语和宾语之间，",
+          "而不是放在宾语之后；后者才是正确的韩语语序。"
+        ]
+      },
+      "true_word_and_pause_checks": [
+        {
+          "at": "a second-language learner",
+          "char": 81,
+          "pause_check": [
+            true,
+            5.43,
+            [
+              5.17,
+              5.69
+            ]
+          ]
+        },
+        {
+          "at": "rather than placing",
+          "char": 220,
+          "pause_check": [
+            true,
+            15.06,
+            [
+              14.93,
+              15.2
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "k_hint": 34,
+      "en_anchor": "The third point I want to bring up here is that it’s apparent that first language acquisition happens without conscious teaching, you know, in a kind of natural way, as I mentioned just now.",
+      "zh": "我要提出的第三点是：显然，第一语言习得无需有意识的教学，正如我刚才提到的，它是以一种自然的方式发生的。",
+      "actual_pngs": [
+        "screen044.png",
+        "screen045.png"
+      ],
+      "reason": "as I mentioned just now在第二屏，中文正如我刚才提到的却在第一屏；把该中文短语移到第二片。",
+      "old_plan": {
+        "at": "you know, in a",
+        "zh": [
+          "我要提出的第三点是：显然，第一语言习得无需有意识的教学，正如我刚才提到的，",
+          "它是以一种自然的方式发生的。"
+        ]
+      },
+      "proposed_plan": {
+        "at": "you know, in a",
+        "zh": [
+          "我要提出的第三点是：显然，第一语言习得无需有意识的教学，",
+          "正如我刚才提到的，它是以一种自然的方式发生的。"
+        ]
+      },
+      "true_word_and_pause_checks": [
+        {
+          "at": "you know, in a",
+          "char": 130,
+          "pause_check": [
+            true,
+            7.24,
+            [
+              7.0,
+              7.48
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "next_step": "仅将派生分屏按英文整句锚真正合入final.splits并重新绑定源审阅/输入指纹；母稿EN/ZH/W、原音时刻均无需更改。新截图再审，当前83PNG不批准编码。",
+  "candidate_work": "/workspace/tem8-online-intensive-review/2024-A/review/work"
+}

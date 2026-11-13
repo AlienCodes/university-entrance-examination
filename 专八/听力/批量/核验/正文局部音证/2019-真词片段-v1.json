@@ -1,0 +1,73 @@
+{
+  "year": 2019,
+  "canonical_source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283",
+  "source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283",
+  "source_evidence": "2019-Parakeet.json",
+  "model_evidence": {
+    "year": 2019,
+    "source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283",
+    "model": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8",
+    "model_sha256": {
+      "encoder.int8.onnx": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+      "decoder.int8.onnx": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+      "joiner.int8.onnx": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+      "tokens.txt": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+    },
+    "analysis_only": "局部16k单声道分析副本；正式原音未改"
+  },
+  "patches": [
+    {
+      "window": [
+        872.57,
+        875.51
+      ],
+      "words": [
+        [
+          "The",
+          872.72,
+          872.8
+        ],
+        [
+          "greenhouse",
+          872.88,
+          873.52
+        ],
+        [
+          "effect",
+          873.6,
+          873.84
+        ],
+        [
+          "isn't",
+          874.0,
+          874.48
+        ],
+        [
+          "actually",
+          874.56,
+          874.64
+        ],
+        [
+          "happening?",
+          874.8,
+          875.36
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2019-Parakeet.json",
+      "origin_sha256_at_selection": "f3b45ce6c5055467ea6d497b85fa53e3528aaa2ad75ab302f2d2f53238bbbe23",
+      "origin_pointer": "/windows/0/words",
+      "origin_word_range": [
+        12,
+        18
+      ],
+      "origin_window": [
+        868,
+        878
+      ],
+      "origin_text": "Are you saying global warming isn't a fact? Deforestation isn't a fact. The greenhouse effect isn't actually happening? Hey, calm down, Mark. I just think.",
+      "decision": "独立双模型明确The greenhouse effect isn’t actually happening，恢复漏掉整句的真词锚；不能删该句。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "字词时刻逐项复制真实模型输出；替换窗仅限定分析ASR替换范围，不用作成品音轨裁剪。"
+    }
+  ]
+}

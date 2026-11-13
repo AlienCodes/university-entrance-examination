@@ -1,0 +1,117 @@
+{
+  "year": 2022,
+  "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "patches": [
+    {
+      "evidence_ref": "核验/正文异文复核/2022/greeting.json",
+      "evidence_sha256": "0146f14548dd749c9677ad779854cc82d692b9bcaeb6325aa1ad682363790adc",
+      "pointer": "/adopted_words",
+      "window": [
+        855.48,
+        859.64
+      ],
+      "decision": "保留原三句问候；原候选额外Good morning为组合ASR伪重复，局部两模型均与源文一致。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/underserved.json",
+      "evidence_sha256": "3072567ec0361e0f91bcbbcccb01f5ef846d3924ee8ff09cba1652b28a6ea04c",
+      "pointer": "/adopted_words",
+      "window": [
+        870.24,
+        879.2
+      ],
+      "decision": "两模型均and underserved，母稿已将in订为and；under-served/underserved仅复合词拼写等价。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/education_article.json",
+      "evidence_sha256": "c981aedaae53fc8a251db82b7fa47ac856edf15b790da52c1a0cd285ee6d234a",
+      "pointer": "/adopted_words",
+      "window": [
+        901.16,
+        910.2
+      ],
+      "decision": "两模型均a public education；保留源文a，排除原ASR误识have。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+      "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+      "pointer": "/adopted_words",
+      "window": [
+        942.52,
+        945.24
+      ],
+      "decision": "保留真实低声应声，Parakeet Hmm/Whisper Mm；Harriet原专名由源页和Whisper确证，Harry属罕名误识。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/grants_number.json",
+      "evidence_sha256": "01773a972429dab7e752777eacd992c62a4924eacf4fe87f19e5538d0b94680d",
+      "pointer": "/adopted_words",
+      "window": [
+        973.96,
+        982.84
+      ],
+      "decision": "两模型均our grants与186,000；已落稿our，不把主ASR180,000/36,000拼接残片当数值。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+      "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+      "pointer": "/adopted_words",
+      "window": [
+        1021.24,
+        1038.68
+      ],
+      "decision": "两路确证EverFi合作内容；Everphi/Everphy为Parakeet对品牌的拼写误识，按源页与独立Whisper规范EverFi。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/hundreds.json",
+      "evidence_sha256": "d4ac5be32d303edbaae158391f3dd69b8985390c8564785239ad8597490932f3",
+      "pointer": "/adopted_words",
+      "window": [
+        1265.28,
+        1270.48
+      ],
+      "decision": "保留源文两次hundreds；额外第三次为ASR伪重复，两局部模型均无第三次。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/light_only.json",
+      "evidence_sha256": "38c3ff4903613aa61bb418e551d867645032f7e2a6ba430b1f1871cffe051d47",
+      "pointer": "/adopted_words",
+      "window": [
+        1292.36,
+        1307.08
+      ],
+      "decision": "保留not only light，无第二个only；or lighting确有or；over-lit/overlit是连写等价。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/overlit.json",
+      "evidence_sha256": "a452b36fee74c287a67d72614001cf1eccd7f7445edba0754ff4b34e35b53a52",
+      "pointer": "/adopted_words",
+      "window": [
+        1314.32,
+        1322.72
+      ],
+      "decision": "源文over-lit正确，主ASR he是错词，两局部模型均overlit；不把连字符当正文异文。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/emitted_light.json",
+      "evidence_sha256": "656e39602926f1b740dd0d5b3edae0c3ac5caf7391ea19478a166e3e1c80ad2b",
+      "pointer": "/adopted_words",
+      "window": [
+        1352.36,
+        1361.88
+      ],
+      "decision": "三路均a lot of light emitted（无the），母稿已删误印the。"
+    },
+    {
+      "evidence_ref": "核验/正文异文复核/2022/bulb.json",
+      "evidence_sha256": "16572761bbfc9f42098408187d45700c8dadd1324f1b32fb1014a96167083155",
+      "pointer": "/adopted_words",
+      "window": [
+        1429.52,
+        1433.92
+      ],
+      "decision": "保留源页bulb：独立Whisper明确bulb，Parakeet bowl为错词；原音实际整词锚可审校绑定，不改为碗。"
+    }
+  ],
+  "decision_status": "逐项证据裁决；字幕最终音画审核不冒称approved"
+}

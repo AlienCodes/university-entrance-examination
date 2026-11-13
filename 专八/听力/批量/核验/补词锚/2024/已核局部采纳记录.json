@@ -1,0 +1,87 @@
+{
+  "year": 2024,
+  "canonical_source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+  "baseline": "核验/补词锚/2024/优选识别.json",
+  "baseline_sha256": "814507c0604450163eda87084bf7bc82df4719a29242c32ed3261d27146edc09",
+  "patches": [
+    {
+      "pointer": "/fragments/0/words",
+      "window": [
+        1078.42,
+        1079.78
+      ],
+      "decision": "原ASR漏题号，错位Parakeet恢复实际Question及数字完整两词，独立Whisper同样确认；只采题号，截断的后续题干不采。",
+      "evidence_ref": "核验/2024-题号完整真词-v1.json",
+      "evidence_sha256": "5b452b729b501b48d09aea853cc677c173c920ad541ab35ad753c6e9f56374e0",
+      "words": [
+        [
+          "Question",
+          1078.42,
+          1078.98
+        ],
+        [
+          "2:",
+          1079.3,
+          1079.78
+        ]
+      ],
+      "manifest": "2024-题号采纳词窗.json",
+      "manifest_sha256": "fc8792497585e425c67eff6ffb9486a04e93f3a934bbccb465f2ca31c4826351",
+      "removed_previous_indices": [],
+      "removed_previous_words": []
+    },
+    {
+      "pointer": "/fragments/1/words",
+      "window": [
+        1425.96,
+        1427.4
+      ],
+      "decision": "原ASR漏题号，错位Parakeet恢复实际Question及数字完整两词，独立Whisper同样确认；只采题号，截断的后续题干不采。",
+      "evidence_ref": "核验/2024-题号完整真词-v1.json",
+      "evidence_sha256": "5b452b729b501b48d09aea853cc677c173c920ad541ab35ad753c6e9f56374e0",
+      "words": [
+        [
+          "Question",
+          1425.96,
+          1426.52
+        ],
+        [
+          "7.",
+          1426.84,
+          1427.4
+        ]
+      ],
+      "manifest": "2024-题号采纳词窗.json",
+      "manifest_sha256": "fc8792497585e425c67eff6ffb9486a04e93f3a934bbccb465f2ca31c4826351",
+      "removed_previous_indices": [],
+      "removed_previous_words": []
+    },
+    {
+      "pointer": "/fragments/2/words",
+      "window": [
+        1473.48,
+        1474.68
+      ],
+      "decision": "原ASR漏题号，错位Parakeet恢复实际Question及数字完整两词，独立Whisper同样确认；只采题号，截断的后续题干不采。",
+      "evidence_ref": "核验/2024-题号完整真词-v1.json",
+      "evidence_sha256": "5b452b729b501b48d09aea853cc677c173c920ad541ab35ad753c6e9f56374e0",
+      "words": [
+        [
+          "Question",
+          1473.48,
+          1474.04
+        ],
+        [
+          "10:",
+          1474.2,
+          1474.68
+        ]
+      ],
+      "manifest": "2024-题号采纳词窗.json",
+      "manifest_sha256": "fc8792497585e425c67eff6ffb9486a04e93f3a934bbccb465f2ca31c4826351",
+      "removed_previous_indices": [],
+      "removed_previous_words": []
+    }
+  ],
+  "status": "仅按已明确音证裁决恢复真实局部词锚；母稿/主ASR/原音未改，非成品批准。"
+}

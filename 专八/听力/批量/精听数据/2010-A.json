@@ -16,7 +16,7 @@
   "待核": [
     "尚须与实际原音逐句对应；本稿不附假定时间。",
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有13个原文词缺少ASR对应；涉及句号[16, 20, 25, 32, 36, 42, 46, 49, 54, 76, 78]，严禁按比例补时。"
+    "仍有2个原文词缺少ASR对应；涉及句号[16, 32]，严禁按比例补时。"
   ],
   "instruction_review": {
     "source": "说明语句/2010.json",
@@ -31,9 +31,395 @@
     "source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
     "source_kind": "canonical WAV; original sample rate/channels/gain",
     "window": [
-      14.79,
-      781.42
-    ]
+      13.925,
+      781.5
+    ],
+    "boundary_evidence": {
+      "status": "measured_PCM_boundaries_or_complete_file_edge",
+      "canonical_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+      "source_entries": [
+        {
+          "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+          "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c"
+        }
+      ],
+      "first_ASR_anchor": 14.91,
+      "last_ASR_anchor": 781.3,
+      "next_ASR_start": 782.56,
+      "window": [
+        13.925,
+        781.5
+      ],
+      "start_kind": "measured_quiet_before_first_ASR_anchor",
+      "end_kind": "measured_quiet_after_last_ASR_anchor",
+      "leading_PCM": {
+        "decoded_window": [
+          13.31,
+          15.11
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            13.31,
+            14.54
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          -6.880015104476629e-05,
+          -4.400076425874486e-05
+        ],
+        "frames_dBFS": [
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -72.92,
+          -60.62,
+          -63.99,
+          -62.72,
+          -61.64,
+          -64.84,
+          -62.27,
+          -66.0,
+          -63.92,
+          -64.57,
+          -66.64,
+          -64.06,
+          -65.57,
+          -65.51,
+          -63.36,
+          -67.58,
+          -64.6,
+          -64.27,
+          -66.97,
+          -63.97,
+          -66.84,
+          -66.92,
+          -63.87,
+          -68.29,
+          -61.66,
+          -65.17,
+          -67.31,
+          -63.03,
+          -68.37,
+          -65.34,
+          -65.24,
+          -67.43,
+          -61.99,
+          -67.82,
+          -64.91,
+          -63.6,
+          -65.51,
+          -65.98,
+          -61.38,
+          -60.59,
+          -60.35,
+          -63.5,
+          -63.23,
+          -61.89,
+          -63.77,
+          -66.97,
+          -59.71,
+          -64.09,
+          -61.76,
+          -64.02,
+          -65.2,
+          -60.9,
+          -64.69,
+          -64.99,
+          -63.33,
+          -65.91,
+          -64.8,
+          -64.57,
+          -64.77,
+          -70.38,
+          -73.6,
+          -73.43,
+          -74.07,
+          -68.39,
+          -69.96,
+          -75.25,
+          -69.1,
+          -74.52,
+          -74.89,
+          -83.42,
+          -82.44,
+          -83.43,
+          -83.11,
+          -83.13,
+          -83.24,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.25,
+          -83.24,
+          -83.26,
+          -83.51,
+          -83.13,
+          -81.7,
+          -81.22,
+          -59.94,
+          -61.52,
+          -59.4,
+          -59.62,
+          -58.9,
+          -57.95,
+          -53.88,
+          -47.35,
+          -43.68,
+          -46.2,
+          -47.14,
+          -47.6,
+          -46.07,
+          -49.23,
+          -51.61,
+          -51.0,
+          -49.72,
+          -51.74,
+          -52.78,
+          -54.49,
+          -56.02,
+          -55.96,
+          -50.27,
+          -51.01,
+          -47.88,
+          -48.17,
+          -49.0,
+          -48.34,
+          -46.39,
+          -45.94,
+          -48.27,
+          -48.02,
+          -44.9,
+          -40.47,
+          -42.15,
+          -42.81,
+          -43.51,
+          -43.92,
+          -44.84,
+          -44.96,
+          -45.48,
+          -44.32,
+          -43.45,
+          -43.85,
+          -43.78,
+          -44.08,
+          -44.51,
+          -44.14,
+          -44.83,
+          -45.98,
+          -46.3,
+          -46.69,
+          -45.73,
+          -43.86,
+          -45.3,
+          -46.53,
+          -34.11,
+          -26.59,
+          -30.43,
+          -35.04,
+          -36.3,
+          -34.61
+        ]
+      },
+      "trailing_PCM": {
+        "decoded_window": [
+          781.0999999999999,
+          782.52
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            781.1,
+            782.52
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          -2.503099780226552e-07,
+          -2.2325777851402696e-07
+        ],
+        "frames_dBFS": [
+          -89.86,
+          -77.9,
+          -82.08,
+          -84.37,
+          -85.62,
+          -85.31,
+          -88.07,
+          -87.15,
+          -88.39,
+          -90.15,
+          -86.7,
+          -88.73,
+          -86.09,
+          -89.1,
+          -88.54,
+          -88.23,
+          -91.3,
+          -84.89,
+          -88.05,
+          -90.52,
+          -88.48,
+          -88.73,
+          -92.74,
+          -91.83,
+          -90.23,
+          -87.22,
+          -89.88,
+          -91.23,
+          -91.09,
+          -95.89,
+          -98.18,
+          -105.82,
+          -117.49,
+          -119.69,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.74,
+          -119.63,
+          -115.03,
+          -100.39,
+          -97.23,
+          -94.75,
+          -88.47,
+          -79.97,
+          -81.35,
+          -82.57,
+          -79.49,
+          -82.11,
+          -77.7,
+          -78.19,
+          -77.49,
+          -76.69,
+          -77.23,
+          -77.36,
+          -77.69,
+          -77.87,
+          -77.81,
+          -77.44,
+          -78.52,
+          -75.71,
+          -76.31,
+          -77.76,
+          -78.3,
+          -80.4
+        ]
+      },
+      "note": "原采样率/声道PCM逐10ms实测低能量间隙；词尾仍是ASR候选，窗口未按词长估计；正式原音未修改。"
+    }
   },
   "sentences": [
     {
@@ -105,23 +491,14 @@
         },
         {
           "char": 24,
-          "char_end": 30,
-          "start": 17.15,
-          "end": 18.19,
-          "asr_indices": [
-            4,
-            5
-          ]
-        },
-        {
-          "char": 31,
           "char_end": 34,
           "start": 17.15,
           "end": 18.19,
           "asr_indices": [
             4,
             5
-          ]
+          ],
+          "shared_whole_ASR_span": true
         }
       ],
       "alignment": {
@@ -1227,21 +1604,13 @@
         },
         {
           "char": 32,
-          "char_end": 36,
-          "start": 55.87,
-          "end": 57.07,
-          "asr_indices": [
-            83
-          ]
-        },
-        {
-          "char": 37,
           "char_end": 43,
           "start": 55.87,
           "end": 57.07,
           "asr_indices": [
             83
-          ]
+          ],
+          "shared_whole_ASR_span": true
         }
       ],
       "alignment": {
@@ -1463,21 +1832,13 @@
         },
         {
           "char": 18,
-          "char_end": 22,
-          "start": 92.07,
-          "end": 93.27,
-          "asr_indices": [
-            98
-          ]
-        },
-        {
-          "char": 23,
           "char_end": 30,
           "start": 92.07,
           "end": 93.27,
           "asr_indices": [
             98
-          ]
+          ],
+          "shared_whole_ASR_span": true
         }
       ],
       "alignment": {
@@ -2507,30 +2868,16 @@
         },
         {
           "char": 25,
-          "char_end": 38,
-          "start": 133.35,
-          "end": 134.07,
-          "asr_indices": [
-            177
-          ]
-        },
-        {
-          "char": 39,
-          "char_end": 43,
-          "start": 134.31,
-          "end": 134.39,
-          "asr_indices": [
-            178
-          ]
-        },
-        {
-          "char": 50,
           "char_end": 55,
-          "start": 135.27,
+          "start": 133.35,
           "end": 135.35,
           "asr_indices": [
+            177,
+            178,
+            179,
             180
-          ]
+          ],
+          "shared_whole_ASR_span": true
         },
         {
           "char": 56,
@@ -2599,27 +2946,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 16,
-        "mapped_lexemes": 15,
-        "missing": [
-          {
-            "text": "takes",
-            "char": [
-              44,
-              49
-            ]
-          }
-        ],
+        "mapped_lexemes": 16,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            179
-          ],
-          "asr_text": [
-            "take"
-          ],
-          "window": [
-            134.79,
-            134.87
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 131.75,
@@ -3161,6 +3493,17 @@
               137
             ]
           ]
+        },
+        {
+          "t": "word",
+          "h": "central",
+          "m": "adj.核心的；主要的",
+          "sp": [
+            [
+              29,
+              36
+            ]
+          ]
         }
       ],
       "word_alignment": [
@@ -3229,21 +3572,15 @@
         },
         {
           "char": 40,
-          "char_end": 47,
-          "start": 166.75,
-          "end": 167.07,
-          "asr_indices": [
-            239
-          ]
-        },
-        {
-          "char": 51,
           "char_end": 64,
-          "start": 167.47,
+          "start": 166.75,
           "end": 168.11,
           "asr_indices": [
+            239,
+            240,
             241
-          ]
+          ],
+          "shared_whole_ASR_span": true
         },
         {
           "char": 65,
@@ -3411,27 +3748,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 28,
-        "mapped_lexemes": 27,
-        "missing": [
-          {
-            "text": "in",
-            "char": [
-              48,
-              50
-            ]
-          }
-        ],
+        "mapped_lexemes": 28,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            240
-          ],
-          "asr_text": [
-            "and"
-          ],
-          "window": [
-            167.23,
-            167.31
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 163.95,
@@ -4711,7 +5033,7 @@
       "end": 243.43
     },
     {
-      "en": "In addition to convey meanings with tone of voice, we can also express our intentions through the ways in which we use our bodies.",
+      "en": "In addition to conveying meanings with tone of voice, we can also express our intention through the ways in which we use our bodies.",
       "zh": "除了通过语气传达意义，我们还可以通过运用身体的方式表达意图。",
       "w": [
         {
@@ -4720,18 +5042,147 @@
           "m": "n.意图；用意",
           "sp": [
             [
-              75,
-              85
+              78,
+              87
             ]
           ]
         }
+      ],
+      "words": [
+        [
+          "In",
+          243.88,
+          243.96
+        ],
+        [
+          "addition",
+          244.2,
+          244.52
+        ],
+        [
+          "to",
+          244.6,
+          244.68
+        ],
+        [
+          "conveying",
+          244.76,
+          245.4
+        ],
+        [
+          "meanings",
+          245.48,
+          245.8
+        ],
+        [
+          "with",
+          246.04,
+          246.12
+        ],
+        [
+          "tone",
+          246.36,
+          246.6
+        ],
+        [
+          "of",
+          246.76,
+          246.84
+        ],
+        [
+          "voice,",
+          247.0,
+          247.8
+        ],
+        [
+          "we",
+          248.04,
+          248.12
+        ],
+        [
+          "can",
+          248.28,
+          248.36
+        ],
+        [
+          "also",
+          248.6,
+          248.68
+        ],
+        [
+          "express",
+          248.84,
+          249.4
+        ],
+        [
+          "our",
+          249.56,
+          249.64
+        ],
+        [
+          "intention",
+          249.8,
+          250.2
+        ],
+        [
+          "through",
+          250.44,
+          250.52
+        ],
+        [
+          "the",
+          250.76,
+          250.84
+        ],
+        [
+          "ways",
+          250.92,
+          251.24
+        ],
+        [
+          "in",
+          251.32,
+          251.4
+        ],
+        [
+          "which",
+          251.56,
+          251.64
+        ],
+        [
+          "we",
+          251.8,
+          251.88
+        ],
+        [
+          "use",
+          252.04,
+          252.12
+        ],
+        [
+          "our",
+          252.28,
+          252.36
+        ],
+        [
+          "bodies.",
+          252.6,
+          253.64
+        ]
+      ],
+      "asr_ref": "核验/正文清理/2010-局部真词锚.json",
+      "asr_sha256": "34fb15b10a9bab160ae20f85c2e0757b546d55c9daf893716d1efbe611531521",
+      "asr_pointer": "/recognitions/2/words",
+      "asr_range": [
+        0,
+        24
       ],
       "word_alignment": [
         {
           "char": 0,
           "char_end": 2,
-          "start": 243.99,
-          "end": 244.07,
+          "start": 243.88,
+          "end": 243.96,
           "asr_indices": [
             365
           ]
@@ -4739,8 +5190,8 @@
         {
           "char": 3,
           "char_end": 11,
-          "start": 244.23,
-          "end": 244.47,
+          "start": 244.2,
+          "end": 244.52,
           "asr_indices": [
             366
           ]
@@ -4748,170 +5199,197 @@
         {
           "char": 12,
           "char_end": 14,
-          "start": 244.55,
-          "end": 244.63,
+          "start": 244.6,
+          "end": 244.68,
           "asr_indices": [
             367
           ]
         },
         {
-          "char": 31,
-          "char_end": 35,
-          "start": 246.11,
-          "end": 246.27,
+          "char": 15,
+          "char_end": 24,
+          "start": 244.76,
+          "end": 245.4,
+          "asr_indices": [
+            368
+          ]
+        },
+        {
+          "char": 25,
+          "char_end": 33,
+          "start": 245.48,
+          "end": 245.8,
+          "asr_indices": [
+            369
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 38,
+          "start": 246.04,
+          "end": 246.12,
           "asr_indices": [
             370
           ]
         },
         {
-          "char": 36,
-          "char_end": 40,
-          "start": 246.43,
-          "end": 246.67,
+          "char": 39,
+          "char_end": 43,
+          "start": 246.36,
+          "end": 246.6,
           "asr_indices": [
             371
           ]
         },
         {
-          "char": 41,
-          "char_end": 43,
-          "start": 246.75,
-          "end": 246.83,
+          "char": 44,
+          "char_end": 46,
+          "start": 246.76,
+          "end": 246.84,
           "asr_indices": [
             372
           ]
         },
         {
-          "char": 44,
-          "char_end": 49,
-          "start": 246.99,
-          "end": 247.79,
+          "char": 47,
+          "char_end": 52,
+          "start": 247.0,
+          "end": 247.8,
           "asr_indices": [
             373
           ]
         },
         {
-          "char": 51,
-          "char_end": 53,
-          "start": 248.03,
-          "end": 248.11,
+          "char": 54,
+          "char_end": 56,
+          "start": 248.04,
+          "end": 248.12,
           "asr_indices": [
             374
           ]
         },
         {
-          "char": 54,
-          "char_end": 57,
-          "start": 248.27,
-          "end": 248.35,
+          "char": 57,
+          "char_end": 60,
+          "start": 248.28,
+          "end": 248.36,
           "asr_indices": [
             375
           ]
         },
         {
-          "char": 58,
-          "char_end": 62,
-          "start": 248.59,
-          "end": 248.67,
+          "char": 61,
+          "char_end": 65,
+          "start": 248.6,
+          "end": 248.68,
           "asr_indices": [
             376
           ]
         },
         {
-          "char": 63,
-          "char_end": 70,
-          "start": 248.91,
-          "end": 249.39,
+          "char": 66,
+          "char_end": 73,
+          "start": 248.84,
+          "end": 249.4,
           "asr_indices": [
             377
           ]
         },
         {
-          "char": 71,
-          "char_end": 74,
-          "start": 249.55,
-          "end": 249.63,
+          "char": 74,
+          "char_end": 77,
+          "start": 249.56,
+          "end": 249.64,
           "asr_indices": [
             378
           ]
         },
         {
-          "char": 86,
-          "char_end": 93,
-          "start": 250.43,
-          "end": 250.51,
+          "char": 78,
+          "char_end": 87,
+          "start": 249.8,
+          "end": 250.2,
+          "asr_indices": [
+            379
+          ]
+        },
+        {
+          "char": 88,
+          "char_end": 95,
+          "start": 250.44,
+          "end": 250.52,
           "asr_indices": [
             380
           ]
         },
         {
-          "char": 94,
-          "char_end": 97,
-          "start": 250.75,
-          "end": 250.83,
+          "char": 96,
+          "char_end": 99,
+          "start": 250.76,
+          "end": 250.84,
           "asr_indices": [
             381
           ]
         },
         {
-          "char": 98,
-          "char_end": 102,
-          "start": 250.91,
-          "end": 251.23,
+          "char": 100,
+          "char_end": 104,
+          "start": 250.92,
+          "end": 251.24,
           "asr_indices": [
             382
           ]
         },
         {
-          "char": 103,
-          "char_end": 105,
-          "start": 251.31,
-          "end": 251.39,
+          "char": 105,
+          "char_end": 107,
+          "start": 251.32,
+          "end": 251.4,
           "asr_indices": [
             383
           ]
         },
         {
-          "char": 106,
-          "char_end": 111,
-          "start": 251.55,
-          "end": 251.63,
+          "char": 108,
+          "char_end": 113,
+          "start": 251.56,
+          "end": 251.64,
           "asr_indices": [
             384
           ]
         },
         {
-          "char": 112,
-          "char_end": 114,
-          "start": 251.79,
-          "end": 251.87,
+          "char": 114,
+          "char_end": 116,
+          "start": 251.8,
+          "end": 251.88,
           "asr_indices": [
             385
           ]
         },
         {
-          "char": 115,
-          "char_end": 118,
-          "start": 252.03,
-          "end": 252.11,
+          "char": 117,
+          "char_end": 120,
+          "start": 252.04,
+          "end": 252.12,
           "asr_indices": [
             386
           ]
         },
         {
-          "char": 119,
-          "char_end": 122,
-          "start": 252.35,
-          "end": 252.43,
+          "char": 121,
+          "char_end": 124,
+          "start": 252.28,
+          "end": 252.36,
           "asr_indices": [
             387
           ]
         },
         {
-          "char": 123,
-          "char_end": 129,
-          "start": 252.59,
-          "end": 253.63,
+          "char": 125,
+          "char_end": 131,
+          "start": 252.6,
+          "end": 253.64,
           "asr_indices": [
             388
           ]
@@ -4920,49 +5398,16 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 24,
-        "mapped_lexemes": 21,
-        "missing": [
-          {
-            "text": "convey",
-            "char": [
-              15,
-              21
-            ]
-          },
-          {
-            "text": "meanings",
-            "char": [
-              22,
-              30
-            ]
-          },
-          {
-            "text": "intentions",
-            "char": [
-              75,
-              85
-            ]
-          }
-        ],
+        "mapped_lexemes": 24,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            368,
-            369,
-            379
-          ],
-          "asr_text": [
-            "conveying",
-            "meaning.",
-            "intention"
-          ],
-          "window": [
-            244.71,
-            250.27
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
-      "start": 243.99,
-      "end": 253.63
+      "start": 243.88,
+      "end": 253.64
     },
     {
       "en": "You may ask: what are the ways, then?",
@@ -5166,6 +5611,17 @@
             [
               58,
               67
+            ]
+          ]
+        },
+        {
+          "t": "phr",
+          "h": "powerful messages",
+          "m": "phr.有力的信息；鲜明的信号",
+          "sp": [
+            [
+              112,
+              129
             ]
           ]
         }
@@ -5718,6 +6174,15 @@
           ]
         },
         {
+          "char": 32,
+          "char_end": 40,
+          "start": 286.87,
+          "end": 287.59,
+          "asr_indices": [
+            453
+          ]
+        },
+        {
           "char": 41,
           "char_end": 43,
           "start": 287.75,
@@ -5739,27 +6204,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 8,
-        "mapped_lexemes": 7,
-        "missing": [
-          {
-            "text": "conveyer",
-            "char": [
-              32,
-              40
-            ]
-          }
-        ],
+        "mapped_lexemes": 8,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            453
-          ],
-          "asr_text": [
-            "conveyor"
-          ],
-          "window": [
-            286.87,
-            287.59
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 284.79,
@@ -6100,21 +6550,13 @@
         },
         {
           "char": 22,
-          "char_end": 25,
-          "start": 303.55,
-          "end": 304.43,
-          "asr_indices": [
-            484
-          ]
-        },
-        {
-          "char": 26,
           "char_end": 31,
           "start": 303.55,
           "end": 304.43,
           "asr_indices": [
             484
-          ]
+          ],
+          "shared_whole_ASR_span": true
         },
         {
           "char": 32,
@@ -6224,6 +6666,17 @@
             [
               206,
               215
+            ]
+          ]
+        },
+        {
+          "t": "word",
+          "h": "compress",
+          "m": "v.抿紧；压紧",
+          "sp": [
+            [
+              128,
+              139
             ]
           ]
         }
@@ -6653,6 +7106,15 @@
           ]
         },
         {
+          "char": 275,
+          "char_end": 284,
+          "start": 328.39,
+          "end": 328.95,
+          "asr_indices": [
+            541
+          ]
+        },
+        {
           "char": 285,
           "char_end": 287,
           "start": 328.95,
@@ -6683,27 +7145,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 51,
-        "mapped_lexemes": 50,
-        "missing": [
-          {
-            "text": "conveyers",
-            "char": [
-              275,
-              284
-            ]
-          }
-        ],
+        "mapped_lexemes": 51,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            541
-          ],
-          "asr_text": [
-            "conveyors"
-          ],
-          "window": [
-            328.39,
-            328.95
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 309.07,
@@ -7188,21 +7635,15 @@
         },
         {
           "char": 45,
-          "char_end": 48,
-          "start": 351.71,
-          "end": 351.79,
-          "asr_indices": [
-            589
-          ]
-        },
-        {
-          "char": 58,
           "char_end": 66,
-          "start": 352.59,
+          "start": 351.71,
           "end": 353.07,
           "asr_indices": [
+            589,
+            590,
             591
-          ]
+          ],
+          "shared_whole_ASR_span": true
         },
         {
           "char": 67,
@@ -7235,27 +7676,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 14,
-        "mapped_lexemes": 13,
-        "missing": [
-          {
-            "text": "favorite",
-            "char": [
-              49,
-              57
-            ]
-          }
-        ],
+        "mapped_lexemes": 14,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            590
-          ],
-          "asr_text": [
-            "favored"
-          ],
-          "window": [
-            351.95,
-            352.51
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 348.59,
@@ -7795,7 +8221,7 @@
       "end": 376.87
     },
     {
-      "en": "Waving can mean welcome and farewell while scratching your head may indicate that you are at a loss.",
+      "en": "Waving can mean welcome and farewell whereas scratching your head may indicate that you are at a loss.",
       "zh": "挥手可以表示欢迎或告别，而挠头则可能表示你不知所措。",
       "w": [
         {
@@ -7804,8 +8230,8 @@
           "m": "phr.不知所措；困惑",
           "sp": [
             [
-              90,
-              99
+              92,
+              101
             ]
           ]
         }
@@ -7866,8 +8292,17 @@
           ]
         },
         {
-          "char": 43,
-          "char_end": 53,
+          "char": 37,
+          "char_end": 44,
+          "start": 380.55,
+          "end": 380.79,
+          "asr_indices": [
+            646
+          ]
+        },
+        {
+          "char": 45,
+          "char_end": 55,
           "start": 380.95,
           "end": 381.51,
           "asr_indices": [
@@ -7875,8 +8310,8 @@
           ]
         },
         {
-          "char": 54,
-          "char_end": 58,
+          "char": 56,
+          "char_end": 60,
           "start": 381.59,
           "end": 381.67,
           "asr_indices": [
@@ -7884,8 +8319,8 @@
           ]
         },
         {
-          "char": 59,
-          "char_end": 63,
+          "char": 61,
+          "char_end": 65,
           "start": 381.75,
           "end": 381.99,
           "asr_indices": [
@@ -7893,8 +8328,8 @@
           ]
         },
         {
-          "char": 64,
-          "char_end": 67,
+          "char": 66,
+          "char_end": 69,
           "start": 382.07,
           "end": 382.15,
           "asr_indices": [
@@ -7902,8 +8337,8 @@
           ]
         },
         {
-          "char": 68,
-          "char_end": 76,
+          "char": 70,
+          "char_end": 78,
           "start": 382.31,
           "end": 382.79,
           "asr_indices": [
@@ -7911,8 +8346,8 @@
           ]
         },
         {
-          "char": 77,
-          "char_end": 81,
+          "char": 79,
+          "char_end": 83,
           "start": 382.87,
           "end": 382.95,
           "asr_indices": [
@@ -7920,8 +8355,8 @@
           ]
         },
         {
-          "char": 82,
-          "char_end": 85,
+          "char": 84,
+          "char_end": 87,
           "start": 383.03,
           "end": 383.11,
           "asr_indices": [
@@ -7929,8 +8364,8 @@
           ]
         },
         {
-          "char": 86,
-          "char_end": 89,
+          "char": 88,
+          "char_end": 91,
           "start": 383.19,
           "end": 383.27,
           "asr_indices": [
@@ -7938,8 +8373,8 @@
           ]
         },
         {
-          "char": 90,
-          "char_end": 92,
+          "char": 92,
+          "char_end": 94,
           "start": 383.43,
           "end": 383.51,
           "asr_indices": [
@@ -7947,8 +8382,8 @@
           ]
         },
         {
-          "char": 93,
-          "char_end": 94,
+          "char": 95,
+          "char_end": 96,
           "start": 383.67,
           "end": 383.75,
           "asr_indices": [
@@ -7956,8 +8391,8 @@
           ]
         },
         {
-          "char": 95,
-          "char_end": 99,
+          "char": 97,
+          "char_end": 101,
           "start": 383.91,
           "end": 384.87,
           "asr_indices": [
@@ -7968,27 +8403,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 18,
-        "mapped_lexemes": 17,
-        "missing": [
-          {
-            "text": "while",
-            "char": [
-              37,
-              42
-            ]
-          }
-        ],
+        "mapped_lexemes": 18,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            646
-          ],
-          "asr_text": [
-            "whereas"
-          ],
-          "window": [
-            380.55,
-            380.79
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 377.11,
@@ -9232,21 +9652,13 @@
         },
         {
           "char": 93,
-          "char_end": 100,
-          "start": 440.31,
-          "end": 441.75,
-          "asr_indices": [
-            765
-          ]
-        },
-        {
-          "char": 101,
           "char_end": 106,
           "start": 440.31,
           "end": 441.75,
           "asr_indices": [
             765
-          ]
+          ],
+          "shared_whole_ASR_span": true
         }
       ],
       "alignment": {
@@ -9505,6 +9917,17 @@
             [
               116,
               128
+            ]
+          ]
+        },
+        {
+          "t": "word",
+          "h": "appropriate",
+          "m": "adj.合适的；得体的",
+          "sp": [
+            [
+              43,
+              54
             ]
           ]
         }
@@ -11151,7 +11574,7 @@
       "end": 525.99
     },
     {
-      "en": "When two people are keen to agree with each other, they would likely, though unconsciously, adopt the same posture, as if an imitation of each other.",
+      "en": "When two people are keen to agree with each other, they would likely, though unconsciously, adopt the same posture, as if in imitation of each other.",
       "zh": "当两个人很想与对方达成一致时，往往会不自觉地采用相同的姿态，仿佛在相互模仿。",
       "w": [
         {
@@ -11357,6 +11780,15 @@
           ]
         },
         {
+          "char": 122,
+          "char_end": 124,
+          "start": 535.27,
+          "end": 535.35,
+          "asr_indices": [
+            954
+          ]
+        },
+        {
           "char": 125,
           "char_end": 134,
           "start": 535.59,
@@ -11396,27 +11828,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 26,
-        "mapped_lexemes": 25,
-        "missing": [
-          {
-            "text": "an",
-            "char": [
-              122,
-              124
-            ]
-          }
-        ],
+        "mapped_lexemes": 26,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            954
-          ],
-          "asr_text": [
-            "in"
-          ],
-          "window": [
-            535.27,
-            535.35
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 526.23,
@@ -11542,12 +11959,81 @@
           ]
         }
       ],
+      "words": [
+        [
+          "When",
+          541.56,
+          541.88
+        ],
+        [
+          "used",
+          542.04,
+          542.12
+        ],
+        [
+          "in",
+          542.36,
+          542.44
+        ],
+        [
+          "this",
+          542.6,
+          542.68
+        ],
+        [
+          "way,",
+          542.92,
+          543.24
+        ],
+        [
+          "echoing",
+          543.48,
+          544.12
+        ],
+        [
+          "appears",
+          544.2,
+          544.52
+        ],
+        [
+          "to",
+          544.52,
+          544.6
+        ],
+        [
+          "complement",
+          544.68,
+          545.16
+        ],
+        [
+          "the",
+          545.32,
+          545.4
+        ],
+        [
+          "verbal",
+          545.48,
+          545.88
+        ],
+        [
+          "communication.",
+          546.04,
+          547.4
+        ]
+      ],
+      "asr_ref": "核验/正文清理/2010-局部真词锚.json",
+      "asr_sha256": "34fb15b10a9bab160ae20f85c2e0757b546d55c9daf893716d1efbe611531521",
+      "asr_pointer": "/recognitions/6/words",
+      "asr_range": [
+        0,
+        12
+      ],
       "word_alignment": [
         {
           "char": 0,
           "char_end": 4,
-          "start": 541.67,
-          "end": 541.91,
+          "start": 541.56,
+          "end": 541.88,
           "asr_indices": [
             967
           ]
@@ -11555,8 +12041,8 @@
         {
           "char": 5,
           "char_end": 9,
-          "start": 542.07,
-          "end": 542.15,
+          "start": 542.04,
+          "end": 542.12,
           "asr_indices": [
             968
           ]
@@ -11564,8 +12050,8 @@
         {
           "char": 10,
           "char_end": 12,
-          "start": 542.39,
-          "end": 542.47,
+          "start": 542.36,
+          "end": 542.44,
           "asr_indices": [
             969
           ]
@@ -11573,8 +12059,8 @@
         {
           "char": 13,
           "char_end": 17,
-          "start": 542.63,
-          "end": 542.71,
+          "start": 542.6,
+          "end": 542.68,
           "asr_indices": [
             970
           ]
@@ -11582,8 +12068,8 @@
         {
           "char": 18,
           "char_end": 21,
-          "start": 542.87,
-          "end": 543.19,
+          "start": 542.92,
+          "end": 543.24,
           "asr_indices": [
             971
           ]
@@ -11591,8 +12077,8 @@
         {
           "char": 23,
           "char_end": 30,
-          "start": 543.43,
-          "end": 544.07,
+          "start": 543.48,
+          "end": 544.12,
           "asr_indices": [
             972
           ]
@@ -11600,8 +12086,8 @@
         {
           "char": 31,
           "char_end": 38,
-          "start": 544.15,
-          "end": 544.47,
+          "start": 544.2,
+          "end": 544.52,
           "asr_indices": [
             973
           ]
@@ -11609,8 +12095,8 @@
         {
           "char": 39,
           "char_end": 41,
-          "start": 544.47,
-          "end": 544.55,
+          "start": 544.52,
+          "end": 544.6,
           "asr_indices": [
             974
           ]
@@ -11618,8 +12104,8 @@
         {
           "char": 42,
           "char_end": 52,
-          "start": 544.63,
-          "end": 545.03,
+          "start": 544.68,
+          "end": 545.16,
           "asr_indices": [
             975
           ]
@@ -11627,17 +12113,26 @@
         {
           "char": 53,
           "char_end": 56,
-          "start": 545.11,
-          "end": 545.19,
+          "start": 545.32,
+          "end": 545.4,
           "asr_indices": [
             976
           ]
         },
         {
+          "char": 57,
+          "char_end": 63,
+          "start": 545.48,
+          "end": 545.88,
+          "asr_indices": [
+            977
+          ]
+        },
+        {
           "char": 64,
           "char_end": 77,
-          "start": 546.03,
-          "end": 547.39,
+          "start": 546.04,
+          "end": 547.4,
           "asr_indices": [
             978
           ]
@@ -11646,31 +12141,16 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 12,
-        "mapped_lexemes": 11,
-        "missing": [
-          {
-            "text": "verbal",
-            "char": [
-              57,
-              63
-            ]
-          }
-        ],
+        "mapped_lexemes": 12,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            977
-          ],
-          "asr_text": [
-            "verb."
-          ],
-          "window": [
-            545.19,
-            545.51
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
-      "start": 541.67,
-      "end": 547.39
+      "start": 541.56,
+      "end": 547.4
     },
     {
       "en": "Of course, when such imitation is carried out consciously, it often indicates that someone is mocking at another speaker.",
@@ -12083,6 +12563,17 @@
               162
             ]
           ]
+        },
+        {
+          "t": "word",
+          "h": "linguistic",
+          "m": "adj.语言的；语言学的",
+          "sp": [
+            [
+              30,
+              40
+            ]
+          ]
         }
       ],
       "word_alignment": [
@@ -12304,30 +12795,13 @@
         },
         {
           "char": 150,
-          "char_end": 154,
-          "start": 578.23,
-          "end": 579.03,
-          "asr_indices": [
-            1040
-          ]
-        },
-        {
-          "char": 155,
-          "char_end": 157,
-          "start": 578.23,
-          "end": 579.03,
-          "asr_indices": [
-            1040
-          ]
-        },
-        {
-          "char": 158,
           "char_end": 162,
           "start": 578.23,
           "end": 579.03,
           "asr_indices": [
             1040
-          ]
+          ],
+          "shared_whole_ASR_span": true
         },
         {
           "char": 163,
@@ -12365,6 +12839,17 @@
             [
               164,
               168
+            ]
+          ]
+        },
+        {
+          "t": "phr",
+          "h": "video material",
+          "m": "phr.视频资料；影像材料",
+          "sp": [
+            [
+              38,
+              52
             ]
           ]
         }
@@ -12889,6 +13374,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2010/对齐报告.json",
-    "content_sha256": "ac41adfe5205554cbb5f22475e20d6bb4c5c33ec6961674973c6e6e5035231dd"
+    "content_sha256": "6f19f4ee2d457a958a69f15434626c4033e753624230fd560e901c170434534a"
   }
 }

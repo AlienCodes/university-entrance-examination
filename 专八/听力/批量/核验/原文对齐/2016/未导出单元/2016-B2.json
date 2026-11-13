@@ -16,8 +16,8 @@
   ],
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有6个原文词缺少ASR对应；涉及句号[4, 15, 16, 21, 31, 33]，严禁按比例补时。",
-    "句首/尾无真实ASR词锚，句号[15, 16, 31]；单元未导出到可制作目录。"
+    "仍有2个原文词缺少ASR对应；涉及句号[4, 31]，严禁按比例补时。",
+    "句首/尾无真实ASR词锚，句号[31]；单元未导出到可制作目录。"
   ],
   "instruction_review": {
     "source": "说明语句/2016.json",
@@ -592,7 +592,7 @@
       "end": 1130.68
     },
     {
-      "en": "Changing careers later in life is no longer a rarity, so it is not uncommon for students and their parents to be toying with big decisions at the same time.",
+      "en": "Changing careers later in life is no longer a rarity, so it is not uncommon for students and their parents to be toying with the big decisions at the same time.",
       "speaker": "W",
       "zh": "在人生后期转行已经不是什么稀罕事了，因此，学生和父母同时考虑重大决定也并不少见。",
       "w": [
@@ -828,6 +828,15 @@
         {
           "char": 125,
           "char_end": 128,
+          "start": 1140.0,
+          "end": 1140.08,
+          "asr_indices": [
+            1994
+          ]
+        },
+        {
+          "char": 129,
+          "char_end": 132,
           "start": 1140.24,
           "end": 1140.32,
           "asr_indices": [
@@ -835,8 +844,8 @@
           ]
         },
         {
-          "char": 129,
-          "char_end": 138,
+          "char": 133,
+          "char_end": 142,
           "start": 1140.48,
           "end": 1141.04,
           "asr_indices": [
@@ -844,8 +853,8 @@
           ]
         },
         {
-          "char": 139,
-          "char_end": 141,
+          "char": 143,
+          "char_end": 145,
           "start": 1141.28,
           "end": 1141.36,
           "asr_indices": [
@@ -853,8 +862,8 @@
           ]
         },
         {
-          "char": 142,
-          "char_end": 145,
+          "char": 146,
+          "char_end": 149,
           "start": 1141.6,
           "end": 1141.68,
           "asr_indices": [
@@ -862,8 +871,8 @@
           ]
         },
         {
-          "char": 146,
-          "char_end": 150,
+          "char": 150,
+          "char_end": 154,
           "start": 1141.92,
           "end": 1142.0,
           "asr_indices": [
@@ -871,8 +880,8 @@
           ]
         },
         {
-          "char": 151,
-          "char_end": 155,
+          "char": 155,
+          "char_end": 159,
           "start": 1142.24,
           "end": 1142.64,
           "asr_indices": [
@@ -882,21 +891,19 @@
       ],
       "alignment": {
         "boundary_anchored": true,
-        "source_lexemes": 30,
-        "mapped_lexemes": 30,
+        "source_lexemes": 31,
+        "mapped_lexemes": 31,
         "missing": [],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1970,
-            1994
+            1970
           ],
           "asr_text": [
-            "career.",
-            "the"
+            "career."
           ],
           "window": [
             1131.4,
-            1140.08
+            1131.64
           ]
         }
       },
@@ -2068,10 +2075,21 @@
       "end": 1183.84
     },
     {
-      "en": "Freshman Week, in one of the welcoming speeches, our dean mentioned that many of us might have grown up thinking that “doctor, lawyer, teacher” were our only option.",
+      "en": "Freshman Week, in one of the welcoming speeches, our dean mentioned that many of us might have grown up thinking that “doctor, lawyer, teacher” were our only options.",
       "speaker": "W",
       "zh": "新生周的一次欢迎致辞中，院长提到，我们很多人可能从小就认为“医生、律师、教师”是仅有的职业选择。",
       "w": [
+        {
+          "t": "word",
+          "h": "freshman",
+          "m": "n.大学一年级学生",
+          "sp": [
+            [
+              0,
+              8
+            ]
+          ]
+        },
         {
           "t": "word",
           "h": "dean",
@@ -2327,32 +2345,33 @@
           "asr_indices": [
             2127
           ]
+        },
+        {
+          "char": 158,
+          "char_end": 165,
+          "start": 1194.88,
+          "end": 1195.92,
+          "asr_indices": [
+            2128
+          ]
         }
       ],
       "alignment": {
-        "boundary_anchored": false,
+        "boundary_anchored": true,
         "source_lexemes": 28,
-        "mapped_lexemes": 27,
-        "missing": [
-          {
-            "text": "option",
-            "char": [
-              158,
-              164
-            ]
-          }
-        ],
+        "mapped_lexemes": 28,
+        "missing": [],
         "unmatched_internal_asr": {
           "asr_indices": [],
           "asr_text": [],
           "window": null
         }
       },
-      "start": null,
-      "end": null
+      "start": 1184.08,
+      "end": 1195.92
     },
     {
-      "en": "She urged us to stick to our dream.",
+      "en": "She urged us to stick to our dreams.",
       "speaker": "W",
       "zh": "她鼓励我们坚持自己的梦想。",
       "w": [
@@ -2431,29 +2450,30 @@
           "asr_indices": [
             2135
           ]
+        },
+        {
+          "char": 29,
+          "char_end": 35,
+          "start": 1198.08,
+          "end": 1199.12,
+          "asr_indices": [
+            2136
+          ]
         }
       ],
       "alignment": {
-        "boundary_anchored": false,
+        "boundary_anchored": true,
         "source_lexemes": 8,
-        "mapped_lexemes": 7,
-        "missing": [
-          {
-            "text": "dream",
-            "char": [
-              29,
-              34
-            ]
-          }
-        ],
+        "mapped_lexemes": 8,
+        "missing": [],
         "unmatched_internal_asr": {
           "asr_indices": [],
           "asr_text": [],
           "window": null
         }
       },
-      "start": null,
-      "end": null
+      "start": 1196.16,
+      "end": 1199.12
     },
     {
       "en": "But later I realized talking about passions is one thing—actually following them is another.",
@@ -2628,6 +2648,17 @@
       "speaker": "W",
       "zh": "当我开始思考自己可能会选择怎样的职业方向时，“美国人平均一生会转行七次”这句话我已经听得太多，几乎对此麻木了。",
       "w": [
+        {
+          "t": "word",
+          "h": "professional",
+          "m": "adj.职业的；专业的",
+          "sp": [
+            [
+              42,
+              54
+            ]
+          ]
+        },
         {
           "t": "word",
           "h": "numb",
@@ -3020,6 +3051,17 @@
             [
               128,
               137
+            ]
+          ]
+        },
+        {
+          "t": "word",
+          "h": "uncertain",
+          "m": "adj.不确定的",
+          "sp": [
+            [
+              173,
+              182
             ]
           ]
         }
@@ -3434,7 +3476,7 @@
       "end": 1238.48
     },
     {
-      "en": "Even if she graduated from Harvard herself as a brilliant student, she has to make alterations of her career.",
+      "en": "Even if she graduated from Harvard herself as a brilliant student, she had to make alterations of her career.",
       "speaker": "W",
       "zh": "即使她当初也是以优异成绩从哈佛毕业，也仍然不得不调整自己的职业方向。",
       "w": [
@@ -3560,6 +3602,15 @@
           ]
         },
         {
+          "char": 71,
+          "char_end": 74,
+          "start": 1243.12,
+          "end": 1243.2,
+          "asr_indices": [
+            2243
+          ]
+        },
+        {
           "char": 75,
           "char_end": 77,
           "start": 1243.36,
@@ -3617,27 +3668,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 19,
-        "mapped_lexemes": 18,
-        "missing": [
-          {
-            "text": "has",
-            "char": [
-              71,
-              74
-            ]
-          }
-        ],
+        "mapped_lexemes": 19,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            2243
-          ],
-          "asr_text": [
-            "had"
-          ],
-          "window": [
-            1243.12,
-            1243.2
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 1238.72,
@@ -4034,6 +4070,17 @@
             [
               101,
               110
+            ]
+          ]
+        },
+        {
+          "t": "word",
+          "h": "omelet",
+          "m": "n.煎蛋卷",
+          "sp": [
+            [
+              221,
+              228
             ]
           ]
         }
@@ -5581,12 +5628,21 @@
           ]
         },
         {
-          "char": 130,
-          "char_end": 134,
-          "start": 1318.6,
-          "end": 1319.16,
+          "char": 126,
+          "char_end": 129,
+          "start": 1318.52,
+          "end": 1318.6,
           "asr_indices": [
             2423
+          ]
+        },
+        {
+          "char": 130,
+          "char_end": 134,
+          "start": 1318.92,
+          "end": 1319.16,
+          "asr_indices": [
+            2424
           ]
         },
         {
@@ -5595,7 +5651,7 @@
           "start": 1319.4,
           "end": 1319.48,
           "asr_indices": [
-            2424
+            2425
           ]
         },
         {
@@ -5604,34 +5660,19 @@
           "start": 1319.72,
           "end": 1320.44,
           "asr_indices": [
-            2425
+            2426
           ]
         }
       ],
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 25,
-        "mapped_lexemes": 24,
-        "missing": [
-          {
-            "text": "end",
-            "char": [
-              126,
-              129
-            ]
-          }
-        ],
+        "mapped_lexemes": 25,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            2423
-          ],
-          "asr_text": [
-            "in-goal"
-          ],
-          "window": [
-            1318.6,
-            1319.16
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 1310.12,
@@ -5652,6 +5693,17 @@
               74
             ]
           ]
+        },
+        {
+          "t": "word",
+          "h": "shape",
+          "m": "v.塑造；影响形成",
+          "sp": [
+            [
+              141,
+              147
+            ]
+          ]
         }
       ],
       "word_alignment": [
@@ -5661,7 +5713,7 @@
           "start": 1320.68,
           "end": 1320.76,
           "asr_indices": [
-            2426
+            2427
           ]
         },
         {
@@ -5670,7 +5722,7 @@
           "start": 1320.92,
           "end": 1321.0,
           "asr_indices": [
-            2427
+            2428
           ]
         },
         {
@@ -5679,7 +5731,7 @@
           "start": 1321.16,
           "end": 1321.24,
           "asr_indices": [
-            2428
+            2429
           ]
         },
         {
@@ -5688,7 +5740,7 @@
           "start": 1321.4,
           "end": 1321.48,
           "asr_indices": [
-            2429
+            2430
           ]
         },
         {
@@ -5697,7 +5749,7 @@
           "start": 1321.56,
           "end": 1321.64,
           "asr_indices": [
-            2430
+            2431
           ]
         },
         {
@@ -5706,7 +5758,7 @@
           "start": 1321.8,
           "end": 1321.88,
           "asr_indices": [
-            2431
+            2432
           ]
         },
         {
@@ -5715,7 +5767,7 @@
           "start": 1322.12,
           "end": 1322.2,
           "asr_indices": [
-            2432
+            2433
           ]
         },
         {
@@ -5724,7 +5776,7 @@
           "start": 1322.28,
           "end": 1322.92,
           "asr_indices": [
-            2433
+            2434
           ]
         },
         {
@@ -5733,7 +5785,7 @@
           "start": 1323.16,
           "end": 1323.24,
           "asr_indices": [
-            2434
+            2435
           ]
         },
         {
@@ -5742,7 +5794,7 @@
           "start": 1323.4,
           "end": 1323.48,
           "asr_indices": [
-            2435
+            2436
           ]
         },
         {
@@ -5751,7 +5803,7 @@
           "start": 1323.72,
           "end": 1323.8,
           "asr_indices": [
-            2436
+            2437
           ]
         },
         {
@@ -5760,7 +5812,7 @@
           "start": 1324.04,
           "end": 1324.12,
           "asr_indices": [
-            2437
+            2438
           ]
         },
         {
@@ -5769,7 +5821,7 @@
           "start": 1324.36,
           "end": 1324.44,
           "asr_indices": [
-            2438
+            2439
           ]
         },
         {
@@ -5778,7 +5830,7 @@
           "start": 1324.6,
           "end": 1324.68,
           "asr_indices": [
-            2439
+            2440
           ]
         },
         {
@@ -5787,7 +5839,7 @@
           "start": 1324.84,
           "end": 1324.92,
           "asr_indices": [
-            2440
+            2441
           ]
         },
         {
@@ -5796,7 +5848,7 @@
           "start": 1325.24,
           "end": 1325.32,
           "asr_indices": [
-            2441
+            2442
           ]
         },
         {
@@ -5805,7 +5857,7 @@
           "start": 1325.48,
           "end": 1325.56,
           "asr_indices": [
-            2442
+            2443
           ]
         },
         {
@@ -5814,7 +5866,7 @@
           "start": 1326.28,
           "end": 1326.36,
           "asr_indices": [
-            2443
+            2444
           ]
         },
         {
@@ -5823,7 +5875,7 @@
           "start": 1326.52,
           "end": 1327.64,
           "asr_indices": [
-            2444
+            2445
           ]
         },
         {
@@ -5832,7 +5884,7 @@
           "start": 1327.8,
           "end": 1327.88,
           "asr_indices": [
-            2445
+            2446
           ]
         },
         {
@@ -5841,7 +5893,7 @@
           "start": 1328.04,
           "end": 1328.76,
           "asr_indices": [
-            2446
+            2447
           ]
         },
         {
@@ -5850,7 +5902,7 @@
           "start": 1329.0,
           "end": 1329.08,
           "asr_indices": [
-            2447
+            2448
           ]
         },
         {
@@ -5859,7 +5911,7 @@
           "start": 1329.24,
           "end": 1329.32,
           "asr_indices": [
-            2448
+            2449
           ]
         },
         {
@@ -5868,7 +5920,7 @@
           "start": 1329.4,
           "end": 1329.48,
           "asr_indices": [
-            2449
+            2450
           ]
         },
         {
@@ -5877,7 +5929,7 @@
           "start": 1329.64,
           "end": 1329.96,
           "asr_indices": [
-            2450
+            2451
           ]
         },
         {
@@ -5886,7 +5938,7 @@
           "start": 1330.36,
           "end": 1330.44,
           "asr_indices": [
-            2451
+            2452
           ]
         },
         {
@@ -5895,7 +5947,7 @@
           "start": 1330.6,
           "end": 1330.68,
           "asr_indices": [
-            2452
+            2453
           ]
         },
         {
@@ -5904,7 +5956,7 @@
           "start": 1330.76,
           "end": 1331.16,
           "asr_indices": [
-            2453
+            2454
           ]
         },
         {
@@ -5913,7 +5965,7 @@
           "start": 1331.24,
           "end": 1331.64,
           "asr_indices": [
-            2454
+            2455
           ]
         },
         {
@@ -5922,7 +5974,7 @@
           "start": 1332.16,
           "end": 1332.32,
           "asr_indices": [
-            2455
+            2456
           ]
         },
         {
@@ -5931,7 +5983,7 @@
           "start": 1332.32,
           "end": 1332.72,
           "asr_indices": [
-            2456
+            2457
           ]
         },
         {
@@ -5940,7 +5992,7 @@
           "start": 1332.8,
           "end": 1332.88,
           "asr_indices": [
-            2457
+            2458
           ]
         },
         {
@@ -5949,7 +6001,7 @@
           "start": 1333.04,
           "end": 1333.12,
           "asr_indices": [
-            2458
+            2459
           ]
         },
         {
@@ -5958,7 +6010,7 @@
           "start": 1333.28,
           "end": 1333.36,
           "asr_indices": [
-            2459
+            2460
           ]
         },
         {
@@ -5967,7 +6019,7 @@
           "start": 1333.52,
           "end": 1333.6,
           "asr_indices": [
-            2460
+            2461
           ]
         },
         {
@@ -5976,7 +6028,7 @@
           "start": 1333.92,
           "end": 1334.0,
           "asr_indices": [
-            2461
+            2462
           ]
         },
         {
@@ -5985,7 +6037,7 @@
           "start": 1334.24,
           "end": 1334.32,
           "asr_indices": [
-            2462
+            2463
           ]
         },
         {
@@ -5994,7 +6046,7 @@
           "start": 1334.56,
           "end": 1334.96,
           "asr_indices": [
-            2463
+            2464
           ]
         }
       ],
@@ -6036,7 +6088,7 @@
           "start": 1335.2,
           "end": 1335.28,
           "asr_indices": [
-            2464
+            2465
           ]
         },
         {
@@ -6045,7 +6097,7 @@
           "start": 1335.44,
           "end": 1335.52,
           "asr_indices": [
-            2465
+            2466
           ]
         },
         {
@@ -6054,7 +6106,7 @@
           "start": 1335.76,
           "end": 1336.16,
           "asr_indices": [
-            2466
+            2467
           ]
         },
         {
@@ -6063,7 +6115,7 @@
           "start": 1336.4,
           "end": 1336.48,
           "asr_indices": [
-            2467
+            2468
           ]
         },
         {
@@ -6072,7 +6124,7 @@
           "start": 1336.56,
           "end": 1336.64,
           "asr_indices": [
-            2468
+            2469
           ]
         },
         {
@@ -6081,7 +6133,7 @@
           "start": 1336.8,
           "end": 1336.88,
           "asr_indices": [
-            2469
+            2470
           ]
         },
         {
@@ -6090,7 +6142,7 @@
           "start": 1337.12,
           "end": 1337.36,
           "asr_indices": [
-            2470
+            2471
           ]
         },
         {
@@ -6099,7 +6151,7 @@
           "start": 1337.44,
           "end": 1337.84,
           "asr_indices": [
-            2471
+            2472
           ]
         },
         {
@@ -6108,7 +6160,7 @@
           "start": 1337.84,
           "end": 1337.92,
           "asr_indices": [
-            2472
+            2473
           ]
         },
         {
@@ -6117,7 +6169,7 @@
           "start": 1338.0,
           "end": 1338.08,
           "asr_indices": [
-            2473
+            2474
           ]
         },
         {
@@ -6126,7 +6178,7 @@
           "start": 1338.32,
           "end": 1338.4,
           "asr_indices": [
-            2474
+            2475
           ]
         },
         {
@@ -6135,7 +6187,7 @@
           "start": 1338.56,
           "end": 1339.36,
           "asr_indices": [
-            2475
+            2476
           ]
         }
       ],
@@ -6177,7 +6229,7 @@
           "start": 1339.76,
           "end": 1340.0,
           "asr_indices": [
-            2476
+            2477
           ]
         },
         {
@@ -6186,7 +6238,7 @@
           "start": 1340.0,
           "end": 1340.64,
           "asr_indices": [
-            2477
+            2478
           ]
         }
       ],
@@ -6228,7 +6280,7 @@
           "start": 1340.8,
           "end": 1341.04,
           "asr_indices": [
-            2478
+            2479
           ]
         },
         {
@@ -6237,7 +6289,7 @@
           "start": 1341.12,
           "end": 1341.2,
           "asr_indices": [
-            2479
+            2480
           ]
         },
         {
@@ -6246,7 +6298,7 @@
           "start": 1341.36,
           "end": 1341.44,
           "asr_indices": [
-            2480
+            2481
           ]
         },
         {
@@ -6255,7 +6307,7 @@
           "start": 1341.6,
           "end": 1341.68,
           "asr_indices": [
-            2481
+            2482
           ]
         },
         {
@@ -6264,7 +6316,7 @@
           "start": 1341.92,
           "end": 1342.0,
           "asr_indices": [
-            2482
+            2483
           ]
         },
         {
@@ -6273,7 +6325,7 @@
           "start": 1342.16,
           "end": 1342.56,
           "asr_indices": [
-            2483
+            2484
           ]
         },
         {
@@ -6282,7 +6334,7 @@
           "start": 1342.56,
           "end": 1342.64,
           "asr_indices": [
-            2484
+            2485
           ]
         },
         {
@@ -6291,7 +6343,7 @@
           "start": 1342.72,
           "end": 1342.8,
           "asr_indices": [
-            2485
+            2486
           ]
         },
         {
@@ -6300,7 +6352,7 @@
           "start": 1342.96,
           "end": 1343.36,
           "asr_indices": [
-            2486
+            2487
           ]
         }
       ],
@@ -6342,7 +6394,7 @@
           "start": 1343.68,
           "end": 1343.92,
           "asr_indices": [
-            2487
+            2488
           ]
         },
         {
@@ -6351,7 +6403,7 @@
           "start": 1344.0,
           "end": 1344.8,
           "asr_indices": [
-            2488
+            2489
           ]
         }
       ],
@@ -6406,7 +6458,7 @@
           "start": 1345.68,
           "end": 1345.76,
           "asr_indices": [
-            2489
+            2490
           ]
         },
         {
@@ -6415,7 +6467,7 @@
           "start": 1346.08,
           "end": 1346.16,
           "asr_indices": [
-            2490
+            2491
           ]
         },
         {
@@ -6424,7 +6476,7 @@
           "start": 1346.32,
           "end": 1346.4,
           "asr_indices": [
-            2491
+            2492
           ]
         },
         {
@@ -6433,7 +6485,7 @@
           "start": 1346.64,
           "end": 1346.72,
           "asr_indices": [
-            2492
+            2493
           ]
         },
         {
@@ -6442,7 +6494,7 @@
           "start": 1346.96,
           "end": 1347.04,
           "asr_indices": [
-            2493
+            2494
           ]
         },
         {
@@ -6451,7 +6503,7 @@
           "start": 1347.2,
           "end": 1347.28,
           "asr_indices": [
-            2494
+            2495
           ]
         },
         {
@@ -6460,7 +6512,7 @@
           "start": 1347.6,
           "end": 1347.68,
           "asr_indices": [
-            2495
+            2496
           ]
         },
         {
@@ -6469,7 +6521,7 @@
           "start": 1348.0,
           "end": 1348.08,
           "asr_indices": [
-            2496
+            2497
           ]
         },
         {
@@ -6478,7 +6530,7 @@
           "start": 1348.16,
           "end": 1348.24,
           "asr_indices": [
-            2497
+            2498
           ]
         },
         {
@@ -6487,7 +6539,7 @@
           "start": 1348.32,
           "end": 1349.44,
           "asr_indices": [
-            2498
+            2499
           ]
         }
       ],
@@ -6542,7 +6594,7 @@
           "start": 1349.68,
           "end": 1350.16,
           "asr_indices": [
-            2499
+            2500
           ]
         },
         {
@@ -6551,7 +6603,7 @@
           "start": 1350.32,
           "end": 1350.56,
           "asr_indices": [
-            2500
+            2501
           ]
         },
         {
@@ -6560,7 +6612,7 @@
           "start": 1350.64,
           "end": 1350.72,
           "asr_indices": [
-            2501
+            2502
           ]
         },
         {
@@ -6569,7 +6621,7 @@
           "start": 1350.88,
           "end": 1351.12,
           "asr_indices": [
-            2502
+            2503
           ]
         },
         {
@@ -6578,7 +6630,7 @@
           "start": 1351.28,
           "end": 1351.36,
           "asr_indices": [
-            2503
+            2504
           ]
         },
         {
@@ -6587,7 +6639,7 @@
           "start": 1351.52,
           "end": 1351.92,
           "asr_indices": [
-            2504
+            2505
           ]
         },
         {
@@ -6596,7 +6648,7 @@
           "start": 1352.0,
           "end": 1352.08,
           "asr_indices": [
-            2505
+            2506
           ]
         },
         {
@@ -6605,7 +6657,7 @@
           "start": 1352.16,
           "end": 1352.24,
           "asr_indices": [
-            2506
+            2507
           ]
         },
         {
@@ -6614,7 +6666,7 @@
           "start": 1352.4,
           "end": 1352.48,
           "asr_indices": [
-            2507
+            2508
           ]
         },
         {
@@ -6623,7 +6675,7 @@
           "start": 1352.64,
           "end": 1352.72,
           "asr_indices": [
-            2508
+            2509
           ]
         },
         {
@@ -6632,7 +6684,7 @@
           "start": 1352.88,
           "end": 1352.96,
           "asr_indices": [
-            2509
+            2510
           ]
         },
         {
@@ -6641,7 +6693,7 @@
           "start": 1353.36,
           "end": 1354.24,
           "asr_indices": [
-            2510
+            2511
           ]
         }
       ],
@@ -6685,7 +6737,7 @@
           "start": 1355.44,
           "end": 1355.84,
           "asr_indices": [
-            2511
+            2512
           ]
         },
         {
@@ -6694,7 +6746,7 @@
           "start": 1356.08,
           "end": 1356.48,
           "asr_indices": [
-            2512
+            2513
           ]
         },
         {
@@ -6703,7 +6755,7 @@
           "start": 1357.4,
           "end": 1357.72,
           "asr_indices": [
-            2513
+            2514
           ]
         },
         {
@@ -6712,7 +6764,7 @@
           "start": 1357.88,
           "end": 1357.96,
           "asr_indices": [
-            2514
+            2515
           ]
         },
         {
@@ -6721,7 +6773,7 @@
           "start": 1358.12,
           "end": 1358.6,
           "asr_indices": [
-            2515
+            2516
           ]
         },
         {
@@ -6730,7 +6782,7 @@
           "start": 1358.68,
           "end": 1358.76,
           "asr_indices": [
-            2516
+            2517
           ]
         },
         {
@@ -6739,7 +6791,7 @@
           "start": 1358.92,
           "end": 1359.16,
           "asr_indices": [
-            2517
+            2518
           ]
         },
         {
@@ -6748,7 +6800,7 @@
           "start": 1359.4,
           "end": 1359.96,
           "asr_indices": [
-            2518
+            2519
           ]
         },
         {
@@ -6757,7 +6809,7 @@
           "start": 1360.04,
           "end": 1360.6,
           "asr_indices": [
-            2519
+            2520
           ]
         },
         {
@@ -6766,7 +6818,7 @@
           "start": 1360.76,
           "end": 1360.84,
           "asr_indices": [
-            2520
+            2521
           ]
         },
         {
@@ -6775,7 +6827,7 @@
           "start": 1361.0,
           "end": 1361.4,
           "asr_indices": [
-            2521
+            2522
           ]
         },
         {
@@ -6784,7 +6836,7 @@
           "start": 1361.56,
           "end": 1362.44,
           "asr_indices": [
-            2522
+            2523
           ]
         }
       ],
@@ -6828,7 +6880,7 @@
           "start": 1373.08,
           "end": 1373.56,
           "asr_indices": [
-            2523
+            2524
           ]
         },
         {
@@ -6837,7 +6889,7 @@
           "start": 1373.88,
           "end": 1374.76,
           "asr_indices": [
-            2524
+            2525
           ]
         },
         {
@@ -6846,7 +6898,7 @@
           "start": 1375.0,
           "end": 1375.08,
           "asr_indices": [
-            2525
+            2526
           ]
         },
         {
@@ -6855,7 +6907,7 @@
           "start": 1375.4,
           "end": 1375.48,
           "asr_indices": [
-            2526
+            2527
           ]
         },
         {
@@ -6864,7 +6916,7 @@
           "start": 1375.64,
           "end": 1376.36,
           "asr_indices": [
-            2527
+            2528
           ]
         },
         {
@@ -6873,7 +6925,7 @@
           "start": 1376.44,
           "end": 1376.76,
           "asr_indices": [
-            2528
+            2529
           ]
         },
         {
@@ -6882,7 +6934,7 @@
           "start": 1376.92,
           "end": 1377.0,
           "asr_indices": [
-            2529
+            2530
           ]
         },
         {
@@ -6891,7 +6943,7 @@
           "start": 1377.16,
           "end": 1377.24,
           "asr_indices": [
-            2530
+            2531
           ]
         },
         {
@@ -6900,7 +6952,7 @@
           "start": 1377.48,
           "end": 1377.56,
           "asr_indices": [
-            2531
+            2532
           ]
         },
         {
@@ -6909,7 +6961,7 @@
           "start": 1377.8,
           "end": 1377.88,
           "asr_indices": [
-            2532
+            2533
           ]
         },
         {
@@ -6918,7 +6970,7 @@
           "start": 1378.36,
           "end": 1379.32,
           "asr_indices": [
-            2533
+            2534
           ]
         }
       ],
@@ -6962,7 +7014,7 @@
           "start": 1389.92,
           "end": 1390.4,
           "asr_indices": [
-            2534
+            2535
           ]
         },
         {
@@ -6971,7 +7023,7 @@
           "start": 1390.56,
           "end": 1391.6,
           "asr_indices": [
-            2535
+            2536
           ]
         },
         {
@@ -6980,7 +7032,7 @@
           "start": 1391.84,
           "end": 1392.08,
           "asr_indices": [
-            2536
+            2537
           ]
         },
         {
@@ -6989,7 +7041,7 @@
           "start": 1392.16,
           "end": 1392.24,
           "asr_indices": [
-            2537
+            2538
           ]
         },
         {
@@ -6998,7 +7050,7 @@
           "start": 1392.4,
           "end": 1393.12,
           "asr_indices": [
-            2538
+            2539
           ]
         },
         {
@@ -7007,7 +7059,7 @@
           "start": 1393.12,
           "end": 1393.36,
           "asr_indices": [
-            2539
+            2540
           ]
         },
         {
@@ -7016,7 +7068,7 @@
           "start": 1393.6,
           "end": 1393.68,
           "asr_indices": [
-            2540
+            2541
           ]
         },
         {
@@ -7025,7 +7077,7 @@
           "start": 1394.16,
           "end": 1394.24,
           "asr_indices": [
-            2541
+            2542
           ]
         },
         {
@@ -7034,7 +7086,7 @@
           "start": 1394.48,
           "end": 1394.96,
           "asr_indices": [
-            2542
+            2543
           ]
         },
         {
@@ -7043,7 +7095,7 @@
           "start": 1395.12,
           "end": 1395.2,
           "asr_indices": [
-            2543
+            2544
           ]
         },
         {
@@ -7052,7 +7104,7 @@
           "start": 1395.44,
           "end": 1395.84,
           "asr_indices": [
-            2544
+            2545
           ]
         },
         {
@@ -7061,7 +7113,7 @@
           "start": 1396.16,
           "end": 1396.24,
           "asr_indices": [
-            2545
+            2546
           ]
         },
         {
@@ -7070,7 +7122,7 @@
           "start": 1396.48,
           "end": 1397.04,
           "asr_indices": [
-            2546
+            2547
           ]
         },
         {
@@ -7079,7 +7131,7 @@
           "start": 1397.28,
           "end": 1397.68,
           "asr_indices": [
-            2547
+            2548
           ]
         }
       ],
@@ -7123,7 +7175,7 @@
           "start": 1408.79,
           "end": 1409.35,
           "asr_indices": [
-            2548
+            2549
           ]
         },
         {
@@ -7132,7 +7184,7 @@
           "start": 1409.59,
           "end": 1410.23,
           "asr_indices": [
-            2549
+            2550
           ]
         },
         {
@@ -7141,7 +7193,7 @@
           "start": 1410.71,
           "end": 1410.79,
           "asr_indices": [
-            2550
+            2551
           ]
         },
         {
@@ -7150,7 +7202,7 @@
           "start": 1411.19,
           "end": 1411.27,
           "asr_indices": [
-            2551
+            2552
           ]
         },
         {
@@ -7159,7 +7211,7 @@
           "start": 1411.51,
           "end": 1411.59,
           "asr_indices": [
-            2552
+            2553
           ]
         },
         {
@@ -7168,7 +7220,7 @@
           "start": 1411.99,
           "end": 1412.87,
           "asr_indices": [
-            2553
+            2554
           ]
         },
         {
@@ -7177,7 +7229,7 @@
           "start": 1413.11,
           "end": 1413.19,
           "asr_indices": [
-            2554
+            2555
           ]
         },
         {
@@ -7186,7 +7238,7 @@
           "start": 1413.35,
           "end": 1414.15,
           "asr_indices": [
-            2555
+            2556
           ]
         },
         {
@@ -7195,7 +7247,7 @@
           "start": 1414.15,
           "end": 1414.79,
           "asr_indices": [
-            2556
+            2557
           ]
         }
       ],
@@ -7239,7 +7291,7 @@
           "start": 1425.32,
           "end": 1425.88,
           "asr_indices": [
-            2557
+            2558
           ]
         },
         {
@@ -7248,7 +7300,7 @@
           "start": 1426.04,
           "end": 1426.84,
           "asr_indices": [
-            2558
+            2559
           ]
         },
         {
@@ -7257,7 +7309,7 @@
           "start": 1427.4,
           "end": 1427.56,
           "asr_indices": [
-            2559
+            2560
           ]
         },
         {
@@ -7266,7 +7318,7 @@
           "start": 1427.72,
           "end": 1427.8,
           "asr_indices": [
-            2560
+            2561
           ]
         },
         {
@@ -7275,7 +7327,7 @@
           "start": 1427.96,
           "end": 1428.6,
           "asr_indices": [
-            2561
+            2562
           ]
         },
         {
@@ -7284,7 +7336,7 @@
           "start": 1428.76,
           "end": 1429.24,
           "asr_indices": [
-            2562
+            2563
           ]
         },
         {
@@ -7293,7 +7345,7 @@
           "start": 1429.32,
           "end": 1429.4,
           "asr_indices": [
-            2563
+            2564
           ]
         },
         {
@@ -7302,7 +7354,7 @@
           "start": 1429.56,
           "end": 1429.96,
           "asr_indices": [
-            2564
+            2565
           ]
         },
         {
@@ -7311,7 +7363,7 @@
           "start": 1430.2,
           "end": 1430.28,
           "asr_indices": [
-            2565
+            2566
           ]
         },
         {
@@ -7320,7 +7372,7 @@
           "start": 1430.44,
           "end": 1430.84,
           "asr_indices": [
-            2566
+            2567
           ]
         },
         {
@@ -7329,7 +7381,7 @@
           "start": 1431.0,
           "end": 1431.08,
           "asr_indices": [
-            2567
+            2568
           ]
         },
         {
@@ -7338,7 +7390,7 @@
           "start": 1431.32,
           "end": 1431.88,
           "asr_indices": [
-            2568
+            2569
           ]
         },
         {
@@ -7347,7 +7399,7 @@
           "start": 1431.88,
           "end": 1432.36,
           "asr_indices": [
-            2569
+            2570
           ]
         },
         {
@@ -7356,7 +7408,7 @@
           "start": 1432.52,
           "end": 1433.4,
           "asr_indices": [
-            2570
+            2571
           ]
         }
       ],
@@ -7411,7 +7463,7 @@
           "start": 1444.21,
           "end": 1444.29,
           "asr_indices": [
-            2571
+            2572
           ]
         },
         {
@@ -7420,7 +7472,7 @@
           "start": 1444.53,
           "end": 1444.61,
           "asr_indices": [
-            2572
+            2573
           ]
         },
         {
@@ -7429,7 +7481,7 @@
           "start": 1444.93,
           "end": 1445.01,
           "asr_indices": [
-            2573
+            2574
           ]
         },
         {
@@ -7438,7 +7490,7 @@
           "start": 1445.17,
           "end": 1445.25,
           "asr_indices": [
-            2574
+            2575
           ]
         },
         {
@@ -7447,7 +7499,7 @@
           "start": 1445.49,
           "end": 1445.57,
           "asr_indices": [
-            2575
+            2576
           ]
         },
         {
@@ -7456,7 +7508,7 @@
           "start": 1445.81,
           "end": 1446.05,
           "asr_indices": [
-            2576
+            2577
           ]
         },
         {
@@ -7465,7 +7517,7 @@
           "start": 1446.21,
           "end": 1446.45,
           "asr_indices": [
-            2577
+            2578
           ]
         },
         {
@@ -7474,7 +7526,7 @@
           "start": 1446.53,
           "end": 1447.01,
           "asr_indices": [
-            2578
+            2579
           ]
         },
         {
@@ -7483,7 +7535,7 @@
           "start": 1447.09,
           "end": 1448.53,
           "asr_indices": [
-            2579
+            2580
           ]
         }
       ],
@@ -7508,6 +7560,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2016/对齐报告.json",
-    "content_sha256": "0689793a8e31b9cf4bb69073aa00379cdb8a5f7b6b0dae6b13f62b12cabc1686"
+    "content_sha256": "bf00d740d4601c387c3d6258e13056fcb1d63d8dbde4398d360717ae57719deb"
   }
 }

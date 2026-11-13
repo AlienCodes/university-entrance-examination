@@ -1,5 +1,7 @@
 """精听适配的实际音频/失败注入检查，不需要下载ASR或TTS模型。"""
 import copy
+import contextlib
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -7,7 +9,7 @@ import unittest
 import numpy as np
 import soundfile as sf
 
-from 精听数据 import compact,compile_input,content_sha,sha,validate,align_words,first_aligned_word,audio_protection,PROTECTION_2022
+from 精听数据 import compact,compile_input,content_sha,sha,validate,align_words,first_aligned_word,audio_protection,PROTECTION_2022,resolve_manual_splits,bind_manual_pauses,assert_manual_preserved,dump,ROOT
 
 
 def example(audio):
@@ -119,6 +121,48 @@ class Checks(unittest.TestCase):
         self.assertEqual(len(align_words(apostrophe)),2)
         apostrophe['words'][0][0]='Well'
         with self.assertRaises(AssertionError):align_words(apostrophe)
+
+    def test_real_2024_manual_plans_through_actual_finalizer(self):
+        from 精听 import engine,script
+        source=ROOT/'专八/听力/批量/精听数据/2024-A.json'
+        d=json.loads(source.read_text('utf-8'));plans=resolve_manual_splits(d);pid=d['id']
+        self.assertEqual(len(d['manual_splits']),2)
+        self.assertEqual(len(plans),2)
+        with tempfile.TemporaryDirectory() as folder:
+            out=Path(folder);(out/'tools').mkdir();(out/'audio').mkdir()
+            # 分屏定稿只需此结构；不写虚构英语词时刻或音频。
+            dump(out/'audio/timings.json',{'cet4_male':{pid:{'sentences':[]}}})
+            dump(out/'tools/人名.json',{'names':[]})
+            bad={k:{'at':'deliberately wrong automatic cut','zh':['错误自动候选']} for k in plans}
+            dump(out/'tools/分屏_水墨.json',{pid:bad});dump(out/'tools/分屏手定_水墨.json',{pid:plans})
+            suggestion={'done':[pid],'plan':{pid:bad},'results':{f'{pid}:{k}':{'候选':[{'at':['deliberately wrong automatic cut'],'zh':['错误自动候选'],'对齐（错/对）':[0,1],'无停顿':False}]} for k in plans}}
+            dump(out/'suggestion.json',suggestion);m=engine(out)
+            with contextlib.redirect_stdout(io.StringIO()):script(ROOT/'专八/tools/分屏定稿.py',[str(out/'suggestion.json'),pid])
+            actual=json.loads((out/'tools/分屏_水墨.json').read_text())[pid]
+            assert_manual_preserved(plans,actual)
+            # 故意移除手定后，再走真实定稿路径：坏自动候选必须被我们的后置守门拒绝。
+            (out/'tools/分屏手定_水墨.json').unlink();dump(out/'tools/分屏_水墨.json',{pid:bad})
+            with contextlib.redirect_stdout(io.StringIO()):script(ROOT/'专八/tools/分屏定稿.py',[str(out/'suggestion.json'),pid])
+            overwritten=json.loads((out/'tools/分屏_水墨.json').read_text())[pid]
+            with self.assertRaisesRegex(AssertionError,'覆盖人工'):assert_manual_preserved(plans,overwritten)
+        conflict=copy.deepcopy(d);key=next(iter(plans));conflict['splits'][key]['at']='conflicting cut'
+        with self.assertRaisesRegex(AssertionError,'冲突'):resolve_manual_splits(conflict)
+        missing=copy.deepcopy(d);missing['manual_splits'][0]['en']+=' missing anchor'
+        with self.assertRaisesRegex(AssertionError,'英文锚'):resolve_manual_splits(missing)
+
+    def test_manual_pause_flags_only_from_real_aligned_fixture(self):
+        # 合成时间/文字夹具，仅测试真实gap vs 无gap分支；不作为年度录音证据。
+        en='He paused, then spoke.';cut=en.index('then')
+        plan={'1':{'at':'then spoke','zh':['他停了一下，','然后说话。'],'无停顿':'过期旧标记'}}
+        sentence=[{'en':en}];it={'word_alignment':[{'char':cut,'char_end':cut+4,'start':1.5,'end':1.7}], 'parts':[[0.,1.],[1.4,2.]]}
+        bound,evidence=bind_manual_pauses(plan,sentence,[it])
+        self.assertNotIn('无停顿',bound['1']);self.assertEqual(evidence['1'][0]['actual_gap'],[1.,1.4])
+        it['parts']=[[0.,2.]];bound,evidence=bind_manual_pauses(plan,sentence,[it])
+        self.assertEqual(bound['1']['无停顿'],'句中没有停顿');self.assertEqual(evidence['1'][0]['switch_time'],1.5)
+        it['parts']=[[0.,.3],[.5,2.]];bound,_=bind_manual_pauses(plan,sentence,[it])
+        self.assertEqual(bound['1']['无停顿'],'停顿处切不开')
+        it['word_alignment']=[]
+        with self.assertRaisesRegex(AssertionError,'首词缺少真实对齐'):bind_manual_pauses(plan,sentence,[it])
 
 
 if __name__=='__main__':unittest.main()

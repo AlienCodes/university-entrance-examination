@@ -1,0 +1,66 @@
+{
+  "status": "六年47句正文订正、64处分屏词注、29条显式真词锚及40段真实局部词表已完成；2处技术术语已按负责人裁决保留并整词绑定。非最终视频审批。",
+  "years": [
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015
+  ],
+  "counts": {
+    "changed_body_sentences": 47,
+    "contextual_vocabulary_gaps": 64,
+    "explicit_bindings": 29,
+    "usable_sentence_asr_proposals": 40,
+    "technical_term_bindings": 2,
+    "explicit_bindings_including_technical_terms": 31
+  },
+  "draft_sha256": {
+    "2010": "a0878fbb5aab93c53a38fb666d801911264652e1a41ebcfe6866a4abf4769776",
+    "2011": "2a8a904eeb9af5284acf7de7f8ac30ab57619dfeb8a5ad96ffb4bbd556e304b2",
+    "2012": "f67248255ef75a33f6f28eb1533ce0ab300493c3f59d383a66c918eb35bbb94b",
+    "2013": "1aa39c9a0aa90c6d95bc02c5346989fee63b9d155beab6a8768441c3b5bd86eb",
+    "2014": "5da30879cf4213effee4fc8b4174e2c0022f74c1b38112666909dceeb6c0e875",
+    "2015": "462d71e9bc6e38f0b21ee29739ef0f8150ee28160bc0c1487df9f1f66eaa0396"
+  },
+  "question_guard": "tools/念题一致.py只读150道通过；未改role=question英文/中文/sp。",
+  "residual_technical_word_forms": [
+    {
+      "unit": "2014-A",
+      "sentence": 15,
+      "en": "As you all know, life always has stressors, er, things which are causing us stress and living without stress is virtually impossible.",
+      "source_word": "stressors",
+      "Parakeet_and_Whisper_word": "stresses",
+      "evidence": "核验/正文清理/2014-双模型.json",
+      "window": [
+        109,
+        122
+      ],
+      "status": "负责人已裁定保留stressors技术纸源并作完整实际ASR词段绑定；弱元音分歧留作来源说明，不再阻断整单元。"
+    },
+    {
+      "unit": "2014-A",
+      "sentence": 42,
+      "en": "And this seems quite apparent because exercise can provide a stress-free environment away from your usual stressors, and it keeps your body busy and preoccupied with non-stressful things.",
+      "source_word": "stressors",
+      "Parakeet_and_Whisper_word": "stresses",
+      "evidence": "核验/正文清理/2014-双模型.json",
+      "window": [
+        331,
+        346
+      ],
+      "status": "负责人已裁定保留stressors技术纸源并作完整实际ASR词段绑定；弱元音分歧留作来源说明，不再阻断整单元。"
+    }
+  ],
+  "timing_note": "短应声、重复and/or和2015 da节奏拟声仍须用实际ASR/声学边界处理，不为这些漏识词按长度猜时刻。2015节奏拟声已由独立Whisper190—215秒确认存在；不能因主ASR不出词而删正文。",
+  "files": {
+    "body_edits": "核验/正文清理/2010-2015-正文改字.json",
+    "vocabulary": "核验/2010-2015-词注增补.json",
+    "bindings": "核验/正文清理/{year}-人工词锚.json",
+    "speech_proposals": "核验/正文清理/{year}-可用语音段.json",
+    "speech_words": "核验/正文清理/{year}-局部真词锚.json",
+    "expired_pending": "核验/正文清理/过期待核处理.json"
+  },
+  "technical_term_binding_file": "核验/正文清理/2014-stressors-整词裁决.json"
+}

@@ -1,0 +1,419 @@
+{
+  "year": 2023,
+  "decisions": [
+    {
+      "case": "following",
+      "decision": "保留following，两局部模型均正确；排除主ASR followed错词。",
+      "evidence_ref": "核验/正文异文复核/2023/following.json",
+      "evidence_sha256": "5d914535fcae71067c50e218f02be58e531fe72894c39eb16d676060094cfce3",
+      "adopted_word_range": [
+        2,
+        12
+      ],
+      "adopted_window": [
+        155.16,
+        160.6
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Concepts, thoughts. In this, Elvis is following Aristotle's classic definition of metaphor.",
+        "whisper": "feelings, concepts, thoughts. In this, Elvis is following Aristotle's classic definition of metaphor. That is, met- [SOUND] [SOUND] [SOUND] [SOUND] [SOUND] [SOUND"
+      }
+    },
+    {
+      "case": "metaphor",
+      "decision": "保留原页metaphor’s source规范书写；音频连读两模型写metaphor source，整个词组可整体绑定，不猜所有格-s的内部时刻。",
+      "evidence_ref": "核验/正文异文复核/2023/metaphor.json",
+      "evidence_sha256": "d914d0205e481c705cc33d6067c8742fb84605dc33a1a3386330a565c452aa00",
+      "adopted_word_range": [
+        1,
+        17
+      ],
+      "adopted_window": [
+        207.96,
+        214.44
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Two, we mix and match what we know about the metaphor source, in this case the sun, with what we know.",
+        "whisper": "All network of analogies too. We mix and match what we know about the metaphor source, in this case, the sun, with what we know about its target."
+      }
+    },
+    {
+      "case": "and_in",
+      "decision": "两模型均in another sense organ，母稿已订正and→in；中文按联觉语境重译。",
+      "evidence_ref": "核验/正文异文复核/2023/and_in.json",
+      "evidence_sha256": "a671e3de7b69f4ce4e0c5bef610a4b057c95cc5bade8185b3956278310aa3971",
+      "adopted_word_range": [
+        0,
+        15
+      ],
+      "adopted_window": [
+        254.16,
+        260.16
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Experience of a stimulus received by one sense organ in another sense organ as well. For example, like",
+        "whisper": "It is the experience of a stimulus received by one sense organ in another sense organ as well. For example, like colored hearing."
+      }
+    },
+    {
+      "case": "when_where",
+      "decision": "两模型均where the name，母稿已订正when→where；颜色词英美拼写不改原文。",
+      "evidence_ref": "核验/正文异文复核/2023/when_where.json",
+      "evidence_sha256": "dc84452b27c8bbcfc40f956681e5a818a42daad4afa759194b1eaebc07ea13f9",
+      "adopted_word_range": [
+        5,
+        23
+      ],
+      "adopted_window": [
+        315.36,
+        322.48
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "For example, you will experience a moment of cognitive dissonance, where the name of the colour is printed in a differently coloured ink.",
+        "whisper": "If you like most people, you will experience a moment of cognitive dissonance where the name of the colour is printed in a differently coloured ink. For example, the word \"f- [static] [static] [static] [static] [static]"
+      }
+    },
+    {
+      "case": "meaning_had",
+      "decision": "保留have been done；两个局部模型均have，原had及额外meaning均识别伪差。",
+      "evidence_ref": "核验/正文异文复核/2023/meaning_had.json",
+      "evidence_sha256": "c0084308557aefc3348ac0eea37e7dade506a2f4f5c42f09000808e8ff650ee0",
+      "adopted_word_range": [
+        0,
+        30
+      ],
+      "adopted_window": [
+        331.16,
+        344.12
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "The test shows that we cannot overlook the literal meaning of words even when the literal meaning gives the wrong answer. Stroop tests have been done with metaphor as well.",
+        "whisper": "Tell us, while the test shows that we cannot overlook the literal meaning of words even when the literal meaning gives the wrong answer. Stroop tests have been done with metaphor as well."
+      }
+    },
+    {
+      "case": "id_say",
+      "decision": "保留I’d say；两局部模型恢复真词，排除主ASR at错词。",
+      "evidence_ref": "核验/正文异文复核/2023/id_say.json",
+      "evidence_sha256": "01125ab505eca683c05b28caa566c801d4ae1865fde8485192c529e3acc59255",
+      "adopted_word_range": [
+        7,
+        19
+      ],
+      "adopted_window": [
+        400.6,
+        405.96
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "And in what ways does metaphor matter? Well, I'd say metaphor matters, first of all, because it creates expectations. So pay careful attention the next time you read metaphor.",
+        "whisper": "How and in what ways does metaphor matter? Well, I'd say metaphor matters first of all because it creates expectations. So pay careful attention the next time you read some financial-"
+      }
+    },
+    {
+      "case": "united_states",
+      "decision": "实际United Nations，两模型均同；排除主ASR多余States/United，不向正文补假词。",
+      "evidence_ref": "核验/正文异文复核/2023/united_states.json",
+      "evidence_sha256": "b0a875cfab0dda258e90f4c0ee3dc97109e985f3850f622a95c63ef7ad77d8b8",
+      "adopted_word_range": [
+        4,
+        18
+      ],
+      "adopted_window": [
+        488.76,
+        495.8
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "To make a decision. What should they do? Intervene? Appeal to the United Nations or just do nothing? They were each then given one of the three.",
+        "whisper": "And they had to make a decision. What should they do? Intervene, appeal to the United Nations, or just do nothing. They were each then given one of the three descriptions..."
+      }
+    },
+    {
+      "case": "chewed",
+      "decision": "保留培根原引文chewed，两模型均正确；原changed为ASR错词。",
+      "evidence_ref": "核验/正文异文复核/2023/chewed.json",
+      "evidence_sha256": "3959ce839de820d6b3a2e199a0975e6b8a7a961c5dcd5d326669dce055db6e9d",
+      "adopted_word_range": [
+        0,
+        16
+      ],
+      "adopted_window": [
+        604.24,
+        612.0
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Some books are to be tasted, others swallowed, and some few to be chewed and digested. Well, how many metaphors?",
+        "whisper": "Bacon. Some books are to be tasted, others swallowed, and some few to be chewed and digested. Well how many metaphors are there in"
+      }
+    },
+    {
+      "case": "domain",
+      "decision": "保留gapyear.com’s spokesperson；两局部模型均读出网站与所有格，原主ASR省略com’s。",
+      "evidence_ref": "核验/正文异文复核/2023/domain.json",
+      "evidence_sha256": "6b54c0f14415872e39b656eae63bc1e46c1a85de4a30309173364d7a3583d3ec",
+      "adopted_word_range": [
+        0,
+        9
+      ],
+      "adopted_window": [
+        899.24,
+        904.44
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Delighted to have invited Jim Johnson, a GapYear.com's spokesperson, to talk about Gap Year. So, whether you're currently deciding",
+        "whisper": "Today, we are delighted to have invited Jim Johnson, a gapyear.com's spokesperson, to talk about gapyear. So, whether you're currently deciding whether a gap-"
+      }
+    },
+    {
+      "case": "seriously_asked",
+      "decision": "保留原源完整问句/asked，两模型恢复；原seriously重复、here/off为分块误识。",
+      "evidence_ref": "核验/正文异文复核/2023/seriously_asked.json",
+      "evidence_sha256": "8be8e6d783f26cd50b6a80062fde076987cadca4ee136b4c37b0d6e5699b9b46",
+      "adopted_word_range": [
+        0,
+        28
+      ],
+      "adopted_window": [
+        924.0,
+        934.64
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Let me first ask you a question. Why should young people be thinking seriously about taking a gap year? Well, I get asked this question all the time. People will tell you that a gap year boosts your C V.",
+        "whisper": "Now, let me first ask you a question. Why should young people be thinking seriously about taking a gap year? Well, I get asked this question all the time. People will tell you that a gap year boosts your CV, that it makes you more important"
+      }
+    },
+    {
+      "case": "life_filler",
+      "decision": "保留完整两句源文；主ASR额外A未在两局部出现。Eh为源页非词性语气记号，需实际声学岛核边界，不删除声音或造词时。",
+      "evidence_ref": "核验/正文异文复核/2023/life_filler.json",
+      "evidence_sha256": "9bb8ca9447b478be6b6f560f088d874bd22c67a2b80ddd0085839871979f6006",
+      "adopted_word_range": [
+        0,
+        35
+      ],
+      "adopted_window": [
+        947.24,
+        960.12
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "But I find not enough people put an emphasis on just how amazing a Gap year really is. It's a life-changing experience, and it's unbelievable how much fun you can have on a gap year. So, what is the best thing about taking a game?",
+        "whisper": "This is the case, but I find not enough people put an emphasis on just how amazing a gap here really is. It's a life-changing experience and it's unbelievable how much fun you can have on a gap here. So, what is the best thing about taking a gap here?"
+      }
+    },
+    {
+      "case": "value_it",
+      "decision": "保留源文which is the best thing I think，额外it未被两局部确认，排除。",
+      "evidence_ref": "核验/正文异文复核/2023/value_it.json",
+      "evidence_sha256": "dd49b59b6b873a327e65ef351bb5543770f89707dfc297db7eb784bdf645b492",
+      "adopted_word_range": [
+        0,
+        24
+      ],
+      "adopted_window": [
+        981.0,
+        989.32
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "In each new location, you're learning more and more and that ultimately adds more value to yourself, which is the best thing I think.",
+        "whisper": "their religion. In each new location, you're learning more and more, and that ultimately adds more value to yourself, which is the best thing, I think. What did your campaign"
+      }
+    },
+    {
+      "case": "gapyear",
+      "decision": "保留原页gap year；两模型将紧连读音拼作Dapia/gapia，按源页与整段gap year语境核整词组锚，不能教作不存在的Dapia。",
+      "evidence_ref": "核验/正文异文复核/2023/gapyear.json",
+      "evidence_sha256": "924baa6501f5e5de3d214361ae8ee572fa19396890cb8ae84fee09a5b74cdf6d",
+      "adopted_word_range": [
+        0,
+        16
+      ],
+      "adopted_window": [
+        1036.08,
+        1043.2
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Others may advise talking to friends with some experience of Dapia or browse some online forums, which I personally would not.",
+        "whisper": "Polym. Others may advise talking to friends with some experience of gapia or browsome online forums, which I personally would not highly recommend."
+      }
+    },
+    {
+      "case": "project_question",
+      "decision": "保留原完整Which project...taking a gap year；独立Whisper完整确认，聚焦Parakeet给全句真词时（year误拼here）。",
+      "evidence_ref": "核验/正文异文复核/2023/project_question.json",
+      "evidence_sha256": "3718ad1a8f46a9f1c5cec06a50a2619bc2b38a348ad50d5e767ee4d9efdeeaa0",
+      "adopted_word_range": [
+        7,
+        19
+      ],
+      "adopted_window": [
+        1057.0,
+        1061.0
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Okay, let's move on to another question. Which project would you do if you were taking a gap here? I'm a bit of a diving master.",
+        "whisper": "appropriate for you. Okay, let's move on to another question. Which project would you do if you were taking a gap year? I'm a bit of a diving nut, so I would go... [static] [static] [static] [static] [static]"
+      }
+    },
+    {
+      "case": "time_majority",
+      "decision": "两模型均the majority，母稿已将a订正the；timeout/time-out、gap year为连写等价，不另改正文。",
+      "evidence_ref": "核验/正文异文复核/2023/time_majority.json",
+      "evidence_sha256": "28b59c29574c5fc0cbfe2064af9dbc8ffc8f2e8f69007c131758ea2e375fcc19",
+      "adopted_word_range": [
+        3,
+        41
+      ],
+      "adopted_window": [
+        1245.24,
+        1260.6
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "No, it's not. A Gap year is just timeout between life stages. People from all ages and all backgrounds take a GAAP year, you know. And the majority of this time, I'd say it's usually only for three to nine months. Anyway, back to the question.",
+        "whisper": "It's a whole year. No, it's not. A gap year is just time out between life stages. People from all ages and all backgrounds take a gap year. You know, and the majority of this time, I'd say it's usually only for three to nine months. Anyway, back to the question. If people (buzzer)"
+      }
+    },
+    {
+      "case": "specific_culture",
+      "decision": "两模型均有冠词；主ASR和Parakeet为a，Whisper为the，采用最稳定a并如实保留分歧，未称逐字一致。",
+      "evidence_ref": "核验/正文异文复核/2023/specific_culture.json",
+      "evidence_sha256": "15c2fd87fd7ef4b9cbfbdb223c4cc2bea481486a1b1c4ee30e50b7c6f3e41931",
+      "adopted_word_range": [
+        7,
+        18
+      ],
+      "adopted_window": [
+        1308.96,
+        1313.2
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "A direct difference to local people's lives, but you're also learning more about a specific culture and society. Often, you can learn a lot more about an",
+        "whisper": "Because you're not only making a direct difference to local people's lives, but you're also learning more about the specific culture and society. Often you can learn a lot more about an area, volunteer..."
+      }
+    },
+    {
+      "case": "travel_lists",
+      "decision": "两模型均travel list单数、I think a travel list；母稿已补a，保留list而非主ASR lists。",
+      "evidence_ref": "核验/正文异文复核/2023/travel_lists.json",
+      "evidence_sha256": "9faadb32850e6e5451a684055f3f3a8308e4a758a84d6c185b07054d1a811e32",
+      "adopted_word_range": [
+        0,
+        27
+      ],
+      "adopted_window": [
+        1320.24,
+        1329.28
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Love to find out what is on people's travel list. Could you tell us yours? I think a travel list has to be as ridiculous as possible. It has to be made up of things that are achievable.",
+        "whisper": "We'd love to find out what is on people's travel list. Could you tell us yours? I think a travel list has to be as ridiculous as possible. It has to be made up of things that are achievable and things that are"
+      }
+    },
+    {
+      "case": "after_all",
+      "decision": "两局部均有what do you do完整问句，恢复原主漏do；原Ah保留语气声，声学边界另核。",
+      "evidence_ref": "核验/正文异文复核/2023/after_all.json",
+      "evidence_sha256": "bc5843e297abd3e93eac7e6edb8034890f42edf70a86a9c91faa2ae3e91b215d",
+      "adopted_word_range": [
+        3,
+        13
+      ],
+      "adopted_window": [
+        1335.08,
+        1338.92
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "are perhaps unachievable. After all, what do you do when you've done everything? On my travel list, number one, cage diving with great white sharks.",
+        "whisper": "and things that are perhaps unachievable. After all, what do you do when you've done everything? On my travel list, number one, cage diving with great white sharks. Number two. [buzzing]"
+      }
+    },
+    {
+      "case": "qomolangma",
+      "decision": "保留Qomolangma规范专名，Komolangma/Como Langma属音译拼写；整个山名词锚绑定，排除原多余Number。",
+      "evidence_ref": "核验/正文异文复核/2023/qomolangma.json",
+      "evidence_sha256": "48e24bbfe4be2422f29edfc6bc1c66c1fdd40b7140a604a8bc2d396ecb4493e6",
+      "adopted_word_range": [
+        8,
+        31
+      ],
+      "adopted_window": [
+        1350.52,
+        1360.36
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Across America from New York to San Francisco. Number three, touring over land in Africa. And number four is climbing Mount Komolangma, which let's be honest, I need to think twice. So, Jim,",
+        "whisper": "2. Hitchhiking across America from New York to San Francisco. 3. Touring overland in Africa. And 4. Climbing Mount Como Langma. Which, let's be honest, I need to think twice. So Jim, you traveled as..."
+      }
+    },
+    {
+      "case": "validation",
+      "decision": "两模型均完整三句，无主ASR to be able to do it伪串；it’ll/it will等价，of being已落稿订正or。",
+      "evidence_ref": "核验/正文异文复核/2023/validation.json",
+      "evidence_sha256": "4ea2f2cb7ea8a768f7ca580b4f5ad3c8e8dc9935cd085a5bb9ac33de696b7bcb",
+      "adopted_word_range": [
+        2,
+        44
+      ],
+      "adopted_window": [
+        1431.0,
+        1447.48
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "You personally. For me, it'll be about how much I've learned. It'll be a validation of my ability to think critically and analyze the different ways that societies try to function. There's so much to learn from personal experience of being in a place. And I love travel because to me",
+        "whisper": "the world mean to you personally. For me, it'll be about how much I've learned. It'll be a validation of my ability to think critically and analyze the different ways that societies try to function. There's so much to learn from personal experience of being in a place. And I love travel, because to me, it's about constant-- [AUDIO PLAYBACK]"
+      }
+    },
+    {
+      "case": "jim",
+      "decision": "两局部明确Jim，保留源页Jim；主ASR Tim为错词，不需要改人名。",
+      "evidence_ref": "核验/正文异文复核/2023/jim.json",
+      "evidence_sha256": "33bffadd20297b5c62fe13b23429846470daed3239e4501c4c7cb1438444d6eb",
+      "adopted_word_range": [
+        7,
+        19
+      ],
+      "adopted_window": [
+        1456.52,
+        1460.2
+      ],
+      "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+      "texts": {
+        "parakeet": "Broadens one's mind. As the saying goes, well, Jim, thank you very much for joining us on the interview. My pleasure.",
+        "whisper": "Yeah, travel broadens one's mind. As the saying goes, \"Well Jim, thank you very much for joining us on the interview.\" My pleasure. This... ["
+      }
+    }
+  ],
+  "orthographic_equivalences": [
+    "color/colour",
+    "colored/coloured",
+    "travelled/traveled",
+    "travelling/traveling",
+    "under-served/underserved",
+    "over-lit/overlit",
+    "time-out/timeout",
+    "CV/C V",
+    "who is/who’s",
+    "it will/it’ll"
+  ],
+  "retained_true_spoken_forms": [
+    "a year sharp（2023，原页+主ASR+独立Whisper均确证，不为语法修改）"
+  ]
+}

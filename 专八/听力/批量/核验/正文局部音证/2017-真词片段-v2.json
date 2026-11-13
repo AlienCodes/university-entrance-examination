@@ -1,0 +1,537 @@
+{
+  "year": 2017,
+  "canonical_source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
+  "source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
+  "model_evidence": {
+    "year": 2017,
+    "source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
+    "model": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8",
+    "model_sha256": {
+      "encoder.int8.onnx": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+      "decoder.int8.onnx": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+      "joiner.int8.onnx": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+      "tokens.txt": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+    },
+    "analysis_only": "局部16k单声道分析副本；正式原音未改"
+  },
+  "patches": [
+    {
+      "window": [
+        266.7,
+        271.9
+      ],
+      "words": [
+        [
+          "In",
+          266.8,
+          266.88
+        ],
+        [
+          "a",
+          267.04,
+          267.12
+        ],
+        [
+          "letter",
+          267.12,
+          267.36
+        ],
+        [
+          "to",
+          267.44,
+          267.52
+        ],
+        [
+          "a",
+          267.6,
+          267.68
+        ],
+        [
+          "friend,",
+          267.76,
+          268.08
+        ],
+        [
+          "in",
+          268.16,
+          268.24
+        ],
+        [
+          "contrast,",
+          268.4,
+          269.12
+        ],
+        [
+          "such",
+          269.36,
+          269.44
+        ],
+        [
+          "immediacy",
+          269.6,
+          270.48
+        ],
+        [
+          "is",
+          270.64,
+          270.72
+        ],
+        [
+          "lacking.",
+          270.88,
+          271.76
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2017-Parakeet.json",
+      "origin_sha256_at_selection": "466cd804fa5e0f5fe6752b8bdafa1f1413253be392044a35681a7190b3a722a4",
+      "origin_pointer": "/windows/3/words",
+      "origin_word_range": [
+        1,
+        13
+      ],
+      "origin_window": [
+        266,
+        273
+      ],
+      "origin_text": "Said. In a letter to a friend, in contrast, such immediacy is lacking. When speaking to a",
+      "decision": "恢复In a letter的真实开口词，Whisper也逐词同读。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "每个词的时刻原样复制真实ASR；替换窗仅限制分析ASR替换，非生产音轨裁剪时刻。"
+    },
+    {
+      "window": [
+        799.4,
+        807.4
+      ],
+      "words": [
+        [
+          "The",
+          799.56,
+          799.64
+        ],
+        [
+          "head",
+          799.88,
+          800.12
+        ],
+        [
+          "of",
+          800.2,
+          800.28
+        ],
+        [
+          "the",
+          800.28,
+          800.36
+        ],
+        [
+          "World",
+          800.44,
+          800.76
+        ],
+        [
+          "Bank",
+          800.84,
+          801.16
+        ],
+        [
+          "said",
+          801.32,
+          801.4
+        ],
+        [
+          "the",
+          801.64,
+          801.72
+        ],
+        [
+          "international",
+          801.8,
+          802.36
+        ],
+        [
+          "community",
+          802.52,
+          802.92
+        ],
+        [
+          "community",
+          803.48,
+          803.96
+        ],
+        [
+          "had",
+          804.12,
+          804.2
+        ],
+        [
+          "failed",
+          804.36,
+          804.76
+        ],
+        [
+          "miserably",
+          804.84,
+          805.32
+        ],
+        [
+          "in",
+          805.48,
+          805.56
+        ],
+        [
+          "its",
+          805.72,
+          805.8
+        ],
+        [
+          "initial",
+          805.88,
+          806.28
+        ],
+        [
+          "response.",
+          806.36,
+          807.16
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2017-Parakeet.json",
+      "origin_sha256_at_selection": "466cd804fa5e0f5fe6752b8bdafa1f1413253be392044a35681a7190b3a722a4",
+      "origin_pointer": "/windows/5/words",
+      "origin_word_range": [
+        0,
+        18
+      ],
+      "origin_window": [
+        799,
+        808
+      ],
+      "origin_text": "The head of the World Bank said the international community community had failed miserably in its initial response.",
+      "decision": "完整录音有两次community；印本quote未朗读已去掉，保留真实自我修正。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "每个词的时刻原样复制真实ASR；替换窗仅限制分析ASR替换，非生产音轨裁剪时刻。"
+    },
+    {
+      "window": [
+        997.55,
+        999.9
+      ],
+      "words": [
+        [
+          "is",
+          997.6,
+          997.68
+        ],
+        [
+          "being",
+          997.84,
+          997.92
+        ],
+        [
+          "is",
+          998.88,
+          998.96
+        ],
+        [
+          "outpacing",
+          999.12,
+          999.84
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2017-Parakeet.json",
+      "origin_sha256_at_selection": "466cd804fa5e0f5fe6752b8bdafa1f1413253be392044a35681a7190b3a722a4",
+      "origin_pointer": "/windows/7/words",
+      "origin_word_range": [
+        15,
+        19
+      ],
+      "origin_window": [
+        992,
+        1006
+      ],
+      "origin_text": "more treatment facilities. The problem we have now is that the disease and the outbreak is being is outpacing the operational efforts on the ground. There are a lot of plans in place, by the way, to change that.",
+      "decision": "只采纳is being is outpacing真实重复，独立Whisper亦保留第二is；不规范掉口误。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "每个词的时刻原样复制真实ASR；替换窗仅限制分析ASR替换，非生产音轨裁剪时刻。"
+    },
+    {
+      "window": [
+        1121.9,
+        1134.0
+      ],
+      "words": [
+        [
+          "Tom,",
+          1122.16,
+          1122.8
+        ],
+        [
+          "I",
+          1123.04,
+          1123.12
+        ],
+        [
+          "understand",
+          1123.28,
+          1123.36
+        ],
+        [
+          "when",
+          1123.84,
+          1123.92
+        ],
+        [
+          "Havas",
+          1124.0,
+          1124.56
+        ],
+        [
+          "Media",
+          1124.64,
+          1124.88
+        ],
+        [
+          "North",
+          1125.04,
+          1125.36
+        ],
+        [
+          "America",
+          1125.36,
+          1125.76
+        ],
+        [
+          "hired",
+          1125.92,
+          1126.24
+        ],
+        [
+          "you",
+          1126.32,
+          1126.4
+        ],
+        [
+          "early",
+          1126.56,
+          1126.8
+        ],
+        [
+          "this",
+          1126.96,
+          1127.04
+        ],
+        [
+          "year",
+          1127.2,
+          1127.28
+        ],
+        [
+          "to",
+          1127.6,
+          1127.68
+        ],
+        [
+          "be",
+          1127.84,
+          1127.92
+        ],
+        [
+          "head",
+          1128.0,
+          1128.24
+        ],
+        [
+          "of",
+          1128.32,
+          1128.4
+        ],
+        [
+          "strategy",
+          1128.48,
+          1128.96
+        ],
+        [
+          "and",
+          1128.96,
+          1129.04
+        ],
+        [
+          "innovation,",
+          1129.12,
+          1129.84
+        ],
+        [
+          "it",
+          1130.08,
+          1130.16
+        ],
+        [
+          "did",
+          1130.32,
+          1130.4
+        ],
+        [
+          "not",
+          1130.48,
+          1130.56
+        ],
+        [
+          "include",
+          1130.72,
+          1131.12
+        ],
+        [
+          "the",
+          1131.12,
+          1131.2
+        ],
+        [
+          "words",
+          1131.2,
+          1131.52
+        ],
+        [
+          "future",
+          1131.6,
+          1132.0
+        ],
+        [
+          "or",
+          1132.16,
+          1132.24
+        ],
+        [
+          "futurist",
+          1132.4,
+          1132.88
+        ],
+        [
+          "in",
+          1133.12,
+          1133.2
+        ],
+        [
+          "your",
+          1133.28,
+          1133.36
+        ],
+        [
+          "title,",
+          1133.44,
+          1133.84
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2017-Parakeet.json",
+      "origin_sha256_at_selection": "466cd804fa5e0f5fe6752b8bdafa1f1413253be392044a35681a7190b3a722a4",
+      "origin_pointer": "/windows/8/words",
+      "origin_word_range": [
+        0,
+        32
+      ],
+      "origin_window": [
+        1122,
+        1135
+      ],
+      "origin_text": "Tom, I understand when Havas Media North America hired you early this year to be head of strategy and innovation, it did not include the words future or futurist in your title, but a large part of you.",
+      "decision": "Havas/futurist新真词正确，独立Whisper及原题专名词条佐证；不引入Havis/future误字。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "每个词的时刻原样复制真实ASR；替换窗仅限制分析ASR替换，非生产音轨裁剪时刻。"
+    },
+    {
+      "window": [
+        1148.8,
+        1152.1
+      ],
+      "words": [
+        [
+          "So,",
+          1148.92,
+          1149.32
+        ],
+        [
+          "what",
+          1149.4,
+          1149.48
+        ],
+        [
+          "exactly",
+          1149.72,
+          1150.2
+        ],
+        [
+          "is",
+          1150.28,
+          1150.36
+        ],
+        [
+          "your",
+          1150.44,
+          1150.52
+        ],
+        [
+          "role",
+          1150.6,
+          1150.76
+        ],
+        [
+          "at",
+          1150.84,
+          1150.92
+        ],
+        [
+          "Havas?",
+          1151.0,
+          1151.88
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2017-Parakeet.json",
+      "origin_sha256_at_selection": "466cd804fa5e0f5fe6752b8bdafa1f1413253be392044a35681a7190b3a722a4",
+      "origin_pointer": "/windows/9/words",
+      "origin_word_range": [
+        1,
+        9
+      ],
+      "origin_window": [
+        1147,
+        1162
+      ],
+      "origin_text": "Yeah. So, what exactly is your role at Havas? Well, I'm very lucky in that I get paid to think. My role is about understanding the changes in behavior, technology and media, and then to",
+      "decision": "完整So what exactly...Havas真句，修复问句尾专名边界；两模型同句。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "每个词的时刻原样复制真实ASR；替换窗仅限制分析ASR替换，非生产音轨裁剪时刻。"
+    },
+    {
+      "window": [
+        1154.25,
+        1154.65
+      ],
+      "words": [
+        [
+          "in",
+          1154.36,
+          1154.44
+        ],
+        [
+          "that",
+          1154.52,
+          1154.6
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2017-Parakeet.json",
+      "origin_sha256_at_selection": "466cd804fa5e0f5fe6752b8bdafa1f1413253be392044a35681a7190b3a722a4",
+      "origin_pointer": "/windows/9/words",
+      "origin_word_range": [
+        13,
+        15
+      ],
+      "origin_window": [
+        1147,
+        1162
+      ],
+      "origin_text": "Yeah. So, what exactly is your role at Havas? Well, I'm very lucky in that I get paid to think. My role is about understanding the changes in behavior, technology and media, and then to",
+      "decision": "只恢复in that两词，真实词时刻直接复制。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "每个词的时刻原样复制真实ASR；替换窗仅限制分析ASR替换，非生产音轨裁剪时刻。"
+    }
+  ]
+}

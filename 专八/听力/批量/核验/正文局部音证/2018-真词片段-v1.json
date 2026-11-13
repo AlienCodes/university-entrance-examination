@@ -1,0 +1,507 @@
+{
+  "year": 2018,
+  "canonical_source_sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8",
+  "source_sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8",
+  "source_evidence": "2018-Parakeet.json",
+  "model_evidence": {
+    "year": 2018,
+    "source_sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8",
+    "model": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8",
+    "model_sha256": {
+      "encoder.int8.onnx": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+      "decoder.int8.onnx": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+      "joiner.int8.onnx": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+      "tokens.txt": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+    },
+    "analysis_only": "局部16k单声道分析副本；正式原音未改"
+  },
+  "patches": [
+    {
+      "window": [
+        173.5,
+        181.8
+      ],
+      "words": [
+        [
+          "As",
+          173.68,
+          173.76
+        ],
+        [
+          "a",
+          173.92,
+          174.0
+        ],
+        [
+          "result,",
+          174.08,
+          174.64
+        ],
+        [
+          "they",
+          174.8,
+          174.88
+        ],
+        [
+          "can't",
+          175.04,
+          175.44
+        ],
+        [
+          "improve",
+          175.36,
+          175.76
+        ],
+        [
+          "on",
+          175.84,
+          175.92
+        ],
+        [
+          "others'",
+          176.08,
+          176.4
+        ],
+        [
+          "ideas,",
+          176.56,
+          177.2
+        ],
+        [
+          "learn",
+          177.44,
+          177.76
+        ],
+        [
+          "from",
+          177.84,
+          177.92
+        ],
+        [
+          "others'",
+          178.0,
+          178.32
+        ],
+        [
+          "mistakes,",
+          178.4,
+          179.04
+        ],
+        [
+          "or",
+          179.28,
+          179.36
+        ],
+        [
+          "even",
+          179.52,
+          179.6
+        ],
+        [
+          "benefit",
+          179.68,
+          180.16
+        ],
+        [
+          "from",
+          180.24,
+          180.32
+        ],
+        [
+          "others'",
+          180.4,
+          180.72
+        ],
+        [
+          "wisdom.",
+          180.8,
+          181.68
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2018-Parakeet.json",
+      "origin_sha256_at_selection": "3cbfcee0196a50a914c2db9f6e8d657d371f7715186ba3c616feebf7ec43e7eb",
+      "origin_pointer": "/windows/0/words",
+      "origin_word_range": [
+        2,
+        21
+      ],
+      "origin_window": [
+        172,
+        183
+      ],
+      "origin_text": "Simply watching. As a result, they can't improve on others' ideas, learn from others' mistakes, or even benefit from others' wisdom. And so they just",
+      "decision": "局部Parakeet真实can’t，正文及解析保留否定；不跟随can误识。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "字词时刻逐项复制真实模型输出；替换窗仅限定分析ASR替换范围，不用作成品音轨裁剪。"
+    },
+    {
+      "window": [
+        1235.9,
+        1241.9
+      ],
+      "words": [
+        [
+          "The",
+          1236.04,
+          1236.12
+        ],
+        [
+          "countries",
+          1236.2,
+          1236.68
+        ],
+        [
+          "at",
+          1236.68,
+          1236.76
+        ],
+        [
+          "this",
+          1236.84,
+          1236.92
+        ],
+        [
+          "stage",
+          1237.08,
+          1237.32
+        ],
+        [
+          "of",
+          1237.4,
+          1237.48
+        ],
+        [
+          "democratic",
+          1237.56,
+          1238.12
+        ],
+        [
+          "development",
+          1238.2,
+          1238.92
+        ],
+        [
+          "often",
+          1239.08,
+          1239.48
+        ],
+        [
+          "have",
+          1239.56,
+          1239.64
+        ],
+        [
+          "difficulties",
+          1239.8,
+          1240.36
+        ],
+        [
+          "of",
+          1240.52,
+          1240.6
+        ],
+        [
+          "this",
+          1240.84,
+          1240.92
+        ],
+        [
+          "sort.",
+          1241.08,
+          1241.64
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2018-Parakeet.json",
+      "origin_sha256_at_selection": "3cbfcee0196a50a914c2db9f6e8d657d371f7715186ba3c616feebf7ec43e7eb",
+      "origin_pointer": "/windows/1/words",
+      "origin_word_range": [
+        15,
+        29
+      ],
+      "origin_window": [
+        1229,
+        1249
+      ],
+      "origin_text": "Been by unfair means. I agree with you that Afghanistan is a relatively new democracy. The countries at this stage of democratic development often have difficulties of this sort. That there's not a tradition of good losers in societies at this level of political development. And in that sense,",
+      "decision": "从The countries完整句起截取，双模型确认The，不含前句边缘。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "字词时刻逐项复制真实模型输出；替换窗仅限定分析ASR替换范围，不用作成品音轨裁剪。"
+    },
+    {
+      "window": [
+        1270.55,
+        1278.0
+      ],
+      "words": [
+        [
+          "That",
+          1270.68,
+          1270.76
+        ],
+        [
+          "most",
+          1271.0,
+          1271.08
+        ],
+        [
+          "Afghans",
+          1271.16,
+          1271.72
+        ],
+        [
+          "have",
+          1271.8,
+          1271.88
+        ],
+        [
+          "said",
+          1271.96,
+          1272.04
+        ],
+        [
+          "that",
+          1272.2,
+          1272.28
+        ],
+        [
+          "they",
+          1272.36,
+          1272.44
+        ],
+        [
+          "could",
+          1272.6,
+          1272.68
+        ],
+        [
+          "accept",
+          1272.76,
+          1273.08
+        ],
+        [
+          "the",
+          1273.24,
+          1273.32
+        ],
+        [
+          "person",
+          1273.48,
+          1273.56
+        ],
+        [
+          "they",
+          1273.72,
+          1273.8
+        ],
+        [
+          "didn't",
+          1273.96,
+          1274.36
+        ],
+        [
+          "vote",
+          1274.28,
+          1274.52
+        ],
+        [
+          "for",
+          1274.6,
+          1274.68
+        ],
+        [
+          "winning",
+          1274.84,
+          1275.16
+        ],
+        [
+          "the",
+          1275.24,
+          1275.32
+        ],
+        [
+          "election",
+          1275.4,
+          1275.72
+        ],
+        [
+          "if",
+          1276.04,
+          1276.12
+        ],
+        [
+          "that",
+          1276.28,
+          1276.36
+        ],
+        [
+          "was",
+          1276.44,
+          1276.52
+        ],
+        [
+          "the",
+          1276.68,
+          1276.76
+        ],
+        [
+          "result.",
+          1277.0,
+          1277.72
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2018-Parakeet.json",
+      "origin_sha256_at_selection": "3cbfcee0196a50a914c2db9f6e8d657d371f7715186ba3c616feebf7ec43e7eb",
+      "origin_pointer": "/windows/2/words",
+      "origin_word_range": [
+        24,
+        47
+      ],
+      "origin_window": [
+        1261,
+        1283
+      ],
+      "origin_text": "In the expectation that their vote would count. The numerous polls indicate that most Afghans are prepared to support either candidate as the victor. That most Afghans have said that they could accept the person they didn't vote for winning the election if that was the result. So while the problems we face are not unparalleled, the Afghan voters expect",
+      "decision": "只取That most Afghans句，避免把前句That numerous误识The合入。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "字词时刻逐项复制真实模型输出；替换窗仅限定分析ASR替换范围，不用作成品音轨裁剪。"
+    },
+    {
+      "window": [
+        469.3,
+        478.8
+      ],
+      "words": [
+        [
+          "Because",
+          469.44,
+          469.52
+        ],
+        [
+          "these",
+          469.84,
+          469.92
+        ],
+        [
+          "different",
+          470.08,
+          470.16
+        ],
+        [
+          "languages",
+          470.4,
+          471.12
+        ],
+        [
+          "impose",
+          471.2,
+          471.52
+        ],
+        [
+          "a",
+          471.6,
+          471.68
+        ],
+        [
+          "barrier,",
+          471.76,
+          472.48
+        ],
+        [
+          "as",
+          472.72,
+          472.8
+        ],
+        [
+          "we",
+          472.88,
+          472.96
+        ],
+        [
+          "have",
+          473.04,
+          473.12
+        ],
+        [
+          "just",
+          473.2,
+          473.28
+        ],
+        [
+          "seen,",
+          473.52,
+          474.16
+        ],
+        [
+          "to",
+          474.4,
+          474.48
+        ],
+        [
+          "the",
+          474.56,
+          474.64
+        ],
+        [
+          "transfer",
+          474.72,
+          475.2
+        ],
+        [
+          "of",
+          475.2,
+          475.28
+        ],
+        [
+          "goods",
+          475.36,
+          475.68
+        ],
+        [
+          "and",
+          475.76,
+          475.84
+        ],
+        [
+          "ideas",
+          476.0,
+          476.4
+        ],
+        [
+          "and",
+          476.48,
+          476.56
+        ],
+        [
+          "technologies",
+          476.72,
+          477.36
+        ],
+        [
+          "and",
+          477.6,
+          477.68
+        ],
+        [
+          "wisdom",
+          477.84,
+          478.48
+        ]
+      ],
+      "origin_ref": "核验/正文局部音证/2018-Parakeet.json",
+      "origin_sha256_at_selection": "3cbfcee0196a50a914c2db9f6e8d657d371f7715186ba3c616feebf7ec43e7eb",
+      "origin_pointer": "/windows/3/words",
+      "origin_word_range": [
+        1,
+        24
+      ],
+      "origin_window": [
+        468,
+        482
+      ],
+      "origin_text": "burden. Because these different languages impose a barrier, as we have just seen, to the transfer of goods and ideas and technologies and wisdom and they impose a barrier to cooperation.",
+      "decision": "真实transfer，独立Whisper亦为transfer；不采用transformation误识。",
+      "word_end_estimate_seconds": 0.08,
+      "note": "字词时刻逐项复制真实模型输出；替换窗仅限定分析ASR替换范围，不用作成品音轨裁剪。"
+    }
+  ]
+}

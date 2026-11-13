@@ -59,8 +59,9 @@ def main():
                              **window})
     jobs.sort(key=lambda x: (-len(x['boundary_sentences']), -x['missing_lexemes'], x['duration'], x['year']))
     result = {'status': 'machine_triage; all outputs remain draft',
-              'years': sorted({u['year'] for u in units}), 'skip': [2022], 'units': units,
+              'years': sorted({u['year'] for u in units}), 'skip': [2022] if not any(u['year'] == 2022 for u in units) else [], 'units': units,
               'unit_count': len(units), 'exported_drafts': sum(u['state'].startswith('draft_exported') for u in units),
+              'source_approved_preserved':sum(u['state']=='source_approved_preserved' for u in units),
               'blocked_units': sum(u['state'].startswith('blocked') for u in units),
               'boundary_sentences': boundaries,
               'classification_note': '类别4只表示原文/ASR连续缺口，未据此断言录音真实缺失；类别1也不据机器差异直接改源文。'}

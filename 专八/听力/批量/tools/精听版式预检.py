@@ -57,7 +57,7 @@ def probe_unit(snapshot,out,browser,screens=False):
             if problems:
                 original_bad.append({'screen':i+1,'label':label,'problems':problems})
                 k=re.match(r'第 (\d+) 句',label)
-                if k:bad.add(int(k.group(1)))
+                if k and fit and (not r[2] or r[0]<m.MIN_FS or r[1]<m.MIN_VS):bad.add(int(k.group(1)))
         for k in sorted(bad):
             s=flat[k-1];en=s['en'];zh=s['zh']
             cs=set(sug.en_cuts(en,s))
@@ -70,6 +70,7 @@ def probe_unit(snapshot,out,browser,screens=False):
                     for cuts in itertools.combinations(sorted(pool),count):
                         b=[0,*cuts,len(en)]
                         if min(y-x for x,y in zip(b,b[1:]))<12:continue
+                        if any(len(TOKEN.findall(en[x:y]))<4 for x,y in zip(b,b[1:])):continue
                         missing=sum(not any(x<=w['sp'][0][0]<y for w in s['w']) for x,y in zip(b,b[1:]))
                         z=sug.best_zh(s,list(cuts))
                         if z is None:continue
@@ -115,12 +116,39 @@ def probe_unit(snapshot,out,browser,screens=False):
     dump(out/'分屏候选.json',{pid:plans})
     result={'id':pid,'layout_only':True,'not_audio_approved':True,'input_sha256':sha(snapshot),'precheck_script_sha256':sha(__file__),
             'fingerprint_before':frozen,'fingerprint_after':fingerprint(m,p,{}),'font_min_css_px':font_min,
-            'dimensions':[3840,2160],'source_title':source_title,'proposed_display_title':p['title'],'proposed_names':proposed_names,'original_problems':original_bad,'split_findings':findings,
+            'dimensions':[3840,2160],'layout_source_origin':d.get('layout_source_origin'),'manual_rebase_notes':d.get('layout_manual_rebase_notes',[]),'source_title':source_title,'proposed_display_title':p['title'],'proposed_names':proposed_names,'original_problems':original_bad,'split_findings':findings,
             'final_problems':final,'shots':rows,'ok':not final,
             'chinese_integrity':'split_parts逐字核对每屏译文；拼接与整句完全相同',
             'next_gate':'候选必须再通过原声停顿、英文/中文分屏语义及真实换屏时刻核验，才可生产编码'}
     dump(out/'版式预检.json',result);print(pid,'screens',len(rows),'problems',len(final),'split',len(plans),flush=True)
     return {'id':pid,'ok':not final,'screens':len(rows),'problems':len(final),'split':len(plans),'report':str(out/'版式预检.json')}
+
+
+def manual_overlays(unit):
+    """只给几何候选合已审手工EN锚；不修改母稿，也不声称换屏已核音频。"""
+    d=copy.deepcopy(unit);records=[];notes=[]
+    f=BATCH/'核验/2024人工分屏补充.json'
+    if f.exists():
+        records += [{'id':r['id'],'en':r['en'],'plan':{'at':r['at'],'zh':r['zh']}} for r in json.loads(f.read_text()).get('split_records',[])]
+    f=BATCH/'核验/2018长句分屏译文调整.json'
+    if f.exists():
+        r=json.loads(f.read_text());records.append({'id':r['unit'],'en':r['en_anchor'],'plan':r['candidate']})
+    f=BATCH/'核验/正文局部音证/2018-裁决.json'
+    if f.exists():
+        records += [{'id':r['unit'],'en':r['en'],'plan':r['candidate']} for r in json.loads(f.read_text()).get('manual_splits',[])]
+    f=BATCH/'核验/正文异文复核/2023-B1-人工分屏候选.json'
+    if f.exists():
+        r=json.loads(f.read_text());records.append({'id':r['id'],'en':r['en'],'plan':r['candidate']})
+    for r in records:
+        if r['id']!=d['id']:continue
+        matches=[(k,s) for k,s in enumerate(d['sentences'],1) if s['en']==r['en']]
+        if len(matches)!=1:notes.append('手工EN锚未唯一匹配，未应用：'+r['en']);continue
+        k,s=matches[0];zs=r['plan']['zh']
+        if ''.join(zs)!=s['zh']:notes.append('手工中文不再与母稿逐字相同，未应用：'+r['en']);continue
+        d.setdefault('splits',{})[str(k)]=r['plan']
+        notes.append('仅几何预检按EN整句锚合人工候选：'+r['en'])
+    d['layout_manual_rebase_notes']=notes
+    return d
 
 
 def worker(args):
@@ -134,16 +162,18 @@ def worker(args):
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--out',type=Path,required=True);ap.add_argument('--ids',nargs='*');ap.add_argument('--workers',type=int,default=2)
-    ap.add_argument('--resume',action='store_true');ap.add_argument('--screens',action='store_true');ap.add_argument('--browser',default=shutil.which('chromium') or '/usr/bin/chromium')
+    ap.add_argument('--prefer-drafts',action='store_true');ap.add_argument('--resume',action='store_true');ap.add_argument('--screens',action='store_true');ap.add_argument('--browser',default=shutil.which('chromium') or '/usr/bin/chromium')
     args=ap.parse_args();out=args.out.resolve();out.mkdir(parents=True,exist_ok=True);units={}
     for f in sorted((BATCH/'译注草稿').glob('*.json')):
         obj=json.loads(f.read_text())
-        for u in obj.get('units',[]):units[u['id']]={'year':obj['year'],**u}
+        for u in obj.get('units',[]):units[u['id']]={'year':obj['year'],**u,'layout_source_origin':{'file':str(f.relative_to(BATCH)),'sha256':sha(f)}}
     for f in sorted((BATCH/'精听数据').glob('*.json')):
-        u=json.loads(f.read_text());units[u['id']]=u
+        u=json.loads(f.read_text())
+        if not args.prefer_drafts or u['id'] not in units:units[u['id']]={**u,'layout_source_origin':{'file':str(f.relative_to(BATCH)),'sha256':sha(f)}}
     jobs=[]
     for pid,u in sorted(units.items()):
         if args.ids and pid not in args.ids:continue
+        u=manual_overlays(u)
         sub=out/pid;sub.mkdir(exist_ok=True);snap=sub/'source.json';dump(snap,u)
         old=sub/'版式预检.json'
         if args.resume and old.exists() and json.loads(old.read_text()).get('input_sha256')==sha(snap):continue

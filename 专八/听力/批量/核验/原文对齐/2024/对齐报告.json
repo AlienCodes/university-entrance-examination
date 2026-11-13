@@ -4,11 +4,11 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2024.json",
-    "draft_sha256": "947a5f81771307c2815e40481caf6e1e6317e5c2b810a6909ae346f44840158d",
+    "draft_sha256": "d5bc48984566af82c864ac794933f14558ee6fd0d850158b543dacbde5f3fa86",
     "asr": "核验/原文对齐/2024/含说明识别.json",
-    "asr_sha256": "60d6989ee58e046eeb77eded82706695daf593f16e012b3258ded64d6221b6ed",
-    "input_asr": "核验/补词锚/2024/优选识别.json",
-    "input_asr_sha256": "814507c0604450163eda87084bf7bc82df4719a29242c32ed3261d27146edc09",
+    "asr_sha256": "e6974137e135b4108fa3f55d3f0bc7bcd60a2247c0e4c8a7e6a110adacb7f850",
+    "input_asr": "核验/补词锚/2024/已核局部识别.json",
+    "input_asr_sha256": "b227d5d4f99894f3251ff7425f323f89552b192d47609b4b13b2070798dd814b",
     "prepare": "预处理/2024/原音准备.json",
     "prepare_sha256": "21e088ebbdd9bca58ff714ba6cce4f60bada103eaf2b2f6d86999b7d56c84659",
     "canonical_source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213"
@@ -66,51 +66,32 @@
       "removed_input_ASR": []
     }
   ],
-  "filler_acoustic_evidence": [
-    {
-      "unit": "2024-B1",
-      "sentence": 26,
-      "source_text": "Hmm. Now let’s focus on fiction writing.",
-      "unanchored_filler": [
-        "Hmm"
-      ],
-      "speech_island": [
-        877.99,
-        878.44
-      ],
-      "sentence_boundary": [
-        877.97,
-        878.46
-      ],
-      "ASR_bracket": [
-        877.54,
-        879.14
-      ],
-      "frame_seconds": 0.01,
-      "threshold_dBFS": -32.981,
-      "noise_percentile_15_dBFS": -44.981,
-      "proof": "唯一60—1200ms声学岛，两边各至少80ms低电平；源文件SHA已复核。",
-      "status": "machine_acoustic_candidate; not_word_timestamps; human_review_required"
-    }
-  ],
+  "decision_inputs": [],
+  "decision_rebinding": [],
+  "filler_acoustic_evidence": [],
+  "reviewed_whole_audio_anchors": [],
+  "reviewed_nonverbal_events": [],
   "ASR_provenance": {
-    "file": "核验/补词锚/2024/优选ASR核验.json",
-    "sha256": "3c82bbd6898a151c55cb1a98b89c56898ff841ad4620a8b881cb582b04a4d1cb",
+    "file": "核验/补词锚/2024/已核局部ASR核验.json",
+    "sha256": "1d4e1c510fdb84bfaefd0a53225709fda43059f9d5d91612b4e8493a62098db3",
     "canonical_and_ASR_sha_verified": true,
-    "status": "机器优选逐词ASR候选；未审，不修改主ASR或正式原音。",
+    "status": "已核局部逐词识别合并候选，最终字幕/音轨/画面审校尚须登记。",
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
-    "source_lexemes": 2648,
-    "source_mapped": 2644,
-    "source_ratio": 0.9984894259818731,
-    "asr_lexemes": 2665,
-    "asr_mapped": 2646,
-    "asr_ratio": 0.9928705440900563,
-    "all_source_mapped": false,
+    "source_lexemes": 2668,
+    "source_mapped": 2668,
+    "source_ratio": 1.0,
+    "asr_lexemes": 2671,
+    "asr_mapped": 2669,
+    "asr_ratio": 0.9992512167727443,
+    "all_source_mapped": true,
     "all_asr_mapped": false,
-    "all_boundaries_anchored": false,
-    "literal_complete": false
+    "all_boundaries_anchored": true,
+    "literal_complete": false,
+    "source_lexical_lexemes": 2668,
+    "external_reviewed_ASR_lexemes": 0,
+    "nonverbal_not_word_lexemes": 0
   },
   "differences": [
     {
@@ -129,137 +110,10 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2024-B1",
-          "sentence": 26,
-          "char": [
-            0,
-            3
-          ],
-          "text": "Hmm"
-        }
-      ],
-      "asr_indices": [
-        1480
-      ],
-      "asr_text": [
-        "Hm."
-      ],
-      "window": [
-        877.86,
-        878.9
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2024-B1",
-          "sentence": 49,
-          "char": [
-            105,
-            109
-          ],
-          "text": "best"
-        },
-        {
-          "unit": "2024-B1",
-          "sentence": 49,
-          "char": [
-            110,
-            117
-          ],
-          "text": "sellers"
-        }
-      ],
-      "asr_indices": [
-        1840
-      ],
-      "asr_text": [
-        "bestsellers"
-      ],
-      "window": [
-        1036.12,
-        1036.76
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1899,
-        1900
-      ],
-      "asr_text": [
-        "Question",
-        "one:"
-      ],
-      "window": [
-        1063.43,
-        1064.79
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1917,
-        1918
-      ],
-      "asr_text": [
-        "Question",
-        "three"
-      ],
-      "window": [
-        1093.14,
-        1093.94
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1931,
-        1932
-      ],
-      "asr_text": [
-        "Question",
-        "four:"
-      ],
-      "window": [
-        1110.31,
-        1111.91
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1942,
-        1943
-      ],
-      "asr_text": [
-        "Question",
-        "five:"
-      ],
-      "window": [
-        1126.2,
-        1127.64
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2098
+        2100
       ],
       "asr_text": [
         "that"
@@ -267,82 +121,6 @@
       "window": [
         1205.31,
         1205.39
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2591,
-        2592
-      ],
-      "asr_text": [
-        "Question",
-        "six:"
-      ],
-      "window": [
-        1410.04,
-        1411.32
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2612,
-        2613
-      ],
-      "asr_text": [
-        "Question",
-        "eight:"
-      ],
-      "window": [
-        1442.19,
-        1443.23
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2627,
-        2628
-      ],
-      "asr_text": [
-        "Question",
-        "nine:"
-      ],
-      "window": [
-        1457.84,
-        1459.36
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2024-B2",
-          "sentence": 43,
-          "char": [
-            5,
-            12
-          ],
-          "text": "measure"
-        }
-      ],
-      "asr_indices": [
-        2630
-      ],
-      "asr_text": [
-        "measures"
-      ],
-      "window": [
-        1459.92,
-        1460.48
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -464,6 +242,34 @@
       "source": [
         {
           "unit": "2024-B1",
+          "sentence": 26,
+          "char": [
+            0,
+            3
+          ],
+          "text": "Hmm"
+        }
+      ],
+      "asr_indices": [
+        1480
+      ],
+      "asr_text": [
+        "Hm."
+      ],
+      "window": [
+        877.86,
+        878.9
+      ],
+      "canonical": [
+        "hmm"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B1",
           "sentence": 34,
           "char": [
             0,
@@ -521,6 +327,156 @@
       "kind": "normalized_or_reviewed_mapping",
       "source": [
         {
+          "unit": "2024-B1",
+          "sentence": 49,
+          "char": [
+            105,
+            109
+          ],
+          "text": "best"
+        },
+        {
+          "unit": "2024-B1",
+          "sentence": 49,
+          "char": [
+            110,
+            117
+          ],
+          "text": "sellers"
+        }
+      ],
+      "asr_indices": [
+        1840
+      ],
+      "asr_text": [
+        "bestsellers"
+      ],
+      "window": [
+        1036.12,
+        1036.76
+      ],
+      "canonical": [
+        "best",
+        "sellers"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B1",
+          "sentence": 55,
+          "char": [
+            9,
+            10
+          ],
+          "text": "1"
+        }
+      ],
+      "asr_indices": [
+        1900
+      ],
+      "asr_text": [
+        "one:"
+      ],
+      "window": [
+        1064.07,
+        1064.79
+      ],
+      "canonical": [
+        "#1"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B1",
+          "sentence": 57,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1920
+      ],
+      "asr_text": [
+        "three"
+      ],
+      "window": [
+        1093.86,
+        1093.94
+      ],
+      "canonical": [
+        "#3"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B1",
+          "sentence": 58,
+          "char": [
+            9,
+            10
+          ],
+          "text": "4"
+        }
+      ],
+      "asr_indices": [
+        1934
+      ],
+      "asr_text": [
+        "four:"
+      ],
+      "window": [
+        1111.03,
+        1111.91
+      ],
+      "canonical": [
+        "#4"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B1",
+          "sentence": 59,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1945
+      ],
+      "asr_text": [
+        "five:"
+      ],
+      "window": [
+        1126.92,
+        1127.64
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
           "unit": "2024-B2",
           "sentence": 4,
           "char": [
@@ -531,7 +487,7 @@
         }
       ],
       "asr_indices": [
-        2004
+        2006
       ],
       "asr_text": [
         "eighty"
@@ -559,7 +515,7 @@
         }
       ],
       "asr_indices": [
-        2482
+        2484
       ],
       "asr_text": [
         "two."
@@ -570,6 +526,90 @@
       ],
       "canonical": [
         "#2"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 40,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2594
+      ],
+      "asr_text": [
+        "six:"
+      ],
+      "window": [
+        1410.68,
+        1411.32
+      ],
+      "canonical": [
+        "#6"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 42,
+          "char": [
+            9,
+            10
+          ],
+          "text": "8"
+        }
+      ],
+      "asr_indices": [
+        2617
+      ],
+      "asr_text": [
+        "eight:"
+      ],
+      "window": [
+        1442.75,
+        1443.23
+      ],
+      "canonical": [
+        "#8"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 43,
+          "char": [
+            9,
+            10
+          ],
+          "text": "9"
+        }
+      ],
+      "asr_indices": [
+        2632
+      ],
+      "asr_text": [
+        "nine:"
+      ],
+      "window": [
+        1458.48,
+        1459.36
+      ],
+      "canonical": [
+        "#9"
       ],
       "decision": "machine_normalization_requires_review"
     }
@@ -591,99 +631,7 @@
     },
     {
       "asr_indices": [
-        1480
-      ],
-      "asr_text": [
-        "Hm."
-      ],
-      "window": [
-        877.86,
-        878.9
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1840
-      ],
-      "asr_text": [
-        "bestsellers"
-      ],
-      "window": [
-        1036.12,
-        1036.76
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1899,
-        1900
-      ],
-      "asr_text": [
-        "Question",
-        "one:"
-      ],
-      "window": [
-        1063.43,
-        1064.79
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1917,
-        1918
-      ],
-      "asr_text": [
-        "Question",
-        "three"
-      ],
-      "window": [
-        1093.14,
-        1093.94
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1931,
-        1932
-      ],
-      "asr_text": [
-        "Question",
-        "four:"
-      ],
-      "window": [
-        1110.31,
-        1111.91
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1942,
-        1943
-      ],
-      "asr_text": [
-        "Question",
-        "five:"
-      ],
-      "window": [
-        1126.2,
-        1127.64
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2098
+        2100
       ],
       "asr_text": [
         "that"
@@ -694,275 +642,39 @@
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2591,
-        2592
-      ],
-      "asr_text": [
-        "Question",
-        "six:"
-      ],
-      "window": [
-        1410.04,
-        1411.32
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2612,
-        2613
-      ],
-      "asr_text": [
-        "Question",
-        "eight:"
-      ],
-      "window": [
-        1442.19,
-        1443.23
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2627,
-        2628
-      ],
-      "asr_text": [
-        "Question",
-        "nine:"
-      ],
-      "window": [
-        1457.84,
-        1459.36
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2630
-      ],
-      "asr_text": [
-        "measures"
-      ],
-      "window": [
-        1459.92,
-        1460.48
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     }
   ],
   "human_decisions": [],
-  "rerecognition_windows": [
-    {
-      "unit": "2024-B1",
-      "window": [
-        875.72,
-        880.72
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 26,
-          "source_text": "Hmm",
-          "source_chars": [
-            [
-              0,
-              3
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2024-B1",
-            "sentence": 25,
-            "text": "way",
-            "asr_indices": [
-              1479
-            ],
-            "asr_text": [
-              "way."
-            ],
-            "window": [
-              877.22,
-              877.54
-            ]
-          },
-          "right_anchor": {
-            "unit": "2024-B1",
-            "sentence": 26,
-            "text": "Now",
-            "asr_indices": [
-              1481
-            ],
-            "asr_text": [
-              "Now"
-            ],
-            "window": [
-              879.14,
-              879.22
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        26
-      ],
-      "duration": 5.0
-    },
-    {
-      "unit": "2024-B1",
-      "window": [
-        1034.38,
-        1038.42
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 49,
-          "source_text": "best sellers",
-          "source_chars": [
-            [
-              105,
-              109
-            ],
-            [
-              110,
-              117
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2024-B1",
-            "sentence": 49,
-            "text": "of",
-            "asr_indices": [
-              1839
-            ],
-            "asr_text": [
-              "of"
-            ],
-            "window": [
-              1035.88,
-              1035.96
-            ]
-          },
-          "right_anchor": {
-            "unit": "2024-B1",
-            "sentence": 49,
-            "text": "of",
-            "asr_indices": [
-              1841
-            ],
-            "asr_text": [
-              "of"
-            ],
-            "window": [
-              1036.84,
-              1036.92
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.04
-    },
-    {
-      "unit": "2024-B2",
-      "window": [
-        1458.1,
-        1462.06
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 43,
-          "source_text": "measure",
-          "source_chars": [
-            [
-              5,
-              12
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2024-B2",
-            "sentence": 43,
-            "text": "What",
-            "asr_indices": [
-              2629
-            ],
-            "asr_text": [
-              "What"
-            ],
-            "window": [
-              1459.6,
-              1459.68
-            ]
-          },
-          "right_anchor": {
-            "unit": "2024-B2",
-            "sentence": 43,
-            "text": "should",
-            "asr_indices": [
-              2631
-            ],
-            "asr_text": [
-              "should"
-            ],
-            "window": [
-              1460.48,
-              1460.56
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.96
-    }
-  ],
+  "rerecognition_windows": [],
   "units": [
     {
       "id": "2024-A",
-      "state": "draft_exported_not_approved",
+      "state": "source_approved_preserved",
       "output": "精听数据/2024-A.json",
       "sentences": 68,
       "source_lexemes": 1135,
       "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
-      "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 0,
       "audio_window": [
-        1.0,
-        700.11
-      ]
+        0.6075,
+        700.19
+      ],
+      "source_lock": "核验/2024-A-源文审核.json",
+      "note": "已批源文原文件逐字保留；报告更新不会清回draft或覆盖已审时间/译注。"
     },
     {
       "id": "2024-B1",
       "state": "draft_exported_not_approved",
       "output": "精听数据/2024-B1.json",
       "sentences": 59,
-      "source_lexemes": 812,
-      "missing_source_lexemes": 3,
+      "source_lexemes": 822,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
-      "acoustic_filler_sentences": [
-        26
-      ],
-      "rerecognition_window_count": 2,
+      "acoustic_filler_sentences": [],
+      "rerecognition_window_count": 0,
       "audio_window": [
-        701.07,
-        1132.56
+        700.5525,
+        1132.64
       ]
     },
     {
@@ -970,14 +682,14 @@
       "state": "draft_exported_not_approved",
       "output": "精听数据/2024-B2.json",
       "sentences": 46,
-      "source_lexemes": 701,
-      "missing_source_lexemes": 1,
+      "source_lexemes": 711,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 1,
+      "rerecognition_window_count": 0,
       "audio_window": [
-        1142.27,
-        1495.92
+        1142.2625,
+        1496.0
       ]
     }
   ]

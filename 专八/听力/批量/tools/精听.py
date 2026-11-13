@@ -18,7 +18,7 @@ import subprocess
 import sys
 import tempfile
 
-from 精听数据 import ROOT,HERE,LEAD,TAIL,FPS,sha,dump,compile_input,validate,first_aligned_word,audio_protection,PROTECTION_2022
+from 精听数据 import ROOT,HERE,LEAD,TAIL,FPS,sha,dump,compile_input,validate,first_aligned_word,audio_protection,PROTECTION_2022,resolve_manual_splits,aligned_switch,assert_manual_preserved
 
 PROJECT='专八批量精听'
 
@@ -53,10 +53,7 @@ def engine(out):
     def switch_time(audio,it,en,cut):
         aligned=it.get('word_alignment') or []
         if not aligned:return fallback(audio,it,en,cut)
-        t=first_aligned_word(aligned,en,cut)['start']
-        gaps=list(zip([p[1] for p in it['parts']],[p[0] for p in it['parts'][1:]]))
-        near=[(a+b)/2 for a,b in gaps if abs((a+b)/2-t)<=.35]
-        return min(near,key=lambda x:abs(x-t)) if near else t
+        return aligned_switch(it,en,cut)[0]
     m.switch_time=switch_time
     return m
 
@@ -80,6 +77,10 @@ def read_prepared(out,input_file,draft=False):
     tm=json.loads((out/'audio/timings.json').read_text())['cet4_male'][p['id']]
     report=json.loads((out/'prepared.json').read_text())
     assert report['input_sha256']==sha(input_file),'输入更改，须重新prepare'
+    explicit=resolve_manual_splits(d)
+    assert all(key in report.get('manual_splits',{}) and all(report['manual_splits'][key].get(x)==plan[x] for x in ['at','zh']) for key,plan in explicit.items()),'编译的人工计划失效，须重新prepare'
+    hand=json.loads((out/'tools/分屏手定_水墨.json').read_text()).get(d['id'],{})
+    assert_manual_preserved(report.get('manual_splits',{}),hand)
     assert sha(out/'audio'/tm['file'])==tm['audio_sha256']
     protected,protection=audio_protection(d)
     assert tm.get('protected_source_intervals',[])==protected and tm.get('audio_protection')==protection,'原音保护登记改变，须重新prepare'
@@ -125,10 +126,14 @@ def autosplit(m,p,out):
     script(ROOT/'专八/tools/分屏建议.py',[p['id'],'--project',PROJECT,'--styles','C','--out',str(suggestion)])
     script(ROOT/'专八/tools/分屏定稿.py',[str(suggestion),p['id']])
     m.set_project(PROJECT)
+    expected=json.loads((out/'prepared.json').read_text()).get('manual_splits',{})
+    assert_manual_preserved(expected,m.SPLIT.get(p['id'],{}))
 
 
 def states(m,p,tm,out):
     flat=[s for para in p['paras'] for s in para]
+    expected=json.loads((out/'prepared.json').read_text()).get('manual_splits',{})
+    assert_manual_preserved(expected,m.SPLIT.get(p['id'],{}))
     result=[[0,'screen001']];i=1
     for k,s in enumerate(flat,1):
         it=tm['sentences'][k-1]

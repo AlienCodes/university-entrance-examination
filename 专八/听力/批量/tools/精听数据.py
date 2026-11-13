@@ -96,6 +96,68 @@ def first_aligned_word(aligned,en,cut):
     return later[0]
 
 
+def resolve_manual_splits(d):
+    """用完整英文锚重新定位当前句号；显式句号计划只作兼容，冲突一律拒绝。"""
+    result={str(k):copy.deepcopy(v) for k,v in d.get('splits',{}).items()}
+    for record in d.get('manual_splits',[]):
+        hits=[i for i,s in enumerate(d['sentences'],1) if s['en']==record['en']]
+        assert len(hits)==1,'人工分屏英文锚缺失或不唯一：'+record['en']
+        key=str(hits[0]);plan={x:copy.deepcopy(record[x]) for x in ['at','zh']}
+        if record.get('无停顿'):plan['无停顿']=record['无停顿']
+        if key in result:
+            assert all(result[key].get(x)==plan[x] for x in ['at','zh']),'英文锚人工分屏与显式句号计划冲突：'+key
+            result[key].update(plan)
+        else:result[key]=plan
+    for key,plan in result.items():
+        assert key.isdigit() and 1<=int(key)<=len(d['sentences']),'人工分屏句号不存在：'+key
+        sentence=d['sentences'][int(key)-1];en=sentence['en'];zs=plan['zh']
+        ats=plan['at'] if isinstance(plan['at'],list) else [plan['at']]
+        assert ats and all(isinstance(a,str) and a and en.count(a)==1 for a in ats),'人工分屏切点不唯一：'+key
+        cuts=[en.index(a) for a in ats]
+        assert cuts==sorted(set(cuts)) and all(0<c<len(en) and re.search(r'[ —]$',en[:c]) for c in cuts),'人工分屏不在真实词边界：'+key
+        assert all(not any(a<c<b for w in sentence['w'] for a,b in w['sp']) for c in cuts),'人工分屏切断高亮词：'+key
+        if zs!='整句':
+            assert isinstance(zs,list) and len(zs)==len(cuts)+1 and all(isinstance(z,str) and z for z in zs),'人工中文段数不符：'+key
+            ded=[z for i,z in enumerate(zs) if i==0 or z!=zs[i-1]]
+            assert ''.join(ded)==sentence['zh'],'人工分屏中文未原样拼回：'+key
+    return dict(sorted(result.items(),key=lambda item:int(item[0])))
+
+
+def aligned_switch(it,en,cut):
+    """真实首词+实测静音gap；不靠字数估时，也不越过缺失首词。"""
+    word=first_aligned_word(it.get('word_alignment') or [],en,cut)
+    t=word['start'];gaps=list(zip([p[1] for p in it['parts']],[p[0] for p in it['parts'][1:]]))
+    near=[(a+b)/2 for a,b in gaps if abs((a+b)/2-t)<=.35]
+    when=min(near,key=lambda x:abs(x-t)) if near else t
+    gap=next(([a,b] for a,b in gaps if a-.02<=when<=b+.02),None)
+    return when,{'char':word['char'],'char_end':word['char_end'],'word':en[word['char']:word['char_end']],
+                 'first_word_start':t,'switch_time':when,'actual_gap':gap}
+
+
+def bind_manual_pauses(plans,sentences,times):
+    """手定只有真实gap不存在时才登记语义回退；已核真词首不可缺。"""
+    bound=copy.deepcopy(plans);evidence={}
+    for key,plan in bound.items():
+        en=sentences[int(key)-1]['en'];it=times[int(key)-1]
+        ats=plan['at'] if isinstance(plan['at'],list) else [plan['at']]
+        rows=[]
+        for at in ats:
+            _,record=aligned_switch(it,en,en.index(at));rows.append({'at':at,**record})
+        if any(r['actual_gap'] is None for r in rows):
+            plan['无停顿']='句中没有停顿' if len(it['parts'])==1 else '停顿处切不开'
+        else:plan.pop('无停顿',None)
+        evidence[key]=rows
+    return bound,evidence
+
+
+def assert_manual_preserved(expected,actual):
+    """自动建议/定稿只可增补其他句，不能改掉明确手定at/zh及真实无停顿状态。"""
+    for key,plan in expected.items():
+        assert key in actual,'自动分屏丢失人工计划：'+key
+        assert all(actual[key].get(x)==plan[x] for x in ['at','zh']),'自动分屏覆盖人工at/zh：'+key
+        assert actual[key].get('无停顿')==plan.get('无停顿'),'人工分屏实测无停顿登记丢失或不实：'+key
+
+
 def float_wav(path,x,sr):
     """不带时间相关PEAK块的IEEE FLOAT WAV，原采样率/声道/样本值。"""
     import numpy as np
@@ -174,6 +236,7 @@ def compile_input(input_file,original,out,draft=False):
     import numpy as np
     import soundfile as sf
     d=validate(json.loads(Path(input_file).read_text('utf-8')),draft)
+    explicit=resolve_manual_splits(d)
     assert sha(original)==d['audio']['sha256'],'原声SHA-256不符'
     out=Path(out).resolve();out.mkdir(parents=True,exist_ok=True)
     source=out/'source.wav'
@@ -219,11 +282,14 @@ def compile_input(input_file,original,out,draft=False):
         'source_sha256':d['audio']['sha256'],'audio_sha256':sha(audio),'window':[lo,hi],'kept_intervals':[[u/sr,v/sr] for u,v in intervals],
         'compressed_gaps':[[u/sr,v/sr] for u,v in removed],'kept_gaps':kept,'sentences':times,
         'protected_source_intervals':protected,'audio_protection':protection}
+    manual,manual_evidence=bind_manual_pauses(explicit,d['sentences'],times)
     dump(out/'data/vocab.json',{'passages':[p]});dump(out/'audio/timings.json',{'cet4_male':{d['id']:tm}})
     dump(out/'tools/人名.json',{'names':d.get('names',[])})
-    dump(out/'tools/分屏_水墨.json',{d['id']:d.get('splits',{})})
+    dump(out/'tools/分屏_水墨.json',{d['id']:manual})
+    dump(out/'tools/分屏手定_水墨.json',{d['id']:manual})
     dump(out/'prepared.json',{'input_sha256':sha(input_file),'content_sha256':content_sha(d),'draft':draft,
                               'id':d['id'],'source_sha256':tm['source_sha256'],'audio_sha256':tm['audio_sha256'],
                               'source_window':[lo,hi],'compressed_gaps':tm['compressed_gaps'],'kept_gaps':kept,
-                              'protected_source_intervals':protected,'audio_protection':protection})
+                              'protected_source_intervals':protected,'audio_protection':protection,
+                              'manual_splits':manual,'manual_switch_evidence':manual_evidence})
     return d,p,tm

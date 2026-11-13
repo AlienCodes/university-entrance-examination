@@ -15,7 +15,11 @@ def main():
  for pid,path in sorted(chosen.items()):
   result=json.loads(path.read_text());snapshot=path.parent/'source.json';d=json.loads(snapshot.read_text());sentences=d['sentences'];anchored=[]
   for k,f in result.get('split_findings',{}).items():
-   s=sentences[int(k)-1];item={'en':s['en'],'zh':s['zh'],'ordinal_hint':int(k),**f}
+   s=sentences[int(k)-1]
+   original=[x for x in result.get('original_problems',[]) if re.match(r'第 '+re.escape(str(k))+r' 句(?:$| )',x['label'])]
+   sizing=any(any('一屏放不下或字太小' in message or '字号过小' in message for message in x['problems']) for x in original)
+   if original and not sizing:continue  # 纯词注/字体出界不能靠拆短题干解决，保留在layout_problems交编辑修释义。
+   item={'en':s['en'],'zh':s['zh'],'ordinal_hint':int(k),**f}
    if f.get('candidate'):
     plan=f['candidate'];ats=plan['at'] if isinstance(plan['at'],list) else [plan['at']];cuts=[0,*[s['en'].index(x) for x in ats],len(s['en'])]
     zs=[s['zh']]*(len(cuts)-1) if plan['zh']=='整句' else plan['zh'];missing=[]

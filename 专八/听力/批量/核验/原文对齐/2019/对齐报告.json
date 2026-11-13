@@ -4,11 +4,11 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2019.json",
-    "draft_sha256": "a8bcacbdfa28233e1d43307b12545fcbe01e060e5ceb8ad8cde847496730ef14",
+    "draft_sha256": "4e89f1322cae726bfb57c7236c50a8418afc04a0648a5d3db9e9b782b43d6749",
     "asr": "核验/原文对齐/2019/含说明识别.json",
-    "asr_sha256": "6a1d085a3589ec902c9e47540353189f26092140d1f53ed2821300afa0a125a8",
-    "input_asr": "核验/补词锚/2019/优选识别.json",
-    "input_asr_sha256": "0d80f64e7286eb4b343523f6c997ec56d2f2fecb3d26f1096749fb4d24212657",
+    "asr_sha256": "fb62e702b3f88f82d4b73b5c83cdddaaf0e88cb21f61a1e807d26a8587df46b2",
+    "input_asr": "核验/补词锚/2019/已核局部识别.json",
+    "input_asr_sha256": "c83f554c5302703ec6a944c3f0a0a0c76f4498a6d1b4367edbb833a625d65851",
     "prepare": "预处理/2019/原音准备.json",
     "prepare_sha256": "c46a900b8ee6867ba6f9357ca447ebad1c3d22fc87fedd60d43a97fde73d64c0",
     "canonical_source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283"
@@ -196,25 +196,32 @@
       ]
     }
   ],
+  "decision_inputs": [],
+  "decision_rebinding": [],
   "filler_acoustic_evidence": [],
+  "reviewed_whole_audio_anchors": [],
+  "reviewed_nonverbal_events": [],
   "ASR_provenance": {
-    "file": "核验/补词锚/2019/优选ASR核验.json",
-    "sha256": "f18b564812fbddc8b05be17cd4efff827f26e51e1ef7be2fb6990af8327c7518",
+    "file": "核验/补词锚/2019/已核局部ASR核验.json",
+    "sha256": "fc0d6efed43bd4f7036d09af70e6d242b49b6cc2c88db4558dc353cbc102a726",
     "canonical_and_ASR_sha_verified": true,
-    "status": "机器优选逐词ASR候选；未审，不修改主ASR或正式原音。",
+    "status": "已核局部逐词识别合并候选，最终字幕/音轨/画面审校尚须登记。",
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
     "source_lexemes": 2748,
-    "source_mapped": 2728,
-    "source_ratio": 0.992721979621543,
-    "asr_lexemes": 2754,
-    "asr_mapped": 2727,
-    "asr_ratio": 0.9901960784313726,
+    "source_mapped": 2745,
+    "source_ratio": 0.9989082969432315,
+    "asr_lexemes": 2761,
+    "asr_mapped": 2746,
+    "asr_ratio": 0.9945671858022456,
     "all_source_mapped": false,
     "all_asr_mapped": false,
-    "all_boundaries_anchored": false,
-    "literal_complete": false
+    "all_boundaries_anchored": true,
+    "literal_complete": false,
+    "source_lexical_lexemes": 2748,
+    "external_reviewed_ASR_lexemes": 0,
+    "nonverbal_not_word_lexemes": 0
   },
   "differences": [
     {
@@ -236,39 +243,14 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        164
+        163
       ],
       "asr_text": [
-        "Glance,"
+        "glance."
       ],
       "window": [
-        107.34,
-        107.82
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 21,
-          "char": [
-            13,
-            22
-          ],
-          "text": "nonverbal"
-        }
-      ],
-      "asr_indices": [
-        201
-      ],
-      "asr_text": [
-        "non-verbal"
-      ],
-      "window": [
-        124.23,
-        125.03
+        106.74,
+        106.98
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -298,31 +280,6 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 39,
-          "char": [
-            19,
-            27
-          ],
-          "text": "behavior"
-        }
-      ],
-      "asr_indices": [
-        413
-      ],
-      "asr_text": [
-        "behaviour"
-      ],
-      "window": [
-        211.55,
-        212.03
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
@@ -334,31 +291,6 @@
       "window": [
         271.45,
         271.61
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 59,
-          "char": [
-            54,
-            59
-          ],
-          "text": "games"
-        }
-      ],
-      "asr_indices": [
-        681
-      ],
-      "asr_text": [
-        "gain."
-      ],
-      "window": [
-        321.37,
-        321.61
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -424,79 +356,11 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 82,
-          "char": [
-            0,
-            3
-          ],
-          "text": "And"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 86,
-          "char": [
-            93,
-            101
-          ],
-          "text": "behavior"
-        }
-      ],
-      "asr_indices": [
-        1062
-      ],
-      "asr_text": [
-        "behaviour,"
-      ],
-      "window": [
-        496.75,
-        497.71
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 86,
-          "char": [
-            111,
-            119
-          ],
-          "text": "behavior"
-        }
-      ],
-      "asr_indices": [
-        1065
-      ],
-      "asr_text": [
-        "behaviour"
-      ],
-      "window": [
-        498.43,
-        499.07
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1107,
-        1108
+        1108,
+        1109
       ],
       "asr_text": [
         "for",
@@ -506,119 +370,6 @@
         517.15,
         517.47
       ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 94,
-          "char": [
-            37,
-            46
-          ],
-          "text": "nonverbal"
-        }
-      ],
-      "asr_indices": [
-        1202
-      ],
-      "asr_text": [
-        "non-verbal"
-      ],
-      "window": [
-        556.27,
-        557.15
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-A",
-          "sentence": 94,
-          "char": [
-            123,
-            131
-          ],
-          "text": "behavior"
-        }
-      ],
-      "asr_indices": [
-        1216
-      ],
-      "asr_text": [
-        "behaviour."
-      ],
-      "window": [
-        561.87,
-        563.07
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2019-B1",
-          "sentence": 22,
-          "char": [
-            0,
-            3
-          ],
-          "text": "The"
-        },
-        {
-          "unit": "2019-B1",
-          "sentence": 22,
-          "char": [
-            4,
-            14
-          ],
-          "text": "greenhouse"
-        },
-        {
-          "unit": "2019-B1",
-          "sentence": 22,
-          "char": [
-            15,
-            21
-          ],
-          "text": "effect"
-        },
-        {
-          "unit": "2019-B1",
-          "sentence": 22,
-          "char": [
-            22,
-            27
-          ],
-          "text": "isn’t"
-        },
-        {
-          "unit": "2019-B1",
-          "sentence": 22,
-          "char": [
-            28,
-            36
-          ],
-          "text": "actually"
-        },
-        {
-          "unit": "2019-B1",
-          "sentence": 22,
-          "char": [
-            37,
-            46
-          ],
-          "text": "happening"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
       "decision": "machine_candidate_unreviewed"
     },
     {
@@ -635,7 +386,7 @@
         }
       ],
       "asr_indices": [
-        1903
+        1910
       ],
       "asr_text": [
         "animal's"
@@ -650,7 +401,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        2044
+        2051
       ],
       "asr_text": [
         "research."
@@ -665,7 +416,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        2110
+        2117
       ],
       "asr_text": [
         "understand."
@@ -677,79 +428,33 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "replace",
+      "kind": "normalized_or_reviewed_mapping",
       "source": [
         {
-          "unit": "2019-B2",
-          "sentence": 39,
+          "unit": "2019-A",
+          "sentence": 21,
           "char": [
-            0,
-            2
+            13,
+            22
           ],
-          "text": "Mm"
+          "text": "nonverbal"
         }
       ],
       "asr_indices": [
-        2471
+        201
       ],
       "asr_text": [
-        "Um,"
+        "non-verbal"
       ],
       "window": [
-        1354.08,
-        1354.64
+        124.23,
+        125.03
       ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-B2",
-          "sentence": 46,
-          "char": [
-            33,
-            41
-          ],
-          "text": "programs"
-        }
+      "canonical": [
+        "non",
+        "verbal"
       ],
-      "asr_indices": [
-        2607
-      ],
-      "asr_text": [
-        "programmes"
-      ],
-      "window": [
-        1419.0,
-        1419.64
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2019-B2",
-          "sentence": 47,
-          "char": [
-            18,
-            26
-          ],
-          "text": "programs"
-        }
-      ],
-      "asr_indices": [
-        2619
-      ],
-      "asr_text": [
-        "programmes,"
-      ],
-      "window": [
-        1424.84,
-        1425.56
-      ],
-      "decision": "machine_candidate_unreviewed"
+      "decision": "machine_normalization_requires_review"
     },
     {
       "kind": "normalized_or_reviewed_mapping",
@@ -786,6 +491,34 @@
       "canonical": [
         "am",
         "i"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
+          "sentence": 39,
+          "char": [
+            19,
+            27
+          ],
+          "text": "behavior"
+        }
+      ],
+      "asr_indices": [
+        413
+      ],
+      "asr_text": [
+        "behaviour"
+      ],
+      "window": [
+        211.55,
+        212.03
+      ],
+      "canonical": [
+        "behavior"
       ],
       "decision": "machine_normalization_requires_review"
     },
@@ -832,6 +565,119 @@
       "source": [
         {
           "unit": "2019-A",
+          "sentence": 86,
+          "char": [
+            93,
+            101
+          ],
+          "text": "behavior"
+        }
+      ],
+      "asr_indices": [
+        1063
+      ],
+      "asr_text": [
+        "behaviour,"
+      ],
+      "window": [
+        496.75,
+        497.71
+      ],
+      "canonical": [
+        "behavior"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
+          "sentence": 86,
+          "char": [
+            111,
+            119
+          ],
+          "text": "behavior"
+        }
+      ],
+      "asr_indices": [
+        1066
+      ],
+      "asr_text": [
+        "behaviour"
+      ],
+      "window": [
+        498.43,
+        499.07
+      ],
+      "canonical": [
+        "behavior"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
+          "sentence": 94,
+          "char": [
+            37,
+            46
+          ],
+          "text": "nonverbal"
+        }
+      ],
+      "asr_indices": [
+        1203
+      ],
+      "asr_text": [
+        "non-verbal"
+      ],
+      "window": [
+        556.27,
+        557.15
+      ],
+      "canonical": [
+        "non",
+        "verbal"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
+          "sentence": 94,
+          "char": [
+            123,
+            131
+          ],
+          "text": "behavior"
+        }
+      ],
+      "asr_indices": [
+        1217
+      ],
+      "asr_text": [
+        "behaviour."
+      ],
+      "window": [
+        561.87,
+        563.07
+      ],
+      "canonical": [
+        "behavior"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
           "sentence": 96,
           "char": [
             0,
@@ -841,7 +687,7 @@
         }
       ],
       "asr_indices": [
-        1235
+        1236
       ],
       "asr_text": [
         "Okay,"
@@ -869,7 +715,7 @@
         }
       ],
       "asr_indices": [
-        1311
+        1312
       ],
       "asr_text": [
         "10-second"
@@ -897,8 +743,8 @@
         }
       ],
       "asr_indices": [
-        1563,
-        1564
+        1570,
+        1571
       ],
       "asr_text": [
         "fifty",
@@ -927,7 +773,7 @@
         }
       ],
       "asr_indices": [
-        1862
+        1869
       ],
       "asr_text": [
         "twenty"
@@ -955,7 +801,7 @@
         }
       ],
       "asr_indices": [
-        1946
+        1953
       ],
       "asr_text": [
         "three:"
@@ -983,7 +829,7 @@
         }
       ],
       "asr_indices": [
-        1967
+        1974
       ],
       "asr_text": [
         "five."
@@ -1002,6 +848,62 @@
       "source": [
         {
           "unit": "2019-B2",
+          "sentence": 46,
+          "char": [
+            33,
+            41
+          ],
+          "text": "programs"
+        }
+      ],
+      "asr_indices": [
+        2614
+      ],
+      "asr_text": [
+        "programmes"
+      ],
+      "window": [
+        1419.0,
+        1419.64
+      ],
+      "canonical": [
+        "programs"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-B2",
+          "sentence": 47,
+          "char": [
+            18,
+            26
+          ],
+          "text": "programs"
+        }
+      ],
+      "asr_indices": [
+        2626
+      ],
+      "asr_text": [
+        "programmes,"
+      ],
+      "window": [
+        1424.84,
+        1425.56
+      ],
+      "canonical": [
+        "programs"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-B2",
           "sentence": 51,
           "char": [
             9,
@@ -1011,7 +913,7 @@
         }
       ],
       "asr_indices": [
-        2680
+        2687
       ],
       "asr_text": [
         "seven:"
@@ -1043,30 +945,16 @@
     },
     {
       "asr_indices": [
-        164
+        163
       ],
       "asr_text": [
-        "Glance,"
+        "glance."
       ],
       "window": [
-        107.34,
-        107.82
+        106.74,
+        106.98
       ],
       "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        201
-      ],
-      "asr_text": [
-        "non-verbal"
-      ],
-      "window": [
-        124.23,
-        125.03
-      ],
-      "lexeme_count": 2,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     },
     {
@@ -1085,20 +973,6 @@
     },
     {
       "asr_indices": [
-        413
-      ],
-      "asr_text": [
-        "behaviour"
-      ],
-      "window": [
-        211.55,
-        212.03
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         565
       ],
       "asr_text": [
@@ -1107,20 +981,6 @@
       "window": [
         271.45,
         271.61
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        681
-      ],
-      "asr_text": [
-        "gain."
-      ],
-      "window": [
-        321.37,
-        321.61
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
@@ -1175,36 +1035,8 @@
     },
     {
       "asr_indices": [
-        1062
-      ],
-      "asr_text": [
-        "behaviour,"
-      ],
-      "window": [
-        496.75,
-        497.71
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1065
-      ],
-      "asr_text": [
-        "behaviour"
-      ],
-      "window": [
-        498.43,
-        499.07
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1107,
-        1108
+        1108,
+        1109
       ],
       "asr_text": [
         "for",
@@ -1219,35 +1051,7 @@
     },
     {
       "asr_indices": [
-        1202
-      ],
-      "asr_text": [
-        "non-verbal"
-      ],
-      "window": [
-        556.27,
-        557.15
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1216
-      ],
-      "asr_text": [
-        "behaviour."
-      ],
-      "window": [
-        561.87,
-        563.07
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1903
+        1910
       ],
       "asr_text": [
         "animal's"
@@ -1261,7 +1065,7 @@
     },
     {
       "asr_indices": [
-        2044
+        2051
       ],
       "asr_text": [
         "research."
@@ -1275,7 +1079,7 @@
     },
     {
       "asr_indices": [
-        2110
+        2117
       ],
       "asr_text": [
         "understand."
@@ -1286,591 +1090,10 @@
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2471
-      ],
-      "asr_text": [
-        "Um,"
-      ],
-      "window": [
-        1354.08,
-        1354.64
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2607
-      ],
-      "asr_text": [
-        "programmes"
-      ],
-      "window": [
-        1419.0,
-        1419.64
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2619
-      ],
-      "asr_text": [
-        "programmes,"
-      ],
-      "window": [
-        1424.84,
-        1425.56
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     }
   ],
   "human_decisions": [],
   "rerecognition_windows": [
-    {
-      "unit": "2019-B1",
-      "window": [
-        870.53,
-        877.37
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 22,
-          "source_text": "The greenhouse effect isn’t actually happening",
-          "source_chars": [
-            [
-              0,
-              3
-            ],
-            [
-              4,
-              14
-            ],
-            [
-              15,
-              21
-            ],
-            [
-              22,
-              27
-            ],
-            [
-              28,
-              36
-            ],
-            [
-              37,
-              46
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 6,
-          "left_anchor": {
-            "unit": "2019-B1",
-            "sentence": 21,
-            "text": "fact",
-            "asr_indices": [
-              1446
-            ],
-            "asr_text": [
-              "fact?"
-            ],
-            "window": [
-              872.03,
-              872.35
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-B1",
-            "sentence": 23,
-            "text": "Hey",
-            "asr_indices": [
-              1447
-            ],
-            "asr_text": [
-              "Hey,"
-            ],
-            "window": [
-              875.55,
-              875.87
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 6,
-      "boundary_sentences": [
-        22
-      ],
-      "duration": 6.84
-    },
-    {
-      "unit": "2019-A",
-      "window": [
-        554.61,
-        564.89
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 94,
-          "source_text": "nonverbal",
-          "source_chars": [
-            [
-              37,
-              46
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 94,
-            "text": "the",
-            "asr_indices": [
-              1201
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              556.11,
-              556.19
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 94,
-            "text": "expressions",
-            "asr_indices": [
-              1203
-            ],
-            "asr_text": [
-              "expressions"
-            ],
-            "window": [
-              557.23,
-              557.71
-            ]
-          }
-        },
-        {
-          "sentence": 94,
-          "source_text": "behavior",
-          "source_chars": [
-            [
-              123,
-              131
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 94,
-            "text": "of",
-            "asr_indices": [
-              1215
-            ],
-            "asr_text": [
-              "of"
-            ],
-            "window": [
-              561.63,
-              561.71
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 95,
-            "text": "I",
-            "asr_indices": [
-              1217
-            ],
-            "asr_text": [
-              "I"
-            ],
-            "window": [
-              563.31,
-              563.39
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [
-        94
-      ],
-      "duration": 10.28
-    },
-    {
-      "unit": "2019-B2",
-      "window": [
-        1351.7,
-        1356.38
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 39,
-          "source_text": "Mm",
-          "source_chars": [
-            [
-              0,
-              2
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-B2",
-            "sentence": 38,
-            "text": "use",
-            "asr_indices": [
-              2470
-            ],
-            "asr_text": [
-              "use."
-            ],
-            "window": [
-              1353.2,
-              1353.52
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-B2",
-            "sentence": 39,
-            "text": "that",
-            "asr_indices": [
-              2472
-            ],
-            "asr_text": [
-              "that"
-            ],
-            "window": [
-              1354.8,
-              1354.88
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        39
-      ],
-      "duration": 4.68
-    },
-    {
-      "unit": "2019-A",
-      "window": [
-        463.65,
-        469.25
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 82,
-          "source_text": "And",
-          "source_chars": [
-            [
-              0,
-              3
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 81,
-            "text": "reactive",
-            "asr_indices": [
-              994
-            ],
-            "asr_text": [
-              "stress-reactive."
-            ],
-            "window": [
-              465.15,
-              466.59
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 82,
-            "text": "you",
-            "asr_indices": [
-              995
-            ],
-            "asr_text": [
-              "You"
-            ],
-            "window": [
-              467.67,
-              467.75
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        82
-      ],
-      "duration": 5.6
-    },
-    {
-      "unit": "2019-A",
-      "window": [
-        495.01,
-        500.81
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 86,
-          "source_text": "behavior",
-          "source_chars": [
-            [
-              93,
-              101
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 86,
-            "text": "our",
-            "asr_indices": [
-              1061
-            ],
-            "asr_text": [
-              "our"
-            ],
-            "window": [
-              496.51,
-              496.59
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 86,
-            "text": "and",
-            "asr_indices": [
-              1063
-            ],
-            "asr_text": [
-              "and"
-            ],
-            "window": [
-              497.95,
-              498.03
-            ]
-          }
-        },
-        {
-          "sentence": 86,
-          "source_text": "behavior",
-          "source_chars": [
-            [
-              111,
-              119
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 86,
-            "text": "our",
-            "asr_indices": [
-              1064
-            ],
-            "asr_text": [
-              "our"
-            ],
-            "window": [
-              498.19,
-              498.27
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 86,
-            "text": "can",
-            "asr_indices": [
-              1066
-            ],
-            "asr_text": [
-              "can"
-            ],
-            "window": [
-              499.23,
-              499.31
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 5.8
-    },
-    {
-      "unit": "2019-B2",
-      "window": [
-        1417.34,
-        1427.22
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 46,
-          "source_text": "programs",
-          "source_chars": [
-            [
-              33,
-              41
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-B2",
-            "sentence": 46,
-            "text": "of",
-            "asr_indices": [
-              2606
-            ],
-            "asr_text": [
-              "of"
-            ],
-            "window": [
-              1418.84,
-              1418.92
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-B2",
-            "sentence": 46,
-            "text": "that",
-            "asr_indices": [
-              2608
-            ],
-            "asr_text": [
-              "that"
-            ],
-            "window": [
-              1419.64,
-              1419.72
-            ]
-          }
-        },
-        {
-          "sentence": 47,
-          "source_text": "programs",
-          "source_chars": [
-            [
-              18,
-              26
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-B2",
-            "sentence": 47,
-            "text": "these",
-            "asr_indices": [
-              2618
-            ],
-            "asr_text": [
-              "these"
-            ],
-            "window": [
-              1424.6,
-              1424.68
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-B2",
-            "sentence": 47,
-            "text": "in",
-            "asr_indices": [
-              2620
-            ],
-            "asr_text": [
-              "in"
-            ],
-            "window": [
-              1425.64,
-              1425.72
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 9.88
-    },
-    {
-      "unit": "2019-A",
-      "window": [
-        209.89,
-        213.69
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 39,
-          "source_text": "behavior",
-          "source_chars": [
-            [
-              19,
-              27
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 39,
-            "text": "this",
-            "asr_indices": [
-              412
-            ],
-            "asr_text": [
-              "this"
-            ],
-            "window": [
-              211.39,
-              211.47
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 39,
-            "text": "in",
-            "asr_indices": [
-              414
-            ],
-            "asr_text": [
-              "in"
-            ],
-            "window": [
-              212.11,
-              212.19
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.8
-    },
     {
       "unit": "2019-A",
       "window": [
@@ -1927,61 +1150,6 @@
       "duration": 3.88
     },
     {
-      "unit": "2019-A",
-      "window": [
-        319.71,
-        323.71
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 59,
-          "source_text": "games",
-          "source_chars": [
-            [
-              54,
-              59
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 59,
-            "text": "at",
-            "asr_indices": [
-              680
-            ],
-            "asr_text": [
-              "at"
-            ],
-            "window": [
-              321.21,
-              321.29
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 59,
-            "text": "of",
-            "asr_indices": [
-              682
-            ],
-            "asr_text": [
-              "Of"
-            ],
-            "window": [
-              322.13,
-              322.21
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.0
-    },
-    {
       "unit": "2019-B1",
       "window": [
         1043.56,
@@ -2005,7 +1173,7 @@
             "sentence": 58,
             "text": "the",
             "asr_indices": [
-              1902
+              1909
             ],
             "asr_text": [
               "the"
@@ -2020,7 +1188,7 @@
             "sentence": 58,
             "text": "original",
             "asr_indices": [
-              1904
+              1911
             ],
             "asr_text": [
               "original"
@@ -2035,61 +1203,6 @@
       "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 4.2
-    },
-    {
-      "unit": "2019-A",
-      "window": [
-        122.49,
-        127.17
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 21,
-          "source_text": "nonverbal",
-          "source_chars": [
-            [
-              13,
-              22
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 21,
-            "text": "are",
-            "asr_indices": [
-              200
-            ],
-            "asr_text": [
-              "are"
-            ],
-            "window": [
-              123.99,
-              124.07
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 21,
-            "text": "expressions",
-            "asr_indices": [
-              202
-            ],
-            "asr_text": [
-              "expressions"
-            ],
-            "window": [
-              125.11,
-              125.67
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.68
     },
     {
       "unit": "2019-A",
@@ -2150,46 +1263,48 @@
   "units": [
     {
       "id": "2019-A",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2019/未导出单元/2019-A.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2019-A.json",
       "sentences": 98,
       "source_lexemes": 1275,
-      "missing_source_lexemes": 10,
-      "missing_boundary_sentences": [
-        82,
-        94
-      ],
+      "missing_source_lexemes": 2,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 8,
-      "audio_window": null
+      "rerecognition_window_count": 2,
+      "audio_window": [
+        0.4675,
+        765.99
+      ]
     },
     {
       "id": "2019-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2019/未导出单元/2019-B1.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2019-B1.json",
       "sentences": 65,
       "source_lexemes": 717,
-      "missing_source_lexemes": 7,
-      "missing_boundary_sentences": [
-        22
-      ],
+      "missing_source_lexemes": 1,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 2,
-      "audio_window": null
+      "rerecognition_window_count": 1,
+      "audio_window": [
+        765.7675,
+        1122.31
+      ]
     },
     {
       "id": "2019-B2",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2019/未导出单元/2019-B2.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2019-B2.json",
       "sentences": 55,
       "source_lexemes": 756,
-      "missing_source_lexemes": 3,
-      "missing_boundary_sentences": [
-        39
-      ],
+      "missing_source_lexemes": 0,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 2,
-      "audio_window": null
+      "rerecognition_window_count": 0,
+      "audio_window": [
+        1130.7775,
+        1533.724444
+      ]
     }
   ]
 }

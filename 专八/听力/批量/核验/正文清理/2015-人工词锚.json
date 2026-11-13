@@ -1,0 +1,319 @@
+{
+  "year": 2015,
+  "source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+  "asr_sha256": "6e5644fb82e93bec679c8598a48edf37609772fdd15f912d19a9c05387364776",
+  "input_asr": "核验/原文对齐/2015/含说明识别.json",
+  "draft_sha256_at_review": "cfc3711f0e47e994ff1d3b9cdb9fd71aafa108b3a85b549840bd2187ae75d029",
+  "bindings": [
+    {
+      "unit": "2015-B1",
+      "sentence": 14,
+      "char": [
+        15,
+        22
+      ],
+      "text": "Theresa",
+      "asr_indices": [
+        1304
+      ],
+      "asr_text": [
+        "Teresa"
+      ],
+      "evidence": "https://www.gov.uk/government/people/theresa-may；英国政府原站确认Theresa May，与访谈Shadow Education Secretary身份对应，不采用机器Teresa误拼。 语音位置按当前连续原ASR完整词条作整体绑定；未造时间，未宣称两个模型拼写一致。",
+      "source_asr_rows": [
+        [
+          "Teresa",
+          784.57,
+          785.05
+        ]
+      ],
+      "source_window": [
+        784.57,
+        785.05
+      ],
+      "source_sentence_en": "Today, we have Theresa May, the Shadow Education Secretary from the Opposition, with us on the radio show."
+    },
+    {
+      "unit": "2015-B1",
+      "sentence": 15,
+      "char": [
+        16,
+        23
+      ],
+      "text": "Theresa",
+      "asr_indices": [
+        1321
+      ],
+      "asr_text": [
+        "Teresa."
+      ],
+      "evidence": "https://www.gov.uk/government/people/theresa-may；英国政府原站确认Theresa May，与访谈Shadow Education Secretary身份对应，不采用机器Teresa误拼。 语音位置按当前连续原ASR完整词条作整体绑定；未造时间，未宣称两个模型拼写一致。",
+      "source_asr_rows": [
+        [
+          "Teresa.",
+          791.69,
+          792.25
+        ]
+      ],
+      "source_window": [
+        791.69,
+        792.25
+      ],
+      "source_sentence_en": "Good afternoon, Theresa."
+    },
+    {
+      "unit": "2015-B2",
+      "sentence": 31,
+      "char": [
+        25,
+        32
+      ],
+      "text": "Theresa",
+      "asr_indices": [
+        2423
+      ],
+      "asr_text": [
+        "Teresa."
+      ],
+      "evidence": "https://www.gov.uk/government/people/theresa-may；英国政府原站确认Theresa May，与访谈Shadow Education Secretary身份对应，不采用机器Teresa误拼。 语音位置按当前连续原ASR完整词条作整体绑定；未造时间，未宣称两个模型拼写一致。",
+      "source_asr_rows": [
+        [
+          "Teresa.",
+          1269.67,
+          1270.15
+        ]
+      ],
+      "source_window": [
+        1269.67,
+        1270.15
+      ],
+      "source_sentence_en": "OK, thank you very much, Theresa, for talking to us on the programme."
+    },
+    {
+      "unit": "2015-A",
+      "sentence": 26,
+      "char": [
+        0,
+        21
+      ],
+      "text": "In the second example",
+      "asr_indices": [
+        281,
+        282,
+        283,
+        284
+      ],
+      "asr_text": [
+        "In",
+        "this",
+        "second",
+        "example,"
+      ],
+      "evidence": "核验/正文清理/2015-双模型.json，实际窗口[168, 179]。印本+Whisper为In the second example，局部Parakeet为this；保留印本the，并明确模型弱读冠词分歧；只绑定该完整短语实际音段。",
+      "source_asr_rows": [
+        [
+          "In",
+          168.61,
+          168.69
+        ],
+        [
+          "this",
+          168.77,
+          168.85
+        ],
+        [
+          "second",
+          169.09,
+          169.33
+        ],
+        [
+          "example,",
+          169.49,
+          169.97
+        ]
+      ],
+      "source_window": [
+        168.61,
+        169.97
+      ],
+      "source_sentence_en": "In the second example, I’m stressing the fact that it was me and not someone else so that this means stress has some meaning."
+    },
+    {
+      "unit": "2015-A",
+      "sentence": 55,
+      "char": [
+        161,
+        182
+      ],
+      "text": "the lecturer’s saying",
+      "asr_indices": [
+        760,
+        761,
+        762,
+        763
+      ],
+      "asr_text": [
+        "the",
+        "lecturer",
+        "is",
+        "saying,"
+      ],
+      "evidence": "核验/正文清理/2015-双模型.json，实际窗口[343, 361]。本处两个独立模型均the lecturer is saying；源文lecturer’s为lecturer is的同一缩略语法，不是把所有名词所有格自动拆is；按完整词组实际音段绑定。",
+      "source_asr_rows": [
+        [
+          "the",
+          353.65,
+          353.73
+        ],
+        [
+          "lecturer",
+          353.73,
+          354.29
+        ],
+        [
+          "is",
+          354.37,
+          354.45
+        ],
+        [
+          "saying,",
+          354.53,
+          354.85
+        ]
+      ],
+      "source_window": [
+        353.65,
+        354.85
+      ],
+      "source_sentence_en": "Now when you listen you need time to think about the information, relate it to old ideas, take notes, and if you’re only keeping up with what I’m saying or what the lecturer’s saying, you have no time to do that."
+    },
+    {
+      "unit": "2015-B1",
+      "sentence": 34,
+      "char": [
+        181,
+        214
+      ],
+      "text": "apply to go into the universities",
+      "asr_indices": [
+        1640,
+        1641,
+        1642,
+        1643,
+        1644,
+        1645
+      ],
+      "asr_text": [
+        "apply",
+        "to",
+        "going",
+        "to",
+        "the",
+        "universities"
+      ],
+      "evidence": "核验/正文清理/2015-双模型.json，实际窗口[907, 929]。印本+Whisper为apply to go into the universities，Parakeet为apply to going to the universities；保留有源正文并记录语流重切分差异，使用整个同段短语真ASR索引，不以语法猜单词时刻。",
+      "source_asr_rows": [
+        [
+          "apply",
+          918.37,
+          918.69
+        ],
+        [
+          "to",
+          919.01,
+          919.09
+        ],
+        [
+          "going",
+          919.25,
+          919.33
+        ],
+        [
+          "to",
+          919.57,
+          919.65
+        ],
+        [
+          "the",
+          919.73,
+          919.81
+        ],
+        [
+          "universities",
+          919.89,
+          920.61
+        ]
+      ],
+      "source_window": [
+        918.37,
+        920.61
+      ],
+      "source_sentence_en": "The number from the state schools, who are going to leading universities, has increased over the years, but there is still an issue about ensuring the pupils from our state schools apply to go into the universities, and if you look at the Oxford figures, for example, you see that the percentage of students applying to Oxford from the state schools is about 1%, whereas from the private schools it’s over 4.5%, so that, you know, that’s the problem, it’s expectations in the state system that have been driven down by this Government over the years."
+    },
+    {
+      "unit": "2015-B2",
+      "sentence": 16,
+      "char": [
+        10,
+        42
+      ],
+      "text": "the government say in the future",
+      "asr_indices": [
+        2113,
+        2114,
+        2115,
+        2116,
+        2117,
+        2118
+      ],
+      "asr_text": [
+        "the",
+        "governments",
+        "say",
+        "in",
+        "the",
+        "future,"
+      ],
+      "evidence": "核验/正文清理/2015-双模型.json，实际窗口[1154, 1163]。印本+Whisper为the government say（英式集合名词），Parakeet为government says；主ASR合为governments。保留有源真实口语候选，整个短语绑定同一音段并明列s连读分歧，不强改书面主谓。",
+      "source_asr_rows": [
+        [
+          "the",
+          1155.27,
+          1155.35
+        ],
+        [
+          "governments",
+          1155.43,
+          1155.91
+        ],
+        [
+          "say",
+          1155.99,
+          1156.07
+        ],
+        [
+          "in",
+          1156.31,
+          1156.39
+        ],
+        [
+          "the",
+          1156.47,
+          1156.55
+        ],
+        [
+          "future,",
+          1156.55,
+          1157.03
+        ]
+      ],
+      "source_window": [
+        1155.27,
+        1157.03
+      ],
+      "source_sentence_en": "... well, the government say in the future eighty-five pence in the pound will go to the schools."
+    }
+  ],
+  "remaining_proper_names": [],
+  "scope": "权威专名与明列机构缩写的人工整体词锚；不校写原音，无比例估时。"
+}

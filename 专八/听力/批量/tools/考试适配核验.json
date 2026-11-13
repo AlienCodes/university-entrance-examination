@@ -1,17 +1,19 @@
 {
-  "adapter_sha256": "0bbaab63c89c227ac3430fb3db6185e732b508fb2b28144c60190995ca237fcc",
+  "adapter_sha256": "941779b0e8272331cd89ee1525c4c88c1d0a8711d01e648acee4424382e22ea8",
   "base_sha256": "62f7e2ffbd902837078be7945b518540f6401c799b8c5e7d69c6efcc5512b4e0",
-  "baseline": "2025已核题目和时间轴转换，非新年份内容审校",
-  "browser_sample_states": 31,
-  "browser_problems": [],
-  "schema_negative_cases": 6,
-  "browser_negative_cases": 5,
+  "baseline": "2025原卷白纸黑字/字体/编码底座；本批按用户追加手机大字要求自动分页，不修改2025旧成品",
+  "schema_negative_cases": 7,
+  "browser_negative_cases": 9,
   "browser_negative_types": [
     "超长选项",
-    "答题卡泄露答案",
+    "答题卡额外答案泄露",
     "题间距与分隔缺失",
     "未知字形回退",
-    "彩色像素"
+    "彩色像素",
+    "合法同词后的额外泄题",
+    "英文词间距压缩",
+    "选项标签贴正文",
+    "预览题号贴选项"
   ],
   "audio_smoke": {
     "synthetic_not_exam_content": true,
@@ -25,5 +27,29 @@
     "injected_gain_0_2db_rejected": true,
     "modified_post_trim_samples_rejected": true
   },
-  "scope": "实际历史年份仍须原卷/原音配对、逐题内容与对应时间轴核查，随后完整stills、audio、fast、4K及回下载检查。"
+  "scope": "这是适配开发核验，正式生产仍须对应提交完整stills、原音preflight/编码、成品音画/回下载核查。旧277小字布局不作为手机大字版通过证据。",
+  "layout_version": "mobile-large-type-spacing-checked",
+  "browser_positive_cases": 9,
+  "mobile_sample_2009": {
+    "screens": 37,
+    "problems": [],
+    "source_fingerprints": {
+      "paper": "c3bfa9c6eca8acf33f2bd54bfe805ded43ca899fd823ada1105bf3ec0c1d142c",
+      "timeline": "fb30bbb7b8f817c7ded1e74d37354ae864e777c7e0d9b81d6c336f1851e33c65",
+      "adapter": "941779b0e8272331cd89ee1525c4c88c1d0a8711d01e648acee4424382e22ea8",
+      "base": "62f7e2ffbd902837078be7945b518540f6401c799b8c5e7d69c6efcc5512b4e0"
+    },
+    "word_space_em_range": [
+      0.3,
+      0.30061141304347827
+    ],
+    "minimum_option_label_gap_px": 23.859375,
+    "minimum_question_number_gap_px": 72.25,
+    "visually_viewed": [
+      "2009 Q2 all four choices",
+      "2009 preview questions 3—5",
+      "two-page gap-filling card"
+    ]
+  },
+  "historical_2025_sample_states": 31
 }

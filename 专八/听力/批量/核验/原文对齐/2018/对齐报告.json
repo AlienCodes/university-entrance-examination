@@ -4,11 +4,11 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2018.json",
-    "draft_sha256": "442646507b9803607880a7a151bc4e21fd01a3ba7a561cf5ea1bbe1cde6d6957",
+    "draft_sha256": "20443c16a9b4d0273f0ea223f518f67111af02cc954099e7f0f019facd96fcd8",
     "asr": "核验/原文对齐/2018/含说明识别.json",
-    "asr_sha256": "8b57b92b4ed71125c266e480c31c246e4c1a6bd4242e5c1c0656f49d8002b134",
-    "input_asr": "核验/补词锚/2018/优选识别.json",
-    "input_asr_sha256": "f006f9fb7adcc04471a13f71caa9287deaf5a27d220f70a1e3efc0ab59ac695c",
+    "asr_sha256": "2624e5da1ee42a69f4f60e6fa167134e823f320893c72965cc433cf8032d9c3c",
+    "input_asr": "核验/补词锚/2018/已核局部识别.json",
+    "input_asr_sha256": "d8679b0ca6c2f70a620db238591d4444bb862940318c0c6b89a88b81a4288a25",
     "prepare": "预处理/2018/原音准备.json",
     "prepare_sha256": "087d98975726f7e713d3a25999255cfa121fb80cb0b8f44be8cacafe17312044",
     "canonical_source_sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8"
@@ -122,100 +122,34 @@
       ]
     }
   ],
+  "decision_inputs": [],
+  "decision_rebinding": [],
   "filler_acoustic_evidence": [],
+  "reviewed_whole_audio_anchors": [],
+  "reviewed_nonverbal_events": [],
   "ASR_provenance": {
-    "file": "核验/补词锚/2018/优选ASR核验.json",
-    "sha256": "a90167d9adc58add24e42c6a719f2fbe1eb79f3bc925a1bbff7afc9389a13960",
+    "file": "核验/补词锚/2018/已核局部ASR核验.json",
+    "sha256": "12de97b2e474ae9d6419cdd4b2ce430f1b6e54e41b63871b2b14c7382f1a39ed",
     "canonical_and_ASR_sha_verified": true,
-    "status": "机器优选逐词ASR候选；未审，不修改主ASR或正式原音。",
+    "status": "已核局部逐词识别合并候选，最终字幕/音轨/画面审校尚须登记。",
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
-    "source_lexemes": 2502,
-    "source_mapped": 2482,
-    "source_ratio": 0.9920063948840927,
-    "asr_lexemes": 2515,
-    "asr_mapped": 2482,
-    "asr_ratio": 0.9868787276341948,
+    "source_lexemes": 2507,
+    "source_mapped": 2503,
+    "source_ratio": 0.9984044674910252,
+    "asr_lexemes": 2513,
+    "asr_mapped": 2503,
+    "asr_ratio": 0.9960206923995225,
     "all_source_mapped": false,
     "all_asr_mapped": false,
-    "all_boundaries_anchored": false,
-    "literal_complete": false
+    "all_boundaries_anchored": true,
+    "literal_complete": false,
+    "source_lexical_lexemes": 2507,
+    "external_reviewed_ASR_lexemes": 0,
+    "nonverbal_not_word_lexemes": 0
   },
   "differences": [
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        136
-      ],
-      "asr_text": [
-        "it"
-      ],
-      "window": [
-        94.6,
-        94.68
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 16,
-          "char": [
-            98,
-            102
-          ],
-          "text": "into"
-        }
-      ],
-      "asr_indices": [
-        147
-      ],
-      "asr_text": [
-        "in"
-      ],
-      "window": [
-        97.88,
-        97.96
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        153
-      ],
-      "asr_text": [
-        "like"
-      ],
-      "window": [
-        100.88,
-        100.96
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 17,
-          "char": [
-            44,
-            48
-          ],
-          "text": "that"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
     {
       "kind": "replace",
       "source": [
@@ -242,131 +176,10 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 28,
-          "char": [
-            13,
-            17
-          ],
-          "text": "they"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 28,
-          "char": [
-            18,
-            23
-          ],
-          "text": "can’t"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        480
-      ],
-      "asr_text": [
-        "available,"
-      ],
-      "window": [
-        225.48,
-        226.12
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 38,
-          "char": [
-            172,
-            177
-          ],
-          "text": "lives"
-        }
-      ],
-      "asr_indices": [
-        532
-      ],
-      "asr_text": [
-        "Life."
-      ],
-      "window": [
-        250.64,
-        251.52
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        558
-      ],
-      "asr_text": [
-        "is"
-      ],
-      "window": [
-        260.88,
-        260.96
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        571
-      ],
-      "asr_text": [
-        "today,"
-      ],
-      "window": [
-        267.6,
-        268.16
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        583
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        273.28,
-        273.36
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        589
+        590
       ],
       "asr_text": [
         "you."
@@ -381,7 +194,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        647
+        648
       ],
       "asr_text": [
         "what."
@@ -415,7 +228,7 @@
         }
       ],
       "asr_indices": [
-        738
+        739
       ],
       "asr_text": [
         "sometime"
@@ -427,46 +240,10 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 49,
-          "char": [
-            4,
-            8
-          ],
-          "text": "what"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 49,
-          "char": [
-            18,
-            21
-          ],
-          "text": "was"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        828
+        829
       ],
       "asr_text": [
         "inheritance."
@@ -491,7 +268,7 @@
         }
       ],
       "asr_indices": [
-        893
+        894
       ],
       "asr_text": [
         "develop"
@@ -506,51 +283,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        911
-      ],
-      "asr_text": [
-        "And"
-      ],
-      "window": [
-        412.24,
-        412.32
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 64,
-          "char": [
-            79,
-            87
-          ],
-          "text": "transfer"
-        }
-      ],
-      "asr_indices": [
-        1052,
-        1053,
-        1054
-      ],
-      "asr_text": [
-        "transformation",
-        "of",
-        "the"
-      ],
-      "window": [
-        474.48,
-        474.96
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1114
+        1113
       ],
       "asr_text": [
         "in."
@@ -565,62 +298,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1161
-      ],
-      "asr_text": [
-        "has"
-      ],
-      "window": [
-        519.04,
-        519.12
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1164
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        520.48,
-        520.56
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-A",
-          "sentence": 69,
-          "char": [
-            138,
-            146
-          ],
-          "text": "solution"
-        }
-      ],
-      "asr_indices": [
-        1166
-      ],
-      "asr_text": [
-        "solutions"
-      ],
-      "window": [
-        521.2,
-        521.68
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1336
+        1335
       ],
       "asr_text": [
         "the"
@@ -632,28 +310,10 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-B1",
-          "sentence": 17,
-          "char": [
-            11,
-            15
-          ],
-          "text": "that"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1475
+        1474
       ],
       "asr_text": [
         "elections."
@@ -665,177 +325,18 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-B1",
-          "sentence": 23,
-          "char": [
-            42,
-            54
-          ],
-          "text": "institutions"
-        }
-      ],
-      "asr_indices": [
-        1477
-      ],
-      "asr_text": [
-        "institution"
-      ],
-      "window": [
-        875.64,
-        876.04
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-B1",
-          "sentence": 24,
-          "char": [
-            204,
-            215
-          ],
-          "text": "predictable"
-        }
-      ],
-      "asr_indices": [
-        1551
-      ],
-      "asr_text": [
-        "likely"
-      ],
-      "window": [
-        902.24,
-        902.56
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1742
+        1740
       ],
       "asr_text": [
-        "Population"
+        "population."
       ],
       "window": [
-        975.16,
-        975.48
+        974.64,
+        974.96
       ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1767
-      ],
-      "asr_text": [
-        "an"
-      ],
-      "window": [
-        983.0,
-        983.08
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-B2",
-          "sentence": 12,
-          "char": [
-            33,
-            37
-          ],
-          "text": "that"
-        }
-      ],
-      "asr_indices": [
-        2096,
-        2097
-      ],
-      "asr_text": [
-        "the",
-        "results"
-      ],
-      "window": [
-        1169.31,
-        1170.03
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2018-B2",
-          "sentence": 20,
-          "char": [
-            0,
-            4
-          ],
-          "text": "That"
-        }
-      ],
-      "asr_indices": [
-        2270
-      ],
-      "asr_text": [
-        "The"
-      ],
-      "window": [
-        1235.95,
-        1236.03
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2274
-      ],
-      "asr_text": [
-        "stage"
-      ],
-      "window": [
-        1236.83,
-        1236.99
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2018-B2",
-          "sentence": 26,
-          "char": [
-            0,
-            4
-          ],
-          "text": "That"
-        },
-        {
-          "unit": "2018-B2",
-          "sentence": 26,
-          "char": [
-            5,
-            7
-          ],
-          "text": "is"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
       "decision": "machine_candidate_unreviewed"
     },
     {
@@ -890,8 +391,8 @@
         }
       ],
       "asr_indices": [
-        1046,
-        1047
+        1047,
+        1048
       ],
       "asr_text": [
         "we",
@@ -921,7 +422,7 @@
         }
       ],
       "asr_indices": [
-        1141
+        1140
       ],
       "asr_text": [
         "Okay,"
@@ -949,8 +450,8 @@
         }
       ],
       "asr_indices": [
-        1145,
-        1146
+        1144,
+        1145
       ],
       "asr_text": [
         "I",
@@ -980,7 +481,7 @@
         }
       ],
       "asr_indices": [
-        1255
+        1254
       ],
       "asr_text": [
         "10-second"
@@ -1008,7 +509,7 @@
         }
       ],
       "asr_indices": [
-        1807
+        1806
       ],
       "asr_text": [
         "two."
@@ -1036,7 +537,7 @@
         }
       ],
       "asr_indices": [
-        1819
+        1818
       ],
       "asr_text": [
         "three:"
@@ -1064,7 +565,7 @@
         }
       ],
       "asr_indices": [
-        1836
+        1835
       ],
       "asr_text": [
         "four."
@@ -1092,7 +593,7 @@
         }
       ],
       "asr_indices": [
-        1851
+        1850
       ],
       "asr_text": [
         "five."
@@ -1120,7 +621,7 @@
         }
       ],
       "asr_indices": [
-        1896
+        1895
       ],
       "asr_text": [
         "mister"
@@ -1148,7 +649,7 @@
         }
       ],
       "asr_indices": [
-        2087
+        2086
       ],
       "asr_text": [
         "56%"
@@ -1176,7 +677,7 @@
         }
       ],
       "asr_indices": [
-        2089
+        2088
       ],
       "asr_text": [
         "44%."
@@ -1213,7 +714,7 @@
         }
       ],
       "asr_indices": [
-        2397
+        2395
       ],
       "asr_text": [
         "I'm"
@@ -1242,7 +743,7 @@
         }
       ],
       "asr_indices": [
-        2440
+        2438
       ],
       "asr_text": [
         "six:"
@@ -1270,7 +771,7 @@
         }
       ],
       "asr_indices": [
-        2452
+        2450
       ],
       "asr_text": [
         "seven:"
@@ -1298,7 +799,7 @@
         }
       ],
       "asr_indices": [
-        2466
+        2464
       ],
       "asr_text": [
         "eight."
@@ -1326,7 +827,7 @@
         }
       ],
       "asr_indices": [
-        2479
+        2477
       ],
       "asr_text": [
         "nine."
@@ -1344,48 +845,6 @@
   "uncovered_asr": [
     {
       "asr_indices": [
-        136
-      ],
-      "asr_text": [
-        "it"
-      ],
-      "window": [
-        94.6,
-        94.68
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        147
-      ],
-      "asr_text": [
-        "in"
-      ],
-      "window": [
-        97.88,
-        97.96
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        153
-      ],
-      "asr_text": [
-        "like"
-      ],
-      "window": [
-        100.88,
-        100.96
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         213
       ],
       "asr_text": [
@@ -1400,91 +859,7 @@
     },
     {
       "asr_indices": [
-        352
-      ],
-      "asr_text": [
-        "Can"
-      ],
-      "window": [
-        175.16,
-        175.32
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        480
-      ],
-      "asr_text": [
-        "available,"
-      ],
-      "window": [
-        225.48,
-        226.12
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        532
-      ],
-      "asr_text": [
-        "Life."
-      ],
-      "window": [
-        250.64,
-        251.52
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        558
-      ],
-      "asr_text": [
-        "is"
-      ],
-      "window": [
-        260.88,
-        260.96
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        571
-      ],
-      "asr_text": [
-        "today,"
-      ],
-      "window": [
-        267.6,
-        268.16
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        583
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        273.28,
-        273.36
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        589
+        590
       ],
       "asr_text": [
         "you."
@@ -1498,7 +873,7 @@
     },
     {
       "asr_indices": [
-        647
+        648
       ],
       "asr_text": [
         "what."
@@ -1512,7 +887,7 @@
     },
     {
       "asr_indices": [
-        738
+        739
       ],
       "asr_text": [
         "sometime"
@@ -1526,7 +901,7 @@
     },
     {
       "asr_indices": [
-        828
+        829
       ],
       "asr_text": [
         "inheritance."
@@ -1540,7 +915,7 @@
     },
     {
       "asr_indices": [
-        893
+        894
       ],
       "asr_text": [
         "develop"
@@ -1554,39 +929,7 @@
     },
     {
       "asr_indices": [
-        911
-      ],
-      "asr_text": [
-        "And"
-      ],
-      "window": [
-        412.24,
-        412.32
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1052,
-        1053,
-        1054
-      ],
-      "asr_text": [
-        "transformation",
-        "of",
-        "the"
-      ],
-      "window": [
-        474.48,
-        474.96
-      ],
-      "lexeme_count": 3,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1114
+        1113
       ],
       "asr_text": [
         "in."
@@ -1600,49 +943,7 @@
     },
     {
       "asr_indices": [
-        1161
-      ],
-      "asr_text": [
-        "has"
-      ],
-      "window": [
-        519.04,
-        519.12
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1164
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        520.48,
-        520.56
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1166
-      ],
-      "asr_text": [
-        "solutions"
-      ],
-      "window": [
-        521.2,
-        521.68
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1336
+        1335
       ],
       "asr_text": [
         "the"
@@ -1656,7 +957,7 @@
     },
     {
       "asr_indices": [
-        1475
+        1474
       ],
       "asr_text": [
         "elections."
@@ -1670,100 +971,14 @@
     },
     {
       "asr_indices": [
-        1477
+        1740
       ],
       "asr_text": [
-        "institution"
+        "population."
       ],
       "window": [
-        875.64,
-        876.04
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1551
-      ],
-      "asr_text": [
-        "likely"
-      ],
-      "window": [
-        902.24,
-        902.56
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1742
-      ],
-      "asr_text": [
-        "Population"
-      ],
-      "window": [
-        975.16,
-        975.48
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1767
-      ],
-      "asr_text": [
-        "an"
-      ],
-      "window": [
-        983.0,
-        983.08
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2096,
-        2097
-      ],
-      "asr_text": [
-        "the",
-        "results"
-      ],
-      "window": [
-        1169.31,
-        1170.03
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2270
-      ],
-      "asr_text": [
-        "The"
-      ],
-      "window": [
-        1235.95,
-        1236.03
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2274
-      ],
-      "asr_text": [
-        "stage"
-      ],
-      "window": [
-        1236.83,
-        1236.99
+        974.64,
+        974.96
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
@@ -1772,185 +987,10 @@
   "human_decisions": [],
   "rerecognition_windows": [
     {
-      "unit": "2018-B2",
-      "window": [
-        1268.21,
-        1272.33
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 26,
-          "source_text": "That is",
-          "source_chars": [
-            [
-              0,
-              4
-            ],
-            [
-              5,
-              7
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2018-B2",
-            "sentence": 25,
-            "text": "victor",
-            "asr_indices": [
-              2357
-            ],
-            "asr_text": [
-              "victor."
-            ],
-            "window": [
-              1269.71,
-              1270.51
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-B2",
-            "sentence": 26,
-            "text": "that",
-            "asr_indices": [
-              2358
-            ],
-            "asr_text": [
-              "That"
-            ],
-            "window": [
-              1270.75,
-              1270.83
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [
-        26
-      ],
-      "duration": 4.12
-    },
-    {
-      "unit": "2018-B2",
-      "window": [
-        1233.17,
-        1238.01
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 20,
-          "source_text": "That",
-          "source_chars": [
-            [
-              0,
-              4
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-B2",
-            "sentence": 19,
-            "text": "democracy",
-            "asr_indices": [
-              2269
-            ],
-            "asr_text": [
-              "democracy."
-            ],
-            "window": [
-              1234.67,
-              1235.71
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-B2",
-            "sentence": 20,
-            "text": "countries",
-            "asr_indices": [
-              2271
-            ],
-            "asr_text": [
-              "countries"
-            ],
-            "window": [
-              1236.11,
-              1236.51
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        20
-      ],
-      "duration": 4.84
-    },
-    {
-      "unit": "2018-A",
-      "window": [
-        248.06,
-        253.34
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 38,
-          "source_text": "lives",
-          "source_chars": [
-            [
-              172,
-              177
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 38,
-            "text": "everyday",
-            "asr_indices": [
-              531
-            ],
-            "asr_text": [
-              "everyday."
-            ],
-            "window": [
-              249.56,
-              249.96
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 39,
-            "text": "I",
-            "asr_indices": [
-              533
-            ],
-            "asr_text": [
-              "I"
-            ],
-            "window": [
-              251.76,
-              251.84
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        38
-      ],
-      "duration": 5.28
-    },
-    {
       "unit": "2018-A",
       "window": [
         334.46,
-        343.62
+        338.34
       ],
       "bracketing_only_not_word_timestamps": true,
       "issues": [
@@ -1974,7 +1014,7 @@
             "sentence": 48,
             "text": "so",
             "asr_indices": [
-              737
+              738
             ],
             "asr_text": [
               "so,"
@@ -1989,7 +1029,7 @@
             "sentence": 48,
             "text": "around",
             "asr_indices": [
-              739
+              740
             ],
             "asr_text": [
               "around"
@@ -1999,471 +1039,11 @@
               336.84
             ]
           }
-        },
-        {
-          "sentence": 49,
-          "source_text": "what",
-          "source_chars": [
-            [
-              4,
-              8
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 49,
-            "text": "And",
-            "asr_indices": [
-              748
-            ],
-            "asr_text": [
-              "and"
-            ],
-            "window": [
-              341.48,
-              341.56
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 49,
-            "text": "we",
-            "asr_indices": [
-              749
-            ],
-            "asr_text": [
-              "we"
-            ],
-            "window": [
-              341.64,
-              341.72
-            ]
-          }
-        },
-        {
-          "sentence": 49,
-          "source_text": "was",
-          "source_chars": [
-            [
-              18,
-              21
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 49,
-            "text": "chose",
-            "asr_indices": [
-              750
-            ],
-            "asr_text": [
-              "chose"
-            ],
-            "window": [
-              341.8,
-              342.04
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 49,
-            "text": "to",
-            "asr_indices": [
-              751
-            ],
-            "asr_text": [
-              "to"
-            ],
-            "window": [
-              342.04,
-              342.12
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 4,
-      "boundary_sentences": [],
-      "duration": 9.16
-    },
-    {
-      "unit": "2018-A",
-      "window": [
-        172.58,
-        177.3
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 28,
-          "source_text": "they can’t",
-          "source_chars": [
-            [
-              13,
-              17
-            ],
-            [
-              18,
-              23
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 28,
-            "text": "result",
-            "asr_indices": [
-              351
-            ],
-            "asr_text": [
-              "result,"
-            ],
-            "window": [
-              174.08,
-              174.48
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 28,
-            "text": "improve",
-            "asr_indices": [
-              353
-            ],
-            "asr_text": [
-              "improve"
-            ],
-            "window": [
-              175.48,
-              175.8
-            ]
-          }
         }
       ],
       "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.72
-    },
-    {
-      "unit": "2018-A",
-      "window": [
-        95.66,
-        104.86
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 16,
-          "source_text": "into",
-          "source_chars": [
-            [
-              98,
-              102
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 16,
-            "text": "directly",
-            "asr_indices": [
-              146
-            ],
-            "asr_text": [
-              "directly"
-            ],
-            "window": [
-              97.16,
-              97.8
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 16,
-            "text": "someone",
-            "asr_indices": [
-              148
-            ],
-            "asr_text": [
-              "someone"
-            ],
-            "window": [
-              98.12,
-              98.36
-            ]
-          }
-        },
-        {
-          "sentence": 17,
-          "source_text": "that",
-          "source_chars": [
-            [
-              44,
-              48
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 17,
-            "text": "things",
-            "asr_indices": [
-              157
-            ],
-            "asr_text": [
-              "things"
-            ],
-            "window": [
-              103.04,
-              103.12
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 17,
-            "text": "they",
-            "asr_indices": [
-              158
-            ],
-            "asr_text": [
-              "they"
-            ],
-            "window": [
-              103.28,
-              103.36
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 9.2
-    },
-    {
-      "unit": "2018-B1",
-      "window": [
-        838.7,
-        842.1
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 17,
-          "source_text": "that",
-          "source_chars": [
-            [
-              11,
-              15
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-B1",
-            "sentence": 17,
-            "text": "believe",
-            "asr_indices": [
-              1379
-            ],
-            "asr_text": [
-              "believe"
-            ],
-            "window": [
-              840.2,
-              840.44
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-B1",
-            "sentence": 17,
-            "text": "there",
-            "asr_indices": [
-              1380
-            ],
-            "asr_text": [
-              "there"
-            ],
-            "window": [
-              840.52,
-              840.6
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.4
-    },
-    {
-      "unit": "2018-B1",
-      "window": [
-        900.34,
-        904.22
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 24,
-          "source_text": "predictable",
-          "source_chars": [
-            [
-              204,
-              215
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-B1",
-            "sentence": 24,
-            "text": "pretty",
-            "asr_indices": [
-              1550
-            ],
-            "asr_text": [
-              "pretty"
-            ],
-            "window": [
-              901.84,
-              902.16
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-B1",
-            "sentence": 24,
-            "text": "that",
-            "asr_indices": [
-              1552
-            ],
-            "asr_text": [
-              "that"
-            ],
-            "window": [
-              902.64,
-              902.72
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 3.88
-    },
-    {
-      "unit": "2018-A",
-      "window": [
-        472.9,
-        476.98
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 64,
-          "source_text": "transfer",
-          "source_chars": [
-            [
-              79,
-              87
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 64,
-            "text": "the",
-            "asr_indices": [
-              1051
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              474.4,
-              474.48
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 64,
-            "text": "of",
-            "asr_indices": [
-              1055
-            ],
-            "asr_text": [
-              "Of"
-            ],
-            "window": [
-              475.4,
-              475.48
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.08
-    },
-    {
-      "unit": "2018-A",
-      "window": [
-        519.14,
-        523.34
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 69,
-          "source_text": "solution",
-          "source_chars": [
-            [
-              138,
-              146
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 69,
-            "text": "possible",
-            "asr_indices": [
-              1165
-            ],
-            "asr_text": [
-              "possible"
-            ],
-            "window": [
-              520.64,
-              521.04
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 69,
-            "text": "to",
-            "asr_indices": [
-              1167
-            ],
-            "asr_text": [
-              "to"
-            ],
-            "window": [
-              521.76,
-              521.84
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.2
     },
     {
       "unit": "2018-A",
@@ -2544,7 +1124,7 @@
             "sentence": 56,
             "text": "we",
             "asr_indices": [
-              892
+              893
             ],
             "asr_text": [
               "we"
@@ -2559,7 +1139,7 @@
             "sentence": 56,
             "text": "thousands",
             "asr_indices": [
-              894
+              895
             ],
             "asr_text": [
               "thousands"
@@ -2574,132 +1154,23 @@
       "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 4.28
-    },
-    {
-      "unit": "2018-B1",
-      "window": [
-        873.58,
-        877.86
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 23,
-          "source_text": "institutions",
-          "source_chars": [
-            [
-              42,
-              54
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-B1",
-            "sentence": 23,
-            "text": "electoral",
-            "asr_indices": [
-              1476
-            ],
-            "asr_text": [
-              "Electoral"
-            ],
-            "window": [
-              875.08,
-              875.56
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-B1",
-            "sentence": 23,
-            "text": "had",
-            "asr_indices": [
-              1478
-            ],
-            "asr_text": [
-              "had"
-            ],
-            "window": [
-              876.28,
-              876.36
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.28
-    },
-    {
-      "unit": "2018-B2",
-      "window": [
-        1167.57,
-        1172.33
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 12,
-          "source_text": "that",
-          "source_chars": [
-            [
-              33,
-              37
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-B2",
-            "sentence": 12,
-            "text": "see",
-            "asr_indices": [
-              2095
-            ],
-            "asr_text": [
-              "see"
-            ],
-            "window": [
-              1169.07,
-              1169.15
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-B2",
-            "sentence": 12,
-            "text": "overturned",
-            "asr_indices": [
-              2098
-            ],
-            "asr_text": [
-              "overturned"
-            ],
-            "window": [
-              1170.11,
-              1170.83
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.76
     }
   ],
   "units": [
     {
       "id": "2018-A",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2018/未导出单元/2018-A.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2018-A.json",
       "sentences": 72,
-      "source_lexemes": 1193,
-      "missing_source_lexemes": 13,
-      "missing_boundary_sentences": [
-        38
-      ],
+      "source_lexemes": 1199,
+      "missing_source_lexemes": 4,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 8,
-      "audio_window": null
+      "rerecognition_window_count": 3,
+      "audio_window": [
+        0.9475,
+        730.4
+      ]
     },
     {
       "id": "2018-B1",
@@ -2707,29 +1178,29 @@
       "output": "精听数据/2018-B1.json",
       "sentences": 40,
       "source_lexemes": 659,
-      "missing_source_lexemes": 3,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 3,
+      "rerecognition_window_count": 0,
       "audio_window": [
-        731.28,
-        1069.22
+        731.2975,
+        1069.3
       ]
     },
     {
       "id": "2018-B2",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2018/未导出单元/2018-B2.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2018-B2.json",
       "sentences": 38,
-      "source_lexemes": 650,
-      "missing_source_lexemes": 4,
-      "missing_boundary_sentences": [
-        20,
-        26
-      ],
+      "source_lexemes": 649,
+      "missing_source_lexemes": 0,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 3,
-      "audio_window": null
+      "rerecognition_window_count": 0,
+      "audio_window": [
+        1078.3875,
+        1382.208
+      ]
     }
   ]
 }

@@ -54,7 +54,8 @@ def run():
         d = {'units': [{'id': 'TEST', 'sentences': [{'en': en, 'zh': '测试夹具', 'w': []}]}]}
         asr = [[word, i + 1., i + 1.5] for i, word in enumerate(heard)]
         return alignment.align(d, asr)
-    for en, heard in [('cannot', ['can']), ('three', ['one', 'and', 'two']), ('5', ['six'])]:
+    for en, heard in [('cannot', ['can']), ('three', ['one', 'and', 'two']), ('5', ['six']),
+                       ('life',['lives']),('toward',['towards']),('at',['in']),('no',['number']),('I am',['I','a.m.'])]:
         result = fixture(en, heard)
         assert not result['coverage']['all_source_mapped'], (en, heard)
         assert not result['coverage']['literal_complete']
@@ -64,6 +65,16 @@ def run():
     assert equivalent['differences'] and not equivalent['coverage']['literal_complete']
     assert equivalent['rows'][0]['boundary_anchored']
     checks.append({'case': 'number_equivalence_reported_not_silently_literal', 'ok': True})
+    for en,heard in [('behaviour',['behavior']),('behaviours',['behaviors']),('honoured',['honored']),
+                     ('levelling',['leveling']),('disorganised',['disorganized']),('conveyer',['conveyor']),
+                     ('school work',['schoolwork']),('dream-like',['dreamlike']),('re-interpreting',['reinterpreting']),
+                     ('good will',['goodwill']),('co-workers',['coworkers']),('CV',['C','V']),
+                     ('UNHCR',['U.','N.','H.','C.','R.']),('best-sellers',['bestsellers']),('grown-ups',['grownups']),
+                     ('9 am',['nine','a.m.']),('No. 3',['number','three'])]:
+        result=fixture(en,heard)
+        assert result['coverage']['all_source_mapped'],(en,heard,result['differences'])
+        assert result['differences'] and not result['coverage']['literal_complete'],(en,heard)
+        checks.append({'case':'explicit_spelling_or_compound_reported','source':en,'ASR':heard,'ok':True})
     result = {'ok': True, 'scope': 'word_anchor_alignment_only; no production approval', 'checks': checks}
     alignment.dump(BATCH / '核验/原文对齐/正反例自检.json', result)
     print(json.dumps({'ok': True, 'checks': len(checks)}, ensure_ascii=False))

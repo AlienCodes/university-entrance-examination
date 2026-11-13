@@ -1,0 +1,87 @@
+{
+  "year": 2009,
+  "source_sha256": "af0fc28b7b3c9a7e04f77ba715e78c426233395dcdfbbd1ab834c1951b19a8e0",
+  "asr_sha256": "4371354b7e7449afae86e3afcdb722e6f1dfdcf6a1600a8a6d4ae79850d72d43",
+  "bindings": [
+    {
+      "unit": "2009-A",
+      "sentence": 8,
+      "char": [
+        14,
+        21
+      ],
+      "text": "word(s)",
+      "asr_indices": [
+        61,
+        62
+      ],
+      "asr_text": [
+        "word",
+        "words"
+      ],
+      "source_asr_rows": [
+        [
+          "word",
+          47.88,
+          48.12
+        ],
+        [
+          "words",
+          48.44,
+          48.92
+        ]
+      ],
+      "source_sentence_en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+      "evidence": "出版括号复数写法word(s)对应实际读出的word words；按两个真实词的整体声学区间绑定，不猜字母s时刻。双模型word_words证据一致。 证据：核验/2009-原文独立复核.json；核验/2009-末轮原文裁决.json。"
+    },
+    {
+      "unit": "2009-B2",
+      "sentence": 11,
+      "char": [
+        167,
+        169
+      ],
+      "text": "er",
+      "asr_indices": [
+        1869
+      ],
+      "asr_text": [
+        "uh"
+      ],
+      "source_asr_rows": [
+        [
+          "uh",
+          1177.48,
+          1177.56
+        ]
+      ],
+      "source_sentence_en": "Other assignments include serving as an evaluator for another speaker, or serving as grammarian who will monitor use of filler words or phrases, such as “and”, “uh”, “er” or “you know”.",
+      "evidence": "解析用er表示犹豫声，原音第二个犹豫声两模型转写uh；作为同一非词义语气的完整声段绑定，保留原写法，不把普通实词作模糊别名。独立复核a_er/grammarians_article。 证据：核验/2009-原文独立复核.json；核验/2009-末轮原文裁决.json。"
+    },
+    {
+      "unit": "2009-B2",
+      "sentence": 28,
+      "char": [
+        25,
+        28
+      ],
+      "text": "Mrs",
+      "asr_indices": [
+        2097
+      ],
+      "asr_text": [
+        "misses"
+      ],
+      "source_asr_rows": [
+        [
+          "misses",
+          1296.86,
+          1297.18
+        ]
+      ],
+      "source_sentence_en": "Question 8. According to Mrs. Collins, what does a grammarian do?",
+      "evidence": "Mrs.为Collins称谓，原页与独立Whisper明确Mrs.，主ASR misses为同称谓声音误拼；只在此句完整ASR词条上绑定，不建全局异词别名。question_8_mrs。 证据：核验/2009-原文独立复核.json；核验/2009-末轮原文裁决.json。"
+    }
+  ],
+  "scope": "三条明确的出版记法/犹豫声/称谓对应；非成品批准。"
+}

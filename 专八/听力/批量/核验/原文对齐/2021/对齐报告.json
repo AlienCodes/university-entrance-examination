@@ -4,11 +4,11 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2021.json",
-    "draft_sha256": "a2d615df90090c72539d010a51eb11bc006798d9e2c0aa825e28194ae39544ce",
+    "draft_sha256": "0111aaa17b3ac39d27af143d25ce9553de79cceb45ca9cca6dabfe7515f0e431",
     "asr": "核验/原文对齐/2021/含说明识别.json",
-    "asr_sha256": "618e8cd1294fcc83bc793b174d135f9cf4ba24fa2071928daac91559600a826d",
-    "input_asr": "核验/补词锚/2021/优选识别.json",
-    "input_asr_sha256": "fd1db1ca7e8cc83ebb90f2f9e8530a997b346688d9bb2017e2714a068ab0ce73",
+    "asr_sha256": "186c53d226df483a91dc060f30979395842e058befe37a8584c28f96d2bf8f08",
+    "input_asr": "核验/补词锚/2021/已核局部识别.json",
+    "input_asr_sha256": "fe352d23667c3d2b170d06b6c5c5d1c25d09c403728742ef31ef0c83b821d651",
     "prepare": "预处理/2021/原音准备.json",
     "prepare_sha256": "cf89b665e0b68fed871a424eb46fe19d8ae01f7ca8161e578fd80b27a732b865",
     "canonical_source_sha256": "a9701c485a209512978c089a10a20b73e4a7e4ef34ebd209c1dddb4a28390701"
@@ -431,25 +431,57 @@
       ]
     }
   ],
+  "decision_inputs": [],
+  "decision_rebinding": [],
   "filler_acoustic_evidence": [],
+  "reviewed_whole_audio_anchors": [],
+  "reviewed_nonverbal_events": [
+    {
+      "unit": "2021-B2",
+      "en": "Emm, Emm...",
+      "start": 1324.24,
+      "end": 1325.74,
+      "nonverbal": true,
+      "evidence_ref": "核验/正文局部音证/2021-非言语声学检查.json",
+      "evidence_sha256": "ed6d99a5fd89d970e7acdd83cfeff406d3e44059056fd99366443e91f9b152dc",
+      "decision": "两个连续有基频的嗯声；印本与独立Whisper(humming)相符。逐帧波形/频谱确认整段起止，边界位于前后实际发声间隙；非ASR逐词时刻，不删原音。",
+      "manifest": "核验/正文局部音证/2021-非言语采纳.json",
+      "manifest_sha256": "b9ebe726523a0908ec7c8e5929ca1f3b4d31a7fe9660657d3ca546e2ab7ceac3"
+    },
+    {
+      "unit": "2021-B2",
+      "en": "Ha ha ha...",
+      "start": 1399.84,
+      "end": 1400.86,
+      "nonverbal": true,
+      "evidence_ref": "核验/正文局部音证/2021-非言语声学检查.json",
+      "evidence_sha256": "ed6d99a5fd89d970e7acdd83cfeff406d3e44059056fd99366443e91f9b152dc",
+      "decision": "三次清楚的笑声脉冲及其后呼气，位于上一句that结束与下一句Okay开始之间；按10ms波形/频谱量测整事件，绝不把Ha字数分摊为假词时刻。",
+      "manifest": "核验/正文局部音证/2021-非言语采纳.json",
+      "manifest_sha256": "b9ebe726523a0908ec7c8e5929ca1f3b4d31a7fe9660657d3ca546e2ab7ceac3"
+    }
+  ],
   "ASR_provenance": {
-    "file": "核验/补词锚/2021/优选ASR核验.json",
-    "sha256": "8623f881e45b0f4b3ab3abe1c3fc197c9cfbdc094fb59a794ab7567665c27785",
+    "file": "核验/补词锚/2021/已核局部ASR核验.json",
+    "sha256": "5d74afda021badd865ac776beb3d095d68fa4bed92f987679cfea12ccacd2acb",
     "canonical_and_ASR_sha_verified": true,
-    "status": "机器优选逐词ASR候选；未审，不修改主ASR或正式原音。",
+    "status": "已核局部逐词识别合并候选，最终字幕/音轨/画面审校尚须登记。",
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
-    "source_lexemes": 2601,
-    "source_mapped": 2581,
-    "source_ratio": 0.9923106497500961,
-    "asr_lexemes": 2624,
-    "asr_mapped": 2581,
-    "asr_ratio": 0.9836128048780488,
+    "source_lexemes": 2621,
+    "source_mapped": 2608,
+    "source_ratio": 0.9969418960244648,
+    "asr_lexemes": 2621,
+    "asr_mapped": 2607,
+    "asr_ratio": 0.9946585272796642,
     "all_source_mapped": false,
     "all_asr_mapped": false,
-    "all_boundaries_anchored": false,
-    "literal_complete": false
+    "all_boundaries_anchored": true,
+    "literal_complete": false,
+    "source_lexical_lexemes": 2616,
+    "external_reviewed_ASR_lexemes": 0,
+    "nonverbal_not_word_lexemes": 5
   },
   "differences": [
     {
@@ -471,48 +503,15 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        192
+        191
       ],
       "asr_text": [
-        "Education,"
+        "education."
       ],
       "window": [
-        125.24,
-        126.36
+        124.64,
+        124.96
       ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        203
-      ],
-      "asr_text": [
-        "it"
-      ],
-      "window": [
-        131.4,
-        131.48
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2021-A",
-          "sentence": 20,
-          "char": [
-            20,
-            22
-          ],
-          "text": "it"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
       "decision": "machine_candidate_unreviewed"
     },
     {
@@ -535,74 +534,6 @@
       "source": [
         {
           "unit": "2021-A",
-          "sentence": 45,
-          "char": [
-            180,
-            185
-          ],
-          "text": "widen"
-        }
-      ],
-      "asr_indices": [
-        646
-      ],
-      "asr_text": [
-        "widens"
-      ],
-      "window": [
-        351.12,
-        351.52
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2021-A",
-          "sentence": 48,
-          "char": [
-            69,
-            78
-          ],
-          "text": "balancing"
-        }
-      ],
-      "asr_indices": [
-        689
-      ],
-      "asr_text": [
-        "balanced"
-      ],
-      "window": [
-        374.48,
-        374.8
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2021-A",
-          "sentence": 48,
-          "char": [
-            108,
-            110
-          ],
-          "text": "is"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2021-A",
           "sentence": 53,
           "char": [
             14,
@@ -612,7 +543,7 @@
         }
       ],
       "asr_indices": [
-        817
+        818
       ],
       "asr_text": [
         "bears"
@@ -627,8 +558,8 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        984,
-        985
+        985,
+        986
       ],
       "asr_text": [
         "most",
@@ -654,7 +585,7 @@
         }
       ],
       "asr_indices": [
-        1327
+        1328
       ],
       "asr_text": [
         "MacLean"
@@ -662,40 +593,6 @@
       "window": [
         888.43,
         889.07
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2021-B1",
-          "sentence": 12,
-          "char": [
-            135,
-            137
-          ],
-          "text": "Ph"
-        },
-        {
-          "unit": "2021-B1",
-          "sentence": 12,
-          "char": [
-            138,
-            139
-          ],
-          "text": "D"
-        }
-      ],
-      "asr_indices": [
-        1352
-      ],
-      "asr_text": [
-        "PhD"
-      ],
-      "window": [
-        898.43,
-        898.99
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -713,7 +610,7 @@
         }
       ],
       "asr_indices": [
-        1367
+        1368
       ],
       "asr_text": [
         "MacLean"
@@ -721,31 +618,6 @@
       "window": [
         906.27,
         906.91
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "replace",
-      "source": [
-        {
-          "unit": "2021-B1",
-          "sentence": 13,
-          "char": [
-            112,
-            121
-          ],
-          "text": "criticism"
-        }
-      ],
-      "asr_indices": [
-        1375
-      ],
-      "asr_text": [
-        "criticisms."
-      ],
-      "window": [
-        909.15,
-        909.95
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -763,7 +635,7 @@
         }
       ],
       "asr_indices": [
-        1416
+        1417
       ],
       "asr_text": [
         "McLean,"
@@ -788,7 +660,7 @@
         }
       ],
       "asr_indices": [
-        1534
+        1535
       ],
       "asr_text": [
         "Bendler"
@@ -803,7 +675,7 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1558
+        1559
       ],
       "asr_text": [
         "were"
@@ -815,37 +687,20 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1945,
-        1946
-      ],
-      "asr_text": [
-        "Question",
-        "one:"
-      ],
-      "window": [
-        1128.93,
-        1130.29
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "replace",
       "source": [
         {
           "unit": "2021-B1",
           "sentence": 53,
           "char": [
-            16,
-            22
+            28,
+            34
           ],
           "text": "McLane"
         }
       ],
       "asr_indices": [
-        1950
+        1951
       ],
       "asr_text": [
         "McLean"
@@ -853,93 +708,6 @@
       "window": [
         1131.49,
         1132.05
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1955,
-        1956
-      ],
-      "asr_text": [
-        "Question",
-        "2."
-      ],
-      "window": [
-        1143.79,
-        1145.07
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1965,
-        1966
-      ],
-      "asr_text": [
-        "Question",
-        "three:"
-      ],
-      "window": [
-        1158.68,
-        1160.2
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1975,
-        1976
-      ],
-      "asr_text": [
-        "Question",
-        "4."
-      ],
-      "window": [
-        1173.44,
-        1174.8
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        1994,
-        1995
-      ],
-      "asr_text": [
-        "Question",
-        "five."
-      ],
-      "window": [
-        1191.58,
-        1193.18
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2129,
-        2130,
-        2131
-      ],
-      "asr_text": [
-        "kinds",
-        "of",
-        "people."
-      ],
-      "window": [
-        1259.22,
-        1259.62
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -971,21 +739,6 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2311
-      ],
-      "asr_text": [
-        "of"
-      ],
-      "window": [
-        1331.74,
-        1331.82
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "replace",
       "source": [
         {
@@ -999,7 +752,7 @@
         }
       ],
       "asr_indices": [
-        2450
+        2447
       ],
       "asr_text": [
         "ticks."
@@ -1047,37 +800,20 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2536,
-        2537
-      ],
-      "asr_text": [
-        "Question",
-        "six."
-      ],
-      "window": [
-        1414.78,
-        1416.38
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "replace",
       "source": [
         {
           "unit": "2021-B2",
           "sentence": 43,
           "char": [
-            9,
-            16
+            21,
+            28
           ],
           "text": "Maureen"
         }
       ],
       "asr_indices": [
-        2540
+        2537
       ],
       "asr_text": [
         "Marine"
@@ -1085,74 +821,6 @@
       "window": [
         1417.02,
         1417.5
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2546,
-        2547
-      ],
-      "asr_text": [
-        "Question",
-        "7."
-      ],
-      "window": [
-        1430.21,
-        1431.57
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2557,
-        2558
-      ],
-      "asr_text": [
-        "Question",
-        "eight."
-      ],
-      "window": [
-        1445.89,
-        1447.25
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2566,
-        2567
-      ],
-      "asr_text": [
-        "Question",
-        "9."
-      ],
-      "window": [
-        1461.08,
-        1462.44
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
-        2578,
-        2579
-      ],
-      "asr_text": [
-        "Question",
-        "10."
-      ],
-      "window": [
-        1476.67,
-        1478.19
       ],
       "decision": "machine_candidate_unreviewed"
     },
@@ -1188,6 +856,34 @@
       "kind": "normalized_or_reviewed_mapping",
       "source": [
         {
+          "unit": "2021-A",
+          "sentence": 48,
+          "char": [
+            161,
+            168
+          ],
+          "text": "fulfill"
+        }
+      ],
+      "asr_indices": [
+        705
+      ],
+      "asr_text": [
+        "fulfil"
+      ],
+      "window": [
+        381.32,
+        381.8
+      ],
+      "canonical": [
+        "fulfill"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
           "unit": "2021-B1",
           "sentence": 6,
           "char": [
@@ -1198,7 +894,7 @@
         }
       ],
       "asr_indices": [
-        1269
+        1270
       ],
       "asr_text": [
         "10-second"
@@ -1217,6 +913,44 @@
       "source": [
         {
           "unit": "2021-B1",
+          "sentence": 12,
+          "char": [
+            135,
+            137
+          ],
+          "text": "Ph"
+        },
+        {
+          "unit": "2021-B1",
+          "sentence": 12,
+          "char": [
+            138,
+            139
+          ],
+          "text": "D"
+        }
+      ],
+      "asr_indices": [
+        1353
+      ],
+      "asr_text": [
+        "PhD"
+      ],
+      "window": [
+        898.43,
+        898.99
+      ],
+      "canonical": [
+        "d",
+        "ph"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
           "sentence": 39,
           "char": [
             116,
@@ -1226,7 +960,7 @@
         }
       ],
       "asr_indices": [
-        1769
+        1770
       ],
       "asr_text": [
         "eighteen."
@@ -1237,6 +971,146 @@
       ],
       "canonical": [
         "#18"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 53,
+          "char": [
+            9,
+            10
+          ],
+          "text": "1"
+        }
+      ],
+      "asr_indices": [
+        1947
+      ],
+      "asr_text": [
+        "one:"
+      ],
+      "window": [
+        1129.57,
+        1130.29
+      ],
+      "canonical": [
+        "#1"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 55,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1967
+      ],
+      "asr_text": [
+        "three:"
+      ],
+      "window": [
+        1159.32,
+        1160.2
+      ],
+      "canonical": [
+        "#3"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 57,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1996
+      ],
+      "asr_text": [
+        "five."
+      ],
+      "window": [
+        1192.3,
+        1193.18
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 43,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2534
+      ],
+      "asr_text": [
+        "six."
+      ],
+      "window": [
+        1415.42,
+        1416.38
+      ],
+      "canonical": [
+        "#6"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 45,
+          "char": [
+            9,
+            10
+          ],
+          "text": "8"
+        }
+      ],
+      "asr_indices": [
+        2555
+      ],
+      "asr_text": [
+        "eight."
+      ],
+      "window": [
+        1446.61,
+        1447.25
+      ],
+      "canonical": [
+        "#8"
       ],
       "decision": "machine_normalization_requires_review"
     }
@@ -1258,28 +1132,14 @@
     },
     {
       "asr_indices": [
-        192
+        191
       ],
       "asr_text": [
-        "Education,"
+        "education."
       ],
       "window": [
-        125.24,
-        126.36
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        203
-      ],
-      "asr_text": [
-        "it"
-      ],
-      "window": [
-        131.4,
-        131.48
+        124.64,
+        124.96
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
@@ -1300,35 +1160,7 @@
     },
     {
       "asr_indices": [
-        646
-      ],
-      "asr_text": [
-        "widens"
-      ],
-      "window": [
-        351.12,
-        351.52
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        689
-      ],
-      "asr_text": [
-        "balanced"
-      ],
-      "window": [
-        374.48,
-        374.8
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        817
+        818
       ],
       "asr_text": [
         "bears"
@@ -1342,8 +1174,8 @@
     },
     {
       "asr_indices": [
-        984,
-        985
+        985,
+        986
       ],
       "asr_text": [
         "most",
@@ -1358,7 +1190,7 @@
     },
     {
       "asr_indices": [
-        1327
+        1328
       ],
       "asr_text": [
         "MacLean"
@@ -1372,21 +1204,7 @@
     },
     {
       "asr_indices": [
-        1352
-      ],
-      "asr_text": [
-        "PhD"
-      ],
-      "window": [
-        898.43,
-        898.99
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1367
+        1368
       ],
       "asr_text": [
         "MacLean"
@@ -1400,21 +1218,7 @@
     },
     {
       "asr_indices": [
-        1375
-      ],
-      "asr_text": [
-        "criticisms."
-      ],
-      "window": [
-        909.15,
-        909.95
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1416
+        1417
       ],
       "asr_text": [
         "McLean,"
@@ -1428,7 +1232,7 @@
     },
     {
       "asr_indices": [
-        1534
+        1535
       ],
       "asr_text": [
         "Bendler"
@@ -1442,7 +1246,7 @@
     },
     {
       "asr_indices": [
-        1558
+        1559
       ],
       "asr_text": [
         "were"
@@ -1456,23 +1260,7 @@
     },
     {
       "asr_indices": [
-        1945,
-        1946
-      ],
-      "asr_text": [
-        "Question",
-        "one:"
-      ],
-      "window": [
-        1128.93,
-        1130.29
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1950
+        1951
       ],
       "asr_text": [
         "McLean"
@@ -1486,103 +1274,7 @@
     },
     {
       "asr_indices": [
-        1955,
-        1956
-      ],
-      "asr_text": [
-        "Question",
-        "2."
-      ],
-      "window": [
-        1143.79,
-        1145.07
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1965,
-        1966
-      ],
-      "asr_text": [
-        "Question",
-        "three:"
-      ],
-      "window": [
-        1158.68,
-        1160.2
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1975,
-        1976
-      ],
-      "asr_text": [
-        "Question",
-        "4."
-      ],
-      "window": [
-        1173.44,
-        1174.8
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1994,
-        1995
-      ],
-      "asr_text": [
-        "Question",
-        "five."
-      ],
-      "window": [
-        1191.58,
-        1193.18
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2129,
-        2130,
-        2131
-      ],
-      "asr_text": [
-        "kinds",
-        "of",
-        "people."
-      ],
-      "window": [
-        1259.22,
-        1259.62
-      ],
-      "lexeme_count": 3,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2311
-      ],
-      "asr_text": [
-        "of"
-      ],
-      "window": [
-        1331.74,
-        1331.82
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2450
+        2447
       ],
       "asr_text": [
         "ticks."
@@ -1596,23 +1288,7 @@
     },
     {
       "asr_indices": [
-        2536,
         2537
-      ],
-      "asr_text": [
-        "Question",
-        "six."
-      ],
-      "window": [
-        1414.78,
-        1416.38
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2540
       ],
       "asr_text": [
         "Marine"
@@ -1623,510 +1299,10 @@
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2546,
-        2547
-      ],
-      "asr_text": [
-        "Question",
-        "7."
-      ],
-      "window": [
-        1430.21,
-        1431.57
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2557,
-        2558
-      ],
-      "asr_text": [
-        "Question",
-        "eight."
-      ],
-      "window": [
-        1445.89,
-        1447.25
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2566,
-        2567
-      ],
-      "asr_text": [
-        "Question",
-        "9."
-      ],
-      "window": [
-        1461.08,
-        1462.44
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        2578,
-        2579
-      ],
-      "asr_text": [
-        "Question",
-        "10."
-      ],
-      "window": [
-        1476.67,
-        1478.19
-      ],
-      "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     }
   ],
   "human_decisions": [],
   "rerecognition_windows": [
-    {
-      "unit": "2021-B2",
-      "window": [
-        1398.04,
-        1402.96
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 37,
-          "source_text": "Ha ha ha",
-          "source_chars": [
-            [
-              0,
-              2
-            ],
-            [
-              3,
-              5
-            ],
-            [
-              6,
-              8
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 3,
-          "left_anchor": {
-            "unit": "2021-B2",
-            "sentence": 36,
-            "text": "that",
-            "asr_indices": [
-              2501
-            ],
-            "asr_text": [
-              "that."
-            ],
-            "window": [
-              1399.54,
-              1399.78
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B2",
-            "sentence": 38,
-            "text": "Okay",
-            "asr_indices": [
-              2502
-            ],
-            "asr_text": [
-              "Okay."
-            ],
-            "window": [
-              1400.9,
-              1401.46
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 3,
-      "boundary_sentences": [
-        37
-      ],
-      "duration": 4.92
-    },
-    {
-      "unit": "2021-B2",
-      "window": [
-        1321.84,
-        1327.4
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 24,
-          "source_text": "Emm Emm",
-          "source_chars": [
-            [
-              0,
-              3
-            ],
-            [
-              5,
-              8
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2021-B2",
-            "sentence": 23,
-            "text": "musically",
-            "asr_indices": [
-              2296
-            ],
-            "asr_text": [
-              "musically."
-            ],
-            "window": [
-              1323.34,
-              1324.14
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B2",
-            "sentence": 25,
-            "text": "And",
-            "asr_indices": [
-              2297
-            ],
-            "asr_text": [
-              "And"
-            ],
-            "window": [
-              1325.82,
-              1325.9
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [
-        24
-      ],
-      "duration": 5.56
-    },
-    {
-      "unit": "2021-B1",
-      "window": [
-        904.21,
-        912.29
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 13,
-          "source_text": "McLane",
-          "source_chars": [
-            [
-              69,
-              75
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 13,
-            "text": "Maureen",
-            "asr_indices": [
-              1366
-            ],
-            "asr_text": [
-              "Maureen"
-            ],
-            "window": [
-              905.71,
-              906.27
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 13,
-            "text": "has",
-            "asr_indices": [
-              1368
-            ],
-            "asr_text": [
-              "has"
-            ],
-            "window": [
-              907.07,
-              907.15
-            ]
-          }
-        },
-        {
-          "sentence": 13,
-          "source_text": "criticism",
-          "source_chars": [
-            [
-              112,
-              121
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 13,
-            "text": "and",
-            "asr_indices": [
-              1374
-            ],
-            "asr_text": [
-              "and"
-            ],
-            "window": [
-              908.99,
-              909.07
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 14,
-            "text": "One",
-            "asr_indices": [
-              1376
-            ],
-            "asr_text": [
-              "One"
-            ],
-            "window": [
-              910.47,
-              910.79
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [
-        13
-      ],
-      "duration": 8.08
-    },
-    {
-      "unit": "2021-B1",
-      "window": [
-        896.77,
-        900.89
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 12,
-          "source_text": "Ph D",
-          "source_chars": [
-            [
-              135,
-              137
-            ],
-            [
-              138,
-              139
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 12,
-            "text": "her",
-            "asr_indices": [
-              1351
-            ],
-            "asr_text": [
-              "her"
-            ],
-            "window": [
-              898.27,
-              898.35
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 12,
-            "text": "at",
-            "asr_indices": [
-              1353
-            ],
-            "asr_text": [
-              "at"
-            ],
-            "window": [
-              899.31,
-              899.39
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 4.12
-    },
-    {
-      "unit": "2021-A",
-      "window": [
-        372.34,
-        378.5
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 48,
-          "source_text": "balancing",
-          "source_chars": [
-            [
-              69,
-              78
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-A",
-            "sentence": 48,
-            "text": "appropriately",
-            "asr_indices": [
-              688
-            ],
-            "asr_text": [
-              "appropriately"
-            ],
-            "window": [
-              373.84,
-              374.48
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-A",
-            "sentence": 48,
-            "text": "them",
-            "asr_indices": [
-              690
-            ],
-            "asr_text": [
-              "them"
-            ],
-            "window": [
-              375.48,
-              375.56
-            ]
-          }
-        },
-        {
-          "sentence": 48,
-          "source_text": "is",
-          "source_chars": [
-            [
-              108,
-              110
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-A",
-            "sentence": 48,
-            "text": "good",
-            "asr_indices": [
-              694
-            ],
-            "asr_text": [
-              "good"
-            ],
-            "window": [
-              376.52,
-              376.6
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-A",
-            "sentence": 48,
-            "text": "is",
-            "asr_indices": [
-              695
-            ],
-            "asr_text": [
-              "is"
-            ],
-            "window": [
-              376.92,
-              377.0
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 6.16
-    },
-    {
-      "unit": "2021-A",
-      "window": [
-        349.38,
-        353.26
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 45,
-          "source_text": "widen",
-          "source_chars": [
-            [
-              180,
-              185
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-A",
-            "sentence": 45,
-            "text": "also",
-            "asr_indices": [
-              645
-            ],
-            "asr_text": [
-              "also"
-            ],
-            "window": [
-              350.88,
-              350.96
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-A",
-            "sentence": 45,
-            "text": "the",
-            "asr_indices": [
-              647
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              351.68,
-              351.76
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.88
-    },
     {
       "unit": "2021-A",
       "window": [
@@ -2151,7 +1327,7 @@
             "sentence": 53,
             "text": "data",
             "asr_indices": [
-              816
+              817
             ],
             "asr_text": [
               "data"
@@ -2166,7 +1342,7 @@
             "sentence": 53,
             "text": "out",
             "asr_indices": [
-              818
+              819
             ],
             "asr_text": [
               "out"
@@ -2195,8 +1371,8 @@
           "source_text": "Maureen",
           "source_chars": [
             [
-              9,
-              16
+              21,
+              28
             ]
           ],
           "boundary_missing": false,
@@ -2206,7 +1382,7 @@
             "sentence": 43,
             "text": "did",
             "asr_indices": [
-              2539
+              2536
             ],
             "asr_text": [
               "did"
@@ -2221,7 +1397,7 @@
             "sentence": 43,
             "text": "think",
             "asr_indices": [
-              2541
+              2538
             ],
             "asr_text": [
               "think"
@@ -2236,61 +1412,6 @@
       "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 3.96
-    },
-    {
-      "unit": "2021-A",
-      "window": [
-        130.06,
-        134.26
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 20,
-          "source_text": "it",
-          "source_chars": [
-            [
-              20,
-              22
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-A",
-            "sentence": 20,
-            "text": "is",
-            "asr_indices": [
-              204
-            ],
-            "asr_text": [
-              "is"
-            ],
-            "window": [
-              131.56,
-              131.64
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-A",
-            "sentence": 20,
-            "text": "so",
-            "asr_indices": [
-              205
-            ],
-            "asr_text": [
-              "so?"
-            ],
-            "window": [
-              132.04,
-              132.76
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.2
     },
     {
       "unit": "2021-B1",
@@ -2316,7 +1437,7 @@
             "sentence": 11,
             "text": "Maureen",
             "asr_indices": [
-              1326
+              1327
             ],
             "asr_text": [
               "Maureen"
@@ -2331,7 +1452,7 @@
             "sentence": 11,
             "text": "is",
             "asr_indices": [
-              1328
+              1329
             ],
             "asr_text": [
               "is"
@@ -2346,6 +1467,61 @@
       "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 4.36
+    },
+    {
+      "unit": "2021-B1",
+      "window": [
+        904.21,
+        908.65
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 13,
+          "source_text": "McLane",
+          "source_chars": [
+            [
+              69,
+              75
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2021-B1",
+            "sentence": 13,
+            "text": "Maureen",
+            "asr_indices": [
+              1367
+            ],
+            "asr_text": [
+              "Maureen"
+            ],
+            "window": [
+              905.71,
+              906.27
+            ]
+          },
+          "right_anchor": {
+            "unit": "2021-B1",
+            "sentence": 13,
+            "text": "has",
+            "asr_indices": [
+              1369
+            ],
+            "asr_text": [
+              "has"
+            ],
+            "window": [
+              907.07,
+              907.15
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.44
     },
     {
       "unit": "2021-B1",
@@ -2371,7 +1547,7 @@
             "sentence": 24,
             "text": "Helen",
             "asr_indices": [
-              1533
+              1534
             ],
             "asr_text": [
               "Helen"
@@ -2386,7 +1562,7 @@
             "sentence": 24,
             "text": "and",
             "asr_indices": [
-              1535
+              1536
             ],
             "asr_text": [
               "and"
@@ -2415,8 +1591,8 @@
           "source_text": "McLane",
           "source_chars": [
             [
-              16,
-              22
+              28,
+              34
             ]
           ],
           "boundary_missing": false,
@@ -2426,7 +1602,7 @@
             "sentence": 53,
             "text": "Maureen",
             "asr_indices": [
-              1949
+              1950
             ],
             "asr_text": [
               "Maureen"
@@ -2441,7 +1617,7 @@
             "sentence": 53,
             "text": "according",
             "asr_indices": [
-              1951
+              1952
             ],
             "asr_text": [
               "according"
@@ -2481,7 +1657,7 @@
             "sentence": 34,
             "text": "facial",
             "asr_indices": [
-              2449
+              2446
             ],
             "asr_text": [
               "facial"
@@ -2496,7 +1672,7 @@
             "sentence": 34,
             "text": "one",
             "asr_indices": [
-              2451
+              2448
             ],
             "asr_text": [
               "One"
@@ -2536,7 +1712,7 @@
             "sentence": 16,
             "text": "Maureen",
             "asr_indices": [
-              1415
+              1416
             ],
             "asr_text": [
               "Maureen"
@@ -2551,7 +1727,7 @@
             "sentence": 16,
             "text": "now",
             "asr_indices": [
-              1417
+              1418
             ],
             "asr_text": [
               "now"
@@ -2575,43 +1751,44 @@
       "output": "精听数据/2021-A.json",
       "sentences": 71,
       "source_lexemes": 1231,
-      "missing_source_lexemes": 5,
+      "missing_source_lexemes": 1,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 4,
+      "rerecognition_window_count": 1,
       "audio_window": [
-        1.16,
-        809.86
+        0.6275,
+        809.94
       ]
     },
     {
       "id": "2021-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2021/未导出单元/2021-B1.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2021-B1.json",
       "sentences": 57,
-      "source_lexemes": 777,
-      "missing_source_lexemes": 8,
-      "missing_boundary_sentences": [
-        13
-      ],
+      "source_lexemes": 787,
+      "missing_source_lexemes": 5,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 6,
-      "audio_window": null
+      "rerecognition_window_count": 5,
+      "audio_window": [
+        810.0925,
+        1196.98
+      ]
     },
     {
       "id": "2021-B2",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2021/未导出单元/2021-B2.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2021-B2.json",
       "sentences": 49,
-      "source_lexemes": 593,
-      "missing_source_lexemes": 7,
-      "missing_boundary_sentences": [
-        24,
-        37
-      ],
+      "source_lexemes": 603,
+      "missing_source_lexemes": 2,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 4,
-      "audio_window": null
+      "rerecognition_window_count": 2,
+      "audio_window": [
+        1205.9675,
+        1499.585306
+      ]
     }
   ]
 }

@@ -34,7 +34,8 @@ CONTRACTIONS = {
     "i'm": ['i', 'am'], "you're": ['you', 'are'], "we're": ['we', 'are'], "they're": ['they', 'are'],
     "there's": ['there', 'is'], "here's": ['here', 'is'], "it's": ['it', 'is'],
     "i'll": ['i', 'will'], "you'll": ['you', 'will'], "he'll": ['he', 'will'],
-    "she'll": ['she', 'will'], "we'll": ['we', 'will'], "they'll": ['they', 'will'],
+    "she'll": ['she', 'will'], "we'll": ['we', 'will'], "they'll": ['they', 'will'], "it'll": ['it','will'],
+    "who's": ['who','is'],
     "i've": ['i', 'have'], "you've": ['you', 'have'], "we've": ['we', 'have'], "they've": ['they', 'have'],
     "can't": ['can', 'not'], 'cannot': ['can', 'not'], "won't": ['will', 'not'],
     "don't": ['do', 'not'], "doesn't": ['does', 'not'], "didn't": ['did', 'not'],
@@ -43,10 +44,32 @@ CONTRACTIONS = {
     "shouldn't": ['should', 'not'], "wouldn't": ['would', 'not'], "couldn't": ['could', 'not'], "mustn't": ['must', 'not'],
     "let's": ['let', 'us'],
 }
-SPELLINGS = {'ok': 'okay', 'dr': 'doctor', 'mr': 'mister', '&': 'and', '%': 'percent'}
+SPELLINGS = {'ok': 'okay', 'dr': 'doctor', 'mr': 'mister', '&': 'and', '%': 'percent',
+    'behaviour':'behavior','behaviours':'behaviors','behavioural':'behavioral',
+    'organise':'organize','organised':'organized','organising':'organizing','organises':'organizes',
+    'organisation':'organization','organisations':'organizations','organisational':'organizational',
+    'disorganised':'disorganized','analyse':'analyze','analysed':'analyzed','analysing':'analyzing',
+    'programme':'program','programmes':'programs','favour':'favor','favours':'favors','favoured':'favored',
+    'favouring':'favoring','favourite':'favorite','favourites':'favorites','centre':'center','centres':'centers',
+    'centred':'centered','centring':'centering','travelled':'traveled','travelling':'traveling',
+    'traveller':'traveler','travellers':'travelers','colour':'color','colours':'colors','coloured':'colored',
+    'colouring':'coloring','honour':'honor','honours':'honors','honoured':'honored','honouring':'honoring',
+    'levelling':'leveling','levelled':'leveled','modelling':'modeling','modelled':'modeled',
+    'labelled':'labeled','labelling':'labeling','theatre':'theater','theatres':'theaters',
+    'metre':'meter','metres':'meters','litre':'liter','litres':'liters','defence':'defense',
+    'licence':'license','licences':'licenses','practise':'practice','practised':'practiced','practising':'practicing',
+    'conveyer':'conveyor','conveyers':'conveyors','synched':'synced','adviser':'advisor','advisers':'advisors',
+    'fulfil':'fulfill','fulfils':'fulfills','fulfilment':'fulfillment','vs':'versus','hm':'hmm','hmmm':'hmm'}
 JOINED_SPELLINGS = {'onto': ['on', 'to'], 'midwestern': ['mid', 'western'], 'eyebrows': ['eye', 'brows'],
-                    'grownup': ['grown', 'up'], 'grownups': ['grown', 'ups']}
-ABBREVIATIONS = {'us', 'uk', 'un', 'eu', 'mc'}
+                    'grownup': ['grown', 'up'], 'grownups': ['grown', 'ups'],
+                    'bestseller': ['best', 'seller'], 'bestsellers': ['best', 'sellers'],
+                    'altogether': ['all', 'together'], 'schoolwork':['school','work'],
+                    'dreamlike':['dream','like'],'reinterpreting':['re','interpreting'],
+                    'goodwill':['good','will'],'coworkers':['co','workers'],'coworker':['co','worker'],
+                    'overlit':['over','lit'],'timeout':['time','out'],'online':['on','line'],
+                    'nongovernmental':['non','governmental'],'healthcare':['health','care'],
+                    'nonverbal':['non','verbal'],'phd':['ph','d']}
+ABBREVIATIONS = {'us', 'uk', 'un', 'eu', 'mc', 'cv', 'cnn', 'bbc', 'unhcr', 'am', 'pm'}
 
 
 def sha(path):
@@ -86,6 +109,7 @@ class Lexeme:
     raw_index: int | None = None
     start: float | None = None
     end: float | None = None
+    following_character: str = ''
 
 
 @dataclass
@@ -151,18 +175,31 @@ def atoms(lexemes):
         word = simple(item.text)
         # U.S./U S等只按明列缩写合并，绝不做任意名字的模糊匹配。
         if len(word) == 1:
-            for size in (3, 2):
+            for size in range(max(map(len, ABBREVIATIONS)), 1, -1):
                 group = lexemes[i:i + size]
                 joined = ''.join(simple(x.text) for x in group)
                 if (len(group) == size and all(x.group == item.group and len(simple(x.text)) == 1 for x in group)
                         and joined in ABBREVIATIONS):
-                    result.append(Atom(joined, tuple(range(i, i + size)), 'abbreviation'))
+                    if joined in ('am','pm'):
+                        clock_context = (any(x.following_character=='.' for x in group)
+                            or (i>0 and lexemes[i-1].group==item.group and bool(re.fullmatch(r'\d[\d,]*',simple(lexemes[i-1].text)))))
+                        if not clock_context:
+                            continue
+                    result.append(Atom('#clock_'+joined if joined in ('am','pm') else joined, tuple(range(i, i + size)), 'abbreviation'))
                     i += size
                     break
             else:
                 size = 0
             if size:
                 continue
+        # No.只在明确编号上下文可读number；绝不把否定no规范成number。
+        next_word = simple(lexemes[i+1].text) if i+1 < len(lexemes) and lexemes[i+1].group == item.group else ''
+        if word in ('am','pm') and (item.text in ('AM','PM') or (i>0 and lexemes[i-1].group==item.group and (simple(lexemes[i-1].text) in NUM or re.fullmatch(r'\d[\d,]*',simple(lexemes[i-1].text))))):
+            result.append(Atom('#clock_'+word,(i,),'clock_abbreviation'));i+=1;continue
+        if (item.text in ('No','NO') and item.following_character == '.'
+                and (next_word in NUM or bool(re.fullmatch(r'\d[\d,]*', next_word))
+                     or (i+1<len(lexemes) and lexemes[i+1].text=='of'))):
+            result.append(Atom('number',(i,),'number_abbreviation'));i+=1;continue
         if (word in NUMBER_WORDS or re.fullmatch(r'\d[\d,]*', word)) and word != 'and':
             end = i
             while (end < len(lexemes) and end - i < 18 and lexemes[end].group == item.group
@@ -199,7 +236,8 @@ def source_lexemes(draft):
             ids = []
             for match in LEX.finditer(sentence['en']):
                 ids.append(len(lexemes))
-                lexemes.append(Lexeme(match.group(), match.start(), match.end(), group))
+                lexemes.append(Lexeme(match.group(), match.start(), match.end(), group,
+                                     following_character=sentence['en'][match.end():match.end()+1]))
             if not ids:
                 raise ValueError(f'{group}没有可对齐英文词')
             sentences.append({'unit': unit['id'], 'n': n, 'sentence': sentence, 'lexemes': ids})
@@ -224,7 +262,8 @@ def asr_lexemes(raw, duration=None):
         previous = start
         for match in LEX.finditer(text):
             # ASR是全年度连续词序；不能每个单词建立独立group，否则数字无法跨词解析。
-            lexemes.append(Lexeme(match.group(), match.start(), match.end(), ('ASR',), n, start, end))
+            lexemes.append(Lexeme(match.group(), match.start(), match.end(), ('ASR',), n, start, end,
+                                 following_character=text[match.end():match.end()+1]))
     return raw, lexemes
 
 
@@ -305,8 +344,8 @@ def align(draft, raw_asr, duration=None, decisions=None):
             continue
         seen.add(key)
         source_ids = [j for j in sorted(mapping) if tuple(mapping[j]) == key]
-        lhs = ' '.join(simple(src[j].text) for j in source_ids)
-        rhs = ' '.join(simple(target[j].text) for j in js)
+        lhs = ' '.join(src[j].text.casefold().replace('’',"'") for j in source_ids)
+        rhs = ' '.join(target[j].text.casefold().replace('’',"'") for j in js)
         if lhs != rhs:
             diff.append({'kind': 'normalized_or_reviewed_mapping',
                          'source': [{'unit': src[j].group[0], 'sentence': src[j].group[1], 'char': [src[j].char, src[j].char_end], 'text': src[j].text} for j in source_ids],
@@ -323,6 +362,16 @@ def align(draft, raw_asr, duration=None, decisions=None):
              'start': min(target[j].start for j in mapping[i]), 'end': max(target[j].end for j in mapping[i]),
              'asr_indices': sorted({target[j].raw_index for j in mapping[i]})}
             for i in matched]
+        joined = []
+        for w in row['word_alignment']:
+            if (joined and all(joined[-1][k] == w[k] for k in ('start','end','asr_indices'))
+                    and not re.search(r'[A-Za-z0-9]', row['sentence']['en'][joined[-1]['char_end']:w['char']])):
+                # 一个真实ASR整词对应best-sellers等合写词组，不虚构内部切分。
+                joined[-1]['char_end'] = w['char_end']
+                joined[-1]['shared_whole_ASR_span'] = True
+            else:
+                joined.append(w)
+        row['word_alignment'] = joined
         row['anchor_window'] = ([row['word_alignment'][0]['start'], row['word_alignment'][-1]['end']] if matched else None)
         row['internal_asr_unmatched'] = []
         if matched:
@@ -359,7 +408,7 @@ def rerecognition_windows(result, duration, context=1.5):
     src, target, mapping = result['source'], result['target'], result['mapping']
     keys = sorted(mapping)
     row_by_group = {(r['unit'], r['n']): r for r in result['rows']}
-    missing = [i for i in range(len(src)) if i not in mapping]
+    missing = sorted({i for row in result['rows'] for i in row['missing']})
     runs = []
     for i in missing:
         if runs and i == runs[-1][-1] + 1 and src[i].group == src[runs[-1][-1]].group:
@@ -452,6 +501,45 @@ def augment_sentence_asr(draft, raw, base, prepare):
     return combined, patches
 
 
+def rebind_decisions(decision, draft, raw, canonical_sha, effective_sha):
+    """仅凭原始ASR三元组精确重定位；已被新真字面锚覆盖的裁定另记取代。"""
+    if decision.get('year') != draft['year'] or decision.get('source_sha256') != canonical_sha:
+        raise ValueError('人工裁定年份/canonical音源SHA不符')
+    rebased=[];logs=[];baseline=None
+    for original in decision.get('bindings',[]):
+        item=copy.deepcopy(original)
+        unit=next(u for u in draft['units'] if u['id']==item['unit'])
+        if item.get('source_sentence_en'):
+            matches=[i for i,s in enumerate(unit['sentences'],1) if s['en']==item['source_sentence_en']]
+            if len(matches)!=1:raise ValueError('人工裁定原整句已变/不唯一，不能沿用旧char或ordinal：'+item['text'])
+            item['sentence']=matches[0]
+        s=unit['sentences'][item['sentence']-1];a,z=item['char']
+        if s['en'][a:z]!=item['text']:raise ValueError('人工裁定文字/字符范围已变：'+item['text'])
+        if decision.get('asr_sha256')==effective_sha:
+            rebased.append(item);continue
+        rows=item.get('source_asr_rows')
+        if not rows:raise ValueError('ASR已变，裁定缺source_asr_rows，禁止按旧索引猜：'+item['text'])
+        matches=[i for i in range(len(raw)-len(rows)+1) if raw[i:i+len(rows)]==rows]
+        if len(matches)==1:
+            item['asr_indices']=list(range(matches[0],matches[0]+len(rows)))
+            item['asr_text']=[w[0] for w in rows]
+            logs.append({'text':item['text'],'unit':item['unit'],'state':'exact_original_ASR_rows_reindexed',
+                         'old_asr_sha256':decision.get('asr_sha256'),'new_asr_sha256':effective_sha,
+                         'old_indices':original['asr_indices'],'new_indices':item['asr_indices'],'source_asr_rows':rows})
+            rebased.append(item);continue
+        if baseline is None:baseline=align(draft,raw)
+        ids=[i for i,x in enumerate(baseline['source']) if x.group==(item['unit'],item['sentence']) and a<=x.char and x.char_end<=z]
+        if ids and all(i in baseline['mapping'] for i in ids):
+            mapped=[baseline['target'][j] for i in ids for j in baseline['mapping'][i]]
+            lo,hi=min(w.start for w in mapped),max(w.end for w in mapped)
+            if min(w[1] for w in rows)-1.2<=lo<hi<=max(w[2] for w in rows)+1.2:
+                logs.append({'text':item['text'],'unit':item['unit'],'state':'superseded_by_current_literal_ASR_in_same_audio_context',
+                    'old_asr_sha256':decision.get('asr_sha256'),'new_asr_sha256':effective_sha,
+                    'old_rows':rows,'current_literal_window':[lo,hi]});continue
+        raise ValueError('新ASR找不到唯一真实原条目，且尚无同声窗字面锚，须更新人工裁定：'+item['text'])
+    return rebased,logs
+
+
 def run_year(year, args):
     base = Path(args.base).resolve()
     def resolve(template, default):
@@ -462,7 +550,7 @@ def run_year(year, args):
     prepare_path = resolve(args.prepare, '预处理/{year}/原音准备.json')
     preferred_meta = None
     if args.prefer_local and not args.asr:
-        for filename, metadata in [('优选识别.json', '优选ASR核验.json'), ('识别.json', 'ASR核验.json')]:
+        for filename, metadata in [('已核局部识别.json','已核局部ASR核验.json'),('优选识别.json', '优选ASR核验.json'), ('识别.json', 'ASR核验.json')]:
             local = base / f'核验/补词锚/{year}/{filename}'
             if local.exists():
                 asr_path = local
@@ -487,14 +575,24 @@ def run_year(year, args):
     if supplied_patches:
         effective_asr_path = report_dir / '含说明识别.json'
         dump(effective_asr_path, raw)
-    decisions = {}
-    if args.decisions:
-        path = Path(args.decisions.format(year=year))
-        if not path.is_absolute(): path = base / path
-        decisions = json.loads(path.read_text('utf-8'))
-        if decisions.get('year') != year or decisions.get('asr_sha256') != sha(effective_asr_path) or decisions.get('source_sha256') != canonical['sha256']:
-            raise ValueError('人工裁定文件的年份、ASR哈希或canonical音源哈希不符')
+    decisions = {'bindings':[]};decision_rebinding=[];decision_inputs=[]
+    paths=list(args.decisions) if isinstance(args.decisions,list) else [args.decisions] if args.decisions else []
+    if args.body_decisions:
+        for value in [f'核验/正文清理/{year}-人工词锚.json',f'核验/正文清理/{year}-stressors-整词裁决.json']:
+            if (base/value).exists():paths.append(value)
+    for filename in dict.fromkeys(paths):
+        path = resolve(filename, filename)
+        value=json.loads(path.read_text('utf-8'))
+        bindings,logs=rebind_decisions(value,draft,raw,canonical['sha256'],sha(effective_asr_path))
+        decisions['bindings'].extend(bindings);decision_rebinding.extend(logs)
+        decision_inputs.append({'file':portable(path,base),'sha256':sha(path)})
     result = align(draft, raw, canonical['duration'], decisions)
+    reviewed_spec=importlib.util.spec_from_file_location('tem8_reviewed_audio_anchors',HERE/'已核声锚.py')
+    reviewed_module=importlib.util.module_from_spec(reviewed_spec);reviewed_spec.loader.exec_module(reviewed_module)
+    nonverbal_paths=list(args.nonverbal or [])
+    default_events=base/f'核验/正文局部音证/{year}-非言语采纳.json'
+    if default_events.exists() and str(default_events) not in nonverbal_paths:nonverbal_paths.append(str(default_events))
+    reviewed_anchors,nonverbal_events=reviewed_module.apply(result,draft,prepare,base,nonverbal_paths)
     acoustic_proofs = []
     if args.acoustic_fillers:
         if not args.source_root:
@@ -515,7 +613,9 @@ def run_year(year, args):
               'method': '全局单调规范词匹配；每个时刻只取实际ASR词条边界。数词/缩写/收缩差异逐条登记；无模糊关键词代换、无比例估时。',
               'machine_result_only': True, 'human_review_status': 'draft',
               'supplied_sentence_ASR': supplied_patches,
+              'decision_inputs':decision_inputs,'decision_rebinding':decision_rebinding,
               'filler_acoustic_evidence': acoustic_proofs,
+              'reviewed_whole_audio_anchors':reviewed_anchors,'reviewed_nonverbal_events':nonverbal_events,
               'ASR_provenance': ({'file': portable(meta_path, base), 'sha256': sha(meta_path),
                                   'canonical_and_ASR_sha_verified': True, 'status': meta.get('status'),
                                   'word_end_estimate_seconds': meta.get('word_end_estimate_seconds')}
@@ -526,7 +626,22 @@ def run_year(year, args):
     contract = interface_module()
     for unit in draft['units']:
         rows = [r for r in result['rows'] if r['unit'] == unit['id']]
-        blocked = [r['n'] for r in rows if not r['boundary_anchored'] and not r.get('acoustic_boundary')]
+        existing = out / f"{unit['id']}.json"
+        lock = base / '核验' / f"{unit['id']}-源文审核.json"
+        if (out.resolve() == (base/'精听数据').resolve() and lock.exists() and existing.exists()
+                and json.loads(lock.read_text('utf-8')).get('status') == 'source-approved'):
+            old = json.loads(existing.read_text('utf-8'))
+            same = (old['title'] == unit['title'] and old.get('names',[]) == unit.get('names',[]) and old.get('manual_splits',[]) == unit.get('manual_splits',[])
+                    and [{k:s[k] for k in ('en','zh','w')} for s in old['sentences']]
+                    == [{k:s[k] for k in ('en','zh','w')} for s in unit['sentences']])
+            report['units'].append({'id':unit['id'],'state':'source_approved_preserved' if same else 'source_approved_locked_mother_changed_requires_explicit_revocation',
+                'output':portable(existing,base),'sentences':len(old['sentences']),
+                'source_lexemes':sum(len(r['lexemes']) for r in rows),
+                'missing_source_lexemes':sum(len(s.get('alignment',{}).get('missing',[])) for s in old['sentences']),
+                'missing_boundary_sentences':[], 'audio_window':old['audio']['window'],
+                'source_lock':portable(lock,base),'note':'已批源文原文件逐字保留；报告更新不会清回draft或覆盖已审时间/译注。'})
+            continue
+        blocked = [r['n'] for r in rows if not r['boundary_anchored'] and not r.get('acoustic_boundary') and not r.get('nonverbal_boundary')]
         d = {k: copy.deepcopy(v) for k, v in unit.items() if k != 'sentences'}
         d['year'] = year
         d['audio'] = {'file': args.audio_template.format(year=year), 'sha256': canonical['sha256'],
@@ -535,23 +650,21 @@ def run_year(year, args):
         if Path(d['audio']['file']).is_absolute():
             raise ValueError('audio-template必须是可移植相对路径；实际输入音源由精听.py --original传入')
         d['sentences'] = []
-        type_repairs = []
         unit_missing = 0
         missing_sentences = []
         for row in rows:
             s = copy.deepcopy(row['sentence'])
-            for w in s['w']:
-                expected = ('word' if re.fullmatch(r"[A-Za-zÀ-ÿ]+(?:['’\-][A-Za-zÀ-ÿ]+)*", w['h'])
-                            else 'phr' if ' ' in w['h'] else w['t'])
-                if w['t'] != expected and w['t'] != 'core':
-                    type_repairs.append({'sentence': row['n'], 'head': w['h'], 'old': w['t'], 'new': expected})
-                    w['t'] = expected
             s['word_alignment'] = row['word_alignment']
             s['alignment'] = {'boundary_anchored': row['boundary_anchored'], 'source_lexemes': len(row['lexemes']),
                               'mapped_lexemes': len(row['lexemes']) - len(row['missing']),
                               'missing': [{'text': result['source'][i].text, 'char': [result['source'][i].char, result['source'][i].char_end]} for i in row['missing']],
                               'unmatched_internal_asr': describe_asr(row['internal_asr_unmatched'], result['target'], result['raw'])}
-            if row.get('acoustic_boundary'):
+            if row.get('reviewed_whole_ASR_evidence'):s['alignment']['reviewed_whole_ASR_evidence']=row['reviewed_whole_ASR_evidence']
+            if row.get('nonverbal_boundary'):
+                s['start'],s['end']=row['nonverbal_boundary'];s['nonverbal']=True
+                s['alignment']['mapped_lexemes']=0;s['alignment']['nonverbal_not_words']=len(row['lexemes'])
+                s['alignment']['nonverbal_evidence']=row['nonverbal_evidence']
+            elif row.get('acoustic_boundary'):
                 s['start'], s['end'] = row['acoustic_boundary']
                 s['alignment']['acoustic_filler_boundary'] = row['acoustic_evidence']
             elif row['boundary_anchored']:
@@ -570,8 +683,6 @@ def run_year(year, args):
             d['待核'].append(f'仍有{unit_missing}个原文词缺少ASR对应；涉及句号{missing_sentences}，严禁按比例补时。')
         d['alignment_report'] = portable(report_path, base)
         d['alignment_tool_version'] = TOOL_VERSION
-        if type_repairs:
-            d['lexical_type_repairs'] = type_repairs
         if blocked:
             d['待核'].append(f'句首/尾无真实ASR词锚，句号{blocked}；单元未导出到可制作目录。')
             output = report_dir / '未导出单元' / f"{unit['id']}.json"
@@ -588,6 +699,19 @@ def run_year(year, args):
             lo = max(0, min(s['start'] for s in d['sentences']) - args.pad)
             hi = min(canonical['duration'], max(s['end'] for s in d['sentences']) + args.pad)
             d['audio']['window'] = [round(lo, 6), round(hi, 6)]
+            if args.acoustic_window:
+                if not args.source_root:
+                    raise ValueError('--acoustic-window须提供--source-root以实读原始PCM')
+                win_spec = importlib.util.spec_from_file_location('tem8_source_window', HERE / '原声窗口边界.py')
+                win_mod = importlib.util.module_from_spec(win_spec); win_spec.loader.exec_module(win_mod)
+                measured, proof = win_mod.find(prepare, args.source_root, d['sentences'], raw)
+                d['audio']['boundary_evidence'] = proof
+                if measured:
+                    d['audio']['window'] = measured
+                else:
+                    d['待核'].append('未找到源窗口首尾安全声学间隙；固定余量不可视为完整辅音/尾音核验通过。')
+            else:
+                d['待核'].append('当前源窗口仍为固定余量候选；须据真实PCM低能量间隙/文件末尾核实首辅音和最后词尾，不能直接批准。')
             output = out / f"{unit['id']}.json"
             if output.exists():
                 old = json.loads(output.read_text('utf-8'))
@@ -620,7 +744,10 @@ def parser():
     p.add_argument('--prefer-local', action='store_true', help='存在时采用核验/补词锚/<year>独立组合ASR；其余年份用主ASR')
     p.add_argument('--acoustic-fillers', action='store_true', help='孤立短应声以实际声学岛和相邻ASR锚定句边；不造该词时刻')
     p.add_argument('--source-root', help='仅声学核验所用的原始材料目录，不写进精听JSON')
-    p.add_argument('--decisions', help='可选人工裁定JSON模板，必须绑定ASR/原音哈希和实际词序号')
+    p.add_argument('--acoustic-window', action='store_true', help='源窗口首尾必须落在真实PCM能量谷或完整文件边界，防ASR词尾截音')
+    p.add_argument('--decisions',action='append', help='可重复人工裁定JSON模板，绑定ASR/音源SHA；变动后仅按真实source_asr_rows重定位')
+    p.add_argument('--body-decisions',action='store_true',help='自动读取存在的核验/正文清理/<year>-人工词锚及stressors整词裁定')
+    p.add_argument('--nonverbal',action='append',help='可重复非言语声学采纳清单；默认另读取本年已核非言语sidecar')
     p.add_argument('--audio-template', default='预处理/{year}/原音.wav')
     p.add_argument('--out', help='精听数据目录')
     p.add_argument('--report', help='核验报告目录（其下再分年份）')

@@ -4,6 +4,7 @@ from pathlib import Path
 from 精听数据 import dump,sha
 from 精听草稿构建 import annotated
 D=Path(__file__).resolve().parents[1]
+BASE_SHA={'A':'64899653a19b9011e7430fc3aa83ea7ac2931bd9e7439e9e72be48137042d86d','B1':'42ea7b688fde2d0e439768ae256f4d8d072c6d1df6dff418ab90e8a5fbc004c5','B2':'7ef600e8de9beff9866e5cc8c97836511cc2a9eda3a724319f672efc7ed702d5'}
 ADD={
 'A':{
 3:'signed up for~sign up for=phr. 报名选修|psychology=n. 心理学|chances are that=phr. 很可能|statistics=n. 统计学',
@@ -56,6 +57,7 @@ def main():
  side={'scope':'只补充2009视觉/语境词，不改变EN/原声时刻/译文完整内容；分屏仍须原音停顿核查','units':[]}
  for code in ['A','B1','B2']:
   src=D/f'精听数据/2009-{code}.json';d=json.loads(src.read_text());before=sha(src);changes=[]
+  assert before==BASE_SHA[code],'只支持已核旧正文技术快照；当前母稿已变，须用核验侧表EN整句锚合并，禁止按旧序号覆盖。'
   d['title']=re.sub(r'（新题型优化版所供原文）$','',d['title']);d.setdefault('names',[])
   if code=='B1' and '拉尔夫·斯梅德利' not in d['names']:d['names'].append('拉尔夫·斯梅德利')
   for k,terms in ADD[code].items():
@@ -71,7 +73,7 @@ def main():
    for a in ([at] if isinstance(at,str) else at):assert s['en'].count(a)==1
    d['splits'][str(k)]={'at':at,'zh':zh}
   target=args.out/f'2009-{code}.json';dump(target,d)
-  side['units'].append({'id':d['id'],'base_sha256':before,'title':d['title'],'names':d['names'],'vocabulary_additions':changes,'splits':d['splits'],'snapshot':str(target)})
+  side['units'].append({'id':d['id'],'base_sha256':before,'title':d['title'],'names':d['names'],'vocabulary_additions':changes,'split_records':[{'en':d['sentences'][int(k)-1]['en'],'zh':d['sentences'][int(k)-1]['zh'],'ordinal_hint':int(k),'plan':v,'status':'人工语义候选；仍须真实换屏核查'} for k,v in d['splits'].items()],'snapshot':str(target),'apply_rule':'仅按EN整句完全一致合并；不可用ordinal_hint覆盖含formal的新输入'})
  dump(D/'核验/精听2009版式补充.json',side)
  print('2009三份独立补充快照已生成。')
 

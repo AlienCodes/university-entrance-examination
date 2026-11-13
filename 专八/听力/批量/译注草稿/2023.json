@@ -1067,6 +1067,39 @@
           "source_sentence_range": [
             19,
             19
+          ],
+          "reviewed_phrase_audio_anchors": [
+            {
+              "text": "metaphor’s source",
+              "char": [
+                40,
+                57
+              ],
+              "asr_ref": "核验/正文异文复核/2023/metaphor.json",
+              "asr_sha256": "d914d0205e481c705cc33d6067c8742fb84605dc33a1a3386330a565c452aa00",
+              "asr_pointer": "/recognitions/0/words",
+              "asr_range": [
+                10,
+                12
+              ],
+              "start": 211.0,
+              "end": 212.36,
+              "method": "整个字词/词组使用实际ASR声锚，不依据规范拼写猜词内时间。",
+              "decision": "源页规范所有格metaphor’s source，两模型连读标作metaphor source；保留规范原文，把整个二词组绑定实际二词声锚，不猜所有格-s内部时刻。",
+              "source_refs": [
+                {
+                  "path": "来源/2023/解析.txt",
+                  "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+                  "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+                  "pdf_pages": [
+                    1,
+                    2
+                  ],
+                  "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+                }
+              ],
+              "status": "已记录具体证据对应，不冒称整个单元approved"
+            }
           ]
         },
         {
@@ -1239,8 +1272,8 @@
           ]
         },
         {
-          "en": "It is the experience of a stimulus received by one sense organ and another sense organ as well, for example, like colored hearing.",
-          "zh": "联觉是这样一种体验：原本由某一感觉器官接收的刺激，同时也被另一个感觉器官感知，例如色听联觉。",
+          "en": "It is the experience of a stimulus received by one sense organ in another sense organ as well, for example, like colored hearing.",
+          "zh": "联觉是指一种感觉器官接收到的刺激，也在另一种感觉器官中产生感受的体验，例如色听联觉。",
           "w": [
             {
               "t": "word",
@@ -1263,8 +1296,8 @@
                   62
                 ],
                 [
-                  75,
-                  86
+                  74,
+                  85
                 ]
               ]
             },
@@ -1274,8 +1307,8 @@
               "m": "n. 色听联觉",
               "sp": [
                 [
-                  114,
-                  129
+                  113,
+                  128
                 ]
               ]
             }
@@ -1491,8 +1524,8 @@
           ]
         },
         {
-          "en": "If you’re like most people, you’ll experience a moment of cognitive dissonance when the name of the color is printed in a differently colored ink.",
-          "zh": "如果你和大多数人一样，当颜色名称用另一种颜色的墨水印出来时，会经历片刻的认知失调。",
+          "en": "If you’re like most people, you’ll experience a moment of cognitive dissonance where the name of the color is printed in a differently colored ink.",
+          "zh": "如果你和大多数人一样，面对用另一种颜色墨水印出的颜色名称时，会经历片刻的认知失调。",
           "w": [
             {
               "t": "phr",
@@ -1995,6 +2028,39 @@
           "source_sentence_range": [
             54,
             54
+          ],
+          "proper_name_audio_anchors": [
+            {
+              "text": "Dow",
+              "char": [
+                76,
+                79
+              ],
+              "asr_ref": "预处理/2023/识别.json",
+              "asr_sha256": "e5d58519afb6a33c89e4a5a9497bea79535abbe15ed333d9a902a914540e23a1",
+              "asr_pointer": "",
+              "asr_range": [
+                809,
+                810
+              ],
+              "start": 425.72,
+              "end": 426.2,
+              "method": "整个金融指数专名Dow与原音实际同音DAO词锚对应，不猜字母时刻。",
+              "decision": "源页财经隐喻引文The Dow fell like a brick，指道琼斯指数；DAO为同音转写，并非此处人名或其他实体。",
+              "source_refs": [
+                {
+                  "path": "来源/2023/解析.txt",
+                  "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+                  "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+                  "pdf_pages": [
+                    1,
+                    2
+                  ],
+                  "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+                }
+              ],
+              "status": "具体源词与实际整词声锚对应"
+            }
           ]
         },
         {
@@ -2875,7 +2941,67 @@
         "source_sha256": "f5022401413a7b87322a1013f2170ed0c9295dc5f58d0c2681e5558bfd65338b",
         "status": "draft_local_asr_checked_not_publication_approved",
         "待核": []
-      }
+      },
+      "body_audio_corrections": [
+        {
+          "year": 2023,
+          "unit": "2023-A",
+          "case": "and_in",
+          "old_en": "It is the experience of a stimulus received by one sense organ and another sense organ as well, for example, like colored hearing.",
+          "new_en": "It is the experience of a stimulus received by one sense organ in another sense organ as well, for example, like colored hearing.",
+          "new_zh": "联觉是指一种感觉器官接收到的刺激，也在另一种感觉器官中产生感受的体验，例如色听联觉。",
+          "evidence": {
+            "file": "核验/正文异文复核/2023/and_in.json",
+            "sha256": "99e4cc50092f784013dcc1d36c9f2484cdc5b6d51c0bcf2dfc495cec794d3d18",
+            "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+            "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+            "windows": [
+              [
+                254,
+                262
+              ],
+              [
+                252.65,
+                263.1
+              ]
+            ],
+            "texts": {
+              "parakeet": "Experience of a stimulus received by one sense organ in another sense organ as well. For example, like",
+              "whisper": "It is the experience of a stimulus received by one sense organ in another sense organ as well. For example, like colored hearing."
+            }
+          },
+          "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        },
+        {
+          "year": 2023,
+          "unit": "2023-A",
+          "case": "when_where",
+          "old_en": "If you’re like most people, you’ll experience a moment of cognitive dissonance when the name of the color is printed in a differently colored ink.",
+          "new_en": "If you’re like most people, you’ll experience a moment of cognitive dissonance where the name of the color is printed in a differently colored ink.",
+          "new_zh": "如果你和大多数人一样，面对用另一种颜色墨水印出的颜色名称时，会经历片刻的认知失调。",
+          "evidence": {
+            "file": "核验/正文异文复核/2023/when_where.json",
+            "sha256": "c4d98ccc3f605a34e8d6504e6a2b8bfa4dbb689aabdf9006976bfd5be6ad8c74",
+            "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+            "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+            "windows": [
+              [
+                314,
+                323
+              ],
+              [
+                312.65,
+                324.1
+              ]
+            ],
+            "texts": {
+              "parakeet": "For example, you will experience a moment of cognitive dissonance, where the name of the colour is printed in a differently coloured ink.",
+              "whisper": "If you like most people, you will experience a moment of cognitive dissonance where the name of the colour is printed in a differently coloured ink. For example, the word \"f- [static] [static] [static] [static] [static]"
+            }
+          },
+          "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        }
+      ]
     },
     {
       "id": "2023-B1",
@@ -3907,6 +4033,39 @@
           "source_sentence_range": [
             28,
             28
+          ],
+          "reviewed_phrase_audio_anchors": [
+            {
+              "text": "gap year",
+              "char": [
+                61,
+                69
+              ],
+              "asr_ref": "核验/正文异文复核/2023/gapyear.json",
+              "asr_sha256": "924baa6501f5e5de3d214361ae8ee572fa19396890cb8ae84fee09a5b74cdf6d",
+              "asr_pointer": "/recognitions/0/words",
+              "asr_range": [
+                10,
+                11
+              ],
+              "start": 1039.52,
+              "end": 1040.08,
+              "method": "整个字词/词组使用实际ASR声锚，不依据规范拼写猜词内时间。",
+              "decision": "所供源页明确gap year，整个访谈反复解释间隔年，紧连读音被两模型拼作Dapia/gapia；源文语义及真实整体0.56秒连读锚对应，不教成不存在的Dapia，也不拆出虚假两词内部时间。",
+              "source_refs": [
+                {
+                  "path": "来源/2023/解析.txt",
+                  "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+                  "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+                  "pdf_pages": [
+                    3,
+                    4
+                  ],
+                  "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+                }
+              ],
+              "status": "已记录具体证据对应，不冒称整个单元approved"
+            }
           ]
         },
         {
@@ -4270,7 +4429,7 @@
           "asr_ref": "预处理/2023/识别.json"
         },
         {
-          "en": "What is part one of the interview mainly about?",
+          "en": "Question 1. What is part one of the interview mainly about?",
           "zh": "这次访谈的第一部分主要谈什么？",
           "w": [
             {
@@ -4279,8 +4438,8 @@
               "m": "n. 访谈",
               "sp": [
                 [
-                  24,
-                  33
+                  36,
+                  45
                 ]
               ]
             },
@@ -4290,17 +4449,18 @@
               "m": "adv. 主要地",
               "sp": [
                 [
-                  34,
-                  40
+                  46,
+                  52
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 1
+          "n": 1,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "According to the man, why should young people think seriously about taking a gap year?",
+          "en": "Question 2. According to the man, why should young people think seriously about taking a gap year?",
           "zh": "根据这位男士的说法，年轻人为什么应该认真考虑过间隔年？",
           "w": [
             {
@@ -4309,8 +4469,8 @@
               "m": "phr. 认真考虑",
               "sp": [
                 [
-                  46,
-                  67
+                  58,
+                  79
                 ]
               ]
             },
@@ -4320,17 +4480,18 @@
               "m": "phr. 过一个间隔年",
               "sp": [
                 [
-                  68,
-                  85
+                  80,
+                  97
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 2
+          "n": 2,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "What does the man say about the best thing of taking a gap year?",
+          "en": "Question 3. What does the man say about the best thing of taking a gap year?",
           "zh": "这位男士认为，间隔年最大的好处是什么？",
           "w": [
             {
@@ -4339,17 +4500,18 @@
               "m": "phr. 过一个间隔年",
               "sp": [
                 [
-                  46,
-                  63
+                  58,
+                  75
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 3
+          "n": 3,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "What is the man’s advice for young people before they start a gap year?",
+          "en": "Question 4. What is the man’s advice for young people before they start a gap year?",
           "zh": "对于即将开始间隔年的年轻人，这位男士有什么建议？",
           "w": [
             {
@@ -4358,8 +4520,8 @@
               "m": "n. 建议",
               "sp": [
                 [
-                  18,
-                  24
+                  30,
+                  36
                 ]
               ]
             },
@@ -4369,17 +4531,18 @@
               "m": "n. 间隔年",
               "sp": [
                 [
-                  62,
-                  70
+                  74,
+                  82
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 4
+          "n": 4,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "According to the man, what kind of gap year experience do employers care most?",
+          "en": "Question 5. According to the man, what kind of gap year experience do employers care most?",
           "zh": "根据这位男士的说法，雇主最看重哪类间隔年经历？",
           "w": [
             {
@@ -4388,8 +4551,8 @@
               "m": "n. 经历",
               "sp": [
                 [
-                  44,
-                  54
+                  56,
+                  66
                 ]
               ]
             },
@@ -4399,14 +4562,15 @@
               "m": "n. 雇主",
               "sp": [
                 [
-                  58,
-                  67
+                  70,
+                  79
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 5
+          "n": 5,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         }
       ],
       "待核": [],
@@ -4425,7 +4589,28 @@
         "source_sha256": "f5022401413a7b87322a1013f2170ed0c9295dc5f58d0c2681e5558bfd65338b",
         "status": "draft_local_asr_checked_not_publication_approved",
         "待核": []
-      }
+      },
+      "manual_splits": [
+        {
+          "en": "Recently, at gapyear.com, we conducted a survey asking HR professionals whether a gap year makes a job applicant more employable. 63% agreed that a constructive gap year, either just a few months or a year sharp spent volunteering or gaining work experience overseas, makes a job application stand out, so the evidence is there.",
+          "at": [
+            "63% agreed",
+            "makes a job application"
+          ],
+          "zh": [
+            "最近，gapyear.com对人力资源专业人士开展了一项调查，询问间隔年是否会让求职者更具就业竞争力。",
+            "63%的受访者表示，一段有意义的间隔年经历，无论是几个月还是一年，用来参加志愿活动或积累海外工作经验，",
+            "都能使求职申请脱颖而出；这就是依据。"
+          ],
+          "evidence": "核验/正文异文复核/2023-B1-人工分屏候选.json /candidate；人工语义已核且几何复跑0问题，换屏另核实际词首/停顿。",
+          "evidence_ref": "核验/人工语义分屏来源快照.json",
+          "evidence_sha256": "a1a1a298d79f702de0f642c608e3ade86367df2e5693ced6109623f83697d80d",
+          "original_source_ref": "核验/正文异文复核/2023-B1-人工分屏候选.json",
+          "original_source_sha256": "1e973a9fd6565896734d43586cd8e1ce71248fcfc28e247f4873539bfe144fd7",
+          "original_source_pointer": "/candidate",
+          "approval_scope": "仅人工语义/几何分屏计划，不含任何音频时刻或生产批准。"
+        }
+      ]
     },
     {
       "id": "2023-B2",
@@ -4624,7 +4809,7 @@
           ]
         },
         {
-          "en": "You know, and a majority of this time, I’d say it’s usually only for three to nine months?",
+          "en": "You know, and the majority of this time, I’d say it’s usually only for three to nine months?",
           "zh": "而且，大多数时候，我想通常也就三到九个月。",
           "w": [
             {
@@ -4633,8 +4818,8 @@
               "m": "n. 大多数",
               "sp": [
                 [
-                  16,
-                  24
+                  18,
+                  26
                 ]
               ]
             },
@@ -4644,8 +4829,8 @@
               "m": "phr. 三到九个月",
               "sp": [
                 [
-                  69,
-                  89
+                  71,
+                  91
                 ]
               ]
             }
@@ -4836,7 +5021,7 @@
           ]
         },
         {
-          "en": "Because you’re not only making a direct difference to local people’s lives, but you’re also learning more about specific culture and society.",
+          "en": "Because you’re not only making a direct difference to local people’s lives, but you’re also learning more about a specific culture and society.",
           "zh": "因为你不仅直接改变了当地人的生活，也能更深入地了解某个地区特有的文化和社会。",
           "w": [
             {
@@ -4856,8 +5041,8 @@
               "m": "adj. 特定的；独有的",
               "sp": [
                 [
-                  112,
-                  120
+                  114,
+                  122
                 ]
               ]
             }
@@ -4910,7 +5095,7 @@
           ]
         },
         {
-          "en": "I think travel list has to be as ridiculous as possible.",
+          "en": "I think a travel list has to be as ridiculous as possible.",
           "zh": "我觉得，旅行愿望清单就应该尽可能天马行空。",
           "w": [
             {
@@ -4919,8 +5104,8 @@
               "m": "adj. 荒诞的；异想天开的",
               "sp": [
                 [
-                  33,
-                  43
+                  35,
+                  45
                 ]
               ]
             }
@@ -5046,6 +5231,39 @@
           "source_sentence_range": [
             26,
             26
+          ],
+          "proper_name_audio_anchors": [
+            {
+              "text": "Qomolangma",
+              "char": [
+                221,
+                231
+              ],
+              "asr_ref": "核验/正文异文复核/2023/qomolangma.json",
+              "asr_sha256": "48e24bbfe4be2422f29edfc6bc1c66c1fdd40b7140a604a8bc2d396ecb4493e6",
+              "asr_pointer": "/recognitions/0/words",
+              "asr_range": [
+                21,
+                22
+              ],
+              "start": 1356.28,
+              "end": 1357.56,
+              "method": "整个字词/词组使用实际ASR声锚，不依据规范拼写猜词内时间。",
+              "decision": "源页Mount Qomolangma规范罗马字，Parakeet Komolangma/Whisper Como Langma为同一山名音译写法；整个专名共用实际一词声锚。",
+              "source_refs": [
+                {
+                  "path": "来源/2023/解析.txt",
+                  "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+                  "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+                  "pdf_pages": [
+                    4,
+                    5
+                  ],
+                  "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+                }
+              ],
+              "status": "已记录具体证据对应，不冒称整个单元approved"
+            }
           ]
         },
         {
@@ -5351,8 +5569,8 @@
           ]
         },
         {
-          "en": "There’s so much to learn from personal experience or being in a place.",
-          "zh": "亲身经历或置身某地，都能让人学到很多东西。",
+          "en": "There’s so much to learn from personal experience of being in a place.",
+          "zh": "身处某个地方的亲身经历中，有太多值得学习的东西。",
           "w": [
             {
               "t": "phr",
@@ -5518,7 +5736,7 @@
           "asr_ref": "预处理/2023/识别.json"
         },
         {
-          "en": "What does the man say about a gap year?",
+          "en": "Question 6. What does the man say about a gap year?",
           "zh": "这位男士对间隔年有什么看法？",
           "w": [
             {
@@ -5527,17 +5745,18 @@
               "m": "n. 间隔年",
               "sp": [
                 [
-                  30,
-                  38
+                  42,
+                  50
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 6
+          "n": 6,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "According to the man, why is volunteering a good option?",
+          "en": "Question 7. According to the man, why is volunteering a good option?",
           "zh": "根据这位男士的说法，为什么做志愿者是一个好选择？",
           "w": [
             {
@@ -5546,8 +5765,8 @@
               "m": "v. 做志愿者",
               "sp": [
                 [
-                  29,
-                  41
+                  41,
+                  53
                 ]
               ]
             },
@@ -5557,17 +5776,18 @@
               "m": "n. 选择",
               "sp": [
                 [
-                  49,
-                  55
+                  61,
+                  67
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 7
+          "n": 7,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "Which of the following activities is the man least likely to do?",
+          "en": "Question 8. Which of the following activities is a man least likely to do?",
           "zh": "下列活动中，这位男士最不可能做的是哪一项？",
           "w": [
             {
@@ -5576,17 +5796,18 @@
               "m": "phr. 最不可能",
               "sp": [
                 [
-                  45,
-                  57
+                  55,
+                  67
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 8
+          "n": 8,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "What contributes to the man’s love for travelling?",
+          "en": "Question 9. What contributes to the man’s love for travelling?",
           "zh": "是什么促成了这位男士对旅行的热爱？",
           "w": [
             {
@@ -5595,17 +5816,18 @@
               "m": "phr. 促成；有助于",
               "sp": [
                 [
-                  5,
-                  19
+                  17,
+                  31
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 9
+          "n": 9,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
-          "en": "What does the man see as a personal benefit of global travelling?",
+          "en": "Question 10. What does the man see as a personal benefit of global travelling?",
           "zh": "这位男士认为，环球旅行能给个人带来什么益处？",
           "w": [
             {
@@ -5614,8 +5836,8 @@
               "m": "n. 个人益处",
               "sp": [
                 [
-                  27,
-                  43
+                  40,
+                  56
                 ]
               ]
             },
@@ -5625,14 +5847,15 @@
               "m": "n. 环球旅行",
               "sp": [
                 [
-                  47,
-                  64
+                  60,
+                  77
                 ]
               ]
             }
           ],
           "role": "question",
-          "n": 10
+          "n": 10,
+          "question_sync_basis": "对应已核考试试卷stem；含实际口述Question题号。"
         },
         {
           "en": "This is the end of Section B interview.",
@@ -5712,7 +5935,125 @@
         "source_sha256": "f5022401413a7b87322a1013f2170ed0c9295dc5f58d0c2681e5558bfd65338b",
         "status": "draft_local_asr_checked_not_publication_approved",
         "待核": []
-      }
+      },
+      "body_audio_corrections": [
+        {
+          "year": 2023,
+          "unit": "2023-B2",
+          "case": "time_majority",
+          "old_en": "You know, and a majority of this time, I’d say it’s usually only for three to nine months?",
+          "new_en": "You know, and the majority of this time, I’d say it’s usually only for three to nine months?",
+          "new_zh": "而且，大多数时候，我想通常也就三到九个月。",
+          "evidence": {
+            "file": "核验/正文异文复核/2023/time_majority.json",
+            "sha256": "f19d253efc73c7a1d0f63dfddc383f7d53ec4f0ca526fd065f01d8df4b73d36b",
+            "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+            "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+            "windows": [
+              [
+                1243,
+                1263
+              ],
+              [
+                1241.65,
+                1264.1
+              ]
+            ],
+            "texts": {
+              "parakeet": "No, it's not. A Gap year is just timeout between life stages. People from all ages and all backgrounds take a GAAP year, you know. And the majority of this time, I'd say it's usually only for three to nine months. Anyway, back to the question.",
+              "whisper": "It's a whole year. No, it's not. A gap year is just time out between life stages. People from all ages and all backgrounds take a gap year. You know, and the majority of this time, I'd say it's usually only for three to nine months. Anyway, back to the question. If people (buzzer)"
+            }
+          },
+          "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        },
+        {
+          "year": 2023,
+          "unit": "2023-B2",
+          "case": "specific_culture",
+          "old_en": "Because you’re not only making a direct difference to local people’s lives, but you’re also learning more about specific culture and society.",
+          "new_en": "Because you’re not only making a direct difference to local people’s lives, but you’re also learning more about a specific culture and society.",
+          "new_zh": "因为你不仅直接改变了当地人的生活，也能更深入地了解某个地区特有的文化和社会。",
+          "evidence": {
+            "file": "核验/正文异文复核/2023/specific_culture.json",
+            "sha256": "947c9097ae2bade7a062a925fccde1fbacb1f9dfb9158c6a65f7af748a98c0ab",
+            "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+            "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+            "windows": [
+              [
+                1306,
+                1316
+              ],
+              [
+                1304.65,
+                1317.1
+              ]
+            ],
+            "texts": {
+              "parakeet": "A direct difference to local people's lives, but you're also learning more about a specific culture and society. Often, you can learn a lot more about an",
+              "whisper": "Because you're not only making a direct difference to local people's lives, but you're also learning more about the specific culture and society. Often you can learn a lot more about an area, volunteer..."
+            }
+          },
+          "decision": "主ASR与聚焦Parakeet均为a specific culture；Whisper为the specific culture，两路均确认有冠词。采用最稳定的a并完整保留冠词分歧，不声称双模型逐字一致。"
+        },
+        {
+          "year": 2023,
+          "unit": "2023-B2",
+          "case": "travel_lists",
+          "old_en": "I think travel list has to be as ridiculous as possible.",
+          "new_en": "I think a travel list has to be as ridiculous as possible.",
+          "new_zh": "我觉得，旅行愿望清单就应该尽可能天马行空。",
+          "evidence": {
+            "file": "核验/正文异文复核/2023/travel_lists.json",
+            "sha256": "53ffd733bad6087950368a40e6279737d8014ccef0832926be09a830d6746893",
+            "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+            "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+            "windows": [
+              [
+                1320,
+                1332
+              ],
+              [
+                1318.65,
+                1333.1
+              ]
+            ],
+            "texts": {
+              "parakeet": "Love to find out what is on people's travel list. Could you tell us yours? I think a travel list has to be as ridiculous as possible. It has to be made up of things that are achievable.",
+              "whisper": "We'd love to find out what is on people's travel list. Could you tell us yours? I think a travel list has to be as ridiculous as possible. It has to be made up of things that are achievable and things that are"
+            }
+          },
+          "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        },
+        {
+          "year": 2023,
+          "unit": "2023-B2",
+          "case": "validation",
+          "old_en": "There’s so much to learn from personal experience or being in a place.",
+          "new_en": "There’s so much to learn from personal experience of being in a place.",
+          "new_zh": "身处某个地方的亲身经历中，有太多值得学习的东西。",
+          "evidence": {
+            "file": "核验/正文异文复核/2023/validation.json",
+            "sha256": "cecdbd08573d696363ec27ac957808fbba28fd0ea9e08f7d4300a5c0c7ef5261",
+            "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+            "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+            "windows": [
+              [
+                1429,
+                1450
+              ],
+              [
+                1427.65,
+                1451.1
+              ]
+            ],
+            "texts": {
+              "parakeet": "You personally. For me, it'll be about how much I've learned. It'll be a validation of my ability to think critically and analyze the different ways that societies try to function. There's so much to learn from personal experience of being in a place. And I love travel because to me",
+              "whisper": "the world mean to you personally. For me, it'll be about how much I've learned. It'll be a validation of my ability to think critically and analyze the different ways that societies try to function. There's so much to learn from personal experience of being in a place. And I love travel, because to me, it's about constant-- [AUDIO PLAYBACK]"
+            }
+          },
+          "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        }
+      ]
     }
   ],
   "instruction_merge": {
