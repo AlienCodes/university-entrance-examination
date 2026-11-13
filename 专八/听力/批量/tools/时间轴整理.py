@@ -89,6 +89,18 @@ def build(y):
   question_candidates.append({'n':n,'start':t,'pause':[a,b],'asr_text':' '.join(x[0] for x in w[idx:] if t-.1<=x[1]<a),'source':'仅机器候选，题干须核解析与实际录音，不直接替代原文'})
   if k==4:add(b,kind='plist',group=groups[1]['id'],st='采访播放中，结束后作答第6—10题')
  add(pp[-1][1],kind='end',st='请等待正式考试结束，之后展示答案')
+ # 2018原记录在三分钟口令后留有193秒等待，不能把全部静默都算检查配额。
+ policy_file=D/'核验'/f'{y}-倒计时显示核定.json'
+ policy=None
+ if policy_file.exists():
+  policy=json.loads(policy_file.read_text());assert y==2018 and policy['status']=='verified' and policy['source_sha256']==sha
+  assert policy['asr_sha256']==hashlib.sha256((p/'识别.json').read_bytes()).hexdigest()
+  assert all(abs(a-b)<.001 for a,b in zip(policy['actual_acoustic_check'],check))
+  for ev in events:
+   countdown=ev.get('countdown')
+   if countdown and countdown['label']=='预览':countdown['end']=min(countdown['end'],round(ev['t']+30,3))
+   if countdown and countdown['label']=='检查':countdown['end']=round(ev['t']+180,3)
+  add(check[0]+180,kind='sheet',st='检查时间结束，等待下一部分')
  events.sort(key=lambda e:e['t'])
  # 同秒两个说明状态只保留最终者，倒计时及不同题不能用此隐去。
  merged=[]
@@ -96,6 +108,7 @@ def build(y):
   if merged and abs(ev['t']-merged[-1]['t'])<.0001:merged[-1]=ev
   else:merged.append(ev)
  T={'source_duration':duration,'source_sha256':sha,'trim':trim,'events':merged,'evidence':{'asr_sha256':hashlib.sha256((p/'识别.json').read_bytes()).hexdigest(),'pauses_sha256':hashlib.sha256((p/'停顿.json').read_bytes()).hexdigest(),'previewA':preA,'check':check,'previewB':preB,'question_pauses':pp,**({'reviewed_pause_override':{'file':str(override_file.relative_to(D)),'sha256':hashlib.sha256(override_file.read_bytes()).hexdigest(),'preserve_entire_wait_audio':True}} if override else {})},'pending':notes+([] if trim_file.exists() else ['片头音乐剪切点尚待正式核定'])}
+ if policy:T['display_policy']={'preview_max_seconds':30,'check_max_seconds':180,'extra_source_wait':'倒计时结束后保留原音等待，不另延长学生检查时间','source_audio_changed':False}
  dump(D/'数据'/str(y)/'时间轴.json',T);dump(D/'核验'/f'{y}-时间轴候选.json',{'year':y,'questions':question_candidates,'notes':notes,'status':'候选待与实际原音/解析核对'})
  print(y,'timeline',len(merged),'events','notes',len(notes),'trim reviewed',trim_file.exists(),flush=True)
 if __name__=='__main__':

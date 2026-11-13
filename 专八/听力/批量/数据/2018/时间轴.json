@@ -53,7 +53,7 @@
       "kind": "sheet",
       "st": "预览答题卡",
       "countdown": {
-        "end": 73.26,
+        "end": 72.72,
         "label": "预览"
       }
     },
@@ -67,9 +67,14 @@
       "kind": "sheet",
       "st": "检查答案",
       "countdown": {
-        "end": 726.22,
+        "end": 713.24,
         "label": "检查"
       }
+    },
+    {
+      "t": 713.24,
+      "kind": "sheet",
+      "st": "检查时间结束，等待下一部分"
     },
     {
       "t": 726.22,
@@ -88,7 +93,7 @@
       "group": "part1",
       "st": "预览采访选项",
       "countdown": {
-        "end": 798.12,
+        "end": 797.22,
         "label": "预览"
       }
     },
@@ -334,5 +339,11 @@
     "status": "timeline-checked",
     "evidence": "核验/2018-时间轴说明处理.json；核验/2018-考试内容审核.json；音乐剪切/2018.json",
     "instruction_display": "完整原卷说明静态展示，不以部分ASR猜逐句高亮"
+  },
+  "display_policy": {
+    "preview_max_seconds": 30,
+    "check_max_seconds": 180,
+    "extra_source_wait": "倒计时结束后保留原音等待，不另延长学生检查时间",
+    "source_audio_changed": false
   }
 }
