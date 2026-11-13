@@ -1,0 +1,63 @@
+{
+  "id": "2013-B2",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2013-B2.json",
+  "candidate_sha256": "a914ab3742b57e3086e85cd4a2ee07b3834c3ebf29149b55d3f2269600a71228",
+  "input_before_approval_sha256": "991f1b0822f250c7d875c0de9c595f5996540c80dfdbf102fabd014ee59941be",
+  "input_sha256": "018192167e489d2d745fda7bef679cfaa178e4d6b580da1b2d7dd3cd905c493a",
+  "approved_content_sha256": "0df26d6fd378315b557bc9f44ed4d09eda274beeaa86f9f0d34cf6e5fa16201e",
+  "mother_unit_semantic_sha256": "081145429943cd224bc407bcd3ab1c117f0f823c27cd3b526b23db8a17329028",
+  "source_audio_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+  "source_window": [
+    1080.6375,
+    1382.582857
+  ],
+  "sentences": 51,
+  "vocabulary_items": 66,
+  "manual_plans": 1,
+  "previous_pending_items": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[34]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 34,
+      "en": "Umm.",
+      "window": [
+        1229.31,
+        1229.79
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Umm",
+          "char": [
+            0,
+            3
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "native_spectral_verified_nonlexical_event",
+        "decision": "独立嗯声已实读原采样率频谱，基音及倍频清楚；现有完整1229.31—1229.79应声范围保留，不造Umm词时。",
+        "evidence": {
+          "file": "核验/2010—2015整句声学证据/2013-B2-34-spectral-evidence.json",
+          "sha256": "22d78c6de004c4967c0952fc042ba702d1e8256e2bddb4b50d8c920557775e6e"
+        },
+        "whole_sentence_window": [
+          1229.31,
+          1229.79
+        ],
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

@@ -1,0 +1,83 @@
+{
+  "id": "2011-A",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2011-A.json",
+  "candidate_sha256": "86c025cc891a4dde0eb4e88265332686cc740c3d65580ff515ad6b7b34e8ef73",
+  "input_before_approval_sha256": "c29a69ab0157376b9778c9091254e2cf30b30c8a3235d32203a6f4f5db312330",
+  "input_sha256": "c1e3b89a3831060a07e04458b6a6088d8c4889c3b58ae688200b9d3bb4589b28",
+  "approved_content_sha256": "c2ef6017e837c7871587af266ba847696e61aec8a1e9578f89443d2f89294372",
+  "mother_unit_semantic_sha256": "ab3ded99f631ee4736796217759f4978bc691406dc39736c8e3d3d66a7c9ffbb",
+  "source_audio_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+  "source_window": [
+    14.0775,
+    731.09
+  ],
+  "sentences": 70,
+  "vocabulary_items": 79,
+  "manual_plans": 9,
+  "previous_pending_items": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
+  ],
+  "retained_unknown_word_time_dispositions": [],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 28,
+      "en": "If you go into that culture, people might stand closer when they’re talking to you.",
+      "extra_ASR": {
+        "asr_indices": [
+          374
+        ],
+        "asr_text": [
+          "they"
+        ],
+        "window": [
+          220.55,
+          220.63
+        ]
+      },
+      "disposition": {
+        "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+        "decision": "独立Whisper为when they’re talking to you；额外they是该缩约形式的重复分词，保留源稿they’re。",
+        "evidence": {
+          "file": "核验/2010—2015源审残留多词复核/2011-A-they.json",
+          "sha256": "fb82c6a6413f0320820a93d11b0f1923bd23b56cd34159644caa791fef8107b4"
+        },
+        "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+      }
+    },
+    {
+      "sentence": 56,
+      "en": "What do you think there would be in a low-context culture?",
+      "extra_ASR": {
+        "asr_indices": [
+          812
+        ],
+        "asr_text": [
+          "be?"
+        ],
+        "window": [
+          420.63,
+          420.79
+        ]
+      },
+      "disposition": {
+        "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+        "decision": "独立Whisper目标句只有一次would be；主ASR额外be为重复候选，不再补字幕。",
+        "evidence": {
+          "file": "核验/2010—2015源审残留多词复核/2011-A-be.json",
+          "sha256": "71e5804e03279cb5fdd166fbfdf3b1b83e3af4f6334a66298180371a5ca56ca6"
+        },
+        "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

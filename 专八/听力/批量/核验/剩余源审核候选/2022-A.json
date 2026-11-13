@@ -2,12 +2,10 @@
   "id": "2022-A",
   "status": "source-review-candidate-only",
   "source_approved": false,
-  "recommendation": "hold",
-  "blocking": [
-    "ASR额外段待核：['Most'] [338.14, 338.38]"
-  ],
+  "recommendation": "ready",
+  "blocking": [],
   "scope": "仅建议root批准源EN/中文/词汇/真实锚及原音窗；不批准PNG、实际换屏guard或编码成品。",
-  "checked_at_UTC": "2026-11-13T21:54:05.553552+00:00",
+  "checked_at_UTC": "2026-11-13T21:56:32.574224+00:00",
   "current": {
     "mother_file": "译注草稿/2022.json",
     "mother_file_sha256": "4198c4c0b15c657e64d2710ca6f38710194952f49a7599b6b3d3a6f01d0ff13e",
@@ -572,7 +570,36 @@
         338.38
       ],
       "decision": "machine_candidate_unreviewed",
-      "audit_disposition": "尚无该ASR额外段的明确实音裁决"
+      "audit_disposition": "最后will→would真词片段合并在338.1秒左右留下Most重叠重复：主ASR、错位Parakeet与独立Whisper的对应原句均只有一次Most。新旧ASR候选Most起止338.10—338.34与338.14—338.38重叠，不能据合并重复给正文添第二个Most；正文保留一次。",
+      "adjudication": {
+        "year": 2022,
+        "unit": "2022-A",
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "asr_text": [
+            "Most"
+          ],
+          "window": [
+            338.14,
+            338.38
+          ]
+        },
+        "analysis_window": [
+          335.5,
+          361.5
+        ],
+        "source_corresponding_phrase": "Most cultural anthropologists would limit themselves",
+        "decision": "最后will→would真词片段合并在338.1秒左右留下Most重叠重复：主ASR、错位Parakeet与独立Whisper的对应原句均只有一次Most。新旧ASR候选Most起止338.10—338.34与338.14—338.38重叠，不能据合并重复给正文添第二个Most；正文保留一次。",
+        "disposition": "overlapping_ASR_patch_boundary_duplicate_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-Most-existing.json",
+        "evidence_sha256": "14404272875d15da786fcd3608a502cb070e152f786f792b737621f4ab78e44f",
+        "model_texts": {
+          "parakeet": "Behavior in human societies. Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Kluckholm with the Navajo Indians in the southwestern United States. I should mention that Kluckholm's work, which is Mirror for Man, is considered one of the best introductions to anthropology.",
+          "Whisper-base.en": "behavior in human societies. Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Cluckhorn with the Navajo Indians in the southwestern United States. I should mention that Cluckhorn's work, which is \"mirror for man,\" is considered one of the best introductions to anthropology."
+        },
+        "scope": "仅最后合并边界重复词裁决，无原文/原音/时间变更。"
+      }
     },
     {
       "kind": "replace",
@@ -1379,6 +1406,10 @@
       "sha256": "27425783fdaaf3d0edaa0e42138da6f431c20980931f3e8d7575491b59bf8b70"
     },
     {
+      "file": "核验/剩余源审核候选/局部音证/2022-extra-Most-existing.json",
+      "sha256": "14404272875d15da786fcd3608a502cb070e152f786f792b737621f4ab78e44f"
+    },
+    {
       "file": "核验/剩余源审核候选/局部音证/2022-extra-409.66.json",
       "sha256": "e1cb939eabc75a655c521d1c1e6f066018d59eaef120da71236b00a91d5404aa"
     },
@@ -1400,7 +1431,7 @@
     },
     {
       "file": "核验/剩余源审核候选/额外ASR逐项裁决.json",
-      "sha256": "d300437c9fdc79bbed4ecd56212ac82e50ec6e1a9baf032603a2a08c5df0f4dc"
+      "sha256": "f697fe4b645183425e76b6f540d78d004215ed6e1b43dc4be1d7f46aff962e87"
     },
     {
       "file": "核验/第二批人工语义分屏/分屏平表.json",

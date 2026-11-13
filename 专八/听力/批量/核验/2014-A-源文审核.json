@@ -1,0 +1,111 @@
+{
+  "id": "2014-A",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2014-A.json",
+  "candidate_sha256": "eaa31c9a14572a58b154f271e3491f9065d0637bd20f4eeb205472690ce83869",
+  "input_before_approval_sha256": "588149d076b61fc06fdc6a091d52fd9842aaed4474e2ca72be22029475e3d9c5",
+  "input_sha256": "e72bb553a7453705c3e03ffbc04da5763fd34bbfbf9f6330ebcb2abff701991a",
+  "approved_content_sha256": "60b2a8dc0360bdd59d568897423291b4cea57e65d45d680978b358bba2cb3bb7",
+  "mother_unit_semantic_sha256": "389b2b3988500d3bbb8a595397c9867fa5d727d6e340e4613fd8f1cdf24bf0c2",
+  "source_audio_sha256": "48626f7e4bd715ab94fcdc1cc948a8f5e38b0ffe3dc5e94e2491bb8ee53188db",
+  "source_window": [
+    14.1375,
+    708.47
+  ],
+  "sentences": 69,
+  "vocabulary_items": 105,
+  "manual_plans": 7,
+  "previous_pending_items": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[8, 15]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 8,
+      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+      "window": [
+        46.66,
+        54.9
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "s",
+          "char": [
+            19,
+            20
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "printed_optional_plural_marker_not_separate_spoken_letter",
+        "decision": "word(s)为单复数书写形式；模型word/words均在此正式说明，不把括号s当额外念出的字母，不为s单独造秒。",
+        "evidence": {
+          "file": "说明语句/2014.json",
+          "sha256": "f2fd06c445ef8db9b445c5e2e3ad307e0824c7e9e08974c9c79eba4e75b32f73"
+        },
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 15,
+      "en": "As you all know, life always has stressors, er, things which are causing us stress and living without stress is virtually impossible.",
+      "window": [
+        109.41,
+        119.49
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "er",
+          "char": [
+            44,
+            46
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "reference_retained_internal_disfluency_or_weak_function_word",
+        "decision": "er为句内犹豫声；stressors技术词已由根裁定印本+同源整词锚，绝不重开该词或将er变成内容差异。",
+        "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+        "evidence": {
+          "file": "核验/正文清理/2014-双模型.json",
+          "sha256": "fbc8a9fd7900249a20a74085903b4bbd3d9c7c17117d2b6654e1f85da5b42fd7"
+        },
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 8,
+      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+      "extra_ASR": {
+        "asr_indices": [
+          62
+        ],
+        "asr_text": [
+          "words"
+        ],
+        "window": [
+          48.18,
+          48.66
+        ]
+      },
+      "disposition": {
+        "category": "spoken_plural_variant_of_printed_word_s",
+        "decision": "words对应印本word(s)允许的复数形式，不新增第二个words字幕。",
+        "evidence": {
+          "file": "说明语句/2014.json",
+          "sha256": "f2fd06c445ef8db9b445c5e2e3ad307e0824c7e9e08974c9c79eba4e75b32f73"
+        }
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

@@ -1,0 +1,229 @@
+{
+  "id": "2010-B1",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2010-B1.json",
+  "candidate_sha256": "d20d323c160e48f5d8c7903a19eda5db138ed8f12ebc9f10a1e5a9b719182326",
+  "input_before_approval_sha256": "9244e6960cada8cf94e59977012b1f03c9e8c4a12b94f3ef3d9a2bbca4db7d78",
+  "input_sha256": "295e894e1f3542fd3af4026b35c03ee983b890291f67ba6249bf11596d8256bd",
+  "approved_content_sha256": "3ad78277eff39b6986fb36169f17726afce13dadcd3164a698b9a192dd6ff2d3",
+  "mother_unit_semantic_sha256": "9959d1cc5203d017f690292a4da0a59d0f508dc1aff44daf103172fd84930b5a",
+  "source_audio_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+  "source_window": [
+    781.7875,
+    1210.73
+  ],
+  "sentences": 52,
+  "vocabulary_items": 59,
+  "manual_plans": 6,
+  "previous_pending_items": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有4个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[40, 42, 50, 52]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 40,
+      "en": "OK. The first is racial diversity.",
+      "window": [
+        1060.42,
+        1064.22
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "The",
+          "char": [
+            4,
+            7
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "reference_retained_internal_disfluency_or_weak_function_word",
+        "decision": "The为句内弱冠词，first/racial diversity实际锚齐；保留参考字幕，不把缺冠词当内容差异或补造其秒。",
+        "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+        "evidence": {
+          "file": "核验/正文清理/2010-双模型.json",
+          "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+        },
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 42,
+      "en": "Um, let’s look at two states, California and Maine.",
+      "window": [
+        1073.38,
+        1078.65
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Um",
+          "char": [
+            0,
+            2
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "verified_whole_utterance_unknown_word_times_retained",
+        "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+        "evidence": {
+          "file": "核验/2010—2015整句声学证据/2010-B1-42.json",
+          "sha256": "2dce1ab664c08da1fe47db0394e992e6c46f9a12e83f2251d795596931c11d72"
+        },
+        "whole_sentence_window": [
+          1073.38,
+          1078.65
+        ],
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 50,
+      "en": "Question 3. What does the example of Selinsgrove show?",
+      "window": [
+        1168.26,
+        1173.78
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Selinsgrove",
+          "char": [
+            37,
+            48
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+        "evidence": {
+          "file": "核验/2010-考试内容审核.json",
+          "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+        },
+        "question": 3,
+        "source_stem": "What does the example of Selinsgrove show?",
+        "actual_ASR_text": "What does the example of Sellings Grove show?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "Selinsgrove专名被ASR拆成Sellings Grove，保持原PDF",
+        "explicit_local_name_comparison": null,
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 52,
+      "en": "Question 5. What is the similarity between Selinsgrove and Maine according to the interview?",
+      "window": [
+        1202.69,
+        1210.53
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Selinsgrove",
+          "char": [
+            43,
+            54
+          ]
+        },
+        {
+          "text": "Maine",
+          "char": [
+            59,
+            64
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+        "evidence": {
+          "file": "核验/2010-考试内容审核.json",
+          "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+        },
+        "question": 5,
+        "source_stem": "What is the similarity between Selinsgrove and Maine according to the interview?",
+        "actual_ASR_text": "What is the similarity between Selling Grove and Main, according to the interview?",
+        "source_review_normalized_exact": false,
+        "normalization_note": "Selinsgrove/Maine专名被ASR识作Selling Grove/Main，保持原PDF",
+        "explicit_local_name_comparison": "旧审计normalized_exact=false未改；其明确备注已裁Selinsgrove/Maine近音。仅此题局部按该备注比较后其余全部词相同，未建立全局别名或猜词时。",
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 50,
+      "en": "Question 3. What does the example of Selinsgrove show?",
+      "extra_ASR": {
+        "asr_indices": [
+          1786,
+          1787
+        ],
+        "asr_text": [
+          "Sellings",
+          "Grove"
+        ],
+        "window": [
+          1171.7,
+          1172.74
+        ]
+      },
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+        "evidence": {
+          "file": "核验/2010-考试内容审核.json",
+          "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+        },
+        "question": 3,
+        "source_stem": "What does the example of Selinsgrove show?",
+        "actual_ASR_text": "What does the example of Sellings Grove show?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "Selinsgrove专名被ASR拆成Sellings Grove，保持原PDF",
+        "explicit_local_name_comparison": null
+      }
+    },
+    {
+      "sentence": 52,
+      "en": "Question 5. What is the similarity between Selinsgrove and Maine according to the interview?",
+      "extra_ASR": {
+        "asr_indices": [
+          1815,
+          1816,
+          1818
+        ],
+        "asr_text": [
+          "Selling",
+          "Grove",
+          "Main,"
+        ],
+        "window": [
+          1206.69,
+          1208.61
+        ]
+      },
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+        "evidence": {
+          "file": "核验/2010-考试内容审核.json",
+          "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+        },
+        "question": 5,
+        "source_stem": "What is the similarity between Selinsgrove and Maine according to the interview?",
+        "actual_ASR_text": "What is the similarity between Selling Grove and Main, according to the interview?",
+        "source_review_normalized_exact": false,
+        "normalization_note": "Selinsgrove/Maine专名被ASR识作Selling Grove/Main，保持原PDF",
+        "explicit_local_name_comparison": "旧审计normalized_exact=false未改；其明确备注已裁Selinsgrove/Maine近音。仅此题局部按该备注比较后其余全部词相同，未建立全局别名或猜词时。"
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

@@ -1,0 +1,60 @@
+{
+  "id": "2014-B2",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2014-B2.json",
+  "candidate_sha256": "c904b53ee4b33d1c755be6237c87ce8da18fda0ddf06dab6a7d7c74d539ad65e",
+  "input_before_approval_sha256": "86efee69ba0c4f4a950893f89dd0100f9947b89fa60ebef5060576ac7af720e3",
+  "input_sha256": "25b5813299b30601a1da1b88c9fb5d873846e1030c0994eaf43b3cc2fbf226b7",
+  "approved_content_sha256": "939adadb672f3f4e62a4ddaf6df9fcaca55bb19d84a7af078e615240a0be0b13",
+  "mother_unit_semantic_sha256": "7d4f4ce267af8fd2bea8e4bb41af947a05b814c26c3f8cbc3113d32fe25f4527",
+  "source_audio_sha256": "48626f7e4bd715ab94fcdc1cc948a8f5e38b0ffe3dc5e94e2491bb8ee53188db",
+  "source_window": [
+    1036.0475,
+    1356.982857
+  ],
+  "sentences": 39,
+  "vocabulary_items": 67,
+  "manual_plans": 7,
+  "previous_pending_items": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[7]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 7,
+      "en": "A lot of people feel it’s a little calmer now... this is the time to really discuss and, and try to get these communities back together.",
+      "window": [
+        1069.42,
+        1078.38
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "and",
+          "char": [
+            89,
+            92
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "reference_retained_internal_disfluency_or_weak_function_word",
+        "decision": "同一and口述重复；两模型文本可能归一化犹豫，字幕保留纸源重复，不声称两个独立and时刻。",
+        "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+        "evidence": {
+          "file": "核验/正文清理/2014-双模型.json",
+          "sha256": "fbc8a9fd7900249a20a74085903b4bbd3d9c7c17117d2b6654e1f85da5b42fd7"
+        },
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

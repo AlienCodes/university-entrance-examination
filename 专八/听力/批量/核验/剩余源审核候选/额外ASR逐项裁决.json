@@ -4,7 +4,7 @@
     2023,
     2024
   ],
-  "case_count": 31,
+  "case_count": 32,
   "independent_local_windows": 32,
   "not_whole_year_ASR": true,
   "source_approved": false,
@@ -1033,6 +1033,36 @@
       },
       "root_specific_review": "请root阅读此局部分歧后决定接受该保留原文裁决。",
       "scope": "局部插词候选裁决；不修改原文/原音/实际词时。"
+    },
+    {
+      "year": 2022,
+      "unit": "2022-A",
+      "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+      "original_ASR_candidate": {
+        "kind": "insert",
+        "asr_text": [
+          "Most"
+        ],
+        "window": [
+          338.14,
+          338.38
+        ]
+      },
+      "analysis_window": [
+        335.5,
+        361.5
+      ],
+      "source_corresponding_phrase": "Most cultural anthropologists would limit themselves",
+      "decision": "最后will→would真词片段合并在338.1秒左右留下Most重叠重复：主ASR、错位Parakeet与独立Whisper的对应原句均只有一次Most。新旧ASR候选Most起止338.10—338.34与338.14—338.38重叠，不能据合并重复给正文添第二个Most；正文保留一次。",
+      "disposition": "overlapping_ASR_patch_boundary_duplicate_not_source_omission",
+      "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-Most-existing.json",
+      "evidence_sha256": "14404272875d15da786fcd3608a502cb070e152f786f792b737621f4ab78e44f",
+      "model_texts": {
+        "parakeet": "Behavior in human societies. Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Kluckholm with the Navajo Indians in the southwestern United States. I should mention that Kluckholm's work, which is Mirror for Man, is considered one of the best introductions to anthropology.",
+        "Whisper-base.en": "behavior in human societies. Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Cluckhorn with the Navajo Indians in the southwestern United States. I should mention that Cluckhorn's work, which is \"mirror for man,\" is considered one of the best introductions to anthropology."
+      },
+      "scope": "仅最后合并边界重复词裁决，无原文/原音/时间变更。"
     }
-  ]
+  ],
+  "reused_existing_independent_windows": 1
 }

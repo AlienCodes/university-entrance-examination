@@ -1,0 +1,182 @@
+{
+  "id": "2012-B2",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2012-B2.json",
+  "candidate_sha256": "3cb4189a36d1dbee1d2b9bb9edbd8200de619c7f85767235a6a997a48f2cddb0",
+  "input_before_approval_sha256": "1fe1034aa788fba91b229743f90d97a6a0dbd04d394aaa135a4942d43d2d5417",
+  "input_sha256": "161d2b6a747249b89629aac2470f7042a4b7a0ef5b7534025e79d1d6e23b059f",
+  "approved_content_sha256": "ac6f2f38964f08269bb15c4878ab195fa1a106dbea6e3d2a51356b922d323925",
+  "mother_unit_semantic_sha256": "87bb62fcf69e451f4a03ba168c24a2e7f96f70467cf15ba6572f4811e5cdd48a",
+  "source_audio_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+  "source_window": [
+    1162.6275,
+    1413.12
+  ],
+  "sentences": 37,
+  "vocabulary_items": 51,
+  "manual_plans": 1,
+  "previous_pending_items": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[7, 8, 14, 20]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 7,
+      "en": "Uh, they don’t like being hemmed in by rules or convention and, and they often look at problems from a different angle.",
+      "window": [
+        1190.3,
+        1198.18
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Uh",
+          "char": [
+            0,
+            2
+          ]
+        },
+        {
+          "text": "and",
+          "char": [
+            64,
+            67
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "verified_whole_utterance_unknown_word_times_retained",
+        "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+        "evidence": {
+          "file": "核验/2010—2015整句声学证据/2012-B2-7.json",
+          "sha256": "4ae32224cb9c0b0e4e580cda5f6cb3040ce9683fc4a1f378e109729e7877a8e5"
+        },
+        "whole_sentence_window": [
+          1190.3,
+          1198.18
+        ],
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 8,
+      "en": "Another point is, is they often have to move doggedly ahead on a project—even when the outside world rejects their art or new ideas.",
+      "window": [
+        1198.41,
+        1207.05
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "is",
+          "char": [
+            14,
+            16
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "reference_retained_internal_disfluency_or_weak_function_word",
+        "decision": "同一系词is口述重复；正文语义与真实前后锚不变，不为重复is分摊时间。",
+        "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+        "evidence": {
+          "file": "核验/正文清理/2012-双模型.json",
+          "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+        },
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 14,
+      "en": "Uh, since the environment helps in the creative process, are there ways for people to build a better, more creative brain?",
+      "window": [
+        1240.81,
+        1249.65
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Uh",
+          "char": [
+            0,
+            2
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "verified_whole_utterance_unknown_word_times_retained",
+        "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+        "evidence": {
+          "file": "核验/2010—2015整句声学证据/2012-B2-14.json",
+          "sha256": "a54e9462f97d6e075553690151512bd14008e72ddcbf5367e4762ba6734f554b"
+        },
+        "whole_sentence_window": [
+          1240.81,
+          1249.65
+        ],
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 20,
+      "en": "And the second?",
+      "window": [
+        1269.82,
+        1270.91
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "And",
+          "char": [
+            0,
+            3
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "verified_whole_utterance_unknown_word_times_retained",
+        "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+        "evidence": {
+          "file": "核验/2010—2015整句声学证据/2012-B2-20.json",
+          "sha256": "7f12ed7b16b1b732ee9cda37227b3a6b43fbb1eae7efe680fbde334cba1c233d"
+        },
+        "whole_sentence_window": [
+          1269.82,
+          1270.91
+        ],
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 14,
+      "en": "Uh, since the environment helps in the creative process, are there ways for people to build a better, more creative brain?",
+      "extra_ASR": {
+        "asr_indices": [
+          2043
+        ],
+        "asr_text": [
+          "better"
+        ],
+        "window": [
+          1247.25,
+          1247.33
+        ]
+      },
+      "disposition": {
+        "category": "ASR_duplicate_candidate",
+        "decision": "既有完整话轮独立Whisper为a better, more creative brain一次；保留纸源单better，不扩写主模型重复片段。",
+        "evidence": {
+          "file": "核验/2010—2015整句声学证据/2012-B2-14.json",
+          "sha256": "a54e9462f97d6e075553690151512bd14008e72ddcbf5367e4762ba6734f554b"
+        }
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

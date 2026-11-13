@@ -1,0 +1,136 @@
+{
+  "id": "2012-A",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2012-A.json",
+  "candidate_sha256": "f1efc64541196ab220279c51488ade575da66f4c91cc403ddd4f58cbe9b59d44",
+  "input_before_approval_sha256": "7b64b8130ef045e7bf840bb5c6a1cf109e717d9474b0de38d74b39d00d9c8d6f",
+  "input_sha256": "9a7fbccf543bbfca1dc39ab8f0c3803cf59b3dd96560d9c10489ffb2e2d4b720",
+  "approved_content_sha256": "f3f0a1c511f91a534eb2ebd390978686d7036af0952f9515e8f6722a7806d63a",
+  "mother_unit_semantic_sha256": "30548c332fc0f2c5cacf9b56618f4c67e21767a979cd121ab5ecdef236675d60",
+  "source_audio_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+  "source_window": [
+    13.9125,
+    738.37
+  ],
+  "sentences": 74,
+  "vocabulary_items": 108,
+  "manual_plans": 11,
+  "previous_pending_items": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[8, 23]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 8,
+      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+      "window": [
+        45.58,
+        53.82
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "s",
+          "char": [
+            19,
+            20
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "printed_optional_plural_marker_not_separate_spoken_letter",
+        "decision": "word(s)为单复数书写形式；模型word/words均在此正式说明，不把括号s当额外念出的字母，不为s单独造秒。",
+        "evidence": {
+          "file": "说明语句/2012.json",
+          "sha256": "254c64caf74586cd106f849d61297c5074a3ce2f0d72b1bcd79bef61608c189e"
+        },
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 23,
+      "en": "For instance, when we observe casually, we may not be aware of factors that bias our observations, and, and when we rarely keep formal records of our observations.",
+      "window": [
+        142.47,
+        156.35
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "and",
+          "char": [
+            104,
+            107
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "reference_retained_internal_disfluency_or_weak_function_word",
+        "decision": "同一连接词and的犹豫重复；按已审口述保留源稿，不按语言习惯改写原句，第二次and无独立ASR锚。",
+        "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+        "evidence": {
+          "file": "核验/正文清理/2012-双模型.json",
+          "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+        },
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 8,
+      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+      "extra_ASR": {
+        "asr_indices": [
+          62
+        ],
+        "asr_text": [
+          "words"
+        ],
+        "window": [
+          47.1,
+          47.58
+        ]
+      },
+      "disposition": {
+        "category": "spoken_plural_variant_of_printed_word_s",
+        "decision": "words对应印本word(s)允许的复数形式，不新增第二个words字幕。",
+        "evidence": {
+          "file": "说明语句/2012.json",
+          "sha256": "254c64caf74586cd106f849d61297c5074a3ce2f0d72b1bcd79bef61608c189e"
+        }
+      }
+    },
+    {
+      "sentence": 55,
+      "en": "Having discussed ways to sample behaviour in research, we are now moving onto another issue, that is, what researchers should do to record behaviour as it occurs, that is whether researchers are active or passive in recording behaviour.",
+      "extra_ASR": {
+        "asr_indices": [
+          732
+        ],
+        "asr_text": [
+          "do."
+        ],
+        "window": [
+          397.03,
+          397.27
+        ]
+      },
+      "disposition": {
+        "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+        "decision": "独立Whisper目标片段为what researchers should do to record behaviour；其后WH产生明显重复幻觉，后缀排除不用。纸源只保留目标片段的一次do。",
+        "evidence": {
+          "file": "核验/2010—2015源审残留多词复核/2012-A-do.json",
+          "sha256": "c7a604611f371da4361daf9e36b3d4fd78a580fb49989b025980fe9ef0e8000c"
+        },
+        "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

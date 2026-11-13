@@ -1,0 +1,97 @@
+{
+  "id": "2011-B2",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2011-B2.json",
+  "candidate_sha256": "e03999c05012f6959ac52cb9337a0bad89fb048aa40811fc7d0cbff78729a5c0",
+  "input_before_approval_sha256": "d9db029dfc5c61ac6d18fcb7b924e5410eaba31f0ddaef5146c9fe452a14bccd",
+  "input_sha256": "52a642d170bb7afa45b9c79301d17dfebe9df62abbcbf297250c12b61022306d",
+  "approved_content_sha256": "ccf56f9a055c5f7b4fa896d5043421b0bc0e4d6976490daec40e0ff8192d2936",
+  "mother_unit_semantic_sha256": "64b2b74ba04d11ed81c990145d403f2adf4a5fa38783bef53cf1c6bd9f94c1dd",
+  "source_audio_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+  "source_window": [
+    1132.6375,
+    1408.235102
+  ],
+  "sentences": 42,
+  "vocabulary_items": 43,
+  "manual_plans": 1,
+  "previous_pending_items": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[37]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 37,
+      "en": "Question 6. What can we learn from Krashen's first hypothesis?",
+      "window": [
+        1322.13,
+        1328.05
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Krashen's",
+          "char": [
+            35,
+            44
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+        "evidence": {
+          "file": "核验/2011-考试内容审核.json",
+          "sha256": "930cfd40534fc761da4cbaf5320bfa1541b19aa54fc2ad966997b19ccffb0a42"
+        },
+        "question": 6,
+        "source_stem": "What can we learn from Krashen's first hypothesis?",
+        "actual_ASR_text": "What can we learn from Crashan's first hypothesis?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "",
+        "explicit_local_name_comparison": null,
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 37,
+      "en": "Question 6. What can we learn from Krashen's first hypothesis?",
+      "extra_ASR": {
+        "asr_indices": [
+          2261
+        ],
+        "asr_text": [
+          "Crashan's"
+        ],
+        "window": [
+          1325.57,
+          1326.53
+        ]
+      },
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+        "evidence": {
+          "file": "核验/2011-考试内容审核.json",
+          "sha256": "930cfd40534fc761da4cbaf5320bfa1541b19aa54fc2ad966997b19ccffb0a42"
+        },
+        "question": 6,
+        "source_stem": "What can we learn from Krashen's first hypothesis?",
+        "actual_ASR_text": "What can we learn from Crashan's first hypothesis?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "",
+        "explicit_local_name_comparison": null
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}

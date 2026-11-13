@@ -20,6 +20,8 @@ BEFORE='8d8e22cddc482112e7cc7c653c97b057cd27ff0a'
 ALLOWED=[2009,2012,2013,2014,2015,2018,2021,2022,2023,2024]
 FORBIDDEN=[2010,2011,2016,2017,2019]
 CONTROL=ROOT/'.github/tem8-listening-exam-cache-migration.json'
+ROOT_REVIEW=D/'核验/分页短tick修复/root-登记刷新.json'
+OLD_REGISTRIES=D/'核验/分页短tick修复/旧登记'
 class MigrationError(ValueError):pass
 def need(ok,message):
  if not ok:raise MigrationError(message)
@@ -55,6 +57,7 @@ def validate_year_certificate(cert,year,current_inputs):
  ac={**r['audio_contract_evidence'],'LEAD':1.5,'FPS':30}
  need(data['audio_contract_sha256']==pub.hash_json(ac),'音频调用/T/总帧数契约摘要不符')
  need(ac['ORIGINAL'] is True and ac['CUT_END'] is None and ac['INSERTS']==[] and ac['nfr']>frames[-1],'不是不变原声音频契约')
+ need(ac['nfr']==round((ac['total']+1.5)*30) and ac['T']['trim_start']==ac['CUT_START'] and abs(ac['T']['source_duration']-ac['CUT_START']-ac['T']['audioEnd'])<1e-8,'总帧/时长/剪头契约自相矛盾')
  required={f'专八/听力/批量/数据/{year}/'+name for name in ['试卷.json','时间轴.json']}
  need(set(r['source_inputs'])==required,'年度输入证据集合不符')
  need(all(current_inputs.get(p)==s for p,s in r['source_inputs'].items()),'证据已过期：年度input SHA变化')
@@ -98,6 +101,11 @@ def payload_transition(old_row,new_payload,cert):
  need(before[ADAPTER]==cert['old_sha256'] and after[ADAPTER]==cert['new_sha256'],'adapter旧新SHA不在冻结证据')
  return old_fp,pub.hash_json(new_payload)
 
+def validate_success_reports(layout,final,fingerprints,video_sha):
+ need(layout.get('sample') is False and layout.get('draft') is False and layout.get('problems')==[],'旧排版报告失败/样片/草稿')
+ need(final.get('问题')==[] and final.get('原音模式') is True and final.get('成品sha256')==video_sha,'旧成品报告未通过')
+ need(layout.get('source_fingerprints')==final.get('source_fingerprints')==fingerprints,'旧报告真实来源指纹不符')
+
 def actual_pngs(stage):
  base=Path(stage)/'evidence/已审截图'
  paths=sorted(base.rglob('*.png'));need(bool(paths),'旧stage缺实际PNG')
@@ -134,8 +142,7 @@ def inspect_stage(stage,year,cert,current_payload,new_registry=None):
  for name in required_reports:
   need('evidence/工作记录/'+name in meta['evidence'],'必要成功报告未列入原evidence')
   r=pub.read(root/name);need(r.get('source_fingerprints')==fps,'旧报告真实来源指纹不符')
- layout=pub.read(root/'核验/排版核验.json');need(layout.get('sample') is False and layout.get('draft') is False and layout.get('problems')==[],'旧排版报告失败/样片/草稿')
- final=pub.read(root/'核验/核查报告.json');need(final.get('问题')==[] and final.get('原音模式') is True and final.get('成品sha256')==meta['mp4_sha256'],'旧成品报告未通过')
+ layout=pub.read(root/'核验/排版核验.json');final=pub.read(root/'核验/核查报告.json');validate_success_reports(layout,final,fps,meta['mp4_sha256'])
  timing=pub.read(root/'核验/画面时间轴核验.json');ac=row['audio_contract_evidence']
  need(timing['frame_count']==ac['nfr'] and timing['events']==len(fr),'旧总帧/状态数与证据不符')
  need(timing['source_duration']==ac['T']['source_duration'] and timing['trim_start']==ac['CUT_START'],'原音时长/剪头契约改变')
@@ -147,8 +154,16 @@ def inspect_stage(stage,year,cert,current_payload,new_registry=None):
 def migration_context(proof):return {k:proof[k] for k in ['certificate_sha256','old_payload_sha256','mp4_sha256']}
 def validate_current_registry(year,proof):
  r=pub.gate('exam',str(year));need(r['payload_sha256']==proof['new_payload_sha256'],'当前gate指纹不符')
- need(all(r.get('approval_migration',{}).get(k)==v for k,v in migration_context(proof).items()),'当前审批未明确授权此旧成品/此冻结等价证据迁移')
+ review=pub.read(ROOT_REVIEW);need(review.get('status')=='approved' and review.get('certificate')==pub.relative(CERTIFICATE),'缺根实际登记刷新批准')
+ rows=[x for x in review['records'] if x['id']==str(year)];need(len(rows)==1,'根批准年度不唯一');x=rows[0]
+ need(x['old_payload_sha256']==proof['old_payload_sha256'] and x['new_payload_sha256']==proof['new_payload_sha256'] and x['certificate_sha256']==CERT_SHA,'根批准指纹/证据不匹配')
+ need(x['changed_render_sources']==[ADAPTER] and x['must_reencode'] is False and not x['removed_shots'] and x['new_image_bytes_approved'] is False,'根登记不允许本年等价缓存迁移')
+ need(x['previous_shots']==x['current_shots']==len(r['shots']),'根批准截图数量不一致')
  return r
+
+def old_registry_entry(path,year):
+ path=Path(path);row=pub.read(path/f'{year}.json' if path.is_dir() else path)
+ return row['entries']['exam:'+str(year)] if 'entries' in row else row
 
 def download_old(year,fp,dest):
  need(hexsha(fp),'旧fingerprint不合法');dest=Path(dest);dest.mkdir(parents=True,exist_ok=True)
@@ -188,18 +203,18 @@ def migrate(source,target,year,cert,current_registry,download_record=None):
  (extra/'旧meta.json').write_bytes(oldbytes)
  (extra/'旧审核登记.json').write_bytes((source/'evidence/审核登记.json').read_bytes())
  shutil.copyfile(CERTIFICATE,extra/'冻结等价证明.json')
+ shutil.copyfile(ROOT_REVIEW,extra/'根登记刷新批准.json')
  replace_bytes(target/'evidence/审核登记.json',(json.dumps(current_registry,ensure_ascii=False,indent=2)+'\n').encode())
  proof.update(status='approval_migration_revalidated_not_rerendered',revalidated_commit=revision(),revalidation_run_id=os.getenv('GITHUB_RUN_ID'),download=download_record)
  pub.dump(extra/'迁移核验.json',proof)
  meta=copy.deepcopy(old);meta['approval_payload_sha256']=proof['new_payload_sha256'];meta['revalidated_commit']=revision();meta['revalidation_run_id']=os.getenv('GITHUB_RUN_ID');meta['current_registry']=current_registry
- meta['approval_migration']={**migration_context(proof),'schema':1,'new_payload_sha256':proof['new_payload_sha256'],'old_meta_sha256':digest_bytes(oldbytes),'old_registry_path':'evidence/审批迁移/旧审核登记.json','current_registry_path':'evidence/审核登记.json','certificate_path':'evidence/审批迁移/冻结等价证明.json','report_path':'evidence/审批迁移/迁移核验.json','reason':'该年states/帧表/逐state HTML/音轨与编码函数完全等价；保留原MP4字节及生成来源，仅迁移审批指纹。','no_new_video_verification_claim':True}
+ meta['approval_migration']={**migration_context(proof),'schema':1,'new_payload_sha256':proof['new_payload_sha256'],'old_meta_sha256':digest_bytes(oldbytes),'old_registry_path':'evidence/审批迁移/旧审核登记.json','current_registry_path':'evidence/审核登记.json','certificate_path':'evidence/审批迁移/冻结等价证明.json','root_review_path':'evidence/审批迁移/根登记刷新批准.json','root_review_sha256':pub.sha(ROOT_REVIEW),'report_path':'evidence/审批迁移/迁移核验.json','reason':'该年states/帧表/逐state HTML/音轨与编码函数完全等价；保留原MP4字节及生成来源，仅迁移审批指纹。','no_new_video_verification_claim':True}
  meta['evidence']={p.relative_to(target).as_posix():pub.sha(p) for p in sorted((target/'evidence').rglob('*')) if p.is_file()}
  replace_bytes(target/'meta.json',(json.dumps(meta,ensure_ascii=False,indent=2)+'\n').encode())
  for name,h in old['evidence'].items():
   if name!='evidence/审核登记.json':need(pub.sha(target/name)==h,'旧机械报告/截图/来源字节改变')
  need((source/'meta.json').read_bytes()==oldbytes and pub.sha(target/meta['mp4'])==old['mp4_sha256'] and (target/meta['mp4']).stat().st_size==old['mp4_bytes'],'源stage或MP4字节改变')
  pub.validate_stage(target,'exam',str(year),proof['new_payload_sha256'])
- inspect_stage(target,year,cert,payload,current_registry) if False else None  # 新stage不冒充旧adapter生产来源。
  need(Counter(actual_pngs(source)[0].values())==Counter(actual_pngs(target)[0].values()),'复制后PNG多重集改变')
  return meta,proof
 
@@ -209,6 +224,7 @@ def load_control(path=CONTROL):
  need(c.get('target_release')==pub.CACHE_TAG,'只准写持久缓存Release')
  need(c.get('certificate_sha256')==CERT_SHA and c.get('certificate')==pub.relative(CERTIFICATE),'control证据过期')
  need(c.get('registry_sha256')==pub.sha(pub.REGISTRY),'control所审registry已变')
+ need(c.get('root_review_sha256')==pub.sha(ROOT_REVIEW),'control所审根等价迁移批准已变')
  need(isinstance(c.get('evidence'),str) and len(c['evidence'].strip())>=10,'control无根实际审核说明')
  years=c.get('years');need(isinstance(years,list) and years and len(years)==len(set(years)) and all(y in ALLOWED for y in years),'control年份非法/重复/含受影响年')
  need(set(c.get('old_fingerprints',{}))=={str(y) for y in years},'control旧指纹未逐年固定')
@@ -218,23 +234,27 @@ def load_control(path=CONTROL):
 
 def main():
  ap=argparse.ArgumentParser(description=__doc__);sub=ap.add_subparsers(dest='command',required=True)
- p=sub.add_parser('plan');p.add_argument('--years',type=int,nargs='+',default=ALLOWED);p.add_argument('--old-registry',type=Path,default=pub.REGISTRY);p.add_argument('--source',type=Path);p.add_argument('--out',type=Path,required=True)
+ p=sub.add_parser('plan');p.add_argument('--years',type=int,nargs='+',default=ALLOWED);p.add_argument('--old-registry',type=Path,default=OLD_REGISTRIES);p.add_argument('--source',type=Path);p.add_argument('--out',type=Path,required=True)
  p=sub.add_parser('run');p.add_argument('--control',type=Path,default=CONTROL);p.add_argument('--out',type=Path,required=True)
  a=ap.parse_args();branch_guard();cert=validate_certificate();a.out.mkdir(parents=True,exist_ok=True)
  if a.command=='plan':
-  oldrows=pub.read(a.old_registry)['entries'];need(len(a.years)==len(set(a.years)) and all(y in ALLOWED for y in a.years),'plan含禁迁移年/重复')
+  need(len(a.years)==len(set(a.years)) and all(y in ALLOWED for y in a.years),'plan含禁迁移年/重复')
   need(a.source is None or len(a.years)==1,'--source只对应一个年份');results=[]
   for year in a.years:
    with tempfile.TemporaryDirectory(prefix='tem8migration-plan-',dir=a.out) as td:
     if a.source:stage,download=a.source,None
-    else:stage,download=download_old(year,oldrows['exam:'+str(year)]['payload_sha256'],Path(td))
+    else:stage,download=download_old(year,old_registry_entry(a.old_registry,year)['payload_sha256'],Path(td))
     payload=pub.payload('exam',str(year));proof=inspect_stage(stage,year,cert,payload)
+    current=validate_current_registry(year,proof);proof=inspect_stage(stage,year,cert,payload,current)
     candidate=pub.candidate('exam',str(year));candidate['shots']=pub.read(stage/'evidence/审核登记.json')['shots'];candidate['approval_migration']=migration_context(proof);candidate['evidence']='待根实际审查：冻结等价证据、原成品成功报告、逐帧与PNG字节完全等价后填写批准说明。'
     pub.dump(a.out/f'exam-{year}-待批准候选.json',candidate);pub.dump(a.out/f'exam-{year}-只读迁移核验.json',{**proof,'download':download,'status':'ready_for_root_registry_approval_not_migrated'})
     results.append({k:proof[k] for k in ['year','old_payload_sha256','new_payload_sha256','mp4_sha256','mp4_bytes','source_commit','run_id']})
   pub.dump(a.out/'待根审批迁移汇总.json',{'status':'pending_root_approval_no_control_created','certificate_sha256':CERT_SHA,'years':results});print('只读plan通过',len(results),'年；未批准/迁移/上传。')
  else:
   c=load_control(a.control);results=[]
+  frozen=[Path(__file__),a.control,CERTIFICATE,ROOT_REVIEW,pub.REGISTRY,*pub.dependencies('exam'),*[p for y in c['years'] for p in pub.input_paths('exam',str(y))]]
+  need(subprocess.run(['git','diff','--quiet','HEAD','--',*[pub.relative(p) for p in frozen]],cwd=ROOT).returncode==0,'run拒绝未提交的源/审批/控制文件，revalidated_commit必须真实对应当前字节')
+  need(subprocess.run(['git','ls-files','--error-unmatch','--',*[pub.relative(p) for p in [Path(__file__),a.control,CERTIFICATE,ROOT_REVIEW,pub.REGISTRY]]],cwd=ROOT,capture_output=True).returncode==0,'run要求迁移代码/控制/证据/registry均已提交')
   for year in c['years']:
    with tempfile.TemporaryDirectory(prefix=f'tem8migration-{year}-',dir=a.out) as td:
     source,download=download_old(year,c['old_fingerprints'][str(year)],Path(td)/'download');need(pub.read(source/'meta.json')['mp4_sha256']==c['old_mp4_sha256'][str(year)],'control旧MP4 SHA与实际下载不同')

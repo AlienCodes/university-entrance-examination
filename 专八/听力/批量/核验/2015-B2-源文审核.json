@@ -1,0 +1,183 @@
+{
+  "id": "2015-B2",
+  "status": "source-approved",
+  "scope": "仅内容与实际句界/词锚、已记录的弱音/专名/整声例外；完整在线PNG和成品仍须另外核验",
+  "candidate_file": "核验/2010—2015源审候选/2015-B2.json",
+  "candidate_sha256": "54ae56334b3de00ef7b6f790541e33a62edbdc08144b16067009e5045dc3e37a",
+  "input_before_approval_sha256": "241d0f5f368f4028b96f79abf488880045d44ae2d6068a86da00735728868e64",
+  "input_sha256": "1ee89f2b0c95974e1273bad00b840d8610222591a103bfc3aae873979dc1eb4f",
+  "approved_content_sha256": "42bcd70f21d2875d22b753b11b4b7defdcc11db71d09d0b1f22e1eb8ba94c4fa",
+  "mother_unit_semantic_sha256": "7c1d561ffbe770abf7f2b0a65949cb2561a602992e54825baaaa762a880161a2",
+  "source_audio_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+  "source_window": [
+    1033.6375,
+    1371.506939
+  ],
+  "sentences": 40,
+  "vocabulary_items": 48,
+  "manual_plans": 7,
+  "previous_pending_items": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[35, 36]，严禁按比例补时。"
+  ],
+  "retained_unknown_word_time_dispositions": [
+    {
+      "sentence": 35,
+      "en": "Question 6. In Theresa’s view, what is school freedom?",
+      "window": [
+        1284.11,
+        1289.95
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Theresa’s",
+          "char": [
+            15,
+            24
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+        "evidence": {
+          "file": "核验/2015-考试内容审核.json",
+          "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+        },
+        "question": 6,
+        "source_stem": "In Theresa’s view, what is school freedom?",
+        "actual_ASR_text": "In Teresa's view, what is school freedom?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "",
+        "explicit_local_name_comparison": null,
+        "individual_word_time_asserted": false
+      }
+    },
+    {
+      "sentence": 36,
+      "en": "Question 7. According to Theresa, who decides money for schools at the present?",
+      "window": [
+        1299.67,
+        1307.19
+      ],
+      "missing_source_lexemes": [
+        {
+          "text": "Theresa",
+          "char": [
+            25,
+            32
+          ]
+        }
+      ],
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+        "evidence": {
+          "file": "核验/2015-考试内容审核.json",
+          "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+        },
+        "question": 7,
+        "source_stem": "According to Theresa, who decides money for schools at the present?",
+        "actual_ASR_text": "According to Teresa, who decides money for schools at the present?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "",
+        "explicit_local_name_comparison": null,
+        "individual_word_time_asserted": false
+      }
+    }
+  ],
+  "extra_ASR_dispositions": [
+    {
+      "sentence": 10,
+      "en": "You made a speech last night laying out the way you see the education system changing in this country.",
+      "extra_ASR": {
+        "asr_indices": [
+          2008
+        ],
+        "asr_text": [
+          "You"
+        ],
+        "window": [
+          1119.0,
+          1119.08
+        ]
+      },
+      "disposition": {
+        "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+        "decision": "两个You都在原文：前句same as you结尾与本句You made开头；额外记录来自跨句匹配归属，不加第三个You，也不删相邻实际话轮。",
+        "evidence": {
+          "file": "核验/2010—2015源审残留多词复核/2015-B2-You.json",
+          "sha256": "6eab4d634ee0da5747f0d7502c78e04562a8557fa992c066ed2c1d535e660ffc"
+        },
+        "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+      }
+    },
+    {
+      "sentence": 35,
+      "en": "Question 6. In Theresa’s view, what is school freedom?",
+      "extra_ASR": {
+        "asr_indices": [
+          2458
+        ],
+        "asr_text": [
+          "Teresa's"
+        ],
+        "window": [
+          1286.43,
+          1287.23
+        ]
+      },
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+        "evidence": {
+          "file": "核验/2015-考试内容审核.json",
+          "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+        },
+        "question": 6,
+        "source_stem": "In Theresa’s view, what is school freedom?",
+        "actual_ASR_text": "In Teresa's view, what is school freedom?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "",
+        "explicit_local_name_comparison": null
+      }
+    },
+    {
+      "sentence": 36,
+      "en": "Question 7. According to Theresa, who decides money for schools at the present?",
+      "extra_ASR": {
+        "asr_indices": [
+          2468
+        ],
+        "asr_text": [
+          "Teresa,"
+        ],
+        "window": [
+          1302.39,
+          1303.27
+        ]
+      },
+      "disposition": {
+        "category": "exam_reviewed_proper_name_ASR_spelling",
+        "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+        "evidence": {
+          "file": "核验/2015-考试内容审核.json",
+          "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+        },
+        "question": 7,
+        "source_stem": "According to Theresa, who decides money for schools at the present?",
+        "actual_ASR_text": "According to Teresa, who decides money for schools at the present?",
+        "source_review_normalized_exact": true,
+        "normalization_note": "",
+        "explicit_local_name_comparison": null
+      }
+    }
+  ],
+  "assurance_limit": "保留纸源弱音/重复、专名同音和整声范围；48处未逐词定时项逐项裁决，不声称源字秒100%或为未知词造秒。全部真实cut首词另已逐个核过。",
+  "evidence": [
+    "既有47句音文修订/双模型正文复核、真实局部词段与人工同音绑定；95处人工语义197屏、真实4K几何1113屏均核过",
+    "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
+    "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
+  ],
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+}
