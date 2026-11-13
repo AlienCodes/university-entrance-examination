@@ -791,6 +791,17 @@
                   205
                 ]
               ]
+            },
+            {
+              "t": "word",
+              "h": "face-to-face",
+              "m": "adj.面对面的",
+              "sp": [
+                [
+                  41,
+                  53
+                ]
+              ]
             }
           ]
         },
@@ -1517,16 +1528,20 @@
       "manual_splits": [
         {
           "en": "Because the most common type of speech – face-to-face conversations – is highly interactive, this mode is well suited to many social contexts, such as casual conversations over lunch, business transactions in a grocery store, discussions between students and teachers in a classroom.",
-          "at": "such as casual conversations",
+          "at": [
+            "– is highly interactive",
+            "such as casual conversations"
+          ],
           "zh": [
-            "最常见的口语形式——面对面交谈——具有很强的互动性，因此很适用于许多社交情境，",
+            "最常见的口语形式——面对面交谈",
+            "——具有很强的互动性，因此很适用于许多社交情境，",
             "例如午餐时闲聊、杂货店里的买卖交流，以及课堂上师生之间的讨论。"
           ],
-          "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
-          "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
-          "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
-          "evidence_pointer": "/records/15",
-          "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+          "evidence": "闭合插入语的破折号随谓语移后屏，主语完整留首屏，例举独立第三屏，消除行首悬挂破折号；完整ZH原样重组。",
+          "evidence_ref": "核验/五年锁源几何/修复方案.json",
+          "evidence_sha256": "062da52b3df1987bd543eb689fae47316f321efad6fa851099ece2d949308eea",
+          "evidence_pointer": "/units/2/changes/0",
+          "approval_scope": "人工语义及本地几何修复；真实原声换屏与在线PNG另核。"
         },
         {
           "en": "For instance, individuals engaged in conversation can ask for immediate clarification if there is a question about something said; in a letter to a friend, in contrast, such immediacy is lacking.",
@@ -2859,16 +2874,16 @@
         },
         {
           "en": "When there are treatment efforts, when there are health care workers to treat patients as they come in —I mean, our first patients that arrived to our treatment unit, they died at the doorstep.",
-          "at": "I mean, our first",
+          "at": "—I mean, our first",
           "zh": [
-            "只要开展救治，只要有医护人员来接诊患者——",
-            "我是说，最早来到我们治疗中心的那些患者，就死在了门口。"
+            "只要开展救治，只要有医护人员来接诊患者",
+            "——我是说，最早来到我们治疗中心的那些患者，就死在了门口。"
           ],
-          "evidence": "I mean应与后屏同在；同时采用当前已核“死在门口”而不恢复旧候选弱译“倒在门口”。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
-          "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
-          "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
-          "evidence_pointer": "/records/22",
-          "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+          "evidence": "破折号与I mean同屏，而非上一屏独占一行；中英整句均不动。",
+          "evidence_ref": "核验/五年锁源几何/修复方案.json",
+          "evidence_sha256": "062da52b3df1987bd543eb689fae47316f321efad6fa851099ece2d949308eea",
+          "evidence_pointer": "/units/3/changes/0",
+          "approval_scope": "人工语义及本地几何修复；真实原声换屏与在线PNG另核。"
         },
         {
           "en": "Is that because a lack of international action or non-governmental action, or is it because the infrastructure in these communities is so difficult that even if you sent them 10 pop-up hospitals, they couldn’t build them?",

@@ -53,6 +53,22 @@ class RefusalTests(unittest.TestCase):
   old,new,c=transition();new['inputs']['origin.json']='f'*64;self.reject(m.payload_transition,old,new,c)
  def test_frozen_certificate_sha_cannot_be_replaced(self):
   self.reject(m.validate_certificate,m.CERTIFICATE,'f'*64)
+ def test_failed_report_cannot_migrate(self):
+  fps={'adapter':m.OLD_SHA};layout={'sample':False,'draft':False,'problems':[],'source_fingerprints':fps};final={'问题':['故意失败'],'原音模式':True,'成品sha256':'a'*64,'source_fingerprints':fps}
+  self.reject(m.validate_success_reports,layout,final,fps,'a'*64)
+ def test_sample_report_cannot_migrate(self):
+  fps={'adapter':m.OLD_SHA};layout={'sample':True,'draft':False,'problems':[],'source_fingerprints':fps};final={'问题':[],'原音模式':True,'成品sha256':'a'*64,'source_fingerprints':fps}
+  self.reject(m.validate_success_reports,layout,final,fps,'a'*64)
+ def test_old_report_source_cannot_be_relabelled_new(self):
+  fps={'adapter':m.OLD_SHA};layout={'sample':False,'draft':False,'problems':[],'source_fingerprints':fps};final={'问题':[],'原音模式':True,'成品sha256':'a'*64,'source_fingerprints':{'adapter':m.NEW_SHA}}
+  self.reject(m.validate_success_reports,layout,final,fps,'a'*64)
+ def test_report_MP4_sha_mismatch_cannot_migrate(self):
+  fps={'adapter':m.OLD_SHA};layout={'sample':False,'draft':False,'problems':[],'source_fingerprints':fps};final={'问题':[],'原音模式':True,'成品sha256':'b'*64,'source_fingerprints':fps}
+  self.reject(m.validate_success_reports,layout,final,fps,'a'*64)
+ def test_PNG_duplicate_multiplicity_is_not_a_set(self):
+  self.reject(m.require_png_multiset,{'a':'1'*64,'b':'1'*64},{'a':'1'*64},'PNG multiplicity changed')
+ def test_PNG_changed_bytes_rejected(self):
+  self.reject(m.require_png_multiset,{'a':'1'*64},{'a':'2'*64},'PNG bytes changed')
  def test_actual_png_digest_detects_changed_bytes(self):
   with tempfile.TemporaryDirectory() as td:
    p=Path(td)/'evidence/已审截图/shots';p.mkdir(parents=True);f=p/('a'*12+'.png');f.write_bytes(b'byte-hash-test-fixture-only')

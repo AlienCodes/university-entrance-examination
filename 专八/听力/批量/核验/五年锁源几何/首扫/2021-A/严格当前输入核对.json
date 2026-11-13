@@ -1,0 +1,64 @@
+{
+  "id": "2021-A",
+  "status": "hold_actual_geometry_or_manual_changed",
+  "ok": false,
+  "source": {
+    "file": "精听数据/2021-A.json",
+    "sha256": "f9f1c11bb5436c778ad46cfb6a5b07f02f6fedfe319214a41d2ea9b607d6b6f5"
+  },
+  "source_lock": {
+    "file": "核验/2021-A-源文审核.json",
+    "sha256": "92b3630e1baa9555f389d544b7834ba76ad8d389e2867b8d49294675988069ea"
+  },
+  "manual_count": 18,
+  "new_automatic_splits": [],
+  "manual_changed_by_helper": [],
+  "original_problems": [
+    {
+      "screen": 1,
+      "label": "片头",
+      "problems": [
+        "片头：标题：一行放不下（文字 350–1374，标题框 350–1650，卡片 350–1650，2 行）"
+      ]
+    },
+    {
+      "screen": 20,
+      "label": "第 19 句 第 1 屏",
+      "problems": [
+        "第 19 句 第 1 屏：一屏放不下或字太小（英文 69px、词汇 40px，下限 73/34px）：在 专八批量精听/tools/分屏.json 里拆屏",
+        "第 19 句 第 1 屏：字号过小：英文 69px、词汇栏 40px"
+      ]
+    },
+    {
+      "screen": 21,
+      "label": "第 19 句 第 2 屏",
+      "problems": [
+        "第 19 句 第 2 屏：一屏放不下或字太小（英文 69px、词汇 40px，下限 73/34px）：在 专八批量精听/tools/分屏.json 里拆屏",
+        "第 19 句 第 2 屏：字号过小：英文 69px、词汇栏 40px"
+      ]
+    }
+  ],
+  "final_problems": [
+    "片头：标题：一行放不下（文字 350–1374，标题框 350–1650，卡片 350–1650，2 行）",
+    "第 19 句 第 1 屏：一屏放不下或字太小（英文 69px、词汇 40px，下限 73/34px）：在 专八批量精听/tools/分屏.json 里拆屏",
+    "第 19 句 第 1 屏：字号过小：英文 69px、词汇栏 40px",
+    "第 19 句 第 2 屏：一屏放不下或字太小（英文 69px、词汇 40px，下限 73/34px）：在 专八批量精听/tools/分屏.json 里拆屏",
+    "第 19 句 第 2 屏：字号过小：英文 69px、词汇栏 40px"
+  ],
+  "split_findings": {
+    "19": {
+      "unresolved": true,
+      "reason": "自然/句法边界的1—3刀仍无合法方案，或某屏无词条；须人工语义分屏/补足真实学习词。",
+      "en": "Many people believe that the marketplace has overtaken state government as the dominant external force shaping and reshaping American higher education, even for public colleges and universities.",
+      "zh": "许多人认为，市场已经取代州政府，成为塑造和重塑美国高等教育的主导性外部力量，即使对于公立大学和学院也是如此。"
+    }
+  },
+  "error": null,
+  "screens": 93,
+  "expected_names": [],
+  "names_used": [],
+  "source_title": "Current Challenges Confronting U.S. Higher Education",
+  "title_used": "Current Challenges Confronting U.S. Higher Education",
+  "browser": "Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)",
+  "report": "/workspace/tem8-layout-locked2016-2021/2021-A/版式预检.json"
+}

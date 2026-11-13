@@ -1,0 +1,739 @@
+{
+  "id": "2022-B1",
+  "status": "source-approved",
+  "scope": "仅423句已核音文/译注及真实词锚、两处合法Eh/Ah整话轮例外；在线全部PNG与成品另审",
+  "candidate_file": "核验/剩余源审核候选/2022-B1.json",
+  "candidate_sha256": "86bc9ac702e424cff97453ec8a26ec946f47991f5a93077f8aa9d0e80bb87d19",
+  "input_before_approval_sha256": "877bf43a41c58e51d85d83f1ee8c1639fa86810e137b5a39aafea6405d671e3b",
+  "input_sha256": "fd04d1fde28f08534d26bb79eab736128370bdd5323ee3d607c79b5ec2c73b6c",
+  "approved_content_sha256": "9107f13841cb4b71aa126542cabecee43a8ee0379fec3a64ea4cb4833303d3ed",
+  "mother_unit_semantic_sha256": "ffad07d7ed26c2825679f8a5144a7c4c74d142167096465afec7350c96aa7b61",
+  "candidate_semantic_sha256": "fcafa36e2819367f52d38b0e4335b7e9e0fc435802c8951a2b5b0c05daf8f3f2",
+  "source_audio_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "source_window": [
+    771.1975,
+    1189.01
+  ],
+  "sentences": 57,
+  "vocabulary_items": 94,
+  "manual_plans": 3,
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1254
+      ],
+      "asr_text": [
+        "Good"
+      ],
+      "window": [
+        855.48,
+        855.64
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Good']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1253
+          ],
+          "asr_text": [
+            "Good"
+          ],
+          "window": [
+            855.48,
+            855.64
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          851.98,
+          859.14
+        ],
+        "source_corresponding_phrase": "Good morning, Harriet. Nice to have you here.",
+        "decision": "原候选的['Good']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-855.48.json",
+        "evidence_sha256": "2710e3018aaee0f31d44056f4c416e39ed737f5ec52de1d80314d5190c7206c6",
+        "model_texts": {
+          "Parakeet": "And students through the NEA Foundation. Good morning, Harriet. Nice to have you here. Good morning.",
+          "Whisper": "and students through the NEA Foundation. Good morning, Harriet. Nice to have you here. Good morning."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1290,
+        1291
+      ],
+      "asr_text": [
+        "I",
+        "did"
+      ],
+      "window": [
+        870.01,
+        870.25
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['I', 'did']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1291,
+            1292
+          ],
+          "asr_text": [
+            "I",
+            "did"
+          ],
+          "window": [
+            870.24,
+            870.4
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          866.74,
+          873.9
+        ],
+        "source_corresponding_phrase": "Although I did not remain",
+        "decision": "原候选的['I', 'did']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-870.24.json",
+        "evidence_sha256": "be230592a924bbba50420b0f7206d1bc422b7ff071cfcbedd698c51f96f9c4cf",
+        "model_texts": {
+          "Parakeet": "School teacher at an elementary school. Although I did not remain in the classroom for many years, my commitment to",
+          "Whisper": "school teacher at an elementary school. Although I did not remain in the classroom for many years, my commitment to"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1370
+      ],
+      "asr_text": [
+        "adamant"
+      ],
+      "window": [
+        900.93,
+        901.41
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['adamant']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1369
+          ],
+          "asr_text": [
+            "adamant"
+          ],
+          "window": [
+            900.93,
+            901.41
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          897.43,
+          904.91
+        ],
+        "source_corresponding_phrase": "but they were adamant",
+        "decision": "原候选的['adamant']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-900.93.json",
+        "evidence_sha256": "29f279acc6f67f898f214af3c20fcb54fcfc7bc733cf98ba8809f79ade60c388",
+        "model_texts": {
+          "Parakeet": "Nor father completed their education, but they were adamant that their children take advantage of all of the opportunities.",
+          "Whisper": "their nor father completed their education, but they were adamant that their children take advantage of all of the opportunities."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 24,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Um"
+        }
+      ],
+      "asr_indices": [
+        1467
+      ],
+      "asr_text": [
+        "Hmm,"
+      ],
+      "window": [
+        942.52,
+        943.08
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Um",
+          "actual_ASR_rows": [
+            [
+              "Hmm,",
+              942.52,
+              943.08
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        },
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Harriet",
+          "actual_ASR_rows": [
+            [
+              "Harry,",
+              944.68,
+              945.24
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 24,
+          "char": [
+            16,
+            23
+          ],
+          "text": "Harriet"
+        }
+      ],
+      "asr_indices": [
+        1471
+      ],
+      "asr_text": [
+        "Harry,"
+      ],
+      "window": [
+        944.68,
+        945.24
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Um",
+          "actual_ASR_rows": [
+            [
+              "Hmm,",
+              942.52,
+              943.08
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        },
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Harriet",
+          "actual_ASR_rows": [
+            [
+              "Harry,",
+              944.68,
+              945.24
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1529
+      ],
+      "asr_text": [
+        "Last"
+      ],
+      "window": [
+        973.93,
+        974.25
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Last']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1528
+          ],
+          "asr_text": [
+            "Last"
+          ],
+          "window": [
+            973.93,
+            974.25
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          970.43,
+          977.75
+        ],
+        "source_corresponding_phrase": "Last year, our grants",
+        "decision": "原候选的['Last']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-973.93.json",
+        "evidence_sha256": "bdd504bdcedcf31b278b34e039ef8ca6b76c1199c8f978a64443dd7c4c958bda",
+        "model_texts": {
+          "Parakeet": "Their creative and innovative classroom projects. Last year, our grants empowered more than 6,000.",
+          "Whisper": "their creative and innovative classroom projects. Last year, our grants empowered more than 6,000"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1628
+      ],
+      "asr_text": [
+        "I"
+      ],
+      "window": [
+        1021.24,
+        1021.32
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['I']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1627
+          ],
+          "asr_text": [
+            "I"
+          ],
+          "window": [
+            1021.24,
+            1021.32
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1017.74,
+          1024.82
+        ],
+        "source_corresponding_phrase": "I have heard",
+        "decision": "原候选的['I']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1021.24.json",
+        "evidence_sha256": "1917752b2be59ff48dfb374d3b1152bf5c264c957c1b7d0f044b663d190343df",
+        "model_texts": {
+          "Parakeet": "Curriculum in their own schools and communities. I have heard that you have a partner called Everfy. How do you?",
+          "Whisper": "curriculum in their homeschools and communities. I have heard that you have a partner called Everfi."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 37,
+          "char": [
+            7,
+            13
+          ],
+          "text": "EverFi"
+        }
+      ],
+      "asr_indices": [
+        1640
+      ],
+      "asr_text": [
+        "Everphi"
+      ],
+      "window": [
+        1024.84,
+        1025.48
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 37,
+          "en": "How do EverFi and the NEA foundation work together?",
+          "source_text": "EverFi",
+          "actual_ASR_rows": [
+            [
+              "Everphi",
+              1024.84,
+              1025.48
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+          "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 38,
+          "char": [
+            29,
+            35
+          ],
+          "text": "EverFi"
+        }
+      ],
+      "asr_indices": [
+        1652
+      ],
+      "asr_text": [
+        "Everphy"
+      ],
+      "window": [
+        1031.24,
+        1031.96
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 38,
+          "en": "Yeah, the NEA foundation and EverFi work together to increase educator and student access to technology and digital learning tools.",
+          "source_text": "EverFi",
+          "actual_ASR_rows": [
+            [
+              "Everphy",
+              1031.24,
+              1031.96
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+          "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 5,
+          "char": [
+            37,
+            40
+          ],
+          "text": "ten"
+        }
+      ],
+      "asr_indices": [
+        1171
+      ],
+      "asr_text": [
+        "10-second"
+      ],
+      "window": [
+        789.04,
+        789.68
+      ],
+      "canonical": [
+        "#10"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            96,
+            101
+          ],
+          "text": "under"
+        },
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            102,
+            108
+          ],
+          "text": "served"
+        }
+      ],
+      "asr_indices": [
+        1308
+      ],
+      "asr_text": [
+        "underserved"
+      ],
+      "window": [
+        875.52,
+        876.32
+      ],
+      "canonical": [
+        "served",
+        "under"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 25,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1487
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        951.33,
+        951.65
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 41,
+          "char": [
+            6,
+            8
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1694
+      ],
+      "asr_text": [
+        "okay."
+      ],
+      "window": [
+        1050.93,
+        1051.17
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 49,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1813
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        1102.45,
+        1102.93
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 53,
+          "char": [
+            9,
+            10
+          ],
+          "text": "1"
+        }
+      ],
+      "asr_indices": [
+        1848
+      ],
+      "asr_text": [
+        "one:"
+      ],
+      "window": [
+        1116.89,
+        1117.37
+      ],
+      "canonical": [
+        "#1"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 55,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1868
+      ],
+      "asr_text": [
+        "three:"
+      ],
+      "window": [
+        1147.92,
+        1148.56
+      ],
+      "canonical": [
+        "#3"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 57,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1896
+      ],
+      "asr_text": [
+        "five:"
+      ],
+      "window": [
+        1182.81,
+        1183.53
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "evidence": [
+    "423句EN/ZH/词注独立审读、30语义手定/25口述题与原卷一致",
+    "6043真实词锚；两处Eh/Ah不造单词时间，使用有图谱/真静段证据的完整话轮",
+    "31组额外ASR均局部裁决，原音/原主识别不删除；母稿/当前final语义精确一致",
+    "2022采用已校SHA的完整补充源；低电平周期等待信号按已核登记保留"
+  ],
+  "next": "在线原声/分屏/全部PNG预检并实际看图，再审批编码"
+}

@@ -1,0 +1,236 @@
+{
+  "id": "2024-B2",
+  "status": "source-approved",
+  "scope": "仅423句已核音文/译注及真实词锚、两处合法Eh/Ah整话轮例外；在线全部PNG与成品另审",
+  "candidate_file": "核验/剩余源审核候选/2024-B2.json",
+  "candidate_sha256": "9488aa60d37e94c02b73edbc9424b7066a9b0960fcb107fffa481dddc425db64",
+  "input_before_approval_sha256": "2a0fe0b59a5081de41986d0855bfeb1e27f820a8b44f494bb9871dd65769d9c0",
+  "input_sha256": "619b28249d5448e16de50954c061203fb333d78f00f2426d1045b85a617a4b52",
+  "approved_content_sha256": "85452dfde65395bc06ea4d3e1737dc3516a49b5a3550c5c1bc02baa397a18406",
+  "mother_unit_semantic_sha256": "a19ac56467aaaec901840ab7086de51859d8f6d0d8f091f47b358af79aa2054d",
+  "candidate_semantic_sha256": "2055dced9e7a60e26125bc5e974e4a9a899d4a919bb783029e403b10498e4c50",
+  "source_audio_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+  "source_window": [
+    1142.2625,
+    1496.0
+  ],
+  "sentences": 46,
+  "vocabulary_items": 80,
+  "manual_plans": 5,
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2100
+      ],
+      "asr_text": [
+        "that"
+      ],
+      "window": [
+        1205.31,
+        1205.39
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "局部Parakeet有is that Antarctica，独立Whisper为is Antarctica，与当前印文同；不把单一路模型补出的that擅自加入正文。建议按纸源+独立Whisper保留当前EN，清楚保留模型分歧交root最终源审裁决；不声称两模型逐字一致。",
+      "adjudication": {
+        "year": 2024,
+        "unit": "2024-B2",
+        "canonical_source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "asr_text": [
+            "that"
+          ],
+          "window": [
+            1205.31,
+            1205.39
+          ]
+        },
+        "analysis_window": [
+          1200.7,
+          1209.1
+        ],
+        "source_corresponding_phrase": "Well, the first thing I’d like to point out is Antarctica is just one part of the story.",
+        "decision": "局部Parakeet有is that Antarctica，独立Whisper为is Antarctica，与当前印文同；不把单一路模型补出的that擅自加入正文。建议按纸源+独立Whisper保留当前EN，清楚保留模型分歧交root最终源审裁决；不声称两模型逐字一致。",
+        "disposition": "retain_printed_source_supported_by_independent_Whisper_against_Parakeet_optional_that",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2024-B2-that.json",
+        "evidence_sha256": "1ef12c2debfa6866fd75365e0777839e8748211a8143f68ac8067bc7526d9ec7",
+        "model_texts": {
+          "Parakeet": "What did it look at? Well, the first thing I'd like to point out is that Antarctica is just one part of the story.",
+          "Whisper": "What did it look at? Well, the first thing I'd like to point out is Antarctica is just one part of the story."
+        },
+        "root_specific_review": "请root阅读此局部分歧后决定接受该保留原文裁决。",
+        "scope": "局部插词候选裁决；不修改原文/原音/实际词时。"
+      }
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 4,
+          "char": [
+            68,
+            70
+          ],
+          "text": "80"
+        }
+      ],
+      "asr_indices": [
+        2006
+      ],
+      "asr_text": [
+        "eighty"
+      ],
+      "window": [
+        1164.39,
+        1164.71
+      ],
+      "canonical": [
+        "#80"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 31,
+          "char": [
+            98,
+            99
+          ],
+          "text": "2"
+        }
+      ],
+      "asr_indices": [
+        2484
+      ],
+      "asr_text": [
+        "two."
+      ],
+      "window": [
+        1364.42,
+        1364.9
+      ],
+      "canonical": [
+        "#2"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 40,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2594
+      ],
+      "asr_text": [
+        "six:"
+      ],
+      "window": [
+        1410.68,
+        1411.32
+      ],
+      "canonical": [
+        "#6"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 42,
+          "char": [
+            9,
+            10
+          ],
+          "text": "8"
+        }
+      ],
+      "asr_indices": [
+        2617
+      ],
+      "asr_text": [
+        "eight:"
+      ],
+      "window": [
+        1442.75,
+        1443.23
+      ],
+      "canonical": [
+        "#8"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2024-B2",
+          "sentence": 43,
+          "char": [
+            9,
+            10
+          ],
+          "text": "9"
+        }
+      ],
+      "asr_indices": [
+        2632
+      ],
+      "asr_text": [
+        "nine:"
+      ],
+      "window": [
+        1458.48,
+        1459.36
+      ],
+      "canonical": [
+        "#9"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "evidence": [
+    "423句EN/ZH/词注独立审读、30语义手定/25口述题与原卷一致",
+    "6043真实词锚；两处Eh/Ah不造单词时间，使用有图谱/真静段证据的完整话轮",
+    "31组额外ASR均局部裁决，原音/原主识别不删除；母稿/当前final语义精确一致",
+    "2022采用已校SHA的完整补充源；低电平周期等待信号按已核登记保留"
+  ],
+  "next": "在线原声/分屏/全部PNG预检并实际看图，再审批编码",
+  "root_specific_adjudication": {
+    "item": "可选补语标记that",
+    "decision": "采纳印文与独立Whisper一致的现有句子，不擅自追加Parakeet单路候选that。已读两路具体短窗文本，保留分歧及原音，不声称逐字模型一致。",
+    "evidence": "核验/剩余源审核候选/局部音证/2024-B2-that.json",
+    "audio_changed": false,
+    "text_changed": false
+  }
+}

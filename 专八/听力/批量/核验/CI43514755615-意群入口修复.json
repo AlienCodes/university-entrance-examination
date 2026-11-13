@@ -1,0 +1,58 @@
+{
+  "status": "local_fix_verified; root_commit_and_CI_pending",
+  "CI_run": 43514755615,
+  "reported_commit": "9ecc",
+  "current_checkout": "90202b29aece179a9fbdb6e69fd47420c5086016",
+  "prior_exact_scan_errors": [
+    "专八/听力/批量/核验/分页短tick修复/真实PNG复现.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check"
+  ],
+  "root_cause": "静态视频入口以ffmpeg/.mp4/libx264发现了PNG编码诊断；该文件只读SHA锁定PNG并生成无音轨480×270复现片段、抽帧和比较，不存在音频输入或TTS。",
+  "changed_code": {
+    "file": "tools/防复发/验证/意群响度入口.py",
+    "sha256": "516cd32920c5aa8105147f73a6950a1f6b770e197fdf6ecc8d0f43128750a39e",
+    "scope": "仅一个确切路径+完整已核源码SHA的静音诊断登记；旧音频/视频生产豁免及TTS发现逻辑不放宽。"
+  },
+  "pinned_script": {
+    "file": "专八/听力/批量/核验/分页短tick修复/真实PNG复现.py",
+    "sha256": "3d8eada6a60ab38e4f69c3cc615d9bfa5814c2c592cb66d2916fee3a71289b7e",
+    "unchanged": true
+  },
+  "new_cases": [
+    "同路径/同SHA静音PNG诊断放行",
+    "相同源码复制到陌生路径仍拒绝",
+    "任一源码变更使旧SHA失效",
+    "原路径加入陌生TTS仍报音频入口",
+    "原路径加入音频视频输入仍拒绝"
+  ],
+  "scan_after": {
+    "audio_entries": 28,
+    "video_entries": 14,
+    "errors": []
+  },
+  "tests": [
+    {
+      "command": "python3 tools/防复发/验证/意群响度入口.py --ci",
+      "exit_code": 0,
+      "passed_cases": 51,
+      "stdout_sha256": "f190c6bc1157c5c97a26963c11aefb42cb7e5b1cd0dd00551055b58a5a894dd9",
+      "conclusion": "意群响度入口双向验证：全部通过"
+    },
+    {
+      "command": "python3 .github/check-audio-cert.py --自检",
+      "exit_code": 0,
+      "passed_cases": 24,
+      "stdout_sha256": "830d332c228e4685c4db68af85640040e4c2cbc2223176c221ce0ceb24301aab",
+      "conclusion": "check-audio-cert 自检：全部通过"
+    },
+    {
+      "command": "/workspace/tem8-venv/bin/python tools/防复发/验证/意群响度.py",
+      "exit_code": 0,
+      "passed_cases": 12,
+      "stdout_sha256": "572b63c1a2d2463d4676eaea8af6cdccdf778442b35dd0bf8b138ea04e2d4997",
+      "conclusion": "意群响度双向验证：全部通过"
+    }
+  ],
+  "diff_whitespace_check": "git diff --check -- tools/防复发/验证/意群响度入口.py => exit 0",
+  "production_impact": "实际调用发布汇集.dependencies(\"intensive\")核过1285个依赖；guard不在其中，未动任何renderer/主工作流/原音/已锁源稿。",
+  "approval_note": "此修复未提交push或启动GitHub，交根统一提交。"
+}

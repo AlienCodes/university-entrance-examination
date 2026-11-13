@@ -1,0 +1,46 @@
+name: 专八无变化年份考试缓存审批迁移
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-exam-cache-migration.json']
+permissions:
+  contents: write
+concurrency:
+  group: tem8-exam-cache-approval-migration
+  cancel-in-progress: false
+jobs:
+  migrate:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            四级/tools/fonts
+            tools/题目间隔.py
+      - name: 核分支、Release目标与迁移拒绝条件
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 专八/听力/批量/tools/迁移考试缓存测试.py
+      - name: 串行迁移已批准的无变化年份（无视频生成命令）
+        env:
+          GH_TOKEN: '${{ github.token }}'
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/迁移考试缓存.py run --out "$RUNNER_TEMP/tem8-exam-cache-migration"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: tem8-exam-cache-migration-diagnostics
+          path: '${{ runner.temp }}/tem8-exam-cache-migration/*.json'
+          if-no-files-found: ignore
+          retention-days: 30

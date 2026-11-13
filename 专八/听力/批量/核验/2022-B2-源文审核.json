@@ -1,0 +1,542 @@
+{
+  "id": "2022-B2",
+  "status": "source-approved",
+  "scope": "仅423句已核音文/译注及真实词锚、两处合法Eh/Ah整话轮例外；在线全部PNG与成品另审",
+  "candidate_file": "核验/剩余源审核候选/2022-B2.json",
+  "candidate_sha256": "81484da9f897f620b1c8a3355118ec6178a5247bf45feb67592c39ea7d94ea78",
+  "input_before_approval_sha256": "1d4073cde9d2e94e415f723cf45dad12d2ffa6373f5e4f06d43f4efdb981e75c",
+  "input_sha256": "8103c44305703bd32b2e56b66aad2fc7c308d61375c80d0eea00c601bab885fa",
+  "approved_content_sha256": "d92df72ab6020ae53ce78aba09edc511a9a3705622bcf6c51fcc2f435f7bfbcc",
+  "mother_unit_semantic_sha256": "f291e27eef54f8fbf808e0cf566f27a071f0bc87481ff1427cb383d4c55e5fe5",
+  "candidate_semantic_sha256": "1e35e117470546be7035095c2844a3d3b49410a7f663e9b8202a3bd741985823",
+  "source_audio_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "source_window": [
+    1198.1375,
+    1546.798685
+  ],
+  "sentences": 50,
+  "vocabulary_items": 83,
+  "manual_plans": 4,
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2086
+      ],
+      "asr_text": [
+        "If"
+      ],
+      "window": [
+        1265.28,
+        1265.36
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['If']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2085
+          ],
+          "asr_text": [
+            "If"
+          ],
+          "window": [
+            1265.28,
+            1265.36
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1261.78,
+          1268.86
+        ],
+        "source_corresponding_phrase": "If they had done this",
+        "decision": "原候选的['If']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1265.28.json",
+        "evidence_sha256": "7943dbee6703accccbf4cf8057754cb1c4dd65a99948931e8982c31ef5f07285",
+        "model_texts": {
+          "Parakeet": "Managed to see more than five to ten stars. If they had done this 20 years ago, they would be talking about",
+          "Whisper": "managed to see more than 5 to 10 stars. If they had done this 20 years ago, they would be talking about"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2153
+      ],
+      "asr_text": [
+        "Light"
+      ],
+      "window": [
+        1292.36,
+        1292.6
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Light']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2152
+          ],
+          "asr_text": [
+            "Light"
+          ],
+          "window": [
+            1292.36,
+            1292.6
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1288.86,
+          1296.1
+        ],
+        "source_corresponding_phrase": "Light pollution is not only",
+        "decision": "原候选的['Light']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1292.36.json",
+        "evidence_sha256": "1b7b473754a2c2ab5615386d1531e20ffaba68b7ae462497ac514990f4d3f8c3",
+        "model_texts": {
+          "Parakeet": "Are a major contributory factor in all of this. Light pollution is not only light that is shining up into the sky.",
+          "Whisper": "are a major contributory factor in all of this. Light pollution is not only light that is shining up into the sky."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2210
+      ],
+      "asr_text": [
+        "so"
+      ],
+      "window": [
+        1314.23,
+        1314.31
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['so']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2209
+          ],
+          "asr_text": [
+            "so"
+          ],
+          "window": [
+            1314.23,
+            1314.31
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1309,
+          1324
+        ],
+        "source_corresponding_phrase": "I know so many people",
+        "decision": "原候选的['so']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1314.23-long.json",
+        "evidence_sha256": "f53192011dd0d50131efaa85f7189968919b8e310de16774ea9241b8e348bf94",
+        "model_texts": {
+          "Parakeet": "Glare. This can obviously be dangerous if drivers are affected. I know so many people are worried about security, and I imagine this is why huge areas of our cities are, in your words, overlit. Well, many states.",
+          "Whisper": "This can obviously be dangerous if drivers are affected. I know so many people are worried about security, and I imagine this is why huge areas of our cities are, in your words, overlit. Well, many say-"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2308
+      ],
+      "asr_text": [
+        "By"
+      ],
+      "window": [
+        1352.31,
+        1352.47
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['By']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2307
+          ],
+          "asr_text": [
+            "By"
+          ],
+          "window": [
+            1352.31,
+            1352.47
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1348.81,
+          1355.97
+        ],
+        "source_corresponding_phrase": "By that I mean",
+        "decision": "原候选的['By']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1352.31.json",
+        "evidence_sha256": "07dbdf05269cff84742140273fcb9f5f5bfa56d6a9dd475dd832dd9a1e974a77",
+        "model_texts": {
+          "Parakeet": "Completely above horizontal light escape. By that, I mean we can't continue to use inefficient street light.",
+          "Whisper": "completely above horizontal light escape. By that, I mean, we can't continue to use inefficient streetlights."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2421
+      ],
+      "asr_text": [
+        "But,"
+      ],
+      "window": [
+        1393.83,
+        1394.15
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['But,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2420
+          ],
+          "asr_text": [
+            "But,"
+          ],
+          "window": [
+            1393.83,
+            1394.15
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1390.33,
+          1397.65
+        ],
+        "source_corresponding_phrase": "but, and this is important",
+        "decision": "原候选的['But,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1393.83.json",
+        "evidence_sha256": "149f931fa0b5dce06991afc990d339053fbb20e115dc51741fa11439f85f7e83",
+        "model_texts": {
+          "Parakeet": "Lighting in any number of parking lots or stores, but, and this is important, the lighting needs to be suitable and the",
+          "Whisper": "lighting in any number of parking lots or stores. But, and this is important, the lighting needs to be suitable. And the [static] [static]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2522
+      ],
+      "asr_text": [
+        "the"
+      ],
+      "window": [
+        1429.52,
+        1429.6
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['the']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2521
+          ],
+          "asr_text": [
+            "the"
+          ],
+          "window": [
+            1429.52,
+            1429.6
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1426.02,
+          1433.1
+        ],
+        "source_corresponding_phrase": "and the light source itself",
+        "decision": "原候选的['the']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1429.52.json",
+        "evidence_sha256": "461d2cad9dbd4fad0b041859835d1e490c47fbcffaeef868772125087f245bda",
+        "model_texts": {
+          "Parakeet": "Directed, by which I mean angled downward, and the light source itself, the bowl I mean, has a good cut.",
+          "Whisper": "directed by which I mean angled downward and the light source itself, the ball I mean, has a good-"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 37,
+          "char": [
+            205,
+            209
+          ],
+          "text": "bulb"
+        }
+      ],
+      "asr_indices": [
+        2527
+      ],
+      "asr_text": [
+        "bowl"
+      ],
+      "window": [
+        1431.28,
+        1431.68
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 37,
+          "en": "For example, if you use lighting, be it security lighting or lighting for your barbecue in the garden, just make sure it is well directed, by which I mean angled downward, and the light source itself, the bulb I mean, has a good cover on it.",
+          "source_text": "bulb",
+          "actual_ASR_rows": [
+            [
+              "bowl",
+              1431.28,
+              1431.68
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/bulb.json",
+          "evidence_sha256": "16572761bbfc9f42098408187d45700c8dadd1324f1b32fb1014a96167083155",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 12,
+          "char": [
+            22,
+            28
+          ],
+          "text": "twenty"
+        }
+      ],
+      "asr_indices": [
+        2091
+      ],
+      "asr_text": [
+        "20"
+      ],
+      "window": [
+        1266.24,
+        1266.56
+      ],
+      "canonical": [
+        "#20"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 19,
+          "char": [
+            39,
+            43
+          ],
+          "text": "over"
+        },
+        {
+          "unit": "2022-B2",
+          "sentence": 19,
+          "char": [
+            44,
+            47
+          ],
+          "text": "lit"
+        }
+      ],
+      "asr_indices": [
+        2183
+      ],
+      "asr_text": [
+        "overlit,"
+      ],
+      "window": [
+        1301.88,
+        1302.68
+      ],
+      "canonical": [
+        "lit",
+        "over"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 21,
+          "char": [
+            120,
+            124
+          ],
+          "text": "over"
+        },
+        {
+          "unit": "2022-B2",
+          "sentence": 21,
+          "char": [
+            125,
+            128
+          ],
+          "text": "lit"
+        }
+      ],
+      "asr_indices": [
+        2233
+      ],
+      "asr_text": [
+        "overlit."
+      ],
+      "window": [
+        1322.0,
+        1322.72
+      ],
+      "canonical": [
+        "lit",
+        "over"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 44,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2599
+      ],
+      "asr_text": [
+        "six:"
+      ],
+      "window": [
+        1458.47,
+        1459.03
+      ],
+      "canonical": [
+        "#6"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 47,
+          "char": [
+            9,
+            10
+          ],
+          "text": "9"
+        }
+      ],
+      "asr_indices": [
+        2636
+      ],
+      "asr_text": [
+        "nine:"
+      ],
+      "window": [
+        1506.11,
+        1506.83
+      ],
+      "canonical": [
+        "#9"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "evidence": [
+    "423句EN/ZH/词注独立审读、30语义手定/25口述题与原卷一致",
+    "6043真实词锚；两处Eh/Ah不造单词时间，使用有图谱/真静段证据的完整话轮",
+    "31组额外ASR均局部裁决，原音/原主识别不删除；母稿/当前final语义精确一致",
+    "2022采用已校SHA的完整补充源；低电平周期等待信号按已核登记保留"
+  ],
+  "next": "在线原声/分屏/全部PNG预检并实际看图，再审批编码"
+}

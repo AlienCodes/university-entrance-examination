@@ -1,0 +1,786 @@
+{
+  "id": "2022-A",
+  "status": "source-approved",
+  "scope": "仅423句已核音文/译注及真实词锚、两处合法Eh/Ah整话轮例外；在线全部PNG与成品另审",
+  "candidate_file": "核验/剩余源审核候选/2022-A.json",
+  "candidate_sha256": "52050ce667781241c2135864c2f195d98436f6fa159ab8f8903b6309d94c916b",
+  "input_before_approval_sha256": "87609128bb5e995d1959dc3164846688b0c4259dc4414c739636d8c0b08d7ac7",
+  "input_sha256": "ead400cbffdb8e725ccbf70085cad64a881742f6930fe4596d2b8390b3b3278e",
+  "approved_content_sha256": "7d8a7744c4c12cdd47337e95b6c9453e5989221b339428548dd51f5538d8bdf6",
+  "mother_unit_semantic_sha256": "c79e4139164213225de3229da578e0d2256c0fd5e8e69925ead88d07fbb85c80",
+  "candidate_semantic_sha256": "7968d14a6b2cc32eb976de48463c5fc9f6d8e045e4e4a1d464ebcfad7fa99722",
+  "source_audio_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "source_window": [
+    13.5875,
+    771.44
+  ],
+  "sentences": 80,
+  "vocabulary_items": 156,
+  "manual_plans": 10,
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 22,
+          "char": [
+            8,
+            16
+          ],
+          "text": "Bohannan"
+        }
+      ],
+      "asr_indices": [
+        185
+      ],
+      "asr_text": [
+        "Bohan,"
+      ],
+      "window": [
+        133.02,
+        133.98
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 1,
+          "unit": "2022-A",
+          "sentence": 22,
+          "char": [
+            3,
+            16
+          ],
+          "text": "Paul Bohannan",
+          "asr_indices": [
+            184,
+            185
+          ],
+          "asr_text": [
+            "Paul",
+            "Bohan,"
+          ],
+          "source_asr_rows": [
+            [
+              "Paul",
+              132.62,
+              133.02
+            ],
+            [
+              "Bohan,",
+              133.02,
+              133.98
+            ]
+          ],
+          "source_sentence_en": "As Paul Bohannan, who is a renowned anthropologist, pointed out a number of years ago, “Each science that deals with people has its own definitions of human.",
+          "evidence": "原解析PDF页图已核的标准人名及Mirror for Man明确作品上下文，保留Paul Bohannan/Clyde Kluckhohn正确拼写；ASR Bohan/Kluckholm/Cluckhorn为此学者同处近音标签，不建立全局异词别名；整个姓名/所有格词共享实际连续ASR完整声段，不猜内部字母或-s时间。来源：母稿source_refs原PDF SHA；核验/独立收尾复核/2022.json。",
+          "window": [
+            132.62,
+            133.98
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        236
+      ],
+      "asr_text": [
+        "anthropology"
+      ],
+      "window": [
+        158.74,
+        159.3
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['anthropology']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            236
+          ],
+          "asr_text": [
+            "anthropology"
+          ],
+          "window": [
+            158.74,
+            159.3
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          155.24,
+          162.8
+        ],
+        "source_corresponding_phrase": "Well, anthropology attempts",
+        "decision": "原候选的['anthropology']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-158.74.json",
+        "evidence_sha256": "10765655e900b8d5e16d7cbb3d7434758b073b579568bfbdc886ffe9e70ffbac",
+        "model_texts": {
+          "Parakeet": "How does anthropology define humans? Well, anthropology attempts to be all-inclusive in the",
+          "Whisper": "how does anthropology define humans? Well, anthropology attempts to be all-inclusive in the"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        436
+      ],
+      "asr_text": [
+        "Places,"
+      ],
+      "window": [
+        259.66,
+        260.22
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Places,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            436
+          ],
+          "asr_text": [
+            "Places,"
+          ],
+          "window": [
+            259.66,
+            260.22
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          256.16,
+          263.72
+        ],
+        "source_corresponding_phrase": "other distant places, the study",
+        "decision": "原候选的['Places,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-259.66.json",
+        "evidence_sha256": "27425783fdaaf3d0edaa0e42138da6f431c20980931f3e8d7575491b59bf8b70",
+        "model_texts": {
+          "Parakeet": "The Americas, as well as travel to other distant places, the study of non-Western people began in earnest.",
+          "Whisper": "the Americas, as well as travel to other distant places. The study of non-western people began and earned it."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        596
+      ],
+      "asr_text": [
+        "Most"
+      ],
+      "window": [
+        338.14,
+        338.38
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "最后will→would真词片段合并在338.1秒左右留下Most重叠重复：主ASR、错位Parakeet与独立Whisper的对应原句均只有一次Most。新旧ASR候选Most起止338.10—338.34与338.14—338.38重叠，不能据合并重复给正文添第二个Most；正文保留一次。",
+      "adjudication": {
+        "year": 2022,
+        "unit": "2022-A",
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "asr_text": [
+            "Most"
+          ],
+          "window": [
+            338.14,
+            338.38
+          ]
+        },
+        "analysis_window": [
+          335.5,
+          361.5
+        ],
+        "source_corresponding_phrase": "Most cultural anthropologists would limit themselves",
+        "decision": "最后will→would真词片段合并在338.1秒左右留下Most重叠重复：主ASR、错位Parakeet与独立Whisper的对应原句均只有一次Most。新旧ASR候选Most起止338.10—338.34与338.14—338.38重叠，不能据合并重复给正文添第二个Most；正文保留一次。",
+        "disposition": "overlapping_ASR_patch_boundary_duplicate_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-Most-existing.json",
+        "evidence_sha256": "14404272875d15da786fcd3608a502cb070e152f786f792b737621f4ab78e44f",
+        "model_texts": {
+          "parakeet": "Behavior in human societies. Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Kluckholm with the Navajo Indians in the southwestern United States. I should mention that Kluckholm's work, which is Mirror for Man, is considered one of the best introductions to anthropology.",
+          "Whisper-base.en": "behavior in human societies. Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Cluckhorn with the Navajo Indians in the southwestern United States. I should mention that Cluckhorn's work, which is \"mirror for man,\" is considered one of the best introductions to anthropology."
+        },
+        "scope": "仅最后合并边界重复词裁决，无原文/原音/时间变更。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 50,
+          "char": [
+            142,
+            151
+          ],
+          "text": "Kluckhohn"
+        }
+      ],
+      "asr_indices": [
+        618
+      ],
+      "asr_text": [
+        "Kluckholm"
+      ],
+      "window": [
+        348.38,
+        349.18
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 2,
+          "unit": "2022-A",
+          "sentence": 50,
+          "char": [
+            136,
+            151
+          ],
+          "text": "Clyde Kluckhohn",
+          "asr_indices": [
+            617,
+            618
+          ],
+          "asr_text": [
+            "Clyde",
+            "Kluckholm"
+          ],
+          "source_asr_rows": [
+            [
+              "Clyde",
+              347.82,
+              348.38
+            ],
+            [
+              "Kluckholm",
+              348.38,
+              349.18
+            ]
+          ],
+          "source_sentence_en": "Most cultural anthropologists would limit themselves to a few geographic areas, for example, Margaret Mead in Samoa and New Guinea, and Clyde Kluckhohn with the Navajo Indians in the Southwestern United States.",
+          "evidence": "原解析PDF页图已核的标准人名及Mirror for Man明确作品上下文，保留Paul Bohannan/Clyde Kluckhohn正确拼写；ASR Bohan/Kluckholm/Cluckhorn为此学者同处近音标签，不建立全局异词别名；整个姓名/所有格词共享实际连续ASR完整声段，不猜内部字母或-s时间。来源：母稿source_refs原PDF SHA；核验/独立收尾复核/2022.json。",
+          "window": [
+            347.82,
+            349.18
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 51,
+          "char": [
+            22,
+            33
+          ],
+          "text": "Kluckhohn’s"
+        }
+      ],
+      "asr_indices": [
+        632
+      ],
+      "asr_text": [
+        "Kluckholm's"
+      ],
+      "window": [
+        354.58,
+        355.54
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 3,
+          "unit": "2022-A",
+          "sentence": 51,
+          "char": [
+            22,
+            33
+          ],
+          "text": "Kluckhohn’s",
+          "asr_indices": [
+            632
+          ],
+          "asr_text": [
+            "Kluckholm's"
+          ],
+          "source_asr_rows": [
+            [
+              "Kluckholm's",
+              354.58,
+              355.54
+            ]
+          ],
+          "source_sentence_en": "I should mention that Kluckhohn’s work, which is Mirror for Man, is considered one of the best introductions to anthropology.",
+          "evidence": "原解析PDF页图已核的标准人名及Mirror for Man明确作品上下文，保留Paul Bohannan/Clyde Kluckhohn正确拼写；ASR Bohan/Kluckholm/Cluckhorn为此学者同处近音标签，不建立全局异词别名；整个姓名/所有格词共享实际连续ASR完整声段，不猜内部字母或-s时间。来源：母稿source_refs原PDF SHA；核验/独立收尾复核/2022.json。",
+          "window": [
+            354.58,
+            355.54
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        752
+      ],
+      "asr_text": [
+        "Know,"
+      ],
+      "window": [
+        409.66,
+        409.98
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Know,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            751
+          ],
+          "asr_text": [
+            "Know,"
+          ],
+          "window": [
+            409.66,
+            409.98
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          406.16,
+          413.48
+        ],
+        "source_corresponding_phrase": "As you probably know, linguistics",
+        "decision": "原候选的['Know,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-409.66.json",
+        "evidence_sha256": "e1cb939eabc75a655c521d1c1e6f066018d59eaef120da71236b00a91d5404aa",
+        "model_texts": {
+          "Parakeet": "Linguistics, as I said just now. As you probably know, linguistics is the study of language as communication.",
+          "Whisper": "As I said just now, as you probably know, linguistics is the study of language as communication"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        801
+      ],
+      "asr_text": [
+        "environment."
+      ],
+      "window": [
+        434.06,
+        434.3
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['environment.']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            800
+          ],
+          "asr_text": [
+            "environment."
+          ],
+          "window": [
+            434.06,
+            434.3
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          430.56,
+          437.8
+        ],
+        "source_corresponding_phrase": "real natural environment rather than",
+        "decision": "原候选的['environment.']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-434.06.json",
+        "evidence_sha256": "b6e68040c034d23d9b142c4fdce822d0f11576fec91d02ebd15aeb74835e9b6d",
+        "model_texts": {
+          "Parakeet": "Hand information about something in a real, natural environment rather than in a place of study such as a",
+          "Whisper": "and information about something in a real, natural environment rather than in a place of study such as a"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1109
+      ],
+      "asr_text": [
+        "Now"
+      ],
+      "window": [
+        583.7,
+        583.78
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Now']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1108
+          ],
+          "asr_text": [
+            "Now"
+          ],
+          "window": [
+            583.7,
+            583.78
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          580.2,
+          587.28
+        ],
+        "source_corresponding_phrase": "Now you have three minutes",
+        "decision": "原候选的['Now']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-583.70.json",
+        "evidence_sha256": "6cf6e33eed6bc741d98f6cbe3a1255658388d4c3b9f20671531cb39f1aa29b16",
+        "model_texts": {
+          "Parakeet": "The human species is heading. Now you have three minutes to check your work.",
+          "Whisper": "Where the human species is heading. Now you have three minutes to check your work."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 22,
+          "char": [
+            3,
+            7
+          ],
+          "text": "Paul"
+        },
+        {
+          "unit": "2022-A",
+          "sentence": 22,
+          "char": [
+            8,
+            16
+          ],
+          "text": "Bohannan"
+        }
+      ],
+      "asr_indices": [
+        184,
+        185
+      ],
+      "asr_text": [
+        "Paul",
+        "Bohan,"
+      ],
+      "window": [
+        132.62,
+        133.98
+      ],
+      "canonical": [
+        "bohannan",
+        "paul"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 37,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        463
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        273.9,
+        274.46
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 48,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        577
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        328.62,
+        329.1
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 50,
+          "char": [
+            136,
+            141
+          ],
+          "text": "Clyde"
+        },
+        {
+          "unit": "2022-A",
+          "sentence": 50,
+          "char": [
+            142,
+            151
+          ],
+          "text": "Kluckhohn"
+        }
+      ],
+      "asr_indices": [
+        617,
+        618
+      ],
+      "asr_text": [
+        "Clyde",
+        "Kluckholm"
+      ],
+      "window": [
+        347.82,
+        349.18
+      ],
+      "canonical": [
+        "clyde",
+        "kluckhohn"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 51,
+          "char": [
+            22,
+            33
+          ],
+          "text": "Kluckhohn’s"
+        }
+      ],
+      "asr_indices": [
+        632
+      ],
+      "asr_text": [
+        "Kluckholm's"
+      ],
+      "window": [
+        354.58,
+        355.54
+      ],
+      "canonical": [
+        "kluckhohn's"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 61,
+          "char": [
+            147,
+            156
+          ],
+          "text": "firsthand"
+        }
+      ],
+      "asr_indices": [
+        793
+      ],
+      "asr_text": [
+        "first-hand"
+      ],
+      "window": [
+        430.38,
+        431.02
+      ],
+      "canonical": [
+        "first",
+        "hand"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 73,
+          "char": [
+            149,
+            155
+          ],
+          "text": "health"
+        },
+        {
+          "unit": "2022-A",
+          "sentence": 73,
+          "char": [
+            156,
+            160
+          ],
+          "text": "care"
+        }
+      ],
+      "asr_indices": [
+        1017
+      ],
+      "asr_text": [
+        "healthcare"
+      ],
+      "window": [
+        539.7,
+        540.34
+      ],
+      "canonical": [
+        "care",
+        "health"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 76,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1037
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        551.06,
+        551.54
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "evidence": [
+    "423句EN/ZH/词注独立审读、30语义手定/25口述题与原卷一致",
+    "6043真实词锚；两处Eh/Ah不造单词时间，使用有图谱/真静段证据的完整话轮",
+    "31组额外ASR均局部裁决，原音/原主识别不删除；母稿/当前final语义精确一致",
+    "2022采用已校SHA的完整补充源；低电平周期等待信号按已核登记保留"
+  ],
+  "next": "在线原声/分屏/全部PNG预检并实际看图，再审批编码"
+}

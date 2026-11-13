@@ -49,6 +49,12 @@ VIDEO_EXEMPT = {   # 视频入口豁免：路径 → 理由（只许减少）
     '高考听力/精读/tools/生成.py': '用户2026-11-12要求考试原声；自己的verify检查原音采样率/声道、逐样本SNR和音量、全屏像素、帧数和时长，全部通过才写meta',
     '专八/听力/批量/tools/精听.py': '用户2026-11-13专八原声精听；源SHA锁定，仅窗口去片头和删超长纯静音；AAC预演及成品逐样本/增益/SNR/声道采样率独立核查，逐屏像素及截图审核指纹匹配后才写meta，不是TTS',
 }
+SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完整源码SHA必须同时相同
+    '专八/听力/批量/核验/分页短tick修复/真实PNG复现.py': {
+        'sha256': '3d8eada6a60ab38e4f69c3cc615d9bfa5814c2c592cb66d2916fee3a71289b7e',
+        'reason': '只输入SHA锁定PNG concat，输出480×270无音轨诊断MP4并取帧比较；无音频输入/合成/用户成品。源码变化必须重新核，不豁免任何音频或TTS入口。',
+    },
+}
 GT_WRITE_EXEMPT = {'write_mp3', 'write_wav'}    # gaokao_tts 里只负责写字节的底层函数（调用它们的函数必须检查）
 PROTECTED = ('音频合格证（处理链版本、意群响度检查）', '响度一致（第一项检查）')
 GUARDED = ('_VERIFY_CORE', 'final_check', 'certificate', 'certificate_problems', 'save_checked', 'cert_check')
@@ -406,7 +412,8 @@ def per_file(f, s, tree):
                         errs.append(f'{f}：重新赋值了 {ast.unparse(t)}（合格证 / 最终检查不许被替换，踩坑 87）')
     if f != CERT.RAW_WRITER and f not in RAW_SOURCE_OK and SRC_RE.search(s):
         errs.append(f'{f}：写了 source=原音（只有 {CERT.RAW_WRITER} 能写，自己声明原音就能逃过合格证，踩坑 87）')
-    if is_v and f not in VIDEO_EXEMPT:
+    silent = f in SILENT_DIAGNOSTICS and hashlib.sha256(s.encode('utf-8')).hexdigest() == SILENT_DIAGNOSTICS[f]['sha256']
+    if is_v and f not in VIDEO_EXEMPT and not silent:
         if f.endswith('.sh') or tree is None:
             errs.append(f'{f}：用 ffmpeg 出视频的脚本必须是 Python 并接上 verify_videos.check / certificate_problems（或登记 VIDEO_EXEMPT）')
         else:
@@ -445,6 +452,11 @@ def check(over=None, product=True):
     for f in VIDEO_EXEMPT:
         if f not in F:
             errs.append(f'视频豁免名单里的 {f} 已不存在：删掉（只许减少）')
+    for f, spec in SILENT_DIAGNOSTICS.items():
+        if f not in F:
+            errs.append(f'已核静音诊断脚本 {f} 已不存在：删掉该登记')
+        elif hashlib.sha256(F[f].encode('utf-8')).hexdigest() != spec['sha256']:
+            errs.append(f'{f}：已核静音诊断脚本源码SHA变化，须重核是否仍无音频/TTS；旧登记不放行')
     g = F.get('tools/tts/gaokao_tts.py', '')
     seg = re.search(r'def segment\(x\):(.*?)\n\n\n', g, re.S)
     if not seg or 'even(' not in seg.group(1) or 'level_clause(' not in seg.group(1):
@@ -548,6 +560,13 @@ def main():
     case('专八：RAW_SKIP 去掉 RAW 条件（任何模式都滤掉响度）→ 报出', only(z8, {z8: m8.replace('and not (RAW and r[0].startswith(RAW_SKIP))', 'and not r[0].startswith(RAW_SKIP)')}), '响度一致')
     case('新视频引擎（大字版2.py）只按内容发现、不接核查 → 报出', only('大字版2', {'专八/tools/大字版2.py':
         'import subprocess\nsubprocess.run(["ffmpeg", "-i", a, "-c:v", "libx264", "o.mp4"])\n'}), '大字版2')
+    diag = '专八/听力/批量/核验/分页短tick修复/真实PNG复现.py'
+    ds = rd(diag)
+    case('已核PNG静音诊断路径+完整SHA相同 → 不报', only(diag, {diag: ds}), None)
+    case('相同诊断脚本复制到陌生路径 → 仍报视频入口', only('陌生诊断.py', {N + '陌生诊断.py': ds}), '生成视频却')
+    case('静音诊断脚本任一源码变更 → 旧SHA不放行', only(diag, {diag: ds + '\n# changed\n'}), '源码SHA变化')
+    case('已核诊断路径加入陌生TTS → 仍报音频入口', only(diag, {diag: ds + '\nfrom gtts import gTTS\ngTTS("hi").save("o.mp3")\n'}), '没接意群级')
+    case('已核诊断路径加入音频视频输入 → 旧SHA不放行', only(diag, {diag: ds + '\nsubprocess.run(["ffmpeg", "-i", "unknown.wav", "-c:v", "libx264", "o.mp4"])\n'}), '生成视频却')
     xv = '六级/tools/宣传视频.py'
     case('六级宣传视频去掉合格证核对 → 报出', only(xv, {xv: rd(xv).replace('certificate_problems(', 'list(')}), xv)
     case('别处自己写 source=原音 → 报出', only('z.py', {'中考/tools/z.py': "tm = {'file': 'a.mp3', 'source': '原音'}\n"}), '原音')

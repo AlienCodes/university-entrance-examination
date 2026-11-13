@@ -205,7 +205,7 @@ def shots(work):
 
 def load_control(path=CONTROL):
     c = read(path)
-    assert c['mode'] in ('sample', 'complete')
+    assert c['mode'] in ('sample', 'complete', 'complete_exam')
     assert c.get('stage', 'render') in ('render', 'review')
     c.setdefault('stage', 'render'); c.setdefault('exam', []); c.setdefault('intensive', [])
     assert c['exam'] or c['intensive'], '目标清单为空'
@@ -215,6 +215,9 @@ def load_control(path=CONTROL):
         for ident in c[kind]: validate_id(kind, ident)
     if c['mode'] == 'sample':
         assert re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,50}', c.get('sample_id', '')), '样片须有独立sample_id'
+    elif c['mode'] == 'complete_exam':
+        assert set(c['exam']) == set(map(str, YEARS)) and not c['intensive'], '考试单独正式发布必须完整15年，且不冒称精听已完成'
+        assert c['stage'] == 'render' and c.get('render') is False, '考试单独正式发布只续收已核成品，不重做视频'
     else:
         full = read(D / '全批清单.json')
         assert full.get('status') == 'approved' and full.get('cancelled_years') == [2020]
@@ -550,6 +553,8 @@ def publish(c, art, out):
             zip_files(evidence, [('meta.json', folder / 'meta.json')] + [(n, folder / n) for n in m['evidence']])
             planned.append({'meta': m, 'video': dest, 'evidence': evidence})
         notes = ('本页为独立样片，仅含本次试跑单元，不代表全批完成。\n\n' if c['mode'] == 'sample' else '2009—2024实际考试材料；2020因疫情取消考试，没有虚构2020试卷。\n\n')
+        if c['mode'] == 'complete_exam':
+            notes += '本页为完整15套考试版，先行发布已核验的考试成品；逐句精听版按独立进度核验与发布。\n\n'
         notes += '考试沿用2025白底黑字规格；精听沿用专八阅读书卷水墨主题。原声不增益、不改采样率或声道，仅执行核定音乐剪切；精听另压缩经确认的长纯静音。原文/解析核对、截图登记和成品核验均随来源包保存。\n\n'
         included_years = {m['year'] for _, m in data}
         if included_years & set(range(2009, 2016)):
@@ -685,6 +690,15 @@ def selftest():
         rejected(lambda: find_stage(t / 'empty', 'exam', '2009', fp), '缺成品')
         assert len(groups([{'mp4_bytes':LIMIT//2},{'mp4_bytes':LIMIT//2}])) == 2
         assert tag({'mode':'sample','sample_id':'x'},'exam') != tag({'mode':'complete'},'exam')
+        exam_only = {'mode':'complete_exam','stage':'render','exam':YEARS,'intensive':[],'render':False}
+        control = t / 'exam-complete-control.json'; dump(control, exam_only)
+        assert load_control(control)['exam'] == list(map(str, YEARS))
+        assert tag(exam_only,'exam') == 'tem8-listening-exam-2009-2024'
+        for bad, reason in [({**exam_only,'exam':YEARS[:-1]},'缺一年冒称完整考试'),
+                            ({**exam_only,'exam':YEARS+[2020]},'虚构2020考试'),
+                            ({**exam_only,'intensive':['2009-A']},'考试单独发布夹带不完整精听'),
+                            ({**exam_only,'render':True},'单独发布意外重做视频')]:
+            dump(control, bad); rejected(lambda: load_control(control), reason)
     print('发布自检通过：正常包/成品核验＋路径、重名、体积、过期、损坏、失败报告、缺项及样片隔离。')
 
 

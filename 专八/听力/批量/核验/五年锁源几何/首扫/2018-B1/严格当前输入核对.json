@@ -1,0 +1,93 @@
+{
+  "id": "2018-B1",
+  "status": "hold_actual_geometry_or_manual_changed",
+  "ok": false,
+  "source": {
+    "file": "精听数据/2018-B1.json",
+    "sha256": "34ce301391de003c83e97416f1704349ae3bd6bcbed878b1c81a1ca5d4f91d8e"
+  },
+  "source_lock": {
+    "file": "核验/2018-B1-源文审核.json",
+    "sha256": "79857047b2048a2cea674f77997f891a07b275eff7647c9190c4ac58ea5872ef"
+  },
+  "manual_count": 6,
+  "new_automatic_splits": [],
+  "manual_changed_by_helper": [
+    {
+      "sentence": 23,
+      "en": "I think it was made because the electoral institution had previously set that date and they held to it despite advice to the contrary from the UN, from the United States, and from other voices within Afghanistan, and we think that was unfortunate.",
+      "expected": {
+        "at": "and they held to it",
+        "zh": [
+          "我认为，这是因为选举机构事先定好了那个日期；",
+          "尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，它们仍坚持原定日期，我们认为这很不妥。"
+        ]
+      },
+      "helper_actual": {
+        "at": "from the United States,",
+        "zh": [
+          "我认为，这是因为选举机构事先定好了那个日期；尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，",
+          "它们仍坚持原定日期，我们认为这很不妥。"
+        ]
+      }
+    }
+  ],
+  "original_problems": [
+    {
+      "screen": 25,
+      "label": "第 23 句 第 1 屏",
+      "problems": [
+        "第 23 句 第 1 屏：一屏放不下或字太小（英文 71px、词汇 40px，下限 73/34px）：在 专八批量精听/tools/分屏.json 里拆屏",
+        "第 23 句 第 1 屏：字号过小：英文 71px、词汇栏 40px"
+      ]
+    },
+    {
+      "screen": 26,
+      "label": "第 23 句 第 2 屏",
+      "problems": [
+        "第 23 句 第 2 屏：一屏放不下或字太小（英文 71px、词汇 40px，下限 73/34px）：在 专八批量精听/tools/分屏.json 里拆屏",
+        "第 23 句 第 2 屏：字号过小：英文 71px、词汇栏 40px"
+      ]
+    }
+  ],
+  "final_problems": [],
+  "split_findings": {
+    "23": {
+      "candidate": {
+        "at": "from the United States,",
+        "zh": [
+          "我认为，这是因为选举机构事先定好了那个日期；尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，",
+          "它们仍坚持原定日期，我们认为这很不妥。"
+        ]
+      },
+      "sizes": [
+        73,
+        40
+      ],
+      "anchor_wrong_right": [
+        0,
+        2
+      ],
+      "dependency_boundary": false,
+      "cuts": [
+        147
+      ],
+      "missing_vocab_parts": [],
+      "audio_switch_status": "未核；无时间值，须在真实词时刻/停顿上检查"
+    }
+  },
+  "error": null,
+  "screens": 49,
+  "expected_names": [
+    "詹姆斯·多宾斯",
+    "阿卜杜拉·阿卜杜拉"
+  ],
+  "names_used": [
+    "詹姆斯·多宾斯",
+    "阿卜杜拉·阿卜杜拉"
+  ],
+  "source_title": "阿富汗选举访谈（上）",
+  "title_used": "阿富汗选举访谈（上）",
+  "browser": "Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)",
+  "report": "/workspace/tem8-layout-locked2016-2021/2018-B1/版式预检.json"
+}

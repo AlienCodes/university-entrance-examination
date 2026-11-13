@@ -106,6 +106,9 @@ def validate_success_reports(layout,final,fingerprints,video_sha):
  need(final.get('问题')==[] and final.get('原音模式') is True and final.get('成品sha256')==video_sha,'旧成品报告未通过')
  need(layout.get('source_fingerprints')==final.get('source_fingerprints')==fingerprints,'旧报告真实来源指纹不符')
 
+def require_png_multiset(actual,expected,message):
+ need(bool(actual) and bool(expected) and Counter(actual.values())==Counter(expected.values()),message)
+
 def actual_pngs(stage):
  base=Path(stage)/'evidence/已审截图'
  paths=sorted(base.rglob('*.png'));need(bool(paths),'旧stage缺实际PNG')
@@ -132,11 +135,11 @@ def inspect_stage(stage,year,cert,current_payload,new_registry=None):
  frames=[x[0] for x in fr];expected=[x['frame'] for x in row['old']['html_by_state']]
  need(frames==expected,'真实帧表帧号与冻结证据不相同')
  pngs,keys=actual_pngs(stage)
- need(Counter(pngs.values())==Counter(old_registry['shots'].values()),'旧实际PNG与旧已审多重集不同')
+ require_png_multiset(pngs,old_registry['shots'],'旧实际PNG与旧已审多重集不同')
  need(set(k for _,k in fr)==set(keys),'真实帧表可达PNG集合与实际完整截图不同')
  if new_registry is not None:
   need(new_registry.get('status')=='approved' and new_registry.get('shots'),'当前审批未批准完整截图')
-  need(Counter(new_registry['shots'].values())==Counter(pngs.values()),'旧/新实际PNG多重集不一致')
+  require_png_multiset(pngs,new_registry['shots'],'旧/新实际PNG多重集不一致')
  fps={'paper':old_registry['inputs'][f'专八/听力/批量/数据/{year}/试卷.json'],'timeline':old_registry['inputs'][f'专八/听力/批量/数据/{year}/时间轴.json'],'adapter':OLD_SHA,'base':old_registry['render_sources'][BASE]}
  required_reports={'核验/排版核验.json','核验/核查报告.json'}
  for name in required_reports:
@@ -215,7 +218,7 @@ def migrate(source,target,year,cert,current_registry,download_record=None):
   if name!='evidence/审核登记.json':need(pub.sha(target/name)==h,'旧机械报告/截图/来源字节改变')
  need((source/'meta.json').read_bytes()==oldbytes and pub.sha(target/meta['mp4'])==old['mp4_sha256'] and (target/meta['mp4']).stat().st_size==old['mp4_bytes'],'源stage或MP4字节改变')
  pub.validate_stage(target,'exam',str(year),proof['new_payload_sha256'])
- need(Counter(actual_pngs(source)[0].values())==Counter(actual_pngs(target)[0].values()),'复制后PNG多重集改变')
+ require_png_multiset(actual_pngs(source)[0],actual_pngs(target)[0],'复制后PNG多重集改变')
  return meta,proof
 
 def load_control(path=CONTROL):

@@ -58,16 +58,20 @@
     },
     {
       "en": "I think it was made because the electoral institution had previously set that date and they held to it despite advice to the contrary from the UN, from the United States, and from other voices within Afghanistan, and we think that was unfortunate.",
-      "at": "and they held to it",
+      "at": [
+        "and they held to it",
+        "and we think that was"
+      ],
       "zh": [
         "我认为，这是因为选举机构事先定好了那个日期；",
-        "尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，它们仍坚持原定日期，我们认为这很不妥。"
+        "尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，它们仍坚持原定日期，",
+        "我们认为这很不妥。"
       ],
-      "evidence": "日期设定为首屏；坚持日期及联合国/美国/阿富汗各方相反建议的完整列举和评价均留后屏，避免在UN/US之间错配。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
-      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
-      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
-      "evidence_pointer": "/records/44",
-      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+      "evidence": "保留日期设定/坚持日期及各方相反建议/遗憾评价三个完整语义屏；不允许helper为了fit恢复UN/US列举错屏。",
+      "evidence_ref": "核验/五年锁源几何/修复方案.json",
+      "evidence_sha256": "062da52b3df1987bd543eb689fae47316f321efad6fa851099ece2d949308eea",
+      "evidence_pointer": "/units/4/changes/0",
+      "approval_scope": "人工语义及本地几何修复；真实原声换屏与在线PNG另核。"
     },
     {
       "en": "Is there another reason that could be slightly more favorable, that is, they wanted to prepare the ground because if they just came out with one final result at the end of all this, then it can be pretty likely that the loser, whoever it was going to be, was going to complain because they think it is unfair?",
@@ -4025,6 +4029,17 @@
             [
               235,
               246
+            ]
+          ]
+        },
+        {
+          "t": "phr",
+          "h": "hold to",
+          "m": "phr.坚持（原定决定）",
+          "sp": [
+            [
+              92,
+              99
             ]
           ]
         }
@@ -8260,58 +8275,6 @@
     "scope": "仅已审内容、实际词锚/合法非词整事件与安全原音窗口；在线完整PNG和成品另审",
     "content_sha256": "40577912c86323dcab53f455d60715671992d84773af704f7682e193e37ab6c1"
   },
-  "splits": {
-    "17": {
-      "at": "and we’re sorry that",
-      "zh": [
-        "我们认为，有必要对涉嫌舞弊的选票进行有力且透明的审查；",
-        "遗憾的是，这件事推进得还不够快、也不够充分。"
-      ]
-    },
-    "23": {
-      "at": "and they held to it",
-      "zh": [
-        "我认为，这是因为选举机构事先定好了那个日期；",
-        "尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，它们仍坚持原定日期，我们认为这很不妥。"
-      ]
-    },
-    "24": {
-      "at": [
-        "that is, they wanted",
-        "then it can be"
-      ],
-      "zh": [
-        "能否从稍微有利的角度来解释呢？",
-        "也许它们是想先做铺垫，因为如果一直等到最后才公布一个最终结果，",
-        "那么无论谁落败，都很可能会抱怨结果不公平。"
-      ]
-    },
-    "25": {
-      "at": "that therefore any preliminary",
-      "zh": [
-        "我们的看法是，它们并不具备作这种铺垫的依据，因为仍有那么多选票等待检查；",
-        "因此，任何初步结果都可能不是在作铺垫，而是在误导公众。"
-      ]
-    },
-    "26": {
-      "at": "from the camp",
-      "zh": [
-        "那么接下来会如何发展呢？我们已经听到一些非常强烈、情绪激动的言论，",
-        "这些言论来自看起来可能落败的阿卜杜拉·阿卜杜拉博士所在的阵营。"
-      ]
-    },
-    "30": {
-      "at": [
-        "would make it impossible",
-        "and that the consequences"
-      ],
-      "zh": [
-        "任何建立平行总统政权的尝试，",
-        "都会使美国及其伙伴无法继续提供财政、经济和军事支持，",
-        "而这可能给阿富汗带来非常严重的后果。"
-      ]
-    }
-  },
   "manual_split_anchor_check": {
     "all_cut_starts_have_real_word_anchors": true,
     "cuts": [
@@ -8402,5 +8365,61 @@
     "previous_content_sha256": "ce6365920da3f2fd7160c18c919940baacb4b075497ef427f22b082ad2a345ab",
     "manual_splits_by_exact_EN": [],
     "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
+  },
+  "splits": {
+    "17": {
+      "at": "and we’re sorry that",
+      "zh": [
+        "我们认为，有必要对涉嫌舞弊的选票进行有力且透明的审查；",
+        "遗憾的是，这件事推进得还不够快、也不够充分。"
+      ]
+    },
+    "23": {
+      "at": [
+        "and they held to it",
+        "and we think that was"
+      ],
+      "zh": [
+        "我认为，这是因为选举机构事先定好了那个日期；",
+        "尽管联合国、美国以及阿富汗国内其他方面提出了相反建议，它们仍坚持原定日期，",
+        "我们认为这很不妥。"
+      ]
+    },
+    "24": {
+      "at": [
+        "that is, they wanted",
+        "then it can be"
+      ],
+      "zh": [
+        "能否从稍微有利的角度来解释呢？",
+        "也许它们是想先做铺垫，因为如果一直等到最后才公布一个最终结果，",
+        "那么无论谁落败，都很可能会抱怨结果不公平。"
+      ]
+    },
+    "25": {
+      "at": "that therefore any preliminary",
+      "zh": [
+        "我们的看法是，它们并不具备作这种铺垫的依据，因为仍有那么多选票等待检查；",
+        "因此，任何初步结果都可能不是在作铺垫，而是在误导公众。"
+      ]
+    },
+    "26": {
+      "at": "from the camp",
+      "zh": [
+        "那么接下来会如何发展呢？我们已经听到一些非常强烈、情绪激动的言论，",
+        "这些言论来自看起来可能落败的阿卜杜拉·阿卜杜拉博士所在的阵营。"
+      ]
+    },
+    "30": {
+      "at": [
+        "would make it impossible",
+        "and that the consequences"
+      ],
+      "zh": [
+        "任何建立平行总统政权的尝试，",
+        "都会使美国及其伙伴无法继续提供财政、经济和军事支持，",
+        "而这可能给阿富汗带来非常严重的后果。"
+      ]
+    }
   }
 }
