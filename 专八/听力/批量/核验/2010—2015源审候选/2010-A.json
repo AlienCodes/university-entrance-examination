@@ -1,0 +1,373 @@
+{
+  "id": "2010-A",
+  "year": 2010,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2010.json",
+    "sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+    "unit_semantic_sha256": "87f60b74cdea2d1bd01e90b2ea944c600b11c4fed43b7bb9a71bbcfe8f0b33cf"
+  },
+  "final": {
+    "file": "精听数据/2010-A.json",
+    "sha256": "89ca05f4530525bace5010637fcd55d39ee784e5153915165f71daa94dc14b0e",
+    "unit_semantic_sha256": "87f60b74cdea2d1bd01e90b2ea944c600b11c4fed43b7bb9a71bbcfe8f0b33cf",
+    "render_content_sha256": "5a9f116cf022a07102547b10f3e8ccc1b89d846537a5804fa64bccd36fb44a83",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 84,
+    "sha256": "c82c44d37e96372665677e04f02760fe1a396a60308c50c00e0480dcb048fcce"
+  },
+  "audio": {
+    "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+        "bytes": 11797120,
+        "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1474.612125
+        },
+        "decoded_pcm_sha256": "e2e8bfb2c08c5a13631f1b1340162af87bc8e2e5500d65f537eab9f7c215b56e",
+        "decoded_frames": 65030400,
+        "canonical_start": 0.0,
+        "canonical_end": 1474.6122448979593
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      13.925,
+      781.5
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "b74a28465b699a358757ac53b4d60c7a13501a3056ca261a866a878366856c92",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2010/对齐报告.json",
+      "sha256": "e21d461bc8a51e6cd05840979805adcd0a9f8298c4e2ac4923f61b436c107597"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 2,
+    "missing_word_dispositions": [
+      {
+        "sentence": 16,
+        "en": "Last week we examined such features of, of language as grammar, vocabulary, the sounds of language, etc.",
+        "window": [
+          110.35,
+          118.83
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "of",
+            "char": [
+              40,
+              42
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "同一介词of的口述重复；保留纸源口语式，模型只锚到其中一次，不为第二次of补秒。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2010-双模型.json",
+            "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 32,
+        "en": "This, um, is to indicate anxiety.",
+        "window": [
+          206.99,
+          211.87
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "um",
+            "char": [
+              6,
+              8
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "句内语气um保持纸源；实际语义及前后词锚完整，未声称该语气词有独立字秒。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2010-双模型.json",
+            "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+          },
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 22,
+        "en": "These features fall into two broad categories: those that involve the voice and those that involve the body.",
+        "extra_ASR": {
+          "asr_indices": [
+            201
+          ],
+          "asr_text": [
+            "categories."
+          ],
+          "window": [
+            145.27,
+            145.67
+          ]
+        },
+        "disposition": {
+          "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+          "decision": "独立Whisper目标句只有一次categories；纸源保留一次。主识别在该词附近重复分段，不新增第二次字幕。",
+          "evidence": {
+            "file": "核验/2010—2015源审残留多词复核/2010-A-categories.json",
+            "sha256": "a2bf2b9d7aa077f248e5eb6b2ee19542e20f10ab3742e254e61a983dee5d9669"
+          },
+          "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "c2453a4fd7b04c5105947a3fecde4464d40c79db8c9986d6ebaabf55f244b9ca"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 6,
+    "screen_count": 13,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 25,
+        "en": "While they are, perhaps, not central to meaning in communication in the same way as grammar or vocabulary, they may, nevertheless, convey attitude or intention in some way.",
+        "at": "they may, nevertheless, convey",
+        "zh": [
+          "虽然它们可能不像语法或词汇那样处于交流意义的核心，",
+          "却仍然能够在某种程度上传达态度或意图。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "they may, nevertheless, convey",
+            "char": 107,
+            "actual_first_word": "they",
+            "actual_first_word_window": [
+              172.79,
+              172.87
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 39,
+        "en": "The expression on our face, the gestures we make and even proximity or way we sit, are some of the ways we send powerful messages about how we feel, or what we mean.",
+        "at": "are some of the",
+        "zh": [
+          "面部表情、手势，甚至我们与别人之间的距离或坐姿，",
+          "都能有力地传达自己的感受或意思。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "are some of the",
+            "char": 83,
+            "actual_first_word": "are",
+            "actual_first_word_window": [
+              269.39,
+              269.47
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 46,
+        "en": "Other facial actions, such as biting your lip, which indicates that you are deep in thinking, or are uncertain about something; compressing the lips, which show that you are making decisions; and a visible clenching of the teeth, to show that you are angry, are all powerful conveyers of meaning, too.",
+        "at": [
+          "compressing the lips,",
+          "and a visible clenching"
+        ],
+        "zh": [
+          "其他面部动作，比如咬嘴唇，表示你在深思或对某事拿不准；",
+          "抿紧嘴唇表示你在作决定；",
+          "明显地咬紧牙齿，则表示你很生气。这些动作也都能有力地传达意义。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "compressing the lips,",
+            "char": 128,
+            "actual_first_word": "compressing",
+            "actual_first_word_window": [
+              318.03,
+              318.67
+            ]
+          },
+          {
+            "at": "and a visible clenching",
+            "char": 192,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              323.03,
+              323.11
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 65,
+        "en": "And standing close to someone may be quite appropriate in some situations such as an informal party, but completely out of place in other situations, such as a meeting with a superior.",
+        "at": "but completely out of",
+        "zh": [
+          "站得离别人很近，在非正式聚会等场合可能很合适，",
+          "但在与上级开会等场合，就可能完全不妥。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but completely out of",
+            "char": 101,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              459.63,
+              459.71
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 81,
+        "en": "These features, together with linguistic features of language, like grammar, or vocabulary, are all part of the way we communicate with each other in face to face encounters.",
+        "at": "are all part of",
+        "zh": [
+          "这些特征，与语法、词汇等语言特征一起，",
+          "都构成了面对面交流方式的一部分。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "are all part of",
+            "char": 92,
+            "actual_first_word": "are",
+            "actual_first_word_window": [
+              575.43,
+              575.51
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 82,
+        "en": "In our next lecture, we’ll watch some video material, and see how people actually use paralinguistic means in communication to express their intention or desire or mood.",
+        "at": "and see how people",
+        "zh": [
+          "下一堂课，我们会看一些视频材料，",
+          "了解人们在交流中如何实际运用副语言手段，来表达意图、愿望或情绪。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and see how people",
+            "char": 54,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              584.87,
+              584.95
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2010-A/版式预检.json",
+      "sha256": "9b9657b9d1ee245c0e04ecda45c79e9ab6663d0d8c5c0b9ce8a99fa1ae31f1c4"
+    },
+    "screens": 92,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2010-双模型.json",
+        "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+      },
+      {
+        "file": "核验/正文清理/2010-局部真词锚.json",
+        "sha256": "34fb15b10a9bab160ae20f85c2e0757b546d55c9daf893716d1efbe611531521"
+      },
+      {
+        "file": "核验/正文清理/2010-可用语音段.json",
+        "sha256": "0369b6de9da050d1a94c42124327bba97f1d5833d344159df4ad2b0f20c0cc5b"
+      },
+      {
+        "file": "核验/正文清理/2010-人工词锚.json",
+        "sha256": "21be17a5c1c772385e277fc524f5195d453d9205e49e3de78b6e4ba2d746b68a"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 3
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[16, 32]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

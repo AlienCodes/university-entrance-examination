@@ -63,12 +63,14 @@
       "at": [
         "but there is still an issue",
         "and if you look at the Oxford figures,",
+        "whereas from the private schools",
         "so that,"
       ],
       "zh": [
         "这些年来，来自公立学校、进入顶尖大学的学生人数有所增加，",
         "但如何确保公立学校学生积极申请大学，仍是一个问题。",
-        "以牛津的数据为例，公立学校学生申请牛津的比例大约是百分之一，而私立学校学生的这一比例超过百分之四点五。",
+        "以牛津的数据为例，公立学校学生申请牛津的比例大约是百分之一，",
+        "而私立学校学生的这一比例超过百分之四点五。",
         "所以，你看，问题就在这里：这些年来，公立教育体系中的期望一直被本届政府压低。"
       ],
       "evidence": "核验/2010-2015-长句分屏语义预审.json；逐屏中英/词注人工语义审查，换屏另核真实词首与原音guard；不得伪称纯静音。"
@@ -6211,6 +6213,17 @@
               468
             ]
           ]
+        },
+        {
+          "t": "word",
+          "h": "percentage",
+          "m": "n. 百分比；比例",
+          "sp": [
+            [
+              285,
+              295
+            ]
+          ]
         }
       ],
       "speaker": "T",
@@ -8049,8 +8062,146 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2015/对齐报告.json",
-    "content_sha256": "da432c035a34fa2034aba60b03dec7c12d6cc58026159f6580593601037f4cd4"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "2d401647ce0426f0d723ce27c99e4ec629c42d3f788d0ba513e9864edacd1ec1"
+  },
+  "splits": {
+    "24": {
+      "at": "but actually they are cutting opportunity",
+      "zh": [
+        "我们看到，现任政府也许口口声声说人人都有机会、人人都有选择，",
+        "但实际上，他们正在减少机会、缩小选择范围。"
+      ]
+    },
+    "31": {
+      "at": [
+        "but there is a problem in",
+        "and it’s the present Government"
+      ],
+      "zh": [
+        "被牛津、剑桥及其他顶尖大学录取的公立学校学生比例，实际上已经提高了。",
+        "但是，我们许多中学的学生对未来的期望存在问题；",
+        "当前政府一直在降低这些期望，而不是提高它们。"
+      ]
+    },
+    "34": {
+      "at": [
+        "but there is still an issue",
+        "and if you look at the Oxford figures,",
+        "whereas from the private schools",
+        "so that,"
+      ],
+      "zh": [
+        "这些年来，来自公立学校、进入顶尖大学的学生人数有所增加，",
+        "但如何确保公立学校学生积极申请大学，仍是一个问题。",
+        "以牛津的数据为例，公立学校学生申请牛津的比例大约是百分之一，",
+        "而私立学校学生的这一比例超过百分之四点五。",
+        "所以，你看，问题就在这里：这些年来，公立教育体系中的期望一直被本届政府压低。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 24,
+        "at": "but actually they are cutting opportunity",
+        "real_word_anchor": true,
+        "char": 117,
+        "start": 832.13,
+        "end": 832.21
+      },
+      {
+        "sentence": 31,
+        "at": "but there is a problem in",
+        "real_word_anchor": true,
+        "char": 154,
+        "start": 886.65,
+        "end": 886.73
+      },
+      {
+        "sentence": 31,
+        "at": "and it’s the present Government",
+        "real_word_anchor": true,
+        "char": 228,
+        "start": 892.09,
+        "end": 892.17
+      },
+      {
+        "sentence": 34,
+        "at": "but there is still an issue",
+        "real_word_anchor": true,
+        "char": 104,
+        "start": 913.65,
+        "end": 913.73
+      },
+      {
+        "sentence": 34,
+        "at": "and if you look at the Oxford figures,",
+        "real_word_anchor": true,
+        "char": 216,
+        "start": 921.17,
+        "end": 921.25
+      },
+      {
+        "sentence": 34,
+        "at": "whereas from the private schools",
+        "real_word_anchor": true,
+        "char": 363,
+        "start": 932.01,
+        "end": 932.49
+      },
+      {
+        "sentence": 34,
+        "at": "so that,",
+        "real_word_anchor": true,
+        "char": 412,
+        "start": 936.81,
+        "end": 936.89
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "24",
+      "31",
+      "34"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2015.json",
+    "mother_sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+    "english_sequence_sha256": "912b14b169414abc264016b9960c2e34d7ee76301f72202c8b07bc99e145d5a9",
+    "timing_fingerprint_unchanged": "e97d967e800a26c7f2e5e2c93b424dac8542e104451482fb9ddd81c5ceaaf09e",
+    "previous_content_sha256": "c386686fed9efc22ea03f8bd9c3bd66c656bc3322f1f5bfe80f53997a5678349",
+    "manual_splits_by_exact_EN": [
+      {
+        "sentence": 24,
+        "en": "What we see from the present government is that they may talk about opportunity for all, they may talk about choice, but actually they are cutting opportunity and reducing choice.",
+        "at": "but actually they are cutting opportunity"
+      },
+      {
+        "sentence": 31,
+        "en": "The number of state pupils being accepted by Oxford and Cambridge, and other leading universities, the proportion of state pupils has actually increased, but there is a problem in many of our secondary schools, of expectations, and it’s the present Government that has been levelling down expectations, rather than raising them.",
+        "at": [
+          "but there is a problem in",
+          "and it’s the present Government"
+        ]
+      },
+      {
+        "sentence": 34,
+        "en": "The number from the state schools, who are going to leading universities, has increased over the years, but there is still an issue about ensuring the pupils from our state schools apply to go into the universities, and if you look at the Oxford figures, for example, you see that the percentage of students applying to Oxford from the state schools is about 1%, whereas from the private schools it’s over 4.5%, so that, you know, that’s the problem, it’s expectations in the state system that have been driven down by this Government over the years.",
+        "at": [
+          "but there is still an issue",
+          "and if you look at the Oxford figures,",
+          "whereas from the private schools",
+          "so that,"
+        ]
+      }
+    ],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

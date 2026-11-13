@@ -1,0 +1,220 @@
+{
+  "year": 2022,
+  "id": "2022-extra-158.74",
+  "window": [
+    155.24,
+    162.8
+  ],
+  "query": "核ASR额外段是否真实重读/漏译：['anthropology']",
+  "initial_ASR_difference": {
+    "kind": "insert",
+    "source": [],
+    "asr_indices": [
+      236
+    ],
+    "asr_text": [
+      "anthropology"
+    ],
+    "window": [
+      158.74,
+      159.3
+    ],
+    "decision": "machine_candidate_unreviewed"
+  },
+  "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "original_source_sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+  "analysis_only": "16k单声道局部分析副本；原音采样率/声道/PCM/音量未改。Whisper仅文字佐证，无逐词时刻；Parakeet词尾为模型末token+0.08s估计。",
+  "recognitions": [
+    {
+      "model": "Parakeet",
+      "model_sha256": {
+        "encoder": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+        "decoder": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+        "joiner": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+        "tokens": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+      },
+      "text": "How does anthropology define humans? Well, anthropology attempts to be all-inclusive in the",
+      "tokens": [
+        " H",
+        "ow",
+        " does",
+        " an",
+        "th",
+        "ro",
+        "p",
+        "olog",
+        "y",
+        " def",
+        "ine",
+        " h",
+        "um",
+        "ans",
+        "?",
+        " Well",
+        ",",
+        " an",
+        "th",
+        "ro",
+        "p",
+        "olog",
+        "y",
+        " att",
+        "em",
+        "pt",
+        "s",
+        " to",
+        " be",
+        " all",
+        "-",
+        "in",
+        "c",
+        "l",
+        "us",
+        "ive",
+        " in",
+        " the"
+      ],
+      "timestamps": [
+        0.1599999964237213,
+        0.23999999463558197,
+        0.3999999761581421,
+        0.5600000023841858,
+        0.7199999690055847,
+        0.7999999523162842,
+        0.9599999785423279,
+        1.1200000047683716,
+        1.2799999713897705,
+        1.4399999380111694,
+        1.6799999475479126,
+        1.9199999570846558,
+        2.0799999237060547,
+        2.319999933242798,
+        2.799999952316284,
+        3.119999885559082,
+        3.359999895095825,
+        3.5999999046325684,
+        3.759999990463257,
+        3.919999837875366,
+        4.159999847412109,
+        4.319999694824219,
+        4.559999942779541,
+        4.71999979019165,
+        4.960000038146973,
+        5.119999885559082,
+        5.279999732971191,
+        5.440000057220459,
+        5.599999904632568,
+        5.839999675750732,
+        6.079999923706055,
+        6.239999771118164,
+        6.399999618530273,
+        6.480000019073486,
+        6.639999866485596,
+        6.799999713897705,
+        7.039999961853027,
+        7.199999809265137
+      ],
+      "words": [
+        [
+          "How",
+          155.4,
+          155.56
+        ],
+        [
+          "does",
+          155.64,
+          155.72
+        ],
+        [
+          "anthropology",
+          155.8,
+          156.6
+        ],
+        [
+          "define",
+          156.68,
+          157.0
+        ],
+        [
+          "humans?",
+          157.16,
+          158.12
+        ],
+        [
+          "Well,",
+          158.36,
+          158.68
+        ],
+        [
+          "anthropology",
+          158.84,
+          159.88
+        ],
+        [
+          "attempts",
+          159.96,
+          160.6
+        ],
+        [
+          "to",
+          160.68,
+          160.76
+        ],
+        [
+          "be",
+          160.84,
+          160.92
+        ],
+        [
+          "all-inclusive",
+          161.08,
+          162.12
+        ],
+        [
+          "in",
+          162.28,
+          162.36
+        ],
+        [
+          "the",
+          162.44,
+          162.52
+        ]
+      ],
+      "elapsed": 1.7791146829986246
+    },
+    {
+      "model": "Whisper",
+      "model_sha256": {
+        "encoder": "ef6b936f4c9b1d90a3b68634b60c4ed8576b26172b33c2535ec0e933c9edb823",
+        "decoder": "f7162ad6db2dbef16cfaeaa7f945b9d7dd9c1b8d472f6aca82f2273d185e4d41",
+        "tokens": "306cd27f03c1a714eca7108e03d66b7dc042abe8c258b44c199a7ed9838dd930"
+      },
+      "text": "how does anthropology define humans? Well, anthropology attempts to be all-inclusive in the",
+      "tokens": [
+        " how",
+        " does",
+        " anthropology",
+        " define",
+        " humans",
+        "?",
+        " Well",
+        ",",
+        " anthropology",
+        " attempts",
+        " to",
+        " be",
+        " all",
+        "-",
+        "in",
+        "clusive",
+        " in",
+        " the"
+      ],
+      "timestamps": [],
+      "words": [],
+      "elapsed": 1.6013615219999338
+    }
+  ],
+  "status": "定点识别证据，仍须具体裁决，不构成source-approved"
+}

@@ -52,7 +52,15 @@ def main():
   report.append({'unit':u['id'],'en':s['en'],'at':at,'zh':r['zh'],'whole_zh_change':r['whole_zh_change'],'old_whole_zh':r['current_zh'] if r['whole_zh_change'] else None,'decision':r['decision'],'added_notes':new_notes,'reanchor':r['reanchor']})
  for meta in audit.get('metadata_updates',[]):
   year=int(meta['unit'][:4]);u=next(u for u in files[year][1]['units'] if u['id']==meta['unit'])
-  u['names']=list(dict.fromkeys(u.get('names',[])+meta.get('names',[])))
+  if meta.get('names'):u['names']=list(dict.fromkeys(u.get('names',[])+meta['names']))
+  if meta.get('title'):
+   assert u['title'] in [meta['original_title'],meta['title']]
+   u.setdefault('original_title',meta['original_title']);u['title']=meta['title']
+ for fix in audit.get('vocab_gloss_updates',[]):
+  year=int(fix['unit'][:4]);u=next(u for u in files[year][1]['units'] if u['id']==fix['unit'])
+  hits=[s for s in u['sentences'] if s['en']==fix['en']];assert len(hits)==1
+  hits=[w for w in hits[0]['w'] if w['h']==fix['word_h'] and w['sp']==fix['sp']];assert len(hits)==1
+  assert hits[0]['m'] in [fix['old_m'],fix['new_m']];hits[0]['m']=fix['new_m']
  output={'status':'checked','apply':args.apply,'audit_sha256':sha(AUDIT),'records':report,'files':[],'en_and_audio_time_unchanged':True}
  for year,(p,obj,before) in files.items():
   # 复读最新母稿防并发：任一字节变化即中断，不覆盖其他代理写入。

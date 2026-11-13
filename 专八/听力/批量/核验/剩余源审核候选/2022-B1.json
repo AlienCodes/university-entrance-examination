@@ -1,0 +1,1615 @@
+{
+  "id": "2022-B1",
+  "status": "source-review-candidate-only",
+  "source_approved": false,
+  "recommendation": "ready",
+  "blocking": [],
+  "scope": "仅建议root批准源EN/中文/词汇/真实锚及原音窗；不批准PNG、实际换屏guard或编码成品。",
+  "checked_at_UTC": "2026-11-13T21:54:05.574181+00:00",
+  "current": {
+    "mother_file": "译注草稿/2022.json",
+    "mother_file_sha256": "4198c4c0b15c657e64d2710ca6f38710194952f49a7599b6b3d3a6f01d0ff13e",
+    "mother_semantic_sha256": "fcafa36e2819367f52d38b0e4335b7e9e0fc435802c8951a2b5b0c05daf8f3f2",
+    "final_file": "精听数据/2022-B1.json",
+    "final_file_sha256": "877bf43a41c58e51d85d83f1ee8c1639fa86810e137b5a39aafea6405d671e3b",
+    "final_semantic_sha256": "fcafa36e2819367f52d38b0e4335b7e9e0fc435802c8951a2b5b0c05daf8f3f2",
+    "semantic_exact": true,
+    "final_production_content_sha256": "3385d7a3f7723d928a0b751918641eac163824f0f240ee691bc147623fead5a5",
+    "alignment_report": "核验/原文对齐/2022/对齐报告.json",
+    "alignment_report_sha256": "b24b08d1c266fa4d2d4fd627d107f01c112486d585b32010951a9586db963fe7",
+    "effective_ASR": "核验/原文对齐/2022/含说明识别.json",
+    "effective_ASR_sha256": "46420b504b729dcb85c5d65e07b55df0fbbedd93a68e5fa8c7f476d612c077d8"
+  },
+  "counts": {
+    "sentences": 57,
+    "vocabulary_entries": 94,
+    "source_lexemes": 780,
+    "mapped_lexemes": 780,
+    "word_alignment_segments": 776,
+    "reviewed_external_whole_word_spans": 4,
+    "whole_sentence_or_nonword_events": 0,
+    "nonverbal_lexemes_not_word_timed": 0,
+    "acoustic_interjection_missing_not_word_timed": 0,
+    "manual_plans": 3,
+    "spoken_questions_checked_against_exam": 5
+  },
+  "source_audio": {
+    "canonical_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+    "window": [
+      771.1975,
+      1189.01
+    ],
+    "native_sample_rate": 44100,
+    "native_channels": 2,
+    "registered_pcm_sha256": "0c39fafbf4573b9e610b569349675445eb6f2c682e66e4bd2b46a541ee781cd9",
+    "original_source_entries": [
+      {
+        "file": "TEM8-2022-complete.m4a",
+        "suffix": ".m4a",
+        "bytes": 12523048,
+        "sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+        "origin": {
+          "kind": "public_educational_audio_supplement",
+          "provider": "新东方在线（考研四六级专四专八公开教学页面）",
+          "page_url": "https://tem.koolearn.com/20250401/824726.html",
+          "download_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3",
+          "retrieved_utc": "2026-11-13T18:57:00Z",
+          "release_tag": "tem8-listening-raw-supplement",
+          "release_asset": "TEM8-2022-complete.m4a",
+          "release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw-supplement/TEM8-2022-complete.m4a",
+          "file_naming_note": "公开直链扩展名为.mp3，ffprobe确定实际容器M4A，codec=HE-AAC；仅给原字节副本正确.m4a名称，未转码/增益/裁切/声道/采样率处理",
+          "public_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3"
+        },
+        "audio": {
+          "codec": "aac",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1546.79
+        },
+        "supplement_registration_sha256": "fd4fd05904aa78dcc5da6fb88539d355f023950335495cd4189420f1f982149d",
+        "decoded_pcm_sha256": "0c39fafbf4573b9e610b569349675445eb6f2c682e66e4bd2b46a541ee781cd9",
+        "decoded_frames": 68213822,
+        "canonical_start": 0.0,
+        "canonical_end": 1546.7986848072562
+      }
+    ],
+    "boundary_evidence": {
+      "status": "measured_PCM_boundaries_or_complete_file_edge",
+      "canonical_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+      "source_entries": [
+        {
+          "file": "TEM8-2022-complete.m4a",
+          "sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693"
+        }
+      ],
+      "first_ASR_anchor": 771.48,
+      "last_ASR_anchor": 1188.81,
+      "next_ASR_start": 1198.95,
+      "window": [
+        771.1975,
+        1189.01
+      ],
+      "start_kind": "measured_quiet_before_first_ASR_anchor",
+      "end_kind": "measured_quiet_after_last_ASR_anchor",
+      "leading_PCM": {
+        "decoded_window": [
+          769.88,
+          771.6800000000001
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -48.01373053556682,
+        "quiet_runs": [
+          [
+            770.94,
+            771.55
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          9.225188375210104e-05,
+          0.00018850938507826992
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -23.0,
+          -9.92,
+          -6.31,
+          -6.01,
+          -5.52,
+          -6.07,
+          -5.5,
+          -5.5,
+          -5.03,
+          -5.54,
+          -8.6,
+          -11.36,
+          -9.18,
+          -11.3,
+          -12.92,
+          -8.15,
+          -7.54,
+          -5.86,
+          -6.09,
+          -6.1,
+          -6.22,
+          -6.08,
+          -6.08,
+          -5.34,
+          -7.5,
+          -9.79,
+          -8.69,
+          -6.52,
+          -10.71,
+          -18.56,
+          -12.48,
+          -13.53,
+          -11.85,
+          -11.77,
+          -11.84,
+          -12.74,
+          -14.33,
+          -13.88,
+          -14.65,
+          -14.87,
+          -18.33,
+          -16.79,
+          -19.6,
+          -19.83,
+          -21.05,
+          -27.16,
+          -27.01,
+          -26.96,
+          -26.76,
+          -28.6,
+          -29.78,
+          -31.56,
+          -26.16,
+          -24.75,
+          -24.27,
+          -24.14,
+          -25.34,
+          -24.75,
+          -25.75,
+          -26.34,
+          -28.59,
+          -29.08,
+          -25.37,
+          -20.49,
+          -18.38,
+          -17.11,
+          -17.66,
+          -20.23,
+          -28.63,
+          -27.44,
+          -24.7,
+          -28.51,
+          -31.7,
+          -31.89,
+          -29.21,
+          -30.2,
+          -32.53,
+          -37.05,
+          -37.02,
+          -40.85,
+          -38.38,
+          -36.3,
+          -43.0,
+          -43.45,
+          -40.19,
+          -41.18,
+          -38.72,
+          -40.49,
+          -42.45,
+          -39.18,
+          -41.46,
+          -42.12,
+          -39.91,
+          -39.99,
+          -46.37,
+          -44.8,
+          -42.31,
+          -49.12,
+          -44.91,
+          -41.9,
+          -45.09,
+          -44.43,
+          -48.63,
+          -45.17,
+          -45.84,
+          -46.57,
+          -51.98,
+          -54.3,
+          -54.01,
+          -54.54,
+          -53.68,
+          -50.89,
+          -49.84,
+          -50.72,
+          -48.66,
+          -49.12,
+          -49.29,
+          -53.05,
+          -48.33,
+          -50.59,
+          -51.61,
+          -51.28,
+          -48.64,
+          -49.02,
+          -48.88,
+          -50.63,
+          -55.63,
+          -54.16,
+          -51.43,
+          -51.37,
+          -51.43,
+          -52.16,
+          -53.12,
+          -53.27,
+          -55.42,
+          -57.29,
+          -53.1,
+          -59.84,
+          -53.83,
+          -54.45,
+          -58.01,
+          -56.81,
+          -55.94,
+          -60.66,
+          -60.03,
+          -54.35,
+          -55.95,
+          -54.29,
+          -55.17,
+          -56.62,
+          -56.93,
+          -55.33,
+          -59.42,
+          -54.72,
+          -57.54,
+          -59.99,
+          -54.28,
+          -54.42,
+          -54.13,
+          -59.28,
+          -60.0,
+          -60.08,
+          -63.07,
+          -57.37,
+          -58.1,
+          -57.83,
+          -48.69,
+          -44.63,
+          -41.64,
+          -36.09,
+          -32.58,
+          -30.52,
+          -29.28,
+          -28.38,
+          -27.05,
+          -28.56,
+          -28.24,
+          -28.82,
+          -10.38,
+          -8.34
+        ]
+      },
+      "trailing_PCM": {
+        "decoded_window": [
+          1188.61,
+          1191.61
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            1188.61,
+            1191.61
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          1.6414070454522322e-07,
+          1.6389265235601266e-07
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -64.68,
+          -66.26,
+          -68.35,
+          -71.16,
+          -70.51,
+          -69.69,
+          -67.98,
+          -67.57,
+          -65.22,
+          -70.44,
+          -76.46,
+          -75.48,
+          -73.62,
+          -73.37,
+          -76.71,
+          -72.99,
+          -72.91,
+          -72.68,
+          -79.45,
+          -87.29,
+          -93.15,
+          -100.37,
+          -102.5,
+          -102.37,
+          -101.58,
+          -101.78,
+          -102.06,
+          -102.28,
+          -104.39,
+          -107.45,
+          -107.09,
+          -106.88,
+          -107.35,
+          -112.8,
+          -112.25,
+          -112.63,
+          -112.77,
+          -107.05,
+          -104.4,
+          -104.77,
+          -104.17,
+          -104.39,
+          -104.6,
+          -104.33,
+          -104.64,
+          -104.68,
+          -105.07,
+          -105.7,
+          -105.78,
+          -105.92,
+          -105.86,
+          -107.17,
+          -110.15,
+          -110.11,
+          -109.82,
+          -110.09,
+          -112.38,
+          -112.46,
+          -112.41,
+          -112.45,
+          -112.5,
+          -112.38,
+          -112.76,
+          -112.65,
+          -112.59,
+          -112.54,
+          -112.57,
+          -112.25,
+          -112.54,
+          -112.82,
+          -112.18,
+          -112.56,
+          -112.83,
+          -112.43,
+          -112.4,
+          -112.82,
+          -112.27,
+          -112.43,
+          -112.62,
+          -112.51,
+          -112.61,
+          -112.93,
+          -112.61,
+          -112.35,
+          -112.47,
+          -112.49,
+          -112.27,
+          -112.48,
+          -112.72,
+          -112.44,
+          -112.37,
+          -112.78,
+          -112.64,
+          -112.46,
+          -112.75,
+          -112.26,
+          -112.25,
+          -112.43,
+          -112.57,
+          -112.48,
+          -112.85,
+          -112.65,
+          -112.59,
+          -112.47,
+          -112.49,
+          -112.5,
+          -112.22,
+          -112.53,
+          -112.59,
+          -112.38,
+          -112.66,
+          -112.67,
+          -112.46,
+          -112.59,
+          -112.57,
+          -112.23,
+          -112.59,
+          -112.63,
+          -112.58,
+          -112.5,
+          -112.6,
+          -112.63,
+          -112.59,
+          -112.49,
+          -112.53,
+          -112.23,
+          -112.39,
+          -112.69,
+          -112.65,
+          -112.54,
+          -112.98,
+          -112.3,
+          -112.47,
+          -112.56,
+          -112.33,
+          -112.45,
+          -112.63,
+          -112.78,
+          -112.53,
+          -112.5,
+          -112.48,
+          -112.57,
+          -112.45,
+          -112.39,
+          -112.63,
+          -112.36,
+          -112.73,
+          -112.62,
+          -112.5,
+          -112.61,
+          -112.49,
+          -112.2,
+          -112.64,
+          -112.64,
+          -112.57,
+          -112.74,
+          -112.58,
+          -112.54,
+          -112.53,
+          -112.46,
+          -112.34,
+          -112.39,
+          -112.51,
+          -112.53,
+          -112.5,
+          -112.81,
+          -112.72,
+          -112.29,
+          -112.7,
+          -112.43,
+          -112.21,
+          -112.35,
+          -112.81,
+          -112.34,
+          -112.64,
+          -112.69,
+          -112.61,
+          -112.45,
+          -112.85,
+          -112.2,
+          -112.29,
+          -112.5,
+          -112.49,
+          -112.42,
+          -112.76,
+          -112.7,
+          -112.44,
+          -112.46,
+          -112.52,
+          -112.5,
+          -112.42,
+          -112.67,
+          -112.55,
+          -112.4,
+          -112.62,
+          -112.9,
+          -112.45,
+          -112.52,
+          -112.46,
+          -112.38,
+          -112.32,
+          -112.7,
+          -112.77,
+          -112.39,
+          -112.77,
+          -112.57,
+          -112.42,
+          -112.54,
+          -112.54,
+          -112.29,
+          -112.34,
+          -112.89,
+          -112.46,
+          -112.59,
+          -112.72,
+          -112.38,
+          -112.44,
+          -112.52,
+          -105.74,
+          -101.66,
+          -102.18,
+          -101.97,
+          -101.57,
+          -101.69,
+          -101.84,
+          -101.4,
+          -101.98,
+          -101.99,
+          -104.47,
+          -104.37,
+          -104.84,
+          -104.63,
+          -105.34,
+          -107.41,
+          -106.77,
+          -107.15,
+          -107.05,
+          -110.53,
+          -112.49,
+          -112.81,
+          -112.47,
+          -112.59,
+          -112.48,
+          -112.68,
+          -112.21,
+          -112.21,
+          -112.53,
+          -112.66,
+          -112.43,
+          -112.69,
+          -112.81,
+          -112.4,
+          -112.67,
+          -112.49,
+          -112.16,
+          -112.44,
+          -112.71,
+          -112.36,
+          -112.69,
+          -112.66,
+          -112.4,
+          -112.52,
+          -112.67,
+          -112.44,
+          -112.43,
+          -112.47,
+          -112.51,
+          -112.63,
+          -112.64,
+          -112.91,
+          -112.33,
+          -112.58,
+          -112.49,
+          -112.48,
+          -112.18,
+          -112.8,
+          -112.5,
+          -112.62,
+          -112.54,
+          -112.71,
+          -112.51,
+          -112.48,
+          -112.37,
+          -112.53,
+          -112.32,
+          -112.67,
+          -112.61,
+          -112.66,
+          -112.55,
+          -112.66,
+          -112.21,
+          -112.48,
+          -112.76,
+          -112.29,
+          -112.71,
+          -112.69,
+          -112.35,
+          -112.44,
+          -112.78,
+          -112.29
+        ]
+      },
+      "note": "原采样率/声道PCM逐10ms实测低能量间隙；词尾仍是ASR候选，窗口未按词长估计；正式原音未修改。"
+    },
+    "first_sentence": {
+      "en": "Section B interviews.",
+      "start": 771.48,
+      "end": 773.8
+    },
+    "last_sentence": {
+      "en": "Question 5. According to the woman, what quality should be pursued by a teacher?",
+      "start": 1182.17,
+      "end": 1188.81
+    },
+    "last_actual_word": {
+      "char": 72,
+      "char_end": 79,
+      "start": 1187.77,
+      "end": 1188.81,
+      "asr_indices": [
+        1908
+      ]
+    }
+  },
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [],
+  "legal_whole_sentence_and_nonword_events": [],
+  "external_actual_word_span_evidence": [
+    {
+      "sentence": 24,
+      "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+      "source_text": "Um",
+      "actual_ASR_rows": [
+        [
+          "Hmm,",
+          942.52,
+          943.08
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+      "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    },
+    {
+      "sentence": 24,
+      "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+      "source_text": "Harriet",
+      "actual_ASR_rows": [
+        [
+          "Harry,",
+          944.68,
+          945.24
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+      "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    },
+    {
+      "sentence": 37,
+      "en": "How do EverFi and the NEA foundation work together?",
+      "source_text": "EverFi",
+      "actual_ASR_rows": [
+        [
+          "Everphi",
+          1024.84,
+          1025.48
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+      "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    },
+    {
+      "sentence": 38,
+      "en": "Yeah, the NEA foundation and EverFi work together to increase educator and student access to technology and digital learning tools.",
+      "source_text": "EverFi",
+      "actual_ASR_rows": [
+        [
+          "Everphy",
+          1031.24,
+          1031.96
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+      "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    }
+  ],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1254
+      ],
+      "asr_text": [
+        "Good"
+      ],
+      "window": [
+        855.48,
+        855.64
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Good']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1253
+          ],
+          "asr_text": [
+            "Good"
+          ],
+          "window": [
+            855.48,
+            855.64
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          851.98,
+          859.14
+        ],
+        "source_corresponding_phrase": "Good morning, Harriet. Nice to have you here.",
+        "decision": "原候选的['Good']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-855.48.json",
+        "evidence_sha256": "2710e3018aaee0f31d44056f4c416e39ed737f5ec52de1d80314d5190c7206c6",
+        "model_texts": {
+          "Parakeet": "And students through the NEA Foundation. Good morning, Harriet. Nice to have you here. Good morning.",
+          "Whisper": "and students through the NEA Foundation. Good morning, Harriet. Nice to have you here. Good morning."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1290,
+        1291
+      ],
+      "asr_text": [
+        "I",
+        "did"
+      ],
+      "window": [
+        870.01,
+        870.25
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['I', 'did']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1291,
+            1292
+          ],
+          "asr_text": [
+            "I",
+            "did"
+          ],
+          "window": [
+            870.24,
+            870.4
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          866.74,
+          873.9
+        ],
+        "source_corresponding_phrase": "Although I did not remain",
+        "decision": "原候选的['I', 'did']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-870.24.json",
+        "evidence_sha256": "be230592a924bbba50420b0f7206d1bc422b7ff071cfcbedd698c51f96f9c4cf",
+        "model_texts": {
+          "Parakeet": "School teacher at an elementary school. Although I did not remain in the classroom for many years, my commitment to",
+          "Whisper": "school teacher at an elementary school. Although I did not remain in the classroom for many years, my commitment to"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1370
+      ],
+      "asr_text": [
+        "adamant"
+      ],
+      "window": [
+        900.93,
+        901.41
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['adamant']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1369
+          ],
+          "asr_text": [
+            "adamant"
+          ],
+          "window": [
+            900.93,
+            901.41
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          897.43,
+          904.91
+        ],
+        "source_corresponding_phrase": "but they were adamant",
+        "decision": "原候选的['adamant']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-900.93.json",
+        "evidence_sha256": "29f279acc6f67f898f214af3c20fcb54fcfc7bc733cf98ba8809f79ade60c388",
+        "model_texts": {
+          "Parakeet": "Nor father completed their education, but they were adamant that their children take advantage of all of the opportunities.",
+          "Whisper": "their nor father completed their education, but they were adamant that their children take advantage of all of the opportunities."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 24,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Um"
+        }
+      ],
+      "asr_indices": [
+        1467
+      ],
+      "asr_text": [
+        "Hmm,"
+      ],
+      "window": [
+        942.52,
+        943.08
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Um",
+          "actual_ASR_rows": [
+            [
+              "Hmm,",
+              942.52,
+              943.08
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        },
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Harriet",
+          "actual_ASR_rows": [
+            [
+              "Harry,",
+              944.68,
+              945.24
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 24,
+          "char": [
+            16,
+            23
+          ],
+          "text": "Harriet"
+        }
+      ],
+      "asr_indices": [
+        1471
+      ],
+      "asr_text": [
+        "Harry,"
+      ],
+      "window": [
+        944.68,
+        945.24
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Um",
+          "actual_ASR_rows": [
+            [
+              "Hmm,",
+              942.52,
+              943.08
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        },
+        {
+          "sentence": 24,
+          "en": "Um, I see. Now, Harriet, can you tell us what the NEA foundation is and what support it gives teachers?",
+          "source_text": "Harriet",
+          "actual_ASR_rows": [
+            [
+              "Harry,",
+              944.68,
+              945.24
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/harriet_filler.json",
+          "evidence_sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1529
+      ],
+      "asr_text": [
+        "Last"
+      ],
+      "window": [
+        973.93,
+        974.25
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Last']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1528
+          ],
+          "asr_text": [
+            "Last"
+          ],
+          "window": [
+            973.93,
+            974.25
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          970.43,
+          977.75
+        ],
+        "source_corresponding_phrase": "Last year, our grants",
+        "decision": "原候选的['Last']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-973.93.json",
+        "evidence_sha256": "bdd504bdcedcf31b278b34e039ef8ca6b76c1199c8f978a64443dd7c4c958bda",
+        "model_texts": {
+          "Parakeet": "Their creative and innovative classroom projects. Last year, our grants empowered more than 6,000.",
+          "Whisper": "their creative and innovative classroom projects. Last year, our grants empowered more than 6,000"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1628
+      ],
+      "asr_text": [
+        "I"
+      ],
+      "window": [
+        1021.24,
+        1021.32
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['I']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2022,
+        "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1627
+          ],
+          "asr_text": [
+            "I"
+          ],
+          "window": [
+            1021.24,
+            1021.32
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1017.74,
+          1024.82
+        ],
+        "source_corresponding_phrase": "I have heard",
+        "decision": "原候选的['I']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2022-extra-1021.24.json",
+        "evidence_sha256": "1917752b2be59ff48dfb374d3b1152bf5c264c957c1b7d0f044b663d190343df",
+        "model_texts": {
+          "Parakeet": "Curriculum in their own schools and communities. I have heard that you have a partner called Everfy. How do you?",
+          "Whisper": "curriculum in their homeschools and communities. I have heard that you have a partner called Everfi."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 37,
+          "char": [
+            7,
+            13
+          ],
+          "text": "EverFi"
+        }
+      ],
+      "asr_indices": [
+        1640
+      ],
+      "asr_text": [
+        "Everphi"
+      ],
+      "window": [
+        1024.84,
+        1025.48
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 37,
+          "en": "How do EverFi and the NEA foundation work together?",
+          "source_text": "EverFi",
+          "actual_ASR_rows": [
+            [
+              "Everphi",
+              1024.84,
+              1025.48
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+          "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 38,
+          "char": [
+            29,
+            35
+          ],
+          "text": "EverFi"
+        }
+      ],
+      "asr_indices": [
+        1652
+      ],
+      "asr_text": [
+        "Everphy"
+      ],
+      "window": [
+        1031.24,
+        1031.96
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 38,
+          "en": "Yeah, the NEA foundation and EverFi work together to increase educator and student access to technology and digital learning tools.",
+          "source_text": "EverFi",
+          "actual_ASR_rows": [
+            [
+              "Everphy",
+              1031.24,
+              1031.96
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2022/everfi.json",
+          "evidence_sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 5,
+          "char": [
+            37,
+            40
+          ],
+          "text": "ten"
+        }
+      ],
+      "asr_indices": [
+        1171
+      ],
+      "asr_text": [
+        "10-second"
+      ],
+      "window": [
+        789.04,
+        789.68
+      ],
+      "canonical": [
+        "#10"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            96,
+            101
+          ],
+          "text": "under"
+        },
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            102,
+            108
+          ],
+          "text": "served"
+        }
+      ],
+      "asr_indices": [
+        1308
+      ],
+      "asr_text": [
+        "underserved"
+      ],
+      "window": [
+        875.52,
+        876.32
+      ],
+      "canonical": [
+        "served",
+        "under"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 25,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1487
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        951.33,
+        951.65
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 41,
+          "char": [
+            6,
+            8
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1694
+      ],
+      "asr_text": [
+        "okay."
+      ],
+      "window": [
+        1050.93,
+        1051.17
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 49,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1813
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        1102.45,
+        1102.93
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 53,
+          "char": [
+            9,
+            10
+          ],
+          "text": "1"
+        }
+      ],
+      "asr_indices": [
+        1848
+      ],
+      "asr_text": [
+        "one:"
+      ],
+      "window": [
+        1116.89,
+        1117.37
+      ],
+      "canonical": [
+        "#1"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 55,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1868
+      ],
+      "asr_text": [
+        "three:"
+      ],
+      "window": [
+        1147.92,
+        1148.56
+      ],
+      "canonical": [
+        "#3"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 57,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1896
+      ],
+      "asr_text": [
+        "five:"
+      ],
+      "window": [
+        1182.81,
+        1183.53
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "source_references": [
+    {
+      "path": "来源/2022/解析.txt",
+      "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2022年专八真题+音频+解析/2022年英语专八真题解析.pdf",
+      "sha256": "a1c78bd868984feb346f9df8a580a1b7f70f638c26ad861ae405315b63df0e54",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+    }
+  ],
+  "source_variant_dispositions": {
+    "recorded_original_audio_checks": [],
+    "recorded_body_audio_corrections": [
+      {
+        "year": 2022,
+        "unit": "2022-B1",
+        "case": "underserved",
+        "old_en": "Although I did not remain in the classroom for many years, my commitment to improving lives in under-served communities for the better never faltered.",
+        "new_en": "Although I did not remain in the classroom for many years, my commitment to improving lives and under-served communities for the better never faltered.",
+        "new_zh": "虽然我在课堂上任教的年头不算很多，但我致力于改善人们生活、改善服务不足社区状况的决心，从未动摇。",
+        "evidence": {
+          "file": "核验/正文异文复核/2022/underserved.json",
+          "sha256": "6a096fcc4b61d687ae3b605eae3ecec51da89ce0223ed8f557afec6be7b31113",
+          "source_sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+          "canonical_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+          "windows": [
+            [
+              870,
+              881
+            ],
+            [
+              868.65,
+              882.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "I did not remain in the classroom for many years, my commitment to improving lives and underserved communities for the better never faltered. It has been a privilege to work.",
+            "whisper": "school. Although I did not remain in the classroom for many years, my commitment to improving lives and underserved communities for the better never faltered. It has been a privilege to work in education"
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      },
+      {
+        "year": 2022,
+        "unit": "2022-B1",
+        "case": "grants_number",
+        "old_en": "Last year, all grants empowered more than 6,000 educators, reaching more than 186,000 students.",
+        "new_en": "Last year, our grants empowered more than 6,000 educators, reaching more than 186,000 students.",
+        "new_zh": "去年，我们的资助共支持了6000多名教育工作者，惠及18.6万多名学生。",
+        "evidence": {
+          "file": "核验/正文异文复核/2022/grants_number.json",
+          "sha256": "650602cfac4a341870ff64b9eddb1bb058fc500d5bdd1471cff246a4e31e3101",
+          "source_sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+          "canonical_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+          "windows": [
+            [
+              971,
+              985
+            ],
+            [
+              969.65,
+              986.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "And innovative classroom projects. Last year, our grants empowered more than 6,000 educators, reaching more than 186,000 students. That's wonderful.",
+            "whisper": "to fund their creative and innovative classroom projects. Last year, our grants empowered more than 6,000 educators, reaching more than 186,000 students. That's wonderful. We also have annual..."
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      }
+    ],
+    "current_binding_proof_note": "历史修订记录原样保留；本次真实词锚/整句例外的有效证据引用及SHA逐项在本候选另核，不将旧修订时SHA冒称当前文件SHA。"
+  },
+  "bilingual_vocabulary_review": {
+    "all_sentences_and_vocabulary_read": true,
+    "review_total_scope": "423句逐句审阅，包括语境词性/lemma与释义、否定/条件、数值/计量单位、列举和插入语；不独立重推答案。",
+    "specific_semantic_checks": [
+      "1969年创立、每年三次资助、6000多名教师及186000多名学生数量准确；未把millions或percent误套。",
+      "neither父母完成学业的否定、基金会支持资源及教师追求卓越/关爱学生含义对应。"
+    ],
+    "known_corrections": "2023-A两处句末逗号句点与look→看起来，见2023-A-三处显示译意修复.json；其他未发现明确错义。",
+    "all_sp_valid_and_nonoverlapping": true,
+    "names_exact": true
+  },
+  "manual_plan_checks": [
+    {
+      "en": "Today we are having Harriet Sanford on our program to hear about her career in education and her current work supporting public teachers and students through the NEA foundation.",
+      "at": "and her current work supporting",
+      "zh": [
+        "今天，我们邀请到哈丽雅特·桑福德，听她谈谈自己的教育生涯，",
+        "以及她目前通过NEA基金会支持公立学校教师和学生的工作。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "and her current work supporting",
+          "actual_word": "and",
+          "actual_word_start": 848.85,
+          "actual_word_end": 848.93,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "Neither my mother nor father completed their education, but they were adamant that their children take advantage of all of the opportunities that a public education offers both in and out of school time.",
+      "at": "but they were adamant",
+      "zh": [
+        "我父母都没有完成学业，",
+        "但他们坚持要自己的孩子利用公共教育在课内外提供的一切机会。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "but they were adamant",
+          "actual_word": "but",
+          "actual_word_start": 900.37,
+          "actual_word_end": 900.45,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "Yeah. OK. The partnership currently supports NEA school districts across the country, providing free access to EverFi’s digital resources and accompanying professional development.",
+      "at": "providing free access to",
+      "zh": [
+        "可以。好的。目前，这项合作为全国各地的NEA学区提供支持，",
+        "让它们免费使用EverFi的数字资源，并获得配套的专业发展培训。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "providing free access to",
+          "actual_word": "providing",
+          "actual_word_start": 1056.57,
+          "actual_word_end": 1056.97,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "核验/补词锚/2022/已核局部ASR核验.json",
+      "sha256": "7c29d977fba4e6fb7a965740ebc35c184d1b4d7e2b02197b89bfca43126b96b9"
+    },
+    {
+      "file": "核验/正文异文复核/2022/harriet_filler.json",
+      "sha256": "c0e3afd04811529e85a077443ea9b2f9871c84368d4d32e9821bf194f1db3754"
+    },
+    {
+      "file": "核验/正文异文复核/2022/everfi.json",
+      "sha256": "c7c388b157246808b21b969ec73bd85b62300479a4206f34092b976b6633d846"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2022-extra-855.48.json",
+      "sha256": "2710e3018aaee0f31d44056f4c416e39ed737f5ec52de1d80314d5190c7206c6"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2022-extra-870.24.json",
+      "sha256": "be230592a924bbba50420b0f7206d1bc422b7ff071cfcbedd698c51f96f9c4cf"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2022-extra-900.93.json",
+      "sha256": "29f279acc6f67f898f214af3c20fcb54fcfc7bc733cf98ba8809f79ade60c388"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2022-extra-973.93.json",
+      "sha256": "bdd504bdcedcf31b278b34e039ef8ca6b76c1199c8f978a64443dd7c4c958bda"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2022-extra-1021.24.json",
+      "sha256": "1917752b2be59ff48dfb374d3b1152bf5c264c957c1b7d0f044b663d190343df"
+    },
+    {
+      "file": "核验/正文清理/2022-人工词锚.json",
+      "sha256": "4df756f515eaa50cf86583c67d705a38db8d93a772b0bbaa062f5bd50457157f"
+    },
+    {
+      "file": "核验/剩余源审核候选/原音及材料引用复核.json",
+      "sha256": "5906de1c5d3c86667932272dfaf3b5bc1038f01e7e04e2cbfb7aec3248dcd194"
+    },
+    {
+      "file": "核验/剩余源审核候选/额外ASR逐项裁决.json",
+      "sha256": "d300437c9fdc79bbed4ecd56212ac82e50ec6e1a9baf032603a2a08c5df0f4dc"
+    },
+    {
+      "file": "核验/第二批人工语义分屏/分屏平表.json",
+      "sha256": "d21d8fe10e74f01f16451652d8edd85292eb675ca08cbf471cd7684a4db3630e"
+    }
+  ],
+  "next": "root阅读本篇具体差异/例外后写源审核及registry；PNG和实际音频换屏guard另审。"
+}

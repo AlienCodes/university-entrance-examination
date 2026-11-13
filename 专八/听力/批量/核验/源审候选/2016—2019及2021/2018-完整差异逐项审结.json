@@ -1,0 +1,1126 @@
+{
+  "year": 2018,
+  "alignment_report": {
+    "file": "核验/原文对齐/2018/对齐报告.json",
+    "sha256": "121ccd7d181938c69a7ae33309c0eb153b0e6914c7b5d72b727198c74a0cfb7f"
+  },
+  "effective_ASR": {
+    "file": "核验/原文对齐/2018/含说明识别.json",
+    "sha256": "2624e5da1ee42a69f4f60e6fa167134e823f320893c72965cc433cf8032d9c3c"
+  },
+  "canonical_source_sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8",
+  "differences": [
+    {
+      "index": 0,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 19,
+          "char": [
+            69,
+            76
+          ],
+          "text": "human’s"
+        }
+      ],
+      "asr_indices": [
+        213
+      ],
+      "asr_text": [
+        "humans'"
+      ],
+      "window": [
+        122.96,
+        123.44
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 1,
+        "unit": "2018-A",
+        "sentence": 19,
+        "source_sentence_en": "Now, we need to explain how and why this remarkable trait, you know, human’s ability to do things with language has evolved, and why did this trait evolve only in our species?",
+        "char": [
+          69,
+          76
+        ],
+        "text": "human’s",
+        "asr_indices": [
+          213
+        ],
+        "asr_text": [
+          "humans'"
+        ],
+        "source_asr_rows": [
+          [
+            "humans'",
+            122.96,
+            123.44
+          ]
+        ],
+        "evidence": "human’s与humans'在此同音/hjuːmənz/；纸源原样human’s。声学不能判定撇号归属，保留纸源字形，仅该同一真实整词时间共用。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/0",
+        "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+        "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
+        "window": [
+          122.96,
+          123.44
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        590
+      ],
+      "asr_text": [
+        "you."
+      ],
+      "window": [
+        274.72,
+        274.88
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/21",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          270.72,
+          278.88
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        648
+      ],
+      "asr_text": [
+        "what."
+      ],
+      "window": [
+        299.64,
+        299.8
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/22",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          295.64,
+          303.8
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 48,
+          "char": [
+            7,
+            11
+          ],
+          "text": "some"
+        },
+        {
+          "unit": "2018-A",
+          "sentence": 48,
+          "char": [
+            12,
+            16
+          ],
+          "text": "time"
+        }
+      ],
+      "asr_indices": [
+        739
+      ],
+      "asr_text": [
+        "sometime"
+      ],
+      "window": [
+        336.2,
+        336.68
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 2,
+        "unit": "2018-A",
+        "sentence": 48,
+        "source_sentence_en": "And so some time around 200,000 years ago, our species confronted this crisis.",
+        "char": [
+          7,
+          16
+        ],
+        "text": "some time",
+        "asr_indices": [
+          739
+        ],
+        "asr_text": [
+          "sometime"
+        ],
+        "source_asr_rows": [
+          [
+            "sometime",
+            336.2,
+            336.68
+          ]
+        ],
+        "evidence": "纸源some time，局部Whisper/主识别合写sometime；around 200,000 years ago语境同一时间表达。两词仅共享ASR真实sometime整词区间，不虚造内部time边界。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/1",
+        "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+        "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
+        "window": [
+          336.2,
+          336.68
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        829
+      ],
+      "asr_text": [
+        "inheritance."
+      ],
+      "window": [
+        374.64,
+        374.96
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/23",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          370.64,
+          378.96
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 56,
+          "char": [
+            43,
+            52
+          ],
+          "text": "developed"
+        }
+      ],
+      "asr_indices": [
+        894
+      ],
+      "asr_text": [
+        "develop"
+      ],
+      "window": [
+        403.36,
+        403.76
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 3,
+        "unit": "2018-A",
+        "sentence": 56,
+        "source_sentence_en": "But, as we spread out around the world, we developed thousands of different languages.",
+        "char": [
+          43,
+          52
+        ],
+        "text": "developed",
+        "asr_indices": [
+          894
+        ],
+        "asr_text": [
+          "develop"
+        ],
+        "source_asr_rows": [
+          [
+            "develop",
+            403.36,
+            403.76
+          ]
+        ],
+        "evidence": "数字/B1纸源过去式developed；独立Whisper399—414明确developed；Parakeet漏弱读词尾t为develop。采纳纸源与独立模型读法，保留过去式；仅该完整单词的真实声段绑定，无全局develop/developed等价。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/2",
+        "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+        "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
+        "window": [
+          403.36,
+          403.76
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1113
+      ],
+      "asr_text": [
+        "in."
+      ],
+      "window": [
+        499.64,
+        499.88
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/24",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          495.64,
+          503.88
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1474
+      ],
+      "asr_text": [
+        "elections."
+      ],
+      "window": [
+        874.64,
+        874.88
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/26",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          870.64,
+          878.88
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1740
+      ],
+      "asr_text": [
+        "population."
+      ],
+      "window": [
+        974.64,
+        974.96
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/27",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          970.64,
+          978.96
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 15,
+          "char": [
+            20,
+            22
+          ],
+          "text": "we"
+        },
+        {
+          "unit": "2018-A",
+          "sentence": 15,
+          "char": [
+            23,
+            26
+          ],
+          "text": "are"
+        }
+      ],
+      "asr_indices": [
+        117
+      ],
+      "asr_text": [
+        "we're"
+      ],
+      "window": [
+        86.68,
+        87.08
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "we are",
+      "reviewed_ASR_text": "we're"
+    },
+    {
+      "index": 10,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 19,
+          "char": [
+            69,
+            76
+          ],
+          "text": "human’s"
+        }
+      ],
+      "asr_indices": [
+        213
+      ],
+      "asr_text": [
+        "humans'"
+      ],
+      "window": [
+        122.96,
+        123.44
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 1,
+        "unit": "2018-A",
+        "sentence": 19,
+        "source_sentence_en": "Now, we need to explain how and why this remarkable trait, you know, human’s ability to do things with language has evolved, and why did this trait evolve only in our species?",
+        "char": [
+          69,
+          76
+        ],
+        "text": "human’s",
+        "asr_indices": [
+          213
+        ],
+        "asr_text": [
+          "humans'"
+        ],
+        "source_asr_rows": [
+          [
+            "humans'",
+            122.96,
+            123.44
+          ]
+        ],
+        "evidence": "human’s与humans'在此同音/hjuːmənz/；纸源原样human’s。声学不能判定撇号归属，保留纸源字形，仅该同一真实整词时间共用。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/0",
+        "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+        "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
+        "window": [
+          122.96,
+          123.44
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 48,
+          "char": [
+            7,
+            11
+          ],
+          "text": "some"
+        },
+        {
+          "unit": "2018-A",
+          "sentence": 48,
+          "char": [
+            12,
+            16
+          ],
+          "text": "time"
+        }
+      ],
+      "asr_indices": [
+        739
+      ],
+      "asr_text": [
+        "sometime"
+      ],
+      "window": [
+        336.2,
+        336.68
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 2,
+        "unit": "2018-A",
+        "sentence": 48,
+        "source_sentence_en": "And so some time around 200,000 years ago, our species confronted this crisis.",
+        "char": [
+          7,
+          16
+        ],
+        "text": "some time",
+        "asr_indices": [
+          739
+        ],
+        "asr_text": [
+          "sometime"
+        ],
+        "source_asr_rows": [
+          [
+            "sometime",
+            336.2,
+            336.68
+          ]
+        ],
+        "evidence": "纸源some time，局部Whisper/主识别合写sometime；around 200,000 years ago语境同一时间表达。两词仅共享ASR真实sometime整词区间，不虚造内部time边界。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/1",
+        "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+        "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
+        "window": [
+          336.2,
+          336.68
+        ]
+      }
+    },
+    {
+      "index": 12,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 56,
+          "char": [
+            43,
+            52
+          ],
+          "text": "developed"
+        }
+      ],
+      "asr_indices": [
+        894
+      ],
+      "asr_text": [
+        "develop"
+      ],
+      "window": [
+        403.36,
+        403.76
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 3,
+        "unit": "2018-A",
+        "sentence": 56,
+        "source_sentence_en": "But, as we spread out around the world, we developed thousands of different languages.",
+        "char": [
+          43,
+          52
+        ],
+        "text": "developed",
+        "asr_indices": [
+          894
+        ],
+        "asr_text": [
+          "develop"
+        ],
+        "source_asr_rows": [
+          [
+            "develop",
+            403.36,
+            403.76
+          ]
+        ],
+        "evidence": "数字/B1纸源过去式developed；独立Whisper399—414明确developed；Parakeet漏弱读词尾t为develop。采纳纸源与独立模型读法，保留过去式；仅该完整单词的真实声段绑定，无全局develop/developed等价。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/2",
+        "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+        "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
+        "window": [
+          403.36,
+          403.76
+        ]
+      }
+    },
+    {
+      "index": 13,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 64,
+          "char": [
+            55,
+            60
+          ],
+          "text": "we’ve"
+        }
+      ],
+      "asr_indices": [
+        1047,
+        1048
+      ],
+      "asr_text": [
+        "we",
+        "have"
+      ],
+      "window": [
+        472.88,
+        473.12
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "we’ve",
+      "reviewed_ASR_text": "we have"
+    },
+    {
+      "index": 14,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 69,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1140
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        510.96,
+        511.6
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "OK",
+      "reviewed_ASR_text": "Okay,"
+    },
+    {
+      "index": 15,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 69,
+          "char": [
+            24,
+            28
+          ],
+          "text": "I’ve"
+        }
+      ],
+      "asr_indices": [
+        1144,
+        1145
+      ],
+      "asr_text": [
+        "I",
+        "have"
+      ],
+      "window": [
+        513.12,
+        513.36
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "I’ve",
+      "reviewed_ASR_text": "I have"
+    },
+    {
+      "index": 16,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B1",
+          "sentence": 6,
+          "char": [
+            37,
+            40
+          ],
+          "text": "ten"
+        }
+      ],
+      "asr_indices": [
+        1254
+      ],
+      "asr_text": [
+        "10-second"
+      ],
+      "window": [
+        751.08,
+        751.72
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "ten",
+      "reviewed_ASR_text": "10-second"
+    },
+    {
+      "index": 17,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B1",
+          "sentence": 37,
+          "char": [
+            9,
+            10
+          ],
+          "text": "2"
+        }
+      ],
+      "asr_indices": [
+        1806
+      ],
+      "asr_text": [
+        "two."
+      ],
+      "window": [
+        1011.49,
+        1012.21
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "2",
+      "reviewed_ASR_text": "two."
+    },
+    {
+      "index": 18,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B1",
+          "sentence": 38,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1818
+      ],
+      "asr_text": [
+        "three:"
+      ],
+      "window": [
+        1027.59,
+        1028.47
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "3",
+      "reviewed_ASR_text": "three:"
+    },
+    {
+      "index": 19,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B1",
+          "sentence": 39,
+          "char": [
+            9,
+            10
+          ],
+          "text": "4"
+        }
+      ],
+      "asr_indices": [
+        1835
+      ],
+      "asr_text": [
+        "four."
+      ],
+      "window": [
+        1045.86,
+        1046.58
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "4",
+      "reviewed_ASR_text": "four."
+    },
+    {
+      "index": 20,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B1",
+          "sentence": 40,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1850
+      ],
+      "asr_text": [
+        "five."
+      ],
+      "window": [
+        1062.7,
+        1063.42
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "5",
+      "reviewed_ASR_text": "five."
+    },
+    {
+      "index": 21,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 3,
+          "char": [
+            56,
+            58
+          ],
+          "text": "Mr"
+        }
+      ],
+      "asr_indices": [
+        1895
+      ],
+      "asr_text": [
+        "mister"
+      ],
+      "window": [
+        1091.51,
+        1091.91
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "Mr",
+      "reviewed_ASR_text": "mister"
+    },
+    {
+      "index": 22,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 11,
+          "char": [
+            50,
+            57
+          ],
+          "text": "percent"
+        }
+      ],
+      "asr_indices": [
+        2086
+      ],
+      "asr_text": [
+        "56%"
+      ],
+      "window": [
+        1163.55,
+        1164.51
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "percent",
+      "reviewed_ASR_text": "56%"
+    },
+    {
+      "index": 23,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 11,
+          "char": [
+            64,
+            71
+          ],
+          "text": "percent"
+        }
+      ],
+      "asr_indices": [
+        2088
+      ],
+      "asr_text": [
+        "44%."
+      ],
+      "window": [
+        1165.15,
+        1166.67
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "percent",
+      "reviewed_ASR_text": "44%."
+    },
+    {
+      "index": 24,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 28,
+          "char": [
+            7,
+            8
+          ],
+          "text": "I"
+        },
+        {
+          "unit": "2018-B2",
+          "sentence": 28,
+          "char": [
+            9,
+            11
+          ],
+          "text": "am"
+        }
+      ],
+      "asr_indices": [
+        2395
+      ],
+      "asr_text": [
+        "I'm"
+      ],
+      "window": [
+        1285.31,
+        1285.63
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "I am",
+      "reviewed_ASR_text": "I'm"
+    },
+    {
+      "index": 25,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 33,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2438
+      ],
+      "asr_text": [
+        "six:"
+      ],
+      "window": [
+        1303.99,
+        1304.95
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "6",
+      "reviewed_ASR_text": "six:"
+    },
+    {
+      "index": 26,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 34,
+          "char": [
+            9,
+            10
+          ],
+          "text": "7"
+        }
+      ],
+      "asr_indices": [
+        2450
+      ],
+      "asr_text": [
+        "seven:"
+      ],
+      "window": [
+        1320.35,
+        1321.23
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "7",
+      "reviewed_ASR_text": "seven:"
+    },
+    {
+      "index": 27,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 35,
+          "char": [
+            9,
+            10
+          ],
+          "text": "8"
+        }
+      ],
+      "asr_indices": [
+        2464
+      ],
+      "asr_text": [
+        "eight."
+      ],
+      "window": [
+        1335.5,
+        1336.06
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "8",
+      "reviewed_ASR_text": "eight."
+    },
+    {
+      "index": 28,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-B2",
+          "sentence": 36,
+          "char": [
+            9,
+            10
+          ],
+          "text": "9"
+        }
+      ],
+      "asr_indices": [
+        2477
+      ],
+      "asr_text": [
+        "nine."
+      ],
+      "window": [
+        1350.5,
+        1351.22
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "9",
+      "reviewed_ASR_text": "nine."
+    }
+  ],
+  "extra_groups_resolved": 6,
+  "source_ratio": 1.0,
+  "source_lexical_lexemes": 2508,
+  "nonverbal_not_word_lexemes": 0,
+  "scope": "只读内容/声学来源候选证据；不更改原ASR，不批准任何画面或成品。"
+}

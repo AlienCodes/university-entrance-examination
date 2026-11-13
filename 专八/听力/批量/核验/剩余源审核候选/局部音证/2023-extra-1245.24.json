@@ -1,0 +1,223 @@
+{
+  "year": 2023,
+  "id": "2023-extra-1245.24",
+  "window": [
+    1241.74,
+    1248.82
+  ],
+  "query": "核ASR额外段是否真实重读/漏译：['A']",
+  "initial_ASR_difference": {
+    "kind": "insert",
+    "source": [],
+    "asr_indices": [
+      2051
+    ],
+    "asr_text": [
+      "A"
+    ],
+    "window": [
+      1245.24,
+      1245.32
+    ],
+    "decision": "machine_candidate_unreviewed"
+  },
+  "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+  "original_source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+  "analysis_only": "16k单声道局部分析副本；原音采样率/声道/PCM/音量未改。Whisper仅文字佐证，无逐词时刻；Parakeet词尾为模型末token+0.08s估计。",
+  "recognitions": [
+    {
+      "model": "Parakeet",
+      "model_sha256": {
+        "encoder": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+        "decoder": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+        "joiner": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+        "tokens": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+      },
+      "text": "A whole year? No, it's not. A gap year is just time out between life stages.",
+      "tokens": [
+        " A",
+        " who",
+        "le",
+        " year",
+        "?",
+        " No",
+        ",",
+        " it",
+        "'",
+        "s",
+        " not",
+        ".",
+        " A",
+        " g",
+        "ap",
+        " year",
+        " is",
+        " just",
+        " time",
+        " out",
+        " between",
+        " life",
+        " st",
+        "ag",
+        "es",
+        "."
+      ],
+      "timestamps": [
+        0.23999999463558197,
+        0.3199999928474426,
+        0.47999998927116394,
+        0.6399999856948853,
+        1.1999999284744263,
+        1.8399999141693115,
+        2.1599998474121094,
+        2.3999998569488525,
+        2.559999942779541,
+        2.7200000286102295,
+        2.879999876022339,
+        3.119999885559082,
+        3.43999981880188,
+        3.679999828338623,
+        3.8399999141693115,
+        4.079999923706055,
+        4.400000095367432,
+        4.639999866485596,
+        5.039999961853027,
+        5.279999732971191,
+        5.679999828338623,
+        6.0,
+        6.399999618530273,
+        6.559999942779541,
+        6.71999979019165,
+        6.87999963760376
+      ],
+      "words": [
+        [
+          "A",
+          1241.98,
+          1242.06
+        ],
+        [
+          "whole",
+          1242.06,
+          1242.3
+        ],
+        [
+          "year?",
+          1242.38,
+          1243.02
+        ],
+        [
+          "No,",
+          1243.58,
+          1243.98
+        ],
+        [
+          "it's",
+          1244.14,
+          1244.54
+        ],
+        [
+          "not.",
+          1244.62,
+          1244.94
+        ],
+        [
+          "A",
+          1245.18,
+          1245.26
+        ],
+        [
+          "gap",
+          1245.42,
+          1245.66
+        ],
+        [
+          "year",
+          1245.82,
+          1245.9
+        ],
+        [
+          "is",
+          1246.14,
+          1246.22
+        ],
+        [
+          "just",
+          1246.38,
+          1246.46
+        ],
+        [
+          "time",
+          1246.78,
+          1246.86
+        ],
+        [
+          "out",
+          1247.02,
+          1247.1
+        ],
+        [
+          "between",
+          1247.42,
+          1247.5
+        ],
+        [
+          "life",
+          1247.74,
+          1247.82
+        ],
+        [
+          "stages.",
+          1248.14,
+          1248.7
+        ]
+      ],
+      "elapsed": 1.4696277800030657
+    },
+    {
+      "model": "Whisper",
+      "model_sha256": {
+        "encoder": "ef6b936f4c9b1d90a3b68634b60c4ed8576b26172b33c2535ec0e933c9edb823",
+        "decoder": "f7162ad6db2dbef16cfaeaa7f945b9d7dd9c1b8d472f6aca82f2273d185e4d41",
+        "tokens": "306cd27f03c1a714eca7108e03d66b7dc042abe8c258b44c199a7ed9838dd930"
+      },
+      "text": "The whole year? No, it's not. A gap year is just time out between life stages. [static] [static] [static]",
+      "tokens": [
+        " The",
+        " whole",
+        " year",
+        "?",
+        " No",
+        ",",
+        " it",
+        "'s",
+        " not",
+        ".",
+        " A",
+        " gap",
+        " year",
+        " is",
+        " just",
+        " time",
+        " out",
+        " between",
+        " life",
+        " stages",
+        ".",
+        " [",
+        "static",
+        "]",
+        " [",
+        "static",
+        "]",
+        " [",
+        "static",
+        "]"
+      ],
+      "timestamps": [],
+      "words": [],
+      "elapsed": 1.7541349189996254
+    }
+  ],
+  "status": "定点识别证据，仍须具体裁决，不构成source-approved"
+}

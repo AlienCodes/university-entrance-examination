@@ -5665,8 +5665,62 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2010/对齐报告.json",
-    "content_sha256": "596283aa4a4d82e5530cdc910f53b5f24ab1542628c926d686b5c8f3564c12c4"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "f6acdfeb6723265584f3fceaeb81410963b008cb4b538d2e0114b9573750d933"
+  },
+  "splits": {
+    "13": {
+      "at": "to older, wealthier whites.",
+      "zh": [
+        "因此，今后可能会出现这样的局面：财富通过制度性的再分配，从较年轻、较贫穷的少数族裔群体，",
+        "流向较年长、较富裕的白人。"
+      ]
+    },
+    "24": {
+      "at": "while at the same time",
+      "zh": [
+        "所以我们可以看到，美国的许多地方确实正在变得更多元；",
+        "与此同时，另一些地方在种族、年龄和宗教方面基本保持不变。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 13,
+        "at": "to older, wealthier whites.",
+        "real_word_anchor": true,
+        "char": 108,
+        "start": 1297.82,
+        "end": 1297.9
+      },
+      {
+        "sentence": 24,
+        "at": "while at the same time",
+        "real_word_anchor": true,
+        "char": 68,
+        "start": 1367.86,
+        "end": 1368.1
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "13",
+      "24"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2010.json",
+    "mother_sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+    "english_sequence_sha256": "8ecc95bd67e71b04b9ce186356be56d80d970957c7dd7b3a681d9678d5babb8f",
+    "timing_fingerprint_unchanged": "df834cb407371e2315447045b62915c2557825ff8a36276a0fd1d34201e3ef53",
+    "previous_content_sha256": "596283aa4a4d82e5530cdc910f53b5f24ab1542628c926d686b5c8f3564c12c4",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

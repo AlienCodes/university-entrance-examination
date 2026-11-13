@@ -551,6 +551,13 @@ def publish(c, art, out):
             planned.append({'meta': m, 'video': dest, 'evidence': evidence})
         notes = ('本页为独立样片，仅含本次试跑单元，不代表全批完成。\n\n' if c['mode'] == 'sample' else '2009—2024实际考试材料；2020因疫情取消考试，没有虚构2020试卷。\n\n')
         notes += '考试沿用2025白底黑字规格；精听沿用专八阅读书卷水墨主题。原声不增益、不改采样率或声道，仅执行核定音乐剪切；精听另压缩经确认的长纯静音。原文/解析核对、截图登记和成品核验均随来源包保存。\n\n'
+        included_years = {m['year'] for _, m in data}
+        if included_years & set(range(2009, 2016)):
+            notes += '2009—2015年采用上传材料中的“新题型优化版”：试卷和录音均已按新题型改编，供对应练习与精听使用，不应当作当年未经改编的考试原版。\n\n'
+        if 2014 in included_years:
+            notes += '2014年选择题第2题的口述地名与正文数据指向冲突，已保留原题并明确标注不计分；不把有题源问题的参考选项当作确定答案。\n\n'
+        if 2022 in included_years:
+            notes += '2022年使用补充完整音源，保留原包缺失的开场说明与预览。等待区的低电平周期信号也保留，不作为纯静音删除。\n\n'
         notes += '单个MP4使用ASCII资产名，中文名见标签与包内文件名。下载中文ZIP分包即可按原中文名使用。\n\n'
         notes += '|资产|中文文件名|字节|\n|---|---|---:|\n' + ''.join(f'|{m["mp4"]}|{m["label"]}|{m["mp4_bytes"]}|\n' for _, m in data)
         notes_file = target / 'notes.md'; notes_file.write_text(notes, 'utf-8')

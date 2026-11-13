@@ -1,0 +1,1893 @@
+{
+  "id": "2023-B2",
+  "status": "source-review-candidate-only",
+  "source_approved": false,
+  "recommendation": "ready",
+  "blocking": [],
+  "scope": "仅建议root批准源EN/中文/词汇/真实锚及原音窗；不批准PNG、实际换屏guard或编码成品。",
+  "checked_at_UTC": "2026-11-13T21:54:05.683682+00:00",
+  "current": {
+    "mother_file": "译注草稿/2023.json",
+    "mother_file_sha256": "6a932a04b749f8d31928ec3a3927e4a1aa2269f779c36a702e34d22cab556b52",
+    "mother_semantic_sha256": "2cfadc9684be4b71af0e56b97e944fc81bb5c4c20803bb1eaa6493c3535d976d",
+    "final_file": "精听数据/2023-B2.json",
+    "final_file_sha256": "ed5309971d014a52c3a78c2fe10ecc88be75b722693056e1f0358e3e95898762",
+    "final_semantic_sha256": "2cfadc9684be4b71af0e56b97e944fc81bb5c4c20803bb1eaa6493c3535d976d",
+    "semantic_exact": true,
+    "final_production_content_sha256": "ffd4fc7f17dd5b880ac4848c5fd6a628d24d9cc62f9abd5f179880d59b9ffb61",
+    "alignment_report": "核验/原文对齐/2023/对齐报告.json",
+    "alignment_report_sha256": "e4328a1485dfd29460edd9253782860005fe312c905da78291d1e9fbe15bbefe",
+    "effective_ASR": "核验/原文对齐/2023/含说明识别.json",
+    "effective_ASR_sha256": "74f928a9575f84059aab7ad42d48f061c9d204bacbbd9409d37a7b635df2eae8"
+  },
+  "counts": {
+    "sentences": 46,
+    "vocabulary_entries": 68,
+    "source_lexemes": 684,
+    "mapped_lexemes": 683,
+    "word_alignment_segments": 676,
+    "reviewed_external_whole_word_spans": 1,
+    "whole_sentence_or_nonword_events": 1,
+    "nonverbal_lexemes_not_word_timed": 0,
+    "acoustic_interjection_missing_not_word_timed": 0,
+    "manual_plans": 4,
+    "spoken_questions_checked_against_exam": 5
+  },
+  "source_audio": {
+    "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+    "window": [
+      1216.6075,
+      1561.49
+    ],
+    "native_sample_rate": 44100,
+    "native_channels": 2,
+    "registered_pcm_sha256": "10665233e9d7909108b8765eb57aa4bc09334d6ab1cd6603bea117ac71dcd48e",
+    "original_source_entries": [
+      {
+        "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+        "bytes": 12531170,
+        "sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1565.88425
+        },
+        "decoded_pcm_sha256": "10665233e9d7909108b8765eb57aa4bc09334d6ab1cd6603bea117ac71dcd48e",
+        "decoded_frames": 69055488,
+        "canonical_start": 0.0,
+        "canonical_end": 1565.884081632653
+      }
+    ],
+    "boundary_evidence": {
+      "status": "measured_PCM_boundaries_or_complete_file_edge",
+      "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+      "source_entries": [
+        {
+          "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+          "sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618"
+        }
+      ],
+      "first_ASR_anchor": 1217.42,
+      "last_ASR_anchor": 1561.29,
+      "next_ASR_start": 1565.884081632653,
+      "window": [
+        1216.6075,
+        1561.49
+      ],
+      "start_kind": "measured_quiet_before_first_ASR_anchor",
+      "end_kind": "measured_quiet_after_last_ASR_anchor",
+      "leading_PCM": {
+        "decoded_window": [
+          1215.8200000000002,
+          1217.6200000000001
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            1215.82,
+            1217.52
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          -6.350259674596857e-05,
+          -6.350259674596857e-05
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -83.94,
+          -84.19,
+          -83.43,
+          -80.88,
+          -71.92,
+          -76.25,
+          -72.46,
+          -69.97,
+          -60.59,
+          -38.67,
+          -32.42,
+          -31.92,
+          -28.16,
+          -25.22,
+          -25.38,
+          -22.47,
+          -22.08,
+          -19.54,
+          -20.26
+        ]
+      },
+      "trailing_PCM": {
+        "decoded_window": [
+          1561.09,
+          1564.09
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            1561.09,
+            1564.09
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          6.039288987868371e-07,
+          5.671697505215525e-07
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -78.14,
+          -72.0,
+          -76.05,
+          -76.79,
+          -78.06,
+          -76.58,
+          -75.18,
+          -77.6,
+          -76.77,
+          -71.75,
+          -73.69,
+          -73.69,
+          -72.84,
+          -71.52,
+          -72.59,
+          -71.16,
+          -77.72,
+          -71.13,
+          -68.33,
+          -71.44,
+          -73.41,
+          -71.05,
+          -75.17,
+          -70.8,
+          -72.19,
+          -74.3,
+          -74.71,
+          -71.28,
+          -74.88,
+          -72.59,
+          -69.1,
+          -67.58,
+          -74.75,
+          -85.18,
+          -90.25,
+          -92.41,
+          -97.67,
+          -117.28,
+          -118.51,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65,
+          -118.65
+        ]
+      },
+      "note": "原采样率/声道PCM逐10ms实测低能量间隙；词尾仍是ASR候选，窗口未按词长估计；正式原音未修改。"
+    },
+    "first_sentence": {
+      "en": "Now listen to part two of the interview.",
+      "start": 1217.42,
+      "end": 1220.78
+    },
+    "last_sentence": {
+      "en": "This is the end of Part 1 Listening Comprehension.",
+      "start": 1557.29,
+      "end": 1561.29
+    },
+    "last_actual_word": {
+      "char": 36,
+      "char_end": 49,
+      "start": 1560.17,
+      "end": 1561.29,
+      "asr_indices": [
+        2671
+      ]
+    }
+  },
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [
+    {
+      "sentence": 22,
+      "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+      "missing": [
+        {
+          "text": "Ah",
+          "char": [
+            0,
+            2
+          ]
+        }
+      ],
+      "disposition": "verified_whole_sentence_acoustic_event"
+    }
+  ],
+  "legal_whole_sentence_and_nonword_events": [
+    {
+      "sentence": 22,
+      "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+      "kind": "verified_whole_sentence_acoustic_event",
+      "start": 1339.03,
+      "end": 1360.46,
+      "unknown_words_without_fake_word_times": [
+        {
+          "text": "Ah",
+          "char": [
+            0,
+            2
+          ]
+        }
+      ],
+      "evidence": {
+        "unit": "2023-B2",
+        "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+        "start": 1339.03,
+        "end": 1360.46,
+        "nonverbal": false,
+        "whole_sentence_audio_verified": true,
+        "word_alignment_policy": "retain_actual_ASR_only",
+        "evidence_ref": "核验/正文清理/2023-气声整句话轮/2023-B2.json",
+        "evidence_sha256": "effdebecab4433c4a7510d9bd3d7c433a7c548e3c8f2b88da2cd27247ec6c7bb",
+        "decision": "纸源保留Eh/Ah的非实义语气书写；该标记不强求模型拆为字词，也不假定独立音节内边界。两模型及已核原文支持完整话轮正文；首尾为实测原采样率双声道静段内截点，包住全部普通词实际ASR锚和原录声响。未知语气字无word_alignment，仅整句显示。",
+        "manifest": "核验/正文清理/2023-整句声学采纳.json",
+        "manifest_sha256": "295eacd0eb942691915e11662288eeef903d1a24ca33373f242dff9d6a9dc58f"
+      }
+    }
+  ],
+  "external_actual_word_span_evidence": [
+    {
+      "sentence": 22,
+      "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+      "source_text": "Qomolangma",
+      "actual_ASR_rows": [
+        [
+          "Komolangma,",
+          1356.28,
+          1357.56
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2023/qomolangma.json",
+      "evidence_sha256": "48e24bbfe4be2422f29edfc6bc1c66c1fdd40b7140a604a8bc2d396ecb4493e6",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    }
+  ],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2053
+      ],
+      "asr_text": [
+        "A"
+      ],
+      "window": [
+        1245.24,
+        1245.32
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['A']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2051
+          ],
+          "asr_text": [
+            "A"
+          ],
+          "window": [
+            1245.24,
+            1245.32
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1241.74,
+          1248.82
+        ],
+        "source_corresponding_phrase": "A gap year is just time-out",
+        "decision": "原候选的['A']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-1245.24.json",
+        "evidence_sha256": "bfffd639ee19f0a3ec990db4d72dcfc9daf749c9435e3374dc870673c713162e",
+        "model_texts": {
+          "Parakeet": "A whole year? No, it's not. A gap year is just time out between life stages.",
+          "Whisper": "The whole year? No, it's not. A gap year is just time out between life stages. [static] [static] [static]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 7,
+          "char": [
+            48,
+            51
+          ],
+          "text": "gap"
+        }
+      ],
+      "asr_indices": [
+        2071
+      ],
+      "asr_text": [
+        "GAAP"
+      ],
+      "window": [
+        1252.44,
+        1252.84
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 4,
+          "unit": "2023-B2",
+          "sentence": 7,
+          "char": [
+            48,
+            56
+          ],
+          "text": "gap year",
+          "asr_indices": [
+            2071,
+            2072
+          ],
+          "asr_text": [
+            "GAAP",
+            "year,"
+          ],
+          "source_asr_rows": [
+            [
+              "GAAP",
+              1252.44,
+              1252.84
+            ],
+            [
+              "year,",
+              1252.84,
+              1253.48
+            ]
+          ],
+          "source_sentence_en": "People from all ages and all backgrounds take a gap year.",
+          "evidence": "gap year为本访谈主题、原解析与根已核口述题干的固定词组；原ASR here/Pure/Gapia/GAAP为该处连读误标签，当前连续真实声段与原句对应。只将完整gap year词组绑定，不把here/Pure/GAAP作为全局同义词，也不猜gap/year内部秒数。证据：核验/正文异文复核/2023/project_question.json、gapyear.json；核验/2023-考试内容审核.json及母稿原页source_refs。",
+          "window": [
+            1252.44,
+            1253.48
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2234
+      ],
+      "asr_text": [
+        "Love"
+      ],
+      "window": [
+        1320.24,
+        1320.4
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Love']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2232
+          ],
+          "asr_text": [
+            "Love"
+          ],
+          "window": [
+            1320.24,
+            1320.4
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1316.74,
+          1323.9
+        ],
+        "source_corresponding_phrase": "We’d love to find out",
+        "decision": "原候选的['Love']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-1320.24.json",
+        "evidence_sha256": "24c3ea93a16f4eb76149ba4edbd8cf70c20651f550d655460b31c2c6bb4e9287",
+        "model_texts": {
+          "Parakeet": "Hearing than just traveling around. We'd love to find out what is on People's Travel List. Could you tell us?",
+          "Whisper": "hearing than just traveling around. We'd love to find out what is on people's travel list. Could you tell us... [static]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2279
+      ],
+      "asr_text": [
+        "After"
+      ],
+      "window": [
+        1335.08,
+        1335.24
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['After']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2277
+          ],
+          "asr_text": [
+            "After"
+          ],
+          "window": [
+            1335.08,
+            1335.24
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1331.58,
+          1338.74
+        ],
+        "source_corresponding_phrase": "After all, what do you do",
+        "decision": "原候选的['After']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-1335.08.json",
+        "evidence_sha256": "e66b57b39d82dee983ca7ba6e359a07becce5af568ed52ea3e28a865a8944f73",
+        "model_texts": {
+          "Parakeet": "Achievable and things that are perhaps unachievable. After all, what do you do when you've done everything?",
+          "Whisper": "evil and things that are perhaps unachievable. After all, what do you do when you've done everything? [SOUND]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 22,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Ah"
+        }
+      ],
+      "asr_indices": [
+        2289
+      ],
+      "asr_text": [
+        "Um"
+      ],
+      "window": [
+        1339.17,
+        1339.41
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 22,
+          "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+          "source_text": "Qomolangma",
+          "actual_ASR_rows": [
+            [
+              "Komolangma,",
+              1356.28,
+              1357.56
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2023/qomolangma.json",
+          "evidence_sha256": "48e24bbfe4be2422f29edfc6bc1c66c1fdd40b7140a604a8bc2d396ecb4493e6",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": [
+        {
+          "sentence": 22,
+          "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+          "kind": "verified_whole_sentence_acoustic_event",
+          "start": 1339.03,
+          "end": 1360.46,
+          "unknown_words_without_fake_word_times": [
+            {
+              "text": "Ah",
+              "char": [
+                0,
+                2
+              ]
+            }
+          ],
+          "evidence": {
+            "unit": "2023-B2",
+            "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+            "start": 1339.03,
+            "end": 1360.46,
+            "nonverbal": false,
+            "whole_sentence_audio_verified": true,
+            "word_alignment_policy": "retain_actual_ASR_only",
+            "evidence_ref": "核验/正文清理/2023-气声整句话轮/2023-B2.json",
+            "evidence_sha256": "effdebecab4433c4a7510d9bd3d7c433a7c548e3c8f2b88da2cd27247ec6c7bb",
+            "decision": "纸源保留Eh/Ah的非实义语气书写；该标记不强求模型拆为字词，也不假定独立音节内边界。两模型及已核原文支持完整话轮正文；首尾为实测原采样率双声道静段内截点，包住全部普通词实际ASR锚和原录声响。未知语气字无word_alignment，仅整句显示。",
+            "manifest": "核验/正文清理/2023-整句声学采纳.json",
+            "manifest_sha256": "295eacd0eb942691915e11662288eeef903d1a24ca33373f242dff9d6a9dc58f"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 22,
+          "char": [
+            221,
+            231
+          ],
+          "text": "Qomolangma"
+        }
+      ],
+      "asr_indices": [
+        2326
+      ],
+      "asr_text": [
+        "Komolangma,"
+      ],
+      "window": [
+        1356.28,
+        1357.56
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 22,
+          "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+          "source_text": "Qomolangma",
+          "actual_ASR_rows": [
+            [
+              "Komolangma,",
+              1356.28,
+              1357.56
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2023/qomolangma.json",
+          "evidence_sha256": "48e24bbfe4be2422f29edfc6bc1c66c1fdd40b7140a604a8bc2d396ecb4493e6",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": [
+        {
+          "sentence": 22,
+          "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+          "kind": "verified_whole_sentence_acoustic_event",
+          "start": 1339.03,
+          "end": 1360.46,
+          "unknown_words_without_fake_word_times": [
+            {
+              "text": "Ah",
+              "char": [
+                0,
+                2
+              ]
+            }
+          ],
+          "evidence": {
+            "unit": "2023-B2",
+            "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+            "start": 1339.03,
+            "end": 1360.46,
+            "nonverbal": false,
+            "whole_sentence_audio_verified": true,
+            "word_alignment_policy": "retain_actual_ASR_only",
+            "evidence_ref": "核验/正文清理/2023-气声整句话轮/2023-B2.json",
+            "evidence_sha256": "effdebecab4433c4a7510d9bd3d7c433a7c548e3c8f2b88da2cd27247ec6c7bb",
+            "decision": "纸源保留Eh/Ah的非实义语气书写；该标记不强求模型拆为字词，也不假定独立音节内边界。两模型及已核原文支持完整话轮正文；首尾为实测原采样率双声道静段内截点，包住全部普通词实际ASR锚和原录声响。未知语气字无word_alignment，仅整句显示。",
+            "manifest": "核验/正文清理/2023-整句声学采纳.json",
+            "manifest_sha256": "295eacd0eb942691915e11662288eeef903d1a24ca33373f242dff9d6a9dc58f"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2495
+      ],
+      "asr_text": [
+        "For"
+      ],
+      "window": [
+        1430.93,
+        1431.01
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['For']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            2493
+          ],
+          "asr_text": [
+            "For"
+          ],
+          "window": [
+            1430.93,
+            1431.01
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1427.43,
+          1434.51
+        ],
+        "source_corresponding_phrase": "For me, it’ll be",
+        "decision": "原候选的['For']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-1430.93.json",
+        "evidence_sha256": "e394df680620abcda34c00623553451b9a3a601a13e24160febdad7050f3ab4f",
+        "model_texts": {
+          "Parakeet": "In the world, mean to you personally? For me, it'll be about how much I've learned.",
+          "Whisper": "in the world mean to you personally. For me, it'll be about how much I've learned. [BUZZER]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 6,
+          "char": [
+            19,
+            23
+          ],
+          "text": "time"
+        },
+        {
+          "unit": "2023-B2",
+          "sentence": 6,
+          "char": [
+            24,
+            27
+          ],
+          "text": "out"
+        }
+      ],
+      "asr_indices": [
+        2058
+      ],
+      "asr_text": [
+        "timeout"
+      ],
+      "window": [
+        1246.68,
+        1247.16
+      ],
+      "canonical": [
+        "out",
+        "time"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 7,
+          "char": [
+            48,
+            51
+          ],
+          "text": "gap"
+        },
+        {
+          "unit": "2023-B2",
+          "sentence": 7,
+          "char": [
+            52,
+            56
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        2071,
+        2072
+      ],
+      "asr_text": [
+        "GAAP",
+        "year,"
+      ],
+      "window": [
+        1252.44,
+        1253.48
+      ],
+      "canonical": [
+        "gap",
+        "year"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 15,
+          "char": [
+            36,
+            45
+          ],
+          "text": "travelled"
+        }
+      ],
+      "asr_indices": [
+        2180
+      ],
+      "asr_text": [
+        "traveled"
+      ],
+      "window": [
+        1298.41,
+        1298.97
+      ],
+      "canonical": [
+        "traveled"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 17,
+          "char": [
+            69,
+            79
+          ],
+          "text": "travelling"
+        }
+      ],
+      "asr_indices": [
+        2230
+      ],
+      "asr_text": [
+        "traveling"
+      ],
+      "window": [
+        1318.13,
+        1318.61
+      ],
+      "canonical": [
+        "traveling"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 22,
+          "char": [
+            167,
+            175
+          ],
+          "text": "overland"
+        }
+      ],
+      "asr_indices": [
+        2316,
+        2317
+      ],
+      "asr_text": [
+        "over",
+        "land"
+      ],
+      "window": [
+        1352.28,
+        1352.76
+      ],
+      "canonical": [
+        "land",
+        "over"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 23,
+          "char": [
+            16,
+            25
+          ],
+          "text": "travelled"
+        }
+      ],
+      "asr_indices": [
+        2339
+      ],
+      "asr_text": [
+        "traveled"
+      ],
+      "window": [
+        1362.43,
+        1362.99
+      ],
+      "canonical": [
+        "traveled"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 23,
+          "char": [
+            53,
+            56
+          ],
+          "text": "who"
+        },
+        {
+          "unit": "2023-B2",
+          "sentence": 23,
+          "char": [
+            57,
+            59
+          ],
+          "text": "is"
+        }
+      ],
+      "asr_indices": [
+        2345
+      ],
+      "asr_text": [
+        "who's"
+      ],
+      "window": [
+        1364.83,
+        1365.15
+      ],
+      "canonical": [
+        "is",
+        "who"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 23,
+          "char": [
+            65,
+            67
+          ],
+          "text": "26"
+        }
+      ],
+      "asr_indices": [
+        2347,
+        2348
+      ],
+      "asr_text": [
+        "twenty",
+        "six"
+      ],
+      "window": [
+        1365.55,
+        1366.03
+      ],
+      "canonical": [
+        "#26"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 32,
+          "char": [
+            0,
+            2
+          ],
+          "text": "It"
+        },
+        {
+          "unit": "2023-B2",
+          "sentence": 32,
+          "char": [
+            3,
+            7
+          ],
+          "text": "will"
+        }
+      ],
+      "asr_indices": [
+        2505
+      ],
+      "asr_text": [
+        "It'll"
+      ],
+      "window": [
+        1434.84,
+        1435.24
+      ],
+      "canonical": [
+        "it",
+        "will"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 40,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2595
+      ],
+      "asr_text": [
+        "six"
+      ],
+      "window": [
+        1472.05,
+        1472.29
+      ],
+      "canonical": [
+        "#6"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 41,
+          "char": [
+            9,
+            10
+          ],
+          "text": "7"
+        }
+      ],
+      "asr_indices": [
+        2606
+      ],
+      "asr_text": [
+        "seven:"
+      ],
+      "window": [
+        1487.32,
+        1488.04
+      ],
+      "canonical": [
+        "#7"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 42,
+          "char": [
+            9,
+            10
+          ],
+          "text": "8"
+        }
+      ],
+      "asr_indices": [
+        2618
+      ],
+      "asr_text": [
+        "eight."
+      ],
+      "window": [
+        1503.71,
+        1504.59
+      ],
+      "canonical": [
+        "#8"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 43,
+          "char": [
+            9,
+            10
+          ],
+          "text": "9"
+        }
+      ],
+      "asr_indices": [
+        2632
+      ],
+      "asr_text": [
+        "nine:"
+      ],
+      "window": [
+        1520.54,
+        1521.5
+      ],
+      "canonical": [
+        "#9"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 43,
+          "char": [
+            51,
+            61
+          ],
+          "text": "travelling"
+        }
+      ],
+      "asr_indices": [
+        2640
+      ],
+      "asr_text": [
+        "traveling?"
+      ],
+      "window": [
+        1524.54,
+        1525.5
+      ],
+      "canonical": [
+        "traveling"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B2",
+          "sentence": 44,
+          "char": [
+            67,
+            77
+          ],
+          "text": "travelling"
+        }
+      ],
+      "asr_indices": [
+        2654
+      ],
+      "asr_text": [
+        "traveling?"
+      ],
+      "window": [
+        1541.44,
+        1542.48
+      ],
+      "canonical": [
+        "traveling"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "source_references": [
+    {
+      "path": "来源/2023/解析.txt",
+      "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+      "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+    }
+  ],
+  "source_variant_dispositions": {
+    "recorded_original_audio_checks": [
+      "Oh, I see：原PDF省Oh，真实主ASR1421—1427s有Oh，按root授权恢复。"
+    ],
+    "recorded_body_audio_corrections": [
+      {
+        "year": 2023,
+        "unit": "2023-B2",
+        "case": "time_majority",
+        "old_en": "You know, and a majority of this time, I’d say it’s usually only for three to nine months?",
+        "new_en": "You know, and the majority of this time, I’d say it’s usually only for three to nine months?",
+        "new_zh": "而且，大多数时候，我想通常也就三到九个月。",
+        "evidence": {
+          "file": "核验/正文异文复核/2023/time_majority.json",
+          "sha256": "f19d253efc73c7a1d0f63dfddc383f7d53ec4f0ca526fd065f01d8df4b73d36b",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+          "windows": [
+            [
+              1243,
+              1263
+            ],
+            [
+              1241.65,
+              1264.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "No, it's not. A Gap year is just timeout between life stages. People from all ages and all backgrounds take a GAAP year, you know. And the majority of this time, I'd say it's usually only for three to nine months. Anyway, back to the question.",
+            "whisper": "It's a whole year. No, it's not. A gap year is just time out between life stages. People from all ages and all backgrounds take a gap year. You know, and the majority of this time, I'd say it's usually only for three to nine months. Anyway, back to the question. If people (buzzer)"
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      },
+      {
+        "year": 2023,
+        "unit": "2023-B2",
+        "case": "specific_culture",
+        "old_en": "Because you’re not only making a direct difference to local people’s lives, but you’re also learning more about specific culture and society.",
+        "new_en": "Because you’re not only making a direct difference to local people’s lives, but you’re also learning more about a specific culture and society.",
+        "new_zh": "因为你不仅直接改变了当地人的生活，也能更深入地了解某个地区特有的文化和社会。",
+        "evidence": {
+          "file": "核验/正文异文复核/2023/specific_culture.json",
+          "sha256": "947c9097ae2bade7a062a925fccde1fbacb1f9dfb9158c6a65f7af748a98c0ab",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+          "windows": [
+            [
+              1306,
+              1316
+            ],
+            [
+              1304.65,
+              1317.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "A direct difference to local people's lives, but you're also learning more about a specific culture and society. Often, you can learn a lot more about an",
+            "whisper": "Because you're not only making a direct difference to local people's lives, but you're also learning more about the specific culture and society. Often you can learn a lot more about an area, volunteer..."
+          }
+        },
+        "decision": "主ASR与聚焦Parakeet均为a specific culture；Whisper为the specific culture，两路均确认有冠词。采用最稳定的a并完整保留冠词分歧，不声称双模型逐字一致。"
+      },
+      {
+        "year": 2023,
+        "unit": "2023-B2",
+        "case": "travel_lists",
+        "old_en": "I think travel list has to be as ridiculous as possible.",
+        "new_en": "I think a travel list has to be as ridiculous as possible.",
+        "new_zh": "我觉得，旅行愿望清单就应该尽可能天马行空。",
+        "evidence": {
+          "file": "核验/正文异文复核/2023/travel_lists.json",
+          "sha256": "53ffd733bad6087950368a40e6279737d8014ccef0832926be09a830d6746893",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+          "windows": [
+            [
+              1320,
+              1332
+            ],
+            [
+              1318.65,
+              1333.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "Love to find out what is on people's travel list. Could you tell us yours? I think a travel list has to be as ridiculous as possible. It has to be made up of things that are achievable.",
+            "whisper": "We'd love to find out what is on people's travel list. Could you tell us yours? I think a travel list has to be as ridiculous as possible. It has to be made up of things that are achievable and things that are"
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      },
+      {
+        "year": 2023,
+        "unit": "2023-B2",
+        "case": "validation",
+        "old_en": "There’s so much to learn from personal experience or being in a place.",
+        "new_en": "There’s so much to learn from personal experience of being in a place.",
+        "new_zh": "身处某个地方的亲身经历中，有太多值得学习的东西。",
+        "evidence": {
+          "file": "核验/正文异文复核/2023/validation.json",
+          "sha256": "cecdbd08573d696363ec27ac957808fbba28fd0ea9e08f7d4300a5c0c7ef5261",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+          "windows": [
+            [
+              1429,
+              1450
+            ],
+            [
+              1427.65,
+              1451.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "You personally. For me, it'll be about how much I've learned. It'll be a validation of my ability to think critically and analyze the different ways that societies try to function. There's so much to learn from personal experience of being in a place. And I love travel because to me",
+            "whisper": "the world mean to you personally. For me, it'll be about how much I've learned. It'll be a validation of my ability to think critically and analyze the different ways that societies try to function. There's so much to learn from personal experience of being in a place. And I love travel, because to me, it's about constant-- [AUDIO PLAYBACK]"
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      }
+    ],
+    "current_binding_proof_note": "历史修订记录原样保留；本次真实词锚/整句例外的有效证据引用及SHA逐项在本候选另核，不将旧修订时SHA冒称当前文件SHA。"
+  },
+  "bilingual_vocabulary_review": {
+    "all_sentences_and_vocabulary_read": true,
+    "review_total_scope": "423句逐句审阅，包括语境词性/lemma与释义、否定/条件、数值/计量单位、列举和插入语；不独立重推答案。",
+    "specific_semantic_checks": [
+      "三到九个月、一个月短期方案、26岁/16岁/90国等数字及所指对应。",
+      "四项旅行清单分别成屏，珠峰项think twice未错接其他项目；国籍认同与全球/人类视角对比完整。"
+    ],
+    "known_corrections": "2023-A两处句末逗号句点与look→看起来，见2023-A-三处显示译意修复.json；其他未发现明确错义。",
+    "all_sp_valid_and_nonoverlapping": true,
+    "names_exact": true
+  },
+  "manual_plan_checks": [
+    {
+      "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+      "at": [
+        "number two, hitchhiking",
+        "number three, touring overland",
+        "and number four is"
+      ],
+      "zh": [
+        "我的旅行清单上，第一项是在防护笼里潜水，近距离接触大白鲨；",
+        "第二项是搭便车横穿美国，从纽约到旧金山；",
+        "第三项是在非洲进行陆路旅行；",
+        "第四项是攀登珠穆朗玛峰，不过说实话，这一项我得三思。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "number two, hitchhiking",
+          "actual_word": "number",
+          "actual_word_start": 1345.13,
+          "actual_word_end": 1345.53,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        },
+        {
+          "at": "number three, touring overland",
+          "actual_word": "number",
+          "actual_word_start": 1350.52,
+          "actual_word_end": 1350.92,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        },
+        {
+          "at": "and number four is",
+          "actual_word": "and",
+          "actual_word_start": 1353.88,
+          "actual_word_end": 1353.96,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "Well, firstly, I grew up in an international household with a German mother and an Italian-American father, so our daily lives and conversations always were more global in a lot of ways.",
+      "at": "so our daily lives",
+      "zh": [
+        "首先，我在一个国际化家庭里长大，母亲是德国人，父亲是意大利裔美国人，",
+        "因此我们的日常生活和交谈，在很多方面都更具全球视野。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "so our daily lives",
+          "actual_word": "so",
+          "actual_word_start": 1378.45,
+          "actual_word_end": 1378.53,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "Secondly, when I was 16, I left home to go to the United World College, which is a two-year boarding school with students from 90 different countries.",
+      "at": "which is a two-year",
+      "zh": [
+        "其次，16岁时，我离家去了世界联合学院；",
+        "那是一所学制两年的寄宿学校，学生来自90个不同国家。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "which is a two-year",
+          "actual_word": "which",
+          "actual_word_start": 1396.49,
+          "actual_word_end": 1396.57,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "There, I really grew to see the entire world as an interconnected place, and began to think of myself less with national identities and more through global and human lenses.",
+      "at": "and began to think",
+      "zh": [
+        "在那里，我真正开始把整个世界看成相互联系的整体；",
+        "我不再主要以国籍来定位自己，而是更多地从全球和人类整体的视角看待自己。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "and began to think",
+          "actual_word": "and",
+          "actual_word_start": 1408.09,
+          "actual_word_end": 1408.17,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "核验/补词锚/2023/已核局部ASR核验.json",
+      "sha256": "9bb90520f20f2a4be673f784d444077d88d5ba5b3da434651f0a07b3e821d407"
+    },
+    {
+      "file": "核验/正文异文复核/2023/qomolangma.json",
+      "sha256": "48e24bbfe4be2422f29edfc6bc1c66c1fdd40b7140a604a8bc2d396ecb4493e6"
+    },
+    {
+      "file": "核验/正文清理/2023-气声整句话轮/2023-B2.json",
+      "sha256": "effdebecab4433c4a7510d9bd3d7c433a7c548e3c8f2b88da2cd27247ec6c7bb"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-1245.24.json",
+      "sha256": "bfffd639ee19f0a3ec990db4d72dcfc9daf749c9435e3374dc870673c713162e"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-1320.24.json",
+      "sha256": "24c3ea93a16f4eb76149ba4edbd8cf70c20651f550d655460b31c2c6bb4e9287"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-1335.08.json",
+      "sha256": "e66b57b39d82dee983ca7ba6e359a07becce5af568ed52ea3e28a865a8944f73"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-1430.93.json",
+      "sha256": "e394df680620abcda34c00623553451b9a3a601a13e24160febdad7050f3ab4f"
+    },
+    {
+      "file": "核验/正文清理/2023-人工词锚.json",
+      "sha256": "28b5dffb998c49c578677c3ca60d9ed0833666a38d8098de699ad5d0c09da121"
+    },
+    {
+      "file": "核验/剩余源审核候选/原音及材料引用复核.json",
+      "sha256": "5906de1c5d3c86667932272dfaf3b5bc1038f01e7e04e2cbfb7aec3248dcd194"
+    },
+    {
+      "file": "核验/剩余源审核候选/额外ASR逐项裁决.json",
+      "sha256": "d300437c9fdc79bbed4ecd56212ac82e50ec6e1a9baf032603a2a08c5df0f4dc"
+    },
+    {
+      "file": "核验/第二批人工语义分屏/分屏平表.json",
+      "sha256": "d21d8fe10e74f01f16451652d8edd85292eb675ca08cbf471cd7684a4db3630e"
+    }
+  ],
+  "next": "root阅读本篇具体差异/例外后写源审核及registry；PNG和实际音频换屏guard另审。"
+}

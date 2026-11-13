@@ -1,0 +1,1556 @@
+{
+  "year": 2021,
+  "alignment_report": {
+    "file": "核验/原文对齐/2021/对齐报告.json",
+    "sha256": "f210b5905feda1dfef6ca4bdcb67c528aed71fbb9e7b9def452696e25659e450"
+  },
+  "effective_ASR": {
+    "file": "核验/原文对齐/2021/含说明识别.json",
+    "sha256": "186c53d226df483a91dc060f30979395842e058befe37a8584c28f96d2bf8f08"
+  },
+  "canonical_source_sha256": "a9701c485a209512978c089a10a20b73e4a7e4ef34ebd209c1dddb4a28390701",
+  "differences": [
+    {
+      "index": 0,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        32
+      ],
+      "asr_text": [
+        "While"
+      ],
+      "window": [
+        20.08,
+        20.32
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/36",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          16.08,
+          24.32
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        191
+      ],
+      "asr_text": [
+        "education."
+      ],
+      "window": [
+        124.64,
+        124.96
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/37",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          121.24,
+          130.36
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        492
+      ],
+      "asr_text": [
+        "general."
+      ],
+      "window": [
+        274.56,
+        274.96
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/39",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          270.56,
+          278.96
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-A",
+          "sentence": 53,
+          "char": [
+            14,
+            18
+          ],
+          "text": "bear"
+        }
+      ],
+      "asr_indices": [
+        818
+      ],
+      "asr_text": [
+        "bears"
+      ],
+      "window": [
+        434.6,
+        435.0
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 3,
+        "unit": "2021-A",
+        "sentence": 53,
+        "source_sentence_en": "Research data bear out public perceptions: When young people from low-income backgrounds complete a bachelor’s degree, their income and employment characteristics after graduation are equivalent to their peers from more affluent backgrounds.",
+        "char": [
+          14,
+          18
+        ],
+        "text": "bear",
+        "asr_indices": [
+          818
+        ],
+        "asr_text": [
+          "bears"
+        ],
+        "source_asr_rows": [
+          [
+            "bears",
+            434.6,
+            435.0
+          ]
+        ],
+        "evidence": "B1纸源Research data bear out；独立Whisper429—448和其他独立窗均bear，Parakeet读bears。依纸源和独立模型保留bear，记录模型分歧，仅同一真实整词声段绑定；不作bear/bears全局等价。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/0",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          434.6,
+          435.0
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        985,
+        986
+      ],
+      "asr_text": [
+        "most",
+        "important."
+      ],
+      "window": [
+        516.85,
+        517.25
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/40",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          512.85,
+          521.25
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 11,
+          "char": [
+            8,
+            14
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1328
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "window": [
+        888.43,
+        889.07
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 4,
+        "unit": "2021-B1",
+        "sentence": 11,
+        "source_sentence_en": "Maureen McLane is a poet and critic.",
+        "char": [
+          8,
+          14
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1328
+        ],
+        "asr_text": [
+          "MacLean"
+        ],
+        "source_asr_rows": [
+          [
+            "MacLean",
+            888.43,
+            889.07
+          ]
+        ],
+        "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/1",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          888.43,
+          889.07
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 13,
+          "char": [
+            69,
+            75
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1368
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "window": [
+        906.27,
+        906.91
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 5,
+        "unit": "2021-B1",
+        "sentence": 13,
+        "source_sentence_en": "In addition to academic publications on British romanticism, Maureen McLane has written a number of memoirs and criticism.",
+        "char": [
+          69,
+          75
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1368
+        ],
+        "asr_text": [
+          "MacLean"
+        ],
+        "source_asr_rows": [
+          [
+            "MacLean",
+            906.27,
+            906.91
+          ]
+        ],
+        "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/2",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          906.27,
+          906.91
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 16,
+          "char": [
+            23,
+            29
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1417
+      ],
+      "asr_text": [
+        "McLean,"
+      ],
+      "window": [
+        930.63,
+        931.51
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 6,
+        "unit": "2021-B1",
+        "sentence": 16,
+        "source_sentence_en": "Today, we have Maureen McLane, now professor of English at New York University, with us on the radio show.",
+        "char": [
+          23,
+          29
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1417
+        ],
+        "asr_text": [
+          "McLean,"
+        ],
+        "source_asr_rows": [
+          [
+            "McLean,",
+            930.63,
+            931.51
+          ]
+        ],
+        "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/3",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          930.63,
+          931.51
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 24,
+          "char": [
+            112,
+            119
+          ],
+          "text": "Vendler"
+        }
+      ],
+      "asr_indices": [
+        1535
+      ],
+      "asr_text": [
+        "Bendler"
+      ],
+      "window": [
+        976.87,
+        977.51
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 7,
+        "unit": "2021-B1",
+        "sentence": 24,
+        "source_sentence_en": "You begin one section of My Poets by talking about the lecture course you took in your freshman year with Helen Vendler, and the poetry section you had with William Corbett.",
+        "char": [
+          112,
+          119
+        ],
+        "text": "Vendler",
+        "asr_indices": [
+          1535
+        ],
+        "asr_text": [
+          "Bendler"
+        ],
+        "source_asr_rows": [
+          [
+            "Bendler",
+            976.87,
+            977.51
+          ]
+        ],
+        "evidence": "纸源Helen Vendler，诗歌课程语境明确；主ASR Bendler是专名识别差异。保留纸源正确姓氏，仅该实际完整词声段绑定。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/4",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          976.87,
+          977.51
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1559
+      ],
+      "asr_text": [
+        "were"
+      ],
+      "window": [
+        986.19,
+        986.27
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "independent_local_double_model_ASR_extra_review",
+      "evidence": {
+        "evidence_ref": "核验/正文清理/五年ASR多字定点核验.json",
+        "evidence_sha256": "f634515d7719573fcd177309ec08273c5f280918faffe8591d7f21255d166cc9",
+        "pointer": "/rows/41",
+        "status": "ASR_chunk_repeat_or_unspoken_candidate_verified",
+        "decision": "两次独立局部识别均支持纸源对应短语只出现一次；原分块识别尾部产生重复/残词/误字，不把这些ASR多字添进字幕。原主识别和音频均保留不改。",
+        "window": [
+          982.19,
+          990.27
+        ]
+      }
+    },
+    {
+      "index": 10,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 53,
+          "char": [
+            28,
+            34
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1951
+      ],
+      "asr_text": [
+        "McLean"
+      ],
+      "window": [
+        1131.49,
+        1132.05
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 1,
+        "unit": "2021-B1",
+        "sentence": 53,
+        "source_sentence_en": "Question 1. What is Maureen McLane according to the interviewer?",
+        "char": [
+          28,
+          34
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1951
+        ],
+        "asr_text": [
+          "McLean"
+        ],
+        "source_asr_rows": [
+          [
+            "McLean",
+            1131.49,
+            1132.05
+          ]
+        ],
+        "evidence": "已核原卷/解析及正文受访者姓名为Maureen McLane，My Poets与NYU身份相符。本口述题与正文同一受访者；ASR McLean是该专名实际整词声段的拼写识别差异，字幕保留纸源正确McLane；只显式绑定该次完整ASR词条，不把通用词全局等同、不猜测词内时刻。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_ref": "核验/念题词锚/2021-专名人工词锚证据.json",
+        "evidence_pointer": "/items/0",
+        "evidence_sha256": "9529cc9c90e939d47c0e70ebaaf8db8c2486b658e364bd2b8c9c2a4b8ccab41c",
+        "window": [
+          1131.49,
+          1132.05
+        ]
+      }
+    },
+    {
+      "index": 11,
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 24,
+          "char": [
+            0,
+            3
+          ],
+          "text": "Emm"
+        },
+        {
+          "unit": "2021-B2",
+          "sentence": 24,
+          "char": [
+            5,
+            8
+          ],
+          "text": "Emm"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "measured_nonverbal_event_not_lexical_words",
+      "evidence": {
+        "unit": "2021-B2",
+        "en": "Emm, Emm...",
+        "start": 1324.24,
+        "end": 1325.74,
+        "nonverbal": true,
+        "evidence_ref": "核验/正文局部音证/2021-非言语声学检查.json",
+        "evidence_sha256": "ed6d99a5fd89d970e7acdd83cfeff406d3e44059056fd99366443e91f9b152dc",
+        "decision": "两个连续有基频的嗯声；印本与独立Whisper(humming)相符。逐帧波形/频谱确认整段起止，边界位于前后实际发声间隙；非ASR逐词时刻，不删原音。",
+        "manifest": "核验/正文局部音证/2021-非言语采纳.json",
+        "manifest_sha256": "b9ebe726523a0908ec7c8e5929ca1f3b4d31a7fe9660657d3ca546e2ab7ceac3"
+      },
+      "note": "保留整段真实嗯声/笑声，按实际波形事件边界，不给Emm/Ha字数伪造逐词时间。"
+    },
+    {
+      "index": 12,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 34,
+          "char": [
+            32,
+            36
+          ],
+          "text": "tics"
+        }
+      ],
+      "asr_indices": [
+        2447
+      ],
+      "asr_text": [
+        "ticks."
+      ],
+      "window": [
+        1381.02,
+        1381.74
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 8,
+        "unit": "2021-B2",
+        "sentence": 34,
+        "source_sentence_en": "One doesn’t want to have facial tics, one doesn’t want things to be routinized, and I think about that.",
+        "char": [
+          32,
+          36
+        ],
+        "text": "tics",
+        "asr_indices": [
+          2447
+        ],
+        "asr_text": [
+          "ticks."
+        ],
+        "source_asr_rows": [
+          [
+            "ticks.",
+            1381.02,
+            1381.74
+          ]
+        ],
+        "evidence": "纸源facial tics，独立Whisper1378—1388也转tics；主ASR ticks为完全同音字。保留医学/行为语境tics，仅对应实际完整词声段绑定。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/5",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          1381.02,
+          1381.74
+        ]
+      }
+    },
+    {
+      "index": 13,
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 37,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Ha"
+        },
+        {
+          "unit": "2021-B2",
+          "sentence": 37,
+          "char": [
+            3,
+            5
+          ],
+          "text": "ha"
+        },
+        {
+          "unit": "2021-B2",
+          "sentence": 37,
+          "char": [
+            6,
+            8
+          ],
+          "text": "ha"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "measured_nonverbal_event_not_lexical_words",
+      "evidence": {
+        "unit": "2021-B2",
+        "en": "Ha ha ha...",
+        "start": 1399.84,
+        "end": 1400.86,
+        "nonverbal": true,
+        "evidence_ref": "核验/正文局部音证/2021-非言语声学检查.json",
+        "evidence_sha256": "ed6d99a5fd89d970e7acdd83cfeff406d3e44059056fd99366443e91f9b152dc",
+        "decision": "三次清楚的笑声脉冲及其后呼气，位于上一句that结束与下一句Okay开始之间；按10ms波形/频谱量测整事件，绝不把Ha字数分摊为假词时刻。",
+        "manifest": "核验/正文局部音证/2021-非言语采纳.json",
+        "manifest_sha256": "b9ebe726523a0908ec7c8e5929ca1f3b4d31a7fe9660657d3ca546e2ab7ceac3"
+      },
+      "note": "保留整段真实嗯声/笑声，按实际波形事件边界，不给Emm/Ha字数伪造逐词时间。"
+    },
+    {
+      "index": 14,
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 43,
+          "char": [
+            21,
+            28
+          ],
+          "text": "Maureen"
+        }
+      ],
+      "asr_indices": [
+        2537
+      ],
+      "asr_text": [
+        "Marine"
+      ],
+      "window": [
+        1417.02,
+        1417.5
+      ],
+      "original_machine_decision": "machine_candidate_unreviewed",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 2,
+        "unit": "2021-B2",
+        "sentence": 43,
+        "source_sentence_en": "Question 6. What did Maureen think about socializing with writers?",
+        "char": [
+          21,
+          28
+        ],
+        "text": "Maureen",
+        "asr_indices": [
+          2537
+        ],
+        "asr_text": [
+          "Marine"
+        ],
+        "source_asr_rows": [
+          [
+            "Marine",
+            1417.02,
+            1417.5
+          ]
+        ],
+        "evidence": "已核原卷/解析及正文受访者姓名为Maureen McLane，My Poets与NYU身份相符。本口述题与正文同一受访者；ASR Marine是该专名实际整词声段的拼写识别差异，字幕保留纸源正确Maureen；只显式绑定该次完整ASR词条，不把通用词全局等同、不猜测词内时刻。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_ref": "核验/念题词锚/2021-专名人工词锚证据.json",
+        "evidence_pointer": "/items/1",
+        "evidence_sha256": "9529cc9c90e939d47c0e70ebaaf8db8c2486b658e364bd2b8c9c2a4b8ccab41c",
+        "window": [
+          1417.02,
+          1417.5
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-A",
+          "sentence": 17,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        149
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        105.28,
+        105.76
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "OK",
+      "reviewed_ASR_text": "Okay,"
+    },
+    {
+      "index": 16,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-A",
+          "sentence": 48,
+          "char": [
+            161,
+            168
+          ],
+          "text": "fulfill"
+        }
+      ],
+      "asr_indices": [
+        705
+      ],
+      "asr_text": [
+        "fulfil"
+      ],
+      "window": [
+        381.32,
+        381.8
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "fulfill",
+      "reviewed_ASR_text": "fulfil"
+    },
+    {
+      "index": 17,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-A",
+          "sentence": 53,
+          "char": [
+            14,
+            18
+          ],
+          "text": "bear"
+        }
+      ],
+      "asr_indices": [
+        818
+      ],
+      "asr_text": [
+        "bears"
+      ],
+      "window": [
+        434.6,
+        435.0
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 3,
+        "unit": "2021-A",
+        "sentence": 53,
+        "source_sentence_en": "Research data bear out public perceptions: When young people from low-income backgrounds complete a bachelor’s degree, their income and employment characteristics after graduation are equivalent to their peers from more affluent backgrounds.",
+        "char": [
+          14,
+          18
+        ],
+        "text": "bear",
+        "asr_indices": [
+          818
+        ],
+        "asr_text": [
+          "bears"
+        ],
+        "source_asr_rows": [
+          [
+            "bears",
+            434.6,
+            435.0
+          ]
+        ],
+        "evidence": "B1纸源Research data bear out；独立Whisper429—448和其他独立窗均bear，Parakeet读bears。依纸源和独立模型保留bear，记录模型分歧，仅同一真实整词声段绑定；不作bear/bears全局等价。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/0",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          434.6,
+          435.0
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 6,
+          "char": [
+            37,
+            40
+          ],
+          "text": "ten"
+        }
+      ],
+      "asr_indices": [
+        1270
+      ],
+      "asr_text": [
+        "10-second"
+      ],
+      "window": [
+        832.87,
+        833.43
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "ten",
+      "reviewed_ASR_text": "10-second"
+    },
+    {
+      "index": 19,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 11,
+          "char": [
+            8,
+            14
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1328
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "window": [
+        888.43,
+        889.07
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 4,
+        "unit": "2021-B1",
+        "sentence": 11,
+        "source_sentence_en": "Maureen McLane is a poet and critic.",
+        "char": [
+          8,
+          14
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1328
+        ],
+        "asr_text": [
+          "MacLean"
+        ],
+        "source_asr_rows": [
+          [
+            "MacLean",
+            888.43,
+            889.07
+          ]
+        ],
+        "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/1",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          888.43,
+          889.07
+        ]
+      }
+    },
+    {
+      "index": 20,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 12,
+          "char": [
+            135,
+            137
+          ],
+          "text": "Ph"
+        },
+        {
+          "unit": "2021-B1",
+          "sentence": 12,
+          "char": [
+            138,
+            139
+          ],
+          "text": "D"
+        }
+      ],
+      "asr_indices": [
+        1353
+      ],
+      "asr_text": [
+        "PhD"
+      ],
+      "window": [
+        898.43,
+        898.99
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "Ph D",
+      "reviewed_ASR_text": "PhD"
+    },
+    {
+      "index": 21,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 13,
+          "char": [
+            69,
+            75
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1368
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "window": [
+        906.27,
+        906.91
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 5,
+        "unit": "2021-B1",
+        "sentence": 13,
+        "source_sentence_en": "In addition to academic publications on British romanticism, Maureen McLane has written a number of memoirs and criticism.",
+        "char": [
+          69,
+          75
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1368
+        ],
+        "asr_text": [
+          "MacLean"
+        ],
+        "source_asr_rows": [
+          [
+            "MacLean",
+            906.27,
+            906.91
+          ]
+        ],
+        "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/2",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          906.27,
+          906.91
+        ]
+      }
+    },
+    {
+      "index": 22,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 16,
+          "char": [
+            23,
+            29
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1417
+      ],
+      "asr_text": [
+        "McLean,"
+      ],
+      "window": [
+        930.63,
+        931.51
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 6,
+        "unit": "2021-B1",
+        "sentence": 16,
+        "source_sentence_en": "Today, we have Maureen McLane, now professor of English at New York University, with us on the radio show.",
+        "char": [
+          23,
+          29
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1417
+        ],
+        "asr_text": [
+          "McLean,"
+        ],
+        "source_asr_rows": [
+          [
+            "McLean,",
+            930.63,
+            931.51
+          ]
+        ],
+        "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/3",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          930.63,
+          931.51
+        ]
+      }
+    },
+    {
+      "index": 23,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 24,
+          "char": [
+            112,
+            119
+          ],
+          "text": "Vendler"
+        }
+      ],
+      "asr_indices": [
+        1535
+      ],
+      "asr_text": [
+        "Bendler"
+      ],
+      "window": [
+        976.87,
+        977.51
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 7,
+        "unit": "2021-B1",
+        "sentence": 24,
+        "source_sentence_en": "You begin one section of My Poets by talking about the lecture course you took in your freshman year with Helen Vendler, and the poetry section you had with William Corbett.",
+        "char": [
+          112,
+          119
+        ],
+        "text": "Vendler",
+        "asr_indices": [
+          1535
+        ],
+        "asr_text": [
+          "Bendler"
+        ],
+        "source_asr_rows": [
+          [
+            "Bendler",
+            976.87,
+            977.51
+          ]
+        ],
+        "evidence": "纸源Helen Vendler，诗歌课程语境明确；主ASR Bendler是专名识别差异。保留纸源正确姓氏，仅该实际完整词声段绑定。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/4",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          976.87,
+          977.51
+        ]
+      }
+    },
+    {
+      "index": 24,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 39,
+          "char": [
+            116,
+            118
+          ],
+          "text": "18"
+        }
+      ],
+      "asr_indices": [
+        1770
+      ],
+      "asr_text": [
+        "eighteen."
+      ],
+      "window": [
+        1062.95,
+        1063.75
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "18",
+      "reviewed_ASR_text": "eighteen."
+    },
+    {
+      "index": 25,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 53,
+          "char": [
+            9,
+            10
+          ],
+          "text": "1"
+        }
+      ],
+      "asr_indices": [
+        1947
+      ],
+      "asr_text": [
+        "one:"
+      ],
+      "window": [
+        1129.57,
+        1130.29
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "1",
+      "reviewed_ASR_text": "one:"
+    },
+    {
+      "index": 26,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 53,
+          "char": [
+            28,
+            34
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1951
+      ],
+      "asr_text": [
+        "McLean"
+      ],
+      "window": [
+        1131.49,
+        1132.05
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 1,
+        "unit": "2021-B1",
+        "sentence": 53,
+        "source_sentence_en": "Question 1. What is Maureen McLane according to the interviewer?",
+        "char": [
+          28,
+          34
+        ],
+        "text": "McLane",
+        "asr_indices": [
+          1951
+        ],
+        "asr_text": [
+          "McLean"
+        ],
+        "source_asr_rows": [
+          [
+            "McLean",
+            1131.49,
+            1132.05
+          ]
+        ],
+        "evidence": "已核原卷/解析及正文受访者姓名为Maureen McLane，My Poets与NYU身份相符。本口述题与正文同一受访者；ASR McLean是该专名实际整词声段的拼写识别差异，字幕保留纸源正确McLane；只显式绑定该次完整ASR词条，不把通用词全局等同、不猜测词内时刻。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_ref": "核验/念题词锚/2021-专名人工词锚证据.json",
+        "evidence_pointer": "/items/0",
+        "evidence_sha256": "9529cc9c90e939d47c0e70ebaaf8db8c2486b658e364bd2b8c9c2a4b8ccab41c",
+        "window": [
+          1131.49,
+          1132.05
+        ]
+      }
+    },
+    {
+      "index": 27,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 55,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1967
+      ],
+      "asr_text": [
+        "three:"
+      ],
+      "window": [
+        1159.32,
+        1160.2
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "3",
+      "reviewed_ASR_text": "three:"
+    },
+    {
+      "index": 28,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 57,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1996
+      ],
+      "asr_text": [
+        "five."
+      ],
+      "window": [
+        1192.3,
+        1193.18
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "5",
+      "reviewed_ASR_text": "five."
+    },
+    {
+      "index": 29,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 34,
+          "char": [
+            32,
+            36
+          ],
+          "text": "tics"
+        }
+      ],
+      "asr_indices": [
+        2447
+      ],
+      "asr_text": [
+        "ticks."
+      ],
+      "window": [
+        1381.02,
+        1381.74
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 8,
+        "unit": "2021-B2",
+        "sentence": 34,
+        "source_sentence_en": "One doesn’t want to have facial tics, one doesn’t want things to be routinized, and I think about that.",
+        "char": [
+          32,
+          36
+        ],
+        "text": "tics",
+        "asr_indices": [
+          2447
+        ],
+        "asr_text": [
+          "ticks."
+        ],
+        "source_asr_rows": [
+          [
+            "ticks.",
+            1381.02,
+            1381.74
+          ]
+        ],
+        "evidence": "纸源facial tics，独立Whisper1378—1388也转tics；主ASR ticks为完全同音字。保留医学/行为语境tics，仅对应实际完整词声段绑定。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_pointer": "/items/5",
+        "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+        "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+        "window": [
+          1381.02,
+          1381.74
+        ]
+      }
+    },
+    {
+      "index": 30,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 43,
+          "char": [
+            9,
+            10
+          ],
+          "text": "6"
+        }
+      ],
+      "asr_indices": [
+        2534
+      ],
+      "asr_text": [
+        "six."
+      ],
+      "window": [
+        1415.42,
+        1416.38
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "6",
+      "reviewed_ASR_text": "six."
+    },
+    {
+      "index": 31,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 43,
+          "char": [
+            21,
+            28
+          ],
+          "text": "Maureen"
+        }
+      ],
+      "asr_indices": [
+        2537
+      ],
+      "asr_text": [
+        "Marine"
+      ],
+      "window": [
+        1417.02,
+        1417.5
+      ],
+      "original_machine_decision": "human_binding",
+      "disposition": "resolved",
+      "resolution_kind": "explicit_same_real_whole_word_binding",
+      "evidence": {
+        "id": 2,
+        "unit": "2021-B2",
+        "sentence": 43,
+        "source_sentence_en": "Question 6. What did Maureen think about socializing with writers?",
+        "char": [
+          21,
+          28
+        ],
+        "text": "Maureen",
+        "asr_indices": [
+          2537
+        ],
+        "asr_text": [
+          "Marine"
+        ],
+        "source_asr_rows": [
+          [
+            "Marine",
+            1417.02,
+            1417.5
+          ]
+        ],
+        "evidence": "已核原卷/解析及正文受访者姓名为Maureen McLane，My Poets与NYU身份相符。本口述题与正文同一受访者；ASR Marine是该专名实际整词声段的拼写识别差异，字幕保留纸源正确Maureen；只显式绑定该次完整ASR词条，不把通用词全局等同、不猜测词内时刻。",
+        "anchor_granularity": "shared_whole_real_ASR_word_span",
+        "evidence_ref": "核验/念题词锚/2021-专名人工词锚证据.json",
+        "evidence_pointer": "/items/1",
+        "evidence_sha256": "9529cc9c90e939d47c0e70ebaaf8db8c2486b658e364bd2b8c9c2a4b8ccab41c",
+        "window": [
+          1417.02,
+          1417.5
+        ]
+      }
+    },
+    {
+      "index": 32,
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
+          "sentence": 45,
+          "char": [
+            9,
+            10
+          ],
+          "text": "8"
+        }
+      ],
+      "asr_indices": [
+        2555
+      ],
+      "asr_text": [
+        "eight."
+      ],
+      "window": [
+        1446.61,
+        1447.25
+      ],
+      "original_machine_decision": "machine_normalization_requires_review",
+      "disposition": "resolved",
+      "resolution_kind": "explicitly_reviewed_notation_spelling_contraction_or_compound",
+      "note": "已逐项读明：数字/题号与英文记法、英美拼写、缩略/全写、连字符合分或OK/Okay等记法差异。保留原文；对ASR合并为一完整词条者共享该真实整词时段，不作词内比例插值。",
+      "reviewed_source_text": "8",
+      "reviewed_ASR_text": "eight."
+    }
+  ],
+  "extra_groups_resolved": 5,
+  "source_ratio": 1.0,
+  "source_lexical_lexemes": 2616,
+  "nonverbal_not_word_lexemes": 5,
+  "scope": "只读内容/声学来源候选证据；不更改原ASR，不批准任何画面或成品。"
+}

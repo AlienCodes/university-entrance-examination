@@ -1,0 +1,249 @@
+{
+  "id": "2010-B2",
+  "year": 2010,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2010.json",
+    "sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+    "unit_semantic_sha256": "82cf70f371573ad461884343644047284835c298150dbdaa5c8e9b056a6e0887"
+  },
+  "final": {
+    "file": "精听数据/2010-B2.json",
+    "sha256": "8ddee6973923298eddf64169c6f1d1aa022417088acbc108f2ca2c0acc314c09",
+    "unit_semantic_sha256": "82cf70f371573ad461884343644047284835c298150dbdaa5c8e9b056a6e0887",
+    "render_content_sha256": "f6acdfeb6723265584f3fceaeb81410963b008cb4b538d2e0114b9573750d933",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 35,
+    "sha256": "f635fa6e2d1f09351676777fa9c71091cbf09be138c2a8b812502bbf7fce9e00"
+  },
+  "audio": {
+    "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+        "bytes": 11797120,
+        "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1474.612125
+        },
+        "decoded_pcm_sha256": "e2e8bfb2c08c5a13631f1b1340162af87bc8e2e5500d65f537eab9f7c215b56e",
+        "decoded_frames": 65030400,
+        "canonical_start": 0.0,
+        "canonical_end": 1474.6122448979593
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      1219.0975,
+      1474.612245
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "d402eed1d2fec331d9eede2b4e909cf51a0b0146c756c4b23b567a59b07f84c7",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2010/对齐报告.json",
+      "sha256": "e21d461bc8a51e6cd05840979805adcd0a9f8298c4e2ac4923f61b436c107597"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 0,
+    "missing_word_dispositions": [],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 19,
+        "en": "Oh, I see.",
+        "extra_ASR": {
+          "asr_indices": [
+            2055
+          ],
+          "asr_text": [
+            "Oh,"
+          ],
+          "window": [
+            1327.8,
+            1328.12
+          ]
+        },
+        "disposition": {
+          "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+          "decision": "独立Whisper为Oh, I see一次；同一实际短应答被主对齐重复计为额外Oh，保持源稿。",
+          "evidence": {
+            "file": "核验/2010—2015源审残留多词复核/2010-B2-Oh.json",
+            "sha256": "009039c93b75b6e58a27105bbe414a75a92dc0ae1371f90b7c4f0cb98bfa0cdc"
+          },
+          "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+        }
+      },
+      {
+        "sentence": 26,
+        "en": "OK. Dr Johnson, thank you very much for coming on the show and talking to us.",
+        "extra_ASR": {
+          "asr_indices": [
+            2157
+          ],
+          "asr_text": [
+            "D."
+          ],
+          "window": [
+            1377.78,
+            1377.94
+          ]
+        },
+        "disposition": {
+          "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+          "decision": "实际为Dr/Doctor Johnson；D.为缩写的ASR碎片，不另增口述字母D。",
+          "evidence": {
+            "file": "核验/2010—2015源审残留多词复核/2010-B2-Doctor.json",
+            "sha256": "ae09ddd59d1bb64d16e9b39e32dc583704c846c3cc1681972f4b1a4fb4027f79"
+          },
+          "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "a5bcaf2b74f88b547733dbab5bab446543d9e98be977d000a029083337f09662"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 2,
+    "screen_count": 4,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 13,
+        "en": "So this could lead to a future where wealth is systematically redistributed from younger, poorer minorities to older, wealthier whites.",
+        "at": "to older, wealthier whites.",
+        "zh": [
+          "因此，今后可能会出现这样的局面：财富通过制度性的再分配，从较年轻、较贫穷的少数族裔群体，",
+          "流向较年长、较富裕的白人。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "to older, wealthier whites.",
+            "char": 108,
+            "actual_first_word": "to",
+            "actual_first_word_window": [
+              1297.82,
+              1297.9
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 24,
+        "en": "So we see that many parts of the US are truly becoming more diverse while at the same time others are essentially remaining the same in terms of race, age and religion.",
+        "at": "while at the same time",
+        "zh": [
+          "所以我们可以看到，美国的许多地方确实正在变得更多元；",
+          "与此同时，另一些地方在种族、年龄和宗教方面基本保持不变。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "while at the same time",
+            "char": 68,
+            "actual_first_word": "while",
+            "actual_first_word_window": [
+              1367.86,
+              1368.1
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2010-B2/版式预检.json",
+      "sha256": "9ca59ce3f7b42e9839859aec84a76b11d49765723fed64810d2a219ed90a7758"
+    },
+    "screens": 38,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2010-双模型.json",
+        "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+      },
+      {
+        "file": "核验/正文清理/2010-局部真词锚.json",
+        "sha256": "34fb15b10a9bab160ae20f85c2e0757b546d55c9daf893716d1efbe611531521"
+      },
+      {
+        "file": "核验/正文清理/2010-可用语音段.json",
+        "sha256": "0369b6de9da050d1a94c42124327bba97f1d5833d344159df4ad2b0f20c0cc5b"
+      },
+      {
+        "file": "核验/正文清理/2010-人工词锚.json",
+        "sha256": "21be17a5c1c772385e277fc524f5195d453d9205e49e3de78b6e4ba2d746b68a"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 4
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

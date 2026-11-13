@@ -1,1638 +1,968 @@
 {
-  "years": [
-    2010,
-    2011,
-    2012,
-    2013,
-    2014,
-    2015
-  ],
-  "unit_count": 18,
-  "exported_playable_drafts": 11,
-  "blocked_units": 7,
-  "blocked_sentences": 14,
-  "all_exported_EN_ZH_W_exactly_match_current_mother": true,
-  "source_English_and_times_unchanged": true,
-  "outputs": [
+  "status": "18_of_18_actual_draft_exports_current_mother_semantics_exact",
+  "source_candidates": {
+    "file": "核验/2010—2015源审候选.json",
+    "sha256": "c78c8d934b772aae580ae94884400c83df1c225c83144ef63fd716849a2c69ca"
+  },
+  "counts": {
+    "units": 18,
+    "ready": 18,
+    "hold": 0,
+    "sentences": 993,
+    "manual_sentences": 95,
+    "manual_screens": 197,
+    "geometry_screens": 1113,
+    "missing_source_lexemes_retained": 48,
+    "missing_word_categories": {
+      "reference_retained_internal_disfluency_or_weak_function_word": 15,
+      "verified_whole_utterance_unknown_word_times_retained": 18,
+      "exam_reviewed_proper_name_ASR_spelling": 11,
+      "printed_optional_plural_marker_not_separate_spoken_letter": 3,
+      "native_spectral_verified_nonlexical_event": 1
+    },
+    "extra_ASR_disposition_rows": 22,
+    "whole_utterance_exceptions": 9,
+    "nonverbal_exceptions": 1,
+    "acoustic_filler_exceptions": 1
+  },
+  "units": [
     {
       "id": "2010-A",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2010-A.json",
-      "file_sha256": "027dd012695dd54d558ecd604123ee8ee7498c8b8a5e8ab653505af8126499f7",
-      "sentences": 84,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 2,
+      "final": {
+        "file": "精听数据/2010-A.json",
+        "sha256": "89ca05f4530525bace5010637fcd55d39ee784e5153915165f71daa94dc14b0e",
+        "unit_semantic_sha256": "87f60b74cdea2d1bd01e90b2ea944c600b11c4fed43b7bb9a71bbcfe8f0b33cf",
+        "render_content_sha256": "5a9f116cf022a07102547b10f3e8ccc1b89d846537a5804fa64bccd36fb44a83",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2010.json",
+        "sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+        "unit_semantic_sha256": "87f60b74cdea2d1bd01e90b2ea944c600b11c4fed43b7bb9a71bbcfe8f0b33cf"
+      },
+      "audio": {
+        "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+            "bytes": 11797120,
+            "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1474.612125
+            },
+            "decoded_pcm_sha256": "e2e8bfb2c08c5a13631f1b1340162af87bc8e2e5500d65f537eab9f7c215b56e",
+            "decoded_frames": 65030400,
+            "canonical_start": 0.0,
+            "canonical_end": 1474.6122448979593
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          13.925,
+          781.5
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "b74a28465b699a358757ac53b4d60c7a13501a3056ca261a866a878366856c92",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        13.925,
-        781.5
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 2,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2010-A.json",
+        "sha256": "19f108b67dc12da0667d3fc3a60043566272cc7ebf94ab5cecb3dcfc46f22181"
+      }
     },
     {
       "id": "2010-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2010/未导出单元/2010-B1.json",
-      "file_sha256": "15a995a5fd60d724dfb89ec8a19c525a47bd2a88cf96f7db9631478d3a98e1d9",
-      "sentences": 52,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 5,
-      "missing_boundary_sentences": [
-        42
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2010-B1.json",
+        "sha256": "9244e6960cada8cf94e59977012b1f03c9e8c4a12b94f3ef3d9a2bbca4db7d78",
+        "unit_semantic_sha256": "9959d1cc5203d017f690292a4da0a59d0f508dc1aff44daf103172fd84930b5a",
+        "render_content_sha256": "a6d5003c43053b285aa635eafecb240b33f1cc4819a00e0cb08d7c2bc923ddc8",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2010.json",
+        "sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+        "unit_semantic_sha256": "9959d1cc5203d017f690292a4da0a59d0f508dc1aff44daf103172fd84930b5a"
+      },
+      "audio": {
+        "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+            "bytes": 11797120,
+            "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1474.612125
+            },
+            "decoded_pcm_sha256": "e2e8bfb2c08c5a13631f1b1340162af87bc8e2e5500d65f537eab9f7c215b56e",
+            "decoded_frames": 65030400,
+            "canonical_start": 0.0,
+            "canonical_end": 1474.6122448979593
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          781.7875,
+          1210.73
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "87c85e2c3bcbaad18b1f9beae1b68ef029a00a880ab9dcdfea23f8d6e25b686d",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 5,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2010-B1.json",
+        "sha256": "d20d323c160e48f5d8c7903a19eda5db138ed8f12ebc9f10a1e5a9b719182326"
+      }
     },
     {
       "id": "2010-B2",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2010-B2.json",
-      "file_sha256": "247233c540ad80644159667b12394e3443ef2f1416b84e321d0d763b61e4dfac",
-      "sentences": 35,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 0,
+      "final": {
+        "file": "精听数据/2010-B2.json",
+        "sha256": "8ddee6973923298eddf64169c6f1d1aa022417088acbc108f2ca2c0acc314c09",
+        "unit_semantic_sha256": "82cf70f371573ad461884343644047284835c298150dbdaa5c8e9b056a6e0887",
+        "render_content_sha256": "f6acdfeb6723265584f3fceaeb81410963b008cb4b538d2e0114b9573750d933",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2010.json",
+        "sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+        "unit_semantic_sha256": "82cf70f371573ad461884343644047284835c298150dbdaa5c8e9b056a6e0887"
+      },
+      "audio": {
+        "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+            "bytes": 11797120,
+            "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1474.612125
+            },
+            "decoded_pcm_sha256": "e2e8bfb2c08c5a13631f1b1340162af87bc8e2e5500d65f537eab9f7c215b56e",
+            "decoded_frames": 65030400,
+            "canonical_start": 0.0,
+            "canonical_end": 1474.6122448979593
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          1219.0975,
+          1474.612245
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "d402eed1d2fec331d9eede2b4e909cf51a0b0146c756c4b23b567a59b07f84c7",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        1219.0975,
-        1474.612245
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 0,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2010-B2.json",
+        "sha256": "547652c097029d75b27ff80d22b12007eb1fae924de0bff878a1aa68a70f569a"
+      }
     },
     {
       "id": "2011-A",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2011-A.json",
-      "file_sha256": "e41c1d3c079ac5d1a1aa436985901c84b3187a6eb34a0b2127cd4a615a3b4cd1",
-      "sentences": 70,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 0,
+      "final": {
+        "file": "精听数据/2011-A.json",
+        "sha256": "c29a69ab0157376b9778c9091254e2cf30b30c8a3235d32203a6f4f5db312330",
+        "unit_semantic_sha256": "ab3ded99f631ee4736796217759f4978bc691406dc39736c8e3d3d66a7c9ffbb",
+        "render_content_sha256": "e730b206b827a9846c8e6dd5b8389afb418a18d92b2d5cdfe01e77e0219f57e1",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2011.json",
+        "sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+        "unit_semantic_sha256": "ab3ded99f631ee4736796217759f4978bc691406dc39736c8e3d3d66a7c9ffbb"
+      },
+      "audio": {
+        "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+            "bytes": 11266103,
+            "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1408.235
+            },
+            "decoded_pcm_sha256": "e5edc4637d9f9b9dc5992ae0a4665eee50ef093b4920654cbd5e9743946e0d8b",
+            "decoded_frames": 62103168,
+            "canonical_start": 0.0,
+            "canonical_end": 1408.2351020408164
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          14.0775,
+          731.09
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "0f7dc2139655fa1a99059bebd9899526a08a412be47750f578c10ae9a583e181",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        14.0775,
-        731.09
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 0,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2011-A.json",
+        "sha256": "86c025cc891a4dde0eb4e88265332686cc740c3d65580ff515ad6b7b34e8ef73"
+      }
     },
     {
       "id": "2011-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2011/未导出单元/2011-B1.json",
-      "file_sha256": "5df4b21f231dc799f9483c61669209c5a541e624824d1d41ecd7d7008bc1e8ff",
-      "sentences": 69,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 6,
-      "missing_boundary_sentences": [
-        21,
-        28,
-        50
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2011-B1.json",
+        "sha256": "4ce6c43dd2e98f0281d7ab966f7971dc928d2b858b0e67710f6a6e88f454ff76",
+        "unit_semantic_sha256": "d2530faa5b175298d5e1c32ec58227f4209a17e0899fdfb3cc78e6e7f00fdef1",
+        "render_content_sha256": "08082740f8f97e77c4f53cf9e63a6b9aceec94e8cb043ab026aed642e5a60f7e",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2011.json",
+        "sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+        "unit_semantic_sha256": "d2530faa5b175298d5e1c32ec58227f4209a17e0899fdfb3cc78e6e7f00fdef1"
+      },
+      "audio": {
+        "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+            "bytes": 11266103,
+            "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1408.235
+            },
+            "decoded_pcm_sha256": "e5edc4637d9f9b9dc5992ae0a4665eee50ef093b4920654cbd5e9743946e0d8b",
+            "decoded_frames": 62103168,
+            "canonical_start": 0.0,
+            "canonical_end": 1408.2351020408164
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          731.3775,
+          1124.14
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "c4e9045278994cdc4db751e8ae7d36072d8da1655a0270647170bc95a71fd4e3",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 4,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2011-B1.json",
+        "sha256": "4ce14e381725a12fa72ba7b05390ebe4ffeab2d2e30aac04ad3fa63969402008"
+      }
     },
     {
       "id": "2011-B2",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2011-B2.json",
-      "file_sha256": "de46cfddf230d93129792e8ef3ffaeaf134f0667e6f78a224a2d16fc78cb007c",
-      "sentences": 42,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 1,
+      "final": {
+        "file": "精听数据/2011-B2.json",
+        "sha256": "d9db029dfc5c61ac6d18fcb7b924e5410eaba31f0ddaef5146c9fe452a14bccd",
+        "unit_semantic_sha256": "64b2b74ba04d11ed81c990145d403f2adf4a5fa38783bef53cf1c6bd9f94c1dd",
+        "render_content_sha256": "04b336704a991a369d162dd9cc5350aa8c2051fc18570b11fd980320196cd6b6",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2011.json",
+        "sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+        "unit_semantic_sha256": "64b2b74ba04d11ed81c990145d403f2adf4a5fa38783bef53cf1c6bd9f94c1dd"
+      },
+      "audio": {
+        "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+            "bytes": 11266103,
+            "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1408.235
+            },
+            "decoded_pcm_sha256": "e5edc4637d9f9b9dc5992ae0a4665eee50ef093b4920654cbd5e9743946e0d8b",
+            "decoded_frames": 62103168,
+            "canonical_start": 0.0,
+            "canonical_end": 1408.2351020408164
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          1132.6375,
+          1408.235102
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "e1bcab8d422e0d1736a3c62627d224a57c09ad1d7ccf5ed1d570561da183b0c1",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        1132.6375,
-        1408.235102
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 1,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2011-B2.json",
+        "sha256": "e03999c05012f6959ac52cb9337a0bad89fb048aa40811fc7d0cbff78729a5c0"
+      }
     },
     {
       "id": "2012-A",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2012-A.json",
-      "file_sha256": "1a9933ccd51cdddc82574015fe428448a4a06ddc4e0f1c9b8d23497ba33b1250",
-      "sentences": 74,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 2,
+      "final": {
+        "file": "精听数据/2012-A.json",
+        "sha256": "7b64b8130ef045e7bf840bb5c6a1cf109e717d9474b0de38d74b39d00d9c8d6f",
+        "unit_semantic_sha256": "30548c332fc0f2c5cacf9b56618f4c67e21767a979cd121ab5ecdef236675d60",
+        "render_content_sha256": "36997ac7e986cb11c18da8ced64e3615889a942cbd009f5c514a45f6a92df7e5",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2012.json",
+        "sha256": "0abc0a285fd92113c734d556850737551aa865a49102c80470abc61b025ff809",
+        "unit_semantic_sha256": "30548c332fc0f2c5cacf9b56618f4c67e21767a979cd121ab5ecdef236675d60"
+      },
+      "audio": {
+        "canonical_source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2012年专八真题+音频+解析/听力音频 TEM8-2012.mp3",
+            "bytes": 11305183,
+            "sha256": "76493b3a0a9159a391a51d0c914dfa49d5123bdfc36a8783f7c6491a3940989c",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1413.12
+            },
+            "decoded_pcm_sha256": "904dc6444dcd756a8384501be4d37d0060b4d3bd3d46bca96872ac33e7845e23",
+            "decoded_frames": 62318592,
+            "canonical_start": 0.0,
+            "canonical_end": 1413.12
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          13.9125,
+          738.37
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "99c9e5798a45e5deb182482575ffb8bcabbd02c0840dc5d690cc516413231f14",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        13.9125,
-        738.37
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 2,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2012-A.json",
+        "sha256": "f1efc64541196ab220279c51488ade575da66f4c91cc403ddd4f58cbe9b59d44"
+      }
     },
     {
       "id": "2012-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2012/未导出单元/2012-B1.json",
-      "file_sha256": "dd6990ae6706a841e1500488f8b975aa938a075589514e8ee494b6eed09b0697",
-      "sentences": 54,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 8,
-      "missing_boundary_sentences": [
-        40,
-        43
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2012-B1.json",
+        "sha256": "d8ef545038103d1a1af56d7d4c75bb89c55ae50b192b7a695e0df162ca5f0456",
+        "unit_semantic_sha256": "9cb5c6373fe49c6dd7c4696e1b995030c5ce8ae59534ce3e0f9112a9b2b8253d",
+        "render_content_sha256": "2dd7bfbe99110b52d27197356f841ecba5979ed318580eaeadb5dc0e3886d9cc",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2012.json",
+        "sha256": "0abc0a285fd92113c734d556850737551aa865a49102c80470abc61b025ff809",
+        "unit_semantic_sha256": "9cb5c6373fe49c6dd7c4696e1b995030c5ce8ae59534ce3e0f9112a9b2b8253d"
+      },
+      "audio": {
+        "canonical_source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2012年专八真题+音频+解析/听力音频 TEM8-2012.mp3",
+            "bytes": 11305183,
+            "sha256": "76493b3a0a9159a391a51d0c914dfa49d5123bdfc36a8783f7c6491a3940989c",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1413.12
+            },
+            "decoded_pcm_sha256": "904dc6444dcd756a8384501be4d37d0060b4d3bd3d46bca96872ac33e7845e23",
+            "decoded_frames": 62318592,
+            "canonical_start": 0.0,
+            "canonical_end": 1413.12
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          738.8775,
+          1154.0
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "c4c7ec948a20ef565018914ab1bbba0877d97702b4557bcfa13cfe1c3c080aa7",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 8,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2012-B1.json",
+        "sha256": "1bfb742c4f4b542a49ec4f751e0651b9f27f334e0203f1188fd2953db6060e0b"
+      }
     },
     {
       "id": "2012-B2",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2012/未导出单元/2012-B2.json",
-      "file_sha256": "89d97247e5b6ed1ef8854e534250d627d6e2d3272f68eb6f9707b3261ba57f75",
-      "sentences": 37,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 5,
-      "missing_boundary_sentences": [
-        7,
-        14,
-        20
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2012-B2.json",
+        "sha256": "1fe1034aa788fba91b229743f90d97a6a0dbd04d394aaa135a4942d43d2d5417",
+        "unit_semantic_sha256": "87bb62fcf69e451f4a03ba168c24a2e7f96f70467cf15ba6572f4811e5cdd48a",
+        "render_content_sha256": "03c27c7c0aa9ee276cde005b622202c0960cf0f1cf7581d23dd93071775a5fae",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2012.json",
+        "sha256": "0abc0a285fd92113c734d556850737551aa865a49102c80470abc61b025ff809",
+        "unit_semantic_sha256": "87bb62fcf69e451f4a03ba168c24a2e7f96f70467cf15ba6572f4811e5cdd48a"
+      },
+      "audio": {
+        "canonical_source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2012年专八真题+音频+解析/听力音频 TEM8-2012.mp3",
+            "bytes": 11305183,
+            "sha256": "76493b3a0a9159a391a51d0c914dfa49d5123bdfc36a8783f7c6491a3940989c",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1413.12
+            },
+            "decoded_pcm_sha256": "904dc6444dcd756a8384501be4d37d0060b4d3bd3d46bca96872ac33e7845e23",
+            "decoded_frames": 62318592,
+            "canonical_start": 0.0,
+            "canonical_end": 1413.12
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          1162.6275,
+          1413.12
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "a2d5694d420f53bf95c576911b22bcdb2c5c17d71198703f039b34c024daf465",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 5,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2012-B2.json",
+        "sha256": "3cb4189a36d1dbee1d2b9bb9edbd8200de619c7f85767235a6a997a48f2cddb0"
+      }
     },
     {
       "id": "2013-A",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2013-A.json",
-      "file_sha256": "a2b6b08f3ff609d927ee86fb5705f84dd31ff7a92adc8fc3512241f6374d9a3b",
-      "sentences": 62,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 1,
+      "final": {
+        "file": "精听数据/2013-A.json",
+        "sha256": "97fbdf8ff606448af4bc90e97f605579d898fac1a43047bac4ea05477cce6634",
+        "unit_semantic_sha256": "597f572efc229ba84c62735a6ef1d6e1f2c3fbc876833a644fd882ec76f500f5",
+        "render_content_sha256": "13d4f0437d8690a377d58dcc58ef79003d0b154c6d67384cd58e6f4549e81218",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2013.json",
+        "sha256": "d653c0676700e3f6a3d5cf226a6e17be138e2fb739a4c96785693e015c922940",
+        "unit_semantic_sha256": "597f572efc229ba84c62735a6ef1d6e1f2c3fbc876833a644fd882ec76f500f5"
+      },
+      "audio": {
+        "canonical_source_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2013年专八真题+音频+解析/听力音频 TEM8-2013.mp3",
+            "bytes": 11060885,
+            "sha256": "a76ba4b63f49124c871b0cfdbfb221ce644c104d1cc9c9464d4696a4c68cf186",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1382.58275
+            },
+            "decoded_pcm_sha256": "535a6b82032deea0340b5d3edb3c205933b3b088693394c75cd79b9f15872eb5",
+            "decoded_frames": 60971904,
+            "canonical_start": 0.0,
+            "canonical_end": 1382.5828571428572
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          13.8775,
+          689.77
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "2220159069d7040fb6e82897addb8f392bd37933a65097e0181f0731d34ab1b6",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        13.8775,
-        689.77
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 1,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2013-A.json",
+        "sha256": "559f34f0d2c32aedded5ce3315faabf030b47a47052a66c2e3cf6885f0432281"
+      }
     },
     {
       "id": "2013-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2013/未导出单元/2013-B1.json",
-      "file_sha256": "c93c8cfb7e0227d73531813620b6d90bc560a52a4844ab2a4fb0b3e4262224f1",
-      "sentences": 58,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 1,
-      "missing_boundary_sentences": [
-        24
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2013-B1.json",
+        "sha256": "9131ef3bc1abe514b82321f3213515f9f5f4ffe774991ad9e646727406e8e1ec",
+        "unit_semantic_sha256": "cff792773bf4a0220f30931b57b2f6a6e1d8a71fde97ce8e9e6c0688c2cf070d",
+        "render_content_sha256": "05ac553ff66d6ef34591464e2ae083046f332ea2ad8028ed50c138c1c8d03548",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2013.json",
+        "sha256": "d653c0676700e3f6a3d5cf226a6e17be138e2fb739a4c96785693e015c922940",
+        "unit_semantic_sha256": "cff792773bf4a0220f30931b57b2f6a6e1d8a71fde97ce8e9e6c0688c2cf070d"
+      },
+      "audio": {
+        "canonical_source_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2013年专八真题+音频+解析/听力音频 TEM8-2013.mp3",
+            "bytes": 11060885,
+            "sha256": "a76ba4b63f49124c871b0cfdbfb221ce644c104d1cc9c9464d4696a4c68cf186",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1382.58275
+            },
+            "decoded_pcm_sha256": "535a6b82032deea0340b5d3edb3c205933b3b088693394c75cd79b9f15872eb5",
+            "decoded_frames": 60971904,
+            "canonical_start": 0.0,
+            "canonical_end": 1382.5828571428572
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          690.0325,
+          1072.17
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "4c062ac651bd27980f484c3ee41068d63ec951dbca07963ab26e91435d3dd32b",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 1,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2013-B1.json",
+        "sha256": "e82d746d0e50913f59b1d39ad3f5aa3ab7b09ab1c97be7f40668e9b160a0df42"
+      }
     },
     {
       "id": "2013-B2",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2013-B2.json",
-      "file_sha256": "77c1228f0592d48b21692a77ed1f826af56c3faf5da8a2ba80fcbad774de8dee",
-      "sentences": 51,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 1,
+      "final": {
+        "file": "精听数据/2013-B2.json",
+        "sha256": "991f1b0822f250c7d875c0de9c595f5996540c80dfdbf102fabd014ee59941be",
+        "unit_semantic_sha256": "081145429943cd224bc407bcd3ab1c117f0f823c27cd3b526b23db8a17329028",
+        "render_content_sha256": "990d725fd339520a44160de1db86dfb61465e747b018aa22b02d39e9c1f3714a",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2013.json",
+        "sha256": "d653c0676700e3f6a3d5cf226a6e17be138e2fb739a4c96785693e015c922940",
+        "unit_semantic_sha256": "081145429943cd224bc407bcd3ab1c117f0f823c27cd3b526b23db8a17329028"
+      },
+      "audio": {
+        "canonical_source_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2013年专八真题+音频+解析/听力音频 TEM8-2013.mp3",
+            "bytes": 11060885,
+            "sha256": "a76ba4b63f49124c871b0cfdbfb221ce644c104d1cc9c9464d4696a4c68cf186",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1382.58275
+            },
+            "decoded_pcm_sha256": "535a6b82032deea0340b5d3edb3c205933b3b088693394c75cd79b9f15872eb5",
+            "decoded_frames": 60971904,
+            "canonical_start": 0.0,
+            "canonical_end": 1382.5828571428572
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          1080.6375,
+          1382.582857
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "57fd3087786fa83d897c8e3bfb73e4b844ca017da0795ca23edc8e89b10bf7da",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        1080.6375,
-        1382.582857
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 1,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2013-B2.json",
+        "sha256": "a914ab3742b57e3086e85cd4a2ee07b3834c3ebf29149b55d3f2269600a71228"
+      }
     },
     {
       "id": "2014-A",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2014-A.json",
-      "file_sha256": "1f7fb506656b7f299bc37474e3bede9526430004ec39ed8409a6b460233b7b73",
-      "sentences": 69,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 2,
+      "final": {
+        "file": "精听数据/2014-A.json",
+        "sha256": "588149d076b61fc06fdc6a091d52fd9842aaed4474e2ca72be22029475e3d9c5",
+        "unit_semantic_sha256": "389b2b3988500d3bbb8a595397c9867fa5d727d6e340e4613fd8f1cdf24bf0c2",
+        "render_content_sha256": "9b8e0cc85252836d9e4c635074bfe3b5828ce1e2c4f352abd923c5d1fd984da0",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2014.json",
+        "sha256": "d210bd6af8fba29a5a89469015e1611b049d56717d0f7c0170d970288536fd4f",
+        "unit_semantic_sha256": "389b2b3988500d3bbb8a595397c9867fa5d727d6e340e4613fd8f1cdf24bf0c2"
+      },
+      "audio": {
+        "canonical_source_sha256": "48626f7e4bd715ab94fcdc1cc948a8f5e38b0ffe3dc5e94e2491bb8ee53188db",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2014年专八真题+音频+解析/听力音频 TEM8-2014.mp3",
+            "bytes": 21711948,
+            "sha256": "52d6c87ad219b66540554d3f1d72935cbea988497d2097141fa2095ba4deb739",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1356.982813
+            },
+            "decoded_pcm_sha256": "fb984edf5617eb52875bbbb51f964d7e061ad2d9ff112658df08b23c69b44a3b",
+            "decoded_frames": 59842944,
+            "canonical_start": 0.0,
+            "canonical_end": 1356.9828571428573
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          14.1375,
+          708.47
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "19b5e91d120cc9e847abe36c2f77a96ecbcfbb8b1cb47c6a1c2767441b4241d0",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        14.1375,
-        708.47
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 2,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2014-A.json",
+        "sha256": "eaa31c9a14572a58b154f271e3491f9065d0637bd20f4eeb205472690ce83869"
+      }
     },
     {
       "id": "2014-B1",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2014-B1.json",
-      "file_sha256": "ceff809ffe06d15b3d1c649517462e503037436d3d978867283a7e13b9278225",
-      "sentences": 36,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 1,
+      "final": {
+        "file": "精听数据/2014-B1.json",
+        "sha256": "d622f1fb65d29d8caa81dafdf68fcd86d8a5476994b4c437bd47a91acbb8a3f6",
+        "unit_semantic_sha256": "f26313e4c321ab9319568d547341c44c0a2622439b4428d21ccb29111f6697eb",
+        "render_content_sha256": "cb605dade1e427bbeeaf70e44271a71c702cf51f44e90feca6ff11485d687650",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2014.json",
+        "sha256": "d210bd6af8fba29a5a89469015e1611b049d56717d0f7c0170d970288536fd4f",
+        "unit_semantic_sha256": "f26313e4c321ab9319568d547341c44c0a2622439b4428d21ccb29111f6697eb"
+      },
+      "audio": {
+        "canonical_source_sha256": "48626f7e4bd715ab94fcdc1cc948a8f5e38b0ffe3dc5e94e2491bb8ee53188db",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2014年专八真题+音频+解析/听力音频 TEM8-2014.mp3",
+            "bytes": 21711948,
+            "sha256": "52d6c87ad219b66540554d3f1d72935cbea988497d2097141fa2095ba4deb739",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1356.982813
+            },
+            "decoded_pcm_sha256": "fb984edf5617eb52875bbbb51f964d7e061ad2d9ff112658df08b23c69b44a3b",
+            "decoded_frames": 59842944,
+            "canonical_start": 0.0,
+            "canonical_end": 1356.9828571428573
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          709.4575,
+          1027.3
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "ce51e92683eb428401b498fc3c77cf9fa33c04fbb603f9ecf236b2ff7ef18d17",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        709.4575,
-        1027.3
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 1,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2014-B1.json",
+        "sha256": "4dab748729ff3a5c18a0d08770d085b6c0c87d67325f0d4e5964fab20614ae3c"
+      }
     },
     {
       "id": "2014-B2",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2014-B2.json",
-      "file_sha256": "5651e4b138fe06681024446bdab74511967f053c357943bff932cf95d9570487",
-      "sentences": 39,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 1,
+      "final": {
+        "file": "精听数据/2014-B2.json",
+        "sha256": "86efee69ba0c4f4a950893f89dd0100f9947b89fa60ebef5060576ac7af720e3",
+        "unit_semantic_sha256": "7d4f4ce267af8fd2bea8e4bb41af947a05b814c26c3f8cbc3113d32fe25f4527",
+        "render_content_sha256": "9cafcd415521b6053aa464709ecf042a238db12c6018e2e5b4246d80fca5e7e2",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2014.json",
+        "sha256": "d210bd6af8fba29a5a89469015e1611b049d56717d0f7c0170d970288536fd4f",
+        "unit_semantic_sha256": "7d4f4ce267af8fd2bea8e4bb41af947a05b814c26c3f8cbc3113d32fe25f4527"
+      },
+      "audio": {
+        "canonical_source_sha256": "48626f7e4bd715ab94fcdc1cc948a8f5e38b0ffe3dc5e94e2491bb8ee53188db",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2014年专八真题+音频+解析/听力音频 TEM8-2014.mp3",
+            "bytes": 21711948,
+            "sha256": "52d6c87ad219b66540554d3f1d72935cbea988497d2097141fa2095ba4deb739",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1356.982813
+            },
+            "decoded_pcm_sha256": "fb984edf5617eb52875bbbb51f964d7e061ad2d9ff112658df08b23c69b44a3b",
+            "decoded_frames": 59842944,
+            "canonical_start": 0.0,
+            "canonical_end": 1356.9828571428573
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          1036.0475,
+          1356.982857
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "90d279c69403e9ae8e1541aa465a193bf6a4160b8500ada08465f40a82c649d4",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        1036.0475,
-        1356.982857
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 1,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2014-B2.json",
+        "sha256": "c904b53ee4b33d1c755be6237c87ce8da18fda0ddf06dab6a7d7c74d539ad65e"
+      }
     },
     {
       "id": "2015-A",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2015/未导出单元/2015-A.json",
-      "file_sha256": "9d8c132bfac233d2e674de57bcc6d54f50a11d7b66b025639f6f17a24dbe9197",
-      "sentences": 81,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 10,
-      "missing_boundary_sentences": [
-        31
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2015-A.json",
+        "sha256": "35032c9e54f0a363b8819c19887af641950e78060a95f66473ce56a08968b451",
+        "unit_semantic_sha256": "625927c2a025742ac308bbc4598c3e618bce8b8b44838342493f58ccf39833f2",
+        "render_content_sha256": "c599d2dc78ae427efdc3bc735f215fe3b9e556286652cd1ce247ed23a5c22837",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2015.json",
+        "sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+        "unit_semantic_sha256": "625927c2a025742ac308bbc4598c3e618bce8b8b44838342493f58ccf39833f2"
+      },
+      "audio": {
+        "canonical_source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+            "bytes": 21944334,
+            "sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1371.506938
+            },
+            "decoded_pcm_sha256": "fea66d7b392aa494e98384490f6a10a1ea403b134f57bb833c8676c1a0a7bb09",
+            "decoded_frames": 60483456,
+            "canonical_start": 0.0,
+            "canonical_end": 1371.5069387755102
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          13.415,
+          682.79
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "27ac72d9bf2143d57d98ed18353df19d078e3499eb40f71d8e1275a2bee377ae",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 10,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2015-A.json",
+        "sha256": "173062f60013be038ba8a56c09bb5f9f09cee7cdacd2a10b54adb7a8e6bbc378"
+      }
     },
     {
       "id": "2015-B1",
-      "state": "draft_exported_not_approved",
-      "file": "精听数据/2015-B1.json",
-      "file_sha256": "618e82d5787b57acd9fa86a4387ae33306cef929b9d8a84dc69c650890c078da",
-      "sentences": 41,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 2,
+      "final": {
+        "file": "精听数据/2015-B1.json",
+        "sha256": "333a5218e54d8c121a474b53e30105ef9b5683971566ccee64bdf1acc1095930",
+        "unit_semantic_sha256": "15c66a1c0875aef713f455e8430ca7d14e2b7963422416172cdee48ba3b64d9d",
+        "render_content_sha256": "2d401647ce0426f0d723ce27c99e4ec629c42d3f788d0ba513e9864edacd1ec1",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2015.json",
+        "sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+        "unit_semantic_sha256": "15c66a1c0875aef713f455e8430ca7d14e2b7963422416172cdee48ba3b64d9d"
+      },
+      "audio": {
+        "canonical_source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+            "bytes": 21944334,
+            "sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1371.506938
+            },
+            "decoded_pcm_sha256": "fea66d7b392aa494e98384490f6a10a1ea403b134f57bb833c8676c1a0a7bb09",
+            "decoded_frames": 60483456,
+            "canonical_start": 0.0,
+            "canonical_end": 1371.5069387755102
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          683.7775,
+          1025.13
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "555353a79f6b3dbaae7f5745b2b01986791fde852f9157cdcd511138da6496e2",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
       "missing_boundary_sentences": [],
-      "audio_window": [
-        683.7775,
-        1025.13
-      ],
-      "PCM_boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
-      "ASR_provenance_verified": true
+      "raw_missing_word_count": 2,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2015-B1.json",
+        "sha256": "80705821d3671e23461e96be230ef05851690be839aa1d2cb7f449d8333f2190"
+      }
     },
     {
       "id": "2015-B2",
-      "state": "blocked_missing_boundary_anchor",
-      "file": "核验/原文对齐/2015/未导出单元/2015-B2.json",
-      "file_sha256": "f7cb0b9937418389284d86dba3e88e58cf75a52879e9bdef22d310e5e0eba81c",
-      "sentences": 40,
-      "mother_EN_ZH_W_equal": true,
-      "missing_source_lexemes": 8,
-      "missing_boundary_sentences": [
-        24,
-        26,
-        39
-      ],
-      "audio_window": null,
-      "PCM_boundary_status": null,
-      "ASR_provenance_verified": true
+      "final": {
+        "file": "精听数据/2015-B2.json",
+        "sha256": "241d0f5f368f4028b96f79abf488880045d44ae2d6068a86da00735728868e64",
+        "unit_semantic_sha256": "7c1d561ffbe770abf7f2b0a65949cb2561a602992e54825baaaa762a880161a2",
+        "render_content_sha256": "8191801f714a0b402a51ad5ffc5f2906d53eae2c3cd4cc8a7d5abb02268c952d",
+        "review_status": "draft"
+      },
+      "mother": {
+        "file": "译注草稿/2015.json",
+        "sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+        "unit_semantic_sha256": "7c1d561ffbe770abf7f2b0a65949cb2561a602992e54825baaaa762a880161a2"
+      },
+      "audio": {
+        "canonical_source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+        "raw_source_entries": [
+          {
+            "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+            "bytes": 21944334,
+            "sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+            "suffix": ".mp3",
+            "audio": {
+              "codec": "mp3",
+              "sample_rate": 44100,
+              "channels": 2,
+              "channel_layout": "stereo",
+              "container_duration": 1371.506938
+            },
+            "decoded_pcm_sha256": "fea66d7b392aa494e98384490f6a10a1ea403b134f57bb833c8676c1a0a7bb09",
+            "decoded_frames": 60483456,
+            "canonical_start": 0.0,
+            "canonical_end": 1371.5069387755102
+          }
+        ],
+        "raw_source_sha_verified_on_disk": true,
+        "window": [
+          1033.6375,
+          1371.506939
+        ],
+        "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+        "boundary_evidence_sha256": "abc9a8ddedba1aec4063fe12ab7f9b9dd57a0084d5deaa0c6c8b70f35466b13f",
+        "raw_audio_unchanged": true
+      },
+      "recommendation": "ready",
+      "missing_boundary_sentences": [],
+      "raw_missing_word_count": 2,
+      "candidate": {
+        "file": "核验/2010—2015源审候选/2015-B2.json",
+        "sha256": "54ae56334b3de00ef7b6f790541e33a62edbdc08144b16067009e5045dc3e37a"
+      }
     }
   ],
-  "boundary_blockers": [
-    {
-      "unit": "2010-B1",
-      "sentence": 42,
-      "en": "Um, let’s look at two states, California and Maine.",
-      "missing": [
-        "Um"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 41,
-          "en": "States with the most racially diverse populations stand in stark contrast to those with the least racially diverse populations.",
-          "start": 1064.46,
-          "end": 1073.26
-        },
-        {
-          "sentence": 43,
-          "en": "From 1990 to 2000, California’s Caucasian population — meaning non-Hispanic whites — declined from 57% to 48%.",
-          "start": 1079.02,
-          "end": 1091.38
-        }
-      ]
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 21,
-      "en": "Urmm... first, there have been research studies.",
-      "missing": [
-        "Urmm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 20,
-          "en": "Well, there are a number of reasons for this.",
-          "start": 855.62,
-          "end": 858.98
-        },
-        {
-          "sentence": 22,
-          "en": "They have shown that some aspects of language learning, especially syntax, are more difficult beyond a certain age, say after around 12 years of age.",
-          "start": 862.74,
-          "end": 872.42
-        }
-      ]
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 28,
-      "en": "Mm...",
-      "missing": [
-        "Mm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 27,
-          "en": "Old children and adults often have less time and motivation to learn a second language.",
-          "start": 884.38,
-          "end": 890.94
-        },
-        {
-          "sentence": 29,
-          "en": "Another is related to the similarities and differences between one’s mother tongue and a second language.",
-          "start": 891.26,
-          "end": 897.82
-        }
-      ]
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 50,
-      "en": "Mm...",
-      "missing": [
-        "Mm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 49,
-          "en": "This method is based on translation from one language to another and it emphasizes grammar teaching.",
-          "start": 992.06,
-          "end": 998.38
-        },
-        {
-          "sentence": 51,
-          "en": "And then you have direct methods, which focuses on conversational skills and all teaching must be carried out in the second language.",
-          "start": 999.26,
-          "end": 1007.62
-        }
-      ]
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 40,
-      "en": "Now Dr. Andreasen, could you describe to us what the actual creative process is?",
-      "missing": [
-        "Now"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 39,
-          "en": "Yes.",
-          "start": 999.98,
-          "end": 1000.38
-        },
-        {
-          "sentence": 41,
-          "en": "OK. Uh, artists, musicians and writers often describe periods during which they’re relying on ordinary creativity.",
-          "start": 1006.46,
-          "end": 1015.82
-        }
-      ]
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 43,
-      "en": "And and many great artists also describe a dream-like state during which a symphony, a poem or the idea for the ending of a play comes to them in a flash.",
-      "missing": [
-        "And"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 42,
-          "en": "For example, you know writers can spend hours at the keyboard putting thoughts together—this process is similar to the way people put together novel ideas when talking.",
-          "start": 1016.04,
-          "end": 1027.56
-        },
-        {
-          "sentence": 44,
-          "en": "So what’s going on in the brain during the flash of inspiration?",
-          "start": 1039.22,
-          "end": 1042.42
-        }
-      ]
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 7,
-      "en": "Uh, they don’t like being hemmed in by rules or convention and, and they often look at problems from a different angle.",
-      "missing": [
-        "Uh",
-        "and"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 6,
-          "en": "They often like to explore new places or ideas.",
-          "start": 1186.69,
-          "end": 1190.13
-        },
-        {
-          "sentence": 8,
-          "en": "Another point is, is they often have to move doggedly ahead on a project—even when the outside world rejects their art or new ideas.",
-          "start": 1198.41,
-          "end": 1207.05
-        }
-      ]
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 14,
-      "en": "Uh, since the environment helps in the creative process, are there ways for people to build a better, more creative brain?",
-      "missing": [
-        "Uh"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          2043
-        ],
-        "asr_text": [
-          "better"
-        ],
-        "window": [
-          1247.25,
-          1247.33
-        ]
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 13,
-          "en": "Both men in fact came from families that didn’t especially value creativity, yet someone noticed a spark of talent in them and both got the training and financial backing to produce extraordinary pieces of art.",
-          "start": 1226.53,
-          "end": 1240.85
-        },
-        {
-          "sentence": 15,
-          "en": "Well, I’d suggest that you spend 30 minutes a day on a creativity workout.",
-          "start": 1249.77,
-          "end": 1254.73
-        }
-      ]
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 20,
-      "en": "And the second?",
-      "missing": [
-        "And"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 19,
-          "en": "For example, people who use a lot of math on the job should sign up for a painting class.",
-          "start": 1264.33,
-          "end": 1269.85
-        },
-        {
-          "sentence": 21,
-          "en": "The second is, spend time each day thinking.",
-          "start": 1270.97,
-          "end": 1274.37
-        }
-      ]
-    },
-    {
-      "unit": "2013-B1",
-      "sentence": 24,
-      "en": "Umm. What were they?",
-      "missing": [
-        "Umm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 23,
-          "en": "The purposes were to find out what issues or job characteristics were especially important to workers.",
-          "start": 831.62,
-          "end": 838.66
-        },
-        {
-          "sentence": 25,
-          "en": "Some of you might guess that the answer is obvious.",
-          "start": 841.18,
-          "end": 843.98
-        }
-      ]
-    },
-    {
-      "unit": "2015-A",
-      "sentence": 31,
-      "en": "For instance, “Can you see, Mary?” versus “Can you see Mary?” da da DA da... da da da DA da.",
-      "missing": [
-        "da",
-        "da",
-        "DA",
-        "da",
-        "da",
-        "da",
-        "da",
-        "DA",
-        "da"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 30,
-          "en": "And another thing you need to listen for is rhythm.",
-          "start": 191.93,
-          "end": 194.97
-        },
-        {
-          "sentence": 32,
-          "en": "Those two mean something different.",
-          "start": 203.97,
-          "end": 206.13
-        }
-      ]
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 24,
-      "en": "... and on local...",
-      "missing": [
-        "and",
-        "on",
-        "local"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 23,
-          "en": "What it means is that all the money at the moment that is being spent on the schools should be spent in the schools, rather than...",
-          "start": 1203.03,
-          "end": 1211.19
-        },
-        {
-          "sentence": 25,
-          "en": "... rather than money, that is supposed to be spent on schools, but is being held back in bureaucracy.",
-          "start": 1213.19,
-          "end": 1219.35
-        }
-      ]
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 26,
-      "en": "So, at the moment, a certain amount of money goes to schools, a certain amount of money goes to local education authorities, are you saying that in future, no money will go to Local Education Authorities, but all of the money will go to the schools.",
-      "missing": [
-        "So"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 25,
-          "en": "... rather than money, that is supposed to be spent on schools, but is being held back in bureaucracy.",
-          "start": 1213.19,
-          "end": 1219.35
-        },
-        {
-          "sentence": 27,
-          "en": "I mean, that’s a very straightforward question, isn’t it?",
-          "start": 1236.99,
-          "end": 1240.27
-        }
-      ]
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 39,
-      "en": "Question 10. What do we learn about the money being spent on schools at the moment?",
-      "missing": [
-        "Question",
-        "10"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 38,
-          "en": "Question 9. Why some state school pupils give up applying to leading universities?",
-          "start": 1332.27,
-          "end": 1339.3
-        },
-        {
-          "sentence": 40,
-          "en": "This is the end of Part One: Listening Comprehension.",
-          "start": 1366.32,
-          "end": 1370.96
-        }
-      ]
-    }
-  ],
-  "missing_lexemes_all_units": [
-    {
-      "unit": "2010-A",
-      "sentence": 16,
-      "en": "Last week we examined such features of, of language as grammar, vocabulary, the sounds of language, etc.",
-      "missing": [
-        "of"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2010-A",
-      "sentence": 32,
-      "en": "This, um, is to indicate anxiety.",
-      "missing": [
-        "um"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2010-B1",
-      "sentence": 40,
-      "en": "OK. The first is racial diversity.",
-      "missing": [
-        "The"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2010-B1",
-      "sentence": 42,
-      "en": "Um, let’s look at two states, California and Maine.",
-      "missing": [
-        "Um"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 41,
-          "en": "States with the most racially diverse populations stand in stark contrast to those with the least racially diverse populations.",
-          "start": 1064.46,
-          "end": 1073.26
-        },
-        {
-          "sentence": 43,
-          "en": "From 1990 to 2000, California’s Caucasian population — meaning non-Hispanic whites — declined from 57% to 48%.",
-          "start": 1079.02,
-          "end": 1091.38
-        }
-      ]
-    },
-    {
-      "unit": "2010-B1",
-      "sentence": 50,
-      "en": "Question 3. What does the example of Selinsgrove show?",
-      "missing": [
-        "Selinsgrove"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1786,
-          1787
-        ],
-        "asr_text": [
-          "Sellings",
-          "Grove"
-        ],
-        "window": [
-          1171.7,
-          1172.74
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2010-B1",
-      "sentence": 52,
-      "en": "Question 5. What is the similarity between Selinsgrove and Maine according to the interview?",
-      "missing": [
-        "Selinsgrove",
-        "Maine"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1815,
-          1816,
-          1818
-        ],
-        "asr_text": [
-          "Selling",
-          "Grove",
-          "Main,"
-        ],
-        "window": [
-          1206.69,
-          1208.61
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 15,
-      "en": "So, today, urmm... we’ll look at this issue.",
-      "missing": [
-        "urmm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 17,
-      "en": "Well, second language acquisition is “happens when a child or adult has already become competent at a language, and then, urmm... they attempt to learn another.”",
-      "missing": [
-        "urmm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 21,
-      "en": "Urmm... first, there have been research studies.",
-      "missing": [
-        "Urmm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 20,
-          "en": "Well, there are a number of reasons for this.",
-          "start": 855.62,
-          "end": 858.98
-        },
-        {
-          "sentence": 22,
-          "en": "They have shown that some aspects of language learning, especially syntax, are more difficult beyond a certain age, say after around 12 years of age.",
-          "start": 862.74,
-          "end": 872.42
-        }
-      ]
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 26,
-      "en": "Yes. For example, umm, time and interest.",
-      "missing": [
-        "umm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 28,
-      "en": "Mm...",
-      "missing": [
-        "Mm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 27,
-          "en": "Old children and adults often have less time and motivation to learn a second language.",
-          "start": 884.38,
-          "end": 890.94
-        },
-        {
-          "sentence": 29,
-          "en": "Another is related to the similarities and differences between one’s mother tongue and a second language.",
-          "start": 891.26,
-          "end": 897.82
-        }
-      ]
-    },
-    {
-      "unit": "2011-B1",
-      "sentence": 50,
-      "en": "Mm...",
-      "missing": [
-        "Mm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 49,
-          "en": "This method is based on translation from one language to another and it emphasizes grammar teaching.",
-          "start": 992.06,
-          "end": 998.38
-        },
-        {
-          "sentence": 51,
-          "en": "And then you have direct methods, which focuses on conversational skills and all teaching must be carried out in the second language.",
-          "start": 999.26,
-          "end": 1007.62
-        }
-      ]
-    },
-    {
-      "unit": "2011-B2",
-      "sentence": 37,
-      "en": "Question 6. What can we learn from Krashen's first hypothesis?",
-      "missing": [
-        "Krashen's"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          2261
-        ],
-        "asr_text": [
-          "Crashan's"
-        ],
-        "window": [
-          1325.57,
-          1326.53
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-A",
-      "sentence": 8,
-      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
-      "missing": [
-        "s"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          62
-        ],
-        "asr_text": [
-          "words"
-        ],
-        "window": [
-          47.1,
-          47.58
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-A",
-      "sentence": 23,
-      "en": "For instance, when we observe casually, we may not be aware of factors that bias our observations, and, and when we rarely keep formal records of our observations.",
-      "missing": [
-        "and"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 20,
-      "en": "That person must think about the problem or, or their project in a novel way and then come up with a solution.",
-      "missing": [
-        "or"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 40,
-      "en": "Now Dr. Andreasen, could you describe to us what the actual creative process is?",
-      "missing": [
-        "Now"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 39,
-          "en": "Yes.",
-          "start": 999.98,
-          "end": 1000.38
-        },
-        {
-          "sentence": 41,
-          "en": "OK. Uh, artists, musicians and writers often describe periods during which they’re relying on ordinary creativity.",
-          "start": 1006.46,
-          "end": 1015.82
-        }
-      ]
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 41,
-      "en": "OK. Uh, artists, musicians and writers often describe periods during which they’re relying on ordinary creativity.",
-      "missing": [
-        "Uh"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 43,
-      "en": "And and many great artists also describe a dream-like state during which a symphony, a poem or the idea for the ending of a play comes to them in a flash.",
-      "missing": [
-        "And"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 42,
-          "en": "For example, you know writers can spend hours at the keyboard putting thoughts together—this process is similar to the way people put together novel ideas when talking.",
-          "start": 1016.04,
-          "end": 1027.56
-        },
-        {
-          "sentence": 44,
-          "en": "So what’s going on in the brain during the flash of inspiration?",
-          "start": 1039.22,
-          "end": 1042.42
-        }
-      ]
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 47,
-      "en": "And that brain region is known to be able to link up ideas or or thoughts in potentially novel ways.",
-      "missing": [
-        "or"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 51,
-      "en": "Question 2. What does Dr. Andreasen want to show by citing the Bach family?",
-      "missing": [
-        "Andreasen"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1791
-        ],
-        "asr_text": [
-          "Andreessen"
-        ],
-        "window": [
-          1098.48,
-          1099.36
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 52,
-      "en": "Question 3. What does Dr. Andreasen want to explain by mentioning a cook?",
-      "missing": [
-        "Andreasen"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1805
-        ],
-        "asr_text": [
-          "Andreessen"
-        ],
-        "window": [
-          1115.36,
-          1116.32
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B1",
-      "sentence": 53,
-      "en": "Question 4. How many types of the creative process does Dr. Andreasen describe?",
-      "missing": [
-        "Andreasen"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1824
-        ],
-        "asr_text": [
-          "Andreessen"
-        ],
-        "window": [
-          1134.72,
-          1135.68
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 7,
-      "en": "Uh, they don’t like being hemmed in by rules or convention and, and they often look at problems from a different angle.",
-      "missing": [
-        "Uh",
-        "and"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 6,
-          "en": "They often like to explore new places or ideas.",
-          "start": 1186.69,
-          "end": 1190.13
-        },
-        {
-          "sentence": 8,
-          "en": "Another point is, is they often have to move doggedly ahead on a project—even when the outside world rejects their art or new ideas.",
-          "start": 1198.41,
-          "end": 1207.05
-        }
-      ]
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 8,
-      "en": "Another point is, is they often have to move doggedly ahead on a project—even when the outside world rejects their art or new ideas.",
-      "missing": [
-        "is"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 14,
-      "en": "Uh, since the environment helps in the creative process, are there ways for people to build a better, more creative brain?",
-      "missing": [
-        "Uh"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          2043
-        ],
-        "asr_text": [
-          "better"
-        ],
-        "window": [
-          1247.25,
-          1247.33
-        ]
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 13,
-          "en": "Both men in fact came from families that didn’t especially value creativity, yet someone noticed a spark of talent in them and both got the training and financial backing to produce extraordinary pieces of art.",
-          "start": 1226.53,
-          "end": 1240.85
-        },
-        {
-          "sentence": 15,
-          "en": "Well, I’d suggest that you spend 30 minutes a day on a creativity workout.",
-          "start": 1249.77,
-          "end": 1254.73
-        }
-      ]
-    },
-    {
-      "unit": "2012-B2",
-      "sentence": 20,
-      "en": "And the second?",
-      "missing": [
-        "And"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 19,
-          "en": "For example, people who use a lot of math on the job should sign up for a painting class.",
-          "start": 1264.33,
-          "end": 1269.85
-        },
-        {
-          "sentence": 21,
-          "en": "The second is, spend time each day thinking.",
-          "start": 1270.97,
-          "end": 1274.37
-        }
-      ]
-    },
-    {
-      "unit": "2013-A",
-      "sentence": 14,
-      "en": "Good morning, today I will discuss what is active learning, and, ah, what do active learners do.",
-      "missing": [
-        "ah"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2013-B1",
-      "sentence": 24,
-      "en": "Umm. What were they?",
-      "missing": [
-        "Umm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 23,
-          "en": "The purposes were to find out what issues or job characteristics were especially important to workers.",
-          "start": 831.62,
-          "end": 838.66
-        },
-        {
-          "sentence": 25,
-          "en": "Some of you might guess that the answer is obvious.",
-          "start": 841.18,
-          "end": 843.98
-        }
-      ]
-    },
-    {
-      "unit": "2013-B2",
-      "sentence": 34,
-      "en": "Umm.",
-      "missing": [
-        "Umm"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2014-A",
-      "sentence": 8,
-      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
-      "missing": [
-        "s"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          62
-        ],
-        "asr_text": [
-          "words"
-        ],
-        "window": [
-          48.18,
-          48.66
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2014-A",
-      "sentence": 15,
-      "en": "As you all know, life always has stressors, er, things which are causing us stress and living without stress is virtually impossible.",
-      "missing": [
-        "er"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2014-B1",
-      "sentence": 25,
-      "en": "So far the different officials I’ve met with and different local people I’ve met with all have shared concerns and very strongly, you know, they have spoken out about the humanitarian crisis but um, there seems to be a block in.",
-      "missing": [
-        "um"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2014-B2",
-      "sentence": 7,
-      "en": "A lot of people feel it’s a little calmer now... this is the time to really discuss and, and try to get these communities back together.",
-      "missing": [
-        "and"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2015-A",
-      "sentence": 8,
-      "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
-      "missing": [
-        "s"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          62
-        ],
-        "asr_text": [
-          "words"
-        ],
-        "window": [
-          47.21,
-          47.69
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2015-A",
-      "sentence": 31,
-      "en": "For instance, “Can you see, Mary?” versus “Can you see Mary?” da da DA da... da da da DA da.",
-      "missing": [
-        "da",
-        "da",
-        "DA",
-        "da",
-        "da",
-        "da",
-        "da",
-        "DA",
-        "da"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 30,
-          "en": "And another thing you need to listen for is rhythm.",
-          "start": 191.93,
-          "end": 194.97
-        },
-        {
-          "sentence": 32,
-          "en": "Those two mean something different.",
-          "start": 203.97,
-          "end": 206.13
-        }
-      ]
-    },
-    {
-      "unit": "2015-B1",
-      "sentence": 37,
-      "en": "Question 1. In Theresa’s view, what is the present government doing?",
-      "missing": [
-        "Theresa’s"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1729
-        ],
-        "asr_text": [
-          "Teresa's"
-        ],
-        "window": [
-          957.2,
-          958.08
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2015-B1",
-      "sentence": 40,
-      "en": "Question 4. What contribution does Theresa think her party has made in education?",
-      "missing": [
-        "Theresa"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          1761
-        ],
-        "asr_text": [
-          "Teresa"
-        ],
-        "window": [
-          1004.8,
-          1005.44
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 24,
-      "en": "... and on local...",
-      "missing": [
-        "and",
-        "on",
-        "local"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 23,
-          "en": "What it means is that all the money at the moment that is being spent on the schools should be spent in the schools, rather than...",
-          "start": 1203.03,
-          "end": 1211.19
-        },
-        {
-          "sentence": 25,
-          "en": "... rather than money, that is supposed to be spent on schools, but is being held back in bureaucracy.",
-          "start": 1213.19,
-          "end": 1219.35
-        }
-      ]
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 26,
-      "en": "So, at the moment, a certain amount of money goes to schools, a certain amount of money goes to local education authorities, are you saying that in future, no money will go to Local Education Authorities, but all of the money will go to the schools.",
-      "missing": [
-        "So"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 25,
-          "en": "... rather than money, that is supposed to be spent on schools, but is being held back in bureaucracy.",
-          "start": 1213.19,
-          "end": 1219.35
-        },
-        {
-          "sentence": 27,
-          "en": "I mean, that’s a very straightforward question, isn’t it?",
-          "start": 1236.99,
-          "end": 1240.27
-        }
-      ]
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 35,
-      "en": "Question 6. In Theresa’s view, what is school freedom?",
-      "missing": [
-        "Theresa’s"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          2454
-        ],
-        "asr_text": [
-          "Teresa's"
-        ],
-        "window": [
-          1286.43,
-          1287.23
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 36,
-      "en": "Question 7. According to Theresa, who decides money for schools at the present?",
-      "missing": [
-        "Theresa"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [
-          2464
-        ],
-        "asr_text": [
-          "Teresa,"
-        ],
-        "window": [
-          1302.39,
-          1303.27
-        ]
-      },
-      "boundary_blocked": false
-    },
-    {
-      "unit": "2015-B2",
-      "sentence": 39,
-      "en": "Question 10. What do we learn about the money being spent on schools at the moment?",
-      "missing": [
-        "Question",
-        "10"
-      ],
-      "internal_unmatched_ASR": {
-        "asr_indices": [],
-        "asr_text": [],
-        "window": null
-      },
-      "boundary_blocked": true,
-      "adjacent": [
-        {
-          "sentence": 38,
-          "en": "Question 9. Why some state school pupils give up applying to leading universities?",
-          "start": 1332.27,
-          "end": 1339.3
-        },
-        {
-          "sentence": 40,
-          "en": "This is the end of Part One: Listening Comprehension.",
-          "start": 1366.32,
-          "end": 1370.96
-        }
-      ]
-    }
-  ],
-  "frozen_reference": "核验/2010—2015最终导出冻结引用.json",
-  "publication_approved": false
+  "not_approved": true,
+  "note": "逐项技术限制、弱音/专名/节奏例外及额外ASR裁决见对应candidate，未通用清待核或自称字词100%。"
 }

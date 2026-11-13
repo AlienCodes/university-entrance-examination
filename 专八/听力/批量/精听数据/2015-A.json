@@ -14576,8 +14576,178 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2015/对齐报告.json",
-    "content_sha256": "2b1e5753581b8be1a786011a6cfd20203a12e1b2e7080edb523d3d4e01f592c0"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "c599d2dc78ae427efdc3bc735f215fe3b9e556286652cd1ce247ed23a5c22837"
+  },
+  "splits": {
+    "15": {
+      "at": "listening in a group",
+      "zh": [
+        "在大学里，作为学生，你们经常需要完成各种听力任务：",
+        "听小组讨论、与老师一对一交谈，以及听学术讲座。"
+      ]
+    },
+    "41": {
+      "at": "add information that the",
+      "zh": [
+        "因此，意义并不只存在于词语本身，也存在于使用这些词语、或对其作出回应的人身上。所以，听众要做的第二件事，",
+        "就是补充讲课人假定双方都知道的信息。"
+      ]
+    },
+    "52": {
+      "at": "you can just keep",
+      "zh": [
+        "随后，你会突然想起来：“哦，我得认真听。”如果你能在听讲时进行预测，",
+        "就能继续跟上讲座，而不会失去对当前内容的理解。"
+      ]
+    },
+    "55": {
+      "at": "and if you’re only",
+      "zh": [
+        "听讲时，你需要时间来思考信息、把它与已有的想法联系起来，以及记笔记；",
+        "如果你只是勉强跟上我或讲课人的讲话，就没有时间做这些事了。"
+      ]
+    },
+    "56": {
+      "at": "that you don’t have",
+      "zh": [
+        "我敢说，你们中很多人现在就有这个问题：光是跟上我说的全部内容，就已经很费力了，",
+        "因而没有时间记下要点。"
+      ]
+    },
+    "69": {
+      "at": "decide what’s important, what’s",
+      "zh": [
+        "现在来看听众必须做的最后一件事：边听边评价，",
+        "判断什么重要、什么不重要，以及某件事与另一件事之间有什么联系。"
+      ]
+    },
+    "78": {
+      "at": "language awareness, adding information,",
+      "zh": [
+        "从刚才的内容可以看出，听讲座涉及很多事情：",
+        "语言意识、补充信息、进行预测和作出评价。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 15,
+        "at": "listening in a group",
+        "real_word_anchor": true,
+        "char": 104,
+        "start": 114.16,
+        "end": 114.64
+      },
+      {
+        "sentence": 41,
+        "at": "add information that the",
+        "real_word_anchor": true,
+        "char": 148,
+        "start": 278.97,
+        "end": 279.05
+      },
+      {
+        "sentence": 52,
+        "at": "you can just keep",
+        "real_word_anchor": true,
+        "char": 113,
+        "start": 325.69,
+        "end": 325.77
+      },
+      {
+        "sentence": 55,
+        "at": "and if you’re only",
+        "real_word_anchor": true,
+        "char": 102,
+        "start": 350.93,
+        "end": 351.01
+      },
+      {
+        "sentence": 56,
+        "at": "that you don’t have",
+        "real_word_anchor": true,
+        "char": 119,
+        "start": 363.97,
+        "end": 364.05
+      },
+      {
+        "sentence": 69,
+        "at": "decide what’s important, what’s",
+        "real_word_anchor": true,
+        "char": 108,
+        "start": 426.89,
+        "end": 427.29
+      },
+      {
+        "sentence": 78,
+        "at": "language awareness, adding information,",
+        "real_word_anchor": true,
+        "char": 89,
+        "start": 484.01,
+        "end": 484.49
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "15",
+      "41",
+      "52",
+      "55",
+      "56",
+      "69",
+      "78"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2015.json",
+    "mother_sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+    "english_sequence_sha256": "fd9e665c18d639a889cf2beb6cdaadfcb1a27c6ece03096b7c7de78524c54c93",
+    "timing_fingerprint_unchanged": "119705c7a153cce67b05f48b7925e016d8c9355fd0fa70dca77ea3444f9681e9",
+    "previous_content_sha256": "2f3685864e0742dfe18abeeaa35d38f6b761a478266da8939193820cb5cd5939",
+    "manual_splits_by_exact_EN": [
+      {
+        "sentence": 15,
+        "en": "Now, at the university, you, as students, are often called on to perform many types of listening tasks: listening in a group discussion, listening to a teacher on a one-to-one basis, and listening to academic lectures.",
+        "at": "listening in a group"
+      },
+      {
+        "sentence": 41,
+        "en": "So the meaning is not in the word alone, rather it is in the person who uses it or responds to it so that the second thing that a listener must do— add information that the lecturer assumes that they share.",
+        "at": "add information that the"
+      },
+      {
+        "sentence": 52,
+        "en": "And then all of a sudden, you'll remember “Oh, I’ve got to listen.” By being able to predict during the lecture, you can just keep listening to the lecture and not lose the idea of what’s going on.",
+        "at": "you can just keep"
+      },
+      {
+        "sentence": 55,
+        "en": "Now when you listen you need time to think about the information, relate it to old ideas, take notes, and if you’re only keeping up with what I’m saying or what the lecturer’s saying, you have no time to do that.",
+        "at": "and if you’re only"
+      },
+      {
+        "sentence": 56,
+        "en": "And I’ll bet a lot of you are having that problem right now because it’s so hard just to follow everything I’m saying, that you don’t have time to note down ideas.",
+        "at": "that you don’t have"
+      },
+      {
+        "sentence": 69,
+        "en": "Now let’s come to the last thing a listener must do: the listener must evaluate, as he or she is listening, decide what’s important, what’s not, decide how something relates to something else.",
+        "at": "decide what’s important, what’s"
+      },
+      {
+        "sentence": 78,
+        "en": "From what I’ve said so far, you can see there’s a lot involved in listening to lectures: language awareness, adding information, making predictions and evaluations.",
+        "at": "language awareness, adding information,"
+      }
+    ],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

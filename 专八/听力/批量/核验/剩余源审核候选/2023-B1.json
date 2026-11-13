@@ -1,0 +1,1896 @@
+{
+  "id": "2023-B1",
+  "status": "source-review-candidate-only",
+  "source_approved": false,
+  "recommendation": "ready",
+  "blocking": [],
+  "scope": "仅建议root批准源EN/中文/词汇/真实锚及原音窗；不批准PNG、实际换屏guard或编码成品。",
+  "checked_at_UTC": "2026-11-13T21:54:05.660614+00:00",
+  "current": {
+    "mother_file": "译注草稿/2023.json",
+    "mother_file_sha256": "6a932a04b749f8d31928ec3a3927e4a1aa2269f779c36a702e34d22cab556b52",
+    "mother_semantic_sha256": "e77a2e7f5f1fdf44449ccbbd2f7bd409d352090a90107c1ed55b025c636dca2d",
+    "final_file": "精听数据/2023-B1.json",
+    "final_file_sha256": "9a01960c273588aab874731cac3a20f16e19d3eeb52ec84a4e3b6b1c66888d02",
+    "final_semantic_sha256": "e77a2e7f5f1fdf44449ccbbd2f7bd409d352090a90107c1ed55b025c636dca2d",
+    "semantic_exact": true,
+    "final_production_content_sha256": "f149f04c53746167df2ff2e836d89c458a7204c3b354982016995738880d6cf8",
+    "alignment_report": "核验/原文对齐/2023/对齐报告.json",
+    "alignment_report_sha256": "e4328a1485dfd29460edd9253782860005fe312c905da78291d1e9fbe15bbefe",
+    "effective_ASR": "核验/原文对齐/2023/含说明识别.json",
+    "effective_ASR_sha256": "74f928a9575f84059aab7ad42d48f061c9d204bacbbd9409d37a7b635df2eae8"
+  },
+  "counts": {
+    "sentences": 51,
+    "vocabulary_entries": 81,
+    "source_lexemes": 766,
+    "mapped_lexemes": 765,
+    "word_alignment_segments": 756,
+    "reviewed_external_whole_word_spans": 1,
+    "whole_sentence_or_nonword_events": 1,
+    "nonverbal_lexemes_not_word_timed": 0,
+    "acoustic_interjection_missing_not_word_timed": 0,
+    "manual_plans": 3,
+    "spoken_questions_checked_against_exam": 5
+  },
+  "source_audio": {
+    "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+    "window": [
+      810.1525,
+      1207.77
+    ],
+    "native_sample_rate": 44100,
+    "native_channels": 2,
+    "registered_pcm_sha256": "10665233e9d7909108b8765eb57aa4bc09334d6ab1cd6603bea117ac71dcd48e",
+    "original_source_entries": [
+      {
+        "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+        "bytes": 12531170,
+        "sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1565.88425
+        },
+        "decoded_pcm_sha256": "10665233e9d7909108b8765eb57aa4bc09334d6ab1cd6603bea117ac71dcd48e",
+        "decoded_frames": 69055488,
+        "canonical_start": 0.0,
+        "canonical_end": 1565.884081632653
+      }
+    ],
+    "boundary_evidence": {
+      "status": "measured_PCM_boundaries_or_complete_file_edge",
+      "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+      "source_entries": [
+        {
+          "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+          "sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618"
+        }
+      ],
+      "first_ASR_anchor": 810.86,
+      "last_ASR_anchor": 1207.57,
+      "next_ASR_start": 1217.42,
+      "window": [
+        810.1525,
+        1207.77
+      ],
+      "start_kind": "measured_quiet_before_first_ASR_anchor",
+      "end_kind": "measured_quiet_after_last_ASR_anchor",
+      "leading_PCM": {
+        "decoded_window": [
+          809.26,
+          811.0600000000001
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            809.47,
+            811.06
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          -2.276490442645996e-06,
+          -2.171098417129799e-06
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -29.15,
+          -27.98,
+          -33.65,
+          -35.22,
+          -32.87,
+          -31.44,
+          -30.74,
+          -29.86,
+          -39.97,
+          -30.56,
+          -49.49,
+          -33.27,
+          -48.74,
+          -57.65,
+          -38.17,
+          -38.37,
+          -51.61,
+          -54.65,
+          -52.18,
+          -56.65,
+          -56.56,
+          -64.9,
+          -67.69,
+          -71.47,
+          -70.02,
+          -71.65,
+          -71.27,
+          -73.73,
+          -74.45,
+          -76.77,
+          -80.03,
+          -79.96,
+          -87.14,
+          -96.1,
+          -111.61,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.09,
+          -112.12,
+          -111.85,
+          -95.85,
+          -93.93,
+          -79.88,
+          -79.33,
+          -80.65,
+          -79.98,
+          -81.04,
+          -79.54,
+          -78.82,
+          -79.21,
+          -78.44,
+          -78.69
+        ]
+      },
+      "trailing_PCM": {
+        "decoded_window": [
+          1207.37,
+          1210.37
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            1207.37,
+            1210.37
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          8.697420069251342e-07,
+          8.771615077423944e-07
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -71.29,
+          -70.03,
+          -73.37,
+          -73.18,
+          -70.31,
+          -76.73,
+          -78.47,
+          -86.34,
+          -95.05,
+          -89.73,
+          -91.76,
+          -116.81,
+          -117.43,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52,
+          -117.52
+        ]
+      },
+      "note": "原采样率/声道PCM逐10ms实测低能量间隙；词尾仍是ASR候选，窗口未按词长估计；正式原音未修改。"
+    },
+    "first_sentence": {
+      "en": "Section B. Interview.",
+      "start": 810.86,
+      "end": 813.74
+    },
+    "last_sentence": {
+      "en": "Question 5. According to the man, what kind of gap year experience do employers care most?",
+      "start": 1200.13,
+      "end": 1207.57
+    },
+    "last_actual_word": {
+      "char": 85,
+      "char_end": 89,
+      "start": 1206.93,
+      "end": 1207.57,
+      "asr_indices": [
+        1987
+      ]
+    }
+  },
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [
+    {
+      "sentence": 19,
+      "en": "Eh, it’s a life changing experience, and it’s unbelievable how much fun you can have on a gap year.",
+      "missing": [
+        {
+          "text": "Eh",
+          "char": [
+            0,
+            2
+          ]
+        }
+      ],
+      "disposition": "verified_whole_sentence_acoustic_event"
+    }
+  ],
+  "legal_whole_sentence_and_nonword_events": [
+    {
+      "sentence": 19,
+      "en": "Eh, it’s a life changing experience, and it’s unbelievable how much fun you can have on a gap year.",
+      "kind": "verified_whole_sentence_acoustic_event",
+      "start": 953.44,
+      "end": 960.44,
+      "unknown_words_without_fake_word_times": [
+        {
+          "text": "Eh",
+          "char": [
+            0,
+            2
+          ]
+        }
+      ],
+      "evidence": {
+        "unit": "2023-B1",
+        "en": "Eh, it’s a life changing experience, and it’s unbelievable how much fun you can have on a gap year.",
+        "start": 953.44,
+        "end": 960.44,
+        "nonverbal": false,
+        "whole_sentence_audio_verified": true,
+        "word_alignment_policy": "retain_actual_ASR_only",
+        "evidence_ref": "核验/正文清理/2023-气声整句话轮/2023-B1.json",
+        "evidence_sha256": "09052a207645683bf6547006f60b2c3470cdddc830364bc26e6b5e3d36a78aed",
+        "decision": "纸源保留Eh/Ah的非实义语气书写；该标记不强求模型拆为字词，也不假定独立音节内边界。两模型及已核原文支持完整话轮正文；首尾为实测原采样率双声道静段内截点，包住全部普通词实际ASR锚和原录声响。未知语气字无word_alignment，仅整句显示。",
+        "manifest": "核验/正文清理/2023-整句声学采纳.json",
+        "manifest_sha256": "295eacd0eb942691915e11662288eeef903d1a24ca33373f242dff9d6a9dc58f"
+      }
+    }
+  ],
+  "external_actual_word_span_evidence": [
+    {
+      "sentence": 34,
+      "en": "Others may advise talking to friends with some experience of gap year, or browse some online forums, which I personally would not highly recommend.",
+      "source_text": "gap year",
+      "actual_ASR_rows": [
+        [
+          "Dapia",
+          1039.52,
+          1040.08
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2023/gapyear.json",
+      "evidence_sha256": "924baa6501f5e5de3d214361ae8ee572fa19396890cb8ae84fee09a5b74cdf6d",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    }
+  ],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1337
+      ],
+      "asr_text": [
+        "Delighted"
+      ],
+      "window": [
+        899.24,
+        899.64
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Delighted']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1335
+          ],
+          "asr_text": [
+            "Delighted"
+          ],
+          "window": [
+            899.24,
+            899.64
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          895.74,
+          903.14
+        ],
+        "source_corresponding_phrase": "we are delighted to have invited",
+        "decision": "原候选的['Delighted']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-899.24.json",
+        "evidence_sha256": "3fd5e0a3761efec303580ffec33610df794b0f80e07bb5d9aa78a8b31170f2aa",
+        "model_texts": {
+          "Parakeet": "Good evening, everybody. Today, we are delighted to have invited Jim Johnson, a gapyear.com.",
+          "Whisper": "Good evening, everybody. Today, we are delighted to have invited Jim Johnson, a gapyear.com. ["
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1392,
+        1393
+      ],
+      "asr_text": [
+        "let",
+        "me"
+      ],
+      "window": [
+        923.66,
+        923.98
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['let', 'me']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1390,
+            1391
+          ],
+          "asr_text": [
+            "let",
+            "me"
+          ],
+          "window": [
+            923.66,
+            923.98
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          920.16,
+          927.48
+        ],
+        "source_corresponding_phrase": "Now, let me first ask",
+        "decision": "原候选的['let', 'me']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-923.66.json",
+        "evidence_sha256": "fb53620205ea5a4dcffd207792167a3e9ca1396cccd8ae52175f9afb73a97f2f",
+        "model_texts": {
+          "Parakeet": "I'm very pleased to meet you all. Now, let me first ask you a question: why should young people?",
+          "Whisper": "I'm very pleased to meet you all. Now, let me first ask you a question. Why should young people... *static* *static* *static*"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1456
+      ],
+      "asr_text": [
+        "But"
+      ],
+      "window": [
+        947.24,
+        947.32
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['But']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1454
+          ],
+          "asr_text": [
+            "But"
+          ],
+          "window": [
+            947.24,
+            947.32
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          943.74,
+          950.82
+        ],
+        "source_corresponding_phrase": "this is the case, but I find",
+        "decision": "原候选的['But']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-947.24.json",
+        "evidence_sha256": "e864871b4430f51859908fdd583a5b9cfca3e0947a7c5bb93a8e206b3029c3cf",
+        "model_texts": {
+          "Parakeet": "University. Well, this is the case, but I find not enough people put an emphasis on just how amazing.",
+          "Whisper": "university. Well, this is the case, but I find not enough people putting emphasis on just how a major sssssssssssssssssssssssssssssssss"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 19,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Eh"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [],
+      "whole_events": [
+        {
+          "sentence": 19,
+          "en": "Eh, it’s a life changing experience, and it’s unbelievable how much fun you can have on a gap year.",
+          "kind": "verified_whole_sentence_acoustic_event",
+          "start": 953.44,
+          "end": 960.44,
+          "unknown_words_without_fake_word_times": [
+            {
+              "text": "Eh",
+              "char": [
+                0,
+                2
+              ]
+            }
+          ],
+          "evidence": {
+            "unit": "2023-B1",
+            "en": "Eh, it’s a life changing experience, and it’s unbelievable how much fun you can have on a gap year.",
+            "start": 953.44,
+            "end": 960.44,
+            "nonverbal": false,
+            "whole_sentence_audio_verified": true,
+            "word_alignment_policy": "retain_actual_ASR_only",
+            "evidence_ref": "核验/正文清理/2023-气声整句话轮/2023-B1.json",
+            "evidence_sha256": "09052a207645683bf6547006f60b2c3470cdddc830364bc26e6b5e3d36a78aed",
+            "decision": "纸源保留Eh/Ah的非实义语气书写；该标记不强求模型拆为字词，也不假定独立音节内边界。两模型及已核原文支持完整话轮正文；首尾为实测原采样率双声道静段内截点，包住全部普通词实际ASR锚和原录声响。未知语气字无word_alignment，仅整句显示。",
+            "manifest": "核验/正文清理/2023-整句声学采纳.json",
+            "manifest_sha256": "295eacd0eb942691915e11662288eeef903d1a24ca33373f242dff9d6a9dc58f"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1675
+      ],
+      "asr_text": [
+        "Others"
+      ],
+      "window": [
+        1036.08,
+        1036.32
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Others']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1673
+          ],
+          "asr_text": [
+            "Others"
+          ],
+          "window": [
+            1036.08,
+            1036.32
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1032.58,
+          1039.82
+        ],
+        "source_corresponding_phrase": "Others may advise",
+        "decision": "原候选的['Others']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-1036.08.json",
+        "evidence_sha256": "a88274adc5842ff7f87cdeaed03cf91d2329f0c2f853a65ea41490970adbe31b",
+        "model_texts": {
+          "Parakeet": "Even throw in a pros and cons column. Others may advise talking to friends with some experience of gas.",
+          "Whisper": "even throw in a pros and cons column. Others may advise talking to friends with some experience of gaz-"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 34,
+          "char": [
+            61,
+            64
+          ],
+          "text": "gap"
+        },
+        {
+          "unit": "2023-B1",
+          "sentence": 34,
+          "char": [
+            65,
+            69
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1685
+      ],
+      "asr_text": [
+        "Dapia"
+      ],
+      "window": [
+        1039.52,
+        1040.08
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 34,
+          "en": "Others may advise talking to friends with some experience of gap year, or browse some online forums, which I personally would not highly recommend.",
+          "source_text": "gap year",
+          "actual_ASR_rows": [
+            [
+              "Dapia",
+              1039.52,
+              1040.08
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2023/gapyear.json",
+          "evidence_sha256": "924baa6501f5e5de3d214361ae8ee572fa19396890cb8ae84fee09a5b74cdf6d",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1721
+      ],
+      "asr_text": [
+        "Which"
+      ],
+      "window": [
+        1057.0,
+        1057.24
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Which']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            1719
+          ],
+          "asr_text": [
+            "Which"
+          ],
+          "window": [
+            1057.0,
+            1057.24
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          1053.5,
+          1060.74
+        ],
+        "source_corresponding_phrase": "Which project would you do",
+        "decision": "原候选的['Which']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-1057.00.json",
+        "evidence_sha256": "e32fba9d5f4d0398aa9d88e7838a23bef2cedc4645f3e96274fb14d53b9e25fc",
+        "model_texts": {
+          "Parakeet": "Okay, let's move on to another question. Which project would you do if you were taking a gap year?",
+          "Whisper": "Okay, let's move on to another question. Which project would you do if you were taking a gap here? [static]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 37,
+          "char": [
+            52,
+            56
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1732
+      ],
+      "asr_text": [
+        "here?"
+      ],
+      "window": [
+        1060.68,
+        1061.0
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 1,
+          "unit": "2023-B1",
+          "sentence": 37,
+          "char": [
+            48,
+            56
+          ],
+          "text": "gap year",
+          "asr_indices": [
+            1731,
+            1732
+          ],
+          "asr_text": [
+            "gap",
+            "here?"
+          ],
+          "source_asr_rows": [
+            [
+              "gap",
+              1060.2,
+              1060.44
+            ],
+            [
+              "here?",
+              1060.68,
+              1061.0
+            ]
+          ],
+          "source_sentence_en": "Which project would you do if you were taking a gap year?",
+          "evidence": "gap year为本访谈主题、原解析与根已核口述题干的固定词组；原ASR here/Pure/Gapia/GAAP为该处连读误标签，当前连续真实声段与原句对应。只将完整gap year词组绑定，不把here/Pure/GAAP作为全局同义词，也不猜gap/year内部秒数。证据：核验/正文异文复核/2023/project_question.json、gapyear.json；核验/2023-考试内容审核.json及母稿原页source_refs。",
+          "window": [
+            1060.2,
+            1061.0
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 49,
+          "char": [
+            67,
+            70
+          ],
+          "text": "gap"
+        },
+        {
+          "unit": "2023-B1",
+          "sentence": 49,
+          "char": [
+            71,
+            75
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1955
+      ],
+      "asr_text": [
+        "Gapia?"
+      ],
+      "window": [
+        1172.63,
+        1173.67
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 2,
+          "unit": "2023-B1",
+          "sentence": 49,
+          "char": [
+            67,
+            75
+          ],
+          "text": "gap year",
+          "asr_indices": [
+            1955
+          ],
+          "asr_text": [
+            "Gapia?"
+          ],
+          "source_asr_rows": [
+            [
+              "Gapia?",
+              1172.63,
+              1173.67
+            ]
+          ],
+          "source_sentence_en": "Question 3. What does the man say about the best thing of taking a gap year?",
+          "evidence": "gap year为本访谈主题、原解析与根已核口述题干的固定词组；原ASR here/Pure/Gapia/GAAP为该处连读误标签，当前连续真实声段与原句对应。只将完整gap year词组绑定，不把here/Pure/GAAP作为全局同义词，也不猜gap/year内部秒数。证据：核验/正文异文复核/2023/project_question.json、gapyear.json；核验/2023-考试内容审核.json及母稿原页source_refs。",
+          "window": [
+            1172.63,
+            1173.67
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 51,
+          "char": [
+            51,
+            55
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1982
+      ],
+      "asr_text": [
+        "Pure"
+      ],
+      "window": [
+        1204.61,
+        1204.85
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [
+        {
+          "id": 3,
+          "unit": "2023-B1",
+          "sentence": 51,
+          "char": [
+            47,
+            55
+          ],
+          "text": "gap year",
+          "asr_indices": [
+            1981,
+            1982
+          ],
+          "asr_text": [
+            "Gap",
+            "Pure"
+          ],
+          "source_asr_rows": [
+            [
+              "Gap",
+              1204.21,
+              1204.45
+            ],
+            [
+              "Pure",
+              1204.61,
+              1204.85
+            ]
+          ],
+          "source_sentence_en": "Question 5. According to the man, what kind of gap year experience do employers care most?",
+          "evidence": "gap year为本访谈主题、原解析与根已核口述题干的固定词组；原ASR here/Pure/Gapia/GAAP为该处连读误标签，当前连续真实声段与原句对应。只将完整gap year词组绑定，不把here/Pure/GAAP作为全局同义词，也不猜gap/year内部秒数。证据：核验/正文异文复核/2023/project_question.json、gapyear.json；核验/2023-考试内容审核.json及母稿原页source_refs。",
+          "window": [
+            1204.21,
+            1204.85
+          ]
+        }
+      ],
+      "external_anchors": [],
+      "whole_events": []
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 6,
+          "char": [
+            37,
+            40
+          ],
+          "text": "ten"
+        }
+      ],
+      "asr_indices": [
+        1273
+      ],
+      "asr_text": [
+        "10-second"
+      ],
+      "window": [
+        836.26,
+        837.06
+      ],
+      "canonical": [
+        "#10"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 14,
+          "char": [
+            8,
+            9
+          ],
+          "text": "I"
+        },
+        {
+          "unit": "2023-B1",
+          "sentence": 14,
+          "char": [
+            10,
+            12
+          ],
+          "text": "am"
+        }
+      ],
+      "asr_indices": [
+        1384
+      ],
+      "asr_text": [
+        "I'm"
+      ],
+      "window": [
+        920.46,
+        920.94
+      ],
+      "canonical": [
+        "am",
+        "i"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 26,
+          "char": [
+            2,
+            11
+          ],
+          "text": "travelled"
+        }
+      ],
+      "asr_indices": [
+        1569
+      ],
+      "asr_text": [
+        "traveled"
+      ],
+      "window": [
+        992.82,
+        993.38
+      ],
+      "canonical": [
+        "traveled"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 36,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1713
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        1053.62,
+        1054.18
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 37,
+          "char": [
+            48,
+            51
+          ],
+          "text": "gap"
+        },
+        {
+          "unit": "2023-B1",
+          "sentence": 37,
+          "char": [
+            52,
+            56
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1731,
+        1732
+      ],
+      "asr_text": [
+        "gap",
+        "here?"
+      ],
+      "window": [
+        1060.2,
+        1061.0
+      ],
+      "canonical": [
+        "gap",
+        "year"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 43,
+          "char": [
+            145,
+            147
+          ],
+          "text": "CV"
+        }
+      ],
+      "asr_indices": [
+        1827,
+        1828
+      ],
+      "asr_text": [
+        "C",
+        "V"
+      ],
+      "window": [
+        1097.14,
+        1097.46
+      ],
+      "canonical": [
+        "cv"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 44,
+          "char": [
+            130,
+            132
+          ],
+          "text": "63"
+        }
+      ],
+      "asr_indices": [
+        1855,
+        1856
+      ],
+      "asr_text": [
+        "Sixty",
+        "three"
+      ],
+      "window": [
+        1109.93,
+        1110.65
+      ],
+      "canonical": [
+        "#63"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 44,
+          "char": [
+            132,
+            133
+          ],
+          "text": "%"
+        }
+      ],
+      "asr_indices": [
+        1857
+      ],
+      "asr_text": [
+        "percent"
+      ],
+      "window": [
+        1110.89,
+        1111.29
+      ],
+      "canonical": [
+        "percent"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 47,
+          "char": [
+            9,
+            10
+          ],
+          "text": "1"
+        }
+      ],
+      "asr_indices": [
+        1914
+      ],
+      "asr_text": [
+        "one."
+      ],
+      "window": [
+        1134.53,
+        1135.17
+      ],
+      "canonical": [
+        "#1"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 48,
+          "char": [
+            9,
+            10
+          ],
+          "text": "2"
+        }
+      ],
+      "asr_indices": [
+        1925
+      ],
+      "asr_text": [
+        "two."
+      ],
+      "window": [
+        1149.49,
+        1150.21
+      ],
+      "canonical": [
+        "#2"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 49,
+          "char": [
+            9,
+            10
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1942
+      ],
+      "asr_text": [
+        "three:"
+      ],
+      "window": [
+        1166.95,
+        1168.07
+      ],
+      "canonical": [
+        "#3"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 49,
+          "char": [
+            67,
+            70
+          ],
+          "text": "gap"
+        },
+        {
+          "unit": "2023-B1",
+          "sentence": 49,
+          "char": [
+            71,
+            75
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1955
+      ],
+      "asr_text": [
+        "Gapia?"
+      ],
+      "window": [
+        1172.63,
+        1173.67
+      ],
+      "canonical": [
+        "gap",
+        "year"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 50,
+          "char": [
+            9,
+            10
+          ],
+          "text": "4"
+        }
+      ],
+      "asr_indices": [
+        1957
+      ],
+      "asr_text": [
+        "four:"
+      ],
+      "window": [
+        1184.09,
+        1184.97
+      ],
+      "canonical": [
+        "#4"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 51,
+          "char": [
+            9,
+            10
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1973
+      ],
+      "asr_text": [
+        "five."
+      ],
+      "window": [
+        1200.85,
+        1201.57
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-B1",
+          "sentence": 51,
+          "char": [
+            47,
+            50
+          ],
+          "text": "gap"
+        },
+        {
+          "unit": "2023-B1",
+          "sentence": 51,
+          "char": [
+            51,
+            55
+          ],
+          "text": "year"
+        }
+      ],
+      "asr_indices": [
+        1981,
+        1982
+      ],
+      "asr_text": [
+        "Gap",
+        "Pure"
+      ],
+      "window": [
+        1204.21,
+        1204.85
+      ],
+      "canonical": [
+        "gap",
+        "year"
+      ],
+      "decision": "human_binding",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "source_references": [
+    {
+      "path": "来源/2023/解析.txt",
+      "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+      "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+    }
+  ],
+  "source_variant_dispositions": {
+    "recorded_original_audio_checks": [
+      "a year sharp spent：扫描与两路ASR均为sharp，按root裁决保留真实口语，不擅改为gap或about；译文按间隔年时长及后文工作/志愿经历表达。",
+      "To put it simple、employers care most：扫描及两路ASR均一致；保留实际口语，不擅自补simply/about。"
+    ],
+    "recorded_body_audio_corrections": [],
+    "current_binding_proof_note": "历史修订记录原样保留；本次真实词锚/整句例外的有效证据引用及SHA逐项在本候选另核，不将旧修订时SHA冒称当前文件SHA。"
+  },
+  "bilingual_vocabulary_review": {
+    "all_sentences_and_vocabulary_read": true,
+    "review_total_scope": "423句逐句审阅，包括语境词性/lemma与释义、否定/条件、数值/计量单位、列举和插入语；不独立重推答案。",
+    "specific_semantic_checks": [
+      "63%调查赞同的是建设性间隔经历对申请的帮助，几个月/一年与海外志愿/工作经历关系未跨屏错配。",
+      "保留原音a year sharp及to put it simple等非标准表达，未为语法改写原音文本。"
+    ],
+    "known_corrections": "2023-A两处句末逗号句点与look→看起来，见2023-A-三处显示译意修复.json；其他未发现明确错义。",
+    "all_sp_valid_and_nonoverlapping": true,
+    "names_exact": true
+  },
+  "manual_plan_checks": [
+    {
+      "en": "So, whether you’re currently deciding whether a gap year is for you, or you’re just feeling itchy to decide what to do with it, you are welcome to join us. Well, Jim.",
+      "at": "or you’re just feeling",
+      "zh": [
+        "无论你正在考虑自己是否适合间隔年，",
+        "还是已经迫不及待地想决定如何度过间隔年，都欢迎加入我们。那么，吉姆。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "or you’re just feeling",
+          "actual_word": "or",
+          "actual_word_start": 911.66,
+          "actual_word_end": 911.74,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "Yes, they really do. If you’re studying veterinary science and you volunteer on a wildlife conservation project, then that can really boost your CV and experience levels by doing so.",
+      "at": "then that can really",
+      "zh": [
+        "会的，他们确实很在意。如果你学兽医学，又参加了野生动物保护项目的志愿工作，",
+        "这样的经历就能实实在在地为简历加分、丰富你的经验。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "then that can really",
+          "actual_word": "then",
+          "actual_word_start": 1095.38,
+          "actual_word_end": 1095.46,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    },
+    {
+      "en": "Recently, at gapyear.com, we conducted a survey asking HR professionals whether a gap year makes a job applicant more employable. 63% agreed that a constructive gap year, either just a few months or a year sharp spent volunteering or gaining work experience overseas, makes a job application stand out, so the evidence is there.",
+      "at": [
+        "63% agreed",
+        "makes a job application"
+      ],
+      "zh": [
+        "最近，gapyear.com对人力资源专业人士开展了一项调查，询问间隔年是否会让求职者更具就业竞争力。",
+        "63%的受访者表示，一段有意义的间隔年经历，无论是几个月还是一年，用来参加志愿活动或积累海外工作经验，",
+        "都能使求职申请脱颖而出；这就是依据。"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "63% agreed",
+          "actual_word": "63",
+          "actual_word_start": 1109.93,
+          "actual_word_end": 1110.65,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        },
+        {
+          "at": "makes a job application",
+          "actual_word": "makes",
+          "actual_word_start": 1120.41,
+          "actual_word_end": 1120.65,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "核验/补词锚/2023/已核局部ASR核验.json",
+      "sha256": "9bb90520f20f2a4be673f784d444077d88d5ba5b3da434651f0a07b3e821d407"
+    },
+    {
+      "file": "核验/正文异文复核/2023/gapyear.json",
+      "sha256": "924baa6501f5e5de3d214361ae8ee572fa19396890cb8ae84fee09a5b74cdf6d"
+    },
+    {
+      "file": "核验/正文清理/2023-气声整句话轮/2023-B1.json",
+      "sha256": "09052a207645683bf6547006f60b2c3470cdddc830364bc26e6b5e3d36a78aed"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-899.24.json",
+      "sha256": "3fd5e0a3761efec303580ffec33610df794b0f80e07bb5d9aa78a8b31170f2aa"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-923.66.json",
+      "sha256": "fb53620205ea5a4dcffd207792167a3e9ca1396cccd8ae52175f9afb73a97f2f"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-947.24.json",
+      "sha256": "e864871b4430f51859908fdd583a5b9cfca3e0947a7c5bb93a8e206b3029c3cf"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-1036.08.json",
+      "sha256": "a88274adc5842ff7f87cdeaed03cf91d2329f0c2f853a65ea41490970adbe31b"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-1057.00.json",
+      "sha256": "e32fba9d5f4d0398aa9d88e7838a23bef2cedc4645f3e96274fb14d53b9e25fc"
+    },
+    {
+      "file": "核验/正文清理/2023-人工词锚.json",
+      "sha256": "28b5dffb998c49c578677c3ca60d9ed0833666a38d8098de699ad5d0c09da121"
+    },
+    {
+      "file": "核验/剩余源审核候选/原音及材料引用复核.json",
+      "sha256": "5906de1c5d3c86667932272dfaf3b5bc1038f01e7e04e2cbfb7aec3248dcd194"
+    },
+    {
+      "file": "核验/剩余源审核候选/额外ASR逐项裁决.json",
+      "sha256": "d300437c9fdc79bbed4ecd56212ac82e50ec6e1a9baf032603a2a08c5df0f4dc"
+    },
+    {
+      "file": "核验/第二批人工语义分屏/分屏平表.json",
+      "sha256": "d21d8fe10e74f01f16451652d8edd85292eb675ca08cbf471cd7684a4db3630e"
+    }
+  ],
+  "next": "root阅读本篇具体差异/例外后写源审核及registry；PNG和实际音频换屏guard另审。"
+}

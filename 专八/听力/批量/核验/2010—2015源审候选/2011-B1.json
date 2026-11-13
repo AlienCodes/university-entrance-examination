@@ -1,0 +1,344 @@
+{
+  "id": "2011-B1",
+  "year": 2011,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2011.json",
+    "sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+    "unit_semantic_sha256": "d2530faa5b175298d5e1c32ec58227f4209a17e0899fdfb3cc78e6e7f00fdef1"
+  },
+  "final": {
+    "file": "精听数据/2011-B1.json",
+    "sha256": "4ce6c43dd2e98f0281d7ab966f7971dc928d2b858b0e67710f6a6e88f454ff76",
+    "unit_semantic_sha256": "d2530faa5b175298d5e1c32ec58227f4209a17e0899fdfb3cc78e6e7f00fdef1",
+    "render_content_sha256": "08082740f8f97e77c4f53cf9e63a6b9aceec94e8cb043ab026aed642e5a60f7e",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 68,
+    "sha256": "157f07a5d72c406840c0dc80664ef3f700470feddd7b8fa4ddee2098abb0f654"
+  },
+  "audio": {
+    "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+        "bytes": 11266103,
+        "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1408.235
+        },
+        "decoded_pcm_sha256": "e5edc4637d9f9b9dc5992ae0a4665eee50ef093b4920654cbd5e9743946e0d8b",
+        "decoded_frames": 62103168,
+        "canonical_start": 0.0,
+        "canonical_end": 1408.2351020408164
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      731.3775,
+      1124.14
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "c4e9045278994cdc4db751e8ae7d36072d8da1655a0270647170bc95a71fd4e3",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2011/对齐报告.json",
+      "sha256": "f4a48e7e1dfab1c0ae830278f4f4ab591e1ddaa5d9fc2ae3cfbc6fe052d65a8a"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 4,
+    "missing_word_dispositions": [
+      {
+        "sentence": 15,
+        "en": "So, today, urmm... we’ll look at this issue.",
+        "window": [
+          822.34,
+          825.78
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "urmm",
+            "char": [
+              11,
+              15
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "句内犹豫声urmm；已核完整语义不变，保留印本犹豫标记，未声称独立词时。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2011-双模型.json",
+            "sha256": "81375ea890ba441e23cc93cde794a83b260fb852bb4641e1e719925ce4988f7e"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 17,
+        "en": "Well, second language acquisition is “happens when a child or adult has already become competent at a language, and then, urmm... they attempt to learn another.”",
+        "window": [
+          832.78,
+          844.7
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "urmm",
+            "char": [
+              122,
+              126
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "引语中犹豫声urmm；全句内容词和前后话轮实际锚齐，不造该声逐字时刻。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2011-双模型.json",
+            "sha256": "81375ea890ba441e23cc93cde794a83b260fb852bb4641e1e719925ce4988f7e"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 21,
+        "en": "Urmm... first, there have been research studies.",
+        "window": [
+          859.0,
+          862.51
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Urmm",
+            "char": [
+              0,
+              4
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "verified_whole_utterance_unknown_word_times_retained",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "evidence": {
+            "file": "核验/2010—2015整句声学证据/2011-B1-21.json",
+            "sha256": "b3eb54936383b460afca4d56938919cf7cec13a87cfec8406b827ab592275bca"
+          },
+          "whole_sentence_window": [
+            859.0,
+            862.51
+          ],
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 26,
+        "en": "Yes. For example, umm, time and interest.",
+        "window": [
+          880.7,
+          884.14
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "umm",
+            "char": [
+              18,
+              21
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "句内语气umm；保留印本口语标记，独立应声词时未知。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2011-双模型.json",
+            "sha256": "81375ea890ba441e23cc93cde794a83b260fb852bb4641e1e719925ce4988f7e"
+          },
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [],
+    "whole_utterance_exceptions": [
+      {
+        "sentence": 21,
+        "en": "Urmm... first, there have been research studies.",
+        "window": [
+          859.0,
+          862.51
+        ],
+        "evidence": {
+          "unit": "2011-B1",
+          "en": "Urmm... first, there have been research studies.",
+          "start": 859.0,
+          "end": 862.51,
+          "nonverbal": false,
+          "whole_sentence_audio_verified": true,
+          "word_alignment_policy": "retain_actual_ASR_only",
+          "evidence_ref": "核验/2010—2015整句声学证据/2011-B1-21.json",
+          "evidence_sha256": "b3eb54936383b460afca4d56938919cf7cec13a87cfec8406b827ab592275bca",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "manifest": "核验/正文清理/2011-整句声学采纳.json",
+          "manifest_sha256": "f696054885d81f270c3d51d3477e3d7f7a6fd87d925cdbc39b6d7926f4b61556"
+        }
+      }
+    ],
+    "nonverbal_exceptions": [
+      {
+        "sentence": 49,
+        "en": "Mm...",
+        "window": [
+          998.25,
+          998.87
+        ],
+        "evidence": {
+          "unit": "2011-B1",
+          "en": "Mm...",
+          "start": 998.25,
+          "end": 998.87,
+          "nonverbal": true,
+          "evidence_ref": "核验/2010—2015整句声学证据/2011-B1-50-已核整声响.json",
+          "evidence_sha256": "f3633a7069ba1e7970a6e515ad03b87409b141a53e5d56f6b31e1a85e7ea2a0c",
+          "decision": "源页此处独立Mm；虽两ASR忽略非词声，但44.1kHz双声道频谱在998.25—998.84清楚出现独立低频谐波与衰减鼻音，998.85后为底噪。保留998.25—998.87整个应声事件，不给Mm任何逐字时刻；前句ASR词尾估计与该声有0.13s交叠，在整声真实范围中如实保留。",
+          "manifest": "核验/正文清理/2011-整句声学采纳.json",
+          "manifest_sha256": "f696054885d81f270c3d51d3477e3d7f7a6fd87d925cdbc39b6d7926f4b61556"
+        }
+      }
+    ],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "b9210c37462e5bc3b44aa3ed2aa4abf76280df8f6d0fbb7baac2c59375e13b9c"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 1,
+    "screen_count": 2,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 41,
+        "en": "Now, Dr. Harley. Since learning a second language is a difficult process, you know, in one way or another, are there any methods, so far, effective methods to teach a second language?",
+        "at": "in one way or",
+        "zh": [
+          "那么，哈利博士，既然学习第二语言是一个艰难的过程，",
+          "或多或少都会遇到困难，那么到目前为止，有没有什么方法，有效的方法，来教授第二语言？"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "in one way or",
+            "char": 84,
+            "actual_first_word": "in",
+            "actual_first_word_window": [
+              962.58,
+              962.66
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2011-B1/版式预检.json",
+      "sha256": "2206d118ba185b3d0f759a44c67c6b659e1524f79d8518fdc77c3bc99a9325f5"
+    },
+    "screens": 70,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2011-双模型.json",
+        "sha256": "81375ea890ba441e23cc93cde794a83b260fb852bb4641e1e719925ce4988f7e"
+      },
+      {
+        "file": "核验/正文清理/2011-局部真词锚.json",
+        "sha256": "809f65e51d3df60586297201df085e64fb66849f8abfb4b2df7998e4c40d1aab"
+      },
+      {
+        "file": "核验/正文清理/2011-可用语音段.json",
+        "sha256": "8d92cd5298f7cc91a32ab9c24514e0048d97cd672cdbac3abe09f7310d891ec8"
+      },
+      {
+        "file": "核验/正文清理/2011-人工词锚.json",
+        "sha256": "02e678f0316b86a7b7cd8e57833a01704d0744f336240b95a4e1c6b9a2734a06"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 2
+  },
+  "specific_notes": [
+    {
+      "type": "printed_only_nonspoken_subtitle_omission",
+      "evidence": {
+        "file": "核验/正文清理/2011-印本未念应声省略.json",
+        "sha256": "79dc327b24ada9fca2c0ac69c99a33f847afc5ae76aad1bc3f304d88e94863ca"
+      },
+      "decision": "仅省略前后唯一真锚之间、双ASR与原采样率频谱共同证实未念的那一条印本Mm；另一独立实际鼻音Mm保留。原音不删不改。"
+    }
+  ],
+  "retained_input_pending": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有3个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[15, 17, 21, 26]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

@@ -1,0 +1,392 @@
+{
+  "id": "2015-B1",
+  "year": 2015,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2015.json",
+    "sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+    "unit_semantic_sha256": "15c66a1c0875aef713f455e8430ca7d14e2b7963422416172cdee48ba3b64d9d"
+  },
+  "final": {
+    "file": "精听数据/2015-B1.json",
+    "sha256": "333a5218e54d8c121a474b53e30105ef9b5683971566ccee64bdf1acc1095930",
+    "unit_semantic_sha256": "15c66a1c0875aef713f455e8430ca7d14e2b7963422416172cdee48ba3b64d9d",
+    "render_content_sha256": "2d401647ce0426f0d723ce27c99e4ec629c42d3f788d0ba513e9864edacd1ec1",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 41,
+    "sha256": "5b892501579390ee25ec647510f0cc30b04df19cc0510b5fc66025cf942c2aec"
+  },
+  "audio": {
+    "canonical_source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+        "bytes": 21944334,
+        "sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1371.506938
+        },
+        "decoded_pcm_sha256": "fea66d7b392aa494e98384490f6a10a1ea403b134f57bb833c8676c1a0a7bb09",
+        "decoded_frames": 60483456,
+        "canonical_start": 0.0,
+        "canonical_end": 1371.5069387755102
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      683.7775,
+      1025.13
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "555353a79f6b3dbaae7f5745b2b01986791fde852f9157cdcd511138da6496e2",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2015/对齐报告.json",
+      "sha256": "0dd3a787f82597d0fdff991d16018512de6f026c7edf688bb8a0879a782f2bee"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 2,
+    "missing_word_dispositions": [
+      {
+        "sentence": 37,
+        "en": "Question 1. In Theresa’s view, what is the present government doing?",
+        "window": [
+          955.12,
+          961.44
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Theresa’s",
+            "char": [
+              15,
+              24
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 1,
+          "source_stem": "In Theresa’s view, what is the present government doing?",
+          "actual_ASR_text": "In Teresa's view, what is the present government doing?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 40,
+        "en": "Question 4. What contribution does Theresa think her party has made in education?",
+        "window": [
+          1001.2,
+          1008.88
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Theresa",
+            "char": [
+              35,
+              42
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 4,
+          "source_stem": "What contribution does Theresa think her party has made in education?",
+          "actual_ASR_text": "What contribution does Teresa think her party has made in education?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 37,
+        "en": "Question 1. In Theresa’s view, what is the present government doing?",
+        "extra_ASR": {
+          "asr_indices": [
+            1729
+          ],
+          "asr_text": [
+            "Teresa's"
+          ],
+          "window": [
+            957.2,
+            958.08
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 1,
+          "source_stem": "In Theresa’s view, what is the present government doing?",
+          "actual_ASR_text": "In Teresa's view, what is the present government doing?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      },
+      {
+        "sentence": 40,
+        "en": "Question 4. What contribution does Theresa think her party has made in education?",
+        "extra_ASR": {
+          "asr_indices": [
+            1761
+          ],
+          "asr_text": [
+            "Teresa"
+          ],
+          "window": [
+            1004.8,
+            1005.44
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 4,
+          "source_stem": "What contribution does Theresa think her party has made in education?",
+          "actual_ASR_text": "What contribution does Teresa think her party has made in education?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "ec352e7ae31efa1457569715d80f083333b235348a99df9202bb793aa7c0680c"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 3,
+    "screen_count": 10,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 24,
+        "en": "What we see from the present government is that they may talk about opportunity for all, they may talk about choice, but actually they are cutting opportunity and reducing choice.",
+        "at": "but actually they are cutting opportunity",
+        "zh": [
+          "我们看到，现任政府也许口口声声说人人都有机会、人人都有选择，",
+          "但实际上，他们正在减少机会、缩小选择范围。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but actually they are cutting opportunity",
+            "char": 117,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              832.13,
+              832.21
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 31,
+        "en": "The number of state pupils being accepted by Oxford and Cambridge, and other leading universities, the proportion of state pupils has actually increased, but there is a problem in many of our secondary schools, of expectations, and it’s the present Government that has been levelling down expectations, rather than raising them.",
+        "at": [
+          "but there is a problem in",
+          "and it’s the present Government"
+        ],
+        "zh": [
+          "被牛津、剑桥及其他顶尖大学录取的公立学校学生比例，实际上已经提高了。",
+          "但是，我们许多中学的学生对未来的期望存在问题；",
+          "当前政府一直在降低这些期望，而不是提高它们。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but there is a problem in",
+            "char": 154,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              886.65,
+              886.73
+            ]
+          },
+          {
+            "at": "and it’s the present Government",
+            "char": 228,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              892.09,
+              892.17
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 34,
+        "en": "The number from the state schools, who are going to leading universities, has increased over the years, but there is still an issue about ensuring the pupils from our state schools apply to go into the universities, and if you look at the Oxford figures, for example, you see that the percentage of students applying to Oxford from the state schools is about 1%, whereas from the private schools it’s over 4.5%, so that, you know, that’s the problem, it’s expectations in the state system that have been driven down by this Government over the years.",
+        "at": [
+          "but there is still an issue",
+          "and if you look at the Oxford figures,",
+          "whereas from the private schools",
+          "so that,"
+        ],
+        "zh": [
+          "这些年来，来自公立学校、进入顶尖大学的学生人数有所增加，",
+          "但如何确保公立学校学生积极申请大学，仍是一个问题。",
+          "以牛津的数据为例，公立学校学生申请牛津的比例大约是百分之一，",
+          "而私立学校学生的这一比例超过百分之四点五。",
+          "所以，你看，问题就在这里：这些年来，公立教育体系中的期望一直被本届政府压低。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but there is still an issue",
+            "char": 104,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              913.65,
+              913.73
+            ]
+          },
+          {
+            "at": "and if you look at the Oxford figures,",
+            "char": 216,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              921.17,
+              921.25
+            ]
+          },
+          {
+            "at": "whereas from the private schools",
+            "char": 363,
+            "actual_first_word": "whereas",
+            "actual_first_word_window": [
+              932.01,
+              932.49
+            ]
+          },
+          {
+            "at": "so that,",
+            "char": 412,
+            "actual_first_word": "so",
+            "actual_first_word_window": [
+              936.81,
+              936.89
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2015-B1/版式预检.json",
+      "sha256": "31b594c796f85203cf40a8b2dd2a2b939cf12ee84848daa9561cf08523c569d7"
+    },
+    "screens": 49,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2015-双模型.json",
+        "sha256": "889aee983d05b13a139b580b22534d05c15bffb8685f0b4f26693fa24376538c"
+      },
+      {
+        "file": "核验/正文清理/2015-局部真词锚.json",
+        "sha256": "b11d9de622f4321f9c49a33ab653e15783c22a56b0a95658702baad373863018"
+      },
+      {
+        "file": "核验/正文清理/2015-可用语音段.json",
+        "sha256": "9956093bfff9dbc84ae37a74ec9c7f713e4fab0aaf70e877c482ddc09671813c"
+      },
+      {
+        "file": "核验/正文清理/2015-人工词锚.json",
+        "sha256": "e85c2ea40bf4d33f89f7a43a0766775a9114990c616f3e187f527cfea148e054"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 4
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[37, 40]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

@@ -4,7 +4,7 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2024.json",
-    "draft_sha256": "d5bc48984566af82c864ac794933f14558ee6fd0d850158b543dacbde5f3fa86",
+    "draft_sha256": "f9de15cd0d0b005e76360df3bcaf81500eb9adb39f192e7f0053cc91e5728bc0",
     "asr": "核验/原文对齐/2024/含说明识别.json",
     "asr_sha256": "e6974137e135b4108fa3f55d3f0bc7bcd60a2247c0e4c8a7e6a110adacb7f850",
     "input_asr": "核验/补词锚/2024/已核局部识别.json",
@@ -91,7 +91,8 @@
     "literal_complete": false,
     "source_lexical_lexemes": 2668,
     "external_reviewed_ASR_lexemes": 0,
-    "nonverbal_not_word_lexemes": 0
+    "nonverbal_not_word_lexemes": 0,
+    "all_sentence_boundaries_resolved": true
   },
   "differences": [
     {
@@ -664,18 +665,18 @@
     },
     {
       "id": "2024-B1",
-      "state": "draft_exported_not_approved",
+      "state": "source_approved_preserved",
       "output": "精听数据/2024-B1.json",
       "sentences": 59,
       "source_lexemes": 822,
       "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
-      "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 0,
       "audio_window": [
         700.5525,
         1132.64
-      ]
+      ],
+      "source_lock": "核验/2024-B1-源文审核.json",
+      "note": "已批源文原文件逐字保留；报告更新不会清回draft或覆盖已审时间/译注。"
     },
     {
       "id": "2024-B2",
@@ -686,6 +687,7 @@
       "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 0,
       "audio_window": [
         1142.2625,

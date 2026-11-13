@@ -694,6 +694,10 @@ def run_year(year, args):
             d.setdefault('alignment_known_limitations',[]).append(f'{unit_missing-unresolved_missing}个字面词无独立词时刻，但已核完整语句/声响真实边界及音文覆盖；word_alignment仅保留实际ASR，禁止在未知词内按比例拆屏。')
         d['alignment_report'] = portable(report_path, base)
         d['alignment_tool_version'] = TOOL_VERSION
+        if 'manual_splits' in d:
+            annotation_spec=importlib.util.spec_from_file_location('tem8_annotation_projection',HERE/'精听译注更新.py')
+            annotation_module=importlib.util.module_from_spec(annotation_spec);annotation_spec.loader.exec_module(annotation_module)
+            annotation_module.project_manual_splits(d,contract)
         if blocked:
             d['待核'].append(f'句首/尾无真实ASR词锚，句号{blocked}；单元未导出到可制作目录。')
             output = report_dir / '未导出单元' / f"{unit['id']}.json"

@@ -7567,8 +7567,52 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2013/对齐报告.json",
-    "content_sha256": "4eb272a7551f39d58c4a83c5dcb7c0ca4167b47a46179e1161c5aa7b3341c9e7"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "990d725fd339520a44160de1db86dfb61465e747b018aa22b02d39e9c1f3714a"
+  },
+  "splits": {
+    "41": {
+      "at": "because it might allow",
+      "zh": [
+        "尽管如此，我仍认为雇主应该更多了解这类调查，",
+        "因为它们或许能让雇主用以前没有想到的方法，提高员工的满意度。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 41,
+        "at": "because it might allow",
+        "real_word_anchor": true,
+        "char": 89,
+        "start": 1263.41,
+        "end": 1263.49
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "41"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2013.json",
+    "mother_sha256": "d653c0676700e3f6a3d5cf226a6e17be138e2fb739a4c96785693e015c922940",
+    "english_sequence_sha256": "18320288b3dc92e99b086a1ba15261aa1433a02d3540052e9d28e554399991b3",
+    "timing_fingerprint_unchanged": "37737b07d3e4bdadf1cdbfe3c7682325b816d4deec234d29b243eef34c832e9e",
+    "previous_content_sha256": "24c75301cf033c0b992eea5633db91ffb705a4cad14f032059aef2fc3f108859",
+    "manual_splits_by_exact_EN": [
+      {
+        "sentence": 41,
+        "en": "But still I think it is important for employers to become more aware of polls like these because it might allow them to keep their workers satisfied in ways that maybe they hadn’t thought of before.",
+        "at": "because it might allow"
+      }
+    ],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

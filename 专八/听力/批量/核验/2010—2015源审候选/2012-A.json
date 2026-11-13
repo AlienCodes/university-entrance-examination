@@ -1,0 +1,482 @@
+{
+  "id": "2012-A",
+  "year": 2012,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2012.json",
+    "sha256": "0abc0a285fd92113c734d556850737551aa865a49102c80470abc61b025ff809",
+    "unit_semantic_sha256": "30548c332fc0f2c5cacf9b56618f4c67e21767a979cd121ab5ecdef236675d60"
+  },
+  "final": {
+    "file": "精听数据/2012-A.json",
+    "sha256": "7b64b8130ef045e7bf840bb5c6a1cf109e717d9474b0de38d74b39d00d9c8d6f",
+    "unit_semantic_sha256": "30548c332fc0f2c5cacf9b56618f4c67e21767a979cd121ab5ecdef236675d60",
+    "render_content_sha256": "36997ac7e986cb11c18da8ced64e3615889a942cbd009f5c514a45f6a92df7e5",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 74,
+    "sha256": "84118fa2bfd790755886d3a371093c18e9c9f7c7989dd83d3957e962c223317c"
+  },
+  "audio": {
+    "canonical_source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2012年专八真题+音频+解析/听力音频 TEM8-2012.mp3",
+        "bytes": 11305183,
+        "sha256": "76493b3a0a9159a391a51d0c914dfa49d5123bdfc36a8783f7c6491a3940989c",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1413.12
+        },
+        "decoded_pcm_sha256": "904dc6444dcd756a8384501be4d37d0060b4d3bd3d46bca96872ac33e7845e23",
+        "decoded_frames": 62318592,
+        "canonical_start": 0.0,
+        "canonical_end": 1413.12
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      13.9125,
+      738.37
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "99c9e5798a45e5deb182482575ffb8bcabbd02c0840dc5d690cc516413231f14",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2012/对齐报告.json",
+      "sha256": "68343c81272633855141408e76fb3b36fd9ab4f7713b636c78f8f2221eacc2ce"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 2,
+    "missing_word_dispositions": [
+      {
+        "sentence": 8,
+        "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+        "window": [
+          45.58,
+          53.82
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "s",
+            "char": [
+              19,
+              20
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "printed_optional_plural_marker_not_separate_spoken_letter",
+          "decision": "word(s)为单复数书写形式；模型word/words均在此正式说明，不把括号s当额外念出的字母，不为s单独造秒。",
+          "evidence": {
+            "file": "说明语句/2012.json",
+            "sha256": "254c64caf74586cd106f849d61297c5074a3ce2f0d72b1bcd79bef61608c189e"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 23,
+        "en": "For instance, when we observe casually, we may not be aware of factors that bias our observations, and, and when we rarely keep formal records of our observations.",
+        "window": [
+          142.47,
+          156.35
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "and",
+            "char": [
+              104,
+              107
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "同一连接词and的犹豫重复；按已审口述保留源稿，不按语言习惯改写原句，第二次and无独立ASR锚。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2012-双模型.json",
+            "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+          },
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 8,
+        "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+        "extra_ASR": {
+          "asr_indices": [
+            62
+          ],
+          "asr_text": [
+            "words"
+          ],
+          "window": [
+            47.1,
+            47.58
+          ]
+        },
+        "disposition": {
+          "category": "spoken_plural_variant_of_printed_word_s",
+          "decision": "words对应印本word(s)允许的复数形式，不新增第二个words字幕。",
+          "evidence": {
+            "file": "说明语句/2012.json",
+            "sha256": "254c64caf74586cd106f849d61297c5074a3ce2f0d72b1bcd79bef61608c189e"
+          }
+        }
+      },
+      {
+        "sentence": 55,
+        "en": "Having discussed ways to sample behaviour in research, we are now moving onto another issue, that is, what researchers should do to record behaviour as it occurs, that is whether researchers are active or passive in recording behaviour.",
+        "extra_ASR": {
+          "asr_indices": [
+            732
+          ],
+          "asr_text": [
+            "do."
+          ],
+          "window": [
+            397.03,
+            397.27
+          ]
+        },
+        "disposition": {
+          "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+          "decision": "独立Whisper目标片段为what researchers should do to record behaviour；其后WH产生明显重复幻觉，后缀排除不用。纸源只保留目标片段的一次do。",
+          "evidence": {
+            "file": "核验/2010—2015源审残留多词复核/2012-A-do.json",
+            "sha256": "c7a604611f371da4361daf9e36b3d4fd78a580fb49989b025980fe9ef0e8000c"
+          },
+          "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "1bf659a167d43fbac0dd697dcc77777b77f462b8ccbb5a4a6a9979ce5b989491"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 11,
+    "screen_count": 22,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 23,
+        "en": "For instance, when we observe casually, we may not be aware of factors that bias our observations, and, and when we rarely keep formal records of our observations.",
+        "at": "and, and when we",
+        "zh": [
+          "例如，随意观察时，我们可能意识不到哪些因素使观察结果产生偏差，",
+          "而且我们很少正式记录观察结果。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and, and when we",
+            "char": 99,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              150.83,
+              150.91
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 25,
+        "en": "Observations in research on the other hand are made under precisely defined conditions, that is, in a systematic and objective manner, and with careful record keeping.",
+        "at": "that is, in a",
+        "zh": [
+          "而研究中的观察是在明确规定的条件下开展的，",
+          "也就是说，要采用系统、客观的方式，并认真做好记录。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "that is, in a",
+            "char": 88,
+            "actual_first_word": "that",
+            "actual_first_word_window": [
+              167.79,
+              167.87
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 26,
+        "en": "Then how are we going to conduct observations in our research studies, and what do we need to do in order to make a scientific and objective observation?",
+        "at": "and what do we",
+        "zh": [
+          "那么，在研究中应该如何进行观察？",
+          "要做到科学、客观，我们又需要做些什么？"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and what do we",
+            "char": 71,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              179.19,
+              179.27
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 27,
+        "en": "Now, as you remember, the primary goal of observation is to describe behaviour, but it is in reality impossible to observe and describe all of a person’s behaviour.",
+        "at": "but it is in",
+        "zh": [
+          "大家还记得，观察的首要目标是描述行为，",
+          "但实际上，我们不可能观察并描述一个人的所有行为。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but it is in",
+            "char": 80,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              191.27,
+              191.35
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 51,
+        "en": "By sampling as many different situations as possible researchers can reduce the chance that their observation results will be peculiar to a certain set of circumstances and conditions.",
+        "at": "researchers can reduce",
+        "zh": [
+          "尽可能对多种情境取样，",
+          "能够降低观察结果只适用于某组特定情形和条件的可能性。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "researchers can reduce",
+            "char": 53,
+            "actual_first_word": "researchers",
+            "actual_first_word_window": [
+              347.63,
+              348.03
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 53,
+        "en": "For example, children do not always behave the same way with one parent as they do with the other parent, and animals do not behave the same way in zoos as they do in the wild.",
+        "at": "and animals do not",
+        "zh": [
+          "例如，孩子面对父母中的一方时，表现不一定与面对另一方时相同；",
+          "动物在动物园里的行为，也和在野外不同。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and animals do not",
+            "char": 106,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              374.63,
+              374.71
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 55,
+        "en": "Having discussed ways to sample behaviour in research, we are now moving onto another issue, that is, what researchers should do to record behaviour as it occurs, that is whether researchers are active or passive in recording behaviour.",
+        "at": "what researchers should do",
+        "zh": [
+          "讨论完研究中如何进行行为取样后，我们接下来转向另一个问题：",
+          "研究人员应如何实时记录行为，也就是他们在记录时是主动介入还是被动观察。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "what researchers should do",
+            "char": 102,
+            "actual_first_word": "what",
+            "actual_first_word_window": [
+              395.67,
+              395.75
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 59,
+        "en": "In participant observation, observers, that is researchers, play a dual role: They observe people’s behaviour and they participate actively in the situation they are observing.",
+        "at": "They observe people’s behaviour",
+        "zh": [
+          "在参与式观察中，观察者，也就是研究人员，承担双重角色：",
+          "既观察人们的行为，也积极参与所观察的情境。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "They observe people’s behaviour",
+            "char": 78,
+            "actual_first_word": "They",
+            "actual_first_word_window": [
+              433.91,
+              433.99
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 60,
+        "en": "If individuals who are being observed know that the observer is present to collect information about their behaviour, this is undisguised participant observation.",
+        "at": "this is undisguised participant",
+        "zh": [
+          "如果被观察者知道，观察者在场是为了收集他们的行为信息，",
+          "这就属于公开的参与式观察。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "this is undisguised participant",
+            "char": 118,
+            "actual_first_word": "this",
+            "actual_first_word_window": [
+              447.63,
+              447.71
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 64,
+        "en": "When an observer controls one or more conditions in a natural setting in order to determine their effect on behaviour, this procedure is called field experiment.",
+        "at": "this procedure is called",
+        "zh": [
+          "观察者在自然环境中控制一个或多个条件，以确定这些条件对行为的影响，",
+          "这种研究程序就叫实地实验。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "this procedure is called",
+            "char": 119,
+            "actual_first_word": "this",
+            "actual_first_word_window": [
+              474.52,
+              474.6
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 68,
+        "en": "Observation without intervention is also called naturalistic observation because its main purpose is to describe behaviour as it normally occurs, that is, in a natural setting, without any attempt by the observer to intervene.",
+        "at": "that is, in a",
+        "zh": [
+          "无干预观察也叫自然观察，因为它主要用于描述行为自然发生时的样子，",
+          "也就是在自然环境中观察，而观察者不作任何干预。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "that is, in a",
+            "char": 146,
+            "actual_first_word": "that",
+            "actual_first_word_window": [
+              509.95,
+              510.03
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2012-A/版式预检.json",
+      "sha256": "cdaaeead5265c8135c89e22d1d12f79785b7c92f614c852b169735de6954d344"
+    },
+    "screens": 86,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2012-双模型.json",
+        "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+      },
+      {
+        "file": "核验/正文清理/2012-局部真词锚.json",
+        "sha256": "95cfbb16f8450dc63265fdb90386e56b00e3250808b4355f8555cd5b55486a13"
+      },
+      {
+        "file": "核验/正文清理/2012-可用语音段.json",
+        "sha256": "b8fb3112e7df7254ca9c786b1c539428f37a4bd8ae332759cec1a4f4b6f44127"
+      },
+      {
+        "file": "核验/正文清理/2012-人工词锚.json",
+        "sha256": "a8bf04564cc5f6f7ec71a384a28a49d3afb4a192c4f1b191eb5e302f5920e4d3"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 1
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[8, 23]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

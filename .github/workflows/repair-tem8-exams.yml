@@ -1,0 +1,177 @@
+# token预算：约0万；已核定资料的排版/音频/编码/发布由程序执行。
+name: 专八考试五年分页修复再生成
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-exam-repair.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: tem8-listening-exam-repair
+  cancel-in-progress: false
+jobs:
+  list:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+      stage: ${{ steps.list.outputs.stage }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/原文/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - name: 核所有输入审核、依赖指纹与完整批次范围
+        id: list
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 - <<'PY'
+          import importlib.util,json,os
+          from pathlib import Path
+          s=importlib.util.spec_from_file_location('pub',Path('专八/听力/批量/tools/发布汇集.py'));m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+          c=m.load_control(Path('.github/tem8-listening-exam-repair.json'));assert c['stage']=='render' and c['mode']=='sample' and set(c['exam'])=={'2010','2011','2016','2017','2019'} and not c['intensive'];rows=m.matrix(c)
+          if rows:
+              if c['stage']=='review':m.ensure_release(m.REVIEW_TAG,'专八历年听力待审截图与机械核验','待审截图，不是正式成品；实际看过并登记后才允许编码。')
+              else:m.ensure_release(m.CACHE_TAG,'专八历年听力已核验成品与来源存档','按输入和成品指纹持久保留独立成功结果；完整正式发布另见考试/精听Release。')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('matrix='+json.dumps(rows)+'\n');f.write('stage='+c['stage']+'\n')
+          print('本次需机器制作',len(rows),'项；stage',c['stage'],'mode',c['mode'])
+          PY
+  render:
+    needs: list
+    if: needs.list.outputs.matrix != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        item: ${{ fromJson(needs.list.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/2025
+            专八/听力/原文/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 精听自动分屏所需NLP（按已验证版本，避免新版本OverflowError）
+        if: matrix.item.kind == 'intensive'
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check spacy==3.8.7 thinc==8.3.6 preshed==3.0.9 cymem==2.0.11 murmurhash==1.0.12 typer==0.15.4 click==8.1.8
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check --no-deps https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+          /opt/ttsenv/bin/python -c "import spacy; spacy.load('en_core_web_sm')('It is ready.'); print('分屏NLP模型加载通过')"
+      - name: 同款原卷字体与正式输入门禁
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+          /opt/ttsenv/bin/python 专八/听力/批量/tools/发布汇集.py gate '${{ matrix.item.kind }}' '${{ matrix.item.id }}'
+      - name: 准备原采样率/声道音频（不擅自剪音乐）
+        run: |
+          set -euo pipefail
+          mkdir -p in work
+          if [ '${{ matrix.item.year }}' = '2022' ]; then
+            /opt/ttsenv/bin/python 专八/听力/批量/tools/原音准备.py 2022 --out in/audio
+          else
+            curl -fL --retry 5 --retry-delay 3 -o in/default.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw/default.zip
+            /opt/ttsenv/bin/python 专八/听力/批量/tools/原音准备.py '${{ matrix.item.year }}' --archive in/default.zip --out in/audio
+            rm in/default.zip
+          fi
+          cp in/audio/原音准备.json work/源音频准备.json
+      - name: 全部预检与完整截图（考试先音频预演；精听原声/分屏/排版）
+        env:
+          TEM8_BROWSER: /opt/pw-browsers/chromium
+          TEM8_THREADS: '2'
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python
+          if [ '${{ matrix.item.kind }}' = exam ]; then
+            D='专八/听力/批量/数据/${{ matrix.item.id }}'
+            $P 专八/听力/批量/tools/考试视频.py "$D" schema --out work
+            $P 专八/听力/批量/tools/考试视频.py "$D" audio --audio in/audio/原音.wav --out work
+            $P 专八/听力/批量/tools/考试视频.py "$D" stills --out work
+          else
+            U='专八/听力/批量/精听数据/${{ matrix.item.id }}.json'
+            $P 专八/听力/批量/tools/精听.py "$U" precheck --autosplit --original in/audio/原音.wav --out work --browser /opt/pw-browsers/chromium
+          fi
+      - name: 待审阶段只存截图，不编码或发布正式视频
+        if: needs.list.outputs.stage == 'review'
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python 专八/听力/批量/tools/发布汇集.py review '${{ matrix.item.kind }}' '${{ matrix.item.id }}' --work work --out review
+      - name: 核当前截图与真实审阅登记一致，再编码与独立核验
+        if: needs.list.outputs.stage == 'render'
+        env:
+          TEM8_BROWSER: /opt/pw-browsers/chromium
+          TEM8_THREADS: '2'
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python
+          $P 专八/听力/批量/tools/发布汇集.py gate '${{ matrix.item.kind }}' '${{ matrix.item.id }}' --work work --record current-review.json
+          if [ '${{ matrix.item.kind }}' = exam ]; then
+            D='专八/听力/批量/数据/${{ matrix.item.id }}'
+            $P 专八/听力/批量/tools/考试视频.py "$D" video --audio in/audio/原音.wav --out work --fast
+            $P 专八/听力/批量/tools/考试视频.py "$D" video --audio in/audio/原音.wav --out work
+            $P 专八/听力/批量/tools/考试视频.py "$D" verify --audio in/audio/原音.wav --out work
+          else
+            U='专八/听力/批量/精听数据/${{ matrix.item.id }}.json'
+            NOTE=$(python3 -c 'import json;print(json.load(open("current-review.json"))["evidence"])')
+            $P 专八/听力/批量/tools/精听.py "$U" approve --review-note "$NOTE" --out work --browser /opt/pw-browsers/chromium
+            $P 专八/听力/批量/tools/精听.py "$U" video --out work --browser /opt/pw-browsers/chromium
+            $P 专八/听力/批量/tools/精听.py "$U" verify --out work --browser /opt/pw-browsers/chromium
+          fi
+      - name: 成功结果立即持久保存（临时artifact不是唯一副本）
+        if: needs.list.outputs.stage == 'render'
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          P=/opt/ttsenv/bin/python
+          $P 专八/听力/批量/tools/发布汇集.py stage '${{ matrix.item.kind }}' '${{ matrix.item.id }}' --work work --out up
+          $P 专八/听力/批量/tools/发布汇集.py store up
+      - uses: actions/upload-artifact@v4
+        if: needs.list.outputs.stage == 'render'
+        continue-on-error: true
+        with:
+          name: tem8-repair-${{ matrix.item.kind }}-${{ matrix.item.id }}
+          path: up
+          compression-level: 0
+          retention-days: 30
+      - name: 失败诊断（不代替成品持久保存）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tem8-repair-diagnostic-${{ matrix.item.kind }}-${{ matrix.item.id }}
+          path: |
+            work/**/*.json
+            current-review.json
+          if-no-files-found: ignore
+          retention-days: 14

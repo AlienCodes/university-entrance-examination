@@ -1,0 +1,632 @@
+{
+  "id": "2012-B1",
+  "year": 2012,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2012.json",
+    "sha256": "0abc0a285fd92113c734d556850737551aa865a49102c80470abc61b025ff809",
+    "unit_semantic_sha256": "9cb5c6373fe49c6dd7c4696e1b995030c5ce8ae59534ce3e0f9112a9b2b8253d"
+  },
+  "final": {
+    "file": "精听数据/2012-B1.json",
+    "sha256": "d8ef545038103d1a1af56d7d4c75bb89c55ae50b192b7a695e0df162ca5f0456",
+    "unit_semantic_sha256": "9cb5c6373fe49c6dd7c4696e1b995030c5ce8ae59534ce3e0f9112a9b2b8253d",
+    "render_content_sha256": "2dd7bfbe99110b52d27197356f841ecba5979ed318580eaeadb5dc0e3886d9cc",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 54,
+    "sha256": "0d490cf53571fc176be791444dba9975535a5a2702dec06944cddffbd59450ff"
+  },
+  "audio": {
+    "canonical_source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2012年专八真题+音频+解析/听力音频 TEM8-2012.mp3",
+        "bytes": 11305183,
+        "sha256": "76493b3a0a9159a391a51d0c914dfa49d5123bdfc36a8783f7c6491a3940989c",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1413.12
+        },
+        "decoded_pcm_sha256": "904dc6444dcd756a8384501be4d37d0060b4d3bd3d46bca96872ac33e7845e23",
+        "decoded_frames": 62318592,
+        "canonical_start": 0.0,
+        "canonical_end": 1413.12
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      738.8775,
+      1154.0
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "c4c7ec948a20ef565018914ab1bbba0877d97702b4557bcfa13cfe1c3c080aa7",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2012/对齐报告.json",
+      "sha256": "68343c81272633855141408e76fb3b36fd9ab4f7713b636c78f8f2221eacc2ce"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 8,
+    "missing_word_dispositions": [
+      {
+        "sentence": 20,
+        "en": "That person must think about the problem or, or their project in a novel way and then come up with a solution.",
+        "window": [
+          882.34,
+          889.3
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "or",
+            "char": [
+              41,
+              43
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "同一连接词or重复，保留源稿原始口述；只留已实际返回的词锚，不推测第二个or时刻。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2012-双模型.json",
+            "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 40,
+        "en": "Now Dr. Andreasen, could you describe to us what the actual creative process is?",
+        "window": [
+          1000.32,
+          1006.29
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Now",
+            "char": [
+              0,
+              3
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "verified_whole_utterance_unknown_word_times_retained",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "evidence": {
+            "file": "核验/2010—2015整句声学证据/2012-B1-40.json",
+            "sha256": "97aa6548b6760ca859646211d5633e06dc5b2acf7d8b65b5df3175fae0d52582"
+          },
+          "whole_sentence_window": [
+            1000.32,
+            1006.29
+          ],
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 41,
+        "en": "OK. Uh, artists, musicians and writers often describe periods during which they’re relying on ordinary creativity.",
+        "window": [
+          1006.46,
+          1015.82
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Uh",
+            "char": [
+              4,
+              6
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "句内轻声Uh；内容词artists/musicians/writers等实际锚齐，保留纸源语气，未虚构Uh字秒。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2012-双模型.json",
+            "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 43,
+        "en": "And and many great artists also describe a dream-like state during which a symphony, a poem or the idea for the ending of a play comes to them in a flash.",
+        "window": [
+          1027.71,
+          1038.65
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "And",
+            "char": [
+              0,
+              3
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "verified_whole_utterance_unknown_word_times_retained",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "evidence": {
+            "file": "核验/2010—2015整句声学证据/2012-B1-43.json",
+            "sha256": "5ae71d6a31cf1b31352f79f3aef53226c9004affc2576952b70065e87600e8e6"
+          },
+          "whole_sentence_window": [
+            1027.71,
+            1038.65
+          ],
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 47,
+        "en": "And that brain region is known to be able to link up ideas or or thoughts in potentially novel ways.",
+        "window": [
+          1062.46,
+          1070.18
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "or",
+            "char": [
+              62,
+              64
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "同一连接词or重复，不改变ideas/thoughts内容；保留源稿，重复or仍无独立字秒。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2012-双模型.json",
+            "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 51,
+        "en": "Question 2. What does Dr. Andreasen want to show by citing the Bach family?",
+        "window": [
+          1095.2,
+          1102.96
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Andreasen",
+            "char": [
+              26,
+              35
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2012-考试内容审核.json",
+            "sha256": "07aa241807ad1e71247156923ebd5aee8df55073d1157eb61ef46823825aa597"
+          },
+          "question": 2,
+          "source_stem": "What does Dr. Andreasen want to show by citing the Bach family?",
+          "actual_ASR_text": "What does Dr. Andreessen want to show by citing the Bach family?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 52,
+        "en": "Question 3. What does Dr. Andreasen want to explain by mentioning a cook?",
+        "window": [
+          1112.4,
+          1120.0
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Andreasen",
+            "char": [
+              26,
+              35
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2012-考试内容审核.json",
+            "sha256": "07aa241807ad1e71247156923ebd5aee8df55073d1157eb61ef46823825aa597"
+          },
+          "question": 3,
+          "source_stem": "What does Dr. Andreasen want to explain by mentioning a cook?",
+          "actual_ASR_text": "What does Dr. Andreessen want to explain by mentioning a cook?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 53,
+        "en": "Question 4. How many types of the creative process does Dr. Andreasen describe?",
+        "window": [
+          1129.2,
+          1136.88
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Andreasen",
+            "char": [
+              60,
+              69
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2012-考试内容审核.json",
+            "sha256": "07aa241807ad1e71247156923ebd5aee8df55073d1157eb61ef46823825aa597"
+          },
+          "question": 4,
+          "source_stem": "How many types of the creative process does Dr. Andreasen describe?",
+          "actual_ASR_text": "How many types of the creative process does Dr. Andreessen describe?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 51,
+        "en": "Question 2. What does Dr. Andreasen want to show by citing the Bach family?",
+        "extra_ASR": {
+          "asr_indices": [
+            1791
+          ],
+          "asr_text": [
+            "Andreessen"
+          ],
+          "window": [
+            1098.48,
+            1099.36
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2012-考试内容审核.json",
+            "sha256": "07aa241807ad1e71247156923ebd5aee8df55073d1157eb61ef46823825aa597"
+          },
+          "question": 2,
+          "source_stem": "What does Dr. Andreasen want to show by citing the Bach family?",
+          "actual_ASR_text": "What does Dr. Andreessen want to show by citing the Bach family?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      },
+      {
+        "sentence": 52,
+        "en": "Question 3. What does Dr. Andreasen want to explain by mentioning a cook?",
+        "extra_ASR": {
+          "asr_indices": [
+            1805
+          ],
+          "asr_text": [
+            "Andreessen"
+          ],
+          "window": [
+            1115.36,
+            1116.32
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2012-考试内容审核.json",
+            "sha256": "07aa241807ad1e71247156923ebd5aee8df55073d1157eb61ef46823825aa597"
+          },
+          "question": 3,
+          "source_stem": "What does Dr. Andreasen want to explain by mentioning a cook?",
+          "actual_ASR_text": "What does Dr. Andreessen want to explain by mentioning a cook?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      },
+      {
+        "sentence": 53,
+        "en": "Question 4. How many types of the creative process does Dr. Andreasen describe?",
+        "extra_ASR": {
+          "asr_indices": [
+            1824
+          ],
+          "asr_text": [
+            "Andreessen"
+          ],
+          "window": [
+            1134.72,
+            1135.68
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2012-考试内容审核.json",
+            "sha256": "07aa241807ad1e71247156923ebd5aee8df55073d1157eb61ef46823825aa597"
+          },
+          "question": 4,
+          "source_stem": "How many types of the creative process does Dr. Andreasen describe?",
+          "actual_ASR_text": "How many types of the creative process does Dr. Andreessen describe?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [
+      {
+        "sentence": 40,
+        "en": "Now Dr. Andreasen, could you describe to us what the actual creative process is?",
+        "window": [
+          1000.32,
+          1006.29
+        ],
+        "evidence": {
+          "unit": "2012-B1",
+          "en": "Now Dr. Andreasen, could you describe to us what the actual creative process is?",
+          "start": 1000.32,
+          "end": 1006.29,
+          "nonverbal": false,
+          "whole_sentence_audio_verified": true,
+          "word_alignment_policy": "retain_actual_ASR_only",
+          "evidence_ref": "核验/2010—2015整句声学证据/2012-B1-40.json",
+          "evidence_sha256": "97aa6548b6760ca859646211d5633e06dc5b2acf7d8b65b5df3175fae0d52582",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "manifest": "核验/正文清理/2012-整句声学采纳.json",
+          "manifest_sha256": "2219e7330c49cb14769f0c704484d9dc4e54f47ae3f8f06a997d3c2472040a0e"
+        }
+      },
+      {
+        "sentence": 43,
+        "en": "And and many great artists also describe a dream-like state during which a symphony, a poem or the idea for the ending of a play comes to them in a flash.",
+        "window": [
+          1027.71,
+          1038.65
+        ],
+        "evidence": {
+          "unit": "2012-B1",
+          "en": "And and many great artists also describe a dream-like state during which a symphony, a poem or the idea for the ending of a play comes to them in a flash.",
+          "start": 1027.71,
+          "end": 1038.65,
+          "nonverbal": false,
+          "whole_sentence_audio_verified": true,
+          "word_alignment_policy": "retain_actual_ASR_only",
+          "evidence_ref": "核验/2010—2015整句声学证据/2012-B1-43.json",
+          "evidence_sha256": "5ae71d6a31cf1b31352f79f3aef53226c9004affc2576952b70065e87600e8e6",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "manifest": "核验/正文清理/2012-整句声学采纳.json",
+          "manifest_sha256": "2219e7330c49cb14769f0c704484d9dc4e54f47ae3f8f06a997d3c2472040a0e"
+        }
+      }
+    ],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "2a16b0325705a2b75cab8d4bd642db06c8cfc5f5dfa4267c9d643b449cbdabc3"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 5,
+    "screen_count": 10,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 24,
+        "en": "But the end result is invariably the production of something new and useful, such as the automobile, or something beautiful and artistic, such as a painting by Vincent van Gogh.",
+        "at": "or something beautiful and artistic,",
+        "zh": [
+          "但最终结果总是创造出某种新颖实用的东西，比如汽车；",
+          "或者某种优美、具有艺术性的东西，比如文森特·梵高的画。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "or something beautiful and artistic,",
+            "char": 101,
+            "actual_first_word": "or",
+            "actual_first_word_window": [
+              908.62,
+              908.7
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 26,
+        "en": "Well, no one knows yet if the ability to be creative, for example, the ability to produce a haunting symphony is the result of the environment or a genetic makeup that allows people to be creative more easily.",
+        "at": "for example,",
+        "zh": [
+          "目前还没有人知道，创造能力——",
+          "比如创作出令人难忘的交响曲的能力——究竟来自环境，还是来自使人更容易产生创造力的遗传构成。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "for example,",
+            "char": 54,
+            "actual_first_word": "for",
+            "actual_first_word_window": [
+              925.22,
+              925.3
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 29,
+        "en": "Yes. You see, Johann Sebastian Bach was the most famous member of the Bach family, but there were 20 other eminent musicians who came from the same family.",
+        "at": "but there were 20",
+        "zh": [
+          "是的。约翰·塞巴斯蒂安·巴赫是巴赫家族最著名的成员，",
+          "但这个家族还出了二十位杰出的音乐家。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but there were 20",
+            "char": 83,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              947.26,
+              947.34
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 42,
+        "en": "For example, you know writers can spend hours at the keyboard putting thoughts together—this process is similar to the way people put together novel ideas when talking.",
+        "at": "this process is similar",
+        "zh": [
+          "例如，作家会花好几个小时坐在键盘前组织想法；",
+          "这个过程，类似于人们交谈时把新想法组织起来。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "this process is similar",
+            "char": 88,
+            "actual_first_word": "this",
+            "actual_first_word_window": [
+              1022.04,
+              1022.12
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 45,
+        "en": "Well, for the moment no one knows for sure, but but research suggests that creative people often slip into a zone in which ideas, uh, and thoughts come up freely in a sort of disorganized way.",
+        "at": "in which ideas,",
+        "zh": [
+          "目前还没有人确切知道，但研究表明，有创造力的人常常会进入一种状态，",
+          "想法和念头会以一种不太有条理的方式自由涌现。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "in which ideas,",
+            "char": 114,
+            "actual_first_word": "in",
+            "actual_first_word_window": [
+              1051.56,
+              1051.64
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2012-B1/版式预检.json",
+      "sha256": "91c63fe457763d171771ec1a152d72ef05e2a590af8844fac5ef3b23bff569b2"
+    },
+    "screens": 60,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2012-双模型.json",
+        "sha256": "0c86c4c7cd2252907a3ce31437a5b9a89c6587539e55e2e3316b4a067816b804"
+      },
+      {
+        "file": "核验/正文清理/2012-局部真词锚.json",
+        "sha256": "95cfbb16f8450dc63265fdb90386e56b00e3250808b4355f8555cd5b55486a13"
+      },
+      {
+        "file": "核验/正文清理/2012-可用语音段.json",
+        "sha256": "b8fb3112e7df7254ca9c786b1c539428f37a4bd8ae332759cec1a4f4b6f44127"
+      },
+      {
+        "file": "核验/正文清理/2012-人工词锚.json",
+        "sha256": "a8bf04564cc5f6f7ec71a384a28a49d3afb4a192c4f1b191eb5e302f5920e4d3"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 5
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有6个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[20, 40, 41, 43, 47, 51, 52, 53]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

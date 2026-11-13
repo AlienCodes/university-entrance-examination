@@ -16,9 +16,7 @@
       ]
     }
   ],
-  "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
-  ],
+  "待核": [],
   "audio_corrections": [
     {
       "source": "divided in dissections",
@@ -7494,9 +7492,18 @@
   "alignment_report": "核验/原文对齐/2021/对齐报告.json",
   "alignment_tool_version": "1.0",
   "review": {
-    "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2021/对齐报告.json",
-    "content_sha256": "abd0186beb1d3bdeede002c46072182a1f70d39697e999cd1116c09948727f3e"
+    "status": "approved",
+    "source": "核验/2021-B2-源文审核.json",
+    "scope": "仅已审内容、实际词锚/合法非词整事件与安全原音窗口；在线完整PNG和成品另审",
+    "content_sha256": "a76c676d8bfe45f59c1f47b1b89fe9d98365c33333521766045fa176ff4adff8"
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2021.json",
+    "mother_sha256": "ac0307e97e543ce0697416e9584733c53f79b4a7f6febf5c31b25cd54c00c98b",
+    "english_sequence_sha256": "8d701ce8279109dae7db655bae293ac1d54fab60e55f87adcda1406a131ec0ec",
+    "timing_fingerprint_unchanged": "076504cb3ad8759f4826cfc98e4a09b2dca49a4b78f0389cdfd85d3379d68662",
+    "previous_content_sha256": "abd0186beb1d3bdeede002c46072182a1f70d39697e999cd1116c09948727f3e",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

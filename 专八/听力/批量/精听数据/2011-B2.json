@@ -6286,8 +6286,46 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2011/对齐报告.json",
-    "content_sha256": "b8147d4239a0efc3604485e905be8b698cbb01a66c324fc876abdf595b9473aa"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "04b336704a991a369d162dd9cc5350aa8c2051fc18570b11fd980320196cd6b6"
+  },
+  "splits": {
+    "12": {
+      "at": "but adults could only",
+      "zh": [
+        "克拉申认为，儿童主要是在无意识、自然而然的过程中习得母语，",
+        "而成年人只能有意识地、付出努力地学习第二语言。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 12,
+        "at": "but adults could only",
+        "real_word_anchor": true,
+        "char": 101,
+        "start": 1193.69,
+        "end": 1193.77
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "12"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2011.json",
+    "mother_sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+    "english_sequence_sha256": "00dbaa08dbc50f37b17130c722fb21733db4d533504f3878ec01e2308ad8e1f7",
+    "timing_fingerprint_unchanged": "0c1e0171400ec66723fb70c338232407cb55c65bd2a1429f98a0616376df8be3",
+    "previous_content_sha256": "b8147d4239a0efc3604485e905be8b698cbb01a66c324fc876abdf595b9473aa",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

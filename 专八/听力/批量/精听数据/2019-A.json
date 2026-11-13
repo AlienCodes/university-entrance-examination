@@ -14,9 +14,7 @@
       "sha256": "72d7e95832d428a921fba9aebc8657a2569482168ffbd1c62aea51e890a2d2e5"
     }
   ],
-  "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
-  ],
+  "待核": [],
   "instruction_review": {
     "source": "说明语句/2019.json",
     "source_sha256": "3cfb98129bd76f8ff4d897035bfc3fbca186a3f4609c6a87592fede08588da82",
@@ -15099,9 +15097,92 @@
   "alignment_report": "核验/原文对齐/2019/对齐报告.json",
   "alignment_tool_version": "1.0",
   "review": {
-    "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2019/对齐报告.json",
-    "content_sha256": "dc1f6c199445689ef9dbd9397f5c2a36af83388245f5f6dbdaaf34eee0fb1e3f"
+    "status": "approved",
+    "source": "核验/2019-A-源文审核.json",
+    "scope": "仅已审内容、实际词锚/合法非词整事件与安全原音窗口；在线完整PNG和成品另审",
+    "content_sha256": "f12bc6bed8337d301732dcfc9ca4f3c428f0741b2b6fd9fdd34f71906ca0f47f"
+  },
+  "manual_splits": [
+    {
+      "en": "Here’s what we find on dominance hormone: from their baseline when they come in, high power people experience about a 20% increase and low power people experience about a 10% decrease.",
+      "at": "high power people experience",
+      "zh": [
+        "在支配激素方面，我们发现：与进入实验室时的基线水平相比，",
+        "强势姿势组大约上升了20%，弱势姿势组则大约下降了10%。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/50",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "When I tell people about this that our bodies change our minds, and our minds can change our behavior, and our behavior can change our outcomes, they say to me “I don’t believe that. It feels fake, right?”",
+      "at": "and our behavior can",
+      "zh": [
+        "当我告诉人们，身体能改变心理，心理能改变行为，",
+        "行为又能改变结果时，他们会说：“我不相信。这感觉很假，对吧？”"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/51",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    }
+  ],
+  "splits": {
+    "78": {
+      "at": "high power people experience",
+      "zh": [
+        "在支配激素方面，我们发现：与进入实验室时的基线水平相比，",
+        "强势姿势组大约上升了20%，弱势姿势组则大约下降了10%。"
+      ]
+    },
+    "86": {
+      "at": "and our behavior can",
+      "zh": [
+        "当我告诉人们，身体能改变心理，心理能改变行为，",
+        "行为又能改变结果时，他们会说：“我不相信。这感觉很假，对吧？”"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 78,
+        "at": "high power people experience",
+        "real_word_anchor": true,
+        "char": 81,
+        "start": 429.03,
+        "end": 429.11
+      },
+      {
+        "sentence": 86,
+        "at": "and our behavior can",
+        "real_word_anchor": true,
+        "char": 103,
+        "start": 497.95,
+        "end": 498.03
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "78",
+      "86"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2019.json",
+    "mother_sha256": "f603d0312082bc9d09b226f801173c1d4f466564bb6ffeff1ae770fb44e08938",
+    "english_sequence_sha256": "c0095363660396e93ad48f47871d5fbbf0261d87d9a5f6a916c7e4a9f8833e57",
+    "timing_fingerprint_unchanged": "287086ffe78eaac17bebe558f0bfa1c92bfef0ed63a238a672441a3cd97709ba",
+    "previous_content_sha256": "dc1f6c199445689ef9dbd9397f5c2a36af83388245f5f6dbdaaf34eee0fb1e3f",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

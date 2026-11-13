@@ -14,9 +14,7 @@
       "sha256": "12831b9f1f59c7b2bd09b00761cff5e96054bb6730c1a86ac7c417f5d45d11d3"
     }
   ],
-  "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
-  ],
+  "待核": [],
   "instruction_review": {
     "source": "说明语句/2017.json",
     "source_sha256": "9079492201564735de8e64fcf435c36c3d04812976f4d8457d57ce8a8a371b58",
@@ -8157,9 +8155,224 @@
   "alignment_report": "核验/原文对齐/2017/对齐报告.json",
   "alignment_tool_version": "1.0",
   "review": {
-    "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2017/对齐报告.json",
-    "content_sha256": "bc5d76888d05c8b09aca0a35a04615b922562db10cde43940af38641ce021da9"
+    "status": "approved",
+    "source": "核验/2017-B2-源文审核.json",
+    "scope": "仅已审内容、实际词锚/合法非词整事件与安全原音窗口；在线完整PNG和成品另审",
+    "content_sha256": "a2553c9132755f4d824a5f1d85d387b184855aa327631c7c5c6ef2a926afcd7c"
+  },
+  "manual_splits": [
+    {
+      "en": "Tom, I understand when Havas Media North America hired you early this year to be head of strategy and innovation, it did not include the words “future” or “futurist” in your title, but a large part of your role is understanding where the near- and not-so-distant futures of media can be applied and accelerated in ways that give Havas and its clients a competitive advantage.",
+      "at": [
+        "it did not include",
+        "where the near- and"
+      ],
+      "zh": [
+        "汤姆，我了解到，Havas Media北美公司今年年初聘请你担任战略与创新主管时，",
+        "你的职位名称并没有包含“未来”或“未来学家”这样的词；但你的工作很大一部分，是理解",
+        "如何应用和加速推进媒体近期以及更远一些的未来发展，为Havas及其客户带来竞争优势。"
+      ],
+      "evidence": "第二屏英文understanding对应“是理解”保留第二屏；第三屏where...对应“如何应用”开始，不让理解一词错屏。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/25",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "My role is about understanding the changes in behavior, technology and media, and then to use that information to inspire new thinking and new ideas, and then to bring them to life.",
+      "at": "and then to use",
+      "zh": [
+        "我的职责是了解行为、技术和媒体的变化，",
+        "再利用这些信息激发新的思考和创意，并把它们变成现实。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/26",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "For me, media agencies should not be advising clients on how to spend marketing money, but applying design thinking, creativity, data and consumer understanding to solve client business problems.",
+      "at": "but applying design thinking,",
+      "zh": [
+        "在我看来，媒体代理公司不应该只是建议客户如何花营销预算，",
+        "而应该运用设计思维、创造力、数据和对消费者的理解，解决客户的商业问题。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/27",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "My approach is first to take a long hard look at the future and see what will be possible one day, and then to consider an entry point that is buyable in the next 4 months, and make it happen.",
+      "at": "and then to consider",
+      "zh": [
+        "我的做法是，先认真审视未来，看看有朝一日什么能够实现；",
+        "再考虑一个未来四个月内有望获得买单支持的切入点，并将它落实。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/28",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "What do you think of other agencies getting directly into the ventures game to fuel innovation vis-à-vis capital, or is it best left to professional venture capital firms, or clients to do directly?",
+      "at": "or is it best",
+      "zh": [
+        "你怎么看待其他代理公司直接参与风险投资，以资本来推动创新？",
+        "或者，这类事情最好还是交给专业风投公司，或由客户自己直接去做？"
+      ],
+      "evidence": "or与对专业风投/客户执行的另一个选择同屏。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/29",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "I think the role of media agencies needs to be about collaboration and openness and fostering creativity, but the key is how that is done, and how we ensure that everything is about the best interests of our clients.",
+      "at": "but the key is",
+      "zh": [
+        "我认为，媒体代理公司的职责应当体现合作、开放以及对创造力的培育；",
+        "但关键在于怎样实现这些目标，以及怎样确保一切都以客户的最大利益为出发点。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/30",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    }
+  ],
+  "splits": {
+    "3": {
+      "at": [
+        "it did not include",
+        "where the near- and"
+      ],
+      "zh": [
+        "汤姆，我了解到，Havas Media北美公司今年年初聘请你担任战略与创新主管时，",
+        "你的职位名称并没有包含“未来”或“未来学家”这样的词；但你的工作很大一部分，是理解",
+        "如何应用和加速推进媒体近期以及更远一些的未来发展，为Havas及其客户带来竞争优势。"
+      ]
+    },
+    "7": {
+      "at": "and then to use",
+      "zh": [
+        "我的职责是了解行为、技术和媒体的变化，",
+        "再利用这些信息激发新的思考和创意，并把它们变成现实。"
+      ]
+    },
+    "16": {
+      "at": "but applying design thinking,",
+      "zh": [
+        "在我看来，媒体代理公司不应该只是建议客户如何花营销预算，",
+        "而应该运用设计思维、创造力、数据和对消费者的理解，解决客户的商业问题。"
+      ]
+    },
+    "27": {
+      "at": "and then to consider",
+      "zh": [
+        "我的做法是，先认真审视未来，看看有朝一日什么能够实现；",
+        "再考虑一个未来四个月内有望获得买单支持的切入点，并将它落实。"
+      ]
+    },
+    "28": {
+      "at": "or is it best",
+      "zh": [
+        "你怎么看待其他代理公司直接参与风险投资，以资本来推动创新？",
+        "或者，这类事情最好还是交给专业风投公司，或由客户自己直接去做？"
+      ]
+    },
+    "29": {
+      "at": "but the key is",
+      "zh": [
+        "我认为，媒体代理公司的职责应当体现合作、开放以及对创造力的培育；",
+        "但关键在于怎样实现这些目标，以及怎样确保一切都以客户的最大利益为出发点。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 3,
+        "at": "it did not include",
+        "real_word_anchor": true,
+        "char": 114,
+        "start": 1130.08,
+        "end": 1130.16
+      },
+      {
+        "sentence": 3,
+        "at": "where the near- and",
+        "real_word_anchor": true,
+        "char": 228,
+        "start": 1137.02,
+        "end": 1137.1
+      },
+      {
+        "sentence": 7,
+        "at": "and then to use",
+        "real_word_anchor": true,
+        "char": 78,
+        "start": 1161.62,
+        "end": 1161.7
+      },
+      {
+        "sentence": 16,
+        "at": "but applying design thinking,",
+        "real_word_anchor": true,
+        "char": 87,
+        "start": 1226.26,
+        "end": 1226.34
+      },
+      {
+        "sentence": 27,
+        "at": "and then to consider",
+        "real_word_anchor": true,
+        "char": 99,
+        "start": 1309.22,
+        "end": 1309.3
+      },
+      {
+        "sentence": 28,
+        "at": "or is it best",
+        "real_word_anchor": true,
+        "char": 114,
+        "start": 1322.5,
+        "end": 1322.66
+      },
+      {
+        "sentence": 29,
+        "at": "but the key is",
+        "real_word_anchor": true,
+        "char": 106,
+        "start": 1336.22,
+        "end": 1336.3
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "3",
+      "7",
+      "16",
+      "27",
+      "28",
+      "29"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2017.json",
+    "mother_sha256": "4db0618e2435c9bb2b37fb7309112f8edf62e550313cf8e4ae0ab35f0bf07807",
+    "english_sequence_sha256": "fb973d1d5070b7175b5d45dc2c09a03cde917a15531eba131c858f61fff2fa1d",
+    "timing_fingerprint_unchanged": "dd3022daaef82c96f19821abfdff05b8aeed752b473ae115a918a2effa872860",
+    "previous_content_sha256": "bc5d76888d05c8b09aca0a35a04615b922562db10cde43940af38641ce021da9",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

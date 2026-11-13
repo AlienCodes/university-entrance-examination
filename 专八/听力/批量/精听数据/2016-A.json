@@ -14,9 +14,7 @@
       "sha256": "17f0771e8eb3220d6d545d8da8279f2c08cc5c222a6148c8eb3910d7d128132d"
     }
   ],
-  "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
-  ],
+  "待核": [],
   "instruction_review": {
     "source": "说明语句/2016.json",
     "source_sha256": "6664f8dbf5b2569f5c67a0a7bf95e192f71b63c4457a775e58196bc7b1d0a8a1",
@@ -14481,9 +14479,195 @@
   "alignment_report": "核验/原文对齐/2016/对齐报告.json",
   "alignment_tool_version": "1.0",
   "review": {
-    "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2016/对齐报告.json",
-    "content_sha256": "a1ddbe6c64890e182127243474bdd87ccb46dd19519f666cbd789f2ff7f8681b"
+    "status": "approved",
+    "source": "核验/2016-A-源文审核.json",
+    "scope": "仅已审内容、实际词锚/合法非词整事件与安全原音窗口；在线完整PNG和成品另审",
+    "content_sha256": "cf5a3efa0d4ec4472773ec877e5cf9d403fcc77e06addaeaa7a98dfbc6984430"
+  },
+  "manual_splits": [
+    {
+      "en": "And there’s a third model to keep in mind that I think is going to be very helpful, and that is arguments as performances, arguments as being in front of an audience.",
+      "at": "and that is arguments",
+      "zh": [
+        "还有第三种值得记住的模式，我认为它会很有用：",
+        "把论证看成表演，也就是在听众面前展开论证。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/0",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "But there’s another twist on this model that I really think is important; namely, that when we argue before an audience, sometimes the audience has a more participatory role in the argument; that is, you present your arguments in front of an audience who are like juries that make a judgment and decide the case.",
+      "at": [
+        "that when we argue",
+        "that is, you present"
+      ],
+      "zh": [
+        "不过，我认为这种模式还有一个重要的变体：",
+        "在听众面前论证时，听众有时会更多地参与进来；",
+        "也就是说，听众就像陪审团，会作出判断并裁决结果。"
+      ],
+      "evidence": "把that is与“也就是说”连同后面的陪审团解释保留在第三屏，避免连接语留在前屏。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/1",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "It dominates how we talk about arguments, it dominates how we think about arguments, and because of that, it shapes how we argue, our actual conduct in arguments.",
+      "at": "and because of that,",
+      "zh": [
+        "它支配着我们谈论论证和思考论证的方式，",
+        "因此也塑造了我们如何论证，以及我们在论证中的实际行为。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/2",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "Now, suppose at the end of the day, I’ve objected, I’ve questioned, I’ve raised all sorts of questions from an opposite perspective and in every case you’ve responded to my satisfaction.",
+      "at": "I’ve raised all sorts",
+      "zh": [
+        "现在，假设到最后，我已经提出过异议、追问过问题、",
+        "从相反的角度提出过种种疑问，而每次你都给出了让我满意的回应。"
+      ],
+      "evidence": "前屏英语已说objected/questioned，中文异议和追问必须移回前屏。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/3",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "It really takes practice to become a good arguer, in the sense of being able to benefit from losing, but fortunately, I’ve had many, many colleagues who have been willing to step up and provide that practice for me.",
+      "at": "but fortunately, I’ve had",
+      "zh": [
+        "要成为一个好的论辩者，能够从失败中获益，确实需要练习；",
+        "幸运的是，我有许多同事愿意挺身而出，让我有机会练习。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/4",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    }
+  ],
+  "splits": {
+    "37": {
+      "at": "and that is arguments",
+      "zh": [
+        "还有第三种值得记住的模式，我认为它会很有用：",
+        "把论证看成表演，也就是在听众面前展开论证。"
+      ]
+    },
+    "39": {
+      "at": [
+        "that when we argue",
+        "that is, you present"
+      ],
+      "zh": [
+        "不过，我认为这种模式还有一个重要的变体：",
+        "在听众面前论证时，听众有时会更多地参与进来；",
+        "也就是说，听众就像陪审团，会作出判断并裁决结果。"
+      ]
+    },
+    "42": {
+      "at": "and because of that,",
+      "zh": [
+        "它支配着我们谈论论证和思考论证的方式，",
+        "因此也塑造了我们如何论证，以及我们在论证中的实际行为。"
+      ]
+    },
+    "69": {
+      "at": "I’ve raised all sorts",
+      "zh": [
+        "现在，假设到最后，我已经提出过异议、追问过问题、",
+        "从相反的角度提出过种种疑问，而每次你都给出了让我满意的回应。"
+      ]
+    },
+    "91": {
+      "at": "but fortunately, I’ve had",
+      "zh": [
+        "要成为一个好的论辩者，能够从失败中获益，确实需要练习；",
+        "幸运的是，我有许多同事愿意挺身而出，让我有机会练习。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 37,
+        "at": "and that is arguments",
+        "real_word_anchor": true,
+        "char": 84,
+        "start": 182.26,
+        "end": 182.34
+      },
+      {
+        "sentence": 39,
+        "at": "that when we argue",
+        "real_word_anchor": true,
+        "char": 82,
+        "start": 200.62,
+        "end": 200.7
+      },
+      {
+        "sentence": 39,
+        "at": "that is, you present",
+        "real_word_anchor": true,
+        "char": 191,
+        "start": 207.98,
+        "end": 208.06
+      },
+      {
+        "sentence": 42,
+        "at": "and because of that,",
+        "real_word_anchor": true,
+        "char": 85,
+        "start": 234.66,
+        "end": 234.74
+      },
+      {
+        "sentence": 69,
+        "at": "I’ve raised all sorts",
+        "real_word_anchor": true,
+        "char": 68,
+        "start": 370.34,
+        "end": 370.66
+      },
+      {
+        "sentence": 91,
+        "at": "but fortunately, I’ve had",
+        "real_word_anchor": true,
+        "char": 101,
+        "start": 478.18,
+        "end": 478.26
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "37",
+      "39",
+      "42",
+      "69",
+      "91"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2016.json",
+    "mother_sha256": "c39c54554329b4ed7e3e3199924d492cd8301f92fc83344535bc74d4e0263b60",
+    "english_sequence_sha256": "b019ddf03e9c912d9759e1378fd3d625b4eccc36eab363c9f5a737ca3de698f3",
+    "timing_fingerprint_unchanged": "ef2e3cc37dbb589c7dc737c90f15a3f6e0c802fa17b1597da4eea4428fa6b7f6",
+    "previous_content_sha256": "a1ddbe6c64890e182127243474bdd87ccb46dd19519f666cbd789f2ff7f8681b",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

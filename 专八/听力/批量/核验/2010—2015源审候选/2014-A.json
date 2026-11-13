@@ -1,0 +1,399 @@
+{
+  "id": "2014-A",
+  "year": 2014,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2014.json",
+    "sha256": "d210bd6af8fba29a5a89469015e1611b049d56717d0f7c0170d970288536fd4f",
+    "unit_semantic_sha256": "389b2b3988500d3bbb8a595397c9867fa5d727d6e340e4613fd8f1cdf24bf0c2"
+  },
+  "final": {
+    "file": "精听数据/2014-A.json",
+    "sha256": "588149d076b61fc06fdc6a091d52fd9842aaed4474e2ca72be22029475e3d9c5",
+    "unit_semantic_sha256": "389b2b3988500d3bbb8a595397c9867fa5d727d6e340e4613fd8f1cdf24bf0c2",
+    "render_content_sha256": "9b8e0cc85252836d9e4c635074bfe3b5828ce1e2c4f352abd923c5d1fd984da0",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 69,
+    "sha256": "f049bd81352a548da5f525d64bd3c31c4d71866380b1a4ce7f35caaf3d83797e"
+  },
+  "audio": {
+    "canonical_source_sha256": "48626f7e4bd715ab94fcdc1cc948a8f5e38b0ffe3dc5e94e2491bb8ee53188db",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2014年专八真题+音频+解析/听力音频 TEM8-2014.mp3",
+        "bytes": 21711948,
+        "sha256": "52d6c87ad219b66540554d3f1d72935cbea988497d2097141fa2095ba4deb739",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1356.982813
+        },
+        "decoded_pcm_sha256": "fb984edf5617eb52875bbbb51f964d7e061ad2d9ff112658df08b23c69b44a3b",
+        "decoded_frames": 59842944,
+        "canonical_start": 0.0,
+        "canonical_end": 1356.9828571428573
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      14.1375,
+      708.47
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "19b5e91d120cc9e847abe36c2f77a96ecbcfbb8b1cb47c6a1c2767441b4241d0",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2014/对齐报告.json",
+      "sha256": "2ee565dd66c37eff52630066ca36af0acb6558788bbf0208ef2aff3830bb06f6"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 2,
+    "missing_word_dispositions": [
+      {
+        "sentence": 8,
+        "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+        "window": [
+          46.66,
+          54.9
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "s",
+            "char": [
+              19,
+              20
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "printed_optional_plural_marker_not_separate_spoken_letter",
+          "decision": "word(s)为单复数书写形式；模型word/words均在此正式说明，不把括号s当额外念出的字母，不为s单独造秒。",
+          "evidence": {
+            "file": "说明语句/2014.json",
+            "sha256": "f2fd06c445ef8db9b445c5e2e3ad307e0824c7e9e08974c9c79eba4e75b32f73"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 15,
+        "en": "As you all know, life always has stressors, er, things which are causing us stress and living without stress is virtually impossible.",
+        "window": [
+          109.41,
+          119.49
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "er",
+            "char": [
+              44,
+              46
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "er为句内犹豫声；stressors技术词已由根裁定印本+同源整词锚，绝不重开该词或将er变成内容差异。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2014-双模型.json",
+            "sha256": "fbc8a9fd7900249a20a74085903b4bbd3d9c7c17117d2b6654e1f85da5b42fd7"
+          },
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 8,
+        "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+        "extra_ASR": {
+          "asr_indices": [
+            62
+          ],
+          "asr_text": [
+            "words"
+          ],
+          "window": [
+            48.18,
+            48.66
+          ]
+        },
+        "disposition": {
+          "category": "spoken_plural_variant_of_printed_word_s",
+          "decision": "words对应印本word(s)允许的复数形式，不新增第二个words字幕。",
+          "evidence": {
+            "file": "说明语句/2014.json",
+            "sha256": "f2fd06c445ef8db9b445c5e2e3ad307e0824c7e9e08974c9c79eba4e75b32f73"
+          }
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "279d1f28c5b307fdb6f41853fa909a0dc9905d1dac78f1d718673eca8d59bf89"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 7,
+    "screen_count": 14,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 20,
+        "en": "Then in the 1930s, a doctor named Hans Selye, S-e-l-y-e, first used this term to describe a human’s reaction to a demand placed on it, pleasant or not.",
+        "at": "first used this term",
+        "zh": [
+          "到了二十世纪三十年代，一位名叫汉斯·塞利的医生——姓氏拼作S-e-l-y-e——",
+          "首次用这个术语描述人对外界要求所作出的反应，无论这种要求令人愉快与否。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "first used this term",
+            "char": 57,
+            "actual_first_word": "first",
+            "actual_first_word_window": [
+              150.43,
+              150.51
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 32,
+        "en": "So psychologists have found that if we develop appropriate ways to cope with stressful situations, individuals can reduce the physiological harm which is caused by stress, or which can be caused by stress.",
+        "at": "individuals can reduce the",
+        "zh": [
+          "心理学家因此发现，如果我们学会以适当的方式应对压力情境，",
+          "就能够减轻压力已经造成或可能造成的生理伤害。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "individuals can reduce the",
+            "char": 99,
+            "actual_first_word": "individuals",
+            "actual_first_word_window": [
+              239.21,
+              239.93
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 35,
+        "en": "We all have different types of stress signals, but individuals should monitor themselves for stress signals so that they can focus on minimizing or acknowledging the stress before it gets out of control.",
+        "at": "so that they can",
+        "zh": [
+          "每个人的压力信号各不相同，但我们都应该留意自身的这些信号，",
+          "以便在压力失控之前，着手减轻它，或者正视它的存在。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "so that they can",
+            "char": 108,
+            "actual_first_word": "so",
+            "actual_first_word_window": [
+              271.25,
+              271.33
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 38,
+        "en": "You can consider ways to protect yourself when you start seeing these signs coming on, so you might decide to withdraw from a stressful situation or reward yourself with equal amounts of low stress activity time.",
+        "at": "so you might decide",
+        "zh": [
+          "开始察觉这些迹象时，就可以考虑如何保护自己。",
+          "比如，选择暂时离开压力情境，或者奖励自己等量时间，去参加压力较小的活动。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "so you might decide",
+            "char": 87,
+            "actual_first_word": "so",
+            "actual_first_word_window": [
+              301.4,
+              301.48
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 42,
+        "en": "And this seems quite apparent because exercise can provide a stress-free environment away from your usual stressors, and it keeps your body busy and preoccupied with non-stressful things.",
+        "at": "and it keeps your",
+        "zh": [
+          "这似乎很容易理解：锻炼能提供一个远离日常压力源的无压力环境，",
+          "还能让身体忙起来，专注于不会造成压力的事情。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and it keeps your",
+            "char": 117,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              339.93,
+              340.01
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 51,
+        "en": "You can make plans and act when it’s appropriate, but when it’s not appropriate or when it’s impossible, the only way is to learn to accept that some things are unchangeable, and out of your hands.",
+        "at": "the only way is",
+        "zh": [
+          "时机合适时，可以制订计划并行动；而时机不合适，或者根本无法行动时，",
+          "唯一的办法就是学会接受：有些事是改变不了、也不由你掌控的。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "the only way is",
+            "char": 105,
+            "actual_first_word": "the",
+            "actual_first_word_window": [
+              409.57,
+              409.65
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 60,
+        "en": "But if you say to yourself: today I’m going to the library and gather resources; tomorrow I’m going to read three articles, and so on, you will have broken this one large task, that’s writing a term paper, down into many smaller and more manageable tasks.",
+        "at": "you will have broken",
+        "zh": [
+          "但如果你告诉自己：今天去图书馆找资料，明天读三篇文章，以此类推，",
+          "那么，你就把写学期论文这一项大任务，分解成了许多更小、更容易完成的任务。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "you will have broken",
+            "char": 135,
+            "actual_first_word": "you will",
+            "actual_first_word_window": [
+              472.69,
+              473.09
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2014-A/版式预检.json",
+      "sha256": "ee0e8a8106de13eeeb00bb11b94063d2e1a4687b8c918ca4fb683bd90232f41d"
+    },
+    "screens": 77,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2014-双模型.json",
+        "sha256": "fbc8a9fd7900249a20a74085903b4bbd3d9c7c17117d2b6654e1f85da5b42fd7"
+      },
+      {
+        "file": "核验/正文清理/2014-局部真词锚.json",
+        "sha256": "c6d5b64121f416baf814504b40245dd96922a46306e5e7d630003e3cac471a15"
+      },
+      {
+        "file": "核验/正文清理/2014-可用语音段.json",
+        "sha256": "b0999e64ca713df34b86de0d6bb4c18b8c34058f90a022a31b1743ece9be86c1"
+      },
+      {
+        "file": "核验/正文清理/2014-人工词锚.json",
+        "sha256": "0c700db1b7e76d4e678510f7de58c4cc9567c33d582163cdc3132e7f39c55f21"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 7
+  },
+  "specific_notes": [
+    {
+      "type": "latest_metadata_repairs",
+      "evidence": {
+        "file": "核验/2014-B1-正式说明人名登记.json",
+        "sha256": "6fb7a71784b591eabb132927207381dbbe592ca528ab1a0d7225a5fc2b00a433"
+      }
+    },
+    {
+      "type": "latest_metadata_repairs",
+      "evidence": {
+        "file": "核验/2014-采访短题名登记.json",
+        "sha256": "4b7b007f6287834b16c793fecb79d61e8eb47bd61142d7c0470486126c379f71"
+      }
+    },
+    {
+      "type": "latest_metadata_repairs",
+      "evidence": {
+        "file": "核验/2014-B1-访谈追问UNHCR简称恢复.json",
+        "sha256": "4da2256fac7528e6dd5e0e8942f5a09747297c680f90806460505329565e17a6"
+      }
+    }
+  ],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[8, 15]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

@@ -260,6 +260,38 @@ def paginated_events():
     return result
 
 
+def suppress_short_pagination_ticks(raw):
+    """仅省去翻页前至多两帧的旧页重复倒计时；真正翻页时刻不动。
+
+    例如旧页16秒→旧页15秒（1帧）→下一页15秒。中间只更新一次数字，
+    前后页已完整存在；不允许据此删除单题、说明或任何新内容。
+    """
+    frames = [round((t + B.LEAD) * B.FPS) for t, _ in raw]
+    require(all(z > a for a, z in zip(frames, frames[1:])), '分页tick处理前存在零帧/负帧状态')
+    kept, removed = [], []
+    no_cd = lambda s: {k:v for k,v in s.items() if k != 'cd'}
+    logical = lambda s: {k:v for k,v in s.items() if k not in ['cd', 'page', 'display_page', 'numbers']}
+    for i, (t, s) in enumerate(raw):
+        if 0 < i < len(raw)-1:
+            prev, nxt = raw[i-1][1], raw[i+1][1]
+            redundant = (s.get('kind') in ['sheet', 'plist'] and
+                         0 < frames[i+1]-frames[i] <= 2 and
+                         isinstance(s.get('cd'), int) and prev.get('cd') == s['cd']+1 and
+                         no_cd(prev) == no_cd(s) and
+                         nxt.get('cd') == s['cd'] and logical(nxt) == logical(s) and
+                         isinstance(s.get('display_page'), int) and
+                         nxt.get('display_page') == s['display_page']+1 and
+                         nxt['display_page'] <= s.get('display_pages', 0))
+            if redundant:
+                removed.append({'frame':frames[i], 'duration_frames':frames[i+1]-frames[i],
+                                'previous_frame':frames[i-1], 'next_frame_unchanged':frames[i+1],
+                                'state':s, 'previous_state':prev, 'next_state':nxt,
+                                'reason':'翻页前旧页仅更新倒计时，下一页仍显示同一倒计时；保留真实翻页帧及原音'})
+                continue
+        kept.append((t, s))
+    return kept, removed
+
+
 def states():
     trim = TIMELINE.get('trim', {}).get('start', 0)
     duration = TIMELINE['source_duration'] - trim
@@ -321,11 +353,12 @@ def states():
             merged.append({'frame':f,'old':old,'new':s})
         final_frames[f] = (x,s)
     raw = [final_frames[f] for f in sorted(final_frames)]
+    raw, suppressed_ticks = suppress_short_pagination_ticks(raw)
     frames = [round((x + B.LEAD) * B.FPS) for x, _ in raw]
     stop = round((at + B.LEAD) * B.FPS)
     require(all(b > a for a,b in zip(frames, frames[1:] + [stop])), '存在零帧/负帧状态')
     T = {'audioEnd': duration, 'source_duration': TIMELINE['source_duration'], 'trim_start': trim}
-    dump(AUDIT / '画面时间轴核验.json', {'source_duration': T['source_duration'], 'trim_start': trim, 'recording_seconds': duration, 'total_seconds': at+B.LEAD, 'frame_count': stop, 'events': len(raw), 'same_frame_boundary_merges': merged, 'answers_start': first_answer+B.LEAD, 'choice_count':len(PAPER['questions']), 'scored_choice_count':sum(not q.get('unscored') for q in PAPER['questions']), 'unscored_questions':[q['n'] for q in PAPER['questions'] if q.get('unscored')]})
+    dump(AUDIT / '画面时间轴核验.json', {'source_duration': T['source_duration'], 'trim_start': trim, 'recording_seconds': duration, 'total_seconds': at+B.LEAD, 'frame_count': stop, 'events': len(raw), 'same_frame_boundary_merges': merged, 'suppressed_short_pagination_ticks':suppressed_ticks, 'answers_start': first_answer+B.LEAD, 'choice_count':len(PAPER['questions']), 'scored_choice_count':sum(not q.get('unscored') for q in PAPER['questions']), 'unscored_questions':[q['n'] for q in PAPER['questions'] if q.get('unscored')]})
     return raw, at, T
 
 

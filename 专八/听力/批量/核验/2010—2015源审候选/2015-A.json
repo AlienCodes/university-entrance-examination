@@ -1,0 +1,459 @@
+{
+  "id": "2015-A",
+  "year": 2015,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2015.json",
+    "sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+    "unit_semantic_sha256": "625927c2a025742ac308bbc4598c3e618bce8b8b44838342493f58ccf39833f2"
+  },
+  "final": {
+    "file": "精听数据/2015-A.json",
+    "sha256": "35032c9e54f0a363b8819c19887af641950e78060a95f66473ce56a08968b451",
+    "unit_semantic_sha256": "625927c2a025742ac308bbc4598c3e618bce8b8b44838342493f58ccf39833f2",
+    "render_content_sha256": "c599d2dc78ae427efdc3bc735f215fe3b9e556286652cd1ce247ed23a5c22837",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 81,
+    "sha256": "7481a9f786614541e863c46a6035cf0d61605c3bdfa47ac8254b0eca49556818"
+  },
+  "audio": {
+    "canonical_source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+        "bytes": 21944334,
+        "sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1371.506938
+        },
+        "decoded_pcm_sha256": "fea66d7b392aa494e98384490f6a10a1ea403b134f57bb833c8676c1a0a7bb09",
+        "decoded_frames": 60483456,
+        "canonical_start": 0.0,
+        "canonical_end": 1371.5069387755102
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      13.415,
+      682.79
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "27ac72d9bf2143d57d98ed18353df19d078e3499eb40f71d8e1275a2bee377ae",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2015/对齐报告.json",
+      "sha256": "0dd3a787f82597d0fdff991d16018512de6f026c7edf688bb8a0879a782f2bee"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 10,
+    "missing_word_dispositions": [
+      {
+        "sentence": 8,
+        "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+        "window": [
+          45.69,
+          54.01
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "s",
+            "char": [
+              19,
+              20
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "printed_optional_plural_marker_not_separate_spoken_letter",
+          "decision": "word(s)为单复数书写形式；模型word/words均在此正式说明，不把括号s当额外念出的字母，不为s单独造秒。",
+          "evidence": {
+            "file": "说明语句/2015.json",
+            "sha256": "d276880f77302f43ebd03db71782929867fe321d7481c16811b0d69ac4133ab2"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 31,
+        "en": "For instance, “Can you see, Mary?” versus “Can you see Mary?” da da DA da... da da da DA da.",
+        "window": [
+          195.02,
+          203.87
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "da",
+            "char": [
+              62,
+              64
+            ]
+          },
+          {
+            "text": "da",
+            "char": [
+              65,
+              67
+            ]
+          },
+          {
+            "text": "DA",
+            "char": [
+              68,
+              70
+            ]
+          },
+          {
+            "text": "da",
+            "char": [
+              71,
+              73
+            ]
+          },
+          {
+            "text": "da",
+            "char": [
+              77,
+              79
+            ]
+          },
+          {
+            "text": "da",
+            "char": [
+              80,
+              82
+            ]
+          },
+          {
+            "text": "da",
+            "char": [
+              83,
+              85
+            ]
+          },
+          {
+            "text": "DA",
+            "char": [
+              86,
+              88
+            ]
+          },
+          {
+            "text": "da",
+            "char": [
+              89,
+              91
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "verified_whole_utterance_unknown_word_times_retained",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。 节奏拟声是原页记谱且root独立Whisper已确认真实模仿，完整话轮承载，da内部不拆屏、不造逐音节时刻。",
+          "evidence": {
+            "file": "核验/2010—2015整句声学证据/2015-A-31.json",
+            "sha256": "53d6fabe1497a34e402366ef15e3387479561be69416cde8934ed730e8abd43f"
+          },
+          "whole_sentence_window": [
+            195.02,
+            203.87
+          ],
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 8,
+        "en": "Make sure the word(s) you fill in is or are both grammatically and semantically acceptable.",
+        "extra_ASR": {
+          "asr_indices": [
+            62
+          ],
+          "asr_text": [
+            "words"
+          ],
+          "window": [
+            47.21,
+            47.69
+          ]
+        },
+        "disposition": {
+          "category": "spoken_plural_variant_of_printed_word_s",
+          "decision": "words对应印本word(s)允许的复数形式，不新增第二个words字幕。",
+          "evidence": {
+            "file": "说明语句/2015.json",
+            "sha256": "d276880f77302f43ebd03db71782929867fe321d7481c16811b0d69ac4133ab2"
+          }
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [
+      {
+        "sentence": 31,
+        "en": "For instance, “Can you see, Mary?” versus “Can you see Mary?” da da DA da... da da da DA da.",
+        "window": [
+          195.02,
+          203.87
+        ],
+        "evidence": {
+          "unit": "2015-A",
+          "en": "For instance, “Can you see, Mary?” versus “Can you see Mary?” da da DA da... da da da DA da.",
+          "start": 195.02,
+          "end": 203.87,
+          "nonverbal": false,
+          "whole_sentence_audio_verified": true,
+          "word_alignment_policy": "retain_actual_ASR_only",
+          "evidence_ref": "核验/2010—2015整句声学证据/2015-A-31.json",
+          "evidence_sha256": "53d6fabe1497a34e402366ef15e3387479561be69416cde8934ed730e8abd43f",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。 节奏拟声是原页记谱且root独立Whisper已确认真实模仿，完整话轮承载，da内部不拆屏、不造逐音节时刻。",
+          "manifest": "核验/正文清理/2015-整句声学采纳.json",
+          "manifest_sha256": "cbd25aa49a9480636740ee611c40b3c82f7d5538888d2e3989dd68bc745d763e"
+        }
+      }
+    ],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "1dccde5b53039b5764bd6ce0e9b8db2fdbb662c7d600a4606d24994ccd766a61"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 7,
+    "screen_count": 14,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 15,
+        "en": "Now, at the university, you, as students, are often called on to perform many types of listening tasks: listening in a group discussion, listening to a teacher on a one-to-one basis, and listening to academic lectures.",
+        "at": "listening in a group",
+        "zh": [
+          "在大学里，作为学生，你们经常需要完成各种听力任务：",
+          "听小组讨论、与老师一对一交谈，以及听学术讲座。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "listening in a group",
+            "char": 104,
+            "actual_first_word": "listening",
+            "actual_first_word_window": [
+              114.16,
+              114.64
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 41,
+        "en": "So the meaning is not in the word alone, rather it is in the person who uses it or responds to it so that the second thing that a listener must do— add information that the lecturer assumes that they share.",
+        "at": "add information that the",
+        "zh": [
+          "因此，意义并不只存在于词语本身，也存在于使用这些词语、或对其作出回应的人身上。所以，听众要做的第二件事，",
+          "就是补充讲课人假定双方都知道的信息。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "add information that the",
+            "char": 148,
+            "actual_first_word": "add",
+            "actual_first_word_window": [
+              278.97,
+              279.05
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 52,
+        "en": "And then all of a sudden, you'll remember “Oh, I’ve got to listen.” By being able to predict during the lecture, you can just keep listening to the lecture and not lose the idea of what’s going on.",
+        "at": "you can just keep",
+        "zh": [
+          "随后，你会突然想起来：“哦，我得认真听。”如果你能在听讲时进行预测，",
+          "就能继续跟上讲座，而不会失去对当前内容的理解。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "you can just keep",
+            "char": 113,
+            "actual_first_word": "you",
+            "actual_first_word_window": [
+              325.69,
+              325.77
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 55,
+        "en": "Now when you listen you need time to think about the information, relate it to old ideas, take notes, and if you’re only keeping up with what I’m saying or what the lecturer’s saying, you have no time to do that.",
+        "at": "and if you’re only",
+        "zh": [
+          "听讲时，你需要时间来思考信息、把它与已有的想法联系起来，以及记笔记；",
+          "如果你只是勉强跟上我或讲课人的讲话，就没有时间做这些事了。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and if you’re only",
+            "char": 102,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              350.93,
+              351.01
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 56,
+        "en": "And I’ll bet a lot of you are having that problem right now because it’s so hard just to follow everything I’m saying, that you don’t have time to note down ideas.",
+        "at": "that you don’t have",
+        "zh": [
+          "我敢说，你们中很多人现在就有这个问题：光是跟上我说的全部内容，就已经很费力了，",
+          "因而没有时间记下要点。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "that you don’t have",
+            "char": 119,
+            "actual_first_word": "that",
+            "actual_first_word_window": [
+              363.97,
+              364.05
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 69,
+        "en": "Now let’s come to the last thing a listener must do: the listener must evaluate, as he or she is listening, decide what’s important, what’s not, decide how something relates to something else.",
+        "at": "decide what’s important, what’s",
+        "zh": [
+          "现在来看听众必须做的最后一件事：边听边评价，",
+          "判断什么重要、什么不重要，以及某件事与另一件事之间有什么联系。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "decide what’s important, what’s",
+            "char": 108,
+            "actual_first_word": "decide",
+            "actual_first_word_window": [
+              426.89,
+              427.29
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 78,
+        "en": "From what I’ve said so far, you can see there’s a lot involved in listening to lectures: language awareness, adding information, making predictions and evaluations.",
+        "at": "language awareness, adding information,",
+        "zh": [
+          "从刚才的内容可以看出，听讲座涉及很多事情：",
+          "语言意识、补充信息、进行预测和作出评价。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "language awareness, adding information,",
+            "char": 89,
+            "actual_first_word": "language",
+            "actual_first_word_window": [
+              484.01,
+              484.49
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2015-A/版式预检.json",
+      "sha256": "49259da6026ab0644f0e24d0e98ee0810ac9b17550c5a50ad7bdb55ddd1c63dd"
+    },
+    "screens": 89,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2015-双模型.json",
+        "sha256": "889aee983d05b13a139b580b22534d05c15bffb8685f0b4f26693fa24376538c"
+      },
+      {
+        "file": "核验/正文清理/2015-局部真词锚.json",
+        "sha256": "b11d9de622f4321f9c49a33ab653e15783c22a56b0a95658702baad373863018"
+      },
+      {
+        "file": "核验/正文清理/2015-可用语音段.json",
+        "sha256": "9956093bfff9dbc84ae37a74ec9c7f713e4fab0aaf70e877c482ddc09671813c"
+      },
+      {
+        "file": "核验/正文清理/2015-人工词锚.json",
+        "sha256": "e85c2ea40bf4d33f89f7a43a0766775a9114990c616f3e187f527cfea148e054"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 0
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[8, 31]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

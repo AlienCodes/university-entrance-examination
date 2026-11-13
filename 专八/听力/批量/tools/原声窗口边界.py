@@ -22,8 +22,13 @@ def pcm(prep, root, lo, hi):
         info = entry.get('audio', {})
         assert info.get('sample_rate', sr) == sr and info.get('channels', channels) == channels
         # 分析仍用源采样率、源声道；不用单声道相消后的波形找低能量谷。
-        data = subprocess.check_output(['ffmpeg','-v','error','-ss',str(a-origin),'-t',str(z-a),'-i',str(path),'-map','0:a:0','-f','f32le','-'])
-        pieces.append(np.frombuffer(data, dtype='<f4').reshape(-1, channels))
+        # MP3随机seek可能在最初几个解码帧补零；预卷后只取目标PCM，
+        # 不能把解码初始化的静样误当真实声学低谷。
+        decode_from=max(0.,a-origin-.5)
+        data = subprocess.check_output(['ffmpeg','-v','error','-ss',str(decode_from),'-t',str(z-origin-decode_from),'-i',str(path),'-map','0:a:0','-f','f32le','-'])
+        decoded=np.frombuffer(data, dtype='<f4').reshape(-1, channels)
+        offset=round((a-origin-decode_from)*sr)
+        pieces.append(decoded[offset:offset+round((z-a)*sr)])
     assert pieces
     samples = np.concatenate(pieces)
     assert abs(len(samples)/sr-(hi-lo)) < .15
@@ -40,7 +45,7 @@ def pcm(prep, root, lo, hi):
     changes = np.flatnonzero(np.diff(np.r_[False,quiet,False].astype('int8')))
     runs = [[round(lo+int(a)*hop/sr,6), round(lo+int(z)*hop/sr,6)] for a,z in zip(changes[::2],changes[1::2]) if (z-a)*hop/sr >= .16]
     return {'decoded_window':[lo,hi],'sample_rate':sr,'channels':channels,'frame_seconds':hop/sr,
-            'threshold_dBFS':threshold,'quiet_runs':runs,'analysis_DC_removed_per_channel':dc.tolist(),
+            'threshold_dBFS':threshold,'quiet_runs':runs,'analysis_DC_removed_per_channel':dc.tolist(),'decoder_preroll_seconds':.5,
             'frames_dBFS':[round(float(v),2) for v in db]}
 
 

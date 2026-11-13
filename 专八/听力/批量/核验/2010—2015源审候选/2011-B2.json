@@ -1,0 +1,243 @@
+{
+  "id": "2011-B2",
+  "year": 2011,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2011.json",
+    "sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+    "unit_semantic_sha256": "64b2b74ba04d11ed81c990145d403f2adf4a5fa38783bef53cf1c6bd9f94c1dd"
+  },
+  "final": {
+    "file": "精听数据/2011-B2.json",
+    "sha256": "d9db029dfc5c61ac6d18fcb7b924e5410eaba31f0ddaef5146c9fe452a14bccd",
+    "unit_semantic_sha256": "64b2b74ba04d11ed81c990145d403f2adf4a5fa38783bef53cf1c6bd9f94c1dd",
+    "render_content_sha256": "04b336704a991a369d162dd9cc5350aa8c2051fc18570b11fd980320196cd6b6",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 42,
+    "sha256": "d6aba7b764c0fe915a0f78bf85a3131920ffff0d66ca70284a12bf04e7f1dc1a"
+  },
+  "audio": {
+    "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+        "bytes": 11266103,
+        "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1408.235
+        },
+        "decoded_pcm_sha256": "e5edc4637d9f9b9dc5992ae0a4665eee50ef093b4920654cbd5e9743946e0d8b",
+        "decoded_frames": 62103168,
+        "canonical_start": 0.0,
+        "canonical_end": 1408.2351020408164
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      1132.6375,
+      1408.235102
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "e1bcab8d422e0d1736a3c62627d224a57c09ad1d7ccf5ed1d570561da183b0c1",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2011/对齐报告.json",
+      "sha256": "f4a48e7e1dfab1c0ae830278f4f4ab591e1ddaa5d9fc2ae3cfbc6fe052d65a8a"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 1,
+    "missing_word_dispositions": [
+      {
+        "sentence": 37,
+        "en": "Question 6. What can we learn from Krashen's first hypothesis?",
+        "window": [
+          1322.13,
+          1328.05
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Krashen's",
+            "char": [
+              35,
+              44
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2011-考试内容审核.json",
+            "sha256": "930cfd40534fc761da4cbaf5320bfa1541b19aa54fc2ad966997b19ccffb0a42"
+          },
+          "question": 6,
+          "source_stem": "What can we learn from Krashen's first hypothesis?",
+          "actual_ASR_text": "What can we learn from Crashan's first hypothesis?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 37,
+        "en": "Question 6. What can we learn from Krashen's first hypothesis?",
+        "extra_ASR": {
+          "asr_indices": [
+            2261
+          ],
+          "asr_text": [
+            "Crashan's"
+          ],
+          "window": [
+            1325.57,
+            1326.53
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2011-考试内容审核.json",
+            "sha256": "930cfd40534fc761da4cbaf5320bfa1541b19aa54fc2ad966997b19ccffb0a42"
+          },
+          "question": 6,
+          "source_stem": "What can we learn from Krashen's first hypothesis?",
+          "actual_ASR_text": "What can we learn from Crashan's first hypothesis?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "381afbe0aaa307ebe5e85ab90afe3143d52aa7009c1d601412a572b1a3c5af02"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 1,
+    "screen_count": 2,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 12,
+        "en": "According to Krashen, children acquire their first language largely unconsciously and automatically, but adults could only learn a second language consciously and effortfully.",
+        "at": "but adults could only",
+        "zh": [
+          "克拉申认为，儿童主要是在无意识、自然而然的过程中习得母语，",
+          "而成年人只能有意识地、付出努力地学习第二语言。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but adults could only",
+            "char": 101,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              1193.69,
+              1193.77
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2011-B2/版式预检.json",
+      "sha256": "3fcfb83e9c6f6aea6e7737636f1ec748dfa4ac7caa48b9379be28504f7c500b2"
+    },
+    "screens": 44,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2011-双模型.json",
+        "sha256": "81375ea890ba441e23cc93cde794a83b260fb852bb4641e1e719925ce4988f7e"
+      },
+      {
+        "file": "核验/正文清理/2011-局部真词锚.json",
+        "sha256": "809f65e51d3df60586297201df085e64fb66849f8abfb4b2df7998e4c40d1aab"
+      },
+      {
+        "file": "核验/正文清理/2011-可用语音段.json",
+        "sha256": "8d92cd5298f7cc91a32ab9c24514e0048d97cd672cdbac3abe09f7310d891ec8"
+      },
+      {
+        "file": "核验/正文清理/2011-人工词锚.json",
+        "sha256": "02e678f0316b86a7b7cd8e57833a01704d0744f336240b95a4e1c6b9a2734a06"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 2
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[37]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

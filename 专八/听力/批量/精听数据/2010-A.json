@@ -13443,8 +13443,138 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2010/对齐报告.json",
-    "content_sha256": "14bd72990d8e1c6bcda9eff73ce9fb5bbd96e4c0888164668f6aa2aa61e26a6a"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "5a9f116cf022a07102547b10f3e8ccc1b89d846537a5804fa64bccd36fb44a83"
+  },
+  "splits": {
+    "25": {
+      "at": "they may, nevertheless, convey",
+      "zh": [
+        "虽然它们可能不像语法或词汇那样处于交流意义的核心，",
+        "却仍然能够在某种程度上传达态度或意图。"
+      ]
+    },
+    "39": {
+      "at": "are some of the",
+      "zh": [
+        "面部表情、手势，甚至我们与别人之间的距离或坐姿，",
+        "都能有力地传达自己的感受或意思。"
+      ]
+    },
+    "46": {
+      "at": [
+        "compressing the lips,",
+        "and a visible clenching"
+      ],
+      "zh": [
+        "其他面部动作，比如咬嘴唇，表示你在深思或对某事拿不准；",
+        "抿紧嘴唇表示你在作决定；",
+        "明显地咬紧牙齿，则表示你很生气。这些动作也都能有力地传达意义。"
+      ]
+    },
+    "65": {
+      "at": "but completely out of",
+      "zh": [
+        "站得离别人很近，在非正式聚会等场合可能很合适，",
+        "但在与上级开会等场合，就可能完全不妥。"
+      ]
+    },
+    "81": {
+      "at": "are all part of",
+      "zh": [
+        "这些特征，与语法、词汇等语言特征一起，",
+        "都构成了面对面交流方式的一部分。"
+      ]
+    },
+    "82": {
+      "at": "and see how people",
+      "zh": [
+        "下一堂课，我们会看一些视频材料，",
+        "了解人们在交流中如何实际运用副语言手段，来表达意图、愿望或情绪。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 25,
+        "at": "they may, nevertheless, convey",
+        "real_word_anchor": true,
+        "char": 107,
+        "start": 172.79,
+        "end": 172.87
+      },
+      {
+        "sentence": 39,
+        "at": "are some of the",
+        "real_word_anchor": true,
+        "char": 83,
+        "start": 269.39,
+        "end": 269.47
+      },
+      {
+        "sentence": 46,
+        "at": "compressing the lips,",
+        "real_word_anchor": true,
+        "char": 128,
+        "start": 318.03,
+        "end": 318.67
+      },
+      {
+        "sentence": 46,
+        "at": "and a visible clenching",
+        "real_word_anchor": true,
+        "char": 192,
+        "start": 323.03,
+        "end": 323.11
+      },
+      {
+        "sentence": 65,
+        "at": "but completely out of",
+        "real_word_anchor": true,
+        "char": 101,
+        "start": 459.63,
+        "end": 459.71
+      },
+      {
+        "sentence": 81,
+        "at": "are all part of",
+        "real_word_anchor": true,
+        "char": 92,
+        "start": 575.43,
+        "end": 575.51
+      },
+      {
+        "sentence": 82,
+        "at": "and see how people",
+        "real_word_anchor": true,
+        "char": 54,
+        "start": 584.87,
+        "end": 584.95
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "25",
+      "39",
+      "46",
+      "65",
+      "81",
+      "82"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2010.json",
+    "mother_sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+    "english_sequence_sha256": "3a627e8e30a741879afd434d6efa6f0496145e4814cdfbd6a351d57067722db7",
+    "timing_fingerprint_unchanged": "4cd47530e1dd666af4fc7d42a436754a7b1e7481a6b9ca8b4e77659130c7c363",
+    "previous_content_sha256": "14bd72990d8e1c6bcda9eff73ce9fb5bbd96e4c0888164668f6aa2aa61e26a6a",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

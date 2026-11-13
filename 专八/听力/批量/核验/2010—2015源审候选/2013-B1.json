@@ -1,0 +1,291 @@
+{
+  "id": "2013-B1",
+  "year": 2013,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2013.json",
+    "sha256": "d653c0676700e3f6a3d5cf226a6e17be138e2fb739a4c96785693e015c922940",
+    "unit_semantic_sha256": "cff792773bf4a0220f30931b57b2f6a6e1d8a71fde97ce8e9e6c0688c2cf070d"
+  },
+  "final": {
+    "file": "精听数据/2013-B1.json",
+    "sha256": "9131ef3bc1abe514b82321f3213515f9f5f4ffe774991ad9e646727406e8e1ec",
+    "unit_semantic_sha256": "cff792773bf4a0220f30931b57b2f6a6e1d8a71fde97ce8e9e6c0688c2cf070d",
+    "render_content_sha256": "05ac553ff66d6ef34591464e2ae083046f332ea2ad8028ed50c138c1c8d03548",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 58,
+    "sha256": "4996de4d977f947f1b26bdf730fef7328902f626d1d52dcc2f4bb2068d8b5d07"
+  },
+  "audio": {
+    "canonical_source_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2013年专八真题+音频+解析/听力音频 TEM8-2013.mp3",
+        "bytes": 11060885,
+        "sha256": "a76ba4b63f49124c871b0cfdbfb221ce644c104d1cc9c9464d4696a4c68cf186",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1382.58275
+        },
+        "decoded_pcm_sha256": "535a6b82032deea0340b5d3edb3c205933b3b088693394c75cd79b9f15872eb5",
+        "decoded_frames": 60971904,
+        "canonical_start": 0.0,
+        "canonical_end": 1382.5828571428572
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      690.0325,
+      1072.17
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "4c062ac651bd27980f484c3ee41068d63ec951dbca07963ab26e91435d3dd32b",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2013/对齐报告.json",
+      "sha256": "1dbf8ba6d2eb290013d44c442337d60975d1407551c0209250a3dadcfacf1ad4"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 1,
+    "missing_word_dispositions": [
+      {
+        "sentence": 24,
+        "en": "Umm. What were they?",
+        "window": [
+          838.85,
+          840.91
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Umm",
+            "char": [
+              0,
+              3
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "verified_whole_utterance_unknown_word_times_retained",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "evidence": {
+            "file": "核验/2010—2015整句声学证据/2013-B1-24.json",
+            "sha256": "59bca6d9e9c4d766c711f57de45514a721b77cc27a6db38ec8a5edfd5302ed06"
+          },
+          "whole_sentence_window": [
+            838.85,
+            840.91
+          ],
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [],
+    "whole_utterance_exceptions": [
+      {
+        "sentence": 24,
+        "en": "Umm. What were they?",
+        "window": [
+          838.85,
+          840.91
+        ],
+        "evidence": {
+          "unit": "2013-B1",
+          "en": "Umm. What were they?",
+          "start": 838.85,
+          "end": 840.91,
+          "nonverbal": false,
+          "whole_sentence_audio_verified": true,
+          "word_alignment_policy": "retain_actual_ASR_only",
+          "evidence_ref": "核验/2010—2015整句声学证据/2013-B1-24.json",
+          "evidence_sha256": "59bca6d9e9c4d766c711f57de45514a721b77cc27a6db38ec8a5edfd5302ed06",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "manifest": "核验/正文清理/2013-整句声学采纳.json",
+          "manifest_sha256": "09eed13fa5f4fa9ed01474b1a206991916041bc0efcb6694fe2683ec4454083d"
+        }
+      }
+    ],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "bc51a60e5b246b8fde69cfec164e874ced2c5424e31734e2e6c19edd3e4340bf"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 4,
+    "screen_count": 8,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 17,
+        "en": "With greater mobility, the mobility that is offered when people have greater opportunities for higher education or training, more and more people are able to choose the fields that interest them.",
+        "at": "more and more people",
+        "zh": [
+          "当人们获得更多接受高等教育或培训的机会时，流动性也随之增强，",
+          "越来越多的人因此能够选择自己感兴趣的领域。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "more and more people",
+            "char": 125,
+            "actual_first_word": "more",
+            "actual_first_word_window": [
+              800.54,
+              800.62
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 47,
+        "en": "I think what’s striking about the results is that by far workers valued important and meaningful work as more important than any of the other characteristics, that included salary.",
+        "at": "that included salary.",
+        "zh": [
+          "我觉得结果最引人注目的地方在于，劳动者认为工作重要且有意义，远比其他任何特点都重要，",
+          "其中也包括工资。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "that included salary.",
+            "char": 159,
+            "actual_first_word": "that",
+            "actual_first_word_window": [
+              943.16,
+              943.24
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 48,
+        "en": "Yeah. Now I’m going to tell you about another poll, and this poll was taken a year later in 1991, and it asked the respondents to reflect on how important certain job characteristics were in their work.",
+        "at": "and it asked the",
+        "zh": [
+          "下面再介绍另一项调查。这项调查在一年后，也就是一九九一年开展，",
+          "要求受访者考虑某些工作特点对自己究竟有多重要。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and it asked the",
+            "char": 98,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              953.74,
+              953.82
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 49,
+        "en": "And this is a different type of poll because whereas in the first poll, respondents had to choose only one out of five, in this poll they wanted the respondents to react to each item separately.",
+        "at": "in this poll they",
+        "zh": [
+          "这项调查的类型不同：第一项调查要求受访者五选一，",
+          "而这项调查则要求他们逐项分别作答。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "in this poll they",
+            "char": 120,
+            "actual_first_word": "in",
+            "actual_first_word_window": [
+              969.08,
+              969.16
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2013-B1/版式预检.json",
+      "sha256": "9e0f89ca79dc6269ad53adac6abd8ae1c7977431c87376637ec9f8b2e0f2e1e0"
+    },
+    "screens": 63,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2013-双模型.json",
+        "sha256": "6fdd5e9262de262d5fd60d65b2a89083f1242e239051a8a932ae99bb5ddbf5fb"
+      },
+      {
+        "file": "核验/正文清理/2013-局部真词锚.json",
+        "sha256": "05fe318aef3c7b07606bd1f38e5115425a4ce49666501bcf3bfd008ce1baa479"
+      },
+      {
+        "file": "核验/正文清理/2013-可用语音段.json",
+        "sha256": "0053eba8b33102d4e6b419e6bcd20b80de7b87dbe0a46b73c2bd626b80e70a16"
+      },
+      {
+        "file": "核验/正文清理/2013-人工词锚.json",
+        "sha256": "6f8b1ac344238249e413fa1db4350fa4c894e0a5a9f7e2fdeb6e9f0b3c99330c"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 2
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

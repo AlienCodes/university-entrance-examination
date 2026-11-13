@@ -1,0 +1,205 @@
+{
+  "id": "2024-B1",
+  "status": "pass",
+  "purpose": "已编码screen059看似aboutfiction的只读核验，不改冻结renderer",
+  "source_sentence": 55,
+  "source_screen": "screen059.png",
+  "raw_html": "Question 1. How does the man feel about <span class=\"ph\">fiction writing<sup>1</sup></span>?",
+  "source_literal_separator": "about后U+0020，未删除空格；高亮前HTML保留真实空白文本节点",
+  "production_helper": "专八/tools/make_video.py:sentence_html/sentence_slide",
+  "DOM": {
+    "text": "Question 1. How does the man feel about fiction writing1?",
+    "html": "Question 1. How does the man feel about <span class=\"ph\">fiction writing<sup data-ml0=\"0.12\" style=\"margin-left: 0.12em;\">1</sup></span>?",
+    "nodes": [
+      {
+        "text": "Question 1. How does the man feel about ",
+        "parent": "DIV",
+        "cls": "en"
+      },
+      {
+        "text": "fiction writing",
+        "parent": "SPAN",
+        "cls": "ph"
+      },
+      {
+        "text": "1",
+        "parent": "SUP",
+        "cls": ""
+      },
+      {
+        "text": "?",
+        "parent": "DIV",
+        "cls": "en"
+      }
+    ],
+    "computed": {
+      "en": {
+        "font": "700 73px / 105.85px \"EB Garamond\", \"Noto Serif SC\", serif",
+        "fontFamily": "\"EB Garamond\", \"Noto Serif SC\", serif",
+        "fontSize": "73px",
+        "fontWeight": "700",
+        "whiteSpace": "normal",
+        "letterSpacing": "normal",
+        "wordSpacing": "0px"
+      },
+      "highlight": {
+        "font": "800 73px / 105.85px \"EB Garamond\", \"Noto Serif SC\", serif",
+        "fontFamily": "\"EB Garamond\", \"Noto Serif SC\", serif",
+        "fontSize": "73px",
+        "fontWeight": "800",
+        "whiteSpace": "nowrap",
+        "display": "inline",
+        "marginLeft": "0px",
+        "paddingLeft": "0px"
+      }
+    },
+    "about": {
+      "text": "about",
+      "index": 34,
+      "rect": [
+        {
+          "x": 110,
+          "y": 508.859375,
+          "width": 175.859375,
+          "height": 96,
+          "left": 110,
+          "right": 285.859375
+        }
+      ]
+    },
+    "fiction": {
+      "text": "fiction",
+      "index": 40,
+      "rect": [
+        {
+          "x": 303.171875,
+          "y": 508.859375,
+          "width": 203.828125,
+          "height": 96,
+          "left": 303.171875,
+          "right": 507
+        }
+      ]
+    },
+    "space": {
+      "codepoint": 32,
+      "rect": [
+        {
+          "x": 285.84375,
+          "y": 508.859375,
+          "width": 17.328125,
+          "height": 96,
+          "left": 285.84375,
+          "right": 303.171875
+        }
+      ]
+    },
+    "platformfonts": {
+      "fonts": [
+        {
+          "familyName": "EB Garamond",
+          "postScriptName": "EBGaramond-Bold",
+          "isCustomFont": true,
+          "glyphCount": 40
+        },
+        {
+          "familyName": "EB Garamond ExtraBold",
+          "postScriptName": "EBGaramond-ExtraBold",
+          "isCustomFont": true,
+          "glyphCount": 14
+        }
+      ]
+    }
+  },
+  "normal_control": {
+    "sentence": 38,
+    "screen": "screen041.png",
+    "text": "Barry, Another question for you. Given1 our increasingly visual and “mediatized2” culture, how do you see the future of fiction writing?",
+    "target": "of fiction",
+    "of": {
+      "text": "of",
+      "index": 117,
+      "rect": [
+        {
+          "x": 669.53125,
+          "y": 476.703125,
+          "width": 63.015625,
+          "height": 96,
+          "left": 669.53125,
+          "right": 732.546875
+        }
+      ]
+    },
+    "space": {
+      "codepoint": 32,
+      "rect": [
+        {
+          "x": 732.53125,
+          "y": 476.703125,
+          "width": 17.328125,
+          "height": 96,
+          "left": 732.53125,
+          "right": 749.859375
+        }
+      ]
+    },
+    "fiction": {
+      "text": "fiction",
+      "index": 120,
+      "rect": [
+        {
+          "x": 749.84375,
+          "y": 476.703125,
+          "width": 200.09375,
+          "height": 96,
+          "left": 749.84375,
+          "right": 949.9375
+        }
+      ]
+    }
+  },
+  "pixel_corroboration": {
+    "roi_4K": [
+      180,
+      1000,
+      1000,
+      1230
+    ],
+    "local_vs_online_identical_RGB_in_word_region": false,
+    "evidence": {
+      "online_review_png": {
+        "sha256": "9212aeb70737c7efd4fe9ba1d8100ec1fa19473506c0e0ee10867eb0ea20163c",
+        "phrase_green_left": 608,
+        "about_black_right": 569,
+        "blank_ink_columns": 38,
+        "english_line_y": [
+          1063,
+          1208
+        ]
+      },
+      "decoded_video_png": {
+        "sha256": "932431a498c5db6e65410e02207d5763a85d8d7ccac2447f5eb5f23bb822f9f5",
+        "phrase_green_left": 608,
+        "about_black_right": 569,
+        "blank_ink_columns": 38,
+        "english_line_y": [
+          1063,
+          1208
+        ]
+      },
+      "local_repro_png": {
+        "sha256": "deaf5c87b0fe331304a164002c191f36692d044d5b9bd7ebf45727f8bc0e795e",
+        "phrase_green_left": 608,
+        "about_black_right": 569,
+        "blank_ink_columns": 38,
+        "english_line_y": [
+          1063,
+          1208
+        ]
+      }
+    }
+  },
+  "browser": "本机Chromium156只读DOM；实际已批准Chrome153在线PNG与视频解码PNG均验证同一目标区像素边界。未据本机不同浏览器替换生产图。",
+  "conclusion": "实际EB Garamond Bold/ExtraBold，非Times New Roman；about/fiction间空格17.328125 CSS px，正常of fiction同为17.328125；原4K图和成品解码均有38列空白墨迹间隔。不存在真实缺空格或DOM负字距，不修改核心。",
+  "core_files_unchanged": true
+}

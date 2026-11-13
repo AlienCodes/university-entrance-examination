@@ -1,0 +1,253 @@
+{
+  "year": 2023,
+  "id": "2023-extra-923.66",
+  "window": [
+    920.16,
+    927.48
+  ],
+  "query": "核ASR额外段是否真实重读/漏译：['let', 'me']",
+  "initial_ASR_difference": {
+    "kind": "insert",
+    "source": [],
+    "asr_indices": [
+      1390,
+      1391
+    ],
+    "asr_text": [
+      "let",
+      "me"
+    ],
+    "window": [
+      923.66,
+      923.98
+    ],
+    "decision": "machine_candidate_unreviewed"
+  },
+  "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+  "original_source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+  "analysis_only": "16k单声道局部分析副本；原音采样率/声道/PCM/音量未改。Whisper仅文字佐证，无逐词时刻；Parakeet词尾为模型末token+0.08s估计。",
+  "recognitions": [
+    {
+      "model": "Parakeet",
+      "model_sha256": {
+        "encoder": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+        "decoder": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+        "joiner": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+        "tokens": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+      },
+      "text": "I'm very pleased to meet you all. Now, let me first ask you a question: why should young people?",
+      "tokens": [
+        " I",
+        "'",
+        "m",
+        " very",
+        " p",
+        "le",
+        "as",
+        "ed",
+        " to",
+        " me",
+        "et",
+        " you",
+        " all",
+        ".",
+        " Now",
+        ",",
+        " let",
+        " me",
+        " first",
+        " ask",
+        " you",
+        " a",
+        " question",
+        ":",
+        " why",
+        " should",
+        " you",
+        "n",
+        "g",
+        " people",
+        "?"
+      ],
+      "timestamps": [
+        0.23999999463558197,
+        0.47999998927116394,
+        0.7199999690055847,
+        0.7199999690055847,
+        1.0399999618530273,
+        1.1200000047683716,
+        1.2799999713897705,
+        1.4399999380111694,
+        1.5199999809265137,
+        1.6799999475479126,
+        1.7599999904632568,
+        2.0,
+        2.240000009536743,
+        2.559999942779541,
+        2.879999876022339,
+        3.119999885559082,
+        3.5199999809265137,
+        3.759999990463257,
+        4.079999923706055,
+        4.400000095367432,
+        4.639999866485596,
+        4.960000038146973,
+        5.279999732971191,
+        5.599999904632568,
+        5.920000076293945,
+        6.319999694824219,
+        6.559999942779541,
+        6.71999979019165,
+        6.799999713897705,
+        6.87999963760376,
+        7.119999885559082
+      ],
+      "words": [
+        [
+          "I'm",
+          920.4,
+          920.96
+        ],
+        [
+          "very",
+          920.88,
+          920.96
+        ],
+        [
+          "pleased",
+          921.2,
+          921.68
+        ],
+        [
+          "to",
+          921.68,
+          921.76
+        ],
+        [
+          "meet",
+          921.84,
+          922.0
+        ],
+        [
+          "you",
+          922.16,
+          922.24
+        ],
+        [
+          "all.",
+          922.4,
+          922.8
+        ],
+        [
+          "Now,",
+          923.04,
+          923.36
+        ],
+        [
+          "let",
+          923.68,
+          923.76
+        ],
+        [
+          "me",
+          923.92,
+          924.0
+        ],
+        [
+          "first",
+          924.24,
+          924.32
+        ],
+        [
+          "ask",
+          924.56,
+          924.64
+        ],
+        [
+          "you",
+          924.8,
+          924.88
+        ],
+        [
+          "a",
+          925.12,
+          925.2
+        ],
+        [
+          "question:",
+          925.44,
+          925.84
+        ],
+        [
+          "why",
+          926.08,
+          926.16
+        ],
+        [
+          "should",
+          926.48,
+          926.56
+        ],
+        [
+          "young",
+          926.72,
+          927.04
+        ],
+        [
+          "people?",
+          927.04,
+          927.36
+        ]
+      ],
+      "elapsed": 1.5691276949946769
+    },
+    {
+      "model": "Whisper",
+      "model_sha256": {
+        "encoder": "ef6b936f4c9b1d90a3b68634b60c4ed8576b26172b33c2535ec0e933c9edb823",
+        "decoder": "f7162ad6db2dbef16cfaeaa7f945b9d7dd9c1b8d472f6aca82f2273d185e4d41",
+        "tokens": "306cd27f03c1a714eca7108e03d66b7dc042abe8c258b44c199a7ed9838dd930"
+      },
+      "text": "I'm very pleased to meet you all. Now, let me first ask you a question. Why should young people... *static* *static* *static*",
+      "tokens": [
+        " I",
+        "'m",
+        " very",
+        " pleased",
+        " to",
+        " meet",
+        " you",
+        " all",
+        ".",
+        " Now",
+        ",",
+        " let",
+        " me",
+        " first",
+        " ask",
+        " you",
+        " a",
+        " question",
+        ".",
+        " Why",
+        " should",
+        " young",
+        " people",
+        "...",
+        " *",
+        "static",
+        "*",
+        " *",
+        "static",
+        "*",
+        " *",
+        "static",
+        "*"
+      ],
+      "timestamps": [],
+      "words": [],
+      "elapsed": 1.763176612999814
+    }
+  ],
+  "status": "定点识别证据，仍须具体裁决，不构成source-approved"
+}

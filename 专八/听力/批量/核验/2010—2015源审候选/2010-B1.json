@@ -1,0 +1,498 @@
+{
+  "id": "2010-B1",
+  "year": 2010,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2010.json",
+    "sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
+    "unit_semantic_sha256": "9959d1cc5203d017f690292a4da0a59d0f508dc1aff44daf103172fd84930b5a"
+  },
+  "final": {
+    "file": "精听数据/2010-B1.json",
+    "sha256": "9244e6960cada8cf94e59977012b1f03c9e8c4a12b94f3ef3d9a2bbca4db7d78",
+    "unit_semantic_sha256": "9959d1cc5203d017f690292a4da0a59d0f508dc1aff44daf103172fd84930b5a",
+    "render_content_sha256": "a6d5003c43053b285aa635eafecb240b33f1cc4819a00e0cb08d7c2bc923ddc8",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 52,
+    "sha256": "2ced9ac2627a3b56c8aa4e7123b15dca2b61d0ab6b82617b5b4524111f535e97"
+  },
+  "audio": {
+    "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2010年专八真题+音频+解析/听力音频 TEM8-2010.mp3",
+        "bytes": 11797120,
+        "sha256": "c525c22d74a77cd291471be15af79e4d58da94477aeb48e4126911e0dc61926c",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1474.612125
+        },
+        "decoded_pcm_sha256": "e2e8bfb2c08c5a13631f1b1340162af87bc8e2e5500d65f537eab9f7c215b56e",
+        "decoded_frames": 65030400,
+        "canonical_start": 0.0,
+        "canonical_end": 1474.6122448979593
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      781.7875,
+      1210.73
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "87c85e2c3bcbaad18b1f9beae1b68ef029a00a880ab9dcdfea23f8d6e25b686d",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2010/对齐报告.json",
+      "sha256": "e21d461bc8a51e6cd05840979805adcd0a9f8298c4e2ac4923f61b436c107597"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 5,
+    "missing_word_dispositions": [
+      {
+        "sentence": 40,
+        "en": "OK. The first is racial diversity.",
+        "window": [
+          1060.42,
+          1064.22
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "The",
+            "char": [
+              4,
+              7
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "reference_retained_internal_disfluency_or_weak_function_word",
+          "decision": "The为句内弱冠词，first/racial diversity实际锚齐；保留参考字幕，不把缺冠词当内容差异或补造其秒。",
+          "assurance_limit": "既有本年原音正文审查与当前真首尾/内容词支持完整话轮；单个弱音/重复次数未由逐词ASR独立识别，保留该技术限制供根审，不标成字词100%。",
+          "evidence": {
+            "file": "核验/正文清理/2010-双模型.json",
+            "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+          },
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 42,
+        "en": "Um, let’s look at two states, California and Maine.",
+        "window": [
+          1073.38,
+          1078.65
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Um",
+            "char": [
+              0,
+              2
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "verified_whole_utterance_unknown_word_times_retained",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "evidence": {
+            "file": "核验/2010—2015整句声学证据/2010-B1-42.json",
+            "sha256": "2dce1ab664c08da1fe47db0394e992e6c46f9a12e83f2251d795596931c11d72"
+          },
+          "whole_sentence_window": [
+            1073.38,
+            1078.65
+          ],
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 50,
+        "en": "Question 3. What does the example of Selinsgrove show?",
+        "window": [
+          1168.26,
+          1173.78
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Selinsgrove",
+            "char": [
+              37,
+              48
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2010-考试内容审核.json",
+            "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+          },
+          "question": 3,
+          "source_stem": "What does the example of Selinsgrove show?",
+          "actual_ASR_text": "What does the example of Sellings Grove show?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "Selinsgrove专名被ASR拆成Sellings Grove，保持原PDF",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 52,
+        "en": "Question 5. What is the similarity between Selinsgrove and Maine according to the interview?",
+        "window": [
+          1202.69,
+          1210.53
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Selinsgrove",
+            "char": [
+              43,
+              54
+            ]
+          },
+          {
+            "text": "Maine",
+            "char": [
+              59,
+              64
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2010-考试内容审核.json",
+            "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+          },
+          "question": 5,
+          "source_stem": "What is the similarity between Selinsgrove and Maine according to the interview?",
+          "actual_ASR_text": "What is the similarity between Selling Grove and Main, according to the interview?",
+          "source_review_normalized_exact": false,
+          "normalization_note": "Selinsgrove/Maine专名被ASR识作Selling Grove/Main，保持原PDF",
+          "explicit_local_name_comparison": "旧审计normalized_exact=false未改；其明确备注已裁Selinsgrove/Maine近音。仅此题局部按该备注比较后其余全部词相同，未建立全局别名或猜词时。",
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 50,
+        "en": "Question 3. What does the example of Selinsgrove show?",
+        "extra_ASR": {
+          "asr_indices": [
+            1786,
+            1787
+          ],
+          "asr_text": [
+            "Sellings",
+            "Grove"
+          ],
+          "window": [
+            1171.7,
+            1172.74
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2010-考试内容审核.json",
+            "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+          },
+          "question": 3,
+          "source_stem": "What does the example of Selinsgrove show?",
+          "actual_ASR_text": "What does the example of Sellings Grove show?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "Selinsgrove专名被ASR拆成Sellings Grove，保持原PDF",
+          "explicit_local_name_comparison": null
+        }
+      },
+      {
+        "sentence": 52,
+        "en": "Question 5. What is the similarity between Selinsgrove and Maine according to the interview?",
+        "extra_ASR": {
+          "asr_indices": [
+            1815,
+            1816,
+            1818
+          ],
+          "asr_text": [
+            "Selling",
+            "Grove",
+            "Main,"
+          ],
+          "window": [
+            1206.69,
+            1208.61
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2010-考试内容审核.json",
+            "sha256": "250e429d6279071adea031fca92584207f55bee7a552c8a1fc85c46c3cc12200"
+          },
+          "question": 5,
+          "source_stem": "What is the similarity between Selinsgrove and Maine according to the interview?",
+          "actual_ASR_text": "What is the similarity between Selling Grove and Main, according to the interview?",
+          "source_review_normalized_exact": false,
+          "normalization_note": "Selinsgrove/Maine专名被ASR识作Selling Grove/Main，保持原PDF",
+          "explicit_local_name_comparison": "旧审计normalized_exact=false未改；其明确备注已裁Selinsgrove/Maine近音。仅此题局部按该备注比较后其余全部词相同，未建立全局别名或猜词时。"
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [
+      {
+        "sentence": 42,
+        "en": "Um, let’s look at two states, California and Maine.",
+        "window": [
+          1073.38,
+          1078.65
+        ],
+        "evidence": {
+          "unit": "2010-B1",
+          "en": "Um, let’s look at two states, California and Maine.",
+          "start": 1073.38,
+          "end": 1078.65,
+          "nonverbal": false,
+          "whole_sentence_audio_verified": true,
+          "word_alignment_policy": "retain_actual_ASR_only",
+          "evidence_ref": "核验/2010—2015整句声学证据/2010-B1-42.json",
+          "evidence_sha256": "2dce1ab664c08da1fe47db0394e992e6c46f9a12e83f2251d795596931c11d72",
+          "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+          "manifest": "核验/正文清理/2010-整句声学采纳.json",
+          "manifest_sha256": "beb162a2eb1dff7664fb43f417cddb503c072075864a3a31a00e542b36bc738f"
+        }
+      }
+    ],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "d410326c4b20e6414f68b67ebffc7396ee07faa62ee8ad9d013f4a58959dbac7"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 6,
+    "screen_count": 12,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 12,
+        "en": "It seems to me that nowadays Americans cannot turn on the television or read a newspaper without seeing the word pop up somewhere as a description of the American demographic.",
+        "at": "without seeing the word",
+        "zh": [
+          "在我看来，如今美国人只要打开电视或翻开报纸，",
+          "就会在某处看到这个词，用来描述美国的人口构成。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "without seeing the word",
+            "char": 89,
+            "actual_first_word": "without",
+            "actual_first_word_window": [
+              875.02,
+              875.34
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 19,
+        "en": "Well, at one time the US was called a melting pot, you know, which means that people of many different religions, cultures, and races could shed their traditional cultural identities and blend into one homogeneous nation.",
+        "at": "could shed their traditional cultural identities",
+        "zh": [
+          "嗯，美国曾被称为“大熔炉”，也就是说，信仰、文化和种族各不相同的人，",
+          "可以放下原有的传统文化身份，融合为一个同质的国家。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "could shed their traditional cultural identities",
+            "char": 134,
+            "actual_first_word": "could",
+            "actual_first_word_window": [
+              918.7,
+              918.78
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 22,
+        "en": "Um, of course, when the phrase “melting pot” was popular, there was also the idea of being different, but being different then simply meant Catholic as opposed to Protestant, or Irish as opposed to Swedish or Italian.",
+        "at": "but being different then",
+        "zh": [
+          "嗯，当然，在“大熔炉”这个说法流行时，也存在差异的观念，",
+          "不过那时所谓的不同，只是天主教徒相对于新教徒，或者爱尔兰裔相对于瑞典裔、意大利裔的差别。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but being different then",
+            "char": 102,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              944.58,
+              944.66
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 25,
+        "en": "You see today, we use the word diversity to refer to more-visible ethnic differences — Asian American, African American, and Latino, for instance.",
+        "at": "Asian American, African American,",
+        "zh": [
+          "你看，如今我们用“多样性”指更为明显的族裔差异，",
+          "例如亚裔美国人、非裔美国人以及拉丁裔。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "Asian American, African American,",
+            "char": 87,
+            "actual_first_word": "Asian",
+            "actual_first_word_window": [
+              967.02,
+              967.34
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 28,
+        "en": "Well, I think in all this talk of diversity there is a critical point that may be missed: that is, diversity is not occurring everywhere in the US, or at least not to a degree that would alter the demography of every region in the country.",
+        "at": "diversity is not occurring",
+        "zh": [
+          "嗯，我认为，在所有这些关于多样性的讨论中，人们可能忽略了一个关键点：",
+          "多样化并未发生在美国所有地方，至少还没有达到改变全国每个地区人口构成的程度。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "diversity is not occurring",
+            "char": 99,
+            "actual_first_word": "diversity",
+            "actual_first_word_window": [
+              992.58,
+              993.3
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 45,
+        "en": "On the contrary, Maine’s Caucasian population was 98% of its total population throughout the 1990s; and by 2025, Maine’s population will still be 97% Caucasian, which means virtually no change in Maine’s racial diversity over the next 20 or so years.",
+        "at": "Maine’s population will still",
+        "zh": [
+          "相反，整个20世纪90年代，缅因州的高加索裔人口占总人口的98%；到2025年，",
+          "这个比例仍将为97%，也就是说，在之后二十年左右的时间里，缅因州的种族多样性几乎不会发生变化。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "Maine’s population will still",
+            "char": 113,
+            "actual_first_word": "Maine’s",
+            "actual_first_word_window": [
+              1114.78,
+              1115.42
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2010-B1/版式预检.json",
+      "sha256": "a507c47b5762d4b09554db3c43005e19901053d862ed49105204032b37c962c3"
+    },
+    "screens": 59,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2010-双模型.json",
+        "sha256": "6b4b1c7ab639079e7df2a18520c2ace5e725653fe898b1f08fe8c6cc04acb8c3"
+      },
+      {
+        "file": "核验/正文清理/2010-局部真词锚.json",
+        "sha256": "34fb15b10a9bab160ae20f85c2e0757b546d55c9daf893716d1efbe611531521"
+      },
+      {
+        "file": "核验/正文清理/2010-可用语音段.json",
+        "sha256": "0369b6de9da050d1a94c42124327bba97f1d5833d344159df4ad2b0f20c0cc5b"
+      },
+      {
+        "file": "核验/正文清理/2010-人工词锚.json",
+        "sha256": "21be17a5c1c772385e277fc524f5195d453d9205e49e3de78b6e4ba2d746b68a"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 3
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "尚须与实际原音逐句对应；本稿不附假定时间。",
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有4个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[40, 42, 50, 52]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

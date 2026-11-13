@@ -14,9 +14,7 @@
       "sha256": "17f0771e8eb3220d6d545d8da8279f2c08cc5c222a6148c8eb3910d7d128132d"
     }
   ],
-  "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
-  ],
+  "待核": [],
   "instruction_review": {
     "source": "说明语句/2016.json",
     "source_sha256": "6664f8dbf5b2569f5c67a0a7bf95e192f71b63c4457a775e58196bc7b1d0a8a1",
@@ -8079,9 +8077,179 @@
   "alignment_report": "核验/原文对齐/2016/对齐报告.json",
   "alignment_tool_version": "1.0",
   "review": {
-    "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2016/对齐报告.json",
-    "content_sha256": "f4c7c821b7cd992f76776fe13c927f87195b32fad4d3677927035e081771ac75"
+    "status": "approved",
+    "source": "核验/2016-B2-源文审核.json",
+    "scope": "仅已审内容、实际词锚/合法非词整事件与安全原音窗口；在线完整PNG和成品另审",
+    "content_sha256": "c7bfeb10ff195ce9f3c5b1264802fa9e2e83fa0bdcbe67f3ed21172c3879e105"
+  },
+  "manual_splits": [
+    {
+      "en": "Freshman Week, in one of the welcoming speeches, our dean mentioned that many of us might have grown up thinking that “doctor, lawyer, teacher” were our only options.",
+      "at": "our dean mentioned that",
+      "zh": [
+        "新生周的一次欢迎致辞中，",
+        "院长提到，我们很多人可能从小就认为“医生、律师、教师”是仅有的职业选择。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/10",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "By the time I started to think about what professional directions I might want to take, I had heard “The average American changes careers seven times” so often that it was hard not to become numb to its message.",
+      "at": "I had heard “The",
+      "zh": [
+        "当我开始思考自己可能会选择怎样的职业方向时，",
+        "“美国人平均一生会转行七次”这句话我已经听得太多，几乎对此麻木了。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/11",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "The last thing that the enthusiastic Harvard student wants to do is to imagine moving from job to job until she lands somewhere by chance, especially when the economy is so uncertain.",
+      "at": "especially when the economy",
+      "zh": [
+        "一个满怀热情的哈佛学生，最不愿意想象的，就是自己在不同工作间辗转，直到碰巧落在某个岗位上，",
+        "尤其是经济如此不确定的时候。"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/12",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "Mom once described the experience of taking classes with students half her age after 30 years in the workforce: “What’s most challenging is that you come into class knowing how to make a cake—but you’re all there to make omelets.”",
+      "at": "“What’s most challenging is",
+      "zh": [
+        "妈妈曾这样描述自己工作三十年后，和年龄只有自己一半的学生一起上课的经历：",
+        "“最有挑战的是，你走进教室时已经知道怎样做蛋糕了，但大家在这里学的却是做煎蛋卷。”"
+      ],
+      "evidence": "逐屏核对英文主干、原因条件、列举对象与中文对应；当前自动方案自然，片段完整拼回当前中文。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/13",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    },
+    {
+      "en": "In the course of my time at Harvard, it has been just such a give-and-take—with professors, with friends, and with my mother—that has slowly shaped my ideas of who I might want to be.",
+      "at": "that has slowly shaped",
+      "zh": [
+        "在哈佛求学期间，正是和教授、朋友、妈妈之间这样的思想交流，",
+        "慢慢塑造了我对未来想成为怎样的人的认识。"
+      ],
+      "evidence": "教授/朋友/母亲的完整并列组均留首屏，塑造未来认识的谓语留次屏；不把后两位提前翻译到无对应英文屏。 中文片段literal拼回当前整句；只核语义，原音换屏须预检真实词首/停顿。",
+      "evidence_ref": "核验/长句语义分屏/2016—2019及2021-平表.json",
+      "evidence_sha256": "0d1edda84348c7289f16b25320c3ea914dc5ec0b9d04984ed9efa94ded8dba10",
+      "evidence_pointer": "/records/14",
+      "approval_scope": "人工语义分屏；未核音频/最终截图，不含虚构时间。"
+    }
+  ],
+  "splits": {
+    "15": {
+      "at": "our dean mentioned that",
+      "zh": [
+        "新生周的一次欢迎致辞中，",
+        "院长提到，我们很多人可能从小就认为“医生、律师、教师”是仅有的职业选择。"
+      ]
+    },
+    "18": {
+      "at": "I had heard “The",
+      "zh": [
+        "当我开始思考自己可能会选择怎样的职业方向时，",
+        "“美国人平均一生会转行七次”这句话我已经听得太多，几乎对此麻木了。"
+      ]
+    },
+    "19": {
+      "at": "especially when the economy",
+      "zh": [
+        "一个满怀热情的哈佛学生，最不愿意想象的，就是自己在不同工作间辗转，直到碰巧落在某个岗位上，",
+        "尤其是经济如此不确定的时候。"
+      ]
+    },
+    "25": {
+      "at": "“What’s most challenging is",
+      "zh": [
+        "妈妈曾这样描述自己工作三十年后，和年龄只有自己一半的学生一起上课的经历：",
+        "“最有挑战的是，你走进教室时已经知道怎样做蛋糕了，但大家在这里学的却是做煎蛋卷。”"
+      ]
+    },
+    "34": {
+      "at": "that has slowly shaped",
+      "zh": [
+        "在哈佛求学期间，正是和教授、朋友、妈妈之间这样的思想交流，",
+        "慢慢塑造了我对未来想成为怎样的人的认识。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 15,
+        "at": "our dean mentioned that",
+        "real_word_anchor": true,
+        "char": 49,
+        "start": 1187.28,
+        "end": 1187.36
+      },
+      {
+        "sentence": 18,
+        "at": "I had heard “The",
+        "real_word_anchor": true,
+        "char": 88,
+        "start": 1212.44,
+        "end": 1212.52
+      },
+      {
+        "sentence": 19,
+        "at": "especially when the economy",
+        "real_word_anchor": true,
+        "char": 139,
+        "start": 1232.24,
+        "end": 1232.8
+      },
+      {
+        "sentence": 25,
+        "at": "“What’s most challenging is",
+        "real_word_anchor": true,
+        "char": 113,
+        "start": 1267.08,
+        "end": 1267.48
+      },
+      {
+        "sentence": 34,
+        "at": "that has slowly shaped",
+        "real_word_anchor": true,
+        "char": 125,
+        "start": 1330.36,
+        "end": 1330.44
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "15",
+      "18",
+      "19",
+      "25",
+      "34"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2016.json",
+    "mother_sha256": "c39c54554329b4ed7e3e3199924d492cd8301f92fc83344535bc74d4e0263b60",
+    "english_sequence_sha256": "472e08651a7342d67015290c01ed12ac0cf9d27f16615efe00bc155f2c47f7f1",
+    "timing_fingerprint_unchanged": "ab11df21ce24a034f378a64c7fecb19464e0d4fbbf2b18323502400f2954e0b7",
+    "previous_content_sha256": "f4c7c821b7cd992f76776fe13c927f87195b32fad4d3677927035e081771ac75",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

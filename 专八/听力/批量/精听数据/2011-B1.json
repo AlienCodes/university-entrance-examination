@@ -9911,8 +9911,46 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2011/对齐报告.json",
-    "content_sha256": "c6535fdb365953ae828c723aefbfe55049f93ca1d28a85039221b5b6ad9e0a31"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "08082740f8f97e77c4f53cf9e63a6b9aceec94e8cb043ab026aed642e5a60f7e"
+  },
+  "splits": {
+    "41": {
+      "at": "in one way or",
+      "zh": [
+        "那么，哈利博士，既然学习第二语言是一个艰难的过程，",
+        "或多或少都会遇到困难，那么到目前为止，有没有什么方法，有效的方法，来教授第二语言？"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 41,
+        "at": "in one way or",
+        "real_word_anchor": true,
+        "char": 84,
+        "start": 962.58,
+        "end": 962.66
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "41"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2011.json",
+    "mother_sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
+    "english_sequence_sha256": "4fec954a41a697646ca86e7523f1d0e7307ddce48d201bd3cb52228db07813ed",
+    "timing_fingerprint_unchanged": "2253c4d13e7c6837fab46cbd2a29def9c8bdb1608846bc41148637b4485442c7",
+    "previous_content_sha256": "c6535fdb365953ae828c723aefbfe55049f93ca1d28a85039221b5b6ad9e0a31",
+    "manual_splits_by_exact_EN": [],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }

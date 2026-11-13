@@ -1,0 +1,449 @@
+{
+  "id": "2015-B2",
+  "year": 2015,
+  "status": "source_review_candidate_not_approved",
+  "recommendation": "ready",
+  "recommendation_scope": "当前源文/译注/真实界/语义手定证据齐备，可提交根源审；未逐词定时的语气、同词重复、专名异拼及节奏明列，须由根采纳例外。不等于MP4或正式发布批准。",
+  "mother": {
+    "file": "译注草稿/2015.json",
+    "sha256": "b8d25113e710466f585ecf6ef90ab4d7b2e1c0949c44dcad2fdfbd6f1681eebf",
+    "unit_semantic_sha256": "7c1d561ffbe770abf7f2b0a65949cb2561a602992e54825baaaa762a880161a2"
+  },
+  "final": {
+    "file": "精听数据/2015-B2.json",
+    "sha256": "241d0f5f368f4028b96f79abf488880045d44ae2d6068a86da00735728868e64",
+    "unit_semantic_sha256": "7c1d561ffbe770abf7f2b0a65949cb2561a602992e54825baaaa762a880161a2",
+    "render_content_sha256": "8191801f714a0b402a51ad5ffc5f2906d53eae2c3cd4cc8a7d5abb02268c952d",
+    "review_status": "draft"
+  },
+  "mother_final_semantics_exact": true,
+  "EN_ZH_W": {
+    "sentence_count": 40,
+    "sha256": "e0dd5829e2e3e054a3e71cc7b835ab6ee3af366a121a96c05ab7c99c6d925a00"
+  },
+  "audio": {
+    "canonical_source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+    "raw_source_entries": [
+      {
+        "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+        "bytes": 21944334,
+        "sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1371.506938
+        },
+        "decoded_pcm_sha256": "fea66d7b392aa494e98384490f6a10a1ea403b134f57bb833c8676c1a0a7bb09",
+        "decoded_frames": 60483456,
+        "canonical_start": 0.0,
+        "canonical_end": 1371.5069387755102
+      }
+    ],
+    "raw_source_sha_verified_on_disk": true,
+    "window": [
+      1033.6375,
+      1371.506939
+    ],
+    "boundary_status": "measured_PCM_boundaries_or_complete_file_edge",
+    "boundary_evidence_sha256": "abc9a8ddedba1aec4063fe12ab7f9b9dd57a0084d5deaa0c6c8b70f35466b13f",
+    "raw_audio_unchanged": true
+  },
+  "alignment": {
+    "report": {
+      "file": "核验/原文对齐/2015/对齐报告.json",
+      "sha256": "0dd3a787f82597d0fdff991d16018512de6f026c7edf688bb8a0879a782f2bee"
+    },
+    "state": "draft_exported_not_approved",
+    "missing_boundary_sentences": [],
+    "raw_missing_word_count": 2,
+    "missing_word_dispositions": [
+      {
+        "sentence": 35,
+        "en": "Question 6. In Theresa’s view, what is school freedom?",
+        "window": [
+          1284.11,
+          1289.95
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Theresa’s",
+            "char": [
+              15,
+              24
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 6,
+          "source_stem": "In Theresa’s view, what is school freedom?",
+          "actual_ASR_text": "In Teresa's view, what is school freedom?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      },
+      {
+        "sentence": 36,
+        "en": "Question 7. According to Theresa, who decides money for schools at the present?",
+        "window": [
+          1299.67,
+          1307.19
+        ],
+        "missing_source_lexemes": [
+          {
+            "text": "Theresa",
+            "char": [
+              25,
+              32
+            ]
+          }
+        ],
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "试题审核已逐题核同一源音人名/地名并保留原PDF规范拼写；ASR近音分词不改专名。个别专名字母仍无独立逐词映射，未推测时刻。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 7,
+          "source_stem": "According to Theresa, who decides money for schools at the present?",
+          "actual_ASR_text": "According to Teresa, who decides money for schools at the present?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null,
+          "individual_word_time_asserted": false
+        }
+      }
+    ],
+    "extra_ASR_dispositions": [
+      {
+        "sentence": 10,
+        "en": "You made a speech last night laying out the way you see the education system changing in this country.",
+        "extra_ASR": {
+          "asr_indices": [
+            2008
+          ],
+          "asr_text": [
+            "You"
+          ],
+          "window": [
+            1119.0,
+            1119.08
+          ]
+        },
+        "disposition": {
+          "category": "focused_independent_Whisper_reviewed_ASR_segmentation",
+          "decision": "两个You都在原文：前句same as you结尾与本句You made开头；额外记录来自跨句匹配归属，不加第三个You，也不删相邻实际话轮。",
+          "evidence": {
+            "file": "核验/2010—2015源审残留多词复核/2015-B2-You.json",
+            "sha256": "6eab4d634ee0da5747f0d7502c78e04562a8557fa992c066ed2c1d535e660ffc"
+          },
+          "model_limitation": "独立Whisper仅作文本旁证；无有效token时刻，未据其推导词秒。"
+        }
+      },
+      {
+        "sentence": 35,
+        "en": "Question 6. In Theresa’s view, what is school freedom?",
+        "extra_ASR": {
+          "asr_indices": [
+            2458
+          ],
+          "asr_text": [
+            "Teresa's"
+          ],
+          "window": [
+            1286.43,
+            1287.23
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 6,
+          "source_stem": "In Theresa’s view, what is school freedom?",
+          "actual_ASR_text": "In Teresa's view, what is school freedom?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      },
+      {
+        "sentence": 36,
+        "en": "Question 7. According to Theresa, who decides money for schools at the present?",
+        "extra_ASR": {
+          "asr_indices": [
+            2468
+          ],
+          "asr_text": [
+            "Teresa,"
+          ],
+          "window": [
+            1302.39,
+            1303.27
+          ]
+        },
+        "disposition": {
+          "category": "exam_reviewed_proper_name_ASR_spelling",
+          "decision": "额外串为同一已审核专名的ASR近音/拆词，不是额外口述正文。",
+          "evidence": {
+            "file": "核验/2015-考试内容审核.json",
+            "sha256": "6a286511378a9808ff5350b4640675812b102cb63270ef93abe010a8388326f4"
+          },
+          "question": 7,
+          "source_stem": "According to Theresa, who decides money for schools at the present?",
+          "actual_ASR_text": "According to Teresa, who decides money for schools at the present?",
+          "source_review_normalized_exact": true,
+          "normalization_note": "",
+          "explicit_local_name_comparison": null
+        }
+      }
+    ],
+    "whole_utterance_exceptions": [],
+    "nonverbal_exceptions": [],
+    "acoustic_filler_exceptions": [],
+    "no_unknown_word_times_invented": true,
+    "timing_fingerprint_sha256": "2513038d33de51263423f97da1eb35864c9f82e44da32412bce795da3f844419"
+  },
+  "manual_splits": {
+    "mother_final_exact": true,
+    "count": 7,
+    "screen_count": 14,
+    "all_true_cut_first_word_anchors": true,
+    "chinese_reassembles": true,
+    "no_highlight_cut": true,
+    "every_part_has_real_annotation": true,
+    "rows": [
+      {
+        "sentence": 3,
+        "en": "But, again, you had the opportunity to do that as well, I mean to get more children from state schools into those leading universities, and it didn’t happen.",
+        "at": "I mean to get",
+        "zh": [
+          "可是，我还要再说一次，你们同样有机会做到这一点，",
+          "也就是让更多公立学校的孩子进入那些顶尖大学，然而这并没有发生。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "I mean to get",
+            "char": 56,
+            "actual_first_word": "I",
+            "actual_first_word_window": [
+              1048.55,
+              1048.63
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 6,
+        "en": "Because they have been giving a message that there are barriers there, and we’ve seen it today, there are reports already that Cambridge has been finding state school pupils ringing up and saying that they are not going to bother to apply now.",
+        "at": "there are reports already",
+        "zh": [
+          "因为他们一直在传递“有障碍挡在那里”的信息。我们今天就看到了这一点：",
+          "已经有报道说，剑桥接到公立学校学生的电话，他们说自己现在不打算费力去申请了。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "there are reports already",
+            "char": 96,
+            "actual_first_word": "there",
+            "actual_first_word_window": [
+              1077.95,
+              1078.03
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 9,
+        "en": "Now one of the ways they want to do it is to give the schools the opportunity to run themselves more completely than they are doing at the moment, to give schools more powers, exactly the same as you.",
+        "at": "to give schools more",
+        "zh": [
+          "他们想采取的一种做法，是让学校比现在更全面地自主管理，",
+          "赋予学校更多权力，这和您的主张完全一样。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "to give schools more",
+            "char": 147,
+            "actual_first_word": "to",
+            "actual_first_word_window": [
+              1114.95,
+              1115.03
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 13,
+        "en": "The present government talks about freedom for schools, it talks about getting money into schools, but if you look in the detail of what they are proposing, the reality is very different.",
+        "at": "but if you look",
+        "zh": [
+          "现任政府在谈学校自由，也在谈把钱投入学校。",
+          "但只要仔细看看他们提出的方案，就会发现实际情况完全不同。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "but if you look",
+            "char": 99,
+            "actual_first_word": "but",
+            "actual_first_word_window": [
+              1138.64,
+              1138.72
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 26,
+        "en": "So, at the moment, a certain amount of money goes to schools, a certain amount of money goes to local education authorities, are you saying that in future, no money will go to Local Education Authorities, but all of the money will go to the schools.",
+        "at": "are you saying that",
+        "zh": [
+          "所以，目前有一部分钱拨给学校，另一部分拨给地方教育主管部门。",
+          "您的意思是，将来将不再有经费拨给地方教育主管部门，而是全部拨给学校？"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "are you saying that",
+            "char": 125,
+            "actual_first_word": "are",
+            "actual_first_word_window": [
+              1228.19,
+              1228.51
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 28,
+        "en": "At the moment, what happens is that money goes to Local Education Authorities and they decide how much money is then going to be spent on the schools.",
+        "at": "and they decide",
+        "zh": [
+          "目前的情况是，经费先拨给地方教育主管部门，",
+          "再由他们决定有多少钱会用于学校。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and they decide",
+            "char": 78,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              1245.75,
+              1245.83
+            ]
+          }
+        ]
+      },
+      {
+        "sentence": 29,
+        "en": "Money is held back at those Education Authorities, and is held back initially at Central Government as well, for them to decide how it should be spent.",
+        "at": "and is held back",
+        "zh": [
+          "有些钱被扣留在这些教育主管部门，",
+          "也有些钱一开始就被中央政府扣留，由他们决定如何使用。"
+        ],
+        "true_cut_word_anchors": [
+          {
+            "at": "and is held back",
+            "char": 51,
+            "actual_first_word": "and",
+            "actual_first_word_window": [
+              1253.91,
+              1253.99
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "evidence": {
+      "file": "核验/2010-2015-语义分屏版式/汇总.json",
+      "sha256": "a89bab46cb5b70cad5734dbdac3f1897fc8a46f9a5d79d0f66a29224777cab0d"
+    },
+    "report": {
+      "file": "核验/2010-2015-语义分屏版式/2015-B2/版式预检.json",
+      "sha256": "d5db95c8d52398253156bc0258e85c5cfec1e49280fd286b9f0e63757d647b58"
+    },
+    "screens": 48,
+    "final_problems": [],
+    "manual_plans_not_rewritten": true
+  },
+  "prior_source_review": {
+    "index": {
+      "file": "核验/2010-2015-源审依据索引.json",
+      "sha256": "6ab93814c02bcc910154972eafe3c552a6d4a66d8057ed824751a0e6a18cd1b8"
+    },
+    "year_evidence": [
+      {
+        "file": "核验/正文清理/2015-双模型.json",
+        "sha256": "889aee983d05b13a139b580b22534d05c15bffb8685f0b4f26693fa24376538c"
+      },
+      {
+        "file": "核验/正文清理/2015-局部真词锚.json",
+        "sha256": "b11d9de622f4321f9c49a33ab653e15783c22a56b0a95658702baad373863018"
+      },
+      {
+        "file": "核验/正文清理/2015-可用语音段.json",
+        "sha256": "9956093bfff9dbc84ae37a74ec9c7f713e4fab0aaf70e877c482ddc09671813c"
+      },
+      {
+        "file": "核验/正文清理/2015-人工词锚.json",
+        "sha256": "e85c2ea40bf4d33f89f7a43a0766775a9114990c616f3e187f527cfea148e054"
+      }
+    ],
+    "shared_evidence": [
+      {
+        "file": "核验/正文清理/2010-2015-正文复核汇总.json",
+        "sha256": "fb2ef63a53af57654e36ceb52a6d18e608a992dcf10db3a5833a3df896de3a81"
+      },
+      {
+        "file": "核验/正文清理/2010-2015-正文改字.json",
+        "sha256": "2496c84a226c84e315fb575b79529b138aa24001fcd96e2226111c765c131f23"
+      },
+      {
+        "file": "核验/2010-2015-词注增补.json",
+        "sha256": "84fcff687524be267c6abe8e747bad2e1508f9326b3f75c7c84f2d41c2c22c3b"
+      },
+      {
+        "file": "核验/正文清理/40段局部词锚挂回.json",
+        "sha256": "60f27b932a21399734a9d14d103cef0d60260277f2c81cd918daeb2c34f0d359"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏语义预审.json",
+        "sha256": "bb11169ea72154c71804f8701afac5f2254db9bdbe568311b61c7c85142c076f"
+      },
+      {
+        "file": "核验/2010-2015-长句分屏逐屏平表.tsv",
+        "sha256": "b3dcf1d245f4e5cd869c27751dff9f70d2abd5659a0d794bc2e5bf70d156051a"
+      },
+      {
+        "file": "核验/2010-2015-语义分屏落稿核验.json",
+        "sha256": "c8c8f31522ac0b3dcbb3bcd2d417ffa485a08ff3c68dd79a89dfb8035944c4f6"
+      }
+    ],
+    "body_audio_corrections_cited": 1
+  },
+  "specific_notes": [],
+  "retained_input_pending": [
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[35, 36]，严禁按比例补时。"
+  ],
+  "parent_actions": [
+    "根逐项采纳本包disposition/整声例外后登记当前content_sha256源审；本工具不改draft/待核。",
+    "正式编码后仍需真实在线画面、换屏时刻及音画审查。"
+  ]
+}

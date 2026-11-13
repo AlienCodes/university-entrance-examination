@@ -1,0 +1,1189 @@
+{
+  "id": "2023-A",
+  "status": "source-review-candidate-only",
+  "source_approved": false,
+  "recommendation": "ready",
+  "blocking": [],
+  "scope": "仅建议root批准源EN/中文/词汇/真实锚及原音窗；不批准PNG、实际换屏guard或编码成品。",
+  "checked_at_UTC": "2026-11-13T21:54:05.632156+00:00",
+  "current": {
+    "mother_file": "译注草稿/2023.json",
+    "mother_file_sha256": "6a932a04b749f8d31928ec3a3927e4a1aa2269f779c36a702e34d22cab556b52",
+    "mother_semantic_sha256": "1d2c5c68f7514bf4183e1700d87c1b1a9f7076093061b779fde1989e4db057d6",
+    "final_file": "精听数据/2023-A.json",
+    "final_file_sha256": "ea55e2ccbb383de97d270f42620322d221f9ac1d3a0ddf5348200a0b1ed2af1d",
+    "final_semantic_sha256": "1d2c5c68f7514bf4183e1700d87c1b1a9f7076093061b779fde1989e4db057d6",
+    "semantic_exact": true,
+    "final_production_content_sha256": "82fb5c7e9d76207905cb654b79fbfdcbb3b5774f7b79c628b3a9a32cc44978a4",
+    "alignment_report": "核验/原文对齐/2023/对齐报告.json",
+    "alignment_report_sha256": "e4328a1485dfd29460edd9253782860005fe312c905da78291d1e9fbe15bbefe",
+    "effective_ASR": "核验/原文对齐/2023/含说明识别.json",
+    "effective_ASR_sha256": "74f928a9575f84059aab7ad42d48f061c9d204bacbbd9409d37a7b635df2eae8"
+  },
+  "counts": {
+    "sentences": 93,
+    "vocabulary_entries": 152,
+    "source_lexemes": 1217,
+    "mapped_lexemes": 1217,
+    "word_alignment_segments": 1215,
+    "reviewed_external_whole_word_spans": 2,
+    "whole_sentence_or_nonword_events": 0,
+    "nonverbal_lexemes_not_word_timed": 0,
+    "acoustic_interjection_missing_not_word_timed": 0,
+    "manual_plans": 1,
+    "spoken_questions_checked_against_exam": 0
+  },
+  "source_audio": {
+    "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+    "window": [
+      0.7875,
+      809.9
+    ],
+    "native_sample_rate": 44100,
+    "native_channels": 2,
+    "registered_pcm_sha256": "10665233e9d7909108b8765eb57aa4bc09334d6ab1cd6603bea117ac71dcd48e",
+    "original_source_entries": [
+      {
+        "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+        "bytes": 12531170,
+        "sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+        "suffix": ".mp3",
+        "audio": {
+          "codec": "mp3",
+          "sample_rate": 44100,
+          "channels": 2,
+          "channel_layout": "stereo",
+          "container_duration": 1565.88425
+        },
+        "decoded_pcm_sha256": "10665233e9d7909108b8765eb57aa4bc09334d6ab1cd6603bea117ac71dcd48e",
+        "decoded_frames": 69055488,
+        "canonical_start": 0.0,
+        "canonical_end": 1565.884081632653
+      }
+    ],
+    "boundary_evidence": {
+      "status": "measured_PCM_boundaries_or_complete_file_edge",
+      "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+      "source_entries": [
+        {
+          "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+          "sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618"
+        }
+      ],
+      "first_ASR_anchor": 1.6,
+      "last_ASR_anchor": 809.7,
+      "next_ASR_start": 810.86,
+      "window": [
+        0.7875,
+        809.9
+      ],
+      "start_kind": "measured_quiet_before_first_ASR_anchor",
+      "end_kind": "measured_quiet_after_last_ASR_anchor",
+      "leading_PCM": {
+        "decoded_window": [
+          0.0,
+          1.8
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            0.0,
+            1.71
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          -3.2033586561346453e-06,
+          -3.2083809534915196e-06
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -109.07,
+          -102.62,
+          -78.1,
+          -67.82,
+          -73.0,
+          -74.79,
+          -68.31,
+          -72.95,
+          -69.54,
+          -72.96,
+          -71.25,
+          -70.27,
+          -73.46,
+          -69.71,
+          -70.04,
+          -70.85,
+          -70.04,
+          -71.96,
+          -72.3,
+          -67.43,
+          -73.65,
+          -70.93,
+          -69.35,
+          -72.15,
+          -70.54,
+          -76.23,
+          -71.22,
+          -73.96,
+          -75.12,
+          -72.09,
+          -77.5,
+          -74.74,
+          -73.01,
+          -86.66,
+          -89.6,
+          -99.71,
+          -109.11,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.47,
+          -109.46,
+          -109.36,
+          -95.46,
+          -90.06,
+          -91.46,
+          -90.78,
+          -108.76,
+          -106.21,
+          -92.6,
+          -86.91,
+          -75.63,
+          -74.54,
+          -75.88,
+          -75.13,
+          -76.83,
+          -80.05,
+          -74.5,
+          -67.8,
+          -71.55,
+          -75.25,
+          -75.81,
+          -74.42,
+          -75.26,
+          -76.49,
+          -72.43,
+          -63.63,
+          -63.43,
+          -38.59,
+          -39.52,
+          -34.85,
+          -37.25,
+          -33.03,
+          -35.05,
+          -32.27,
+          -25.24,
+          -18.65
+        ]
+      },
+      "trailing_PCM": {
+        "decoded_window": [
+          809.5,
+          810.82
+        ],
+        "sample_rate": 44100,
+        "channels": 2,
+        "frame_seconds": 0.01,
+        "threshold_dBFS": -58.0,
+        "quiet_runs": [
+          [
+            809.5,
+            810.82
+          ]
+        ],
+        "analysis_DC_removed_per_channel": [
+          2.8648235685050147e-07,
+          3.7503110658271815e-07
+        ],
+        "decoder_preroll_seconds": 0.5,
+        "frames_dBFS": [
+          -70.04,
+          -71.63,
+          -71.29,
+          -73.7,
+          -74.49,
+          -76.7,
+          -80.14,
+          -79.91,
+          -87.3,
+          -95.55,
+          -117.23,
+          -119.42,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43,
+          -119.43
+        ]
+      },
+      "note": "原采样率/声道PCM逐10ms实测低能量间隙；词尾仍是ASR候选，窗口未按词长估计；正式原音未修改。"
+    },
+    "first_sentence": {
+      "en": "Test for English Majors, 2023.",
+      "start": 1.6,
+      "end": 4.8
+    },
+    "last_sentence": {
+      "en": "This is the end of section A mini-lecture.",
+      "start": 806.42,
+      "end": 809.7
+    },
+    "last_actual_word": {
+      "char": 34,
+      "char_end": 41,
+      "start": 809.06,
+      "end": 809.7,
+      "asr_indices": [
+        1221
+      ]
+    }
+  },
+  "pending_dispositions": [
+    {
+      "origin": "final",
+      "text": "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
+      "disposition": "本候选已逐项核对真实词锚、全部对齐差异与额外ASR局部证据；待root最终源审签署后清除此通用门禁，当前不自行批准。",
+      "blocking": false
+    }
+  ],
+  "source_missing_dispositions": [],
+  "legal_whole_sentence_and_nonword_events": [],
+  "external_actual_word_span_evidence": [
+    {
+      "sentence": 32,
+      "en": "We mix and match what we know about the metaphor’s source, in this case, the sun, with what we know about its target, Juliet.",
+      "source_text": "metaphor’s source",
+      "actual_ASR_rows": [
+        [
+          "metaphor",
+          211.0,
+          211.56
+        ],
+        [
+          "source,",
+          211.8,
+          212.36
+        ]
+      ],
+      "evidence_ref": "核验/正文异文复核/2023/metaphor.json",
+      "evidence_sha256": "d914d0205e481c705cc33d6067c8742fb84605dc33a1a3386330a565c452aa00",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    },
+    {
+      "sentence": 66,
+      "en": "Object metaphors describe price movements as non-living things, as in, “The Dow fell like a brick.”",
+      "source_text": "Dow",
+      "actual_ASR_rows": [
+        [
+          "DAO.",
+          425.72,
+          426.2
+        ]
+      ],
+      "evidence_ref": "预处理/2023/识别.json",
+      "evidence_sha256": "e5d58519afb6a33c89e4a5a9497bea79535abbe15ed333d9a902a914540e23a1",
+      "disposition": "完整真实声段共享；没有估计词内边界"
+    }
+  ],
+  "alignment_difference_dispositions": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        260
+      ],
+      "asr_text": [
+        "In"
+      ],
+      "window": [
+        155.16,
+        155.24
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['In']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            260
+          ],
+          "asr_text": [
+            "In"
+          ],
+          "window": [
+            155.16,
+            155.24
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          151.66,
+          158.74
+        ],
+        "source_corresponding_phrase": "In this, Elvis",
+        "decision": "原候选的['In']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-155.16.json",
+        "evidence_sha256": "5ca994f2fea95c8cc7dd1d647ef549b6e2f5ea6588b7468eb777302363c74bf7",
+        "model_texts": {
+          "Parakeet": "Feelings, concepts, thoughts. In this, Elvis is following Aristotle's class.",
+          "Whisper": "feelings, concepts, thoughts. In this, Elvis is following Aristotle's classic"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 32,
+          "char": [
+            40,
+            50
+          ],
+          "text": "metaphor’s"
+        }
+      ],
+      "asr_indices": [
+        378
+      ],
+      "asr_text": [
+        "metaphor"
+      ],
+      "window": [
+        211.0,
+        211.56
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 32,
+          "en": "We mix and match what we know about the metaphor’s source, in this case, the sun, with what we know about its target, Juliet.",
+          "source_text": "metaphor’s source",
+          "actual_ASR_rows": [
+            [
+              "metaphor",
+              211.0,
+              211.56
+            ],
+            [
+              "source,",
+              211.8,
+              212.36
+            ]
+          ],
+          "evidence_ref": "核验/正文异文复核/2023/metaphor.json",
+          "evidence_sha256": "d914d0205e481c705cc33d6067c8742fb84605dc33a1a3386330a565c452aa00",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        462
+      ],
+      "asr_text": [
+        "experience"
+      ],
+      "window": [
+        253.8,
+        254.44
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['experience']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            462
+          ],
+          "asr_text": [
+            "experience"
+          ],
+          "window": [
+            253.8,
+            254.44
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          250.3,
+          257.94
+        ],
+        "source_corresponding_phrase": "It is the experience of",
+        "decision": "原候选的['experience']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-253.80.json",
+        "evidence_sha256": "61e4113aa980ba27791a6b4612a3dc6bd9df5f4dc7ab6a0972772ccac611496b",
+        "model_texts": {
+          "Parakeet": "And what is synesthesia? It is the experience of a stimulus received by one sense organ.",
+          "Whisper": "And what is synesthesia? It is the experience of a stimulus received by one sense organ."
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        633
+      ],
+      "asr_text": [
+        "The"
+      ],
+      "window": [
+        331.16,
+        331.24
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['The']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            633
+          ],
+          "asr_text": [
+            "The"
+          ],
+          "window": [
+            331.16,
+            331.24
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          327.66,
+          334.74
+        ],
+        "source_corresponding_phrase": "Well, the test shows",
+        "decision": "原候选的['The']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-331.16.json",
+        "evidence_sha256": "af8427b0c36effe0264eac144ffc5c267f2d4a6f3469c1032f208497ccb67a92",
+        "model_texts": {
+          "Parakeet": "Wonder what the test intends to tell us. Well, the test shows that we cannot overlook the literal meaning.",
+          "Whisper": "what the test intends to tell us. Well, the test shows that we cannot overlook the literal mean [SOUND]"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        768
+      ],
+      "asr_text": [
+        "Well,"
+      ],
+      "window": [
+        400.6,
+        400.84
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['Well,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            768
+          ],
+          "asr_text": [
+            "Well,"
+          ],
+          "window": [
+            400.6,
+            400.84
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          397.1,
+          404.34
+        ],
+        "source_corresponding_phrase": "Well, I’d say",
+        "decision": "原候选的['Well,']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-400.60.json",
+        "evidence_sha256": "9d63bd28b1d6efc024bd60a0393d318a7ec508d98ea8cfa5ff1f7fb6c5d9b9b1",
+        "model_texts": {
+          "Parakeet": "And in what ways does metaphor matter? Well, I'd say metaphor matters first of all because it creates",
+          "Whisper": "and in what ways does metaphor matter? Well, I'd say metaphor matters first of all because it creates"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 66,
+          "char": [
+            76,
+            79
+          ],
+          "text": "Dow"
+        }
+      ],
+      "asr_indices": [
+        822
+      ],
+      "asr_text": [
+        "DAO."
+      ],
+      "window": [
+        425.72,
+        426.2
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "逐句语义已读；最终原文字符在实际词锚/已核完整声段中覆盖；保留具体局部人名/拼写及真实口述异文证据，未为配ASR改写。",
+      "human_decisions": [],
+      "external_anchors": [
+        {
+          "sentence": 66,
+          "en": "Object metaphors describe price movements as non-living things, as in, “The Dow fell like a brick.”",
+          "source_text": "Dow",
+          "actual_ASR_rows": [
+            [
+              "DAO.",
+              425.72,
+              426.2
+            ]
+          ],
+          "evidence_ref": "预处理/2023/识别.json",
+          "evidence_sha256": "e5d58519afb6a33c89e4a5a9497bea79535abbe15ed333d9a902a914540e23a1",
+          "disposition": "完整真实声段共享；没有估计词内边界"
+        }
+      ],
+      "whole_events": []
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        947
+      ],
+      "asr_text": [
+        "What"
+      ],
+      "window": [
+        488.74,
+        488.82
+      ],
+      "decision": "machine_candidate_unreviewed",
+      "audit_disposition": "原候选的['What']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+      "adjudication": {
+        "year": 2023,
+        "canonical_source_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+        "original_ASR_candidate": {
+          "kind": "insert",
+          "source": [],
+          "asr_indices": [
+            947
+          ],
+          "asr_text": [
+            "What"
+          ],
+          "window": [
+            488.76,
+            488.84
+          ],
+          "decision": "machine_candidate_unreviewed"
+        },
+        "analysis_window": [
+          485.26,
+          492.34
+        ],
+        "source_corresponding_phrase": "What should they do",
+        "decision": "原候选的['What']为分块/局部合并重复或同一声段残词；两独立局部模型在目标处均仅出现对应短语一次。保留当前纸源对应正文，不补进假重读；原ASR/原音均不修改。",
+        "disposition": "ASR_duplicate_or_partial_word_not_source_omission",
+        "evidence_ref": "核验/剩余源审核候选/局部音证/2023-extra-488.76.json",
+        "evidence_sha256": "80c3e5b7f918e7aed0742997df92b0d73bd579670ecb3de67bed54a2993f8ddc",
+        "model_texts": {
+          "Parakeet": "For help, and they had to make a decision. What should they do? Intervene?",
+          "Whisper": "for help and they had to make a decision. What should they do? Intervene, a piece. (buzzing)"
+        },
+        "scope": "只裁决该ASR额外段；窗口两端其他词的模型转写不据此改正文或宣称逐字正确。"
+      }
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 48,
+          "char": [
+            59,
+            64
+          ],
+          "text": "color"
+        }
+      ],
+      "asr_indices": [
+        573
+      ],
+      "asr_text": [
+        "colour"
+      ],
+      "window": [
+        307.75,
+        308.15
+      ],
+      "canonical": [
+        "color"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 48,
+          "char": [
+            94,
+            99
+          ],
+          "text": "color"
+        }
+      ],
+      "asr_indices": [
+        581
+      ],
+      "asr_text": [
+        "colour"
+      ],
+      "window": [
+        310.51,
+        310.91
+      ],
+      "canonical": [
+        "color"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 49,
+          "char": [
+            28,
+            34
+          ],
+          "text": "you’ll"
+        }
+      ],
+      "asr_indices": [
+        589,
+        590
+      ],
+      "asr_text": [
+        "you",
+        "will"
+      ],
+      "window": [
+        314.51,
+        314.75
+      ],
+      "canonical": [
+        "will",
+        "you"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 49,
+          "char": [
+            101,
+            106
+          ],
+          "text": "color"
+        }
+      ],
+      "asr_indices": [
+        602
+      ],
+      "asr_text": [
+        "colour"
+      ],
+      "window": [
+        319.12,
+        319.52
+      ],
+      "canonical": [
+        "color"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 49,
+          "char": [
+            135,
+            142
+          ],
+          "text": "colored"
+        }
+      ],
+      "asr_indices": [
+        608
+      ],
+      "asr_text": [
+        "coloured"
+      ],
+      "window": [
+        321.52,
+        322.08
+      ],
+      "canonical": [
+        "colored"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2023-A",
+          "sentence": 87,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1130
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        581.7,
+        582.26
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review",
+      "audit_disposition": "已读中文/语境与原文；采用工具严格正字法/数词/缩写等价或明确局部人工完整词锚，不作否定/词形模糊合并。"
+    }
+  ],
+  "source_references": [
+    {
+      "path": "来源/2023/解析.txt",
+      "original_pdf": "B1专八历年真题+听力+解析/01.历年真题+解析/2023年专八真题+音频+解析/2023年英语专八真题解析.pdf",
+      "sha256": "a8877a6f8ab45ce65eba73648a22213b3ead25ef5c23b76424afcd1abe4939a7",
+      "pdf_pages": [
+        1,
+        2
+      ],
+      "verified_against": "原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明"
+    }
+  ],
+  "source_variant_dispositions": {
+    "recorded_original_audio_checks": [
+      "fossil metaphor：扫描与两路ASR一致，保留真实表达，不按常识重写before。"
+    ],
+    "recorded_body_audio_corrections": [
+      {
+        "year": 2023,
+        "unit": "2023-A",
+        "case": "and_in",
+        "old_en": "It is the experience of a stimulus received by one sense organ and another sense organ as well, for example, like colored hearing.",
+        "new_en": "It is the experience of a stimulus received by one sense organ in another sense organ as well, for example, like colored hearing.",
+        "new_zh": "联觉是指一种感觉器官接收到的刺激，也在另一种感觉器官中产生感受的体验，例如色听联觉。",
+        "evidence": {
+          "file": "核验/正文异文复核/2023/and_in.json",
+          "sha256": "99e4cc50092f784013dcc1d36c9f2484cdc5b6d51c0bcf2dfc495cec794d3d18",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+          "windows": [
+            [
+              254,
+              262
+            ],
+            [
+              252.65,
+              263.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "Experience of a stimulus received by one sense organ in another sense organ as well. For example, like",
+            "whisper": "It is the experience of a stimulus received by one sense organ in another sense organ as well. For example, like colored hearing."
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      },
+      {
+        "year": 2023,
+        "unit": "2023-A",
+        "case": "when_where",
+        "old_en": "If you’re like most people, you’ll experience a moment of cognitive dissonance when the name of the color is printed in a differently colored ink.",
+        "new_en": "If you’re like most people, you’ll experience a moment of cognitive dissonance where the name of the color is printed in a differently colored ink.",
+        "new_zh": "如果你和大多数人一样，面对用另一种颜色墨水印出的颜色名称时，会经历片刻的认知失调。",
+        "evidence": {
+          "file": "核验/正文异文复核/2023/when_where.json",
+          "sha256": "c4d98ccc3f605a34e8d6504e6a2b8bfa4dbb689aabdf9006976bfd5be6ad8c74",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "canonical_sha256": "5456ebb4af7760ba0e1a3daa51c4bf334f7e585f10ad325b18c979b9867c19ce",
+          "windows": [
+            [
+              314,
+              323
+            ],
+            [
+              312.65,
+              324.1
+            ]
+          ],
+          "texts": {
+            "parakeet": "For example, you will experience a moment of cognitive dissonance, where the name of the colour is printed in a differently coloured ink.",
+            "whisper": "If you like most people, you will experience a moment of cognitive dissonance where the name of the colour is printed in a differently coloured ink. For example, the word \"f- [static] [static] [static] [static] [static]"
+          }
+        },
+        "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+      }
+    ],
+    "current_binding_proof_note": "历史修订记录原样保留；本次真实词锚/整句例外的有效证据引用及SHA逐项在本候选另核，不将旧修订时SHA冒称当前文件SHA。"
+  },
+  "bilingual_vocabulary_review": {
+    "all_sentences_and_vocabulary_read": true,
+    "review_total_scope": "423句逐句审阅，包括语境词性/lemma与释义、否定/条件、数值/计量单位、列举和插入语；不独立重推答案。",
+    "specific_semantic_checks": [
+      "太阳为隐喻源域、朱丽叶为目标域，联觉/认知失调、字面/隐喻真假对比对应。",
+      "施事与物体隐喻、二战/越战/中性描述三个条件以及培根引文的三类读法顺序正确。"
+    ],
+    "known_corrections": "2023-A两处句末逗号句点与look→看起来，见2023-A-三处显示译意修复.json；其他未发现明确错义。",
+    "all_sp_valid_and_nonoverlapping": true,
+    "names_exact": true
+  },
+  "manual_plan_checks": [
+    {
+      "en": "Before we call it a day, I'd like to walk you through a famous quote from Francis Bacon: “Some books are to be tasted, others swallowed, and some few to be chewed and digested.”",
+      "at": "“Some books are to",
+      "zh": [
+        "结束之前，我想带大家细读弗朗西斯·培根的一句名言：",
+        "“书有可浅尝者，有可吞食者，少数则须咀嚼消化。”"
+      ],
+      "exact_chinese_rejoin": true,
+      "each_part_has_actual_vocabulary": true,
+      "first_words": [
+        {
+          "at": "“Some books are to",
+          "actual_word": "Some",
+          "actual_word_start": 604.24,
+          "actual_word_end": 604.56,
+          "disposition": "仅真实首词存在性；实际静音guard与PNG另审"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "file": "核验/补词锚/2023/已核局部ASR核验.json",
+      "sha256": "9bb90520f20f2a4be673f784d444077d88d5ba5b3da434651f0a07b3e821d407"
+    },
+    {
+      "file": "核验/正文异文复核/2023/metaphor.json",
+      "sha256": "d914d0205e481c705cc33d6067c8742fb84605dc33a1a3386330a565c452aa00"
+    },
+    {
+      "file": "预处理/2023/识别.json",
+      "sha256": "e5d58519afb6a33c89e4a5a9497bea79535abbe15ed333d9a902a914540e23a1"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-155.16.json",
+      "sha256": "5ca994f2fea95c8cc7dd1d647ef549b6e2f5ea6588b7468eb777302363c74bf7"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-253.80.json",
+      "sha256": "61e4113aa980ba27791a6b4612a3dc6bd9df5f4dc7ab6a0972772ccac611496b"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-331.16.json",
+      "sha256": "af8427b0c36effe0264eac144ffc5c267f2d4a6f3469c1032f208497ccb67a92"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-400.60.json",
+      "sha256": "9d63bd28b1d6efc024bd60a0393d318a7ec508d98ea8cfa5ff1f7fb6c5d9b9b1"
+    },
+    {
+      "file": "核验/剩余源审核候选/局部音证/2023-extra-488.76.json",
+      "sha256": "80c3e5b7f918e7aed0742997df92b0d73bd579670ecb3de67bed54a2993f8ddc"
+    },
+    {
+      "file": "核验/正文清理/2023-人工词锚.json",
+      "sha256": "28b5dffb998c49c578677c3ca60d9ed0833666a38d8098de699ad5d0c09da121"
+    },
+    {
+      "file": "核验/剩余源审核候选/原音及材料引用复核.json",
+      "sha256": "5906de1c5d3c86667932272dfaf3b5bc1038f01e7e04e2cbfb7aec3248dcd194"
+    },
+    {
+      "file": "核验/剩余源审核候选/额外ASR逐项裁决.json",
+      "sha256": "d300437c9fdc79bbed4ecd56212ac82e50ec6e1a9baf032603a2a08c5df0f4dc"
+    },
+    {
+      "file": "核验/第二批人工语义分屏/分屏平表.json",
+      "sha256": "d21d8fe10e74f01f16451652d8edd85292eb675ca08cbf471cd7684a4db3630e"
+    }
+  ],
+  "next": "root阅读本篇具体差异/例外后写源审核及registry；PNG和实际音频换屏guard另审。"
+}

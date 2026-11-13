@@ -9582,8 +9582,115 @@
   "alignment_tool_version": "1.0",
   "review": {
     "status": "draft",
-    "machine_only": true,
-    "source": "核验/原文对齐/2013/对齐报告.json",
-    "content_sha256": "5292389013499d063d277be43f5e9e4d98dbd8c540243d3bc9f2efc36c51ffb7"
+    "source": "译注刷新使旧审校摘要失效；须重新审核现注释/画面",
+    "content_sha256": "05ac553ff66d6ef34591464e2ae083046f332ea2ad8028ed50c138c1c8d03548"
+  },
+  "splits": {
+    "17": {
+      "at": "more and more people",
+      "zh": [
+        "当人们获得更多接受高等教育或培训的机会时，流动性也随之增强，",
+        "越来越多的人因此能够选择自己感兴趣的领域。"
+      ]
+    },
+    "47": {
+      "at": "that included salary.",
+      "zh": [
+        "我觉得结果最引人注目的地方在于，劳动者认为工作重要且有意义，远比其他任何特点都重要，",
+        "其中也包括工资。"
+      ]
+    },
+    "48": {
+      "at": "and it asked the",
+      "zh": [
+        "下面再介绍另一项调查。这项调查在一年后，也就是一九九一年开展，",
+        "要求受访者考虑某些工作特点对自己究竟有多重要。"
+      ]
+    },
+    "49": {
+      "at": "in this poll they",
+      "zh": [
+        "这项调查的类型不同：第一项调查要求受访者五选一，",
+        "而这项调查则要求他们逐项分别作答。"
+      ]
+    }
+  },
+  "manual_split_anchor_check": {
+    "all_cut_starts_have_real_word_anchors": true,
+    "cuts": [
+      {
+        "sentence": 17,
+        "at": "more and more people",
+        "real_word_anchor": true,
+        "char": 125,
+        "start": 800.54,
+        "end": 800.62
+      },
+      {
+        "sentence": 47,
+        "at": "that included salary.",
+        "real_word_anchor": true,
+        "char": 159,
+        "start": 943.16,
+        "end": 943.24
+      },
+      {
+        "sentence": 48,
+        "at": "and it asked the",
+        "real_word_anchor": true,
+        "char": 98,
+        "start": 953.74,
+        "end": 953.82
+      },
+      {
+        "sentence": 49,
+        "at": "in this poll they",
+        "real_word_anchor": true,
+        "char": 120,
+        "start": 969.08,
+        "end": 969.16
+      }
+    ],
+    "note": "仅据实际word_alignment检查，不为缺首词跳到后词；最终仍须编译音频/停顿及在线图审。"
+  },
+  "manual_split_projection": {
+    "rule": "母稿manual_splits完整EN唯一映射；舍弃旧ordinal差异",
+    "previous_explicit_splits": {},
+    "current_keys": [
+      "17",
+      "47",
+      "48",
+      "49"
+    ]
+  },
+  "annotation_refresh": {
+    "mother": "译注草稿/2013.json",
+    "mother_sha256": "d653c0676700e3f6a3d5cf226a6e17be138e2fb739a4c96785693e015c922940",
+    "english_sequence_sha256": "6943dd46926d07c74c085fe5230bcb834d51057ae0c949ced48b931516ed43d2",
+    "timing_fingerprint_unchanged": "7eda8f921754217727ab3d2c23747ca0193acc317400acdf5dd1f9bc12182c63",
+    "previous_content_sha256": "3055e9224b45cce9830bf9c83c4890b08d8f374d0d496c3822be7c34df00a1ec",
+    "manual_splits_by_exact_EN": [
+      {
+        "sentence": 17,
+        "en": "With greater mobility, the mobility that is offered when people have greater opportunities for higher education or training, more and more people are able to choose the fields that interest them.",
+        "at": "more and more people"
+      },
+      {
+        "sentence": 47,
+        "en": "I think what’s striking about the results is that by far workers valued important and meaningful work as more important than any of the other characteristics, that included salary.",
+        "at": "that included salary."
+      },
+      {
+        "sentence": 48,
+        "en": "Yeah. Now I’m going to tell you about another poll, and this poll was taken a year later in 1991, and it asked the respondents to reflect on how important certain job characteristics were in their work.",
+        "at": "and it asked the"
+      },
+      {
+        "sentence": 49,
+        "en": "And this is a different type of poll because whereas in the first poll, respondents had to choose only one out of five, in this poll they wanted the respondents to react to each item separately.",
+        "at": "in this poll they"
+      }
+    ],
+    "note": "只刷新英文完全相同的译注/标题/整名；所有原音时刻、窗口和ASR绑定逐字保留。"
   }
 }
