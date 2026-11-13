@@ -58,23 +58,28 @@ def entries(path, aliases, expected):
     return found
 
 
-def rewrite(src, dst, aliases, expected):
+def rewrite(src, dst, aliases, expected, extra=None, sort_key=None):
+    extra = extra or {}
     out_names = []
     with zipfile.ZipFile(src) as old, zipfile.ZipFile(dst, 'w', zipfile.ZIP_STORED, allowZip64=True) as new:
-        for info in old.infolist():
-            if info.is_dir():
-                continue
-            p = PurePosixPath(info.filename)
-            sid = aliases[p.name]
+        infos = {aliases[PurePosixPath(i.filename).name]: i for i in old.infolist() if not i.is_dir()}
+        ids = list(infos) + list(extra)
+        assert len(ids) == len(set(ids)), '补齐视频与已有视频重复'
+        if sort_key:
+            ids.sort(key=sort_key)
+        base = PurePosixPath(next(iter(infos.values())).filename).parent
+        for sid in ids:
+            info = infos.get(sid)
             row = expected[sid]
-            name = str(p.parent / row['label'])
+            name = str(base / row['label'])
             assert '视频版' not in name and '高考英语真题' not in name
-            zi = zipfile.ZipInfo(name, info.date_time)
+            zi = zipfile.ZipInfo(name, info.date_time if info else (2026, 11, 5, 0, 0, 0))
             zi.compress_type = zipfile.ZIP_STORED
             zi.external_attr = 0o644 << 16
             h = hashlib.sha256()
             size = 0
-            with old.open(info) as r, new.open(zi, 'w', force_zip64=True) as w:
+            source = Path(extra[sid]).open('rb') if sid in extra else old.open(info)
+            with source as r, new.open(zi, 'w', force_zip64=True) as w:
                 for b in iter(lambda: r.read(1 << 20), b''):
                     h.update(b)
                     size += len(b)
@@ -139,12 +144,27 @@ def main(kind, out):
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as ex:
         parts = list(ex.map(download, zips))
     all_ids = [sid for part in parts for sid in part]
-    assert len(all_ids) == 50 and set(all_ids) == set(expected), '既有ZIP缺套或重复'
+    assert len(all_ids) == len(set(all_ids)), '既有ZIP重复套号'
+    missing = sorted(set(expected) - set(all_ids), key=m.rank)
+    extra = {}
+    if missing:
+        print(tag, '既有ZIP遗漏：', missing, '；直接补入同Release已核验MP4资产', flush=True)
+        extra_dir = out / 'extra-passed'
+        extra_dir.mkdir(exist_ok=True)
+        for sid in missing:
+            row = expected[sid]
+            run(['gh', 'release', 'download', tag, '-R', REPO, '-p', row['asset'], '-D', str(extra_dir), '--clobber'])
+            video = extra_dir / row['asset']
+            assert video.stat().st_size == row['bytes'] and sha(video) == row['sha256'], sid + ' 补齐资产不符'
+            extra[sid] = video
+        all_ids += missing
+    assert len(all_ids) == 50 and set(all_ids) == set(expected), '完整50套未齐全'
     print(tag, '已取回50个既有成品的压缩包；开始只改包内名字', flush=True)
     summaries = []
-    for zname in zips:
+    for part_index, zname in enumerate(zips):
         dest = out / zname
-        file_names = rewrite(old_dir / zname, dest, aliases, expected)
+        additions = extra if part_index == len(zips) - 1 else {}
+        file_names = rewrite(old_dir / zname, dest, aliases, expected, additions, m.rank)
         (old_dir / zname).unlink()
         digest = sha(dest)
         if assets[zname].get('digest') != 'sha256:' + digest:
@@ -164,12 +184,16 @@ def main(kind, out):
     listing.write_text('资产名\t中文文件名\tsha256\t字节数\n' + ''.join(
         f"{r['asset']}\t{r['label']}\t{r['sha256']}\t{r['bytes']}\n" for r in rows), encoding='utf-8')
     run(['gh', 'release', 'upload', tag, '-R', REPO, str(listing), '--clobber'])
-    body = before.get('body') or ''
-    for r in rows:
-        for old in m.accepted_labels(r['套']):
-            body = body.replace(old, r['label'])
-    body = body.replace('视频版真题考试', '考试').replace('视频版考试', '考试').replace('高考英语真题', '').replace('视频版', '')
-    body = body.replace('官方解析 × 独立做题一致；没有解析答案的套是两次独立做题一致。', '上传解析与独立做题互核，分歧保留裁定记录。')
+    body = ('考试' if kind == 'exam' else '原文精读') + '，共50个视频（2019—2026）。\n\n'
+    body += '文件名统一只保留年份、卷名、场次及类型。下载ZIP可获得中文文件名；视频内容与已有成品一致。\n\n'
+    body += '；'.join(f"{z['zip']}：{z['files']}个" for z in summaries) + '。\n\n'
+    if kind == 'exam':
+        body += '参考答案沿用既有视频，来源分歧保留原有裁定记录。\n\n'
+        for paragraph in (before.get('body') or '').split('\n\n'):
+            if ('第10题' in paragraph or '第3题' in paragraph) and any(x in paragraph for x in ('分歧', '更正', '复核')):
+                body += paragraph.replace('正在更正', '另有更正记录') + '\n\n'
+    body += '| 资产名 | 中文文件名 | 大小 |\n|---|---|---|\n'
+    body += ''.join(f"| {r['asset']} | {r['label']} | {r['bytes']/1e6:.0f} MB |\n" for r in rows)
     notes = out / 'notes.md'
     notes.write_text(body, encoding='utf-8')
     title = '高考听力 ' + ('考试' if kind == 'exam' else '原文精读')
@@ -210,6 +234,14 @@ def selftest():
             assert set(entries(t / 'old.zip', aliases, expected)) == set(ids)
             good = rewrite(t / 'old.zip', t / 'new.zip', aliases, expected)
             check_download(t / 'new.zip', good, aliases, expected)
+            with zipfile.ZipFile(t / 'partial.zip', 'w', zipfile.ZIP_STORED) as z:
+                for sid in ids[:-1]:
+                    z.writestr('既有目录/' + m.previous_label(sid), expected[sid]['data'])
+            (t / 'extra.mp4').write_bytes(expected[ids[-1]]['data'])
+            full = rewrite(t / 'partial.zip', t / 'completed.zip', aliases, expected,
+                           {ids[-1]: t / 'extra.mp4'}, m.rank)
+            check_download(t / 'completed.zip', full, aliases, expected)
+            assert len(full) == 3
             expected[ids[0]]['sha256'] = '0' * 64
             try:
                 rewrite(t / 'old.zip', t / 'bad.zip', aliases, expected)

@@ -6,11 +6,11 @@ on:
 permissions:
   contents: write
   actions: read
-concurrency:
-  group: gaokao-video-name-publish
-  cancel-in-progress: false
 jobs:
   rename:
+    concurrency:
+      group: gaokao-video-name-${{ matrix.kind }}
+      cancel-in-progress: false
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     strategy:
@@ -27,13 +27,29 @@ jobs:
             /高考听力/套.json
             /高考听力/tools/命名.py
             /高考听力/精读/tools/命名.py
+      - name: 只执行这次指定的类别，通过的类别不重复打包
+        id: select
+        env:
+          THIS_KIND: ${{ matrix.kind }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          wanted=Path('.github/gaokao-video-names.txt').read_text().strip().splitlines()[0]
+          yes=wanted not in ('exam','text') or wanted==os.environ['THIS_KIND']
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('selected='+str(yes).lower()+'\n')
+          PY
       - name: 命名与复用成品正反例
+        if: steps.select.outputs.selected == 'true'
         run: python3 .github/rename-gaokao-releases.py --selftest
       - name: 复用既有Release视频，只改名称，逐包回下载校验
+        if: steps.select.outputs.selected == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 .github/rename-gaokao-releases.py --kind '${{ matrix.kind }}' --out rename-out
       - name: 保存新名称和视频字节不变的核验记录
+        if: steps.select.outputs.selected == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: gaokao-short-names-${{ matrix.kind }}
