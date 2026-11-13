@@ -86,7 +86,7 @@ jobs:
         if: matrix.item.kind == 'intensive'
         run: |
           set -euo pipefail
-          /opt/ttsenv/bin/pip install -q --disable-pip-version-check spacy==3.8.7 thinc==8.3.6 preshed==3.0.9 cymem==2.0.11 murmurhash==1.0.12
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check spacy==3.8.7 thinc==8.3.6 preshed==3.0.9 cymem==2.0.11 murmurhash==1.0.12 typer==0.15.4 click==8.1.8
           /opt/ttsenv/bin/pip install -q --disable-pip-version-check --no-deps https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
           /opt/ttsenv/bin/python -c "import spacy; spacy.load('en_core_web_sm')('It is ready.'); print('分屏NLP模型加载通过')"
       - name: 同款原卷字体与正式输入门禁
