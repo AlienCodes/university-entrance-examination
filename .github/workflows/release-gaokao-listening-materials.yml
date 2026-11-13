@@ -35,8 +35,32 @@ jobs:
           set -euo pipefail
           tag=$(head -1 .github/gaokao-handout-release.txt | tr -d '[:space:]')
           test "$tag" = gaokao-listening-materials
+          mode=$(sed -n '2p' .github/gaokao-handout-release.txt | tr -d '[:space:]')
           if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" /tmp/GAOKAO-listening-materials.zip /tmp/GAOKAO-listening-shop.zip /tmp/SHA256SUMS --clobber
+            if [ "$mode" = shop ]; then
+              gh api "repos/$GH_REPO/releases/tags/$tag" > /tmp/gaokao-release-before.json
+              python3 - <<'PY'
+          import json, hashlib
+          from pathlib import Path
+          r=json.loads(Path('/tmp/gaokao-release-before.json').read_text())
+          asset=next(a for a in r['assets'] if a['name']=='GAOKAO-listening-materials.zip')
+          expected='sha256:'+hashlib.sha256(Path('/tmp/GAOKAO-listening-materials.zip').read_bytes()).hexdigest()
+          assert asset['digest']==expected, '仅更新商品图时，学习资料包必须与既有版本完全相同'
+          print('保留已发布的学习资料包，资产ID：',asset['id'])
+          PY
+              gh release upload "$tag" /tmp/GAOKAO-listening-shop.zip /tmp/SHA256SUMS --clobber
+              gh api "repos/$GH_REPO/releases/tags/$tag" > /tmp/gaokao-release-after.json
+              python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('/tmp/gaokao-release-before.json').read_text())
+          b=json.loads(Path('/tmp/gaokao-release-after.json').read_text())
+          pick=lambda r:next((x['id'],x['size'],x['digest']) for x in r['assets'] if x['name']=='GAOKAO-listening-materials.zip')
+          assert pick(a)==pick(b), '学习资料包资产发生变化'
+          PY
+            else
+              gh release upload "$tag" /tmp/GAOKAO-listening-materials.zip /tmp/GAOKAO-listening-shop.zip /tmp/SHA256SUMS --clobber
+            fi
             gh release edit "$tag" --title '高考英语听力电子资料与B站小店素材' --notes-file 高考听力/讲义/发布说明.md
           else
             gh release create "$tag" /tmp/GAOKAO-listening-materials.zip /tmp/GAOKAO-listening-shop.zip /tmp/SHA256SUMS --target "$GITHUB_REF_NAME" --title '高考英语听力电子资料与B站小店素材' --notes-file 高考听力/讲义/发布说明.md

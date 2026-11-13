@@ -50,7 +50,7 @@ def materials():
 def shop():
     source = D / '商品图'
     images = sorted((source / '成品').glob('*.png'))
-    assert len(images) == 9, f'商品图应为9张，实际{len(images)}'
+    assert len(images) == 11, f'商品图应为11张，实际{len(images)}'
     from struct import unpack
     for image in images:
         b = image.read_bytes()
@@ -58,13 +58,21 @@ def shop():
         w, h = unpack('>II', b[16:24])
         assert w == h and w >= 1000 and len(b) <= 5*1024*1024, (image.name, w, h, len(b))
     proof = json.loads((source / '图文核对.json').read_text())
-    assert len(proof['images']) == 9
+    assert len(proof['images']) == 11 and proof['pdf_source_count'] == 8
+    manifest = json.loads((D / '成品/文件清单与核验.json').read_text())
+    assert {r['key'] for r in proof['pdf_sources']} == set(manifest['files']), '八份PDF都必须展示真实内页'
+    for row in proof['pdf_sources']:
+        book = manifest['files'][row['key']]
+        assert row['pdf'] == book['file'] and row['pdf_sha256'] == book['sha256']
+        for image_field, digest_field in [('full_png', 'full_sha256'), ('detail_png', 'detail_sha256')]:
+            image_path = (source / row[image_field]).resolve()
+            assert image_path.is_relative_to(source.resolve()) and sha(image_path) == row[digest_field], '真实PDF截图缺失或已变'
     assert {x['file'] for x in proof['images']} == {x.name for x in images}
     for row in proof['images']:
         assert sha(source / '成品' / row['file']) == row['sha256'] and row['reviewed'] is True
     files = [(f'小店上传素材/商品图/{p.name}', p) for p in images]
-    for p in sorted((source / '真实内页').glob('*.png')):
-        files.append((f'小店上传素材/真实PDF样图/{p.name}', p))
+    for p in sorted((source / '真实内页').rglob('*.png')):
+        files.append((f'小店上传素材/真实PDF样图/{p.relative_to(source / "真实内页").as_posix()}', p))
     for name in ['商品标题.txt', '商品简介.txt', '上传顺序与填写说明.txt', '图文核对.json']:
         files.append((f'小店上传素材/{name}', source / name))
     sample = source / '真实内页预览.pdf'
