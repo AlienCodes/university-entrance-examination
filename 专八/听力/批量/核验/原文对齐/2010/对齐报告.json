@@ -4,7 +4,7 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2010.json",
-    "draft_sha256": "a0878fbb5aab93c53a38fb666d801911264652e1a41ebcfe6866a4abf4769776",
+    "draft_sha256": "a3fef7e4c0ea34fd92f74ebff31474b618fba34c8d9541b64a7ca39f6b328167",
     "asr": "核验/原文对齐/2010/含说明识别.json",
     "asr_sha256": "6911e3d45f2e7578155f0ce288e3dab8e422c884e9f1e917512cf7e9f74a69a1",
     "input_asr": "核验/补词锚/2010/优选识别.json",
@@ -1019,7 +1019,22 @@
   ],
   "filler_acoustic_evidence": [],
   "reviewed_whole_audio_anchors": [],
-  "reviewed_nonverbal_events": [],
+  "reviewed_nonverbal_events": [
+    {
+      "unit": "2010-B1",
+      "en": "Um, let’s look at two states, California and Maine.",
+      "start": 1073.38,
+      "end": 1078.65,
+      "nonverbal": false,
+      "whole_sentence_audio_verified": true,
+      "word_alignment_policy": "retain_actual_ASR_only",
+      "evidence_ref": "核验/2010—2015整句声学证据/2010-B1-42.json",
+      "evidence_sha256": "2dce1ab664c08da1fe47db0394e992e6c46f9a12e83f2251d795596931c11d72",
+      "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+      "manifest": "核验/正文清理/2010-整句声学采纳.json",
+      "manifest_sha256": "beb162a2eb1dff7664fb43f417cddb503c072075864a3a31a00e542b36bc738f"
+    }
+  ],
   "ASR_provenance": {
     "file": "核验/补词锚/2010/优选ASR核验.json",
     "sha256": "f1c8555082f19baaf4ce0d8654cdb039dfb4ec808c69a19c2fa935596e4a544e",
@@ -1040,7 +1055,8 @@
     "literal_complete": false,
     "source_lexical_lexemes": 2266,
     "external_reviewed_ASR_lexemes": 0,
-    "nonverbal_not_word_lexemes": 0
+    "nonverbal_not_word_lexemes": 0,
+    "all_sentence_boundaries_resolved": true
   },
   "differences": [
     {
@@ -3399,6 +3415,7 @@
       "missing_source_lexemes": 2,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 2,
       "audio_window": [
         13.925,
@@ -3407,17 +3424,21 @@
     },
     {
       "id": "2010-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2010/未导出单元/2010-B1.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2010-B1.json",
       "sentences": 52,
       "source_lexemes": 726,
       "missing_source_lexemes": 5,
-      "missing_boundary_sentences": [
+      "missing_boundary_sentences": [],
+      "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [
         42
       ],
-      "acoustic_filler_sentences": [],
       "rerecognition_window_count": 4,
-      "audio_window": null
+      "audio_window": [
+        781.7875,
+        1210.73
+      ]
     },
     {
       "id": "2010-B2",
@@ -3428,6 +3449,7 @@
       "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 0,
       "audio_window": [
         1219.0975,

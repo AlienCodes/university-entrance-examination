@@ -4,7 +4,7 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2011.json",
-    "draft_sha256": "2a8a904eeb9af5284acf7de7f8ac30ab57619dfeb8a5ad96ffb4bbd556e304b2",
+    "draft_sha256": "725a3fa2de268e27add897c63c32f2340548105b3c025fc128c0fb449714cd6a",
     "asr": "核验/原文对齐/2011/含说明识别.json",
     "asr_sha256": "93873fc6a5a0d5e34e73d4926cb7ca9485665a447a11ba106c6746ababd42c8c",
     "input_asr": "核验/补词锚/2011/优选识别.json",
@@ -227,7 +227,7 @@
     },
     {
       "unit": "2011-B1",
-      "sentence": 34,
+      "sentence": 33,
       "window": [
         921.88,
         931.16
@@ -486,7 +486,7 @@
     },
     {
       "unit": "2011-B1",
-      "sentence": 59,
+      "sentence": 58,
       "window": [
         1028.6,
         1031.96
@@ -1062,7 +1062,34 @@
   ],
   "filler_acoustic_evidence": [],
   "reviewed_whole_audio_anchors": [],
-  "reviewed_nonverbal_events": [],
+  "reviewed_nonverbal_events": [
+    {
+      "unit": "2011-B1",
+      "en": "Urmm... first, there have been research studies.",
+      "start": 859.0,
+      "end": 862.51,
+      "nonverbal": false,
+      "whole_sentence_audio_verified": true,
+      "word_alignment_policy": "retain_actual_ASR_only",
+      "evidence_ref": "核验/2010—2015整句声学证据/2011-B1-21.json",
+      "evidence_sha256": "b3eb54936383b460afca4d56938919cf7cec13a87cfec8406b827ab592275bca",
+      "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+      "manifest": "核验/正文清理/2011-整句声学采纳.json",
+      "manifest_sha256": "f696054885d81f270c3d51d3477e3d7f7a6fd87d925cdbc39b6d7926f4b61556"
+    },
+    {
+      "unit": "2011-B1",
+      "en": "Mm...",
+      "start": 998.25,
+      "end": 998.87,
+      "nonverbal": true,
+      "evidence_ref": "核验/2010—2015整句声学证据/2011-B1-50-已核整声响.json",
+      "evidence_sha256": "f3633a7069ba1e7970a6e515ad03b87409b141a53e5d56f6b31e1a85e7ea2a0c",
+      "decision": "源页此处独立Mm；虽两ASR忽略非词声，但44.1kHz双声道频谱在998.25—998.84清楚出现独立低频谐波与衰减鼻音，998.85后为底噪。保留998.25—998.87整个应声事件，不给Mm任何逐字时刻；前句ASR词尾估计与该声有0.13s交叠，在整声真实范围中如实保留。",
+      "manifest": "核验/正文清理/2011-整句声学采纳.json",
+      "manifest_sha256": "f696054885d81f270c3d51d3477e3d7f7a6fd87d925cdbc39b6d7926f4b61556"
+    }
+  ],
   "ASR_provenance": {
     "file": "核验/补词锚/2011/优选ASR核验.json",
     "sha256": "54f941924d17e6133dabe213fda81553dc1fddfcae2e3034f6b9520f8d5b83ad",
@@ -1071,9 +1098,9 @@
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
-    "source_lexemes": 2339,
+    "source_lexemes": 2338,
     "source_mapped": 2332,
-    "source_ratio": 0.9970072680632749,
+    "source_ratio": 0.9978605049208387,
     "asr_lexemes": 2335,
     "asr_mapped": 2328,
     "asr_ratio": 0.9970021413276231,
@@ -1081,9 +1108,10 @@
     "all_asr_mapped": false,
     "all_boundaries_anchored": false,
     "literal_complete": false,
-    "source_lexical_lexemes": 2339,
+    "source_lexical_lexemes": 2337,
     "external_reviewed_ASR_lexemes": 0,
-    "nonverbal_not_word_lexemes": 0
+    "nonverbal_not_word_lexemes": 1,
+    "all_sentence_boundaries_resolved": true
   },
   "differences": [
     {
@@ -1299,24 +1327,6 @@
       "decision": "machine_candidate_unreviewed"
     },
     {
-      "kind": "delete",
-      "source": [
-        {
-          "unit": "2011-B1",
-          "sentence": 28,
-          "char": [
-            0,
-            2
-          ],
-          "text": "Mm"
-        }
-      ],
-      "asr_indices": [],
-      "asr_text": [],
-      "window": null,
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
       "kind": "insert",
       "source": [],
       "asr_indices": [
@@ -1336,7 +1346,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 50,
+          "sentence": 49,
           "char": [
             0,
             2
@@ -1868,7 +1878,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 36,
+          "sentence": 35,
           "char": [
             0,
             2
@@ -1896,7 +1906,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 65,
+          "sentence": 64,
           "char": [
             9,
             10
@@ -1924,7 +1934,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 66,
+          "sentence": 65,
           "char": [
             9,
             10
@@ -1952,7 +1962,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 67,
+          "sentence": 66,
           "char": [
             9,
             10
@@ -1980,7 +1990,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 68,
+          "sentence": 67,
           "char": [
             9,
             10
@@ -2008,7 +2018,7 @@
       "source": [
         {
           "unit": "2011-B1",
-          "sentence": 69,
+          "sentence": 68,
           "char": [
             9,
             10
@@ -2672,63 +2682,6 @@
     {
       "unit": "2011-B1",
       "window": [
-        996.32,
-        1000.84
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 50,
-          "source_text": "Mm",
-          "source_chars": [
-            [
-              0,
-              2
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2011-B1",
-            "sentence": 49,
-            "text": "teaching",
-            "asr_indices": [
-              1642
-            ],
-            "asr_text": [
-              "teaching."
-            ],
-            "window": [
-              997.82,
-              998.38
-            ]
-          },
-          "right_anchor": {
-            "unit": "2011-B1",
-            "sentence": 51,
-            "text": "And",
-            "asr_indices": [
-              1643
-            ],
-            "asr_text": [
-              "And"
-            ],
-            "window": [
-              999.26,
-              999.34
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        50
-      ],
-      "duration": 4.52
-    },
-    {
-      "unit": "2011-B1",
-      "window": [
         856.92,
         861.76
       ],
@@ -2782,63 +2735,6 @@
         21
       ],
       "duration": 4.84
-    },
-    {
-      "unit": "2011-B1",
-      "window": [
-        887.92,
-        893.0
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 28,
-          "source_text": "Mm",
-          "source_chars": [
-            [
-              0,
-              2
-            ]
-          ],
-          "boundary_missing": true,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2011-B1",
-            "sentence": 27,
-            "text": "language",
-            "asr_indices": [
-              1385
-            ],
-            "asr_text": [
-              "language."
-            ],
-            "window": [
-              889.42,
-              890.94
-            ]
-          },
-          "right_anchor": {
-            "unit": "2011-B1",
-            "sentence": 29,
-            "text": "Another",
-            "asr_indices": [
-              1386
-            ],
-            "asr_text": [
-              "Another"
-            ],
-            "window": [
-              891.26,
-              891.5
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [
-        28
-      ],
-      "duration": 5.08
     },
     {
       "unit": "2011-B1",
@@ -3071,6 +2967,7 @@
       "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 0,
       "audio_window": [
         14.0775,
@@ -3079,19 +2976,21 @@
     },
     {
       "id": "2011-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2011/未导出单元/2011-B1.json",
-      "sentences": 69,
-      "source_lexemes": 739,
-      "missing_source_lexemes": 6,
-      "missing_boundary_sentences": [
-        21,
-        28,
-        50
-      ],
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2011-B1.json",
+      "sentences": 68,
+      "source_lexemes": 738,
+      "missing_source_lexemes": 4,
+      "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 6,
-      "audio_window": null
+      "reviewed_whole_sentence_events": [
+        21
+      ],
+      "rerecognition_window_count": 4,
+      "audio_window": [
+        731.3775,
+        1124.14
+      ]
     },
     {
       "id": "2011-B2",
@@ -3102,6 +3001,7 @@
       "missing_source_lexemes": 1,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 1,
       "audio_window": [
         1132.6375,

@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 
 FIELDS=('proper_name_audio_anchors','reviewed_word_audio_anchors','reviewed_phrase_audio_anchors','reviewed_interjection_audio_anchors')
-NONVERBAL={'ha','hah','haha','emm','mm','mmm','hmm','um','uh','ah','oh','eh','humming','laughter','laughing'}
+NONVERBAL={'ha','hah','haha','emm','mm','mmm','hmm','um','uh','ah','oh','eh','da','dah','humming','laughter','laughing'}
 
 
 def sha(path):
@@ -65,23 +65,38 @@ def apply(result, draft, prep, base, nonverbal_files=()):
         if not path.exists():continue
         obj=json.loads(path.read_text('utf-8'));assert obj['year']==draft['year'] and obj['canonical_source_sha256']==prep['canonical']['sha256']
         for event in obj['events']:
-            assert event.get('nonverbal') is True and event.get('decision','').strip()
+            assert event.get('decision','').strip()
+            is_nonverbal=event.get('nonverbal') is True
+            if not is_nonverbal:
+                assert event.get('whole_sentence_audio_verified') is True and event.get('word_alignment_policy')=='retain_actual_ASR_only','普通语音整句必须明确已核音文覆盖，禁止按整句分摊词时刻'
             rows=[r for r in result['rows'] if r['unit']==event['unit'] and r['sentence']['en']==event['en']]
             assert len(rows)==1,'非言语事件须以完整EN唯一匹配，不用旧ordinal'
-            row=rows[0];assert all(src[i].text.lower() in NONVERBAL for i in row['lexemes']),'普通实词不能伪装非言语事件免除词锚'
+            row=rows[0]
+            if is_nonverbal:assert all(src[i].text.lower() in NONVERBAL for i in row['lexemes']),'普通实词不能伪装非言语事件免除词锚'
+            else:
+                critical=[src[i].text for i in row['missing'] if re.search(r'\d',src[i].text) or src[i].text.lower() in ('no','not','never','cannot',"can't","isn't","aren't","don't","doesn't","didn't")]
+                if critical:assert event.get('critical_semantics_verified') is True and event.get('critical_evidence'),'关键否定/数值不能作为轻声功能词例外放过'
             ref=(base/event['evidence_ref']).resolve();assert ref.is_relative_to(base.resolve())
             assert sha(ref)==event['evidence_sha256'],'非言语声学证据SHA不符'
             lo,hi=event['start'],event['end'];assert 0<=lo<hi<=prep['canonical']['duration']
             pos=result['rows'].index(row)
             if pos and result['rows'][pos-1].get('anchor_window'):assert result['rows'][pos-1]['anchor_window'][1]<=lo+.15
             if pos+1<len(result['rows']) and result['rows'][pos+1].get('anchor_window'):assert hi<=result['rows'][pos+1]['anchor_window'][0]+.15
-            row['nonverbal_boundary']=[lo,hi];row['nonverbal_evidence']={**copy.deepcopy(event),'manifest':str(path.relative_to(base)),'manifest_sha256':sha(path)}
-            row['missing']=[];row['word_alignment']=[];nonverbal_ids.update(row['lexemes']);event_evidence.append(row['nonverbal_evidence'])
+            proof={**copy.deepcopy(event),'manifest':str(path.relative_to(base)),'manifest_sha256':sha(path)}
+            if is_nonverbal:
+                row['nonverbal_boundary']=[lo,hi];row['nonverbal_evidence']=proof
+                row['missing']=[];row['word_alignment']=[];nonverbal_ids.update(row['lexemes'])
+            else:
+                if row['word_alignment']:
+                    assert lo<=min(w['start'] for w in row['word_alignment'])+.15 and max(w['end'] for w in row['word_alignment'])<=hi+.15,'整句事件不得裁掉已有真实词锚'
+                row['reviewed_sentence_boundary']=[lo,hi];row['reviewed_sentence_evidence']=proof
+            event_evidence.append(proof)
     lexical=set(result['mapping'])|covered
     result['coverage'].update({'source_mapped':len(lexical-nonverbal_ids),'source_lexical_lexemes':len(src)-len(nonverbal_ids),
         'external_reviewed_ASR_lexemes':len(covered),'nonverbal_not_word_lexemes':len(nonverbal_ids),
-        'source_ratio':len(lexical-nonverbal_ids)/(len(src)-len(nonverbal_ids)),
+        'source_ratio':len(lexical-nonverbal_ids)/(len(src)-len(nonverbal_ids)) if len(src)>len(nonverbal_ids) else 1.,
         'all_source_mapped':len(lexical|nonverbal_ids)==len(src),
-        'all_boundaries_anchored':all(r['boundary_anchored'] or r.get('nonverbal_boundary') for r in result['rows'])})
+        'all_boundaries_anchored':all(r['boundary_anchored'] or r.get('nonverbal_boundary') for r in result['rows']),
+        'all_sentence_boundaries_resolved':all(r['boundary_anchored'] or r.get('nonverbal_boundary') or r.get('reviewed_sentence_boundary') for r in result['rows'])})
     if evidence or event_evidence:result['coverage']['literal_complete']=False
     return evidence,event_evidence

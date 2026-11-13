@@ -8,41 +8,11 @@
   ],
   "units": 15,
   "sentences": 911,
-  "checked_at_UTC": "2026-11-13T20:51:30.380240+00:00",
+  "checked_at_UTC": "2026-11-13T21:22:10.180012+00:00",
   "status": "15单元已重导；正文均具真实词锚；仍须总审及视频成品门禁批准",
   "stable_command": "python tools/原文对齐.py 2016 2017 2018 2019 2021 --prefer-local --acoustic-fillers --acoustic-window --body-decisions --source-root /workspace/tem8-input",
-  "remaining_source_lexemes": [
-    {
-      "unit": "2021-B1",
-      "sentence": 53,
-      "en": "Question 1. What is Maureen McLane according to the interviewer?",
-      "missing": [
-        {
-          "text": "McLane",
-          "char": [
-            28,
-            34
-          ]
-        }
-      ],
-      "role": "question"
-    },
-    {
-      "unit": "2021-B2",
-      "sentence": 43,
-      "en": "Question 6. What did Maureen think about socializing with writers?",
-      "missing": [
-        {
-          "text": "Maureen",
-          "char": [
-            21,
-            28
-          ]
-        }
-      ],
-      "role": "question"
-    }
-  ],
+  "question_extra_decision_for_2021": "--decisions 核验/念题词锚/2021-专名人工词锚.json",
+  "remaining_source_lexemes": [],
   "checks": [
     {
       "unit": "2016-A",
@@ -242,7 +212,7 @@
     {
       "unit": "2021-B1",
       "mother_sha256": "0111aaa17b3ac39d27af143d25ce9553de79cceb45ca9cca6dabfe7515f0e431",
-      "export_sha256": "ca3cd83d36eea16ebf26efda47cc70b9615ac13003192729f59f9ab7b55229bd",
+      "export_sha256": "9be3f0e69c09fa9d5ef0250914a5e0a8d4e1726bb34bfd040320aebf2b1368ec",
       "sentences": 57,
       "vocabulary_entries": 61,
       "mother_export_all_source_fields_equal": true,
@@ -251,29 +221,13 @@
       "all_body_source_lexemes_have_true_anchors": true,
       "all_sentence_boundaries_anchored": true,
       "nonverbal_events": [],
-      "question_missing_only": [
-        {
-          "unit": "2021-B1",
-          "sentence": 53,
-          "en": "Question 1. What is Maureen McLane according to the interviewer?",
-          "missing": [
-            {
-              "text": "McLane",
-              "char": [
-                28,
-                34
-              ]
-            }
-          ],
-          "role": "question"
-        }
-      ],
+      "question_missing_only": [],
       "review_status": "draft"
     },
     {
       "unit": "2021-B2",
       "mother_sha256": "0111aaa17b3ac39d27af143d25ce9553de79cceb45ca9cca6dabfe7515f0e431",
-      "export_sha256": "b4890e0665b4f7b6bbe2212b5461b143d7750556664fe4adafdb9ffe3db38dd1",
+      "export_sha256": "e43a1f2a497cad29d797a0e2bb626100b5a3e0fa5111ab2ad1206888b406871c",
       "sentences": 49,
       "vocabulary_entries": 49,
       "mother_export_all_source_fields_equal": true,
@@ -293,23 +247,7 @@
           "end": 1400.86
         }
       ],
-      "question_missing_only": [
-        {
-          "unit": "2021-B2",
-          "sentence": 43,
-          "en": "Question 6. What did Maureen think about socializing with writers?",
-          "missing": [
-            {
-              "text": "Maureen",
-              "char": [
-                21,
-                28
-              ]
-            }
-          ],
-          "role": "question"
-        }
-      ],
+      "question_missing_only": [],
       "review_status": "draft"
     }
   ],

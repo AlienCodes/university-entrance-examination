@@ -55,7 +55,7 @@
           "asr_ref": "预处理/2023/识别.json"
         },
         {
-          "en": "Grade 8,.",
+          "en": "Grade 8.",
           "zh": "专业八级。",
           "w": [
             {
@@ -86,7 +86,7 @@
           "asr_ref": "预处理/2023/识别.json"
         },
         {
-          "en": "Part 1, Listening Comprehension,.",
+          "en": "Part 1, Listening Comprehension.",
           "zh": "第一部分：听力理解。",
           "w": [
             {
@@ -1157,7 +1157,7 @@
         },
         {
           "en": "This might look familiar.",
-          "zh": "这可能听起来很熟悉。",
+          "zh": "这看起来可能很熟悉。",
           "w": [
             {
               "t": "word",
@@ -1942,7 +1942,80 @@
           "source_sentence_range": [
             52,
             52
-          ]
+          ],
+          "words": [
+            [
+              "So",
+              406.22,
+              406.3
+            ],
+            [
+              "pay",
+              406.46,
+              406.7
+            ],
+            [
+              "careful",
+              406.78,
+              407.18
+            ],
+            [
+              "attention",
+              407.34,
+              407.66
+            ],
+            [
+              "the",
+              407.9,
+              407.98
+            ],
+            [
+              "next",
+              408.14,
+              408.22
+            ],
+            [
+              "time",
+              408.38,
+              408.46
+            ],
+            [
+              "you",
+              408.62,
+              408.7
+            ],
+            [
+              "read",
+              408.86,
+              408.94
+            ],
+            [
+              "some",
+              409.26,
+              409.34
+            ],
+            [
+              "financial",
+              409.5,
+              409.98
+            ],
+            [
+              "news.",
+              410.22,
+              410.86
+            ]
+          ],
+          "asr_ref": "核验/独立收尾复核/2023.json",
+          "asr_sha256": "b3b6a43a5ffe5a978b0ad2a69fec09abff7b761a70bfdd909ed4dd2702f51021",
+          "asr_pointer": "/windows/0/recognitions/0/words",
+          "asr_range": [
+            3,
+            15
+          ],
+          "local_word_recovery": {
+            "key": "attention_the_next",
+            "decision": "独立模型同文，采用完整原Parakeet词元片段；the/a恢复真实词锚，原英语/中文保持。"
+          }
         },
         {
           "en": "Agent metaphors describe price movements as the deliberate action of a living thing, as in, “The NASDAQ climbed higher.”",
@@ -2552,7 +2625,115 @@
           "source_sentence_range": [
             70,
             70
-          ]
+          ],
+          "words": [
+            [
+              "Whenever",
+              541.8,
+              542.28
+            ],
+            [
+              "we",
+              542.36,
+              542.44
+            ],
+            [
+              "solve",
+              542.52,
+              542.92
+            ],
+            [
+              "a",
+              543.0,
+              543.08
+            ],
+            [
+              "problem",
+              543.24,
+              543.32
+            ],
+            [
+              "or",
+              543.72,
+              543.8
+            ],
+            [
+              "make",
+              543.96,
+              544.04
+            ],
+            [
+              "a",
+              544.2,
+              544.28
+            ],
+            [
+              "discovery,",
+              544.44,
+              545.16
+            ],
+            [
+              "we",
+              545.4,
+              545.48
+            ],
+            [
+              "compare",
+              545.64,
+              546.04
+            ],
+            [
+              "what",
+              546.52,
+              546.6
+            ],
+            [
+              "we",
+              546.76,
+              546.84
+            ],
+            [
+              "know",
+              547.08,
+              547.16
+            ],
+            [
+              "with",
+              547.4,
+              547.48
+            ],
+            [
+              "what",
+              547.72,
+              547.8
+            ],
+            [
+              "we",
+              548.04,
+              548.12
+            ],
+            [
+              "don't",
+              548.28,
+              548.84
+            ],
+            [
+              "know.",
+              548.92,
+              549.56
+            ]
+          ],
+          "asr_ref": "核验/独立收尾复核/2023.json",
+          "asr_sha256": "b3b6a43a5ffe5a978b0ad2a69fec09abff7b761a70bfdd909ed4dd2702f51021",
+          "asr_pointer": "/windows/1/recognitions/0/words",
+          "asr_range": [
+            4,
+            23
+          ],
+          "local_word_recovery": {
+            "key": "solve_a_problem",
+            "decision": "独立模型同文，采用完整原Parakeet词元片段；the/a恢复真实词锚，原英语/中文保持。"
+          }
         },
         {
           "en": "And the only way to find out about the latter is to investigate the ways it might be like the former.",
@@ -3000,6 +3181,21 @@
             }
           },
           "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        }
+      ],
+      "manual_splits": [
+        {
+          "en": "Before we call it a day, I'd like to walk you through a famous quote from Francis Bacon: “Some books are to be tasted, others swallowed, and some few to be chewed and digested.”",
+          "at": "“Some books are to",
+          "zh": [
+            "结束之前，我想带大家细读弗朗西斯·培根的一句名言：",
+            "“书有可浅尝者，有可吞食者，少数则须咀嚼消化。”"
+          ],
+          "evidence": "引语介绍与完整培根三类读书比喻分屏，不拆tasted/swallowed/chewed and digested对应列举。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/17",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
         }
       ]
     },
@@ -4609,6 +4805,32 @@
           "original_source_sha256": "1e973a9fd6565896734d43586cd8e1ce71248fcfc28e247f4873539bfe144fd7",
           "original_source_pointer": "/candidate",
           "approval_scope": "仅人工语义/几何分屏计划，不含任何音频时刻或生产批准。"
+        },
+        {
+          "en": "So, whether you’re currently deciding whether a gap year is for you, or you’re just feeling itchy to decide what to do with it, you are welcome to join us. Well, Jim.",
+          "at": "or you’re just feeling",
+          "zh": [
+            "无论你正在考虑自己是否适合间隔年，",
+            "还是已经迫不及待地想决定如何度过间隔年，都欢迎加入我们。那么，吉姆。"
+          ],
+          "evidence": "whether...or...两种听众状态自然并列；第二种状态与欢迎加入的主句都在第二屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/18",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "Yes, they really do. If you’re studying veterinary science and you volunteer on a wildlife conservation project, then that can really boost your CV and experience levels by doing so.",
+          "at": "then that can really",
+          "zh": [
+            "会的，他们确实很在意。如果你学兽医学，又参加了野生动物保护项目的志愿工作，",
+            "这样的经历就能实实在在地为简历加分、丰富你的经验。"
+          ],
+          "evidence": "兽医学与保护项目志愿经历组成的完整if条件在第一屏，then对简历和经验的结果在第二屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/19",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
         }
       ]
     },
@@ -5202,6 +5424,17 @@
                 [
                   86,
                   97
+                ]
+              ]
+            },
+            {
+              "t": "word",
+              "h": "overland",
+              "m": "adv.经陆路",
+              "sp": [
+                [
+                  167,
+                  175
                 ]
               ]
             },
@@ -6052,6 +6285,66 @@
             }
           },
           "decision": "两种错位上下文模型对实际口述一致；只订正本句明确印误/异文，不为语法修音。"
+        }
+      ],
+      "manual_splits": [
+        {
+          "en": "Ah... on my travel list, number one, cage diving with great white sharks; number two, hitchhiking across America from New York to San Francisco; number three, touring overland in Africa, and number four is climbing Mount Qomolangma, which, let’s be honest, I need to think twice.",
+          "at": [
+            "number two, hitchhiking",
+            "number three, touring overland",
+            "and number four is"
+          ],
+          "zh": [
+            "我的旅行清单上，第一项是在防护笼里潜水，近距离接触大白鲨；",
+            "第二项是搭便车横穿美国，从纽约到旧金山；",
+            "第三项是在非洲进行陆路旅行；",
+            "第四项是攀登珠穆朗玛峰，不过说实话，这一项我得三思。"
+          ],
+          "evidence": "四项旅行清单各成一屏，第三项不与第二项或珠峰项交叉；最后let’s be honest/think twice保留在珠峰项。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/20",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "Well, firstly, I grew up in an international household with a German mother and an Italian-American father, so our daily lives and conversations always were more global in a lot of ways.",
+          "at": "so our daily lives",
+          "zh": [
+            "首先，我在一个国际化家庭里长大，母亲是德国人，父亲是意大利裔美国人，",
+            "因此我们的日常生活和交谈，在很多方面都更具全球视野。"
+          ],
+          "evidence": "家庭的国际背景与so引出的日常生活/交谈全球视野分别成屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/21",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "Secondly, when I was 16, I left home to go to the United World College, which is a two-year boarding school with students from 90 different countries.",
+          "at": "which is a two-year",
+          "zh": [
+            "其次，16岁时，我离家去了世界联合学院；",
+            "那是一所学制两年的寄宿学校，学生来自90个不同国家。"
+          ],
+          "evidence": "离家到世界联合学院与which引出的学校性质/学生来源分别成屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/22",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "There, I really grew to see the entire world as an interconnected place, and began to think of myself less with national identities and more through global and human lenses.",
+          "at": "and began to think",
+          "zh": [
+            "在那里，我真正开始把整个世界看成相互联系的整体；",
+            "我不再主要以国籍来定位自己，而是更多地从全球和人类整体的视角看待自己。"
+          ],
+          "evidence": "世界相互关联的认知与less...and more...自我认同对比分屏，国籍与全球人类视角对比留同屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/23",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
         }
       ]
     }

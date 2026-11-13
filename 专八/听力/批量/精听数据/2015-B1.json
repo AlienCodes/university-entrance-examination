@@ -18,7 +18,7 @@
   ],
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有2个原文词缺少ASR对应；涉及句号[37, 40]，严禁按比例补时。"
+    "仍有2个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[37, 40]，严禁按比例补时。"
   ],
   "source_check": {
     "pdf_pages_viewed": true,
@@ -34,6 +34,45 @@
   "names": [
     "特雷莎·梅",
     "约翰·梅杰"
+  ],
+  "manual_splits": [
+    {
+      "en": "What we see from the present government is that they may talk about opportunity for all, they may talk about choice, but actually they are cutting opportunity and reducing choice.",
+      "at": "but actually they are cutting opportunity",
+      "zh": [
+        "我们看到，现任政府也许口口声声说人人都有机会、人人都有选择，",
+        "但实际上，他们正在减少机会、缩小选择范围。"
+      ],
+      "evidence": "核验/2010-2015-长句分屏语义预审.json；逐屏中英/词注人工语义审查，换屏另核真实词首与原音guard；不得伪称纯静音。"
+    },
+    {
+      "en": "The number of state pupils being accepted by Oxford and Cambridge, and other leading universities, the proportion of state pupils has actually increased, but there is a problem in many of our secondary schools, of expectations, and it’s the present Government that has been levelling down expectations, rather than raising them.",
+      "at": [
+        "but there is a problem in",
+        "and it’s the present Government"
+      ],
+      "zh": [
+        "被牛津、剑桥及其他顶尖大学录取的公立学校学生比例，实际上已经提高了。",
+        "但是，我们许多中学的学生对未来的期望存在问题；",
+        "当前政府一直在降低这些期望，而不是提高它们。"
+      ],
+      "evidence": "核验/2010-2015-长句分屏语义预审.json；逐屏中英/词注人工语义审查，换屏另核真实词首与原音guard；不得伪称纯静音。"
+    },
+    {
+      "en": "The number from the state schools, who are going to leading universities, has increased over the years, but there is still an issue about ensuring the pupils from our state schools apply to go into the universities, and if you look at the Oxford figures, for example, you see that the percentage of students applying to Oxford from the state schools is about 1%, whereas from the private schools it’s over 4.5%, so that, you know, that’s the problem, it’s expectations in the state system that have been driven down by this Government over the years.",
+      "at": [
+        "but there is still an issue",
+        "and if you look at the Oxford figures,",
+        "so that,"
+      ],
+      "zh": [
+        "这些年来，来自公立学校、进入顶尖大学的学生人数有所增加，",
+        "但如何确保公立学校学生积极申请大学，仍是一个问题。",
+        "以牛津的数据为例，公立学校学生申请牛津的比例大约是百分之一，而私立学校学生的这一比例超过百分之四点五。",
+        "所以，你看，问题就在这里：这些年来，公立教育体系中的期望一直被本届政府压低。"
+      ],
+      "evidence": "核验/2010-2015-长句分屏语义预审.json；逐屏中英/词注人工语义审查，换屏另核真实词首与原音guard；不得伪称纯静音。"
+    }
   ],
   "year": 2015,
   "audio": {
@@ -8012,6 +8051,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2015/对齐报告.json",
-    "content_sha256": "bc6e5d8c6b76c0f47f446429afb035b0ca3d9469e03883239c3ef257ba0cfb82"
+    "content_sha256": "da432c035a34fa2034aba60b03dec7c12d6cc58026159f6580593601037f4cd4"
   }
 }

@@ -4,7 +4,7 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2013.json",
-    "draft_sha256": "1aa39c9a0aa90c6d95bc02c5346989fee63b9d155beab6a8768441c3b5bd86eb",
+    "draft_sha256": "319cc6bd0f72ae14063fc4de46b834caeeaf54dc891b64eb4a59332db8eaa7af",
     "asr": "核验/原文对齐/2013/含说明识别.json",
     "asr_sha256": "c833da477b453dc62686350b128c079ec7ff7eed034b45ae9b9d76ca83ecc20b",
     "input_asr": "核验/补词锚/2013/优选识别.json",
@@ -1885,7 +1885,22 @@
     }
   ],
   "reviewed_whole_audio_anchors": [],
-  "reviewed_nonverbal_events": [],
+  "reviewed_nonverbal_events": [
+    {
+      "unit": "2013-B1",
+      "en": "Umm. What were they?",
+      "start": 838.85,
+      "end": 840.91,
+      "nonverbal": false,
+      "whole_sentence_audio_verified": true,
+      "word_alignment_policy": "retain_actual_ASR_only",
+      "evidence_ref": "核验/2010—2015整句声学证据/2013-B1-24.json",
+      "evidence_sha256": "59bca6d9e9c4d766c711f57de45514a721b77cc27a6db38ec8a5edfd5302ed06",
+      "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。",
+      "manifest": "核验/正文清理/2013-整句声学采纳.json",
+      "manifest_sha256": "09eed13fa5f4fa9ed01474b1a206991916041bc0efcb6694fe2683ec4454083d"
+    }
+  ],
   "ASR_provenance": {
     "file": "核验/补词锚/2013/优选ASR核验.json",
     "sha256": "c86e6c634007ab4808b2ae8b9c633ee4051478226387db5e915e41ff3e33d28e",
@@ -1906,7 +1921,8 @@
     "literal_complete": false,
     "source_lexical_lexemes": 2352,
     "external_reviewed_ASR_lexemes": 0,
-    "nonverbal_not_word_lexemes": 0
+    "nonverbal_not_word_lexemes": 0,
+    "all_sentence_boundaries_resolved": false
   },
   "differences": [
     {
@@ -3415,6 +3431,7 @@
       "missing_source_lexemes": 1,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 1,
       "audio_window": [
         13.8775,
@@ -3423,17 +3440,21 @@
     },
     {
       "id": "2013-B1",
-      "state": "blocked_missing_boundary_anchor",
-      "output": "核验/原文对齐/2013/未导出单元/2013-B1.json",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2013-B1.json",
       "sentences": 58,
       "source_lexemes": 704,
       "missing_source_lexemes": 1,
-      "missing_boundary_sentences": [
+      "missing_boundary_sentences": [],
+      "acoustic_filler_sentences": [],
+      "reviewed_whole_sentence_events": [
         24
       ],
-      "acoustic_filler_sentences": [],
       "rerecognition_window_count": 1,
-      "audio_window": null
+      "audio_window": [
+        690.0325,
+        1072.17
+      ]
     },
     {
       "id": "2013-B2",
@@ -3446,6 +3467,7 @@
       "acoustic_filler_sentences": [
         34
       ],
+      "reviewed_whole_sentence_events": [],
       "rerecognition_window_count": 1,
       "audio_window": [
         1080.6375,

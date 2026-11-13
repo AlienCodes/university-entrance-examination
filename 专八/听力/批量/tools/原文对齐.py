@@ -68,7 +68,8 @@ JOINED_SPELLINGS = {'onto': ['on', 'to'], 'midwestern': ['mid', 'western'], 'eye
                     'goodwill':['good','will'],'coworkers':['co','workers'],'coworker':['co','worker'],
                     'overlit':['over','lit'],'timeout':['time','out'],'online':['on','line'],
                     'nongovernmental':['non','governmental'],'healthcare':['health','care'],
-                    'nonverbal':['non','verbal'],'phd':['ph','d']}
+                    'nonverbal':['non','verbal'],'phd':['ph','d'],'firsthand':['first','hand'],
+                    'underserved':['under','served'],'overland':['over','land']}
 ABBREVIATIONS = {'us', 'uk', 'un', 'eu', 'mc', 'cv', 'cnn', 'bbc', 'unhcr', 'am', 'pm'}
 
 
@@ -592,6 +593,8 @@ def run_year(year, args):
     nonverbal_paths=list(args.nonverbal or [])
     default_events=base/f'核验/正文局部音证/{year}-非言语采纳.json'
     if default_events.exists() and str(default_events) not in nonverbal_paths:nonverbal_paths.append(str(default_events))
+    sentence_events=base/f'核验/正文清理/{year}-整句声学采纳.json'
+    if sentence_events.exists() and str(sentence_events) not in nonverbal_paths:nonverbal_paths.append(str(sentence_events))
     reviewed_anchors,nonverbal_events=reviewed_module.apply(result,draft,prepare,base,nonverbal_paths)
     acoustic_proofs = []
     if args.acoustic_fillers:
@@ -641,7 +644,7 @@ def run_year(year, args):
                 'missing_boundary_sentences':[], 'audio_window':old['audio']['window'],
                 'source_lock':portable(lock,base),'note':'已批源文原文件逐字保留；报告更新不会清回draft或覆盖已审时间/译注。'})
             continue
-        blocked = [r['n'] for r in rows if not r['boundary_anchored'] and not r.get('acoustic_boundary') and not r.get('nonverbal_boundary')]
+        blocked = [r['n'] for r in rows if not r['boundary_anchored'] and not r.get('acoustic_boundary') and not r.get('nonverbal_boundary') and not r.get('reviewed_sentence_boundary')]
         d = {k: copy.deepcopy(v) for k, v in unit.items() if k != 'sentences'}
         d['year'] = year
         d['audio'] = {'file': args.audio_template.format(year=year), 'sha256': canonical['sha256'],
@@ -651,6 +654,7 @@ def run_year(year, args):
             raise ValueError('audio-template必须是可移植相对路径；实际输入音源由精听.py --original传入')
         d['sentences'] = []
         unit_missing = 0
+        unresolved_missing = 0
         missing_sentences = []
         for row in rows:
             s = copy.deepcopy(row['sentence'])
@@ -660,7 +664,11 @@ def run_year(year, args):
                               'missing': [{'text': result['source'][i].text, 'char': [result['source'][i].char, result['source'][i].char_end]} for i in row['missing']],
                               'unmatched_internal_asr': describe_asr(row['internal_asr_unmatched'], result['target'], result['raw'])}
             if row.get('reviewed_whole_ASR_evidence'):s['alignment']['reviewed_whole_ASR_evidence']=row['reviewed_whole_ASR_evidence']
-            if row.get('nonverbal_boundary'):
+            if row.get('reviewed_sentence_boundary'):
+                s['start'],s['end']=row['reviewed_sentence_boundary']
+                s['alignment']['whole_sentence_audio_coverage_verified']=row['reviewed_sentence_evidence']
+                s['alignment']['unknown_words_without_word_times']=copy.deepcopy(s['alignment']['missing'])
+            elif row.get('nonverbal_boundary'):
                 s['start'],s['end']=row['nonverbal_boundary'];s['nonverbal']=True
                 s['alignment']['mapped_lexemes']=0;s['alignment']['nonverbal_not_words']=len(row['lexemes'])
                 s['alignment']['nonverbal_evidence']=row['nonverbal_evidence']
@@ -673,14 +681,17 @@ def run_year(year, args):
                 s['start'] = s['end'] = None
             if row['missing']:
                 unit_missing += len(row['missing'])
+                if not row.get('reviewed_sentence_boundary'):unresolved_missing+=len(row['missing'])
                 missing_sentences.append(row['n'])
             d['sentences'].append(s)
         d.setdefault('待核', [])
         d['待核'].append('程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。')
         if meta is None:
             d['待核'].append('缺少绑定canonical音源和识别.json哈希的ASR核验元数据；不能声称音源对应已验证。')
-        if unit_missing:
-            d['待核'].append(f'仍有{unit_missing}个原文词缺少ASR对应；涉及句号{missing_sentences}，严禁按比例补时。')
+        if unresolved_missing:
+            d['待核'].append(f'仍有{unresolved_missing}个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号{missing_sentences}，严禁按比例补时。')
+        if unit_missing>unresolved_missing:
+            d.setdefault('alignment_known_limitations',[]).append(f'{unit_missing-unresolved_missing}个字面词无独立词时刻，但已核完整语句/声响真实边界及音文覆盖；word_alignment仅保留实际ASR，禁止在未知词内按比例拆屏。')
         d['alignment_report'] = portable(report_path, base)
         d['alignment_tool_version'] = TOOL_VERSION
         if blocked:
@@ -727,6 +738,7 @@ def run_year(year, args):
                                 'sentences': len(rows), 'source_lexemes': sum(len(r['lexemes']) for r in rows),
                                 'missing_source_lexemes': unit_missing, 'missing_boundary_sentences': blocked,
                                 'acoustic_filler_sentences': [r['n'] for r in rows if r.get('acoustic_boundary')],
+                                'reviewed_whole_sentence_events':[r['n'] for r in rows if r.get('reviewed_sentence_boundary')],
                                 'rerecognition_window_count': sum(w['unit'] == unit['id'] for w in rerecognition),
                                 'audio_window': d['audio']['window']})
     dump(report_path, report)

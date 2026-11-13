@@ -4,7 +4,7 @@
   "title": "What Workers Want — Part Two",
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有1个原文词缺少ASR对应；涉及句号[34]，严禁按比例补时。"
+    "仍有1个原文词缺少ASR对应且未获整句音文覆盖核实；涉及句号[34]，严禁按比例补时。"
   ],
   "source_refs": [
     {
@@ -25,6 +25,17 @@
     "status": "draft_local_asr_checked_not_publication_approved",
     "待核": []
   },
+  "manual_splits": [
+    {
+      "en": "But still I think it is important for employers to become more aware of polls like these because it might allow them to keep their workers satisfied in ways that maybe they hadn’t thought of before.",
+      "at": "because it might allow",
+      "zh": [
+        "尽管如此，我仍认为雇主应该更多了解这类调查，",
+        "因为它们或许能让雇主用以前没有想到的方法，提高员工的满意度。"
+      ],
+      "evidence": "核验/2010-2015-长句分屏语义预审.json；逐屏中英/词注人工语义审查，换屏另核真实词首与原音guard；不得伪称纯静音。"
+    }
+  ],
   "year": 2013,
   "audio": {
     "file": "预处理/2013/原音.wav",
@@ -7558,6 +7569,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2013/对齐报告.json",
-    "content_sha256": "9402314112e1488856b645f2d82447e81055fada0c6887cfa747d3ee46e78703"
+    "content_sha256": "4eb272a7551f39d58c4a83c5dcb7c0ca4167b47a46179e1161c5aa7b3341c9e7"
   }
 }

@@ -634,6 +634,10 @@ def selftest():
         rejected(lambda: validate_annotation_snapshot(unit,changed),'母稿已改英文而输入退回旧稿')
         changed=copy.deepcopy(unit);changed['sentences'][0]['w'][0]['h']='evening'
         rejected(lambda: validate_annotation_snapshot(unit,changed),'母稿词注修正未同步')
+        changed=copy.deepcopy(unit);changed['manual_splits']=[{'en':'Good morning.','at':'morning','zh':['早上','好。']}]
+        rejected(lambda: validate_annotation_snapshot(unit,changed),'已审人工分屏只留侧表而最终输入丢失')
+        same=copy.deepcopy(changed)
+        assert validate_annotation_snapshot(same,changed)==hash_json(annotation_semantics(changed))
         def test_prep(year):
             rows = [{**r, 'audio':{'sample_rate':44100,'channels':2}} for r in selected_sources(year)]
             prep = {'year':year,'canonical':{'sha256':'7'*64,'sample_rate':44100,'channels':2},

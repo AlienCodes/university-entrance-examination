@@ -1,0 +1,132 @@
+{
+  "id": "2024-B1",
+  "scope": "对实际发布缓存MP4回下载校验，并实际解码抽查6屏；不是宣称逐帧人工观看",
+  "cache_release": "tem8-listening-render-cache-2009-2024",
+  "run_id": "43508425588",
+  "source_commit": "c87cf30777f324ceabde3a0eba6a1a7ecfd54451",
+  "mp4_asset": "tem8-intensive-2024-B1-4cf36401b8a3f6ce-311e43832660.mp4",
+  "mp4_sha256": "311e438326607e52a4079e40fc2b713bfe1478a9ccfa4446f930a2007430b0aa",
+  "evidence_members_verified": 79,
+  "zip_crc": "pass",
+  "verification_report": {
+    "id": "2024-B1",
+    "ok": true,
+    "draft": false,
+    "checks": [
+      {
+        "item": "4K 16:9",
+        "ok": true,
+        "detail": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "item": "30帧恒定/帧数",
+        "ok": true,
+        "detail": [
+          "30/1",
+          "13074"
+        ]
+      },
+      {
+        "item": "声画等长",
+        "ok": true,
+        "detail": [
+          "435.800000",
+          "435.800000"
+        ]
+      },
+      {
+        "item": "原采样率与声道",
+        "ok": true,
+        "detail": [
+          "24000",
+          2
+        ]
+      },
+      {
+        "item": "原声逐样本核对",
+        "ok": true,
+        "detail": {
+          "gain_db": -0.0091,
+          "snr_db": 41.5,
+          "sec_db": 0.038
+        }
+      },
+      {
+        "item": "片头1.5秒静音",
+        "ok": true,
+        "detail": "1.5秒"
+      },
+      {
+        "item": "片尾至少2秒静音",
+        "ok": true,
+        "detail": "至少2秒"
+      },
+      {
+        "item": "逐屏画面与截图一致（每屏中间一帧）",
+        "ok": true,
+        "detail": "63 屏全部一致（最大平均差 1.35，99.9% 分位差 12）"
+      },
+      {
+        "item": "成品附件大小",
+        "ok": true,
+        "detail": 19412788
+      }
+    ],
+    "sha256": "311e438326607e52a4079e40fc2b713bfe1478a9ccfa4446f930a2007430b0aa",
+    "bytes": 19412788,
+    "fingerprint": "8bb1f05cf3aa1dedc284ce495e5c5e1f499a27836fc004f7d84c60dd2b1ff829",
+    "source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+    "duration": 435.8,
+    "mode": "原音不动",
+    "protected_source_intervals": [],
+    "audio_protection": null
+  },
+  "actual_decoded_frames_viewed": [
+    {
+      "screen": 1,
+      "frame": 32,
+      "seconds": 1.0666666666666667,
+      "decoded_png_sha256": "1e869c05983beb9d681baa7e59aa8015adc0eb72344e27b881278bd9e148af26"
+    },
+    {
+      "screen": 8,
+      "frame": 1519,
+      "seconds": 50.63333333333333,
+      "decoded_png_sha256": "0a4dbda36de5429107c999275564af1243d3809cc4c01f17d1ba407bb519e340"
+    },
+    {
+      "screen": 39,
+      "frame": 7675,
+      "seconds": 255.83333333333334,
+      "decoded_png_sha256": "ebab00f7686312269b8bcae9c70ad828f496051bb7340d3e9ea45117f6c808dc"
+    },
+    {
+      "screen": 40,
+      "frame": 7961,
+      "seconds": 265.3666666666667,
+      "decoded_png_sha256": "4e78026e795af8ca98aa78bed2e18086139b34d965ec3d4b2d343e98bb37e27f"
+    },
+    {
+      "screen": 59,
+      "frame": 11156,
+      "seconds": 371.8666666666667,
+      "decoded_png_sha256": "932431a498c5db6e65410e02207d5763a85d8d7ccac2447f5eb5f23bb822f9f5"
+    },
+    {
+      "screen": 63,
+      "frame": 12944,
+      "seconds": 431.46666666666664,
+      "decoded_png_sha256": "a6625ba04a403a964157d58cc64633446c93b2c8038bec8ef694c02282b9188c"
+    }
+  ],
+  "status": "spotcheck-pass",
+  "visual_observations": [
+    "片头/说明/双屏长句/念题实际成片文字清晰，无裁切、黑屏或错屏。",
+    "039/040哥特式小说已随Gothic切到第二屏，语义一致。",
+    "059中about与fiction的词间距经独立DOM实测为17.3125px CSS（4K34.625px）；原HTML保留真实U+0020空格，EBGaramond粗体正常字距，不存在漏空格。"
+  ],
+  "space_measurement_evidence": "核验/第二批在线审图准备/2024-B1-词间距只读核验.json"
+}

@@ -5046,6 +5046,17 @@
             },
             {
               "t": "word",
+              "h": "predict",
+              "m": "v.预测",
+              "sp": [
+                [
+                  188,
+                  197
+                ]
+              ]
+            },
+            {
+              "t": "word",
               "h": "unmanageable",
               "m": "adj. 难以应对的",
               "sp": [
@@ -5137,6 +5148,17 @@
                 [
                   96,
                   99
+                ]
+              ]
+            },
+            {
+              "t": "phr",
+              "h": "climate change",
+              "m": "n.气候变化",
+              "sp": [
+                [
+                  141,
+                  155
                 ]
               ]
             }
@@ -5569,7 +5591,82 @@
         "source_sha256": "6585f35449929c81ad71c680da500b2f1d27e00d08c053bf3d5968928ab98318",
         "status": "draft_local_asr_checked_not_publication_approved",
         "待核": []
-      }
+      },
+      "manual_splits": [
+        {
+          "en": "In a new study published last week in the journal Nature, more than 80 scientists from multiple countries used satellite data to examine the Antarctica’s vast ice sheets, and their prediction is that if the current rate of ice melt continues, sea levels could rise six inches by the year 2100.",
+          "at": [
+            "more than 80 scientists",
+            "and their prediction is"
+          ],
+          "zh": [
+            "上周发表在《自然》杂志的一项新研究中，",
+            "来自多个国家的80多位科学家，利用卫星数据研究了南极广袤的冰盖；",
+            "他们预测，如果当前融冰速度持续下去，到2100年，海平面可能上升6英寸。"
+          ],
+          "evidence": "研究出处、科学家用卫星考察冰盖、含完整if条件的预测三屏，与中文逐项对应。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/24",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "Yesterday, for example, there were huge floods in some of the areas around the country, and these floods wouldn’t have happened without the sea level rise that we’ve already seen.",
+          "at": "and these floods wouldn’t",
+          "zh": [
+            "比如，昨天全国一些地区发生了严重洪水；",
+            "如果没有我们已经经历的海平面上升，这些洪水本来不会发生。"
+          ],
+          "evidence": "已发生洪水与without...wouldn’t have的反事实说明分屏，中文条件前置仍完整处于第二屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/25",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "Well, they have a lot of direct measurements from satellites of the height of the surface of the ice sheets, so they’re able to see how that height changes over time.",
+          "at": "so they’re able to",
+          "zh": [
+            "他们有大量卫星对冰盖表面高度的直接测量数据，",
+            "因此能看出这些高度如何随时间变化。"
+          ],
+          "evidence": "卫星测量冰盖表面高度与由此观察时间变化的结果分别成屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/26",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "Yeah. If we continue to see the ice melt speeding up, and don’t cut back on our climate pollution emissions, then we’re pointed more towards six feet, possibly, rather than the three feet predicted by 2100, and that will be unmanageable in very many places.",
+          "at": [
+            "then we’re pointed",
+            "and that will be unmanageable"
+          ],
+          "zh": [
+            "是的。如果冰融化继续加速，而我们又不减少气候污染物的排放，",
+            "那么到2100年，海平面上升可能会更接近6英尺，而不是预测的3英尺；",
+            "这对许多地方来说将难以应对。"
+          ],
+          "evidence": "先保留完整双条件，再是6英尺/3英尺预测对比（possibly与rather than同屏），最后才是难以应对的后果；原自动possibly切点会使中英条件/结论错屏。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/27",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        },
+        {
+          "en": "So even if everyone stopped driving, all the factories shut down, and somehow we didn’t produce CO2, we’re still going to see the effects of climate change.",
+          "at": "we’re still going to see",
+          "zh": [
+            "所以，即使每个人都停止开车，所有工厂都关闭，而且我们设法不再产生二氧化碳，",
+            "气候变化的影响仍会持续出现。"
+          ],
+          "evidence": "even if下三个并列假设完整留在第一屏，主句仍会出现的影响在第二屏，避免把假设条件and somehow与结论拼混。 仅通过分屏语义预审，几何及实际换屏音证另核。",
+          "evidence_ref": "核验/第二批人工语义分屏/来源与逐屏审阅快照.json",
+          "evidence_pointer": "/records/28",
+          "approval_scope": "仅派生分屏语义；无任何音频时刻或生产批准。",
+          "evidence_sha256": "adfd7b182fcbf0ffb50191a83a06e084e9d4af67aa7a5e61e29815f34815d562"
+        }
+      ]
     }
   ],
   "instruction_merge": {

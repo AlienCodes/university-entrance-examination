@@ -1,0 +1,29 @@
+{
+  "year": 2011,
+  "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+  "events": [
+    {
+      "unit": "2011-B1",
+      "en": "Urmm... first, there have been research studies.",
+      "start": 859.0,
+      "end": 862.51,
+      "nonverbal": false,
+      "whole_sentence_audio_verified": true,
+      "word_alignment_policy": "retain_actual_ASR_only",
+      "evidence_ref": "核验/2010—2015整句声学证据/2011-B1-21.json",
+      "evidence_sha256": "b3eb54936383b460afca4d56938919cf7cec13a87cfec8406b827ab592275bca",
+      "decision": "源页与两路识别核过完整话轮语义；已实读原采样率双声道10ms包络及九窗总览图，边界包住全部实际词锚/弱音/节奏；未知字仍保留unknown，绝不以整句范围分配未知字秒。"
+    },
+    {
+      "unit": "2011-B1",
+      "en": "Mm...",
+      "start": 998.25,
+      "end": 998.87,
+      "nonverbal": true,
+      "evidence_ref": "核验/2010—2015整句声学证据/2011-B1-50-已核整声响.json",
+      "evidence_sha256": "f3633a7069ba1e7970a6e515ad03b87409b141a53e5d56f6b31e1a85e7ea2a0c",
+      "decision": "源页此处独立Mm；虽两ASR忽略非词声，但44.1kHz双声道频谱在998.25—998.84清楚出现独立低频谐波与衰减鼻音，998.85后为底噪。保留998.25—998.87整个应声事件，不给Mm任何逐字时刻；前句ASR词尾估计与该声有0.13s交叠，在整声真实范围中如实保留。"
+    }
+  ],
+  "policy": "仅完整话轮/整声响实测范围；实际word_alignment与unknown保留，绝不比例分摊词时。"
+}
