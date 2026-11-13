@@ -2,8 +2,37 @@
   "source_duration": 1497.624,
   "source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
   "trim": {
+    "year": 2024,
     "start": 0,
-    "status": "待核片头音乐，时间轴仍保留完整原声，不准发布"
+    "reason": "无片头音乐",
+    "source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+    "evidence": "逐年查看0—7s原采样率波形和0—6kHz频谱：正式报幕前没有连续音乐谐波或音乐段，只有前导静音及录音底噪；保留完整开头，start=0。ASR仅作报幕内容定位参考，首词Test在1.12s；不据此删除前导部分。本源约0.1s后的波形基线为直流偏置，非音乐；不消除偏置、不作音量或声道处理。",
+    "source_entry": {
+      "file": "2024年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+      "sha256": "99fc32a4bc452a6923b86e493b7f989f4852f6159359239b059fc1a17fd666b8"
+    },
+    "canonical_format": {
+      "sample_rate": 24000,
+      "channels": 2,
+      "pcm_format": "float32le"
+    },
+    "cut_sample": 0,
+    "silence_interval": null,
+    "cut_window": {
+      "half_window_seconds": 0.04,
+      "max_channel_peak_dbfs": -240.0,
+      "all_channel_rms_dbfs": -240.0,
+      "digital_zero": true,
+      "db_display_floor": -240.0
+    },
+    "reference_first_word": [
+      "Test",
+      1.12,
+      1.36
+    ],
+    "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+    "plot": "图证/2024.png",
+    "pending": []
   },
   "events": [
     {
@@ -18,42 +47,6 @@
       "kind": "instr",
       "sec": "A",
       "hi": -1
-    },
-    {
-      "t": 14.08,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 0
-    },
-    {
-      "t": 17.76,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 1
-    },
-    {
-      "t": 21.36,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 2
-    },
-    {
-      "t": 32.07,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 3
-    },
-    {
-      "t": 37.99,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 4
-    },
-    {
-      "t": 41.51,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 5
     },
     {
       "t": 45.0,
@@ -88,42 +81,6 @@
       "kind": "instr",
       "sec": "B",
       "hi": -1
-    },
-    {
-      "t": 703.82,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 0
-    },
-    {
-      "t": 707.34,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 1
-    },
-    {
-      "t": 712.7,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 2
-    },
-    {
-      "t": 717.42,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 3
-    },
-    {
-      "t": 721.82,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 4
-    },
-    {
-      "t": 732.9,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 5
     },
     {
       "t": 735.68,
@@ -371,31 +328,11 @@
       ]
     ]
   },
-  "pending": [
-    {
-      "section": "A",
-      "line": 6,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Now, listen to the mini-lecture."
-    },
-    {
-      "section": "A",
-      "line": 7,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "When it is over, you will be given THREE minutes to check your work."
-    },
-    {
-      "question": 2,
-      "issue": "ASR未认出唯一Question题号；按前一道作答停顿的实测终点显示下一题，须核录音"
-    },
-    {
-      "question": 7,
-      "issue": "ASR未认出唯一Question题号；按前一道作答停顿的实测终点显示下一题，须核录音"
-    },
-    {
-      "question": 10,
-      "issue": "ASR未认出唯一Question题号；按前一道作答停顿的实测终点显示下一题，须核录音"
-    },
-    "片头音乐剪切点尚待正式核定"
-  ]
+  "pending": [],
+  "待核": [],
+  "review": {
+    "status": "timeline-checked",
+    "evidence": "核验/2024-时间轴说明处理.json；核验/2024-考试内容审核.json；音乐剪切/2024.json",
+    "instruction_display": "完整原卷说明静态展示，不以部分ASR猜逐句高亮"
+  }
 }

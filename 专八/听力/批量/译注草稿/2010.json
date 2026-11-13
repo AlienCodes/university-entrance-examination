@@ -18,6 +18,452 @@
       ],
       "sentences": [
         {
+          "en": "Test for English Majors twenty ten.",
+          "zh": "2010年英语专业全国统一考试。",
+          "w": [
+            {
+              "t": "word",
+              "h": "major",
+              "m": "n.某专业的学生",
+              "sp": [
+                [
+                  17,
+                  23
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            0,
+            6
+          ],
+          "asr_text": "Test for English Majors twenty ten",
+          "translation_key": "test",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Grade eight.",
+          "zh": "专业八级。",
+          "w": [
+            {
+              "t": "word",
+              "h": "grade",
+              "m": "n.级别",
+              "sp": [
+                [
+                  0,
+                  5
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            6,
+            8
+          ],
+          "asr_text": "Grade eight",
+          "translation_key": "grade",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-2",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Part I Listening Comprehension.",
+          "zh": "第一部分：听力理解。",
+          "w": [
+            {
+              "t": "word",
+              "h": "comprehension",
+              "m": "n.理解",
+              "sp": [
+                [
+                  17,
+                  30
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            8,
+            12
+          ],
+          "asr_text": "Part I Listening Comprehension",
+          "translation_key": "part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-3",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Section A mini-lecture.",
+          "zh": "A节：短讲。",
+          "w": [
+            {
+              "t": "word",
+              "h": "lecture",
+              "m": "n.讲座；短讲",
+              "sp": [
+                [
+                  15,
+                  22
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            2,
+            6
+          ],
+          "asr_text": "Section A Mini Lecture",
+          "translation_key": "a_header",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2010/a_header.json",
+          "asr_sha256": "a9bb9ca4f742162390a9864f769690b8bb93207fb045637b11981831af739bd7",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
+            12,
+            15
+          ],
+          "primary_asr_ref": "预处理/2010/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "Section",
+              24.95,
+              25.35
+            ],
+            [
+              "A",
+              25.51,
+              25.59
+            ],
+            [
+              "Mini",
+              26.55,
+              27.03
+            ],
+            [
+              "Lecture",
+              27.11,
+              27.59
+            ]
+          ],
+          "start": 24.95,
+          "end": 27.59,
+          "correction_case": "a_header",
+          "evidence": {
+            "window": [
+              22.55,
+              31.55
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          },
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-4"
+        },
+        {
+          "en": "In this section you will hear a mini-lecture.",
+          "zh": "在这一节中，你将听到一段短讲。",
+          "w": [
+            {
+              "t": "word",
+              "h": "hear",
+              "m": "v.听到",
+              "sp": [
+                [
+                  25,
+                  29
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            15,
+            24
+          ],
+          "asr_text": "In this section you will hear a mini lecture.",
+          "translation_key": "a_in",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-5",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "You will hear the mini-lecture once only.",
+          "zh": "这段短讲只播放一遍。",
+          "w": [
+            {
+              "t": "word",
+              "h": "once",
+              "m": "adv.一次",
+              "sp": [
+                [
+                  31,
+                  35
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            24,
+            32
+          ],
+          "asr_text": "You will hear the mini lecture once only.",
+          "translation_key": "a_once",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-6",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "While listening to the mini-lecture, please complete the gap-filling task on Answer Sheet I, and write no more than three words for each gap.",
+          "zh": "请边听短讲，边完成答题卡一上的填空任务；每空填写不超过三个词。",
+          "w": [
+            {
+              "t": "word",
+              "h": "gap-filling",
+              "m": "adj.填空的",
+              "sp": [
+                [
+                  57,
+                  68
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            32,
+            58
+          ],
+          "asr_text": "While listening to the mini lecture, please complete the gap filling task on Answer Sheet I, and write no more than three words for each gap.",
+          "translation_key": "a_gap",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-7",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Make sure the word or words you fill in is or are both grammatically and semantically acceptable.",
+          "zh": "请确保填入的词在语法和语义上都恰当。",
+          "w": [
+            {
+              "t": "word",
+              "h": "acceptable",
+              "m": "adj.可接受的；恰当的",
+              "sp": [
+                [
+                  86,
+                  96
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            58,
+            75
+          ],
+          "asr_text": "Make sure the word or words you fill in is or are both grammatically and semantically acceptable.",
+          "translation_key": "a_accept",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-8",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "You may use the blank sheet for note-taking.",
+          "zh": "你可以用空白纸做笔记。",
+          "w": [
+            {
+              "t": "word",
+              "h": "blank",
+              "m": "adj.空白的",
+              "sp": [
+                [
+                  16,
+                  21
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            75,
+            83
+          ],
+          "asr_text": "You may use the blank sheet for note-taking.",
+          "translation_key": "a_blank",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-9",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "You have 30 seconds to preview the gap-filling task.",
+          "zh": "你有三十秒钟预览填空任务。",
+          "w": [
+            {
+              "t": "word",
+              "h": "preview",
+              "m": "v.预览；预先浏览",
+              "sp": [
+                [
+                  23,
+                  30
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            83,
+            93
+          ],
+          "asr_text": "You have 30 seconds to preview the gap filling task.",
+          "translation_key": "a_preview",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-10",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Now listen to the mini-lecture.",
+          "zh": "现在请听短讲。",
+          "w": [
+            {
+              "t": "word",
+              "h": "listen",
+              "m": "v.听",
+              "sp": [
+                [
+                  4,
+                  10
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            93,
+            98
+          ],
+          "asr_text": "Now listen to the mini-lecture.",
+          "translation_key": "a_listen",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-11",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "When it is over, you will be given Three minutes to check your work.",
+          "zh": "短讲结束后，你将有三分钟检查作答。",
+          "w": [
+            {
+              "t": "word",
+              "h": "check",
+              "m": "v.检查",
+              "sp": [
+                [
+                  52,
+                  57
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            98,
+            112
+          ],
+          "asr_text": "When it is over, you will be given Three minutes to check your work.",
+          "translation_key": "a_check_future",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-12",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Paralinguistic Features of Language.",
+          "zh": "语言的副语言特征。",
+          "w": [
+            {
+              "t": "word",
+              "h": "paralinguistic",
+              "m": "adj.副语言的；与语调、音量等语言伴随特征有关的",
+              "sp": [
+                [
+                  0,
+                  14
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            112,
+            116
+          ],
+          "asr_text": "Paralinguistic Features of Language.",
+          "translation_key": "a_title",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-A-before-13",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
           "en": "Good morning, everyone.",
           "zh": "大家早上好。",
           "w": [
@@ -1189,11 +1635,79 @@
               ]
             }
           ]
+        },
+        {
+          "en": "Now you have three minutes to check your work.",
+          "zh": "现在你有三分钟检查作答。",
+          "w": [
+            {
+              "t": "word",
+              "h": "check",
+              "m": "v.检查",
+              "sp": [
+                [
+                  30,
+                  35
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1068,
+            1077
+          ],
+          "asr_text": "Now you have three minutes to check your work.",
+          "translation_key": "a_check",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "after",
+          "instruction_id": "2010-A-after-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "This is the end of section A mini-lecture.",
+          "zh": "A节短讲到此结束。",
+          "w": [
+            {
+              "t": "word",
+              "h": "end",
+              "m": "n.结束",
+              "sp": [
+                [
+                  12,
+                  15
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1077,
+            1086
+          ],
+          "asr_text": "This is the end of section A mini lecture.",
+          "translation_key": "a_end",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "after",
+          "instruction_id": "2010-A-after-2",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
         }
       ],
       "待核": [
         "尚须与实际原音逐句对应；本稿不附假定时间。"
-      ]
+      ],
+      "instruction_review": {
+        "source": "说明语句/2010.json",
+        "source_sha256": "177c93cfbdc010f1a6e11ecda9ab55465c10524eaabc4047089fa9e9ff43b0d8",
+        "status": "draft_local_asr_checked_not_publication_approved",
+        "待核": []
+      }
     },
     {
       "id": "2010-B1",
@@ -1211,6 +1725,316 @@
         }
       ],
       "sentences": [
+        {
+          "en": "Section B Interview.",
+          "zh": "B节：访谈。",
+          "w": [
+            {
+              "t": "word",
+              "h": "interview",
+              "m": "n.访谈",
+              "sp": [
+                [
+                  10,
+                  19
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1086,
+            1089
+          ],
+          "asr_text": "Section B Interview",
+          "translation_key": "b_header",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "In this section you will hear one interview.",
+          "zh": "在这一节中，你将听到一段访谈。",
+          "w": [
+            {
+              "t": "word",
+              "h": "interview",
+              "m": "n.访谈",
+              "sp": [
+                [
+                  34,
+                  43
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1089,
+            1097
+          ],
+          "asr_text": "In this section you will hear one interview.",
+          "translation_key": "b_in_one",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-2",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "The interview will be divided into two parts.",
+          "zh": "这段访谈分为两部分。",
+          "w": [
+            {
+              "t": "word",
+              "h": "divide",
+              "m": "v.划分",
+              "sp": [
+                [
+                  22,
+                  29
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1097,
+            1105
+          ],
+          "asr_text": "The interview will be divided into two parts.",
+          "translation_key": "b_divided",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-3",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "At the end of each part, five questions will be asked about what was said.",
+          "zh": "每部分结束后，将就刚才所说的内容提出五个问题。",
+          "w": [
+            {
+              "t": "word",
+              "h": "question",
+              "m": "n.问题",
+              "sp": [
+                [
+                  30,
+                  39
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1105,
+            1120
+          ],
+          "asr_text": "At the end of each part, five questions will be asked about what was said.",
+          "translation_key": "b_five_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-4",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Both the interview and the questions will be spoken once only.",
+          "zh": "访谈和问题都只读一遍。",
+          "w": [
+            {
+              "t": "word",
+              "h": "once",
+              "m": "adv.一次",
+              "sp": [
+                [
+                  52,
+                  56
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1120,
+            1131
+          ],
+          "asr_text": "Both the interview and the questions will be spoken once only.",
+          "translation_key": "b_once",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-5",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "After each question, there will be a ten-second pause.",
+          "zh": "每个问题之后会有十秒钟的停顿。",
+          "w": [
+            {
+              "t": "word",
+              "h": "pause",
+              "m": "n.停顿",
+              "sp": [
+                [
+                  48,
+                  53
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1131,
+            1141
+          ],
+          "asr_text": "After each question, there will be a ten second pause.",
+          "translation_key": "b_pause",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-6",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "During the pause, you should read the four choices of A, B, C, and D, and mark the best answer to each question on Answer Sheet II.",
+          "zh": "请利用停顿时间阅读A、B、C、D四个选项，并在答题卡二上标出每题的最佳答案。",
+          "w": [
+            {
+              "t": "word",
+              "h": "choice",
+              "m": "n.选项",
+              "sp": [
+                [
+                  43,
+                  50
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1141,
+            1168
+          ],
+          "asr_text": "During the pause, you should read the four choices of A, B, C, and D, and mark the best answer to each question on Answer Sheet II.",
+          "translation_key": "b_choices",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-7",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "You have thirty seconds to preview the questions.",
+          "zh": "你有三十秒钟预览题目。",
+          "w": [
+            {
+              "t": "word",
+              "h": "preview",
+              "m": "v.预览；预先浏览",
+              "sp": [
+                [
+                  27,
+                  34
+                ]
+              ]
+            }
+          ],
+          "role": "instruction",
+          "asr_range": [
+            1168,
+            1176
+          ],
+          "asr_text": "You have thirty seconds to preview the questions.",
+          "translation_key": "b_preview_questions",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-8",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Now listen to part one of the interview.",
+          "zh": "现在请听访谈的第一部分。",
+          "w": [
+            {
+              "t": "word",
+              "h": "listen",
+              "m": "v.听",
+              "sp": [
+                [
+                  4,
+                  10
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1176,
+            1184
+          ],
+          "asr_text": "Now listen to part one of the interview.",
+          "translation_key": "b1_listen_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-9",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Questions one to five are based on part one of the interview.",
+          "zh": "第1至5题根据访谈的第一部分提问。",
+          "w": [
+            {
+              "t": "phr",
+              "h": "be based on",
+              "m": "phr.以……为依据",
+              "sp": [
+                [
+                  26,
+                  34
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1184,
+            1196
+          ],
+          "asr_text": "Questions one to five are based on part one of the interview.",
+          "translation_key": "b1_group_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B1-before-10",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
         {
           "en": "The word diversity has become a cliché in the United States today.",
           "zh": "如今在美国，“多样性”这个词已成了老生常谈。",
@@ -1285,8 +2109,8 @@
           "w": [
             {
               "t": "word",
-              "h": "Welcome",
-              "m": "v.欢迎",
+              "h": "welcome",
+              "m": "interj.欢迎（此处为独立欢迎语）",
               "sp": [
                 [
                   0,
@@ -1416,7 +2240,7 @@
           ]
         },
         {
-          "en": "Has the idea of being different change over the years?",
+          "en": "Has the idea of being different changed over the years?",
           "zh": "这些年来，人们对于“不同”的理解发生变化了吗？",
           "w": [
             {
@@ -1425,8 +2249,8 @@
               "m": "phr.这些年来",
               "sp": [
                 [
-                  39,
-                  53
+                  40,
+                  54
                 ]
               ]
             }
@@ -1807,6 +2631,68 @@
           ]
         },
         {
+          "en": "This is the end of part one of the interview.",
+          "zh": "访谈的第一部分到此结束。",
+          "w": [
+            {
+              "t": "word",
+              "h": "end",
+              "m": "n.结束",
+              "sp": [
+                [
+                  12,
+                  15
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1731,
+            1741
+          ],
+          "asr_text": "This is the end of part one of the interview.",
+          "translation_key": "b1_end_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before_questions",
+          "instruction_id": "2010-B1-before_questions-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Questions one to five are based on what you have just heard.",
+          "zh": "第1至5题根据你刚才听到的内容提问。",
+          "w": [
+            {
+              "t": "phr",
+              "h": "be based on",
+              "m": "phr.以……为依据",
+              "sp": [
+                [
+                  26,
+                  34
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1741,
+            1753
+          ],
+          "asr_text": "Questions one to five are based on what you have just heard.",
+          "translation_key": "b1_group_heard",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before_questions",
+          "instruction_id": "2010-B1-before_questions-2",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
           "en": "Why does the woman say the word diversity has become a cliche?",
           "zh": "为什么女士说“多样性”这个词已成为老生常谈？",
           "w": [
@@ -1904,9 +2790,29 @@
       ],
       "待核": [
         "尚须与实际原音逐句对应；本稿不附假定时间。",
-        "尾部题干来自本年所供解析；实际念题措辞、题号和时序仍须以录音对齐，不能把解析字面差异冒充录音。",
-        "解析页3实际印“Has the idea of being different change over the years?”，保留change，是否原音读changed须实听；不能只依语法修改。"
-      ]
+        "尾部题干来自本年所供解析；实际念题措辞、题号和时序仍须以录音对齐，不能把解析字面差异冒充录音。"
+      ],
+      "原文修订记录": [
+        {
+          "原印": "being different change over",
+          "采用": "being different changed over",
+          "依据": "原PDF页图与两套独立ASR交叉；原印与原音不符，英文按实际音证修正。",
+          "primary_text": "or Irish as opposed to Swedish or Italian. Has the idea of being different changed over the years? Yes, of course. You see, Today, we",
+          "secondary_text": "Or Irish as opposed to Swedish or Italian. Has the idea of being different changed over the years? Yes, of course. You see, today we-",
+          "window": [
+            950.1,
+            962.18
+          ],
+          "secondary_record": "核验/疑文复识别/2010.json",
+          "secondary_record_sha256": "58a8895c006bd1bd9c8c0447bb34c07a411f2951124d72f44513d7607cc91e2f"
+        }
+      ],
+      "instruction_review": {
+        "source": "说明语句/2010.json",
+        "source_sha256": "177c93cfbdc010f1a6e11ecda9ab55465c10524eaabc4047089fa9e9ff43b0d8",
+        "status": "draft_local_asr_checked_not_publication_approved",
+        "待核": []
+      }
     },
     {
       "id": "2010-B2",
@@ -1924,6 +2830,68 @@
         }
       ],
       "sentences": [
+        {
+          "en": "Now listen to part two of the interview.",
+          "zh": "现在请听访谈的第二部分。",
+          "w": [
+            {
+              "t": "word",
+              "h": "listen",
+              "m": "v.听",
+              "sp": [
+                [
+                  4,
+                  10
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1822,
+            1830
+          ],
+          "asr_text": "Now listen to part two of the interview.",
+          "translation_key": "b2_listen_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B2-before-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Questions six to ten are based on part two of the interview.",
+          "zh": "第6至10题根据访谈的第二部分提问。",
+          "w": [
+            {
+              "t": "phr",
+              "h": "be based on",
+              "m": "phr.以……为依据",
+              "sp": [
+                [
+                  25,
+                  33
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            1830,
+            1842
+          ],
+          "asr_text": "Questions six to ten are based on part two of the interview.",
+          "translation_key": "b2_group_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before",
+          "instruction_id": "2010-B2-before-2",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
         {
           "en": "This shows that racial diversity is not occurring everywhere.",
           "zh": "这表明，种族多样化并没有发生在每个地方。",
@@ -1976,7 +2944,7 @@
           ]
         },
         {
-          "en": "And there are some interesting age gap developing between states.",
+          "en": "And there are some interesting age gaps developing between states.",
           "zh": "各州之间正在形成一些值得关注的年龄差距。",
           "w": [
             {
@@ -2350,6 +3318,68 @@
           ]
         },
         {
+          "en": "This is the end of part two of the interview.",
+          "zh": "访谈的第二部分到此结束。",
+          "w": [
+            {
+              "t": "word",
+              "h": "end",
+              "m": "n.结束",
+              "sp": [
+                [
+                  12,
+                  15
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            2166,
+            2176
+          ],
+          "asr_text": "This is the end of part two of the interview.",
+          "translation_key": "b2_end_part",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before_questions",
+          "instruction_id": "2010-B2-before_questions-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
+          "en": "Questions six to ten are based on what you have just heard.",
+          "zh": "第6至10题根据你刚才听到的内容提问。",
+          "w": [
+            {
+              "t": "phr",
+              "h": "be based on",
+              "m": "phr.以……为依据",
+              "sp": [
+                [
+                  25,
+                  33
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            2176,
+            2188
+          ],
+          "asr_text": "Questions six to ten are based on what you have just heard.",
+          "translation_key": "b2_group_heard",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "before_questions",
+          "instruction_id": "2010-B2-before_questions-2",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
+        },
+        {
           "en": "What does Dr Johnson indicate during the interview?",
           "zh": "约翰逊博士在访谈中指出了什么？",
           "w": [
@@ -2443,13 +3473,78 @@
           ],
           "role": "question",
           "n": 10
+        },
+        {
+          "en": "This is the end of Part 1: Listening Comprehension.",
+          "zh": "第一部分听力理解到此结束。",
+          "w": [
+            {
+              "t": "word",
+              "h": "comprehension",
+              "m": "n.理解",
+              "sp": [
+                [
+                  37,
+                  50
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            2247,
+            2256
+          ],
+          "asr_text": "This is the end of Part 1: Listening Comprehension.",
+          "translation_key": "end",
+          "speaker": "announcer",
+          "instruction_source": "说明语句/2010.json",
+          "instruction_slot": "after",
+          "instruction_id": "2010-B2-after-1",
+          "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+          "asr_pointer": "",
+          "asr_ref": "预处理/2010/识别.json"
         }
       ],
       "待核": [
         "尚须与实际原音逐句对应；本稿不附假定时间。",
-        "尾部题干来自本年所供解析；实际念题措辞、题号和时序仍须以录音对齐，不能把解析字面差异冒充录音。",
-        "解析页4实际印“there are some interesting age gap developing”，保留gap，须实听是否为gaps。"
-      ]
+        "尾部题干来自本年所供解析；实际念题措辞、题号和时序仍须以录音对齐，不能把解析字面差异冒充录音。"
+      ],
+      "原文修订记录": [
+        {
+          "原印": "interesting age gap developing",
+          "采用": "interesting age gaps developing",
+          "依据": "原PDF页图与两套独立ASR交叉；原印与原音不符，英文按实际音证修正。",
+          "primary_text": "type of diversity is age diversity. And there are some interesting age gaps developing between states. For example, there is a large gap between the average age",
+          "secondary_text": "type of diversity is age diversity, and there are some interesting age gaps developing between states. For example, there is a large gap between the average age and age of age of age.",
+          "window": [
+            1239.42,
+            1250.14
+          ],
+          "secondary_record": "核验/疑文复识别/2010.json",
+          "secondary_record_sha256": "58a8895c006bd1bd9c8c0447bb34c07a411f2951124d72f44513d7607cc91e2f"
+        }
+      ],
+      "instruction_review": {
+        "source": "说明语句/2010.json",
+        "source_sha256": "177c93cfbdc010f1a6e11ecda9ab55465c10524eaabc4047089fa9e9ff43b0d8",
+        "status": "draft_local_asr_checked_not_publication_approved",
+        "待核": []
+      }
     }
-  ]
+  ],
+  "instruction_merge": {
+    "source": "说明语句/2010.json",
+    "source_sha256": "177c93cfbdc010f1a6e11ecda9ab55465c10524eaabc4047089fa9e9ff43b0d8",
+    "body_and_question_objects_sha256": "0cc3d95fde999ce0a2fdf6ce919a40af0abf08fcfc744c804b5771e854456d4f",
+    "existing_instruction_duplicates": [],
+    "status": "已按播放顺序合入；全文词汇span已重查，不签发approved"
+  },
+  "译注语言复核_2009_2014": {
+    "scope": "核对zh/w的词条、词性、语境义及否定/范围关系；仅作必要订正，不改en/题干/时刻。",
+    "sentences_checked": 171,
+    "vocabulary_entries_checked": 171,
+    "changes": 1,
+    "record": "核验/2009—2014译注语义复核.json"
+  }
 }

@@ -39,6 +39,8 @@ AUDIT = None
 DRAFT = False
 SOURCE_DIR = None
 BASE_CSS = B.CSS
+SHEET_PAGES = []
+PREVIEW_PAGES = {}
 
 
 def require(ok, message):
@@ -145,7 +147,7 @@ def validate(p, t, allow_draft=False):
 
 
 def configure(folder, out, draft=False):
-    global PAPER, TIMELINE, OUT, AUDIT, DRAFT, SOURCE_DIR
+    global PAPER, TIMELINE, OUT, AUDIT, DRAFT, SOURCE_DIR, SHEET_PAGES, PREVIEW_PAGES
     DRAFT = draft
     folder = Path(folder).resolve()
     SOURCE_DIR = folder
@@ -155,6 +157,9 @@ def configure(folder, out, draft=False):
     OUT.mkdir(parents=True, exist_ok=True)
     AUDIT = OUT / '核验'
     AUDIT.mkdir(exist_ok=True)
+    SHEET_PAGES = paginate_sheet(PAPER)
+    PREVIEW_PAGES = {g['id']:preview_pages(g['questions']) for g in PAPER['groups']}
+    dump(AUDIT/'大字分页方案.json',{'sheet_pages':SHEET_PAGES,'preview_pages':PREVIEW_PAGES,'policy':{'preview':'30秒按页数均分；绝对倒计时不重置','lecture_seconds_per_page':25,'check_seconds_per_page':30,'interview_seconds_per_page':20},'source_fingerprints':fingerprints()})
     B.D, B.OUT = AUDIT, OUT
     B.Q = {'gap_answers': PAPER.get('gap_answers', [])}
     B.NAME = PAPER.get('filename', f'{PAPER["year"]}年 专八听力 考试.mp4')
@@ -176,11 +181,91 @@ def fingerprints():
     }.items()}
 
 
+def preview_pages(numbers):
+    # 五题按原顺序2+3，避免最后一页只剩一题；其他长度均完整覆盖。
+    if len(numbers)==5:return [numbers[:2],numbers[2:]]
+    return [numbers[i:i+3] for i in range(0,len(numbers),3)]
+
+
+def paginate_sheet(p):
+    """原题完整逻辑行分为2页，必要时3页；不拆词句、不重复/删除正文。
+
+    用原卷TNR实际字宽估算分栏，浏览器另作40—46px真实度量核验。
+    """
+    from PIL import ImageFont
+    original=[r for rows in p.get('sheets',[p.get('sheet',[])]) for r in rows]
+    title=next((r[1] for r in original if r[0]=='title'),p.get('sheet_title','Mini-lecture'))
+    rows=[r for r in original if r[0] not in ('col','title')]
+    if len(rows)<4:
+        cut=max(1,math.ceil(len(rows)/2))
+        return [{'rows':[['title',title]]+part+[['col']],'source_row_range':rg,'planned_font_size':46} for part,rg in [(rows[:cut],[0,cut]),(rows[cut:],[cut,len(rows)])]]
+    best=None
+    for pages in [2,3]:
+        for fs in range(46,39,-1):
+            fonts={b:ImageFont.truetype(str(B.FL/('TimesNewRomanBold.ttf' if b else 'TimesNewRoman.ttf')),fs) for b in (False,True)}
+            costs=[]
+            for kind,txt in rows:
+                font=fonts[kind=='h'];width=800-{'b':46,'e':80,'d':90}.get(kind,0)
+                tokens=re.findall(r'\{\d+\}|\S+',txt);line=0.;lines=1
+                for token in tokens:
+                    token=re.sub(r'\{(\d+)\}',lambda m:'('+m[1]+') _______',token)
+                    w=font.getlength(token,features=['-kern']);space=(font.getlength(' ')+fs*.05) if line else 0
+                    if line and line+space+w>width:lines+=1;line=w
+                    else:line+=space+w
+                costs.append(lines*fs*1.25+(18 if kind=='h' else 0))
+            prefix=[0]
+            for c in costs:prefix.append(prefix[-1]+c)
+            n=len(rows);cols=pages*2;dp={(0,0):(0,[])}
+            for k in range(1,cols+1):
+                for end in range(k,n+1):
+                    options=[]
+                    for start in range(k-1,end):
+                        if (k-1,start) not in dp or (end<n and rows[end-1][0]=='h'):continue
+                        height=prefix[end]-prefix[start]-(18 if rows[start][0]=='h' else 0)
+                        prev,cuts=dp[k-1,start];options.append((max(prev,height),cuts+[end]))
+                    if options:dp[k,end]=min(options,key=lambda x:x[0])
+            if (cols,n) in dp and dp[cols,n][0]<=735:
+                best=(pages,fs,dp[cols,n][1]);break
+        if best:break
+    require(best,'原题在3页40px仍过密，须人工保留原文合理分屏')
+    pages,fs,cuts=best;columns=[];a=0
+    for z in cuts:columns.append(rows[a:z]);a=z
+    result=[]
+    for i in range(pages):result.append({'rows':[['title',title]]+columns[2*i]+[['col']]+columns[2*i+1],'source_row_range':[0 if i==0 else cuts[2*i-1],cuts[2*i+1]],'planned_font_size':fs})
+    flattened=[r for page in result for r in page['rows'] if r[0] not in ('title','col')]
+    require(flattened==rows,'分页正文重复或漏行')
+    return result
+
+
+def paginated_events():
+    """只增加画面换页，保留每个原始语音边界和绝对倒计时结束。"""
+    source=TIMELINE['events'];result=[];audit=[]
+    for i,ev in enumerate(source):
+        e=copy.deepcopy(ev);a=e['t'];z=source[i+1]['t'] if i+1<len(source) else TIMELINE['source_duration'];kind=e['kind']
+        if kind=='sheet':pages=list(range(len(SHEET_PAGES)))
+        elif kind=='plist':
+            g=next(g for g in PAPER['groups'] if g['id']==e['group']);pages=preview_pages(e.get('numbers',g['questions']))
+        else:result.append(e);continue
+        end=min(z,e.get('countdown',{}).get('end',z));span=end-a
+        preview=bool('countdown' in e and span<=45)
+        step=(span/len(pages) if preview else (30 if 'countdown' in e else 25 if kind=='sheet' else 20))
+        starts=[a] if span<=0 or step<=0 else [a+j*step for j in range(max(1,math.ceil(span/step-1e-8))) if a+j*step<end-1e-6]
+        for j,x in enumerate(starts):
+            pg=j%len(pages);s=copy.deepcopy(e);s['t']=round(x,6);s['display_page']=pg+1;s['display_pages']=len(pages)
+            if kind=='sheet':s['page']=pages[pg]
+            else:s['numbers']=pages[pg]
+            result.append(s)
+        audit.append({'kind':kind,'original_start':a,'original_end':z,'pages':len(pages),'page_starts':starts,'absolute_countdown_end':e.get('countdown',{}).get('end'),'preview':preview})
+    dump(AUDIT/'自动翻页核验.json',{'segments':audit,'audio_timing_changed':False,'source_fingerprints':fingerprints()})
+    return result
+
+
 def states():
     trim = TIMELINE.get('trim', {}).get('start', 0)
     duration = TIMELINE['source_duration'] - trim
     raw = [(-B.LEAD, {'kind': 'title'})]
-    for e in TIMELINE['events']:
+    expanded=paginated_events()
+    for index,e in enumerate(expanded):
         s = {k: v for k, v in e.items() if k not in ['t', 'countdown']}
         a = e['t'] - trim
         if 'countdown' not in e:
@@ -192,8 +277,9 @@ def states():
         if n > 1 and end - a - (n - 1) < .5:
             n -= 1
         raw.append((a, dict(s, cd=n, cdl=label)))
+        stop=(expanded[index+1]['t']-trim) if index+1<len(expanded) else duration
         for k in range(n-1, 0, -1):
-            raw.append((end-k, dict(s, cd=k, cdl=label)))
+            if a+1e-6<end-k<stop-1e-6:raw.append((end-k, dict(s, cd=k, cdl=label)))
     # 同一帧的说明/倒计时边界取最后状态；不同题号碰在同一帧则不允许隐匿。
     by_frame = {}
     merged = []
@@ -266,8 +352,9 @@ def page(s):
         text = ' '.join(f'<s class="{"on" if i==hi else ""}">{ESC(x)}</s>' for i,x in enumerate(lines))
         body = f'<div class="main"><div class="sec blk">{ESC(sec["title"])}</div><div class="instr blk">{text}</div></div>'
     elif k == 'sheet':
-        rows = p.get('sheets', [p.get('sheet', [])])[s.get('page', 0)]
+        rows = SHEET_PAGES[s.get('page', 0)]['rows']
         title = next((x[1] for x in rows if x[0] == 'title'), p.get('sheet_title', 'Mini-lecture'))
+        title += f'　({s.get("page",0)+1}/{len(SHEET_PAGES)})'
         cols, cur = [], []
         for it in rows:
             if it[0] == 'title':
@@ -279,12 +366,14 @@ def page(s):
         body = f'<div class="main"><div class="sheet blk"><div class="t">{ESC(title)}</div><div class="cols">'+''.join('<div class="col">'+''.join(c)+'</div>' for c in cols)+'</div></div></div>'
     elif k == 'plist':
         group = next(g for g in p['groups'] if g['id'] == s['group'])
+        label=f'　({s["display_page"]}/{s["display_pages"]})' if s.get('display_pages',1)>1 else ''
         rows = []
         for n in s.get('numbers', group['questions']):
             q = q_by_n()[n];o=q['options']
-            rows.append(f'<div class="qg"><div class="r"><span class="n">{n}.</span>'+''.join(f'<span class="opt"><b>{"ABCD"[j]}.</b>{ESC(o[j])}</span>' for j in (0,1))+'</div><div class="r"><span></span>'+''.join(f'<span class="opt"><b>{"ABCD"[j]}.</b>{ESC(o[j])}</span>' for j in (2,3))+'</div></div>')
-        intro = f'<div class="inst2 blk">{ESC(group["intro"])}</div>' if group.get('intro') else ''
-        body = f'<div class="main pl"><div class="sec blk">{ESC(group["title"])}</div>{intro}<div class="blk">'+''.join(rows)+'</div></div>'
+            rows.append(f'<div class="qg"><div class="r"><span class="n">{n}.</span>'+''.join(f'<span class="opt"><b class="opt-label">{"ABCD"[j]}.</b><span class="option-text">{ESC(o[j])}</span></span>' for j in (0,1))+'</div><div class="r"><span></span>'+''.join(f'<span class="opt"><b class="opt-label">{"ABCD"[j]}.</b><span class="option-text">{ESC(o[j])}</span></span>' for j in (2,3))+'</div></div>')
+        # 选项卡保留题组标题；完整正式说明原音/说明页保留，不在每次循环卡上重复整段。
+        intro = f'<div class="inst2 blk">{ESC(group["intro"])}</div>' if group.get('intro') and p.get('show_group_instructions',False) else ''
+        body = f'<div class="main pl"><div class="sec blk">{ESC(group["title"]+label)}</div>{intro}<div class="blk">'+''.join(rows)+'</div></div>'
     elif k == 'q':
         q = q_by_n()[s['n']]
         stem = q.get('stem') or 'Listen to the question in the recording.'
@@ -331,6 +420,7 @@ def page(s):
     # 历史题长度不同：先尝试2025默认；不适配才按浏览器实测从最大字号逐级调整。
     # 只有明确标注的历史长选项允许自然换行，整个画面/边框/块重叠检查仍完整执行。
     css += '.source-note{font-family:"Noto Serif SC";font-size:28px;line-height:40px;margin-top:20px}.answer-text{min-width:0}'
+    css += '.ln,.stem,.ql .opt,.pl .r,.inst2,.instr,.ansb .qg,.ans .qg,.ttl{word-spacing:.05em;font-kerning:none}.pl .r{grid-template-columns:92px minmax(0,1fr) minmax(0,1fr);column-gap:44px}.pl .opt{display:flex;column-gap:18px;align-items:flex-start}.pl .opt-label{flex:0 0 1.1em;margin-right:0}.pl .option-text{min-width:0;flex:1}.ql .opt{column-gap:24px}.ql .opt b{margin-right:0}'
     if DRAFT:
         body += '<div style="position:absolute;left:90px;bottom:9px;font:22px Noto Serif SC;color:#666">待核样片 · 非成品</div>'
     css = "@import url('"+(ROOT/'四级/tools/fonts/fonts.css').as_uri()+"');" + css
@@ -356,17 +446,17 @@ FIT_JS = r'''(kind) => {
    return e.getClientRects().length<=1&&r.height<=lh*1.6+8;
  });
  const mark=sel=>document.querySelectorAll(sel).forEach(e=>e.classList.add('allow-wrap'));
- if(rectok()&&one())return {mode:'2025-default'};
+ if(!['q','plist','sheet'].includes(kind)&&rectok()&&one())return {mode:'2025-default'};
  if(kind==='q') {
    mark('.ql .opt');
-   for(let fs=68;fs>=48;fs--) {
-     const stem=Math.min(72,fs+4),lh=fs*1.38;
+   for(let fs=80;fs>=56;fs--) {
+     const stem=Math.min(84,fs+4),lh=fs*1.32;
      setcss(`.qn{margin-bottom:18px}.stem{font-size:${stem}px;line-height:1.2;margin-bottom:26px}.ql .opt{font-size:${fs}px;line-height:${lh}px;padding:9px 0;align-items:flex-start}.ql .opt>span{flex:1;min-width:0}.ql .opt b{width:76px}.source-note{margin-top:14px}`);
      if(rectok())return {mode:'question-wrap',font_size:fs,line_height:lh,stem_font_size:stem};
    }
  } else if(kind==='plist') {
    mark('.pl .opt,.pl .r > span,.inst2');
-   for(let fs=40;fs>=30;fs--) {
+   for(let fs=52;fs>=44;fs--) {
      const lh=fs*1.28;
      setcss(`.pl .sec{margin-bottom:24px}.pl .r{font-size:${fs}px;line-height:${lh}px}.pl .r>span{align-self:start;min-width:0}.pl .qg{padding:11px 0 12px}.pl .qg:first-child{padding-top:0}.pl .inst2{font-size:${fs}px;line-height:${lh}px;margin-bottom:20px}`);
      if(rectok())return {mode:'preview-wrap',font_size:fs,line_height:lh};
@@ -379,14 +469,14 @@ FIT_JS = r'''(kind) => {
      if(rectok())return {mode:'answer-wrap',font_size:fs,line_height:lh};
    }
  } else if(kind==='sheet') {
-   for(let fs=37;fs>=32;fs--)for(const ratio of [46/37,1.18,1.125])for(const gap of [18,12,5]){
+   for(let fs=46;fs>=40;fs--)for(const ratio of [1.25,1.2])for(const gap of [18,12]){
      const lh=fs*ratio;
      setcss(`.ln{font-size:${fs}px;line-height:${lh}px}.ln.h{margin-top:${gap}px}.ln.h:first-child{margin-top:0}`);
      if(rectok())return {mode:'sheet-fit',font_size:fs,line_height:lh,heading_gap:gap};
    }
    // 原有换栏若明显不均，只移动完整逻辑行，保持左栏→右栏的逐字阅读顺序。
    const cols=[...document.querySelectorAll('.sheet .col')], rows=cols.flatMap(c=>[...c.children]);
-   if(cols.length===2)for(let fs=37;fs>=32;fs--)for(const ratio of [46/37,1.18,1.125])for(const gap of [18,12,5]){
+   if(cols.length===2)for(let fs=46;fs>=40;fs--)for(const ratio of [1.25,1.2])for(const gap of [18,12]){
      const lh=fs*ratio;
      setcss(`.ln{font-size:${fs}px;line-height:${lh}px}.ln.h{margin-top:${gap}px}.ln.h:first-child{margin-top:0}`);
      let best=null;
@@ -407,6 +497,39 @@ def fit_layout(pg, state):
     return pg.evaluate(FIT_JS, state['kind'])
 
 
+SPACING_JS = r'''() => {
+ const errors=[], spaces=[] , labels=[], numbers=[];
+ const rr=(node,a,b)=>{const r=document.createRange();r.setStart(node,a);r.setEnd(node,b);return r.getBoundingClientRect();};
+ const textrect=e=>{const r=document.createRange();r.selectNodeContents(e);return r.getBoundingClientRect();};
+ for(const root of document.querySelectorAll('.ln,.stem,.ql .opt,.pl .option-text,.instr,.ansb .answer-text,.ans .a,.ttl')){
+   const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+   for(let node=walk.nextNode();node;node=walk.nextNode()){
+     const txt=node.textContent,fs=parseFloat(getComputedStyle(node.parentElement).fontSize);
+     for(let i=1;i<txt.length-1;i++){
+       if(txt[i]!==' '||!/[a-z0-9]/i.test(txt[i-1])||!/[a-z0-9]/i.test(txt[i+1]))continue;
+       const a=rr(node,i-1,i),sp=rr(node,i,i+1),b=rr(node,i+1,i+2);
+       if(Math.abs(a.top-b.top)>2)continue;
+       const em=sp.width/fs;spaces.push(em);
+       if(em<.275)errors.push('英文空格过窄 '+em.toFixed(3)+'em '+txt.slice(Math.max(0,i-12),i+14));
+       if(em>.55)errors.push('英文空格过宽 '+em.toFixed(3)+'em');
+     }
+   }
+ }
+ for(const opt of document.querySelectorAll('.ql .opt,.pl .opt')){
+   const label=opt.querySelector('b'),body=opt.querySelector('.option-text')||opt.querySelector('span');
+   if(!label||!body)continue;
+   const a=textrect(label),b=textrect(body),fs=parseFloat(getComputedStyle(opt).fontSize),gap=b.left-a.right;
+   labels.push(gap);if(gap<Math.max(16,fs*.28))errors.push('选项标签与正文间距不足 '+gap.toFixed(1)+'px '+opt.textContent.slice(0,25));
+ }
+ for(const row of document.querySelectorAll('.pl .qg>.r:first-child')){
+   const n=row.querySelector('.n'),opt=row.querySelector('.opt');if(!n||!opt)continue;
+   const gap=textrect(opt.querySelector('b')).left-textrect(n).right;numbers.push(gap);
+   if(gap<28)errors.push('题号与选项间距不足 '+gap.toFixed(1)+'px '+row.textContent.slice(0,25));
+ }
+ return {errors,spaces_checked:spaces.length,min_space_em:spaces.length?Math.min(...spaces):null,max_space_em:spaces.length?Math.max(...spaces):null,min_label_gap_px:labels.length?Math.min(...labels):null,min_question_number_gap_px:numbers.length?Math.min(...numbers):null};
+}'''
+
+
 def original_texts(s):
     """原卷合法出现的词不能因恰与某空答案相同而被误当泄题。"""
     k=s['kind'];items=[s.get('st',''),s.get('cdl','')]
@@ -414,7 +537,7 @@ def original_texts(s):
         sec=next(x for x in PAPER['sections'] if x['id']==s['sec'])
         items += [sec['title']]+s.get('lines',sec['lines'])
     elif k=='sheet':
-        rows=PAPER.get('sheets',[PAPER.get('sheet',[])])[s.get('page',0)]
+        rows=SHEET_PAGES[s.get('page',0)]['rows']
         items += [r[1] for r in rows if r[0]!='col']
     elif k=='plist':
         g=next(g for g in PAPER['groups'] if g['id']==s['group'])
@@ -538,7 +661,7 @@ def render(sample=False, layout_only=False):
     if sample:
         chosen = {}
         for key,s in todo.items():
-            typ = (s['kind'],bool('cd' in s),s.get('sec'),s.get('group'),s.get('page'),s.get('n'))
+            typ = (s['kind'],bool('cd' in s),s.get('sec'),s.get('group'),s.get('page'),s.get('display_page'),s.get('n'))
             if typ not in chosen:
                 chosen[typ]=(key,s)
         todo=dict(chosen.values())
@@ -555,8 +678,9 @@ def render(sample=False, layout_only=False):
             pg=pager.load(base+'/render/'+tmp.name)
             require(pg.locator('body').get_attribute('data-render-key')==key,'浏览器展示了过期页面')
             fit=fit_layout(pg,s)
-            fitted.append({'state':s,'fit':fit})
-            bad=pg.evaluate(CHECK_JS)+question_gap_check(pg,s)+B.font_check(pg,pager.cdp)+leak_check(s,htm)
+            spacing=pg.evaluate(SPACING_JS)
+            fitted.append({'state':s,'fit':fit,'spacing':spacing})
+            bad=pg.evaluate(CHECK_JS)+question_gap_check(pg,s)+B.font_check(pg,pager.cdp)+leak_check(s,htm)+spacing['errors']
             if bad:
                 errors.append({'state':s,'errors':sorted(set(bad))})
                 pg.screenshot(path=str(shots/(key+'.bad.png')))
@@ -603,6 +727,11 @@ def selftest():
         require(l[-2][1]['kind']=='ansA' and l[-1][1]['kind']=='ansB','答案屏转换错误')
         require(0 <= total-(t['source_duration']+65) <= 1/B.FPS,'2025答案时长不符')
         require(l[-2][0] >= meta['audioEnd'],'答案不得早于录音结束')
+        require(len(SHEET_PAGES) in (2,3),'大字卡片未完整分2/3页')
+        require(all([n for sub in PREVIEW_PAGES[g['id']] for n in sub]==g['questions'] for g in PAPER['groups']),'预览翻页漏题/错序')
+        preview=[e for e in paginated_events() if e['kind']=='sheet' and e.get('st')=='预览答题卡']
+        require(sorted(e['page'] for e in preview)==list(range(len(SHEET_PAGES))),'30秒预览未覆盖卡片全部页')
+        require(len({e['countdown']['end'] for e in preview})==1,'翻页重置了绝对倒计时')
         tests=[]
         x=copy.deepcopy(t);x['events'][0]['kind']='ansA';tests.append((p,x,'提前答案'))
         x=copy.deepcopy(t);x['events'][2]['t']=-1;tests.append((p,x,'时间倒序/越界'))
@@ -628,7 +757,7 @@ def selftest():
         validate(oldp,oldt)
         dump(Path(td)/'试卷.json',oldp);dump(Path(td)/'时间轴.json',oldt);configure(td,Path(td)/'old');l,_,_=states()
         require(sum(s['kind']=='ansB' for _,s in l)==2,'20题答案分页错误')
-        print('自检通过：2025转换、动态空数/题数、自动答案分页、不计分题源标记、7项错误注入。')
+        print('自检通过：2025转换、大字分页无漏/无倒计时重置、动态题数、答案分页、不计分题源标记、7项错误注入。')
 
 
 def layout_selftest():
@@ -638,7 +767,7 @@ def layout_selftest():
         configure(td,Path(td)/'out')
         good={'kind':'q','n':7,'st':'作答','cd':7,'cdl':'作答'}
         sheet={'kind':'sheet','st':'检查答案','cd':125,'cdl':'检查'}
-        plist={'kind':'plist','group':'part2','st':'选项预览'}
+        plist={'kind':'plist','group':'part2','numbers':[6,7,8],'display_page':2,'display_pages':2,'st':'选项预览'}
         with serving() as base,sync_playwright() as pw:
             br=pw.chromium.launch(executable_path=shutil.which('chromium'),args=['--no-sandbox'])
             pager=B.Pager(br,viewport={'width':1920,'height':1080},device_scale_factor=1)
@@ -649,7 +778,7 @@ def layout_selftest():
                 (OUT/'page.html').write_text(htm,'utf-8')
                 pg=pager.load(base+'/render/page.html?attempt='+str(attempt[0]))
                 fit_layout(pg,state)
-                return pg.evaluate(CHECK_JS)+question_gap_check(pg,state)+B.font_check(pg,pager.cdp)+leak_check(state,htm)
+                return pg.evaluate(CHECK_JS)+question_gap_check(pg,state)+B.font_check(pg,pager.cdp)+leak_check(state,htm)+pg.evaluate(SPACING_JS)['errors']
             for state in [good,sheet,plist,{'kind':'ansA','numbers':list(range(1,16))}]:
                 bad=check(page(state),state)
                 require(not bad,'正常画面被错误拦截：'+str(bad[:3]))
@@ -659,9 +788,12 @@ def layout_selftest():
             PAPER['questions'][0].pop('unscored');PAPER['questions'][0].pop('source_note')
             negatives=[
                 ('超长选项',page(good).replace('Mountain climbing.','Mountain climbing. '*35),good,None),
-                ('答题卡泄露答案',page(sheet).replace('and knowledge','and knowledge long-term memory'),sheet,'答案泄露'),
+                ('答题卡泄露答案',page(sheet).replace('<div class="sheet blk">','<div class="sheet blk"><div>long-term memory</div>'),sheet,'答案泄露'),
                 ('题间距/细线缺失',page(plist).replace('class="qg"','class="missing-group"'),plist,None),
                 ('未知字体字形',page(good).replace('Question 7','Question 7 𝄞 ꙮ'),good,'字体回退'),
+                ('英文词间距压缩',page(good).replace('</style>','.ql .opt{word-spacing:-.2em!important}</style>'),good,'英文空格过窄'),
+                ('标签正文贴合',page(good).replace('</style>','.ql .opt b{width:auto!important}.ql .opt{column-gap:0!important}</style>'),good,'选项标签与正文间距不足'),
+                ('预览题号贴合',page(plist).replace('</style>','.pl .r{grid-template-columns:25px minmax(0,1fr) minmax(0,1fr);column-gap:0}</style>'),plist,'题号与选项间距不足'),
             ]
             for name,htm,state,match in negatives:
                 bad=check(htm,state)
@@ -675,11 +807,11 @@ def layout_selftest():
             # 原卷原本出现别空答案短语允许保留，再多插入一次仍须报泄题。
             PAPER['sheet'][1][1]+=' long-term memory'
             require(not check(page(sheet),sheet),'原卷合法同词被误报泄题')
-            extra=page(sheet).replace('and knowledge','and knowledge long-term memory')
+            extra=page(sheet).replace('<div class="sheet blk">','<div class="sheet blk"><div>long-term memory</div>')
             require(any('答案泄露' in x for x in check(extra,sheet)),'原卷合法同词导致额外泄题漏检')
             print('已拦截原卷合法同词后的额外答案泄露',flush=True)
             br.close()
-        print('浏览器自检通过：含不计分/原卷合法同词的7个正常屏和6项错误注入。',flush=True)
+        print('浏览器自检通过：含不计分/原卷合法同词的7个正常屏和9项错误注入。',flush=True)
 
 
 def main():

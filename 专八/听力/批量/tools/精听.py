@@ -18,7 +18,7 @@ import subprocess
 import sys
 import tempfile
 
-from 精听数据 import ROOT,HERE,LEAD,TAIL,FPS,sha,dump,compile_input,validate
+from 精听数据 import ROOT,HERE,LEAD,TAIL,FPS,sha,dump,compile_input,validate,first_aligned_word,audio_protection,PROTECTION_2022
 
 PROJECT='专八批量精听'
 
@@ -53,9 +53,7 @@ def engine(out):
     def switch_time(audio,it,en,cut):
         aligned=it.get('word_alignment') or []
         if not aligned:return fallback(audio,it,en,cut)
-        later=[w for w in aligned if w['char']>=cut]
-        assert later,'分屏切点没有真实词时刻：'+en[cut:]
-        t=later[0]['start']
+        t=first_aligned_word(aligned,en,cut)['start']
         gaps=list(zip([p[1] for p in it['parts']],[p[0] for p in it['parts'][1:]]))
         near=[(a+b)/2 for a,b in gaps if abs((a+b)/2-t)<=.35]
         return min(near,key=lambda x:abs(x-t)) if near else t
@@ -69,6 +67,7 @@ def fingerprint(m,p,tm):
            m.QA/'分词补充.txt',ROOT/'专八/tools/字号.json',ROOT/'四级/tools/fonts/fonts.css',*m.look_files('C')]
     for base in [ROOT/'专八/tools/fonts',ROOT/'四级/tools/fonts']:
         files+=sorted(f for f in base.rglob('*') if f.is_file() and f.suffix.lower() in ['.woff2','.woff','.ttf','.otf'])
+    if p['year']==2022:files.append(PROTECTION_2022)
     for f in dict.fromkeys(files):
         h.update(str(f.relative_to(ROOT)).encode());h.update(f.read_bytes())
     h.update(json.dumps([p,tm,m.SPLIT.get(p['id'],{}),m.NAMES],ensure_ascii=False,sort_keys=True).encode())
@@ -82,6 +81,8 @@ def read_prepared(out,input_file,draft=False):
     report=json.loads((out/'prepared.json').read_text())
     assert report['input_sha256']==sha(input_file),'输入更改，须重新prepare'
     assert sha(out/'audio'/tm['file'])==tm['audio_sha256']
+    protected,protection=audio_protection(d)
+    assert tm.get('protected_source_intervals',[])==protected and tm.get('audio_protection')==protection,'原音保护登记改变，须重新prepare'
     return d,p,tm
 
 
@@ -197,6 +198,9 @@ def verify(m,p,tm,out,mp4,draft=False):
     check('30帧恒定/帧数',v['r_frame_rate']=='30/1' and int(v['nb_frames'])==frames,[v['r_frame_rate'],v['nb_frames']])
     check('声画等长',abs(float(v['duration'])-float(a['duration']))<.05,[v['duration'],a['duration']])
     check('原采样率与声道',int(a['sample_rate'])==tm['sample_rate'] and a['channels']==tm['channels'],[a['sample_rate'],a['channels']])
+    if tm.get('protected_source_intervals'):
+        intact=not any(u<b and v>a for u,v in tm['compressed_gaps'] for a,b in tm['protected_source_intervals'])
+        check('2022低电平信号保护段完整保留',intact,tm['protected_source_intervals'])
     decoded=out/'decoded.wav';subprocess.run(['ffmpeg','-y','-v','error','-i',str(mp4),'-vn','-c:a','pcm_f32le',str(decoded)],check=True)
     y,sr=sf.read(decoded,dtype='float32',always_2d=True)
     ref,sr2=sf.read(out/'audio'/tm['file'],dtype='float32',always_2d=True)
@@ -214,7 +218,8 @@ def verify(m,p,tm,out,mp4,draft=False):
     item,ok,detail=m.frame_check(mp4,bound,[out/'shots'/(x[1]+'.png') for x in s]);check(item,ok,detail)
     check('成品附件大小',0<mp4.stat().st_size<1900*2**20,mp4.stat().st_size)
     result={'id':p['id'],'ok':all(r['ok'] for r in checks),'draft':draft,'checks':checks,'sha256':sha(mp4),'bytes':mp4.stat().st_size,
-            'fingerprint':fingerprint(m,p,tm),'source_sha256':tm['source_sha256'],'duration':tm['duration'],'mode':'原音不动'}
+            'fingerprint':fingerprint(m,p,tm),'source_sha256':tm['source_sha256'],'duration':tm['duration'],'mode':'原音不动',
+            'protected_source_intervals':tm.get('protected_source_intervals',[]),'audio_protection':tm.get('audio_protection')}
     dump(out/('preview-verification.json' if draft else 'verification.json'),result);decoded.unlink()
     assert result['ok'],'成品独立核验未通过：'+str([r for r in checks if not r['ok']])
     return result
@@ -246,7 +251,8 @@ def encode(m,p,tm,out,input_file,draft=False):
         return
     dump(out/'meta.json',{'id':p['id'],'year':p['year'],'kind':'text','mp4':mp4.name,'label':mp4.name,
                          'mp4_bytes':r['bytes'],'mp4_sha256':r['sha256'],'原音_sha256':tm['source_sha256'],
-                         'input_sha256':sha(input_file),'fingerprint':r['fingerprint'],'成品核查':'全部通过'})
+                         'input_sha256':sha(input_file),'fingerprint':r['fingerprint'],'成品核查':'全部通过',
+                         '原音保护登记_sha256':(tm.get('audio_protection') or {}).get('registration_sha256')})
     print(f'{p["id"]}: 正式成品核验通过 {mp4}',flush=True)
 
 

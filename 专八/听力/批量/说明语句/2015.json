@@ -1,6 +1,6 @@
 {
   "year": 2015,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2015-A",
@@ -294,8 +294,8 @@
           "translation_key": "a_check_future"
         },
         {
-          "en": "Understanding academic.",
-          "zh": "理解学术……〔标题ASR未完整，待听核〕",
+          "en": "Understanding academic lectures.",
+          "zh": "理解学术讲座。",
           "w": [
             {
               "t": "word",
@@ -311,14 +311,54 @@
           ],
           "role": "transition",
           "asr_range": [
+            6,
+            9
+          ],
+          "asr_text": "Understanding academic lectures.",
+          "translation_key": "a_title",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2015/a_title.json",
+          "asr_sha256": "20635b127d1d643c6f3cf24312c73f628c6d16cf58685b58381bc904ca2bce5e",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             113,
             115
           ],
-          "asr_text": "Understanding academic",
-          "translation_key": "a_title",
-          "待核": [
-            "ASR讲座题名仅Understanding academic，解析标题为Understanding Academic Lectures；未给漏识词伪造索引，需原音听核。"
-          ]
+          "primary_asr_ref": "预处理/2015/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "Understanding",
+              101.6,
+              102.32
+            ],
+            [
+              "academic",
+              102.48,
+              103.04
+            ],
+            [
+              "lectures.",
+              103.12,
+              104.16
+            ]
+          ],
+          "start": 101.6,
+          "end": 104.16,
+          "correction_case": "a_title",
+          "evidence": {
+            "window": [
+              97.6,
+              107.2
+            ],
+            "models": [
+              "parakeet",
+              "whisper",
+              "whisper_focused"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         }
       ],
       "after": [
@@ -797,15 +837,7 @@
       ]
     }
   ],
-  "待核": [
-    {
-      "asr_range": [
-        113,
-        115
-      ],
-      "reason": "ASR讲座题名仅Understanding academic，解析标题为Understanding Academic Lectures；未给漏识词伪造索引，需原音听核。"
-    }
-  ],
+  "待核": [],
   "source": {
     "asr": "预处理/2015/识别.json",
     "asr_sha256": "c61b5f5b148db8ec987336e5045eab27732ca13104ce2f4df34aebd0453c03da",
@@ -819,5 +851,55 @@
     "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
   ],
   "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
+    {
+      "asr_range": [
+        113,
+        115
+      ],
+      "reason": "ASR讲座题名仅Understanding academic，解析标题为Understanding Academic Lectures；未给漏识词伪造索引，需原音听核。"
+    }
+  ],
+  "local_corrections": [
+    {
+      "case": "a_title",
+      "old_en": "Understanding academic.",
+      "new_en": "Understanding academic lectures.",
+      "primary_asr_range": [
+        113,
+        115
+      ],
+      "local_asr_range": [
+        6,
+        9
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2015/a_title.json",
+      "local_sha256": "20635b127d1d643c6f3cf24312c73f628c6d16cf58685b58381bc904ca2bce5e",
+      "source_parts": [
+        {
+          "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2015年专八真题+音频+解析/听力音频 TEM8-2015.mp3",
+          "source_sha256": "2172a48a77d5d48b69e7c6b0dced081e5353f98aab11b58ff13ac7a86f1bf589",
+          "source_window": [
+            97.6,
+            107.2
+          ],
+          "canonical_window": [
+            97.6,
+            107.2
+          ]
+        }
+      ],
+      "times": [
+        101.6,
+        104.16
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "Three minutes to check your work. Understanding academic lectures. Good morning, everybody. Now, at the",
+        "whisper": "It is over. You will be given three minutes to check your work.",
+        "whisper_focused": "understanding academic lectures."
+      }
+    }
+  ]
 }

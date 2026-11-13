@@ -1,0 +1,598 @@
+{
+  "year": 2021,
+  "canonical_source_sha256": "a9701c485a209512978c089a10a20b73e4a7e4ef34ebd209c1dddb4a28390701",
+  "primary_asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+  "model": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8",
+  "model_files": {
+    "encoder.int8.onnx": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+    "decoder.int8.onnx": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+    "joiner.int8.onnx": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+    "tokens.txt": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+  },
+  "source_entries": [
+    {
+      "file": "2021专八笔试真题和答案/TEM8-2021-听力.mp3",
+      "sha256": "f022cf43bee44471625c25828ba574b28b70e9001edf45622c691a230acd9b17"
+    }
+  ],
+  "script_sha256": "b5e9fccc0cd2c669a78e07831022678dfca58984acb80eaffd0ca45959b5c10f",
+  "analysis_only": "内存16k单声道分析副本；正式原音未修改",
+  "word_end_estimate_seconds": 0.08,
+  "windows": [
+    {
+      "key": "a2e1a92bf7cff20cdd30b8763ca9b3b4b203c7949357ef35aec70e74cd3948e2",
+      "unit": "2021-B2",
+      "window": [
+        1398.04,
+        1402.96
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 35,
+          "source_text": "Ha ha ha",
+          "source_chars": [
+            [
+              0,
+              2
+            ],
+            [
+              3,
+              5
+            ],
+            [
+              6,
+              8
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 3,
+          "left_anchor": {
+            "unit": "2021-B2",
+            "sentence": 34,
+            "text": "that",
+            "asr_indices": [
+              2500
+            ],
+            "asr_text": [
+              "that."
+            ],
+            "window": [
+              1399.54,
+              1399.78
+            ]
+          },
+          "right_anchor": {
+            "unit": "2021-B2",
+            "sentence": 36,
+            "text": "Okay",
+            "asr_indices": [
+              2501
+            ],
+            "asr_text": [
+              "Okay."
+            ],
+            "window": [
+              1400.9,
+              1401.46
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " I",
+        " didn",
+        "'",
+        "t",
+        " know",
+        " how",
+        " to",
+        " take",
+        " that",
+        ".",
+        " Okay",
+        ".",
+        " M",
+        "a",
+        "ure",
+        "en",
+        ",",
+        " than",
+        "k",
+        " you",
+        "."
+      ],
+      "timestamps": [
+        0.23999999463558197,
+        0.3999999761581421,
+        0.47999998927116394,
+        0.5600000023841858,
+        0.5600000023841858,
+        0.7199999690055847,
+        0.9599999785423279,
+        1.2799999713897705,
+        1.5999999046325684,
+        1.9199999570846558,
+        2.879999876022339,
+        3.2799999713897705,
+        3.5999999046325684,
+        3.759999990463257,
+        3.919999837875366,
+        4.079999923706055,
+        4.319999694824219,
+        4.400000095367432,
+        4.480000019073486,
+        4.639999866485596,
+        4.71999979019165
+      ],
+      "words": [
+        [
+          "I",
+          1398.28,
+          1398.36
+        ],
+        [
+          "didn't",
+          1398.44,
+          1398.68
+        ],
+        [
+          "know",
+          1398.6,
+          1398.68
+        ],
+        [
+          "how",
+          1398.76,
+          1398.84
+        ],
+        [
+          "to",
+          1399.0,
+          1399.08
+        ],
+        [
+          "take",
+          1399.32,
+          1399.4
+        ],
+        [
+          "that.",
+          1399.64,
+          1400.04
+        ],
+        [
+          "Okay.",
+          1400.92,
+          1401.4
+        ],
+        [
+          "Maureen,",
+          1401.64,
+          1402.44
+        ],
+        [
+          "thank",
+          1402.44,
+          1402.6
+        ],
+        [
+          "you.",
+          1402.68,
+          1402.84
+        ]
+      ],
+      "primary_asr_indices": [
+        2494,
+        2495,
+        2496,
+        2497,
+        2498,
+        2499,
+        2500,
+        2501,
+        2502,
+        2503,
+        2504
+      ],
+      "primary_text": "I didn't know how to take that. Okay. Maureen, thank you",
+      "new_text": "I didn't know how to take that. Okay. Maureen, thank you.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -8,4 +8,4 @@",
+        " Okay.",
+        " Maureen,",
+        " thank",
+        "-you",
+        "+you."
+      ],
+      "elapsed_seconds": 1.791,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "3b292a7ea18978a0c37710e0eb7092e37d64cd466fb15767ef8c80404d2bdc87",
+      "unit": "2021-B2",
+      "window": [
+        1321.84,
+        1327.4
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 22,
+          "source_text": "Emm Emm",
+          "source_chars": [
+            [
+              0,
+              3
+            ],
+            [
+              5,
+              8
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2021-B2",
+            "sentence": 21,
+            "text": "musically",
+            "asr_indices": [
+              2297
+            ],
+            "asr_text": [
+              "musically."
+            ],
+            "window": [
+              1323.34,
+              1324.14
+            ]
+          },
+          "right_anchor": {
+            "unit": "2021-B2",
+            "sentence": 23,
+            "text": "And",
+            "asr_indices": [
+              2298
+            ],
+            "asr_text": [
+              "And"
+            ],
+            "window": [
+              1325.82,
+              1325.9
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " Th",
+        "ink",
+        " of",
+        " the",
+        " se",
+        "ct",
+        "ions",
+        " more",
+        " m",
+        "us",
+        "ically",
+        ".",
+        " And",
+        " I",
+        "'",
+        "m",
+        " interest",
+        "ed",
+        " in",
+        " us",
+        "her",
+        "."
+      ],
+      "timestamps": [
+        0.3199999928474426,
+        0.3999999761581421,
+        0.5600000023841858,
+        0.6399999856948853,
+        0.7999999523162842,
+        0.9599999785423279,
+        1.1200000047683716,
+        1.2799999713897705,
+        1.5199999809265137,
+        1.7599999904632568,
+        2.0,
+        2.240000009536743,
+        4.0,
+        4.159999847412109,
+        4.239999771118164,
+        4.400000095367432,
+        4.559999942779541,
+        4.71999979019165,
+        4.960000038146973,
+        5.119999885559082,
+        5.199999809265137,
+        5.359999656677246
+      ],
+      "words": [
+        [
+          "Think",
+          1322.16,
+          1322.32
+        ],
+        [
+          "of",
+          1322.4,
+          1322.48
+        ],
+        [
+          "the",
+          1322.48,
+          1322.56
+        ],
+        [
+          "sections",
+          1322.64,
+          1323.04
+        ],
+        [
+          "more",
+          1323.12,
+          1323.2
+        ],
+        [
+          "musically.",
+          1323.36,
+          1324.16
+        ],
+        [
+          "And",
+          1325.84,
+          1325.92
+        ],
+        [
+          "I'm",
+          1326.0,
+          1326.32
+        ],
+        [
+          "interested",
+          1326.4,
+          1326.64
+        ],
+        [
+          "in",
+          1326.8,
+          1326.88
+        ],
+        [
+          "usher.",
+          1326.96,
+          1327.28
+        ]
+      ],
+      "primary_asr_indices": [
+        2292,
+        2293,
+        2294,
+        2295,
+        2296,
+        2297,
+        2298,
+        2299,
+        2300,
+        2301,
+        2302
+      ],
+      "primary_text": "think of the sections more musically. And I'm interested in ushering",
+      "new_text": "Think of the sections more musically. And I'm interested in usher.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,4 +1,4 @@",
+        "-think",
+        "+Think",
+        " of",
+        " the",
+        " sections",
+        "@@ -8,4 +8,4 @@",
+        " I'm",
+        " interested",
+        " in",
+        "-ushering",
+        "+usher."
+      ],
+      "elapsed_seconds": 2.585,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "a5c439348e13bef87f16347570dc8b45af0d6e7097821cb9800e11a09ee4fada",
+      "unit": "2021-B2",
+      "window": [
+        1331.76,
+        1336.56
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 24,
+          "source_text": "For",
+          "source_chars": [
+            [
+              0,
+              3
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2021-B2",
+            "sentence": 23,
+            "text": "worlds",
+            "asr_indices": [
+              2316
+            ],
+            "asr_text": [
+              "worlds."
+            ],
+            "window": [
+              1333.26,
+              1333.98
+            ]
+          },
+          "right_anchor": {
+            "unit": "2021-B2",
+            "sentence": 24,
+            "text": "good",
+            "asr_indices": [
+              2317
+            ],
+            "asr_text": [
+              "Good"
+            ],
+            "window": [
+              1334.9,
+              1335.06
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " Of",
+        " s",
+        "ound",
+        " and",
+        " thought",
+        " world",
+        "s",
+        ".",
+        " For",
+        " good",
+        " or",
+        " i",
+        "ll",
+        ",",
+        " my",
+        " bo",
+        "ok",
+        "s",
+        " have"
+      ],
+      "timestamps": [
+        0.1599999964237213,
+        0.3199999928474426,
+        0.47999998927116394,
+        0.7999999523162842,
+        1.0399999618530273,
+        1.4399999380111694,
+        2.0,
+        2.319999933242798,
+        2.6399998664855957,
+        2.879999876022339,
+        3.1999998092651367,
+        3.43999981880188,
+        3.5999999046325684,
+        3.679999828338623,
+        3.8399999141693115,
+        4.079999923706055,
+        4.159999847412109,
+        4.239999771118164,
+        4.400000095367432
+      ],
+      "words": [
+        [
+          "Of",
+          1331.92,
+          1332.0
+        ],
+        [
+          "sound",
+          1332.08,
+          1332.32
+        ],
+        [
+          "and",
+          1332.56,
+          1332.64
+        ],
+        [
+          "thought",
+          1332.8,
+          1332.88
+        ],
+        [
+          "worlds.",
+          1333.2,
+          1334.16
+        ],
+        [
+          "For",
+          1334.4,
+          1334.48
+        ],
+        [
+          "good",
+          1334.64,
+          1334.72
+        ],
+        [
+          "or",
+          1334.96,
+          1335.04
+        ],
+        [
+          "ill,",
+          1335.2,
+          1335.52
+        ],
+        [
+          "my",
+          1335.6,
+          1335.68
+        ],
+        [
+          "books",
+          1335.84,
+          1336.08
+        ],
+        [
+          "have",
+          1336.16,
+          1336.24
+        ]
+      ],
+      "primary_asr_indices": [
+        2313,
+        2314,
+        2315,
+        2316,
+        2317,
+        2318,
+        2319,
+        2320,
+        2321,
+        2322
+      ],
+      "primary_text": "sound and thought worlds. Good or ill, my books have",
+      "new_text": "Of sound and thought worlds. For good or ill, my books have",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,8 +1,10 @@",
+        "+Of",
+        " sound",
+        " and",
+        " thought",
+        " worlds.",
+        "-Good",
+        "+For",
+        "+good",
+        " or",
+        " ill,",
+        " my"
+      ],
+      "elapsed_seconds": 1.849,
+      "status": "machine_candidate_not_human_approved"
+    }
+  ]
+}

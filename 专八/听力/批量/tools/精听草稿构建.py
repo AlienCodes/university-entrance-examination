@@ -60,7 +60,13 @@ def extract(year):
     source=(D/f'来源/{year}/解析.txt').read_text('utf-8');units=[]
     for code,title,start,end in SPECS[year]:
         a=source.index(start);b=source.index(end,a)
-        en=sentences(clean(source[a:b]))
+        text=clean(source[a:b])
+        # root授权：双路ASR/原扫描对照后修正，不按常识改造真实口语。
+        fixes={2022:{'stating once again the anthropology':'stating once again that anthropology'},
+               2023:{},
+               2024:{'adults and adolescence':'adults and adolescents','I knew that there are':'I know that there are','that is a language translation.':'that is, uh, language translation.'}}
+        for old,new in fixes[year].items():text=text.replace(old,new)
+        en=sentences(text)
         units.append({'code':code,'title':title,'en':en})
     return units
 
@@ -91,35 +97,17 @@ MERGES={
 PAGES={2022:{'A':[1,2],'B1':[3,4],'B2':[4,5]},
        2023:{'A':[1,2],'B1':[3,4],'B2':[4,5]},
        2024:{'A':[1,2],'B1':[3,4],'B2':[4,5,6]}}
-PENDING={
- (2022,'A'):[
- '原PDF第1页确印“stating once again the anthropology”；语法应为that的可能性须听原声裁决，目前保留the。',
- ],
- (2023,'A'):[
- '原PDF第2页确印“But before, it was fossil metaphor”；before所指及实际措辞须听原声核实，目前未擅改。',
- ],
- (2023,'B1'):[
- '原PDF第3页确印“a year sharp spent volunteering”；sharp为扫描原稿本身疑误，须原声裁决，英文暂保留，不给sharp强加词义。',
- '原PDF第3页确印“To put it simple”；尚待原声核对simple/simply，未擅自改口语措辞。',
- '第5题扫描题干为“what kind of gap year experience do employers care most?”，缺about；待核实际口述，暂按原扫描保留。',
- ],
- (2023,'B2'):[
- '原PDF第5页主持人说“I see.”，OCR为“Oh, I see.”；最终应以原声核准是否有Oh，目前按扫描更正为I see。',
- ],
- (2024,'A'):[
- '原PDF第1页确印“adults and adolescence”；很可能应为adolescents，必须对照原声后裁决；英文保留扫描原稿，中文按所指年龄人群译。',
- '原PDF第2页末段确印“that is a language translation”；冠词和口语断句须原声核实，未按书面语重写。',
- ],
- (2024,'B1'):[
- '原PDF第3页“minor novels”的语境指称须结合原声复核；现按较少受到关注的小说译，未照解析自行补出篇幅和结构特征。',
- ],
- (2024,'B2'):[
- '原PDF第4页确印“examine the Antarctica’s vast ice sheets”，定冠词the疑多；待原声裁决，未擅改。',
- '原PDF第5页确印“I knew that there are climate science deniers”；knew/know须原声核准，英文暂按原稿。',
- '原PDF第5页“Also the effects ... in a global capacity.”为主持人的不完整口语句；译文保留其承接关系，须原声核断句，不拼入前一位男士话轮。',
- '开头three times faster按新闻通常语意译为2007年的三倍；请连同three feet/six inches/six feet口述数字逐个核准。',
- ],
+PENDING={}
+AUDIO_NOTES={
+ (2022,'A'):['the anthropology→that anthropology：主ASR与独立Whisper在138—156s均清楚为that；原PDF误印。'],
+ (2023,'A'):['fossil metaphor：扫描与两路ASR一致，保留真实表达，不按常识重写before。'],
+ (2023,'B1'):['a year sharp spent：扫描与两路ASR均为sharp，按root裁决保留真实口语，不擅改为gap或about；译文按间隔年时长及后文工作/志愿经历表达。','To put it simple、employers care most：扫描及两路ASR均一致；保留实际口语，不擅自补simply/about。'],
+ (2023,'B2'):['Oh, I see：原PDF省Oh，真实主ASR1421—1427s有Oh，按root授权恢复。'],
+ (2024,'A'):['adolescence→adolescents：主ASR及独立Whisper251—262s一致为adolescents；原稿名词误印。','仅末段that is a language translation改为that is, uh, language translation：448—465s主ASR为uh，独立Whisper无冠词，按root核定作犹豫音；前段147s原本无a的句子没有修改。'],
+ (2024,'B1'):['minor novels：原扫描及独立Whisper961—973s确认原词；按较少受关注的小说理解，未照解析添出篇幅/结构特征。'],
+ (2024,'B2'):['I knew→I know：两路ASR1289—1301s一致为know；原稿时态误印。','the Antarctica’s、Also the effects等扫描表达经两路ASR确认；保留真实冠词/口语断句，不重写成另一句话。','three times faster/six inches/three feet/six feet均已与实际主ASR对应；三倍表述按该气候新闻通常用义译。'],
 }
+
 
 
 def annotated(en,zh,terms):
@@ -144,11 +132,6 @@ def build(year):
         code=base['code'];rows=[r.split('\t') for r in DATA[year][code].strip().splitlines()]
         assert len(rows)==len(base['en']),(year,code,len(rows),len(base['en']))
         original=[annotated(en,*row) for en,row in zip(base['en'],rows)]
-        # 对照页图确认：2023 B2主持人的应答没有OCR多出的“Oh,”。
-        if (year,code)==(2023,'B2'):
-            assert original[33]['en']=='Oh, I see.'
-            original[33]['en']='I see.';original[33]['zh']='我明白了。'
-            base['en'][33]='I see.'
         groups=dict(MERGES.get((year,code),[]));out=[];i=1
         while i<=len(original):
             end=groups.get(i,i);parts=original[i-1:end]
@@ -175,12 +158,12 @@ def build(year):
                     occupied.append((a,b))
         units.append({
             'id':f'{year}-{code}','section':'Section A' if code=='A' else 'Section B Part '+('One' if code=='B1' else 'Two'),
-            'title':base['title'],
+            'title':base['title'],'names':[x for x in {2022:['保罗·博汉南','芭芭拉·米勒','玛格丽特·米德','克莱德·克拉克洪','哈丽雅特·桑福德','苏珊·康罗伊'],2023:['埃尔维斯·普雷斯利','拉尔夫·沃尔多·爱默生','弗朗西斯·培根','吉姆·约翰逊'],2024:['本杰明·约翰逊']}[year] if any(x in s['zh'] or any(x in w['m'] for w in s['w']) for s in out)],
             'source_refs':[{'path':str(source.relative_to(D)),'original_pdf':pdf,'sha256':sha,
                             'pdf_pages':PAGES[year][code],
                             'verified_against':'原PDF页图逐篇查看；正文及B部末尾题干，未混入参考答案或解题说明'}],
-            'sentences':out,'待核':PENDING.get((year,code),[]),
-            'review':{'status':'draft','basis':'扫描原文及原PDF页图；人工逐句中译、语境词汇，尚待真实原声逐句对照及复核。',
+            'sentences':out,'待核':PENDING.get((year,code),[]),'原音核实记录':AUDIO_NOTES.get((year,code),[]),
+            'review':{'status':'draft','basis':'扫描原文及原PDF页图；疑文已对照真实主ASR/独立Whisper；人工逐句中译、语境词汇，尚待整篇原声对齐与译注复核。',
                       'body_sentences':body_count,'question_stems':0 if code=='A' else 5},
         })
     return {'year':year,'units':units}
@@ -189,6 +172,9 @@ def build(year):
 def write_drafts(years=(2022,2023,2024)):
     for year in years:
         obj=build(year);out=D/f'译注草稿/{year}.json';out.parent.mkdir(exist_ok=True)
+        if out.exists():
+            current=json.loads(out.read_text())
+            assert not any(u.get('instruction_review') for u in current.get('units',[])),'已含正式说明的母稿不可被初稿提取工具覆盖；请按英文整句锚修改。'
         out.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+'\n','utf-8')
         print(out,[(u['id'],len(u['sentences']),sum(len(s['w']) for s in u['sentences'])) for u in obj['units']])
 

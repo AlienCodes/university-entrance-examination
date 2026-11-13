@@ -44,6 +44,8 @@ CONTRACTIONS = {
     "let's": ['let', 'us'],
 }
 SPELLINGS = {'ok': 'okay', 'dr': 'doctor', 'mr': 'mister', '&': 'and', '%': 'percent'}
+JOINED_SPELLINGS = {'onto': ['on', 'to'], 'midwestern': ['mid', 'western'], 'eyebrows': ['eye', 'brows'],
+                    'grownup': ['grown', 'up'], 'grownups': ['grown', 'ups']}
 ABBREVIATIONS = {'us', 'uk', 'un', 'eu', 'mc'}
 
 
@@ -181,6 +183,8 @@ def atoms(lexemes):
             result.append(Atom('#decade' + word[:-1], (i,), 'number'))
         elif word in CONTRACTIONS:
             result.extend(Atom(x, (i,), 'contraction') for x in CONTRACTIONS[word])
+        elif word in JOINED_SPELLINGS:
+            result.extend(Atom(x, (i,), 'joined_spelling') for x in JOINED_SPELLINGS[word])
         else:
             result.append(Atom(SPELLINGS.get(word, word), (i,), 'spelling' if word in SPELLINGS else 'literal'))
         i += 1
@@ -401,6 +405,53 @@ def rerecognition_windows(result, duration, context=1.5):
     return sorted(merged, key=lambda x: (-len(x['boundary_sentences']), -x['missing_lexemes'], x['duration']))
 
 
+def augment_sentence_asr(draft, raw, base, prepare):
+    """优先采用有哈希和JSON指针证据的正式说明局部词锚。"""
+    patches = []
+    for unit in draft['units']:
+        for n, s in enumerate(unit['sentences'], 1):
+            if not s.get('words') or not s.get('asr_ref'):
+                continue
+            ref = (base / s['asr_ref']).resolve()
+            if not ref.is_relative_to(base.resolve()):
+                raise ValueError('说明词锚引用须位于批量数据目录内')
+            if not s.get('asr_sha256') or sha(ref) != s['asr_sha256']:
+                raise ValueError(f'{unit["id"]}句{n}说明局部ASR证据哈希不符')
+            evidence = json.loads(ref.read_text('utf-8'))
+            selected = evidence
+            for key in s.get('asr_pointer', '').strip('/').split('/'):
+                if not key:
+                    continue
+                key = key.replace('~1', '/').replace('~0', '~')
+                selected = selected[int(key)] if isinstance(selected, list) else selected[key]
+            a, z = s['asr_range']
+            if selected[a:z] != s['words']:
+                raise ValueError(f'{unit["id"]}句{n}附词表与真实局部ASR指针/范围不符')
+            asr_lexemes(s['words'], prepare['canonical']['duration'])
+            # 来源词元的SHA必须能够追溯到本canonical所登记的原始文件。
+            source_hashes = {x['sha256'] for x in prepare['source_entries']}
+            parts = [p for r in evidence.get('recognitions', []) for p in r.get('source_parts', [])]
+            if parts and any(p['source_sha256'] not in source_hashes for p in parts):
+                raise ValueError(f'{unit["id"]}句{n}局部ASR来自另一个原始音源')
+            words = copy.deepcopy(s['words'])
+            lo, hi = words[0][1], words[-1][2]
+            patches.append({'unit': unit['id'], 'sentence': n, 'window': [lo, hi], 'words': words,
+                            'source_ref': s['asr_ref'], 'source_sha256': s['asr_sha256'],
+                            'pointer': s.get('asr_pointer', ''), 'range': s['asr_range']})
+    if not patches:
+        return raw, []
+    # 按真实词开始时刻去重；同一实际条目重复出现不允许以两份说明冒充两次录音。
+    patches.sort(key=lambda x: x['window'][0])
+    if any(a['words'][-1][1] >= z['words'][0][1] for a, z in zip(patches, patches[1:])):
+        raise ValueError('两个附局部词锚的说明句范围重叠，须核查说明插入位置')
+    combined = [w for w in raw if not any(p['window'][0] - .025 <= w[1] <= p['window'][1] for p in patches)]
+    combined.extend(w for p in patches for w in p['words'])
+    combined.sort(key=lambda x: (x[1], x[2]))
+    for p in patches:
+        p['removed_input_ASR'] = [w for w in raw if p['window'][0] - .025 <= w[1] <= p['window'][1]]
+    return combined, patches
+
+
 def run_year(year, args):
     base = Path(args.base).resolve()
     def resolve(template, default):
@@ -409,38 +460,62 @@ def run_year(year, args):
     draft_path = resolve(args.draft, '译注草稿/{year}.json')
     asr_path = resolve(args.asr, '预处理/{year}/识别.json')
     prepare_path = resolve(args.prepare, '预处理/{year}/原音准备.json')
+    preferred_meta = None
+    if args.prefer_local and not args.asr:
+        for filename, metadata in [('优选识别.json', '优选ASR核验.json'), ('识别.json', 'ASR核验.json')]:
+            local = base / f'核验/补词锚/{year}/{filename}'
+            if local.exists():
+                asr_path = local
+                preferred_meta = f'核验/补词锚/{year}/{metadata}'
+                break
     draft = json.loads(draft_path.read_text('utf-8'))
     raw = json.loads(asr_path.read_text('utf-8'))
     prepare = json.loads(prepare_path.read_text('utf-8'))
     assert draft['year'] == year == prepare['year']
     canonical = prepare['canonical']
     assert re.fullmatch('[0-9a-f]{64}', canonical['sha256'])
-    meta_path = resolve(args.asr_meta, '预处理/{year}/ASR核验.json')
+    meta_path = resolve(args.asr_meta or preferred_meta, '预处理/{year}/ASR核验.json')
     meta = None
     if meta_path.exists():
         meta = json.loads(meta_path.read_text('utf-8'))
         if (meta.get('canonical_sha256') != canonical['sha256'] or
                 meta.get('outputs', {}).get('识别.json', {}).get('sha256') != sha(asr_path)):
             raise ValueError('ASR核验元数据与canonical SHA或识别.json SHA不符，不得跨音源对齐')
+    report_dir = resolve(args.report, '核验/原文对齐') / str(year)
+    raw, supplied_patches = augment_sentence_asr(draft, raw, base, prepare)
+    effective_asr_path = asr_path
+    if supplied_patches:
+        effective_asr_path = report_dir / '含说明识别.json'
+        dump(effective_asr_path, raw)
     decisions = {}
     if args.decisions:
         path = Path(args.decisions.format(year=year))
         if not path.is_absolute(): path = base / path
         decisions = json.loads(path.read_text('utf-8'))
-        if decisions.get('year') != year or decisions.get('asr_sha256') != sha(asr_path) or decisions.get('source_sha256') != canonical['sha256']:
+        if decisions.get('year') != year or decisions.get('asr_sha256') != sha(effective_asr_path) or decisions.get('source_sha256') != canonical['sha256']:
             raise ValueError('人工裁定文件的年份、ASR哈希或canonical音源哈希不符')
     result = align(draft, raw, canonical['duration'], decisions)
+    acoustic_proofs = []
+    if args.acoustic_fillers:
+        if not args.source_root:
+            raise ValueError('--acoustic-fillers需要--source-root，不能凭无原音的ASR间隙猜应声边界')
+        ac_spec = importlib.util.spec_from_file_location('tem8_acoustic_fillers', HERE / '应声声学边界.py')
+        ac = importlib.util.module_from_spec(ac_spec)
+        ac_spec.loader.exec_module(ac)
+        acoustic_proofs = ac.resolve(result, prepare, Path(args.source_root))
     rerecognition = rerecognition_windows(result, canonical['duration'])
     out = resolve(args.out, '精听数据')
-    report_dir = resolve(args.report, '核验/原文对齐') / str(year)
     report_path = report_dir / '对齐报告.json'
     report = {'year': year, 'tool': portable(__file__, base), 'tool_version': TOOL_VERSION,
               'inputs': {'draft': portable(draft_path, base), 'draft_sha256': sha(draft_path),
-                         'asr': portable(asr_path, base), 'asr_sha256': sha(asr_path),
+                         'asr': portable(effective_asr_path, base), 'asr_sha256': sha(effective_asr_path),
+                         'input_asr': portable(asr_path, base), 'input_asr_sha256': sha(asr_path),
                          'prepare': portable(prepare_path, base), 'prepare_sha256': sha(prepare_path),
                          'canonical_source_sha256': canonical['sha256']},
               'method': '全局单调规范词匹配；每个时刻只取实际ASR词条边界。数词/缩写/收缩差异逐条登记；无模糊关键词代换、无比例估时。',
               'machine_result_only': True, 'human_review_status': 'draft',
+              'supplied_sentence_ASR': supplied_patches,
+              'filler_acoustic_evidence': acoustic_proofs,
               'ASR_provenance': ({'file': portable(meta_path, base), 'sha256': sha(meta_path),
                                   'canonical_and_ASR_sha_verified': True, 'status': meta.get('status'),
                                   'word_end_estimate_seconds': meta.get('word_end_estimate_seconds')}
@@ -451,7 +526,7 @@ def run_year(year, args):
     contract = interface_module()
     for unit in draft['units']:
         rows = [r for r in result['rows'] if r['unit'] == unit['id']]
-        blocked = [r['n'] for r in rows if not r['boundary_anchored']]
+        blocked = [r['n'] for r in rows if not r['boundary_anchored'] and not r.get('acoustic_boundary')]
         d = {k: copy.deepcopy(v) for k, v in unit.items() if k != 'sentences'}
         d['year'] = year
         d['audio'] = {'file': args.audio_template.format(year=year), 'sha256': canonical['sha256'],
@@ -460,16 +535,26 @@ def run_year(year, args):
         if Path(d['audio']['file']).is_absolute():
             raise ValueError('audio-template必须是可移植相对路径；实际输入音源由精听.py --original传入')
         d['sentences'] = []
+        type_repairs = []
         unit_missing = 0
         missing_sentences = []
         for row in rows:
             s = copy.deepcopy(row['sentence'])
+            for w in s['w']:
+                expected = ('word' if re.fullmatch(r"[A-Za-zÀ-ÿ]+(?:['’\-][A-Za-zÀ-ÿ]+)*", w['h'])
+                            else 'phr' if ' ' in w['h'] else w['t'])
+                if w['t'] != expected and w['t'] != 'core':
+                    type_repairs.append({'sentence': row['n'], 'head': w['h'], 'old': w['t'], 'new': expected})
+                    w['t'] = expected
             s['word_alignment'] = row['word_alignment']
             s['alignment'] = {'boundary_anchored': row['boundary_anchored'], 'source_lexemes': len(row['lexemes']),
                               'mapped_lexemes': len(row['lexemes']) - len(row['missing']),
                               'missing': [{'text': result['source'][i].text, 'char': [result['source'][i].char, result['source'][i].char_end]} for i in row['missing']],
                               'unmatched_internal_asr': describe_asr(row['internal_asr_unmatched'], result['target'], result['raw'])}
-            if row['boundary_anchored']:
+            if row.get('acoustic_boundary'):
+                s['start'], s['end'] = row['acoustic_boundary']
+                s['alignment']['acoustic_filler_boundary'] = row['acoustic_evidence']
+            elif row['boundary_anchored']:
                 s['start'], s['end'] = row['anchor_window']
             else:
                 s['start'] = s['end'] = None
@@ -485,6 +570,8 @@ def run_year(year, args):
             d['待核'].append(f'仍有{unit_missing}个原文词缺少ASR对应；涉及句号{missing_sentences}，严禁按比例补时。')
         d['alignment_report'] = portable(report_path, base)
         d['alignment_tool_version'] = TOOL_VERSION
+        if type_repairs:
+            d['lexical_type_repairs'] = type_repairs
         if blocked:
             d['待核'].append(f'句首/尾无真实ASR词锚，句号{blocked}；单元未导出到可制作目录。')
             output = report_dir / '未导出单元' / f"{unit['id']}.json"
@@ -515,6 +602,7 @@ def run_year(year, args):
         report['units'].append({'id': unit['id'], 'state': state, 'output': portable(output, base),
                                 'sentences': len(rows), 'source_lexemes': sum(len(r['lexemes']) for r in rows),
                                 'missing_source_lexemes': unit_missing, 'missing_boundary_sentences': blocked,
+                                'acoustic_filler_sentences': [r['n'] for r in rows if r.get('acoustic_boundary')],
                                 'rerecognition_window_count': sum(w['unit'] == unit['id'] for w in rerecognition),
                                 'audio_window': d['audio']['window']})
     dump(report_path, report)
@@ -529,6 +617,9 @@ def parser():
     p.add_argument('--asr', help='输入模板，支持{year}；只接收真正逐词时刻')
     p.add_argument('--prepare', help='原音准备.json模板')
     p.add_argument('--asr-meta', help='ASR核验.json模板；存在时必须核对音源和识别文件SHA')
+    p.add_argument('--prefer-local', action='store_true', help='存在时采用核验/补词锚/<year>独立组合ASR；其余年份用主ASR')
+    p.add_argument('--acoustic-fillers', action='store_true', help='孤立短应声以实际声学岛和相邻ASR锚定句边；不造该词时刻')
+    p.add_argument('--source-root', help='仅声学核验所用的原始材料目录，不写进精听JSON')
     p.add_argument('--decisions', help='可选人工裁定JSON模板，必须绑定ASR/原音哈希和实际词序号')
     p.add_argument('--audio-template', default='预处理/{year}/原音.wav')
     p.add_argument('--out', help='精听数据目录')

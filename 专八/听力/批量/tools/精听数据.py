@@ -89,6 +89,15 @@ def align_words(s):
     return out
 
 
+def first_aligned_word(aligned,en,cut):
+    """换屏必须绑定这一屏真正的首词；缺词时不可悄悄跳到后面一个词。"""
+    token=TOKEN.search(en,cut)
+    assert token,'分屏切点后没有英文词：'+en[cut:]
+    later=[w for w in aligned if w['char']>=token.start()]
+    assert later and later[0]['char']==token.start(),'分屏首词缺少真实对齐：'+token.group()+'；须核准词时刻，不能跳过首词'
+    return later[0]
+
+
 def float_wav(path,x,sr):
     """不带时间相关PEAK块的IEEE FLOAT WAV，原采样率/声道/样本值。"""
     import numpy as np
@@ -101,7 +110,35 @@ def float_wav(path,x,sr):
         f.write(struct.pack('<4sI',b'data',size));f.write(memoryview(x).cast('B'))
 
 
-def compact(x,sr,lo,hi,sentences):
+PROTECTION_2022=BATCH/'核验/2022-停顿边界复核.json'
+
+
+def audio_protection(d):
+    """只采用与2022实际源SHA绑定的已核三段信号；其余14年不套用。"""
+    if d['year']!=2022:
+        assert not d.get('audio',{}).get('protected_source_intervals'),'非2022不可套用2022信号登记'
+        return [],None
+    assert PROTECTION_2022.exists(),'2022缺原音等待信号保护登记，不可尝试静音压缩'
+    r=json.loads(PROTECTION_2022.read_text('utf-8'))
+    source=d['audio']['sha256']
+    canonical=r['consumer_contract']['apply_only_if_canonical_sha256_matches']
+    encoded=r.get('source_encoded_sha256')
+    assert source in [canonical,encoded],'2022原音SHA与低电平信号保护登记不符；须先核定新源'
+    assert r['signal_handling']['pure_silence_compression_allowed'] is False
+    assert r['signal_handling']['preserve_entire_wait_audio'] is True
+    register=r.get('machine_override') or r.get('pauses_override')
+    protected=[list(map(float,register[key])) for key in ['previewA','check','previewB']]
+    assert all(0<=a<b<=r['canonical']['duration'] for a,b in protected)
+    declared=d['audio'].get('protected_source_intervals')
+    if declared is not None:assert declared==protected,'2022输入中的保护段与源登记不一致'
+    evidence={'registration':str(PROTECTION_2022.relative_to(BATCH)),
+              'registration_sha256':sha(PROTECTION_2022),'source_sha256':source,
+              'canonical_sha256':canonical,'protected_source_intervals':protected,
+              'reason':'2022三段等待内含已核低电平周期性非语音信号，完整保留，不能当作纯静音删减。'}
+    return protected,evidence
+
+
+def compact(x,sr,lo,hi,sentences,protected=()):
     """只删除句间超过2秒的低电平纯静音中段；每句内的语音与停顿全部保留。"""
     import numpy as np
     a,b=round(lo*sr),round(hi*sr)
@@ -111,6 +148,9 @@ def compact(x,sr,lo,hi,sentences):
         left,right=previous['end'],current['start']
         if right-left<=2.02:continue
         u,v=round((left+1)*sr),round((right-1)*sr)
+        if any(u/sr<b and v/sr>a for a,b in protected):
+            kept_gaps.append({'interval':[left,right],'reason':'源SHA绑定的低电平信号保护段，完整保留','protected':True})
+            continue
         middle=x[u:v];hop=max(1,round(.01*sr));n=len(middle)//hop
         if n==0:continue
         rms=np.sqrt((middle[:n*hop].astype('float64').reshape(n,hop,x.shape[1])**2).mean(axis=(1,2)))
@@ -143,7 +183,9 @@ def compile_input(input_file,original,out,draft=False):
     x,sr=sf.read(source,dtype='float32',always_2d=True)
     assert np.isfinite(x).all()
     lo,hi=d['audio']['window']
-    body,warp,intervals,removed,kept=compact(x,sr,lo,hi,d['sentences'])
+    protected,protection=audio_protection(d)
+    body,warp,intervals,removed,kept=compact(x,sr,lo,hi,d['sentences'],protected)
+    assert not any(u/sr<b and v/sr>a for u,v in removed for a,b in protected),'已核低电平信号保护段被静音压缩'
     duration=math.ceil((LEAD+len(body)/sr+TAIL)*FPS)/FPS
     result=np.zeros((round(duration*sr),x.shape[1]),dtype='float32')
     lead=round(LEAD*sr);result[lead:lead+len(body)]=body
@@ -177,11 +219,13 @@ def compile_input(input_file,original,out,draft=False):
        'done':True,'words':sum(len(TOKEN.findall(s['en'])) for s in flat),'nv':sum(len(s['w']) for s in flat),'paras':[flat]}
     tm={'file':'原音.wav','source':'原音','mode':'原音不动','duration':duration,'sample_rate':sr,'channels':x.shape[1],
         'source_sha256':d['audio']['sha256'],'audio_sha256':sha(audio),'window':[lo,hi],'kept_intervals':[[u/sr,v/sr] for u,v in intervals],
-        'compressed_gaps':[[u/sr,v/sr] for u,v in removed],'kept_gaps':kept,'sentences':times}
+        'compressed_gaps':[[u/sr,v/sr] for u,v in removed],'kept_gaps':kept,'sentences':times,
+        'protected_source_intervals':protected,'audio_protection':protection}
     dump(out/'data/vocab.json',{'passages':[p]});dump(out/'audio/timings.json',{'cet4_male':{d['id']:tm}})
     dump(out/'tools/人名.json',{'names':d.get('names',[])})
     dump(out/'tools/分屏_水墨.json',{d['id']:d.get('splits',{})})
     dump(out/'prepared.json',{'input_sha256':sha(input_file),'content_sha256':content_sha(d),'draft':draft,
                               'id':d['id'],'source_sha256':tm['source_sha256'],'audio_sha256':tm['audio_sha256'],
-                              'source_window':[lo,hi],'compressed_gaps':tm['compressed_gaps'],'kept_gaps':kept})
+                              'source_window':[lo,hi],'compressed_gaps':tm['compressed_gaps'],'kept_gaps':kept,
+                              'protected_source_intervals':protected,'audio_protection':protection})
     return d,p,tm

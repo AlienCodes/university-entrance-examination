@@ -1,6 +1,6 @@
 {
   "year": 2023,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2023-A",
@@ -198,31 +198,100 @@
           "translation_key": "a_accept"
         },
         {
-          "en": "Note-taking.",
-          "zh": "做笔记。",
+          "en": "You may use the blank sheet for note-taking.",
+          "zh": "你可以用空白纸做笔记。",
           "w": [
             {
               "t": "word",
-              "h": "note-taking",
-              "m": "n.记笔记",
+              "h": "blank",
+              "m": "adj.空白的",
               "sp": [
                 [
-                  0,
-                  11
+                  16,
+                  21
                 ]
               ]
             }
           ],
           "role": "instruction",
           "asr_range": [
+            19,
+            28
+          ],
+          "asr_text": "You may use the blank sheet for note taking.",
+          "translation_key": "a_blank",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2023/a_blank_fragment.json",
+          "asr_sha256": "b4c6c9c74aa08d684dcc521d21a95b169a5c4d9b8913c637d097ddffb5de6b21",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             68,
             69
           ],
-          "asr_text": "Note-taking.",
-          "translation_key": "a_blank_fragment",
-          "待核": [
-            "ASR仅识别到note-taking，缺少原卷You may use the blank sheet for...；单独保留已识别片段，未把它并入上一说明句。"
-          ]
+          "primary_asr_ref": "预处理/2023/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "You",
+              35.41,
+              35.49
+            ],
+            [
+              "may",
+              35.57,
+              35.65
+            ],
+            [
+              "use",
+              35.81,
+              35.89
+            ],
+            [
+              "the",
+              36.05,
+              36.13
+            ],
+            [
+              "blank",
+              36.29,
+              36.53
+            ],
+            [
+              "sheet",
+              36.69,
+              36.93
+            ],
+            [
+              "for",
+              37.09,
+              37.17
+            ],
+            [
+              "note",
+              37.25,
+              37.57
+            ],
+            [
+              "taking.",
+              37.65,
+              38.21
+            ]
+          ],
+          "start": 35.41,
+          "end": 38.21,
+          "correction_case": "a_blank_fragment",
+          "evidence": {
+            "window": [
+              26.45,
+              42.25
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         },
         {
           "en": "You have thirty seconds to preview the gap-filling task.",
@@ -821,16 +890,7 @@
       ]
     }
   ],
-  "待核": [
-    {
-      "asr_range": [
-        68,
-        69
-      ],
-      "asr_text": "Note-taking.",
-      "reason": "ASR仅识别到note-taking，缺少原卷You may use the blank sheet for...；单独保留已识别片段，未把它并入上一说明句。"
-    }
-  ],
+  "待核": [],
   "source": {
     "asr": "预处理/2023/识别.json",
     "asr_sha256": "e5d58519afb6a33c89e4a5a9497bea79535abbe15ed333d9a902a914540e23a1",
@@ -844,5 +904,55 @@
     "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
   ],
   "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
+    {
+      "asr_range": [
+        68,
+        69
+      ],
+      "asr_text": "Note-taking.",
+      "reason": "ASR仅识别到note-taking，缺少原卷You may use the blank sheet for...；单独保留已识别片段，未把它并入上一说明句。"
+    }
+  ],
+  "local_corrections": [
+    {
+      "case": "a_blank_fragment",
+      "old_en": "Note-taking.",
+      "new_en": "You may use the blank sheet for note-taking.",
+      "primary_asr_range": [
+        68,
+        69
+      ],
+      "local_asr_range": [
+        19,
+        28
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2023/a_blank_fragment.json",
+      "local_sha256": "b4c6c9c74aa08d684dcc521d21a95b169a5c4d9b8913c637d097ddffb5de6b21",
+      "source_parts": [
+        {
+          "file": "2023年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+          "source_sha256": "99911c342fb4b65fab0eb58ab7ef3fff4f9300224a0e711e102ccf7bf8d43618",
+          "source_window": [
+            26.45,
+            42.25
+          ],
+          "canonical_window": [
+            26.45,
+            42.25
+          ]
+        }
+      ],
+      "times": [
+        35.41,
+        38.21
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "More than three words for each gap. Make sure what you fill in is both grammatically and semantically acceptable. You may use the blank sheet for note taking. You have thirty seconds to preview the gap filling task.",
+        "whisper": "to sheet 1 and write no more than 3 words for each gap. Make sure what you fill in is both grammatically and semantically acceptable. You may use the blank sheet for note taking. You have 30 seconds to preview the gap filling task."
+      }
+    }
+  ]
 }

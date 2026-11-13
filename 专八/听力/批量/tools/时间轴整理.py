@@ -16,13 +16,21 @@ def unique(w,seq,lo,hi):
 def build(y):
  p=D/'预处理'/str(y);w=json.loads((p/'识别.json').read_text());sil=json.loads((p/'停顿.json').read_text())['静音'];prep=json.loads((p/'原音准备.json').read_text());qpath=D/'数据'/str(y)/'试卷.json';q=json.loads(qpath.read_text())
  duration=prep['canonical']['duration'];sha=prep['canonical']['sha256']
- check=[s for s in sil if 165<s[1]-s[0]<205];assert len(check)==1,(y,'检查段非唯一',check);check=check[0]
- previews=[s for s in sil if 24<s[1]-s[0]<42]
+ override_file=D/'核验'/f'{y}-停顿边界复核.json'
+ override=None
+ if override_file.exists():
+  audit=json.loads(override_file.read_text());assert audit['status']=='verified' and audit['source_sha256']==sha
+  assert y==2022 and audit['signal_handling']['preserve_entire_wait_audio'] and not audit['signal_handling']['pure_silence_compression_allowed']
+  for filename,digest in audit['bindings'].items():
+   assert hashlib.sha256((p/filename).read_bytes()).hexdigest()==digest,('停顿核验依赖已变',filename)
+  override=audit['machine_override']
+ check=([override['check']] if override else [s for s in sil if 165<s[1]-s[0]<205]);assert len(check)==1,(y,'检查段非唯一',check);check=check[0]
+ previews=[override['previewA'],override['previewB']] if override else [s for s in sil if 24<s[1]-s[0]<42]
  preA=[s for s in previews if s[0]<check[0]];preB=[s for s in previews if s[0]>check[1]]
  missing_opening=(y==2022 and not preA)
  assert (len(preA)==1 or missing_opening) and len(preB)==1,(y,previews)
  preA,preB=(preA[0] if preA else None),preB[0]
- pp=[s for s in sil if s[0]>preB[1] and 8.5<s[1]-s[0]<13]
+ pp=override['question_pauses'] if override else [s for s in sil if s[0]>preB[1] and 8.5<s[1]-s[0]<13]
  assert len(pp)==len(q['questions'])==10,(y,'题后作答段不是10段',pp)
  def real_end(a,b):
   ts=[x[1] for x in w if a+.5<x[1]<b+.5]
@@ -87,7 +95,7 @@ def build(y):
  for ev in events:
   if merged and abs(ev['t']-merged[-1]['t'])<.0001:merged[-1]=ev
   else:merged.append(ev)
- T={'source_duration':duration,'source_sha256':sha,'trim':trim,'events':merged,'evidence':{'asr_sha256':hashlib.sha256((p/'识别.json').read_bytes()).hexdigest(),'pauses_sha256':hashlib.sha256((p/'停顿.json').read_bytes()).hexdigest(),'previewA':preA,'check':check,'previewB':preB,'question_pauses':pp},'pending':notes+([] if trim_file.exists() else ['片头音乐剪切点尚待正式核定'])}
+ T={'source_duration':duration,'source_sha256':sha,'trim':trim,'events':merged,'evidence':{'asr_sha256':hashlib.sha256((p/'识别.json').read_bytes()).hexdigest(),'pauses_sha256':hashlib.sha256((p/'停顿.json').read_bytes()).hexdigest(),'previewA':preA,'check':check,'previewB':preB,'question_pauses':pp,**({'reviewed_pause_override':{'file':str(override_file.relative_to(D)),'sha256':hashlib.sha256(override_file.read_bytes()).hexdigest(),'preserve_entire_wait_audio':True}} if override else {})},'pending':notes+([] if trim_file.exists() else ['片头音乐剪切点尚待正式核定'])}
  dump(D/'数据'/str(y)/'时间轴.json',T);dump(D/'核验'/f'{y}-时间轴候选.json',{'year':y,'questions':question_candidates,'notes':notes,'status':'候选待与实际原音/解析核对'})
  print(y,'timeline',len(merged),'events','notes',len(notes),'trim reviewed',trim_file.exists(),flush=True)
 if __name__=='__main__':

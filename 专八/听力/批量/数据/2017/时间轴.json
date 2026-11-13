@@ -2,8 +2,37 @@
   "source_duration": 1454.785306122449,
   "source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
   "trim": {
+    "year": 2017,
     "start": 0,
-    "status": "待核片头音乐，时间轴仍保留完整原声，不准发布"
+    "reason": "无片头音乐",
+    "source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
+    "evidence": "逐年查看0—7s原采样率波形和0—6kHz频谱：正式报幕前没有连续音乐谐波或音乐段，只有前导静音及录音底噪；保留完整开头，start=0。ASR仅作报幕内容定位参考，首词Test在4.08s；不据此删除前导部分。",
+    "source_entry": {
+      "file": "2017专八笔试真题和答案/TEM8-2017.mp3",
+      "sha256": "80dbd0665d778cd9f07accb69d4aea0995f602cc4b75b79b77e0b5bab670c828"
+    },
+    "canonical_format": {
+      "sample_rate": 44100,
+      "channels": 1,
+      "pcm_format": "float32le"
+    },
+    "cut_sample": 0,
+    "silence_interval": null,
+    "cut_window": {
+      "half_window_seconds": 0.04,
+      "max_channel_peak_dbfs": -240.0,
+      "all_channel_rms_dbfs": -240.0,
+      "digital_zero": true,
+      "db_display_floor": -240.0
+    },
+    "reference_first_word": [
+      "Test",
+      4.08,
+      4.4
+    ],
+    "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+    "plot": "图证/2017.png",
+    "pending": []
   },
   "events": [
     {
@@ -18,24 +47,6 @@
       "kind": "instr",
       "sec": "A",
       "hi": -1
-    },
-    {
-      "t": 17.52,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 0
-    },
-    {
-      "t": 21.6,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 1
-    },
-    {
-      "t": 43.72,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 4
     },
     {
       "t": 52.24,
@@ -70,42 +81,6 @@
       "kind": "instr",
       "sec": "B",
       "hi": -1
-    },
-    {
-      "t": 720.19,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 0
-    },
-    {
-      "t": 723.47,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 1
-    },
-    {
-      "t": 728.91,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 2
-    },
-    {
-      "t": 733.87,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 3
-    },
-    {
-      "t": 737.95,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 4
-    },
-    {
-      "t": 748.79,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 5
     },
     {
       "t": 752.14,
@@ -353,37 +328,11 @@
       ]
     ]
   },
-  "pending": [
-    {
-      "section": "A",
-      "line": 2,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "While listening, please complete the gap-filling task on ANSWER SHEET ONE and write NO MORE THAN THREE WORDS for each gap."
-    },
-    {
-      "section": "A",
-      "line": 3,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Make sure the word(s) you fill in is (are) both grammatically and semantically acceptable."
-    },
-    {
-      "section": "A",
-      "line": 5,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "You have THIRTY seconds to preview the gap-filling task."
-    },
-    {
-      "section": "A",
-      "line": 6,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Now listen to the mini-lecture."
-    },
-    {
-      "section": "A",
-      "line": 7,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "When it is over, you will be given THREE minutes to check your work."
-    },
-    "片头音乐剪切点尚待正式核定"
-  ]
+  "pending": [],
+  "待核": [],
+  "review": {
+    "status": "timeline-checked",
+    "evidence": "核验/2017-时间轴说明处理.json；核验/2017-考试内容审核.json；音乐剪切/2017.json",
+    "instruction_display": "完整原卷说明静态展示，不以部分ASR猜逐句高亮"
+  }
 }

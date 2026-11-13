@@ -1,0 +1,1297 @@
+{
+  "schema_version": 1,
+  "year": 2022,
+  "status": "verified",
+  "canonical": {
+    "file": "原音.wav",
+    "sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+    "bytes": 545710634,
+    "sample_rate": 44100,
+    "channels": 2,
+    "frames": 68213822,
+    "duration": 1546.7986848072562,
+    "pcm_format": "float32le",
+    "pcm_sha256": "0c39fafbf4573b9e610b569349675445eb6f2c682e66e4bd2b46a541ee781cd9"
+  },
+  "source_release": "tem8-listening-raw-supplement",
+  "source_asset": "TEM8-2022-complete.m4a",
+  "source_encoded_sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+  "bindings": {
+    "原音准备.json": "e809d4f46bd5db40d6ce2a808eec7f9f460ddd330ad8338f8b49b09f67c57cb0",
+    "识别.json": "c64a162196b8bd89ae28466b04487f9b9d2bdde18dcd5328951bcd66c8dd6e77",
+    "停顿.json": "4983d36e53a413ad582999de69284ae96a507422ef1d09777a5a935a67dc9d53"
+  },
+  "method": "直接读取完整canonical的原始44100Hz双声道float32样本，10ms窗全声道RMS及峰值；以现有新ASR的前后真实词起点交叉定位，不按30/180/10秒从指令机械外推，不改变生产音频。声学边界分辨率10ms。",
+  "boundary_convention": "acoustic_interval是所声明阈值下的实测低能量区间，非声带发声边界；ASR词时刻也有偏差。当前时间轴工具如执行real_end，应取后继实际ASR词起点与声学终点较早者；recommended_current_builder_interval已按此规则提供，不给英语内容虚构词时刻。",
+  "pauses_override": {
+    "previewA": [
+      54.68,
+      84.85
+    ],
+    "check": [
+      586.87,
+      767.6
+    ],
+    "previewB": [
+      804.25,
+      834.32
+    ],
+    "question_pauses": [
+      [
+        1121.0,
+        1131.06
+      ],
+      [
+        1137.13,
+        1147.19
+      ],
+      [
+        1154.5,
+        1164.56
+      ],
+      [
+        1172.01,
+        1182.08
+      ],
+      [
+        1188.8,
+        1198.86
+      ],
+      [
+        1462.74,
+        1472.8
+      ],
+      [
+        1479.3,
+        1489.36
+      ],
+      [
+        1495.32,
+        1505.38
+      ],
+      [
+        1510.0,
+        1520.06
+      ],
+      [
+        1525.5,
+        1535.56
+      ]
+    ]
+  },
+  "current_builder_pauses_override": {
+    "previewA": [
+      54.68,
+      84.74
+    ],
+    "check": [
+      586.87,
+      767.48
+    ],
+    "previewB": [
+      804.25,
+      834.29
+    ],
+    "question_pauses": [
+      [
+        1121.0,
+        1131.06
+      ],
+      [
+        1137.13,
+        1147.19
+      ],
+      [
+        1154.5,
+        1164.56
+      ],
+      [
+        1172.01,
+        1182.08
+      ],
+      [
+        1188.8,
+        1198.86
+      ],
+      [
+        1462.74,
+        1472.8
+      ],
+      [
+        1479.3,
+        1489.36
+      ],
+      [
+        1495.32,
+        1505.38
+      ],
+      [
+        1510.0,
+        1520.06
+      ],
+      [
+        1525.5,
+        1535.56
+      ]
+    ]
+  },
+  "records": [
+    {
+      "id": "previewA",
+      "nominal_seconds": 30,
+      "acoustic_interval": [
+        54.68,
+        84.85
+      ],
+      "duration": 30.17,
+      "source_samples": [
+        2411388,
+        3741885
+      ],
+      "boundary_method": "原始44100Hz双声道按10ms全声道RMS计算；以-60dBFS分出持续等待区；该阈值只标段，不用于改动或删音。首尾定义为低能量交界，并非ASR估计词尾。",
+      "preceding_word_anchor": {
+        "word": "task.",
+        "start": 54.44
+      },
+      "following_word_anchor": {
+        "word": "Now",
+        "start": 84.74
+      },
+      "recommended_current_builder_interval": [
+        54.68,
+        84.74
+      ],
+      "interior_energy_omit_boundary_200ms": {
+        "rms_p10_median_p90_p99_dbfs": [
+          -88.425,
+          -80.391,
+          -71.423,
+          -66.616
+        ],
+        "rms_max_dbfs": -61.773,
+        "peak_max_dbfs": -54.33
+      },
+      "pure_digital_silence": false,
+      "contains_non_speech_low_level_signal": true,
+      "preserve_audio": true,
+      "allow_silence_removal": false
+    },
+    {
+      "id": "check",
+      "nominal_seconds": 180,
+      "acoustic_interval": [
+        586.87,
+        767.6
+      ],
+      "duration": 180.73,
+      "source_samples": [
+        25880967,
+        33851160
+      ],
+      "boundary_method": "原始44100Hz双声道按10ms全声道RMS计算；以-60dBFS分出持续等待区；该阈值只标段，不用于改动或删音。首尾定义为低能量交界，并非ASR估计词尾。",
+      "preceding_word_anchor": {
+        "word": "work.",
+        "start": 586.18
+      },
+      "following_word_anchor": {
+        "word": "This",
+        "start": 767.48
+      },
+      "recommended_current_builder_interval": [
+        586.87,
+        767.48
+      ],
+      "interior_energy_omit_boundary_200ms": {
+        "rms_p10_median_p90_p99_dbfs": [
+          -88.907,
+          -82.865,
+          -74.356,
+          -70.005
+        ],
+        "rms_max_dbfs": -67.494,
+        "peak_max_dbfs": -61.492
+      },
+      "pure_digital_silence": false,
+      "contains_non_speech_low_level_signal": true,
+      "preserve_audio": true,
+      "allow_silence_removal": false
+    },
+    {
+      "id": "previewB",
+      "nominal_seconds": 30,
+      "acoustic_interval": [
+        804.25,
+        834.32
+      ],
+      "duration": 30.07,
+      "source_samples": [
+        35467425,
+        36793512
+      ],
+      "boundary_method": "原始44100Hz双声道按10ms全声道RMS计算；以-60dBFS分出持续等待区；该阈值只标段，不用于改动或删音。首尾定义为低能量交界，并非ASR估计词尾。",
+      "preceding_word_anchor": {
+        "word": "choices.",
+        "start": 803.52
+      },
+      "following_word_anchor": {
+        "word": "Now,",
+        "start": 834.29
+      },
+      "recommended_current_builder_interval": [
+        804.25,
+        834.29
+      ],
+      "interior_energy_omit_boundary_200ms": {
+        "rms_p10_median_p90_p99_dbfs": [
+          -88.562,
+          -81.204,
+          -72.523,
+          -68.193
+        ],
+        "rms_max_dbfs": -65.805,
+        "peak_max_dbfs": -59.788
+      },
+      "pure_digital_silence": false,
+      "contains_non_speech_low_level_signal": true,
+      "preserve_audio": true,
+      "allow_silence_removal": false
+    },
+    {
+      "id": "question1",
+      "n": 1,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1121.0,
+        1131.06
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        49436100,
+        49879746
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "the",
+          1118.25,
+          1118.33
+        ],
+        [
+          "woman",
+          1118.41,
+          1118.81
+        ],
+        [
+          "go",
+          1118.89,
+          1118.97
+        ],
+        [
+          "into",
+          1119.13,
+          1119.21
+        ],
+        [
+          "education?",
+          1119.45,
+          1120.73
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1131.07,
+          1131.63
+        ],
+        [
+          "2.",
+          1131.79,
+          1132.35
+        ],
+        [
+          "What",
+          1132.67,
+          1132.75
+        ],
+        [
+          "is",
+          1132.91,
+          1132.99
+        ],
+        [
+          "her",
+          1133.15,
+          1133.23
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.362,
+        "rms_max_dbfs": -99.839,
+        "peak_max_dbfs": -88.055
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1116.25,
+          1116.73
+        ],
+        [
+          "one:",
+          1116.89,
+          1117.37
+        ]
+      ],
+      "spoken_question_before_pause": "Question one: why does the woman go into education?"
+    },
+    {
+      "id": "question2",
+      "n": 2,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1137.13,
+        1147.19
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        50147433,
+        50591079
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "attitude",
+          1133.95,
+          1134.59
+        ],
+        [
+          "towards",
+          1134.67,
+          1135.15
+        ],
+        [
+          "their",
+          1135.15,
+          1135.23
+        ],
+        [
+          "children's",
+          1135.31,
+          1135.95
+        ],
+        [
+          "education?",
+          1135.95,
+          1137.31
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1147.28,
+          1147.84
+        ],
+        [
+          "three:",
+          1147.92,
+          1148.56
+        ],
+        [
+          "What",
+          1148.8,
+          1148.88
+        ],
+        [
+          "does",
+          1149.04,
+          1149.12
+        ],
+        [
+          "the",
+          1149.28,
+          1149.36
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.36,
+        "rms_max_dbfs": -101.032,
+        "peak_max_dbfs": -87.075
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1131.07,
+          1131.63
+        ],
+        [
+          "2.",
+          1131.79,
+          1132.35
+        ]
+      ],
+      "spoken_question_before_pause": "Question 2. What is her parents' attitude towards their children's education?"
+    },
+    {
+      "id": "question3",
+      "n": 3,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1154.5,
+        1164.56
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        50913450,
+        51357096
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "do",
+          1151.6,
+          1151.68
+        ],
+        [
+          "to",
+          1151.92,
+          1152.0
+        ],
+        [
+          "improve",
+          1152.24,
+          1152.72
+        ],
+        [
+          "public",
+          1152.88,
+          1153.28
+        ],
+        [
+          "education?",
+          1153.36,
+          1154.56
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1164.65,
+          1165.21
+        ],
+        [
+          "4.",
+          1165.37,
+          1166.01
+        ],
+        [
+          "What",
+          1166.25,
+          1166.33
+        ],
+        [
+          "do",
+          1166.49,
+          1166.57
+        ],
+        [
+          "both",
+          1166.73,
+          1166.89
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.319,
+        "rms_max_dbfs": -100.908,
+        "peak_max_dbfs": -89.166
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1147.28,
+          1147.84
+        ],
+        [
+          "three:",
+          1147.92,
+          1148.56
+        ]
+      ],
+      "spoken_question_before_pause": "Question three: What does the NEA Foundation do to improve public education?"
+    },
+    {
+      "id": "question4",
+      "n": 4,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1172.01,
+        1182.08
+      ],
+      "duration": 10.07,
+      "source_samples": [
+        51685641,
+        52129728
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "to",
+          1170.41,
+          1170.49
+        ],
+        [
+          "do",
+          1170.65,
+          1170.73
+        ],
+        [
+          "in",
+          1170.81,
+          1170.89
+        ],
+        [
+          "the",
+          1171.05,
+          1171.13
+        ],
+        [
+          "future?",
+          1171.29,
+          1172.09
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1182.17,
+          1182.65
+        ],
+        [
+          "five:",
+          1182.81,
+          1183.53
+        ],
+        [
+          "According",
+          1183.77,
+          1184.17
+        ],
+        [
+          "to",
+          1184.25,
+          1184.33
+        ],
+        [
+          "the",
+          1184.41,
+          1184.49
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.371,
+        "rms_max_dbfs": -98.979,
+        "peak_max_dbfs": -87.239
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1164.65,
+          1165.21
+        ],
+        [
+          "4.",
+          1165.37,
+          1166.01
+        ]
+      ],
+      "spoken_question_before_pause": "Question 4. What do both Everfi and the NEA Foundation plan to do in the future?"
+    },
+    {
+      "id": "question5",
+      "n": 5,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1188.8,
+        1198.86
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        52426080,
+        52869726
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "be",
+          1186.49,
+          1186.57
+        ],
+        [
+          "pursued",
+          1186.73,
+          1187.29
+        ],
+        [
+          "by",
+          1187.37,
+          1187.45
+        ],
+        [
+          "a",
+          1187.61,
+          1187.69
+        ],
+        [
+          "teacher?",
+          1187.77,
+          1188.81
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Now",
+          1198.95,
+          1199.03
+        ],
+        [
+          "listen",
+          1199.43,
+          1199.83
+        ],
+        [
+          "to",
+          1199.91,
+          1199.99
+        ],
+        [
+          "the",
+          1200.07,
+          1200.15
+        ],
+        [
+          "second",
+          1200.23,
+          1200.55
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.352,
+        "rms_max_dbfs": -99.951,
+        "peak_max_dbfs": -87.823
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1182.17,
+          1182.65
+        ],
+        [
+          "five:",
+          1182.81,
+          1183.53
+        ]
+      ],
+      "spoken_question_before_pause": "Question five: According to the woman, what quality should be pursued by a teacher?"
+    },
+    {
+      "id": "question6",
+      "n": 6,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1462.74,
+        1472.8
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        64506834,
+        64950480
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "woman",
+          1460.15,
+          1460.55
+        ],
+        [
+          "think",
+          1460.63,
+          1460.71
+        ],
+        [
+          "of",
+          1461.03,
+          1461.11
+        ],
+        [
+          "light",
+          1461.27,
+          1461.51
+        ],
+        [
+          "pollution?",
+          1461.67,
+          1462.79
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1472.89,
+          1473.29
+        ],
+        [
+          "7:",
+          1473.61,
+          1474.17
+        ],
+        [
+          "Why",
+          1474.49,
+          1474.73
+        ],
+        [
+          "does",
+          1474.81,
+          1474.89
+        ],
+        [
+          "the",
+          1475.05,
+          1475.13
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.365,
+        "rms_max_dbfs": -99.401,
+        "peak_max_dbfs": -87.075
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1457.83,
+          1458.31
+        ],
+        [
+          "six:",
+          1458.47,
+          1459.03
+        ]
+      ],
+      "spoken_question_before_pause": "Question six: What does the woman think of light pollution?"
+    },
+    {
+      "id": "question7",
+      "n": 7,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1479.3,
+        1489.36
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        65237130,
+        65680776
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "look",
+          1477.13,
+          1477.21
+        ],
+        [
+          "up",
+          1477.45,
+          1477.53
+        ],
+        [
+          "into",
+          1477.69,
+          1477.77
+        ],
+        [
+          "the",
+          1478.01,
+          1478.09
+        ],
+        [
+          "sky?",
+          1478.25,
+          1479.13
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1489.45,
+          1489.85
+        ],
+        [
+          "8.",
+          1490.09,
+          1490.73
+        ],
+        [
+          "In",
+          1490.97,
+          1491.05
+        ],
+        [
+          "the",
+          1491.13,
+          1491.21
+        ],
+        [
+          "woman's",
+          1491.21,
+          1491.77
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.387,
+        "rms_max_dbfs": -100.56,
+        "peak_max_dbfs": -89.392
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1472.89,
+          1473.29
+        ],
+        [
+          "7:",
+          1473.61,
+          1474.17
+        ]
+      ],
+      "spoken_question_before_pause": "Question 7: Why does the woman suggest that the audience look up into the sky?"
+    },
+    {
+      "id": "question8",
+      "n": 8,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1495.32,
+        1505.38
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        65943612,
+        66387258
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "does",
+          1492.81,
+          1492.89
+        ],
+        [
+          "lighting",
+          1493.05,
+          1493.53
+        ],
+        [
+          "relate",
+          1493.77,
+          1494.01
+        ],
+        [
+          "to",
+          1494.09,
+          1494.17
+        ],
+        [
+          "crime?",
+          1494.33,
+          1495.21
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1505.47,
+          1505.95
+        ],
+        [
+          "nine:",
+          1506.11,
+          1506.83
+        ],
+        [
+          "What",
+          1507.07,
+          1507.15
+        ],
+        [
+          "change",
+          1507.39,
+          1507.71
+        ],
+        [
+          "would",
+          1507.79,
+          1507.87
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.38,
+        "rms_max_dbfs": -99.953,
+        "peak_max_dbfs": -87.239
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1489.45,
+          1489.85
+        ],
+        [
+          "8.",
+          1490.09,
+          1490.73
+        ]
+      ],
+      "spoken_question_before_pause": "Question 8. In the woman's opinion, how does lighting relate to crime?"
+    },
+    {
+      "id": "question9",
+      "n": 9,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1510.0,
+        1520.06
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        66591000,
+        67034646
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "the",
+          1508.03,
+          1508.11
+        ],
+        [
+          "woman",
+          1508.19,
+          1508.51
+        ],
+        [
+          "like",
+          1508.59,
+          1508.67
+        ],
+        [
+          "to",
+          1508.99,
+          1509.07
+        ],
+        [
+          "see?",
+          1509.23,
+          1509.79
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "Question",
+          1520.23,
+          1520.71
+        ],
+        [
+          "10.",
+          1520.79,
+          1521.43
+        ],
+        [
+          "What",
+          1521.67,
+          1521.75
+        ],
+        [
+          "does",
+          1521.91,
+          1521.99
+        ],
+        [
+          "the",
+          1522.15,
+          1522.23
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.358,
+        "rms_max_dbfs": -100.338,
+        "peak_max_dbfs": -87.734
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1505.47,
+          1505.95
+        ],
+        [
+          "nine:",
+          1506.11,
+          1506.83
+        ]
+      ],
+      "spoken_question_before_pause": "Question nine: What change would the woman like to see?"
+    },
+    {
+      "id": "question10",
+      "n": 10,
+      "nominal_seconds": 10,
+      "acoustic_interval": [
+        1525.5,
+        1535.56
+      ],
+      "duration": 10.06,
+      "source_samples": [
+        67274550,
+        67718196
+      ],
+      "boundary_method": "原始44100Hz双声道10ms全声道RMS<-79.68dBFS连续区间，唯一8.5—13秒段；前后相邻语音由本次2022识别.json交叉核对。",
+      "preceding_word_anchors": [
+        [
+          "woman",
+          1522.31,
+          1522.71
+        ],
+        [
+          "recommend",
+          1522.79,
+          1523.43
+        ],
+        [
+          "for",
+          1523.59,
+          1523.67
+        ],
+        [
+          "home",
+          1523.83,
+          1524.15
+        ],
+        [
+          "lighting?",
+          1524.31,
+          1525.51
+        ]
+      ],
+      "following_word_anchors": [
+        [
+          "This",
+          1535.83,
+          1535.91
+        ],
+        [
+          "is",
+          1536.07,
+          1536.15
+        ],
+        [
+          "the",
+          1536.31,
+          1536.39
+        ],
+        [
+          "end",
+          1536.55,
+          1536.63
+        ],
+        [
+          "of",
+          1536.79,
+          1536.87
+        ]
+      ],
+      "interior_energy_omit_boundary_100ms": {
+        "rms_median_dbfs": -113.34,
+        "rms_max_dbfs": -99.219,
+        "peak_max_dbfs": -87.075
+      },
+      "preserve_audio": true,
+      "allow_silence_removal": false,
+      "question_number_anchor": [
+        [
+          "Question",
+          1520.23,
+          1520.71
+        ],
+        [
+          "10.",
+          1520.79,
+          1521.43
+        ]
+      ],
+      "spoken_question_before_pause": "Question 10. What does the woman recommend for home lighting?"
+    }
+  ],
+  "checking_repetition_analysis": [
+    {
+      "reference_interval": [
+        590,
+        610
+      ],
+      "comparison_interval": [
+        620.05,
+        640.05
+      ],
+      "period_seconds": 30.05,
+      "log_rms_correlation": 0.994589
+    },
+    {
+      "reference_interval": [
+        590,
+        610
+      ],
+      "comparison_interval": [
+        650.1,
+        670.1
+      ],
+      "period_seconds": 30.05,
+      "log_rms_correlation": 0.990877
+    },
+    {
+      "reference_interval": [
+        590,
+        610
+      ],
+      "comparison_interval": [
+        680.15,
+        700.15
+      ],
+      "period_seconds": 30.05,
+      "log_rms_correlation": 0.985109
+    },
+    {
+      "reference_interval": [
+        590,
+        610
+      ],
+      "comparison_interval": [
+        710.2,
+        730.2
+      ],
+      "period_seconds": 30.05,
+      "log_rms_correlation": 0.977889
+    },
+    {
+      "reference_interval": [
+        590,
+        610
+      ],
+      "comparison_interval": [
+        740.25,
+        760.25
+      ],
+      "period_seconds": 30.05,
+      "log_rms_correlation": 0.971775
+    }
+  ],
+  "signal_handling": {
+    "source_audio_changed": false,
+    "other_years_changed": false,
+    "pure_silence_compression_allowed": false,
+    "preserve_entire_wait_audio": true,
+    "finding": "三个长等待段有低电平非语音底噪/周期性信号，检查段约30.05秒重复；原能量阈值过低导致碎段。仅凭此分析不把信号进一步定性为清晰提示音；无论是否听作beep，全部保留，不能作为纯数字静音删除。十道题后停顿能量显著更低，各约10.06秒，均真实存在。"
+  },
+  "plots": {
+    "核验/2022-停顿图证/2022-checking-low-level-spectrum.png": {
+      "sha256": "28805e4e2f73de91265e257807439b72a8a476cfe7f86fe38374ba2f9c68cb40",
+      "bytes": 578342
+    },
+    "核验/2022-停顿图证/2022-ten-question-pauses.png": {
+      "sha256": "375b5a32b841f84e51a49d53ba3b7761542c0285a9b8cc4da34912a4fcd7b087",
+      "bytes": 435360
+    },
+    "核验/2022-停顿图证/2022-waits-native-energy.png": {
+      "sha256": "6533363c47b080e32b7eca74047a26a5b26ef84fafc35cc40cf24b570abb70cb",
+      "bytes": 586830
+    }
+  },
+  "consumer_contract": {
+    "apply_only_if_canonical_sha256_matches": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+    "apply_only_if_asr_sha256_matches": "c64a162196b8bd89ae28466b04487f9b9d2bdde18dcd5328951bcd66c8dd6e77",
+    "meaning": "覆盖2022等待阶段的逻辑边界；不覆盖音频、不自动剪切、不把周期性信号当纯静音删除；其余14年不使用本记录。",
+    "approval_scope": "声学与词锚候选已核，时间轴工具由root接入并复核实际画面。"
+  },
+  "source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "machine_override": {
+    "previewA": [
+      54.68,
+      84.85
+    ],
+    "check": [
+      586.87,
+      767.6
+    ],
+    "previewB": [
+      804.25,
+      834.32
+    ],
+    "question_pauses": [
+      [
+        1121.0,
+        1131.06
+      ],
+      [
+        1137.13,
+        1147.19
+      ],
+      [
+        1154.5,
+        1164.56
+      ],
+      [
+        1172.01,
+        1182.08
+      ],
+      [
+        1188.8,
+        1198.86
+      ],
+      [
+        1462.74,
+        1472.8
+      ],
+      [
+        1479.3,
+        1489.36
+      ],
+      [
+        1495.32,
+        1505.38
+      ],
+      [
+        1510.0,
+        1520.06
+      ],
+      [
+        1525.5,
+        1535.56
+      ]
+    ]
+  },
+  "verification_scope": "仅2022原音等待阶段的真实边界；不判为可删除纯静音，不改音频或ASR。"
+}

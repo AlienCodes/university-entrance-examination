@@ -20,6 +20,7 @@ from concurrent.futures import ProcessPoolExecutor,as_completed
 from 精听 import engine,load_module,fingerprint
 from 精听数据 import ROOT,HERE,TOKEN,dump,sha
 BATCH=HERE.parent
+KNOWN_NAMES=['拉尔夫·斯梅德利','詹姆斯·约翰逊','爱德华·霍尔','斯蒂芬·克拉申','南希·安德烈亚森','文森特·梵高','约翰·塞巴斯蒂安·巴赫','莱昂纳多·达·芬奇','汉斯·塞利','特雷莎·梅','约翰·梅杰','玛吉·肖茨','玛丽·约翰逊','詹姆斯·多宾斯','阿卜杜拉·阿卜杜拉','阿什拉夫·加尼','莫琳·麦克莱恩','海伦·文德勒','威廉·科贝特','贾妮丝·奈特','苏珊·豪','保罗·博汉南','芭芭拉·米勒','玛格丽特·米德','克莱德·克拉克洪','哈丽雅特·桑福德','苏珊·康罗伊','埃尔维斯·普雷斯利','拉尔夫·沃尔多·爱默生','弗朗西斯·培根','吉姆·约翰逊','本杰明·约翰逊']
 
 
 def passage(d):
@@ -34,8 +35,12 @@ def probe_unit(snapshot,out,browser,screens=False):
     from playwright.sync_api import sync_playwright
     out=Path(out).resolve();out.mkdir(parents=True,exist_ok=True)
     d=json.loads(Path(snapshot).read_text());p=passage(d);pid=p['id'];flat=p['paras'][0];n=len(flat)
+    source_title=p['title']
+    p['title']=re.sub(r'（新题型优化版所供原文）$','',p['title'])
+    texts='\n'.join([s['zh']+' '+' '.join(w['m'] for w in s['w']) for s in flat])
+    proposed_names=list(dict.fromkeys(d.get('names',[])+[name for name in KNOWN_NAMES if name in texts]))
     for folder in ['tools/画面核查','data','阅读','shots']:(out/folder).mkdir(exist_ok=True,parents=True)
-    dump(out/'tools/分屏_水墨.json',{pid:d.get('splits',{})});dump(out/'tools/人名.json',{'names':d.get('names',[])})
+    dump(out/'tools/分屏_水墨.json',{pid:d.get('splits',{})});dump(out/'tools/人名.json',{'names':proposed_names})
     dump(out/'data/vocab.json',{'passages':[p]})
     helper=load_module('tem8_layout_http',ROOT/'高考听力/精读/tools/本机预览.py')
     helper.enable([ROOT,out,Path(tempfile.gettempdir())],browser)
@@ -65,10 +70,10 @@ def probe_unit(snapshot,out,browser,screens=False):
                     for cuts in itertools.combinations(sorted(pool),count):
                         b=[0,*cuts,len(en)]
                         if min(y-x for x,y in zip(b,b[1:]))<12:continue
-                        if any(not any(x<=w['sp'][0][0]<y for w in s['w']) for x,y in zip(b,b[1:])):continue
+                        missing=sum(not any(x<=w['sp'][0][0]<y for w in s['w']) for x,y in zip(b,b[1:]))
                         z=sug.best_zh(s,list(cuts))
                         if z is None:continue
-                        key=(z[0][0],max(y-x for x,y in zip(b,b[1:])),z[0][2])
+                        key=(z[0][0],missing,max(y-x for x,y in zip(b,b[1:])),z[0][2])
                         combos.append((key,cuts,z))
                     for key,cuts,z in sorted(combos,key=lambda x:x[0])[:16]:
                         b=[0,*cuts,len(en)];zb=[0,*z[1],len(zh)]
@@ -79,7 +84,7 @@ def probe_unit(snapshot,out,browser,screens=False):
                             plan={'at':at if len(at)>1 else at[0],'zh':[a[2] for a in parts]}
                             assert ''.join(plan['zh'])==zh
                             return plan,{'sizes':sizes,'anchor_wrong_right':[z[0][0],-z[0][1]],
-                                         'dependency_boundary':dependency,'cuts':list(cuts)}
+                                         'dependency_boundary':dependency,'cuts':list(cuts),'missing_vocab_parts':[j+1 for j,(a,b) in enumerate(zip([0,*cuts],[*cuts,len(en)])) if not any(a<=w['sp'][0][0]<b for w in s['w'])]}
                 return None,None
             plan,info=search(cs)
             if plan is None:
@@ -98,7 +103,8 @@ def probe_unit(snapshot,out,browser,screens=False):
             problems=m.screen_checks(pg,label,fit,r)
             if fit:
                 k=int(re.match(r'第 (\d+) 句',label).group(1))
-                empty=[part for part in m.split_parts(pid,k,flat[k-1]) if not any(part[0]<=w['sp'][0][0]<part[1] for w in flat[k-1]['w'])]
+                parts=m.split_parts(pid,k,flat[k-1]);match=re.search(r'第 (\d+) 屏$',label);current=[parts[int(match.group(1))-1]] if match else parts
+                empty=[part for part in current if not any(part[0]<=w['sp'][0][0]<part[1] for w in flat[k-1]['w'])]
                 if empty:problems.append(label+'：分屏缺少词汇栏内容')
             row={'screen':i+1,'label':label,'sizes':r,'problems':problems}
             if screens or problems:
@@ -107,9 +113,9 @@ def probe_unit(snapshot,out,browser,screens=False):
             final.extend(problems)
         br.close()
     dump(out/'分屏候选.json',{pid:plans})
-    result={'id':pid,'layout_only':True,'not_audio_approved':True,'input_sha256':sha(snapshot),
+    result={'id':pid,'layout_only':True,'not_audio_approved':True,'input_sha256':sha(snapshot),'precheck_script_sha256':sha(__file__),
             'fingerprint_before':frozen,'fingerprint_after':fingerprint(m,p,{}),'font_min_css_px':font_min,
-            'dimensions':[3840,2160],'original_problems':original_bad,'split_findings':findings,
+            'dimensions':[3840,2160],'source_title':source_title,'proposed_display_title':p['title'],'proposed_names':proposed_names,'original_problems':original_bad,'split_findings':findings,
             'final_problems':final,'shots':rows,'ok':not final,
             'chinese_integrity':'split_parts逐字核对每屏译文；拼接与整句完全相同',
             'next_gate':'候选必须再通过原声停顿、英文/中文分屏语义及真实换屏时刻核验，才可生产编码'}
@@ -128,7 +134,7 @@ def worker(args):
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--out',type=Path,required=True);ap.add_argument('--ids',nargs='*');ap.add_argument('--workers',type=int,default=2)
-    ap.add_argument('--screens',action='store_true');ap.add_argument('--browser',default=shutil.which('chromium') or '/usr/bin/chromium')
+    ap.add_argument('--resume',action='store_true');ap.add_argument('--screens',action='store_true');ap.add_argument('--browser',default=shutil.which('chromium') or '/usr/bin/chromium')
     args=ap.parse_args();out=args.out.resolve();out.mkdir(parents=True,exist_ok=True);units={}
     for f in sorted((BATCH/'译注草稿').glob('*.json')):
         obj=json.loads(f.read_text())
@@ -139,6 +145,8 @@ def main():
     for pid,u in sorted(units.items()):
         if args.ids and pid not in args.ids:continue
         sub=out/pid;sub.mkdir(exist_ok=True);snap=sub/'source.json';dump(snap,u)
+        old=sub/'版式预检.json'
+        if args.resume and old.exists() and json.loads(old.read_text()).get('input_sha256')==sha(snap):continue
         jobs.append((snap,sub,args.browser,args.screens))
     results=[]
     with ProcessPoolExecutor(max_workers=args.workers) as pool:

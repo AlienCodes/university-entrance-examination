@@ -1,6 +1,6 @@
 {
   "year": 2018,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2018-A",
@@ -493,8 +493,8 @@
           "translation_key": "b_once"
         },
         {
-          "en": "Question there will be a ten-second pause.",
-          "zh": "题目……会有十秒钟的停顿。",
+          "en": "After each question, there will be a ten-second pause.",
+          "zh": "每个问题之后会有十秒钟的停顿。",
           "w": [
             {
               "t": "word",
@@ -502,22 +502,91 @@
               "m": "n.停顿",
               "sp": [
                 [
-                  36,
-                  41
+                  48,
+                  53
                 ]
               ]
             }
           ],
           "role": "instruction",
           "asr_range": [
+            3,
+            12
+          ],
+          "asr_text": "After each question, there will be a 10-second pause.",
+          "translation_key": "b_pause",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2018/b_pause_fragment.json",
+          "asr_sha256": "2f00c4e5588d1a033a417e150f580220e22489890273ff319ada6dcb641243a5",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             1248,
             1256
           ],
-          "asr_text": "question there will be a 10 second pause.",
-          "translation_key": "b_pause_fragment",
-          "待核": [
-            "ASR仅有question there will be...，疑漏After each；未按公共模板补英语。"
-          ]
+          "primary_asr_ref": "预处理/2018/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "After",
+              749.4,
+              749.64
+            ],
+            [
+              "each",
+              749.8,
+              750.04
+            ],
+            [
+              "question,",
+              750.2,
+              750.52
+            ],
+            [
+              "there",
+              750.52,
+              750.6
+            ],
+            [
+              "will",
+              750.68,
+              750.76
+            ],
+            [
+              "be",
+              750.84,
+              750.92
+            ],
+            [
+              "a",
+              750.92,
+              751.0
+            ],
+            [
+              "10-second",
+              751.08,
+              751.72
+            ],
+            [
+              "pause.",
+              751.88,
+              753.08
+            ]
+          ],
+          "start": 749.4,
+          "end": 753.08,
+          "correction_case": "b_pause_fragment",
+          "evidence": {
+            "window": [
+              747.32,
+              757.12
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         },
         {
           "en": "During the pause you should read the four choices of A, B, C and D and mark the best answer to each question on answer sheet 2.",
@@ -797,16 +866,7 @@
       ]
     }
   ],
-  "待核": [
-    {
-      "asr_range": [
-        1248,
-        1256
-      ],
-      "asr_text": "question there will be a 10 second pause.",
-      "reason": "ASR仅有question there will be...，疑漏After each；未按公共模板补英语。"
-    }
-  ],
+  "待核": [],
   "source": {
     "asr": "预处理/2018/识别.json",
     "asr_sha256": "f006f9fb7adcc04471a13f71caa9287deaf5a27d220f70a1e3efc0ab59ac695c",
@@ -820,5 +880,55 @@
     "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
   ],
   "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
+    {
+      "asr_range": [
+        1248,
+        1256
+      ],
+      "asr_text": "question there will be a 10 second pause.",
+      "reason": "ASR仅有question there will be...，疑漏After each；未按公共模板补英语。"
+    }
+  ],
+  "local_corrections": [
+    {
+      "case": "b_pause_fragment",
+      "old_en": "Question there will be a ten-second pause.",
+      "new_en": "After each question, there will be a ten-second pause.",
+      "primary_asr_range": [
+        1248,
+        1256
+      ],
+      "local_asr_range": [
+        3,
+        12
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2018/b_pause_fragment.json",
+      "local_sha256": "2f00c4e5588d1a033a417e150f580220e22489890273ff319ada6dcb641243a5",
+      "source_parts": [
+        {
+          "file": "2018专八笔试真题和答案/2018TEM8-interview.mp3",
+          "source_sha256": "4ec2a6047d86a55ec3984036ade2c7137738abf4ab211355128d78c29773598c",
+          "source_window": [
+            17.216,
+            27.016
+          ],
+          "canonical_window": [
+            747.32,
+            757.12
+          ]
+        }
+      ],
+      "times": [
+        749.4,
+        753.08
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "Spoken once only. After each question, there will be a 10-second pause. During the pause, you should read the four choices of A, B, and",
+        "whisper": "Both the interview and the questions will be spoken once only. After each question there will be a 10 second pause. During the pause you should read the four choices of A, B, C and D."
+      }
+    }
+  ]
 }

@@ -15,10 +15,16 @@
   ],
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有10个原文词缺少ASR对应；涉及句号[5, 6, 7, 12, 13, 18, 25, 26, 30]，严禁按比例补时。",
-    "句首/尾无真实ASR词锚，句号[5, 12, 18]；单元未导出到可制作目录。"
+    "仍有9个原文词缺少ASR对应；涉及句号[7, 8, 9, 14, 15, 20, 27, 28]，严禁按比例补时。",
+    "句首/尾无真实ASR词锚，句号[7, 14, 20]；单元未导出到可制作目录。"
   ],
   "question_source_status": "五道题干逐字核对所供解析PDF印本；由总协调据该版实际录音核定念题及对齐，不含答案和解析。",
+  "instruction_review": {
+    "source": "说明语句/2012.json",
+    "source_sha256": "254c64caf74586cd106f849d61297c5074a3ce2f0d72b1bcd79bef61608c189e",
+    "status": "draft_asr_anchored_audio_review_pending",
+    "待核": []
+  },
   "year": 2012,
   "audio": {
     "file": "预处理/2012/原音.wav",
@@ -28,6 +34,278 @@
     "window": null
   },
   "sentences": [
+    {
+      "en": "Now listen to part two of the interview.",
+      "zh": "现在请听访谈的第二部分。",
+      "w": [
+        {
+          "t": "word",
+          "h": "listen",
+          "m": "v.听",
+          "sp": [
+            [
+              4,
+              10
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1843,
+        1851
+      ],
+      "asr_text": "Now listen to part two of the interview.",
+      "translation_key": "b2_listen_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2012.json",
+      "instruction_slot": "before",
+      "instruction_id": "2012-B2-before-1",
+      "asr_sha256": "f7a5aa4ff1bd4690a209b25e3109796280f29e946711a68ae6fbe26721cd933f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2012/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 1163.44,
+          "end": 1163.52,
+          "asr_indices": [
+            1843
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 10,
+          "start": 1164.48,
+          "end": 1164.96,
+          "asr_indices": [
+            1844
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 1165.04,
+          "end": 1165.12,
+          "asr_indices": [
+            1845
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 18,
+          "start": 1165.28,
+          "end": 1165.36,
+          "asr_indices": [
+            1846
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 22,
+          "start": 1165.84,
+          "end": 1165.92,
+          "asr_indices": [
+            1847
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 25,
+          "start": 1166.32,
+          "end": 1166.4,
+          "asr_indices": [
+            1848
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 29,
+          "start": 1166.56,
+          "end": 1166.64,
+          "asr_indices": [
+            1849
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 39,
+          "start": 1166.72,
+          "end": 1167.36,
+          "asr_indices": [
+            1850
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1163.44,
+      "end": 1167.36
+    },
+    {
+      "en": "Questions six to ten are based on part two of the interview.",
+      "zh": "第6至10题根据访谈的第二部分提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              25,
+              33
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1851,
+        1863
+      ],
+      "asr_text": "Questions six to ten are based on part two of the interview.",
+      "translation_key": "b2_group_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2012.json",
+      "instruction_slot": "before",
+      "instruction_id": "2012-B2-before-2",
+      "asr_sha256": "f7a5aa4ff1bd4690a209b25e3109796280f29e946711a68ae6fbe26721cd933f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2012/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 1167.52,
+          "end": 1168.0,
+          "asr_indices": [
+            1851
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 1168.24,
+          "end": 1168.48,
+          "asr_indices": [
+            1852
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 1168.8,
+          "end": 1168.88,
+          "asr_indices": [
+            1853
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 1168.96,
+          "end": 1169.2,
+          "asr_indices": [
+            1854
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 24,
+          "start": 1169.6,
+          "end": 1169.68,
+          "asr_indices": [
+            1855
+          ]
+        },
+        {
+          "char": 25,
+          "char_end": 30,
+          "start": 1169.92,
+          "end": 1170.16,
+          "asr_indices": [
+            1856
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 33,
+          "start": 1170.24,
+          "end": 1170.32,
+          "asr_indices": [
+            1857
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 38,
+          "start": 1170.56,
+          "end": 1170.64,
+          "asr_indices": [
+            1858
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 42,
+          "start": 1170.96,
+          "end": 1171.04,
+          "asr_indices": [
+            1859
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 45,
+          "start": 1171.36,
+          "end": 1171.44,
+          "asr_indices": [
+            1860
+          ]
+        },
+        {
+          "char": 46,
+          "char_end": 49,
+          "start": 1171.6,
+          "end": 1171.68,
+          "asr_indices": [
+            1861
+          ]
+        },
+        {
+          "char": 50,
+          "char_end": 59,
+          "start": 1171.76,
+          "end": 1172.32,
+          "asr_indices": [
+            1862
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 12,
+        "mapped_lexemes": 12,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1167.52,
+      "end": 1172.32
+    },
     {
       "en": "I see. Another question, do you think there is a creative personality?",
       "zh": "我明白了。另一个问题是，您认为存在具有创造力的人格特征吗？",
@@ -4272,6 +4550,296 @@
       "end": 1312.57
     },
     {
+      "en": "This is the end of part two of the interview.",
+      "zh": "访谈的第二部分到此结束。",
+      "w": [
+        {
+          "t": "word",
+          "h": "end",
+          "m": "n.结束",
+          "sp": [
+            [
+              12,
+              15
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        2212,
+        2222
+      ],
+      "asr_text": "This is the end of part two of the interview.",
+      "translation_key": "b2_end_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2012.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2012-B2-before_questions-1",
+      "asr_sha256": "f7a5aa4ff1bd4690a209b25e3109796280f29e946711a68ae6fbe26721cd933f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2012/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 1313.77,
+          "end": 1313.85,
+          "asr_indices": [
+            2212
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 1314.01,
+          "end": 1314.09,
+          "asr_indices": [
+            2213
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 1314.25,
+          "end": 1314.33,
+          "asr_indices": [
+            2214
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 1314.49,
+          "end": 1314.57,
+          "asr_indices": [
+            2215
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 1314.81,
+          "end": 1314.89,
+          "asr_indices": [
+            2216
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 23,
+          "start": 1315.05,
+          "end": 1315.13,
+          "asr_indices": [
+            2217
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 27,
+          "start": 1315.45,
+          "end": 1315.53,
+          "asr_indices": [
+            2218
+          ]
+        },
+        {
+          "char": 28,
+          "char_end": 30,
+          "start": 1315.93,
+          "end": 1316.01,
+          "asr_indices": [
+            2219
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 1316.09,
+          "end": 1316.17,
+          "asr_indices": [
+            2220
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 44,
+          "start": 1316.33,
+          "end": 1317.45,
+          "asr_indices": [
+            2221
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1313.77,
+      "end": 1317.45
+    },
+    {
+      "en": "Questions six to ten are based on what you have just heard.",
+      "zh": "第6至10题根据你刚才听到的内容提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              25,
+              33
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        2222,
+        2234
+      ],
+      "asr_text": "Questions six to ten are based on what you have just heard.",
+      "translation_key": "b2_group_heard",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2012.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2012-B2-before_questions-2",
+      "asr_sha256": "f7a5aa4ff1bd4690a209b25e3109796280f29e946711a68ae6fbe26721cd933f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2012/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 1317.69,
+          "end": 1318.17,
+          "asr_indices": [
+            2222
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 1318.49,
+          "end": 1318.73,
+          "asr_indices": [
+            2223
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 1319.05,
+          "end": 1319.13,
+          "asr_indices": [
+            2224
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 1319.21,
+          "end": 1319.45,
+          "asr_indices": [
+            2225
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 24,
+          "start": 1319.85,
+          "end": 1319.93,
+          "asr_indices": [
+            2226
+          ]
+        },
+        {
+          "char": 25,
+          "char_end": 30,
+          "start": 1320.17,
+          "end": 1320.49,
+          "asr_indices": [
+            2227
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 33,
+          "start": 1320.57,
+          "end": 1320.65,
+          "asr_indices": [
+            2228
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 38,
+          "start": 1320.81,
+          "end": 1320.89,
+          "asr_indices": [
+            2229
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 42,
+          "start": 1321.05,
+          "end": 1321.13,
+          "asr_indices": [
+            2230
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 47,
+          "start": 1321.21,
+          "end": 1321.29,
+          "asr_indices": [
+            2231
+          ]
+        },
+        {
+          "char": 48,
+          "char_end": 52,
+          "start": 1321.45,
+          "end": 1321.53,
+          "asr_indices": [
+            2232
+          ]
+        },
+        {
+          "char": 53,
+          "char_end": 58,
+          "start": 1321.69,
+          "end": 1322.09,
+          "asr_indices": [
+            2233
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 12,
+        "mapped_lexemes": 12,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1317.69,
+      "end": 1322.09
+    },
+    {
       "en": "What is NOT mentioned as a feature of a creative personality?",
       "zh": "以下哪一项没有被提及为创造型人格的特点？",
       "w": [
@@ -4571,7 +5139,7 @@
       "end": 1347.82
     },
     {
-      "en": "What is Dr. Andreasen’s suggestion for a creativity workout based on?",
+      "en": "What is Dr. Andreasen’s suggestion for a creative workout based on?",
       "zh": "安德烈亚森博士提出创造力训练建议，依据是什么？",
       "w": [
         {
@@ -4580,8 +5148,8 @@
           "m": "n.训练",
           "sp": [
             [
-              52,
-              59
+              50,
+              57
             ]
           ]
         },
@@ -4591,8 +5159,8 @@
           "m": "phr.以……为依据",
           "sp": [
             [
-              60,
-              68
+              58,
+              66
             ]
           ]
         }
@@ -4666,8 +5234,17 @@
           ]
         },
         {
-          "char": 52,
-          "char_end": 59,
+          "char": 41,
+          "char_end": 49,
+          "start": 1362.7,
+          "end": 1363.26,
+          "asr_indices": [
+            2271
+          ]
+        },
+        {
+          "char": 50,
+          "char_end": 57,
           "start": 1363.42,
           "end": 1363.74,
           "asr_indices": [
@@ -4675,8 +5252,8 @@
           ]
         },
         {
-          "char": 60,
-          "char_end": 65,
+          "char": 58,
+          "char_end": 63,
           "start": 1364.06,
           "end": 1364.3,
           "asr_indices": [
@@ -4684,8 +5261,8 @@
           ]
         },
         {
-          "char": 66,
-          "char_end": 68,
+          "char": 64,
+          "char_end": 66,
           "start": 1364.46,
           "end": 1364.78,
           "asr_indices": [
@@ -4696,27 +5273,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 11,
-        "mapped_lexemes": 10,
-        "missing": [
-          {
-            "text": "creativity",
-            "char": [
-              41,
-              51
-            ]
-          }
-        ],
+        "mapped_lexemes": 11,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            2271
-          ],
-          "asr_text": [
-            "creative"
-          ],
-          "window": [
-            1362.7,
-            1363.26
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 1358.78,
@@ -4964,6 +5526,133 @@
       },
       "start": 1393.43,
       "end": 1398.31
+    },
+    {
+      "en": "This is the end of part one: listening comprehension.",
+      "zh": "第一部分听力理解到此结束。",
+      "w": [
+        {
+          "t": "word",
+          "h": "comprehension",
+          "m": "n.理解",
+          "sp": [
+            [
+              39,
+              52
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        2298,
+        2307
+      ],
+      "asr_text": "This is the end of part one: listening comprehension.",
+      "translation_key": "end",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2012.json",
+      "instruction_slot": "after",
+      "instruction_id": "2012-B2-after-1",
+      "asr_sha256": "f7a5aa4ff1bd4690a209b25e3109796280f29e946711a68ae6fbe26721cd933f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2012/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 1407.95,
+          "end": 1408.03,
+          "asr_indices": [
+            2298
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 1408.19,
+          "end": 1408.27,
+          "asr_indices": [
+            2299
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 1408.51,
+          "end": 1408.59,
+          "asr_indices": [
+            2300
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 1408.75,
+          "end": 1408.83,
+          "asr_indices": [
+            2301
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 1408.99,
+          "end": 1409.07,
+          "asr_indices": [
+            2302
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 23,
+          "start": 1409.31,
+          "end": 1409.39,
+          "asr_indices": [
+            2303
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 27,
+          "start": 1409.79,
+          "end": 1410.27,
+          "asr_indices": [
+            2304
+          ]
+        },
+        {
+          "char": 29,
+          "char_end": 38,
+          "start": 1410.51,
+          "end": 1411.15,
+          "asr_indices": [
+            2305
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 52,
+          "start": 1411.31,
+          "end": 1412.59,
+          "asr_indices": [
+            2306
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 9,
+        "mapped_lexemes": 9,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1407.95,
+      "end": 1412.59
     }
   ],
   "alignment_report": "核验/原文对齐/2012/对齐报告.json",
@@ -4972,6 +5661,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2012/对齐报告.json",
-    "content_sha256": "f58f530c2853577e16516d4adf99e709186379a9571a22fb512f498dd2b33d8c"
+    "content_sha256": "d58bc436392ec7460a66663002cf2ab9fc396c32d0887aeaf347e2a2780cdbaf"
   }
 }

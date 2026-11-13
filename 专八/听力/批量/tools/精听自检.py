@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 import soundfile as sf
 
-from 精听数据 import compact,compile_input,content_sha,sha,validate,align_words
+from 精听数据 import compact,compile_input,content_sha,sha,validate,align_words,first_aligned_word,audio_protection,PROTECTION_2022
 
 
 def example(audio):
@@ -70,6 +70,41 @@ class Checks(unittest.TestCase):
     def test_unproven_word_times_rejected(self):
         s={'en':'She cannot go.','start':0,'end':1,'words':[['She',0,.2],['go',.7,.9]]}
         with self.assertRaises(AssertionError):align_words(s)
+
+    def test_split_cannot_skip_missing_first_word(self):
+        en='He paused, then spoke.';cut=en.index('then')
+        aa=[{'char':en.index('spoke'),'char_end':en.index('spoke')+5,'start':2.,'end':2.3}]
+        with self.assertRaisesRegex(AssertionError,'首词缺少真实对齐'):first_aligned_word(aa,en,cut)
+        aa.insert(0,{'char':cut,'char_end':cut+4,'start':1.5,'end':1.8})
+        self.assertEqual(first_aligned_word(aa,en,cut)['start'],1.5)
+
+    def test_registered_low_level_periodic_signal_preserved(self):
+        # -83dBFS左右的真实形态信号低于旧静音门槛；保护登记必须先于门槛执行。
+        t=np.arange(5*self.sr)/self.sr
+        signal=(1e-4*np.sin(2*np.pi*440*t)).astype(np.float32)
+        self.x[self.sr:6*self.sr,0]=signal
+        plain=compact(self.x,self.sr,0,8,self.sents)
+        self.assertEqual(plain[3],[(2*self.sr,5*self.sr)])
+        protected=compact(self.x,self.sr,0,8,self.sents,[(1.,6.)])
+        self.assertEqual(protected[3],[])
+        self.assertTrue(np.array_equal(protected[0],self.x))
+        self.assertTrue(protected[4][0]['protected'])
+
+    def test_protection_source_sha_is_mandatory(self):
+        r=json.loads(PROTECTION_2022.read_text())
+        d={'year':2022,'audio':{'sha256':r['canonical']['sha256']}}
+        intervals,evidence=audio_protection(d)
+        self.assertEqual(intervals,[[54.68,84.85],[586.87,767.6],[804.25,834.32]])
+        self.assertEqual(evidence['registration_sha256'],sha(PROTECTION_2022))
+        d['audio']['protected_source_intervals']=intervals[:1]
+        with self.assertRaisesRegex(AssertionError,'保护段'):audio_protection(d)
+        d['audio'].pop('protected_source_intervals')
+        d['audio']['sha256']='0'*64
+        with self.assertRaisesRegex(AssertionError,'原音SHA'):audio_protection(d)
+        d={'year':2009,'audio':{'sha256':'0'*64}}
+        self.assertEqual(audio_protection(d),([],None))
+        d['audio']['protected_source_intervals']=intervals
+        with self.assertRaisesRegex(AssertionError,'非2022'):audio_protection(d)
 
 
 if __name__=='__main__':unittest.main()

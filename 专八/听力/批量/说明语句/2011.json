@@ -1,6 +1,6 @@
 {
   "year": 2011,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2011-A",
@@ -78,7 +78,7 @@
           "translation_key": "part"
         },
         {
-          "en": "Section A Lecture.",
+          "en": "Section A mini-lecture.",
           "zh": "A节：短讲。",
           "w": [
             {
@@ -87,19 +87,66 @@
               "m": "n.讲座；短讲",
               "sp": [
                 [
-                  10,
-                  17
+                  15,
+                  22
                 ]
               ]
             }
           ],
           "role": "transition",
           "asr_range": [
+            2,
+            6
+          ],
+          "asr_text": "Section A Mini Lecture",
+          "translation_key": "a_header",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2011/a_header.json",
+          "asr_sha256": "26dfdf3d9e465aa61f01257f0892b3a584e035571f0710fd7913ca4b63df6f11",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             11,
             14
           ],
-          "asr_text": "Section A Lecture",
-          "translation_key": "a_header"
+          "primary_asr_ref": "预处理/2011/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "Section",
+              25.09,
+              25.49
+            ],
+            [
+              "A",
+              25.65,
+              25.73
+            ],
+            [
+              "Mini",
+              26.69,
+              27.09
+            ],
+            [
+              "Lecture",
+              27.25,
+              27.73
+            ]
+          ],
+          "start": 25.09,
+          "end": 27.73,
+          "correction_case": "a_header",
+          "evidence": {
+            "window": [
+              22.05,
+              31.69
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         },
         {
           "en": "In this section you will hear a mini-lecture.",
@@ -794,11 +841,7 @@
       ]
     }
   ],
-  "待核": [
-    {
-      "reason": "卷首ASR标题漏识Section或Mini，英语保留实际已识别词，未凭模板补词；需原音听核。"
-    }
-  ],
+  "待核": [],
   "source": {
     "asr": "预处理/2011/识别.json",
     "asr_sha256": "403e9f5e5508375f9ace7a4fd5e8f89196c6a59dda6d248ee659d706580f399a",
@@ -812,5 +855,50 @@
     "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
   ],
   "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
+    {
+      "reason": "卷首ASR标题漏识Section或Mini，英语保留实际已识别词，未凭模板补词；需原音听核。"
+    }
+  ],
+  "local_corrections": [
+    {
+      "case": "a_header",
+      "old_en": "Section A Lecture.",
+      "new_en": "Section A mini-lecture.",
+      "primary_asr_range": [
+        11,
+        14
+      ],
+      "local_asr_range": [
+        2,
+        6
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2011/a_header.json",
+      "local_sha256": "26dfdf3d9e465aa61f01257f0892b3a584e035571f0710fd7913ca4b63df6f11",
+      "source_parts": [
+        {
+          "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+          "source_sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462",
+          "source_window": [
+            22.05,
+            31.69
+          ],
+          "canonical_window": [
+            22.05,
+            31.69
+          ]
+        }
+      ],
+      "times": [
+        25.09,
+        27.73
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "Listening comprehension. Section A Mini Lecture In this section you will hear a mini lecture.",
+        "whisper": "8. Part 1. Listening comprehension. Section A. Mini lecture. In this section you will hear a mini lecture. You will hear the"
+      }
+    }
+  ]
 }

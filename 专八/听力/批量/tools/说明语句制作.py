@@ -102,7 +102,7 @@ def display(s,key):
 def sentence(year,w,a,z,key,role='instruction'):
  assert 0<=a<z<=len(w),(year,a,z,key)
  en=display(raw(w,a,z),key)
- if key=='test':zh,term,head,meaning=(f'{year}年'+T[key][0],*T[key][1:])
+ if key=='test':zh,term,head,meaning=((f'{year}年' if len(raw(w,a,z).split())>4 else '')+T[key][0],*T[key][1:])
  elif key=='a_title':zh,term,head,meaning=TITLES[year]
  else:zh,term,head,meaning=T[key]
  # 有些ASR只识别到Lecture或复数Interviews；词条仍给出真实表面span。
@@ -223,7 +223,7 @@ def build(year):
   a=group_end(n,q1pre);z=a+3
   if n[a:z]==['of','the','interview']:
    pending.append({'asr_range':[a,z],'asr_text':raw(w,a,z),'reason':'题组提示后ASR重复残片Of the interview，疑识别拼接重复，暂不当正式说明正文；需原音听核。'})
- if year==2022:pending.append({'reason':'当前ASR是原包缺开头版本，仅按实际Now listen起；完整来源与新ASR待root替换后重新提取。'})
+ if year==2022 and not seek(n,'test for english majors',0,body_start):pending.append({'reason':'当前ASR是原包缺开头版本，仅按实际Now listen起；完整来源与新ASR待root替换后重新提取。'})
  if year in [2010,2011]:pending.append({'reason':'卷首ASR标题漏识Section或Mini，英语保留实际已识别词，未凭模板补词；需原音听核。'})
  for u in units:
   for v in u.values():
@@ -238,6 +238,8 @@ def build(year):
      reason='ASR把答题卡位置识别为answering one，与原卷ANSWER SHEET ONE不符；需要听核，不以普通模板冒充实际已识别词。'
     elif key=='a_blank' and re.search(r'use\W+use',text,re.I):
      reason='ASR连续重复use，需原音核是否口述重复；未静默删除。'
+    elif key=='a_check' and re.search(r'have\W+have',text,re.I):
+     reason='ASR连续重复have，需局部复识别核是否为口述重复；未静默删除。'
     elif key=='a_blank_fragment':
      reason='ASR仅识别到note-taking，缺少原卷You may use the blank sheet for...；单独保留已识别片段，未把它并入上一说明句。'
     elif key=='b_header' and len(text.split())>3:

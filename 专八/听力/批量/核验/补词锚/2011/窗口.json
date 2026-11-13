@@ -1,0 +1,2133 @@
+{
+  "year": 2011,
+  "canonical_source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+  "primary_asr_sha256": "403e9f5e5508375f9ace7a4fd5e8f89196c6a59dda6d248ee659d706580f399a",
+  "model": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8",
+  "model_files": {
+    "encoder.int8.onnx": "92a10bd9c23936ea0566c29f963bc57c2a5df4261b6a8921c39abea66557ca8b",
+    "decoder.int8.onnx": "4d097bae3bac5c96018d5293ba39f1b657296102b142affda40378f38b020f41",
+    "joiner.int8.onnx": "77a29f3e5ac7d37074e0af465391b80f314015d5b97f0f90c6c7767f1d56f428",
+    "tokens.txt": "ec182b70dd42113aff6c5372c75cac58c952443eb22322f57bbd7f53977d497d"
+  },
+  "source_entries": [
+    {
+      "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+      "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462"
+    }
+  ],
+  "script_sha256": "b5e9fccc0cd2c669a78e07831022678dfca58984acb80eaffd0ca45959b5c10f",
+  "analysis_only": "内存16k单声道分析副本；正式原音未修改",
+  "word_end_estimate_seconds": 0.08,
+  "windows": [
+    {
+      "key": "b073d75e7935bd2cbb1eda5cea12ef15528e317fec0c1e281613e23a5d89e2e2",
+      "unit": "2011-A",
+      "window": [
+        392.93,
+        397.81
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 39,
+          "source_text": "They are not",
+          "source_chars": [
+            [
+              0,
+              4
+            ],
+            [
+              5,
+              8
+            ],
+            [
+              9,
+              12
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 3,
+          "left_anchor": {
+            "unit": "2011-A",
+            "sentence": 38,
+            "text": "everything",
+            "asr_indices": [
+              748
+            ],
+            "asr_text": [
+              "everything."
+            ],
+            "window": [
+              394.43,
+              395.07
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-A",
+            "sentence": 39,
+            "text": "going",
+            "asr_indices": [
+              749
+            ],
+            "asr_text": [
+              "Going"
+            ],
+            "window": [
+              396.15,
+              396.31
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " The",
+        " m",
+        "ess",
+        "age",
+        " is",
+        " everything",
+        ".",
+        " They",
+        "'",
+        "re",
+        " not",
+        " going",
+        " to",
+        " wor",
+        "ry",
+        " about",
+        " all",
+        " the",
+        " d",
+        "et",
+        "ail",
+        "s",
+        "."
+      ],
+      "timestamps": [
+        0.1599999964237213,
+        0.3199999928474426,
+        0.47999998927116394,
+        0.7199999690055847,
+        1.1200000047683716,
+        1.5199999809265137,
+        2.1599998474121094,
+        2.4800000190734863,
+        2.6399998664855957,
+        2.799999952316284,
+        2.879999876022339,
+        3.119999885559082,
+        3.359999895095825,
+        3.43999981880188,
+        3.5999999046325684,
+        3.759999990463257,
+        4.0,
+        4.159999847412109,
+        4.319999694824219,
+        4.400000095367432,
+        4.480000019073486,
+        4.559999942779541,
+        4.639999866485596
+      ],
+      "words": [
+        [
+          "The",
+          393.09,
+          393.17
+        ],
+        [
+          "message",
+          393.25,
+          393.73
+        ],
+        [
+          "is",
+          394.05,
+          394.13
+        ],
+        [
+          "everything.",
+          394.45,
+          395.17
+        ],
+        [
+          "They're",
+          395.41,
+          395.81
+        ],
+        [
+          "not",
+          395.81,
+          395.89
+        ],
+        [
+          "going",
+          396.05,
+          396.13
+        ],
+        [
+          "to",
+          396.29,
+          396.37
+        ],
+        [
+          "worry",
+          396.37,
+          396.61
+        ],
+        [
+          "about",
+          396.69,
+          396.77
+        ],
+        [
+          "all",
+          396.93,
+          397.01
+        ],
+        [
+          "the",
+          397.09,
+          397.17
+        ],
+        [
+          "details.",
+          397.25,
+          397.65
+        ]
+      ],
+      "primary_asr_indices": [
+        745,
+        746,
+        747,
+        748,
+        749,
+        750,
+        751,
+        752,
+        753,
+        754,
+        755
+      ],
+      "primary_text": "the message is everything. Going to worry about all the details",
+      "new_text": "The message is everything. They're not going to worry about all the details.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,11 +1,13 @@",
+        "-the",
+        "+The",
+        " message",
+        " is",
+        " everything.",
+        "-Going",
+        "+They're",
+        "+not",
+        "+going",
+        " to",
+        " worry",
+        " about",
+        " all",
+        " the",
+        "-details",
+        "+details."
+      ],
+      "elapsed_seconds": 2.031,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "e86458c97f890e5b35cac940c010c700bef87e6370654c44a78c32d23cc725f7",
+      "unit": "2011-B2",
+      "window": [
+        1168.55,
+        1176.03
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 5,
+          "source_text": "Krashen",
+          "source_chars": [
+            [
+              67,
+              74
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B2",
+            "sentence": 5,
+            "text": "Stephen",
+            "asr_indices": [
+              1917
+            ],
+            "asr_text": [
+              "Stephen"
+            ],
+            "window": [
+              1170.05,
+              1170.53
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B2",
+            "sentence": 6,
+            "text": "OK",
+            "asr_indices": [
+              1919
+            ],
+            "asr_text": [
+              "Okay."
+            ],
+            "window": [
+              1171.73,
+              1172.05
+            ]
+          }
+        },
+        {
+          "sentence": 7,
+          "source_text": "or",
+          "source_chars": [
+            [
+              21,
+              23
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B2",
+            "sentence": 7,
+            "text": "hypotheses",
+            "asr_indices": [
+              1922
+            ],
+            "asr_text": [
+              "hypotheses"
+            ],
+            "window": [
+              1173.01,
+              1173.89
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B2",
+            "sentence": 7,
+            "text": "what",
+            "asr_indices": [
+              1924
+            ],
+            "asr_text": [
+              "what"
+            ],
+            "window": [
+              1174.45,
+              1174.53
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " P",
+        "ro",
+        "p",
+        "os",
+        "ed",
+        " by",
+        " St",
+        "ep",
+        "h",
+        "en",
+        " C",
+        "r",
+        "atch",
+        "in",
+        ".",
+        " Okay",
+        ".",
+        " The",
+        " f",
+        "ive",
+        " h",
+        "y",
+        "p",
+        "oth",
+        "es",
+        "es",
+        " form",
+        " what",
+        " he",
+        " call",
+        "s",
+        " the",
+        " mod",
+        "el",
+        "."
+      ],
+      "timestamps": [
+        0.7999999523162842,
+        0.8799999952316284,
+        0.9599999785423279,
+        1.1200000047683716,
+        1.1999999284744263,
+        1.3600000143051147,
+        1.5199999809265137,
+        1.6799999475479126,
+        1.8399999141693115,
+        1.9199999570846558,
+        2.0799999237060547,
+        2.1599998474121094,
+        2.319999933242798,
+        2.6399998664855957,
+        2.879999876022339,
+        3.119999885559082,
+        3.359999895095825,
+        3.919999837875366,
+        4.079999923706055,
+        4.239999771118164,
+        4.480000019073486,
+        4.559999942779541,
+        4.71999979019165,
+        4.880000114440918,
+        5.039999961853027,
+        5.279999732971191,
+        5.519999980926514,
+        5.920000076293945,
+        6.159999847412109,
+        6.399999618530273,
+        6.559999942779541,
+        6.799999713897705,
+        6.960000038146973,
+        7.119999885559082,
+        7.279999732971191
+      ],
+      "words": [
+        [
+          "Proposed",
+          1169.35,
+          1169.83
+        ],
+        [
+          "by",
+          1169.91,
+          1169.99
+        ],
+        [
+          "Stephen",
+          1170.07,
+          1170.55
+        ],
+        [
+          "Cratchin.",
+          1170.63,
+          1171.51
+        ],
+        [
+          "Okay.",
+          1171.67,
+          1171.99
+        ],
+        [
+          "The",
+          1172.47,
+          1172.55
+        ],
+        [
+          "five",
+          1172.63,
+          1172.87
+        ],
+        [
+          "hypotheses",
+          1173.03,
+          1173.91
+        ],
+        [
+          "form",
+          1174.07,
+          1174.15
+        ],
+        [
+          "what",
+          1174.47,
+          1174.55
+        ],
+        [
+          "he",
+          1174.71,
+          1174.79
+        ],
+        [
+          "calls",
+          1174.95,
+          1175.19
+        ],
+        [
+          "the",
+          1175.35,
+          1175.43
+        ],
+        [
+          "model.",
+          1175.51,
+          1175.91
+        ]
+      ],
+      "primary_asr_indices": [
+        1915,
+        1916,
+        1917,
+        1918,
+        1919,
+        1920,
+        1921,
+        1922,
+        1923,
+        1924,
+        1925,
+        1926,
+        1927,
+        1928
+      ],
+      "primary_text": "proposed by Stephen Crashen. Okay. The five hypotheses form what he calls the monitor",
+      "new_text": "Proposed by Stephen Cratchin. Okay. The five hypotheses form what he calls the model.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,7 +1,7 @@",
+        "-proposed",
+        "+Proposed",
+        " by",
+        " Stephen",
+        "-Crashen.",
+        "+Cratchin.",
+        " Okay.",
+        " The",
+        " five",
+        "@@ -11,4 +11,4 @@",
+        " he",
+        " calls",
+        " the",
+        "-monitor",
+        "+model."
+      ],
+      "elapsed_seconds": 2.585,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "3e6109fb5550fd61b608df300e04745fa017e3c4b3e64de489e9a9b51739a77a",
+      "unit": "2011-A",
+      "window": [
+        482.13,
+        491.37
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 50,
+          "source_text": "onto",
+          "source_chars": [
+            [
+              92,
+              96
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-A",
+            "sentence": 50,
+            "text": "hold",
+            "asr_indices": [
+              948
+            ],
+            "asr_text": [
+              "hold"
+            ],
+            "window": [
+              483.63,
+              484.03
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-A",
+            "sentence": 51,
+            "text": "So",
+            "asr_indices": [
+              951
+            ],
+            "asr_text": [
+              "so"
+            ],
+            "window": [
+              486.43,
+              486.51
+            ]
+          }
+        },
+        {
+          "sentence": 51,
+          "source_text": "Hall",
+          "source_chars": [
+            [
+              34,
+              38
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-A",
+            "sentence": 51,
+            "text": "that",
+            "asr_indices": [
+              958
+            ],
+            "asr_text": [
+              "that"
+            ],
+            "window": [
+              488.43,
+              488.51
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-A",
+            "sentence": 51,
+            "text": "stresses",
+            "asr_indices": [
+              960
+            ],
+            "asr_text": [
+              "stresses"
+            ],
+            "window": [
+              489.39,
+              489.87
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " A",
+        "ct",
+        "ually",
+        ",",
+        " something",
+        " you",
+        " can",
+        " h",
+        "old",
+        " on",
+        " to",
+        ".",
+        " So",
+        ",",
+        " what",
+        " this",
+        " is",
+        " all",
+        " about",
+        " is",
+        " that",
+        " P",
+        "a",
+        "ul",
+        " st",
+        "ress",
+        "es",
+        " that",
+        " people",
+        " need",
+        "."
+      ],
+      "timestamps": [
+        0.23999999463558197,
+        0.3199999928474426,
+        0.3199999928474426,
+        0.47999998927116394,
+        0.6399999856948853,
+        1.0399999618530273,
+        1.2799999713897705,
+        1.6799999475479126,
+        1.9199999570846558,
+        2.0799999237060547,
+        2.3999998569488525,
+        3.679999828338623,
+        4.319999694824219,
+        4.480000019073486,
+        4.71999979019165,
+        5.039999961853027,
+        5.279999732971191,
+        5.519999980926514,
+        5.759999752044678,
+        6.079999923706055,
+        6.319999694824219,
+        6.799999713897705,
+        6.960000038146973,
+        7.119999885559082,
+        7.279999732971191,
+        7.440000057220459,
+        7.679999828338623,
+        7.919999599456787,
+        8.479999542236328,
+        8.800000190734863,
+        9.039999961853027
+      ],
+      "words": [
+        [
+          "Actually,",
+          482.37,
+          482.69
+        ],
+        [
+          "something",
+          482.77,
+          482.85
+        ],
+        [
+          "you",
+          483.17,
+          483.25
+        ],
+        [
+          "can",
+          483.41,
+          483.49
+        ],
+        [
+          "hold",
+          483.81,
+          484.13
+        ],
+        [
+          "on",
+          484.21,
+          484.29
+        ],
+        [
+          "to.",
+          484.53,
+          485.89
+        ],
+        [
+          "So,",
+          486.45,
+          486.69
+        ],
+        [
+          "what",
+          486.85,
+          486.93
+        ],
+        [
+          "this",
+          487.17,
+          487.25
+        ],
+        [
+          "is",
+          487.41,
+          487.49
+        ],
+        [
+          "all",
+          487.65,
+          487.73
+        ],
+        [
+          "about",
+          487.89,
+          487.97
+        ],
+        [
+          "is",
+          488.21,
+          488.29
+        ],
+        [
+          "that",
+          488.45,
+          488.53
+        ],
+        [
+          "Paul",
+          488.93,
+          489.33
+        ],
+        [
+          "stresses",
+          489.41,
+          489.89
+        ],
+        [
+          "that",
+          490.05,
+          490.13
+        ],
+        [
+          "people",
+          490.61,
+          490.69
+        ],
+        [
+          "need.",
+          490.93,
+          491.25
+        ]
+      ],
+      "primary_asr_indices": [
+        944,
+        945,
+        946,
+        947,
+        948,
+        949,
+        950,
+        951,
+        952,
+        953,
+        954,
+        955,
+        956,
+        957,
+        958,
+        959,
+        960,
+        961,
+        962,
+        963
+      ],
+      "primary_text": "actually something you can hold on to so what this is all about is that Paul stresses that people need",
+      "new_text": "Actually, something you can hold on to. So, what this is all about is that Paul stresses that people need.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,11 +1,11 @@",
+        "-actually",
+        "+Actually,",
+        " something",
+        " you",
+        " can",
+        " hold",
+        " on",
+        "-to",
+        "-so",
+        "+to.",
+        "+So,",
+        " what",
+        " this",
+        " is",
+        "@@ -17,4 +17,4 @@",
+        " stresses",
+        " that",
+        " people",
+        "-need",
+        "+need."
+      ],
+      "elapsed_seconds": 2.245,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "9fa1711e8f2c80bf0cea2ba54019df100bc14d03b732124b9c70ecce7c3ea688",
+      "unit": "2011-B1",
+      "window": [
+        887.92,
+        898.52
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 18,
+          "source_text": "Mm",
+          "source_chars": [
+            [
+              0,
+              2
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 17,
+            "text": "language",
+            "asr_indices": [
+              1381
+            ],
+            "asr_text": [
+              "language."
+            ],
+            "window": [
+              889.42,
+              890.94
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 19,
+            "text": "Another",
+            "asr_indices": [
+              1382
+            ],
+            "asr_text": [
+              "Another"
+            ],
+            "window": [
+              891.26,
+              891.5
+            ]
+          }
+        },
+        {
+          "sentence": 19,
+          "source_text": "the",
+          "source_chars": [
+            [
+              87,
+              90
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 19,
+            "text": "and",
+            "asr_indices": [
+              1394
+            ],
+            "asr_text": [
+              "and"
+            ],
+            "window": [
+              896.22,
+              896.3
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 19,
+            "text": "second",
+            "asr_indices": [
+              1396
+            ],
+            "asr_text": [
+              "second"
+            ],
+            "window": [
+              896.7,
+              897.02
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " To",
+        " l",
+        "ear",
+        "n",
+        " a",
+        " se",
+        "cond",
+        " l",
+        "ang",
+        "u",
+        "age",
+        ".",
+        " An",
+        "other",
+        " is",
+        " rel",
+        "ated",
+        " to",
+        " the",
+        " sim",
+        "il",
+        "ar",
+        "ities",
+        " and",
+        " differe",
+        "n",
+        "ces",
+        " between",
+        " one",
+        "'",
+        "s",
+        " m",
+        "other",
+        " t",
+        "ong",
+        "ue",
+        " and",
+        " a",
+        " se",
+        "cond",
+        " l",
+        "ang",
+        "u",
+        "age",
+        "."
+      ],
+      "timestamps": [
+        0.6399999856948853,
+        0.7999999523162842,
+        0.8799999952316284,
+        0.9599999785423279,
+        1.0399999618530273,
+        1.1200000047683716,
+        1.2799999713897705,
+        1.5199999809265137,
+        1.5999999046325684,
+        1.7599999904632568,
+        2.0,
+        2.9600000381469727,
+        3.2799999713897705,
+        3.5199999809265137,
+        3.759999990463257,
+        4.0,
+        4.159999847412109,
+        4.400000095367432,
+        4.559999942779541,
+        4.639999866485596,
+        4.880000114440918,
+        5.039999961853027,
+        5.199999809265137,
+        5.359999656677246,
+        5.519999980926514,
+        5.759999752044678,
+        6.0,
+        6.639999866485596,
+        6.87999963760376,
+        7.119999885559082,
+        7.279999732971191,
+        7.359999656677246,
+        7.519999980926514,
+        7.759999752044678,
+        7.919999599456787,
+        8.079999923706055,
+        8.319999694824219,
+        8.559999465942383,
+        8.800000190734863,
+        8.960000038146973,
+        9.119999885559082,
+        9.279999732971191,
+        9.359999656677246,
+        9.519999504089355,
+        9.760000228881836
+      ],
+      "words": [
+        [
+          "To",
+          888.56,
+          888.64
+        ],
+        [
+          "learn",
+          888.72,
+          888.96
+        ],
+        [
+          "a",
+          888.96,
+          889.04
+        ],
+        [
+          "second",
+          889.04,
+          889.28
+        ],
+        [
+          "language.",
+          889.44,
+          890.96
+        ],
+        [
+          "Another",
+          891.2,
+          891.52
+        ],
+        [
+          "is",
+          891.68,
+          891.76
+        ],
+        [
+          "related",
+          891.92,
+          892.16
+        ],
+        [
+          "to",
+          892.32,
+          892.4
+        ],
+        [
+          "the",
+          892.48,
+          892.56
+        ],
+        [
+          "similarities",
+          892.56,
+          893.2
+        ],
+        [
+          "and",
+          893.28,
+          893.36
+        ],
+        [
+          "differences",
+          893.44,
+          894.0
+        ],
+        [
+          "between",
+          894.56,
+          894.64
+        ],
+        [
+          "one's",
+          894.8,
+          895.28
+        ],
+        [
+          "mother",
+          895.28,
+          895.52
+        ],
+        [
+          "tongue",
+          895.68,
+          896.08
+        ],
+        [
+          "and",
+          896.24,
+          896.32
+        ],
+        [
+          "a",
+          896.48,
+          896.56
+        ],
+        [
+          "second",
+          896.72,
+          896.96
+        ],
+        [
+          "language.",
+          897.04,
+          897.76
+        ]
+      ],
+      "primary_asr_indices": [
+        1377,
+        1378,
+        1379,
+        1380,
+        1381,
+        1382,
+        1383,
+        1384,
+        1385,
+        1386,
+        1387,
+        1388,
+        1389,
+        1390,
+        1391,
+        1392,
+        1393,
+        1394,
+        1395,
+        1396,
+        1397,
+        1398,
+        1399,
+        1400
+      ],
+      "primary_text": "to learn a second language. Another is related to the similarities and differences between one's mother tongue and a second language. We find that",
+      "new_text": "To learn a second language. Another is related to the similarities and differences between one's mother tongue and a second language.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,4 +1,4 @@",
+        "-to",
+        "+To",
+        " learn",
+        " a",
+        " second",
+        "@@ -19,6 +19,3 @@",
+        " a",
+        " second",
+        " language.",
+        "-We",
+        "-find",
+        "-that"
+      ],
+      "elapsed_seconds": 2.29,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "41b0fccbdeab3ff1b9d6552d7a38573ed98d7ab56cd04c9a7b7c5ababae1bf9c",
+      "unit": "2011-B1",
+      "window": [
+        996.32,
+        1000.84
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 40,
+          "source_text": "Mm",
+          "source_chars": [
+            [
+              0,
+              2
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 39,
+            "text": "teaching",
+            "asr_indices": [
+              1638
+            ],
+            "asr_text": [
+              "teaching."
+            ],
+            "window": [
+              997.82,
+              998.38
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 41,
+            "text": "And",
+            "asr_indices": [
+              1639
+            ],
+            "asr_text": [
+              "And"
+            ],
+            "window": [
+              999.26,
+              999.34
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " And",
+        " it",
+        " em",
+        "ph",
+        "as",
+        "iz",
+        "es",
+        " gr",
+        "am",
+        "m",
+        "ar",
+        " t",
+        "ea",
+        "ch",
+        "ing",
+        ".",
+        " And",
+        " then",
+        " you",
+        " have",
+        " d",
+        "ire",
+        "ct",
+        " met",
+        "h",
+        "od",
+        "s",
+        "."
+      ],
+      "timestamps": [
+        0.0,
+        0.23999999463558197,
+        0.3999999761581421,
+        0.47999998927116394,
+        0.5600000023841858,
+        0.7199999690055847,
+        0.8799999952316284,
+        1.0399999618530273,
+        1.1999999284744263,
+        1.2799999713897705,
+        1.3600000143051147,
+        1.5199999809265137,
+        1.5999999046325684,
+        1.6799999475479126,
+        1.8399999141693115,
+        2.0,
+        2.879999876022339,
+        3.0399999618530273,
+        3.2799999713897705,
+        3.43999981880188,
+        3.5999999046325684,
+        3.759999990463257,
+        3.8399999141693115,
+        4.0,
+        4.079999923706055,
+        4.159999847412109,
+        4.319999694824219,
+        4.400000095367432
+      ],
+      "words": [
+        [
+          "And",
+          996.32,
+          996.4
+        ],
+        [
+          "it",
+          996.56,
+          996.64
+        ],
+        [
+          "emphasizes",
+          996.72,
+          997.28
+        ],
+        [
+          "grammar",
+          997.36,
+          997.76
+        ],
+        [
+          "teaching.",
+          997.84,
+          998.4
+        ],
+        [
+          "And",
+          999.2,
+          999.28
+        ],
+        [
+          "then",
+          999.36,
+          999.44
+        ],
+        [
+          "you",
+          999.6,
+          999.68
+        ],
+        [
+          "have",
+          999.76,
+          999.84
+        ],
+        [
+          "direct",
+          999.92,
+          1000.24
+        ],
+        [
+          "methods.",
+          1000.32,
+          1000.8
+        ]
+      ],
+      "primary_asr_indices": [
+        1635,
+        1636,
+        1637,
+        1638,
+        1639,
+        1640,
+        1641,
+        1642,
+        1643,
+        1644
+      ],
+      "primary_text": "it emphasizes grammar teaching. And then you have direct methods,",
+      "new_text": "And it emphasizes grammar teaching. And then you have direct methods.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,3 +1,4 @@",
+        "+And",
+        " it",
+        " emphasizes",
+        " grammar",
+        "@@ -7,4 +8,4 @@",
+        " you",
+        " have",
+        " direct",
+        "-methods,",
+        "+methods."
+      ],
+      "elapsed_seconds": 1.057,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "5845b172df405c345cc51c66a3e623e58dfa951f74ee25278b43d6a825b92b50",
+      "unit": "2011-B1",
+      "window": [
+        928.36,
+        933.08
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 24,
+          "source_text": "difficulty",
+          "source_chars": [
+            [
+              125,
+              135
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 24,
+            "text": "cause",
+            "asr_indices": [
+              1477
+            ],
+            "asr_text": [
+              "cause"
+            ],
+            "window": [
+              929.86,
+              930.02
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 25,
+            "text": "Let",
+            "asr_indices": [
+              1479
+            ],
+            "asr_text": [
+              "Let"
+            ],
+            "window": [
+              931.34,
+              931.58
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " differe",
+        "n",
+        "ces",
+        " between",
+        " l",
+        "ang",
+        "u",
+        "ag",
+        "es",
+        " ca",
+        "use",
+        " diff",
+        "ic",
+        "ult",
+        "y",
+        ".",
+        " L",
+        "et",
+        " me",
+        " give",
+        " you",
+        " an",
+        " exam",
+        "ple",
+        "."
+      ],
+      "timestamps": [
+        0.3199999928474426,
+        0.3999999761581421,
+        0.47999998927116394,
+        0.7999999523162842,
+        1.0399999618530273,
+        1.1999999284744263,
+        1.2799999713897705,
+        1.4399999380111694,
+        1.5199999809265137,
+        1.6799999475479126,
+        1.8399999141693115,
+        2.0,
+        2.1599998474121094,
+        2.319999933242798,
+        2.4800000190734863,
+        2.7200000286102295,
+        3.0399999618530273,
+        3.119999885559082,
+        3.1999998092651367,
+        3.359999895095825,
+        3.5199999809265137,
+        3.679999828338623,
+        3.8399999141693115,
+        4.0,
+        4.159999847412109
+      ],
+      "words": [
+        [
+          "differences",
+          928.68,
+          928.92
+        ],
+        [
+          "between",
+          929.16,
+          929.24
+        ],
+        [
+          "languages",
+          929.4,
+          929.96
+        ],
+        [
+          "cause",
+          930.04,
+          930.28
+        ],
+        [
+          "difficulty.",
+          930.36,
+          931.16
+        ],
+        [
+          "Let",
+          931.4,
+          931.56
+        ],
+        [
+          "me",
+          931.56,
+          931.64
+        ],
+        [
+          "give",
+          931.72,
+          931.8
+        ],
+        [
+          "you",
+          931.88,
+          931.96
+        ],
+        [
+          "an",
+          932.04,
+          932.12
+        ],
+        [
+          "example.",
+          932.2,
+          932.6
+        ]
+      ],
+      "primary_asr_indices": [
+        1474,
+        1475,
+        1476,
+        1477,
+        1478,
+        1479,
+        1480,
+        1481,
+        1482,
+        1483,
+        1484,
+        1485
+      ],
+      "primary_text": "differences between languages cause differences. Let me give you an example. Okay.",
+      "new_text": "differences between languages cause difficulty. Let me give you an example.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -2,11 +2,10 @@",
+        " between",
+        " languages",
+        " cause",
+        "-differences.",
+        "+difficulty.",
+        " Let",
+        " me",
+        " give",
+        " you",
+        " an",
+        " example.",
+        "-Okay."
+      ],
+      "elapsed_seconds": 1.0,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "638356f57651f041de62b66714405c0a7a23a4feca36e4440dac5f9f99b72c2d",
+      "unit": "2011-B1",
+      "window": [
+        1007.96,
+        1012.72
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 42,
+          "source_text": "method",
+          "source_chars": [
+            [
+              21,
+              27
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 42,
+            "text": "other",
+            "asr_indices": [
+              1665
+            ],
+            "asr_text": [
+              "other"
+            ],
+            "window": [
+              1009.46,
+              1009.54
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 43,
+            "text": "Yes",
+            "asr_indices": [
+              1667
+            ],
+            "asr_text": [
+              "Yes."
+            ],
+            "window": [
+              1010.66,
+              1011.22
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " I",
+        " see",
+        ".",
+        " An",
+        "y",
+        " other",
+        " met",
+        "h",
+        "od",
+        "s",
+        "?",
+        " Y",
+        "es",
+        ".",
+        " For",
+        " exam",
+        "ple",
+        ",",
+        " the",
+        " a",
+        "ud",
+        "i",
+        "o",
+        "."
+      ],
+      "timestamps": [
+        0.3199999928474426,
+        0.47999998927116394,
+        0.7999999523162842,
+        1.1200000047683716,
+        1.1999999284744263,
+        1.5199999809265137,
+        1.7599999904632568,
+        1.9199999570846558,
+        2.0,
+        2.1599998474121094,
+        2.240000009536743,
+        2.7200000286102295,
+        2.879999876022339,
+        3.0399999618530273,
+        3.5199999809265137,
+        3.679999828338623,
+        3.8399999141693115,
+        4.0,
+        4.079999923706055,
+        4.239999771118164,
+        4.400000095367432,
+        4.480000019073486,
+        4.559999942779541,
+        4.559999942779541
+      ],
+      "words": [
+        [
+          "I",
+          1008.28,
+          1008.36
+        ],
+        [
+          "see.",
+          1008.44,
+          1008.84
+        ],
+        [
+          "Any",
+          1009.08,
+          1009.24
+        ],
+        [
+          "other",
+          1009.48,
+          1009.56
+        ],
+        [
+          "methods?",
+          1009.72,
+          1010.28
+        ],
+        [
+          "Yes.",
+          1010.68,
+          1011.08
+        ],
+        [
+          "For",
+          1011.48,
+          1011.56
+        ],
+        [
+          "example,",
+          1011.64,
+          1012.04
+        ],
+        [
+          "the",
+          1012.04,
+          1012.12
+        ],
+        [
+          "audio.",
+          1012.2,
+          1012.6
+        ]
+      ],
+      "primary_asr_indices": [
+        1662,
+        1663,
+        1664,
+        1665,
+        1666,
+        1667,
+        1668,
+        1669,
+        1670,
+        1671
+      ],
+      "primary_text": "I see. Any other methods? Yes. For example, the audiolingual",
+      "new_text": "I see. Any other methods? Yes. For example, the audio.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -7,4 +7,4 @@",
+        " For",
+        " example,",
+        " the",
+        "-audiolingual",
+        "+audio."
+      ],
+      "elapsed_seconds": 1.66,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "6f92e79fcc769be0596546f1f50579276a5a40b240b95c0ec3b3eb3353b69ec7",
+      "unit": "2011-B1",
+      "window": [
+        856.92,
+        861.76
+      ],
+      "reason": "boundary",
+      "source_issues": [
+        {
+          "sentence": 11,
+          "source_text": "Urmm",
+          "source_chars": [
+            [
+              0,
+              4
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 10,
+            "text": "this",
+            "asr_indices": [
+              1309
+            ],
+            "asr_text": [
+              "this."
+            ],
+            "window": [
+              858.42,
+              858.98
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 11,
+            "text": "first",
+            "asr_indices": [
+              1310
+            ],
+            "asr_text": [
+              "First,"
+            ],
+            "window": [
+              859.7,
+              860.26
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " N",
+        "um",
+        "ber",
+        " of",
+        " re",
+        "as",
+        "ons",
+        " for",
+        " this",
+        ".",
+        " F",
+        "irst",
+        ",",
+        " there",
+        " have",
+        " been",
+        " re",
+        "se",
+        "arch",
+        " stud",
+        "ies"
+      ],
+      "timestamps": [
+        0.1599999964237213,
+        0.23999999463558197,
+        0.23999999463558197,
+        0.3999999761581421,
+        0.5600000023841858,
+        0.7199999690055847,
+        0.8799999952316284,
+        1.1200000047683716,
+        1.4399999380111694,
+        2.0,
+        2.799999952316284,
+        3.0399999618530273,
+        3.1999998092651367,
+        3.43999981880188,
+        3.5999999046325684,
+        3.8399999141693115,
+        4.079999923706055,
+        4.159999847412109,
+        4.319999694824219,
+        4.480000019073486,
+        4.559999942779541
+      ],
+      "words": [
+        [
+          "Number",
+          857.08,
+          857.24
+        ],
+        [
+          "of",
+          857.32,
+          857.4
+        ],
+        [
+          "reasons",
+          857.48,
+          857.88
+        ],
+        [
+          "for",
+          858.04,
+          858.12
+        ],
+        [
+          "this.",
+          858.36,
+          859.0
+        ],
+        [
+          "First,",
+          859.72,
+          860.2
+        ],
+        [
+          "there",
+          860.36,
+          860.44
+        ],
+        [
+          "have",
+          860.52,
+          860.6
+        ],
+        [
+          "been",
+          860.76,
+          860.84
+        ],
+        [
+          "research",
+          861.0,
+          861.32
+        ],
+        [
+          "studies",
+          861.4,
+          861.56
+        ]
+      ],
+      "primary_asr_indices": [
+        1305,
+        1306,
+        1307,
+        1308,
+        1309,
+        1310,
+        1311,
+        1312,
+        1313,
+        1314,
+        1315
+      ],
+      "primary_text": "number of reasons for this. First, there have been research studies.",
+      "new_text": "Number of reasons for this. First, there have been research studies",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -1,4 +1,4 @@",
+        "-number",
+        "+Number",
+        " of",
+        " reasons",
+        " for",
+        "@@ -8,4 +8,4 @@",
+        " have",
+        " been",
+        " research",
+        "-studies.",
+        "+studies"
+      ],
+      "elapsed_seconds": 1.401,
+      "status": "machine_candidate_not_human_approved"
+    },
+    {
+      "key": "560e6b2540452f0f6904b0d5f1d2e190c7fc29e72346ca5d1d07746aefce8ea1",
+      "unit": "2011-B1",
+      "window": [
+        1028.36,
+        1032.52
+      ],
+      "reason": "negation",
+      "source_issues": [
+        {
+          "sentence": 49,
+          "source_text": "cannot",
+          "source_chars": [
+            [
+              31,
+              37
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2011-B1",
+            "sentence": 49,
+            "text": "you",
+            "asr_indices": [
+              1709
+            ],
+            "asr_text": [
+              "you"
+            ],
+            "window": [
+              1029.86,
+              1029.94
+            ]
+          },
+          "right_anchor": {
+            "unit": "2011-B1",
+            "sentence": 49,
+            "text": "speak",
+            "asr_indices": [
+              1711
+            ],
+            "asr_text": [
+              "speak"
+            ],
+            "window": [
+              1030.86,
+              1031.02
+            ]
+          }
+        }
+      ],
+      "tokens": [
+        " Well",
+        ",",
+        " it",
+        " sim",
+        "p",
+        "ly",
+        " me",
+        "ans",
+        " that",
+        " you",
+        " can",
+        "n",
+        "ot",
+        " sp",
+        "ea",
+        "k",
+        " m",
+        "other",
+        " t",
+        "ong",
+        "ue",
+        "."
+      ],
+      "timestamps": [
+        0.1599999964237213,
+        0.47999998927116394,
+        0.6399999856948853,
+        0.7999999523162842,
+        0.9599999785423279,
+        1.0399999618530273,
+        1.1999999284744263,
+        1.3600000143051147,
+        1.5199999809265137,
+        1.6799999475479126,
+        1.9199999570846558,
+        2.0799999237060547,
+        2.240000009536743,
+        2.3999998569488525,
+        2.4800000190734863,
+        2.559999942779541,
+        2.7200000286102295,
+        2.879999876022339,
+        3.119999885559082,
+        3.1999998092651367,
+        3.359999895095825,
+        3.43999981880188
+      ],
+      "words": [
+        [
+          "Well,",
+          1028.52,
+          1028.92
+        ],
+        [
+          "it",
+          1029.0,
+          1029.08
+        ],
+        [
+          "simply",
+          1029.16,
+          1029.48
+        ],
+        [
+          "means",
+          1029.56,
+          1029.8
+        ],
+        [
+          "that",
+          1029.88,
+          1029.96
+        ],
+        [
+          "you",
+          1030.04,
+          1030.12
+        ],
+        [
+          "cannot",
+          1030.28,
+          1030.68
+        ],
+        [
+          "speak",
+          1030.76,
+          1031.0
+        ],
+        [
+          "mother",
+          1031.08,
+          1031.32
+        ],
+        [
+          "tongue.",
+          1031.48,
+          1031.88
+        ]
+      ],
+      "primary_asr_indices": [
+        1704,
+        1705,
+        1706,
+        1707,
+        1708,
+        1709,
+        1710,
+        1711,
+        1712,
+        1713,
+        1714
+      ],
+      "primary_text": "Well, it simply means that you can. speak mother tongue. Everything",
+      "new_text": "Well, it simply means that you cannot speak mother tongue.",
+      "diff": [
+        "--- primary",
+        "+++ local",
+        "@@ -4,8 +4,7 @@",
+        " means",
+        " that",
+        " you",
+        "-can.",
+        "+cannot",
+        " speak",
+        " mother",
+        " tongue.",
+        "-Everything"
+      ],
+      "elapsed_seconds": 1.145,
+      "status": "machine_candidate_not_human_approved"
+    }
+  ]
+}

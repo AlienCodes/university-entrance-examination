@@ -17,8 +17,14 @@
     "尚须与实际原音逐句对应；本稿不附假定时间。",
     "尾部题干来自本年所供解析；实际念题措辞、题号和时序仍须以录音对齐，不能把解析字面差异冒充录音。",
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有6个原文词缺少ASR对应；涉及句号[3, 9, 18, 24]，严禁按比例补时。"
+    "仍有6个原文词缺少ASR对应；涉及句号[5, 11, 20, 28]，严禁按比例补时。"
   ],
+  "instruction_review": {
+    "source": "说明语句/2009.json",
+    "source_sha256": "1e0a27aeaf246bc1d1787e48ccecfb624aefef0ea7032103cde63dd94cfa62af",
+    "status": "draft_asr_anchored_audio_review_pending",
+    "待核": []
+  },
   "year": 2009,
   "audio": {
     "file": "预处理/2009/原音.wav",
@@ -26,11 +32,283 @@
     "source_sha256": "af0fc28b7b3c9a7e04f77ba715e78c426233395dcdfbbd1ab834c1951b19a8e0",
     "source_kind": "canonical WAV; original sample rate/channels/gain",
     "window": [
-      1099.96,
-      1332.63
+      1090.01,
+      1346.79
     ]
   },
   "sentences": [
+    {
+      "en": "Now listen to part two of the interview.",
+      "zh": "现在请听访谈的第二部分。",
+      "w": [
+        {
+          "t": "word",
+          "h": "listen",
+          "m": "v.听",
+          "sp": [
+            [
+              4,
+              10
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1696,
+        1704
+      ],
+      "asr_text": "Now listen to part two of the interview.",
+      "translation_key": "b2_listen_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2009.json",
+      "instruction_slot": "before",
+      "instruction_id": "2009-B2-before-1",
+      "asr_sha256": "1972ed3a3cf18ca77c9fed94b80f702d83b6eb85e5cecc2722bda6e5fe1f9c67",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2009/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 1090.13,
+          "end": 1090.21,
+          "asr_indices": [
+            1696
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 10,
+          "start": 1091.17,
+          "end": 1091.65,
+          "asr_indices": [
+            1697
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 1091.73,
+          "end": 1091.81,
+          "asr_indices": [
+            1698
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 18,
+          "start": 1091.97,
+          "end": 1092.05,
+          "asr_indices": [
+            1699
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 22,
+          "start": 1092.45,
+          "end": 1092.53,
+          "asr_indices": [
+            1700
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 25,
+          "start": 1093.01,
+          "end": 1093.09,
+          "asr_indices": [
+            1701
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 29,
+          "start": 1093.17,
+          "end": 1093.25,
+          "asr_indices": [
+            1702
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 39,
+          "start": 1093.41,
+          "end": 1094.05,
+          "asr_indices": [
+            1703
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1090.13,
+      "end": 1094.05
+    },
+    {
+      "en": "Questions six to ten are based on part two of the interview.",
+      "zh": "第6至10题根据访谈的第二部分提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              25,
+              33
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1704,
+        1716
+      ],
+      "asr_text": "Questions six to ten are based on part two of the interview.",
+      "translation_key": "b2_group_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2009.json",
+      "instruction_slot": "before",
+      "instruction_id": "2009-B2-before-2",
+      "asr_sha256": "1972ed3a3cf18ca77c9fed94b80f702d83b6eb85e5cecc2722bda6e5fe1f9c67",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2009/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 1094.21,
+          "end": 1094.69,
+          "asr_indices": [
+            1704
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 1094.93,
+          "end": 1095.17,
+          "asr_indices": [
+            1705
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 1095.33,
+          "end": 1095.41,
+          "asr_indices": [
+            1706
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 1095.65,
+          "end": 1095.89,
+          "asr_indices": [
+            1707
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 24,
+          "start": 1096.29,
+          "end": 1096.37,
+          "asr_indices": [
+            1708
+          ]
+        },
+        {
+          "char": 25,
+          "char_end": 30,
+          "start": 1096.53,
+          "end": 1096.85,
+          "asr_indices": [
+            1709
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 33,
+          "start": 1096.93,
+          "end": 1097.01,
+          "asr_indices": [
+            1710
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 38,
+          "start": 1097.25,
+          "end": 1097.33,
+          "asr_indices": [
+            1711
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 42,
+          "start": 1097.65,
+          "end": 1097.73,
+          "asr_indices": [
+            1712
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 45,
+          "start": 1098.05,
+          "end": 1098.13,
+          "asr_indices": [
+            1713
+          ]
+        },
+        {
+          "char": 46,
+          "char_end": 49,
+          "start": 1098.29,
+          "end": 1098.37,
+          "asr_indices": [
+            1714
+          ]
+        },
+        {
+          "char": 50,
+          "char_end": 59,
+          "start": 1098.45,
+          "end": 1099.01,
+          "asr_indices": [
+            1715
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 12,
+        "mapped_lexemes": 12,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1094.21,
+      "end": 1099.01
+    },
     {
       "en": "Then, how does Toastmasters train people?",
       "zh": "那么，国际演讲会是怎样培训学员的呢？",
@@ -3773,6 +4051,296 @@
       "end": 1249.16
     },
     {
+      "en": "This is the end of part two of the interview.",
+      "zh": "访谈的第二部分到此结束。",
+      "w": [
+        {
+          "t": "word",
+          "h": "end",
+          "m": "n.结束",
+          "sp": [
+            [
+              12,
+              15
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        2054,
+        2064
+      ],
+      "asr_text": "This is the end of part two of the interview.",
+      "translation_key": "b2_end_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2009.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2009-B2-before_questions-1",
+      "asr_sha256": "1972ed3a3cf18ca77c9fed94b80f702d83b6eb85e5cecc2722bda6e5fe1f9c67",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2009/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 1251.68,
+          "end": 1251.76,
+          "asr_indices": [
+            2054
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 1251.92,
+          "end": 1252.0,
+          "asr_indices": [
+            2055
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 1252.24,
+          "end": 1252.32,
+          "asr_indices": [
+            2056
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 1252.48,
+          "end": 1252.56,
+          "asr_indices": [
+            2057
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 1252.72,
+          "end": 1252.8,
+          "asr_indices": [
+            2058
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 23,
+          "start": 1253.04,
+          "end": 1253.12,
+          "asr_indices": [
+            2059
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 27,
+          "start": 1253.44,
+          "end": 1253.52,
+          "asr_indices": [
+            2060
+          ]
+        },
+        {
+          "char": 28,
+          "char_end": 30,
+          "start": 1253.84,
+          "end": 1253.92,
+          "asr_indices": [
+            2061
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 1254.08,
+          "end": 1254.16,
+          "asr_indices": [
+            2062
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 44,
+          "start": 1254.32,
+          "end": 1255.36,
+          "asr_indices": [
+            2063
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1251.68,
+      "end": 1255.36
+    },
+    {
+      "en": "Questions six to ten are based on what you have just heard.",
+      "zh": "第6至10题根据你刚才听到的内容提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              25,
+              33
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        2064,
+        2076
+      ],
+      "asr_text": "Questions six to ten are based on what you have just heard.",
+      "translation_key": "b2_group_heard",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2009.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2009-B2-before_questions-2",
+      "asr_sha256": "1972ed3a3cf18ca77c9fed94b80f702d83b6eb85e5cecc2722bda6e5fe1f9c67",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2009/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 1255.6,
+          "end": 1256.24,
+          "asr_indices": [
+            2064
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 1256.48,
+          "end": 1256.8,
+          "asr_indices": [
+            2065
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 1256.96,
+          "end": 1257.04,
+          "asr_indices": [
+            2066
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 1257.2,
+          "end": 1257.44,
+          "asr_indices": [
+            2067
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 24,
+          "start": 1257.92,
+          "end": 1258.0,
+          "asr_indices": [
+            2068
+          ]
+        },
+        {
+          "char": 25,
+          "char_end": 30,
+          "start": 1258.16,
+          "end": 1258.48,
+          "asr_indices": [
+            2069
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 33,
+          "start": 1258.56,
+          "end": 1258.64,
+          "asr_indices": [
+            2070
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 38,
+          "start": 1258.8,
+          "end": 1258.88,
+          "asr_indices": [
+            2071
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 42,
+          "start": 1259.04,
+          "end": 1259.12,
+          "asr_indices": [
+            2072
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 47,
+          "start": 1259.28,
+          "end": 1259.36,
+          "asr_indices": [
+            2073
+          ]
+        },
+        {
+          "char": 48,
+          "char_end": 52,
+          "start": 1259.52,
+          "end": 1259.6,
+          "asr_indices": [
+            2074
+          ]
+        },
+        {
+          "char": 53,
+          "char_end": 58,
+          "start": 1259.84,
+          "end": 1260.48,
+          "asr_indices": [
+            2075
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 12,
+        "mapped_lexemes": 12,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1255.6,
+      "end": 1260.48
+    },
+    {
       "en": "How can Toastmasters’ general approach to training be summarized?",
       "zh": "如何概括国际演讲会总体的培训方式？",
       "w": [
@@ -4397,6 +4965,133 @@
       },
       "start": 1329.47,
       "end": 1332.51
+    },
+    {
+      "en": "This is the end of Part I Listening Comprehension.",
+      "zh": "第一部分听力理解到此结束。",
+      "w": [
+        {
+          "t": "word",
+          "h": "comprehension",
+          "m": "n.理解",
+          "sp": [
+            [
+              36,
+              49
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        2136,
+        2145
+      ],
+      "asr_text": "This is the end of Part I Listening Comprehension.",
+      "translation_key": "end",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2009.json",
+      "instruction_slot": "after",
+      "instruction_id": "2009-B2-after-1",
+      "asr_sha256": "1972ed3a3cf18ca77c9fed94b80f702d83b6eb85e5cecc2722bda6e5fe1f9c67",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2009/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 1342.19,
+          "end": 1342.27,
+          "asr_indices": [
+            2136
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 1342.43,
+          "end": 1342.51,
+          "asr_indices": [
+            2137
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 1342.67,
+          "end": 1342.75,
+          "asr_indices": [
+            2138
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 1342.99,
+          "end": 1343.07,
+          "asr_indices": [
+            2139
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 1343.31,
+          "end": 1343.39,
+          "asr_indices": [
+            2140
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 23,
+          "start": 1343.55,
+          "end": 1343.79,
+          "asr_indices": [
+            2141
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 25,
+          "start": 1344.03,
+          "end": 1344.11,
+          "asr_indices": [
+            2142
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 35,
+          "start": 1344.75,
+          "end": 1345.39,
+          "asr_indices": [
+            2143
+          ]
+        },
+        {
+          "char": 36,
+          "char_end": 49,
+          "start": 1345.47,
+          "end": 1346.67,
+          "asr_indices": [
+            2144
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 9,
+        "mapped_lexemes": 9,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1342.19,
+      "end": 1346.67
     }
   ],
   "alignment_report": "核验/原文对齐/2009/对齐报告.json",
@@ -4405,6 +5100,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2009/对齐报告.json",
-    "content_sha256": "2b635f25622397ab729f3e1d31073c60d4d8f299580c3e87457c61d4c59b59c1"
+    "content_sha256": "044dd195ff62ec414dffd78324bbdb836952c038483a3fa7aeae72a43da36740"
   }
 }

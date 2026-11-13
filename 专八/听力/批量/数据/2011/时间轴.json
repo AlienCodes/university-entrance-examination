@@ -2,12 +2,44 @@
   "source_duration": 1408.2351020408164,
   "source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
   "trim": {
-    "start": 0,
-    "status": "待核片头音乐，时间轴仍保留完整原声，不准发布"
+    "year": 2011,
+    "start": 14.19,
+    "reason": "片头音乐",
+    "source_sha256": "45b5db31307efc196305275dd352a330740fbf1e4429429aaa78ba2c0b42f289",
+    "evidence": "逐年查看0—20s原采样率波形和0—6kHz频谱：约1.7—13s存在连续音乐谐波及旋律变化，结束后频谱进入低能量间隙；13.85—14.53s全声道峰值低于-60dBFS，选择间隙内14.19s（原样本625779）裁去片头音乐。剪点前后40ms峰值-240.00dBFS、RMS -240.00dBFS；正式报幕Test的ASR参考起点14.89s，剪点早于该参考0.70s。已按波形/频谱确认没有剪入报幕音节；不是按ASR首字起点切割。保留报幕、正式说明及其后全部内容。",
+    "source_entry": {
+      "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2011年专八真题+音频+解析/听力音频 TEM8-2011.mp3",
+      "sha256": "c5b0784b329e6d88cbc8e309da47eec69eb8f4aa1d33778a04a347da34ee8462"
+    },
+    "canonical_format": {
+      "sample_rate": 44100,
+      "channels": 2,
+      "pcm_format": "float32le"
+    },
+    "cut_sample": 625779,
+    "silence_interval": [
+      13.85,
+      14.53
+    ],
+    "cut_window": {
+      "half_window_seconds": 0.04,
+      "max_channel_peak_dbfs": -240.0,
+      "all_channel_rms_dbfs": -240.0,
+      "digital_zero": true,
+      "db_display_floor": -240.0
+    },
+    "reference_first_word": [
+      "Test",
+      14.89,
+      15.13
+    ],
+    "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+    "plot": "图证/2011.png",
+    "pending": []
   },
   "events": [
     {
-      "t": 0.0,
+      "t": 14.19,
       "kind": "instr",
       "sec": "A",
       "hi": -1,
@@ -18,36 +50,6 @@
       "kind": "instr",
       "sec": "A",
       "hi": -1
-    },
-    {
-      "t": 28.6,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 0
-    },
-    {
-      "t": 32.04,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 1
-    },
-    {
-      "t": 35.24,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 2
-    },
-    {
-      "t": 45.99,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 3
-    },
-    {
-      "t": 53.99,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 4
     },
     {
       "t": 61.32,
@@ -82,48 +84,6 @@
       "kind": "instr",
       "sec": "B",
       "hi": -1
-    },
-    {
-      "t": 735.19,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 0
-    },
-    {
-      "t": 738.55,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 1
-    },
-    {
-      "t": 742.79,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 2
-    },
-    {
-      "t": 748.23,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 3
-    },
-    {
-      "t": 753.23,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 4
-    },
-    {
-      "t": 757.47,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 5
-    },
-    {
-      "t": 769.51,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 6
     },
     {
       "t": 772.62,
@@ -371,19 +331,11 @@
       ]
     ]
   },
-  "pending": [
-    {
-      "section": "A",
-      "line": 5,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "You have THIRTY seconds to preview the gap-filling task."
-    },
-    {
-      "section": "A",
-      "line": 6,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Now, listen to the mini-lecture. When it is over, you will be given THREE minutes to check your work."
-    },
-    "片头音乐剪切点尚待正式核定"
-  ]
+  "pending": [],
+  "待核": [],
+  "review": {
+    "status": "timeline-checked",
+    "evidence": "核验/2011-时间轴说明处理.json；核验/2011-考试内容审核.json；音乐剪切/2011.json",
+    "instruction_display": "完整原卷说明静态展示，不以部分ASR猜逐句高亮"
+  }
 }

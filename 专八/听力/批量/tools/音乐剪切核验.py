@@ -2,7 +2,7 @@
 
 逐年波形及频谱人工判读后固定剪点；不使用ASR首词直接计算剪点。
 python 音乐剪切核验.py --input /workspace/tem8-input --cache /workspace/tem8-intro-audit
-2022待新的完整原音，默认不处理。输出绑定预处理原音准备.json的canonical SHA。
+2022使用已approved的完整补充原音；不采用缺头旧包。输出绑定选定canonical SHA。
 """
 from pathlib import Path
 import argparse,hashlib,json,subprocess
@@ -13,9 +13,9 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 D=Path(__file__).resolve().parent.parent
-YEARS=list(range(2009,2020))+[2021,2023,2024]
+YEARS=list(range(2009,2020))+[2021,2022,2023,2024]
 # 人工从波形/频谱确认：选音乐后的低能量静音区间中部，保留正式报幕和开口前余量。
-CUTS={2009:(13.20,[13.06,13.37]),2010:(14.22,[13.95,14.49]),2011:(14.19,[13.85,14.53]),2012:(13.18,[13.02,13.35]),2013:(14.24,[13.82,14.67]),2014:(13.16,[12.99,13.33]),2015:(13.14,[12.97,13.32])}
+CUTS={2009:(13.20,[13.06,13.37]),2010:(14.22,[13.95,14.49]),2011:(14.19,[13.85,14.53]),2012:(13.18,[13.02,13.35]),2013:(14.24,[13.82,14.67]),2014:(13.16,[12.99,13.33]),2015:(13.14,[12.97,13.32]),2022:(13.60,[13.10,14.20])}
 def sha(p):
  h=hashlib.sha256()
  with Path(p).open('rb') as f:
@@ -25,10 +25,17 @@ def db(v):return float(20*np.log10(max(float(v),1e-12)))
 def dump(p,o):p.write_text(json.dumps(o,ensure_ascii=False,indent=2)+'\n','utf-8')
 
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--input',type=Path,default=Path('/workspace/tem8-input'));ap.add_argument('--cache',type=Path,default=Path('/workspace/tem8-intro-audit'));args=ap.parse_args();args.cache.mkdir(exist_ok=True,parents=True)
+ ap=argparse.ArgumentParser();ap.add_argument('--input',type=Path,default=Path('/workspace/tem8-input'));ap.add_argument('--cache',type=Path,default=Path('/workspace/tem8-intro-audit'));ap.add_argument('--supplement',type=Path,default=Path('/workspace/TEM8-2022-complete.m4a'));args=ap.parse_args();args.cache.mkdir(exist_ok=True,parents=True)
  out=D/'音乐剪切';out.mkdir(exist_ok=True);figdir=out/'图证';figdir.mkdir(exist_ok=True);records=[]
  for year in YEARS:
-  meta=json.loads((D/'预处理'/str(year)/'原音准备.json').read_text());entry=meta['source_entries'][0];src=args.input/entry['file'];canonical=meta['canonical'];rate=canonical['sample_rate'];channels=canonical['channels'];duration=20 if year<=2015 else 7
+  meta=json.loads((D/'预处理'/str(year)/'原音准备.json').read_text())
+  if year==2022:
+   approval=json.loads((D/'核验/2022-补充音源.json').read_text());assert approval['status']=='approved'
+   entry=approval['selected_source'];src=args.supplement
+   # 新完整源的原采样率解码SHA由总协调实际解码核定，和缺头旧包不混用。
+   canonical={'sha256':'cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9','sample_rate':44100,'channels':2,'pcm_format':'float32le'}
+  else:entry=meta['source_entries'][0];src=args.input/entry['file'];canonical=meta['canonical']
+  rate=canonical['sample_rate'];channels=canonical['channels'];duration=20 if year<=2015 or year==2022 else 7
   actualsha=sha(src);assert actualsha==entry['sha256'],(year,'source sha mismatch')
   cache=args.cache/f'{year}.npy'
   if cache.exists():a=np.load(cache)
@@ -38,7 +45,7 @@ def main():
   start,interval=CUTS.get(year,(0,None));cut_sample=round(start*rate);assert abs(cut_sample/rate-start)<1e-9
   window=a[max(0,cut_sample-round(.04*rate)):min(len(a),cut_sample+round(.04*rate))]
   peak=db(np.abs(window).max());rms=db(np.sqrt(np.mean(window.astype(float)**2)))
-  asr=json.loads((D/'预处理'/str(year)/'识别.json').read_text());first=asr[0]
+  asr=json.loads((D/'预处理'/str(year)/'识别.json').read_text());first=['Test',14.40] if year==2022 else asr[0]
   if interval:
    assert interval[0]<start<interval[1]
    # 此阈值只作已人工选定静音区间的客观复核；非自动音乐/语音分类器。
@@ -75,12 +82,12 @@ def main():
   print(year,start,interval,'peak',round(peak,2),'sha verified',flush=True)
  # 可读清单与所有图的完整性绑定。
  lines=['# 专八听力片头音乐剪切核验','', '仅核验并给出剪点；本脚本没有剪写成品音频、调整增益、重采样或改声道。剪点绑定“原音准备.json”的canonical WAV SHA256，基准为未剪原音秒数。','',
- '2009—2015有片头音乐；其余已核年份没有音乐，保留start=0。2022按总协调要求等待完整新源，本轮不对旧缺头源给出通过结论。','',
+ '2009—2015和2022完整补充源有片头音乐；其余已核年份没有音乐，保留start=0。2022绑定经approved登记的新完整源及其canonical SHA，不使用缺头旧包。','',
  '能量表中的-240dBFS为对数显示下限；对应片段PCM全为0，并非实测到了-240dBFS的非零声音。JSON另外以digital_zero标记。','', '方法：逐年人工查看原采样率PCM的波形及STFT频谱；音乐段可见连续谐波、持续旋律结构与渐弱尾部。剪点放在音乐结束后、语音开始前的实际低能量间隙，随后用全声道峰值/RMS复核。ASR首词只用于交叉定位，不作为裁切依据。没有音乐的源保留全部前导静音或底噪。','',
  '|年份|音乐|剪点（秒）|原采样率/声道|核验静音区间（秒）|剪点±40ms峰值|ASR Test参考（非剪点）|', '|---|---|---:|---|---|---:|---:|']
  for r in records:
   interval=r['silence_interval'];fmt=r['canonical_format'];lines.append(f'|{r["year"]}|{"有" if r["start"] else "无"}|{r["start"]:.2f}|{fmt["sample_rate"]}Hz/{fmt["channels"]}声道|{str(interval) if interval else "不剪切"}|{r["cut_window"]["max_channel_peak_dbfs"]:.2f}dBFS|{r["reference_first_word"][1]:.2f}|')
  for r in records:lines+=['',f'## {r["year"]}', '',r['evidence'],'',f'canonical SHA256: `{r["source_sha256"]}`',f'原压缩文件 SHA256: `{r["source_entry"]["sha256"]}`','',f'![{r["year"]}波形与频谱]({r["plot"]})']
  (out/'核验记录.md').write_text('\n'.join(lines)+'\n','utf-8')
- dump(out/'核验清单.json',{'years':YEARS,'source_timebase':'未剪原音秒数','outputs':[{'year':r['year'],'start':r['start'],'json':f'{r["year"]}.json','json_sha256':sha(out/f'{r["year"]}.json'),'plot':r['plot'],'plot_sha256':sha(out/r['plot'])} for r in records],'skipped':{'2022':'旧包原音缺少intro；待完整新源后单独核验。'},'operations':'只读源音频，未生成裁切音频；无增益/归一化/限幅/重采样/声道转换。'})
+ dump(out/'核验清单.json',{'years':YEARS,'source_timebase':'未剪原音秒数','outputs':[{'year':r['year'],'start':r['start'],'json':f'{r["year"]}.json','json_sha256':sha(out/f'{r["year"]}.json'),'plot':r['plot'],'plot_sha256':sha(out/r['plot'])} for r in records],'skipped':{},'operations':'只读源音频，未生成裁切音频；无增益/归一化/限幅/重采样/声道转换。'})
 if __name__=='__main__':main()

@@ -1,6 +1,6 @@
 {
   "year": 2016,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2016-A",
@@ -150,7 +150,7 @@
           "translation_key": "a_once"
         },
         {
-          "en": "While listening to the mini-lecture, please Please complete the gap-filling task on Answer Sheet 1 and write no more than 3 words for each gap.",
+          "en": "While listening to the mini-lecture, please complete the gap-filling task on Answer Sheet 1 and write no more than three words for each gap.",
           "zh": "请边听短讲，边完成答题卡一上的填空任务；每空填写不超过三个词。",
           "w": [
             {
@@ -159,22 +159,176 @@
               "m": "adj.填空的",
               "sp": [
                 [
-                  64,
-                  75
+                  57,
+                  68
                 ]
               ]
             }
           ],
           "role": "instruction",
           "asr_range": [
+            4,
+            30
+          ],
+          "asr_text": "While listening to the mini lecture, please complete the gap filling task on Answer Sheet 1 and write no more than three words for each gap.",
+          "translation_key": "a_gap",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2016/a_gap.json",
+          "asr_sha256": "15677454d08c4870d11f9e70542912d2969e1ce38023d8734d072b8234a4ad9b",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             32,
             59
           ],
-          "asr_text": "While listening to the mini lecture, please Please complete the gap filling task on Answer Sheet 1 and write no more than 3 words for each gap.",
-          "translation_key": "a_gap",
-          "待核": [
-            "ASR连续重复please，需原音核是否确为口述重复；未静默删除。"
-          ]
+          "primary_asr_ref": "预处理/2016/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "While",
+              22.62,
+              22.86
+            ],
+            [
+              "listening",
+              23.02,
+              23.42
+            ],
+            [
+              "to",
+              23.5,
+              23.58
+            ],
+            [
+              "the",
+              23.58,
+              23.66
+            ],
+            [
+              "mini",
+              23.74,
+              23.98
+            ],
+            [
+              "lecture,",
+              24.14,
+              24.7
+            ],
+            [
+              "please",
+              24.86,
+              25.1
+            ],
+            [
+              "complete",
+              25.18,
+              25.58
+            ],
+            [
+              "the",
+              25.66,
+              25.74
+            ],
+            [
+              "gap",
+              25.9,
+              26.14
+            ],
+            [
+              "filling",
+              26.3,
+              26.7
+            ],
+            [
+              "task",
+              26.78,
+              27.02
+            ],
+            [
+              "on",
+              27.1,
+              27.18
+            ],
+            [
+              "Answer",
+              27.34,
+              27.9
+            ],
+            [
+              "Sheet",
+              27.9,
+              28.14
+            ],
+            [
+              "1",
+              28.3,
+              28.54
+            ],
+            [
+              "and",
+              29.42,
+              29.5
+            ],
+            [
+              "write",
+              29.66,
+              29.98
+            ],
+            [
+              "no",
+              30.14,
+              30.22
+            ],
+            [
+              "more",
+              30.38,
+              30.46
+            ],
+            [
+              "than",
+              30.7,
+              30.78
+            ],
+            [
+              "three",
+              31.02,
+              31.1
+            ],
+            [
+              "words",
+              31.42,
+              31.82
+            ],
+            [
+              "for",
+              31.9,
+              31.98
+            ],
+            [
+              "each",
+              32.14,
+              32.38
+            ],
+            [
+              "gap.",
+              32.54,
+              33.58
+            ]
+          ],
+          "start": 22.62,
+          "end": 33.58,
+          "correction_case": "a_gap",
+          "evidence": {
+            "window": [
+              20.14,
+              37.14
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         },
         {
           "en": "Make sure the words you fill in is, are, both grammatically and semantically acceptable.",
@@ -797,16 +951,7 @@
       ]
     }
   ],
-  "待核": [
-    {
-      "asr_range": [
-        32,
-        59
-      ],
-      "asr_text": "While listening to the mini lecture, please Please complete the gap filling task on Answer Sheet 1 and write no more than 3 words for each gap.",
-      "reason": "ASR连续重复please，需原音核是否确为口述重复；未静默删除。"
-    }
-  ],
+  "待核": [],
   "source": {
     "asr": "预处理/2016/识别.json",
     "asr_sha256": "262bb42153337dca05fe33c9e6417307357c762d748232dadb5621d788aaf8c7",
@@ -820,5 +965,55 @@
     "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
   ],
   "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
+    {
+      "asr_range": [
+        32,
+        59
+      ],
+      "asr_text": "While listening to the mini lecture, please Please complete the gap filling task on Answer Sheet 1 and write no more than 3 words for each gap.",
+      "reason": "ASR连续重复please，需原音核是否确为口述重复；未静默删除。"
+    }
+  ],
+  "local_corrections": [
+    {
+      "case": "a_gap",
+      "old_en": "While listening to the mini-lecture, please Please complete the gap-filling task on Answer Sheet 1 and write no more than 3 words for each gap.",
+      "new_en": "While listening to the mini-lecture, please complete the gap-filling task on Answer Sheet 1 and write no more than three words for each gap.",
+      "primary_asr_range": [
+        32,
+        59
+      ],
+      "local_asr_range": [
+        4,
+        30
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2016/a_gap.json",
+      "local_sha256": "15677454d08c4870d11f9e70542912d2969e1ce38023d8734d072b8234a4ad9b",
+      "source_parts": [
+        {
+          "file": "2016专八笔试真题和答案/TEM-8-2016.wma",
+          "source_sha256": "49dbb25f5b95c4abd9ea8485878481f1101644f3b777dfdc3f43c6ffa8d19eb3",
+          "source_window": [
+            20.14,
+            37.14
+          ],
+          "canonical_window": [
+            20.14,
+            37.14
+          ]
+        }
+      ],
+      "times": [
+        22.62,
+        33.58
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "mini lecture once only. While listening to the mini lecture, please complete the gap filling task on Answer Sheet 1 and write no more than three words for each gap. Make sure the words you fill in is, are,",
+        "whisper": "lecture. You will hear the mini lecture once only. While listening to the mini lecture, please complete the gap filling task on answer sheet 1, and write no more than three words for each gap. Make sure the words you fill in is, are, both grammatically"
+      }
+    }
+  ]
 }

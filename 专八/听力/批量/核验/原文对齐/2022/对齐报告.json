@@ -1,0 +1,2840 @@
+{
+  "year": 2022,
+  "tool": "tools/原文对齐.py",
+  "tool_version": "1.0",
+  "inputs": {
+    "draft": "译注草稿/2022.json",
+    "draft_sha256": "c8ebbb603343ff26d51f119c477f8e10d68f40504d8f0d5b2b64e156ca40e2cd",
+    "asr": "核验/原文对齐/2022/含说明识别.json",
+    "asr_sha256": "a5f4c25bc64acc0ece8a29e9b93fc5da720898c1a6e45ed18d056bd62af4cf32",
+    "input_asr": "预处理/2022/识别.json",
+    "input_asr_sha256": "c64a162196b8bd89ae28466b04487f9b9d2bdde18dcd5328951bcd66c8dd6e77",
+    "prepare": "预处理/2022/原音准备.json",
+    "prepare_sha256": "e809d4f46bd5db40d6ce2a808eec7f9f460ddd330ad8338f8b49b09f67c57cb0",
+    "canonical_source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9"
+  },
+  "method": "全局单调规范词匹配；每个时刻只取实际ASR词条边界。数词/缩写/收缩差异逐条登记；无模糊关键词代换、无比例估时。",
+  "machine_result_only": true,
+  "human_review_status": "draft",
+  "supplied_sentence_ASR": [
+    {
+      "unit": "2022-A",
+      "sentence": 79,
+      "window": [
+        583.7,
+        587.22
+      ],
+      "words": [
+        [
+          "Now",
+          583.7,
+          583.78
+        ],
+        [
+          "you",
+          584.1,
+          584.18
+        ],
+        [
+          "have",
+          584.42,
+          584.5
+        ],
+        [
+          "three",
+          584.66,
+          584.74
+        ],
+        [
+          "minutes",
+          584.98,
+          585.3
+        ],
+        [
+          "to",
+          585.38,
+          585.46
+        ],
+        [
+          "check",
+          585.62,
+          586.02
+        ],
+        [
+          "your",
+          586.18,
+          586.26
+        ],
+        [
+          "work.",
+          586.5,
+          587.22
+        ]
+      ],
+      "source_ref": "说明语句/局部复识别/2022/a_check.json",
+      "source_sha256": "77f4afe64f7ab930bf985538532d31eaff0cca3d4e680f0cf4ee33d8fcef7491",
+      "pointer": "/recognitions/0/words",
+      "range": [
+        3,
+        12
+      ],
+      "removed_input_ASR": [
+        [
+          "you",
+          583.98,
+          584.06
+        ],
+        [
+          "have",
+          584.14,
+          584.22
+        ],
+        [
+          "Have",
+          584.66,
+          584.82
+        ],
+        [
+          "three",
+          584.82,
+          584.9
+        ],
+        [
+          "minutes",
+          585.06,
+          585.46
+        ],
+        [
+          "to",
+          585.46,
+          585.54
+        ],
+        [
+          "check",
+          585.62,
+          585.94
+        ],
+        [
+          "your",
+          586.02,
+          586.1
+        ],
+        [
+          "work.",
+          586.18,
+          586.74
+        ]
+      ]
+    }
+  ],
+  "filler_acoustic_evidence": [],
+  "ASR_provenance": {
+    "file": "预处理/2022/ASR核验.json",
+    "sha256": "14e4394edb24732c6c7bdac2cf5a8a28b449adb0c17800e4468b86255f28ba1e",
+    "canonical_and_ASR_sha_verified": true,
+    "status": "机器转写及时间候选，仅用于对齐；解析原文、题型与音乐剪切点尚须核对。",
+    "word_end_estimate_seconds": 0.08
+  },
+  "coverage": {
+    "source_lexemes": 2648,
+    "source_mapped": 2624,
+    "source_ratio": 0.9909365558912386,
+    "asr_lexemes": 2676,
+    "asr_mapped": 2624,
+    "asr_ratio": 0.9805680119581465,
+    "all_source_mapped": false,
+    "all_asr_mapped": false,
+    "all_boundaries_anchored": false,
+    "literal_complete": false
+  },
+  "differences": [
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 22,
+          "char": [
+            8,
+            16
+          ],
+          "text": "Bohannan"
+        }
+      ],
+      "asr_indices": [
+        185
+      ],
+      "asr_text": [
+        "Bohan,"
+      ],
+      "window": [
+        133.02,
+        133.98
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        236
+      ],
+      "asr_text": [
+        "anthropology"
+      ],
+      "window": [
+        158.74,
+        159.3
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        436
+      ],
+      "asr_text": [
+        "Places,"
+      ],
+      "window": [
+        259.66,
+        260.22
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 50,
+          "char": [
+            30,
+            34
+          ],
+          "text": "will"
+        }
+      ],
+      "asr_indices": [
+        598
+      ],
+      "asr_text": [
+        "would"
+      ],
+      "window": [
+        340.34,
+        340.42
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 50,
+          "char": [
+            141,
+            150
+          ],
+          "text": "Kluckhohn"
+        }
+      ],
+      "asr_indices": [
+        617
+      ],
+      "asr_text": [
+        "Kluckholm"
+      ],
+      "window": [
+        348.34,
+        349.22
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 51,
+          "char": [
+            22,
+            33
+          ],
+          "text": "Kluckhohn’s"
+        }
+      ],
+      "asr_indices": [
+        631
+      ],
+      "asr_text": [
+        "Kluckholm's"
+      ],
+      "window": [
+        354.58,
+        355.54
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        751
+      ],
+      "asr_text": [
+        "Know,"
+      ],
+      "window": [
+        409.66,
+        409.98
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 61,
+          "char": [
+            147,
+            156
+          ],
+          "text": "firsthand"
+        }
+      ],
+      "asr_indices": [
+        792
+      ],
+      "asr_text": [
+        "first-hand"
+      ],
+      "window": [
+        430.38,
+        431.02
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        800
+      ],
+      "asr_text": [
+        "environment."
+      ],
+      "window": [
+        434.06,
+        434.3
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 73,
+          "char": [
+            149,
+            155
+          ],
+          "text": "health"
+        },
+        {
+          "unit": "2022-A",
+          "sentence": 73,
+          "char": [
+            156,
+            160
+          ],
+          "text": "care"
+        }
+      ],
+      "asr_indices": [
+        1016
+      ],
+      "asr_text": [
+        "healthcare"
+      ],
+      "window": [
+        539.7,
+        540.34
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1107
+      ],
+      "asr_text": [
+        "Now"
+      ],
+      "window": [
+        583.66,
+        583.74
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1254,
+        1255
+      ],
+      "asr_text": [
+        "Good",
+        "morning,"
+      ],
+      "window": [
+        855.93,
+        856.41
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            92,
+            94
+          ],
+          "text": "in"
+        },
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            95,
+            100
+          ],
+          "text": "under"
+        },
+        {
+          "unit": "2022-B1",
+          "sentence": 16,
+          "char": [
+            101,
+            107
+          ],
+          "text": "served"
+        }
+      ],
+      "asr_indices": [
+        1305,
+        1306
+      ],
+      "asr_text": [
+        "and",
+        "underserved"
+      ],
+      "window": [
+        875.29,
+        876.33
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 20,
+          "char": [
+            146,
+            147
+          ],
+          "text": "a"
+        }
+      ],
+      "asr_indices": [
+        1380
+      ],
+      "asr_text": [
+        "have"
+      ],
+      "window": [
+        905.49,
+        905.57
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 24,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Um"
+        }
+      ],
+      "asr_indices": [
+        1464
+      ],
+      "asr_text": [
+        "Hmm,"
+      ],
+      "window": [
+        942.53,
+        943.09
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 24,
+          "char": [
+            16,
+            23
+          ],
+          "text": "Harriet"
+        }
+      ],
+      "asr_indices": [
+        1468
+      ],
+      "asr_text": [
+        "Harry,"
+      ],
+      "window": [
+        944.61,
+        945.33
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 28,
+          "char": [
+            11,
+            14
+          ],
+          "text": "all"
+        }
+      ],
+      "asr_indices": [
+        1528
+      ],
+      "asr_text": [
+        "our"
+      ],
+      "window": [
+        974.89,
+        974.97
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 28,
+          "char": [
+            78,
+            85
+          ],
+          "text": "186,000"
+        }
+      ],
+      "asr_indices": [
+        1538,
+        1539
+      ],
+      "asr_text": [
+        "180,000.",
+        "36,000"
+      ],
+      "window": [
+        979.85,
+        981.97
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 37,
+          "char": [
+            7,
+            13
+          ],
+          "text": "EverFi"
+        }
+      ],
+      "asr_indices": [
+        1636
+      ],
+      "asr_text": [
+        "Everfly"
+      ],
+      "window": [
+        1024.89,
+        1025.45
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 38,
+          "char": [
+            29,
+            35
+          ],
+          "text": "EverFi"
+        }
+      ],
+      "asr_indices": [
+        1648
+      ],
+      "asr_text": [
+        "Everfy"
+      ],
+      "window": [
+        1031.33,
+        1031.89
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1843,
+        1844
+      ],
+      "asr_text": [
+        "Question",
+        "one:"
+      ],
+      "window": [
+        1116.25,
+        1117.37
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1852,
+        1853
+      ],
+      "asr_text": [
+        "Question",
+        "2."
+      ],
+      "window": [
+        1131.07,
+        1132.35
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1863,
+        1864
+      ],
+      "asr_text": [
+        "Question",
+        "three:"
+      ],
+      "window": [
+        1147.28,
+        1148.56
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1875,
+        1876
+      ],
+      "asr_text": [
+        "Question",
+        "4."
+      ],
+      "window": [
+        1164.65,
+        1166.01
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1891,
+        1892
+      ],
+      "asr_text": [
+        "Question",
+        "five:"
+      ],
+      "window": [
+        1182.17,
+        1183.53
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2095
+      ],
+      "asr_text": [
+        "Hundreds"
+      ],
+      "window": [
+        1268.99,
+        1269.39
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2153
+      ],
+      "asr_text": [
+        "Only"
+      ],
+      "window": [
+        1293.99,
+        1294.15
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 19,
+          "char": [
+            39,
+            43
+          ],
+          "text": "over"
+        },
+        {
+          "unit": "2022-B2",
+          "sentence": 19,
+          "char": [
+            44,
+            47
+          ],
+          "text": "lit"
+        }
+      ],
+      "asr_indices": [
+        2179
+      ],
+      "asr_text": [
+        "overlit,"
+      ],
+      "window": [
+        1301.91,
+        1302.71
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 19,
+          "char": [
+            62,
+            64
+          ],
+          "text": "or"
+        }
+      ],
+      "asr_indices": [
+        2182
+      ],
+      "asr_text": [
+        "O"
+      ],
+      "window": [
+        1303.91,
+        1303.99
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2219
+      ],
+      "asr_text": [
+        "he."
+      ],
+      "window": [
+        1318.47,
+        1318.71
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 21,
+          "char": [
+            120,
+            124
+          ],
+          "text": "over"
+        },
+        {
+          "unit": "2022-B2",
+          "sentence": 21,
+          "char": [
+            125,
+            128
+          ],
+          "text": "lit"
+        }
+      ],
+      "asr_indices": [
+        2229
+      ],
+      "asr_text": [
+        "overlit."
+      ],
+      "window": [
+        1321.95,
+        1322.83
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 27,
+          "char": [
+            101,
+            104
+          ],
+          "text": "the"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2415
+      ],
+      "asr_text": [
+        "but"
+      ],
+      "window": [
+        1393.47,
+        1393.55
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 37,
+          "char": [
+            205,
+            209
+          ],
+          "text": "bulb"
+        }
+      ],
+      "asr_indices": [
+        2521
+      ],
+      "asr_text": [
+        "bowl"
+      ],
+      "window": [
+        1431.31,
+        1431.71
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2592,
+        2593
+      ],
+      "asr_text": [
+        "Question",
+        "six:"
+      ],
+      "window": [
+        1457.83,
+        1459.03
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2602,
+        2603
+      ],
+      "asr_text": [
+        "Question",
+        "7:"
+      ],
+      "window": [
+        1472.89,
+        1474.17
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2617,
+        2618
+      ],
+      "asr_text": [
+        "Question",
+        "8."
+      ],
+      "window": [
+        1489.45,
+        1490.73
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2629,
+        2630
+      ],
+      "asr_text": [
+        "Question",
+        "nine:"
+      ],
+      "window": [
+        1505.47,
+        1506.83
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2639,
+        2640
+      ],
+      "asr_text": [
+        "Question",
+        "10."
+      ],
+      "window": [
+        1520.23,
+        1521.43
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 37,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        463
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        273.9,
+        274.46
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 48,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        577
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        328.62,
+        329.1
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-A",
+          "sentence": 76,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1036
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        551.06,
+        551.54
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 5,
+          "char": [
+            37,
+            40
+          ],
+          "text": "ten"
+        }
+      ],
+      "asr_indices": [
+        1170
+      ],
+      "asr_text": [
+        "10-second"
+      ],
+      "window": [
+        789.04,
+        789.68
+      ],
+      "canonical": [
+        "#10"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 25,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1484
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        951.33,
+        951.65
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 41,
+          "char": [
+            6,
+            8
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1690
+      ],
+      "asr_text": [
+        "okay."
+      ],
+      "window": [
+        1050.93,
+        1051.17
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B1",
+          "sentence": 49,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1809
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        1102.45,
+        1102.93
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2022-B2",
+          "sentence": 12,
+          "char": [
+            22,
+            28
+          ],
+          "text": "twenty"
+        }
+      ],
+      "asr_indices": [
+        2086
+      ],
+      "asr_text": [
+        "20"
+      ],
+      "window": [
+        1266.23,
+        1266.55
+      ],
+      "canonical": [
+        "#20"
+      ],
+      "decision": "machine_normalization_requires_review"
+    }
+  ],
+  "uncovered_asr": [
+    {
+      "asr_indices": [
+        185
+      ],
+      "asr_text": [
+        "Bohan,"
+      ],
+      "window": [
+        133.02,
+        133.98
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        236
+      ],
+      "asr_text": [
+        "anthropology"
+      ],
+      "window": [
+        158.74,
+        159.3
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        436
+      ],
+      "asr_text": [
+        "Places,"
+      ],
+      "window": [
+        259.66,
+        260.22
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        598
+      ],
+      "asr_text": [
+        "would"
+      ],
+      "window": [
+        340.34,
+        340.42
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        617
+      ],
+      "asr_text": [
+        "Kluckholm"
+      ],
+      "window": [
+        348.34,
+        349.22
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        631
+      ],
+      "asr_text": [
+        "Kluckholm's"
+      ],
+      "window": [
+        354.58,
+        355.54
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        751
+      ],
+      "asr_text": [
+        "Know,"
+      ],
+      "window": [
+        409.66,
+        409.98
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        792
+      ],
+      "asr_text": [
+        "first-hand"
+      ],
+      "window": [
+        430.38,
+        431.02
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        800
+      ],
+      "asr_text": [
+        "environment."
+      ],
+      "window": [
+        434.06,
+        434.3
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1016
+      ],
+      "asr_text": [
+        "healthcare"
+      ],
+      "window": [
+        539.7,
+        540.34
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1107
+      ],
+      "asr_text": [
+        "Now"
+      ],
+      "window": [
+        583.66,
+        583.74
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1254,
+        1255
+      ],
+      "asr_text": [
+        "Good",
+        "morning,"
+      ],
+      "window": [
+        855.93,
+        856.41
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1305,
+        1306
+      ],
+      "asr_text": [
+        "and",
+        "underserved"
+      ],
+      "window": [
+        875.29,
+        876.33
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1380
+      ],
+      "asr_text": [
+        "have"
+      ],
+      "window": [
+        905.49,
+        905.57
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1464
+      ],
+      "asr_text": [
+        "Hmm,"
+      ],
+      "window": [
+        942.53,
+        943.09
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1468
+      ],
+      "asr_text": [
+        "Harry,"
+      ],
+      "window": [
+        944.61,
+        945.33
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1528
+      ],
+      "asr_text": [
+        "our"
+      ],
+      "window": [
+        974.89,
+        974.97
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1538,
+        1539
+      ],
+      "asr_text": [
+        "180,000.",
+        "36,000"
+      ],
+      "window": [
+        979.85,
+        981.97
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1636
+      ],
+      "asr_text": [
+        "Everfly"
+      ],
+      "window": [
+        1024.89,
+        1025.45
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1648
+      ],
+      "asr_text": [
+        "Everfy"
+      ],
+      "window": [
+        1031.33,
+        1031.89
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1843,
+        1844
+      ],
+      "asr_text": [
+        "Question",
+        "one:"
+      ],
+      "window": [
+        1116.25,
+        1117.37
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1852,
+        1853
+      ],
+      "asr_text": [
+        "Question",
+        "2."
+      ],
+      "window": [
+        1131.07,
+        1132.35
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1863,
+        1864
+      ],
+      "asr_text": [
+        "Question",
+        "three:"
+      ],
+      "window": [
+        1147.28,
+        1148.56
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1875,
+        1876
+      ],
+      "asr_text": [
+        "Question",
+        "4."
+      ],
+      "window": [
+        1164.65,
+        1166.01
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1891,
+        1892
+      ],
+      "asr_text": [
+        "Question",
+        "five:"
+      ],
+      "window": [
+        1182.17,
+        1183.53
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2095
+      ],
+      "asr_text": [
+        "Hundreds"
+      ],
+      "window": [
+        1268.99,
+        1269.39
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2153
+      ],
+      "asr_text": [
+        "Only"
+      ],
+      "window": [
+        1293.99,
+        1294.15
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2179
+      ],
+      "asr_text": [
+        "overlit,"
+      ],
+      "window": [
+        1301.91,
+        1302.71
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2182
+      ],
+      "asr_text": [
+        "O"
+      ],
+      "window": [
+        1303.91,
+        1303.99
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2219
+      ],
+      "asr_text": [
+        "he."
+      ],
+      "window": [
+        1318.47,
+        1318.71
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2229
+      ],
+      "asr_text": [
+        "overlit."
+      ],
+      "window": [
+        1321.95,
+        1322.83
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2415
+      ],
+      "asr_text": [
+        "but"
+      ],
+      "window": [
+        1393.47,
+        1393.55
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2521
+      ],
+      "asr_text": [
+        "bowl"
+      ],
+      "window": [
+        1431.31,
+        1431.71
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2592,
+        2593
+      ],
+      "asr_text": [
+        "Question",
+        "six:"
+      ],
+      "window": [
+        1457.83,
+        1459.03
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2602,
+        2603
+      ],
+      "asr_text": [
+        "Question",
+        "7:"
+      ],
+      "window": [
+        1472.89,
+        1474.17
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2617,
+        2618
+      ],
+      "asr_text": [
+        "Question",
+        "8."
+      ],
+      "window": [
+        1489.45,
+        1490.73
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2629,
+        2630
+      ],
+      "asr_text": [
+        "Question",
+        "nine:"
+      ],
+      "window": [
+        1505.47,
+        1506.83
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2639,
+        2640
+      ],
+      "asr_text": [
+        "Question",
+        "10."
+      ],
+      "window": [
+        1520.23,
+        1521.43
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    }
+  ],
+  "human_decisions": [],
+  "rerecognition_windows": [
+    {
+      "unit": "2022-B2",
+      "window": [
+        1319.89,
+        1324.97
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 21,
+          "source_text": "over lit",
+          "source_chars": [
+            [
+              120,
+              124
+            ],
+            [
+              125,
+              128
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2022-B2",
+            "sentence": 21,
+            "text": "words",
+            "asr_indices": [
+              2228
+            ],
+            "asr_text": [
+              "words,"
+            ],
+            "window": [
+              1321.39,
+              1321.79
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B2",
+            "sentence": 22,
+            "text": "Well",
+            "asr_indices": [
+              2230
+            ],
+            "asr_text": [
+              "Well,"
+            ],
+            "window": [
+              1323.15,
+              1323.47
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [
+        21
+      ],
+      "duration": 5.08
+    },
+    {
+      "unit": "2022-B1",
+      "window": [
+        940.23,
+        946.99
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 24,
+          "source_text": "Um",
+          "source_chars": [
+            [
+              0,
+              2
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 23,
+            "text": "learning",
+            "asr_indices": [
+              1463
+            ],
+            "asr_text": [
+              "learning."
+            ],
+            "window": [
+              941.73,
+              942.29
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 24,
+            "text": "I",
+            "asr_indices": [
+              1465
+            ],
+            "asr_text": [
+              "I"
+            ],
+            "window": [
+              943.17,
+              943.25
+            ]
+          }
+        },
+        {
+          "sentence": 24,
+          "source_text": "Harriet",
+          "source_chars": [
+            [
+              16,
+              23
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 24,
+            "text": "Now",
+            "asr_indices": [
+              1467
+            ],
+            "asr_text": [
+              "Now,"
+            ],
+            "window": [
+              944.21,
+              944.53
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 24,
+            "text": "can",
+            "asr_indices": [
+              1469
+            ],
+            "asr_text": [
+              "can"
+            ],
+            "window": [
+              945.41,
+              945.49
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [
+        24
+      ],
+      "duration": 6.76
+    },
+    {
+      "unit": "2022-B1",
+      "window": [
+        873.23,
+        878.39
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 16,
+          "source_text": "in under served",
+          "source_chars": [
+            [
+              92,
+              94
+            ],
+            [
+              95,
+              100
+            ],
+            [
+              101,
+              107
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 3,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 16,
+            "text": "lives",
+            "asr_indices": [
+              1304
+            ],
+            "asr_text": [
+              "lives"
+            ],
+            "window": [
+              874.73,
+              875.05
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 16,
+            "text": "communities",
+            "asr_indices": [
+              1307
+            ],
+            "asr_text": [
+              "communities"
+            ],
+            "window": [
+              876.49,
+              876.89
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 3,
+      "boundary_sentences": [],
+      "duration": 5.16
+    },
+    {
+      "unit": "2022-B2",
+      "window": [
+        1300.17,
+        1305.97
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 19,
+          "source_text": "over lit",
+          "source_chars": [
+            [
+              39,
+              43
+            ],
+            [
+              44,
+              47
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2022-B2",
+            "sentence": 19,
+            "text": "are",
+            "asr_indices": [
+              2178
+            ],
+            "asr_text": [
+              "are"
+            ],
+            "window": [
+              1301.67,
+              1301.75
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B2",
+            "sentence": 19,
+            "text": "for",
+            "asr_indices": [
+              2180
+            ],
+            "asr_text": [
+              "for"
+            ],
+            "window": [
+              1302.79,
+              1302.87
+            ]
+          }
+        },
+        {
+          "sentence": 19,
+          "source_text": "or",
+          "source_chars": [
+            [
+              62,
+              64
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B2",
+            "sentence": 19,
+            "text": "example",
+            "asr_indices": [
+              2181
+            ],
+            "asr_text": [
+              "example."
+            ],
+            "window": [
+              1303.03,
+              1303.67
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B2",
+            "sentence": 19,
+            "text": "lighting",
+            "asr_indices": [
+              2183
+            ],
+            "asr_text": [
+              "lighting"
+            ],
+            "window": [
+              1304.07,
+              1304.47
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 3,
+      "boundary_sentences": [],
+      "duration": 5.8
+    },
+    {
+      "unit": "2022-A",
+      "window": [
+        537.08,
+        542.24
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 73,
+          "source_text": "health care",
+          "source_chars": [
+            [
+              149,
+              155
+            ],
+            [
+              156,
+              160
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2022-A",
+            "sentence": 73,
+            "text": "administration",
+            "asr_indices": [
+              1015
+            ],
+            "asr_text": [
+              "administration,"
+            ],
+            "window": [
+              538.58,
+              539.46
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-A",
+            "sentence": 73,
+            "text": "and",
+            "asr_indices": [
+              1017
+            ],
+            "asr_text": [
+              "and"
+            ],
+            "window": [
+              540.66,
+              540.74
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 5.16
+    },
+    {
+      "unit": "2022-A",
+      "window": [
+        346.36,
+        357.28
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 50,
+          "source_text": "Kluckhohn",
+          "source_chars": [
+            [
+              141,
+              150
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-A",
+            "sentence": 50,
+            "text": "Clyde",
+            "asr_indices": [
+              616
+            ],
+            "asr_text": [
+              "Clyde"
+            ],
+            "window": [
+              347.86,
+              348.34
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-A",
+            "sentence": 50,
+            "text": "with",
+            "asr_indices": [
+              618
+            ],
+            "asr_text": [
+              "with"
+            ],
+            "window": [
+              349.3,
+              349.38
+            ]
+          }
+        },
+        {
+          "sentence": 51,
+          "source_text": "Kluckhohn’s",
+          "source_chars": [
+            [
+              22,
+              33
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-A",
+            "sentence": 51,
+            "text": "that",
+            "asr_indices": [
+              630
+            ],
+            "asr_text": [
+              "that"
+            ],
+            "window": [
+              354.34,
+              354.42
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-A",
+            "sentence": 51,
+            "text": "work",
+            "asr_indices": [
+              632
+            ],
+            "asr_text": [
+              "work,"
+            ],
+            "window": [
+              355.54,
+              355.78
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 10.92
+    },
+    {
+      "unit": "2022-B1",
+      "window": [
+        972.91,
+        984.27
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 28,
+          "source_text": "all",
+          "source_chars": [
+            [
+              11,
+              14
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 28,
+            "text": "year",
+            "asr_indices": [
+              1527
+            ],
+            "asr_text": [
+              "year,"
+            ],
+            "window": [
+              974.41,
+              974.73
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 28,
+            "text": "grants",
+            "asr_indices": [
+              1529
+            ],
+            "asr_text": [
+              "grants"
+            ],
+            "window": [
+              975.13,
+              975.69
+            ]
+          }
+        },
+        {
+          "sentence": 28,
+          "source_text": "186,000",
+          "source_chars": [
+            [
+              78,
+              85
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 28,
+            "text": "than",
+            "asr_indices": [
+              1537
+            ],
+            "asr_text": [
+              "than"
+            ],
+            "window": [
+              979.53,
+              979.61
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 28,
+            "text": "students",
+            "asr_indices": [
+              1540
+            ],
+            "asr_text": [
+              "students."
+            ],
+            "window": [
+              982.13,
+              982.77
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 11.36
+    },
+    {
+      "unit": "2022-B2",
+      "window": [
+        1356.65,
+        1360.05
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 27,
+          "source_text": "the",
+          "source_chars": [
+            [
+              101,
+              104
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B2",
+            "sentence": 27,
+            "text": "of",
+            "asr_indices": [
+              2321
+            ],
+            "asr_text": [
+              "of"
+            ],
+            "window": [
+              1358.15,
+              1358.23
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B2",
+            "sentence": 27,
+            "text": "light",
+            "asr_indices": [
+              2322
+            ],
+            "asr_text": [
+              "light"
+            ],
+            "window": [
+              1358.31,
+              1358.55
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 3.4
+    },
+    {
+      "unit": "2022-B2",
+      "window": [
+        1429.65,
+        1433.45
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 37,
+          "source_text": "bulb",
+          "source_chars": [
+            [
+              205,
+              209
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B2",
+            "sentence": 37,
+            "text": "the",
+            "asr_indices": [
+              2520
+            ],
+            "asr_text": [
+              "the"
+            ],
+            "window": [
+              1431.15,
+              1431.23
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B2",
+            "sentence": 37,
+            "text": "I",
+            "asr_indices": [
+              2522
+            ],
+            "asr_text": [
+              "I"
+            ],
+            "window": [
+              1431.87,
+              1431.95
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 3.8
+    },
+    {
+      "unit": "2022-B1",
+      "window": [
+        903.83,
+        907.83
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 20,
+          "source_text": "a",
+          "source_chars": [
+            [
+              146,
+              147
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 20,
+            "text": "that",
+            "asr_indices": [
+              1379
+            ],
+            "asr_text": [
+              "that"
+            ],
+            "window": [
+              905.33,
+              905.41
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 20,
+            "text": "public",
+            "asr_indices": [
+              1381
+            ],
+            "asr_text": [
+              "Public"
+            ],
+            "window": [
+              906.09,
+              906.33
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.0
+    },
+    {
+      "unit": "2022-B1",
+      "window": [
+        1023.23,
+        1027.27
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 37,
+          "source_text": "EverFi",
+          "source_chars": [
+            [
+              7,
+              13
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 37,
+            "text": "do",
+            "asr_indices": [
+              1635
+            ],
+            "asr_text": [
+              "do"
+            ],
+            "window": [
+              1024.73,
+              1024.81
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 37,
+            "text": "and",
+            "asr_indices": [
+              1637
+            ],
+            "asr_text": [
+              "and"
+            ],
+            "window": [
+              1025.69,
+              1025.77
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.04
+    },
+    {
+      "unit": "2022-B1",
+      "window": [
+        1029.59,
+        1033.79
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 38,
+          "source_text": "EverFi",
+          "source_chars": [
+            [
+              29,
+              35
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-B1",
+            "sentence": 38,
+            "text": "and",
+            "asr_indices": [
+              1647
+            ],
+            "asr_text": [
+              "And"
+            ],
+            "window": [
+              1031.09,
+              1031.17
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-B1",
+            "sentence": 38,
+            "text": "work",
+            "asr_indices": [
+              1649
+            ],
+            "asr_text": [
+              "work"
+            ],
+            "window": [
+              1032.21,
+              1032.29
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.2
+    },
+    {
+      "unit": "2022-A",
+      "window": [
+        131.12,
+        135.56
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 22,
+          "source_text": "Bohannan",
+          "source_chars": [
+            [
+              8,
+              16
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-A",
+            "sentence": 22,
+            "text": "Paul",
+            "asr_indices": [
+              184
+            ],
+            "asr_text": [
+              "Paul"
+            ],
+            "window": [
+              132.62,
+              133.02
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-A",
+            "sentence": 22,
+            "text": "who",
+            "asr_indices": [
+              186
+            ],
+            "asr_text": [
+              "who"
+            ],
+            "window": [
+              133.98,
+              134.06
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.44
+    },
+    {
+      "unit": "2022-A",
+      "window": [
+        428.64,
+        433.32
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 61,
+          "source_text": "firsthand",
+          "source_chars": [
+            [
+              147,
+              156
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-A",
+            "sentence": 61,
+            "text": "the",
+            "asr_indices": [
+              791
+            ],
+            "asr_text": [
+              "the"
+            ],
+            "window": [
+              430.14,
+              430.22
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-A",
+            "sentence": 61,
+            "text": "information",
+            "asr_indices": [
+              793
+            ],
+            "asr_text": [
+              "information"
+            ],
+            "window": [
+              431.18,
+              431.82
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.68
+    },
+    {
+      "unit": "2022-A",
+      "window": [
+        337.64,
+        342.48
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 50,
+          "source_text": "will",
+          "source_chars": [
+            [
+              30,
+              34
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2022-A",
+            "sentence": 50,
+            "text": "anthropologists",
+            "asr_indices": [
+              597
+            ],
+            "asr_text": [
+              "anthropologists"
+            ],
+            "window": [
+              339.14,
+              340.18
+            ]
+          },
+          "right_anchor": {
+            "unit": "2022-A",
+            "sentence": 50,
+            "text": "limit",
+            "asr_indices": [
+              599
+            ],
+            "asr_text": [
+              "limit"
+            ],
+            "window": [
+              340.58,
+              340.98
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.84
+    }
+  ],
+  "units": [
+    {
+      "id": "2022-A",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2022-A.json",
+      "sentences": 80,
+      "source_lexemes": 1127,
+      "missing_source_lexemes": 7,
+      "missing_boundary_sentences": [],
+      "acoustic_filler_sentences": [],
+      "rerecognition_window_count": 5,
+      "audio_window": [
+        14.28,
+        771.36
+      ]
+    },
+    {
+      "id": "2022-B1",
+      "state": "blocked_missing_boundary_anchor",
+      "output": "核验/原文对齐/2022/未导出单元/2022-B1.json",
+      "sentences": 57,
+      "source_lexemes": 770,
+      "missing_source_lexemes": 10,
+      "missing_boundary_sentences": [
+        24
+      ],
+      "acoustic_filler_sentences": [],
+      "rerecognition_window_count": 6,
+      "audio_window": null
+    },
+    {
+      "id": "2022-B2",
+      "state": "blocked_missing_boundary_anchor",
+      "output": "核验/原文对齐/2022/未导出单元/2022-B2.json",
+      "sentences": 50,
+      "source_lexemes": 751,
+      "missing_source_lexemes": 7,
+      "missing_boundary_sentences": [
+        21
+      ],
+      "acoustic_filler_sentences": [],
+      "rerecognition_window_count": 4,
+      "audio_window": null
+    }
+  ]
+}

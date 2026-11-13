@@ -16,9 +16,15 @@
   ],
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有10个原文词缺少ASR对应；涉及句号[3, 5, 9, 16, 26, 37]，严禁按比例补时。",
-    "句首/尾无真实ASR词锚，句号[9]；单元未导出到可制作目录。"
+    "仍有10个原文词缺少ASR对应；涉及句号[12, 14, 18, 25, 35, 46]，严禁按比例补时。",
+    "句首/尾无真实ASR词锚，句号[18]；单元未导出到可制作目录。"
   ],
+  "instruction_review": {
+    "source": "说明语句/2017.json",
+    "source_sha256": "9079492201564735de8e64fcf435c36c3d04812976f4d8457d57ce8a8a371b58",
+    "status": "draft_asr_anchored_audio_review_pending",
+    "待核": []
+  },
   "year": 2017,
   "audio": {
     "file": "预处理/2017/原音.wav",
@@ -28,6 +34,1302 @@
     "window": null
   },
   "sentences": [
+    {
+      "en": "Section B. Interview.",
+      "zh": "B节：访谈。",
+      "w": [
+        {
+          "t": "word",
+          "h": "interview",
+          "m": "n.访谈",
+          "sp": [
+            [
+              11,
+              20
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1123,
+        1126
+      ],
+      "asr_text": "Section B. Interview.",
+      "translation_key": "b_header",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-1",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 7,
+          "start": 716.67,
+          "end": 717.23,
+          "asr_indices": [
+            1123
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 9,
+          "start": 717.39,
+          "end": 717.95,
+          "asr_indices": [
+            1124
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 20,
+          "start": 718.19,
+          "end": 719.63,
+          "asr_indices": [
+            1125
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 3,
+        "mapped_lexemes": 3,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 716.67,
+      "end": 719.63
+    },
+    {
+      "en": "In this section, you will hear two interviews.",
+      "zh": "在这一节中，你将听到两段访谈。",
+      "w": [
+        {
+          "t": "word",
+          "h": "interview",
+          "m": "n.访谈",
+          "sp": [
+            [
+              35,
+              45
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1126,
+        1134
+      ],
+      "asr_text": "In this section, you will hear two interviews.",
+      "translation_key": "b_in_two",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-2",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 2,
+          "start": 720.19,
+          "end": 720.27,
+          "asr_indices": [
+            1126
+          ]
+        },
+        {
+          "char": 3,
+          "char_end": 7,
+          "start": 720.43,
+          "end": 720.51,
+          "asr_indices": [
+            1127
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 15,
+          "start": 720.67,
+          "end": 721.15,
+          "asr_indices": [
+            1128
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 721.23,
+          "end": 721.31,
+          "asr_indices": [
+            1129
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 25,
+          "start": 721.47,
+          "end": 721.55,
+          "asr_indices": [
+            1130
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 30,
+          "start": 721.63,
+          "end": 721.87,
+          "asr_indices": [
+            1131
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 722.03,
+          "end": 722.11,
+          "asr_indices": [
+            1132
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 45,
+          "start": 722.27,
+          "end": 723.23,
+          "asr_indices": [
+            1133
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 720.19,
+      "end": 723.23
+    },
+    {
+      "en": "At the end of each interview, five questions will be asked about what was said.",
+      "zh": "每段访谈结束后，将就刚才所说的内容提出五个问题。",
+      "w": [
+        {
+          "t": "word",
+          "h": "question",
+          "m": "n.问题",
+          "sp": [
+            [
+              35,
+              44
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1134,
+        1149
+      ],
+      "asr_text": "At the end of each interview, five questions will be asked about what was said.",
+      "translation_key": "b_five_interview",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-3",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 2,
+          "start": 723.47,
+          "end": 723.63,
+          "asr_indices": [
+            1134
+          ]
+        },
+        {
+          "char": 3,
+          "char_end": 6,
+          "start": 723.71,
+          "end": 723.79,
+          "asr_indices": [
+            1135
+          ]
+        },
+        {
+          "char": 7,
+          "char_end": 10,
+          "start": 723.87,
+          "end": 723.95,
+          "asr_indices": [
+            1136
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 724.11,
+          "end": 724.19,
+          "asr_indices": [
+            1137
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 18,
+          "start": 724.27,
+          "end": 724.51,
+          "asr_indices": [
+            1138
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 28,
+          "start": 724.59,
+          "end": 725.23,
+          "asr_indices": [
+            1139
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 34,
+          "start": 725.47,
+          "end": 725.79,
+          "asr_indices": [
+            1140
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 44,
+          "start": 725.95,
+          "end": 726.27,
+          "asr_indices": [
+            1141
+          ]
+        },
+        {
+          "char": 45,
+          "char_end": 49,
+          "start": 726.43,
+          "end": 726.51,
+          "asr_indices": [
+            1142
+          ]
+        },
+        {
+          "char": 50,
+          "char_end": 52,
+          "start": 726.67,
+          "end": 726.75,
+          "asr_indices": [
+            1143
+          ]
+        },
+        {
+          "char": 53,
+          "char_end": 58,
+          "start": 726.83,
+          "end": 727.07,
+          "asr_indices": [
+            1144
+          ]
+        },
+        {
+          "char": 59,
+          "char_end": 64,
+          "start": 727.15,
+          "end": 727.23,
+          "asr_indices": [
+            1145
+          ]
+        },
+        {
+          "char": 65,
+          "char_end": 69,
+          "start": 727.47,
+          "end": 727.55,
+          "asr_indices": [
+            1146
+          ]
+        },
+        {
+          "char": 70,
+          "char_end": 73,
+          "start": 727.71,
+          "end": 727.79,
+          "asr_indices": [
+            1147
+          ]
+        },
+        {
+          "char": 74,
+          "char_end": 78,
+          "start": 728.27,
+          "end": 728.67,
+          "asr_indices": [
+            1148
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 15,
+        "mapped_lexemes": 15,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 723.47,
+      "end": 728.67
+    },
+    {
+      "en": "Both the interviews and the questions will be spoken once only.",
+      "zh": "访谈和问题都只读一遍。",
+      "w": [
+        {
+          "t": "word",
+          "h": "once",
+          "m": "adv.一次",
+          "sp": [
+            [
+              53,
+              57
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1149,
+        1160
+      ],
+      "asr_text": "Both the interviews and the questions will be spoken once only.",
+      "translation_key": "b_once",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-4",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 728.91,
+          "end": 729.15,
+          "asr_indices": [
+            1149
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 8,
+          "start": 729.31,
+          "end": 729.39,
+          "asr_indices": [
+            1150
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 19,
+          "start": 729.55,
+          "end": 730.11,
+          "asr_indices": [
+            1151
+          ]
+        },
+        {
+          "char": 20,
+          "char_end": 23,
+          "start": 730.19,
+          "end": 730.27,
+          "asr_indices": [
+            1152
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 27,
+          "start": 730.35,
+          "end": 730.43,
+          "asr_indices": [
+            1153
+          ]
+        },
+        {
+          "char": 28,
+          "char_end": 37,
+          "start": 730.59,
+          "end": 730.91,
+          "asr_indices": [
+            1154
+          ]
+        },
+        {
+          "char": 38,
+          "char_end": 42,
+          "start": 731.15,
+          "end": 731.23,
+          "asr_indices": [
+            1155
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 45,
+          "start": 731.47,
+          "end": 731.55,
+          "asr_indices": [
+            1156
+          ]
+        },
+        {
+          "char": 46,
+          "char_end": 52,
+          "start": 731.63,
+          "end": 732.11,
+          "asr_indices": [
+            1157
+          ]
+        },
+        {
+          "char": 53,
+          "char_end": 57,
+          "start": 732.35,
+          "end": 732.67,
+          "asr_indices": [
+            1158
+          ]
+        },
+        {
+          "char": 58,
+          "char_end": 62,
+          "start": 732.91,
+          "end": 733.63,
+          "asr_indices": [
+            1159
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 11,
+        "mapped_lexemes": 11,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 728.91,
+      "end": 733.63
+    },
+    {
+      "en": "After each question, there will be a ten-second pause.",
+      "zh": "每个问题之后会有十秒钟的停顿。",
+      "w": [
+        {
+          "t": "word",
+          "h": "pause",
+          "m": "n.停顿",
+          "sp": [
+            [
+              48,
+              53
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1160,
+        1169
+      ],
+      "asr_text": "After each question, there will be a ten-second pause.",
+      "translation_key": "b_pause",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-5",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 5,
+          "start": 733.87,
+          "end": 734.11,
+          "asr_indices": [
+            1160
+          ]
+        },
+        {
+          "char": 6,
+          "char_end": 10,
+          "start": 734.27,
+          "end": 734.59,
+          "asr_indices": [
+            1161
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 19,
+          "start": 734.75,
+          "end": 735.07,
+          "asr_indices": [
+            1162
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 26,
+          "start": 735.15,
+          "end": 735.23,
+          "asr_indices": [
+            1163
+          ]
+        },
+        {
+          "char": 27,
+          "char_end": 31,
+          "start": 735.31,
+          "end": 735.39,
+          "asr_indices": [
+            1164
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 34,
+          "start": 735.47,
+          "end": 735.55,
+          "asr_indices": [
+            1165
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 36,
+          "start": 735.63,
+          "end": 735.71,
+          "asr_indices": [
+            1166
+          ]
+        },
+        {
+          "char": 37,
+          "char_end": 40,
+          "start": 735.79,
+          "end": 736.43,
+          "asr_indices": [
+            1167
+          ]
+        },
+        {
+          "char": 41,
+          "char_end": 47,
+          "start": 735.79,
+          "end": 736.43,
+          "asr_indices": [
+            1167
+          ]
+        },
+        {
+          "char": 48,
+          "char_end": 53,
+          "start": 736.75,
+          "end": 737.71,
+          "asr_indices": [
+            1168
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 733.87,
+      "end": 737.71
+    },
+    {
+      "en": "During the pause, you should read the four choices, of A, B, C, and D, and mark the best answer to each question on answer sheet two.",
+      "zh": "请利用停顿时间阅读A、B、C、D四个选项，并在答题卡二上标出每题的最佳答案。",
+      "w": [
+        {
+          "t": "word",
+          "h": "choice",
+          "m": "n.选项",
+          "sp": [
+            [
+              43,
+              50
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1169,
+        1196
+      ],
+      "asr_text": "During the pause, you should read the four choices. Of A, B, C, and D, and mark the best answer to each question on answer sheet two.",
+      "translation_key": "b_choices",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-6",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 6,
+          "start": 737.95,
+          "end": 738.35,
+          "asr_indices": [
+            1169
+          ]
+        },
+        {
+          "char": 7,
+          "char_end": 10,
+          "start": 738.43,
+          "end": 738.51,
+          "asr_indices": [
+            1170
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 16,
+          "start": 738.59,
+          "end": 739.23,
+          "asr_indices": [
+            1171
+          ]
+        },
+        {
+          "char": 18,
+          "char_end": 21,
+          "start": 739.39,
+          "end": 739.47,
+          "asr_indices": [
+            1172
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 28,
+          "start": 739.55,
+          "end": 739.63,
+          "asr_indices": [
+            1173
+          ]
+        },
+        {
+          "char": 29,
+          "char_end": 33,
+          "start": 739.79,
+          "end": 739.87,
+          "asr_indices": [
+            1174
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 37,
+          "start": 739.95,
+          "end": 740.03,
+          "asr_indices": [
+            1175
+          ]
+        },
+        {
+          "char": 38,
+          "char_end": 42,
+          "start": 740.11,
+          "end": 740.19,
+          "asr_indices": [
+            1176
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 50,
+          "start": 740.27,
+          "end": 740.67,
+          "asr_indices": [
+            1177
+          ]
+        },
+        {
+          "char": 52,
+          "char_end": 54,
+          "start": 741.19,
+          "end": 741.27,
+          "asr_indices": [
+            1178
+          ]
+        },
+        {
+          "char": 55,
+          "char_end": 56,
+          "start": 741.43,
+          "end": 741.75,
+          "asr_indices": [
+            1179
+          ]
+        },
+        {
+          "char": 58,
+          "char_end": 59,
+          "start": 741.91,
+          "end": 742.23,
+          "asr_indices": [
+            1180
+          ]
+        },
+        {
+          "char": 61,
+          "char_end": 62,
+          "start": 742.39,
+          "end": 742.79,
+          "asr_indices": [
+            1181
+          ]
+        },
+        {
+          "char": 64,
+          "char_end": 67,
+          "start": 742.87,
+          "end": 742.95,
+          "asr_indices": [
+            1182
+          ]
+        },
+        {
+          "char": 68,
+          "char_end": 69,
+          "start": 743.11,
+          "end": 743.67,
+          "asr_indices": [
+            1183
+          ]
+        },
+        {
+          "char": 71,
+          "char_end": 74,
+          "start": 743.91,
+          "end": 743.99,
+          "asr_indices": [
+            1184
+          ]
+        },
+        {
+          "char": 75,
+          "char_end": 79,
+          "start": 744.15,
+          "end": 744.39,
+          "asr_indices": [
+            1185
+          ]
+        },
+        {
+          "char": 80,
+          "char_end": 83,
+          "start": 744.47,
+          "end": 744.55,
+          "asr_indices": [
+            1186
+          ]
+        },
+        {
+          "char": 84,
+          "char_end": 88,
+          "start": 744.63,
+          "end": 744.87,
+          "asr_indices": [
+            1187
+          ]
+        },
+        {
+          "char": 89,
+          "char_end": 95,
+          "start": 744.95,
+          "end": 745.35,
+          "asr_indices": [
+            1188
+          ]
+        },
+        {
+          "char": 96,
+          "char_end": 98,
+          "start": 745.35,
+          "end": 745.43,
+          "asr_indices": [
+            1189
+          ]
+        },
+        {
+          "char": 99,
+          "char_end": 103,
+          "start": 745.59,
+          "end": 745.91,
+          "asr_indices": [
+            1190
+          ]
+        },
+        {
+          "char": 104,
+          "char_end": 112,
+          "start": 746.07,
+          "end": 746.15,
+          "asr_indices": [
+            1191
+          ]
+        },
+        {
+          "char": 113,
+          "char_end": 115,
+          "start": 746.55,
+          "end": 746.63,
+          "asr_indices": [
+            1192
+          ]
+        },
+        {
+          "char": 116,
+          "char_end": 122,
+          "start": 746.79,
+          "end": 747.27,
+          "asr_indices": [
+            1193
+          ]
+        },
+        {
+          "char": 123,
+          "char_end": 128,
+          "start": 747.27,
+          "end": 747.51,
+          "asr_indices": [
+            1194
+          ]
+        },
+        {
+          "char": 129,
+          "char_end": 132,
+          "start": 747.67,
+          "end": 748.23,
+          "asr_indices": [
+            1195
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 27,
+        "mapped_lexemes": 27,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 737.95,
+      "end": 748.23
+    },
+    {
+      "en": "You have thirty seconds to preview the choices.",
+      "zh": "你有三十秒钟预览选项。",
+      "w": [
+        {
+          "t": "word",
+          "h": "preview",
+          "m": "v.预览；预先浏览",
+          "sp": [
+            [
+              27,
+              34
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1196,
+        1204
+      ],
+      "asr_text": "You have thirty seconds to preview the choices.",
+      "translation_key": "b_preview_choices",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-7",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 748.79,
+          "end": 748.87,
+          "asr_indices": [
+            1196
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 8,
+          "start": 749.03,
+          "end": 749.11,
+          "asr_indices": [
+            1197
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 15,
+          "start": 749.27,
+          "end": 749.67,
+          "asr_indices": [
+            1198
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 23,
+          "start": 749.75,
+          "end": 750.15,
+          "asr_indices": [
+            1199
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 26,
+          "start": 750.23,
+          "end": 750.31,
+          "asr_indices": [
+            1200
+          ]
+        },
+        {
+          "char": 27,
+          "char_end": 34,
+          "start": 750.47,
+          "end": 750.95,
+          "asr_indices": [
+            1201
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 38,
+          "start": 751.03,
+          "end": 751.11,
+          "asr_indices": [
+            1202
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 46,
+          "start": 751.19,
+          "end": 752.39,
+          "asr_indices": [
+            1203
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 748.79,
+      "end": 752.39
+    },
+    {
+      "en": "Now listen to the first interview.",
+      "zh": "现在请听第一段访谈。",
+      "w": [
+        {
+          "t": "word",
+          "h": "listen",
+          "m": "v.听",
+          "sp": [
+            [
+              4,
+              10
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1204,
+        1210
+      ],
+      "asr_text": "Now listen to the first interview.",
+      "translation_key": "b1_listen_interview",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-8",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 782.67,
+          "end": 782.75,
+          "asr_indices": [
+            1204
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 10,
+          "start": 782.99,
+          "end": 783.31,
+          "asr_indices": [
+            1205
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 783.39,
+          "end": 783.47,
+          "asr_indices": [
+            1206
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 17,
+          "start": 783.55,
+          "end": 783.63,
+          "asr_indices": [
+            1207
+          ]
+        },
+        {
+          "char": 18,
+          "char_end": 23,
+          "start": 783.71,
+          "end": 783.79,
+          "asr_indices": [
+            1208
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 33,
+          "start": 784.03,
+          "end": 784.83,
+          "asr_indices": [
+            1209
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 6,
+        "mapped_lexemes": 6,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 782.67,
+      "end": 784.83
+    },
+    {
+      "en": "Questions one to five are based on the first interview.",
+      "zh": "第1至5题根据第一段访谈提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              26,
+              34
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1210,
+        1220
+      ],
+      "asr_text": "Questions one to five are based on the first interview.",
+      "translation_key": "b1_group_interview",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-B1-before-9",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 785.07,
+          "end": 785.47,
+          "asr_indices": [
+            1210
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 785.63,
+          "end": 785.71,
+          "asr_indices": [
+            1211
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 785.95,
+          "end": 786.03,
+          "asr_indices": [
+            1212
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 21,
+          "start": 786.11,
+          "end": 786.43,
+          "asr_indices": [
+            1213
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 25,
+          "start": 786.59,
+          "end": 786.67,
+          "asr_indices": [
+            1214
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 31,
+          "start": 786.83,
+          "end": 787.07,
+          "asr_indices": [
+            1215
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 34,
+          "start": 787.15,
+          "end": 787.23,
+          "asr_indices": [
+            1216
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 38,
+          "start": 787.31,
+          "end": 787.39,
+          "asr_indices": [
+            1217
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 44,
+          "start": 787.47,
+          "end": 787.55,
+          "asr_indices": [
+            1218
+          ]
+        },
+        {
+          "char": 45,
+          "char_end": 54,
+          "start": 787.87,
+          "end": 788.99,
+          "asr_indices": [
+            1219
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 785.07,
+      "end": 788.99
+    },
     {
       "en": "Good evening, everybody.",
       "speaker": "M",
@@ -1109,8 +2411,8 @@
       "w": [
         {
           "t": "word",
-          "h": "ceo",
-          "m": "n.首席执行官",
+          "h": "CEO",
+          "m": "n.首席执行官（chief executive officer的缩写）",
           "sp": [
             [
               18,
@@ -1805,7 +3107,7 @@
       "w": [
         {
           "t": "word",
-          "h": "mid-september",
+          "h": "mid-September",
           "m": "n.九月中旬",
           "sp": [
             [
@@ -2802,7 +4104,7 @@
     {
       "en": "When there are treatment efforts, when there are health care workers to treat patients as they come in —I mean, our first patients that arrived to our treatment unit, they died at the doorstep.",
       "speaker": "W",
-      "zh": "只要开展救治，只要有医护人员来接诊患者——我是说，最早来到我们治疗中心的那些患者，就倒在了门口。",
+      "zh": "只要开展救治，只要有医护人员来接诊患者——我是说，最早来到我们治疗中心的那些患者，就死在了门口。",
       "w": [
         {
           "t": "word",
@@ -4340,7 +5642,7 @@
       "w": [
         {
           "t": "phr",
-          "h": "health workers",
+          "h": "health worker",
           "m": "phr.医护人员",
           "sp": [
             [
@@ -6517,12 +7819,12 @@
       "zh": "不客气。",
       "w": [
         {
-          "t": "word",
-          "h": "welcome",
-          "m": "adj.用于回应感谢：不客气",
+          "t": "phr",
+          "h": "you’re welcome",
+          "m": "phr.不客气；用于回应感谢",
           "sp": [
             [
-              7,
+              0,
               14
             ]
           ]
@@ -6564,21 +7866,34 @@
     },
     {
       "en": "This is the end of the first interview.",
-      "speaker": "W",
       "zh": "第一段访谈到此结束。",
       "w": [
         {
           "t": "word",
-          "h": "interview",
-          "m": "n.访谈",
+          "h": "end",
+          "m": "n.结束",
           "sp": [
             [
-              29,
-              38
+              12,
+              15
             ]
           ]
         }
       ],
+      "role": "transition",
+      "asr_range": [
+        1789,
+        1797
+      ],
+      "asr_text": "This is the end of the first. Interview.",
+      "translation_key": "b1_end_interview",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2017-B1-before_questions-1",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
       "word_alignment": [
         {
           "char": 0,
@@ -6668,22 +7983,35 @@
       "end": 1016.91
     },
     {
-      "en": "Questions 1 to 5 are based on what you have just heard.",
-      "speaker": "W",
+      "en": "Questions one to five are based on what you have just heard.",
       "zh": "第1至5题根据你刚才听到的内容提问。",
       "w": [
         {
           "t": "phr",
           "h": "be based on",
-          "m": "phr.根据；基于",
+          "m": "phr.以……为依据",
           "sp": [
             [
-              21,
-              29
+              26,
+              34
             ]
           ]
         }
       ],
+      "role": "transition",
+      "asr_range": [
+        1797,
+        1809
+      ],
+      "asr_text": "Questions one to five are based on what you have just heard.",
+      "translation_key": "b1_group_heard",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2017-B1-before_questions-2",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
       "word_alignment": [
         {
           "char": 0,
@@ -6696,7 +8024,7 @@
         },
         {
           "char": 10,
-          "char_end": 11,
+          "char_end": 13,
           "start": 1017.79,
           "end": 1017.87,
           "asr_indices": [
@@ -6704,8 +8032,8 @@
           ]
         },
         {
-          "char": 12,
-          "char_end": 14,
+          "char": 14,
+          "char_end": 16,
           "start": 1018.11,
           "end": 1018.19,
           "asr_indices": [
@@ -6713,8 +8041,8 @@
           ]
         },
         {
-          "char": 15,
-          "char_end": 16,
+          "char": 17,
+          "char_end": 21,
           "start": 1018.27,
           "end": 1018.59,
           "asr_indices": [
@@ -6722,8 +8050,8 @@
           ]
         },
         {
-          "char": 17,
-          "char_end": 20,
+          "char": 22,
+          "char_end": 25,
           "start": 1018.91,
           "end": 1018.99,
           "asr_indices": [
@@ -6731,8 +8059,8 @@
           ]
         },
         {
-          "char": 21,
-          "char_end": 26,
+          "char": 26,
+          "char_end": 31,
           "start": 1019.15,
           "end": 1019.47,
           "asr_indices": [
@@ -6740,8 +8068,8 @@
           ]
         },
         {
-          "char": 27,
-          "char_end": 29,
+          "char": 32,
+          "char_end": 34,
           "start": 1019.55,
           "end": 1019.63,
           "asr_indices": [
@@ -6749,8 +8077,8 @@
           ]
         },
         {
-          "char": 30,
-          "char_end": 34,
+          "char": 35,
+          "char_end": 39,
           "start": 1019.71,
           "end": 1019.79,
           "asr_indices": [
@@ -6758,8 +8086,8 @@
           ]
         },
         {
-          "char": 35,
-          "char_end": 38,
+          "char": 40,
+          "char_end": 43,
           "start": 1019.95,
           "end": 1020.03,
           "asr_indices": [
@@ -6767,8 +8095,8 @@
           ]
         },
         {
-          "char": 39,
-          "char_end": 43,
+          "char": 44,
+          "char_end": 48,
           "start": 1020.19,
           "end": 1020.27,
           "asr_indices": [
@@ -6776,8 +8104,8 @@
           ]
         },
         {
-          "char": 44,
-          "char_end": 48,
+          "char": 49,
+          "char_end": 53,
           "start": 1020.43,
           "end": 1020.51,
           "asr_indices": [
@@ -6785,8 +8113,8 @@
           ]
         },
         {
-          "char": 49,
-          "char_end": 54,
+          "char": 54,
+          "char_end": 59,
           "start": 1021.07,
           "end": 1021.79,
           "asr_indices": [
@@ -7539,6 +8867,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2017/对齐报告.json",
-    "content_sha256": "97a8daad1431af1963198985d2b7f884c6c30aae5441b4547cb44d63c6e57480"
+    "content_sha256": "0a71360b43e53022fde0bde9b469f124796d26555af34d37941fdac2b613800d"
   }
 }

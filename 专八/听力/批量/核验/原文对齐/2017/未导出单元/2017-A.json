@@ -16,9 +16,15 @@
   ],
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有13个原文词缺少ASR对应；涉及句号[2, 9, 24, 29, 34, 36, 37]，严禁按比例补时。",
-    "句首/尾无真实ASR词锚，句号[36]；单元未导出到可制作目录。"
+    "仍有13个原文词缺少ASR对应；涉及句号[15, 22, 37, 42, 47, 49, 50]，严禁按比例补时。",
+    "句首/尾无真实ASR词锚，句号[49]；单元未导出到可制作目录。"
   ],
+  "instruction_review": {
+    "source": "说明语句/2017.json",
+    "source_sha256": "9079492201564735de8e64fcf435c36c3d04812976f4d8457d57ce8a8a371b58",
+    "status": "draft_asr_anchored_audio_review_pending",
+    "待核": []
+  },
   "year": 2017,
   "audio": {
     "file": "预处理/2017/原音.wav",
@@ -28,6 +34,1630 @@
     "window": null
   },
   "sentences": [
+    {
+      "en": "Test for English Majors 2017.",
+      "zh": "2017年英语专业全国统一考试。",
+      "w": [
+        {
+          "t": "word",
+          "h": "major",
+          "m": "n.某专业的学生",
+          "sp": [
+            [
+              17,
+              23
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        0,
+        5
+      ],
+      "asr_text": "Test for English Majors 2017.",
+      "translation_key": "test",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-1",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 4.08,
+          "end": 4.4,
+          "asr_indices": [
+            0
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 8,
+          "start": 4.64,
+          "end": 4.72,
+          "asr_indices": [
+            1
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 16,
+          "start": 4.8,
+          "end": 5.2,
+          "asr_indices": [
+            2
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 23,
+          "start": 5.2,
+          "end": 5.76,
+          "asr_indices": [
+            3
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 28,
+          "start": 6.0,
+          "end": 8.0,
+          "asr_indices": [
+            4
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 5,
+        "mapped_lexemes": 5,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 4.08,
+      "end": 8.0
+    },
+    {
+      "en": "Grade 8.",
+      "zh": "专业八级。",
+      "w": [
+        {
+          "t": "word",
+          "h": "grade",
+          "m": "n.级别",
+          "sp": [
+            [
+              0,
+              5
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        5,
+        7
+      ],
+      "asr_text": "Grade 8.",
+      "translation_key": "grade",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-2",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 5,
+          "start": 8.24,
+          "end": 8.64,
+          "asr_indices": [
+            5
+          ]
+        },
+        {
+          "char": 6,
+          "char_end": 7,
+          "start": 8.8,
+          "end": 10.4,
+          "asr_indices": [
+            6
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 2,
+        "mapped_lexemes": 2,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 8.24,
+      "end": 10.4
+    },
+    {
+      "en": "Part 1. Listening Comprehension.",
+      "zh": "第一部分：听力理解。",
+      "w": [
+        {
+          "t": "word",
+          "h": "comprehension",
+          "m": "n.理解",
+          "sp": [
+            [
+              18,
+              31
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        7,
+        11
+      ],
+      "asr_text": "Part 1. Listening Comprehension.",
+      "translation_key": "part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-3",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 10.64,
+          "end": 10.88,
+          "asr_indices": [
+            7
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 6,
+          "start": 11.2,
+          "end": 11.6,
+          "asr_indices": [
+            8
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 17,
+          "start": 11.68,
+          "end": 12.24,
+          "asr_indices": [
+            9
+          ]
+        },
+        {
+          "char": 18,
+          "char_end": 31,
+          "start": 12.32,
+          "end": 13.76,
+          "asr_indices": [
+            10
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 4,
+        "mapped_lexemes": 4,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 10.64,
+      "end": 13.76
+    },
+    {
+      "en": "Section A. mini-lecture.",
+      "zh": "A节：短讲。",
+      "w": [
+        {
+          "t": "word",
+          "h": "lecture",
+          "m": "n.讲座；短讲",
+          "sp": [
+            [
+              16,
+              23
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        11,
+        15
+      ],
+      "asr_text": "Section A. Mini Lecture.",
+      "translation_key": "a_header",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-4",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 7,
+          "start": 14.0,
+          "end": 14.48,
+          "asr_indices": [
+            11
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 9,
+          "start": 14.56,
+          "end": 15.04,
+          "asr_indices": [
+            12
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 15,
+          "start": 15.2,
+          "end": 15.6,
+          "asr_indices": [
+            13
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 23,
+          "start": 15.76,
+          "end": 16.72,
+          "asr_indices": [
+            14
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 4,
+        "mapped_lexemes": 4,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 14.0,
+      "end": 16.72
+    },
+    {
+      "en": "In this section, you will hear a mini-lecture.",
+      "zh": "在这一节中，你将听到一段短讲。",
+      "w": [
+        {
+          "t": "word",
+          "h": "hear",
+          "m": "v.听到",
+          "sp": [
+            [
+              26,
+              30
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        15,
+        24
+      ],
+      "asr_text": "In this section, you will hear a mini lecture.",
+      "translation_key": "a_in",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-5",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 2,
+          "start": 17.52,
+          "end": 17.6,
+          "asr_indices": [
+            15
+          ]
+        },
+        {
+          "char": 3,
+          "char_end": 7,
+          "start": 17.76,
+          "end": 17.84,
+          "asr_indices": [
+            16
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 15,
+          "start": 18.08,
+          "end": 18.64,
+          "asr_indices": [
+            17
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 18.8,
+          "end": 18.88,
+          "asr_indices": [
+            18
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 25,
+          "start": 18.96,
+          "end": 19.04,
+          "asr_indices": [
+            19
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 30,
+          "start": 19.2,
+          "end": 19.44,
+          "asr_indices": [
+            20
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 32,
+          "start": 19.44,
+          "end": 19.52,
+          "asr_indices": [
+            21
+          ]
+        },
+        {
+          "char": 33,
+          "char_end": 37,
+          "start": 19.6,
+          "end": 20.0,
+          "asr_indices": [
+            22
+          ]
+        },
+        {
+          "char": 38,
+          "char_end": 45,
+          "start": 20.08,
+          "end": 21.36,
+          "asr_indices": [
+            23
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 9,
+        "mapped_lexemes": 9,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 17.52,
+      "end": 21.36
+    },
+    {
+      "en": "You will hear the mini-lecture once only.",
+      "zh": "这段短讲只播放一遍。",
+      "w": [
+        {
+          "t": "word",
+          "h": "once",
+          "m": "adv.一次",
+          "sp": [
+            [
+              31,
+              35
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        24,
+        32
+      ],
+      "asr_text": "You will hear the mini lecture once only.",
+      "translation_key": "a_once",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-6",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 21.6,
+          "end": 21.68,
+          "asr_indices": [
+            24
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 8,
+          "start": 21.84,
+          "end": 21.92,
+          "asr_indices": [
+            25
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 13,
+          "start": 22.0,
+          "end": 22.24,
+          "asr_indices": [
+            26
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 17,
+          "start": 22.24,
+          "end": 22.32,
+          "asr_indices": [
+            27
+          ]
+        },
+        {
+          "char": 18,
+          "char_end": 22,
+          "start": 22.4,
+          "end": 22.64,
+          "asr_indices": [
+            28
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 30,
+          "start": 22.72,
+          "end": 23.2,
+          "asr_indices": [
+            29
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 35,
+          "start": 23.36,
+          "end": 23.68,
+          "asr_indices": [
+            30
+          ]
+        },
+        {
+          "char": 36,
+          "char_end": 40,
+          "start": 24.0,
+          "end": 24.32,
+          "asr_indices": [
+            31
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 21.6,
+      "end": 24.32
+    },
+    {
+      "en": "While listening to the mini-lecture, please complete the gap-filling task on answer sheet 1 and write no more than three words for each gap.",
+      "zh": "请边听短讲，边完成答题卡一上的填空任务；每空填写不超过三个词。",
+      "w": [
+        {
+          "t": "word",
+          "h": "gap-filling",
+          "m": "adj.填空的",
+          "sp": [
+            [
+              57,
+              68
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        32,
+        57
+      ],
+      "asr_text": "While listening to the mini-lecture, please complete the gap filling task on answer sheet 1 and write no more than three words for each gap.",
+      "translation_key": "a_gap",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-7",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 5,
+          "start": 25.24,
+          "end": 25.56,
+          "asr_indices": [
+            32
+          ]
+        },
+        {
+          "char": 6,
+          "char_end": 15,
+          "start": 25.72,
+          "end": 26.12,
+          "asr_indices": [
+            33
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 26.2,
+          "end": 26.28,
+          "asr_indices": [
+            34
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 22,
+          "start": 26.28,
+          "end": 26.36,
+          "asr_indices": [
+            35
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 27,
+          "start": 26.44,
+          "end": 27.48,
+          "asr_indices": [
+            36
+          ]
+        },
+        {
+          "char": 28,
+          "char_end": 35,
+          "start": 26.44,
+          "end": 27.48,
+          "asr_indices": [
+            36
+          ]
+        },
+        {
+          "char": 37,
+          "char_end": 43,
+          "start": 27.64,
+          "end": 27.96,
+          "asr_indices": [
+            37
+          ]
+        },
+        {
+          "char": 44,
+          "char_end": 52,
+          "start": 28.04,
+          "end": 28.44,
+          "asr_indices": [
+            38
+          ]
+        },
+        {
+          "char": 53,
+          "char_end": 56,
+          "start": 28.52,
+          "end": 28.6,
+          "asr_indices": [
+            39
+          ]
+        },
+        {
+          "char": 57,
+          "char_end": 60,
+          "start": 28.76,
+          "end": 29.0,
+          "asr_indices": [
+            40
+          ]
+        },
+        {
+          "char": 61,
+          "char_end": 68,
+          "start": 29.24,
+          "end": 29.64,
+          "asr_indices": [
+            41
+          ]
+        },
+        {
+          "char": 69,
+          "char_end": 73,
+          "start": 29.72,
+          "end": 30.04,
+          "asr_indices": [
+            42
+          ]
+        },
+        {
+          "char": 74,
+          "char_end": 76,
+          "start": 30.12,
+          "end": 30.2,
+          "asr_indices": [
+            43
+          ]
+        },
+        {
+          "char": 77,
+          "char_end": 83,
+          "start": 30.36,
+          "end": 30.84,
+          "asr_indices": [
+            44
+          ]
+        },
+        {
+          "char": 84,
+          "char_end": 89,
+          "start": 30.84,
+          "end": 31.08,
+          "asr_indices": [
+            45
+          ]
+        },
+        {
+          "char": 90,
+          "char_end": 91,
+          "start": 31.24,
+          "end": 31.56,
+          "asr_indices": [
+            46
+          ]
+        },
+        {
+          "char": 92,
+          "char_end": 95,
+          "start": 32.04,
+          "end": 32.12,
+          "asr_indices": [
+            47
+          ]
+        },
+        {
+          "char": 96,
+          "char_end": 101,
+          "start": 32.28,
+          "end": 32.6,
+          "asr_indices": [
+            48
+          ]
+        },
+        {
+          "char": 102,
+          "char_end": 104,
+          "start": 32.76,
+          "end": 32.84,
+          "asr_indices": [
+            49
+          ]
+        },
+        {
+          "char": 105,
+          "char_end": 109,
+          "start": 33.0,
+          "end": 33.08,
+          "asr_indices": [
+            50
+          ]
+        },
+        {
+          "char": 110,
+          "char_end": 114,
+          "start": 33.32,
+          "end": 33.4,
+          "asr_indices": [
+            51
+          ]
+        },
+        {
+          "char": 115,
+          "char_end": 120,
+          "start": 33.56,
+          "end": 33.64,
+          "asr_indices": [
+            52
+          ]
+        },
+        {
+          "char": 121,
+          "char_end": 126,
+          "start": 33.88,
+          "end": 34.36,
+          "asr_indices": [
+            53
+          ]
+        },
+        {
+          "char": 127,
+          "char_end": 130,
+          "start": 34.44,
+          "end": 34.52,
+          "asr_indices": [
+            54
+          ]
+        },
+        {
+          "char": 131,
+          "char_end": 135,
+          "start": 34.68,
+          "end": 34.92,
+          "asr_indices": [
+            55
+          ]
+        },
+        {
+          "char": 136,
+          "char_end": 139,
+          "start": 35.08,
+          "end": 36.2,
+          "asr_indices": [
+            56
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 26,
+        "mapped_lexemes": 26,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 25.24,
+      "end": 36.2
+    },
+    {
+      "en": "Make sure the words you fill in are both grammatically and semantically acceptable.",
+      "zh": "请确保填入的词在语法和语义上都恰当。",
+      "w": [
+        {
+          "t": "word",
+          "h": "acceptable",
+          "m": "adj.可接受的；恰当的",
+          "sp": [
+            [
+              72,
+              82
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        57,
+        70
+      ],
+      "asr_text": "Make sure the words you fill in are both grammatically and semantically acceptable.",
+      "translation_key": "a_accept",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-8",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 36.44,
+          "end": 36.76,
+          "asr_indices": [
+            57
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 9,
+          "start": 36.92,
+          "end": 37.0,
+          "asr_indices": [
+            58
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 37.24,
+          "end": 37.32,
+          "asr_indices": [
+            59
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 19,
+          "start": 37.48,
+          "end": 37.88,
+          "asr_indices": [
+            60
+          ]
+        },
+        {
+          "char": 20,
+          "char_end": 23,
+          "start": 38.04,
+          "end": 38.12,
+          "asr_indices": [
+            61
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 28,
+          "start": 38.28,
+          "end": 38.52,
+          "asr_indices": [
+            62
+          ]
+        },
+        {
+          "char": 29,
+          "char_end": 31,
+          "start": 38.68,
+          "end": 38.76,
+          "asr_indices": [
+            63
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 35,
+          "start": 39.0,
+          "end": 39.08,
+          "asr_indices": [
+            64
+          ]
+        },
+        {
+          "char": 36,
+          "char_end": 40,
+          "start": 39.32,
+          "end": 39.56,
+          "asr_indices": [
+            65
+          ]
+        },
+        {
+          "char": 41,
+          "char_end": 54,
+          "start": 39.64,
+          "end": 40.44,
+          "asr_indices": [
+            66
+          ]
+        },
+        {
+          "char": 55,
+          "char_end": 58,
+          "start": 40.68,
+          "end": 40.76,
+          "asr_indices": [
+            67
+          ]
+        },
+        {
+          "char": 59,
+          "char_end": 71,
+          "start": 41.0,
+          "end": 41.72,
+          "asr_indices": [
+            68
+          ]
+        },
+        {
+          "char": 72,
+          "char_end": 82,
+          "start": 41.96,
+          "end": 43.16,
+          "asr_indices": [
+            69
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 13,
+        "mapped_lexemes": 13,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 36.44,
+      "end": 43.16
+    },
+    {
+      "en": "You may use the blank sheet for note-taking.",
+      "zh": "你可以用空白纸做笔记。",
+      "w": [
+        {
+          "t": "word",
+          "h": "blank",
+          "m": "adj.空白的",
+          "sp": [
+            [
+              16,
+              21
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        70,
+        78
+      ],
+      "asr_text": "You may use the blank sheet for note-taking.",
+      "translation_key": "a_blank",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-9",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 43.72,
+          "end": 43.8,
+          "asr_indices": [
+            70
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 7,
+          "start": 43.96,
+          "end": 44.04,
+          "asr_indices": [
+            71
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 44.2,
+          "end": 44.28,
+          "asr_indices": [
+            72
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 44.44,
+          "end": 44.52,
+          "asr_indices": [
+            73
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 21,
+          "start": 44.68,
+          "end": 45.0,
+          "asr_indices": [
+            74
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 27,
+          "start": 45.16,
+          "end": 45.4,
+          "asr_indices": [
+            75
+          ]
+        },
+        {
+          "char": 28,
+          "char_end": 31,
+          "start": 45.56,
+          "end": 45.64,
+          "asr_indices": [
+            76
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 36,
+          "start": 45.8,
+          "end": 47.4,
+          "asr_indices": [
+            77
+          ]
+        },
+        {
+          "char": 37,
+          "char_end": 43,
+          "start": 45.8,
+          "end": 47.4,
+          "asr_indices": [
+            77
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 9,
+        "mapped_lexemes": 9,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 43.72,
+      "end": 47.4
+    },
+    {
+      "en": "You have 30 seconds to preview the gap-filling task.",
+      "zh": "你有三十秒钟预览填空任务。",
+      "w": [
+        {
+          "t": "word",
+          "h": "preview",
+          "m": "v.预览；预先浏览",
+          "sp": [
+            [
+              23,
+              30
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        78,
+        88
+      ],
+      "asr_text": "You have 30 seconds to preview. The gap filling task.",
+      "translation_key": "a_preview",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-10",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 47.64,
+          "end": 47.72,
+          "asr_indices": [
+            78
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 8,
+          "start": 47.88,
+          "end": 47.96,
+          "asr_indices": [
+            79
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 11,
+          "start": 48.12,
+          "end": 48.52,
+          "asr_indices": [
+            80
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 19,
+          "start": 48.68,
+          "end": 49.0,
+          "asr_indices": [
+            81
+          ]
+        },
+        {
+          "char": 20,
+          "char_end": 22,
+          "start": 49.08,
+          "end": 49.16,
+          "asr_indices": [
+            82
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 30,
+          "start": 49.32,
+          "end": 49.8,
+          "asr_indices": [
+            83
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 50.24,
+          "end": 50.32,
+          "asr_indices": [
+            84
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 38,
+          "start": 50.32,
+          "end": 50.48,
+          "asr_indices": [
+            85
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 46,
+          "start": 50.56,
+          "end": 50.96,
+          "asr_indices": [
+            86
+          ]
+        },
+        {
+          "char": 47,
+          "char_end": 51,
+          "start": 51.04,
+          "end": 52.16,
+          "asr_indices": [
+            87
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 47.64,
+      "end": 52.16
+    },
+    {
+      "en": "Now listen to the mini-lecture.",
+      "zh": "现在请听短讲。",
+      "w": [
+        {
+          "t": "word",
+          "h": "listen",
+          "m": "v.听",
+          "sp": [
+            [
+              4,
+              10
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        88,
+        94
+      ],
+      "asr_text": "Now listen to the mini lecture.",
+      "translation_key": "a_listen",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-11",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 82.58,
+          "end": 82.66,
+          "asr_indices": [
+            88
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 10,
+          "start": 82.9,
+          "end": 83.3,
+          "asr_indices": [
+            89
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 83.3,
+          "end": 83.38,
+          "asr_indices": [
+            90
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 17,
+          "start": 83.46,
+          "end": 83.54,
+          "asr_indices": [
+            91
+          ]
+        },
+        {
+          "char": 18,
+          "char_end": 22,
+          "start": 83.54,
+          "end": 83.78,
+          "asr_indices": [
+            92
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 30,
+          "start": 84.02,
+          "end": 84.9,
+          "asr_indices": [
+            93
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 6,
+        "mapped_lexemes": 6,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 82.58,
+      "end": 84.9
+    },
+    {
+      "en": "When it is over, you will be given three minutes to check your work.",
+      "zh": "短讲结束后，你将有三分钟检查作答。",
+      "w": [
+        {
+          "t": "word",
+          "h": "check",
+          "m": "v.检查",
+          "sp": [
+            [
+              52,
+              57
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        94,
+        108
+      ],
+      "asr_text": "When it is over, you will be given three minutes to check your work.",
+      "translation_key": "a_check_future",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-12",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 85.14,
+          "end": 85.38,
+          "asr_indices": [
+            94
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 85.54,
+          "end": 85.62,
+          "asr_indices": [
+            95
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 10,
+          "start": 85.7,
+          "end": 85.78,
+          "asr_indices": [
+            96
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 15,
+          "start": 85.94,
+          "end": 86.34,
+          "asr_indices": [
+            97
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 86.58,
+          "end": 86.66,
+          "asr_indices": [
+            98
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 25,
+          "start": 86.74,
+          "end": 86.82,
+          "asr_indices": [
+            99
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 28,
+          "start": 86.9,
+          "end": 86.98,
+          "asr_indices": [
+            100
+          ]
+        },
+        {
+          "char": 29,
+          "char_end": 34,
+          "start": 87.06,
+          "end": 87.3,
+          "asr_indices": [
+            101
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 40,
+          "start": 87.38,
+          "end": 87.46,
+          "asr_indices": [
+            102
+          ]
+        },
+        {
+          "char": 41,
+          "char_end": 48,
+          "start": 87.62,
+          "end": 88.02,
+          "asr_indices": [
+            103
+          ]
+        },
+        {
+          "char": 49,
+          "char_end": 51,
+          "start": 88.02,
+          "end": 88.1,
+          "asr_indices": [
+            104
+          ]
+        },
+        {
+          "char": 52,
+          "char_end": 57,
+          "start": 88.18,
+          "end": 88.5,
+          "asr_indices": [
+            105
+          ]
+        },
+        {
+          "char": 58,
+          "char_end": 62,
+          "start": 88.66,
+          "end": 88.74,
+          "asr_indices": [
+            106
+          ]
+        },
+        {
+          "char": 63,
+          "char_end": 67,
+          "start": 89.22,
+          "end": 89.62,
+          "asr_indices": [
+            107
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 14,
+        "mapped_lexemes": 14,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 85.14,
+      "end": 89.62
+    },
+    {
+      "en": "The modes of language.",
+      "zh": "语言的表达方式。",
+      "w": [
+        {
+          "t": "word",
+          "h": "mode",
+          "m": "n.方式；模式",
+          "sp": [
+            [
+              4,
+              9
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        108,
+        112
+      ],
+      "asr_text": "The modes of language",
+      "translation_key": "a_title",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "before",
+      "instruction_id": "2017-A-before-13",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 90.5,
+          "end": 90.58,
+          "asr_indices": [
+            108
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 9,
+          "start": 90.74,
+          "end": 91.14,
+          "asr_indices": [
+            109
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 12,
+          "start": 91.22,
+          "end": 91.3,
+          "asr_indices": [
+            110
+          ]
+        },
+        {
+          "char": 13,
+          "char_end": 21,
+          "start": 91.38,
+          "end": 91.86,
+          "asr_indices": [
+            111
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 4,
+        "mapped_lexemes": 4,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 90.5,
+      "end": 91.86
+    },
     {
       "en": "Good morning, everyone.",
       "zh": "大家早上好。",
@@ -10870,6 +12500,260 @@
       },
       "start": 525.86,
       "end": 526.98
+    },
+    {
+      "en": "Now you have three minutes to check your work.",
+      "zh": "现在你有三分钟检查作答。",
+      "w": [
+        {
+          "t": "word",
+          "h": "check",
+          "m": "v.检查",
+          "sp": [
+            [
+              30,
+              35
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1105,
+        1114
+      ],
+      "asr_text": "Now you have three minutes to check your work.",
+      "translation_key": "a_check",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "after",
+      "instruction_id": "2017-A-after-1",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 528.18,
+          "end": 528.26,
+          "asr_indices": [
+            1105
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 7,
+          "start": 528.5,
+          "end": 528.58,
+          "asr_indices": [
+            1106
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 12,
+          "start": 528.74,
+          "end": 528.82,
+          "asr_indices": [
+            1107
+          ]
+        },
+        {
+          "char": 13,
+          "char_end": 18,
+          "start": 528.98,
+          "end": 529.06,
+          "asr_indices": [
+            1108
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 26,
+          "start": 529.3,
+          "end": 529.62,
+          "asr_indices": [
+            1109
+          ]
+        },
+        {
+          "char": 27,
+          "char_end": 29,
+          "start": 529.7,
+          "end": 529.78,
+          "asr_indices": [
+            1110
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 35,
+          "start": 529.86,
+          "end": 530.18,
+          "asr_indices": [
+            1111
+          ]
+        },
+        {
+          "char": 36,
+          "char_end": 40,
+          "start": 530.34,
+          "end": 530.42,
+          "asr_indices": [
+            1112
+          ]
+        },
+        {
+          "char": 41,
+          "char_end": 45,
+          "start": 530.66,
+          "end": 531.38,
+          "asr_indices": [
+            1113
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 9,
+        "mapped_lexemes": 9,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 528.18,
+      "end": 531.38
+    },
+    {
+      "en": "This is the end of Section A mini-lecture.",
+      "zh": "A节短讲到此结束。",
+      "w": [
+        {
+          "t": "word",
+          "h": "end",
+          "m": "n.结束",
+          "sp": [
+            [
+              12,
+              15
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1114,
+        1123
+      ],
+      "asr_text": "This is the end of Section A mini lecture.",
+      "translation_key": "a_end",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2017.json",
+      "instruction_slot": "after",
+      "instruction_id": "2017-A-after-2",
+      "asr_sha256": "82b318a7ed76bf2580c5cf442e446b6afc38be21c2e56033953d687689a98c6f",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2017/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 711.66,
+          "end": 711.74,
+          "asr_indices": [
+            1114
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 711.9,
+          "end": 711.98,
+          "asr_indices": [
+            1115
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 712.22,
+          "end": 712.3,
+          "asr_indices": [
+            1116
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 712.38,
+          "end": 712.46,
+          "asr_indices": [
+            1117
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 712.62,
+          "end": 712.7,
+          "asr_indices": [
+            1118
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 26,
+          "start": 712.86,
+          "end": 713.26,
+          "asr_indices": [
+            1119
+          ]
+        },
+        {
+          "char": 27,
+          "char_end": 28,
+          "start": 713.34,
+          "end": 713.42,
+          "asr_indices": [
+            1120
+          ]
+        },
+        {
+          "char": 29,
+          "char_end": 33,
+          "start": 713.66,
+          "end": 713.9,
+          "asr_indices": [
+            1121
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 41,
+          "start": 714.14,
+          "end": 715.02,
+          "asr_indices": [
+            1122
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 9,
+        "mapped_lexemes": 9,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 711.66,
+      "end": 715.02
     }
   ],
   "alignment_report": "核验/原文对齐/2017/对齐报告.json",
@@ -10878,6 +12762,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2017/对齐报告.json",
-    "content_sha256": "930384a55bb499d51ffb1838366c7c6b4d4a0bd45a75f8a11ab445d3888b9b2b"
+    "content_sha256": "8ab8adfd8420c06f30f6ee917807c07bf7bccc1948e54320aebae488803ae037"
   }
 }

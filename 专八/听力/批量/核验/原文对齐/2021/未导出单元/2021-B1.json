@@ -18,9 +18,9 @@
     }
   ],
   "待核": [
-    "解析印为a number of memoir and criticism；908.27秒ASR明确为memoirs and criticisms，已据ASR修复复数，仍由root原音听核。",
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有7个原文词缺少ASR对应；涉及句号[1, 2, 3, 6, 14, 41]，严禁按比例补时。"
+    "仍有8个原文词缺少ASR对应；涉及句号[11, 12, 13, 16, 24, 53]，严禁按比例补时。",
+    "句首/尾无真实ASR词锚，句号[13]；单元未导出到可制作目录。"
   ],
   "audio_corrections": [
     {
@@ -34,18 +34,1589 @@
     "transcript_scope": "解析正文及其真实题干；未把答案或中文解析混入英文正文",
     "audio_alignment": "待root统一ASR与原音核对；此稿不含时间值"
   },
+  "instruction_review": {
+    "source": "说明语句/2021.json",
+    "source_sha256": "12bbb14e2300cec769f111a106aa3ad453ad1b6108925724127a852c86cdf52c",
+    "status": "draft_local_asr_checked_not_publication_approved",
+    "待核": []
+  },
+  "audio_adjudications": [
+    {
+      "query": "memoirs and criticism",
+      "decision": "采用两组聚焦错位Parakeet稳定读法memoirs(复数) and criticism(单数)。主ASR把criticism识别为复数；独立Whisper把memoirs识别为单数。分歧完整保留，不称双模型一致。",
+      "evidence": [
+        {
+          "file": "说明语句/局部复识别/2021/intro_memoirs.json",
+          "sha256": "0876e304eaf8688c190fc278640a2e109ee07dbe843962da6d2b4e4608246e05",
+          "windows": [
+            [
+              903.8,
+              916.2
+            ],
+            [
+              906.8,
+              916.8
+            ]
+          ],
+          "texts": [
+            "On British Romanticism, Marie MacLean has written a number of memoirs and criticism. One of them, My Poets, became a finalist for the 2012 National",
+            "Has written a number of memoirs and criticism. One of them, My Poets, became a finalist for the 2012 National Book."
+          ]
+        },
+        {
+          "file": "核验/疑文复识别/2021.json",
+          "sha256": "75457fd775b93568af3054b147011e6c7c6ac38aabc02ca9288bc32b139a8e05",
+          "query": "memoirs and criticisms",
+          "secondary": "memoir and criticism",
+          "note": "独立Whisper与主ASR有词尾分歧。"
+        }
+      ],
+      "status": "依root裁决登记，不冒称机器转写无误"
+    }
+  ],
+  "已解决待核": [
+    "解析印为a number of memoir and criticism；908.27秒ASR明确为memoirs and criticisms，已据ASR修复复数，仍由root原音听核。"
+  ],
   "year": 2021,
   "audio": {
     "file": "预处理/2021/原音.wav",
     "sha256": "a9701c485a209512978c089a10a20b73e4a7e4ef34ebd209c1dddb4a28390701",
     "source_sha256": "a9701c485a209512978c089a10a20b73e4a7e4ef34ebd209c1dddb4a28390701",
     "source_kind": "canonical WAV; original sample rate/channels/gain",
-    "window": [
-      887.75,
-      1196.9
-    ]
+    "window": null
   },
   "sentences": [
+    {
+      "en": "Section B interview.",
+      "zh": "B节：访谈。",
+      "w": [
+        {
+          "t": "word",
+          "h": "interview",
+          "m": "n.访谈",
+          "sp": [
+            [
+              10,
+              19
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1215,
+        1218
+      ],
+      "asr_text": "Section B interview.",
+      "translation_key": "b_header",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-1",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 7,
+          "start": 810.79,
+          "end": 811.35,
+          "asr_indices": [
+            1217
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 9,
+          "start": 811.43,
+          "end": 811.51,
+          "asr_indices": [
+            1218
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 19,
+          "start": 812.07,
+          "end": 813.43,
+          "asr_indices": [
+            1219
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 3,
+        "mapped_lexemes": 3,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 810.79,
+      "end": 813.43
+    },
+    {
+      "en": "In this section, you will hear one interview.",
+      "zh": "在这一节中，你将听到一段访谈。",
+      "w": [
+        {
+          "t": "word",
+          "h": "interview",
+          "m": "n.访谈",
+          "sp": [
+            [
+              35,
+              44
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1218,
+        1226
+      ],
+      "asr_text": "In this section, you will hear one interview.",
+      "translation_key": "b_in_one",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-2",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 2,
+          "start": 813.67,
+          "end": 813.75,
+          "asr_indices": [
+            1220
+          ]
+        },
+        {
+          "char": 3,
+          "char_end": 7,
+          "start": 813.91,
+          "end": 813.99,
+          "asr_indices": [
+            1221
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 15,
+          "start": 814.15,
+          "end": 814.71,
+          "asr_indices": [
+            1222
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 20,
+          "start": 814.87,
+          "end": 814.95,
+          "asr_indices": [
+            1223
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 25,
+          "start": 815.11,
+          "end": 815.19,
+          "asr_indices": [
+            1224
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 30,
+          "start": 815.27,
+          "end": 815.51,
+          "asr_indices": [
+            1225
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 815.67,
+          "end": 815.75,
+          "asr_indices": [
+            1226
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 44,
+          "start": 815.91,
+          "end": 816.95,
+          "asr_indices": [
+            1227
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 813.67,
+      "end": 816.95
+    },
+    {
+      "en": "The interview will be divided into two parts.",
+      "zh": "这段访谈分为两部分。",
+      "w": [
+        {
+          "t": "word",
+          "h": "divide",
+          "m": "v.划分",
+          "sp": [
+            [
+              22,
+              29
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1226,
+        1234
+      ],
+      "asr_text": "The interview will be divided into two parts.",
+      "translation_key": "b_divided",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-3",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 817.19,
+          "end": 817.27,
+          "asr_indices": [
+            1228
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 13,
+          "start": 817.43,
+          "end": 817.99,
+          "asr_indices": [
+            1229
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 18,
+          "start": 818.07,
+          "end": 818.15,
+          "asr_indices": [
+            1230
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 21,
+          "start": 818.31,
+          "end": 818.39,
+          "asr_indices": [
+            1231
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 29,
+          "start": 818.47,
+          "end": 819.03,
+          "asr_indices": [
+            1232
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 34,
+          "start": 819.19,
+          "end": 819.27,
+          "asr_indices": [
+            1233
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 38,
+          "start": 819.51,
+          "end": 819.59,
+          "asr_indices": [
+            1234
+          ]
+        },
+        {
+          "char": 39,
+          "char_end": 44,
+          "start": 819.99,
+          "end": 820.71,
+          "asr_indices": [
+            1235
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 817.19,
+      "end": 820.71
+    },
+    {
+      "en": "At the end of each part, five questions will be asked about what was said.",
+      "zh": "每部分结束后，将就刚才所说的内容提出五个问题。",
+      "w": [
+        {
+          "t": "word",
+          "h": "question",
+          "m": "n.问题",
+          "sp": [
+            [
+              30,
+              39
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1234,
+        1249
+      ],
+      "asr_text": "At the end of each part, five questions will be asked about what was said.",
+      "translation_key": "b_five_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-4",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 2,
+          "start": 820.95,
+          "end": 821.11,
+          "asr_indices": [
+            1236
+          ]
+        },
+        {
+          "char": 3,
+          "char_end": 6,
+          "start": 821.19,
+          "end": 821.27,
+          "asr_indices": [
+            1237
+          ]
+        },
+        {
+          "char": 7,
+          "char_end": 10,
+          "start": 821.35,
+          "end": 821.43,
+          "asr_indices": [
+            1238
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 821.51,
+          "end": 821.59,
+          "asr_indices": [
+            1239
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 18,
+          "start": 821.67,
+          "end": 821.91,
+          "asr_indices": [
+            1240
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 23,
+          "start": 821.99,
+          "end": 822.31,
+          "asr_indices": [
+            1241
+          ]
+        },
+        {
+          "char": 25,
+          "char_end": 29,
+          "start": 822.55,
+          "end": 822.87,
+          "asr_indices": [
+            1242
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 39,
+          "start": 823.03,
+          "end": 823.35,
+          "asr_indices": [
+            1243
+          ]
+        },
+        {
+          "char": 40,
+          "char_end": 44,
+          "start": 823.51,
+          "end": 823.59,
+          "asr_indices": [
+            1244
+          ]
+        },
+        {
+          "char": 45,
+          "char_end": 47,
+          "start": 823.75,
+          "end": 823.83,
+          "asr_indices": [
+            1245
+          ]
+        },
+        {
+          "char": 48,
+          "char_end": 53,
+          "start": 823.91,
+          "end": 824.15,
+          "asr_indices": [
+            1246
+          ]
+        },
+        {
+          "char": 54,
+          "char_end": 59,
+          "start": 824.23,
+          "end": 824.31,
+          "asr_indices": [
+            1247
+          ]
+        },
+        {
+          "char": 60,
+          "char_end": 64,
+          "start": 824.55,
+          "end": 824.63,
+          "asr_indices": [
+            1248
+          ]
+        },
+        {
+          "char": 65,
+          "char_end": 68,
+          "start": 824.79,
+          "end": 824.87,
+          "asr_indices": [
+            1249
+          ]
+        },
+        {
+          "char": 69,
+          "char_end": 73,
+          "start": 825.35,
+          "end": 825.75,
+          "asr_indices": [
+            1250
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 15,
+        "mapped_lexemes": 15,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 820.95,
+      "end": 825.75
+    },
+    {
+      "en": "Both the interview and the questions will be spoken once only.",
+      "zh": "访谈和问题都只读一遍。",
+      "w": [
+        {
+          "t": "word",
+          "h": "once",
+          "m": "adv.一次",
+          "sp": [
+            [
+              52,
+              56
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1249,
+        1260
+      ],
+      "asr_text": "Both the interview and the questions will be spoken once only.",
+      "translation_key": "b_once",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-5",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 825.99,
+          "end": 826.23,
+          "asr_indices": [
+            1251
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 8,
+          "start": 826.31,
+          "end": 826.39,
+          "asr_indices": [
+            1252
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 18,
+          "start": 826.55,
+          "end": 827.11,
+          "asr_indices": [
+            1253
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 22,
+          "start": 827.19,
+          "end": 827.27,
+          "asr_indices": [
+            1254
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 26,
+          "start": 827.43,
+          "end": 827.51,
+          "asr_indices": [
+            1255
+          ]
+        },
+        {
+          "char": 27,
+          "char_end": 36,
+          "start": 827.67,
+          "end": 828.07,
+          "asr_indices": [
+            1256
+          ]
+        },
+        {
+          "char": 37,
+          "char_end": 41,
+          "start": 828.23,
+          "end": 828.31,
+          "asr_indices": [
+            1257
+          ]
+        },
+        {
+          "char": 42,
+          "char_end": 44,
+          "start": 828.55,
+          "end": 828.63,
+          "asr_indices": [
+            1258
+          ]
+        },
+        {
+          "char": 45,
+          "char_end": 51,
+          "start": 828.71,
+          "end": 829.11,
+          "asr_indices": [
+            1259
+          ]
+        },
+        {
+          "char": 52,
+          "char_end": 56,
+          "start": 829.35,
+          "end": 829.67,
+          "asr_indices": [
+            1260
+          ]
+        },
+        {
+          "char": 57,
+          "char_end": 61,
+          "start": 829.83,
+          "end": 830.55,
+          "asr_indices": [
+            1261
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 11,
+        "mapped_lexemes": 11,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 825.99,
+      "end": 830.55
+    },
+    {
+      "en": "After each question, there will be a ten-second pause.",
+      "zh": "每个问题之后会有十秒钟的停顿。",
+      "w": [
+        {
+          "t": "word",
+          "h": "pause",
+          "m": "n.停顿",
+          "sp": [
+            [
+              48,
+              53
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1260,
+        1269
+      ],
+      "asr_text": "After each question, there will be a 10-second pause.",
+      "translation_key": "b_pause",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-6",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 5,
+          "start": 830.79,
+          "end": 831.03,
+          "asr_indices": [
+            1262
+          ]
+        },
+        {
+          "char": 6,
+          "char_end": 10,
+          "start": 831.19,
+          "end": 831.51,
+          "asr_indices": [
+            1263
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 19,
+          "start": 831.67,
+          "end": 832.15,
+          "asr_indices": [
+            1264
+          ]
+        },
+        {
+          "char": 21,
+          "char_end": 26,
+          "start": 832.31,
+          "end": 832.39,
+          "asr_indices": [
+            1265
+          ]
+        },
+        {
+          "char": 27,
+          "char_end": 31,
+          "start": 832.47,
+          "end": 832.55,
+          "asr_indices": [
+            1266
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 34,
+          "start": 832.63,
+          "end": 832.71,
+          "asr_indices": [
+            1267
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 36,
+          "start": 832.71,
+          "end": 832.79,
+          "asr_indices": [
+            1268
+          ]
+        },
+        {
+          "char": 37,
+          "char_end": 40,
+          "start": 832.87,
+          "end": 833.43,
+          "asr_indices": [
+            1269
+          ]
+        },
+        {
+          "char": 41,
+          "char_end": 47,
+          "start": 832.87,
+          "end": 833.43,
+          "asr_indices": [
+            1269
+          ]
+        },
+        {
+          "char": 48,
+          "char_end": 53,
+          "start": 833.59,
+          "end": 834.23,
+          "asr_indices": [
+            1270
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 830.79,
+      "end": 834.23
+    },
+    {
+      "en": "During the pause, you should read the four choices of A, B, C, and D and mark the best answer to each question on answer sheet 2.",
+      "zh": "请利用停顿时间阅读A、B、C、D四个选项，并在答题卡二上标出每题的最佳答案。",
+      "w": [
+        {
+          "t": "word",
+          "h": "choice",
+          "m": "n.选项",
+          "sp": [
+            [
+              43,
+              50
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1269,
+        1296
+      ],
+      "asr_text": "During the pause, You should read the four choices of A, B, C, and D and mark the best answer to each question on answer sheet 2.",
+      "translation_key": "b_choices",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-7",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 6,
+          "start": 834.47,
+          "end": 834.79,
+          "asr_indices": [
+            1271
+          ]
+        },
+        {
+          "char": 7,
+          "char_end": 10,
+          "start": 834.79,
+          "end": 834.87,
+          "asr_indices": [
+            1272
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 16,
+          "start": 834.87,
+          "end": 835.03,
+          "asr_indices": [
+            1273
+          ]
+        },
+        {
+          "char": 18,
+          "char_end": 21,
+          "start": 835.95,
+          "end": 836.03,
+          "asr_indices": [
+            1274
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 28,
+          "start": 836.03,
+          "end": 836.11,
+          "asr_indices": [
+            1275
+          ]
+        },
+        {
+          "char": 29,
+          "char_end": 33,
+          "start": 836.19,
+          "end": 836.27,
+          "asr_indices": [
+            1276
+          ]
+        },
+        {
+          "char": 34,
+          "char_end": 37,
+          "start": 836.43,
+          "end": 836.51,
+          "asr_indices": [
+            1277
+          ]
+        },
+        {
+          "char": 38,
+          "char_end": 42,
+          "start": 836.59,
+          "end": 836.67,
+          "asr_indices": [
+            1278
+          ]
+        },
+        {
+          "char": 43,
+          "char_end": 50,
+          "start": 836.83,
+          "end": 837.31,
+          "asr_indices": [
+            1279
+          ]
+        },
+        {
+          "char": 51,
+          "char_end": 53,
+          "start": 837.55,
+          "end": 837.63,
+          "asr_indices": [
+            1280
+          ]
+        },
+        {
+          "char": 54,
+          "char_end": 55,
+          "start": 837.71,
+          "end": 838.11,
+          "asr_indices": [
+            1281
+          ]
+        },
+        {
+          "char": 57,
+          "char_end": 58,
+          "start": 838.35,
+          "end": 838.75,
+          "asr_indices": [
+            1282
+          ]
+        },
+        {
+          "char": 60,
+          "char_end": 61,
+          "start": 838.99,
+          "end": 839.31,
+          "asr_indices": [
+            1283
+          ]
+        },
+        {
+          "char": 63,
+          "char_end": 66,
+          "start": 839.47,
+          "end": 839.55,
+          "asr_indices": [
+            1284
+          ]
+        },
+        {
+          "char": 67,
+          "char_end": 68,
+          "start": 839.71,
+          "end": 839.79,
+          "asr_indices": [
+            1285
+          ]
+        },
+        {
+          "char": 69,
+          "char_end": 72,
+          "start": 840.43,
+          "end": 840.51,
+          "asr_indices": [
+            1286
+          ]
+        },
+        {
+          "char": 73,
+          "char_end": 77,
+          "start": 840.59,
+          "end": 840.83,
+          "asr_indices": [
+            1287
+          ]
+        },
+        {
+          "char": 78,
+          "char_end": 81,
+          "start": 840.91,
+          "end": 840.99,
+          "asr_indices": [
+            1288
+          ]
+        },
+        {
+          "char": 82,
+          "char_end": 86,
+          "start": 841.07,
+          "end": 841.23,
+          "asr_indices": [
+            1289
+          ]
+        },
+        {
+          "char": 87,
+          "char_end": 93,
+          "start": 841.31,
+          "end": 841.71,
+          "asr_indices": [
+            1290
+          ]
+        },
+        {
+          "char": 94,
+          "char_end": 96,
+          "start": 841.71,
+          "end": 841.79,
+          "asr_indices": [
+            1291
+          ]
+        },
+        {
+          "char": 97,
+          "char_end": 101,
+          "start": 841.87,
+          "end": 842.19,
+          "asr_indices": [
+            1292
+          ]
+        },
+        {
+          "char": 102,
+          "char_end": 110,
+          "start": 842.35,
+          "end": 842.43,
+          "asr_indices": [
+            1293
+          ]
+        },
+        {
+          "char": 111,
+          "char_end": 113,
+          "start": 842.83,
+          "end": 842.91,
+          "asr_indices": [
+            1294
+          ]
+        },
+        {
+          "char": 114,
+          "char_end": 120,
+          "start": 843.07,
+          "end": 843.55,
+          "asr_indices": [
+            1295
+          ]
+        },
+        {
+          "char": 121,
+          "char_end": 126,
+          "start": 843.63,
+          "end": 843.87,
+          "asr_indices": [
+            1296
+          ]
+        },
+        {
+          "char": 127,
+          "char_end": 128,
+          "start": 844.03,
+          "end": 844.99,
+          "asr_indices": [
+            1297
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 27,
+        "mapped_lexemes": 27,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 834.47,
+      "end": 844.99
+    },
+    {
+      "en": "You have 30 seconds to preview the choices.",
+      "zh": "你有三十秒钟预览选项。",
+      "w": [
+        {
+          "t": "word",
+          "h": "preview",
+          "m": "v.预览；预先浏览",
+          "sp": [
+            [
+              23,
+              30
+            ]
+          ]
+        }
+      ],
+      "role": "instruction",
+      "asr_range": [
+        1296,
+        1304
+      ],
+      "asr_text": "You have 30 seconds to preview the choices.",
+      "translation_key": "b_preview_choices",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-8",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 845.55,
+          "end": 845.63,
+          "asr_indices": [
+            1298
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 8,
+          "start": 845.79,
+          "end": 845.87,
+          "asr_indices": [
+            1299
+          ]
+        },
+        {
+          "char": 9,
+          "char_end": 11,
+          "start": 845.95,
+          "end": 846.35,
+          "asr_indices": [
+            1300
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 19,
+          "start": 846.43,
+          "end": 846.75,
+          "asr_indices": [
+            1301
+          ]
+        },
+        {
+          "char": 20,
+          "char_end": 22,
+          "start": 846.83,
+          "end": 846.91,
+          "asr_indices": [
+            1302
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 30,
+          "start": 846.99,
+          "end": 847.47,
+          "asr_indices": [
+            1303
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 847.55,
+          "end": 847.63,
+          "asr_indices": [
+            1304
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 42,
+          "start": 847.71,
+          "end": 848.99,
+          "asr_indices": [
+            1305
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 845.55,
+      "end": 848.99
+    },
+    {
+      "en": "Now listen to part one of the interview.",
+      "zh": "现在请听访谈的第一部分。",
+      "w": [
+        {
+          "t": "word",
+          "h": "listen",
+          "m": "v.听",
+          "sp": [
+            [
+              4,
+              10
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1304,
+        1312
+      ],
+      "asr_text": "Now listen to part one of the interview.",
+      "translation_key": "b1_listen_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-9",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 3,
+          "start": 878.55,
+          "end": 878.63,
+          "asr_indices": [
+            1306
+          ]
+        },
+        {
+          "char": 4,
+          "char_end": 10,
+          "start": 879.03,
+          "end": 879.43,
+          "asr_indices": [
+            1307
+          ]
+        },
+        {
+          "char": 11,
+          "char_end": 13,
+          "start": 879.51,
+          "end": 879.59,
+          "asr_indices": [
+            1308
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 18,
+          "start": 879.67,
+          "end": 879.75,
+          "asr_indices": [
+            1309
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 22,
+          "start": 879.99,
+          "end": 880.07,
+          "asr_indices": [
+            1310
+          ]
+        },
+        {
+          "char": 23,
+          "char_end": 25,
+          "start": 880.31,
+          "end": 880.39,
+          "asr_indices": [
+            1311
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 29,
+          "start": 880.55,
+          "end": 880.63,
+          "asr_indices": [
+            1312
+          ]
+        },
+        {
+          "char": 30,
+          "char_end": 39,
+          "start": 880.79,
+          "end": 881.75,
+          "asr_indices": [
+            1313
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 8,
+        "mapped_lexemes": 8,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 878.55,
+      "end": 881.75
+    },
+    {
+      "en": "Questions one to five are based on part one of the interview.",
+      "zh": "第1至5题根据访谈的第一部分提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              26,
+              34
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        8,
+        20
+      ],
+      "asr_text": "Questions one to five are based on part one of the interview.",
+      "translation_key": "b1_group_part",
+      "speaker": "announcer",
+      "asr_ref": "说明语句/局部复识别/2021/b1_group_part.json",
+      "asr_sha256": "76dd64f960a2df5ca32b1b5970e0a035e7f608201b55faccca5acffe19b9f40e",
+      "asr_pointer": "/recognitions/0/words",
+      "primary_asr_range": [
+        1312,
+        1324
+      ],
+      "primary_asr_ref": "预处理/2021/识别.json",
+      "alignment_source": "local_parakeet_actual_word_timestamps",
+      "words": [
+        [
+          "Questions",
+          881.99,
+          882.47
+        ],
+        [
+          "one",
+          882.63,
+          882.71
+        ],
+        [
+          "to",
+          882.95,
+          883.03
+        ],
+        [
+          "five",
+          883.19,
+          883.43
+        ],
+        [
+          "are",
+          883.67,
+          883.75
+        ],
+        [
+          "based",
+          883.91,
+          884.23
+        ],
+        [
+          "on",
+          884.31,
+          884.39
+        ],
+        [
+          "part",
+          884.47,
+          884.55
+        ],
+        [
+          "one",
+          884.79,
+          884.87
+        ],
+        [
+          "of",
+          885.11,
+          885.19
+        ],
+        [
+          "the",
+          885.35,
+          885.43
+        ],
+        [
+          "interview.",
+          885.59,
+          886.95
+        ]
+      ],
+      "start": 881.99,
+      "end": 886.95,
+      "correction_case": "b1_group_part",
+      "evidence": {
+        "window": [
+          877.99,
+          890.19
+        ],
+        "models": [
+          "parakeet",
+          "whisper"
+        ],
+        "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+        "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+      },
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before",
+      "instruction_id": "2021-B1-before-10",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 881.99,
+          "end": 882.47,
+          "asr_indices": [
+            1314
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 882.63,
+          "end": 882.71,
+          "asr_indices": [
+            1315
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 882.95,
+          "end": 883.03,
+          "asr_indices": [
+            1316
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 21,
+          "start": 883.19,
+          "end": 883.43,
+          "asr_indices": [
+            1317
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 25,
+          "start": 883.67,
+          "end": 883.75,
+          "asr_indices": [
+            1318
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 31,
+          "start": 883.91,
+          "end": 884.23,
+          "asr_indices": [
+            1319
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 34,
+          "start": 884.31,
+          "end": 884.39,
+          "asr_indices": [
+            1320
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 39,
+          "start": 884.47,
+          "end": 884.55,
+          "asr_indices": [
+            1321
+          ]
+        },
+        {
+          "char": 40,
+          "char_end": 43,
+          "start": 884.79,
+          "end": 884.87,
+          "asr_indices": [
+            1322
+          ]
+        },
+        {
+          "char": 44,
+          "char_end": 46,
+          "start": 885.11,
+          "end": 885.19,
+          "asr_indices": [
+            1323
+          ]
+        },
+        {
+          "char": 47,
+          "char_end": 50,
+          "start": 885.35,
+          "end": 885.43,
+          "asr_indices": [
+            1324
+          ]
+        },
+        {
+          "char": 51,
+          "char_end": 60,
+          "start": 885.59,
+          "end": 886.95,
+          "asr_indices": [
+            1325
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 12,
+        "mapped_lexemes": 12,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      }
+    },
     {
       "en": "Maureen McLane is a poet and critic.",
       "zh": "莫琳·麦克莱恩是一位诗人和评论家。",
@@ -72,7 +1643,7 @@
           "start": 887.87,
           "end": 888.43,
           "asr_indices": [
-            1327
+            1326
           ]
         },
         {
@@ -81,7 +1652,7 @@
           "start": 889.15,
           "end": 889.23,
           "asr_indices": [
-            1329
+            1328
           ]
         },
         {
@@ -90,7 +1661,7 @@
           "start": 889.31,
           "end": 889.39,
           "asr_indices": [
-            1330
+            1329
           ]
         },
         {
@@ -99,7 +1670,7 @@
           "start": 889.47,
           "end": 889.71,
           "asr_indices": [
-            1331
+            1330
           ]
         },
         {
@@ -108,7 +1679,7 @@
           "start": 889.87,
           "end": 889.95,
           "asr_indices": [
-            1332
+            1331
           ]
         },
         {
@@ -117,7 +1688,7 @@
           "start": 890.03,
           "end": 890.67,
           "asr_indices": [
-            1333
+            1332
           ]
         }
       ],
@@ -136,7 +1707,7 @@
         ],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1328
+            1327
           ],
           "asr_text": [
             "MacLean"
@@ -176,7 +1747,7 @@
           "start": 890.91,
           "end": 891.07,
           "asr_indices": [
-            1334
+            1333
           ]
         },
         {
@@ -185,7 +1756,7 @@
           "start": 891.23,
           "end": 891.31,
           "asr_indices": [
-            1335
+            1334
           ]
         },
         {
@@ -194,7 +1765,7 @@
           "start": 891.47,
           "end": 892.19,
           "asr_indices": [
-            1336
+            1335
           ]
         },
         {
@@ -203,7 +1774,7 @@
           "start": 892.27,
           "end": 892.59,
           "asr_indices": [
-            1337
+            1336
           ]
         },
         {
@@ -212,7 +1783,7 @@
           "start": 892.67,
           "end": 892.75,
           "asr_indices": [
-            1338
+            1337
           ]
         },
         {
@@ -221,7 +1792,7 @@
           "start": 892.91,
           "end": 893.31,
           "asr_indices": [
-            1339
+            1338
           ]
         },
         {
@@ -230,7 +1801,7 @@
           "start": 893.39,
           "end": 893.63,
           "asr_indices": [
-            1340
+            1339
           ]
         },
         {
@@ -239,7 +1810,7 @@
           "start": 893.71,
           "end": 893.79,
           "asr_indices": [
-            1341
+            1340
           ]
         },
         {
@@ -248,7 +1819,7 @@
           "start": 893.87,
           "end": 894.75,
           "asr_indices": [
-            1342
+            1341
           ]
         },
         {
@@ -257,7 +1828,7 @@
           "start": 894.99,
           "end": 895.07,
           "asr_indices": [
-            1343
+            1342
           ]
         },
         {
@@ -266,7 +1837,7 @@
           "start": 895.15,
           "end": 895.47,
           "asr_indices": [
-            1344
+            1343
           ]
         },
         {
@@ -275,7 +1846,7 @@
           "start": 895.63,
           "end": 896.03,
           "asr_indices": [
-            1345
+            1344
           ]
         },
         {
@@ -284,7 +1855,7 @@
           "start": 896.03,
           "end": 896.59,
           "asr_indices": [
-            1346
+            1345
           ]
         },
         {
@@ -293,7 +1864,7 @@
           "start": 896.67,
           "end": 896.75,
           "asr_indices": [
-            1347
+            1346
           ]
         },
         {
@@ -302,7 +1873,7 @@
           "start": 896.83,
           "end": 896.91,
           "asr_indices": [
-            1348
+            1347
           ]
         },
         {
@@ -311,7 +1882,7 @@
           "start": 896.99,
           "end": 897.55,
           "asr_indices": [
-            1349
+            1348
           ]
         },
         {
@@ -320,7 +1891,7 @@
           "start": 897.63,
           "end": 897.71,
           "asr_indices": [
-            1350
+            1349
           ]
         },
         {
@@ -329,7 +1900,7 @@
           "start": 897.87,
           "end": 898.11,
           "asr_indices": [
-            1351
+            1350
           ]
         },
         {
@@ -338,7 +1909,7 @@
           "start": 898.27,
           "end": 898.35,
           "asr_indices": [
-            1352
+            1351
           ]
         },
         {
@@ -347,7 +1918,7 @@
           "start": 899.31,
           "end": 899.39,
           "asr_indices": [
-            1354
+            1353
           ]
         },
         {
@@ -356,7 +1927,7 @@
           "start": 899.55,
           "end": 899.63,
           "asr_indices": [
-            1355
+            1354
           ]
         },
         {
@@ -365,7 +1936,7 @@
           "start": 899.71,
           "end": 900.27,
           "asr_indices": [
-            1356
+            1355
           ]
         },
         {
@@ -374,7 +1945,7 @@
           "start": 900.27,
           "end": 900.35,
           "asr_indices": [
-            1357
+            1356
           ]
         },
         {
@@ -383,7 +1954,7 @@
           "start": 900.43,
           "end": 901.71,
           "asr_indices": [
-            1358
+            1357
           ]
         }
       ],
@@ -409,7 +1980,7 @@
         ],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1353
+            1352
           ],
           "asr_text": [
             "PhD"
@@ -424,7 +1995,7 @@
       "end": 901.71
     },
     {
-      "en": "In addition to academic publications on British romanticism, Maureen McLane has written a number of memoirs and criticisms.",
+      "en": "In addition to academic publications on British romanticism, Maureen McLane has written a number of memoirs and criticism.",
       "zh": "除了有关英国浪漫主义的学术著作，莫琳·麦克莱恩还写过一些回忆录和评论作品。",
       "w": [
         {
@@ -449,7 +2020,7 @@
           "start": 901.95,
           "end": 902.03,
           "asr_indices": [
-            1359
+            1358
           ]
         },
         {
@@ -458,7 +2029,7 @@
           "start": 902.19,
           "end": 902.51,
           "asr_indices": [
-            1360
+            1359
           ]
         },
         {
@@ -467,7 +2038,7 @@
           "start": 902.59,
           "end": 902.67,
           "asr_indices": [
-            1361
+            1360
           ]
         },
         {
@@ -476,7 +2047,7 @@
           "start": 902.75,
           "end": 903.31,
           "asr_indices": [
-            1362
+            1361
           ]
         },
         {
@@ -485,7 +2056,7 @@
           "start": 903.39,
           "end": 903.87,
           "asr_indices": [
-            1363
+            1362
           ]
         },
         {
@@ -494,7 +2065,7 @@
           "start": 903.95,
           "end": 904.03,
           "asr_indices": [
-            1364
+            1363
           ]
         },
         {
@@ -503,7 +2074,7 @@
           "start": 904.19,
           "end": 904.51,
           "asr_indices": [
-            1365
+            1364
           ]
         },
         {
@@ -512,7 +2083,7 @@
           "start": 904.51,
           "end": 905.55,
           "asr_indices": [
-            1366
+            1365
           ]
         },
         {
@@ -521,7 +2092,7 @@
           "start": 905.71,
           "end": 906.27,
           "asr_indices": [
-            1367
+            1366
           ]
         },
         {
@@ -530,7 +2101,7 @@
           "start": 907.07,
           "end": 907.15,
           "asr_indices": [
-            1369
+            1368
           ]
         },
         {
@@ -539,7 +2110,7 @@
           "start": 907.23,
           "end": 907.55,
           "asr_indices": [
-            1370
+            1369
           ]
         },
         {
@@ -548,7 +2119,7 @@
           "start": 907.63,
           "end": 907.71,
           "asr_indices": [
-            1371
+            1370
           ]
         },
         {
@@ -557,7 +2128,7 @@
           "start": 907.87,
           "end": 907.95,
           "asr_indices": [
-            1372
+            1371
           ]
         },
         {
@@ -566,7 +2137,7 @@
           "start": 908.11,
           "end": 908.19,
           "asr_indices": [
-            1373
+            1372
           ]
         },
         {
@@ -575,7 +2146,7 @@
           "start": 908.27,
           "end": 908.91,
           "asr_indices": [
-            1374
+            1373
           ]
         },
         {
@@ -584,23 +2155,14 @@
           "start": 908.99,
           "end": 909.07,
           "asr_indices": [
-            1375
-          ]
-        },
-        {
-          "char": 112,
-          "char_end": 122,
-          "start": 909.15,
-          "end": 909.95,
-          "asr_indices": [
-            1376
+            1374
           ]
         }
       ],
       "alignment": {
-        "boundary_anchored": true,
+        "boundary_anchored": false,
         "source_lexemes": 18,
-        "mapped_lexemes": 17,
+        "mapped_lexemes": 16,
         "missing": [
           {
             "text": "McLane",
@@ -608,11 +2170,18 @@
               69,
               75
             ]
+          },
+          {
+            "text": "criticism",
+            "char": [
+              112,
+              121
+            ]
           }
         ],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1368
+            1367
           ],
           "asr_text": [
             "MacLean"
@@ -623,8 +2192,8 @@
           ]
         }
       },
-      "start": 901.95,
-      "end": 909.95
+      "start": null,
+      "end": null
     },
     {
       "en": "One of them, My Poets, became a finalist for the 2012 National Book Critics Circle Award in autobiography.",
@@ -652,7 +2221,7 @@
           "start": 910.47,
           "end": 910.79,
           "asr_indices": [
-            1377
+            1376
           ]
         },
         {
@@ -661,7 +2230,7 @@
           "start": 910.87,
           "end": 910.95,
           "asr_indices": [
-            1378
+            1377
           ]
         },
         {
@@ -670,7 +2239,7 @@
           "start": 911.03,
           "end": 911.35,
           "asr_indices": [
-            1379
+            1378
           ]
         },
         {
@@ -679,7 +2248,7 @@
           "start": 911.51,
           "end": 911.75,
           "asr_indices": [
-            1380
+            1379
           ]
         },
         {
@@ -688,7 +2257,7 @@
           "start": 911.83,
           "end": 912.63,
           "asr_indices": [
-            1381
+            1380
           ]
         },
         {
@@ -697,7 +2266,7 @@
           "start": 912.79,
           "end": 913.03,
           "asr_indices": [
-            1382
+            1381
           ]
         },
         {
@@ -706,7 +2275,7 @@
           "start": 913.19,
           "end": 913.27,
           "asr_indices": [
-            1383
+            1382
           ]
         },
         {
@@ -715,7 +2284,7 @@
           "start": 913.43,
           "end": 913.91,
           "asr_indices": [
-            1384
+            1383
           ]
         },
         {
@@ -724,7 +2293,7 @@
           "start": 914.07,
           "end": 914.15,
           "asr_indices": [
-            1385
+            1384
           ]
         },
         {
@@ -733,7 +2302,7 @@
           "start": 914.23,
           "end": 914.31,
           "asr_indices": [
-            1386
+            1385
           ]
         },
         {
@@ -742,7 +2311,7 @@
           "start": 914.39,
           "end": 915.43,
           "asr_indices": [
-            1387
+            1386
           ]
         },
         {
@@ -751,7 +2320,7 @@
           "start": 915.67,
           "end": 915.99,
           "asr_indices": [
-            1388
+            1387
           ]
         },
         {
@@ -760,7 +2329,7 @@
           "start": 916.31,
           "end": 916.63,
           "asr_indices": [
-            1389
+            1388
           ]
         },
         {
@@ -769,7 +2338,7 @@
           "start": 916.71,
           "end": 917.19,
           "asr_indices": [
-            1390
+            1389
           ]
         },
         {
@@ -778,7 +2347,7 @@
           "start": 917.35,
           "end": 917.83,
           "asr_indices": [
-            1391
+            1390
           ]
         },
         {
@@ -787,7 +2356,7 @@
           "start": 917.91,
           "end": 918.23,
           "asr_indices": [
-            1392
+            1391
           ]
         },
         {
@@ -796,7 +2365,7 @@
           "start": 918.47,
           "end": 918.55,
           "asr_indices": [
-            1393
+            1392
           ]
         },
         {
@@ -805,7 +2374,7 @@
           "start": 918.71,
           "end": 920.39,
           "asr_indices": [
-            1394
+            1393
           ]
         }
       ],
@@ -849,7 +2418,7 @@
           "start": 920.63,
           "end": 920.71,
           "asr_indices": [
-            1395
+            1394
           ]
         },
         {
@@ -858,7 +2427,7 @@
           "start": 920.79,
           "end": 920.87,
           "asr_indices": [
-            1396
+            1395
           ]
         },
         {
@@ -867,7 +2436,7 @@
           "start": 921.03,
           "end": 921.11,
           "asr_indices": [
-            1397
+            1396
           ]
         },
         {
@@ -876,7 +2445,7 @@
           "start": 921.27,
           "end": 921.51,
           "asr_indices": [
-            1398
+            1397
           ]
         },
         {
@@ -885,7 +2454,7 @@
           "start": 921.59,
           "end": 922.07,
           "asr_indices": [
-            1399
+            1398
           ]
         },
         {
@@ -894,7 +2463,7 @@
           "start": 922.07,
           "end": 922.15,
           "asr_indices": [
-            1400
+            1399
           ]
         },
         {
@@ -903,7 +2472,7 @@
           "start": 922.23,
           "end": 922.87,
           "asr_indices": [
-            1401
+            1400
           ]
         },
         {
@@ -912,7 +2481,7 @@
           "start": 923.03,
           "end": 923.11,
           "asr_indices": [
-            1402
+            1401
           ]
         },
         {
@@ -921,7 +2490,7 @@
           "start": 923.43,
           "end": 923.91,
           "asr_indices": [
-            1403
+            1402
           ]
         },
         {
@@ -930,7 +2499,7 @@
           "start": 924.15,
           "end": 924.23,
           "asr_indices": [
-            1404
+            1403
           ]
         },
         {
@@ -939,7 +2508,7 @@
           "start": 924.31,
           "end": 924.39,
           "asr_indices": [
-            1405
+            1404
           ]
         },
         {
@@ -948,7 +2517,7 @@
           "start": 924.55,
           "end": 924.95,
           "asr_indices": [
-            1406
+            1405
           ]
         },
         {
@@ -957,7 +2526,7 @@
           "start": 925.11,
           "end": 925.19,
           "asr_indices": [
-            1407
+            1406
           ]
         },
         {
@@ -966,7 +2535,7 @@
           "start": 925.27,
           "end": 925.35,
           "asr_indices": [
-            1408
+            1407
           ]
         },
         {
@@ -975,7 +2544,7 @@
           "start": 925.35,
           "end": 926.39,
           "asr_indices": [
-            1409
+            1408
           ]
         },
         {
@@ -984,7 +2553,7 @@
           "start": 926.87,
           "end": 927.19,
           "asr_indices": [
-            1410
+            1409
           ]
         },
         {
@@ -993,7 +2562,7 @@
           "start": 927.43,
           "end": 927.75,
           "asr_indices": [
-            1411
+            1410
           ]
         },
         {
@@ -1002,7 +2571,7 @@
           "start": 927.83,
           "end": 928.71,
           "asr_indices": [
-            1412
+            1411
           ]
         }
       ],
@@ -1046,7 +2615,7 @@
           "start": 928.95,
           "end": 929.59,
           "asr_indices": [
-            1413
+            1412
           ]
         },
         {
@@ -1055,7 +2624,7 @@
           "start": 929.67,
           "end": 929.75,
           "asr_indices": [
-            1414
+            1413
           ]
         },
         {
@@ -1064,7 +2633,7 @@
           "start": 929.91,
           "end": 929.99,
           "asr_indices": [
-            1415
+            1414
           ]
         },
         {
@@ -1073,7 +2642,7 @@
           "start": 930.07,
           "end": 930.63,
           "asr_indices": [
-            1416
+            1415
           ]
         },
         {
@@ -1082,7 +2651,7 @@
           "start": 931.75,
           "end": 931.83,
           "asr_indices": [
-            1418
+            1417
           ]
         },
         {
@@ -1091,7 +2660,7 @@
           "start": 931.99,
           "end": 932.63,
           "asr_indices": [
-            1419
+            1418
           ]
         },
         {
@@ -1100,7 +2669,7 @@
           "start": 932.63,
           "end": 932.71,
           "asr_indices": [
-            1420
+            1419
           ]
         },
         {
@@ -1109,7 +2678,7 @@
           "start": 932.79,
           "end": 933.19,
           "asr_indices": [
-            1421
+            1420
           ]
         },
         {
@@ -1118,7 +2687,7 @@
           "start": 933.19,
           "end": 933.27,
           "asr_indices": [
-            1422
+            1421
           ]
         },
         {
@@ -1127,7 +2696,7 @@
           "start": 933.35,
           "end": 933.51,
           "asr_indices": [
-            1423
+            1422
           ]
         },
         {
@@ -1136,7 +2705,7 @@
           "start": 933.59,
           "end": 933.91,
           "asr_indices": [
-            1424
+            1423
           ]
         },
         {
@@ -1145,7 +2714,7 @@
           "start": 933.91,
           "end": 934.63,
           "asr_indices": [
-            1425
+            1424
           ]
         },
         {
@@ -1154,7 +2723,7 @@
           "start": 934.71,
           "end": 934.79,
           "asr_indices": [
-            1426
+            1425
           ]
         },
         {
@@ -1163,7 +2732,7 @@
           "start": 935.47,
           "end": 935.55,
           "asr_indices": [
-            1427
+            1426
           ]
         },
         {
@@ -1172,7 +2741,7 @@
           "start": 935.71,
           "end": 935.79,
           "asr_indices": [
-            1428
+            1427
           ]
         },
         {
@@ -1181,7 +2750,7 @@
           "start": 935.87,
           "end": 935.95,
           "asr_indices": [
-            1429
+            1428
           ]
         },
         {
@@ -1190,7 +2759,7 @@
           "start": 936.03,
           "end": 936.43,
           "asr_indices": [
-            1430
+            1429
           ]
         },
         {
@@ -1199,7 +2768,7 @@
           "start": 936.59,
           "end": 937.07,
           "asr_indices": [
-            1431
+            1430
           ]
         }
       ],
@@ -1218,7 +2787,7 @@
         ],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1417
+            1416
           ],
           "asr_text": [
             "McLean,"
@@ -1258,7 +2827,7 @@
           "start": 937.31,
           "end": 937.55,
           "asr_indices": [
-            1432
+            1431
           ]
         },
         {
@@ -1267,7 +2836,7 @@
           "start": 937.63,
           "end": 937.95,
           "asr_indices": [
-            1433
+            1432
           ]
         },
         {
@@ -1276,7 +2845,7 @@
           "start": 938.03,
           "end": 938.67,
           "asr_indices": [
-            1434
+            1433
           ]
         }
       ],
@@ -1320,7 +2889,7 @@
           "start": 938.91,
           "end": 939.07,
           "asr_indices": [
-            1435
+            1434
           ]
         },
         {
@@ -1329,7 +2898,7 @@
           "start": 939.23,
           "end": 940.03,
           "asr_indices": [
-            1436
+            1435
           ]
         }
       ],
@@ -1373,7 +2942,7 @@
           "start": 940.27,
           "end": 940.35,
           "asr_indices": [
-            1437
+            1436
           ]
         },
         {
@@ -1382,7 +2951,7 @@
           "start": 940.67,
           "end": 940.75,
           "asr_indices": [
-            1438
+            1437
           ]
         },
         {
@@ -1391,7 +2960,7 @@
           "start": 940.91,
           "end": 940.99,
           "asr_indices": [
-            1439
+            1438
           ]
         },
         {
@@ -1400,7 +2969,7 @@
           "start": 941.07,
           "end": 941.15,
           "asr_indices": [
-            1440
+            1439
           ]
         },
         {
@@ -1409,7 +2978,7 @@
           "start": 941.31,
           "end": 941.39,
           "asr_indices": [
-            1441
+            1440
           ]
         },
         {
@@ -1418,7 +2987,7 @@
           "start": 941.55,
           "end": 941.63,
           "asr_indices": [
-            1442
+            1441
           ]
         },
         {
@@ -1427,7 +2996,7 @@
           "start": 941.79,
           "end": 941.87,
           "asr_indices": [
-            1443
+            1442
           ]
         },
         {
@@ -1436,7 +3005,7 @@
           "start": 941.95,
           "end": 942.03,
           "asr_indices": [
-            1444
+            1443
           ]
         },
         {
@@ -1445,7 +3014,7 @@
           "start": 942.19,
           "end": 942.51,
           "asr_indices": [
-            1445
+            1444
           ]
         },
         {
@@ -1454,7 +3023,7 @@
           "start": 942.59,
           "end": 942.67,
           "asr_indices": [
-            1446
+            1445
           ]
         },
         {
@@ -1463,7 +3032,7 @@
           "start": 942.75,
           "end": 942.83,
           "asr_indices": [
-            1447
+            1446
           ]
         },
         {
@@ -1472,7 +3041,7 @@
           "start": 943.07,
           "end": 944.03,
           "asr_indices": [
-            1448
+            1447
           ]
         }
       ],
@@ -1516,7 +3085,7 @@
           "start": 944.27,
           "end": 944.35,
           "asr_indices": [
-            1449
+            1448
           ]
         },
         {
@@ -1525,7 +3094,7 @@
           "start": 944.51,
           "end": 944.59,
           "asr_indices": [
-            1450
+            1449
           ]
         },
         {
@@ -1534,7 +3103,7 @@
           "start": 944.99,
           "end": 945.07,
           "asr_indices": [
-            1451
+            1450
           ]
         },
         {
@@ -1543,7 +3112,7 @@
           "start": 945.31,
           "end": 945.39,
           "asr_indices": [
-            1452
+            1451
           ]
         },
         {
@@ -1552,7 +3121,7 @@
           "start": 945.63,
           "end": 945.71,
           "asr_indices": [
-            1453
+            1452
           ]
         },
         {
@@ -1561,7 +3130,7 @@
           "start": 945.87,
           "end": 945.95,
           "asr_indices": [
-            1454
+            1453
           ]
         },
         {
@@ -1570,7 +3139,7 @@
           "start": 946.19,
           "end": 946.27,
           "asr_indices": [
-            1455
+            1454
           ]
         },
         {
@@ -1579,7 +3148,7 @@
           "start": 946.59,
           "end": 946.99,
           "asr_indices": [
-            1456
+            1455
           ]
         },
         {
@@ -1588,7 +3157,7 @@
           "start": 946.91,
           "end": 947.55,
           "asr_indices": [
-            1457
+            1456
           ]
         }
       ],
@@ -1632,7 +3201,7 @@
           "start": 947.79,
           "end": 947.87,
           "asr_indices": [
-            1458
+            1457
           ]
         },
         {
@@ -1641,7 +3210,7 @@
           "start": 948.03,
           "end": 948.43,
           "asr_indices": [
-            1459
+            1458
           ]
         },
         {
@@ -1650,7 +3219,7 @@
           "start": 948.59,
           "end": 948.67,
           "asr_indices": [
-            1460
+            1459
           ]
         },
         {
@@ -1659,7 +3228,7 @@
           "start": 948.83,
           "end": 948.91,
           "asr_indices": [
-            1461
+            1460
           ]
         },
         {
@@ -1668,7 +3237,7 @@
           "start": 948.99,
           "end": 949.07,
           "asr_indices": [
-            1462
+            1461
           ]
         },
         {
@@ -1677,7 +3246,7 @@
           "start": 949.23,
           "end": 949.31,
           "asr_indices": [
-            1463
+            1462
           ]
         },
         {
@@ -1686,7 +3255,7 @@
           "start": 949.47,
           "end": 949.55,
           "asr_indices": [
-            1464
+            1463
           ]
         },
         {
@@ -1695,7 +3264,7 @@
           "start": 949.71,
           "end": 949.79,
           "asr_indices": [
-            1465
+            1464
           ]
         },
         {
@@ -1704,7 +3273,7 @@
           "start": 950.03,
           "end": 950.11,
           "asr_indices": [
-            1466
+            1465
           ]
         },
         {
@@ -1713,7 +3282,7 @@
           "start": 950.27,
           "end": 950.35,
           "asr_indices": [
-            1467
+            1466
           ]
         },
         {
@@ -1722,7 +3291,7 @@
           "start": 950.35,
           "end": 950.91,
           "asr_indices": [
-            1468
+            1467
           ]
         },
         {
@@ -1731,7 +3300,7 @@
           "start": 950.99,
           "end": 951.07,
           "asr_indices": [
-            1469
+            1468
           ]
         },
         {
@@ -1740,7 +3309,7 @@
           "start": 951.23,
           "end": 951.31,
           "asr_indices": [
-            1470
+            1469
           ]
         },
         {
@@ -1749,7 +3318,7 @@
           "start": 951.39,
           "end": 952.11,
           "asr_indices": [
-            1471
+            1470
           ]
         },
         {
@@ -1758,7 +3327,7 @@
           "start": 952.27,
           "end": 952.35,
           "asr_indices": [
-            1472
+            1471
           ]
         },
         {
@@ -1767,7 +3336,7 @@
           "start": 952.75,
           "end": 952.83,
           "asr_indices": [
-            1473
+            1472
           ]
         },
         {
@@ -1776,7 +3345,7 @@
           "start": 952.99,
           "end": 953.47,
           "asr_indices": [
-            1474
+            1473
           ]
         },
         {
@@ -1785,7 +3354,7 @@
           "start": 953.71,
           "end": 953.79,
           "asr_indices": [
-            1475
+            1474
           ]
         },
         {
@@ -1794,7 +3363,7 @@
           "start": 953.95,
           "end": 954.59,
           "asr_indices": [
-            1476
+            1475
           ]
         },
         {
@@ -1803,7 +3372,7 @@
           "start": 954.67,
           "end": 955.23,
           "asr_indices": [
-            1477
+            1476
           ]
         },
         {
@@ -1812,7 +3381,7 @@
           "start": 955.47,
           "end": 956.11,
           "asr_indices": [
-            1478
+            1477
           ]
         },
         {
@@ -1821,7 +3390,7 @@
           "start": 956.35,
           "end": 956.43,
           "asr_indices": [
-            1479
+            1478
           ]
         },
         {
@@ -1830,7 +3399,7 @@
           "start": 956.59,
           "end": 957.07,
           "asr_indices": [
-            1480
+            1479
           ]
         },
         {
@@ -1839,7 +3408,7 @@
           "start": 957.07,
           "end": 957.31,
           "asr_indices": [
-            1481
+            1480
           ]
         },
         {
@@ -1848,7 +3417,7 @@
           "start": 957.39,
           "end": 957.79,
           "asr_indices": [
-            1482
+            1481
           ]
         },
         {
@@ -1857,7 +3426,7 @@
           "start": 957.79,
           "end": 957.87,
           "asr_indices": [
-            1483
+            1482
           ]
         },
         {
@@ -1866,7 +3435,7 @@
           "start": 957.95,
           "end": 958.67,
           "asr_indices": [
-            1484
+            1483
           ]
         },
         {
@@ -1875,7 +3444,7 @@
           "start": 958.91,
           "end": 959.39,
           "asr_indices": [
-            1485
+            1484
           ]
         },
         {
@@ -1884,7 +3453,7 @@
           "start": 959.47,
           "end": 959.55,
           "asr_indices": [
-            1486
+            1485
           ]
         },
         {
@@ -1893,7 +3462,7 @@
           "start": 959.63,
           "end": 959.79,
           "asr_indices": [
-            1487
+            1486
           ]
         },
         {
@@ -1902,7 +3471,7 @@
           "start": 959.87,
           "end": 959.95,
           "asr_indices": [
-            1488
+            1487
           ]
         },
         {
@@ -1911,7 +3480,7 @@
           "start": 960.39,
           "end": 960.55,
           "asr_indices": [
-            1489
+            1488
           ]
         },
         {
@@ -1920,7 +3489,7 @@
           "start": 960.63,
           "end": 960.71,
           "asr_indices": [
-            1490
+            1489
           ]
         },
         {
@@ -1929,7 +3498,7 @@
           "start": 960.79,
           "end": 961.35,
           "asr_indices": [
-            1491
+            1490
           ]
         }
       ],
@@ -1973,7 +3542,7 @@
           "start": 961.59,
           "end": 961.67,
           "asr_indices": [
-            1492
+            1491
           ]
         },
         {
@@ -1982,7 +3551,7 @@
           "start": 961.75,
           "end": 961.83,
           "asr_indices": [
-            1493
+            1492
           ]
         },
         {
@@ -1991,7 +3560,7 @@
           "start": 961.99,
           "end": 962.23,
           "asr_indices": [
-            1494
+            1493
           ]
         },
         {
@@ -2000,7 +3569,7 @@
           "start": 962.31,
           "end": 962.39,
           "asr_indices": [
-            1495
+            1494
           ]
         },
         {
@@ -2009,7 +3578,7 @@
           "start": 962.47,
           "end": 962.79,
           "asr_indices": [
-            1496
+            1495
           ]
         },
         {
@@ -2018,7 +3587,7 @@
           "start": 962.87,
           "end": 963.59,
           "asr_indices": [
-            1497
+            1496
           ]
         },
         {
@@ -2027,7 +3596,7 @@
           "start": 963.75,
           "end": 963.83,
           "asr_indices": [
-            1498
+            1497
           ]
         },
         {
@@ -2036,7 +3605,7 @@
           "start": 963.99,
           "end": 964.07,
           "asr_indices": [
-            1499
+            1498
           ]
         },
         {
@@ -2045,7 +3614,7 @@
           "start": 964.23,
           "end": 964.47,
           "asr_indices": [
-            1500
+            1499
           ]
         },
         {
@@ -2054,7 +3623,7 @@
           "start": 964.55,
           "end": 964.63,
           "asr_indices": [
-            1501
+            1500
           ]
         },
         {
@@ -2063,7 +3632,7 @@
           "start": 964.79,
           "end": 964.87,
           "asr_indices": [
-            1502
+            1501
           ]
         },
         {
@@ -2072,7 +3641,7 @@
           "start": 965.11,
           "end": 965.19,
           "asr_indices": [
-            1503
+            1502
           ]
         },
         {
@@ -2081,7 +3650,7 @@
           "start": 965.51,
           "end": 965.99,
           "asr_indices": [
-            1504
+            1503
           ]
         }
       ],
@@ -2125,7 +3694,7 @@
           "start": 966.23,
           "end": 966.87,
           "asr_indices": [
-            1505
+            1504
           ]
         },
         {
@@ -2134,7 +3703,7 @@
           "start": 966.95,
           "end": 967.35,
           "asr_indices": [
-            1506
+            1505
           ]
         },
         {
@@ -2143,7 +3712,7 @@
           "start": 967.43,
           "end": 967.51,
           "asr_indices": [
-            1507
+            1506
           ]
         },
         {
@@ -2152,7 +3721,7 @@
           "start": 967.59,
           "end": 967.91,
           "asr_indices": [
-            1508
+            1507
           ]
         },
         {
@@ -2161,7 +3730,7 @@
           "start": 968.15,
           "end": 968.23,
           "asr_indices": [
-            1509
+            1508
           ]
         },
         {
@@ -2170,7 +3739,7 @@
           "start": 968.31,
           "end": 968.39,
           "asr_indices": [
-            1510
+            1509
           ]
         },
         {
@@ -2179,7 +3748,7 @@
           "start": 968.55,
           "end": 969.27,
           "asr_indices": [
-            1511
+            1510
           ]
         },
         {
@@ -2188,7 +3757,7 @@
           "start": 969.35,
           "end": 969.43,
           "asr_indices": [
-            1512
+            1511
           ]
         },
         {
@@ -2197,7 +3766,7 @@
           "start": 969.59,
           "end": 969.99,
           "asr_indices": [
-            1513
+            1512
           ]
         }
       ],
@@ -2241,7 +3810,7 @@
           "start": 970.23,
           "end": 970.31,
           "asr_indices": [
-            1514
+            1513
           ]
         },
         {
@@ -2250,7 +3819,7 @@
           "start": 970.47,
           "end": 970.79,
           "asr_indices": [
-            1515
+            1514
           ]
         },
         {
@@ -2259,7 +3828,7 @@
           "start": 970.87,
           "end": 970.95,
           "asr_indices": [
-            1516
+            1515
           ]
         },
         {
@@ -2268,7 +3837,7 @@
           "start": 971.19,
           "end": 971.43,
           "asr_indices": [
-            1517
+            1516
           ]
         },
         {
@@ -2277,7 +3846,7 @@
           "start": 971.51,
           "end": 971.59,
           "asr_indices": [
-            1518
+            1517
           ]
         },
         {
@@ -2286,7 +3855,7 @@
           "start": 971.75,
           "end": 971.99,
           "asr_indices": [
-            1519
+            1518
           ]
         },
         {
@@ -2295,7 +3864,7 @@
           "start": 972.07,
           "end": 972.55,
           "asr_indices": [
-            1520
+            1519
           ]
         },
         {
@@ -2304,7 +3873,7 @@
           "start": 972.79,
           "end": 972.87,
           "asr_indices": [
-            1521
+            1520
           ]
         },
         {
@@ -2313,7 +3882,7 @@
           "start": 973.03,
           "end": 973.27,
           "asr_indices": [
-            1522
+            1521
           ]
         },
         {
@@ -2322,7 +3891,7 @@
           "start": 973.35,
           "end": 973.43,
           "asr_indices": [
-            1523
+            1522
           ]
         },
         {
@@ -2331,7 +3900,7 @@
           "start": 973.59,
           "end": 973.67,
           "asr_indices": [
-            1524
+            1523
           ]
         },
         {
@@ -2340,7 +3909,7 @@
           "start": 973.75,
           "end": 974.23,
           "asr_indices": [
-            1525
+            1524
           ]
         },
         {
@@ -2349,7 +3918,7 @@
           "start": 974.39,
           "end": 974.47,
           "asr_indices": [
-            1526
+            1525
           ]
         },
         {
@@ -2358,7 +3927,7 @@
           "start": 974.71,
           "end": 974.79,
           "asr_indices": [
-            1527
+            1526
           ]
         },
         {
@@ -2367,7 +3936,7 @@
           "start": 974.95,
           "end": 975.19,
           "asr_indices": [
-            1528
+            1527
           ]
         },
         {
@@ -2376,7 +3945,7 @@
           "start": 975.19,
           "end": 975.27,
           "asr_indices": [
-            1529
+            1528
           ]
         },
         {
@@ -2385,7 +3954,7 @@
           "start": 975.43,
           "end": 975.51,
           "asr_indices": [
-            1530
+            1529
           ]
         },
         {
@@ -2394,7 +3963,7 @@
           "start": 975.59,
           "end": 976.07,
           "asr_indices": [
-            1531
+            1530
           ]
         },
         {
@@ -2403,7 +3972,7 @@
           "start": 976.15,
           "end": 976.23,
           "asr_indices": [
-            1532
+            1531
           ]
         },
         {
@@ -2412,7 +3981,7 @@
           "start": 976.31,
           "end": 976.39,
           "asr_indices": [
-            1533
+            1532
           ]
         },
         {
@@ -2421,7 +3990,7 @@
           "start": 976.55,
           "end": 976.87,
           "asr_indices": [
-            1534
+            1533
           ]
         },
         {
@@ -2430,7 +3999,7 @@
           "start": 977.99,
           "end": 978.07,
           "asr_indices": [
-            1536
+            1535
           ]
         },
         {
@@ -2439,7 +4008,7 @@
           "start": 978.15,
           "end": 978.23,
           "asr_indices": [
-            1537
+            1536
           ]
         },
         {
@@ -2448,7 +4017,7 @@
           "start": 978.31,
           "end": 978.71,
           "asr_indices": [
-            1538
+            1537
           ]
         },
         {
@@ -2457,7 +4026,7 @@
           "start": 978.87,
           "end": 979.11,
           "asr_indices": [
-            1539
+            1538
           ]
         },
         {
@@ -2466,7 +4035,7 @@
           "start": 979.27,
           "end": 979.35,
           "asr_indices": [
-            1540
+            1539
           ]
         },
         {
@@ -2475,7 +4044,7 @@
           "start": 979.43,
           "end": 979.51,
           "asr_indices": [
-            1541
+            1540
           ]
         },
         {
@@ -2484,7 +4053,7 @@
           "start": 979.59,
           "end": 979.67,
           "asr_indices": [
-            1542
+            1541
           ]
         },
         {
@@ -2493,7 +4062,7 @@
           "start": 979.75,
           "end": 980.23,
           "asr_indices": [
-            1543
+            1542
           ]
         },
         {
@@ -2502,7 +4071,7 @@
           "start": 980.23,
           "end": 981.11,
           "asr_indices": [
-            1544
+            1543
           ]
         }
       ],
@@ -2521,7 +4090,7 @@
         ],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1535
+            1534
           ],
           "asr_text": [
             "Bendler"
@@ -2561,7 +4130,7 @@
           "start": 981.35,
           "end": 981.59,
           "asr_indices": [
-            1545
+            1544
           ]
         },
         {
@@ -2570,7 +4139,7 @@
           "start": 981.67,
           "end": 981.75,
           "asr_indices": [
-            1546
+            1545
           ]
         },
         {
@@ -2579,7 +4148,7 @@
           "start": 981.83,
           "end": 981.91,
           "asr_indices": [
-            1547
+            1546
           ]
         },
         {
@@ -2588,7 +4157,7 @@
           "start": 982.15,
           "end": 982.63,
           "asr_indices": [
-            1548
+            1547
           ]
         },
         {
@@ -2597,7 +4166,7 @@
           "start": 982.71,
           "end": 982.79,
           "asr_indices": [
-            1549
+            1548
           ]
         },
         {
@@ -2606,7 +4175,7 @@
           "start": 982.95,
           "end": 983.03,
           "asr_indices": [
-            1550
+            1549
           ]
         },
         {
@@ -2615,7 +4184,7 @@
           "start": 983.19,
           "end": 983.27,
           "asr_indices": [
-            1551
+            1550
           ]
         },
         {
@@ -2624,7 +4193,7 @@
           "start": 983.51,
           "end": 983.59,
           "asr_indices": [
-            1552
+            1551
           ]
         },
         {
@@ -2633,7 +4202,7 @@
           "start": 983.67,
           "end": 984.07,
           "asr_indices": [
-            1553
+            1552
           ]
         }
       ],
@@ -2677,7 +4246,7 @@
           "start": 984.31,
           "end": 984.55,
           "asr_indices": [
-            1554
+            1553
           ]
         },
         {
@@ -2686,7 +4255,7 @@
           "start": 984.63,
           "end": 984.71,
           "asr_indices": [
-            1555
+            1554
           ]
         },
         {
@@ -2695,7 +4264,7 @@
           "start": 984.79,
           "end": 985.03,
           "asr_indices": [
-            1556
+            1555
           ]
         },
         {
@@ -2704,7 +4273,7 @@
           "start": 985.47,
           "end": 985.79,
           "asr_indices": [
-            1557
+            1556
           ]
         },
         {
@@ -2713,7 +4282,7 @@
           "start": 985.87,
           "end": 985.95,
           "asr_indices": [
-            1558
+            1557
           ]
         },
         {
@@ -2722,7 +4291,7 @@
           "start": 986.35,
           "end": 986.43,
           "asr_indices": [
-            1560
+            1559
           ]
         },
         {
@@ -2731,7 +4300,7 @@
           "start": 986.67,
           "end": 986.75,
           "asr_indices": [
-            1561
+            1560
           ]
         },
         {
@@ -2740,7 +4309,7 @@
           "start": 986.83,
           "end": 986.91,
           "asr_indices": [
-            1562
+            1561
           ]
         },
         {
@@ -2749,7 +4318,7 @@
           "start": 987.15,
           "end": 987.23,
           "asr_indices": [
-            1563
+            1562
           ]
         },
         {
@@ -2758,7 +4327,7 @@
           "start": 987.39,
           "end": 987.87,
           "asr_indices": [
-            1564
+            1563
           ]
         },
         {
@@ -2767,7 +4336,7 @@
           "start": 987.79,
           "end": 988.27,
           "asr_indices": [
-            1565
+            1564
           ]
         },
         {
@@ -2776,7 +4345,7 @@
           "start": 988.43,
           "end": 988.51,
           "asr_indices": [
-            1566
+            1565
           ]
         },
         {
@@ -2785,7 +4354,7 @@
           "start": 988.67,
           "end": 988.75,
           "asr_indices": [
-            1567
+            1566
           ]
         },
         {
@@ -2794,7 +4363,7 @@
           "start": 988.91,
           "end": 989.15,
           "asr_indices": [
-            1568
+            1567
           ]
         },
         {
@@ -2803,7 +4372,7 @@
           "start": 989.39,
           "end": 989.47,
           "asr_indices": [
-            1569
+            1568
           ]
         },
         {
@@ -2812,7 +4381,7 @@
           "start": 989.55,
           "end": 989.63,
           "asr_indices": [
-            1570
+            1569
           ]
         },
         {
@@ -2821,7 +4390,7 @@
           "start": 989.79,
           "end": 990.59,
           "asr_indices": [
-            1571
+            1570
           ]
         },
         {
@@ -2830,7 +4399,7 @@
           "start": 990.83,
           "end": 990.91,
           "asr_indices": [
-            1572
+            1571
           ]
         },
         {
@@ -2839,7 +4408,7 @@
           "start": 990.99,
           "end": 991.63,
           "asr_indices": [
-            1573
+            1572
           ]
         },
         {
@@ -2848,7 +4417,7 @@
           "start": 991.71,
           "end": 991.79,
           "asr_indices": [
-            1574
+            1573
           ]
         },
         {
@@ -2857,7 +4426,7 @@
           "start": 991.87,
           "end": 992.43,
           "asr_indices": [
-            1575
+            1574
           ]
         }
       ],
@@ -2868,7 +4437,7 @@
         "missing": [],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1559
+            1558
           ],
           "asr_text": [
             "were"
@@ -2908,7 +4477,7 @@
           "start": 992.67,
           "end": 992.99,
           "asr_indices": [
-            1576
+            1575
           ]
         },
         {
@@ -2917,7 +4486,7 @@
           "start": 993.07,
           "end": 993.47,
           "asr_indices": [
-            1577
+            1576
           ]
         },
         {
@@ -2926,7 +4495,7 @@
           "start": 993.55,
           "end": 994.11,
           "asr_indices": [
-            1578
+            1577
           ]
         }
       ],
@@ -2970,7 +4539,7 @@
           "start": 994.51,
           "end": 994.59,
           "asr_indices": [
-            1579
+            1578
           ]
         },
         {
@@ -2979,7 +4548,7 @@
           "start": 994.67,
           "end": 994.75,
           "asr_indices": [
-            1580
+            1579
           ]
         },
         {
@@ -2988,7 +4557,7 @@
           "start": 994.83,
           "end": 994.91,
           "asr_indices": [
-            1581
+            1580
           ]
         },
         {
@@ -2997,7 +4566,7 @@
           "start": 994.91,
           "end": 995.39,
           "asr_indices": [
-            1582
+            1581
           ]
         },
         {
@@ -3006,7 +4575,7 @@
           "start": 995.47,
           "end": 996.03,
           "asr_indices": [
-            1583
+            1582
           ]
         },
         {
@@ -3015,7 +4584,7 @@
           "start": 996.27,
           "end": 996.35,
           "asr_indices": [
-            1584
+            1583
           ]
         },
         {
@@ -3024,7 +4593,7 @@
           "start": 996.51,
           "end": 996.59,
           "asr_indices": [
-            1585
+            1584
           ]
         },
         {
@@ -3033,7 +4602,7 @@
           "start": 996.67,
           "end": 997.15,
           "asr_indices": [
-            1586
+            1585
           ]
         },
         {
@@ -3042,7 +4611,7 @@
           "start": 997.23,
           "end": 997.31,
           "asr_indices": [
-            1587
+            1586
           ]
         },
         {
@@ -3051,7 +4620,7 @@
           "start": 997.39,
           "end": 997.71,
           "asr_indices": [
-            1588
+            1587
           ]
         },
         {
@@ -3060,7 +4629,7 @@
           "start": 997.79,
           "end": 997.87,
           "asr_indices": [
-            1589
+            1588
           ]
         },
         {
@@ -3069,7 +4638,7 @@
           "start": 997.95,
           "end": 998.03,
           "asr_indices": [
-            1590
+            1589
           ]
         },
         {
@@ -3078,7 +4647,7 @@
           "start": 998.11,
           "end": 998.59,
           "asr_indices": [
-            1591
+            1590
           ]
         },
         {
@@ -3087,7 +4656,7 @@
           "start": 998.67,
           "end": 998.75,
           "asr_indices": [
-            1592
+            1591
           ]
         },
         {
@@ -3096,7 +4665,7 @@
           "start": 998.83,
           "end": 999.55,
           "asr_indices": [
-            1593
+            1592
           ]
         },
         {
@@ -3105,7 +4674,7 @@
           "start": 999.71,
           "end": 1000.11,
           "asr_indices": [
-            1594
+            1593
           ]
         },
         {
@@ -3114,7 +4683,7 @@
           "start": 1000.19,
           "end": 1000.91,
           "asr_indices": [
-            1595
+            1594
           ]
         }
       ],
@@ -3158,7 +4727,7 @@
           "start": 1001.15,
           "end": 1001.55,
           "asr_indices": [
-            1596
+            1595
           ]
         },
         {
@@ -3167,7 +4736,7 @@
           "start": 1001.87,
           "end": 1001.95,
           "asr_indices": [
-            1597
+            1596
           ]
         },
         {
@@ -3176,7 +4745,7 @@
           "start": 1002.19,
           "end": 1002.27,
           "asr_indices": [
-            1598
+            1597
           ]
         },
         {
@@ -3185,7 +4754,7 @@
           "start": 1002.43,
           "end": 1002.51,
           "asr_indices": [
-            1599
+            1598
           ]
         },
         {
@@ -3194,7 +4763,7 @@
           "start": 1002.99,
           "end": 1003.07,
           "asr_indices": [
-            1600
+            1599
           ]
         },
         {
@@ -3203,7 +4772,7 @@
           "start": 1003.23,
           "end": 1003.63,
           "asr_indices": [
-            1601
+            1600
           ]
         },
         {
@@ -3212,7 +4781,7 @@
           "start": 1003.71,
           "end": 1003.79,
           "asr_indices": [
-            1602
+            1601
           ]
         },
         {
@@ -3221,7 +4790,7 @@
           "start": 1003.95,
           "end": 1004.51,
           "asr_indices": [
-            1603
+            1602
           ]
         },
         {
@@ -3230,7 +4799,7 @@
           "start": 1004.67,
           "end": 1005.39,
           "asr_indices": [
-            1604
+            1603
           ]
         },
         {
@@ -3239,7 +4808,7 @@
           "start": 1005.63,
           "end": 1005.71,
           "asr_indices": [
-            1605
+            1604
           ]
         },
         {
@@ -3248,7 +4817,7 @@
           "start": 1005.87,
           "end": 1005.95,
           "asr_indices": [
-            1606
+            1605
           ]
         },
         {
@@ -3257,7 +4826,7 @@
           "start": 1006.11,
           "end": 1006.19,
           "asr_indices": [
-            1607
+            1606
           ]
         },
         {
@@ -3266,7 +4835,7 @@
           "start": 1006.35,
           "end": 1006.59,
           "asr_indices": [
-            1608
+            1607
           ]
         },
         {
@@ -3275,7 +4844,7 @@
           "start": 1006.67,
           "end": 1006.75,
           "asr_indices": [
-            1609
+            1608
           ]
         },
         {
@@ -3284,7 +4853,7 @@
           "start": 1006.83,
           "end": 1006.91,
           "asr_indices": [
-            1610
+            1609
           ]
         },
         {
@@ -3293,7 +4862,7 @@
           "start": 1007.07,
           "end": 1007.15,
           "asr_indices": [
-            1611
+            1610
           ]
         },
         {
@@ -3302,7 +4871,7 @@
           "start": 1007.23,
           "end": 1007.31,
           "asr_indices": [
-            1612
+            1611
           ]
         },
         {
@@ -3311,7 +4880,7 @@
           "start": 1007.39,
           "end": 1007.71,
           "asr_indices": [
-            1613
+            1612
           ]
         },
         {
@@ -3320,7 +4889,7 @@
           "start": 1007.79,
           "end": 1008.03,
           "asr_indices": [
-            1614
+            1613
           ]
         },
         {
@@ -3329,7 +4898,7 @@
           "start": 1008.19,
           "end": 1008.27,
           "asr_indices": [
-            1615
+            1614
           ]
         },
         {
@@ -3338,7 +4907,7 @@
           "start": 1008.35,
           "end": 1008.75,
           "asr_indices": [
-            1616
+            1615
           ]
         },
         {
@@ -3347,7 +4916,7 @@
           "start": 1008.83,
           "end": 1009.71,
           "asr_indices": [
-            1617
+            1616
           ]
         }
       ],
@@ -3391,7 +4960,7 @@
           "start": 1010.23,
           "end": 1010.47,
           "asr_indices": [
-            1618
+            1617
           ]
         },
         {
@@ -3400,7 +4969,7 @@
           "start": 1010.47,
           "end": 1010.95,
           "asr_indices": [
-            1619
+            1618
           ]
         },
         {
@@ -3409,7 +4978,7 @@
           "start": 1010.95,
           "end": 1011.03,
           "asr_indices": [
-            1620
+            1619
           ]
         },
         {
@@ -3418,7 +4987,7 @@
           "start": 1011.11,
           "end": 1011.19,
           "asr_indices": [
-            1621
+            1620
           ]
         },
         {
@@ -3427,7 +4996,7 @@
           "start": 1011.27,
           "end": 1011.67,
           "asr_indices": [
-            1622
+            1621
           ]
         },
         {
@@ -3436,7 +5005,7 @@
           "start": 1011.75,
           "end": 1012.47,
           "asr_indices": [
-            1623
+            1622
           ]
         },
         {
@@ -3445,7 +5014,7 @@
           "start": 1012.39,
           "end": 1012.79,
           "asr_indices": [
-            1624
+            1623
           ]
         }
       ],
@@ -3489,7 +5058,7 @@
           "start": 1013.03,
           "end": 1013.11,
           "asr_indices": [
-            1625
+            1624
           ]
         },
         {
@@ -3498,7 +5067,7 @@
           "start": 1013.27,
           "end": 1013.59,
           "asr_indices": [
-            1626
+            1625
           ]
         },
         {
@@ -3507,7 +5076,7 @@
           "start": 1013.75,
           "end": 1013.83,
           "asr_indices": [
-            1627
+            1626
           ]
         },
         {
@@ -3516,7 +5085,7 @@
           "start": 1014.07,
           "end": 1014.15,
           "asr_indices": [
-            1628
+            1627
           ]
         },
         {
@@ -3525,7 +5094,7 @@
           "start": 1014.55,
           "end": 1014.79,
           "asr_indices": [
-            1629
+            1628
           ]
         },
         {
@@ -3534,7 +5103,7 @@
           "start": 1014.95,
           "end": 1015.03,
           "asr_indices": [
-            1630
+            1629
           ]
         },
         {
@@ -3543,7 +5112,7 @@
           "start": 1015.27,
           "end": 1015.35,
           "asr_indices": [
-            1631
+            1630
           ]
         },
         {
@@ -3552,7 +5121,7 @@
           "start": 1015.51,
           "end": 1015.59,
           "asr_indices": [
-            1632
+            1631
           ]
         },
         {
@@ -3561,7 +5130,7 @@
           "start": 1015.75,
           "end": 1015.83,
           "asr_indices": [
-            1633
+            1632
           ]
         },
         {
@@ -3570,7 +5139,7 @@
           "start": 1016.07,
           "end": 1016.55,
           "asr_indices": [
-            1634
+            1633
           ]
         },
         {
@@ -3579,7 +5148,7 @@
           "start": 1016.71,
           "end": 1017.27,
           "asr_indices": [
-            1635
+            1634
           ]
         }
       ],
@@ -3623,7 +5192,7 @@
           "start": 1017.51,
           "end": 1017.59,
           "asr_indices": [
-            1636
+            1635
           ]
         },
         {
@@ -3632,7 +5201,7 @@
           "start": 1017.75,
           "end": 1018.15,
           "asr_indices": [
-            1637
+            1636
           ]
         },
         {
@@ -3641,7 +5210,7 @@
           "start": 1018.23,
           "end": 1018.31,
           "asr_indices": [
-            1638
+            1637
           ]
         },
         {
@@ -3650,7 +5219,7 @@
           "start": 1018.47,
           "end": 1018.55,
           "asr_indices": [
-            1639
+            1638
           ]
         },
         {
@@ -3659,7 +5228,7 @@
           "start": 1018.71,
           "end": 1018.95,
           "asr_indices": [
-            1640
+            1639
           ]
         },
         {
@@ -3668,7 +5237,7 @@
           "start": 1019.03,
           "end": 1019.11,
           "asr_indices": [
-            1641
+            1640
           ]
         },
         {
@@ -3677,7 +5246,7 @@
           "start": 1019.19,
           "end": 1019.27,
           "asr_indices": [
-            1642
+            1641
           ]
         },
         {
@@ -3686,7 +5255,7 @@
           "start": 1019.43,
           "end": 1019.75,
           "asr_indices": [
-            1643
+            1642
           ]
         },
         {
@@ -3695,7 +5264,7 @@
           "start": 1019.91,
           "end": 1019.99,
           "asr_indices": [
-            1644
+            1643
           ]
         },
         {
@@ -3704,7 +5273,7 @@
           "start": 1020.15,
           "end": 1020.63,
           "asr_indices": [
-            1645
+            1644
           ]
         },
         {
@@ -3713,7 +5282,7 @@
           "start": 1020.71,
           "end": 1021.19,
           "asr_indices": [
-            1646
+            1645
           ]
         },
         {
@@ -3722,7 +5291,7 @@
           "start": 1021.27,
           "end": 1021.35,
           "asr_indices": [
-            1647
+            1646
           ]
         },
         {
@@ -3731,7 +5300,7 @@
           "start": 1021.51,
           "end": 1021.59,
           "asr_indices": [
-            1648
+            1647
           ]
         },
         {
@@ -3740,7 +5309,7 @@
           "start": 1021.75,
           "end": 1021.83,
           "asr_indices": [
-            1649
+            1648
           ]
         },
         {
@@ -3749,7 +5318,7 @@
           "start": 1022.07,
           "end": 1022.15,
           "asr_indices": [
-            1650
+            1649
           ]
         },
         {
@@ -3758,7 +5327,7 @@
           "start": 1022.39,
           "end": 1023.43,
           "asr_indices": [
-            1651
+            1650
           ]
         }
       ],
@@ -3802,7 +5371,7 @@
           "start": 1023.99,
           "end": 1024.07,
           "asr_indices": [
-            1652
+            1651
           ]
         },
         {
@@ -3811,7 +5380,7 @@
           "start": 1024.15,
           "end": 1024.23,
           "asr_indices": [
-            1653
+            1652
           ]
         },
         {
@@ -3820,7 +5389,7 @@
           "start": 1024.47,
           "end": 1024.55,
           "asr_indices": [
-            1654
+            1653
           ]
         },
         {
@@ -3829,7 +5398,7 @@
           "start": 1024.71,
           "end": 1024.79,
           "asr_indices": [
-            1655
+            1654
           ]
         },
         {
@@ -3838,7 +5407,7 @@
           "start": 1024.95,
           "end": 1025.03,
           "asr_indices": [
-            1656
+            1655
           ]
         },
         {
@@ -3847,7 +5416,7 @@
           "start": 1025.11,
           "end": 1025.19,
           "asr_indices": [
-            1657
+            1656
           ]
         },
         {
@@ -3856,7 +5425,7 @@
           "start": 1025.27,
           "end": 1025.51,
           "asr_indices": [
-            1658
+            1657
           ]
         },
         {
@@ -3865,7 +5434,7 @@
           "start": 1025.59,
           "end": 1025.99,
           "asr_indices": [
-            1659
+            1658
           ]
         },
         {
@@ -3874,7 +5443,7 @@
           "start": 1026.07,
           "end": 1026.31,
           "asr_indices": [
-            1660
+            1659
           ]
         },
         {
@@ -3883,7 +5452,7 @@
           "start": 1026.39,
           "end": 1026.47,
           "asr_indices": [
-            1661
+            1660
           ]
         },
         {
@@ -3892,7 +5461,7 @@
           "start": 1026.55,
           "end": 1027.03,
           "asr_indices": [
-            1662
+            1661
           ]
         },
         {
@@ -3901,7 +5470,7 @@
           "start": 1027.27,
           "end": 1027.35,
           "asr_indices": [
-            1663
+            1662
           ]
         },
         {
@@ -3910,7 +5479,7 @@
           "start": 1027.43,
           "end": 1027.51,
           "asr_indices": [
-            1664
+            1663
           ]
         },
         {
@@ -3919,7 +5488,7 @@
           "start": 1027.51,
           "end": 1027.59,
           "asr_indices": [
-            1665
+            1664
           ]
         },
         {
@@ -3928,7 +5497,7 @@
           "start": 1027.75,
           "end": 1027.83,
           "asr_indices": [
-            1666
+            1665
           ]
         },
         {
@@ -3937,7 +5506,7 @@
           "start": 1027.83,
           "end": 1027.91,
           "asr_indices": [
-            1667
+            1666
           ]
         },
         {
@@ -3946,7 +5515,7 @@
           "start": 1027.99,
           "end": 1028.23,
           "asr_indices": [
-            1668
+            1667
           ]
         },
         {
@@ -3955,7 +5524,7 @@
           "start": 1028.39,
           "end": 1028.79,
           "asr_indices": [
-            1669
+            1668
           ]
         },
         {
@@ -3964,7 +5533,7 @@
           "start": 1028.71,
           "end": 1029.11,
           "asr_indices": [
-            1670
+            1669
           ]
         },
         {
@@ -3973,7 +5542,7 @@
           "start": 1029.19,
           "end": 1029.27,
           "asr_indices": [
-            1671
+            1670
           ]
         },
         {
@@ -3982,7 +5551,7 @@
           "start": 1029.35,
           "end": 1029.75,
           "asr_indices": [
-            1672
+            1671
           ]
         },
         {
@@ -3991,7 +5560,7 @@
           "start": 1029.83,
           "end": 1030.15,
           "asr_indices": [
-            1673
+            1672
           ]
         },
         {
@@ -4000,7 +5569,7 @@
           "start": 1030.39,
           "end": 1030.47,
           "asr_indices": [
-            1674
+            1673
           ]
         },
         {
@@ -4009,7 +5578,7 @@
           "start": 1030.55,
           "end": 1030.79,
           "asr_indices": [
-            1675
+            1674
           ]
         },
         {
@@ -4018,7 +5587,7 @@
           "start": 1030.87,
           "end": 1030.95,
           "asr_indices": [
-            1676
+            1675
           ]
         },
         {
@@ -4027,7 +5596,7 @@
           "start": 1031.19,
           "end": 1031.75,
           "asr_indices": [
-            1677
+            1676
           ]
         },
         {
@@ -4036,7 +5605,7 @@
           "start": 1031.83,
           "end": 1032.39,
           "asr_indices": [
-            1678
+            1677
           ]
         }
       ],
@@ -4080,7 +5649,7 @@
           "start": 1032.95,
           "end": 1033.03,
           "asr_indices": [
-            1679
+            1678
           ]
         },
         {
@@ -4089,7 +5658,7 @@
           "start": 1033.11,
           "end": 1033.19,
           "asr_indices": [
-            1680
+            1679
           ]
         },
         {
@@ -4098,7 +5667,7 @@
           "start": 1033.27,
           "end": 1033.35,
           "asr_indices": [
-            1681
+            1680
           ]
         },
         {
@@ -4107,7 +5676,7 @@
           "start": 1033.51,
           "end": 1034.23,
           "asr_indices": [
-            1682
+            1681
           ]
         },
         {
@@ -4116,7 +5685,7 @@
           "start": 1034.23,
           "end": 1034.31,
           "asr_indices": [
-            1683
+            1682
           ]
         },
         {
@@ -4125,7 +5694,7 @@
           "start": 1034.39,
           "end": 1034.87,
           "asr_indices": [
-            1684
+            1683
           ]
         },
         {
@@ -4134,7 +5703,7 @@
           "start": 1035.23,
           "end": 1035.31,
           "asr_indices": [
-            1685
+            1684
           ]
         },
         {
@@ -4143,7 +5712,7 @@
           "start": 1035.39,
           "end": 1035.47,
           "asr_indices": [
-            1686
+            1685
           ]
         },
         {
@@ -4152,7 +5721,7 @@
           "start": 1035.55,
           "end": 1035.63,
           "asr_indices": [
-            1687
+            1686
           ]
         },
         {
@@ -4161,7 +5730,7 @@
           "start": 1035.71,
           "end": 1036.19,
           "asr_indices": [
-            1688
+            1687
           ]
         },
         {
@@ -4170,7 +5739,7 @@
           "start": 1036.19,
           "end": 1036.27,
           "asr_indices": [
-            1689
+            1688
           ]
         },
         {
@@ -4179,7 +5748,7 @@
           "start": 1036.35,
           "end": 1036.59,
           "asr_indices": [
-            1690
+            1689
           ]
         },
         {
@@ -4188,7 +5757,7 @@
           "start": 1036.67,
           "end": 1036.99,
           "asr_indices": [
-            1691
+            1690
           ]
         }
       ],
@@ -4232,7 +5801,7 @@
           "start": 1037.23,
           "end": 1037.31,
           "asr_indices": [
-            1692
+            1691
           ]
         },
         {
@@ -4241,7 +5810,7 @@
           "start": 1037.47,
           "end": 1037.55,
           "asr_indices": [
-            1693
+            1692
           ]
         },
         {
@@ -4250,7 +5819,7 @@
           "start": 1037.71,
           "end": 1037.79,
           "asr_indices": [
-            1694
+            1693
           ]
         },
         {
@@ -4259,7 +5828,7 @@
           "start": 1037.95,
           "end": 1038.27,
           "asr_indices": [
-            1695
+            1694
           ]
         }
       ],
@@ -4303,7 +5872,7 @@
           "start": 1038.59,
           "end": 1038.83,
           "asr_indices": [
-            1696
+            1695
           ]
         },
         {
@@ -4312,7 +5881,7 @@
           "start": 1038.83,
           "end": 1038.91,
           "asr_indices": [
-            1697
+            1696
           ]
         },
         {
@@ -4321,7 +5890,7 @@
           "start": 1038.99,
           "end": 1039.63,
           "asr_indices": [
-            1698
+            1697
           ]
         },
         {
@@ -4330,7 +5899,7 @@
           "start": 1039.63,
           "end": 1039.71,
           "asr_indices": [
-            1699
+            1698
           ]
         },
         {
@@ -4339,7 +5908,7 @@
           "start": 1039.79,
           "end": 1039.87,
           "asr_indices": [
-            1700
+            1699
           ]
         },
         {
@@ -4348,7 +5917,7 @@
           "start": 1039.95,
           "end": 1040.03,
           "asr_indices": [
-            1701
+            1700
           ]
         },
         {
@@ -4357,7 +5926,7 @@
           "start": 1040.11,
           "end": 1040.19,
           "asr_indices": [
-            1702
+            1701
           ]
         },
         {
@@ -4366,7 +5935,7 @@
           "start": 1040.27,
           "end": 1040.35,
           "asr_indices": [
-            1703
+            1702
           ]
         },
         {
@@ -4375,7 +5944,7 @@
           "start": 1040.51,
           "end": 1040.59,
           "asr_indices": [
-            1704
+            1703
           ]
         },
         {
@@ -4384,7 +5953,7 @@
           "start": 1040.83,
           "end": 1041.07,
           "asr_indices": [
-            1705
+            1704
           ]
         },
         {
@@ -4393,7 +5962,7 @@
           "start": 1041.23,
           "end": 1041.31,
           "asr_indices": [
-            1706
+            1705
           ]
         },
         {
@@ -4402,7 +5971,7 @@
           "start": 1041.63,
           "end": 1042.03,
           "asr_indices": [
-            1707
+            1706
           ]
         }
       ],
@@ -4446,7 +6015,7 @@
           "start": 1042.27,
           "end": 1042.51,
           "asr_indices": [
-            1708
+            1707
           ]
         },
         {
@@ -4455,7 +6024,7 @@
           "start": 1042.67,
           "end": 1042.75,
           "asr_indices": [
-            1709
+            1708
           ]
         },
         {
@@ -4464,7 +6033,7 @@
           "start": 1042.91,
           "end": 1042.99,
           "asr_indices": [
-            1710
+            1709
           ]
         },
         {
@@ -4473,7 +6042,7 @@
           "start": 1043.07,
           "end": 1043.15,
           "asr_indices": [
-            1711
+            1710
           ]
         },
         {
@@ -4482,7 +6051,7 @@
           "start": 1043.23,
           "end": 1043.95,
           "asr_indices": [
-            1712
+            1711
           ]
         },
         {
@@ -4491,7 +6060,7 @@
           "start": 1044.11,
           "end": 1044.83,
           "asr_indices": [
-            1713
+            1712
           ]
         },
         {
@@ -4500,7 +6069,7 @@
           "start": 1044.91,
           "end": 1044.99,
           "asr_indices": [
-            1714
+            1713
           ]
         },
         {
@@ -4509,7 +6078,7 @@
           "start": 1045.15,
           "end": 1045.55,
           "asr_indices": [
-            1715
+            1714
           ]
         },
         {
@@ -4518,7 +6087,7 @@
           "start": 1045.63,
           "end": 1046.19,
           "asr_indices": [
-            1716
+            1715
           ]
         },
         {
@@ -4527,7 +6096,7 @@
           "start": 1046.27,
           "end": 1046.59,
           "asr_indices": [
-            1717
+            1716
           ]
         },
         {
@@ -4536,7 +6105,7 @@
           "start": 1046.75,
           "end": 1046.83,
           "asr_indices": [
-            1718
+            1717
           ]
         },
         {
@@ -4545,7 +6114,7 @@
           "start": 1047.07,
           "end": 1047.15,
           "asr_indices": [
-            1719
+            1718
           ]
         },
         {
@@ -4554,7 +6123,7 @@
           "start": 1047.71,
           "end": 1048.11,
           "asr_indices": [
-            1720
+            1719
           ]
         },
         {
@@ -4563,7 +6132,7 @@
           "start": 1048.35,
           "end": 1048.43,
           "asr_indices": [
-            1721
+            1720
           ]
         },
         {
@@ -4572,7 +6141,7 @@
           "start": 1048.51,
           "end": 1048.59,
           "asr_indices": [
-            1722
+            1721
           ]
         },
         {
@@ -4581,7 +6150,7 @@
           "start": 1048.75,
           "end": 1048.83,
           "asr_indices": [
-            1723
+            1722
           ]
         },
         {
@@ -4590,7 +6159,7 @@
           "start": 1049.07,
           "end": 1049.15,
           "asr_indices": [
-            1724
+            1723
           ]
         },
         {
@@ -4599,7 +6168,7 @@
           "start": 1049.31,
           "end": 1050.27,
           "asr_indices": [
-            1725
+            1724
           ]
         },
         {
@@ -4608,7 +6177,7 @@
           "start": 1050.35,
           "end": 1050.43,
           "asr_indices": [
-            1726
+            1725
           ]
         },
         {
@@ -4617,7 +6186,7 @@
           "start": 1050.59,
           "end": 1051.07,
           "asr_indices": [
-            1727
+            1726
           ]
         },
         {
@@ -4626,7 +6195,7 @@
           "start": 1051.15,
           "end": 1051.23,
           "asr_indices": [
-            1728
+            1727
           ]
         },
         {
@@ -4635,7 +6204,7 @@
           "start": 1051.39,
           "end": 1051.47,
           "asr_indices": [
-            1729
+            1728
           ]
         },
         {
@@ -4644,7 +6213,7 @@
           "start": 1051.63,
           "end": 1051.71,
           "asr_indices": [
-            1730
+            1729
           ]
         },
         {
@@ -4653,7 +6222,7 @@
           "start": 1051.79,
           "end": 1051.87,
           "asr_indices": [
-            1731
+            1730
           ]
         },
         {
@@ -4662,7 +6231,7 @@
           "start": 1051.87,
           "end": 1051.95,
           "asr_indices": [
-            1732
+            1731
           ]
         },
         {
@@ -4671,7 +6240,7 @@
           "start": 1052.03,
           "end": 1052.11,
           "asr_indices": [
-            1733
+            1732
           ]
         },
         {
@@ -4680,7 +6249,7 @@
           "start": 1052.19,
           "end": 1053.15,
           "asr_indices": [
-            1734
+            1733
           ]
         }
       ],
@@ -4724,7 +6293,7 @@
           "start": 1053.39,
           "end": 1053.47,
           "asr_indices": [
-            1735
+            1734
           ]
         },
         {
@@ -4733,7 +6302,7 @@
           "start": 1053.63,
           "end": 1053.95,
           "asr_indices": [
-            1736
+            1735
           ]
         },
         {
@@ -4742,7 +6311,7 @@
           "start": 1054.03,
           "end": 1054.11,
           "asr_indices": [
-            1737
+            1736
           ]
         },
         {
@@ -4751,7 +6320,7 @@
           "start": 1054.27,
           "end": 1054.51,
           "asr_indices": [
-            1738
+            1737
           ]
         },
         {
@@ -4760,7 +6329,7 @@
           "start": 1054.59,
           "end": 1054.99,
           "asr_indices": [
-            1739
+            1738
           ]
         },
         {
@@ -4769,7 +6338,7 @@
           "start": 1054.99,
           "end": 1055.31,
           "asr_indices": [
-            1740
+            1739
           ]
         },
         {
@@ -4778,7 +6347,7 @@
           "start": 1055.47,
           "end": 1055.55,
           "asr_indices": [
-            1741
+            1740
           ]
         },
         {
@@ -4787,7 +6356,7 @@
           "start": 1055.63,
           "end": 1055.71,
           "asr_indices": [
-            1742
+            1741
           ]
         },
         {
@@ -4796,7 +6365,7 @@
           "start": 1055.79,
           "end": 1055.87,
           "asr_indices": [
-            1743
+            1742
           ]
         },
         {
@@ -4805,7 +6374,7 @@
           "start": 1055.95,
           "end": 1056.67,
           "asr_indices": [
-            1744
+            1743
           ]
         }
       ],
@@ -4849,7 +6418,7 @@
           "start": 1056.91,
           "end": 1056.99,
           "asr_indices": [
-            1745
+            1744
           ]
         },
         {
@@ -4858,7 +6427,7 @@
           "start": 1057.07,
           "end": 1057.39,
           "asr_indices": [
-            1746
+            1745
           ]
         },
         {
@@ -4867,7 +6436,7 @@
           "start": 1057.39,
           "end": 1057.47,
           "asr_indices": [
-            1747
+            1746
           ]
         },
         {
@@ -4876,7 +6445,7 @@
           "start": 1057.55,
           "end": 1057.63,
           "asr_indices": [
-            1748
+            1747
           ]
         },
         {
@@ -4885,7 +6454,7 @@
           "start": 1057.71,
           "end": 1057.79,
           "asr_indices": [
-            1749
+            1748
           ]
         },
         {
@@ -4894,7 +6463,7 @@
           "start": 1057.87,
           "end": 1057.95,
           "asr_indices": [
-            1750
+            1749
           ]
         },
         {
@@ -4903,7 +6472,7 @@
           "start": 1058.03,
           "end": 1058.11,
           "asr_indices": [
-            1751
+            1750
           ]
         },
         {
@@ -4912,7 +6481,7 @@
           "start": 1058.19,
           "end": 1058.27,
           "asr_indices": [
-            1752
+            1751
           ]
         },
         {
@@ -4921,7 +6490,7 @@
           "start": 1058.43,
           "end": 1058.59,
           "asr_indices": [
-            1753
+            1752
           ]
         },
         {
@@ -4930,7 +6499,7 @@
           "start": 1058.67,
           "end": 1059.07,
           "asr_indices": [
-            1754
+            1753
           ]
         },
         {
@@ -4939,7 +6508,7 @@
           "start": 1059.15,
           "end": 1059.23,
           "asr_indices": [
-            1755
+            1754
           ]
         },
         {
@@ -4948,7 +6517,7 @@
           "start": 1059.39,
           "end": 1059.47,
           "asr_indices": [
-            1756
+            1755
           ]
         },
         {
@@ -4957,7 +6526,7 @@
           "start": 1059.55,
           "end": 1059.63,
           "asr_indices": [
-            1757
+            1756
           ]
         },
         {
@@ -4966,7 +6535,7 @@
           "start": 1059.71,
           "end": 1060.03,
           "asr_indices": [
-            1758
+            1757
           ]
         },
         {
@@ -4975,7 +6544,7 @@
           "start": 1060.55,
           "end": 1060.63,
           "asr_indices": [
-            1759
+            1758
           ]
         },
         {
@@ -4984,7 +6553,7 @@
           "start": 1060.79,
           "end": 1060.87,
           "asr_indices": [
-            1760
+            1759
           ]
         },
         {
@@ -4993,7 +6562,7 @@
           "start": 1060.95,
           "end": 1061.03,
           "asr_indices": [
-            1761
+            1760
           ]
         },
         {
@@ -5002,7 +6571,7 @@
           "start": 1061.11,
           "end": 1061.19,
           "asr_indices": [
-            1762
+            1761
           ]
         },
         {
@@ -5011,7 +6580,7 @@
           "start": 1061.27,
           "end": 1061.35,
           "asr_indices": [
-            1763
+            1762
           ]
         },
         {
@@ -5020,7 +6589,7 @@
           "start": 1061.51,
           "end": 1061.59,
           "asr_indices": [
-            1764
+            1763
           ]
         },
         {
@@ -5029,7 +6598,7 @@
           "start": 1061.83,
           "end": 1061.91,
           "asr_indices": [
-            1765
+            1764
           ]
         },
         {
@@ -5038,7 +6607,7 @@
           "start": 1062.15,
           "end": 1062.23,
           "asr_indices": [
-            1766
+            1765
           ]
         },
         {
@@ -5047,7 +6616,7 @@
           "start": 1062.39,
           "end": 1062.47,
           "asr_indices": [
-            1767
+            1766
           ]
         },
         {
@@ -5056,7 +6625,7 @@
           "start": 1062.63,
           "end": 1062.71,
           "asr_indices": [
-            1768
+            1767
           ]
         },
         {
@@ -5065,7 +6634,7 @@
           "start": 1062.71,
           "end": 1062.79,
           "asr_indices": [
-            1769
+            1768
           ]
         },
         {
@@ -5074,7 +6643,7 @@
           "start": 1062.95,
           "end": 1063.75,
           "asr_indices": [
-            1770
+            1769
           ]
         }
       ],
@@ -5118,7 +6687,7 @@
           "start": 1063.99,
           "end": 1064.07,
           "asr_indices": [
-            1771
+            1770
           ]
         },
         {
@@ -5127,7 +6696,7 @@
           "start": 1064.23,
           "end": 1064.55,
           "asr_indices": [
-            1772
+            1771
           ]
         },
         {
@@ -5136,7 +6705,7 @@
           "start": 1064.63,
           "end": 1064.71,
           "asr_indices": [
-            1773
+            1772
           ]
         },
         {
@@ -5145,7 +6714,7 @@
           "start": 1064.95,
           "end": 1065.03,
           "asr_indices": [
-            1774
+            1773
           ]
         },
         {
@@ -5154,7 +6723,7 @@
           "start": 1065.11,
           "end": 1065.19,
           "asr_indices": [
-            1775
+            1774
           ]
         },
         {
@@ -5163,7 +6732,7 @@
           "start": 1065.19,
           "end": 1065.27,
           "asr_indices": [
-            1776
+            1775
           ]
         },
         {
@@ -5172,7 +6741,7 @@
           "start": 1065.35,
           "end": 1065.43,
           "asr_indices": [
-            1777
+            1776
           ]
         },
         {
@@ -5181,7 +6750,7 @@
           "start": 1065.59,
           "end": 1065.83,
           "asr_indices": [
-            1778
+            1777
           ]
         },
         {
@@ -5190,7 +6759,7 @@
           "start": 1065.83,
           "end": 1065.91,
           "asr_indices": [
-            1779
+            1778
           ]
         },
         {
@@ -5199,7 +6768,7 @@
           "start": 1065.99,
           "end": 1066.07,
           "asr_indices": [
-            1780
+            1779
           ]
         },
         {
@@ -5208,7 +6777,7 @@
           "start": 1066.15,
           "end": 1066.87,
           "asr_indices": [
-            1781
+            1780
           ]
         }
       ],
@@ -5252,7 +6821,7 @@
           "start": 1067.43,
           "end": 1067.51,
           "asr_indices": [
-            1782
+            1781
           ]
         },
         {
@@ -5261,7 +6830,7 @@
           "start": 1067.59,
           "end": 1067.83,
           "asr_indices": [
-            1783
+            1782
           ]
         },
         {
@@ -5270,7 +6839,7 @@
           "start": 1067.91,
           "end": 1067.99,
           "asr_indices": [
-            1784
+            1783
           ]
         },
         {
@@ -5279,7 +6848,7 @@
           "start": 1068.23,
           "end": 1068.39,
           "asr_indices": [
-            1785
+            1784
           ]
         },
         {
@@ -5288,7 +6857,7 @@
           "start": 1068.47,
           "end": 1068.87,
           "asr_indices": [
-            1786
+            1785
           ]
         },
         {
@@ -5297,7 +6866,7 @@
           "start": 1069.03,
           "end": 1069.11,
           "asr_indices": [
-            1787
+            1786
           ]
         },
         {
@@ -5306,7 +6875,7 @@
           "start": 1069.27,
           "end": 1069.35,
           "asr_indices": [
-            1788
+            1787
           ]
         },
         {
@@ -5315,7 +6884,7 @@
           "start": 1069.43,
           "end": 1069.67,
           "asr_indices": [
-            1789
+            1788
           ]
         },
         {
@@ -5324,7 +6893,7 @@
           "start": 1069.75,
           "end": 1069.83,
           "asr_indices": [
-            1790
+            1789
           ]
         },
         {
@@ -5333,7 +6902,7 @@
           "start": 1069.99,
           "end": 1070.55,
           "asr_indices": [
-            1791
+            1790
           ]
         },
         {
@@ -5342,7 +6911,7 @@
           "start": 1070.87,
           "end": 1070.95,
           "asr_indices": [
-            1792
+            1791
           ]
         },
         {
@@ -5351,7 +6920,7 @@
           "start": 1071.19,
           "end": 1071.75,
           "asr_indices": [
-            1793
+            1792
           ]
         },
         {
@@ -5360,7 +6929,7 @@
           "start": 1071.83,
           "end": 1072.07,
           "asr_indices": [
-            1794
+            1793
           ]
         },
         {
@@ -5369,7 +6938,7 @@
           "start": 1072.31,
           "end": 1072.39,
           "asr_indices": [
-            1795
+            1794
           ]
         },
         {
@@ -5378,7 +6947,7 @@
           "start": 1072.55,
           "end": 1072.63,
           "asr_indices": [
-            1796
+            1795
           ]
         },
         {
@@ -5387,7 +6956,7 @@
           "start": 1072.87,
           "end": 1073.35,
           "asr_indices": [
-            1797
+            1796
           ]
         },
         {
@@ -5396,7 +6965,7 @@
           "start": 1073.59,
           "end": 1073.67,
           "asr_indices": [
-            1798
+            1797
           ]
         },
         {
@@ -5405,7 +6974,7 @@
           "start": 1073.83,
           "end": 1074.07,
           "asr_indices": [
-            1799
+            1798
           ]
         },
         {
@@ -5414,7 +6983,7 @@
           "start": 1074.23,
           "end": 1074.31,
           "asr_indices": [
-            1800
+            1799
           ]
         },
         {
@@ -5423,7 +6992,7 @@
           "start": 1074.39,
           "end": 1074.47,
           "asr_indices": [
-            1801
+            1800
           ]
         },
         {
@@ -5432,7 +7001,7 @@
           "start": 1074.55,
           "end": 1074.95,
           "asr_indices": [
-            1802
+            1801
           ]
         },
         {
@@ -5441,7 +7010,7 @@
           "start": 1075.11,
           "end": 1075.51,
           "asr_indices": [
-            1803
+            1802
           ]
         },
         {
@@ -5450,7 +7019,7 @@
           "start": 1075.75,
           "end": 1075.83,
           "asr_indices": [
-            1804
+            1803
           ]
         },
         {
@@ -5459,7 +7028,7 @@
           "start": 1075.99,
           "end": 1076.07,
           "asr_indices": [
-            1805
+            1804
           ]
         },
         {
@@ -5468,7 +7037,7 @@
           "start": 1076.23,
           "end": 1076.31,
           "asr_indices": [
-            1806
+            1805
           ]
         },
         {
@@ -5477,7 +7046,7 @@
           "start": 1076.47,
           "end": 1076.55,
           "asr_indices": [
-            1807
+            1806
           ]
         },
         {
@@ -5486,7 +7055,7 @@
           "start": 1076.87,
           "end": 1077.27,
           "asr_indices": [
-            1808
+            1807
           ]
         },
         {
@@ -5495,7 +7064,7 @@
           "start": 1077.35,
           "end": 1077.51,
           "asr_indices": [
-            1809
+            1808
           ]
         },
         {
@@ -5504,7 +7073,7 @@
           "start": 1077.59,
           "end": 1077.67,
           "asr_indices": [
-            1810
+            1809
           ]
         },
         {
@@ -5513,7 +7082,7 @@
           "start": 1077.83,
           "end": 1078.07,
           "asr_indices": [
-            1811
+            1810
           ]
         }
       ],
@@ -5557,7 +7126,7 @@
           "start": 1078.45,
           "end": 1078.53,
           "asr_indices": [
-            1812
+            1811
           ]
         },
         {
@@ -5566,7 +7135,7 @@
           "start": 1078.69,
           "end": 1079.17,
           "asr_indices": [
-            1813
+            1812
           ]
         },
         {
@@ -5575,7 +7144,7 @@
           "start": 1079.33,
           "end": 1079.57,
           "asr_indices": [
-            1814
+            1813
           ]
         },
         {
@@ -5584,7 +7153,7 @@
           "start": 1079.65,
           "end": 1080.21,
           "asr_indices": [
-            1815
+            1814
           ]
         },
         {
@@ -5593,7 +7162,7 @@
           "start": 1080.37,
           "end": 1080.45,
           "asr_indices": [
-            1816
+            1815
           ]
         },
         {
@@ -5602,7 +7171,7 @@
           "start": 1080.61,
           "end": 1081.17,
           "asr_indices": [
-            1817
+            1816
           ]
         }
       ],
@@ -5646,7 +7215,7 @@
           "start": 1081.41,
           "end": 1081.97,
           "asr_indices": [
-            1818
+            1817
           ]
         },
         {
@@ -5655,7 +7224,7 @@
           "start": 1082.21,
           "end": 1082.45,
           "asr_indices": [
-            1819
+            1818
           ]
         },
         {
@@ -5664,7 +7233,7 @@
           "start": 1082.53,
           "end": 1082.61,
           "asr_indices": [
-            1820
+            1819
           ]
         },
         {
@@ -5673,7 +7242,7 @@
           "start": 1082.69,
           "end": 1082.77,
           "asr_indices": [
-            1821
+            1820
           ]
         },
         {
@@ -5682,7 +7251,7 @@
           "start": 1082.93,
           "end": 1083.01,
           "asr_indices": [
-            1822
+            1821
           ]
         },
         {
@@ -5691,7 +7260,7 @@
           "start": 1083.09,
           "end": 1083.17,
           "asr_indices": [
-            1823
+            1822
           ]
         },
         {
@@ -5700,7 +7269,7 @@
           "start": 1083.33,
           "end": 1084.05,
           "asr_indices": [
-            1824
+            1823
           ]
         },
         {
@@ -5709,7 +7278,7 @@
           "start": 1084.13,
           "end": 1084.45,
           "asr_indices": [
-            1825
+            1824
           ]
         },
         {
@@ -5718,7 +7287,7 @@
           "start": 1084.45,
           "end": 1084.69,
           "asr_indices": [
-            1826
+            1825
           ]
         },
         {
@@ -5727,7 +7296,7 @@
           "start": 1084.85,
           "end": 1084.93,
           "asr_indices": [
-            1827
+            1826
           ]
         },
         {
@@ -5736,7 +7305,7 @@
           "start": 1085.01,
           "end": 1085.09,
           "asr_indices": [
-            1828
+            1827
           ]
         },
         {
@@ -5745,7 +7314,7 @@
           "start": 1085.17,
           "end": 1085.73,
           "asr_indices": [
-            1829
+            1828
           ]
         }
       ],
@@ -5789,7 +7358,7 @@
           "start": 1085.97,
           "end": 1086.05,
           "asr_indices": [
-            1830
+            1829
           ]
         },
         {
@@ -5798,7 +7367,7 @@
           "start": 1086.21,
           "end": 1086.29,
           "asr_indices": [
-            1831
+            1830
           ]
         },
         {
@@ -5807,7 +7376,7 @@
           "start": 1086.45,
           "end": 1086.53,
           "asr_indices": [
-            1832
+            1831
           ]
         },
         {
@@ -5816,7 +7385,7 @@
           "start": 1086.61,
           "end": 1087.01,
           "asr_indices": [
-            1833
+            1832
           ]
         },
         {
@@ -5825,7 +7394,7 @@
           "start": 1086.93,
           "end": 1087.25,
           "asr_indices": [
-            1834
+            1833
           ]
         },
         {
@@ -5834,7 +7403,7 @@
           "start": 1087.33,
           "end": 1087.41,
           "asr_indices": [
-            1835
+            1834
           ]
         },
         {
@@ -5843,7 +7412,7 @@
           "start": 1087.49,
           "end": 1087.89,
           "asr_indices": [
-            1836
+            1835
           ]
         },
         {
@@ -5852,7 +7421,7 @@
           "start": 1087.97,
           "end": 1088.05,
           "asr_indices": [
-            1837
+            1836
           ]
         },
         {
@@ -5861,7 +7430,7 @@
           "start": 1088.21,
           "end": 1089.09,
           "asr_indices": [
-            1838
+            1837
           ]
         },
         {
@@ -5870,7 +7439,7 @@
           "start": 1089.33,
           "end": 1089.41,
           "asr_indices": [
-            1839
+            1838
           ]
         },
         {
@@ -5879,7 +7448,7 @@
           "start": 1089.49,
           "end": 1089.81,
           "asr_indices": [
-            1840
+            1839
           ]
         },
         {
@@ -5888,7 +7457,7 @@
           "start": 1089.89,
           "end": 1090.29,
           "asr_indices": [
-            1841
+            1840
           ]
         },
         {
@@ -5897,7 +7466,7 @@
           "start": 1090.21,
           "end": 1090.29,
           "asr_indices": [
-            1842
+            1841
           ]
         },
         {
@@ -5906,7 +7475,7 @@
           "start": 1090.45,
           "end": 1091.49,
           "asr_indices": [
-            1843
+            1842
           ]
         }
       ],
@@ -5950,7 +7519,7 @@
           "start": 1091.73,
           "end": 1091.81,
           "asr_indices": [
-            1844
+            1843
           ]
         },
         {
@@ -5959,7 +7528,7 @@
           "start": 1091.97,
           "end": 1092.05,
           "asr_indices": [
-            1845
+            1844
           ]
         },
         {
@@ -5968,7 +7537,7 @@
           "start": 1092.45,
           "end": 1092.53,
           "asr_indices": [
-            1846
+            1845
           ]
         },
         {
@@ -5977,7 +7546,7 @@
           "start": 1092.69,
           "end": 1092.77,
           "asr_indices": [
-            1847
+            1846
           ]
         },
         {
@@ -5986,7 +7555,7 @@
           "start": 1092.93,
           "end": 1093.01,
           "asr_indices": [
-            1848
+            1847
           ]
         },
         {
@@ -5995,7 +7564,7 @@
           "start": 1093.09,
           "end": 1093.17,
           "asr_indices": [
-            1849
+            1848
           ]
         },
         {
@@ -6004,7 +7573,7 @@
           "start": 1093.25,
           "end": 1093.65,
           "asr_indices": [
-            1850
+            1849
           ]
         },
         {
@@ -6013,7 +7582,7 @@
           "start": 1093.73,
           "end": 1094.13,
           "asr_indices": [
-            1851
+            1850
           ]
         },
         {
@@ -6022,7 +7591,7 @@
           "start": 1094.29,
           "end": 1094.37,
           "asr_indices": [
-            1852
+            1851
           ]
         },
         {
@@ -6031,7 +7600,7 @@
           "start": 1094.53,
           "end": 1094.61,
           "asr_indices": [
-            1853
+            1852
           ]
         },
         {
@@ -6040,7 +7609,7 @@
           "start": 1094.69,
           "end": 1094.77,
           "asr_indices": [
-            1854
+            1853
           ]
         },
         {
@@ -6049,7 +7618,7 @@
           "start": 1094.93,
           "end": 1095.01,
           "asr_indices": [
-            1855
+            1854
           ]
         },
         {
@@ -6058,7 +7627,7 @@
           "start": 1095.17,
           "end": 1095.65,
           "asr_indices": [
-            1856
+            1855
           ]
         },
         {
@@ -6067,7 +7636,7 @@
           "start": 1095.65,
           "end": 1095.73,
           "asr_indices": [
-            1857
+            1856
           ]
         },
         {
@@ -6076,7 +7645,7 @@
           "start": 1095.81,
           "end": 1095.89,
           "asr_indices": [
-            1858
+            1857
           ]
         },
         {
@@ -6085,7 +7654,7 @@
           "start": 1095.97,
           "end": 1096.21,
           "asr_indices": [
-            1859
+            1858
           ]
         },
         {
@@ -6094,7 +7663,7 @@
           "start": 1096.21,
           "end": 1096.29,
           "asr_indices": [
-            1860
+            1859
           ]
         },
         {
@@ -6103,7 +7672,7 @@
           "start": 1096.37,
           "end": 1096.77,
           "asr_indices": [
-            1861
+            1860
           ]
         },
         {
@@ -6112,7 +7681,7 @@
           "start": 1096.85,
           "end": 1096.93,
           "asr_indices": [
-            1862
+            1861
           ]
         },
         {
@@ -6121,7 +7690,7 @@
           "start": 1097.09,
           "end": 1097.33,
           "asr_indices": [
-            1863
+            1862
           ]
         },
         {
@@ -6130,7 +7699,7 @@
           "start": 1097.41,
           "end": 1098.85,
           "asr_indices": [
-            1864
+            1863
           ]
         }
       ],
@@ -6174,7 +7743,7 @@
           "start": 1099.09,
           "end": 1099.41,
           "asr_indices": [
-            1865
+            1864
           ]
         },
         {
@@ -6183,7 +7752,7 @@
           "start": 1099.57,
           "end": 1099.65,
           "asr_indices": [
-            1866
+            1865
           ]
         },
         {
@@ -6192,7 +7761,7 @@
           "start": 1099.81,
           "end": 1099.89,
           "asr_indices": [
-            1867
+            1866
           ]
         },
         {
@@ -6201,7 +7770,7 @@
           "start": 1100.05,
           "end": 1100.13,
           "asr_indices": [
-            1868
+            1867
           ]
         },
         {
@@ -6210,7 +7779,7 @@
           "start": 1100.29,
           "end": 1100.77,
           "asr_indices": [
-            1869
+            1868
           ]
         },
         {
@@ -6219,7 +7788,7 @@
           "start": 1100.85,
           "end": 1100.93,
           "asr_indices": [
-            1870
+            1869
           ]
         },
         {
@@ -6228,7 +7797,7 @@
           "start": 1101.01,
           "end": 1101.09,
           "asr_indices": [
-            1871
+            1870
           ]
         },
         {
@@ -6237,7 +7806,7 @@
           "start": 1101.25,
           "end": 1101.81,
           "asr_indices": [
-            1872
+            1871
           ]
         }
       ],
@@ -6281,7 +7850,7 @@
           "start": 1102.05,
           "end": 1102.13,
           "asr_indices": [
-            1873
+            1872
           ]
         },
         {
@@ -6290,7 +7859,7 @@
           "start": 1102.29,
           "end": 1102.85,
           "asr_indices": [
-            1874
+            1873
           ]
         },
         {
@@ -6299,7 +7868,7 @@
           "start": 1103.37,
           "end": 1103.45,
           "asr_indices": [
-            1875
+            1874
           ]
         },
         {
@@ -6308,7 +7877,7 @@
           "start": 1103.53,
           "end": 1103.85,
           "asr_indices": [
-            1876
+            1875
           ]
         },
         {
@@ -6317,7 +7886,7 @@
           "start": 1104.01,
           "end": 1104.09,
           "asr_indices": [
-            1877
+            1876
           ]
         },
         {
@@ -6326,7 +7895,7 @@
           "start": 1104.17,
           "end": 1104.25,
           "asr_indices": [
-            1878
+            1877
           ]
         },
         {
@@ -6335,7 +7904,7 @@
           "start": 1104.33,
           "end": 1104.89,
           "asr_indices": [
-            1879
+            1878
           ]
         },
         {
@@ -6344,7 +7913,7 @@
           "start": 1105.13,
           "end": 1105.21,
           "asr_indices": [
-            1880
+            1879
           ]
         },
         {
@@ -6353,7 +7922,7 @@
           "start": 1105.45,
           "end": 1105.93,
           "asr_indices": [
-            1881
+            1880
           ]
         },
         {
@@ -6362,7 +7931,7 @@
           "start": 1106.09,
           "end": 1106.57,
           "asr_indices": [
-            1882
+            1881
           ]
         },
         {
@@ -6371,7 +7940,7 @@
           "start": 1106.81,
           "end": 1106.89,
           "asr_indices": [
-            1883
+            1882
           ]
         },
         {
@@ -6380,7 +7949,7 @@
           "start": 1107.05,
           "end": 1107.13,
           "asr_indices": [
-            1884
+            1883
           ]
         },
         {
@@ -6389,7 +7958,7 @@
           "start": 1107.29,
           "end": 1107.37,
           "asr_indices": [
-            1885
+            1884
           ]
         },
         {
@@ -6398,7 +7967,7 @@
           "start": 1107.45,
           "end": 1107.53,
           "asr_indices": [
-            1886
+            1885
           ]
         },
         {
@@ -6407,7 +7976,7 @@
           "start": 1107.61,
           "end": 1107.69,
           "asr_indices": [
-            1887
+            1886
           ]
         },
         {
@@ -6416,7 +7985,7 @@
           "start": 1107.85,
           "end": 1107.93,
           "asr_indices": [
-            1888
+            1887
           ]
         },
         {
@@ -6425,7 +7994,7 @@
           "start": 1108.09,
           "end": 1108.17,
           "asr_indices": [
-            1889
+            1888
           ]
         },
         {
@@ -6434,7 +8003,7 @@
           "start": 1108.25,
           "end": 1108.49,
           "asr_indices": [
-            1890
+            1889
           ]
         },
         {
@@ -6443,7 +8012,7 @@
           "start": 1108.57,
           "end": 1108.65,
           "asr_indices": [
-            1891
+            1890
           ]
         },
         {
@@ -6452,7 +8021,7 @@
           "start": 1109.05,
           "end": 1109.61,
           "asr_indices": [
-            1892
+            1891
           ]
         }
       ],
@@ -6496,7 +8065,7 @@
           "start": 1110.17,
           "end": 1110.25,
           "asr_indices": [
-            1893
+            1892
           ]
         },
         {
@@ -6505,7 +8074,7 @@
           "start": 1110.57,
           "end": 1110.65,
           "asr_indices": [
-            1894
+            1893
           ]
         },
         {
@@ -6514,7 +8083,7 @@
           "start": 1110.89,
           "end": 1110.97,
           "asr_indices": [
-            1895
+            1894
           ]
         },
         {
@@ -6523,7 +8092,7 @@
           "start": 1111.21,
           "end": 1111.29,
           "asr_indices": [
-            1896
+            1895
           ]
         },
         {
@@ -6532,7 +8101,7 @@
           "start": 1111.45,
           "end": 1111.77,
           "asr_indices": [
-            1897
+            1896
           ]
         },
         {
@@ -6541,7 +8110,7 @@
           "start": 1111.77,
           "end": 1111.85,
           "asr_indices": [
-            1898
+            1897
           ]
         },
         {
@@ -6550,7 +8119,7 @@
           "start": 1111.93,
           "end": 1112.17,
           "asr_indices": [
-            1899
+            1898
           ]
         },
         {
@@ -6559,7 +8128,7 @@
           "start": 1112.25,
           "end": 1112.33,
           "asr_indices": [
-            1900
+            1899
           ]
         },
         {
@@ -6568,7 +8137,7 @@
           "start": 1112.49,
           "end": 1112.57,
           "asr_indices": [
-            1901
+            1900
           ]
         },
         {
@@ -6577,7 +8146,7 @@
           "start": 1112.65,
           "end": 1112.73,
           "asr_indices": [
-            1902
+            1901
           ]
         },
         {
@@ -6586,7 +8155,7 @@
           "start": 1112.81,
           "end": 1113.37,
           "asr_indices": [
-            1903
+            1902
           ]
         },
         {
@@ -6595,7 +8164,7 @@
           "start": 1113.53,
           "end": 1113.61,
           "asr_indices": [
-            1904
+            1903
           ]
         },
         {
@@ -6604,7 +8173,7 @@
           "start": 1113.77,
           "end": 1113.85,
           "asr_indices": [
-            1905
+            1904
           ]
         },
         {
@@ -6613,7 +8182,7 @@
           "start": 1114.09,
           "end": 1114.65,
           "asr_indices": [
-            1906
+            1905
           ]
         }
       ],
@@ -6657,7 +8226,7 @@
           "start": 1114.89,
           "end": 1114.97,
           "asr_indices": [
-            1907
+            1906
           ]
         },
         {
@@ -6666,7 +8235,7 @@
           "start": 1115.13,
           "end": 1115.21,
           "asr_indices": [
-            1908
+            1907
           ]
         },
         {
@@ -6675,7 +8244,7 @@
           "start": 1115.21,
           "end": 1115.45,
           "asr_indices": [
-            1909
+            1908
           ]
         },
         {
@@ -6684,7 +8253,7 @@
           "start": 1115.53,
           "end": 1115.61,
           "asr_indices": [
-            1910
+            1909
           ]
         },
         {
@@ -6693,7 +8262,7 @@
           "start": 1115.77,
           "end": 1116.33,
           "asr_indices": [
-            1911
+            1910
           ]
         }
       ],
@@ -6737,7 +8306,7 @@
           "start": 1116.57,
           "end": 1116.65,
           "asr_indices": [
-            1912
+            1911
           ]
         },
         {
@@ -6746,7 +8315,7 @@
           "start": 1116.81,
           "end": 1116.89,
           "asr_indices": [
-            1913
+            1912
           ]
         },
         {
@@ -6755,7 +8324,7 @@
           "start": 1117.13,
           "end": 1117.21,
           "asr_indices": [
-            1914
+            1913
           ]
         },
         {
@@ -6764,7 +8333,7 @@
           "start": 1117.37,
           "end": 1117.45,
           "asr_indices": [
-            1915
+            1914
           ]
         },
         {
@@ -6773,7 +8342,7 @@
           "start": 1117.61,
           "end": 1118.01,
           "asr_indices": [
-            1916
+            1915
           ]
         },
         {
@@ -6782,7 +8351,7 @@
           "start": 1118.01,
           "end": 1118.09,
           "asr_indices": [
-            1917
+            1916
           ]
         },
         {
@@ -6791,7 +8360,7 @@
           "start": 1118.25,
           "end": 1118.65,
           "asr_indices": [
-            1918
+            1917
           ]
         },
         {
@@ -6800,7 +8369,7 @@
           "start": 1118.89,
           "end": 1118.97,
           "asr_indices": [
-            1919
+            1918
           ]
         },
         {
@@ -6809,7 +8378,7 @@
           "start": 1119.05,
           "end": 1119.13,
           "asr_indices": [
-            1920
+            1919
           ]
         },
         {
@@ -6818,7 +8387,7 @@
           "start": 1119.21,
           "end": 1119.69,
           "asr_indices": [
-            1921
+            1920
           ]
         },
         {
@@ -6827,7 +8396,7 @@
           "start": 1119.93,
           "end": 1120.01,
           "asr_indices": [
-            1922
+            1921
           ]
         },
         {
@@ -6836,7 +8405,7 @@
           "start": 1120.09,
           "end": 1120.41,
           "asr_indices": [
-            1923
+            1922
           ]
         }
       ],
@@ -6853,6 +8422,296 @@
       },
       "start": 1116.57,
       "end": 1120.41
+    },
+    {
+      "en": "This is the end of part one of the interview.",
+      "zh": "访谈的第一部分到此结束。",
+      "w": [
+        {
+          "t": "word",
+          "h": "end",
+          "m": "n.结束",
+          "sp": [
+            [
+              12,
+              15
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1924,
+        1934
+      ],
+      "asr_text": "This is the end of part one of the interview.",
+      "translation_key": "b1_end_part",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2021-B1-before_questions-1",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 4,
+          "start": 1121.17,
+          "end": 1121.25,
+          "asr_indices": [
+            1923
+          ]
+        },
+        {
+          "char": 5,
+          "char_end": 7,
+          "start": 1121.49,
+          "end": 1121.57,
+          "asr_indices": [
+            1924
+          ]
+        },
+        {
+          "char": 8,
+          "char_end": 11,
+          "start": 1121.81,
+          "end": 1121.89,
+          "asr_indices": [
+            1925
+          ]
+        },
+        {
+          "char": 12,
+          "char_end": 15,
+          "start": 1121.97,
+          "end": 1122.05,
+          "asr_indices": [
+            1926
+          ]
+        },
+        {
+          "char": 16,
+          "char_end": 18,
+          "start": 1122.21,
+          "end": 1122.29,
+          "asr_indices": [
+            1927
+          ]
+        },
+        {
+          "char": 19,
+          "char_end": 23,
+          "start": 1122.45,
+          "end": 1122.53,
+          "asr_indices": [
+            1928
+          ]
+        },
+        {
+          "char": 24,
+          "char_end": 27,
+          "start": 1122.77,
+          "end": 1122.85,
+          "asr_indices": [
+            1929
+          ]
+        },
+        {
+          "char": 28,
+          "char_end": 30,
+          "start": 1123.09,
+          "end": 1123.17,
+          "asr_indices": [
+            1930
+          ]
+        },
+        {
+          "char": 31,
+          "char_end": 34,
+          "start": 1123.25,
+          "end": 1123.33,
+          "asr_indices": [
+            1931
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 44,
+          "start": 1123.41,
+          "end": 1124.29,
+          "asr_indices": [
+            1932
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 10,
+        "mapped_lexemes": 10,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1121.17,
+      "end": 1124.29
+    },
+    {
+      "en": "Questions one to five are based on what you have just heard.",
+      "zh": "第1至5题根据你刚才听到的内容提问。",
+      "w": [
+        {
+          "t": "phr",
+          "h": "be based on",
+          "m": "phr.以……为依据",
+          "sp": [
+            [
+              26,
+              34
+            ]
+          ]
+        }
+      ],
+      "role": "transition",
+      "asr_range": [
+        1934,
+        1946
+      ],
+      "asr_text": "Questions one to five are based on what you have just heard.",
+      "translation_key": "b1_group_heard",
+      "speaker": "announcer",
+      "instruction_source": "说明语句/2021.json",
+      "instruction_slot": "before_questions",
+      "instruction_id": "2021-B1-before_questions-2",
+      "asr_sha256": "5fd4be17463a8d15cc74b0715bd092ad1715553905f2c1dbc3a1002d6125162e",
+      "asr_pointer": "",
+      "asr_ref": "预处理/2021/识别.json",
+      "word_alignment": [
+        {
+          "char": 0,
+          "char_end": 9,
+          "start": 1124.53,
+          "end": 1124.93,
+          "asr_indices": [
+            1933
+          ]
+        },
+        {
+          "char": 10,
+          "char_end": 13,
+          "start": 1125.09,
+          "end": 1125.17,
+          "asr_indices": [
+            1934
+          ]
+        },
+        {
+          "char": 14,
+          "char_end": 16,
+          "start": 1125.41,
+          "end": 1125.49,
+          "asr_indices": [
+            1935
+          ]
+        },
+        {
+          "char": 17,
+          "char_end": 21,
+          "start": 1125.65,
+          "end": 1125.89,
+          "asr_indices": [
+            1936
+          ]
+        },
+        {
+          "char": 22,
+          "char_end": 25,
+          "start": 1126.05,
+          "end": 1126.13,
+          "asr_indices": [
+            1937
+          ]
+        },
+        {
+          "char": 26,
+          "char_end": 31,
+          "start": 1126.29,
+          "end": 1126.53,
+          "asr_indices": [
+            1938
+          ]
+        },
+        {
+          "char": 32,
+          "char_end": 34,
+          "start": 1126.61,
+          "end": 1126.69,
+          "asr_indices": [
+            1939
+          ]
+        },
+        {
+          "char": 35,
+          "char_end": 39,
+          "start": 1126.77,
+          "end": 1126.85,
+          "asr_indices": [
+            1940
+          ]
+        },
+        {
+          "char": 40,
+          "char_end": 43,
+          "start": 1126.93,
+          "end": 1127.01,
+          "asr_indices": [
+            1941
+          ]
+        },
+        {
+          "char": 44,
+          "char_end": 48,
+          "start": 1127.17,
+          "end": 1127.25,
+          "asr_indices": [
+            1942
+          ]
+        },
+        {
+          "char": 49,
+          "char_end": 53,
+          "start": 1127.41,
+          "end": 1127.49,
+          "asr_indices": [
+            1943
+          ]
+        },
+        {
+          "char": 54,
+          "char_end": 59,
+          "start": 1127.73,
+          "end": 1128.37,
+          "asr_indices": [
+            1944
+          ]
+        }
+      ],
+      "alignment": {
+        "boundary_anchored": true,
+        "source_lexemes": 12,
+        "mapped_lexemes": 12,
+        "missing": [],
+        "unmatched_internal_asr": {
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
+        }
+      },
+      "start": 1124.53,
+      "end": 1128.37
     },
     {
       "en": "What is Maureen McLane according to the interviewer?",
@@ -6880,7 +8739,7 @@
           "start": 1130.53,
           "end": 1130.61,
           "asr_indices": [
-            1948
+            1947
           ]
         },
         {
@@ -6889,7 +8748,7 @@
           "start": 1130.77,
           "end": 1130.85,
           "asr_indices": [
-            1949
+            1948
           ]
         },
         {
@@ -6898,7 +8757,7 @@
           "start": 1131.01,
           "end": 1131.49,
           "asr_indices": [
-            1950
+            1949
           ]
         },
         {
@@ -6907,7 +8766,7 @@
           "start": 1132.21,
           "end": 1132.53,
           "asr_indices": [
-            1952
+            1951
           ]
         },
         {
@@ -6916,7 +8775,7 @@
           "start": 1132.61,
           "end": 1132.69,
           "asr_indices": [
-            1953
+            1952
           ]
         },
         {
@@ -6925,7 +8784,7 @@
           "start": 1132.69,
           "end": 1132.77,
           "asr_indices": [
-            1954
+            1953
           ]
         },
         {
@@ -6934,7 +8793,7 @@
           "start": 1132.85,
           "end": 1134.29,
           "asr_indices": [
-            1955
+            1954
           ]
         }
       ],
@@ -6953,7 +8812,7 @@
         ],
         "unmatched_internal_asr": {
           "asr_indices": [
-            1951
+            1950
           ],
           "asr_text": [
             "McLean"
@@ -6993,7 +8852,7 @@
           "start": 1145.23,
           "end": 1145.47,
           "asr_indices": [
-            1958
+            1957
           ]
         },
         {
@@ -7002,7 +8861,7 @@
           "start": 1145.55,
           "end": 1145.63,
           "asr_indices": [
-            1959
+            1958
           ]
         },
         {
@@ -7011,7 +8870,7 @@
           "start": 1145.79,
           "end": 1146.27,
           "asr_indices": [
-            1960
+            1959
           ]
         },
         {
@@ -7020,7 +8879,7 @@
           "start": 1146.59,
           "end": 1146.67,
           "asr_indices": [
-            1961
+            1960
           ]
         },
         {
@@ -7029,7 +8888,7 @@
           "start": 1146.83,
           "end": 1147.15,
           "asr_indices": [
-            1962
+            1961
           ]
         },
         {
@@ -7038,7 +8897,7 @@
           "start": 1147.23,
           "end": 1147.31,
           "asr_indices": [
-            1963
+            1962
           ]
         },
         {
@@ -7047,7 +8906,7 @@
           "start": 1147.39,
           "end": 1147.47,
           "asr_indices": [
-            1964
+            1963
           ]
         },
         {
@@ -7056,7 +8915,7 @@
           "start": 1147.79,
           "end": 1148.67,
           "asr_indices": [
-            1965
+            1964
           ]
         }
       ],
@@ -7100,7 +8959,7 @@
           "start": 1160.44,
           "end": 1160.68,
           "asr_indices": [
-            1968
+            1967
           ]
         },
         {
@@ -7109,7 +8968,7 @@
           "start": 1160.76,
           "end": 1160.84,
           "asr_indices": [
-            1969
+            1968
           ]
         },
         {
@@ -7118,7 +8977,7 @@
           "start": 1160.92,
           "end": 1161.0,
           "asr_indices": [
-            1970
+            1969
           ]
         },
         {
@@ -7127,7 +8986,7 @@
           "start": 1161.08,
           "end": 1161.16,
           "asr_indices": [
-            1971
+            1970
           ]
         },
         {
@@ -7136,7 +8995,7 @@
           "start": 1161.48,
           "end": 1161.56,
           "asr_indices": [
-            1972
+            1971
           ]
         },
         {
@@ -7145,7 +9004,7 @@
           "start": 1161.88,
           "end": 1162.36,
           "asr_indices": [
-            1973
+            1972
           ]
         },
         {
@@ -7154,7 +9013,7 @@
           "start": 1162.44,
           "end": 1162.52,
           "asr_indices": [
-            1974
+            1973
           ]
         },
         {
@@ -7163,7 +9022,7 @@
           "start": 1162.6,
           "end": 1163.56,
           "asr_indices": [
-            1975
+            1974
           ]
         }
       ],
@@ -7207,7 +9066,7 @@
           "start": 1175.2,
           "end": 1175.44,
           "asr_indices": [
-            1978
+            1977
           ]
         },
         {
@@ -7216,7 +9075,7 @@
           "start": 1175.6,
           "end": 1175.68,
           "asr_indices": [
-            1979
+            1978
           ]
         },
         {
@@ -7225,7 +9084,7 @@
           "start": 1175.76,
           "end": 1175.84,
           "asr_indices": [
-            1980
+            1979
           ]
         },
         {
@@ -7234,7 +9093,7 @@
           "start": 1176.0,
           "end": 1176.48,
           "asr_indices": [
-            1981
+            1980
           ]
         },
         {
@@ -7243,7 +9102,7 @@
           "start": 1176.56,
           "end": 1176.64,
           "asr_indices": [
-            1982
+            1981
           ]
         },
         {
@@ -7252,7 +9111,7 @@
           "start": 1176.72,
           "end": 1177.28,
           "asr_indices": [
-            1983
+            1982
           ]
         },
         {
@@ -7261,7 +9120,7 @@
           "start": 1177.44,
           "end": 1177.52,
           "asr_indices": [
-            1984
+            1983
           ]
         },
         {
@@ -7270,7 +9129,7 @@
           "start": 1177.68,
           "end": 1177.76,
           "asr_indices": [
-            1985
+            1984
           ]
         },
         {
@@ -7279,7 +9138,7 @@
           "start": 1178.0,
           "end": 1178.48,
           "asr_indices": [
-            1986
+            1985
           ]
         },
         {
@@ -7288,7 +9147,7 @@
           "start": 1178.64,
           "end": 1178.72,
           "asr_indices": [
-            1987
+            1986
           ]
         },
         {
@@ -7297,7 +9156,7 @@
           "start": 1178.88,
           "end": 1178.96,
           "asr_indices": [
-            1988
+            1987
           ]
         },
         {
@@ -7306,7 +9165,7 @@
           "start": 1179.2,
           "end": 1179.28,
           "asr_indices": [
-            1989
+            1988
           ]
         },
         {
@@ -7315,7 +9174,7 @@
           "start": 1179.44,
           "end": 1179.92,
           "asr_indices": [
-            1990
+            1989
           ]
         },
         {
@@ -7324,7 +9183,7 @@
           "start": 1179.92,
           "end": 1180.0,
           "asr_indices": [
-            1991
+            1990
           ]
         },
         {
@@ -7333,7 +9192,7 @@
           "start": 1180.08,
           "end": 1180.32,
           "asr_indices": [
-            1992
+            1991
           ]
         },
         {
@@ -7342,7 +9201,7 @@
           "start": 1180.4,
           "end": 1180.48,
           "asr_indices": [
-            1993
+            1992
           ]
         },
         {
@@ -7351,7 +9210,7 @@
           "start": 1180.64,
           "end": 1181.6,
           "asr_indices": [
-            1994
+            1993
           ]
         }
       ],
@@ -7395,7 +9254,7 @@
           "start": 1193.42,
           "end": 1193.66,
           "asr_indices": [
-            1997
+            1996
           ]
         },
         {
@@ -7404,7 +9263,7 @@
           "start": 1193.74,
           "end": 1193.82,
           "asr_indices": [
-            1998
+            1997
           ]
         },
         {
@@ -7413,7 +9272,7 @@
           "start": 1193.9,
           "end": 1194.46,
           "asr_indices": [
-            1999
+            1998
           ]
         },
         {
@@ -7422,7 +9281,7 @@
           "start": 1194.62,
           "end": 1194.78,
           "asr_indices": [
-            2000
+            1999
           ]
         },
         {
@@ -7431,7 +9290,7 @@
           "start": 1194.86,
           "end": 1195.34,
           "asr_indices": [
-            2001
+            2000
           ]
         },
         {
@@ -7440,7 +9299,7 @@
           "start": 1195.58,
           "end": 1195.66,
           "asr_indices": [
-            2002
+            2001
           ]
         },
         {
@@ -7449,7 +9308,7 @@
           "start": 1195.82,
           "end": 1196.78,
           "asr_indices": [
-            2003
+            2002
           ]
         }
       ],
@@ -7474,6 +9333,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2021/对齐报告.json",
-    "content_sha256": "7e844186170e8179a70d3a3b671acd3b797f765508959bf53fbb387add2219cc"
+    "content_sha256": "1bda1af47a34cf5967ff063df9a625c34fa9ef54da7bae3ddc68d674d0030193"
   }
 }

@@ -1,6 +1,6 @@
 {
   "year": 2024,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2024-A",
@@ -644,6 +644,87 @@
       "id": "2024-B2",
       "before": [
         {
+          "en": "Now listen to the second interview.",
+          "zh": "现在请听第二段访谈。",
+          "w": [
+            {
+              "t": "word",
+              "h": "listen",
+              "m": "v.听",
+              "sp": [
+                [
+                  4,
+                  10
+                ]
+              ]
+            }
+          ],
+          "role": "transition",
+          "asr_range": [
+            0,
+            6
+          ],
+          "asr_text": "Now listen to the second interview.",
+          "translation_key": "b2_listen_interview",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2024/b2_group_interview.json",
+          "asr_sha256": "1f96bb86c61dac08eaf790f2a0c66576579bde0d07070bf957c2754f4eb51377",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
+            1956,
+            1966
+          ],
+          "primary_asr_ref": "预处理/2024/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "Now",
+              1142.39,
+              1142.47
+            ],
+            [
+              "listen",
+              1142.87,
+              1143.27
+            ],
+            [
+              "to",
+              1143.35,
+              1143.43
+            ],
+            [
+              "the",
+              1143.59,
+              1143.67
+            ],
+            [
+              "second",
+              1143.75,
+              1144.07
+            ],
+            [
+              "interview.",
+              1144.23,
+              1145.19
+            ]
+          ],
+          "start": 1142.39,
+          "end": 1145.19,
+          "correction_case": "b2_group_interview",
+          "evidence": {
+            "window": [
+              1133.43,
+              1154.31
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
+        },
+        {
           "en": "Questions six to ten are based on the second interview.",
           "zh": "第6至10题根据第二段访谈提问。",
           "w": [
@@ -770,15 +851,7 @@
       ]
     }
   ],
-  "待核": [
-    {
-      "asr_range": [
-        1956,
-        1956
-      ],
-      "reason": "ASR未识别到第二段开始前Now listen提示，只收录实际题组提示；需原音核其是否真的缺失。"
-    }
-  ],
+  "待核": [],
   "source": {
     "asr": "预处理/2024/识别.json",
     "asr_sha256": "345aca1053761c9d85236607bddf566c73e37a7958bb97dada07082e3da2fde8",
@@ -792,5 +865,54 @@
     "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
   ],
   "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
+    {
+      "asr_range": [
+        1956,
+        1956
+      ],
+      "reason": "ASR未识别到第二段开始前Now listen提示，只收录实际题组提示；需原音核其是否真的缺失。"
+    }
+  ],
+  "local_corrections": [
+    {
+      "case": "b2_group_interview",
+      "old_en": "Questions six to ten are based on the second interview.",
+      "new_en": "Now listen to the second interview.",
+      "primary_asr_range": [
+        1956,
+        1966
+      ],
+      "local_asr_range": [
+        0,
+        6
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2024/b2_group_interview.json",
+      "local_sha256": "1f96bb86c61dac08eaf790f2a0c66576579bde0d07070bf957c2754f4eb51377",
+      "source_parts": [
+        {
+          "file": "2024年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+          "source_sha256": "99fc32a4bc452a6923b86e493b7f989f4852f6159359239b059fc1a17fd666b8",
+          "source_window": [
+            1133.43,
+            1154.31
+          ],
+          "canonical_window": [
+            1133.43,
+            1154.31
+          ]
+        }
+      ],
+      "times": [
+        1142.39,
+        1145.19
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "Now listen to the second interview. Questions six to ten are based on the second interview. Antarctica a continent of snow and ice?",
+        "whisper": "Now listen to the second interview. Questions 6-10 are based on the second interview."
+      }
+    }
+  ]
 }

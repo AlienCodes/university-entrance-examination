@@ -23,7 +23,7 @@ QUERIES={
  2021:['civil rights of the 1960s','memoirs and criticisms','divided into sections','Emm'],
  2022:['stating once again the anthropology'],
  2023:['before, it was fossil metaphor','a year sharp spent','To put it simple','what kind of gap year experience','I see.'],
- 2024:['adults and adolescence','that is a language translation','minor novels','examine the Antarctica','I knew that','Also the effects','three times faster']}
+ 2024:['adults and adolescence','that is a language translation','minor novels','examine the Antarctica','I knew that','Also the effects','three times faster','huge floods at some of the areas','pointed more toward six feet','the first thing I’d like to point out']}
 
 def lex(s):return re.findall(r"[a-z]+(?:'[a-z]+)?|\d+",s.lower().replace('’',"'"))
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()

@@ -1,6 +1,6 @@
 {
   "year": 2019,
-  "status": "draft_asr_anchored_audio_review_pending",
+  "status": "draft_local_asr_checked_not_publication_approved",
   "units": [
     {
       "id": "2019-A",
@@ -198,7 +198,7 @@
           "translation_key": "a_accept"
         },
         {
-          "en": "You may use Use the blank sheet for note-taking.",
+          "en": "You may use the blank sheet for note-taking.",
           "zh": "你可以用空白纸做笔记。",
           "w": [
             {
@@ -207,22 +207,86 @@
               "m": "adj.空白的",
               "sp": [
                 [
-                  20,
-                  25
+                  16,
+                  21
                 ]
               ]
             }
           ],
           "role": "instruction",
           "asr_range": [
+            3,
+            11
+          ],
+          "asr_text": "You may use the blank sheet for note-taking.",
+          "translation_key": "a_blank",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2019/a_blank.json",
+          "asr_sha256": "a0693cc210567afa29d6e28b6bd72b7f9b0f651975eceb0e3588e766735ffc53",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             70,
             79
           ],
-          "asr_text": "You may use Use the blank sheet for note-taking.",
-          "translation_key": "a_blank",
-          "待核": [
-            "ASR连续重复use，需原音核是否口述重复；未静默删除。"
-          ]
+          "primary_asr_ref": "预处理/2019/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "You",
+              36.92,
+              37.0
+            ],
+            [
+              "may",
+              37.08,
+              37.16
+            ],
+            [
+              "use",
+              37.32,
+              37.4
+            ],
+            [
+              "the",
+              37.56,
+              37.64
+            ],
+            [
+              "blank",
+              37.72,
+              37.96
+            ],
+            [
+              "sheet",
+              38.12,
+              38.36
+            ],
+            [
+              "for",
+              38.44,
+              38.52
+            ],
+            [
+              "note-taking.",
+              38.6,
+              39.8
+            ]
+          ],
+          "start": 36.92,
+          "end": 39.8,
+          "correction_case": "a_blank",
+          "evidence": {
+            "window": [
+              33.8,
+              43.8
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         },
         {
           "en": "You have 30 seconds to preview the gap-filling task.",
@@ -376,7 +440,7 @@
       "id": "2019-B1",
       "before": [
         {
-          "en": "Section B is the first of the U.S. Interview.",
+          "en": "Section B interview.",
           "zh": "B节：访谈。",
           "w": [
             {
@@ -385,22 +449,61 @@
               "m": "n.访谈",
               "sp": [
                 [
-                  35,
-                  44
+                  10,
+                  19
                 ]
               ]
             }
           ],
           "role": "transition",
           "asr_range": [
+            4,
+            7
+          ],
+          "asr_text": "Section B interview",
+          "translation_key": "b_header",
+          "speaker": "announcer",
+          "asr_ref": "说明语句/局部复识别/2019/b_header.json",
+          "asr_sha256": "9f0e1ac7130a39395186b0249f9f7c7d4aea1418419f8419e223b93deb618a84",
+          "asr_pointer": "/recognitions/0/words",
+          "primary_asr_range": [
             1267,
             1276
           ],
-          "asr_text": "Section B is the first of the U.S. Interview.",
-          "translation_key": "b_header",
-          "待核": [
-            "ASR章节标题出现is the first of the U.S.额外语句，与原卷SECTION B INTERVIEW不符；需要听核是否为识别幻觉。"
-          ]
+          "primary_asr_ref": "预处理/2019/识别.json",
+          "alignment_source": "local_parakeet_actual_word_timestamps",
+          "words": [
+            [
+              "Section",
+              766.39,
+              766.87
+            ],
+            [
+              "B",
+              767.03,
+              767.11
+            ],
+            [
+              "interview",
+              767.67,
+              768.31
+            ]
+          ],
+          "start": 766.39,
+          "end": 768.31,
+          "correction_case": "b_header",
+          "evidence": {
+            "window": [
+              763.43,
+              772.79
+            ],
+            "models": [
+              "parakeet",
+              "whisper"
+            ],
+            "rationale": "局部错位上下文Parakeet恢复了完整实际词；独立Whisper文本互证（不借用公共模板补英语或估时）。",
+            "whisper_timestamps": "模型未导出cross-attention，仅独立文本互证；词时刻明确来自Parakeet。"
+          }
         },
         {
           "en": "In this section you will hear two interviews.",
@@ -776,7 +879,22 @@
       ]
     }
   ],
-  "待核": [
+  "待核": [],
+  "source": {
+    "asr": "预处理/2019/识别.json",
+    "asr_sha256": "0d80f64e7286eb4b343523f6c997ec56d2f2fecb3d26f1096749fb4d24212657",
+    "word_count": 2739,
+    "paper": "数据/2019/试卷.json",
+    "paper_sha256": "8afef0c3ff28c38b6380c4076f9ac5ab033395bcf24889ce3b75c41b4b74199b"
+  },
+  "index_convention": "asr_range为零起点[startWordIndex,endExclusive]，精确指向当年所列ASR；不是估时值。",
+  "normalizations": [
+    "整理大小写与ASR误句点；mini-lecture/gap-filling/note-taking/ten-second以常规连字符排版",
+    "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
+  ],
+  "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
+  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。",
+  "previous_pending_resolved_by_local_asr": [
     {
       "asr_range": [
         70,
@@ -794,18 +912,82 @@
       "reason": "ASR章节标题出现is the first of the U.S.额外语句，与原卷SECTION B INTERVIEW不符；需要听核是否为识别幻觉。"
     }
   ],
-  "source": {
-    "asr": "预处理/2019/识别.json",
-    "asr_sha256": "0d80f64e7286eb4b343523f6c997ec56d2f2fecb3d26f1096749fb4d24212657",
-    "word_count": 2739,
-    "paper": "数据/2019/试卷.json",
-    "paper_sha256": "8afef0c3ff28c38b6380c4076f9ac5ab033395bcf24889ce3b75c41b4b74199b"
-  },
-  "index_convention": "asr_range为零起点[startWordIndex,endExclusive]，精确指向当年所列ASR；不是估时值。",
-  "normalizations": [
-    "整理大小写与ASR误句点；mini-lecture/gap-filling/note-taking/ten-second以常规连字符排版",
-    "ASR读出的word words用书面word(s)表示，原始词保存在asr_text；不补漏识词"
-  ],
-  "scope": "只含实际ASR有锚点的正式说明、题名、题组提示和过渡语；正文和10道具体题干由译注草稿另供。",
-  "translation_table": "公共译句表.json；共用译法仅复用翻译，不决定任何年份的英文或词索引。"
+  "local_corrections": [
+    {
+      "case": "a_blank",
+      "old_en": "You may use Use the blank sheet for note-taking.",
+      "new_en": "You may use the blank sheet for note-taking.",
+      "primary_asr_range": [
+        70,
+        79
+      ],
+      "local_asr_range": [
+        3,
+        11
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2019/a_blank.json",
+      "local_sha256": "a0693cc210567afa29d6e28b6bd72b7f9b0f651975eceb0e3588e766735ffc53",
+      "source_parts": [
+        {
+          "file": "2019专八笔试真题和答案/TEM8-2019年真题听力.wma",
+          "source_sha256": "e2f8634325ff1d2ab83fb18e93483bc0e419537c487720a7e70c88e21a296902",
+          "source_window": [
+            33.8,
+            43.8
+          ],
+          "canonical_window": [
+            33.8,
+            43.8
+          ]
+        }
+      ],
+      "times": [
+        36.92,
+        39.8
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "And semantically acceptable. You may use the blank sheet for note-taking. You have 30 seconds to preview the gap-filling tab.",
+        "whisper": "What you feel in is both chromatically and semantically acceptable. You may use the blank sheet for note taking. You have 30 seconds to preview the gap filling task."
+      }
+    },
+    {
+      "case": "b_header",
+      "old_en": "Section B is the first of the U.S. Interview.",
+      "new_en": "Section B interview.",
+      "primary_asr_range": [
+        1267,
+        1276
+      ],
+      "local_asr_range": [
+        4,
+        7
+      ],
+      "local_asr_ref": "说明语句/局部复识别/2019/b_header.json",
+      "local_sha256": "9f0e1ac7130a39395186b0249f9f7c7d4aea1418419f8419e223b93deb618a84",
+      "source_parts": [
+        {
+          "file": "2019专八笔试真题和答案/TEM8-2019年真题听力.wma",
+          "source_sha256": "e2f8634325ff1d2ab83fb18e93483bc0e419537c487720a7e70c88e21a296902",
+          "source_window": [
+            763.43,
+            772.79
+          ],
+          "canonical_window": [
+            763.43,
+            772.79
+          ]
+        }
+      ],
+      "times": [
+        766.39,
+        768.31
+      ],
+      "decision": "采用真实局部词，不改主ASR",
+      "independent_texts": {
+        "parakeet": "Section A mini lecture Section B interview In this section you will hear two interviews",
+        "whisper": "This is the end of section A mini-lecture. Section B, interview. In this section, you will hear two interviews. At the end of each-- [AUDIO OUT]"
+      }
+    }
+  ]
 }

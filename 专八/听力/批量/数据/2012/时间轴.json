@@ -2,12 +2,44 @@
   "source_duration": 1413.12,
   "source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
   "trim": {
-    "start": 0,
-    "status": "待核片头音乐，时间轴仍保留完整原声，不准发布"
+    "year": 2012,
+    "start": 13.18,
+    "reason": "片头音乐",
+    "source_sha256": "2036d321ae8c2ea334df2b6494db90e6995b61c070cdc28a6cdd3f2529fd2dca",
+    "evidence": "逐年查看0—20s原采样率波形和0—6kHz频谱：约1.7—13s存在连续音乐谐波及旋律变化，结束后频谱进入低能量间隙；13.02—13.35s全声道峰值低于-60dBFS，选择间隙内13.18s（原样本581238）裁去片头音乐。剪点前后40ms峰值-74.64dBFS、RMS -89.15dBFS；正式报幕Test的ASR参考起点14.00s，剪点早于该参考0.82s。已按波形/频谱确认没有剪入报幕音节；不是按ASR首字起点切割。保留报幕、正式说明及其后全部内容。",
+    "source_entry": {
+      "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2012年专八真题+音频+解析/听力音频 TEM8-2012.mp3",
+      "sha256": "76493b3a0a9159a391a51d0c914dfa49d5123bdfc36a8783f7c6491a3940989c"
+    },
+    "canonical_format": {
+      "sample_rate": 44100,
+      "channels": 2,
+      "pcm_format": "float32le"
+    },
+    "cut_sample": 581238,
+    "silence_interval": [
+      13.02,
+      13.35
+    ],
+    "cut_window": {
+      "half_window_seconds": 0.04,
+      "max_channel_peak_dbfs": -74.64028527123236,
+      "all_channel_rms_dbfs": -89.14648024137992,
+      "digital_zero": false,
+      "db_display_floor": -240.0
+    },
+    "reference_first_word": [
+      "Test",
+      14.0,
+      14.24
+    ],
+    "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+    "plot": "图证/2012.png",
+    "pending": []
   },
   "events": [
     {
-      "t": 0.0,
+      "t": 13.18,
       "kind": "instr",
       "sec": "A",
       "hi": -1,
@@ -18,42 +50,6 @@
       "kind": "instr",
       "sec": "A",
       "hi": -1
-    },
-    {
-      "t": 27.71,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 0
-    },
-    {
-      "t": 31.31,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 1
-    },
-    {
-      "t": 34.51,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 2
-    },
-    {
-      "t": 45.58,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 3
-    },
-    {
-      "t": 54.06,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 4
-    },
-    {
-      "t": 57.88,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 5
     },
     {
       "t": 61.66,
@@ -88,48 +84,6 @@
       "kind": "instr",
       "sec": "B",
       "hi": -1
-    },
-    {
-      "t": 743.02,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 0
-    },
-    {
-      "t": 747.1,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 1
-    },
-    {
-      "t": 751.42,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 2
-    },
-    {
-      "t": 757.34,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 3
-    },
-    {
-      "t": 763.1,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 4
-    },
-    {
-      "t": 767.86,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 5
-    },
-    {
-      "t": 780.34,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 6
     },
     {
       "t": 783.5,
@@ -377,13 +331,11 @@
       ]
     ]
   },
-  "pending": [
-    {
-      "section": "A",
-      "line": 6,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Now, listen to the mini-lecture. When it is over, you will be given THREE minutes to check your work."
-    },
-    "片头音乐剪切点尚待正式核定"
-  ]
+  "pending": [],
+  "待核": [],
+  "review": {
+    "status": "timeline-checked",
+    "evidence": "核验/2012-时间轴说明处理.json；核验/2012-考试内容审核.json；音乐剪切/2012.json",
+    "instruction_display": "完整原卷说明静态展示，不以部分ASR猜逐句高亮"
+  }
 }

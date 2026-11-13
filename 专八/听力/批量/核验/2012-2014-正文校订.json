@@ -1,0 +1,957 @@
+{
+  "status": "13正文疑项逐项裁决；5处按录音更正，7处保留原音口语/印本，1处细微缩略形式保留待最终听核。考试念题另由考试实现代理核查。",
+  "source_evidence": "核验/疑文复识别/2012-2014-正文独立复核.json",
+  "source_evidence_sha256": "d807dc6da2ac784ecc9bc7adbec53721302b93ee8d1bb308d042405573f4c87e",
+  "method": "直接对原包音频SHA确认，局部未增益16k单声道分析副本分别用Parakeet和独立Whisper识别；不改原音、主ASR或对齐工具。时间窗为原音绝对秒，不是伪造的词时刻。",
+  "scope": "仅修改译注草稿2012—2014正文英文/中文/词注sp与已裁决待核项；题目未改、原文对齐输出未直接改，交负责人重跑early。",
+  "records": [
+    {
+      "year": 2012,
+      "unit": "2012-A",
+      "draft_sentence": 7,
+      "query": "being observing",
+      "status": "corrected_from_audio",
+      "window": [
+        121,
+        137
+      ],
+      "before": {
+        "en": "And failing to be observing while walking or driving can be life-threatening.",
+        "zh": "而走路或开车时，如果不注意观察，就可能危及生命。",
+        "w": [
+          {
+            "t": "word",
+            "h": "life-threatening",
+            "m": "adj.危及生命的",
+            "sp": [
+              [
+                60,
+                76
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 7
+      },
+      "after": {
+        "en": "And failing to be observant while walking or driving can be life-threatening.",
+        "zh": "而走路或开车时不留心观察，可能会危及生命。",
+        "w": [
+          {
+            "t": "word",
+            "h": "life-threatening",
+            "m": "adj.危及生命的",
+            "sp": [
+              [
+                60,
+                76
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "observant",
+            "m": "adj.留心的；善于观察的",
+            "sp": [
+              [
+                18,
+                27
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 7
+      },
+      "decision": "原音两模型均为failing to be observant；错误来自解析印本，不把错误observing教给学生。"
+    },
+    {
+      "year": 2012,
+      "unit": "2012-A",
+      "draft_sentence": 10,
+      "query": "and, and when we rarely",
+      "status": "retained_as_recorded",
+      "window": [
+        146,
+        159
+      ],
+      "before": {
+        "en": "For instance, when we observe casually, we may not be aware of factors that bias our observations, and, and when we rarely keep formal records of our observations.",
+        "zh": "例如，随意观察时，我们可能意识不到哪些因素使自己的观察带有偏见，而且我们很少正式记录观察结果。",
+        "w": [
+          {
+            "t": "word",
+            "h": "casually",
+            "m": "adv.随意地",
+            "sp": [
+              [
+                30,
+                38
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "bias",
+            "m": "v.使产生偏见",
+            "sp": [
+              [
+                76,
+                80
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "formal records",
+            "m": "phr.正式记录",
+            "sp": [
+              [
+                128,
+                142
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 10
+      },
+      "after": {
+        "en": "For instance, when we observe casually, we may not be aware of factors that bias our observations, and, and when we rarely keep formal records of our observations.",
+        "zh": "例如，随意观察时，我们可能意识不到哪些因素使自己的观察带有偏见，而且我们很少正式记录观察结果。",
+        "w": [
+          {
+            "t": "word",
+            "h": "casually",
+            "m": "adv.随意地",
+            "sp": [
+              [
+                30,
+                38
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "bias",
+            "m": "v.使产生偏见",
+            "sp": [
+              [
+                76,
+                80
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "formal records",
+            "m": "phr.正式记录",
+            "sp": [
+              [
+                128,
+                142
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 10
+      },
+      "decision": "两模型都识出and when；Whisper另保留重复and，印本亦有重复，故保留口语原句，不据书面语删when或重复and。"
+    },
+    {
+      "year": 2012,
+      "unit": "2012-A",
+      "draft_sentence": 39,
+      "query": "for that manner",
+      "status": "corrected_from_audio",
+      "window": [
+        354,
+        366
+      ],
+      "before": {
+        "en": "Why? Because people or for that manner animals do not behave in exactly the same way across all situations.",
+        "zh": "为什么呢？因为人——动物也是如此——并不会在所有情境下都表现得完全一样。",
+        "w": [
+          {
+            "t": "word",
+            "h": "behave",
+            "m": "v.表现；行为举止",
+            "sp": [
+              [
+                54,
+                60
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "situation",
+            "m": "n.情境",
+            "sp": [
+              [
+                96,
+                106
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 39
+      },
+      "after": {
+        "en": "Why? Because people or for that matter animals do not behave in exactly the same way across all situations.",
+        "zh": "为什么呢？因为人——动物也是如此——并不会在所有情境下都表现得完全一样。",
+        "w": [
+          {
+            "t": "word",
+            "h": "behave",
+            "m": "v.表现；行为举止",
+            "sp": [
+              [
+                54,
+                60
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "situation",
+            "m": "n.情境",
+            "sp": [
+              [
+                96,
+                106
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "for that matter",
+            "m": "phr.就这一点而言；同样也",
+            "sp": [
+              [
+                23,
+                38
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 39
+      },
+      "decision": "两模型均为for that matter。"
+    },
+    {
+      "year": 2012,
+      "unit": "2012-B1",
+      "draft_sentence": 8,
+      "query": "creativity can be saying",
+      "status": "corrected_from_audio",
+      "window": [
+        863,
+        876
+      ],
+      "before": {
+        "en": "Well, creativity can be saying as a process.",
+        "zh": "创造力可以说是一个过程。",
+        "w": [
+          {
+            "t": "word",
+            "h": "process",
+            "m": "n.过程",
+            "sp": [
+              [
+                36,
+                43
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 8
+      },
+      "after": {
+        "en": "Well, creativity can be seen as a process.",
+        "zh": "嗯，创造力可以被视为一个过程。",
+        "w": [
+          {
+            "t": "word",
+            "h": "process",
+            "m": "n.过程",
+            "sp": [
+              [
+                34,
+                41
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "be seen as",
+            "m": "phr.被视为；被看作",
+            "sp": [
+              [
+                21,
+                31
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 8
+      },
+      "decision": "两模型均为creativity can be seen as a process，中文同步改为被视为，process词注位置随英文长度变化重算。"
+    },
+    {
+      "year": 2013,
+      "unit": "2013-A",
+      "draft_sentence": 6,
+      "query": "what the world was that about",
+      "status": "retained_as_recorded",
+      "window": [
+        149,
+        165
+      ],
+      "before": {
+        "en": "However, I am sure that some of you have been in a situation, probably more than once, where you read — quote and unquote — an assignment, closed the text and thought “what the world was that about?”",
+        "zh": "不过，我确信你们中有些人可能不止一次遇到过这种情况：所谓“读过了”布置的阅读材料，合上书，却在想：“刚才那到底讲了些什么？”",
+        "w": [
+          {
+            "t": "phr",
+            "h": "quote and unquote",
+            "m": "phr.所谓；给某词加引号以示保留",
+            "sp": [
+              [
+                104,
+                121
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "assignment",
+            "m": "n.布置的阅读任务",
+            "sp": [
+              [
+                127,
+                137
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 6
+      },
+      "after": {
+        "en": "However, I am sure that some of you have been in a situation, probably more than once, where you read — quote and unquote — an assignment, closed the text and thought “what the world was that about?”",
+        "zh": "不过，我确信你们中有些人可能不止一次遇到过这种情况：所谓“读过了”布置的阅读材料，合上书，却在想：“刚才那到底讲了些什么？”",
+        "w": [
+          {
+            "t": "phr",
+            "h": "quote and unquote",
+            "m": "phr.所谓；给某词加引号以示保留",
+            "sp": [
+              [
+                104,
+                121
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "assignment",
+            "m": "n.布置的阅读任务",
+            "sp": [
+              [
+                127,
+                137
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 6
+      },
+      "decision": "两模型与印本均无in；保留what the world，不凭常用表达补in。"
+    },
+    {
+      "year": 2013,
+      "unit": "2013-B2",
+      "draft_sentence": 21,
+      "query": "although sometimes they could be",
+      "status": "corrected_from_audio",
+      "window": [
+        1175,
+        1190
+      ],
+      "before": {
+        "en": "There’s no monetary reward necessarily attached to it, although sometimes they could be.",
+        "zh": "这种认可不一定带来金钱奖励，不过有时候也可能会有。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "monetary reward",
+            "m": "phr.金钱奖励",
+            "sp": [
+              [
+                11,
+                26
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "attached to",
+            "m": "phr.伴随着；附带于",
+            "sp": [
+              [
+                39,
+                50
+              ]
+            ]
+          }
+        ],
+        "speaker": "Interviewee",
+        "draft_sentence": 21
+      },
+      "after": {
+        "en": "There’s no monetary reward necessarily attached to it, although sometimes there could be.",
+        "zh": "这种认可不一定带来金钱奖励，不过有时候也可能会有。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "monetary reward",
+            "m": "phr.金钱奖励",
+            "sp": [
+              [
+                11,
+                26
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "attached to",
+            "m": "phr.伴随着；附带于",
+            "sp": [
+              [
+                39,
+                50
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "there could be",
+            "m": "phr.可能会有",
+            "sp": [
+              [
+                74,
+                88
+              ]
+            ]
+          }
+        ],
+        "speaker": "Interviewee",
+        "draft_sentence": 21
+      },
+      "decision": "两模型均为there could be，表示有时可能有金钱奖励；保留原中文意思并同步词注。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-A",
+      "draft_sentence": 6,
+      "query": "I restrict it a term",
+      "status": "corrected_from_audio",
+      "window": [
+        134,
+        148
+      ],
+      "before": {
+        "en": "I restrict it a term describing a physical reaction.",
+        "zh": "这里先把它限定为一个描述物理反应的术语。",
+        "w": [
+          {
+            "t": "word",
+            "h": "restrict",
+            "m": "v.限制；限定",
+            "sp": [
+              [
+                2,
+                10
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "physical",
+            "m": "adj.物理的",
+            "sp": [
+              [
+                34,
+                42
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 6
+      },
+      "after": {
+        "en": "It was strictly a term describing a physical reaction.",
+        "zh": "当时，它仅仅是一个描述物理反应的术语。",
+        "w": [
+          {
+            "t": "word",
+            "h": "physical",
+            "m": "adj.物理的",
+            "sp": [
+              [
+                36,
+                44
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "strictly",
+            "m": "adv.仅仅；完全",
+            "sp": [
+              [
+                7,
+                15
+              ]
+            ]
+          }
+        ],
+        "draft_sentence": 6
+      },
+      "decision": "两模型均为It was strictly a term，不是restrict；删除错误restrict词注、加入strictly，并重定位physical。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-B1",
+      "draft_sentence": 6,
+      "query": "went inside and met",
+      "status": "retained_as_recorded",
+      "window": [
+        825,
+        840
+      ],
+      "before": {
+        "en": "and while I was there, I went inside and met with some internally displaced people.",
+        "zh": "而在那期间，我还到境内走访，会见了一些境内流离失所者。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "internally displaced people",
+            "m": "phr.境内流离失所者",
+            "sp": [
+              [
+                55,
+                82
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 6
+      },
+      "after": {
+        "en": "and while I was there, I went inside and met with some internally displaced people.",
+        "zh": "而在那期间，我还到境内走访，会见了一些境内流离失所者。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "internally displaced people",
+            "m": "phr.境内流离失所者",
+            "sp": [
+              [
+                55,
+                82
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 6
+      },
+      "decision": "两模型与印本均为went inside and met with some internally displaced people；保留inside，不把地域不一致误写为英语缺字。题目地域歧义仍在source_issue_notes单列。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-B1",
+      "draft_sentence": 14,
+      "query": "there seems to be a block in",
+      "status": "retained_as_recorded",
+      "window": [
+        914,
+        931
+      ],
+      "before": {
+        "en": "So far the different officials I’ve met with and different local people I’ve met with all have shared concerns and very strongly, you know, they have spoken out about the humanitarian crisis but um, there seems to be a block in.",
+        "zh": "到目前为止，我会见的不同官员和当地民众都有共同的担忧，也都强烈呼吁关注这场人道主义危机；但是，事情似乎卡在了某个环节。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "shared concern",
+            "m": "phr.共同的担忧",
+            "sp": [
+              [
+                95,
+                110
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "speak out",
+            "m": "phr.公开表明立场；大声疾呼",
+            "sp": [
+              [
+                150,
+                160
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "humanitarian crisis",
+            "m": "phr.人道主义危机",
+            "sp": [
+              [
+                171,
+                190
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 14
+      },
+      "after": {
+        "en": "So far the different officials I’ve met with and different local people I’ve met with all have shared concerns and very strongly, you know, they have spoken out about the humanitarian crisis but um, there seems to be a block in.",
+        "zh": "到目前为止，我会见的不同官员和当地民众都有共同的担忧，也都强烈呼吁关注这场人道主义危机；但是，事情似乎卡在了某个环节。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "shared concern",
+            "m": "phr.共同的担忧",
+            "sp": [
+              [
+                95,
+                110
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "speak out",
+            "m": "phr.公开表明立场；大声疾呼",
+            "sp": [
+              [
+                150,
+                160
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "humanitarian crisis",
+            "m": "phr.人道主义危机",
+            "sp": [
+              [
+                171,
+                190
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 14
+      },
+      "decision": "两模型与印本一致为there seems to be a block in，保留口语中断，不按语法补宾语或改blocking。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-B1",
+      "draft_sentence": 17,
+      "query": "How do you think U.N.H.C.R. should be doing",
+      "status": "retained_as_recorded",
+      "window": [
+        930,
+        947
+      ],
+      "before": {
+        "en": "How do you think U.N.H.C.R. should be doing?",
+        "zh": "您认为联合国难民署应该怎样开展工作？",
+        "w": [
+          {
+            "t": "word",
+            "h": "UNHCR",
+            "m": "abbr.联合国难民事务高级专员公署（联合国难民署）",
+            "sp": [
+              [
+                17,
+                27
+              ]
+            ]
+          }
+        ],
+        "speaker": "M",
+        "draft_sentence": 17
+      },
+      "after": {
+        "en": "How do you think U.N.H.C.R. should be doing?",
+        "zh": "您认为联合国难民署应该怎样开展工作？",
+        "w": [
+          {
+            "t": "word",
+            "h": "UNHCR",
+            "m": "abbr.联合国难民事务高级专员公署（联合国难民署）",
+            "sp": [
+              [
+                17,
+                27
+              ]
+            ]
+          }
+        ],
+        "speaker": "M",
+        "draft_sentence": 17
+      },
+      "decision": "原主ASR931.46—943.46窗及本次Whisper均为How do you think UNHCR should be doing；本次Parakeet对较宽窗漏后句，不据漏识别删该句或改What。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-B2",
+      "draft_sentence": 13,
+      "query": "a displaced unstable population",
+      "status": "retained_as_recorded",
+      "window": [
+        1146,
+        1163
+      ],
+      "before": {
+        "en": "Um but I think it’s clear that a displaced unstable population is what happens in Iraq, and how Iraq settles in the years to come is going to affect the entire Middle East.",
+        "zh": "但我认为很清楚，伊拉克目前存在着大量流离失所、生活不稳定的人口；而伊拉克在未来几年如何安定下来，将影响整个中东。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "in the years to come",
+            "m": "phr.在未来几年",
+            "sp": [
+              [
+                109,
+                129
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "settle",
+            "m": "v.安定下来",
+            "sp": [
+              [
+                101,
+                108
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "Middle East",
+            "m": "phr.中东",
+            "sp": [
+              [
+                160,
+                171
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 13
+      },
+      "after": {
+        "en": "Um but I think it’s clear that a displaced unstable population is what happens in Iraq, and how Iraq settles in the years to come is going to affect the entire Middle East.",
+        "zh": "但我认为很清楚，伊拉克目前存在着大量流离失所、生活不稳定的人口；而伊拉克在未来几年如何安定下来，将影响整个中东。",
+        "w": [
+          {
+            "t": "phr",
+            "h": "in the years to come",
+            "m": "phr.在未来几年",
+            "sp": [
+              [
+                109,
+                129
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "settle",
+            "m": "v.安定下来",
+            "sp": [
+              [
+                101,
+                108
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "Middle East",
+            "m": "phr.中东",
+            "sp": [
+              [
+                160,
+                171
+              ]
+            ]
+          }
+        ],
+        "speaker": "W",
+        "draft_sentence": 13
+      },
+      "decision": "正确窄窗两模型完整一致；1136—1163较宽窗Whisper也完整识出。原主ASR1137.62—1162.62块在1146后漏句，不是录音删文。原定位1047—1080为错误窗，不能据此判缺失。原句虽生硬，全部保留。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-B2",
+      "draft_sentence": 16,
+      "query": "you willing to come here",
+      "status": "retained_with_minor_model_disagreement",
+      "window": [
+        1171,
+        1185
+      ],
+      "before": {
+        "en": "On a personal level why is this so important to you... you willing to come here and risk your life?",
+        "zh": "从您个人的角度来说，为什么这件事如此重要，值得您冒着生命危险来到这里？",
+        "w": [
+          {
+            "t": "phr",
+            "h": "on a personal level",
+            "m": "phr.从个人层面来说",
+            "sp": [
+              [
+                0,
+                19
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "risk one's life",
+            "m": "phr.冒生命危险",
+            "sp": [
+              [
+                84,
+                98
+              ]
+            ]
+          }
+        ],
+        "speaker": "M",
+        "draft_sentence": 16
+      },
+      "after": {
+        "en": "On a personal level why is this so important to you... you willing to come here and risk your life?",
+        "zh": "从您个人的角度来说，为什么这件事如此重要，值得您冒着生命危险来到这里？",
+        "w": [
+          {
+            "t": "phr",
+            "h": "on a personal level",
+            "m": "phr.从个人层面来说",
+            "sp": [
+              [
+                0,
+                19
+              ]
+            ]
+          },
+          {
+            "t": "phr",
+            "h": "risk one's life",
+            "m": "phr.冒生命危险",
+            "sp": [
+              [
+                84,
+                98
+              ]
+            ]
+          }
+        ],
+        "speaker": "M",
+        "draft_sentence": 16
+      },
+      "decision": "主ASR、本次Parakeet、印本均为you willing；Whisper写You’re willing。没有足够证据增加独立are；暂保留原文，留这一细微缩略形式待最终听核，不伪称双模型一致。"
+    },
+    {
+      "year": 2014,
+      "unit": "2014-B2",
+      "draft_sentence": 22,
+      "query": "but... pressure perhaps on our government",
+      "status": "retained_as_recorded",
+      "window": [
+        1215,
+        1232
+      ],
+      "before": {
+        "en": "Do you think that you in your position can try to push this process forward, but... pressure perhaps on our government?",
+        "zh": "您认为，凭借您的地位，能否推动这个进程，比如……也许可以向我国政府施压？",
+        "w": [
+          {
+            "t": "phr",
+            "h": "push a process forward",
+            "m": "phr.推动这一进程",
+            "sp": [
+              [
+                50,
+                75
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "pressure",
+            "m": "n.压力",
+            "sp": [
+              [
+                84,
+                92
+              ]
+            ]
+          }
+        ],
+        "speaker": "M",
+        "draft_sentence": 22
+      },
+      "after": {
+        "en": "Do you think that you in your position can try to push this process forward, but... pressure perhaps on our government?",
+        "zh": "您认为，凭借您的地位，能否推动这个进程，比如……也许可以向我国政府施压？",
+        "w": [
+          {
+            "t": "phr",
+            "h": "push a process forward",
+            "m": "phr.推动这一进程",
+            "sp": [
+              [
+                50,
+                75
+              ]
+            ]
+          },
+          {
+            "t": "word",
+            "h": "pressure",
+            "m": "n.压力",
+            "sp": [
+              [
+                84,
+                92
+              ]
+            ]
+          }
+        ],
+        "speaker": "M",
+        "draft_sentence": 22
+      },
+      "decision": "两模型均在这处识作but pressure，随后对方重复问To put pressure on our government；保留原来的but... pressure口语结构，不凭通顺程度替换为put。"
+    }
+  ]
+}

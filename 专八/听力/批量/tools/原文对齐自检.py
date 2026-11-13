@@ -23,7 +23,9 @@ def run():
         # 三年讲座前两句均有原文页图，且原始逐词ASR逐字支持。
         positive = copy.deepcopy(draft)
         positive['units'] = [positive['units'][0]]
-        positive['units'][0]['sentences'] = positive['units'][0]['sentences'][:2]
+        body = positive['units'][0]['sentences']
+        opening = next(i for i, s in enumerate(body) if s['en'].lower().startswith('good morning'))
+        positive['units'][0]['sentences'] = body[opening:opening + 2]
         candidate = alignment.align(positive, raw)
         first = candidate['rows'][0]['word_alignment'][0]['asr_indices'][0]
         last = candidate['rows'][1]['word_alignment'][-1]['asr_indices'][-1]

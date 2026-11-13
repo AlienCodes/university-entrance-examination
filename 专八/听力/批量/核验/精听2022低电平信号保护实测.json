@@ -1,0 +1,45 @@
+{
+  "scope": "只验证2022真实check区间的源SHA绑定保护，不生成视频或虚构词时间",
+  "source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+  "source_subset": [
+    580.0,
+    770.0
+  ],
+  "sample_rate": 44100,
+  "channels": 2,
+  "registered_protected_intervals": [
+    [
+      54.68,
+      84.85
+    ],
+    [
+      586.87,
+      767.6
+    ],
+    [
+      804.25,
+      834.32
+    ]
+  ],
+  "registration_sha256": "746b6f0565c1d7ac7efcf5fc58c15126695b71c980b26378b36a9e94bbe54b23",
+  "with_protection": {
+    "samples_equal": true,
+    "removed_intervals": [],
+    "kept_gap_evidence": [
+      {
+        "interval": [
+          6.8700000000000045,
+          187.60000000000002
+        ],
+        "reason": "源SHA绑定的低电平信号保护段，完整保留",
+        "protected": true
+      }
+    ]
+  },
+  "without_protection_demonstration": {
+    "removed_seconds": 178.73,
+    "purpose": "展示旧门槛会错误删掉这段低电平非语音信号；生产已禁止。"
+  },
+  "gain_or_resample_applied": false,
+  "tests_passed": 8
+}

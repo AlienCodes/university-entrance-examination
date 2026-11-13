@@ -1,7 +1,7 @@
 {
   "scope": "合成2声道测试波形与短句，只验证适配能力，不是真实2009听力样片或语义终审",
   "unit_tests": {
-    "passed": 5,
+    "passed": 8,
     "command": "/workspace/tem8-venv/bin/python 专八/听力/批量/tools/精听自检.py"
   },
   "render": {
@@ -81,5 +81,14 @@
   "local_preview": "/workspace/tem8-style-smoke/out/技术预览_译注未定稿_2009年专八听力 Section A 接口测试.mp4",
   "screens_dir": "/workspace/tem8-style-smoke/out/shots",
   "published": false,
-  "pending": "真实2009开头技术样片等待原始录音首段ASR词时间"
+  "pending": "真实2009前三句4K技术片已完成；整单元旧正文技术截图127屏通过；最终含formal数据仍须重新freeze/审图。",
+  "2022_source_protection": {
+    "scope": "只2022原音，不改其余14年处理路径",
+    "registration": "核验/2022-停顿边界复核.json",
+    "tests": [
+      "-83dBFS周期信号在保护区内逐样本保留",
+      "错源SHA/错保护区间拒绝",
+      "非2022不套用登记"
+    ]
+  }
 }

@@ -2,8 +2,37 @@
   "source_duration": 1533.7244444444445,
   "source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283",
   "trim": {
+    "year": 2019,
     "start": 0,
-    "status": "待核片头音乐，时间轴仍保留完整原声，不准发布"
+    "reason": "无片头音乐",
+    "source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283",
+    "evidence": "逐年查看0—7s原采样率波形和0—6kHz频谱：正式报幕前没有连续音乐谐波或音乐段，只有前导静音及录音底噪；保留完整开头，start=0。ASR仅作报幕内容定位参考，首词Test在0.96s；不据此删除前导部分。",
+    "source_entry": {
+      "file": "2019专八笔试真题和答案/TEM8-2019年真题听力.wma",
+      "sha256": "e2f8634325ff1d2ab83fb18e93483bc0e419537c487720a7e70c88e21a296902"
+    },
+    "canonical_format": {
+      "sample_rate": 44100,
+      "channels": 2,
+      "pcm_format": "float32le"
+    },
+    "cut_sample": 0,
+    "silence_interval": null,
+    "cut_window": {
+      "half_window_seconds": 0.04,
+      "max_channel_peak_dbfs": -240.0,
+      "all_channel_rms_dbfs": -240.0,
+      "digital_zero": true,
+      "db_display_floor": -240.0
+    },
+    "reference_first_word": [
+      "Test",
+      0.96,
+      1.28
+    ],
+    "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+    "plot": "图证/2019.png",
+    "pending": []
   },
   "events": [
     {
@@ -18,18 +47,6 @@
       "kind": "instr",
       "sec": "A",
       "hi": -1
-    },
-    {
-      "t": 12.8,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 0
-    },
-    {
-      "t": 16.4,
-      "kind": "instr",
-      "sec": "A",
-      "hi": 1
     },
     {
       "t": 44.34,
@@ -64,36 +81,6 @@
       "kind": "instr",
       "sec": "B",
       "hi": -1
-    },
-    {
-      "t": 769.03,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 0
-    },
-    {
-      "t": 772.71,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 1
-    },
-    {
-      "t": 778.63,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 2
-    },
-    {
-      "t": 784.23,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 3
-    },
-    {
-      "t": 788.63,
-      "kind": "instr",
-      "sec": "B",
-      "hi": 4
     },
     {
       "t": 804.42,
@@ -341,49 +328,11 @@
       ]
     ]
   },
-  "pending": [
-    {
-      "section": "A",
-      "line": 2,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "While listening, please complete the gap-filling task on ANSWER SHEET ONE and write NO MORE THAN THREE WORDS for each gap."
-    },
-    {
-      "section": "A",
-      "line": 3,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Make sure the word(s) you fill in is (are) both grammatically and semantically acceptable."
-    },
-    {
-      "section": "A",
-      "line": 4,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "You may use the blank sheet for note taking."
-    },
-    {
-      "section": "A",
-      "line": 5,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "You have THIRTY seconds to preview the gap-filling task."
-    },
-    {
-      "section": "A",
-      "line": 6,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "Now listen to the mini-lecture."
-    },
-    {
-      "section": "A",
-      "line": 7,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "When it is over, you will be given THREE minutes to check your work."
-    },
-    {
-      "section": "B",
-      "line": 5,
-      "issue": "说明前缀未唯一对应，保留整段原卷说明、不制造逐句时间",
-      "text": "You have THIRTY seconds to preview the choices."
-    },
-    "片头音乐剪切点尚待正式核定"
-  ]
+  "pending": [],
+  "待核": [],
+  "review": {
+    "status": "timeline-checked",
+    "evidence": "核验/2019-时间轴说明处理.json；核验/2019-考试内容审核.json；音乐剪切/2019.json",
+    "instruction_display": "完整原卷说明静态展示，不以部分ASR猜逐句高亮"
+  }
 }
