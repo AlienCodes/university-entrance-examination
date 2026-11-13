@@ -1,0 +1,174 @@
+# token预算：约0万；程序解码、ASR和核验，不做模型审校，不生成最终视频。
+name: 专八历年听力原音与识别预处理
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-prep.txt']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: tem8-listening-history-prep
+  cancel-in-progress: false
+env:
+  PREP_TAG: tem8-listening-prep-2009-2024
+jobs:
+  list:
+    runs-on: ubuntu-24.04
+    outputs:
+      years: ${{ steps.list.outputs.years }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - name: 核对年份并准备持久Release
+        id: list
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          years = [int(s.strip()) for s in Path('.github/tem8-listening-prep.txt').read_text().splitlines() if s.strip() and not s.lstrip().startswith('#')]
+          allowed = list(range(2009, 2020)) + list(range(2021, 2025))
+          assert years and len(years) == len(set(years)) and all(y in allowed for y in years), '年份缺失、重复或包含2020'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f: f.write('years=' + json.dumps(years) + '\n')
+          PY
+          python3 .github/check-release-target.py
+          if ! gh release view "$PREP_TAG" >/dev/null 2>&1; then
+            gh release create "$PREP_TAG" --target "$GITHUB_REF_NAME" --title '专八2009—2024听力机器转写与来源核验（预处理）' --notes '这是原音来源、机器识别和时间候选的持久存档，不是经核定的听力原文或成品视频。2020取消考试。处理音乐剪切、原文核对、翻译和视频制作将在后续完成。'
+          fi
+  recognize:
+    needs: list
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 15
+      matrix:
+        year: ${{ fromJson(needs.list.outputs.years) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量/tools
+            专八/听力/批量/原始材料清单.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.15'
+          cache: pip
+          cache-dependency-path: .github/cet6-render-requirements.txt
+      - name: 仅安装ASR依赖与ffmpeg
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check numpy==2.4.6 soundfile==0.14.0 soxr==1.1.0 sherpa-onnx==1.13.8
+          if ! command -v ffmpeg >/dev/null; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; fi
+      - name: 恢复Parakeet模型缓存
+        id: model
+        uses: actions/cache@v4
+        with:
+          path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+          key: asr-sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+      - name: 下载Parakeet模型
+        if: steps.model.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p tools/tts/models
+          curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar xj -C tools/tts/models
+      - name: 下载原始资料并核对整体SHA
+        run: |
+          set -euo pipefail
+          mkdir -p in
+          curl -fL --retry 5 --retry-delay 3 -o in/default.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw/default.zip
+          python 专八/听力/批量/tools/原音准备.py ${{ matrix.year }} --archive in/default.zip --out "out/${{ matrix.year }}"
+          rm in/default.zip
+      - name: 原音识别、静音候选及时间检查
+        env:
+          OMP_NUM_THREADS: '2'
+          OPENBLAS_NUM_THREADS: '1'
+        run: |
+          set -euo pipefail
+          python 专八/听力/批量/tools/识别批量.py "out/${{ matrix.year }}" --threads 2 --model tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+      - name: 打包并持久保存本年结果
+        env:
+          GH_TOKEN: ${{ github.token }}
+          YEAR: ${{ matrix.year }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os, zipfile
+          from pathlib import Path
+          year = os.environ['YEAR']; folder = Path('out') / year
+          names = ['原音准备.json', '识别.json', '停顿.json', '识别分块.json', 'ASR核验.json']
+          audit = json.loads((folder / 'ASR核验.json').read_text())
+          for n in names[:-1]: assert hashlib.sha256((folder / n).read_bytes()).hexdigest() == audit['outputs'][n]['sha256']
+          with zipfile.ZipFile(f'TEM8-listening-prep-{year}.zip', 'w', compression=zipfile.ZIP_STORED) as z:
+              for n in names: z.writestr(zipfile.ZipInfo(f'{year}/{n}', (2026,11,13,0,0,0)), (folder / n).read_bytes())
+          with zipfile.ZipFile(f'TEM8-listening-prep-{year}.zip') as z:
+              assert z.testzip() is None and all(i.flag_bits & 0x800 for i in z.infolist())
+          PY
+          gh release upload "$PREP_TAG" "TEM8-listening-prep-$YEAR.zip" --clobber
+      - name: 失败也保存诊断（临时，不代替正式Release）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tem8-prep-failure-${{ matrix.year }}
+          path: out/${{ matrix.year }}/*.json
+          if-no-files-found: ignore
+          retention-days: 14
+  collect:
+    needs: [list, recognize]
+    if: always() && needs.list.result == 'success'
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      EXPECTED: ${{ needs.list.outputs.years }}
+      RECOGNIZE_RESULT: ${{ needs.recognize.result }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {sparse-checkout: .github}
+      - name: 汇总、核对、发布并回下载
+        run: |
+          set -euo pipefail
+          mkdir -p years
+          gh release download "$PREP_TAG" -p 'TEM8-listening-prep-2*.zip' -D years
+          python3 - <<'PY'
+          import hashlib, io, json, os, zipfile
+          from pathlib import Path
+          years = json.loads(os.environ['EXPECTED']); rows = []; files = {}
+          for year in years:
+              p = Path('years') / f'TEM8-listening-prep-{year}.zip'
+              assert p.is_file(), f'缺少{year}结果，不能宣称本批完成'
+              with zipfile.ZipFile(p) as z:
+                  assert z.testzip() is None
+                  a = json.loads(z.read(f'{year}/ASR核验.json'))
+                  assert a['year'] == year and a['source_unchanged'] and not a['music_trim_applied']
+                  assert a['source_commit'] == os.environ['GITHUB_SHA'] and a['workflow_run_id'] == os.environ['GITHUB_RUN_ID'], '旧预处理资产不能替代本次运行'
+                  assert a['source_archive_sha256'] == '919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925'
+                  for n, r in a['outputs'].items(): assert hashlib.sha256(z.read(f'{year}/{n}')).hexdigest() == r['sha256']
+                  for n in z.namelist():
+                      assert n.startswith(str(year) + '/') and '..' not in Path(n).parts
+                      files[n] = z.read(n)
+              rows.append({'year':year,'words':a['words'],'duration':a['duration'],'zip_sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          assert os.environ['RECOGNIZE_RESULT'] == 'success', '识别矩阵未全部成功；旧存档不能掩盖本次失败'
+          manifest = {'source_commit':os.environ['GITHUB_SHA'],'years':rows,'scope':'当前启动清单中的年份；机器转写仅用于对齐，未完成最终原文和音乐剪切核对。'}
+          files['预处理清单.json'] = (json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode()
+          with zipfile.ZipFile('TEM8-listening-prep-complete.zip','w',compression=zipfile.ZIP_STORED) as z:
+              for n,b in sorted(files.items()): z.writestr(zipfile.ZipInfo(n,(2026,11,13,0,0,0)),b)
+          Path('SHA256SUMS').write_text(hashlib.sha256(Path('TEM8-listening-prep-complete.zip').read_bytes()).hexdigest()+'  TEM8-listening-prep-complete.zip\n')
+          Path('notes.md').write_text('专八听力机器识别与来源核验，已完成年份：'+ '、'.join(map(str,years))+'。\n\n2020取消考试。原音未裁音乐、未改增益/采样率/声道。识别词只用于原文对照与时间对齐，不是已经核定的原文或成品视频。\n')
+          PY
+          gh release upload "$PREP_TAG" TEM8-listening-prep-complete.zip SHA256SUMS --clobber
+          gh release edit "$PREP_TAG" --notes-file notes.md
+          mkdir verify
+          gh release download "$PREP_TAG" -p TEM8-listening-prep-complete.zip -D verify
+          python3 - <<'PY'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('verify/TEM8-listening-prep-complete.zip')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==Path('SHA256SUMS').read_text().split()[0]
+          with zipfile.ZipFile(p) as z: assert z.testzip() is None
+          print('Release回下载SHA和CRC核验通过')
+          PY
