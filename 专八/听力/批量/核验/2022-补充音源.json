@@ -1,0 +1,2687 @@
+{
+  "schema_version": 1,
+  "year": 2022,
+  "status": "approved",
+  "decision": {
+    "authorized_by": "任务负责人 /root，2026-11-13明确确认采用这份更完整2022源",
+    "scope": "只更换2022所选原音，其他14年保持原包选源；未改写原包98条清单；这不是最终视频",
+    "reason": "老师上传原包的唯一2022 MP3缺少Section A标题、操作说明和30秒预览；公开教学源包含这些内容，讲座及两段采访与原包同卷关联已核。"
+  },
+  "selected_source": {
+    "file": "TEM8-2022-complete.m4a",
+    "suffix": ".m4a",
+    "bytes": 12523048,
+    "sha256": "05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693",
+    "origin": {
+      "kind": "public_educational_audio_supplement",
+      "provider": "新东方在线（考研四六级专四专八公开教学页面）",
+      "page_url": "https://tem.koolearn.com/20250401/824726.html",
+      "download_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3",
+      "retrieved_utc": "2026-11-13T18:57:00Z",
+      "release_tag": "tem8-listening-raw-supplement",
+      "release_asset": "TEM8-2022-complete.m4a",
+      "release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw-supplement/TEM8-2022-complete.m4a",
+      "file_naming_note": "公开直链扩展名为.mp3，ffprobe确定实际容器M4A，codec=HE-AAC；仅给原字节副本正确.m4a名称，未转码/增益/裁切/声道/采样率处理",
+      "public_url": "https://guonei-cos.koocdn.com/common/a8cba25461cd449fa68d3a49d4e2b939.mp3"
+    },
+    "audio": {
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "codec": "aac",
+      "profile": "HE-AAC",
+      "sample_rate": 44100,
+      "channels": 2,
+      "channel_layout": "stereo",
+      "container_duration": 1546.79
+    }
+  },
+  "comparison": {
+    "old_source": {
+      "file": "2022年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+      "bytes": 9590026,
+      "sha256": "693415abb8b51cc1660eb2506b1a762b7bceaece604559321f5624bb46a87801",
+      "archive_release": "tem8-listening-raw",
+      "archive_asset": "default.zip",
+      "archive_sha256": "919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925",
+      "container_duration": 1465.364898,
+      "sample_rate": 44100,
+      "channels": 2,
+      "start_evidence": "已存在2022机器识别：3.36s即Now listen to the mini lecture；12.32s起Fields and Branches of Anthropology；缺失的是A说明与预览，不能当音乐删去。"
+    },
+    "container_duration_delta_seconds": 81.425102,
+    "same_paper_check": {
+      "lecture": "Fields and Branches of Anthropology",
+      "interview_1": "Harriet Sanford：career in education、NEA Foundation、public teachers and students",
+      "interview_2": "Our World：pollution、Susan Conroy、Darker Skies Association",
+      "ending": "This is the end of Section B: Interviews. This is the end of Part 1: Listening Comprehension.",
+      "evidence": "候选头部115秒及两采访开头、结尾短段Parakeet转写与原包ASR核对；正文14个采样窗10ms log-RMS包络对照一致偏移81.31–81.32s，相关0.883610–0.966887。不得据ASR改写正式原文。"
+    },
+    "alignment": {
+      "method": "10ms log RMS envelope, decoded mono 8000Hz analysis copies; 12s windows, local candidate offset 80.8–81.8s; no production audio modified",
+      "matches": [
+        {
+          "old_start": 20,
+          "new_start": 101.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.898872
+        },
+        {
+          "old_start": 200,
+          "new_start": 281.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.903108
+        },
+        {
+          "old_start": 400,
+          "new_start": 481.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.887468
+        },
+        {
+          "old_start": 800,
+          "new_start": 881.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.894515
+        },
+        {
+          "old_start": 1100,
+          "new_start": 1181.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.955597
+        },
+        {
+          "old_start": 1200,
+          "new_start": 1281.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.88361
+        },
+        {
+          "old_start": 1250,
+          "new_start": 1331.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.895747
+        },
+        {
+          "old_start": 1300,
+          "new_start": 1381.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.903207
+        },
+        {
+          "old_start": 1350,
+          "new_start": 1431.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.899077
+        },
+        {
+          "old_start": 1380,
+          "new_start": 1461.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.952733
+        },
+        {
+          "old_start": 1400,
+          "new_start": 1481.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.963668
+        },
+        {
+          "old_start": 1420,
+          "new_start": 1501.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.953389
+        },
+        {
+          "old_start": 1440,
+          "new_start": 1521.31,
+          "window_seconds": 12,
+          "offset": 81.31,
+          "normalized_log_rms_correlation": 0.966887
+        },
+        {
+          "old_start": 1450,
+          "new_start": 1531.32,
+          "window_seconds": 12,
+          "offset": 81.32,
+          "normalized_log_rms_correlation": 0.936555
+        }
+      ]
+    },
+    "header_asr": [
+      {
+        "start": 0,
+        "end": 25,
+        "text": "Test for English Majors Grade 8 Part One Listening Comprehension Section A Mini Lecture",
+        "tokens": [
+          [
+            " T",
+            14.4
+          ],
+          [
+            "est",
+            14.56
+          ],
+          [
+            " for",
+            14.88
+          ],
+          [
+            " E",
+            15.12
+          ],
+          [
+            "n",
+            15.2
+          ],
+          [
+            "g",
+            15.28
+          ],
+          [
+            "l",
+            15.36
+          ],
+          [
+            "ish",
+            15.44
+          ],
+          [
+            " M",
+            15.52
+          ],
+          [
+            "a",
+            15.68
+          ],
+          [
+            "j",
+            15.84
+          ],
+          [
+            "ors",
+            16.08
+          ],
+          [
+            " G",
+            16.64
+          ],
+          [
+            "r",
+            16.8
+          ],
+          [
+            "ade",
+            16.96
+          ],
+          [
+            " ",
+            17.2
+          ],
+          [
+            "8",
+            17.36
+          ],
+          [
+            " P",
+            18.24
+          ],
+          [
+            "art",
+            18.4
+          ],
+          [
+            " O",
+            18.8
+          ],
+          [
+            "ne",
+            18.96
+          ],
+          [
+            " L",
+            19.52
+          ],
+          [
+            "ist",
+            19.68
+          ],
+          [
+            "en",
+            19.92
+          ],
+          [
+            "ing",
+            20.08
+          ],
+          [
+            " C",
+            20.24
+          ],
+          [
+            "om",
+            20.32
+          ],
+          [
+            "p",
+            20.4
+          ],
+          [
+            "re",
+            20.56
+          ],
+          [
+            "h",
+            20.64
+          ],
+          [
+            "ens",
+            20.8
+          ],
+          [
+            "ion",
+            21.04
+          ],
+          [
+            " S",
+            22.24
+          ],
+          [
+            "ect",
+            22.48
+          ],
+          [
+            "ion",
+            22.64
+          ],
+          [
+            " A",
+            22.88
+          ],
+          [
+            " M",
+            23.6
+          ],
+          [
+            "in",
+            23.76
+          ],
+          [
+            "i",
+            23.84
+          ],
+          [
+            " L",
+            24.08
+          ],
+          [
+            "ect",
+            24.16
+          ],
+          [
+            "ure",
+            24.32
+          ]
+        ]
+      },
+      {
+        "start": 25,
+        "end": 50,
+        "text": "In this section, you will hear a mini lecture. You will hear the mini lecture once only. While listening to the mini lecture, complete the gap filling task on Answer Sheet 1 and write no more than 3 words for each gap. Make sure what you fill in is both grammatically and semantically acceptable. You may use the blank sheet for note.",
+        "tokens": [
+          [
+            " In",
+            25.32
+          ],
+          [
+            " this",
+            25.64
+          ],
+          [
+            " se",
+            25.88
+          ],
+          [
+            "ction",
+            26.12
+          ],
+          [
+            ",",
+            26.36
+          ],
+          [
+            " you",
+            26.6
+          ],
+          [
+            " will",
+            26.76
+          ],
+          [
+            " he",
+            27.0
+          ],
+          [
+            "ar",
+            27.08
+          ],
+          [
+            " a",
+            27.16
+          ],
+          [
+            " min",
+            27.32
+          ],
+          [
+            "i",
+            27.48
+          ],
+          [
+            " l",
+            27.72
+          ],
+          [
+            "ect",
+            27.88
+          ],
+          [
+            "ure",
+            28.12
+          ],
+          [
+            ".",
+            28.36
+          ],
+          [
+            " You",
+            28.68
+          ],
+          [
+            " will",
+            28.84
+          ],
+          [
+            " he",
+            29.08
+          ],
+          [
+            "ar",
+            29.16
+          ],
+          [
+            " the",
+            29.24
+          ],
+          [
+            " min",
+            29.4
+          ],
+          [
+            "i",
+            29.56
+          ],
+          [
+            " l",
+            29.8
+          ],
+          [
+            "ect",
+            29.96
+          ],
+          [
+            "ure",
+            30.2
+          ],
+          [
+            " on",
+            30.52
+          ],
+          [
+            "ce",
+            30.76
+          ],
+          [
+            " only",
+            31.08
+          ],
+          [
+            ".",
+            31.72
+          ],
+          [
+            " Wh",
+            32.04
+          ],
+          [
+            "ile",
+            32.2
+          ],
+          [
+            " l",
+            32.36
+          ],
+          [
+            "ist",
+            32.52
+          ],
+          [
+            "en",
+            32.68
+          ],
+          [
+            "ing",
+            32.76
+          ],
+          [
+            " to",
+            32.84
+          ],
+          [
+            " the",
+            33.0
+          ],
+          [
+            " min",
+            33.08
+          ],
+          [
+            "i",
+            33.24
+          ],
+          [
+            " l",
+            33.48
+          ],
+          [
+            "ect",
+            33.64
+          ],
+          [
+            "ure",
+            33.8
+          ],
+          [
+            ",",
+            33.96
+          ],
+          [
+            " com",
+            34.28
+          ],
+          [
+            "ple",
+            34.44
+          ],
+          [
+            "te",
+            34.6
+          ],
+          [
+            " the",
+            34.76
+          ],
+          [
+            " g",
+            34.92
+          ],
+          [
+            "ap",
+            35.08
+          ],
+          [
+            " f",
+            35.24
+          ],
+          [
+            "ill",
+            35.4
+          ],
+          [
+            "ing",
+            35.56
+          ],
+          [
+            " t",
+            35.72
+          ],
+          [
+            "as",
+            35.8
+          ],
+          [
+            "k",
+            35.96
+          ],
+          [
+            " on",
+            36.2
+          ],
+          [
+            " An",
+            36.44
+          ],
+          [
+            "s",
+            36.6
+          ],
+          [
+            "w",
+            36.68
+          ],
+          [
+            "er",
+            36.76
+          ],
+          [
+            " S",
+            36.92
+          ],
+          [
+            "he",
+            37.08
+          ],
+          [
+            "et",
+            37.08
+          ],
+          [
+            " ",
+            37.32
+          ],
+          [
+            "1",
+            37.48
+          ],
+          [
+            " and",
+            38.04
+          ],
+          [
+            " wr",
+            38.28
+          ],
+          [
+            "ite",
+            38.52
+          ],
+          [
+            " no",
+            38.76
+          ],
+          [
+            " more",
+            39.0
+          ],
+          [
+            " than",
+            39.24
+          ],
+          [
+            " ",
+            39.56
+          ],
+          [
+            "3",
+            39.8
+          ],
+          [
+            " wor",
+            39.8
+          ],
+          [
+            "d",
+            40.04
+          ],
+          [
+            "s",
+            40.2
+          ],
+          [
+            " for",
+            40.44
+          ],
+          [
+            " e",
+            40.68
+          ],
+          [
+            "ach",
+            40.92
+          ],
+          [
+            " g",
+            41.08
+          ],
+          [
+            "ap",
+            41.48
+          ],
+          [
+            ".",
+            41.8
+          ],
+          [
+            " M",
+            42.44
+          ],
+          [
+            "ake",
+            42.6
+          ],
+          [
+            " sure",
+            42.84
+          ],
+          [
+            " what",
+            43.0
+          ],
+          [
+            " you",
+            43.24
+          ],
+          [
+            " f",
+            43.4
+          ],
+          [
+            "ill",
+            43.56
+          ],
+          [
+            " in",
+            43.8
+          ],
+          [
+            " is",
+            44.04
+          ],
+          [
+            " b",
+            44.36
+          ],
+          [
+            "oth",
+            44.44
+          ],
+          [
+            " gr",
+            44.68
+          ],
+          [
+            "am",
+            44.84
+          ],
+          [
+            "m",
+            44.92
+          ],
+          [
+            "at",
+            45.08
+          ],
+          [
+            "ically",
+            45.24
+          ],
+          [
+            " and",
+            45.48
+          ],
+          [
+            " se",
+            45.72
+          ],
+          [
+            "m",
+            45.96
+          ],
+          [
+            "ant",
+            46.12
+          ],
+          [
+            "ically",
+            46.36
+          ],
+          [
+            " ac",
+            46.6
+          ],
+          [
+            "cept",
+            46.84
+          ],
+          [
+            "able",
+            47.08
+          ],
+          [
+            ".",
+            47.64
+          ],
+          [
+            " You",
+            47.96
+          ],
+          [
+            " may",
+            48.12
+          ],
+          [
+            " use",
+            48.36
+          ],
+          [
+            " the",
+            48.52
+          ],
+          [
+            " bl",
+            48.68
+          ],
+          [
+            "ank",
+            48.84
+          ],
+          [
+            " she",
+            49.08
+          ],
+          [
+            "et",
+            49.24
+          ],
+          [
+            " for",
+            49.32
+          ],
+          [
+            " not",
+            49.48
+          ],
+          [
+            "e",
+            49.64
+          ],
+          [
+            ".",
+            49.72
+          ]
+        ]
+      },
+      {
+        "start": 50,
+        "end": 75,
+        "text": "Taking. You have thirty seconds to preview the gap filling task.",
+        "tokens": [
+          [
+            " T",
+            50.24
+          ],
+          [
+            "aking",
+            50.4
+          ],
+          [
+            ".",
+            50.8
+          ],
+          [
+            " You",
+            51.12
+          ],
+          [
+            " have",
+            51.36
+          ],
+          [
+            " th",
+            51.6
+          ],
+          [
+            "ir",
+            51.76
+          ],
+          [
+            "ty",
+            52.0
+          ],
+          [
+            " se",
+            52.16
+          ],
+          [
+            "co",
+            52.32
+          ],
+          [
+            "nds",
+            52.48
+          ],
+          [
+            " to",
+            52.64
+          ],
+          [
+            " pre",
+            52.88
+          ],
+          [
+            "v",
+            53.12
+          ],
+          [
+            "iew",
+            53.2
+          ],
+          [
+            " the",
+            53.36
+          ],
+          [
+            " g",
+            53.52
+          ],
+          [
+            "ap",
+            53.68
+          ],
+          [
+            " f",
+            53.92
+          ],
+          [
+            "ill",
+            54.08
+          ],
+          [
+            "ing",
+            54.24
+          ],
+          [
+            " t",
+            54.4
+          ],
+          [
+            "as",
+            54.56
+          ],
+          [
+            "k",
+            54.8
+          ],
+          [
+            ".",
+            54.96
+          ]
+        ]
+      },
+      {
+        "start": 75,
+        "end": 95,
+        "text": "Now listen to the mini lecture. When it is over, you will be given three minutes to check your work. Fields and branches.",
+        "tokens": [
+          [
+            " Now",
+            84.76
+          ],
+          [
+            " l",
+            85.24
+          ],
+          [
+            "ist",
+            85.4
+          ],
+          [
+            "en",
+            85.56
+          ],
+          [
+            " to",
+            85.72
+          ],
+          [
+            " the",
+            85.8
+          ],
+          [
+            " min",
+            85.96
+          ],
+          [
+            "i",
+            86.12
+          ],
+          [
+            " l",
+            86.36
+          ],
+          [
+            "ect",
+            86.52
+          ],
+          [
+            "ure",
+            86.68
+          ],
+          [
+            ".",
+            86.84
+          ],
+          [
+            " Wh",
+            87.16
+          ],
+          [
+            "en",
+            87.4
+          ],
+          [
+            " it",
+            87.4
+          ],
+          [
+            " is",
+            87.64
+          ],
+          [
+            " over",
+            87.96
+          ],
+          [
+            ",",
+            88.28
+          ],
+          [
+            " you",
+            88.6
+          ],
+          [
+            " will",
+            88.76
+          ],
+          [
+            " be",
+            88.92
+          ],
+          [
+            " g",
+            89.08
+          ],
+          [
+            "i",
+            89.16
+          ],
+          [
+            "ven",
+            89.24
+          ],
+          [
+            " three",
+            89.4
+          ],
+          [
+            " min",
+            89.64
+          ],
+          [
+            "ut",
+            89.8
+          ],
+          [
+            "es",
+            89.88
+          ],
+          [
+            " to",
+            90.04
+          ],
+          [
+            " ch",
+            90.2
+          ],
+          [
+            "e",
+            90.44
+          ],
+          [
+            "ck",
+            90.6
+          ],
+          [
+            " your",
+            90.76
+          ],
+          [
+            " work",
+            91.08
+          ],
+          [
+            ".",
+            91.72
+          ],
+          [
+            " F",
+            93.64
+          ],
+          [
+            "ie",
+            93.8
+          ],
+          [
+            "ld",
+            93.96
+          ],
+          [
+            "s",
+            94.12
+          ],
+          [
+            " and",
+            94.2
+          ],
+          [
+            " br",
+            94.36
+          ],
+          [
+            "an",
+            94.52
+          ],
+          [
+            "ch",
+            94.68
+          ],
+          [
+            "es",
+            94.76
+          ],
+          [
+            ".",
+            94.84
+          ]
+        ]
+      },
+      {
+        "start": 95,
+        "end": 115,
+        "text": "Of anthropology. Good morning, everyone. In today's lecture, I'm going to talk about anthropology. It sounds a complicated word, right? You may want to know the origin of the word or anything about anthropology. Actually, the Greek word for man",
+        "tokens": [
+          [
+            " Of",
+            95.32
+          ],
+          [
+            " an",
+            95.56
+          ],
+          [
+            "th",
+            95.72
+          ],
+          [
+            "ro",
+            95.8
+          ],
+          [
+            "p",
+            96.04
+          ],
+          [
+            "olog",
+            96.28
+          ],
+          [
+            "y",
+            96.6
+          ],
+          [
+            ".",
+            97.24
+          ],
+          [
+            " G",
+            97.88
+          ],
+          [
+            "ood",
+            97.96
+          ],
+          [
+            " m",
+            98.12
+          ],
+          [
+            "or",
+            98.28
+          ],
+          [
+            "ning",
+            98.36
+          ],
+          [
+            ",",
+            98.52
+          ],
+          [
+            " every",
+            98.68
+          ],
+          [
+            "one",
+            98.92
+          ],
+          [
+            ".",
+            99.16
+          ],
+          [
+            " In",
+            99.48
+          ],
+          [
+            " today",
+            99.64
+          ],
+          [
+            "'",
+            99.88
+          ],
+          [
+            "s",
+            99.96
+          ],
+          [
+            " l",
+            100.12
+          ],
+          [
+            "ect",
+            100.28
+          ],
+          [
+            "ure",
+            100.44
+          ],
+          [
+            ",",
+            100.6
+          ],
+          [
+            " I",
+            100.76
+          ],
+          [
+            "'",
+            100.92
+          ],
+          [
+            "m",
+            101.08
+          ],
+          [
+            " going",
+            101.08
+          ],
+          [
+            " to",
+            101.32
+          ],
+          [
+            " talk",
+            101.56
+          ],
+          [
+            " about",
+            101.8
+          ],
+          [
+            " an",
+            102.12
+          ],
+          [
+            "th",
+            102.28
+          ],
+          [
+            "ro",
+            102.44
+          ],
+          [
+            "p",
+            102.68
+          ],
+          [
+            "olog",
+            102.84
+          ],
+          [
+            "y",
+            103.16
+          ],
+          [
+            ".",
+            103.4
+          ],
+          [
+            " It",
+            103.72
+          ],
+          [
+            " s",
+            103.88
+          ],
+          [
+            "ound",
+            104.12
+          ],
+          [
+            "s",
+            104.28
+          ],
+          [
+            " a",
+            104.44
+          ],
+          [
+            " com",
+            104.6
+          ],
+          [
+            "pl",
+            104.84
+          ],
+          [
+            "ic",
+            105.0
+          ],
+          [
+            "ated",
+            105.24
+          ],
+          [
+            " wor",
+            105.4
+          ],
+          [
+            "d",
+            105.64
+          ],
+          [
+            ",",
+            105.8
+          ],
+          [
+            " right",
+            106.12
+          ],
+          [
+            "?",
+            106.6
+          ],
+          [
+            " You",
+            106.92
+          ],
+          [
+            " may",
+            107.16
+          ],
+          [
+            " want",
+            107.4
+          ],
+          [
+            " to",
+            107.64
+          ],
+          [
+            " know",
+            107.8
+          ],
+          [
+            " the",
+            108.04
+          ],
+          [
+            " or",
+            108.28
+          ],
+          [
+            "ig",
+            108.52
+          ],
+          [
+            "in",
+            108.68
+          ],
+          [
+            " of",
+            108.84
+          ],
+          [
+            " the",
+            109.0
+          ],
+          [
+            " wor",
+            109.24
+          ],
+          [
+            "d",
+            109.4
+          ],
+          [
+            " or",
+            109.96
+          ],
+          [
+            " any",
+            110.2
+          ],
+          [
+            "thing",
+            110.44
+          ],
+          [
+            " about",
+            110.68
+          ],
+          [
+            " an",
+            110.92
+          ],
+          [
+            "th",
+            111.08
+          ],
+          [
+            "ro",
+            111.24
+          ],
+          [
+            "p",
+            111.4
+          ],
+          [
+            "olog",
+            111.56
+          ],
+          [
+            "y",
+            111.88
+          ],
+          [
+            ".",
+            112.2
+          ],
+          [
+            " A",
+            112.52
+          ],
+          [
+            "ct",
+            112.76
+          ],
+          [
+            "ually",
+            112.76
+          ],
+          [
+            ",",
+            113.0
+          ],
+          [
+            " the",
+            113.32
+          ],
+          [
+            " G",
+            113.56
+          ],
+          [
+            "ree",
+            113.64
+          ],
+          [
+            "k",
+            113.72
+          ],
+          [
+            " wor",
+            113.88
+          ],
+          [
+            "d",
+            113.96
+          ],
+          [
+            " for",
+            114.12
+          ],
+          [
+            " man",
+            114.36
+          ]
+        ]
+      }
+    ],
+    "interview_and_end_asr": [
+      {
+        "candidate_start": 833,
+        "duration": 25,
+        "text": "Now listen to the first interview. Questions 1 to 5 are based on the first interview. Today we are having Harriet Sanford on our program to hear about her career in education and her current work supporting public teachers and students through the NEA Foundation. Good morning, Harriet. Nice to have you here.",
+        "tokens": [
+          [
+            " Now",
+            834.28
+          ],
+          [
+            " l",
+            834.68
+          ],
+          [
+            "ist",
+            834.84
+          ],
+          [
+            "en",
+            834.92
+          ],
+          [
+            " to",
+            835.08
+          ],
+          [
+            " the",
+            835.24
+          ],
+          [
+            " first",
+            835.4
+          ],
+          [
+            " inter",
+            835.64
+          ],
+          [
+            "v",
+            835.88
+          ],
+          [
+            "iew",
+            836.12
+          ],
+          [
+            ".",
+            836.28
+          ],
+          [
+            " ",
+            836.6
+          ],
+          [
+            "Q",
+            836.76
+          ],
+          [
+            "u",
+            836.76
+          ],
+          [
+            "est",
+            836.76
+          ],
+          [
+            "ions",
+            837.0
+          ],
+          [
+            " ",
+            837.24
+          ],
+          [
+            "1",
+            837.4
+          ],
+          [
+            " to",
+            837.64
+          ],
+          [
+            " ",
+            837.88
+          ],
+          [
+            "5",
+            838.12
+          ],
+          [
+            " are",
+            838.44
+          ],
+          [
+            " bas",
+            838.76
+          ],
+          [
+            "ed",
+            839.0
+          ],
+          [
+            " on",
+            839.16
+          ],
+          [
+            " the",
+            839.32
+          ],
+          [
+            " first",
+            839.48
+          ],
+          [
+            " inter",
+            839.96
+          ],
+          [
+            "v",
+            840.2
+          ],
+          [
+            "iew",
+            840.44
+          ],
+          [
+            ".",
+            841.08
+          ],
+          [
+            " T",
+            841.96
+          ],
+          [
+            "od",
+            842.2
+          ],
+          [
+            "ay",
+            842.44
+          ],
+          [
+            " we",
+            842.68
+          ],
+          [
+            " are",
+            842.92
+          ],
+          [
+            " ha",
+            843.08
+          ],
+          [
+            "ving",
+            843.32
+          ],
+          [
+            " H",
+            843.48
+          ],
+          [
+            "ar",
+            843.64
+          ],
+          [
+            "ri",
+            843.72
+          ],
+          [
+            "et",
+            843.88
+          ],
+          [
+            " S",
+            844.04
+          ],
+          [
+            "an",
+            844.2
+          ],
+          [
+            "f",
+            844.36
+          ],
+          [
+            "ord",
+            844.6
+          ],
+          [
+            " on",
+            844.84
+          ],
+          [
+            " our",
+            845.0
+          ],
+          [
+            " pro",
+            845.16
+          ],
+          [
+            "gr",
+            845.4
+          ],
+          [
+            "am",
+            845.64
+          ],
+          [
+            " to",
+            845.88
+          ],
+          [
+            " he",
+            846.12
+          ],
+          [
+            "ar",
+            846.28
+          ],
+          [
+            " about",
+            846.44
+          ],
+          [
+            " her",
+            846.68
+          ],
+          [
+            " c",
+            846.92
+          ],
+          [
+            "are",
+            847.08
+          ],
+          [
+            "er",
+            847.24
+          ],
+          [
+            " in",
+            847.48
+          ],
+          [
+            " ",
+            847.72
+          ],
+          [
+            "ed",
+            847.96
+          ],
+          [
+            "uc",
+            848.2
+          ],
+          [
+            "ation",
+            848.52
+          ],
+          [
+            " and",
+            848.84
+          ],
+          [
+            " her",
+            849.16
+          ],
+          [
+            " c",
+            849.4
+          ],
+          [
+            "ur",
+            849.48
+          ],
+          [
+            "re",
+            849.64
+          ],
+          [
+            "nt",
+            849.8
+          ],
+          [
+            " work",
+            849.96
+          ],
+          [
+            " supp",
+            850.2
+          ],
+          [
+            "ort",
+            850.44
+          ],
+          [
+            "ing",
+            850.68
+          ],
+          [
+            " p",
+            850.84
+          ],
+          [
+            "ub",
+            851.0
+          ],
+          [
+            "lic",
+            851.16
+          ],
+          [
+            " t",
+            851.32
+          ],
+          [
+            "ea",
+            851.4
+          ],
+          [
+            "ch",
+            851.56
+          ],
+          [
+            "ers",
+            851.8
+          ],
+          [
+            " and",
+            852.04
+          ],
+          [
+            " stud",
+            852.36
+          ],
+          [
+            "ents",
+            852.68
+          ],
+          [
+            " through",
+            852.92
+          ],
+          [
+            " the",
+            853.16
+          ],
+          [
+            " N",
+            853.4
+          ],
+          [
+            "E",
+            853.8
+          ],
+          [
+            "A",
+            854.04
+          ],
+          [
+            " F",
+            854.44
+          ],
+          [
+            "ound",
+            854.68
+          ],
+          [
+            "ation",
+            854.92
+          ],
+          [
+            ".",
+            855.16
+          ],
+          [
+            " G",
+            855.48
+          ],
+          [
+            "ood",
+            855.56
+          ],
+          [
+            " m",
+            855.8
+          ],
+          [
+            "or",
+            855.88
+          ],
+          [
+            "ning",
+            856.04
+          ],
+          [
+            ",",
+            856.12
+          ],
+          [
+            " H",
+            856.28
+          ],
+          [
+            "ar",
+            856.36
+          ],
+          [
+            "ri",
+            856.44
+          ],
+          [
+            "et",
+            856.6
+          ],
+          [
+            ".",
+            856.76
+          ],
+          [
+            " N",
+            856.92
+          ],
+          [
+            "ice",
+            857.08
+          ],
+          [
+            " to",
+            857.24
+          ],
+          [
+            " have",
+            857.4
+          ],
+          [
+            " you",
+            857.56
+          ],
+          [
+            " here",
+            857.72
+          ],
+          [
+            ".",
+            857.88
+          ]
+        ]
+      },
+      {
+        "candidate_start": 1200,
+        "duration": 30,
+        "text": "The second interview. Questions 6 to 10 are based on the second interview. Welcome to this edition of Our World. Our main focus tonight will be on pollution. We are going to talk about a type of pollution which many people have not even heard of. Susan Conroy is the press liaison officer for the Darker Skies Association. Susan, could you just give us a few ideas of what, in your mind, constitutes",
+        "tokens": [
+          [
+            " The",
+            1200.24
+          ],
+          [
+            " se",
+            1200.4
+          ],
+          [
+            "cond",
+            1200.56
+          ],
+          [
+            " inter",
+            1200.72
+          ],
+          [
+            "v",
+            1200.96
+          ],
+          [
+            "iew",
+            1201.2
+          ],
+          [
+            ".",
+            1201.52
+          ],
+          [
+            " ",
+            1201.84
+          ],
+          [
+            "Q",
+            1202.0
+          ],
+          [
+            "u",
+            1202.0
+          ],
+          [
+            "est",
+            1202.24
+          ],
+          [
+            "ions",
+            1202.24
+          ],
+          [
+            " ",
+            1202.56
+          ],
+          [
+            "6",
+            1202.8
+          ],
+          [
+            " to",
+            1203.04
+          ],
+          [
+            " ",
+            1203.36
+          ],
+          [
+            "1",
+            1203.52
+          ],
+          [
+            "0",
+            1203.52
+          ],
+          [
+            " are",
+            1203.92
+          ],
+          [
+            " bas",
+            1204.16
+          ],
+          [
+            "ed",
+            1204.32
+          ],
+          [
+            " on",
+            1204.48
+          ],
+          [
+            " the",
+            1204.72
+          ],
+          [
+            " se",
+            1204.88
+          ],
+          [
+            "cond",
+            1205.12
+          ],
+          [
+            " inter",
+            1205.36
+          ],
+          [
+            "v",
+            1205.6
+          ],
+          [
+            "iew",
+            1206.08
+          ],
+          [
+            ".",
+            1206.4
+          ],
+          [
+            " W",
+            1207.36
+          ],
+          [
+            "el",
+            1207.52
+          ],
+          [
+            "c",
+            1207.68
+          ],
+          [
+            "ome",
+            1207.76
+          ],
+          [
+            " to",
+            1207.92
+          ],
+          [
+            " this",
+            1208.08
+          ],
+          [
+            " ",
+            1208.32
+          ],
+          [
+            "ed",
+            1208.48
+          ],
+          [
+            "ition",
+            1208.64
+          ],
+          [
+            " of",
+            1208.88
+          ],
+          [
+            " O",
+            1209.12
+          ],
+          [
+            "ur",
+            1209.28
+          ],
+          [
+            " W",
+            1209.44
+          ],
+          [
+            "or",
+            1209.6
+          ],
+          [
+            "ld",
+            1209.84
+          ],
+          [
+            ".",
+            1210.0
+          ],
+          [
+            " O",
+            1210.32
+          ],
+          [
+            "ur",
+            1210.4
+          ],
+          [
+            " m",
+            1210.56
+          ],
+          [
+            "ain",
+            1210.72
+          ],
+          [
+            " fo",
+            1210.88
+          ],
+          [
+            "cus",
+            1211.04
+          ],
+          [
+            " t",
+            1211.28
+          ],
+          [
+            "on",
+            1211.44
+          ],
+          [
+            "ight",
+            1211.6
+          ],
+          [
+            " will",
+            1211.76
+          ],
+          [
+            " be",
+            1212.0
+          ],
+          [
+            " on",
+            1212.16
+          ],
+          [
+            " po",
+            1212.4
+          ],
+          [
+            "ll",
+            1212.56
+          ],
+          [
+            "ution",
+            1212.88
+          ],
+          [
+            ".",
+            1213.2
+          ],
+          [
+            " We",
+            1213.52
+          ],
+          [
+            " are",
+            1213.68
+          ],
+          [
+            " going",
+            1213.84
+          ],
+          [
+            " to",
+            1214.0
+          ],
+          [
+            " talk",
+            1214.16
+          ],
+          [
+            " about",
+            1214.4
+          ],
+          [
+            " a",
+            1214.64
+          ],
+          [
+            " ty",
+            1214.8
+          ],
+          [
+            "pe",
+            1214.96
+          ],
+          [
+            " of",
+            1215.04
+          ],
+          [
+            " po",
+            1215.2
+          ],
+          [
+            "ll",
+            1215.36
+          ],
+          [
+            "ution",
+            1215.6
+          ],
+          [
+            " which",
+            1216.16
+          ],
+          [
+            " many",
+            1216.48
+          ],
+          [
+            " people",
+            1217.04
+          ],
+          [
+            " have",
+            1217.36
+          ],
+          [
+            " not",
+            1217.6
+          ],
+          [
+            " even",
+            1217.84
+          ],
+          [
+            " he",
+            1218.08
+          ],
+          [
+            "ard",
+            1218.24
+          ],
+          [
+            " of",
+            1218.4
+          ],
+          [
+            ".",
+            1218.64
+          ],
+          [
+            " S",
+            1218.96
+          ],
+          [
+            "us",
+            1219.12
+          ],
+          [
+            "an",
+            1219.28
+          ],
+          [
+            " C",
+            1219.44
+          ],
+          [
+            "on",
+            1219.6
+          ],
+          [
+            "ro",
+            1219.76
+          ],
+          [
+            "y",
+            1219.92
+          ],
+          [
+            " is",
+            1220.08
+          ],
+          [
+            " the",
+            1220.24
+          ],
+          [
+            " p",
+            1220.32
+          ],
+          [
+            "ress",
+            1220.48
+          ],
+          [
+            " li",
+            1220.72
+          ],
+          [
+            "a",
+            1220.88
+          ],
+          [
+            "is",
+            1221.12
+          ],
+          [
+            "on",
+            1221.28
+          ],
+          [
+            " off",
+            1221.44
+          ],
+          [
+            "ic",
+            1221.6
+          ],
+          [
+            "er",
+            1221.84
+          ],
+          [
+            " for",
+            1222.0
+          ],
+          [
+            " the",
+            1222.16
+          ],
+          [
+            " D",
+            1222.32
+          ],
+          [
+            "ark",
+            1222.48
+          ],
+          [
+            "er",
+            1222.72
+          ],
+          [
+            " S",
+            1222.88
+          ],
+          [
+            "k",
+            1222.96
+          ],
+          [
+            "ies",
+            1223.2
+          ],
+          [
+            " As",
+            1223.44
+          ],
+          [
+            "so",
+            1223.6
+          ],
+          [
+            "ci",
+            1223.76
+          ],
+          [
+            "ation",
+            1224.0
+          ],
+          [
+            ".",
+            1224.32
+          ],
+          [
+            " S",
+            1224.64
+          ],
+          [
+            "us",
+            1224.8
+          ],
+          [
+            "an",
+            1225.04
+          ],
+          [
+            ",",
+            1225.2
+          ],
+          [
+            " could",
+            1225.44
+          ],
+          [
+            " you",
+            1225.68
+          ],
+          [
+            " just",
+            1225.84
+          ],
+          [
+            " give",
+            1226.08
+          ],
+          [
+            " us",
+            1226.24
+          ],
+          [
+            " a",
+            1226.48
+          ],
+          [
+            " fe",
+            1226.64
+          ],
+          [
+            "w",
+            1226.8
+          ],
+          [
+            " id",
+            1226.96
+          ],
+          [
+            "e",
+            1227.2
+          ],
+          [
+            "as",
+            1227.44
+          ],
+          [
+            " of",
+            1227.6
+          ],
+          [
+            " what",
+            1227.76
+          ],
+          [
+            ",",
+            1228.08
+          ],
+          [
+            " in",
+            1228.24
+          ],
+          [
+            " your",
+            1228.4
+          ],
+          [
+            " m",
+            1228.64
+          ],
+          [
+            "ind",
+            1228.72
+          ],
+          [
+            ",",
+            1228.88
+          ],
+          [
+            " con",
+            1229.04
+          ],
+          [
+            "st",
+            1229.12
+          ],
+          [
+            "it",
+            1229.28
+          ],
+          [
+            "ut",
+            1229.44
+          ],
+          [
+            "es",
+            1229.52
+          ]
+        ]
+      },
+      {
+        "candidate_start": 1527,
+        "duration": 19,
+        "text": "This is the end of Section B: Interviews. This is the end of Part 1: Listening Comprehension.",
+        "tokens": [
+          [
+            " This",
+            1535.8
+          ],
+          [
+            " is",
+            1536.04
+          ],
+          [
+            " the",
+            1536.36
+          ],
+          [
+            " end",
+            1536.52
+          ],
+          [
+            " of",
+            1536.76
+          ],
+          [
+            " S",
+            1536.92
+          ],
+          [
+            "ect",
+            1537.16
+          ],
+          [
+            "ion",
+            1537.32
+          ],
+          [
+            " B",
+            1537.48
+          ],
+          [
+            ":",
+            1537.88
+          ],
+          [
+            " In",
+            1538.12
+          ],
+          [
+            "ter",
+            1538.28
+          ],
+          [
+            "v",
+            1538.52
+          ],
+          [
+            "iew",
+            1538.68
+          ],
+          [
+            "s",
+            1538.92
+          ],
+          [
+            ".",
+            1539.56
+          ],
+          [
+            " This",
+            1541.16
+          ],
+          [
+            " is",
+            1541.4
+          ],
+          [
+            " the",
+            1541.56
+          ],
+          [
+            " end",
+            1541.72
+          ],
+          [
+            " of",
+            1541.96
+          ],
+          [
+            " P",
+            1542.12
+          ],
+          [
+            "art",
+            1542.28
+          ],
+          [
+            " ",
+            1542.52
+          ],
+          [
+            "1",
+            1542.68
+          ],
+          [
+            ":",
+            1542.84
+          ],
+          [
+            " L",
+            1543.08
+          ],
+          [
+            "ist",
+            1543.24
+          ],
+          [
+            "en",
+            1543.4
+          ],
+          [
+            "ing",
+            1543.56
+          ],
+          [
+            " C",
+            1543.72
+          ],
+          [
+            "om",
+            1543.8
+          ],
+          [
+            "p",
+            1543.88
+          ],
+          [
+            "re",
+            1543.96
+          ],
+          [
+            "h",
+            1544.12
+          ],
+          [
+            "ens",
+            1544.28
+          ],
+          [
+            "ion",
+            1544.52
+          ],
+          [
+            ".",
+            1544.76
+          ]
+        ]
+      }
+    ],
+    "limits": "两份音频编码不同，未宣称压缩字节或PCM逐样本相同。偏移由音频实测为约81.32s，不能拿容器时长差81.425102s作精确时间轴平移。仅2022需重新预处理、核对时间轴；未重跑其他14年。"
+  },
+  "handling": {
+    "original_download_byte_unchanged": true,
+    "original_archive_inventory_modified": false,
+    "canonical_audio_replaced_here": false,
+    "analysis_only": "包络分析副本在内存/临时文件转单声道8k；ASR分析副本16k。生产原音解码保持原44100Hz、双声道、原增益。",
+    "persistent_archive": "源字节以TEM8-2022-complete.m4a存入tem8-listening-raw-supplement Release；本登记保存实际来源与SHA，不归为原包内音源。"
+  },
+  "web_evidence": {
+    "page_sha256": "0a89cd675a5b822b7f61a0821e36d189accadff3f46dbb0debdaa73d6152806d",
+    "public_source": "公开页面audio/source标签给出直链；未登录、未付费、未绕过访问限制。",
+    "preferred_guojiya_check": "https://www.guojiya.cn/exam/tem8_2022_03_1公开SSR页和Nuxt公开payload未给可下载音频链接；未尝试登录或访问受限资源。"
+  }
+}

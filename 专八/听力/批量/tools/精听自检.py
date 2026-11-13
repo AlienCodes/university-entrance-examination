@@ -1,0 +1,75 @@
+"""精听适配的实际音频/失败注入检查，不需要下载ASR或TTS模型。"""
+import copy
+import json
+from pathlib import Path
+import tempfile
+import unittest
+import numpy as np
+import soundfile as sf
+
+from 精听数据 import compact,compile_input,content_sha,sha,validate,align_words
+
+
+def example(audio):
+    d={'id':'2009-test','year':2009,'section':'Section A','title':'接口测试','audio':{'sha256':sha(audio),'window':[0,8]},
+       'names':[],'待核':[],'sentences':[
+           {'en':'Hello.','zh':'你好。','start':0.05,'end':1.0,'w':[{'t':'core','h':'hello','m':'int. 你好','sp':[[0,5]]}],
+            'words':[['Hello',.05,.9]]},
+           {'en':'Goodbye.','zh':'再见。','start':6.0,'end':7.0,'w':[{'t':'core','h':'goodbye','m':'int. 再见','sp':[[0,7]]}],
+            'words':[['Goodbye',6.,6.9]]}]}
+    d['review']={'status':'approved','content_sha256':content_sha(d)}
+    return d
+
+
+class Checks(unittest.TestCase):
+    def setUp(self):
+        self.sr=16000;t=np.arange(self.sr)/self.sr
+        self.x=np.zeros((self.sr*8,2),np.float32)
+        self.x[:self.sr,0]=.1*np.sin(2*np.pi*440*t);self.x[:self.sr,1]=.07*np.sin(2*np.pi*650*t)
+        self.x[self.sr*6:self.sr*7]=self.x[:self.sr]
+        self.sents=[{'start':.05,'end':1.},{'start':6.,'end':7.}]
+
+    def test_only_pure_silence_removed(self):
+        body,warp,kept,removed,unshortened=compact(self.x,self.sr,0,8,self.sents)
+        self.assertEqual(removed,[(2*self.sr,5*self.sr)])
+        self.assertEqual(len(body),5*self.sr)
+        self.assertTrue(np.array_equal(body,np.concatenate([self.x[:2*self.sr],self.x[5*self.sr:]])))
+        self.assertAlmostEqual(warp(6),4.5)
+
+    def test_breath_or_uncovered_speech_not_removed(self):
+        self.x[3*self.sr:3*self.sr+100]=.03
+        body,_,_,removed,kept=compact(self.x,self.sr,0,8,self.sents)
+        self.assertEqual(removed,[]);self.assertTrue(kept)
+        self.assertTrue(np.array_equal(body,self.x))
+
+    def test_front_window_exclusion_is_explicit(self):
+        body,_,kept,removed,_=compact(self.x,self.sr,1.2,8,self.sents[1:])
+        self.assertTrue(np.array_equal(body,self.x[round(1.2*self.sr):]))
+
+    def test_compile_and_failures(self):
+        with tempfile.TemporaryDirectory() as t:
+            t=Path(t);source=t/'source.wav';sf.write(source,self.x,self.sr,subtype='FLOAT')
+            d=example(source);f=t/'input.json';f.write_text(json.dumps(d,ensure_ascii=False))
+            _,p,tm=compile_input(f,source,t/'build')
+            got,sr=sf.read(t/'build/audio/原音.wav',dtype='float32',always_2d=True)
+            expected=np.concatenate([self.x[:2*self.sr],self.x[5*self.sr:]])
+            self.assertTrue(np.array_equal(got[24000:24000+len(expected)],expected))
+            self.assertEqual(sr,self.sr);self.assertEqual(got.shape[1],2)
+            self.assertEqual(tm['mode'],'原音不动')
+            self.assertEqual(p['year'],2009)
+            self.assertAlmostEqual(tm['sentences'][1]['start'],4.5)
+            changed=copy.deepcopy(d);changed['sentences'][0]['zh']='篡改译文。'
+            with self.assertRaises(AssertionError):validate(changed)
+            wrong=copy.deepcopy(d);wrong['audio']['sha256']='0'*64;wrong['review']['content_sha256']=content_sha(wrong)
+            f.write_text(json.dumps(wrong))
+            with self.assertRaises(AssertionError):compile_input(f,source,t/'bad')
+            pending=copy.deepcopy(d);pending['待核']=['词时刻未定']
+            with self.assertRaises(AssertionError):validate(pending)
+            validate(pending,draft=True)
+
+    def test_unproven_word_times_rejected(self):
+        s={'en':'She cannot go.','start':0,'end':1,'words':[['She',0,.2],['go',.7,.9]]}
+        with self.assertRaises(AssertionError):align_words(s)
+
+
+if __name__=='__main__':unittest.main()

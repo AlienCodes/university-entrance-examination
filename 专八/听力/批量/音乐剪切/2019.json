@@ -1,0 +1,33 @@
+{
+  "year": 2019,
+  "start": 0,
+  "reason": "无片头音乐",
+  "source_sha256": "b6659eec0e0035603eced5cf3cd58b614be9519fb34936ab78f350846c0ab283",
+  "evidence": "逐年查看0—7s原采样率波形和0—6kHz频谱：正式报幕前没有连续音乐谐波或音乐段，只有前导静音及录音底噪；保留完整开头，start=0。ASR仅作报幕内容定位参考，首词Test在0.96s；不据此删除前导部分。",
+  "source_entry": {
+    "file": "2019专八笔试真题和答案/TEM8-2019年真题听力.wma",
+    "sha256": "e2f8634325ff1d2ab83fb18e93483bc0e419537c487720a7e70c88e21a296902"
+  },
+  "canonical_format": {
+    "sample_rate": 44100,
+    "channels": 2,
+    "pcm_format": "float32le"
+  },
+  "cut_sample": 0,
+  "silence_interval": null,
+  "cut_window": {
+    "half_window_seconds": 0.04,
+    "max_channel_peak_dbfs": -240.0,
+    "all_channel_rms_dbfs": -240.0,
+    "digital_zero": true,
+    "db_display_floor": -240.0
+  },
+  "reference_first_word": [
+    "Test",
+    0.96,
+    1.28
+  ],
+  "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+  "plot": "图证/2019.png",
+  "pending": []
+}

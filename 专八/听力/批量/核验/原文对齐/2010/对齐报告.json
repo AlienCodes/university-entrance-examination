@@ -1,0 +1,5619 @@
+{
+  "year": 2010,
+  "tool": "tools/原文对齐.py",
+  "tool_version": "1.0",
+  "inputs": {
+    "draft": "译注草稿/2010.json",
+    "draft_sha256": "9beb45c805e49b72f30e99edcf24b8e0139821d18cb467e7ac3e26307133e8d7",
+    "asr": "预处理/2010/识别.json",
+    "asr_sha256": "1a04e30ba872b37c966acdc11e815899d9426dd391687db09adb705173e526de",
+    "prepare": "预处理/2010/原音准备.json",
+    "prepare_sha256": "98f7860c1f4eb44ae5e3b0bdc8b0e8c28586811cd510c66685c8613b73edf8a1",
+    "canonical_source_sha256": "e8edfe4a8bc7c81033d2e413058ec086d382d50b01bb5b6b9a29a434ce8430eb"
+  },
+  "method": "全局单调规范词匹配；每个时刻只取实际ASR词条边界。数词/缩写/收缩差异逐条登记；无模糊关键词代换、无比例估时。",
+  "machine_result_only": true,
+  "human_review_status": "draft",
+  "ASR_provenance": {
+    "file": "预处理/2010/ASR核验.json",
+    "sha256": "18cec87a58a02734b563b356da27396e36a5cc3fad39fcabd0497ad87d4157c0",
+    "canonical_and_ASR_sha_verified": true,
+    "status": "机器转写及时间候选，仅用于对齐；解析原文、题型与音乐剪切点尚须核对。",
+    "word_end_estimate_seconds": 0.08
+  },
+  "coverage": {
+    "source_lexemes": 1925,
+    "source_mapped": 1882,
+    "source_ratio": 0.9776623376623377,
+    "asr_lexemes": 2279,
+    "asr_mapped": 1902,
+    "asr_ratio": 0.8345765686704695,
+    "all_source_mapped": false,
+    "all_asr_mapped": false,
+    "all_boundaries_anchored": false,
+    "literal_complete": false
+  },
+  "differences": [
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "asr_text": [
+        "Test",
+        "for",
+        "English",
+        "Majors",
+        "twenty",
+        "ten",
+        "Grade",
+        "eight",
+        "Part",
+        "I",
+        "Listening",
+        "Comprehension",
+        "A",
+        "Mini",
+        "Lecture",
+        "In",
+        "this",
+        "section",
+        "you",
+        "will",
+        "hear",
+        "a",
+        "mini",
+        "lecture.",
+        "You",
+        "will",
+        "hear",
+        "the",
+        "mini",
+        "lecture",
+        "once",
+        "only.",
+        "While",
+        "listening",
+        "to",
+        "the",
+        "mini",
+        "lecture,",
+        "please",
+        "complete",
+        "the",
+        "gap",
+        "filling",
+        "task",
+        "on",
+        "Answer",
+        "Sheet",
+        "I,",
+        "and",
+        "write",
+        "no",
+        "more",
+        "than",
+        "three",
+        "words",
+        "for",
+        "each",
+        "gap.",
+        "Make",
+        "sure",
+        "the",
+        "word",
+        "or",
+        "words",
+        "you",
+        "fill",
+        "in",
+        "is",
+        "or",
+        "are",
+        "both",
+        "grammatically",
+        "and",
+        "semantically",
+        "acceptable.",
+        "You",
+        "may",
+        "use",
+        "the",
+        "blank",
+        "sheet",
+        "for",
+        "note-taking.",
+        "You",
+        "have",
+        "30",
+        "seconds",
+        "to",
+        "preview",
+        "the",
+        "gap",
+        "filling",
+        "task.",
+        "Now",
+        "listen",
+        "to",
+        "the",
+        "mini-lecture.",
+        "When",
+        "it",
+        "is",
+        "over,",
+        "you",
+        "will",
+        "be",
+        "given",
+        "Three",
+        "minutes",
+        "to",
+        "check",
+        "your",
+        "work.",
+        "Paralinguistic",
+        "Features",
+        "of",
+        "Language."
+      ],
+      "window": [
+        14.91,
+        102.35
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 3,
+          "char": [
+            36,
+            38
+          ],
+          "text": "of"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 7,
+          "char": [
+            44,
+            49
+          ],
+          "text": "takes"
+        }
+      ],
+      "asr_indices": [
+        178
+      ],
+      "asr_text": [
+        "take"
+      ],
+      "window": [
+        134.79,
+        134.87
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        200
+      ],
+      "asr_text": [
+        "categories."
+      ],
+      "window": [
+        145.27,
+        145.67
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 12,
+          "char": [
+            48,
+            50
+          ],
+          "text": "in"
+        }
+      ],
+      "asr_indices": [
+        239
+      ],
+      "asr_text": [
+        "and"
+      ],
+      "window": [
+        167.23,
+        167.31
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 19,
+          "char": [
+            6,
+            8
+          ],
+          "text": "um"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 23,
+          "char": [
+            15,
+            21
+          ],
+          "text": "convey"
+        },
+        {
+          "unit": "2010-A",
+          "sentence": 23,
+          "char": [
+            22,
+            30
+          ],
+          "text": "meanings"
+        }
+      ],
+      "asr_indices": [
+        367,
+        368
+      ],
+      "asr_text": [
+        "conveying",
+        "meaning."
+      ],
+      "window": [
+        244.71,
+        245.51
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 23,
+          "char": [
+            75,
+            85
+          ],
+          "text": "intentions"
+        }
+      ],
+      "asr_indices": [
+        378
+      ],
+      "asr_text": [
+        "intention"
+      ],
+      "window": [
+        249.87,
+        250.27
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 29,
+          "char": [
+            32,
+            40
+          ],
+          "text": "conveyer"
+        }
+      ],
+      "asr_indices": [
+        452
+      ],
+      "asr_text": [
+        "conveyor"
+      ],
+      "window": [
+        286.87,
+        287.59
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 32,
+          "char": [
+            22,
+            25
+          ],
+          "text": "eye"
+        },
+        {
+          "unit": "2010-A",
+          "sentence": 32,
+          "char": [
+            26,
+            31
+          ],
+          "text": "brows"
+        }
+      ],
+      "asr_indices": [
+        483
+      ],
+      "asr_text": [
+        "eyebrows"
+      ],
+      "window": [
+        303.55,
+        304.43
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 33,
+          "char": [
+            275,
+            284
+          ],
+          "text": "conveyers"
+        }
+      ],
+      "asr_indices": [
+        540
+      ],
+      "asr_text": [
+        "conveyors"
+      ],
+      "window": [
+        328.39,
+        328.95
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 36,
+          "char": [
+            49,
+            57
+          ],
+          "text": "favorite"
+        }
+      ],
+      "asr_indices": [
+        589
+      ],
+      "asr_text": [
+        "favored"
+      ],
+      "window": [
+        351.95,
+        352.51
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 41,
+          "char": [
+            37,
+            42
+          ],
+          "text": "while"
+        }
+      ],
+      "asr_indices": [
+        645
+      ],
+      "asr_text": [
+        "whereas"
+      ],
+      "window": [
+        380.55,
+        380.79
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 63,
+          "char": [
+            122,
+            124
+          ],
+          "text": "an"
+        }
+      ],
+      "asr_indices": [
+        953
+      ],
+      "asr_text": [
+        "in"
+      ],
+      "window": [
+        535.27,
+        535.35
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 65,
+          "char": [
+            57,
+            63
+          ],
+          "text": "verbal"
+        }
+      ],
+      "asr_indices": [
+        976
+      ],
+      "asr_text": [
+        "verb."
+      ],
+      "window": [
+        545.19,
+        545.51
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1068,
+        1069,
+        1070,
+        1071,
+        1072,
+        1073,
+        1074,
+        1075,
+        1076,
+        1077,
+        1078,
+        1079,
+        1080,
+        1081,
+        1082,
+        1083,
+        1084,
+        1085,
+        1086,
+        1087,
+        1088,
+        1089,
+        1090,
+        1091,
+        1092,
+        1093,
+        1094,
+        1095,
+        1096,
+        1097,
+        1098,
+        1099,
+        1100,
+        1101,
+        1102,
+        1103,
+        1104,
+        1105,
+        1106,
+        1107,
+        1108,
+        1109,
+        1110,
+        1111,
+        1112,
+        1113,
+        1114,
+        1115,
+        1116,
+        1117,
+        1118,
+        1119,
+        1120,
+        1121,
+        1122,
+        1123,
+        1124,
+        1125,
+        1126,
+        1127,
+        1128,
+        1129,
+        1130,
+        1131,
+        1132,
+        1133,
+        1134,
+        1135,
+        1136,
+        1137,
+        1138,
+        1139,
+        1140,
+        1141,
+        1142,
+        1143,
+        1144,
+        1145,
+        1146,
+        1147,
+        1148,
+        1149,
+        1150,
+        1151,
+        1152,
+        1153,
+        1154,
+        1155,
+        1156,
+        1157,
+        1158,
+        1159,
+        1160,
+        1161,
+        1162,
+        1163,
+        1164,
+        1165,
+        1166,
+        1167,
+        1168,
+        1169,
+        1170,
+        1171,
+        1172,
+        1173,
+        1174,
+        1175,
+        1176,
+        1177,
+        1178,
+        1179,
+        1180,
+        1181,
+        1182,
+        1183,
+        1184,
+        1185,
+        1186,
+        1187,
+        1188,
+        1189,
+        1190,
+        1191,
+        1192,
+        1193,
+        1194,
+        1195
+      ],
+      "asr_text": [
+        "Now",
+        "you",
+        "have",
+        "three",
+        "minutes",
+        "to",
+        "check",
+        "your",
+        "work.",
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "section",
+        "A",
+        "mini",
+        "lecture.",
+        "Section",
+        "B",
+        "Interview",
+        "In",
+        "this",
+        "section",
+        "you",
+        "will",
+        "hear",
+        "one",
+        "interview.",
+        "The",
+        "interview",
+        "will",
+        "be",
+        "divided",
+        "into",
+        "two",
+        "parts.",
+        "At",
+        "the",
+        "end",
+        "of",
+        "each",
+        "part,",
+        "five",
+        "questions",
+        "will",
+        "be",
+        "asked",
+        "about",
+        "what",
+        "was",
+        "said.",
+        "Both",
+        "the",
+        "interview",
+        "and",
+        "the",
+        "questions",
+        "will",
+        "be",
+        "spoken",
+        "once",
+        "only.",
+        "After",
+        "each",
+        "question,",
+        "there",
+        "will",
+        "be",
+        "a",
+        "ten",
+        "second",
+        "pause.",
+        "During",
+        "the",
+        "pause,",
+        "you",
+        "should",
+        "read",
+        "the",
+        "four",
+        "choices",
+        "of",
+        "A,",
+        "B,",
+        "C,",
+        "and",
+        "D,",
+        "and",
+        "mark",
+        "the",
+        "best",
+        "answer",
+        "to",
+        "each",
+        "question",
+        "on",
+        "Answer",
+        "Sheet",
+        "II.",
+        "You",
+        "have",
+        "thirty",
+        "seconds",
+        "to",
+        "preview",
+        "the",
+        "questions.",
+        "Now",
+        "listen",
+        "to",
+        "part",
+        "one",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "one",
+        "to",
+        "five",
+        "are",
+        "based",
+        "on",
+        "part",
+        "one",
+        "of",
+        "the",
+        "interview."
+      ],
+      "window": [
+        595.87,
+        860.06
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 9,
+          "char": [
+            202,
+            213
+          ],
+          "text": "homogeneous"
+        }
+      ],
+      "asr_indices": [
+        1322
+      ],
+      "asr_text": [
+        "homogenous"
+      ],
+      "window": [
+        923.26,
+        923.98
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 13,
+          "char": [
+            32,
+            38
+          ],
+          "text": "change"
+        }
+      ],
+      "asr_indices": [
+        1393
+      ],
+      "asr_text": [
+        "changed"
+      ],
+      "window": [
+        956.74,
+        957.38
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 21,
+          "char": [
+            56,
+            67
+          ],
+          "text": "Selinsgrove"
+        }
+      ],
+      "asr_indices": [
+        1512,
+        1513
+      ],
+      "asr_text": [
+        "Sellensgrove",
+        "in"
+      ],
+      "window": [
+        1011.34,
+        1012.3
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 24,
+          "char": [
+            74,
+            85
+          ],
+          "text": "Selinsgrove"
+        }
+      ],
+      "asr_indices": [
+        1570
+      ],
+      "asr_text": [
+        "Selensgrove,"
+      ],
+      "window": [
+        1037.06,
+        1038.18
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 24,
+          "char": [
+            121,
+            127
+          ],
+          "text": "toward"
+        }
+      ],
+      "asr_indices": [
+        1576
+      ],
+      "asr_text": [
+        "towards"
+      ],
+      "window": [
+        1040.42,
+        1040.9
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 30,
+          "char": [
+            4,
+            7
+          ],
+          "text": "The"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 32,
+          "char": [
+            0,
+            2
+          ],
+          "text": "Um"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 34,
+          "char": [
+            9,
+            11
+          ],
+          "text": "as"
+        }
+      ],
+      "asr_indices": [
+        1667
+      ],
+      "asr_text": [
+        "it"
+      ],
+      "window": [
+        1093.94,
+        1094.02
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 34,
+          "char": [
+            77,
+            80
+          ],
+          "text": "the"
+        }
+      ],
+      "asr_indices": [
+        1679
+      ],
+      "asr_text": [
+        "a"
+      ],
+      "window": [
+        1099.3,
+        1099.38
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 35,
+          "char": [
+            93,
+            98
+          ],
+          "text": "1990s"
+        }
+      ],
+      "asr_indices": [
+        1702,
+        1703,
+        1704
+      ],
+      "asr_text": [
+        "19th",
+        "century.",
+        "90s."
+      ],
+      "window": [
+        1110.66,
+        1112.7
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1731,
+        1732,
+        1733,
+        1734,
+        1735,
+        1736,
+        1737,
+        1738,
+        1739,
+        1740,
+        1741,
+        1742,
+        1743,
+        1744,
+        1745,
+        1746,
+        1747,
+        1748,
+        1749,
+        1750,
+        1751,
+        1752,
+        1753,
+        1754
+      ],
+      "asr_text": [
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "part",
+        "one",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "one",
+        "to",
+        "five",
+        "are",
+        "based",
+        "on",
+        "what",
+        "you",
+        "have",
+        "just",
+        "heard.",
+        "Question",
+        "one."
+      ],
+      "window": [
+        1127.98,
+        1137.58
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1767,
+        1768
+      ],
+      "asr_text": [
+        "Question",
+        "two."
+      ],
+      "window": [
+        1152.38,
+        1153.58
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1778,
+        1779
+      ],
+      "asr_text": [
+        "Question",
+        "three:"
+      ],
+      "window": [
+        1168.26,
+        1169.38
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 38,
+          "char": [
+            25,
+            36
+          ],
+          "text": "Selinsgrove"
+        }
+      ],
+      "asr_indices": [
+        1785,
+        1786
+      ],
+      "asr_text": [
+        "Sellings",
+        "Grove"
+      ],
+      "window": [
+        1171.7,
+        1172.74
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1788,
+        1789
+      ],
+      "asr_text": [
+        "Question",
+        "four."
+      ],
+      "window": [
+        1182.98,
+        1184.1
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1807,
+        1808
+      ],
+      "asr_text": [
+        "Question",
+        "5."
+      ],
+      "window": [
+        1202.69,
+        1204.21
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 40,
+          "char": [
+            31,
+            42
+          ],
+          "text": "Selinsgrove"
+        }
+      ],
+      "asr_indices": [
+        1814,
+        1815
+      ],
+      "asr_text": [
+        "Selling",
+        "Grove"
+      ],
+      "window": [
+        1206.69,
+        1207.57
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 40,
+          "char": [
+            47,
+            52
+          ],
+          "text": "Maine"
+        }
+      ],
+      "asr_indices": [
+        1817
+      ],
+      "asr_text": [
+        "Main,"
+      ],
+      "window": [
+        1207.97,
+        1208.61
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        1820,
+        1821,
+        1822,
+        1823,
+        1824,
+        1825,
+        1826,
+        1827,
+        1828,
+        1829,
+        1830,
+        1831,
+        1832,
+        1833,
+        1834,
+        1835,
+        1836,
+        1837,
+        1838,
+        1839
+      ],
+      "asr_text": [
+        "the",
+        "interview?",
+        "Now",
+        "listen",
+        "to",
+        "part",
+        "two",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "six",
+        "to",
+        "ten",
+        "are",
+        "based",
+        "on",
+        "part",
+        "two",
+        "of"
+      ],
+      "window": [
+        1209.49,
+        1225.75
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 4,
+          "char": [
+            35,
+            38
+          ],
+          "text": "gap"
+        }
+      ],
+      "asr_indices": [
+        1873
+      ],
+      "asr_text": [
+        "gaps"
+      ],
+      "window": [
+        1244.22,
+        1244.62
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 5,
+          "char": [
+            19,
+            22
+          ],
+          "text": "was"
+        }
+      ],
+      "asr_indices": [
+        1880
+      ],
+      "asr_text": [
+        "is"
+      ],
+      "window": [
+        1248.14,
+        1248.22
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 5,
+          "char": [
+            93,
+            104
+          ],
+          "text": "populations"
+        }
+      ],
+      "asr_indices": [
+        1895
+      ],
+      "asr_text": [
+        "population"
+      ],
+      "window": [
+        1252.46,
+        1252.86
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 8,
+          "char": [
+            110,
+            115
+          ],
+          "text": "great"
+        }
+      ],
+      "asr_indices": [
+        1943
+      ],
+      "asr_text": [
+        "greater"
+      ],
+      "window": [
+        1273.14,
+        1273.38
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 11,
+          "char": [
+            128,
+            132
+          ],
+          "text": "ones"
+        }
+      ],
+      "asr_indices": [
+        1998
+      ],
+      "asr_text": [
+        "whites."
+      ],
+      "window": [
+        1299.34,
+        1300.14
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "delete",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 17,
+          "char": [
+            4,
+            5
+          ],
+          "text": "I"
+        },
+        {
+          "unit": "2010-B2",
+          "sentence": 17,
+          "char": [
+            6,
+            9
+          ],
+          "text": "see"
+        }
+      ],
+      "asr_indices": [],
+      "asr_text": [],
+      "window": null,
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 19,
+          "char": [
+            62,
+            65
+          ],
+          "text": "mid"
+        },
+        {
+          "unit": "2010-B2",
+          "sentence": 19,
+          "char": [
+            66,
+            73
+          ],
+          "text": "western"
+        }
+      ],
+      "asr_indices": [
+        2073
+      ],
+      "asr_text": [
+        "midwestern"
+      ],
+      "window": [
+        1339.02,
+        1339.74
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 20,
+          "char": [
+            68,
+            75
+          ],
+          "text": "600,000"
+        },
+        {
+          "unit": "2010-B2",
+          "sentence": 20,
+          "char": [
+            76,
+            78
+          ],
+          "text": "to"
+        },
+        {
+          "unit": "2010-B2",
+          "sentence": 20,
+          "char": [
+            79,
+            85
+          ],
+          "text": "nearly"
+        },
+        {
+          "unit": "2010-B2",
+          "sentence": 20,
+          "char": [
+            86,
+            87
+          ],
+          "text": "1"
+        },
+        {
+          "unit": "2010-B2",
+          "sentence": 20,
+          "char": [
+            88,
+            95
+          ],
+          "text": "million"
+        }
+      ],
+      "asr_indices": [
+        2097
+      ],
+      "asr_text": [
+        "600."
+      ],
+      "window": [
+        1352.46,
+        1353.1
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2149
+      ],
+      "asr_text": [
+        "D."
+      ],
+      "window": [
+        1377.78,
+        1377.94
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "replace",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 25,
+          "char": [
+            0,
+            2
+          ],
+          "text": "My"
+        }
+      ],
+      "asr_indices": [
+        2164
+      ],
+      "asr_text": [
+        "A"
+      ],
+      "window": [
+        1382.06,
+        1382.14
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2166,
+        2167,
+        2168,
+        2169,
+        2170,
+        2171,
+        2172,
+        2173,
+        2174,
+        2175,
+        2176,
+        2177,
+        2178,
+        2179,
+        2180,
+        2181,
+        2182,
+        2183,
+        2184,
+        2185,
+        2186,
+        2187,
+        2188,
+        2189
+      ],
+      "asr_text": [
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "part",
+        "two",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "six",
+        "to",
+        "ten",
+        "are",
+        "based",
+        "on",
+        "what",
+        "you",
+        "have",
+        "just",
+        "heard.",
+        "Question",
+        "six:"
+      ],
+      "window": [
+        1385.34,
+        1394.06
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2198,
+        2199
+      ],
+      "asr_text": [
+        "Question",
+        "seven:"
+      ],
+      "window": [
+        1407.77,
+        1409.37
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2211,
+        2212
+      ],
+      "asr_text": [
+        "Question",
+        "eight."
+      ],
+      "window": [
+        1423.85,
+        1424.73
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2224,
+        2225
+      ],
+      "asr_text": [
+        "Question",
+        "9."
+      ],
+      "window": [
+        1440.08,
+        1441.04
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2236,
+        2237
+      ],
+      "asr_text": [
+        "Question",
+        "10."
+      ],
+      "window": [
+        1455.7,
+        1457.06
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "insert",
+      "source": [],
+      "asr_indices": [
+        2247,
+        2248,
+        2249,
+        2250,
+        2251,
+        2252,
+        2253,
+        2254,
+        2255
+      ],
+      "asr_text": [
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "Part",
+        "1:",
+        "Listening",
+        "Comprehension."
+      ],
+      "window": [
+        1470.43,
+        1474.11
+      ],
+      "decision": "machine_candidate_unreviewed"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-A",
+          "sentence": 67,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        997
+      ],
+      "asr_text": [
+        "okay."
+      ],
+      "window": [
+        558.19,
+        559.23
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 3,
+          "char": [
+            35,
+            37
+          ],
+          "text": "US"
+        }
+      ],
+      "asr_indices": [
+        1245
+      ],
+      "asr_text": [
+        "U.S.?"
+      ],
+      "window": [
+        884.78,
+        885.58
+      ],
+      "canonical": [
+        "us"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 9,
+          "char": [
+            22,
+            24
+          ],
+          "text": "US"
+        }
+      ],
+      "asr_indices": [
+        1293
+      ],
+      "asr_text": [
+        "U.S."
+      ],
+      "window": [
+        910.66,
+        911.06
+      ],
+      "canonical": [
+        "us"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 18,
+          "char": [
+            144,
+            146
+          ],
+          "text": "US"
+        }
+      ],
+      "asr_indices": [
+        1475
+      ],
+      "asr_text": [
+        "U.S."
+      ],
+      "window": [
+        995.62,
+        996.18
+      ],
+      "canonical": [
+        "us"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 22,
+          "char": [
+            21,
+            23
+          ],
+          "text": "10"
+        }
+      ],
+      "asr_indices": [
+        1520
+      ],
+      "asr_text": [
+        "ten"
+      ],
+      "window": [
+        1015.5,
+        1015.82
+      ],
+      "canonical": [
+        "#10"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 23,
+          "char": [
+            40,
+            45
+          ],
+          "text": "5,384"
+        }
+      ],
+      "asr_indices": [
+        1536,
+        1537,
+        1538,
+        1539,
+        1540,
+        1541
+      ],
+      "asr_text": [
+        "five",
+        "thousand",
+        "three",
+        "hundred",
+        "and",
+        "eighty-four"
+      ],
+      "window": [
+        1022.62,
+        1024.62
+      ],
+      "canonical": [
+        "#5384"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 23,
+          "char": [
+            49,
+            54
+          ],
+          "text": "5,383"
+        }
+      ],
+      "asr_indices": [
+        1543,
+        1544,
+        1545,
+        1546,
+        1547,
+        1548
+      ],
+      "asr_text": [
+        "five",
+        "thousand",
+        "three",
+        "hundred",
+        "and",
+        "eighty-three,"
+      ],
+      "window": [
+        1025.42,
+        1028.38
+      ],
+      "canonical": [
+        "#5383"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 23,
+          "char": [
+            86,
+            89
+          ],
+          "text": "100"
+        }
+      ],
+      "asr_indices": [
+        1554,
+        1555
+      ],
+      "asr_text": [
+        "one",
+        "hundred"
+      ],
+      "window": [
+        1030.3,
+        1030.86
+      ],
+      "canonical": [
+        "#100"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 23,
+          "char": [
+            89,
+            90
+          ],
+          "text": "%"
+        }
+      ],
+      "asr_indices": [
+        1556
+      ],
+      "asr_text": [
+        "percent"
+      ],
+      "window": [
+        1030.94,
+        1031.34
+      ],
+      "canonical": [
+        "percent"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 27,
+          "char": [
+            20,
+            21
+          ],
+          "text": "3"
+        }
+      ],
+      "asr_indices": [
+        1596
+      ],
+      "asr_text": [
+        "three"
+      ],
+      "window": [
+        1051.86,
+        1051.94
+      ],
+      "canonical": [
+        "#3"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 27,
+          "char": [
+            48,
+            50
+          ],
+          "text": "US"
+        }
+      ],
+      "asr_indices": [
+        1602
+      ],
+      "asr_text": [
+        "U.S.,"
+      ],
+      "window": [
+        1053.54,
+        1054.42
+      ],
+      "canonical": [
+        "us"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 30,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        1615
+      ],
+      "asr_text": [
+        "Okay."
+      ],
+      "window": [
+        1060.42,
+        1060.82
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 33,
+          "char": [
+            5,
+            9
+          ],
+          "text": "1990"
+        }
+      ],
+      "asr_indices": [
+        1648,
+        1649
+      ],
+      "asr_text": [
+        "nineteen",
+        "ninety"
+      ],
+      "window": [
+        1079.34,
+        1080.14
+      ],
+      "canonical": [
+        "#1990"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B1",
+          "sentence": 33,
+          "char": [
+            13,
+            17
+          ],
+          "text": "2000"
+        }
+      ],
+      "asr_indices": [
+        1651,
+        1652
+      ],
+      "asr_text": [
+        "two",
+        "thousand,"
+      ],
+      "window": [
+        1080.46,
+        1081.26
+      ],
+      "canonical": [
+        "#2000"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 5,
+          "char": [
+            66,
+            67
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1890
+      ],
+      "asr_text": [
+        "five"
+      ],
+      "window": [
+        1250.7,
+        1251.02
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 5,
+          "char": [
+            113,
+            114
+          ],
+          "text": "5"
+        }
+      ],
+      "asr_indices": [
+        1898
+      ],
+      "asr_text": [
+        "five"
+      ],
+      "window": [
+        1254.34,
+        1254.58
+      ],
+      "canonical": [
+        "#5"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 22,
+          "char": [
+            33,
+            35
+          ],
+          "text": "US"
+        }
+      ],
+      "asr_indices": [
+        2119
+      ],
+      "asr_text": [
+        "U.S."
+      ],
+      "window": [
+        1364.9,
+        1365.3
+      ],
+      "canonical": [
+        "us"
+      ],
+      "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2010-B2",
+          "sentence": 24,
+          "char": [
+            0,
+            2
+          ],
+          "text": "OK"
+        }
+      ],
+      "asr_indices": [
+        2147
+      ],
+      "asr_text": [
+        "Okay,"
+      ],
+      "window": [
+        1376.82,
+        1377.3
+      ],
+      "canonical": [
+        "okay"
+      ],
+      "decision": "machine_normalization_requires_review"
+    }
+  ],
+  "uncovered_asr": [
+    {
+      "asr_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115
+      ],
+      "asr_text": [
+        "Test",
+        "for",
+        "English",
+        "Majors",
+        "twenty",
+        "ten",
+        "Grade",
+        "eight",
+        "Part",
+        "I",
+        "Listening",
+        "Comprehension",
+        "A",
+        "Mini",
+        "Lecture",
+        "In",
+        "this",
+        "section",
+        "you",
+        "will",
+        "hear",
+        "a",
+        "mini",
+        "lecture.",
+        "You",
+        "will",
+        "hear",
+        "the",
+        "mini",
+        "lecture",
+        "once",
+        "only.",
+        "While",
+        "listening",
+        "to",
+        "the",
+        "mini",
+        "lecture,",
+        "please",
+        "complete",
+        "the",
+        "gap",
+        "filling",
+        "task",
+        "on",
+        "Answer",
+        "Sheet",
+        "I,",
+        "and",
+        "write",
+        "no",
+        "more",
+        "than",
+        "three",
+        "words",
+        "for",
+        "each",
+        "gap.",
+        "Make",
+        "sure",
+        "the",
+        "word",
+        "or",
+        "words",
+        "you",
+        "fill",
+        "in",
+        "is",
+        "or",
+        "are",
+        "both",
+        "grammatically",
+        "and",
+        "semantically",
+        "acceptable.",
+        "You",
+        "may",
+        "use",
+        "the",
+        "blank",
+        "sheet",
+        "for",
+        "note-taking.",
+        "You",
+        "have",
+        "30",
+        "seconds",
+        "to",
+        "preview",
+        "the",
+        "gap",
+        "filling",
+        "task.",
+        "Now",
+        "listen",
+        "to",
+        "the",
+        "mini-lecture.",
+        "When",
+        "it",
+        "is",
+        "over,",
+        "you",
+        "will",
+        "be",
+        "given",
+        "Three",
+        "minutes",
+        "to",
+        "check",
+        "your",
+        "work.",
+        "Paralinguistic",
+        "Features",
+        "of",
+        "Language."
+      ],
+      "window": [
+        14.91,
+        102.35
+      ],
+      "lexeme_count": 118,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        178
+      ],
+      "asr_text": [
+        "take"
+      ],
+      "window": [
+        134.79,
+        134.87
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        200
+      ],
+      "asr_text": [
+        "categories."
+      ],
+      "window": [
+        145.27,
+        145.67
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        239
+      ],
+      "asr_text": [
+        "and"
+      ],
+      "window": [
+        167.23,
+        167.31
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        367,
+        368
+      ],
+      "asr_text": [
+        "conveying",
+        "meaning."
+      ],
+      "window": [
+        244.71,
+        245.51
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        378
+      ],
+      "asr_text": [
+        "intention"
+      ],
+      "window": [
+        249.87,
+        250.27
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        452
+      ],
+      "asr_text": [
+        "conveyor"
+      ],
+      "window": [
+        286.87,
+        287.59
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        483
+      ],
+      "asr_text": [
+        "eyebrows"
+      ],
+      "window": [
+        303.55,
+        304.43
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        540
+      ],
+      "asr_text": [
+        "conveyors"
+      ],
+      "window": [
+        328.39,
+        328.95
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        589
+      ],
+      "asr_text": [
+        "favored"
+      ],
+      "window": [
+        351.95,
+        352.51
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        645
+      ],
+      "asr_text": [
+        "whereas"
+      ],
+      "window": [
+        380.55,
+        380.79
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        953
+      ],
+      "asr_text": [
+        "in"
+      ],
+      "window": [
+        535.27,
+        535.35
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        976
+      ],
+      "asr_text": [
+        "verb."
+      ],
+      "window": [
+        545.19,
+        545.51
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1068,
+        1069,
+        1070,
+        1071,
+        1072,
+        1073,
+        1074,
+        1075,
+        1076,
+        1077,
+        1078,
+        1079,
+        1080,
+        1081,
+        1082,
+        1083,
+        1084,
+        1085,
+        1086,
+        1087,
+        1088,
+        1089,
+        1090,
+        1091,
+        1092,
+        1093,
+        1094,
+        1095,
+        1096,
+        1097,
+        1098,
+        1099,
+        1100,
+        1101,
+        1102,
+        1103,
+        1104,
+        1105,
+        1106,
+        1107,
+        1108,
+        1109,
+        1110,
+        1111,
+        1112,
+        1113,
+        1114,
+        1115,
+        1116,
+        1117,
+        1118,
+        1119,
+        1120,
+        1121,
+        1122,
+        1123,
+        1124,
+        1125,
+        1126,
+        1127,
+        1128,
+        1129,
+        1130,
+        1131,
+        1132,
+        1133,
+        1134,
+        1135,
+        1136,
+        1137,
+        1138,
+        1139,
+        1140,
+        1141,
+        1142,
+        1143,
+        1144,
+        1145,
+        1146,
+        1147,
+        1148,
+        1149,
+        1150,
+        1151,
+        1152,
+        1153,
+        1154,
+        1155,
+        1156,
+        1157,
+        1158,
+        1159,
+        1160,
+        1161,
+        1162,
+        1163,
+        1164,
+        1165,
+        1166,
+        1167,
+        1168,
+        1169,
+        1170,
+        1171,
+        1172,
+        1173,
+        1174,
+        1175,
+        1176,
+        1177,
+        1178,
+        1179,
+        1180,
+        1181,
+        1182,
+        1183,
+        1184,
+        1185,
+        1186,
+        1187,
+        1188,
+        1189,
+        1190,
+        1191,
+        1192,
+        1193,
+        1194,
+        1195
+      ],
+      "asr_text": [
+        "Now",
+        "you",
+        "have",
+        "three",
+        "minutes",
+        "to",
+        "check",
+        "your",
+        "work.",
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "section",
+        "A",
+        "mini",
+        "lecture.",
+        "Section",
+        "B",
+        "Interview",
+        "In",
+        "this",
+        "section",
+        "you",
+        "will",
+        "hear",
+        "one",
+        "interview.",
+        "The",
+        "interview",
+        "will",
+        "be",
+        "divided",
+        "into",
+        "two",
+        "parts.",
+        "At",
+        "the",
+        "end",
+        "of",
+        "each",
+        "part,",
+        "five",
+        "questions",
+        "will",
+        "be",
+        "asked",
+        "about",
+        "what",
+        "was",
+        "said.",
+        "Both",
+        "the",
+        "interview",
+        "and",
+        "the",
+        "questions",
+        "will",
+        "be",
+        "spoken",
+        "once",
+        "only.",
+        "After",
+        "each",
+        "question,",
+        "there",
+        "will",
+        "be",
+        "a",
+        "ten",
+        "second",
+        "pause.",
+        "During",
+        "the",
+        "pause,",
+        "you",
+        "should",
+        "read",
+        "the",
+        "four",
+        "choices",
+        "of",
+        "A,",
+        "B,",
+        "C,",
+        "and",
+        "D,",
+        "and",
+        "mark",
+        "the",
+        "best",
+        "answer",
+        "to",
+        "each",
+        "question",
+        "on",
+        "Answer",
+        "Sheet",
+        "II.",
+        "You",
+        "have",
+        "thirty",
+        "seconds",
+        "to",
+        "preview",
+        "the",
+        "questions.",
+        "Now",
+        "listen",
+        "to",
+        "part",
+        "one",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "one",
+        "to",
+        "five",
+        "are",
+        "based",
+        "on",
+        "part",
+        "one",
+        "of",
+        "the",
+        "interview."
+      ],
+      "window": [
+        595.87,
+        860.06
+      ],
+      "lexeme_count": 128,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1322
+      ],
+      "asr_text": [
+        "homogenous"
+      ],
+      "window": [
+        923.26,
+        923.98
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1393
+      ],
+      "asr_text": [
+        "changed"
+      ],
+      "window": [
+        956.74,
+        957.38
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1512,
+        1513
+      ],
+      "asr_text": [
+        "Sellensgrove",
+        "in"
+      ],
+      "window": [
+        1011.34,
+        1012.3
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1570
+      ],
+      "asr_text": [
+        "Selensgrove,"
+      ],
+      "window": [
+        1037.06,
+        1038.18
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1576
+      ],
+      "asr_text": [
+        "towards"
+      ],
+      "window": [
+        1040.42,
+        1040.9
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1667
+      ],
+      "asr_text": [
+        "it"
+      ],
+      "window": [
+        1093.94,
+        1094.02
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1679
+      ],
+      "asr_text": [
+        "a"
+      ],
+      "window": [
+        1099.3,
+        1099.38
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1702,
+        1703,
+        1704
+      ],
+      "asr_text": [
+        "19th",
+        "century.",
+        "90s."
+      ],
+      "window": [
+        1110.66,
+        1112.7
+      ],
+      "lexeme_count": 3,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1731,
+        1732,
+        1733,
+        1734,
+        1735,
+        1736,
+        1737,
+        1738,
+        1739,
+        1740,
+        1741,
+        1742,
+        1743,
+        1744,
+        1745,
+        1746,
+        1747,
+        1748,
+        1749,
+        1750,
+        1751,
+        1752,
+        1753,
+        1754
+      ],
+      "asr_text": [
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "part",
+        "one",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "one",
+        "to",
+        "five",
+        "are",
+        "based",
+        "on",
+        "what",
+        "you",
+        "have",
+        "just",
+        "heard.",
+        "Question",
+        "one."
+      ],
+      "window": [
+        1127.98,
+        1137.58
+      ],
+      "lexeme_count": 24,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1767,
+        1768
+      ],
+      "asr_text": [
+        "Question",
+        "two."
+      ],
+      "window": [
+        1152.38,
+        1153.58
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1778,
+        1779
+      ],
+      "asr_text": [
+        "Question",
+        "three:"
+      ],
+      "window": [
+        1168.26,
+        1169.38
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1785,
+        1786
+      ],
+      "asr_text": [
+        "Sellings",
+        "Grove"
+      ],
+      "window": [
+        1171.7,
+        1172.74
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1788,
+        1789
+      ],
+      "asr_text": [
+        "Question",
+        "four."
+      ],
+      "window": [
+        1182.98,
+        1184.1
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1807,
+        1808
+      ],
+      "asr_text": [
+        "Question",
+        "5."
+      ],
+      "window": [
+        1202.69,
+        1204.21
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1814,
+        1815
+      ],
+      "asr_text": [
+        "Selling",
+        "Grove"
+      ],
+      "window": [
+        1206.69,
+        1207.57
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1817
+      ],
+      "asr_text": [
+        "Main,"
+      ],
+      "window": [
+        1207.97,
+        1208.61
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1820,
+        1821,
+        1822,
+        1823,
+        1824,
+        1825,
+        1826,
+        1827,
+        1828,
+        1829,
+        1830,
+        1831,
+        1832,
+        1833,
+        1834,
+        1835,
+        1836,
+        1837,
+        1838,
+        1839
+      ],
+      "asr_text": [
+        "the",
+        "interview?",
+        "Now",
+        "listen",
+        "to",
+        "part",
+        "two",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "six",
+        "to",
+        "ten",
+        "are",
+        "based",
+        "on",
+        "part",
+        "two",
+        "of"
+      ],
+      "window": [
+        1209.49,
+        1225.75
+      ],
+      "lexeme_count": 20,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1873
+      ],
+      "asr_text": [
+        "gaps"
+      ],
+      "window": [
+        1244.22,
+        1244.62
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1880
+      ],
+      "asr_text": [
+        "is"
+      ],
+      "window": [
+        1248.14,
+        1248.22
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1895
+      ],
+      "asr_text": [
+        "population"
+      ],
+      "window": [
+        1252.46,
+        1252.86
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1943
+      ],
+      "asr_text": [
+        "greater"
+      ],
+      "window": [
+        1273.14,
+        1273.38
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        1998
+      ],
+      "asr_text": [
+        "whites."
+      ],
+      "window": [
+        1299.34,
+        1300.14
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2073
+      ],
+      "asr_text": [
+        "midwestern"
+      ],
+      "window": [
+        1339.02,
+        1339.74
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2097
+      ],
+      "asr_text": [
+        "600."
+      ],
+      "window": [
+        1352.46,
+        1353.1
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2149
+      ],
+      "asr_text": [
+        "D."
+      ],
+      "window": [
+        1377.78,
+        1377.94
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2164
+      ],
+      "asr_text": [
+        "A"
+      ],
+      "window": [
+        1382.06,
+        1382.14
+      ],
+      "lexeme_count": 1,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2166,
+        2167,
+        2168,
+        2169,
+        2170,
+        2171,
+        2172,
+        2173,
+        2174,
+        2175,
+        2176,
+        2177,
+        2178,
+        2179,
+        2180,
+        2181,
+        2182,
+        2183,
+        2184,
+        2185,
+        2186,
+        2187,
+        2188,
+        2189
+      ],
+      "asr_text": [
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "part",
+        "two",
+        "of",
+        "the",
+        "interview.",
+        "Questions",
+        "six",
+        "to",
+        "ten",
+        "are",
+        "based",
+        "on",
+        "what",
+        "you",
+        "have",
+        "just",
+        "heard.",
+        "Question",
+        "six:"
+      ],
+      "window": [
+        1385.34,
+        1394.06
+      ],
+      "lexeme_count": 24,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2198,
+        2199
+      ],
+      "asr_text": [
+        "Question",
+        "seven:"
+      ],
+      "window": [
+        1407.77,
+        1409.37
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2211,
+        2212
+      ],
+      "asr_text": [
+        "Question",
+        "eight."
+      ],
+      "window": [
+        1423.85,
+        1424.73
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2224,
+        2225
+      ],
+      "asr_text": [
+        "Question",
+        "9."
+      ],
+      "window": [
+        1440.08,
+        1441.04
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2236,
+        2237
+      ],
+      "asr_text": [
+        "Question",
+        "10."
+      ],
+      "window": [
+        1455.7,
+        1457.06
+      ],
+      "lexeme_count": 2,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    },
+    {
+      "asr_indices": [
+        2247,
+        2248,
+        2249,
+        2250,
+        2251,
+        2252,
+        2253,
+        2254,
+        2255
+      ],
+      "asr_text": [
+        "This",
+        "is",
+        "the",
+        "end",
+        "of",
+        "Part",
+        "1:",
+        "Listening",
+        "Comprehension."
+      ],
+      "window": [
+        1470.43,
+        1474.11
+      ],
+      "lexeme_count": 9,
+      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
+    }
+  ],
+  "human_decisions": [],
+  "rerecognition_windows": [
+    {
+      "unit": "2010-B2",
+      "window": [
+        1350.72,
+        1357.68
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 20,
+          "source_text": "600,000 to nearly 1 million",
+          "source_chars": [
+            [
+              68,
+              75
+            ],
+            [
+              76,
+              78
+            ],
+            [
+              79,
+              85
+            ],
+            [
+              86,
+              87
+            ],
+            [
+              88,
+              95
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 5,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 20,
+            "text": "from",
+            "asr_indices": [
+              2096
+            ],
+            "asr_text": [
+              "from"
+            ],
+            "window": [
+              1352.22,
+              1352.3
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 21,
+            "text": "In",
+            "asr_indices": [
+              2098
+            ],
+            "asr_text": [
+              "In"
+            ],
+            "window": [
+              1356.1,
+              1356.18
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 5,
+      "boundary_sentences": [
+        20
+      ],
+      "duration": 6.96
+    },
+    {
+      "unit": "2010-B2",
+      "window": [
+        1326.2,
+        1332.04
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 17,
+          "source_text": "I see",
+          "source_chars": [
+            [
+              4,
+              5
+            ],
+            [
+              6,
+              9
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 17,
+            "text": "Oh",
+            "asr_indices": [
+              2053
+            ],
+            "asr_text": [
+              "Oh."
+            ],
+            "window": [
+              1327.7,
+              1327.94
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 18,
+            "text": "But",
+            "asr_indices": [
+              2054
+            ],
+            "asr_text": [
+              "But"
+            ],
+            "window": [
+              1330.46,
+              1330.54
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [
+        17
+      ],
+      "duration": 5.84
+    },
+    {
+      "unit": "2010-B2",
+      "window": [
+        1297.28,
+        1302.28
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 11,
+          "source_text": "ones",
+          "source_chars": [
+            [
+              128,
+              132
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 11,
+            "text": "wealthier",
+            "asr_indices": [
+              1997
+            ],
+            "asr_text": [
+              "wealthier"
+            ],
+            "window": [
+              1298.78,
+              1299.26
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 12,
+            "text": "This",
+            "asr_indices": [
+              1999
+            ],
+            "asr_text": [
+              "This"
+            ],
+            "window": [
+              1300.7,
+              1300.78
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [
+        11
+      ],
+      "duration": 5.0
+    },
+    {
+      "unit": "2010-B2",
+      "window": [
+        1380.0,
+        1385.0
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 25,
+          "source_text": "My",
+          "source_chars": [
+            [
+              0,
+              2
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 24,
+            "text": "us",
+            "asr_indices": [
+              2163
+            ],
+            "asr_text": [
+              "us."
+            ],
+            "window": [
+              1381.5,
+              1381.82
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 25,
+            "text": "pleasure",
+            "asr_indices": [
+              2165
+            ],
+            "asr_text": [
+              "pleasure."
+            ],
+            "window": [
+              1382.3,
+              1383.5
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [
+        25
+      ],
+      "duration": 5.0
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1070.32,
+        1076.04
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 32,
+          "source_text": "Um",
+          "source_chars": [
+            [
+              0,
+              2
+            ]
+          ],
+          "boundary_missing": true,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 31,
+            "text": "populations",
+            "asr_indices": [
+              1638
+            ],
+            "asr_text": [
+              "populations."
+            ],
+            "window": [
+              1071.82,
+              1073.26
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 32,
+            "text": "let’s",
+            "asr_indices": [
+              1639
+            ],
+            "asr_text": [
+              "Let's"
+            ],
+            "window": [
+              1074.14,
+              1074.54
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [
+        32
+      ],
+      "duration": 5.72
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        243.05,
+        252.01
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 23,
+          "source_text": "convey meanings",
+          "source_chars": [
+            [
+              15,
+              21
+            ],
+            [
+              22,
+              30
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 23,
+            "text": "to",
+            "asr_indices": [
+              366
+            ],
+            "asr_text": [
+              "to"
+            ],
+            "window": [
+              244.55,
+              244.63
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 23,
+            "text": "with",
+            "asr_indices": [
+              369
+            ],
+            "asr_text": [
+              "With"
+            ],
+            "window": [
+              246.11,
+              246.27
+            ]
+          }
+        },
+        {
+          "sentence": 23,
+          "source_text": "intentions",
+          "source_chars": [
+            [
+              75,
+              85
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 23,
+            "text": "our",
+            "asr_indices": [
+              377
+            ],
+            "asr_text": [
+              "our"
+            ],
+            "window": [
+              249.55,
+              249.63
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 23,
+            "text": "through",
+            "asr_indices": [
+              379
+            ],
+            "asr_text": [
+              "through"
+            ],
+            "window": [
+              250.43,
+              250.51
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 3,
+      "boundary_sentences": [],
+      "duration": 8.96
+    },
+    {
+      "unit": "2010-B2",
+      "window": [
+        1242.4,
+        1255.52
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 4,
+          "source_text": "gap",
+          "source_chars": [
+            [
+              35,
+              38
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 4,
+            "text": "age",
+            "asr_indices": [
+              1872
+            ],
+            "asr_text": [
+              "age"
+            ],
+            "window": [
+              1243.9,
+              1244.14
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 4,
+            "text": "developing",
+            "asr_indices": [
+              1874
+            ],
+            "asr_text": [
+              "developing"
+            ],
+            "window": [
+              1244.7,
+              1245.26
+            ]
+          }
+        },
+        {
+          "sentence": 5,
+          "source_text": "was",
+          "source_chars": [
+            [
+              19,
+              22
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 5,
+            "text": "there",
+            "asr_indices": [
+              1879
+            ],
+            "asr_text": [
+              "there"
+            ],
+            "window": [
+              1247.98,
+              1248.06
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 5,
+            "text": "a",
+            "asr_indices": [
+              1881
+            ],
+            "asr_text": [
+              "a"
+            ],
+            "window": [
+              1248.3,
+              1248.38
+            ]
+          }
+        },
+        {
+          "sentence": 5,
+          "source_text": "populations",
+          "source_chars": [
+            [
+              93,
+              104
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 5,
+            "text": "youngest",
+            "asr_indices": [
+              1894
+            ],
+            "asr_text": [
+              "youngest"
+            ],
+            "window": [
+              1252.06,
+              1252.46
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 5,
+            "text": "and",
+            "asr_indices": [
+              1896
+            ],
+            "asr_text": [
+              "And"
+            ],
+            "window": [
+              1253.94,
+              1254.02
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 3,
+      "boundary_sentences": [],
+      "duration": 13.12
+    },
+    {
+      "unit": "2010-B2",
+      "window": [
+        1337.36,
+        1341.64
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 19,
+          "source_text": "mid western",
+          "source_chars": [
+            [
+              62,
+              65
+            ],
+            [
+              66,
+              73
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 19,
+            "text": "and",
+            "asr_indices": [
+              2072
+            ],
+            "asr_text": [
+              "and"
+            ],
+            "window": [
+              1338.86,
+              1338.94
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 19,
+            "text": "cities",
+            "asr_indices": [
+              2074
+            ],
+            "asr_text": [
+              "cities"
+            ],
+            "window": [
+              1339.9,
+              1340.14
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 4.28
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        301.41,
+        306.89
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 32,
+          "source_text": "eye brows",
+          "source_chars": [
+            [
+              22,
+              25
+            ],
+            [
+              26,
+              31
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 2,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 32,
+            "text": "raising",
+            "asr_indices": [
+              482
+            ],
+            "asr_text": [
+              "raising"
+            ],
+            "window": [
+              302.91,
+              303.47
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 32,
+            "text": "suggests",
+            "asr_indices": [
+              484
+            ],
+            "asr_text": [
+              "suggests"
+            ],
+            "window": [
+              304.75,
+              305.39
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 5.48
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1204.63,
+        1210.75
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 40,
+          "source_text": "Selinsgrove",
+          "source_chars": [
+            [
+              31,
+              42
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 40,
+            "text": "between",
+            "asr_indices": [
+              1813
+            ],
+            "asr_text": [
+              "between"
+            ],
+            "window": [
+              1206.13,
+              1206.21
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 40,
+            "text": "and",
+            "asr_indices": [
+              1816
+            ],
+            "asr_text": [
+              "and"
+            ],
+            "window": [
+              1207.73,
+              1207.81
+            ]
+          }
+        },
+        {
+          "sentence": 40,
+          "source_text": "Maine",
+          "source_chars": [
+            [
+              47,
+              52
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 40,
+            "text": "and",
+            "asr_indices": [
+              1816
+            ],
+            "asr_text": [
+              "and"
+            ],
+            "window": [
+              1207.73,
+              1207.81
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 40,
+            "text": "according",
+            "asr_indices": [
+              1818
+            ],
+            "asr_text": [
+              "according"
+            ],
+            "window": [
+              1208.85,
+              1209.25
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 6.12
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1035.4,
+        1043.52
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 24,
+          "source_text": "Selinsgrove",
+          "source_chars": [
+            [
+              74,
+              85
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 24,
+            "text": "like",
+            "asr_indices": [
+              1569
+            ],
+            "asr_text": [
+              "Like"
+            ],
+            "window": [
+              1036.9,
+              1036.98
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 24,
+            "text": "virtually",
+            "asr_indices": [
+              1571
+            ],
+            "asr_text": [
+              "virtually"
+            ],
+            "window": [
+              1038.42,
+              1038.82
+            ]
+          }
+        },
+        {
+          "sentence": 24,
+          "source_text": "toward",
+          "source_chars": [
+            [
+              121,
+              127
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 24,
+            "text": "march",
+            "asr_indices": [
+              1575
+            ],
+            "asr_text": [
+              "march"
+            ],
+            "window": [
+              1040.02,
+              1040.26
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 24,
+            "text": "diversity",
+            "asr_indices": [
+              1577
+            ],
+            "asr_text": [
+              "diversity."
+            ],
+            "window": [
+              1040.98,
+              1042.02
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 8.12
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1090.84,
+        1101.36
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 34,
+          "source_text": "as",
+          "source_chars": [
+            [
+              9,
+              11
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 34,
+            "text": "2025",
+            "asr_indices": [
+              1666
+            ],
+            "asr_text": [
+              "2025,"
+            ],
+            "window": [
+              1092.34,
+              1093.86
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 34,
+            "text": "is",
+            "asr_indices": [
+              1668
+            ],
+            "asr_text": [
+              "is"
+            ],
+            "window": [
+              1094.1,
+              1094.18
+            ]
+          }
+        },
+        {
+          "sentence": 34,
+          "source_text": "the",
+          "source_chars": [
+            [
+              77,
+              80
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 34,
+            "text": "indicates",
+            "asr_indices": [
+              1678
+            ],
+            "asr_text": [
+              "indicates"
+            ],
+            "window": [
+              1098.74,
+              1099.14
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 34,
+            "text": "future",
+            "asr_indices": [
+              1680
+            ],
+            "asr_text": [
+              "future"
+            ],
+            "window": [
+              1099.46,
+              1099.86
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 2,
+      "boundary_sentences": [],
+      "duration": 10.52
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        110.93,
+        114.73
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 3,
+          "source_text": "of",
+          "source_chars": [
+            [
+              36,
+              38
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 3,
+            "text": "features",
+            "asr_indices": [
+              132
+            ],
+            "asr_text": [
+              "features"
+            ],
+            "window": [
+              112.43,
+              113.15
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 3,
+            "text": "of",
+            "asr_indices": [
+              133
+            ],
+            "asr_text": [
+              "of"
+            ],
+            "window": [
+              113.15,
+              113.23
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 3.8
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        132.81,
+        136.85
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 7,
+          "source_text": "takes",
+          "source_chars": [
+            [
+              44,
+              49
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 7,
+            "text": "that",
+            "asr_indices": [
+              177
+            ],
+            "asr_text": [
+              "that"
+            ],
+            "window": [
+              134.31,
+              134.39
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 7,
+            "text": "place",
+            "asr_indices": [
+              179
+            ],
+            "asr_text": [
+              "place"
+            ],
+            "window": [
+              135.27,
+              135.35
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.04
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        533.53,
+        537.65
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 63,
+          "source_text": "an",
+          "source_chars": [
+            [
+              122,
+              124
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 63,
+            "text": "if",
+            "asr_indices": [
+              952
+            ],
+            "asr_text": [
+              "if"
+            ],
+            "window": [
+              535.03,
+              535.11
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 63,
+            "text": "imitation",
+            "asr_indices": [
+              954
+            ],
+            "asr_text": [
+              "imitation"
+            ],
+            "window": [
+              535.59,
+              536.15
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.12
+    },
+    {
+      "unit": "2010-B2",
+      "window": [
+        1271.48,
+        1275.68
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 8,
+          "source_text": "great",
+          "source_chars": [
+            [
+              110,
+              115
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B2",
+            "sentence": 8,
+            "text": "with",
+            "asr_indices": [
+              1942
+            ],
+            "asr_text": [
+              "with"
+            ],
+            "window": [
+              1272.98,
+              1273.06
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B2",
+            "sentence": 8,
+            "text": "Caucasian",
+            "asr_indices": [
+              1944
+            ],
+            "asr_text": [
+              "Caucasian"
+            ],
+            "window": [
+              1273.46,
+              1274.18
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.2
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        326.25,
+        330.53
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 33,
+          "source_text": "conveyers",
+          "source_chars": [
+            [
+              275,
+              284
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 33,
+            "text": "powerful",
+            "asr_indices": [
+              539
+            ],
+            "asr_text": [
+              "powerful"
+            ],
+            "window": [
+              327.75,
+              328.23
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 33,
+            "text": "of",
+            "asr_indices": [
+              541
+            ],
+            "asr_text": [
+              "of"
+            ],
+            "window": [
+              328.95,
+              329.03
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.28
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        165.25,
+        169.61
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 12,
+          "source_text": "in",
+          "source_chars": [
+            [
+              48,
+              50
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 12,
+            "text": "meaning",
+            "asr_indices": [
+              238
+            ],
+            "asr_text": [
+              "meaning"
+            ],
+            "window": [
+              166.75,
+              167.07
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 12,
+            "text": "communication",
+            "asr_indices": [
+              240
+            ],
+            "asr_text": [
+              "communication"
+            ],
+            "window": [
+              167.47,
+              168.11
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.36
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        350.21,
+        354.57
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 36,
+          "source_text": "favorite",
+          "source_chars": [
+            [
+              49,
+              57
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 36,
+            "text": "own",
+            "asr_indices": [
+              588
+            ],
+            "asr_text": [
+              "own"
+            ],
+            "window": [
+              351.71,
+              351.79
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 36,
+            "text": "gestures",
+            "asr_indices": [
+              590
+            ],
+            "asr_text": [
+              "gestures"
+            ],
+            "window": [
+              352.59,
+              353.07
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.36
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        205.49,
+        209.93
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 19,
+          "source_text": "um",
+          "source_chars": [
+            [
+              6,
+              8
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 19,
+            "text": "This",
+            "asr_indices": [
+              298
+            ],
+            "asr_text": [
+              "This"
+            ],
+            "window": [
+              206.99,
+              207.07
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 19,
+            "text": "is",
+            "asr_indices": [
+              299
+            ],
+            "asr_text": [
+              "is"
+            ],
+            "window": [
+              208.35,
+              208.43
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.44
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        284.81,
+        289.33
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 29,
+          "source_text": "conveyer",
+          "source_chars": [
+            [
+              32,
+              40
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 29,
+            "text": "powerful",
+            "asr_indices": [
+              451
+            ],
+            "asr_text": [
+              "powerful"
+            ],
+            "window": [
+              286.31,
+              286.79
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 29,
+            "text": "of",
+            "asr_indices": [
+              453
+            ],
+            "asr_text": [
+              "of"
+            ],
+            "window": [
+              287.75,
+              287.83
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.52
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        954.6,
+        959.12
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 13,
+          "source_text": "change",
+          "source_chars": [
+            [
+              32,
+              38
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 13,
+            "text": "different",
+            "asr_indices": [
+              1392
+            ],
+            "asr_text": [
+              "different"
+            ],
+            "window": [
+              956.1,
+              956.18
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 13,
+            "text": "over",
+            "asr_indices": [
+              1394
+            ],
+            "asr_text": [
+              "over"
+            ],
+            "window": [
+              957.54,
+              957.62
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.52
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1058.92,
+        1063.64
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 30,
+          "source_text": "The",
+          "source_chars": [
+            [
+              4,
+              7
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 30,
+            "text": "OK",
+            "asr_indices": [
+              1615
+            ],
+            "asr_text": [
+              "Okay."
+            ],
+            "window": [
+              1060.42,
+              1060.82
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 30,
+            "text": "first",
+            "asr_indices": [
+              1616
+            ],
+            "asr_text": [
+              "First"
+            ],
+            "window": [
+              1061.9,
+              1062.14
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.72
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        921.44,
+        926.28
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 9,
+          "source_text": "homogeneous",
+          "source_chars": [
+            [
+              202,
+              213
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 9,
+            "text": "one",
+            "asr_indices": [
+              1321
+            ],
+            "asr_text": [
+              "one"
+            ],
+            "window": [
+              922.94,
+              923.02
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 9,
+            "text": "nation",
+            "asr_indices": [
+              1323
+            ],
+            "asr_text": [
+              "nation."
+            ],
+            "window": [
+              924.14,
+              924.78
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 4.84
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        543.61,
+        548.89
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 65,
+          "source_text": "verbal",
+          "source_chars": [
+            [
+              57,
+              63
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 65,
+            "text": "the",
+            "asr_indices": [
+              975
+            ],
+            "asr_text": [
+              "the"
+            ],
+            "window": [
+              545.11,
+              545.19
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 65,
+            "text": "communication",
+            "asr_indices": [
+              977
+            ],
+            "asr_text": [
+              "Communication."
+            ],
+            "window": [
+              546.03,
+              547.39
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 5.28
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1169.96,
+        1175.28
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 38,
+          "source_text": "Selinsgrove",
+          "source_chars": [
+            [
+              25,
+              36
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 38,
+            "text": "of",
+            "asr_indices": [
+              1784
+            ],
+            "asr_text": [
+              "of"
+            ],
+            "window": [
+              1171.46,
+              1171.54
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 38,
+            "text": "show",
+            "asr_indices": [
+              1787
+            ],
+            "asr_text": [
+              "show?"
+            ],
+            "window": [
+              1173.06,
+              1173.78
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 5.32
+    },
+    {
+      "unit": "2010-A",
+      "window": [
+        377.61,
+        383.01
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 41,
+          "source_text": "while",
+          "source_chars": [
+            [
+              37,
+              42
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-A",
+            "sentence": 41,
+            "text": "farewell",
+            "asr_indices": [
+              644
+            ],
+            "asr_text": [
+              "farewell,"
+            ],
+            "window": [
+              379.11,
+              380.31
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-A",
+            "sentence": 41,
+            "text": "scratching",
+            "asr_indices": [
+              646
+            ],
+            "asr_text": [
+              "scratching"
+            ],
+            "window": [
+              380.95,
+              381.51
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 5.4
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1109.08,
+        1114.52
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 35,
+          "source_text": "1990s",
+          "source_chars": [
+            [
+              93,
+              98
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 35,
+            "text": "the",
+            "asr_indices": [
+              1701
+            ],
+            "asr_text": [
+              "the"
+            ],
+            "window": [
+              1110.58,
+              1110.66
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 35,
+            "text": "and",
+            "asr_indices": [
+              1705
+            ],
+            "asr_text": [
+              "And"
+            ],
+            "window": [
+              1112.94,
+              1113.02
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 5.44
+    },
+    {
+      "unit": "2010-B1",
+      "window": [
+        1009.4,
+        1015.24
+      ],
+      "bracketing_only_not_word_timestamps": true,
+      "issues": [
+        {
+          "sentence": 21,
+          "source_text": "Selinsgrove",
+          "source_chars": [
+            [
+              56,
+              67
+            ]
+          ],
+          "boundary_missing": false,
+          "missing_lexemes": 1,
+          "left_anchor": {
+            "unit": "2010-B1",
+            "sentence": 21,
+            "text": "of",
+            "asr_indices": [
+              1511
+            ],
+            "asr_text": [
+              "of"
+            ],
+            "window": [
+              1010.9,
+              1010.98
+            ]
+          },
+          "right_anchor": {
+            "unit": "2010-B1",
+            "sentence": 21,
+            "text": "Pennsylvania",
+            "asr_indices": [
+              1514
+            ],
+            "asr_text": [
+              "Pennsylvania."
+            ],
+            "window": [
+              1012.3,
+              1013.74
+            ]
+          }
+        }
+      ],
+      "missing_lexemes": 1,
+      "boundary_sentences": [],
+      "duration": 5.84
+    }
+  ],
+  "units": [
+    {
+      "id": "2010-A",
+      "state": "draft_exported_not_approved",
+      "output": "精听数据/2010-A.json",
+      "sentences": 69,
+      "source_lexemes": 957,
+      "missing_source_lexemes": 15,
+      "missing_boundary_sentences": [],
+      "rerecognition_window_count": 12,
+      "audio_window": [
+        103.11,
+        594.35
+      ]
+    },
+    {
+      "id": "2010-B1",
+      "state": "blocked_missing_boundary_anchor",
+      "output": "核验/原文对齐/2010/未导出单元/2010-B1.json",
+      "sentences": 40,
+      "source_lexemes": 583,
+      "missing_source_lexemes": 13,
+      "missing_boundary_sentences": [
+        32
+      ],
+      "rerecognition_window_count": 10,
+      "audio_window": null
+    },
+    {
+      "id": "2010-B2",
+      "state": "blocked_missing_boundary_anchor",
+      "output": "核验/原文对齐/2010/未导出单元/2010-B2.json",
+      "sentences": 30,
+      "source_lexemes": 385,
+      "missing_source_lexemes": 15,
+      "missing_boundary_sentences": [
+        11,
+        17,
+        20,
+        25
+      ],
+      "rerecognition_window_count": 7,
+      "audio_window": null
+    }
+  ]
+}

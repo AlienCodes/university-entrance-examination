@@ -55,6 +55,7 @@ jobs:
             .github
             专八/听力/批量/tools
             专八/听力/批量/原始材料清单.json
+            专八/听力/批量/核验/2022-补充音源.json
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11.15'
@@ -77,13 +78,52 @@ jobs:
           set -euo pipefail
           mkdir -p tools/tts/models
           curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar xj -C tools/tts/models
-      - name: 下载原始资料并核对整体SHA
+      - name: 按登记下载所选原音并核对SHA（2022用独立补充源）
         run: |
           set -euo pipefail
           mkdir -p in
-          curl -fL --retry 5 --retry-delay 3 -o in/default.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw/default.zip
-          python 专八/听力/批量/tools/原音准备.py ${{ matrix.year }} --archive in/default.zip --out "out/${{ matrix.year }}"
-          rm in/default.zip
+          if [ '${{ matrix.year }}' = '2022' ]; then
+            python - <<'PY'
+          import hashlib, json, shutil, urllib.request
+          from pathlib import Path
+          source=json.loads(Path('专八/听力/批量/核验/2022-补充音源.json').read_text())['selected_source']
+          p=Path('in')/source['file']
+          with urllib.request.urlopen(source['origin']['public_url'],timeout=120) as r,p.open('wb') as f: shutil.copyfileobj(r,f,1<<20)
+          assert p.stat().st_size==source['bytes'] and hashlib.sha256(p.read_bytes()).hexdigest()==source['sha256'], '公开补充源原字节SHA不符'
+          PY
+            python 专八/听力/批量/tools/原音准备.py 2022 --supplement-file in/TEM8-2022-complete.m4a --out out/2022
+          else
+            curl -fL --retry 5 --retry-delay 3 -o in/default.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw/default.zip
+            python 专八/听力/批量/tools/原音准备.py ${{ matrix.year }} --archive in/default.zip --out "out/${{ matrix.year }}"
+            rm in/default.zip
+          fi
+      - name: 2022补充原字节与来源核验先持久保存（不触发视频生成）
+        if: matrix.year == 2022
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,subprocess,tempfile
+          from pathlib import Path
+          reg=Path('专八/听力/批量/核验/2022-补充音源.json')
+          source=json.loads(reg.read_text())['selected_source'];origin=source['origin']
+          repo=os.environ['GITHUB_REPOSITORY'];tag=origin['release_tag'];p=Path('in')/source['file']
+          assert p.stat().st_size==source['bytes'] and hashlib.sha256(p.read_bytes()).hexdigest()==source['sha256']
+          release=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/tags/{tag}']))
+          current=next((a for a in release['assets'] if a['name']==p.name),None)
+          if current:
+              assert current['size']==source['bytes'] and current.get('digest')=='sha256:'+source['sha256'], '持久音源同名资产与核准SHA不符，禁止覆盖'
+          else:
+              subprocess.run(['gh','release','upload',tag,str(p),'-R',repo],check=True)
+          audit=Path('in/TEM8-2022-source-audit.json');audit.write_bytes(reg.read_bytes())
+          subprocess.run(['gh','release','upload',tag,str(audit),'-R',repo,'--clobber'],check=True)
+          with tempfile.TemporaryDirectory() as td:
+              subprocess.run(['gh','release','download',tag,'-R',repo,'-p',p.name,'-D',td],check=True)
+              back=Path(td)/p.name
+              assert back.stat().st_size==source['bytes'] and hashlib.sha256(back.read_bytes()).hexdigest()==source['sha256']
+          print('2022补充原字节Release已持久保存并回下载SHA通过')
+          PY
       - name: 原音识别、静音候选及时间检查
         env:
           OMP_NUM_THREADS: '2'
@@ -146,19 +186,39 @@ jobs:
                   a = json.loads(z.read(f'{year}/ASR核验.json'))
                   assert a['year'] == year and a['source_unchanged'] and not a['music_trim_applied']
                   assert a['source_commit'] == os.environ['GITHUB_SHA'] and a['workflow_run_id'] == os.environ['GITHUB_RUN_ID'], '旧预处理资产不能替代本次运行'
-                  assert a['source_archive_sha256'] == '919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925'
                   for n, r in a['outputs'].items(): assert hashlib.sha256(z.read(f'{year}/{n}')).hexdigest() == r['sha256']
+                  prep = json.loads(z.read(f'{year}/原音准备.json'))
+                  assert a['canonical_sha256'] == prep['canonical']['sha256']
+                  if year == 2022:
+                      supplement_sha = '05c8fd58c03f2aad9e4519974e6d46ac33cd3d5cd0748b0f47fd96133446f693'
+                      assert a['source_archive_sha256'] is None and prep['archive_sha256'] is None, '补充源不能冒称来自原ZIP'
+                      assert a['source_release'] == prep['source_release'] == 'tem8-listening-raw-supplement'
+                      assert a['source_asset'] == prep['source_asset'] == 'TEM8-2022-complete.m4a'
+                      assert a['source_supplement_sha256'] == prep['source_supplement_sha256'] == supplement_sha
+                      assert len(prep['source_entries']) == 1 and prep['source_entries'][0]['sha256'] == supplement_sha
+                      assert a['source_supplement_registration_sha256'] == prep['source_supplement_registration_sha256']
+                      assert a['source_supplement_registration_sha256'], '补充源登记指纹缺失'
+                      assert a['source_origin'] == prep['source_origin'] == prep['source_entries'][0]['origin']
+                  else:
+                      assert a['source_archive_sha256'] == prep['archive_sha256'] == '919d6009b39286e2aadc8cc5eed9d4b15cc207be9f6bd3a3b7852a5be1065925'
+                      assert a['source_release'] == prep['source_release'] == 'tem8-listening-raw'
+                      assert a['source_supplement_sha256'] is None
                   for n in z.namelist():
                       assert n.startswith(str(year) + '/') and '..' not in Path(n).parts
                       files[n] = z.read(n)
-              rows.append({'year':year,'words':a['words'],'duration':a['duration'],'zip_sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+              rows.append({'year':year,'words':a['words'],'duration':a['duration'],
+                           'source_release':a['source_release'],'source_asset':a['source_asset'],
+                           'source_archive_sha256':a['source_archive_sha256'],
+                           'source_supplement_sha256':a['source_supplement_sha256'],
+                           'zip_sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
           assert os.environ['RECOGNIZE_RESULT'] == 'success', '识别矩阵未全部成功；旧存档不能掩盖本次失败'
           manifest = {'source_commit':os.environ['GITHUB_SHA'],'years':rows,'scope':'当前启动清单中的年份；机器转写仅用于对齐，未完成最终原文和音乐剪切核对。'}
           files['预处理清单.json'] = (json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode()
           with zipfile.ZipFile('TEM8-listening-prep-complete.zip','w',compression=zipfile.ZIP_STORED) as z:
               for n,b in sorted(files.items()): z.writestr(zipfile.ZipInfo(n,(2026,11,13,0,0,0)),b)
           Path('SHA256SUMS').write_text(hashlib.sha256(Path('TEM8-listening-prep-complete.zip').read_bytes()).hexdigest()+'  TEM8-listening-prep-complete.zip\n')
-          Path('notes.md').write_text('专八听力机器识别与来源核验，已完成年份：'+ '、'.join(map(str,years))+'。\n\n2020取消考试。原音未裁音乐、未改增益/采样率/声道。识别词只用于原文对照与时间对齐，不是已经核定的原文或成品视频。\n')
+          supplement_note = '\n2022使用tem8-listening-raw-supplement中的完整公开教学原音，独立SHA与来源已登记；原包2022缺少A说明和预览，原包98条清单不变。\n' if 2022 in years else ''
+          Path('notes.md').write_text('专八听力机器识别与来源核验，已完成年份：'+ '、'.join(map(str,years))+'。\n\n2020取消考试。原音未裁音乐、未改增益/采样率/声道。识别词只用于原文对照与时间对齐，不是已经核定的原文或成品视频。\n'+supplement_note)
           PY
           gh release upload "$PREP_TAG" TEM8-listening-prep-complete.zip SHA256SUMS --clobber
           gh release edit "$PREP_TAG" --notes-file notes.md

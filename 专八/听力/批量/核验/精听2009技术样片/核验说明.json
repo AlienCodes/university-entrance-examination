@@ -1,0 +1,103 @@
+{
+  "scope": "2009真实录音与扫描解析前三句的接口/长句分屏验证；只技术样片，不宣称完整译注终审",
+  "audio_window": [
+    106.1,
+    132.4
+  ],
+  "source": "tem8-listening-raw/default.zip的听力音频 TEM8-2009.mp3",
+  "screens": 6,
+  "dimensions": [
+    3840,
+    2160
+  ],
+  "long_sentence_parts": 3,
+  "layout_problems": 0,
+  "verification": {
+    "id": "sample-2009",
+    "ok": true,
+    "draft": true,
+    "checks": [
+      {
+        "item": "4K 16:9",
+        "ok": true,
+        "detail": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "item": "30帧恒定/帧数",
+        "ok": true,
+        "detail": [
+          "30/1",
+          "900"
+        ]
+      },
+      {
+        "item": "声画等长",
+        "ok": true,
+        "detail": [
+          "30.000000",
+          "30.000000"
+        ]
+      },
+      {
+        "item": "原采样率与声道",
+        "ok": true,
+        "detail": [
+          "22050",
+          2
+        ]
+      },
+      {
+        "item": "原声逐样本核对",
+        "ok": true,
+        "detail": {
+          "gain_db": -0.0131,
+          "snr_db": 39.2,
+          "sec_db": 0.033
+        }
+      },
+      {
+        "item": "片头1.5秒静音",
+        "ok": true,
+        "detail": "1.5秒"
+      },
+      {
+        "item": "片尾至少2秒静音",
+        "ok": true,
+        "detail": "至少2秒"
+      },
+      {
+        "item": "逐屏画面与截图一致（每屏中间一帧）",
+        "ok": true,
+        "detail": "6 屏全部一致（最大平均差 1.33，99.9% 分位差 10）"
+      },
+      {
+        "item": "成品附件大小",
+        "ok": true,
+        "detail": 1283661
+      }
+    ],
+    "sha256": "d5a89201932f1db22ea7353ae914399f9ed9c59c335f1ad3c1f7630dd79dff42",
+    "bytes": 1283661,
+    "fingerprint": "bc67dc9f03e5e9e5217f4d472f41fd5f1f58106e3d9b6c8f78ff916516f106bc",
+    "source_sha256": "370f16bfd0d814ddbc1551e7b21c282a39d6964ed59da2af99dd351d677dd6e6",
+    "duration": 30.0,
+    "mode": "原音不动"
+  },
+  "preview_local": "/workspace/tem8-real-sample/out/技术预览_译注未定稿_2009年专八听力 Section A 实验报告：技术样片.mp4",
+  "published": false,
+  "source_audio_changed": false,
+  "code_files": [
+    "tools/精听.py",
+    "tools/精听数据.py",
+    "tools/精听自检.py"
+  ],
+  "notes": [
+    "ASCII撇号仅在HTML转义后排版为弯引号，来源英文和字符span不动。",
+    "2025原有源/成品/音轨不动；新精听不走2025固定WIN和旧增益链。"
+  ],
+  "词性订正": "concerning按当句介词释为关于；相关技术预览已重新编译、截图、编码、核验。",
+  "预览文件SHA256": "d5a89201932f1db22ea7353ae914399f9ed9c59c335f1ad3c1f7630dd79dff42"
+}

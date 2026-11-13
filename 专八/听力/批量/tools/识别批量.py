@@ -112,6 +112,12 @@ def run(out, model, threads=2):
     dump(out / '识别.json', words)
     dump(out / '识别分块.json', records)
     audit = {'year': prep['year'], 'source_archive_sha256': prep['archive_sha256'],
+             'source_release': prep['source_release'], 'source_asset': prep['source_asset'],
+             'source_supplement_sha256': prep.get('source_supplement_sha256'),
+             'source_supplement_registration_sha256': prep.get('source_supplement_registration_sha256'),
+             'source_origin': prep.get('source_origin'),
+             'source_entries': [{'file': r['file'], 'sha256': r['sha256'], 'bytes': r['bytes']}
+                                for r in prep['source_entries']],
              'source_commit': os.getenv('GITHUB_SHA'), 'workflow_run_id': os.getenv('GITHUB_RUN_ID'),
              'canonical_sha256': original_hash, 'duration': duration, 'words': len(words), 'chunks': len(windows),
              'elapsed_seconds': round(time.monotonic() - started, 2), 'threads': threads,

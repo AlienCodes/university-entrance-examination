@@ -1,0 +1,36 @@
+{
+  "year": 2013,
+  "start": 14.24,
+  "reason": "片头音乐",
+  "source_sha256": "2106a911776b6a968a8d3e336a7c006c171acc74aa72494e9f0e4ca51e9cea6f",
+  "evidence": "逐年查看0—20s原采样率波形和0—6kHz频谱：约1.7—13s存在连续音乐谐波及旋律变化，结束后频谱进入低能量间隙；13.82—14.67s全声道峰值低于-60dBFS，选择间隙内14.24s（原样本627984）裁去片头音乐。剪点前后40ms峰值-240.00dBFS、RMS -240.00dBFS；正式报幕Test的ASR参考起点14.69s，剪点早于该参考0.45s。已按波形/频谱确认没有剪入报幕音节；不是按ASR首字起点切割。保留报幕、正式说明及其后全部内容。",
+  "source_entry": {
+    "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2013年专八真题+音频+解析/听力音频 TEM8-2013.mp3",
+    "sha256": "a76ba4b63f49124c871b0cfdbfb221ce644c104d1cc9c9464d4696a4c68cf186"
+  },
+  "canonical_format": {
+    "sample_rate": 44100,
+    "channels": 2,
+    "pcm_format": "float32le"
+  },
+  "cut_sample": 627984,
+  "silence_interval": [
+    13.82,
+    14.67
+  ],
+  "cut_window": {
+    "half_window_seconds": 0.04,
+    "max_channel_peak_dbfs": -240.0,
+    "all_channel_rms_dbfs": -240.0,
+    "digital_zero": true,
+    "db_display_floor": -240.0
+  },
+  "reference_first_word": [
+    "Test",
+    14.69,
+    14.93
+  ],
+  "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+  "plot": "图证/2013.png",
+  "pending": []
+}

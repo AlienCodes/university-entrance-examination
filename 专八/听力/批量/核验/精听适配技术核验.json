@@ -1,0 +1,85 @@
+{
+  "scope": "合成2声道测试波形与短句，只验证适配能力，不是真实2009听力样片或语义终审",
+  "unit_tests": {
+    "passed": 5,
+    "command": "/workspace/tem8-venv/bin/python 专八/听力/批量/tools/精听自检.py"
+  },
+  "render": {
+    "id": "2009-test",
+    "ok": true,
+    "draft": true,
+    "checks": [
+      {
+        "item": "4K 16:9",
+        "ok": true,
+        "detail": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "item": "30帧恒定/帧数",
+        "ok": true,
+        "detail": [
+          "30/1",
+          "261"
+        ]
+      },
+      {
+        "item": "声画等长",
+        "ok": true,
+        "detail": [
+          "8.700000",
+          "8.700000"
+        ]
+      },
+      {
+        "item": "原采样率与声道",
+        "ok": true,
+        "detail": [
+          "16000",
+          2
+        ]
+      },
+      {
+        "item": "原声逐样本核对",
+        "ok": true,
+        "detail": {
+          "gain_db": -0.0026,
+          "snr_db": 51.2,
+          "sec_db": 0.003
+        }
+      },
+      {
+        "item": "片头1.5秒静音",
+        "ok": true,
+        "detail": "1.5秒"
+      },
+      {
+        "item": "片尾至少2秒静音",
+        "ok": true,
+        "detail": "至少2秒"
+      },
+      {
+        "item": "逐屏画面与截图一致（每屏中间一帧）",
+        "ok": true,
+        "detail": "3 屏全部一致（最大平均差 1.26，99.9% 分位差 7）"
+      },
+      {
+        "item": "成品附件大小",
+        "ok": true,
+        "detail": 200800
+      }
+    ],
+    "sha256": "80d4f9738850bdf80cedc8c7a4eb46ce626659b3bc861d18bd7ff0f8a065717a",
+    "bytes": 200800,
+    "fingerprint": "e77a5123773d36d00e355997bf6599eb8473481559a90b950f558ee215beb1ff",
+    "source_sha256": "0ccd145b545dc789e3d81cdd3e8390cf0b563a9267830464e2bae5a25879a7f8",
+    "duration": 8.7,
+    "mode": "原音不动"
+  },
+  "local_preview": "/workspace/tem8-style-smoke/out/技术预览_译注未定稿_2009年专八听力 Section A 接口测试.mp4",
+  "screens_dir": "/workspace/tem8-style-smoke/out/shots",
+  "published": false,
+  "pending": "真实2009开头技术样片等待原始录音首段ASR词时间"
+}

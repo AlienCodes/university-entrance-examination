@@ -1,0 +1,33 @@
+{
+  "year": 2024,
+  "start": 0,
+  "reason": "无片头音乐",
+  "source_sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+  "evidence": "逐年查看0—7s原采样率波形和0—6kHz频谱：正式报幕前没有连续音乐谐波或音乐段，只有前导静音及录音底噪；保留完整开头，start=0。ASR仅作报幕内容定位参考，首词Test在1.12s；不据此删除前导部分。本源约0.1s后的波形基线为直流偏置，非音乐；不消除偏置、不作音量或声道处理。",
+  "source_entry": {
+    "file": "2024年专八真题、PDF下载、查答案 - 英语真题在线.mp3",
+    "sha256": "99fc32a4bc452a6923b86e493b7f989f4852f6159359239b059fc1a17fd666b8"
+  },
+  "canonical_format": {
+    "sample_rate": 24000,
+    "channels": 2,
+    "pcm_format": "float32le"
+  },
+  "cut_sample": 0,
+  "silence_interval": null,
+  "cut_window": {
+    "half_window_seconds": 0.04,
+    "max_channel_peak_dbfs": -240.0,
+    "all_channel_rms_dbfs": -240.0,
+    "digital_zero": true,
+    "db_display_floor": -240.0
+  },
+  "reference_first_word": [
+    "Test",
+    1.12,
+    1.36
+  ],
+  "review_method": "原始PCM波形、10ms全声道峰值及RMS、STFT频谱逐年人工核对；ASR只作交叉定位，不作为剪点。",
+  "plot": "图证/2024.png",
+  "pending": []
+}
