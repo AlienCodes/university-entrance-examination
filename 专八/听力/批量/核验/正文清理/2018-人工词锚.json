@@ -1,0 +1,93 @@
+{
+  "year": 2018,
+  "source_sha256": "959fe004fda2f647acee5dd8c7db79f5268c2d70aeabf6d7768c17471f7cdff8",
+  "asr_sha256": "2624e5da1ee42a69f4f60e6fa167134e823f320893c72965cc433cf8032d9c3c",
+  "method": "每项保持纸源或独立音证支持的正文词，仅映射到同一实际完整词声段；无猜秒、无词尾/词内比例插值、无全局不同词合并。",
+  "bindings": [
+    {
+      "unit": "2018-A",
+      "sentence": 19,
+      "source_sentence_en": "Now, we need to explain how and why this remarkable trait, you know, human’s ability to do things with language has evolved, and why did this trait evolve only in our species?",
+      "char": [
+        69,
+        76
+      ],
+      "text": "human’s",
+      "asr_indices": [
+        213
+      ],
+      "asr_text": [
+        "humans'"
+      ],
+      "source_asr_rows": [
+        [
+          "humans'",
+          122.96,
+          123.44
+        ]
+      ],
+      "evidence": "human’s与humans'在此同音/hjuːmənz/；纸源原样human’s。声学不能判定撇号归属，保留纸源字形，仅该同一真实整词时间共用。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+      "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3"
+    },
+    {
+      "unit": "2018-A",
+      "sentence": 48,
+      "source_sentence_en": "And so some time around 200,000 years ago, our species confronted this crisis.",
+      "char": [
+        7,
+        16
+      ],
+      "text": "some time",
+      "asr_indices": [
+        739
+      ],
+      "asr_text": [
+        "sometime"
+      ],
+      "source_asr_rows": [
+        [
+          "sometime",
+          336.2,
+          336.68
+        ]
+      ],
+      "evidence": "纸源some time，局部Whisper/主识别合写sometime；around 200,000 years ago语境同一时间表达。两词仅共享ASR真实sometime整词区间，不虚造内部time边界。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/1",
+      "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+      "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3"
+    },
+    {
+      "unit": "2018-A",
+      "sentence": 56,
+      "source_sentence_en": "But, as we spread out around the world, we developed thousands of different languages.",
+      "char": [
+        43,
+        52
+      ],
+      "text": "developed",
+      "asr_indices": [
+        894
+      ],
+      "asr_text": [
+        "develop"
+      ],
+      "source_asr_rows": [
+        [
+          "develop",
+          403.36,
+          403.76
+        ]
+      ],
+      "evidence": "数字/B1纸源过去式developed；独立Whisper399—414明确developed；Parakeet漏弱读词尾t为develop。采纳纸源与独立模型读法，保留过去式；仅该完整单词的真实声段绑定，无全局develop/developed等价。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/2",
+      "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+      "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3"
+    }
+  ],
+  "excluded_scope": "role=question、formal及instruction均不处理。"
+}

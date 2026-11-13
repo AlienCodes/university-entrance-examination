@@ -196,7 +196,12 @@
       ]
     }
   ],
-  "decision_inputs": [],
+  "decision_inputs": [
+    {
+      "file": "核验/正文清理/2019-人工词锚.json",
+      "sha256": "f7815f7dc2bfbfe66a79d0340b9937e614c6df72da27450b2714243c875a3157"
+    }
+  ],
   "decision_rebinding": [],
   "filler_acoustic_evidence": [],
   "reviewed_whole_audio_anchors": [],
@@ -210,12 +215,12 @@
   },
   "coverage": {
     "source_lexemes": 2748,
-    "source_mapped": 2745,
-    "source_ratio": 0.9989082969432315,
+    "source_mapped": 2748,
+    "source_ratio": 1.0,
     "asr_lexemes": 2761,
-    "asr_mapped": 2746,
-    "asr_ratio": 0.9945671858022456,
-    "all_source_mapped": false,
+    "asr_mapped": 2749,
+    "asr_ratio": 0.9956537486417965,
+    "all_source_mapped": true,
     "all_asr_mapped": false,
     "all_boundaries_anchored": true,
     "literal_complete": false,
@@ -461,6 +466,34 @@
       "source": [
         {
           "unit": "2019-A",
+          "sentence": 35,
+          "char": [
+            72,
+            79
+          ],
+          "text": "other’s"
+        }
+      ],
+      "asr_indices": [
+        382
+      ],
+      "asr_text": [
+        "others"
+      ],
+      "window": [
+        198.11,
+        198.35
+      ],
+      "canonical": [
+        "other's"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
           "sentence": 39,
           "char": [
             0,
@@ -559,6 +592,34 @@
         "i"
       ],
       "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-A",
+          "sentence": 76,
+          "char": [
+            40,
+            46
+          ],
+          "text": "higher"
+        }
+      ],
+      "asr_indices": [
+        882
+      ],
+      "asr_text": [
+        "high"
+      ],
+      "window": [
+        409.23,
+        409.31
+      ],
+      "canonical": [
+        "higher"
+      ],
+      "decision": "human_binding"
     },
     {
       "kind": "normalized_or_reviewed_mapping",
@@ -792,6 +853,34 @@
       "source": [
         {
           "unit": "2019-B1",
+          "sentence": 58,
+          "char": [
+            33,
+            40
+          ],
+          "text": "animals"
+        }
+      ],
+      "asr_indices": [
+        1910
+      ],
+      "asr_text": [
+        "animal's"
+      ],
+      "window": [
+        1045.22,
+        1045.86
+      ],
+      "canonical": [
+        "animals"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2019-B1",
           "sentence": 63,
           "char": [
             9,
@@ -959,20 +1048,6 @@
     },
     {
       "asr_indices": [
-        382
-      ],
-      "asr_text": [
-        "others"
-      ],
-      "window": [
-        198.11,
-        198.35
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         565
       ],
       "asr_text": [
@@ -995,20 +1070,6 @@
       "window": [
         371.61,
         371.77
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        882
-      ],
-      "asr_text": [
-        "high"
-      ],
-      "window": [
-        409.23,
-        409.31
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
@@ -1051,20 +1112,6 @@
     },
     {
       "asr_indices": [
-        1910
-      ],
-      "asr_text": [
-        "animal's"
-      ],
-      "window": [
-        1045.22,
-        1045.86
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         2051
       ],
       "asr_text": [
@@ -1092,174 +1139,108 @@
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     }
   ],
-  "human_decisions": [],
-  "rerecognition_windows": [
+  "human_decisions": [
     {
+      "id": 1,
       "unit": "2019-A",
+      "sentence": 35,
+      "source_sentence_en": "So, what we tend to do when it comes to power is that we complement the other’s non-verbals.",
+      "char": [
+        72,
+        79
+      ],
+      "text": "other’s",
+      "asr_indices": [
+        382
+      ],
+      "asr_text": [
+        "others"
+      ],
+      "source_asr_rows": [
+        [
+          "others",
+          198.11,
+          198.35
+        ]
+      ],
+      "evidence": "纸源the other’s non-verbals；ASR作others，同音/ʌðəz/。声学不承载撇号；保留纸源所有格，仅该整词真实锚共享。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2019-人工词锚证据.json",
+      "evidence_sha256": "0c982c87efdc8efdaa584db994ccb83cf4a490fe6f7a1b222cfc4956a9a1c52e",
       "window": [
-        407.41,
-        411.29
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 76,
-          "source_text": "higher",
-          "source_chars": [
-            [
-              40,
-              46
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 76,
-            "text": "the",
-            "asr_indices": [
-              881
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              408.91,
-              408.99
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 76,
-            "text": "power",
-            "asr_indices": [
-              883
-            ],
-            "asr_text": [
-              "power"
-            ],
-            "window": [
-              409.55,
-              409.79
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.88
+        198.11,
+        198.35
+      ]
     },
     {
+      "id": 2,
+      "unit": "2019-A",
+      "sentence": 76,
+      "source_sentence_en": "What we find is that when you’re in the higher power pose condition, 86% of you will gamble.",
+      "char": [
+        40,
+        46
+      ],
+      "text": "higher",
+      "asr_indices": [
+        882
+      ],
+      "asr_text": [
+        "high"
+      ],
+      "source_asr_rows": [
+        [
+          "high",
+          409.23,
+          409.31
+        ]
+      ],
+      "evidence": "数字/B1纸源higher power pose condition；独立Whisper405—425也读higher，Parakeet读high。保留有纸源与独立模型支持的higher，并明确记录模型分歧；整词真实声段绑定，不在全局将high/higher视为等价。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/1",
+      "evidence_ref": "核验/正文清理/2019-人工词锚证据.json",
+      "evidence_sha256": "0c982c87efdc8efdaa584db994ccb83cf4a490fe6f7a1b222cfc4956a9a1c52e",
+      "window": [
+        409.23,
+        409.31
+      ]
+    },
+    {
+      "id": 3,
       "unit": "2019-B1",
+      "sentence": 58,
+      "source_sentence_en": "The real solution is to save the animals’ original habitat.",
+      "char": [
+        33,
+        40
+      ],
+      "text": "animals",
+      "asr_indices": [
+        1910
+      ],
+      "asr_text": [
+        "animal's"
+      ],
+      "source_asr_rows": [
+        [
+          "animal's",
+          1045.22,
+          1045.86
+        ]
+      ],
+      "evidence": "纸源animals’ original habitat；ASR作animal's，两种所有格写法此处同音。保留纸源复数名词/后置撇号，仅与实际同音完整词声段绑定。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/2",
+      "evidence_ref": "核验/正文清理/2019-人工词锚证据.json",
+      "evidence_sha256": "0c982c87efdc8efdaa584db994ccb83cf4a490fe6f7a1b222cfc4956a9a1c52e",
       "window": [
-        1043.56,
-        1047.76
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 58,
-          "source_text": "animals",
-          "source_chars": [
-            [
-              33,
-              40
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-B1",
-            "sentence": 58,
-            "text": "the",
-            "asr_indices": [
-              1909
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              1045.06,
-              1045.14
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-B1",
-            "sentence": 58,
-            "text": "original",
-            "asr_indices": [
-              1911
-            ],
-            "asr_text": [
-              "original"
-            ],
-            "window": [
-              1045.86,
-              1046.26
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.2
-    },
-    {
-      "unit": "2019-A",
-      "window": [
-        196.53,
-        201.29
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 35,
-          "source_text": "other’s",
-          "source_chars": [
-            [
-              72,
-              79
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2019-A",
-            "sentence": 35,
-            "text": "the",
-            "asr_indices": [
-              381
-            ],
-            "asr_text": [
-              "the"
-            ],
-            "window": [
-              198.03,
-              198.11
-            ]
-          },
-          "right_anchor": {
-            "unit": "2019-A",
-            "sentence": 35,
-            "text": "non",
-            "asr_indices": [
-              383
-            ],
-            "asr_text": [
-              "non-verbals."
-            ],
-            "window": [
-              198.51,
-              199.79
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.76
+        1045.22,
+        1045.86
+      ]
     }
   ],
+  "rerecognition_windows": [],
   "units": [
     {
       "id": "2019-A",
@@ -1267,10 +1248,10 @@
       "output": "精听数据/2019-A.json",
       "sentences": 98,
       "source_lexemes": 1275,
-      "missing_source_lexemes": 2,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 2,
+      "rerecognition_window_count": 0,
       "audio_window": [
         0.4675,
         765.99
@@ -1282,10 +1263,10 @@
       "output": "精听数据/2019-B1.json",
       "sentences": 65,
       "source_lexemes": 717,
-      "missing_source_lexemes": 1,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 1,
+      "rerecognition_window_count": 0,
       "audio_window": [
         765.7675,
         1122.31

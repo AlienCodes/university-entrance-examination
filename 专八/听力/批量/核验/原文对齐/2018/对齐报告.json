@@ -4,7 +4,7 @@
   "tool_version": "1.0",
   "inputs": {
     "draft": "译注草稿/2018.json",
-    "draft_sha256": "20443c16a9b4d0273f0ea223f518f67111af02cc954099e7f0f019facd96fcd8",
+    "draft_sha256": "9ca18cbd7b9a6e074697c75cea768f132d4f6573e3eca48988c14e7b941f9848",
     "asr": "核验/原文对齐/2018/含说明识别.json",
     "asr_sha256": "2624e5da1ee42a69f4f60e6fa167134e823f320893c72965cc433cf8032d9c3c",
     "input_asr": "核验/补词锚/2018/已核局部识别.json",
@@ -122,7 +122,12 @@
       ]
     }
   ],
-  "decision_inputs": [],
+  "decision_inputs": [
+    {
+      "file": "核验/正文清理/2018-人工词锚.json",
+      "sha256": "62b268e4163c35461c0d36015baaae9b881c4c5f32fd14b0ac0099ae81cfac8d"
+    }
+  ],
   "decision_rebinding": [],
   "filler_acoustic_evidence": [],
   "reviewed_whole_audio_anchors": [],
@@ -135,17 +140,17 @@
     "word_end_estimate_seconds": 0.08
   },
   "coverage": {
-    "source_lexemes": 2507,
-    "source_mapped": 2503,
-    "source_ratio": 0.9984044674910252,
+    "source_lexemes": 2508,
+    "source_mapped": 2508,
+    "source_ratio": 1.0,
     "asr_lexemes": 2513,
-    "asr_mapped": 2503,
-    "asr_ratio": 0.9960206923995225,
-    "all_source_mapped": false,
+    "asr_mapped": 2507,
+    "asr_ratio": 0.9976124154397135,
+    "all_source_mapped": true,
     "all_asr_mapped": false,
     "all_boundaries_anchored": true,
     "literal_complete": false,
-    "source_lexical_lexemes": 2507,
+    "source_lexical_lexemes": 2508,
     "external_reviewed_ASR_lexemes": 0,
     "nonverbal_not_word_lexemes": 0
   },
@@ -298,21 +303,6 @@
       "kind": "insert",
       "source": [],
       "asr_indices": [
-        1335
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        820.0,
-        820.08
-      ],
-      "decision": "machine_candidate_unreviewed"
-    },
-    {
-      "kind": "insert",
-      "source": [],
-      "asr_indices": [
         1474
       ],
       "asr_text": [
@@ -376,6 +366,100 @@
         "we"
       ],
       "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 19,
+          "char": [
+            69,
+            76
+          ],
+          "text": "human’s"
+        }
+      ],
+      "asr_indices": [
+        213
+      ],
+      "asr_text": [
+        "humans'"
+      ],
+      "window": [
+        122.96,
+        123.44
+      ],
+      "canonical": [
+        "human's"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 48,
+          "char": [
+            7,
+            11
+          ],
+          "text": "some"
+        },
+        {
+          "unit": "2018-A",
+          "sentence": 48,
+          "char": [
+            12,
+            16
+          ],
+          "text": "time"
+        }
+      ],
+      "asr_indices": [
+        739
+      ],
+      "asr_text": [
+        "sometime"
+      ],
+      "window": [
+        336.2,
+        336.68
+      ],
+      "canonical": [
+        "some",
+        "time"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2018-A",
+          "sentence": 56,
+          "char": [
+            43,
+            52
+          ],
+          "text": "developed"
+        }
+      ],
+      "asr_indices": [
+        894
+      ],
+      "asr_text": [
+        "develop"
+      ],
+      "window": [
+        403.36,
+        403.76
+      ],
+      "canonical": [
+        "developed"
+      ],
+      "decision": "human_binding"
     },
     {
       "kind": "normalized_or_reviewed_mapping",
@@ -845,20 +929,6 @@
   "uncovered_asr": [
     {
       "asr_indices": [
-        213
-      ],
-      "asr_text": [
-        "humans'"
-      ],
-      "window": [
-        122.96,
-        123.44
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         590
       ],
       "asr_text": [
@@ -887,20 +957,6 @@
     },
     {
       "asr_indices": [
-        739
-      ],
-      "asr_text": [
-        "sometime"
-      ],
-      "window": [
-        336.2,
-        336.68
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         829
       ],
       "asr_text": [
@@ -915,20 +971,6 @@
     },
     {
       "asr_indices": [
-        894
-      ],
-      "asr_text": [
-        "develop"
-      ],
-      "window": [
-        403.36,
-        403.76
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         1113
       ],
       "asr_text": [
@@ -937,20 +979,6 @@
       "window": [
         499.64,
         499.88
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1335
-      ],
-      "asr_text": [
-        "the"
-      ],
-      "window": [
-        820.0,
-        820.08
       ],
       "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
@@ -984,178 +1012,108 @@
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     }
   ],
-  "human_decisions": [],
-  "rerecognition_windows": [
+  "human_decisions": [
     {
+      "id": 1,
       "unit": "2018-A",
+      "sentence": 19,
+      "source_sentence_en": "Now, we need to explain how and why this remarkable trait, you know, human’s ability to do things with language has evolved, and why did this trait evolve only in our species?",
+      "char": [
+        69,
+        76
+      ],
+      "text": "human’s",
+      "asr_indices": [
+        213
+      ],
+      "asr_text": [
+        "humans'"
+      ],
+      "source_asr_rows": [
+        [
+          "humans'",
+          122.96,
+          123.44
+        ]
+      ],
+      "evidence": "human’s与humans'在此同音/hjuːmənz/；纸源原样human’s。声学不能判定撇号归属，保留纸源字形，仅该同一真实整词时间共用。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+      "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
       "window": [
-        334.46,
-        338.34
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 48,
-          "source_text": "some time",
-          "source_chars": [
-            [
-              7,
-              11
-            ],
-            [
-              12,
-              16
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 2,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 48,
-            "text": "so",
-            "asr_indices": [
-              738
-            ],
-            "asr_text": [
-              "so,"
-            ],
-            "window": [
-              335.96,
-              336.2
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 48,
-            "text": "around",
-            "asr_indices": [
-              740
-            ],
-            "asr_text": [
-              "around"
-            ],
-            "window": [
-              336.76,
-              336.84
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 2,
-      "boundary_sentences": [],
-      "duration": 3.88
+        122.96,
+        123.44
+      ]
     },
     {
+      "id": 2,
       "unit": "2018-A",
+      "sentence": 48,
+      "source_sentence_en": "And so some time around 200,000 years ago, our species confronted this crisis.",
+      "char": [
+        7,
+        16
+      ],
+      "text": "some time",
+      "asr_indices": [
+        739
+      ],
+      "asr_text": [
+        "sometime"
+      ],
+      "source_asr_rows": [
+        [
+          "sometime",
+          336.2,
+          336.68
+        ]
+      ],
+      "evidence": "纸源some time，局部Whisper/主识别合写sometime；around 200,000 years ago语境同一时间表达。两词仅共享ASR真实sometime整词区间，不虚造内部time边界。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/1",
+      "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+      "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
       "window": [
-        120.98,
-        125.26
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 19,
-          "source_text": "human’s",
-          "source_chars": [
-            [
-              69,
-              76
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 19,
-            "text": "know",
-            "asr_indices": [
-              212
-            ],
-            "asr_text": [
-              "know,"
-            ],
-            "window": [
-              122.48,
-              122.72
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 19,
-            "text": "ability",
-            "asr_indices": [
-              214
-            ],
-            "asr_text": [
-              "ability"
-            ],
-            "window": [
-              123.52,
-              123.76
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.28
+        336.2,
+        336.68
+      ]
     },
     {
+      "id": 3,
       "unit": "2018-A",
+      "sentence": 56,
+      "source_sentence_en": "But, as we spread out around the world, we developed thousands of different languages.",
+      "char": [
+        43,
+        52
+      ],
+      "text": "developed",
+      "asr_indices": [
+        894
+      ],
+      "asr_text": [
+        "develop"
+      ],
+      "source_asr_rows": [
+        [
+          "develop",
+          403.36,
+          403.76
+        ]
+      ],
+      "evidence": "数字/B1纸源过去式developed；独立Whisper399—414明确developed；Parakeet漏弱读词尾t为develop。采纳纸源与独立模型读法，保留过去式；仅该完整单词的真实声段绑定，无全局develop/developed等价。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/2",
+      "evidence_ref": "核验/正文清理/2018-人工词锚证据.json",
+      "evidence_sha256": "ef6f1caf7b1b7ec33b6fa73f09c1e986bc4e4e2dcf0a1dc374a7cd3971b629b3",
       "window": [
-        401.62,
-        405.9
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 56,
-          "source_text": "developed",
-          "source_chars": [
-            [
-              43,
-              52
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2018-A",
-            "sentence": 56,
-            "text": "we",
-            "asr_indices": [
-              893
-            ],
-            "asr_text": [
-              "we"
-            ],
-            "window": [
-              403.12,
-              403.2
-            ]
-          },
-          "right_anchor": {
-            "unit": "2018-A",
-            "sentence": 56,
-            "text": "thousands",
-            "asr_indices": [
-              895
-            ],
-            "asr_text": [
-              "thousands"
-            ],
-            "window": [
-              403.92,
-              404.4
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.28
+        403.36,
+        403.76
+      ]
     }
   ],
+  "rerecognition_windows": [],
   "units": [
     {
       "id": "2018-A",
@@ -1163,10 +1121,10 @@
       "output": "精听数据/2018-A.json",
       "sentences": 72,
       "source_lexemes": 1199,
-      "missing_source_lexemes": 4,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 3,
+      "rerecognition_window_count": 0,
       "audio_window": [
         0.9475,
         730.4
@@ -1177,7 +1135,7 @@
       "state": "draft_exported_not_approved",
       "output": "精听数据/2018-B1.json",
       "sentences": 40,
-      "source_lexemes": 659,
+      "source_lexemes": 660,
       "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],

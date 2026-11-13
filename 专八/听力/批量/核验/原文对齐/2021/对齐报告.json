@@ -431,7 +431,12 @@
       ]
     }
   ],
-  "decision_inputs": [],
+  "decision_inputs": [
+    {
+      "file": "核验/正文清理/2021-人工词锚.json",
+      "sha256": "21c62330aa08c9efe9944ea26a25d4bf975a084a013ddc1629cca393bb9cfeb2"
+    }
+  ],
   "decision_rebinding": [],
   "filler_acoustic_evidence": [],
   "reviewed_whole_audio_anchors": [],
@@ -470,11 +475,11 @@
   },
   "coverage": {
     "source_lexemes": 2621,
-    "source_mapped": 2608,
-    "source_ratio": 0.9969418960244648,
+    "source_mapped": 2614,
+    "source_ratio": 0.9992354740061162,
     "asr_lexemes": 2621,
-    "asr_mapped": 2607,
-    "asr_ratio": 0.9946585272796642,
+    "asr_mapped": 2613,
+    "asr_ratio": 0.9969477298740939,
     "all_source_mapped": false,
     "all_asr_mapped": false,
     "all_boundaries_anchored": true,
@@ -884,6 +889,34 @@
       "kind": "normalized_or_reviewed_mapping",
       "source": [
         {
+          "unit": "2021-A",
+          "sentence": 53,
+          "char": [
+            14,
+            18
+          ],
+          "text": "bear"
+        }
+      ],
+      "asr_indices": [
+        818
+      ],
+      "asr_text": [
+        "bears"
+      ],
+      "window": [
+        434.6,
+        435.0
+      ],
+      "canonical": [
+        "bear"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
           "unit": "2021-B1",
           "sentence": 6,
           "char": [
@@ -907,6 +940,34 @@
         "#10"
       ],
       "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 11,
+          "char": [
+            8,
+            14
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1328
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "window": [
+        888.43,
+        889.07
+      ],
+      "canonical": [
+        "mclane"
+      ],
+      "decision": "human_binding"
     },
     {
       "kind": "normalized_or_reviewed_mapping",
@@ -945,6 +1006,90 @@
         "ph"
       ],
       "decision": "machine_normalization_requires_review"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 13,
+          "char": [
+            69,
+            75
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1368
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "window": [
+        906.27,
+        906.91
+      ],
+      "canonical": [
+        "mclane"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 16,
+          "char": [
+            23,
+            29
+          ],
+          "text": "McLane"
+        }
+      ],
+      "asr_indices": [
+        1417
+      ],
+      "asr_text": [
+        "McLean,"
+      ],
+      "window": [
+        930.63,
+        931.51
+      ],
+      "canonical": [
+        "mclane"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B1",
+          "sentence": 24,
+          "char": [
+            112,
+            119
+          ],
+          "text": "Vendler"
+        }
+      ],
+      "asr_indices": [
+        1535
+      ],
+      "asr_text": [
+        "Bendler"
+      ],
+      "window": [
+        976.87,
+        977.51
+      ],
+      "canonical": [
+        "vendler"
+      ],
+      "decision": "human_binding"
     },
     {
       "kind": "normalized_or_reviewed_mapping",
@@ -1063,6 +1208,34 @@
       "source": [
         {
           "unit": "2021-B2",
+          "sentence": 34,
+          "char": [
+            32,
+            36
+          ],
+          "text": "tics"
+        }
+      ],
+      "asr_indices": [
+        2447
+      ],
+      "asr_text": [
+        "ticks."
+      ],
+      "window": [
+        1381.02,
+        1381.74
+      ],
+      "canonical": [
+        "tics"
+      ],
+      "decision": "human_binding"
+    },
+    {
+      "kind": "normalized_or_reviewed_mapping",
+      "source": [
+        {
+          "unit": "2021-B2",
           "sentence": 43,
           "char": [
             9,
@@ -1160,20 +1333,6 @@
     },
     {
       "asr_indices": [
-        818
-      ],
-      "asr_text": [
-        "bears"
-      ],
-      "window": [
-        434.6,
-        435.0
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         985,
         986
       ],
@@ -1186,62 +1345,6 @@
         517.25
       ],
       "lexeme_count": 2,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1328
-      ],
-      "asr_text": [
-        "MacLean"
-      ],
-      "window": [
-        888.43,
-        889.07
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1368
-      ],
-      "asr_text": [
-        "MacLean"
-      ],
-      "window": [
-        906.27,
-        906.91
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1417
-      ],
-      "asr_text": [
-        "McLean,"
-      ],
-      "window": [
-        930.63,
-        931.51
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
-        1535
-      ],
-      "asr_text": [
-        "Bendler"
-      ],
-      "window": [
-        976.87,
-        977.51
-      ],
-      "lexeme_count": 1,
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     },
     {
@@ -1274,20 +1377,6 @@
     },
     {
       "asr_indices": [
-        2447
-      ],
-      "asr_text": [
-        "ticks."
-      ],
-      "window": [
-        1381.02,
-        1381.74
-      ],
-      "lexeme_count": 1,
-      "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
-    },
-    {
-      "asr_indices": [
         2537
       ],
       "asr_text": [
@@ -1301,63 +1390,207 @@
       "classification": "uncovered_ASR_candidate; inspect_source_and_audio; neither_speech_nor_silence_assumed"
     }
   ],
-  "human_decisions": [],
-  "rerecognition_windows": [
+  "human_decisions": [
     {
+      "id": 1,
       "unit": "2021-A",
+      "sentence": 53,
+      "source_sentence_en": "Research data bear out public perceptions: When young people from low-income backgrounds complete a bachelor’s degree, their income and employment characteristics after graduation are equivalent to their peers from more affluent backgrounds.",
+      "char": [
+        14,
+        18
+      ],
+      "text": "bear",
+      "asr_indices": [
+        818
+      ],
+      "asr_text": [
+        "bears"
+      ],
+      "source_asr_rows": [
+        [
+          "bears",
+          434.6,
+          435.0
+        ]
+      ],
+      "evidence": "B1纸源Research data bear out；独立Whisper429—448和其他独立窗均bear，Parakeet读bears。依纸源和独立模型保留bear，记录模型分歧，仅同一真实整词声段绑定；不作bear/bears全局等价。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
       "window": [
-        432.7,
-        436.58
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 53,
-          "source_text": "bear",
-          "source_chars": [
-            [
-              14,
-              18
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-A",
-            "sentence": 53,
-            "text": "data",
-            "asr_indices": [
-              817
-            ],
-            "asr_text": [
-              "data"
-            ],
-            "window": [
-              434.2,
-              434.44
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-A",
-            "sentence": 53,
-            "text": "out",
-            "asr_indices": [
-              819
-            ],
-            "asr_text": [
-              "out"
-            ],
-            "window": [
-              435.0,
-              435.08
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 3.88
+        434.6,
+        435.0
+      ]
     },
+    {
+      "id": 2,
+      "unit": "2021-B1",
+      "sentence": 11,
+      "source_sentence_en": "Maureen McLane is a poet and critic.",
+      "char": [
+        8,
+        14
+      ],
+      "text": "McLane",
+      "asr_indices": [
+        1328
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "source_asr_rows": [
+        [
+          "MacLean",
+          888.43,
+          889.07
+        ]
+      ],
+      "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/1",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+      "window": [
+        888.43,
+        889.07
+      ]
+    },
+    {
+      "id": 3,
+      "unit": "2021-B1",
+      "sentence": 13,
+      "source_sentence_en": "In addition to academic publications on British romanticism, Maureen McLane has written a number of memoirs and criticism.",
+      "char": [
+        69,
+        75
+      ],
+      "text": "McLane",
+      "asr_indices": [
+        1368
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "source_asr_rows": [
+        [
+          "MacLean",
+          906.27,
+          906.91
+        ]
+      ],
+      "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/2",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+      "window": [
+        906.27,
+        906.91
+      ]
+    },
+    {
+      "id": 4,
+      "unit": "2021-B1",
+      "sentence": 16,
+      "source_sentence_en": "Today, we have Maureen McLane, now professor of English at New York University, with us on the radio show.",
+      "char": [
+        23,
+        29
+      ],
+      "text": "McLane",
+      "asr_indices": [
+        1417
+      ],
+      "asr_text": [
+        "McLean,"
+      ],
+      "source_asr_rows": [
+        [
+          "McLean,",
+          930.63,
+          931.51
+        ]
+      ],
+      "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/3",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+      "window": [
+        930.63,
+        931.51
+      ]
+    },
+    {
+      "id": 5,
+      "unit": "2021-B1",
+      "sentence": 24,
+      "source_sentence_en": "You begin one section of My Poets by talking about the lecture course you took in your freshman year with Helen Vendler, and the poetry section you had with William Corbett.",
+      "char": [
+        112,
+        119
+      ],
+      "text": "Vendler",
+      "asr_indices": [
+        1535
+      ],
+      "asr_text": [
+        "Bendler"
+      ],
+      "source_asr_rows": [
+        [
+          "Bendler",
+          976.87,
+          977.51
+        ]
+      ],
+      "evidence": "纸源Helen Vendler，诗歌课程语境明确；主ASR Bendler是专名识别差异。保留纸源正确姓氏，仅该实际完整词声段绑定。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/4",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+      "window": [
+        976.87,
+        977.51
+      ]
+    },
+    {
+      "id": 6,
+      "unit": "2021-B2",
+      "sentence": 34,
+      "source_sentence_en": "One doesn’t want to have facial tics, one doesn’t want things to be routinized, and I think about that.",
+      "char": [
+        32,
+        36
+      ],
+      "text": "tics",
+      "asr_indices": [
+        2447
+      ],
+      "asr_text": [
+        "ticks."
+      ],
+      "source_asr_rows": [
+        [
+          "ticks.",
+          1381.02,
+          1381.74
+        ]
+      ],
+      "evidence": "纸源facial tics，独立Whisper1378—1388也转tics；主ASR ticks为完全同音字。保留医学/行为语境tics，仅对应实际完整词声段绑定。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/5",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456",
+      "window": [
+        1381.02,
+        1381.74
+      ]
+    }
+  ],
+  "rerecognition_windows": [
     {
       "unit": "2021-B2",
       "window": [
@@ -1416,171 +1649,6 @@
     {
       "unit": "2021-B1",
       "window": [
-        886.37,
-        890.73
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 11,
-          "source_text": "McLane",
-          "source_chars": [
-            [
-              8,
-              14
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 11,
-            "text": "Maureen",
-            "asr_indices": [
-              1327
-            ],
-            "asr_text": [
-              "Maureen"
-            ],
-            "window": [
-              887.87,
-              888.43
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 11,
-            "text": "is",
-            "asr_indices": [
-              1329
-            ],
-            "asr_text": [
-              "is"
-            ],
-            "window": [
-              889.15,
-              889.23
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.36
-    },
-    {
-      "unit": "2021-B1",
-      "window": [
-        904.21,
-        908.65
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 13,
-          "source_text": "McLane",
-          "source_chars": [
-            [
-              69,
-              75
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 13,
-            "text": "Maureen",
-            "asr_indices": [
-              1367
-            ],
-            "asr_text": [
-              "Maureen"
-            ],
-            "window": [
-              905.71,
-              906.27
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 13,
-            "text": "has",
-            "asr_indices": [
-              1369
-            ],
-            "asr_text": [
-              "has"
-            ],
-            "window": [
-              907.07,
-              907.15
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.44
-    },
-    {
-      "unit": "2021-B1",
-      "window": [
-        975.05,
-        979.57
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 24,
-          "source_text": "Vendler",
-          "source_chars": [
-            [
-              112,
-              119
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 24,
-            "text": "Helen",
-            "asr_indices": [
-              1534
-            ],
-            "asr_text": [
-              "Helen"
-            ],
-            "window": [
-              976.55,
-              976.87
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 24,
-            "text": "and",
-            "asr_indices": [
-              1536
-            ],
-            "asr_text": [
-              "and"
-            ],
-            "window": [
-              977.99,
-              978.07
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.52
-    },
-    {
-      "unit": "2021-B1",
-      "window": [
         1129.51,
         1134.03
       ],
@@ -1632,116 +1700,6 @@
       "missing_lexemes": 1,
       "boundary_sentences": [],
       "duration": 4.52
-    },
-    {
-      "unit": "2021-B2",
-      "window": [
-        1378.96,
-        1383.64
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 34,
-          "source_text": "tics",
-          "source_chars": [
-            [
-              32,
-              36
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B2",
-            "sentence": 34,
-            "text": "facial",
-            "asr_indices": [
-              2446
-            ],
-            "asr_text": [
-              "facial"
-            ],
-            "window": [
-              1380.46,
-              1380.86
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B2",
-            "sentence": 34,
-            "text": "one",
-            "asr_indices": [
-              2448
-            ],
-            "asr_text": [
-              "One"
-            ],
-            "window": [
-              1381.98,
-              1382.14
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.68
-    },
-    {
-      "unit": "2021-B1",
-      "window": [
-        928.57,
-        933.33
-      ],
-      "bracketing_only_not_word_timestamps": true,
-      "issues": [
-        {
-          "sentence": 16,
-          "source_text": "McLane",
-          "source_chars": [
-            [
-              23,
-              29
-            ]
-          ],
-          "boundary_missing": false,
-          "missing_lexemes": 1,
-          "left_anchor": {
-            "unit": "2021-B1",
-            "sentence": 16,
-            "text": "Maureen",
-            "asr_indices": [
-              1416
-            ],
-            "asr_text": [
-              "Maureen"
-            ],
-            "window": [
-              930.07,
-              930.63
-            ]
-          },
-          "right_anchor": {
-            "unit": "2021-B1",
-            "sentence": 16,
-            "text": "now",
-            "asr_indices": [
-              1418
-            ],
-            "asr_text": [
-              "now"
-            ],
-            "window": [
-              931.75,
-              931.83
-            ]
-          }
-        }
-      ],
-      "missing_lexemes": 1,
-      "boundary_sentences": [],
-      "duration": 4.76
     }
   ],
   "units": [
@@ -1751,10 +1709,10 @@
       "output": "精听数据/2021-A.json",
       "sentences": 71,
       "source_lexemes": 1231,
-      "missing_source_lexemes": 1,
+      "missing_source_lexemes": 0,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 1,
+      "rerecognition_window_count": 0,
       "audio_window": [
         0.6275,
         809.94
@@ -1766,10 +1724,10 @@
       "output": "精听数据/2021-B1.json",
       "sentences": 57,
       "source_lexemes": 787,
-      "missing_source_lexemes": 5,
+      "missing_source_lexemes": 1,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 5,
+      "rerecognition_window_count": 1,
       "audio_window": [
         810.0925,
         1196.98
@@ -1781,10 +1739,10 @@
       "output": "精听数据/2021-B2.json",
       "sentences": 49,
       "source_lexemes": 603,
-      "missing_source_lexemes": 2,
+      "missing_source_lexemes": 1,
       "missing_boundary_sentences": [],
       "acoustic_filler_sentences": [],
-      "rerecognition_window_count": 2,
+      "rerecognition_window_count": 1,
       "audio_window": [
         1205.9675,
         1499.585306

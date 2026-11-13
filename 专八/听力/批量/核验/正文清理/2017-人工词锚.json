@@ -1,0 +1,37 @@
+{
+  "year": 2017,
+  "source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
+  "asr_sha256": "7fc7abe9165cfd50dfa52e3a03907fe5edad30b21ff9d7a01ebb08bc290c0720",
+  "method": "每项保持纸源或独立音证支持的正文词，仅映射到同一实际完整词声段；无猜秒、无词尾/词内比例插值、无全局不同词合并。",
+  "bindings": [
+    {
+      "unit": "2017-B2",
+      "sentence": 3,
+      "source_sentence_en": "Tom, I understand when Havas Media North America hired you early this year to be head of strategy and innovation, it did not include the words “future” or “futurist” in your title, but a large part of your role is understanding where the near- and not-so-distant futures of media can be applied and accelerated in ways that give Havas and its clients a competitive advantage.",
+      "char": [
+        329,
+        334
+      ],
+      "text": "Havas",
+      "asr_indices": [
+        1954
+      ],
+      "asr_text": [
+        "Havis"
+      ],
+      "source_asr_rows": [
+        [
+          "Havis",
+          1143.34,
+          1143.9
+        ]
+      ],
+      "evidence": "同一句首及下一问均为Havas，纸源公司Havas Media North America明确；Whisper作HAVA's，主识别第二次作Havis。为同一已介绍品牌的局部专名识别差异，仅绑定第二次实际声段。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2017-人工词锚证据.json",
+      "evidence_sha256": "17697445f84df0eeb8b95b4118e81d3781324393b7db94242b0bf9c96a045828"
+    }
+  ],
+  "excluded_scope": "role=question、formal及instruction均不处理。"
+}

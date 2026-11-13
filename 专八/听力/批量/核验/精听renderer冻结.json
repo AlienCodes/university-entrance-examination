@@ -1,21 +1,21 @@
 {
-  "scope": "正式精听renderer代码冻结；不等于任何未定稿视频已批准发布",
+  "scope": "正式精听renderer人工计划生产闭环修复后冻结；不是未知新截图或成品的批准",
   "tests": {
     "command": "python 专八/听力/批量/tools/精听自检.py",
-    "passed": 9
+    "passed": 11
   },
   "files": [
     {
       "path": "专八/听力/批量/tools/精听.py",
-      "sha256": "21757304fb1bf21552636a4b0f5713ebe9f14262d844a61c8f0ce0d3c1d42755"
+      "sha256": "ff515e1be152ea29844970bca368f64b1dbe1939bd8aeacb075157630aeecf26"
     },
     {
       "path": "专八/听力/批量/tools/精听数据.py",
-      "sha256": "009ea8bb182d81d2edd050d5f91df5f029a0996a7ad3880cd48047e2933391a3"
+      "sha256": "072c40ec95a6b532e798218d3be84eed68225608f53c1565f1c6c24895ba0d47"
     },
     {
       "path": "专八/听力/批量/tools/精听自检.py",
-      "sha256": "94b7cec655ede400c130d77855ac5505d09b5e014a08bb89dfcca15232e31579"
+      "sha256": "c43de63430fd5804588e99bff6f76d719f79863f620d967caff676a671f83155"
     }
   ],
   "2022_protection_registration": {
@@ -38,5 +38,13 @@
     "we’ll/well保留词内撇号区分拒绝",
     "逐词exact正常通过",
     "弯/直撇号正字法等价正常通过"
+  ],
+  "manual_plan_guards": [
+    "完整EN唯一锚导出当前句序，跟splits同句冲突拒绝",
+    "中文原样拼回、词边界/高亮范围校验",
+    "编译同时写工作分屏和强制手定文件",
+    "真实词首+gap；有gap去掉虚假无停顿，无gap才记录真实原因与词首证据",
+    "实际分屏定稿后at/zh和实测无停顿状态强制不丢；stills/编码再核",
+    "真实2024两计划实际定稿正例+故意删除手定的坏自动候选反例PASS"
   ]
 }

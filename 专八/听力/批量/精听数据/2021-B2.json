@@ -18,7 +18,7 @@
   ],
   "待核": [
     "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有2个原文词缺少ASR对应；涉及句号[34, 43]，严禁按比例补时。"
+    "仍有1个原文词缺少ASR对应；涉及句号[43]，严禁按比例补时。"
   ],
   "audio_corrections": [
     {
@@ -5513,6 +5513,15 @@
           ]
         },
         {
+          "char": 32,
+          "char_end": 36,
+          "start": 1381.02,
+          "end": 1381.74,
+          "asr_indices": [
+            2447
+          ]
+        },
+        {
           "char": 38,
           "char_end": 41,
           "start": 1381.98,
@@ -5624,27 +5633,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 19,
-        "mapped_lexemes": 18,
-        "missing": [
-          {
-            "text": "tics",
-            "char": [
-              32,
-              36
-            ]
-          }
-        ],
+        "mapped_lexemes": 19,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            2447
-          ],
-          "asr_text": [
-            "ticks."
-          ],
-          "window": [
-            1381.02,
-            1381.74
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 1379.18,
@@ -7510,6 +7504,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2021/对齐报告.json",
-    "content_sha256": "9e44ce26ab872aa7f69d1670c66dbdf546b72641b9c36fb893061f573698a77e"
+    "content_sha256": "9d866e67b03e5c2f90bbd4b107fb23fa838a0c0ffb9add882edbb9558e99eef3"
   }
 }

@@ -15,8 +15,7 @@
     }
   ],
   "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有1个原文词缺少ASR对应；涉及句号[4]，严禁按比例补时。"
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
   ],
   "instruction_review": {
     "source": "说明语句/2016.json",
@@ -958,6 +957,15 @@
           ]
         },
         {
+          "char": 32,
+          "char_end": 36,
+          "start": 1124.92,
+          "end": 1125.16,
+          "asr_indices": [
+            1957
+          ]
+        },
+        {
           "char": 37,
           "char_end": 45,
           "start": 1125.32,
@@ -1024,27 +1032,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 14,
-        "mapped_lexemes": 13,
-        "missing": [
-          {
-            "text": "kids",
-            "char": [
-              32,
-              36
-            ]
-          }
-        ],
+        "mapped_lexemes": 14,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            1957
-          ],
-          "asr_text": [
-            "kid"
-          ],
-          "window": [
-            1124.92,
-            1125.16
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 1122.76,
@@ -8089,6 +8082,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2016/对齐报告.json",
-    "content_sha256": "fe926a9c46d13301b7c73f7aa73faf08d089df74c6386b2a08b5869f39352b18"
+    "content_sha256": "f4c7c821b7cd992f76776fe13c927f87195b32fad4d3677927035e081771ac75"
   }
 }

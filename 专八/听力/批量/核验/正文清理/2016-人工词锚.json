@@ -1,0 +1,93 @@
+{
+  "year": 2016,
+  "source_sha256": "7fd09dd3352a14943e905c3fa282ed957f74bbf82e3e7368118f7e70da18d6c5",
+  "asr_sha256": "2bd7ebe5e048b20807bdd509492c9c5944ea32cd6b8096952117fc34b4e9793b",
+  "method": "每项保持纸源或独立音证支持的正文词，仅映射到同一实际完整词声段；无猜秒、无词尾/词内比例插值、无全局不同词合并。",
+  "bindings": [
+    {
+      "unit": "2016-B1",
+      "sentence": 12,
+      "source_sentence_en": "Today we are pleased to have invited Maggie Shorts from Harvard University to tell us her feeling of studying together with her mom.",
+      "char": [
+        44,
+        50
+      ],
+      "text": "Shorts",
+      "asr_indices": [
+        1290
+      ],
+      "asr_text": [
+        "Schwartz"
+      ],
+      "source_asr_rows": [
+        [
+          "Schwartz",
+          797.42,
+          798.06
+        ]
+      ],
+      "evidence": "纸源数字解析与B1教材均印Maggie Shorts；原音同一姓名位置模型转Schwartz。保留有纸源依据的专名拼写，仅绑定该真实整词声段，不据模型另造人名。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2016-人工词锚证据.json",
+      "evidence_sha256": "64b362c857ec1f720a597fb95268b80ac2e8c3dbebb6d30cf83ac0d5e7567587"
+    },
+    {
+      "unit": "2016-B1",
+      "sentence": 45,
+      "source_sentence_en": "Last fall, I was chastised for passing along a speculative tidbit I had heard in the dining hall—that, because of grade inflation, GPAs once considered good might be viewed with new scrutiny.",
+      "char": [
+        114,
+        119
+      ],
+      "text": "grade",
+      "asr_indices": [
+        1812
+      ],
+      "asr_text": [
+        "great"
+      ],
+      "source_asr_rows": [
+        [
+          "great",
+          998.06,
+          998.14
+        ]
+      ],
+      "evidence": "纸源grade inflation、GPAs once considered good与中文成绩背景一致。两局部模型此处均误记great；grade/great在此辅音连接处不能靠ASR判字，保留明确纸源术语grade inflation，并把词锚绑定到原声实际对应整词，不声称双模型转写已一致。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/1",
+      "evidence_ref": "核验/正文清理/2016-人工词锚证据.json",
+      "evidence_sha256": "64b362c857ec1f720a597fb95268b80ac2e8c3dbebb6d30cf83ac0d5e7567587"
+    },
+    {
+      "unit": "2016-B2",
+      "sentence": 4,
+      "source_sentence_en": "Is the phenomenon of parent and kids studying together at university a rare case?",
+      "char": [
+        32,
+        36
+      ],
+      "text": "kids",
+      "asr_indices": [
+        1957
+      ],
+      "asr_text": [
+        "kid"
+      ],
+      "source_asr_rows": [
+        [
+          "kid",
+          1124.92,
+          1125.16
+        ]
+      ],
+      "evidence": "纸源kids，独立Whisper1121—1146也读kids；主/局部Parakeet读kid。保留有纸源及独立模型依据的复数，不将kid/kids加入全局等价表；此处只共用真实完整词段。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/2",
+      "evidence_ref": "核验/正文清理/2016-人工词锚证据.json",
+      "evidence_sha256": "64b362c857ec1f720a597fb95268b80ac2e8c3dbebb6d30cf83ac0d5e7567587"
+    }
+  ],
+  "excluded_scope": "role=question、formal及instruction均不处理。"
+}

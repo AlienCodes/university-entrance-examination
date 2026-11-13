@@ -1,0 +1,177 @@
+{
+  "year": 2021,
+  "source_sha256": "a9701c485a209512978c089a10a20b73e4a7e4ef34ebd209c1dddb4a28390701",
+  "asr_sha256": "186c53d226df483a91dc060f30979395842e058befe37a8584c28f96d2bf8f08",
+  "method": "每项保持纸源或独立音证支持的正文词，仅映射到同一实际完整词声段；无猜秒、无词尾/词内比例插值、无全局不同词合并。",
+  "bindings": [
+    {
+      "unit": "2021-A",
+      "sentence": 53,
+      "source_sentence_en": "Research data bear out public perceptions: When young people from low-income backgrounds complete a bachelor’s degree, their income and employment characteristics after graduation are equivalent to their peers from more affluent backgrounds.",
+      "char": [
+        14,
+        18
+      ],
+      "text": "bear",
+      "asr_indices": [
+        818
+      ],
+      "asr_text": [
+        "bears"
+      ],
+      "source_asr_rows": [
+        [
+          "bears",
+          434.6,
+          435.0
+        ]
+      ],
+      "evidence": "B1纸源Research data bear out；独立Whisper429—448和其他独立窗均bear，Parakeet读bears。依纸源和独立模型保留bear，记录模型分歧，仅同一真实整词声段绑定；不作bear/bears全局等价。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/0",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456"
+    },
+    {
+      "unit": "2021-B1",
+      "sentence": 11,
+      "source_sentence_en": "Maureen McLane is a poet and critic.",
+      "char": [
+        8,
+        14
+      ],
+      "text": "McLane",
+      "asr_indices": [
+        1328
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "source_asr_rows": [
+        [
+          "MacLean",
+          888.43,
+          889.07
+        ]
+      ],
+      "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/1",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456"
+    },
+    {
+      "unit": "2021-B1",
+      "sentence": 13,
+      "source_sentence_en": "In addition to academic publications on British romanticism, Maureen McLane has written a number of memoirs and criticism.",
+      "char": [
+        69,
+        75
+      ],
+      "text": "McLane",
+      "asr_indices": [
+        1368
+      ],
+      "asr_text": [
+        "MacLean"
+      ],
+      "source_asr_rows": [
+        [
+          "MacLean",
+          906.27,
+          906.91
+        ]
+      ],
+      "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/2",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456"
+    },
+    {
+      "unit": "2021-B1",
+      "sentence": 16,
+      "source_sentence_en": "Today, we have Maureen McLane, now professor of English at New York University, with us on the radio show.",
+      "char": [
+        23,
+        29
+      ],
+      "text": "McLane",
+      "asr_indices": [
+        1417
+      ],
+      "asr_text": [
+        "McLean,"
+      ],
+      "source_asr_rows": [
+        [
+          "McLean,",
+          930.63,
+          931.51
+        ]
+      ],
+      "evidence": "纸源Maureen McLane，My Poets、NYU身份一致；ASR MacLean/McLean是同一专名的拼写识别差异。按各次实际完整姓名词声段单独绑定，不拼接远处发音。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/3",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456"
+    },
+    {
+      "unit": "2021-B1",
+      "sentence": 24,
+      "source_sentence_en": "You begin one section of My Poets by talking about the lecture course you took in your freshman year with Helen Vendler, and the poetry section you had with William Corbett.",
+      "char": [
+        112,
+        119
+      ],
+      "text": "Vendler",
+      "asr_indices": [
+        1535
+      ],
+      "asr_text": [
+        "Bendler"
+      ],
+      "source_asr_rows": [
+        [
+          "Bendler",
+          976.87,
+          977.51
+        ]
+      ],
+      "evidence": "纸源Helen Vendler，诗歌课程语境明确；主ASR Bendler是专名识别差异。保留纸源正确姓氏，仅该实际完整词声段绑定。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/4",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456"
+    },
+    {
+      "unit": "2021-B2",
+      "sentence": 34,
+      "source_sentence_en": "One doesn’t want to have facial tics, one doesn’t want things to be routinized, and I think about that.",
+      "char": [
+        32,
+        36
+      ],
+      "text": "tics",
+      "asr_indices": [
+        2447
+      ],
+      "asr_text": [
+        "ticks."
+      ],
+      "source_asr_rows": [
+        [
+          "ticks.",
+          1381.02,
+          1381.74
+        ]
+      ],
+      "evidence": "纸源facial tics，独立Whisper1378—1388也转tics；主ASR ticks为完全同音字。保留医学/行为语境tics，仅对应实际完整词声段绑定。",
+      "anchor_granularity": "shared_whole_real_ASR_word_span",
+      "evidence_pointer": "/items/5",
+      "evidence_ref": "核验/正文清理/2021-人工词锚证据.json",
+      "evidence_sha256": "d7386ebff900ff9d15494f645ef8f9113a90706f8e1f058843e18ed3db420456"
+    }
+  ],
+  "excluded_scope": "role=question、formal及instruction均不处理。"
+}

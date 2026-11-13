@@ -1,0 +1,51 @@
+{
+  "year": 2017,
+  "canonical_source_sha256": "a679fd3b8732a2c52107d074a3dd608f80dcbe38dfdc5625bbacfabb080a5c3e",
+  "draft_sha256_at_review": "b613e7feb2e82f0b7fd2e4802e79c68a1a832432c5741ccc69424f8f716b6482",
+  "source_asr_ref": "核验/补词锚/2017/已核局部识别.json",
+  "source_asr_sha256": "7fc7abe9165cfd50dfa52e3a03907fe5edad30b21ff9d7a01ebb08bc290c0720",
+  "items": [
+    {
+      "unit": "2017-B2",
+      "source_sentence_en": "Tom, I understand when Havas Media North America hired you early this year to be head of strategy and innovation, it did not include the words “future” or “futurist” in your title, but a large part of your role is understanding where the near- and not-so-distant futures of media can be applied and accelerated in ways that give Havas and its clients a competitive advantage.",
+      "source_text": "Havas",
+      "source_refs": [
+        {
+          "role": "数字解析录音文本",
+          "file": "2017专八笔试真题和答案/2017年TEM8真题答案.pdf",
+          "sha256": "12fea69e288e9418bdab4ffb0f1e23d0160a1a2a4d63cdeb6337b915995fbf62"
+        },
+        {
+          "role": "B1解析对照",
+          "file": "B1专八历年真题+听力+解析/01.历年真题+解析/2017年专八真题+音频+解析/2017年英语专八真题解析.pdf",
+          "sha256": "12831b9f1f59c7b2bd09b00761cff5e96054bb6730c1a86ac7c417f5d45d11d3"
+        }
+      ],
+      "source_char": [
+        329,
+        334
+      ],
+      "ASR_original_rows": [
+        [
+          "Havis",
+          1143.34,
+          1143.9
+        ]
+      ],
+      "independent_Whisper_text_only": [
+        {
+          "window": [
+            1120,
+            1147
+          ],
+          "text": "Tom, I understand when HAVA's media North America hired you early this year to be head of strategy and innovation, it did not include the words \"future\" or \"futurist\" in your title, but a large part of your role is understanding whether near and not so distant futures of media can be applied and accelerated in ways that give HAVA's and its clients",
+          "query": "that when future/futurist Havas",
+          "status": "independent_machine_evidence_requires_adjudication"
+        }
+      ],
+      "decision": "同一句首及下一问均为Havas，纸源公司Havas Media North America明确；Whisper作HAVA's，主识别第二次作Havis。为同一已介绍品牌的局部专名识别差异，仅绑定第二次实际声段。",
+      "not_independent_word_timestamps": "Whisper只作文字证据，无可用逐词时刻；全部声段边界取真实Parakeet/主ASR词条。",
+      "scope": "局部完整词锚裁定；不等于视频成品批准"
+    }
+  ]
+}

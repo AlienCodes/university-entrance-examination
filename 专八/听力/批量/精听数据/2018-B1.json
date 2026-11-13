@@ -29,6 +29,23 @@
     "詹姆斯·多宾斯",
     "阿卜杜拉·阿卜杜拉"
   ],
+  "manual_splits": [
+    {
+      "en": "In terms now of where this goes, we’ve already heard some very strong, very emotional language from the camp of the man who appears to be on the losing side of all this, Dr. Abdullah Abdullah.",
+      "at": "from the camp",
+      "zh": [
+        "那么接下来会如何发展呢？我们已经听到一些非常强烈、情绪激动的言论，",
+        "这些言论来自看起来可能落败的阿卜杜拉·阿卜杜拉博士所在的阵营。"
+      ],
+      "evidence": "核验/正文局部音证/2018-裁决.json /manual_splits/0；人工语义已核且几何复跑0问题，换屏另核实际词首/停顿。",
+      "evidence_ref": "核验/人工语义分屏来源快照.json",
+      "evidence_sha256": "a1a1a298d79f702de0f642c608e3ade86367df2e5693ced6109623f83697d80d",
+      "original_source_ref": "核验/正文局部音证/2018-裁决.json",
+      "original_source_sha256": "3819c906e1550532ae70e78ff22ec97f54e8c7318e77134cb2abf9ab51fd456a",
+      "original_source_pointer": "/manual_splits/0",
+      "approval_scope": "仅人工语义/几何分屏计划，不含任何音频时刻或生产批准。"
+    }
+  ],
   "year": 2018,
   "audio": {
     "file": "预处理/2018/原音.wav",
@@ -2222,7 +2239,7 @@
       "end": 810.56
     },
     {
-      "en": "Today, we are very delighted to have invited James Dobbins, U.S. special representative for Afghanistan, to tell us electoral process in Afghanistan currently.",
+      "en": "Today, we are very delighted to have invited James Dobbins, U.S. special representative for Afghanistan, to tell us the electoral process in Afghanistan currently.",
       "speaker": "BBC",
       "zh": "今天，我们非常高兴邀请到美国阿富汗问题特别代表詹姆斯·多宾斯，请他谈谈阿富汗目前的选举进程。",
       "w": [
@@ -2404,7 +2421,16 @@
         },
         {
           "char": 116,
-          "char_end": 125,
+          "char_end": 119,
+          "start": 820.0,
+          "end": 820.08,
+          "asr_indices": [
+            1335
+          ]
+        },
+        {
+          "char": 120,
+          "char_end": 129,
           "start": 820.16,
           "end": 820.96,
           "asr_indices": [
@@ -2412,8 +2438,8 @@
           ]
         },
         {
-          "char": 126,
-          "char_end": 133,
+          "char": 130,
+          "char_end": 137,
           "start": 821.12,
           "end": 821.44,
           "asr_indices": [
@@ -2421,8 +2447,8 @@
           ]
         },
         {
-          "char": 134,
-          "char_end": 136,
+          "char": 138,
+          "char_end": 140,
           "start": 821.6,
           "end": 821.68,
           "asr_indices": [
@@ -2430,8 +2456,8 @@
           ]
         },
         {
-          "char": 137,
-          "char_end": 148,
+          "char": 141,
+          "char_end": 152,
           "start": 821.84,
           "end": 822.72,
           "asr_indices": [
@@ -2439,8 +2465,8 @@
           ]
         },
         {
-          "char": 149,
-          "char_end": 158,
+          "char": 153,
+          "char_end": 162,
           "start": 822.88,
           "end": 823.76,
           "asr_indices": [
@@ -2450,20 +2476,13 @@
       ],
       "alignment": {
         "boundary_anchored": true,
-        "source_lexemes": 24,
-        "mapped_lexemes": 24,
+        "source_lexemes": 25,
+        "mapped_lexemes": 25,
         "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            1335
-          ],
-          "asr_text": [
-            "the"
-          ],
-          "window": [
-            820.0,
-            820.08
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 811.12,
@@ -8157,6 +8176,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2018/对齐报告.json",
-    "content_sha256": "055b400ddefc938ac8592082853eb299c61f58969080b40e90496129dd59338a"
+    "content_sha256": "ce6365920da3f2fd7160c18c919940baacb4b075497ef427f22b082ad2a345ab"
   }
 }

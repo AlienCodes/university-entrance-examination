@@ -15,8 +15,7 @@
     }
   ],
   "待核": [
-    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。",
-    "仍有4个原文词缺少ASR对应；涉及句号[19, 48, 56]，严禁按比例补时。"
+    "程序仅绑定ASR候选，不等于源文或音轨已通过人工核验；须复核本年对齐报告的全部差异及未覆盖ASR段。"
   ],
   "instruction_review": {
     "source": "说明语句/2018.json",
@@ -24,6 +23,23 @@
     "status": "draft_local_asr_checked_not_publication_approved",
     "待核": []
   },
+  "manual_splits": [
+    {
+      "en": "OK, in today’s lecture, I’ve presented to you how language shapes our humanity, what kind of dilemma social learning has created and the possible solutions to the dilemma.",
+      "at": "what kind of dilemma",
+      "zh": [
+        "在今天的讲座中，我向大家介绍了语言如何塑造人类、",
+        "社会学习带来了怎样的困境，以及可能的解决办法。"
+      ],
+      "evidence": "核验/正文局部音证/2018-裁决.json /manual_splits/2；人工语义已核且几何复跑0问题，换屏另核实际词首/停顿。",
+      "evidence_ref": "核验/人工语义分屏来源快照.json",
+      "evidence_sha256": "a1a1a298d79f702de0f642c608e3ade86367df2e5693ced6109623f83697d80d",
+      "original_source_ref": "核验/正文局部音证/2018-裁决.json",
+      "original_source_sha256": "3819c906e1550532ae70e78ff22ec97f54e8c7318e77134cb2abf9ab51fd456a",
+      "original_source_pointer": "/manual_splits/2",
+      "approval_scope": "仅人工语义/几何分屏计划，不含任何音频时刻或生产批准。"
+    }
+  ],
   "year": 2018,
   "audio": {
     "file": "预处理/2018/原音.wav",
@@ -3137,6 +3153,15 @@
           ]
         },
         {
+          "char": 69,
+          "char_end": 76,
+          "start": 122.96,
+          "end": 123.44,
+          "asr_indices": [
+            213
+          ]
+        },
+        {
           "char": 77,
           "char_end": 84,
           "start": 123.52,
@@ -3302,27 +3327,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 32,
-        "mapped_lexemes": 31,
-        "missing": [
-          {
-            "text": "human’s",
-            "char": [
-              69,
-              76
-            ]
-          }
-        ],
+        "mapped_lexemes": 32,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            213
-          ],
-          "asr_text": [
-            "humans'"
-          ],
-          "window": [
-            122.96,
-            123.44
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 118.32,
@@ -8856,6 +8866,16 @@
           ]
         },
         {
+          "char": 7,
+          "char_end": 16,
+          "start": 336.2,
+          "end": 336.68,
+          "asr_indices": [
+            739
+          ],
+          "shared_whole_ASR_span": true
+        },
+        {
           "char": 17,
           "char_end": 23,
           "start": 336.76,
@@ -8940,34 +8960,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 13,
-        "mapped_lexemes": 11,
-        "missing": [
-          {
-            "text": "some",
-            "char": [
-              7,
-              11
-            ]
-          },
-          {
-            "text": "time",
-            "char": [
-              12,
-              16
-            ]
-          }
-        ],
+        "mapped_lexemes": 13,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            739
-          ],
-          "asr_text": [
-            "sometime"
-          ],
-          "window": [
-            336.2,
-            336.68
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 335.8,
@@ -10540,6 +10538,15 @@
           ]
         },
         {
+          "char": 43,
+          "char_end": 52,
+          "start": 403.36,
+          "end": 403.76,
+          "asr_indices": [
+            894
+          ]
+        },
+        {
           "char": 53,
           "char_end": 62,
           "start": 403.92,
@@ -10579,27 +10586,12 @@
       "alignment": {
         "boundary_anchored": true,
         "source_lexemes": 14,
-        "mapped_lexemes": 13,
-        "missing": [
-          {
-            "text": "developed",
-            "char": [
-              43,
-              52
-            ]
-          }
-        ],
+        "mapped_lexemes": 14,
+        "missing": [],
         "unmatched_internal_asr": {
-          "asr_indices": [
-            894
-          ],
-          "asr_text": [
-            "develop"
-          ],
-          "window": [
-            403.36,
-            403.76
-          ]
+          "asr_indices": [],
+          "asr_text": [],
+          "window": null
         }
       },
       "start": 400.24,
@@ -13898,6 +13890,6 @@
     "status": "draft",
     "machine_only": true,
     "source": "核验/原文对齐/2018/对齐报告.json",
-    "content_sha256": "cddbf7255520a21bda1f22f5552cb9ebd0b124de8e4f9fce08ab0bea9353a59b"
+    "content_sha256": "dc641a75f0b9cfca9fa5a8ec0e849ac0793b94a84689aab7859a961a993e42dc"
   }
 }
