@@ -1,0 +1,76 @@
+{
+  "id": "2020-shq",
+  "题号": 15,
+  "核验范围": "仅核原MP3的719.30—724.98秒口述题干；只运行一次无提示faster-whisper large-v3-turbo局部识别，未重跑整段或其他题。",
+  "确切题干_本次无提示识别": "According to the passage, which of the following is a main goal of the project?",
+  "题干译": "根据短文，下列哪一项是这个项目的一项主要目标？",
+  "限定词核实": {
+    "NOT": "未识别出；现有Otter、定稿和原始解析题干也未见此词。",
+    "first": "未识别出；没有“第一项目标”的限定。",
+    "冠词": "本次原音局部识别为a main goal；原始解析文本记为the main goal，属于现有文字版本差异。"
+  },
+  "关键字时间_秒": {
+    "is": [
+      722.04,
+      722.52
+    ],
+    "a": [
+      722.52,
+      722.64
+    ],
+    "main": [
+      722.64,
+      722.92
+    ],
+    "goal": [
+      722.92,
+      723.36
+    ]
+  },
+  "判断": "现存题源存在多解，至少A与D均有直接依据；不能把D编写成内容错误，也不能通过假设漏NOT或first来制造唯一答案。",
+  "依据说明": [
+    {
+      "选项": "A",
+      "选项原文": "Planting a tree for every man, woman, and child.",
+      "对应原文": "One is to plant a tree for every man, woman, and child over the next decade.",
+      "原文时间_定稿": [
+        620.67,
+        627.47
+      ],
+      "关系": "第一项明确列出的主要目标，与A直接对应。"
+    },
+    {
+      "选项": "D",
+      "选项原文": "Bringing existing woodland into management.",
+      "对应原文": "Next, we are very much focused on bringing existing woodland into management because it doesn't make any sense to plant new woodland if you can't manage what you've got already.",
+      "原文时间_定稿": [
+        627.71,
+        638.99
+      ],
+      "关系": "第二项明确列出的主要目标，与D直接对应。"
+    },
+    {
+      "选项": "C",
+      "选项原文_原始解析版本": "Engaging people in their natural environment and implanting trees.",
+      "对应原文": "Finally, we want to engage people a lot more in their natural environment, that is, in planting trees, in managing areas.",
+      "原文时间_定稿": [
+        639.55,
+        647.79
+      ],
+      "关系": "第三项目标也涉及公众参与自然环境、植树及管理；C有题源用词差异，不影响A与D已造成不能唯一作答。"
+    }
+  ],
+  "原始解析答案记录": "已读取的秋考解析文本该组三题标为CCA（Q14=C、Q15=C、Q16=A），与当前教案Q15=A另有答案记录差异；本次未修改任何答案。",
+  "置信边界": "上述“确切题干”为本次原音裁片的无提示ASR结果，并与既有Otter和定稿相互印证；未另行声称进行了人工听辨。对权威原卷排版及录音是否曾另有版本，本次无新增证据。",
+  "source_sha256": "c9c3b2cf51729f803e3caf71384bd454412dc9d2a64958291926646cce56ac81",
+  "证据文件": [
+    "原音裁片_719.30-724.98.wav",
+    "Whisper_turbo_无提示局部识别.json",
+    "Whisper_turbo_无提示局部识别.txt"
+  ],
+  "只读对照资料": [
+    "高考听力/精读/定稿/2020-shq.json",
+    "高考听力/精读/准备/解析文本/2020年高考英语试卷（上海）（秋考）（解析卷）.txt"
+  ],
+  "源文件处理": "源音频、题目、定稿、当前答案和详解均未修改。"
+}
