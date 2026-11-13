@@ -6,6 +6,7 @@
 name: 专八水墨截图（GitHub 上画、全部程序检查）
 on:
   push:
+    branches: ['**']  # 文件清单只由分支提交触发，创建原音/成品Release标签不启动旧任务
     paths: ['.github/tem8-ink-stills.txt']
 permissions:
   contents: write

@@ -8,6 +8,7 @@
 name: 生成四级听力原文精读视频（紫黄撞色，GitHub 上生成）
 on:
   push:
+    branches: ['**']  # 文件清单只由分支提交触发，创建原音/成品Release标签不启动旧任务
     paths: ['.github/cet4-listening-text-render.txt']
 permissions:
   contents: write

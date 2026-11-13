@@ -5,6 +5,7 @@
 name: 六级听力准备（识别 + OCR）
 on:
   push:
+    branches: ['**']  # 文件清单只由分支提交触发，创建原音/成品Release标签不启动旧任务
     paths: ['.github/cet6-listening-prep.txt']
 permissions:
   contents: write

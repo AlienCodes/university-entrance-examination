@@ -4,6 +4,7 @@
 name: 发布考研学习资料压缩包
 on:
   push:
+    branches: ['**']  # 文件清单只由分支提交触发，创建原音/成品Release标签不启动旧任务
     paths: ['.github/kaoyan-materials-release.txt']
 permissions:
   contents: write
