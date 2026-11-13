@@ -1,0 +1,115 @@
+{
+  "status": "pass",
+  "tests": [
+    {
+      "case": "真实全328探针通过且当前绑定相同",
+      "expected": "pass",
+      "passed": true
+    },
+    {
+      "case": "输入或程序fingerprint改变",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片未过或程序/源已改变"
+    },
+    {
+      "case": "真实状态边界移动一帧",
+      "expected": "reject",
+      "passed": true,
+      "reason": "正式帧表与已验快片不同"
+    },
+    {
+      "case": "总帧数改变",
+      "expected": "reject",
+      "passed": true,
+      "reason": "正式帧表与已验快片不同"
+    },
+    {
+      "case": "旧25时钟拒绝报告不可复用",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片未过或程序/源已改变"
+    },
+    {
+      "case": "故意错页拒绝报告不可复用",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片未过或程序/源已改变"
+    },
+    {
+      "case": "真实快片SHA改变",
+      "expected": "reject",
+      "passed": true,
+      "reason": "已验快片丢失或改变"
+    },
+    {
+      "case": "任一实际已审PNG字节改变",
+      "expected": "reject",
+      "passed": true,
+      "reason": "正式截图与已验快片不同"
+    },
+    {
+      "case": "checker程序SHA过期",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片未过或程序/源已改变"
+    },
+    {
+      "case": "缺失一个边界探针",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片完整探针记录不符"
+    },
+    {
+      "case": "试图提高阈值",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片未过或程序/源已改变"
+    },
+    {
+      "case": "报告仍带失败",
+      "expected": "reject",
+      "passed": true,
+      "reason": "快片未过或程序/源已改变"
+    },
+    {
+      "case": "报告缺失",
+      "expected": "reject",
+      "passed": true,
+      "reason": "[Errno 2] No such file or directory: '/tmp/tem8-clock-negative-_t5pquwr/missing.json'"
+    },
+    {
+      "case": "production encode快片拒绝先于任何4K命令",
+      "expected": "reject",
+      "passed": true,
+      "reason": "deliberate boundary rejection"
+    },
+    {
+      "case": "production concat全82+2输入逐一显式30fps",
+      "expected": "pass",
+      "passed": true
+    }
+  ],
+  "actual_media_scope": "真实旧2009-A已审PNG的silent480p；不宣称4K成品或重新原音核验已完成",
+  "baseline_commit": "2e8034474b664a3c511897fd0fcf3077a75f18e8",
+  "baseline_core_sha256": "cd766f44cf2075c49331992cb8a2598e48a708d85b2dd873486c494252d03da0",
+  "current_core_sha256": "02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df",
+  "checker_sha256": "824e3ce562b7de13193493e0273f56ba50fb193ddb51f6b857b266851f10c491",
+  "only_changed_existing_functions": [
+    "encode",
+    "fingerprint",
+    "verify"
+  ],
+  "only_added_functions": [
+    "clock_sources",
+    "concat_listing",
+    "fast_clock"
+  ],
+  "visual_engine_AST_unchanged": true,
+  "compiled_data_file_unchanged": true,
+  "audio_check_AST_unchanged": true,
+  "full_encoding_argv_only_adds_standard_fps_filter": true,
+  "shared_visual_engine_sha256": "7c171cfed3166a579b8e47f20462194fdabba510107d332f9d316805490ccb5b",
+  "full_4K_audio_and_quality_verification_retained": true,
+  "policy": "2015-A显式256k，其他44默认192k；原音/采样率/声道/增益/阈值不变。旧5缓存停止迁移，全部45新编码。"
+}

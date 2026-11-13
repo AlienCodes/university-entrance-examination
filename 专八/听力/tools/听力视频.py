@@ -623,8 +623,10 @@ def audio_check(wav):
     print('音频检查 0 处', {'采样率': sr, '声道': ch, '时长秒': round(len(y) / rate, 3)})
 
 
-def video(wav, fast=False):
+def video(wav, fast=False, exact_image_fps=None):
     import numpy as np
+    if exact_image_fps is not None and exact_image_fps != FPS:
+        die('精确图片时间基须与输出帧率一致')
     L, total, T, nfr, sr = audio_track(wav)
     # 每个状态的开始帧（录音时刻 + LEAD，取整到帧）
     fr = [(round((t + LEAD) * FPS), key(s)) for t, s in L]
@@ -634,10 +636,12 @@ def video(wav, fast=False):
         if nxt <= f: die(f'画面状态时长 ≤ 0 帧：{k}')
         png = OUT / 'shots' / f'{k}.png'
         if not png.exists(): die(f'缺截图 {k}（先跑 stills）')
-        lst.append(f"file '{png}'\nduration {(nxt - f) / FPS:.6f}")
+        image_clock = f'\noption framerate {exact_image_fps}' if exact_image_fps is not None else ''
+        lst.append(f"file '{png}'{image_clock}\nduration {(nxt - f) / FPS:.6f}")
     # concat 的最后一段会少算一帧（第一次成品 48508 帧，应为 48509）：末屏多垫 1 秒，再用 -frames:v 截到精确帧数
-    lst.append(f"file '{OUT / 'shots' / (fr[-1][1] + '.png')}'\nduration 1.000000")
-    lst.append(f"file '{OUT / 'shots' / (fr[-1][1] + '.png')}'")
+    image_clock = f'\noption framerate {exact_image_fps}' if exact_image_fps is not None else ''
+    lst.append(f"file '{OUT / 'shots' / (fr[-1][1] + '.png')}'{image_clock}\nduration 1.000000")
+    lst.append(f"file '{OUT / 'shots' / (fr[-1][1] + '.png')}'{image_clock}")
     (OUT / 'list.txt').write_text('\n'.join(lst) + '\n')
     (OUT / '帧表.json').write_text(json.dumps(fr), 'utf-8')
     out = OUT / NAME
@@ -646,8 +650,15 @@ def video(wav, fast=False):
            '-pix_fmt', 'yuv420p', '-g', '300', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-af', 'aresample=48000',
            '-movflags', '+faststart', str(out)]
     if ORIGINAL: i = cmd.index('-ar'); cmd = cmd[:i] + cmd[i + 4:]        # 原音模式不重采样（去掉 -ar 48000 -af aresample）
+    exact_filter = f'fps={exact_image_fps}:start_time=0:round=near' if exact_image_fps is not None else ''
+    if exact_filter:
+        i = cmd.index('-c:v'); cmd[i:i] = ['-vf', exact_filter]
     if fast:      # 试跑：480p 极速编码，只核对帧数与声画时长（几分钟），通过再正式编码
-        cmd = [x for x in cmd]; i = cmd.index('-c:v'); cmd[i:i] = ['-vf', 'scale=480:270']
+        cmd = [x for x in cmd]
+        if exact_filter:
+            cmd[cmd.index('-vf') + 1] = 'scale=480:270,' + exact_filter
+        else:
+            i = cmd.index('-c:v'); cmd[i:i] = ['-vf', 'scale=480:270']
         cmd[cmd.index('medium')] = 'ultrafast'; cmd[-1] = str(OUT / 'fast.mp4')
         subprocess.run(cmd, check=True)
         n = len(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v', '-show_entries', 'packet=pts_time', '-of', 'csv=p=0', cmd[-1]],

@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "status": "pass",
+  "scope": "仅防复发入口静态分类窄兼容，未改生成器/核心/源输入/音量策略/证书阈值",
+  "validator": {
+    "file": "tools/防复发/验证/意群响度入口.py",
+    "sha256": "582eff46332c58e34d178b1b71912541bd99d675efd74cf8c6cb0d23e2eaf615"
+  },
+  "explicit_pinned_entries": {
+    "专八/听力/批量/tools/整套精听.py": "642b53fb90087491845d24811ea7e32c344ecc7d69f0d6bed1d88cafe50c6ac0",
+    "专八/听力/批量/tools/整套精听自检.py": "661f94292a93945f0908e1558e9795ec539b566a10007e59828da17f66818991",
+    "专八/听力/批量/核验/考试图片时间基核验/2019真实快片全状态复现.py": "96300b504995f829a5cef8a8dd57fa109e1e4ad04184cdd9a0f7d01bf322a889",
+    "专八/听力/批量/核验/精听图片时钟核验/真实2009A图片时钟复现.py": "0c21046072e85b163eeb2f8582d0e790761187c383a4290945ed77de7c2a3bb3",
+    "专八/听力/批量/核验/AAC编码策略更新/完整AAC往返码率实测.py": "f0fd03fda6506ff5699df1fe9aed61d035367305b199e324f83a3e9462a57f67"
+  },
+  "check_results": [
+    {
+      "check": "意群响度入口",
+      "command": "PATH=/workspace/tem8-venv/bin:$PATH python tools/防复发/验证/意群响度入口.py",
+      "exit_code": 0,
+      "last_line": "意群响度入口双向验证：全部通过",
+      "log": "tools/防复发/验证/记录/专八整套原音窄入口/意群响度入口.log",
+      "log_sha256": "e2d27c336c9c5600821f1fdd7a5452c7cc94e00b46f4b0c9f9ab4f20f69b2bc9",
+      "case_passes": 76
+    },
+    {
+      "check": "原音不动",
+      "command": "PATH=/workspace/tem8-venv/bin:$PATH python tools/防复发/验证/原音不动.py",
+      "exit_code": 0,
+      "last_line": "原音不动双向验证 通过",
+      "log": "tools/防复发/验证/记录/专八整套原音窄入口/原音不动.log",
+      "log_sha256": "4fc949a1c21e82b0c588e3aad8015d694ac9f693cb4286596699331978d13524",
+      "case_passes": 23
+    },
+    {
+      "check": "音频合格证",
+      "command": "PATH=/workspace/tem8-venv/bin:$PATH python .github/check-audio-cert.py --自检",
+      "exit_code": 0,
+      "last_line": "check-audio-cert 自检：全部通过",
+      "log": "tools/防复发/验证/记录/专八整套原音窄入口/音频合格证.log",
+      "log_sha256": "34d37bf0bff8e13a06b1020eae035e505101c3bedf9650751fdcfed9cb5efb65",
+      "case_passes": 24
+    },
+    {
+      "check": "合格证视频核查",
+      "command": "PATH=/workspace/tem8-venv/bin:$PATH python tools/防复发/验证/合格证视频核查.py",
+      "exit_code": 0,
+      "last_line": "合格证视频核查双向验证：全部通过",
+      "log": "tools/防复发/验证/记录/专八整套原音窄入口/合格证视频核查.log",
+      "log_sha256": "3c7a5633942ef389a3135f0aa2e0b8305b29671915b59ececbcca6837d1058ed",
+      "case_passes": 65
+    }
+  ],
+  "negative_contract": "5份已读文件各有精确路径+完整源码SHA正例，以及复制陌生路径、任意源码改字节、仅CRLF变化、加入gTTS四项反例；所有旧TTS/合格证/原音标记反例保留。没有目录/文件名通配豁免。",
+  "additional_diagnostics": "全ROOT扫描在两整套入口之外还发现3份新归档的真实诊断复现；逐份实读后仅按同样完整SHA登记，不放行陌生核验脚本。",
+  "production_clock_frozen": {
+    "专八/听力/批量/tools/精听.py": "02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df",
+    "专八/听力/批量/tools/图片时钟核验.py": "824e3ce562b7de13193493e0273f56ba50fb193ddb51f6b857b266851f10c491"
+  },
+  "limits": "不替代45分段/15整套媒体与原音核验，不自动批准或发布。"
+}

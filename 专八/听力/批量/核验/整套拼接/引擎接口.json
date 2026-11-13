@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "engine": "tools/整套精听.py",
+  "kind": "intensive_full",
+  "id": "YEAR",
+  "parts_order": [
+    "YEAR-A",
+    "YEAR-B1",
+    "YEAR-B2"
+  ],
+  "commands": [
+    "python tools/整套精听.py build YEAR --parts parts --original in/audio/原音.wav --out work",
+    "python tools/整套精听.py verify YEAR --parts parts --original in/audio/原音.wav --out work"
+  ],
+  "optional_prepare": "--prepare PATH（默认原音.wav同目录的原音准备.json）",
+  "python_api": [
+    "build(year,parts,original,out,prepare=None)",
+    "verify(year,parts,original,out,prepare=None)"
+  ],
+  "dependencies": [
+    "numpy==2.2.6",
+    "soundfile==0.13.1",
+    "ffmpeg/ffprobe",
+    "发布汇集.py",
+    "精听数据.py"
+  ],
+  "required_parts_layout": "parts/YEAR-{A,B1,B2}/meta.json + ASCII MP4 + evidence（严格当前child gate）",
+  "output": "work/tem8-intensive-full-YEAR.mp4 + meta.json + verification.json + PCM重建核验.json + 组装命令.json",
+  "label": "YEAR年 专八听力 精听.mp4",
+  "checks": [
+    "all current child approvals, PNG digests and inputs",
+    "all source PCM samples + original native rate/channels",
+    "all video PTS and VCL bytes + exact parameter sets",
+    "15 decoded first/last/middle representative frames",
+    "whole and each part/body original PCM vs one final AAC",
+    "priming/effective audio PTS0, contiguous packets and chapter AV offsets",
+    "protected 2022 intervals and lead/tail silence",
+    "three chapter titles and order A→B1→B2"
+  ],
+  "thresholds": {
+    "min_snr_db": 30,
+    "max_abs_gain_db": 0.05,
+    "max_1second_difference_db": 1,
+    "max_audio_video_duration_difference_seconds": 0.05
+  },
+  "failure_policy": "任何失败不留下成功meta/verification；H264不兼容直接报错，不自动重编码画面。"
+}

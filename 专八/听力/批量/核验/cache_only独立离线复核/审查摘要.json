@@ -1,0 +1,31 @@
+{
+  "status": "independent_review_passed",
+  "publisher_read_only_sha256": "049735dce3d1ed6f3d9e10b596b5979d1f2f250618424fb046bdb52d3ec2cf9e",
+  "offline_result": {
+    "file": "核验/cache_only独立离线复核/结果.json",
+    "sha256": "8466325ec674dfef5c46797770130d7214a42ddf39607e5f544e858d932d851e",
+    "cases": 9
+  },
+  "findings": [
+    "cache_only在完整15考试+45子段逐项validate_stage/find_stage核齐后，才ensure/upload CACHE_TAG的一份汇集JSON。",
+    "真实verify_release_digest未mock；内存服务器的digest或字节数篡改均被实际校验拦下。",
+    "缺一个考试、缺一个精听子段、10旧审批考试混5当前考试、旧complete45入口及直接publish误发均被拒，拒绝发生在任何模拟远端写之前。",
+    "publish未调用子进程或视频生成；cache_only不自动抑制生产矩阵，单纯续收应render=false，该组合matrix实际为空。"
+  ],
+  "scope": "只模拟远端服务和测试审批。真实gate不替换到生产，60个stage使用真实字节SHA/证据/来源验证，但MP4为显式不可播放测试字节，不冒充已审核媒体。未联网、未造控制文件、不改publisher或审核登记。",
+  "updated_files": [
+    {
+      "file": "全批清单.json",
+      "sha256": "d4e40866257ace4bba5302bcf5d5963959fb746baa5cb9d57edc4e23dd14c365",
+      "verified": "内部45制作子段；final_delivery考试15+年度精听15，15组A/B1/B2扁平后与原45ID精确相同，无2020。"
+    },
+    {
+      "file": "tools/发布接口.md",
+      "sha256": "36538f63e6f98524b7e92fe667b68fd5d2bc6d312f8f76b88f937e6ec853f3f4",
+      "verified": "旧complete45直发与10套迁移+5套表述已移除；cache_only/官方15+15分离，考试须15套新精确时钟当前缓存。"
+    }
+  ],
+  "existing_publisher_selftest": "python3 专八/听力/批量/tools/发布汇集.py --自检 => exit0",
+  "whitespace_and_JSON_mapping_checks": "PASS",
+  "git_commit_or_push": false
+}

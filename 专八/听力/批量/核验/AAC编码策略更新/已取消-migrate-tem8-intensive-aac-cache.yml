@@ -1,0 +1,56 @@
+name: 专八旧五篇默认192k精听缓存审批迁移
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-intensive-aac-cache-migration.json']
+permissions:
+  contents: write
+concurrency:
+  group: tem8-intensive-default-aac-cache-migration
+  cancel-in-progress: false
+jobs:
+  migrate:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/原文/tools
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - name: 完整HTML纯生成所需已固定分词版本（无浏览器、ASR或音频编码）
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/aac-migration-venv"
+          "$RUNNER_TEMP/aac-migration-venv/bin/pip" install --disable-pip-version-check jieba==0.42.1
+      - name: Release目标与默认缓存拒绝条件
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          "$RUNNER_TEMP/aac-migration-venv/bin/python" 专八/听力/批量/tools/迁移精听默认AAC缓存测试.py
+      - name: 只迁移根已批准的旧5，原MP4字节不变
+        env:
+          GH_TOKEN: '${{ github.token }}'
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/aac-migration-venv/bin/python" 专八/听力/批量/tools/迁移精听默认AAC缓存.py run --out "$RUNNER_TEMP/tem8-intensive-aac-migration"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: tem8-intensive-default-aac-migration-diagnostics
+          path: '${{ runner.temp }}/tem8-intensive-aac-migration/*.json'
+          if-no-files-found: ignore
+          retention-days: 30

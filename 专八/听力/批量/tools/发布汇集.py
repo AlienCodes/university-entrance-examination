@@ -4,8 +4,9 @@
 控制文件.github/tem8-listening-history-render.json：
   {"mode":"sample","sample_id":"trial-1","stage":"render","exam":[2009],
    "intensive":["2009-A"],"collect_runs":[],"render":true}
-mode=complete须与批量/全批清单.json严格相同；stage=review只持久保存待看截图，
-不制作/发布正式MP4。render=false只汇集，或render_exam/render_intensive指定失败项重做。
+stage=review只持久保存待看截图，不制作/发布正式MP4。render=false只汇集，
+或render_exam/render_intensive指定失败项重做。cache_only=true只核并持久登记内部成品；
+完整考试使用complete_exam，完整精听使用整套精听发布.py，45子段不能直接当15整套发布。
 
 审核登记：批量/审核登记.json中的entries["exam:2009"或"intensive:2009-A"]。
 先用candidate获取输入/程序指纹，实际审后status改approved并写evidence；截图阶段
@@ -132,7 +133,7 @@ def dependencies(kind):
                   ROOT / '专八/听力/tools/取字体.py', ROOT / '专八/真题/2025年 英语专业八级真题.pdf']
         bases = [ROOT / '四级/tools/fonts']
     else:
-        paths += [HERE / '精听.py', HERE / '精听数据.py',
+        paths += [HERE / '精听.py', HERE / '精听数据.py', HERE / '图片时钟核验.py',
                   ROOT / '专八/听力/原文/tools/原音音轨.py', ROOT / '高考听力/精读/tools/本机预览.py']
         bases = [ROOT / '专八/tools', ROOT / '四级/tools', ROOT / '六级/tools',
                  ROOT / '中考/tools/画面核查', ROOT / 'tools/video']
@@ -208,6 +209,9 @@ def load_control(path=CONTROL):
     assert c['mode'] in ('sample', 'complete', 'complete_exam')
     assert c.get('stage', 'render') in ('render', 'review')
     c.setdefault('stage', 'render'); c.setdefault('exam', []); c.setdefault('intensive', [])
+    assert type(c.get('cache_only', False)) is bool, 'cache_only必须是布尔值'
+    if c.get('cache_only'):
+        assert c['mode'] == 'sample' and c['stage'] == 'render', '内部缓存汇集只接受sample/render，不能冒称正式交付'
     assert c['exam'] or c['intensive'], '目标清单为空'
     c['exam'] = [str(x) for x in c['exam']]; c['intensive'] = [str(x) for x in c['intensive']]
     for kind in ['exam', 'intensive']:
@@ -219,6 +223,7 @@ def load_control(path=CONTROL):
         assert set(c['exam']) == set(map(str, YEARS)) and not c['intensive'], '考试单独正式发布必须完整15年，且不冒称精听已完成'
         assert c['stage'] == 'render' and c.get('render') is False, '考试单独正式发布只续收已核成品，不重做视频'
     else:
+        assert not c['intensive'], '旧complete模式不能将45个精听制作子段作为完整交付；请使用整套精听发布.py发布15整套'
         full = read(D / '全批清单.json')
         assert full.get('status') == 'approved' and full.get('cancelled_years') == [2020]
         assert set(map(str, full['exam'])) == set(map(str, YEARS)) == set(c['exam']), '完整考试清单必须是实际15年'
@@ -528,6 +533,7 @@ def verify_release_digest(release_tag, expected):
 
 def publish(c, art, out):
     assert c['stage'] == 'render', '待审阶段不能发布正式MP4'
+    assert c['mode'] != 'complete' or not c['intensive'], '精听子段不能写入整套正式Release'
     art, out = Path(art), Path(out); out.mkdir(parents=True, exist_ok=True)
     recover(c, art)
     # 先一次性收齐两种目标并验证，任何缺项不开始更新任何正式Release。
@@ -539,6 +545,22 @@ def publish(c, art, out):
             fp = gate(kind, ident)['payload_sha256']; folder = find_stage(art, kind, ident, fp)
             rows.append((folder, validate_stage(folder, kind, ident, fp)))
         complete[kind] = rows
+    if c.get('cache_only'):
+        assert c['mode'] == 'sample' and type(c['cache_only']) is bool
+        summary = {'schema':1, 'status':'pass', 'mode':'internal_cache_only',
+                   'source_commit':os.getenv('GITHUB_SHA'), 'sample_id':c['sample_id'],
+                   'cache_tag':CACHE_TAG, 'official_release_updated':False,
+                   'scope':'考试成品与精听内部制作子段；45子段不等于45整套，正式精听交付由15个全年合成视频组成。',
+                   'counts':{kind:len(data) for kind,data in complete.items()},
+                   'videos':{kind:[m for _,m in data] for kind,data in complete.items()}}
+        name = f'tem8-render-collection-{c["sample_id"]}-{hash_json(summary)[:16]}.json'
+        record = out / name; dump(record, summary)
+        ensure_release(CACHE_TAG, '专八历年听力已核验成品与来源存档',
+                       '内部制作缓存；精听A/B1/B2子段须合成为每年一套后正式交付。')
+        upload(CACHE_TAG, record)
+        verify_release_digest(CACHE_TAG, [(name,sha(record),record.stat().st_size,None)])
+        print(f'内部成品汇集通过：{summary["counts"]}；未更新正式Release。',flush=True)
+        return summary
     for kind, data in complete.items():
         if not data: continue
         target = out / kind; target.mkdir(exist_ok=True); release_tag = tag(c, kind); planned = []
@@ -699,6 +721,14 @@ def selftest():
                             ({**exam_only,'intensive':['2009-A']},'考试单独发布夹带不完整精听'),
                             ({**exam_only,'render':True},'单独发布意外重做视频')]:
             dump(control, bad); rejected(lambda: load_control(control), reason)
+        cache_control={'mode':'sample','sample_id':'clock-production','stage':'render',
+                       'exam':YEARS,'intensive':['2009-A'],'cache_only':True}
+        dump(control,cache_control); assert load_control(control)['cache_only'] is True
+        for bad,reason in [({**cache_control,'cache_only':'true'},'字符串伪装cache_only'),
+                           ({**cache_control,'stage':'review'},'待审图伪装成品汇集'),
+                           ({**exam_only,'cache_only':True},'内部子段冒称正式发布'),
+                           ({**cache_control,'mode':'complete','cache_only':False},'45子段误入官方整套Release')]:
+            dump(control,bad); rejected(lambda:load_control(control),reason)
     print('发布自检通过：正常包/成品核验＋路径、重名、体积、过期、损坏、失败报告、缺项及样片隔离。')
 
 

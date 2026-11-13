@@ -1,0 +1,44 @@
+{
+  "status": "old_five_migration_implementation_ready_no_control_created_no_upload",
+  "tool_files": {
+    "专八/听力/批量/tools/迁移精听默认AAC缓存.py": "f6da71894032ac89af4825e499ed31e3a326b114e04cfe601560293e9250f6c5",
+    "专八/听力/批量/tools/迁移精听默认AAC缓存测试.py": "176c278517392fe27912b3bab297d17d14ad496c27d5f3f66661f2fe27eea2ca",
+    ".github/workflows/migrate-tem8-intensive-aac-cache.yml": "6c57e95c4b6a496df03832ae69070c8006ffa0fae15d4422c013d83c5abb9963",
+    "专八/听力/批量/tools/精听默认AAC缓存迁移接口.md": "8da6763fe38479c490be5ab4ce4f3278e352ff67e15a54f3504c1e2004c13cd2"
+  },
+  "core_files": {
+    "专八/听力/批量/tools/精听.py": "cd766f44cf2075c49331992cb8a2598e48a708d85b2dd873486c494252d03da0",
+    "专八/听力/批量/tools/精听数据.py": "11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e"
+  },
+  "logic_tests": {
+    "passed": 17,
+    "total": 17
+  },
+  "real_cache_plan": {
+    "id": "2009-A",
+    "report": "核验/AAC编码策略更新/旧5迁移-2009-A真实只读等价.json",
+    "sha256": "42eaeb6ca0afdba9cfa4d54d62375f4f47d7fdbdba7ac32fd0cbf24ef9884ac8",
+    "frames": 82,
+    "PNG": 82,
+    "actual_old_new_HTML_and_states_and_encoding_argv_equal": true,
+    "does_not_claim_new_encoding_or_new_media_verify": true
+  },
+  "real_corruption_negatives": {
+    "report": "核验/AAC编码策略更新/真实旧缓存负例结果.json",
+    "passed": 3,
+    "source_unchanged": true
+  },
+  "old_23_PNG_scope": {
+    "report": "核验/AAC编码策略更新/23篇旧PNG核心兼容影响说明.json",
+    "same_visual": 23,
+    "same_audio": 23,
+    "default192": 23,
+    "explicit_root_dependency_reapproval_required": true
+  },
+  "root_proof_pin": "Root最终复验后默认44路径与真实参数正反例证明.json的实际SHA；此处不固定先前哈希。",
+  "control_created": false,
+  "primary_render_workflow_modified_by_this_task": false,
+  "pub_gate_modified": false,
+  "encoded_new_videos": 0,
+  "uploaded_assets": 0
+}

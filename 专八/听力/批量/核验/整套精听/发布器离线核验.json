@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "scope": "发布与缓存代码离线测试；不构成任何生产成品审批或真实Release发布",
+  "checked_at_utc": "2026-11-13T23:20:03.567032+00:00",
+  "files": {
+    ".github/workflows/publish-tem8-complete-exams.yml": "1666252a329d82bc32924d897677c1514a82d59561764ca4a5e30f31443371a9",
+    ".github/workflows/assemble-tem8-intensive-full.yml": "b2a5ad04aa8cb3460821a90d7ea174742e52b4af7b1a00f056e2d26ce84cd22a",
+    "专八/听力/批量/tools/整套精听发布.py": "27dce47e50dca824e24c5e45bb421a58fb4c2b845fa01869d311fe8f83425ccc",
+    "专八/听力/批量/tools/整套精听发布测试.py": "7dc2875ba1358460a477cd92958d7c2dae189d4b4a18b19a1cbae89e0fcf9dd5",
+    "专八/听力/批量/tools/整套精听发布接口.md": "e4056524f11399264e5f6198cce82479b9c73f1050afc30f524482a1724b383e",
+    "专八/听力/批量/tools/发布接口.md": "719d15c7587ea9e6b10cd30451fa0d565e43078560f06c9307360d8dbfe7f7f4",
+    "专八/听力/批量/tools/整套精听.py": "642b53fb90087491845d24811ea7e32c344ecc7d69f0d6bed1d88cafe50c6ac0"
+  },
+  "primary_workflow": {
+    "file": ".github/workflows/render-tem8-history.yml",
+    "sha256": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
+    "unchanged_by_this_task": true
+  },
+  "offline_tests": {
+    "command": "python3 专八/听力/批量/tools/整套精听发布测试.py",
+    "groups": 12,
+    "passed": true,
+    "all_media_and_registry_fixtures": "temporary synthetic test-only",
+    "github_network": "mocked only",
+    "real_release_writes": false,
+    "checks": [
+      "完整15年目标正例及缺年/重复/2020/子段目标负例",
+      "整套stage/证据/当前审批/真实PNG集合/规范名称",
+      "旧指纹、乱序、损坏MP4、缺音画独立核验标记拒绝",
+      "服务器缓存SHA及来源证明",
+      "缺整年在任何Release写前停止",
+      "完整15套模拟服务器上传/ZIP回下载CRC/memberSHA/UTF8/文件名映射",
+      "45中间段不能冒充15整套",
+      "发布文案不使生产指纹过期，组装源码变化使其过期",
+      "旧引擎报告和未绑定原音/子段报告拒绝"
+    ]
+  },
+  "exam_workflow_checks": {
+    "custom_control_entry": true,
+    "single_independent_job": true,
+    "positive_and_six_invalid_controls": true,
+    "release_target_guard": true
+  },
+  "workflow_static_checks": {
+    "yaml": true,
+    "embedded_python_ast": true,
+    "max_parallel_years": 15,
+    "no_NLP_or_child_render_steps": true,
+    "release_target_guard": true,
+    "diff_whitespace": true
+  },
+  "real_historical_child_format": {
+    "id": "2024-B1",
+    "evidence_files": 79,
+    "complete_png_multiset_and_source_report_read_only": true,
+    "production_approval_used": false
+  },
+  "formal_full_year_sample": {
+    "status": "pending_new_clock_child_cache",
+    "reason": "根取消旧5缓存审批迁移，45精听按新30fps时钟重编码；正式组装只接受三个当前gate stage。",
+    "old_technical_sample_is_production": false
+  },
+  "control_files_created_by_this_task": false,
+  "git_push_or_github_publish_by_this_task": false,
+  "historical_technical_only_evidence": {
+    "git_path": "专八/听力/批量/核验/整套拼接/2009-历史缓存技术验证.json",
+    "sha256": "1be1ec729243ba7975da9036026706f6bb731b5be9cfbfb25cbdb4d387896baa",
+    "author": "tem8_exam_spec",
+    "formal_whole_stage": false
+  },
+  "real_full_length_package_interface": {
+    "git_path": "专八/听力/批量/核验/整套拼接/2009-发布接口技术对接.json",
+    "sha256": "75de1e880f8a751a497bffce96199ff8dcb19027f2b2b28917094bf5fbe8b3c6",
+    "local_roundtrip_passed": true,
+    "production_contract_rejected": true,
+    "network_download_verified": false
+  }
+}

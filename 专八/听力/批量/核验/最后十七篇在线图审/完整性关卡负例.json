@@ -1,0 +1,33 @@
+{
+  "checks": [
+    {
+      "case": "真实17包完整正例",
+      "result": "PASS",
+      "png_count": 1132
+    },
+    {
+      "case": "真实ZIP的错误server digest",
+      "result": "REJECT"
+    },
+    {
+      "case": "源输入SHA被改",
+      "result": "REJECT",
+      "error": "候选与当前源依赖不一致",
+      "injection": "只改测试进程解压副本；真实ZIP、生产代码/源/已核目录未改"
+    },
+    {
+      "case": "依赖SHA被改",
+      "result": "REJECT",
+      "error": "候选与当前源依赖不一致",
+      "injection": "只改测试进程解压副本；真实ZIP、生产代码/源/已核目录未改"
+    },
+    {
+      "case": "解压后PNG字节被改",
+      "result": "REJECT",
+      "error": "",
+      "injection": "只改测试进程解压副本；真实ZIP、生产代码/源/已核目录未改"
+    }
+  ],
+  "all_expected": true,
+  "production_inputs_or_code_mutated": false
+}

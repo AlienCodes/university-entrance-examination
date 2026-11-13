@@ -55,6 +55,33 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
         'reason': '只输入SHA锁定PNG concat，输出480×270无音轨诊断MP4并取帧比较；无音频输入/合成/用户成品。源码变化必须重新核，不豁免任何音频或TTS入口。',
     },
 }
+PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '专八/听力/批量/tools/整套精听.py': {
+        'sha256': '642b53fb90087491845d24811ea7e32c344ecc7d69f0d6bed1d88cafe50c6ac0',
+        'audio': False, 'video': True,
+        'reason': '用户要求专八原音；已审A/B1/B2经当前gate，原采样率/声道FLOAT32按真实样本重建，reconstruct逐段完整WAV SHA必须等于已审PCM；画面stream copy并独立核VCL/PTS，AAC只从重建PCM编码，verify逐段/全年核增益/SNR/秒级电平，禁止-ar/-ac/-af和归一化。不是TTS，不可改套TTS电平链。',
+    },
+    '专八/听力/批量/tools/整套精听自检.py': {
+        'sha256': '661f94292a93945f0908e1558e9795ec539b566a10007e59828da17f66818991',
+        'audio': True, 'video': False,
+        'reason': '仅TemporaryDirectory内写数学/随机测试波形，验证原样PCM、采样点篡改、低电平信号保护、增益/延时/SNR负例；不合成TTS、不生成用户成品。不授予其他测试路径豁免，任一字节改动旧SHA失效。',
+    },
+    '专八/听力/批量/核验/考试图片时间基核验/2019真实快片全状态复现.py': {
+        'sha256': '96300b504995f829a5cef8a8dd57fa109e1e4ad04184cdd9a0f7d01bf322a889',
+        'audio': False, 'video': True,
+        'reason': '只读已SHA核定2019真PNG和帧表，对照默认25/显式30图片时钟；每条编码命令均-an，无音轨480×270诊断MP4，仅逐状态取帧和JSON，不产用户视频、不合成TTS。',
+    },
+    '专八/听力/批量/核验/精听图片时钟核验/真实2009A图片时钟复现.py': {
+        'sha256': '0c21046072e85b163eeb2f8582d0e790761187c383a4290945ed77de7c2a3bb3',
+        'audio': False, 'video': True,
+        'reason': '只读旧2009-A持久stage中逐项SHA核对的真PNG/真实states，所有编码均-an无音轨480×270；旧错/新过/故意错页必须与预期一致，仅诊断和JSON，不冒签旧MP4、不产正式视频。',
+    },
+    '专八/听力/批量/核验/AAC编码策略更新/完整AAC往返码率实测.py': {
+        'sha256': 'f0fd03fda6506ff5699df1fe9aed61d035367305b199e324f83a3e9462a57f67',
+        'audio': True, 'video': False,
+        'reason': '只读同源2015-A完整分析副本；源与编译原样PCM先array_equal及完整SHA核对，192/256/320k实编解码测原音SNR/增益/逐秒残差，保持原采样率声道，无TTS/电平归一化、不产正式视频；结束再核源和当时核心SHA。',
+    },
+}
 GT_WRITE_EXEMPT = {'write_mp3', 'write_wav'}    # gaokao_tts 里只负责写字节的底层函数（调用它们的函数必须检查）
 PROTECTED = ('音频合格证（处理链版本、意群响度检查）', '响度一致（第一项检查）')
 GUARDED = ('_VERIFY_CORE', 'final_check', 'certificate', 'certificate_problems', 'save_checked', 'cert_check')
@@ -326,7 +353,8 @@ def _read_all():
         if any(rel.startswith(d) for d in SKIP_DIRS + ign) or '/.git/' in rel or rel.startswith('.git/'):
             continue
         try:
-            out[rel] = p.read_text('utf-8')
+            # 保留换行原字节，路径+源码SHA登记不能因read_text自动统一CRLF而误放行。
+            out[rel] = p.read_bytes().decode('utf-8')
         except UnicodeDecodeError:
             errs.append(f'{rel}：不是 UTF-8（读不了就查不了，踩坑 87：GBK 文件曾被跳过），改成 UTF-8')
         except OSError:
@@ -381,7 +409,9 @@ def per_file(f, s, tree):
     errs = []
     is_a = is_audio_entry(f, s, tree)
     is_v = bool(video_entry(s))
-    if is_a and f not in EXEMPT:
+    pinned = PINNED_ORIGINAL_ENTRIES.get(f, {})
+    pinned_ok = bool(pinned) and hashlib.sha256(s.encode('utf-8')).hexdigest() == pinned['sha256']
+    if is_a and f not in EXEMPT and not (pinned_ok and pinned.get('audio')):
         if f.endswith('.py') and tree is None:
             errs.append(f'{f}：Python 语法错误，无法检查')
         elif f == 'tools/tts/gaokao_tts.py':
@@ -413,7 +443,7 @@ def per_file(f, s, tree):
     if f != CERT.RAW_WRITER and f not in RAW_SOURCE_OK and SRC_RE.search(s):
         errs.append(f'{f}：写了 source=原音（只有 {CERT.RAW_WRITER} 能写，自己声明原音就能逃过合格证，踩坑 87）')
     silent = f in SILENT_DIAGNOSTICS and hashlib.sha256(s.encode('utf-8')).hexdigest() == SILENT_DIAGNOSTICS[f]['sha256']
-    if is_v and f not in VIDEO_EXEMPT and not silent:
+    if is_v and f not in VIDEO_EXEMPT and not silent and not (pinned_ok and pinned.get('video')):
         if f.endswith('.sh') or tree is None:
             errs.append(f'{f}：用 ffmpeg 出视频的脚本必须是 Python 并接上 verify_videos.check / certificate_problems（或登记 VIDEO_EXEMPT）')
         else:
@@ -457,6 +487,11 @@ def check(over=None, product=True):
             errs.append(f'已核静音诊断脚本 {f} 已不存在：删掉该登记')
         elif hashlib.sha256(F[f].encode('utf-8')).hexdigest() != spec['sha256']:
             errs.append(f'{f}：已核静音诊断脚本源码SHA变化，须重核是否仍无音频/TTS；旧登记不放行')
+    for f, spec in PINNED_ORIGINAL_ENTRIES.items():
+        if f not in F:
+            errs.append(f'已核原音/测试窄入口 {f} 已不存在：删掉该登记')
+        elif hashlib.sha256(F[f].encode('utf-8')).hexdigest() != spec['sha256']:
+            errs.append(f'{f}：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行')
     g = F.get('tools/tts/gaokao_tts.py', '')
     seg = re.search(r'def segment\(x\):(.*?)\n\n\n', g, re.S)
     if not seg or 'even(' not in seg.group(1) or 'level_clause(' not in seg.group(1):
@@ -567,6 +602,16 @@ def main():
     case('静音诊断脚本任一源码变更 → 旧SHA不放行', only(diag, {diag: ds + '\n# changed\n'}), '源码SHA变化')
     case('已核诊断路径加入陌生TTS → 仍报音频入口', only(diag, {diag: ds + '\nfrom gtts import gTTS\ngTTS("hi").save("o.mp3")\n'}), '没接意群级')
     case('已核诊断路径加入音频视频输入 → 旧SHA不放行', only(diag, {diag: ds + '\nsubprocess.run(["ffmpeg", "-i", "unknown.wav", "-c:v", "libx264", "o.mp4"])\n'}), '生成视频却')
+    for pinned, spec in PINNED_ORIGINAL_ENTRIES.items():
+        original = rd(pinned)
+        kind = '生成视频却' if spec['video'] else '没接意群级'
+        case(f'{Path(pinned).name}精确路径+完整SHA相同 → 不报', only(pinned, {pinned: original}), None)
+        unknown = N + '陌生_' + Path(pinned).name
+        case(f'{Path(pinned).name}复制到未知路径 → 仍拦入口', only(unknown, {unknown: original}), kind)
+        case(f'{Path(pinned).name}任一源码变化 → 旧SHA不放行', only(pinned, {pinned: original + '\n# changed\n'}), '源码SHA变化')
+        case(f'{Path(pinned).name}仅换CRLF字节 → 旧SHA不放行', only(pinned, {pinned: original.replace('\n', '\r\n')}), '源码SHA变化')
+        tts = original + '\nfrom gtts import gTTS\ngTTS("hi").save("o.mp3")\n'
+        case(f'{Path(pinned).name}加入TTS → 仍拦音频入口', only(pinned, {pinned: tts}), '没接意群级')
     xv = '六级/tools/宣传视频.py'
     case('六级宣传视频去掉合格证核对 → 报出', only(xv, {xv: rd(xv).replace('certificate_problems(', 'list(')}), xv)
     case('别处自己写 source=原音 → 报出', only('z.py', {'中考/tools/z.py': "tm = {'file': 'a.mp3', 'source': '原音'}\n"}), '原音')

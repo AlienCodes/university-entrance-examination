@@ -19,6 +19,7 @@ import sys
 import tempfile
 
 from 精听数据 import ROOT,HERE,LEAD,TAIL,FPS,sha,dump,compile_input,validate,first_aligned_word,audio_protection,PROTECTION_2022,resolve_manual_splits,aligned_switch,assert_manual_preserved
+import 图片时钟核验 as clock
 
 PROJECT='专八批量精听'
 
@@ -60,7 +61,7 @@ def engine(out):
 
 def fingerprint(m,p,tm):
     h=hashlib.sha256()
-    files=[Path(__file__),HERE/'精听数据.py',Path(m.__file__),m.QA/'layoutcheck.py',m.QA/'zh_bind.py',
+    files=[Path(__file__),HERE/'精听数据.py',HERE/'图片时钟核验.py',Path(m.__file__),m.QA/'layoutcheck.py',m.QA/'zh_bind.py',
            m.QA/'分词补充.txt',ROOT/'专八/tools/字号.json',ROOT/'四级/tools/fonts/fonts.css',*m.look_files('C')]
     for base in [ROOT/'专八/tools/fonts',ROOT/'四级/tools/fonts']:
         files+=sorted(f for f in base.rglob('*') if f.is_file() and f.suffix.lower() in ['.woff2','.woff','.ttf','.otf'])
@@ -199,6 +200,11 @@ def verify(m,p,tm,out,mp4,draft=False):
     checks=[]
     def check(item,ok,detail):checks.append({'item':item,'ok':bool(ok),'detail':detail})
     frames=round(tm['duration']*FPS)
+    s=json.loads((out/'states.json').read_text())
+    clock_report=clock.require_pass(out/'clock-fast.mp4',s,out/'shots',frames,out/'clock-precheck.json',
+                                    clock_sources(m,p,tm,out))
+    check('图片时钟全状态首尾及邻帧',True,{'states':clock_report['states'],'probes':clock_report['probes'],
+          'report_sha256':sha(out/'clock-precheck.json'),'video_sha256':clock_report['video_sha256']})
     check('4K 16:9',v['width']==3840 and v['height']==2160,[v['width'],v['height']])
     check('30帧恒定/帧数',v['r_frame_rate']=='30/1' and int(v['nb_frames'])==frames,[v['r_frame_rate'],v['nb_frames']])
     check('声画等长',abs(float(v['duration'])-float(a['duration']))<.05,[v['duration'],a['duration']])
@@ -220,7 +226,7 @@ def verify(m,p,tm,out,mp4,draft=False):
         body_samples=sum(round(b*sr)-round(a*sr) for a,b in tm['kept_intervals'])
         tail=offset+body_samples+round(.05*sr)
         check('片尾至少2秒静音',len(y)-offset-body_samples>=2*sr and np.abs(y[tail:]).max()<.001,'至少2秒')
-    s=json.loads((out/'states.json').read_text());bound=[x[0] for x in s]+[frames]
+    bound=[x[0] for x in s]+[frames]
     item,ok,detail=m.frame_check(mp4,bound,[out/'shots'/(x[1]+'.png') for x in s]);check(item,ok,detail)
     check('成品附件大小',0<mp4.stat().st_size<1900*2**20,mp4.stat().st_size)
     result={'id':p['id'],'ok':all(r['ok'] for r in checks),'draft':draft,'checks':checks,'sha256':sha(mp4),'bytes':mp4.stat().st_size,
@@ -231,6 +237,40 @@ def verify(m,p,tm,out,mp4,draft=False):
     return result
 
 
+def concat_listing(s,frames,out):
+    """每个PNG输入（包括两次末页）明确30fps，禁止默认25fps再补帧。"""
+    clock.normalize_frames(s,frames)
+    assert "'" not in str(out),'concat工作路径不可含单引号'
+    rows=[]
+    for (a,key),b in zip(s,[x[0] for x in s[1:]]+[frames]):
+        rows.append(f"file '{out/'shots'/(key+'.png')}'\noption framerate {FPS}\nduration {(b-a)/FPS:.9f}")
+    rows += [f"file '{out/'shots'/(s[-1][1]+'.png')}'\noption framerate {FPS}\nduration 1",
+             f"file '{out/'shots'/(s[-1][1]+'.png')}'\noption framerate {FPS}"]
+    listing=out/'concat.txt';listing.write_text('\n'.join(rows)+'\n')
+    return listing
+
+
+def clock_sources(m,p,tm,out):
+    return {'fingerprint':fingerprint(m,p,tm),'states_file_sha256':sha(out/'states.json'),
+            'concat_sha256':sha(out/'concat.txt'),'input_sha256':json.loads((out/'prepared.json').read_text())['input_sha256'],
+            'fps':FPS,'fast_filter':'scale=480:270,fps=30:start_time=0:round=near',
+            'full_filter':'fps=30:start_time=0:round=near'}
+
+
+def fast_clock(m,p,tm,out,s,frames,listing):
+    """每次正式/预览编码都重做无音轨快片，先核全部真实切页边界。"""
+    video=out/'clock-fast.mp4';report=out/'clock-precheck.json'
+    report.unlink(missing_ok=True)
+    subprocess.run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',str(listing),
+                    '-vf','scale=480:270,fps=30:start_time=0:round=near','-fps_mode','cfr','-r',str(FPS),
+                    '-frames:v',str(frames),'-c:v','libx264','-preset','ultrafast','-tune','stillimage',
+                    '-crf','18','-threads',os.environ.get('TEM8_THREADS','2'),'-pix_fmt','yuv420p',
+                    '-g','900','-x264-params','scenecut=0','-an',str(video)],check=True)
+    bindings=clock_sources(m,p,tm,out)
+    clock.check(video,s,out/'shots',frames,report,bindings)
+    return clock.require_pass(video,s,out/'shots',frames,report,bindings)
+
+
 def encode(m,p,tm,out,input_file,draft=False):
     validate(json.loads(Path(input_file).read_text('utf-8')),draft)
     assert draft or not json.loads((out/'prepared.json').read_text())['draft'],'未审预览不得生成正式成品'
@@ -239,16 +279,12 @@ def encode(m,p,tm,out,input_file,draft=False):
         approval=json.loads((out/'approved-screens.json').read_text())
         assert approval['fingerprint']==fingerprint(m,p,tm) and approval['screens_sha256']==sha(out/'screens.json'),'缺少当前截图核对登记'
     s=json.loads((out/'states.json').read_text());frames=round(tm['duration']*FPS)
-    # concat解析器使用引号；拒绝无法无歧义表示的工作路径。
-    assert "'" not in str(out)
-    rows=[]
-    for (a,key),b in zip(s,[x[0] for x in s[1:]]+[frames]):
-        assert b>a;rows.append(f"file '{out/'shots'/(key+'.png')}'\nduration {(b-a)/FPS:.9f}")
-    rows += [f"file '{out/'shots'/(s[-1][1]+'.png')}'\nduration 1",f"file '{out/'shots'/(s[-1][1]+'.png')}'"]
-    listing=out/'concat.txt';listing.write_text('\n'.join(rows)+'\n')
+    listing=concat_listing(s,frames,out)
+    fast_clock(m,p,tm,out,s,frames,listing)
+    clock.require_pass(out/'clock-fast.mp4',s,out/'shots',frames,out/'clock-precheck.json',clock_sources(m,p,tm,out))
     mp4=out/(('技术预览_译注未定稿_' if draft else '')+m.video_name(p))
     subprocess.run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',str(listing),'-i',str(out/'audio'/tm['file']),
-                    '-fps_mode','cfr','-r',str(FPS),'-frames:v',str(frames),'-c:v','libx264','-preset','veryfast','-tune','stillimage',
+                    '-vf','fps=30:start_time=0:round=near','-fps_mode','cfr','-r',str(FPS),'-frames:v',str(frames),'-c:v','libx264','-preset','veryfast','-tune','stillimage',
                     '-crf','18','-threads',os.environ.get('TEM8_THREADS','2'),'-pix_fmt','yuv420p','-g','900','-x264-params','scenecut=0',
                     '-c:a','aac','-b:a',tm.get('aac_bitrate','192k'),'-movflags','+faststart',str(mp4)],check=True)
     r=verify(m,p,tm,out,mp4,draft)

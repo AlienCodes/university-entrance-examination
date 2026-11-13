@@ -1,0 +1,172 @@
+# token预算：约0万；复用45个已审中间片段，机器组装并核验15个整套精听。
+name: 专八15年整套精听组装与发布
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-intensive-full.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: tem8-listening-intensive-full
+  cancel-in-progress: false
+jobs:
+  list:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/原文/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - name: 核15年完整目标及45个子段当前审批，跳过已核整套缓存
+        id: list
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 - <<'PY'
+          import importlib.util, json, os
+          from pathlib import Path
+          spec = importlib.util.spec_from_file_location('fullpub', Path('专八/听力/批量/tools/整套精听发布.py'))
+          pub = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(pub)
+          c = pub.load_control()
+          rows = pub.matrix(c)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('matrix=' + json.dumps(rows) + '\n')
+          print('待组装完整年份：', len(rows))
+          PY
+  assemble:
+    needs: list
+    if: needs.list.outputs.matrix != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 15
+      matrix:
+        item: ${{ fromJson(needs.list.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/原文/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - name: 准备音视频封装核验环境（不安装NLP或浏览器）
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg python3-venv
+          python3 -m venv "$RUNNER_TEMP/tem8-full-env"
+          "$RUNNER_TEMP/tem8-full-env/bin/pip" install -q --disable-pip-version-check numpy==2.2.6 soundfile==0.13.1
+      - name: 先核三个当前子段缓存，缺一则停止本年组装
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/整套精听发布.py collect '${{ matrix.item.year }}' --out parts
+      - name: 准备同一canonical原采样率与声道PCM
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/原音准备.py '${{ matrix.item.year }}' --out in/audio
+      - name: 从已核片段组装完整年份，再独立核画面、声音与同步
+        run: |
+          set -euo pipefail
+          P="$RUNNER_TEMP/tem8-full-env/bin/python"
+          # build完成后会从磁盘独立重读gate/PCM/NAL/PTS/AAC并调用verify，通过才写meta。
+          $P 专八/听力/批量/tools/整套精听.py build '${{ matrix.item.year }}' --parts parts --original in/audio/原音.wav --out work
+      - name: 成功整套即时保存到独立持久缓存
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/整套精听发布.py stage '${{ matrix.item.year }}' --parts parts --work work --out up
+          python3 专八/听力/批量/tools/整套精听发布.py store up
+      - uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: tem8full-${{ matrix.item.year }}
+          path: |
+            up/meta.json
+            up/tem8-intensive-full-${{ matrix.item.year }}.mp4
+            up/evidence
+          compression-level: 0
+          retention-days: 30
+      - name: 失败诊断（不作为合格整套成品发布）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tem8full-diagnostic-${{ matrix.item.year }}
+          path: |
+            work/**/*.json
+            work/*.mp4
+            parts/子段收集核验.json
+          if-no-files-found: ignore
+          retention-days: 14
+  publish:
+    needs: [list, assemble]
+    if: always() && needs.list.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/原文/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          path: art
+          pattern: tem8full-*
+      - name: 必须完整15套全部通过才发布，逐分包回下载核验
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 专八/听力/批量/tools/整套精听发布.py publish --art art --out release-out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tem8-full-intensive-publication-audit
+          path: |
+            release-out/**/*.json
+            release-out/SHA256SUMS
+            release-out/TEM8-filenames.txt
+          if-no-files-found: ignore
+          retention-days: 30

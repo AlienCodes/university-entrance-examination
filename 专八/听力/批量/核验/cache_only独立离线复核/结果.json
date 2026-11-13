@@ -1,0 +1,123 @@
+{
+  "status": "independent_offline_positive_and_negative_passed",
+  "publisher_sha256": "049735dce3d1ed6f3d9e10b596b5979d1f2f250618424fb046bdb52d3ec2cf9e",
+  "fixtures": {
+    "exam": 15,
+    "intensive_internal_segments": 45,
+    "stage_validation": "实际validate_stage/find_stage/recover执行；仅gate为隔离的测试审批，MP4是显式不可播放字节，不是视频生产或成品审核。"
+  },
+  "case_count": 9,
+  "cases": [
+    {
+      "name": "60项齐全：仅CACHE_TAG上传一份汇集JSON并核服务器摘要",
+      "passed": true,
+      "rejected": false,
+      "actual_error": null,
+      "remote_mutations": [
+        {
+          "op": "ensure_release",
+          "tag": "tem8-listening-render-cache-2009-2024"
+        },
+        {
+          "op": "upload",
+          "tag": "tem8-listening-render-cache-2009-2024",
+          "name": "tem8-render-collection-offline-cache-collection-02d9a84227074e3c.json"
+        }
+      ],
+      "remote_reads": 1,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "缺一个exam目标：任何远端写之前拒绝",
+      "passed": true,
+      "rejected": true,
+      "actual_error": "AssertionError: 缺少当前审核指纹的成功结果：exam/2009；[]",
+      "remote_mutations": [],
+      "remote_reads": 1,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "缺一个intensive目标：任何远端写之前拒绝",
+      "passed": true,
+      "rejected": true,
+      "actual_error": "AssertionError: 缺少当前审核指纹的成功结果：intensive/2009-B2；[]",
+      "remote_mutations": [],
+      "remote_reads": 1,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "10旧审批指纹＋5当前考试：不能充当15新精确时钟缓存",
+      "passed": true,
+      "rejected": true,
+      "actual_error": "AssertionError: 缺少当前审核指纹的成功结果：exam/2018；['']",
+      "remote_mutations": [],
+      "remote_reads": 10,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "服务器digest篡改：真实校验拒绝",
+      "passed": true,
+      "rejected": true,
+      "actual_error": "AssertionError: 服务器资产不匹配：tem8-render-collection-offline-cache-collection-02d9a84227074e3c.json",
+      "remote_mutations": [
+        {
+          "op": "ensure_release",
+          "tag": "tem8-listening-render-cache-2009-2024"
+        },
+        {
+          "op": "upload",
+          "tag": "tem8-listening-render-cache-2009-2024",
+          "name": "tem8-render-collection-offline-cache-collection-02d9a84227074e3c.json"
+        }
+      ],
+      "remote_reads": 1,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "服务器size篡改：真实校验拒绝",
+      "passed": true,
+      "rejected": true,
+      "actual_error": "AssertionError: 服务器资产不匹配：tem8-render-collection-offline-cache-collection-02d9a84227074e3c.json",
+      "remote_mutations": [
+        {
+          "op": "ensure_release",
+          "tag": "tem8-listening-render-cache-2009-2024"
+        },
+        {
+          "op": "upload",
+          "tag": "tem8-listening-render-cache-2009-2024",
+          "name": "tem8-render-collection-offline-cache-collection-02d9a84227074e3c.json"
+        }
+      ],
+      "remote_reads": 1,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "旧complete＋45子段：真实load_control拒绝，无控制文件",
+      "passed": true,
+      "actual_error": "旧complete模式不能将45个精听制作子段作为完整交付；请使用整套精听发布.py发布15整套"
+    },
+    {
+      "name": "绕过load_control直接旧complete45：publish在远端写前拒绝",
+      "passed": true,
+      "rejected": true,
+      "actual_error": "AssertionError: 精听子段不能写入整套正式Release",
+      "remote_mutations": [],
+      "remote_reads": 0,
+      "real_subprocess_or_network_calls": 0,
+      "server_digest_verifier": "真实verify_release_digest未替换"
+    },
+    {
+      "name": "cache_only＋render=false：真实matrix为空，不启动媒体任务",
+      "passed": true
+    }
+  ],
+  "scope_limit": "真实远端以严格内存服务器替代；未触网，未创建任何控制文件，未改发布器/生产源/审核登记，未生成视频或正式Release。",
+  "matrix_note": "cache_only控制发布分支；生产矩阵另由render控制，仅续收时必须render=false。"
+}

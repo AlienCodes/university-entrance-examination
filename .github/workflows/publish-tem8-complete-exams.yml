@@ -1,0 +1,59 @@
+# token预算：约0万；仅续收已核考试成品、打包发布和回下载核验。
+name: 专八完整15套考试独立发布
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-exam-publish.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: tem8-listening-complete-exam-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/原文/tools
+            专八/真题/2025年 英语专业八级真题.pdf
+            专八/tools
+            四级/tools
+            六级/tools
+            中考/tools/画面核查
+            高考听力/精读/tools/本机预览.py
+            tools
+            !/tools/tts/models/
+      - name: 核完整考试控制、续收15套缓存并发布回下载
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          spec = importlib.util.spec_from_file_location('pub', Path('专八/听力/批量/tools/发布汇集.py'))
+          pub = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(pub)
+          c = pub.load_control(Path('.github/tem8-listening-exam-publish.json'))
+          assert c['mode'] == 'complete_exam', '独立考试发布工作流只接受complete_exam'
+          pub.publish(c, Path('art'), Path('release-out'))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tem8-complete-exam-publication-audit
+          path: |
+            release-out/**/*.json
+            release-out/**/SHA256SUMS
+            release-out/**/TEM8-filenames.txt
+          if-no-files-found: ignore
+          retention-days: 30

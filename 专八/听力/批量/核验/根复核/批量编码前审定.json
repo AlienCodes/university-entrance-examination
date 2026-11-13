@@ -1,0 +1,63 @@
+{
+  "status": "root-reviewed-code-and-source-preproduction",
+  "scope": "15考试与45精听内部子段须按新图片时钟重新编码；最终交付15考试+15全年精听。旧MP4不能迁移成新图片时钟产物。",
+  "approved_source_reviews": 45,
+  "reviewed_visual_batches": [
+    {
+      "file": "核验/在线精听第二批-sources/汇总.json",
+      "units": 4,
+      "sha256": "820dd9b5ac25c3c52655d4905d00875fea6b1b367e7b22912eaaf8fae87fdd16"
+    },
+    {
+      "file": "核验/在线精听2013_2014图审/图审汇总.json",
+      "units": 5,
+      "sha256": "1ad7cadb60302dd4cc86be113555390ccf4a2838b2cccd8bd785d9f5a2edb092"
+    },
+    {
+      "file": "核验/线上精听审图/43515352262/2011-A/实际审图.json",
+      "units": 1,
+      "sha256": "916d9c7789ab04b314b3a044759ef7d795fcccff9708dd759c71ffbb58f1624f"
+    },
+    {
+      "file": "核验/在线精听第三批-sources/汇总.json",
+      "units": 6,
+      "sha256": "ac1d5adc839ed0395fce264a81a860bad8401b4635cc8c0a1b771d187723ec6d"
+    },
+    {
+      "file": "核验/在线精听2022_2024B2图审/图审汇总.json",
+      "units": 7,
+      "sha256": "6737773c4c1c9737f972b49e0b50b6b5035d0a40d0547f433d019895e7c8c75c"
+    },
+    {
+      "file": "核验/最后十七篇在线图审/汇总.json",
+      "units": 17,
+      "sha256": "0462ef255cbcd6ec2508bffaf1b6859836b19347801fc3acad1bf26ecdcf1bf6"
+    }
+  ],
+  "root_independent_checks": {
+    "whole_engine_tests": 4,
+    "whole_publisher_tests": 12,
+    "intensive_clock_binding_tests": 15,
+    "exam_legacy_compatibility_tests": 7,
+    "cache_only_positive_negative_cases": 9,
+    "publisher_selftest": "pass"
+  },
+  "main_workflow_max_parallel": 20,
+  "main_workflow_changed": false,
+  "source_versions": "2009—2015新题型优化版；2020停考；2014选择第2题题源冲突不计分；2022完整补充原声含受保护等待信号。",
+  "frozen_core": {
+    "专八/听力/批量/tools/精听.py": "02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df",
+    "专八/听力/批量/tools/图片时钟核验.py": "824e3ce562b7de13193493e0273f56ba50fb193ddb51f6b857b266851f10c491",
+    "专八/听力/批量/tools/精听数据.py": "11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e",
+    "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
+    "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+    "专八/听力/批量/tools/整套精听.py": "642b53fb90087491845d24811ea7e32c344ecc7d69f0d6bed1d88cafe50c6ac0",
+    "专八/听力/批量/tools/整套精听发布.py": "27dce47e50dca824e24c5e45bb421a58fb4c2b845fa01869d311fe8f83425ccc"
+  },
+  "local_ci": {
+    "pure_suite": "其余全部通过；中文地道唯一缺失的本地稀疏检出DOCX恢复后，该项实际单独复跑exit0。",
+    "baseline_failure_cause": "本机未检出高考续写/续写题汇编_高考真题.docx；不是本批TEM8生成错误。",
+    "snapshot_log": "/workspace/tem8-final-ci-local.log",
+    "guard_entry_sha256": "582eff46332c58e34d178b1b71912541bd99d675efd74cf8c6cb0d23e2eaf615"
+  }
+}

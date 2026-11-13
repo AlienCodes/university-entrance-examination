@@ -655,6 +655,88 @@ def verify(out, t, total, fr):
     dump(AUDIT/'核查报告.json',report)
 
 
+def fast_frame_check(video_file, fr, nfr):
+    """先在480p快片逐一核每个状态首尾及相邻帧，错误不得等到4K才发现。"""
+    import bisect
+    import numpy as np
+    from PIL import Image
+    metadata = json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0',
+                         '-show_entries','stream=width,height,nb_frames,r_frame_rate','-of','json',str(video_file)]))['streams'][0]
+    require((metadata['width'],metadata['height']) == (480,270) and
+            metadata['r_frame_rate'] == f'{B.FPS}/1' and int(metadata['nb_frames']) == nfr,
+            '快片分辨率、帧率或完整帧数不符')
+    frames = [int(f) for f, _ in fr]
+    require(frames and frames[0] == 0 and frames[-1] < nfr and
+            all(z > a for a, z in zip(frames, frames[1:])), '快片帧表越界或含零帧状态')
+    targets = sorted({n for i, (f, _) in enumerate(fr)
+                      for n in [max(0, f-1), f, min(f+1, (frames[i+1] if i+1<len(fr) else nfr)-1),
+                                min(f+2, (frames[i+1] if i+1<len(fr) else nfr)-1),
+                                (frames[i+1] if i+1<len(fr) else nfr)-1]})
+    ranges = []
+    for n in targets:
+        if ranges and n == ranges[-1][1]+1: ranges[-1][1] = n
+        else: ranges.append([n, n])
+    def balanced(items):
+        if len(items) == 1: return items[0]
+        k = len(items)//2
+        return '('+balanced(items[:k])+'+'+balanced(items[k:])+')'
+    expression = balanced([f'between(n,{a},{z})' for a,z in ranges])
+    refs, png_sha = {}, {}
+    for key in sorted({k for _,k in fr}):
+        p = OUT/'shots'/(key+'.png')
+        require(p.is_file(), '快片缺对应真实截图：'+key)
+        with Image.open(p) as image:
+            refs[key] = np.asarray(image.convert('L').resize((480,270)), dtype=np.int16)
+        png_sha[key+'.png'] = sha(p)
+    cmd = ['ffmpeg','-v','error','-i',str(video_file),'-vf',f"select='{expression}',format=gray",
+           '-vsync','0','-f','rawvideo','-']
+    rows = []
+    with tempfile.TemporaryFile() as errors:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=errors)
+        try:
+            for n in targets:
+                raw = proc.stdout.read(480*270)
+                require(len(raw) == 480*270, f'快片精确解码缺帧：{n}')
+                actual = np.frombuffer(raw,dtype=np.uint8).reshape(270,480).astype(np.int16)
+                index = bisect.bisect_right(frames,n)-1
+                key = fr[index][1]
+                diff = float(np.abs(actual-refs[key]).mean())
+                rows.append({'frame':n,'state_start_frame':frames[index],'key':key,
+                             'mean_difference':round(diff,6),'ok':diff<=3})
+            require(not proc.stdout.read(1), '快片解码出现未登记探针')
+            require(proc.wait() == 0, '快片精确抽帧失败')
+        finally:
+            proc.stdout.close()
+            if proc.poll() is None: proc.kill(); proc.wait()
+    failed = [r for r in rows if not r['ok']]
+    report = {'status':'pass' if not failed else 'rejected','states':len(fr),'probes':len(rows),'total_frames':nfr,
+              'frames_sha256':hashlib.sha256(json.dumps(fr,separators=(',',':')).encode()).hexdigest(),
+              'threshold_unchanged':3,'max_mean_difference':max(r['mean_difference'] for r in rows),
+              'failures':failed,'all_probes':rows,'PNG_sha256':png_sha,
+              'source_fingerprints':fingerprints(),'video_sha256':sha(video_file),
+              'scope':'480p全状态首帧/末帧/相邻帧，select n精确解码；未以seek取错状态，不改原音或时间轴'}
+    dump(AUDIT/'快片逐状态边界核验.json',report)
+    require(not failed, '快片逐状态边界不符：'+str(failed[:8]))
+    print('快片全部状态边界通过',len(fr),'状态',len(rows),'精确帧探针',flush=True)
+    return report
+
+
+def require_fast_frame_check(fr, nfr):
+    """正式编码必须接同一源、程序、帧表和完整截图已通过的真实快片。"""
+    path = AUDIT/'快片逐状态边界核验.json'
+    require(path.is_file(), '须先运行video --fast并通过全部状态边界，才能编码4K')
+    record = read(path)
+    require(record.get('status') == 'pass' and not record.get('failures') and
+            record.get('source_fingerprints') == fingerprints(), '快片关卡未过或源/程序已改变')
+    require(record.get('total_frames') == nfr and
+            record.get('frames_sha256') == hashlib.sha256(json.dumps(fr,separators=(',',':')).encode()).hexdigest(),
+            '正式帧表与已验快片不同')
+    pngs = {k+'.png':sha(OUT/'shots'/(k+'.png')) for _,k in fr}
+    require(record.get('PNG_sha256') == pngs, '正式截图与已验快片不同')
+    video = OUT/'fast.mp4'
+    require(video.is_file() and sha(video) == record.get('video_sha256'), '已验快片文件丢失或改变')
+
+
 
 @contextmanager
 def serving():
@@ -873,7 +955,16 @@ def main():
         l,total,t,nfr,sr=B.audio_track(wav)
         frames=[(round((x+B.LEAD)*B.FPS),B.key(s)) for x,s in l]
         return verify(OUT/B.NAME,t,total,frames)
-    return B.video(wav,fast=a.fast)
+    if not a.fast:
+        raw,total,_ = states()
+        frames = [(round((t+B.LEAD)*B.FPS),B.key(s)) for t,s in raw]
+        require_fast_frame_check(frames, round((total+B.LEAD)*B.FPS))
+    result = B.video(wav,fast=a.fast,exact_image_fps=B.FPS)
+    if a.fast:
+        raw,total,_ = states()
+        frames = read(OUT/'帧表.json')
+        fast_frame_check(OUT/'fast.mp4', frames, round((total+B.LEAD)*B.FPS))
+    return result
 
 
 if __name__=='__main__':

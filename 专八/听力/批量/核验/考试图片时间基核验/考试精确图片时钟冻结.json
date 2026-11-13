@@ -1,0 +1,51 @@
+{
+  "status": "frozen_tests_passed",
+  "adapter": {
+    "file": "专八/听力/批量/tools/考试视频.py",
+    "old_sha256": "c8c62c657171c13ed67b839d2389e1a44cecf7b1d1343ea92ffa62dca2849c3c",
+    "sha256": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1"
+  },
+  "base": {
+    "file": "专八/听力/tools/听力视频.py",
+    "old_sha256": "62f7e2ffbd902837078be7945b518540f6401c799b8c5e7d69c6efcc5512b4e0",
+    "sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb"
+  },
+  "scope": "默认关闭，只有批量专八考试adapter启用精确30fps图片时钟；原音/源时刻/states/HTML/字体不改，旧2025默认调用命令逐字相同。15套本批MP4全部须新编码，不迁移旧成品。",
+  "checks": {
+    "legacy_and_exact_parameter_cases": 7,
+    "full_gate_positive_negative_cases": 7,
+    "real_2019_states": 409,
+    "real_2019_exact_frame_probes": 1635,
+    "real_new_bad_frames": 0,
+    "real_old_bad_frames_rejected": 31,
+    "unchanged_actual_state_HTML_PNG_years": 15,
+    "transport_exact_clock_years": 15
+  },
+  "primary_workflow_changed": false,
+  "CLI": [
+    "python 专八/听力/批量/tools/考试视频.py 专八/听力/批量/数据/YEAR video --audio ORIGINAL_WAV --out work --fast",
+    "python 专八/听力/批量/tools/考试视频.py 专八/听力/批量/数据/YEAR video --audio ORIGINAL_WAV --out work"
+  ],
+  "mandatory_fast_report": "work/核验/快片逐状态边界核验.json",
+  "fast_report_binding": [
+    "source_fingerprints",
+    "frames_sha256",
+    "total_frames",
+    "PNG_sha256",
+    "video_sha256"
+  ],
+  "evidence": {
+    "默认关闭兼容与15年PNG不变证明.json": "ef445f3bdb1ddc57b0e655c3e0dde04750a349535d307d7b19a9b450b262940e",
+    "fpsfilter30-2019全状态报告.json": "41d40bc8232345f3f3a3a80df69713622bcf21f995101514c0dc3569f63b354f",
+    "explicit30-2019全状态报告.json": "4701307bdec223822eccc9f539bf06ba11fe90dbb625e309371454ed01b026b2",
+    "2019-真实PNG摘要.json": "4dc976c6e1c42ad478ed890250e3dbb59353d59df3b91957564cf66f6e0637f8",
+    "default25-2019全状态报告.json": "8e402dc4de026be5956cdd3bf4f668a2609c1192b71fb4337f905d44418d48c9",
+    "正式编码前快片门禁正反例.json": "9c68e5ade645dfd9083df6b7122519b756a80f84da0c5672c18a7dac9e9a98c7",
+    "default25-真实生产快片关卡.json": "8d3ab692ff420007bb7ec231ba7bd8844cc7f336189112ec32e0f1385dc78f71",
+    "真实生产快片关卡正反例.json": "b6020585a4dea3b8963170a7dece4f2b971bdd14fbf8e6482fa8d071a09f670d",
+    "15年图片时间基transport核验.json": "3d5da6853e9078f39738f9271f0477b7c202d7a65c876252d66655d545c343e4",
+    "fpsfilter30-真实生产快片关卡.json": "5d4e7a618dfa1c7c736971632fde8cc1a9c0214b1040127a3f9a5b58eb2a10e0",
+    "2019-真实修复run帧表.json": "ae3d65895ee3703c75d88a6eb4031e48bbef4495abccca511a49a16fba91537e",
+    "2019-定点事实与方案.json": "f98001a91621969f466a150cb18344ad3d1f2fd364bf145f1464819f4000db82"
+  }
+}

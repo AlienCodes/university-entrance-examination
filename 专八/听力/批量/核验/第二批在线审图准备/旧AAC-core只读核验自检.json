@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "tests": [
+    {
+      "name": "真实2011A仅两core精确差异接受为旧版本",
+      "pass": true
+    },
+    {
+      "name": "默认仍拒旧指纹",
+      "pass": true
+    },
+    {
+      "name": "未知输入变动拒绝",
+      "pass": true
+    },
+    {
+      "name": "其他依赖变动拒绝",
+      "pass": true
+    },
+    {
+      "name": "未知当前core拒绝",
+      "pass": true
+    },
+    {
+      "name": "不明旧core拒绝",
+      "pass": true
+    },
+    {
+      "name": "母稿单元变动拒绝",
+      "pass": true
+    }
+  ],
+  "note": "本模式只审核原版本，候选保持旧payload；不写approved、不写registry、不放宽任何发布门禁。"
+}

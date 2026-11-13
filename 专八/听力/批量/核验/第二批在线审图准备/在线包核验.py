@@ -14,10 +14,27 @@ from 精听数据 import validate,resolve_manual_splits,assert_manual_preserved,
 from 精听 import engine,states
 REPO='AlienCodes/university-entrance-examination';TAG='tem8-listening-review-2009-2024'
 LOCKED={'2009-A','2009-B1','2009-B2','2024-A','2024-B1'}
+LEGACY_CORE={
+ '专八/听力/批量/tools/精听.py':'ff515e1be152ea29844970bca368f64b1dbe1939bd8aeacb075157630aeecf26',
+ '专八/听力/批量/tools/精听数据.py':'072c40ec95a6b532e798218d3be84eed68225608f53c1565f1c6c24895ba0d47'}
+AAC_CORE={
+ '专八/听力/批量/tools/精听.py':'cd766f44cf2075c49331992cb8a2598e48a708d85b2dd873486c494252d03da0',
+ '专八/听力/批量/tools/精听数据.py':'11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e'}
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def read(p):return json.loads(Path(p).read_text())
 def dump(p,d):p=Path(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
 def gh(*args):return subprocess.check_output(['gh',*map(str,args)],text=True)
+def legacy_projection(now):
+ assert all(now['render_sources'].get(k)==v for k,v in AAC_CORE.items()),'只读旧包审计仅支持本次精确AAC core，不接受未知新程序'
+ old=json.loads(json.dumps(now));old['render_sources'].update(LEGACY_CORE);return old
+def verify_reviewed_payload(row,now,allow_legacy=False):
+ if row['payload_sha256']==hash_json(now):
+  assert all(row[k]==now[k] for k in ['inputs','render_sources','annotation_source']);return {}
+ assert allow_legacy,'输入/依赖指纹已过期'
+ old=legacy_projection(now)
+ assert row['payload_sha256']==hash_json(old),'旧包不是当前输入仅反投影指定两core的精确版本'
+ assert all(row[k]==old[k] for k in ['inputs','render_sources','annotation_source']),'旧包存在未授权输入/依赖差异'
+ return {k:{'reviewed_sha256':row['render_sources'][k],'current_sha256':now['render_sources'][k]} for k in LEGACY_CORE}
 def unpack(arc,out,digest=None):
  if digest:assert sha(arc)==digest.removeprefix('sha256:'),'ZIP SHA与GitHub digest不符'
  with zipfile.ZipFile(arc) as z:
@@ -27,11 +44,10 @@ def unpack(arc,out,digest=None):
   assert z.testzip() is None,'ZIP CRC失败'
   out.mkdir(parents=True,exist_ok=True);z.extractall(out)
  return len(names)
-def audit(arc,out,digest=None,run=None,head=None,contacts=False):
+def audit(arc,out,digest=None,run=None,head=None,contacts=False,allow_legacy=False):
  from PIL import Image,ImageDraw,ImageFont
  entries=unpack(arc,out,digest);row=read(out/'审核候选.json');ident=row['id'];now=payload('intensive',ident)
- assert row['payload_sha256']==hash_json(now),'输入/依赖指纹已过期'
- assert all(row[k]==now[k] for k in ['inputs','render_sources','annotation_source']),'候选与当前源依赖不一致'
+ legacy_delta=verify_reviewed_payload(row,now,allow_legacy)
  for n,h in row['inputs'].items():assert sha(out/'实际输入'/Path(n).name)==h,'实际输入附件损坏：'+n
  source=validate(read(BATCH/'精听数据'/f'{ident}.json'))
  assert read(out/'实际输入'/f'{ident}.json')==source
@@ -88,10 +104,16 @@ def audit(arc,out,digest=None,run=None,head=None,contacts=False):
     with Image.open(out/'shots'/r['file']) as im:canvas.paste(im.resize((960,540)),(x,y+32))
    canvas.save(folder/f'contact-{start//4+1:02d}.jpg',quality=97)
  report={'id':ident,'status':'mechanical_pass_visual_pending','run_id':run,'head':head,'archive':arc.name,'archive_sha256':sha(arc),'zip_entries':entries,'crc':'PASS','payload_sha256':row['payload_sha256'],'screens':len(shotrows),'source_sentences':len(flat),'vocabulary_entries':sum(len(s['w']) for s in flat),'all_png_sha_dimensions_font_checks':'PASS','state_and_real_word_first_guard':'PASS','unit_input_sha256':prepared['input_sha256'],'annotation_source':now['annotation_source'],'audio_precheck':audio,'native_source':native,'multi_sentence_numbers':multi,'critical_png_files':sorted(selected),'work':str(work),'actual_viewed_png_files':[],'warning':'只有完整机械关卡通过；实际看图名单和语义发现须人工填写，candidate仍pending，不自动改登记/批准/触发GitHub。'}
- dump(out/'下载机械核验.json',report);c=candidate('intensive',ident,work);assert c['payload_sha256']==row['payload_sha256'] and c['shots']==row['shots'];dump(out/'待审候选.json',c)
+ report.update(current_payload_sha256=hash_json(now),reviewed_legacy_core_delta=legacy_delta,current_dependency_revalidation_required=bool(legacy_delta))
+ dump(out/'下载机械核验.json',report)
+ c=json.loads(json.dumps(row)) if legacy_delta else candidate('intensive',ident,work)
+ assert c['payload_sha256']==row['payload_sha256'] and c['shots']==row['shots']
+ if legacy_delta:
+  c['status']='pending';c['evidence']='只读核验原在线版本；仅指定两core与当前AAC版本不同。必须实际选图并由root另作等价复核/重绑，不自动批准当前指纹。'
+ dump(out/'待审候选.json',c)
  return {k:report[k] for k in ['id','status','screens','payload_sha256','work']}
 def main():
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--ids',nargs='+',required=True);ap.add_argument('--out',type=Path,required=True);ap.add_argument('--archives',type=Path);ap.add_argument('--download',action='store_true');ap.add_argument('--run',type=int);ap.add_argument('--workers',type=int,default=3);ap.add_argument('--contacts',action='store_true');ap.add_argument('--allow-locked',action='store_true');a=ap.parse_args();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True)
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--ids',nargs='+',required=True);ap.add_argument('--out',type=Path,required=True);ap.add_argument('--archives',type=Path);ap.add_argument('--download',action='store_true');ap.add_argument('--run',type=int);ap.add_argument('--workers',type=int,default=3);ap.add_argument('--contacts',action='store_true');ap.add_argument('--allow-locked',action='store_true');ap.add_argument('--review-legacy-aac-core',action='store_true');a=ap.parse_args();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True)
  assert len(a.ids)==len(set(a.ids)) and all(re.fullmatch(r'20\d\d-(?:A|B1|B2)',i) for i in a.ids)
  assert a.allow_locked or not set(a.ids)&LOCKED,'本轮不覆盖已锁五篇，验证工具需显式--allow-locked'
  assets=json.loads(gh('api',f'repos/{REPO}/releases/tags/{TAG}'))['assets'] if a.download else [];head=None
@@ -99,7 +121,9 @@ def main():
  arcdir=a.archives.resolve() if a.archives else a.out/'archives';arcdir.mkdir(parents=True,exist_ok=True);jobs=[];results=[]
  for ident in a.ids:
   try:
-   fp=hash_json(payload('intensive',ident));name=f'TEM8-review-intensive-{ident}-{fp[:16]}.zip';asset=next((r for r in assets if r['name']==name),None);arc=arcdir/name
+   now=payload('intensive',ident);fp=hash_json(now);name=f'TEM8-review-intensive-{ident}-{fp[:16]}.zip';asset=next((r for r in assets if r['name']==name),None);arc=arcdir/name
+   if a.review_legacy_aac_core and not arc.exists() and asset is None:
+    fp=hash_json(legacy_projection(now));name=f'TEM8-review-intensive-{ident}-{fp[:16]}.zip';asset=next((r for r in assets if r['name']==name),None);arc=arcdir/name
    if not arc.exists():
     assert a.download and asset,'缺少当前指纹在线包：'+name
     jobs.append((ident,arc,asset));continue
@@ -115,7 +139,7 @@ def main():
    try:ready.append(fut.result())
    except Exception as ex:results.append({'id':tasks[fut],'status':'download_error','error':str(ex)})
  for ident,arc,asset in sorted(ready):
-  try:results.append(audit(arc,a.out/ident,asset.get('digest') if asset else None,a.run,head,a.contacts))
+  try:results.append(audit(arc,a.out/ident,asset.get('digest') if asset else None,a.run,head,a.contacts,a.review_legacy_aac_core))
   except Exception as ex:results.append({'id':ident,'status':'rejected_mechanical','error':type(ex).__name__+': '+str(ex)})
  dump(a.out/'批量机械核验汇总.json',{'requested':a.ids,'results':results,'visual_approval_automatic':False});print(json.dumps(results,ensure_ascii=False,indent=2))
  if any(r['status']!='mechanical_pass_visual_pending' for r in results):raise SystemExit(1)
