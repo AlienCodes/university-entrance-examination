@@ -5,8 +5,8 @@
   "candidate_file": "核验/2010—2015源审候选/2015-A.json",
   "candidate_sha256": "173062f60013be038ba8a56c09bb5f9f09cee7cdacd2a10b54adb7a8e6bbc378",
   "input_before_approval_sha256": "35032c9e54f0a363b8819c19887af641950e78060a95f66473ce56a08968b451",
-  "input_sha256": "e354bdb26146e114d78f03f61fce70bc76b8b617f65aed62330645b634c73638",
-  "approved_content_sha256": "07de3a0e18f233d54f86a8e4abf0695807f657ea51ee37812b85392c00ecc71c",
+  "input_sha256": "f05bcecdf832f411a9eb891204c2d4e5d06ae08792121ead727953b26aff2c3a",
+  "approved_content_sha256": "5b19e16048d401e4221efde2344ecdf8590dcd7238c6a150bfbf1820b2195808",
   "mother_unit_semantic_sha256": "625927c2a025742ac308bbc4598c3e618bce8b8b44838342493f58ccf39833f2",
   "source_audio_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
   "source_window": [
@@ -166,5 +166,24 @@
     "原采样率PCM实测原音安全首尾；9完整话轮、Mm和Umm整声事件保留，不删除源录音",
     "母稿title/names/EN/ZH/W/manual当前一致；150念题既有核对不重推答案"
   ],
-  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品"
+  "next": "在线音频与完整PNG预检及实际审图；本次不批准未知画面或成品",
+  "previous_status": "source-approved",
+  "previous_source_approved_input_sha256": "e354bdb26146e114d78f03f61fce70bc76b8b617f65aed62330645b634c73638",
+  "encoding_policy_candidate_content_sha256": "5b19e16048d401e4221efde2344ecdf8590dcd7238c6a150bfbf1820b2195808",
+  "encoding_policy": {
+    "aac_bitrate": "256k",
+    "state": "pending-root-policy-approval",
+    "body_English_Chinese_vocabulary_timing_unchanged": true,
+    "evidence": "核验/AAC编码策略更新/2015-A-AAC完整往返实测.json",
+    "thresholds_unchanged": true
+  },
+  "encoding_policy_root_approval": {
+    "aac_bitrate": "256k",
+    "previous": "192k AAC预演未达SNR30dB，未编码/交付",
+    "measurement_file": "核验/AAC编码策略更新/2015-A-AAC完整往返实测.json",
+    "measurement_sha256": "d2330968c42cc24043d95bcd56f013bf0d9ab53279e7adb19b193208af91fff4",
+    "original_PCM_sample_rate_channels_gain_text_timing_unchanged": true,
+    "thresholds_unchanged": true,
+    "scope": "允许按256在线完整预演；并非预先批准未知截图或成品"
+  }
 }

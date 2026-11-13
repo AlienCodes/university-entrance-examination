@@ -40,6 +40,8 @@ def validate(d, draft=False):
     assert not re.search(r'[/\\:*?"<>|]',d['section']),'Section名称不可包含文件路径字符'
     assert not d.get('待核') or draft,'仍有待核项，不得制作正式成品'
     assert re.fullmatch('[0-9a-f]{64}',d['audio']['sha256'])
+    if 'aac_bitrate' in d['audio']:
+        assert d['audio']['aac_bitrate'] in ('192k','256k','320k'),'AAC码率仅允许192k/256k/320k'
     lo,hi=d['audio']['window'];assert 0<=lo<hi
     assert d['sentences']
     previous=lo
@@ -282,6 +284,8 @@ def compile_input(input_file,original,out,draft=False):
         'source_sha256':d['audio']['sha256'],'audio_sha256':sha(audio),'window':[lo,hi],'kept_intervals':[[u/sr,v/sr] for u,v in intervals],
         'compressed_gaps':[[u/sr,v/sr] for u,v in removed],'kept_gaps':kept,'sentences':times,
         'protected_source_intervals':protected,'audio_protection':protection}
+    if 'aac_bitrate' in d['audio']:
+        tm['aac_bitrate']=d['audio']['aac_bitrate']
     manual,manual_evidence=bind_manual_pauses(explicit,d['sentences'],times)
     dump(out/'data/vocab.json',{'passages':[p]});dump(out/'audio/timings.json',{'cet4_male':{d['id']:tm}})
     dump(out/'tools/人名.json',{'names':d.get('names',[])})

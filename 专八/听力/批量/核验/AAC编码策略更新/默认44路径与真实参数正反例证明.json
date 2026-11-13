@@ -1,0 +1,686 @@
+{
+  "status": "minimal_core_default_44_semantics_and_argument_proof_passed_not_media_approval",
+  "old_commit": "c87cf30777f324ceabde3a0eba6a1a7ecfd54451",
+  "core_files": {
+    "专八/听力/批量/tools/精听.py": {
+      "old_sha256": "ff515e1be152ea29844970bca368f64b1dbe1939bd8aeacb075157630aeecf26",
+      "new_sha256": "cd766f44cf2075c49331992cb8a2598e48a708d85b2dd873486c494252d03da0"
+    },
+    "专八/听力/批量/tools/精听数据.py": {
+      "old_sha256": "072c40ec95a6b532e798218d3be84eed68225608f53c1565f1c6c24895ba0d47",
+      "new_sha256": "11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e"
+    }
+  },
+  "module_AST_proof": {
+    "data_only_two_explicit_optional_ifs_added": true,
+    "core_only_two_bitrate_arguments_changed": true,
+    "after_removing_optional_branches_or_resolving_default192_entire_module_AST_identical_to_c87": true,
+    "all_thresholds_raw_audio_processing_visual_layout_states_verify_functions_unchanged": true,
+    "compiled_p_dict_expression_identical": true,
+    "compiled_tm_base_expression_and_all_preexisting_writes_identical": true,
+    "no_default_aac_metadata_added": true
+  },
+  "actual_production_argument_tests": [
+    {
+      "function": "audio_check",
+      "explicit_input": null,
+      "actual_argument": "192k",
+      "pass": true
+    },
+    {
+      "function": "audio_check",
+      "explicit_input": "192k",
+      "actual_argument": "192k",
+      "pass": true
+    },
+    {
+      "function": "audio_check",
+      "explicit_input": "256k",
+      "actual_argument": "256k",
+      "pass": true
+    },
+    {
+      "function": "audio_check",
+      "explicit_input": "320k",
+      "actual_argument": "320k",
+      "pass": true
+    },
+    {
+      "function": "encode",
+      "explicit_input": null,
+      "actual_argument": "192k",
+      "pass": true
+    },
+    {
+      "function": "encode",
+      "explicit_input": "192k",
+      "actual_argument": "192k",
+      "pass": true
+    },
+    {
+      "function": "encode",
+      "explicit_input": "256k",
+      "actual_argument": "256k",
+      "pass": true
+    },
+    {
+      "function": "encode",
+      "explicit_input": "320k",
+      "actual_argument": "320k",
+      "pass": true
+    }
+  ],
+  "validation_positive_negative_tests": [
+    {
+      "config": "192k",
+      "accepted": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "config": "256k",
+      "accepted": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "config": "320k",
+      "accepted": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "config": null,
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": "128k",
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": "256",
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": "256K",
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": 256,
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": 0,
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": true,
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": [],
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "config": {},
+      "accepted": false,
+      "expected": false,
+      "pass": true
+    }
+  ],
+  "default_units": [
+    {
+      "id": "2009-A",
+      "input_file": "精听数据/2009-A.json",
+      "input_sha256": "e9ce5608cc47eb83689e84483c829331a9fa9d6646b1f8561d0eb8a5ca0e42ba",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "c9069f52aaa007c9a33ff4e6a4337df5b115f00688bd61bc26aa87f4f15a03c7",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2009-B1",
+      "input_file": "精听数据/2009-B1.json",
+      "input_sha256": "5aa58cbec2ec1abd2a960211d791369320503dc3ce6a9446638097c0b47216a1",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "b5a444093f9eda52618c99988c67a081c3229e930988e648efc3bfb8472a386c",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2009-B2",
+      "input_file": "精听数据/2009-B2.json",
+      "input_sha256": "b33e7b9dae8723b483cd2998e206751dcd29311c71170e1fb1a41c903fcf16a1",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "aff54e844984956a69f180f558f90bfbe2c2f81dae305fb5c307a375b524364e",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2010-A",
+      "input_file": "精听数据/2010-A.json",
+      "input_sha256": "14e3b67710b9927f385bb25b6fc99abb22f57b94246d2a10240682fc5d30377c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "04e074f033583c21c4bcc469c78b274219e5b3ec6745863aaa16cb08fb9712b1",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2010-B1",
+      "input_file": "精听数据/2010-B1.json",
+      "input_sha256": "5dc224df6855b12b8ffedf8130be433c8997b5845c505a2997f4639618574533",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "a680e410429bfbc0a4b349f7cbffcadfd5d85009f588f713218869636054ef26",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2010-B2",
+      "input_file": "精听数据/2010-B2.json",
+      "input_sha256": "dbe93c21c28f7b871f0970c61f01c020f294cb85284507976675b2dc461dd16d",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "c33a8d4e8d4e40f52319176dab27caebf2643f3ca997854560b1cfd8b9b88e1a",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2011-A",
+      "input_file": "精听数据/2011-A.json",
+      "input_sha256": "c1e3b89a3831060a07e04458b6a6088d8c4889c3b58ae688200b9d3bb4589b28",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "35d254b001fbc39ee28b096577d8bed64d24091893ecbd4585662624f7340446",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2011-B1",
+      "input_file": "精听数据/2011-B1.json",
+      "input_sha256": "487c4ebf366d1ef3b38a4bf5bb884e012250f9511ccc5e61ba967ef1bde2451c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "974552ef6755367e3e30d9af277c42228aa82f12194e9686eb5855e9d8df3d50",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2011-B2",
+      "input_file": "精听数据/2011-B2.json",
+      "input_sha256": "ff433e8239d468ddfbbdf9e7b7a0692b4019705b4b1ac52b3b6f57b7a65e1a4c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "26e26507986a3b558de463c52451bcf8178154ae2b7b39463421bc4314f459be",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2012-A",
+      "input_file": "精听数据/2012-A.json",
+      "input_sha256": "9a7fbccf543bbfca1dc39ab8f0c3803cf59b3dd96560d9c10489ffb2e2d4b720",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "c277d652192e715fc3c9b04ea7e85493dc20ed1324ba3bf004fd8505e6005035",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2012-B1",
+      "input_file": "精听数据/2012-B1.json",
+      "input_sha256": "39960dd1f04c2faeabc41467db071eb341c3477b52b78c721f8ec9001f394c6e",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "027861f39ec96646f9b3b630f7b9ef818c5d4c341415275df0e9b278ea513b31",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2012-B2",
+      "input_file": "精听数据/2012-B2.json",
+      "input_sha256": "161d2b6a747249b89629aac2470f7042a4b7a0ef5b7534025e79d1d6e23b059f",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "1ce3f2f7a90b6e49cb681a0eb311ff6c6c5a23061f4575085c9a622ddd60044e",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2013-A",
+      "input_file": "精听数据/2013-A.json",
+      "input_sha256": "f27e1a9b383b31ea8f85a167d87e555b63a2030d8edb18fe31b5fa8a6727f699",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "815b08ae61d0797cf2039dbc559fbdf2a495d7f4371d31049bd2ae9280ef09f3",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2013-B1",
+      "input_file": "精听数据/2013-B1.json",
+      "input_sha256": "f3807ca6fcf1eb1e5d009b201a6ce6bb86488df9ced6b9fdc4d8f26c6e2ba088",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "2a0ce952e9a87d719e617c5bf2e2063bf8d98d8c98c654e939a4e4de7d756915",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2013-B2",
+      "input_file": "精听数据/2013-B2.json",
+      "input_sha256": "018192167e489d2d745fda7bef679cfaa178e4d6b580da1b2d7dd3cd905c493a",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "f6c59e16ae9ab398a7a0490b21c254fc758f5a8f6e78ff415bd6b4b26ec12a1d",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2014-A",
+      "input_file": "精听数据/2014-A.json",
+      "input_sha256": "e72bb553a7453705c3e03ffbc04da5763fd34bbfbf9f6330ebcb2abff701991a",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "7bd060b7b95d5efdbfa732ef558764e22606f2e019662ee14bc4312876944ee4",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2014-B1",
+      "input_file": "精听数据/2014-B1.json",
+      "input_sha256": "5cd4fa6452ec06d020cfe0f2a8e0733eddd4b1e7bbcdd8a82a4ede9e1062942a",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "a7ee705c492c2da9886eaf0bf714a1be7de6fa84e3425b1e95507471798c1ff6",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2014-B2",
+      "input_file": "精听数据/2014-B2.json",
+      "input_sha256": "25b5813299b30601a1da1b88c9fb5d873846e1030c0994eaf43b3cc2fbf226b7",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "3aa66680ba86b0f20591382c67019830e548e672cf47e6c97210d84257a6dda4",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2015-B1",
+      "input_file": "精听数据/2015-B1.json",
+      "input_sha256": "b1f2f334ef13a0def8a62b91fb013c55c3f4058885acc9f6070f92761325c5ae",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "49292b1895086e2798a36635416e15d4849d57ac2e9568325f5e17fe7030655a",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2015-B2",
+      "input_file": "精听数据/2015-B2.json",
+      "input_sha256": "1ee89f2b0c95974e1273bad00b840d8610222591a103bfc3aae873979dc1eb4f",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "9cb223c5458fce517d8178636fe774659819e9bc78eece6b98449ec8a13409fc",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2016-A",
+      "input_file": "精听数据/2016-A.json",
+      "input_sha256": "aa50c678df92a4750d943f835244c2c6eb4b37ff3caf15b4548407679c200ffc",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "802ede2510afbd841834deef222abda833c281d8202ccbbc22afd07d18ad9c66",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2016-B1",
+      "input_file": "精听数据/2016-B1.json",
+      "input_sha256": "570f8f45b76a34815eb015eab9d89e7b057b5714ed733915a632f2051deccd03",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "96daf60eb1fc1a236f9eebad5e4dd92aebfeee1cd3008c809237e594afbe1c87",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2016-B2",
+      "input_file": "精听数据/2016-B2.json",
+      "input_sha256": "bd0c7cd4ceeb8ea3021f024b2f7a8e66c997d2e13b82826bef4679576b17080e",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "6f64a3954697426df2fdaab6fe14a0608d1096147bd7cecce113a4a551a44a7b",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2017-A",
+      "input_file": "精听数据/2017-A.json",
+      "input_sha256": "625386b697d6b02825ed3fad2f0ef7677d8615e6d87391d255fb23243641696c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "e91e04b78289942ddad0d910bbb4bb2d4ab720376c3d0d7791ac29da13ac0c6c",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2017-B1",
+      "input_file": "精听数据/2017-B1.json",
+      "input_sha256": "daca8ec8533d8301f4e6cc68fd53ea61c428fb6069a467a099c53b6174cf8fe5",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "d87ac1301fefb2195f01b43bb4ef7b25ebc7da73ddb929cb47cb052766dcbc59",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2017-B2",
+      "input_file": "精听数据/2017-B2.json",
+      "input_sha256": "708463a9ba630611d060e6af7731aae34dbccdbd488c99e06cf309b1a2c1ecc9",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "f666ec71dae0c2a3527babfc333dfc7674dc4625a0fa96e953304dd0d68fba3d",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2018-A",
+      "input_file": "精听数据/2018-A.json",
+      "input_sha256": "f768452e27b5002520f0f79b124717ffa3eabe9b7c65c733f312ac1ed663799a",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "87753d607b892d9fa8326df5567ec7d726f62c8e7f271018b0bf734d52465706",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2018-B1",
+      "input_file": "精听数据/2018-B1.json",
+      "input_sha256": "1044ac3439437417f0e0617043e82e8b68a65612e52e088175bd973c5456005e",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "d7c6537447513bbeff35522e3e0700258b318a197360ee32ecebeb5bf7e98d46",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2018-B2",
+      "input_file": "精听数据/2018-B2.json",
+      "input_sha256": "47b853347e869cd0ac7354d1dd0d30f3f96ef1f9290c6b612ebe7d333a59d40b",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "eb98ab86b4552cb5afc059f2006cc5a9fc1edaa4dd09485d17fd733b6f1ec46a",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2019-A",
+      "input_file": "精听数据/2019-A.json",
+      "input_sha256": "30648bbc9063ac47b5336771e30b047ef009b03a3bac9ef8311102665b7aad9e",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "b7dad37ce5e5b0fca9086de6a402e0c2bb5a89d769e74953a2a65ae35a8fe17f",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2019-B1",
+      "input_file": "精听数据/2019-B1.json",
+      "input_sha256": "8adc277c17537b9b095a7795faa9a88612a1b8f4d7293eee9713b79388eb1033",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "a787c3edbf0aa6537403b0b70d6a58b2f5b7d146b0f030d44af4d24cb36462dd",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2019-B2",
+      "input_file": "精听数据/2019-B2.json",
+      "input_sha256": "0b4bcd648d8537e866eaa417c5a5cb6a2b2378f60b8038d6c632f326f33a5726",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "9cb6fd43e0352a7c1b30cf892da1e90c360b5f254d2e84b183ed4418e0d72ab6",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2021-A",
+      "input_file": "精听数据/2021-A.json",
+      "input_sha256": "2c7b36a2cdcdb52428b885cd8b73fec072abcb702a804f79bac117c0de2ffa9e",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "a2878160e03865491bb4c66a9b4d62bc7f424e071f52d43ea4162b89dd73725f",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2021-B1",
+      "input_file": "精听数据/2021-B1.json",
+      "input_sha256": "de082482f98ab1448529665f96972b89189e3914d897ba51bba033b6bfed60c6",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "41959f8c54801c818dd648a383b1a737e70cb91eb8ae5e4a894e65a67bb30a48",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2021-B2",
+      "input_file": "精听数据/2021-B2.json",
+      "input_sha256": "0f99a2751b76bb410a4fa86b4fa8d54ecbe439d3bf70f59f262ab501e4172bef",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "d8e29d1dd39f5df177267f3df2fadffe4072e273b3cccb6e09d5288b8cebaa4d",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2022-A",
+      "input_file": "精听数据/2022-A.json",
+      "input_sha256": "ead400cbffdb8e725ccbf70085cad64a881742f6930fe4596d2b8390b3b3278e",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "c020d336db8b8105c9e1ebe6f17421821652fc81147a8df01f9ac3fc191499dd",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2022-B1",
+      "input_file": "精听数据/2022-B1.json",
+      "input_sha256": "fd04d1fde28f08534d26bb79eab736128370bdd5323ee3d607c79b5ec2c73b6c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "3ecd8447179ac7a23c47ebc53432935d0a7f931f4af894c0cef1b5c5b3a81b6d",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2022-B2",
+      "input_file": "精听数据/2022-B2.json",
+      "input_sha256": "8103c44305703bd32b2e56b66aad2fc7c308d61375c80d0eea00c601bab885fa",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "ae58af7b2fe291ee3c92d3f640d252a771cf109a682ac21b5840e04a79948953",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2023-A",
+      "input_file": "精听数据/2023-A.json",
+      "input_sha256": "c3749db63eb9c5ba877d6d50dbc86af9141cee8f1f727292a66658457707be18",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "aa2c1fe2dbcc555f94ffb994c07af91226af207b939f1a16ef1dca6a136cc9a1",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2023-B1",
+      "input_file": "精听数据/2023-B1.json",
+      "input_sha256": "302856cfcff8c7af03ff8dfa5048e1bdbd471a175be7cd63a9f5b595f0fed60c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "e602cf08724d9aad00937f953a90462f06ae82610c6997558944d36415ff6ea4",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2023-B2",
+      "input_file": "精听数据/2023-B2.json",
+      "input_sha256": "673e0661d8718c21a30b5ac9639bf21d3eda34b4b206c7d385ad54dd4027428c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "8b05ea4f872f5a67ee81da00618f723045580c4446be2082b7dd7dc5b7b5f39f",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2024-A",
+      "input_file": "精听数据/2024-A.json",
+      "input_sha256": "e84d7be18a77b8e878c64282dc3233765826ef76880a26c50ee869aa31a7cfdc",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "84de3946ee73f5c3feff4d6f8c5df8bfa9e044553b4a1baaa12ed9fd542b25ef",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2024-B1",
+      "input_file": "精听数据/2024-B1.json",
+      "input_sha256": "29070002e5f94d4f7f2916330d209240ea064c7ebc9e72d618280a7531a4d42c",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "0414d180024ed95705477bf1c02f7090065e62ea1f57adeab4ea027b76d7bd5a",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    },
+    {
+      "id": "2024-B2",
+      "input_file": "精听数据/2024-B2.json",
+      "input_sha256": "619b28249d5448e16de50954c061203fb333d78f00f2426d1045b85a617a4b52",
+      "aac_field_absent": true,
+      "tm_optional_write_branch_not_entered": true,
+      "effective_precheck_and_encode_bitrate": "192k",
+      "old_new_actual_p_dict_equal": true,
+      "p_sha256": "e15ece22d745bbf4b091fa49e2070a9b3d6930f59c090f7011f6be9596795532",
+      "old_new_validation_identical": true,
+      "current_source_gate": "accepted"
+    }
+  ],
+  "explicit_exception": [
+    {
+      "id": "2015-A",
+      "rate": "256k",
+      "review_status": "hold-encoding-policy"
+    }
+  ],
+  "2015_hold_blocks_formal_processing": true,
+  "approval_limit": "默认44源没有AAC字段，所以新增两if完全不执行、两处实际FFmpeg参数仍为192k；p/tm/原样PCM/画面函数路径未变。内部代码依赖指纹会变，不等于PNG变化。仍须根显式刷新源/PNG审批；旧5cache迁移另核真实旧meta/MP4/evidence/PNG多重集并保留旧生成来源。此报告不虚称重编码/成品核验或自动批准。"
+}

@@ -60,7 +60,7 @@ def main():
   for u in obj['units']:units[u['id']]={'year':obj['year'],**u};origins[u['id']]={'file':str(f.relative_to(BATCH)),'sha256':sha(f)}
  jobs=[]
  if a.selftest:
-  for label,title in [('normal','讲座：语言与交流'),('long','讲座：语言的副语言特征（新题型优化版所供原文）'*3)]:
+  for label,title in [('normal','讲座：语言与交流'),('long','讲座：语言的副语言特征（新题型优化版所供原文）')]:
    d=copy.deepcopy(units['2010-A']);d['title']=title;jobs.append((d,a.out/label,origins['2010-A'],None,True))
  else:
   assert a.ids and len(a.ids)==len(set(a.ids))

@@ -1,0 +1,27 @@
+{
+  "status": "3_real_cache_corruption_negatives_rejected",
+  "old_real_MP4_sha256": "ca81ca5e931c6bb0b0d006887492d76a2537f2d8da8a98d7cea9eb5aa586bf26",
+  "source_meta_and_report_and_PNG_unchanged": true,
+  "default_proof_sha256_at_test": "dafc075e61013b9f8f106f60a9a3587624f14a9fab5a64379ecc282a5a7c97d8",
+  "cases": [
+    {
+      "case": "failed_report",
+      "rejected": true,
+      "reason": "",
+      "scope": "真实成功缓存隔离副本的故意损坏，非新媒体核验"
+    },
+    {
+      "case": "changed_PNG_even_inventory_updated",
+      "rejected": true,
+      "reason": "旧PNG与旧registry不同",
+      "scope": "真实成功缓存隔离副本的故意损坏，非新媒体核验"
+    },
+    {
+      "case": "changed_tm_policy",
+      "rejected": true,
+      "reason": "旧tm不是未配置192默认",
+      "scope": "真实成功缓存隔离副本的故意损坏，非新媒体核验"
+    }
+  ],
+  "no_video_generated_or_uploaded": true
+}

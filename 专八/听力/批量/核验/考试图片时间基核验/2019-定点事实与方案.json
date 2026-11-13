@@ -1,0 +1,65 @@
+{
+  "status": "proven_repair_not_yet_applied_to_core",
+  "source_run": 43514755833,
+  "job": 132193955466,
+  "source_error": "frame1820 60d03a832610 diff15.5",
+  "source_states": 409,
+  "total_frames": 48007,
+  "probe_frames": 1635,
+  "default25_bad_probes": 31,
+  "only_explicit30_bad_probes": 74,
+  "explicit30_and_fps_filter_bad_probes": 0,
+  "threshold_unchanged": 3,
+  "real_decoded_local1820": [
+    {
+      "frame": 1819,
+      "expected_state_start": 1790,
+      "key": "3384d66525ba",
+      "diff": 0.3106
+    },
+    {
+      "frame": 1820,
+      "expected_state_start": 1820,
+      "key": "60d03a832610",
+      "diff": 0.3109
+    },
+    {
+      "frame": 1821,
+      "expected_state_start": 1820,
+      "key": "60d03a832610",
+      "diff": 0.3109
+    },
+    {
+      "frame": 1822,
+      "expected_state_start": 1820,
+      "key": "60d03a832610",
+      "diff": 0.3109
+    },
+    {
+      "frame": 1823,
+      "expected_state_start": 1823,
+      "key": "4262621f8421",
+      "diff": 0.4471
+    },
+    {
+      "frame": 1824,
+      "expected_state_start": 1823,
+      "key": "4262621f8421",
+      "diff": 0.398
+    },
+    {
+      "frame": 1825,
+      "expected_state_start": 1823,
+      "key": "4262621f8421",
+      "diff": 0.3705
+    }
+  ],
+  "fix_recipe": {
+    "concat_each_file": "option framerate 30",
+    "video_filter": "fps=30:start_time=0:round=near",
+    "fast_filter_order": "scale=480:270,fps=30:start_time=0:round=near",
+    "original_audio": "未参与诊断快片，生产原音处理不应改变"
+  },
+  "scope_warning": "2019使用真实已审PNG+全长480p实际编码、1635个精确select n探针；15年范围为带状态ID的合成图片时间基传输测试，不是15个既有MP4逐像素复检。旧输入25fps和单独改为30fps都不能保证CFR边界；显式fps滤镜使15年传输全零错位。",
+  "current_core_unchanged_by_this_diagnosis": true
+}

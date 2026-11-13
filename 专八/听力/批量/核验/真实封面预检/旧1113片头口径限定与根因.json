@@ -1,0 +1,218 @@
+{
+  "status": "historical_cover_claims_withdrawn_and_helper_fixed",
+  "cause": "probe_unit构造p后使用re.sub删title的（新题型优化版所供原文）后缀，再将此p用于片头。母稿source_title虽另存，实际title_slide看到的是被缩短p.title；因此此前18份片头通过结论均不得作为生产原题名封面通过证据。",
+  "production_behavior": "精听数据.compile_input将d.title逐字赋给p.title，精听.engine使用实际title_slide/page及TITLE_JS/SUB_FIT_JS/screen_checks，无该题名替换。",
+  "actual_fix": {
+    "before_line": "p['title']=re.sub(r'（新题型优化版所供原文）$','',p['title'])",
+    "after_line": "assert p['title']==d['title'],'版式预检不得替换/缩短来源题名'",
+    "before_reconstructed_exact_one_line_diff_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+    "after_sha256": "ca9ae7520d0bdec47f8d9eff029b3c7cb771377b8ea6d8b49607446da23016de",
+    "old_report_helper_sha_matches_reconstruction": true
+  },
+  "old_1113_scope": "18份历史报告的片头结论全部撤销；正文/95处人工分屏的几何记录独立保留，不用旧1113整体结论声称当前封面已过。源题名改动仍由owner处理，线上完整PNG/音频/成品门禁继续。",
+  "historical": [
+    {
+      "id": "2010-A",
+      "raw_report": "核验/2010-2015-语义分屏版式/2010-A/版式预检.json",
+      "raw_report_sha256": "9b9657b9d1ee245c0e04ecda45c79e9ab6663d0d8c5c0b9ce8a99fa1ae31f1c4",
+      "source_title": "讲座：语言的副语言特征（新题型优化版所供原文）",
+      "actually_rendered_title": "讲座：语言的副语言特征",
+      "source_title_was_rewritten": true,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2010-B1",
+      "raw_report": "核验/2010-2015-语义分屏版式/2010-B1/版式预检.json",
+      "raw_report_sha256": "a507c47b5762d4b09554db3c43005e19901053d862ed49105204032b37c962c3",
+      "source_title": "采访：美国社会的多样性（上）（新题型优化版所供原文）",
+      "actually_rendered_title": "采访：美国社会的多样性（上）",
+      "source_title_was_rewritten": true,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2010-B2",
+      "raw_report": "核验/2010-2015-语义分屏版式/2010-B2/版式预检.json",
+      "raw_report_sha256": "9ca59ce3f7b42e9839859aec84a76b11d49765723fed64810d2a219ed90a7758",
+      "source_title": "采访：美国社会的多样性（下）（新题型优化版所供原文）",
+      "actually_rendered_title": "采访：美国社会的多样性（下）",
+      "source_title_was_rewritten": true,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2011-A",
+      "raw_report": "核验/2010-2015-语义分屏版式/2011-A/版式预检.json",
+      "raw_report_sha256": "47941f2eb9c57ebe26fd1894551663a64ecf26edba08f781fec5d1e128470752",
+      "source_title": "讲座：文化的分类（新题型优化版所供原文）",
+      "actually_rendered_title": "讲座：文化的分类",
+      "source_title_was_rewritten": true,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2011-B1",
+      "raw_report": "核验/2010-2015-语义分屏版式/2011-B1/版式预检.json",
+      "raw_report_sha256": "2206d118ba185b3d0f759a44c67c6b659e1524f79d8518fdc77c3bc99a9325f5",
+      "source_title": "采访：第二语言习得（上）（新题型优化版所供原文）",
+      "actually_rendered_title": "采访：第二语言习得（上）",
+      "source_title_was_rewritten": true,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2011-B2",
+      "raw_report": "核验/2010-2015-语义分屏版式/2011-B2/版式预检.json",
+      "raw_report_sha256": "3fcfb83e9c6f6aea6e7737636f1ec748dfa4ac7caa48b9379be28504f7c500b2",
+      "source_title": "采访：第二语言习得（下）（新题型优化版所供原文）",
+      "actually_rendered_title": "采访：第二语言习得（下）",
+      "source_title_was_rewritten": true,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2012-A",
+      "raw_report": "核验/2010-2015-语义分屏版式/2012-A/版式预检.json",
+      "raw_report_sha256": "cdaaeead5265c8135c89e22d1d12f79785b7c92f614c852b169735de6954d344",
+      "source_title": "Observing Behaviour",
+      "actually_rendered_title": "Observing Behaviour",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2012-B1",
+      "raw_report": "核验/2010-2015-语义分屏版式/2012-B1/版式预检.json",
+      "raw_report_sha256": "91c63fe457763d171771ec1a152d72ef05e2a590af8844fac5ef3b23bff569b2",
+      "source_title": "Creativity — Part One",
+      "actually_rendered_title": "Creativity — Part One",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2012-B2",
+      "raw_report": "核验/2010-2015-语义分屏版式/2012-B2/版式预检.json",
+      "raw_report_sha256": "9e21428e5a5a9c8c7e76f207b931184c597e8a8fc6bdd9ebd7f1db98b1d69365",
+      "source_title": "Creativity — Part Two",
+      "actually_rendered_title": "Creativity — Part Two",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2013-A",
+      "raw_report": "核验/2010-2015-语义分屏版式/2013-A/版式预检.json",
+      "raw_report_sha256": "d203b4372bd35560a83ffeca49b9c58a1d5656496617449fac03f5ba8dff3f6d",
+      "source_title": "What Do Active Learners Do?",
+      "actually_rendered_title": "What Do Active Learners Do?",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2013-B1",
+      "raw_report": "核验/2010-2015-语义分屏版式/2013-B1/版式预检.json",
+      "raw_report_sha256": "9e0f89ca79dc6269ad53adac6abd8ae1c7977431c87376637ec9f8b2e0f2e1e0",
+      "source_title": "What Workers Want — Part One",
+      "actually_rendered_title": "What Workers Want — Part One",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2013-B2",
+      "raw_report": "核验/2010-2015-语义分屏版式/2013-B2/版式预检.json",
+      "raw_report_sha256": "aaf2f460d370ac76ca4c6fbbff73273ef36df06876083d482ca090629b3766b6",
+      "source_title": "What Workers Want — Part Two",
+      "actually_rendered_title": "What Workers Want — Part Two",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2014-A",
+      "raw_report": "核验/2010-2015-语义分屏版式/2014-A/版式预检.json",
+      "raw_report_sha256": "ee0e8a8106de13eeeb00bb11b94063d2e1a4687b8c918ca4fb683bd90232f41d",
+      "source_title": "How to Reduce Stress",
+      "actually_rendered_title": "How to Reduce Stress",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2014-B1",
+      "raw_report": "核验/2010-2015-语义分屏版式/2014-B1/版式预检.json",
+      "raw_report_sha256": "150c7d867e2567911061cf24e23b7822830462e345fedb3ca350007066c33490",
+      "source_title": "采访：伊拉克流离失所者（上）",
+      "actually_rendered_title": "采访：伊拉克流离失所者（上）",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2014-B2",
+      "raw_report": "核验/2010-2015-语义分屏版式/2014-B2/版式预检.json",
+      "raw_report_sha256": "cf73a129f8e26e16ead84295f6ef6defa2acb24ab0aa3ff0836dd7a9a29e54c9",
+      "source_title": "采访：伊拉克流离失所者（下）",
+      "actually_rendered_title": "采访：伊拉克流离失所者（下）",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2015-A",
+      "raw_report": "核验/2010-2015-语义分屏版式/2015-A/版式预检.json",
+      "raw_report_sha256": "49259da6026ab0644f0e24d0e98ee0810ac9b17550c5a50ad7bdb55ddd1c63dd",
+      "source_title": "Understanding Academic Lectures",
+      "actually_rendered_title": "Understanding Academic Lectures",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2015-B1",
+      "raw_report": "核验/2010-2015-语义分屏版式/2015-B1/版式预检.json",
+      "raw_report_sha256": "31b594c796f85203cf40a8b2dd2a2b939cf12ee84848daa9561cf08523c569d7",
+      "source_title": "Interview 1",
+      "actually_rendered_title": "Interview 1",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    },
+    {
+      "id": "2015-B2",
+      "raw_report": "核验/2010-2015-语义分屏版式/2015-B2/版式预检.json",
+      "raw_report_sha256": "d5db95c8d52398253156bc0258e85c5cfec1e49280fd286b9f0e63757d647b58",
+      "source_title": "Interview 2",
+      "actually_rendered_title": "Interview 2",
+      "source_title_was_rewritten": false,
+      "original_helper_sha256": "62f470a74ae1bed654abc89cb944ac466f553e2e77a263108b32b48e2e2544bc",
+      "cover_conclusion": "withdrawn_not_production_literal_title",
+      "body_and_95_manual_split_geometry": "retained_separate_from_cover_claim"
+    }
+  ],
+  "fixed_original_helper_regression": {
+    "file": "修复后原helper正反例.json",
+    "sha256": "c996de909b18119b2fea958f3b91a49f9ff14e80cb005f3a6455d3dcea987439",
+    "actual_helper_source_title_equals_p_title": true
+  }
+}

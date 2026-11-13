@@ -104,7 +104,7 @@ def audio_check(out,tm):
     offset=round(LEAD*sr)
     assert np.array_equal(body,ref[offset:offset+len(body)]),'原音编译样本改变'
     encoded=out/'audio-precheck.m4a';decoded=out/'audio-precheck.wav'
-    subprocess.run(['ffmpeg','-y','-v','error','-i',str(out/'audio'/tm['file']),'-c:a','aac','-b:a','192k',str(encoded)],check=True)
+    subprocess.run(['ffmpeg','-y','-v','error','-i',str(out/'audio'/tm['file']),'-c:a','aac','-b:a',tm.get('aac_bitrate','192k'),str(encoded)],check=True)
     subprocess.run(['ffmpeg','-y','-v','error','-i',str(encoded),'-c:a','pcm_f32le',str(decoded)],check=True)
     got,sr3=sf.read(decoded,dtype='float32',always_2d=True)
     assert sr3==sr and got.shape[1]==ref.shape[1]
@@ -250,7 +250,7 @@ def encode(m,p,tm,out,input_file,draft=False):
     subprocess.run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',str(listing),'-i',str(out/'audio'/tm['file']),
                     '-fps_mode','cfr','-r',str(FPS),'-frames:v',str(frames),'-c:v','libx264','-preset','veryfast','-tune','stillimage',
                     '-crf','18','-threads',os.environ.get('TEM8_THREADS','2'),'-pix_fmt','yuv420p','-g','900','-x264-params','scenecut=0',
-                    '-c:a','aac','-b:a','192k','-movflags','+faststart',str(mp4)],check=True)
+                    '-c:a','aac','-b:a',tm.get('aac_bitrate','192k'),'-movflags','+faststart',str(mp4)],check=True)
     r=verify(m,p,tm,out,mp4,draft)
     if draft:
         print(f'{p["id"]}: 仅技术预览（未定稿，不得发布） {mp4}',flush=True)

@@ -1,0 +1,257 @@
+{
+  "id": "2015-A",
+  "scope": "同run43517487459精听输入/核心字节、同canonical原音、同prepare后的完整音轨；仅分析副本，未修改源或生产代码，未生成视频。",
+  "input_provenance": {
+    "id": "2015-A",
+    "run": 43517487459,
+    "failed_job": 132203281067,
+    "run_commit": "1c00d706bd1373dd55a459f6fd4f25fa0896da70",
+    "input_sha256": "e354bdb26146e114d78f03f61fce70bc76b8b617f65aed62330645b634c73638",
+    "current_input_sha256": "e354bdb26146e114d78f03f61fce70bc76b8b617f65aed62330645b634c73638",
+    "input_equals_current": true,
+    "source_expected_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+    "source_actual_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+    "production_code": {
+      "专八/听力/批量/tools/精听.py": {
+        "run_sha256": "ff515e1be152ea29844970bca368f64b1dbe1939bd8aeacb075157630aeecf26",
+        "current_sha256": "ff515e1be152ea29844970bca368f64b1dbe1939bd8aeacb075157630aeecf26",
+        "equal": true
+      },
+      "专八/听力/批量/tools/精听数据.py": {
+        "run_sha256": "072c40ec95a6b532e798218d3be84eed68225608f53c1565f1c6c24895ba0d47",
+        "current_sha256": "072c40ec95a6b532e798218d3be84eed68225608f53c1565f1c6c24895ba0d47",
+        "equal": true
+      },
+      "专八/听力/原文/tools/原音音轨.py": {
+        "run_sha256": "43681dd8bd4c78524e13a49d03dc3dadb0f022c25fc1f5f146b43942652b95a7",
+        "current_sha256": "43681dd8bd4c78524e13a49d03dc3dadb0f022c25fc1f5f146b43942652b95a7",
+        "equal": true
+      }
+    }
+  },
+  "thresholds": {
+    "max_abs_gain_db": 0.05,
+    "min_snr_db": 30.0,
+    "max_second_level_db": 1.0
+  },
+  "ffmpeg": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "prepared_sha256": "cf02701c461b50aba0b14fc8793609948b628491bc70790d5ac8925ab87c5e9b",
+  "timings_sha256": "bb6b5200ba9d6bbe54d430ea02f9c29c507c29bfcb0ea45761a39821888e4da4",
+  "prepared_audio_sha256": "360a14b505373b26942d685e4a96f04c1dcc92f47e054722f9154f5e23fe0305",
+  "prepared_audio_expected_sha256": "360a14b505373b26942d685e4a96f04c1dcc92f47e054722f9154f5e23fe0305",
+  "source_sha256": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1",
+  "sample_rate": 44100,
+  "channels": 2,
+  "source_window": [
+    13.415,
+    682.79
+  ],
+  "kept_intervals": [
+    [
+      13.415011337868481,
+      63.24
+    ],
+    [
+      90.74,
+      498.8
+    ],
+    [
+      678.15,
+      682.79
+    ]
+  ],
+  "lead_samples": 66150,
+  "body_frames": 20397352,
+  "compiled_frames": 20560890,
+  "duration_seconds": 466.23333333333335,
+  "raw_exact_before_encoding": true,
+  "body_pcm_float32_sha256": "c1c810d132d3857ffd634b3f967c6615061887a47af2cd085052237a28dcc122",
+  "results": [
+    {
+      "requested_aac_kbps": 192,
+      "ok": false,
+      "problems": [
+        "语音段与原音残差信噪比 29.8 dB"
+      ],
+      "measure": {
+        "gain_db": -0.0457,
+        "snr_db": 29.8,
+        "sec_db": 0.182
+      },
+      "snr_unrounded_db": 29.79832649230957,
+      "snr_margin_above_30_db": -0.2016735076904297,
+      "encoded": {
+        "file": "complete-192k.m4a",
+        "sha256": "3493e7d5b15837e364c238b5519f2a381f04e6aa0a9caf3cd150a5c398a05ae6",
+        "bytes": 11145979,
+        "stream": {
+          "codec_name": "aac",
+          "sample_rate": "44100",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "duration": "466.232993",
+          "bit_rate": "189847",
+          "nb_frames": "20080"
+        }
+      },
+      "decoded": {
+        "file": "complete-192k.wav",
+        "sha256": "5872bf8ce647fa51b3610297e860d56d1cb4ec446a058cb0904e0b341e8e0ed3",
+        "frames": 20560896,
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "encode_argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        "/workspace/tem8-aac-2015-analysis/work/audio/原音.wav",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "192k",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-192k.m4a"
+      ],
+      "decode_argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-192k.m4a",
+        "-c:a",
+        "pcm_f32le",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-192k.wav"
+      ],
+      "elapsed_seconds": 15.68,
+      "no_resampling_or_gain_filter": true
+    },
+    {
+      "requested_aac_kbps": 256,
+      "ok": true,
+      "problems": [],
+      "measure": {
+        "gain_db": -0.0133,
+        "snr_db": 40.5,
+        "sec_db": 0.043
+      },
+      "snr_unrounded_db": 40.46636199951172,
+      "snr_margin_above_30_db": 10.466361999511719,
+      "encoded": {
+        "file": "complete-256k.m4a",
+        "sha256": "526d539ac1e8a15106afb69179a59f88b789a1d07297662b07d10fd82e0a902d",
+        "bytes": 14337667,
+        "stream": {
+          "codec_name": "aac",
+          "sample_rate": "44100",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "duration": "466.232993",
+          "bit_rate": "244609",
+          "nb_frames": "20080"
+        }
+      },
+      "decoded": {
+        "file": "complete-256k.wav",
+        "sha256": "d0f7b9c6773a68279b3f3e8c68b020d23b4d3b0b6d37c0979bfd0934a9863046",
+        "frames": 20560896,
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "encode_argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        "/workspace/tem8-aac-2015-analysis/work/audio/原音.wav",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "256k",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-256k.m4a"
+      ],
+      "decode_argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-256k.m4a",
+        "-c:a",
+        "pcm_f32le",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-256k.wav"
+      ],
+      "elapsed_seconds": 20.94,
+      "no_resampling_or_gain_filter": true
+    },
+    {
+      "requested_aac_kbps": 320,
+      "ok": true,
+      "problems": [],
+      "measure": {
+        "gain_db": -0.0108,
+        "snr_db": 42.8,
+        "sec_db": 0.029
+      },
+      "snr_unrounded_db": 42.84040832519531,
+      "snr_margin_above_30_db": 12.840408325195312,
+      "encoded": {
+        "file": "complete-320k.m4a",
+        "sha256": "5886b3605278692457457ed77f55120baf53fa79643fb8251f46cfab5a3234b2",
+        "bytes": 15093346,
+        "stream": {
+          "codec_name": "aac",
+          "sample_rate": "44100",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "duration": "466.232993",
+          "bit_rate": "257575",
+          "nb_frames": "20080"
+        }
+      },
+      "decoded": {
+        "file": "complete-320k.wav",
+        "sha256": "fb70bb3a7731e55548d438d976b31c5ac80d9a17cac1bc6bac7264bf59235942",
+        "frames": 20560896,
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "encode_argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        "/workspace/tem8-aac-2015-analysis/work/audio/原音.wav",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "320k",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-320k.m4a"
+      ],
+      "decode_argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "error",
+        "-i",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-320k.m4a",
+        "-c:a",
+        "pcm_f32le",
+        "/workspace/tem8-aac-2015-analysis/roundtrips/complete-320k.wav"
+      ],
+      "elapsed_seconds": 24.1,
+      "no_resampling_or_gain_filter": true
+    }
+  ],
+  "lowest_sufficient_tested_kbps": 256,
+  "input_and_core_unchanged_after_tests": {
+    "专八/听力/批量/tools/精听.py": true,
+    "专八/听力/批量/tools/精听数据.py": true,
+    "专八/听力/原文/tools/原音音轨.py": true
+  },
+  "canonical_source_sha256_after": "64ea33ecbcb4dda10b951a5866fdaf1e7373c09c617aa63da411b7a55591d2d1"
+}
