@@ -81,6 +81,8 @@ def input_paths(kind, ident):
         paths = [D / '精听数据' / (ident + '.json')]
     if int(ident[:4]) == 2022:
         paths.append(D / '核验/2022-补充音源.json')
+        if kind == 'intensive':
+            paths.append(D / '核验/2022-停顿边界复核.json')
     return paths
 
 

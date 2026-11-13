@@ -420,7 +420,7 @@ def page(s):
     # 历史题长度不同：先尝试2025默认；不适配才按浏览器实测从最大字号逐级调整。
     # 只有明确标注的历史长选项允许自然换行，整个画面/边框/块重叠检查仍完整执行。
     css += '.source-note{font-family:"Noto Serif SC";font-size:28px;line-height:40px;margin-top:20px}.answer-text{min-width:0}'
-    css += '.ln,.stem,.ql .opt,.pl .r,.inst2,.instr,.ansb .qg,.ans .qg,.ttl{word-spacing:.05em;font-kerning:none}.pl .r{grid-template-columns:92px minmax(0,1fr) minmax(0,1fr);column-gap:44px}.pl .opt{display:flex;column-gap:18px;align-items:flex-start}.pl .opt-label{flex:0 0 1.1em;margin-right:0}.pl .option-text{min-width:0;flex:1}.ql .opt{column-gap:24px}.ql .opt b{margin-right:0}'
+    css += '.ln,.stem,.ql .opt,.pl .r,.inst2,.instr,.ansb .qg,.ans .qg,.ttl,.ttl h1,.ttl h2,.ttl .pt{word-spacing:.05em;font-kerning:none}.pl .r{grid-template-columns:92px minmax(0,1fr) minmax(0,1fr);column-gap:44px}.pl .opt{display:flex;column-gap:18px;align-items:flex-start}.pl .opt-label{flex:0 0 1.1em;margin-right:0}.pl .option-text{min-width:0;flex:1}.ql .opt{column-gap:24px}.ql .opt b{margin-right:0}'
     if DRAFT:
         body += '<div style="position:absolute;left:90px;bottom:9px;font:22px Noto Serif SC;color:#666">待核样片 · 非成品</div>'
     css = "@import url('"+(ROOT/'四级/tools/fonts/fonts.css').as_uri()+"');" + css
@@ -451,7 +451,7 @@ FIT_JS = r'''(kind) => {
    mark('.ql .opt');
    for(let fs=80;fs>=56;fs--) {
      const stem=Math.min(84,fs+4),lh=fs*1.32;
-     setcss(`.qn{margin-bottom:18px}.stem{font-size:${stem}px;line-height:1.2;margin-bottom:26px}.ql .opt{font-size:${fs}px;line-height:${lh}px;padding:9px 0;align-items:flex-start}.ql .opt>span{flex:1;min-width:0}.ql .opt b{width:76px}.source-note{margin-top:14px}`);
+     setcss(`.qn{margin-bottom:18px}.stem{font-size:${stem}px;line-height:1.2;margin-bottom:26px}.ql .opt{font-size:${fs}px;line-height:${lh}px;padding:9px 0;align-items:flex-start}.ql .opt>span{flex:1;min-width:0}.ql .opt b{width:100px}.source-note{margin-top:14px}`);
      if(rectok())return {mode:'question-wrap',font_size:fs,line_height:lh,stem_font_size:stem};
    }
  } else if(kind==='plist') {
@@ -779,7 +779,7 @@ def layout_selftest():
                 pg=pager.load(base+'/render/page.html?attempt='+str(attempt[0]))
                 fit_layout(pg,state)
                 return pg.evaluate(CHECK_JS)+question_gap_check(pg,state)+B.font_check(pg,pager.cdp)+leak_check(state,htm)+pg.evaluate(SPACING_JS)['errors']
-            for state in [good,sheet,plist,{'kind':'ansA','numbers':list(range(1,16))}]:
+            for state in [good,sheet,dict(sheet,page=1),plist,{'kind':'title'},{'kind':'ansA','numbers':list(range(1,16))}]:
                 bad=check(page(state),state)
                 require(not bad,'正常画面被错误拦截：'+str(bad[:3]))
             PAPER['questions'][0].update(unscored=True,source_note='源题地名与正文冲突，本题不计分。')
@@ -811,7 +811,7 @@ def layout_selftest():
             require(any('答案泄露' in x for x in check(extra,sheet)),'原卷合法同词导致额外泄题漏检')
             print('已拦截原卷合法同词后的额外答案泄露',flush=True)
             br.close()
-        print('浏览器自检通过：含不计分/原卷合法同词的7个正常屏和9项错误注入。',flush=True)
+        print('浏览器自检通过：含双页卡片/标题/不计分/合法同词的9个正常屏和9项错误注入。',flush=True)
 
 
 def main():
