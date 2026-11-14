@@ -185,6 +185,7 @@ def activate():
          '精听两条两步恢复运行登记.json','精听两条两步恢复监控.py','精听两条两步恢复完成核验.json','精听2022-A原失败已解决归档.json',
          '精听仅两条新审批冻结迁接核验.json',
          '精听43加两条实际producer冻结核验.json',
+         '精听根批准两条producer正反例.json',
          '精听2024-A-runner中断核验.json','精听2024-A-run43528080039-job132238965743-connector.log','精听2024-A原失败已解决归档.json',
          '精听失败时-failure-alert.json','精听失败时-latest-intensive-status.json','精听失败时-main-leaf-concurrency.json',
          '精听45当前持久缓存严格核验.json','精听45正式叶全部成功.json',
