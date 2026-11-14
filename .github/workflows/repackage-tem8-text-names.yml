@@ -1,0 +1,101 @@
+# token预算：约0万；旧15年仅改名，2025按用户要求复制既有载荷合成单片；不渲染或重编码。
+name: 专八听力原文仅改名补2025并重新发布
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-text-renamed-release.json']
+permissions:
+  contents: write
+concurrency:
+  group: tem8-listening-text-renamed-release-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  publish-text:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量/tools/改名补入2025.py
+            专八/听力/批量/核验/发布调度/全部视频最终交付核验.json
+            专八/听力/批量/核验/改名补入2025
+            专八/听力/原文/最终视频_水墨
+      - name: 核仅原文目标、合并方法及原Git成品SHA
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 - <<'PY'
+          import hashlib,json,shutil
+          from pathlib import Path
+          c=json.loads(Path('.github/tem8-listening-text-renamed-release.json').read_text())
+          assert c['mode']=='rename_existing_with_authorized_2025_stream_copy' and c['targets']==['text']
+          assert c['expected_videos']==16 and c['source_archive_sha256']=='2d0c0b71435c09eb1162f48e5077ce056275effdc65deb13491b852937ee4107'
+          helper=Path('专八/听力/批量/核验/改名补入2025/2025原文无重编码合并.py')
+          assert hashlib.sha256(helper.read_bytes()).hexdigest()==c['merge_helper_sha256']
+          root=Path('专八/听力/原文/最终视频_水墨');target=Path('in/2025');target.mkdir(parents=True,exist_ok=True)
+          lines=Path('.github/tem8-listening-text-release.txt').read_text().splitlines()[1:]
+          assert len(lines)==3
+          expected=['692c098dc03fd03e120320895b5ab18ba6942b8bdb727d6b36e24b243c91d31d','8885b85720d1a626f0b00235e88e18f6018b685e4e8b6ec16c7695615bebf405','8143cf6e78b9ac87ae4f7815e0ccc7d27720e4ea6d3ede8399e42417f20c3661']
+          for line,ident,sha in zip(lines,['A','B1','B2'],expected):
+              listed,name=line.split(' ',1);assert listed==sha
+              src=root/name
+              with src.open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==sha
+              shutil.copyfile(src,target/f'text-2025-{ident}.mp4')
+          PY
+      - name: 准备容器复制与独立载荷、时钟核验环境
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg python3-venv
+          python3 -m venv "$RUNNER_TEMP/tem8-copy-env"
+          "$RUNNER_TEMP/tem8-copy-env/bin/pip" install -q --disable-pip-version-check numpy==2.2.6
+      - name: 仅复制2025原有载荷，独立核全部包、时钟及接缝后才放行
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/tem8-copy-env/bin/python" 专八/听力/批量/核验/改名补入2025/2025原文无重编码合并.py --source-dir in/2025 --output in/2025/text-2025-full.mp4 --proof 专八/听力/批量/核验/改名补入2025/2025原文合并核验.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('专八/听力/批量/核验/改名补入2025/2025原文合并核验.json').read_text())
+          assert p['status']=='PASS' and p['video_packets_preserved'] is True and p['audio_packets_preserved'] is True
+          assert p['ordered_source_payloads_verified'] is True and p['no_video_render_or_audio_reencode'] is True
+          assert p['video_frame_pts_exact_30fps'] is True and p['video_dts_strictly_increasing'] is True and p['effective_audio_dts_strictly_increasing'] is True
+          assert abs(p['av_container_duration_difference_seconds'])<=0.05 and len(p['frame_checks'])==6 and all(x['equal'] is True for x in p['frame_checks'])
+          assert p['video_frames']==37255 and p['fps']==30 and len(p['decoded_audio_checks'])==3
+          assert all(x['decoded_snr_db']>=30 and abs(x['decoded_gain_db'])<=0.05 and abs(x['pcm_writer_lag_seconds'])<=1/60 for x in p['decoded_audio_checks'])
+          PY
+      - name: 下载既有15年原文成品包并仅按用户名字打包
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-delay 3 --output in/source.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-intensive-2009-2024/TEM8-listening-intensive-2009-2024-part01.zip
+          python3 专八/听力/批量/tools/改名补入2025.py pack text --source-zip in/source.zip --source-2025 in/2025 --out out/text
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('out/text/TEM8-manifest.json').read_text())
+          assert m['videos']==16 and m['text_2025_mode']=='authorized_packet_copy_concatenation'
+          assert m['files'][0]['name']=='2025 听力原文.mp4' and m['files'][-1]['name']=='2009 听力原文.mp4'
+          assert all(x['name']==str(x['year'])+' 听力原文.mp4' for x in m['files'])
+          PY
+      - name: 上传新原文Release并实际回下载逐成员核验
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/改名补入2025.py publish text --out out/text
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tem8-renamed-text-publication-evidence
+          path: |
+            out/text/TEM8-manifest.json
+            out/text/TEM8-download-verification.json
+            out/text/SHA256SUMS
+            out/text/notes.md
+            专八/听力/批量/核验/改名补入2025/2025原文合并核验.json
+          if-no-files-found: ignore
+          retention-days: 30

@@ -56,6 +56,11 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
     },
 }
 PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '专八/听力/批量/核验/改名补入2025/2025原文无重编码合并.py': {
+        'sha256': '50d50c2c048c0f7686cc0fcd811ede56484cd5df41890ce746bf77a6ce1fb078',
+        'audio': False, 'video': True,
+        'reason': '用户明确要求将现成2025原文三片合为一片且画面不重编码。仅对SHA锁定的既有H.264/AAC执行copy与MP4 edit-list封装修复，不合成TTS或归一化。全37255视频包/29109音频包载荷顺序SHA严格相同，全部视频PTS、有效音频DTS及6个首尾/接缝帧核查；解码比较增益/SNR和原数字静音padding，不改文字、帧或声道采样率。精确路径和源码SHA之外不豁免任何新入口。',
+    },
     '专八/听力/批量/tools/整套精听发布测试.py': {
         'sha256': '7658aed5cd2bf9b25cdac0e5027f18569f1e90b15b73e0fe12ef066f11a024cb',
         'audio': False, 'video': True,

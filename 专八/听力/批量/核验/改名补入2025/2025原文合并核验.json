@@ -1,0 +1,250 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "checked_at_utc": "2026-11-14T05:21:48.904079+00:00",
+  "script_sha256": "50d50c2c048c0f7686cc0fcd811ede56484cd5df41890ce746bf77a6ce1fb078",
+  "ffmpeg_version": "ffmpeg version 7.1.5-0+deb13u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "output": {
+    "path": "/workspace/tem8-rename-2025/text-2025-full.mp4",
+    "file": "/workspace/tem8-rename-2025/text-2025-full.mp4",
+    "sha256": "2a209dac0aebcfa02275104db9fc64de5d773827abb479e5a989170d5ce3e3a4",
+    "bytes": 71050603
+  },
+  "video_stream_copy": true,
+  "audio_stream_copy": true,
+  "ordered_source_payloads_verified": true,
+  "video_packets_preserved": true,
+  "audio_packets_preserved": true,
+  "payloads": {
+    "video": {
+      "packets": 37255,
+      "all_packet_sizes_and_sha256_equal_in_order": true,
+      "concatenated_payload_sha256": "fe280b81ea160df973053809172a2b7a3faeaf50cd515ceda5e31a266ccc02ba"
+    },
+    "audio": {
+      "packets": 29109,
+      "all_packet_sizes_and_sha256_equal_in_order": true,
+      "concatenated_payload_sha256": "11d330e18e536ff955fbc33fda39d5d286e42a5e60948c7612362dddcc92e0de"
+    }
+  },
+  "sources": [
+    {
+      "id": "A",
+      "path": "/workspace/tem8-rename-2025/text-2025-A.mp4",
+      "sha256": "692c098dc03fd03e120320895b5ab18ba6942b8bdb727d6b36e24b243c91d31d",
+      "bytes": 30754126,
+      "frames": 16157,
+      "audio_packets": 12624
+    },
+    {
+      "id": "B1",
+      "path": "/workspace/tem8-rename-2025/text-2025-B1.mp4",
+      "sha256": "8885b85720d1a626f0b00235e88e18f6018b685e4e8b6ec16c7695615bebf405",
+      "bytes": 19450143,
+      "frames": 10656,
+      "audio_packets": 8326
+    },
+    {
+      "id": "B2",
+      "path": "/workspace/tem8-rename-2025/text-2025-B2.mp4",
+      "sha256": "8143cf6e78b9ac87ae4f7815e0ccc7d27720e4ea6d3ede8399e42417f20c3661",
+      "bytes": 20849161,
+      "frames": 10442,
+      "audio_packets": 8159
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "warning",
+        "-copyts",
+        "-f",
+        "concat",
+        "-safe",
+        "0",
+        "-auto_convert",
+        "0",
+        "-i",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/video-native.ffconcat",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-c:v",
+        "copy",
+        "-video_track_timescale",
+        "15360",
+        "-use_editlist",
+        "1",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/video.mp4"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "warning",
+        "-copyts",
+        "-f",
+        "concat",
+        "-safe",
+        "0",
+        "-auto_convert",
+        "0",
+        "-i",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/audio-physical.ffconcat",
+        "-map",
+        "0:a:0",
+        "-vn",
+        "-c:a",
+        "copy",
+        "-movie_timescale",
+        "24000",
+        "-use_editlist",
+        "1",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/audio.m4a"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ffmpeg",
+        "-y",
+        "-v",
+        "warning",
+        "-copyts",
+        "-i",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/video.mp4",
+        "-i",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/audio.m4a",
+        "-map",
+        "0:v:0",
+        "-map",
+        "1:a:0",
+        "-c",
+        "copy",
+        "-movie_timescale",
+        "24000",
+        "-video_track_timescale",
+        "15360",
+        "-use_editlist",
+        "1",
+        "/workspace/tem8-rename-2025/2025-streamcopy-work/before-edit.mp4"
+      ],
+      "returncode": 0,
+      "stderr": ""
+    }
+  ],
+  "video_frames": 37255,
+  "fps": 30,
+  "duration_seconds": 1241.8333333333333,
+  "video_frame_pts_exact_30fps": true,
+  "video_dts_strictly_increasing": true,
+  "effective_audio_dts_strictly_increasing": true,
+  "audio_presented_samples": 29804000,
+  "av_container_duration_difference_seconds": 0.0,
+  "audio_edit_list": {
+    "movie_timescale": 24000,
+    "entries": [
+      {
+        "duration": 12925600,
+        "media_time": 1024,
+        "rate": 1
+      },
+      {
+        "duration": 8524800,
+        "media_time": 12928000,
+        "rate": 1
+      },
+      {
+        "duration": 8353600,
+        "media_time": 21453824,
+        "rate": 1
+      }
+    ],
+    "purpose": "每段仅跳过已有1024-sample AAC priming与尾部数字静音padding；所有原AAC载荷仍在mdat中且逐包严格等序。",
+    "discarded_preroll_demux_packets": 49,
+    "normal_demux_packet_order_note": "MOV解码预滚会回读并带D丢弃标记，真实播放包DTS严格递增；raw media全AAC包顺序与来源串接严格相同。"
+  },
+  "frame_checks": [
+    {
+      "source": "/workspace/tem8-rename-2025/text-2025-A.mp4",
+      "source_frame": 0,
+      "output_frame": 0,
+      "decoded_yuv_md5": "137f24c5715f523d2d4858ee2189ef82",
+      "equal": true
+    },
+    {
+      "source": "/workspace/tem8-rename-2025/text-2025-A.mp4",
+      "source_frame": 16156,
+      "output_frame": 16156,
+      "decoded_yuv_md5": "bc68d28375008941665c2fb53ebd77b9",
+      "equal": true
+    },
+    {
+      "source": "/workspace/tem8-rename-2025/text-2025-B1.mp4",
+      "source_frame": 0,
+      "output_frame": 16157,
+      "decoded_yuv_md5": "7d2f2e1de74f8087e6438ae909ee3cbe",
+      "equal": true
+    },
+    {
+      "source": "/workspace/tem8-rename-2025/text-2025-B1.mp4",
+      "source_frame": 10655,
+      "output_frame": 26812,
+      "decoded_yuv_md5": "4844f5f1b78bedacf0ec6c5bed48baa1",
+      "equal": true
+    },
+    {
+      "source": "/workspace/tem8-rename-2025/text-2025-B2.mp4",
+      "source_frame": 0,
+      "output_frame": 26813,
+      "decoded_yuv_md5": "7baefc91d1c6973276aa173583788d53",
+      "equal": true
+    },
+    {
+      "source": "/workspace/tem8-rename-2025/text-2025-B2.mp4",
+      "source_frame": 10441,
+      "output_frame": 37254,
+      "decoded_yuv_md5": "1d2359d79a4233aab1a81702a972a999",
+      "equal": true
+    }
+  ],
+  "decoded_audio_checks": [
+    {
+      "id": "A",
+      "decoded_source_samples": 12925952,
+      "decoded_snr_db": 353.47518251896076,
+      "decoded_gain_db": 0.0,
+      "pcm_writer_lag_samples": 0,
+      "pcm_writer_lag_seconds": 0.0,
+      "source_padding_is_digital_silence": true
+    },
+    {
+      "id": "B1",
+      "decoded_source_samples": 8524800,
+      "decoded_snr_db": 56.03314052776038,
+      "decoded_gain_db": 3.4584402733121776e-07,
+      "pcm_writer_lag_samples": 352,
+      "pcm_writer_lag_seconds": 0.014666666666666666,
+      "source_padding_is_digital_silence": true
+    },
+    {
+      "id": "B2",
+      "decoded_source_samples": 8353792,
+      "decoded_snr_db": 47.3099870197952,
+      "decoded_gain_db": 8.351427606862043e-08,
+      "pcm_writer_lag_samples": 352,
+      "pcm_writer_lag_seconds": 0.014666666666666666,
+      "source_padding_is_digital_silence": true
+    }
+  ],
+  "decoded_audio_note": "多段独立AAC连接后，PNS解码器随机状态可有细微波形差异；有效编码载荷原样。PCM连续写出时A末尾352个数字静音padding使后续最大滞后14.67ms（小于半个30fps画面），末尾另192个数字静音padding；MP4按native帧边界的edit list呈现时长严格一致。没有AAC二次编码或内容/增益/采样率/声道改动。",
+  "no_video_render_or_audio_reencode": true
+}

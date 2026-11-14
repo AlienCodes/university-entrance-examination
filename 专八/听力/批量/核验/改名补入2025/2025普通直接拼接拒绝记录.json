@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "status": "REJECTED",
+  "checked_at_utc": "2026-11-14T05:22:56.286067+00:00",
+  "source": "/workspace/tem8-rename-2025/concat-native.ffconcat",
+  "candidate": "/workspace/tem8-rename-2025/text-2025-simple-copy.mp4",
+  "candidate_sha256": "3a0083e5c6a823d6f8a27c27232bb5d37563b69513df7f384ece1e323b3777ea",
+  "ffmpeg_stderr": "[aost#0:1/copy @ 0x55cfa92b2f80] Non-monotonic DTS; previous: 12925952, current: 12925600; changing to 12925953. This may result in incorrect timestamps in the output file.\n",
+  "reasons": [
+    "ffmpeg明确报告AAC Non-monotonic DTS，不能放行。",
+    "直接concat的输出视频起点0.042643秒，目标应从0开始。"
+  ],
+  "accepted": false,
+  "replacement_proof": "专八/听力/批量/核验/改名补入2025/2025原文合并核验.json"
+}
