@@ -1,0 +1,248 @@
+{
+  "status": "PASS",
+  "scope": "2024第二组真实生产HTML，实际DOM提取及门禁正反例；不是15年全部修复布局或成品审批。",
+  "approved_layout": "固定A/B上行、C/D下行的两栏；题间2px纯黑#000000分隔线。",
+  "browser": "/usr/bin/chromium",
+  "adapter_sha256": "41949dfa3810d5de453fab50c922ce10b4317658cb60a0b16610078a075da416",
+  "adapter_source_unchanged": true,
+  "cases": [
+    {
+      "name": "完整五题正例",
+      "expected_rejection": false,
+      "rejected": false,
+      "ok": true,
+      "error": null,
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "删去第五题",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM五题缺失、重复或换序",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "删去一个选项",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM必须含每题四个选项，顺序A至D",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "选项文字省略",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项文字遗漏、截断或改写",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "子文字display_none",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "子文字visibility_hidden",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "子文字opacity0",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "子文字transparent",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "子文字20px",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选择题组选项字号过小或被缩放",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "子文字scale_half",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选择题组选项字号过小或被缩放",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "完整选项改为未批准inline连排",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项须保留46px标签列、6px列距及可见标签正文间隙",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "文字overflow_hidden",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "文字overflow_clip",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "文字clip_path",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选项不可见或被裁切",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "DOM两页",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选择题组出现拆页标记",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "ASCII分页标题",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选择题组出现拆页标记",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    },
+    {
+      "name": "中文括号分页标题",
+      "expected_rejection": true,
+      "rejected": true,
+      "ok": true,
+      "error": "DOM选择题组出现拆页标记",
+      "fit": {
+        "mode": "interview-five-grid",
+        "font_size": 46,
+        "line_height": 51.52,
+        "columns": "AB/CD",
+        "question_count": 5
+      }
+    }
+  ]
+}

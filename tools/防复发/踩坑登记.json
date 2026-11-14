@@ -4631,6 +4631,44 @@
    ],
    "status": "自动拦截+有双向验证",
    "gap": ""
+  },
+  {
+   "id": "136",
+   "title": "听力采访题组五题拆成两屏破坏做题体验",
+   "stages": [
+    "布局预检",
+    "截图",
+    "编码前"
+   ],
+   "projects": [
+    "专八听力练习（本次2009—2024实际15年）"
+   ],
+   "guards": [
+    {
+     "where": "专八/听力/批量/tools/考试视频.py:validate_group_state、validate_group_states",
+     "runs": "源事件完整性、派生画面每个状态及倒计时tick；同一group必须完整五题",
+     "evidence": "原2+3预览切页与q单题模式作为负例，不允许自动通过或按年份豁免"
+    },
+    {
+     "where": "专八/听力/批量/tools/考试视频.py:validate_group_snapshot + GROUP_SCREEN_SNAPSHOT_JS",
+     "runs": "每种实际截图布局提取DOM并核源文、5题20选项、40px有效字号、可见完整、固定AB/CD双栏、2px纯黑分隔线及局部16px文字间距且无分页标记",
+     "evidence": "缺题/选项、改文/省略、隐藏/裁切、小字、inline错排、错误分隔线与分页等反例"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/采访五题同屏.py",
+     "needs": "none",
+     "expect": "exit 0"
+    },
+    {
+     "cmd": "python3 专八/听力/批量/核验/五题同屏修复/实际DOM错误注入.py",
+     "needs": "browser",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "纯状态/DOM快照双向验证不替代真实浏览器排版、PNG审阅和重做成品的全画面核验；本次15年修复视频完成状态见批次实际生产记录。 用户确认的生产外观为固定AB/CD双栏、2px纯黑分隔线及局部16px文字间距；旧inline候选即使机械测试PASS也不是版式批准，不能恢复到生产。"
   }
  ],
  "_复盘豁免": [

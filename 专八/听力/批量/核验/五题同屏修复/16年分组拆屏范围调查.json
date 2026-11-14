@@ -1,0 +1,1601 @@
+{
+  "schema": 1,
+  "status": "READ_ONLY_SCOPE_COMPLETE",
+  "checked_at_utc": "2026-11-14T09:11:53.683721+00:00",
+  "baseline_commit": "80711bbfaa82f13173d351f6b5db4324daaedbca",
+  "baseline_adapter_sha256": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
+  "scope": {
+    "years": [
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "cancelled_years": [
+      2020
+    ],
+    "annual_exam_videos": 16,
+    "interview_groups": 32,
+    "questions_per_group": 5,
+    "options_per_group": 20,
+    "historical_2009_2024_affected_groups": 30,
+    "historical_explicit_split_input_count": 0,
+    "historical_source_plist_events": 45,
+    "historical_source_q_events": 300
+  },
+  "user_screenshot_identified": {
+    "year": 2024,
+    "group": "part2",
+    "questions": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "evidence": [
+      "Q6 Three feet. / Eight inches. / Six inches. / Six feet.",
+      "Q7 Number of satellites. / Height of ice surface.",
+      "Q8 Changes in gravitational pull."
+    ],
+    "source": "专八/听力/批量/数据/2024/试卷.json"
+  },
+  "root_cause": "baseline adapter preview_pages(numbers) hard-codes every 5-question group into 2+3 pages; paginated_events rotates those pages every20s during interview and splits preview. Original input groups and timelines do not request this split. q page also displays one question instead of preserving full group.",
+  "hardest_sample_groups": [
+    {
+      "year": 2015,
+      "group": "interview1",
+      "total_characters": 1052,
+      "max_option_characters": 67
+    },
+    {
+      "year": 2009,
+      "group": "interview1",
+      "total_characters": 989,
+      "max_option_characters": 57
+    },
+    {
+      "year": 2011,
+      "group": "interview2",
+      "total_characters": 860,
+      "max_option_characters": 58
+    },
+    {
+      "year": 2011,
+      "group": "interview1",
+      "total_characters": 856,
+      "max_option_characters": 66
+    },
+    {
+      "year": 2015,
+      "group": "interview2",
+      "total_characters": 844,
+      "max_option_characters": 60
+    }
+  ],
+  "recommended_visual_samples": [
+    {
+      "year": 2015,
+      "group": "interview1",
+      "reason": "longest complete20options,1052characters"
+    },
+    {
+      "year": 2009,
+      "group": "interview1",
+      "reason": "second-longest,150words"
+    },
+    {
+      "year": 2024,
+      "group": "part2",
+      "reason": "exact user-reported screenshot"
+    },
+    {
+      "year": 2025,
+      "group": "part2",
+      "reason": "new uniform adapter conversion and answering phase"
+    }
+  ],
+  "2025_integration": {
+    "conversion_entry": "考试视频.py --convert-2025 TARGET_DIR",
+    "conversion_source": "existing approved questions and timeline; no new ASR/answer derivation",
+    "baseline_plist_already_five_same_screen": true,
+    "baseline_question_state_single_question": true,
+    "old_raw_audio_release": "8-listening-test",
+    "old_raw_audio_release_current_http": 404,
+    "known_raw_wav_sha256": "e7973102a3bba6358bc97e4a32af7efb20e1a871cbc8921fb8b325444bb7e1c7",
+    "raw_wav_found_local": false,
+    "existing_exam_mp4": "/workspace/tem8-rename-2025/exam-2025.mp4",
+    "existing_exam_mp4_sha256": "df6e5f3a8995f8e416db36cae8316d8bc232ee64ecfbe9ba7f28359c1ea58ba4",
+    "existing_exam_audio": {
+      "codec": "aac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "start_time": 0,
+      "duration": 1616.966
+    },
+    "existing_exam_video_duration": 1616.966667,
+    "approved_timeline_audio_end": 1550.46025,
+    "source_audio_preservation_recommendation": "encode new visual track only and stream-copy the existing full exam AAC track with packet payload/PTS/DTS hashes; do not substitute the original-text videos24kmono audio. Same method may preserve audio across all16years because layout fix does not change original timing."
+  },
+  "groups": [
+    {
+      "year": 2009,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 989,
+      "options_total_words": 150,
+      "max_option_characters": 57,
+      "longest_option": "It helps people improve their ability to do presentation.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 816.28,
+          "end": 846.64,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 846.64,
+          "end": 1011.92,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2009/试卷.json",
+      "paper_sha256": "c3bfa9c6eca8acf33f2bd54bfe805ded43ca899fd823ada1105bf3ec0c1d142c",
+      "timeline": "专八/听力/批量/数据/2009/时间轴.json",
+      "timeline_sha256": "fb30bbb7b8f817c7ded1e74d37354ae864e777c7e0d9b81d6c336f1851e33c65",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2009,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 726,
+      "options_total_words": 103,
+      "max_option_characters": 64,
+      "longest_option": "Because the menu contains an objective to develop vocal variety.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1090.06,
+          "end": 1260.72,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2009/试卷.json",
+      "paper_sha256": "c3bfa9c6eca8acf33f2bd54bfe805ded43ca899fd823ada1105bf3ec0c1d142c",
+      "timeline": "专八/听力/批量/数据/2009/时间轴.json",
+      "timeline_sha256": "fb30bbb7b8f817c7ded1e74d37354ae864e777c7e0d9b81d6c336f1851e33c65",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2010,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 750,
+      "options_total_words": 115,
+      "max_option_characters": 53,
+      "longest_option": "Because the idea of being different no longer exists.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 823.02,
+          "end": 853.1,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 853.1,
+          "end": 1136.06,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2010/试卷.json",
+      "paper_sha256": "aaa6733939e5dc6a7ff3986430e225c3749cffa7aaa20f55f3139626d5da71f0",
+      "timeline": "专八/听力/批量/数据/2010/时间轴.json",
+      "timeline_sha256": "c5593261e3bd9c898796c62ee886a257d983969815bddc7dbb53a86f9c7de2ae",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2010,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 657,
+      "options_total_words": 107,
+      "max_option_characters": 61,
+      "longest_option": "Caucasians will get higher pensions than other ethnic groups.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1219.91,
+          "end": 1392.94,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2010/试卷.json",
+      "paper_sha256": "aaa6733939e5dc6a7ff3986430e225c3749cffa7aaa20f55f3139626d5da71f0",
+      "timeline": "专八/听力/批量/数据/2010/时间轴.json",
+      "timeline_sha256": "c5593261e3bd9c898796c62ee886a257d983969815bddc7dbb53a86f9c7de2ae",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2011,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 856,
+      "options_total_words": 129,
+      "max_option_characters": 66,
+      "longest_option": "Learning a new language after the output of one's native language.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 772.62,
+          "end": 802.7,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 802.7,
+          "end": 1056.42,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2011/试卷.json",
+      "paper_sha256": "67f0374111fd8a0a826515d8bf51919a757c71b8d2ce075024fc4ebed9c71983",
+      "timeline": "专八/听力/批量/数据/2011/时间轴.json",
+      "timeline_sha256": "4492b1a9b7e22d2157fc72f4709942c5f071e0b32bea4c745965289bae983370",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2011,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 860,
+      "options_total_words": 113,
+      "max_option_characters": 58,
+      "longest_option": "Theoretical conceptualization of second language learning.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1133.45,
+          "end": 1322.13,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2011/试卷.json",
+      "paper_sha256": "67f0374111fd8a0a826515d8bf51919a757c71b8d2ce075024fc4ebed9c71983",
+      "timeline": "专八/听力/批量/数据/2011/时间轴.json",
+      "timeline_sha256": "4492b1a9b7e22d2157fc72f4709942c5f071e0b32bea4c745965289bae983370",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2012,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 782,
+      "options_total_words": 126,
+      "max_option_characters": 65,
+      "longest_option": "Creative people focus on novel thinking rather than on solutions.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 783.5,
+          "end": 813.86,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 813.86,
+          "end": 1080.74,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2012/试卷.json",
+      "paper_sha256": "cba74e493d42b486c2a6d21493e8cbf70c385c67aeb25104a2e37c8a12d900c5",
+      "timeline": "专八/听力/批量/数据/2012/时间轴.json",
+      "timeline_sha256": "e9fdc20e74c6b2c37bfd39bf77661383c99605991239115dcb6ad3c27f636b0d",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2012,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 454,
+      "options_total_words": 67,
+      "max_option_characters": 55,
+      "longest_option": "The environment is significant in the creative process.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1163.42,
+          "end": 1322.88,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2012/试卷.json",
+      "paper_sha256": "cba74e493d42b486c2a6d21493e8cbf70c385c67aeb25104a2e37c8a12d900c5",
+      "timeline": "专八/听力/批量/数据/2012/时间轴.json",
+      "timeline_sha256": "e9fdc20e74c6b2c37bfd39bf77661383c99605991239115dcb6ad3c27f636b0d",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2013,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 669,
+      "options_total_words": 109,
+      "max_option_characters": 65,
+      "longest_option": "Chances for advancement might have been favoured by young people.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 731.3,
+          "end": 761.39,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 761.39,
+          "end": 995.21,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2013/试卷.json",
+      "paper_sha256": "f1439c8acd4681a12803d68e12ac499fc7fb26b6305f8fb53eea28f788e7025c",
+      "timeline": "专八/听力/批量/数据/2013/时间轴.json",
+      "timeline_sha256": "51ade9d45719fc619fd0d73776a9a35e43388765503c7480623fa03c2a046695",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2013,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 477,
+      "options_total_words": 80,
+      "max_option_characters": 62,
+      "longest_option": "Workers are always willing and ready to learn more new skills.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1081.45,
+          "end": 1286.41,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2013/试卷.json",
+      "paper_sha256": "f1439c8acd4681a12803d68e12ac499fc7fb26b6305f8fb53eea28f788e7025c",
+      "timeline": "专八/听力/批量/数据/2013/时间轴.json",
+      "timeline_sha256": "51ade9d45719fc619fd0d73776a9a35e43388765503c7480623fa03c2a046695",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2014,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 814,
+      "options_total_words": 146,
+      "max_option_characters": 62,
+      "longest_option": "Relief supplies cannot reach refugees due to Syria's blockage.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 754.08,
+          "end": 784.48,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 784.48,
+          "end": 960.76,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2014/试卷.json",
+      "paper_sha256": "e3372c3d252750a21bb657b3588f2f6527d8bb616026dba6672dd8b2966d672b",
+      "timeline": "专八/听力/批量/数据/2014/时间轴.json",
+      "timeline_sha256": "1020c3e1f393f62bc01c56104bcbe5f0a71414e08939c3bf6646ed8fb75bb054",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2014,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 776,
+      "options_total_words": 123,
+      "max_option_characters": 59,
+      "longest_option": "Because she could help others know where the problems were.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1036.8,
+          "end": 1270.81,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2014/试卷.json",
+      "paper_sha256": "e3372c3d252750a21bb657b3588f2f6527d8bb616026dba6672dd8b2966d672b",
+      "timeline": "专八/听力/批量/数据/2014/时间轴.json",
+      "timeline_sha256": "1020c3e1f393f62bc01c56104bcbe5f0a71414e08939c3bf6646ed8fb75bb054",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2015,
+      "group": "interview1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 1052,
+      "options_total_words": 150,
+      "max_option_characters": 67,
+      "longest_option": "State school pupils' expectations of going to leading universities.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 728.4,
+          "end": 758.8,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 758.8,
+          "end": 955.12,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2015/试卷.json",
+      "paper_sha256": "87c0ba8b2ee2cea409fa237d377993bfc9e0430a8a1561c15f33d5d55ee1539e",
+      "timeline": "专八/听力/批量/数据/2015/时间轴.json",
+      "timeline_sha256": "65165a19320e5a3b43cb62f5cece66bbbc50862e0bfd32cfbe6980dab029c789",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2015,
+      "group": "interview2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 844,
+      "options_total_words": 131,
+      "max_option_characters": 60,
+      "longest_option": "It means getting all the money and deciding how to spend it.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1034.42,
+          "end": 1284.11,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2015/试卷.json",
+      "paper_sha256": "87c0ba8b2ee2cea409fa237d377993bfc9e0430a8a1561c15f33d5d55ee1539e",
+      "timeline": "专八/听力/批量/数据/2015/时间轴.json",
+      "timeline_sha256": "65165a19320e5a3b43cb62f5cece66bbbc50862e0bfd32cfbe6980dab029c789",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2016,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 513,
+      "options_total_words": 79,
+      "max_option_characters": 36,
+      "longest_option": "Maggie’s opinion on her Mom’s major.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 752.74,
+          "end": 782.76,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 782.76,
+          "end": 1024.66,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2016/试卷.json",
+      "paper_sha256": "27a5ab3c68cd9cf9aa44fc1976b1b209ef5590cfb782127ea3ca76375ac6d684",
+      "timeline": "专八/听力/批量/数据/2016/时间轴.json",
+      "timeline_sha256": "0ddcca523e82b8321ba68d967491d574c43c6aa211bde8c4df12a3563552ea97",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2016,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 393,
+      "options_total_words": 67,
+      "max_option_characters": 51,
+      "longest_option": "Because kids find it hard to adapt to college life.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1111.54,
+          "end": 1355.44,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2016/试卷.json",
+      "paper_sha256": "27a5ab3c68cd9cf9aa44fc1976b1b209ef5590cfb782127ea3ca76375ac6d684",
+      "timeline": "专八/听力/批量/数据/2016/时间轴.json",
+      "timeline_sha256": "0ddcca523e82b8321ba68d967491d574c43c6aa211bde8c4df12a3563552ea97",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2017,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: INTERVIEW ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 523,
+      "options_total_words": 70,
+      "max_option_characters": 51,
+      "longest_option": "They can start educating programs for local people.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 752.14,
+          "end": 782.2,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 782.2,
+          "end": 1022.67,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2017/试卷.json",
+      "paper_sha256": "f4edfaf0049b353a021d619ac5ad69b91e7e39604d8e60712d2214a990876b43",
+      "timeline": "专八/听力/批量/数据/2017/时间轴.json",
+      "timeline_sha256": "91ddad7058ce921ccef97fa31436ace713d1d398764a9874fd14573c38adfcaa",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2017,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: INTERVIEW TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 641,
+      "options_total_words": 98,
+      "max_option_characters": 53,
+      "longest_option": "Creating things from changes in behavior, media, etc.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1112.6,
+          "end": 1356.78,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2017/试卷.json",
+      "paper_sha256": "f4edfaf0049b353a021d619ac5ad69b91e7e39604d8e60712d2214a990876b43",
+      "timeline": "专八/听力/批量/数据/2017/时间轴.json",
+      "timeline_sha256": "91ddad7058ce921ccef97fa31436ace713d1d398764a9874fd14573c38adfcaa",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2018,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 446,
+      "options_total_words": 72,
+      "max_option_characters": 42,
+      "longest_option": "Other voices within Afghanistan wanted so.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 767.22,
+          "end": 798.12,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 798.12,
+          "end": 994.02,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2018/试卷.json",
+      "paper_sha256": "b724f87697d4a47eda309f16350c2d2f5dc26e288a17377a69d6222d52168226",
+      "timeline": "专八/听力/批量/数据/2018/时间轴.json",
+      "timeline_sha256": "fd9663cbe8c191d586e6d1c9096a96b3f74f335549f3e19f2576d5288e93fd1a",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2018,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 461,
+      "options_total_words": 70,
+      "max_option_characters": 43,
+      "longest_option": "Ensure the government includes all parties.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1079.2,
+          "end": 1303.35,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2018/试卷.json",
+      "paper_sha256": "b724f87697d4a47eda309f16350c2d2f5dc26e288a17377a69d6222d52168226",
+      "timeline": "专八/听力/批量/数据/2018/时间轴.json",
+      "timeline_sha256": "fd9663cbe8c191d586e6d1c9096a96b3f74f335549f3e19f2576d5288e93fd1a",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2019,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: INTERVIEW ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 528,
+      "options_total_words": 78,
+      "max_option_characters": 46,
+      "longest_option": "The woman’s indifferent attitude to the earth.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 804.42,
+          "end": 834.34,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 834.34,
+          "end": 1056.39,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2019/试卷.json",
+      "paper_sha256": "78aa6dffd46002f4c03b479cee85a37f3b19e65e546be39ede91c41a4f76c321",
+      "timeline": "专八/听力/批量/数据/2019/时间轴.json",
+      "timeline_sha256": "5f151c12681e6de705a57f76283b98fc171db091f04a8962dd81ec7d9f09bc19",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2019,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: INTERVIEW TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 763,
+      "options_total_words": 102,
+      "max_option_characters": 63,
+      "longest_option": "Teaching disciplinary discourse practices by literacy teachers.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1131.59,
+          "end": 1447.44,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2019/试卷.json",
+      "paper_sha256": "78aa6dffd46002f4c03b479cee85a37f3b19e65e546be39ede91c41a4f76c321",
+      "timeline": "专八/听力/批量/数据/2019/时间轴.json",
+      "timeline_sha256": "5f151c12681e6de705a57f76283b98fc171db091f04a8962dd81ec7d9f09bc19",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2021,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 424,
+      "options_total_words": 61,
+      "max_option_characters": 45,
+      "longest_option": "To facilitate the process of composing poems.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 848.38,
+          "end": 878.38,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 878.38,
+          "end": 1128.93,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2021/试卷.json",
+      "paper_sha256": "6d2d771172aef802a8ef970c16f69c7a74a4bf0cfb6a210a0170ba7c906b5ddb",
+      "timeline": "专八/听力/批量/数据/2021/时间轴.json",
+      "timeline_sha256": "34f05d93f4dbf9e2ddad67d852768d88c0fd3f3ff1262a718dbdf1aa5c7d54f9",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2021,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 669,
+      "options_total_words": 108,
+      "max_option_characters": 54,
+      "longest_option": "Continuity between writing and social life was a gift.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1206.48,
+          "end": 1414.78,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2021/试卷.json",
+      "paper_sha256": "6d2d771172aef802a8ef970c16f69c7a74a4bf0cfb6a210a0170ba7c906b5ddb",
+      "timeline": "专八/听力/批量/数据/2021/时间轴.json",
+      "timeline_sha256": "34f05d93f4dbf9e2ddad67d852768d88c0fd3f3ff1262a718dbdf1aa5c7d54f9",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2022,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: INTERVIEW ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 659,
+      "options_total_words": 97,
+      "max_option_characters": 57,
+      "longest_option": "To offer more programs for social and emotional learning.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 804.25,
+          "end": 834.29,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 834.29,
+          "end": 1116.25,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2022/试卷.json",
+      "paper_sha256": "66ecf8a42454590bc82cb91033eea8824ac379e92b90408365c9f076f5bb0516",
+      "timeline": "专八/听力/批量/数据/2022/时间轴.json",
+      "timeline_sha256": "05096bacf7cde7c1fb1bbb042e00defdd51a15f9529d11a26d79413e40c4d1d3",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2022,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: INTERVIEW TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 674,
+      "options_total_words": 115,
+      "max_option_characters": 46,
+      "longest_option": "Crime is unlikely to happen in less-lit areas.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1198.86,
+          "end": 1457.83,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2022/试卷.json",
+      "paper_sha256": "66ecf8a42454590bc82cb91033eea8824ac379e92b90408365c9f076f5bb0516",
+      "timeline": "专八/听力/批量/数据/2022/时间轴.json",
+      "timeline_sha256": "05096bacf7cde7c1fb1bbb042e00defdd51a15f9529d11a26d79413e40c4d1d3",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2023,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 760,
+      "options_total_words": 111,
+      "max_option_characters": 46,
+      "longest_option": "Listening to friends with gap year experience.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 856.52,
+          "end": 886.22,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 886.22,
+          "end": 1133.97,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2023/试卷.json",
+      "paper_sha256": "54fa3218fe1b87214cee429f727ff99ebd49ed58f892b69fb34e1997b1c22144",
+      "timeline": "专八/听力/批量/数据/2023/时间轴.json",
+      "timeline_sha256": "13eea06e87a587589d65d856f0b1c3b7273fda1008820e17fedd6f6b287c93f5",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2023,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 668,
+      "options_total_words": 103,
+      "max_option_characters": 49,
+      "longest_option": "It helps one to get acquainted with local people.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1217.42,
+          "end": 1471.41,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2023/试卷.json",
+      "paper_sha256": "54fa3218fe1b87214cee429f727ff99ebd49ed58f892b69fb34e1997b1c22144",
+      "timeline": "专八/听力/批量/数据/2023/时间轴.json",
+      "timeline_sha256": "13eea06e87a587589d65d856f0b1c3b7273fda1008820e17fedd6f6b287c93f5",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2024,
+      "group": "part1",
+      "title": "SECTION B　INTERVIEW: INTERVIEW ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 464,
+      "options_total_words": 78,
+      "max_option_characters": 40,
+      "longest_option": "People will go on buying literary books.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 735.68,
+          "end": 766.51,
+          "status": "预览采访选项",
+          "has_countdown": true,
+          "numbers_explicit": null
+        },
+        {
+          "start": 766.51,
+          "end": 1063.43,
+          "status": "采访播放中，结束后作答第1—5题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2024/试卷.json",
+      "paper_sha256": "08d76fd0044745492bcc3749065751a320adff4a48d83cd70b47ff198d07787a",
+      "timeline": "专八/听力/批量/数据/2024/时间轴.json",
+      "timeline_sha256": "8651b88341ff598a01f8a798fa2ae6ea583ac0ab2a295bee31cea28ce3c72878",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2024,
+      "group": "part2",
+      "title": "SECTION B　INTERVIEW: INTERVIEW TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 508,
+      "options_total_words": 74,
+      "max_option_characters": 43,
+      "longest_option": "Effects of climate change on coastal areas.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events": [
+        {
+          "start": 1142.62,
+          "end": 1410.04,
+          "status": "采访播放中，结束后作答第6—10题",
+          "has_countdown": false,
+          "numbers_explicit": null
+        }
+      ],
+      "source_q_events": 10,
+      "paper": "专八/听力/批量/数据/2024/试卷.json",
+      "paper_sha256": "08d76fd0044745492bcc3749065751a320adff4a48d83cd70b47ff198d07787a",
+      "timeline": "专八/听力/批量/数据/2024/时间轴.json",
+      "timeline_sha256": "8651b88341ff598a01f8a798fa2ae6ea583ac0ab2a295bee31cea28ce3c72878",
+      "source_explicit_split": false
+    },
+    {
+      "year": 2025,
+      "group": "part1",
+      "title": "SECTION B INTERVIEW: PART ONE",
+      "question_numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "option_count": 20,
+      "options_total_characters": 521,
+      "options_total_words": 86,
+      "max_option_characters": 42,
+      "longest_option": "They should be used as little as possible.",
+      "baseline_preview_pages": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      ],
+      "source_plist_events_count": 5,
+      "source_q_events": 10,
+      "paper": "专八/听力/2025/题目.json",
+      "paper_sha256": "834b847cc6565fdac00a9232fc0bcb938a1ea563844b4539fae888def7b460a7",
+      "timeline": "专八/听力/2025/时间轴.json",
+      "timeline_sha256": "939bb0233f4a283e08046526475d01283f7526a46aa03aa03dc42d1e6da0de80",
+      "source_explicit_split": false,
+      "note": "旧base plist已5题同屏，但q状态仍单题；新要求覆盖作答阶段则需重做。"
+    },
+    {
+      "year": 2025,
+      "group": "part2",
+      "title": "SECTION B INTERVIEW: PART TWO",
+      "question_numbers": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "option_count": 20,
+      "options_total_characters": 497,
+      "options_total_words": 66,
+      "max_option_characters": 43,
+      "longest_option": "Inspiration comes before you start working.",
+      "baseline_preview_pages": [
+        [
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      ],
+      "source_plist_events_count": 3,
+      "source_q_events": 10,
+      "paper": "专八/听力/2025/题目.json",
+      "paper_sha256": "834b847cc6565fdac00a9232fc0bcb938a1ea563844b4539fae888def7b460a7",
+      "timeline": "专八/听力/2025/时间轴.json",
+      "timeline_sha256": "939bb0233f4a283e08046526475d01283f7526a46aa03aa03dc42d1e6da0de80",
+      "source_explicit_split": false,
+      "note": "旧base plist已5题同屏，但q状态仍单题；新要求覆盖作答阶段则需重做。"
+    }
+  ],
+  "not_done": [
+    "No rendering, approval changes, media encoding, transcript or answer review.",
+    "Layout font estimates are not browser approval or finished video PASS."
+  ]
+}

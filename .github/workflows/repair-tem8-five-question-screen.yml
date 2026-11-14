@@ -1,0 +1,162 @@
+# token预算：约0万；仅15年练习视频重做画面，2025原样直通，全部既有AAC音轨复制。
+name: 专八练习五题完整同屏修复与发布
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-five-question-screen.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: tem8-five-question-screen-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  list:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+      publish: ${{ steps.list.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/2025
+            专八/真题/2025年 英语专业八级真题.pdf
+            四级/tools
+            tools
+            !/tools/tts/models/
+      - name: 只允许15年修复；2025禁止进入重做矩阵
+        id: list
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 - <<'PY'
+          import importlib.util,json,os
+          from pathlib import Path
+          p=Path('专八/听力/批量/tools/五题同屏修复.py')
+          s=importlib.util.spec_from_file_location('five_publish',p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+          c,years=m.control()
+          out=__import__('subprocess').check_output(['python3',str(p),'matrix'],text=True)
+          rows=json.loads(out)
+          assert all(x['year'] in m.REPAIR_YEARS and x['year']!=2025 and x['stage']==c['stage'] for x in rows)
+          assert len(rows)==len({x['year'] for x in rows})<=15
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('matrix='+json.dumps(rows)+'\n')
+              f.write('publish='+str(c.get('publish',False)).lower()+'\n')
+          print('实际待执行',len(rows),'项，阶段',c['stage'],'；2025永不重做。')
+          PY
+  repair:
+    needs: list
+    if: needs.list.outputs.matrix != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        item: ${{ fromJson(needs.list.outputs.matrix) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TEM8_BROWSER: /opt/pw-browsers/chromium
+      TEM8_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/2025
+            专八/真题/2025年 英语专业八级真题.pdf
+            四级/tools
+            tools
+            !/tools/tts/models/
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 使用原卷字体与固定浏览器
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 取回同一年已核考试原片，逐字节核来源
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python 专八/听力/批量/tools/五题同屏修复.py fetch '${{ matrix.item.year }}' --out source.mp4
+      - name: review仅产完整截图；render须已审PNG才编码画面并复制原AAC
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python 专八/听力/批量/tools/五题同屏修复.py '${{ matrix.item.stage }}' '${{ matrix.item.year }}' --source source.mp4 --work work
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: tem8-five-${{ matrix.item.stage }}-${{ matrix.item.year }}-audit
+          path: |
+            work/**/*.json
+            work/*.json
+            work/shots/*.bad.png
+          if-no-files-found: ignore
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        continue-on-error: true
+        with:
+          name: tem8-five-${{ matrix.item.year }}-recoverable-work
+          path: |
+            work/*听力真题.mp4
+            work/**/*.json
+            work/*.json
+            work/shots/*.png
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 30
+  publish:
+    needs: [list, repair]
+    if: always() && needs.list.result == 'success' && needs.list.outputs.publish == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env: {GH_TOKEN: '${{ github.token }}'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量
+            专八/听力/tools
+            专八/听力/2025
+            专八/听力/最终视频
+            专八/真题/2025年 英语专业八级真题.pdf
+            四级/tools
+            tools
+            !/tools/tts/models/
+      - uses: ./.github/actions/cet6-chalk-env
+        with: {asr: 'false', browser: '153'}
+      - name: 相同字体与依赖，逐项重验缓存原始证据
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2
+          /opt/ttsenv/bin/python 专八/听力/tools/取字体.py
+      - name: 收齐15个新成品及2025原片后发布16年中文ZIP，再真实下载核验
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          /opt/ttsenv/bin/python 专八/听力/批量/tools/五题同屏修复.py publish --out final
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: tem8-five-final-publication-evidence
+          path: |
+            final/TEM8-manifest.json
+            final/TEM8-download-verification.json
+            final/SHA256SUMS
+          if-no-files-found: ignore
+          retention-days: 30

@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "pipeline_sha256": "b837ed392cc7ca456cf102f6b0c5deb3eb840421f2e5ceaba07e7ee28b5e656c",
+  "checks": [
+    {
+      "name": "16来源与15修复/2025原片范围",
+      "status": "PASS"
+    },
+    {
+      "name": "2020停考不可混入",
+      "status": "PASS",
+      "expected_rejection": "只接受实际16个考试年份，无2020"
+    },
+    {
+      "name": "2025不得进入新审批/编码",
+      "status": "PASS",
+      "expected_rejection": "2025已由用户排除修复，只允许原MP4字节直通"
+    },
+    {
+      "name": "完整实际证据契约可通过",
+      "status": "PASS"
+    },
+    {
+      "name": "错误年份",
+      "status": "PASS",
+      "expected_rejection": "核验报告与媒体、源、帧表或生产来源不一致"
+    },
+    {
+      "name": "不同媒体SHA",
+      "status": "PASS",
+      "expected_rejection": "核验报告与媒体、源、帧表或生产来源不一致"
+    },
+    {
+      "name": "不同源SHA",
+      "status": "PASS",
+      "expected_rejection": "核验报告与媒体、源、帧表或生产来源不一致"
+    },
+    {
+      "name": "错误帧数",
+      "status": "PASS",
+      "expected_rejection": "核验报告与媒体、源、帧表或生产来源不一致"
+    },
+    {
+      "name": "音频未通过",
+      "status": "PASS",
+      "expected_rejection": "缓存缺少逐项生产通过证据"
+    },
+    {
+      "name": "生产run不符",
+      "status": "PASS",
+      "expected_rejection": "核验报告与媒体、源、帧表或生产来源不一致"
+    },
+    {
+      "name": "4K单项失败不能靠全局PASS绕过",
+      "status": "PASS",
+      "expected_rejection": "缓存4K实际画面核验缺状态或含失败项"
+    },
+    {
+      "name": "音频时间基不等必须拒绝",
+      "status": "PASS",
+      "expected_rejection": "缓存AAC原包、时间基或配置证据不全"
+    },
+    {
+      "name": "PNG证据缺失必须拒绝",
+      "status": "PASS",
+      "expected_rejection": "核验报告未覆盖全部实际批准PNG"
+    },
+    {
+      "name": "完整时钟探针不可改号",
+      "status": "PASS",
+      "expected_rejection": "缓存完整换屏时钟核验不符"
+    },
+    {
+      "name": "workflow YAML可解析",
+      "status": "PASS"
+    },
+    {
+      "name": "workflow所有Bash与嵌入Python静态语法",
+      "status": "PASS"
+    }
+  ],
+  "media_encoding_performed": false
+}

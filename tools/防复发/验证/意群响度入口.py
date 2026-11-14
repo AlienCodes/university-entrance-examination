@@ -56,6 +56,11 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
     },
 }
 PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '专八/听力/批量/tools/五题同屏修复.py': {
+        'sha256': 'b837ed392cc7ca456cf102f6b0c5deb3eb840421f2e5ceaba07e7ee28b5e656c',
+        'audio': False, 'video': True,
+        'reason': '用户要求修复2009—2024实际15年考试画面，2025原MP4逐字节直通。仅将已审全组PNG编码为无音轨画面，再以copy复制SHA锁定既有考试MP4完整AAC；不合成TTS、不解码处理或重编码音频。原AAC每包载荷、PTS/DTS、时长、flags及side data完全相同，时间基、codec配置和呈现时长也核同；真实2009/2015/2024复制封装预检已通过。独立审批绑定源文/程序/全部PNG，完整五题DOM、精确图片时钟及4K成品逐状态核验通过后才持久上传，正式16年包再回下载核CRC/UTF8/成员SHA。精确路径和字节SHA之外不豁免任何未知入口、音频或TTS，不能用本登记代替实际审图与成品核验。',
+    },
     '专八/听力/批量/核验/改名补入2025/2025原文无重编码合并.py': {
         'sha256': '50d50c2c048c0f7686cc0fcd811ede56484cd5df41890ce746bf77a6ce1fb078',
         'audio': False, 'video': True,

@@ -41,6 +41,8 @@ SOURCE_DIR = None
 BASE_CSS = B.CSS
 SHEET_PAGES = []
 PREVIEW_PAGES = {}
+GROUP_QUESTION_COUNT = 5
+GROUP_MIN_FONT_SIZE = 40
 
 
 def require(ok, message):
@@ -63,6 +65,96 @@ def sha(path):
         for chunk in iter(lambda: f.read(1 << 20), b''):
             h.update(chunk)
     return h.hexdigest()
+
+
+def group_for_state(paper, state):
+    """采访是考试交互的最小单位；题号状态不能另取一个不完整子页。"""
+    require(state.get('kind') in ('plist', 'q'), '并非选择题组状态')
+    if state['kind'] == 'plist':
+        found = [g for g in paper['groups'] if g['id'] == state.get('group')]
+    else:
+        found = [g for g in paper['groups'] if state.get('n') in g['questions']]
+    require(len(found) == 1, '每个选择题画面须唯一对应一个完整采访题组')
+    group = found[0]
+    require(not state.get('group') or state['group'] == group['id'], '选择题状态漂移到其他采访题组')
+    return group
+
+
+def validate_group_state(paper, state, require_explicit=True):
+    if state.get('kind') not in ('plist', 'q'):
+        return True
+    group = group_for_state(paper, state)
+    numbers = list(group['questions'])
+    require(len(numbers) == GROUP_QUESTION_COUNT and len(set(numbers)) == GROUP_QUESTION_COUNT,
+            '每段采访必须有完整五道选择题，不允许拆成子页')
+    if require_explicit:
+        require(state.get('group') == group['id'] and state.get('numbers') == numbers,
+                '选择题画面必须显式保留整组五题，禁止2+3或逐题换屏')
+    elif 'numbers' in state:
+        require(state['numbers'] == numbers, '原时间轴含选择题组分片，禁止分页')
+    require(state.get('display_pages', 1) == 1 and state.get('display_page', 1) == 1,
+            '选择题组禁止任何多页标记')
+    require('page' not in state and 'pages' not in state, '选择题组禁止页面编号')
+    qs = {q['n']: q for q in paper['questions']}
+    for n in numbers:
+        require(n in qs and len(qs[n].get('options', [])) == 4 and
+                all(isinstance(v, str) and v.strip() for v in qs[n]['options']),
+                '整组五题必须保留二十个完整选项')
+    return True
+
+
+def validate_group_states(paper, items):
+    for item in items:
+        state = item[1] if isinstance(item, (list, tuple)) else item
+        validate_group_state(paper, state)
+    return True
+
+
+def validate_group_snapshot(paper, state, snapshot):
+    """真实DOM截图前的强门禁；CI可对同一生产断言注入拆页/缺字等错误。"""
+    validate_group_state(paper, state, require_explicit=False)
+    group = group_for_state(paper, state); numbers = list(group['questions'])
+    require(snapshot.get('group') == group['id'] and snapshot.get('numbers') == numbers,
+            'DOM采访题组/题号与整组五题不符')
+    require(snapshot.get('page_count') == 1 and not snapshot.get('page_label'), 'DOM选择题组出现拆页标记')
+    rows = snapshot.get('questions', [])
+    require([q.get('n') for q in rows] == numbers, 'DOM五题缺失、重复或换序')
+    source = {q['n']: q for q in paper['questions']}
+    norm = lambda x: re.sub(r'\s+', ' ', x).strip()
+    for index, row in enumerate(rows):
+        options = row.get('options', [])
+        require([o.get('label') for o in options] == list('ABCD'), 'DOM必须含每题四个选项，顺序A至D')
+        for actual, original in zip(options, source[row['n']]['options']):
+            require(norm(actual.get('text', '')) == norm(original), 'DOM选项文字遗漏、截断或改写')
+            require(actual.get('visible') is True and actual.get('clipped') is False,
+                    'DOM选项不可见或被裁切')
+            require(actual.get('font_size', 0) >= GROUP_MIN_FONT_SIZE and
+                    abs(actual.get('scale', 1) - 1) < 1e-6, 'DOM选择题组选项字号过小或被缩放')
+        for actual in options:
+            label, text, grid = actual.get('label_rect', {}), actual.get('text_rect', {}), actual.get('grid', {})
+            require(grid.get('label_column') == 46 and grid.get('column_gap') == 6 and
+                    isinstance(text.get('left'), (int, float)) and isinstance(label.get('right'), (int, float)) and
+                    text['left']-label['right'] >= 6,
+                    'DOM选项须保留46px标签列、6px列距及可见标签正文间隙')
+        boxes = [o.get('rect', {}) for o in options]
+        require(all(all(isinstance(b.get(k), (int, float)) and math.isfinite(b[k]) for k in ('left','top','right','bottom')) for b in boxes),
+                'DOM选项缺少真实网格几何')
+        a,b,c,d = boxes
+        require(abs(a['top']-b['top']) <= .5 and abs(c['top']-d['top']) <= .5 and
+                abs(a['left']-c['left']) <= .5 and abs(b['left']-d['left']) <= .5 and
+                b['left'] >= max(a['right'], c['right'])+20 and
+                c['top'] >= max(a['bottom'], b['bottom'])-.5,
+                'DOM选项必须固定A/B上行、C/D下行且独立对齐，禁止串排')
+        separator = row.get('separator', {})
+        if index < len(rows)-1:
+            require(separator.get('width') == 2 and separator.get('style') == 'solid' and
+                    separator.get('color') in ('rgb(0, 0, 0)', '#000000') and
+                    isinstance(separator.get('gap'), (int, float)) and separator['gap'] >= 16,
+                    'DOM题间须保留2px纯黑实线及至少16px文字间距')
+        else:
+            require(separator.get('width') == 0 and separator.get('style') == 'none' and separator.get('gap') is None,
+                    'DOM末题不应添加额外题间线')
+    return True
 
 
 def validate(p, t, allow_draft=False):
@@ -89,6 +181,7 @@ def validate(p, t, allow_draft=False):
         require(g.get('title') and g.get('questions'), 'group缺标题或题号')
         require(set(g['questions']) <= set(qs), 'group题号不存在')
         require(len(g['questions']) == len(set(g['questions'])), 'group题号重复')
+        require(len(g['questions']) == GROUP_QUESTION_COUNT, '每段采访的五题必须完整同屏，不得改成分片题组')
     grouped = [n for g in groups.values() for n in g['questions']]
     require(sorted(grouped) == sorted(qs), '每道选择题须且仅须属于一个group')
     answers = p.get('gap_answers', [])
@@ -130,10 +223,10 @@ def validate(p, t, allow_draft=False):
             require(0 <= e.get('page', 0) < len(pages), '答题卡页不存在')
         elif e['kind'] == 'plist':
             require(e.get('group') in groups, '选项一览group不存在')
-            nums = e.get('numbers', groups[e['group']]['questions'])
-            require(0 < len(nums) <= 5 and len(nums) == len(set(nums)) and set(nums) <= set(groups[e['group']]['questions']), '选项一览每屏1—5题；长group用numbers分页')
+            validate_group_state(p, e, require_explicit=False)
         elif e['kind'] == 'q':
             require(e.get('n') in qs, '单题题号不存在')
+            validate_group_state(p, e, require_explicit=False)
             seen_q.add(e['n'])
         if 'countdown' in e:
             c = e['countdown']
@@ -159,7 +252,7 @@ def configure(folder, out, draft=False):
     AUDIT.mkdir(exist_ok=True)
     SHEET_PAGES = paginate_sheet(PAPER)
     PREVIEW_PAGES = {g['id']:preview_pages(g['questions']) for g in PAPER['groups']}
-    dump(AUDIT/'大字分页方案.json',{'sheet_pages':SHEET_PAGES,'preview_pages':PREVIEW_PAGES,'policy':{'preview':'30秒按页数均分；绝对倒计时不重置','lecture_seconds_per_page':25,'check_seconds_per_page':30,'interview_seconds_per_page':20},'source_fingerprints':fingerprints()})
+    dump(AUDIT/'大字分页方案.json',{'sheet_pages':SHEET_PAGES,'preview_pages':PREVIEW_PAGES,'policy':{'preview':'答题卡按页均分；采访五题始终完整同屏，绝对倒计时不重置','lecture_seconds_per_page':25,'check_seconds_per_page':30,'interview':'禁止分页；预览、播放、念题和作答均显示完整五题二十选项','choice_min_font_size':GROUP_MIN_FONT_SIZE},'source_fingerprints':fingerprints()})
     B.D, B.OUT = AUDIT, OUT
     B.Q = {'gap_answers': PAPER.get('gap_answers', [])}
     B.NAME = PAPER.get('filename', f'{PAPER["year"]}年 专八听力 考试.mp4')
@@ -182,9 +275,9 @@ def fingerprints():
 
 
 def preview_pages(numbers):
-    # 五题按原顺序2+3，避免最后一页只剩一题；其他长度均完整覆盖。
-    if len(numbers)==5:return [numbers[:2],numbers[2:]]
-    return [numbers[i:i+3] for i in range(0,len(numbers),3)]
+    require(len(numbers) == GROUP_QUESTION_COUNT and len(set(numbers)) == GROUP_QUESTION_COUNT,
+            '采访选项一览必须整组五题，禁止拆页')
+    return [list(numbers)]
 
 
 def paginate_sheet(p):
@@ -242,9 +335,18 @@ def paginated_events():
     source=TIMELINE['events'];result=[];audit=[]
     for i,ev in enumerate(source):
         e=copy.deepcopy(ev);a=e['t'];z=source[i+1]['t'] if i+1<len(source) else TIMELINE['source_duration'];kind=e['kind']
+        if kind in ('plist', 'q'):
+            validate_group_state(PAPER, e, require_explicit=False)
+            g = group_for_state(PAPER, e)
+            e.update(group=g['id'], numbers=list(g['questions']), display_page=1, display_pages=1)
+            validate_group_state(PAPER, e)
+            result.append(e)
+            audit.append({'kind':kind,'group':g['id'],'numbers':list(g['questions']),
+                          'original_start':a,'original_end':z,'pages':1,'page_starts':[a],
+                          'absolute_countdown_end':e.get('countdown',{}).get('end'),
+                          'whole_interview_group_visible':True})
+            continue
         if kind=='sheet':pages=list(range(len(SHEET_PAGES)))
-        elif kind=='plist':
-            g=next(g for g in PAPER['groups'] if g['id']==e['group']);pages=preview_pages(e.get('numbers',g['questions']))
         else:result.append(e);continue
         end=min(z,e.get('countdown',{}).get('end',z));span=end-a
         preview=bool('countdown' in e and span<=45)
@@ -256,7 +358,8 @@ def paginated_events():
             else:s['numbers']=pages[pg]
             result.append(s)
         audit.append({'kind':kind,'original_start':a,'original_end':z,'pages':len(pages),'page_starts':starts,'absolute_countdown_end':e.get('countdown',{}).get('end'),'preview':preview})
-    dump(AUDIT/'自动翻页核验.json',{'segments':audit,'audio_timing_changed':False,'source_fingerprints':fingerprints()})
+    validate_group_states(PAPER, result)
+    dump(AUDIT/'自动翻页核验.json',{'segments':audit,'audio_timing_changed':False,'choice_groups_never_paginated':True,'source_fingerprints':fingerprints()})
     return result
 
 
@@ -354,6 +457,7 @@ def states():
         final_frames[f] = (x,s)
     raw = [final_frames[f] for f in sorted(final_frames)]
     raw, suppressed_ticks = suppress_short_pagination_ticks(raw)
+    validate_group_states(PAPER, raw)
     frames = [round((x + B.LEAD) * B.FPS) for x, _ in raw]
     stop = round((at + B.LEAD) * B.FPS)
     require(all(b > a for a,b in zip(frames, frames[1:] + [stop])), '存在零帧/负帧状态')
@@ -366,7 +470,60 @@ def q_by_n():
     return {q['n']: q for q in PAPER['questions']}
 
 
+def group_page(state):
+    """用户确认的五题整齐网格；仅采访组替换旧2+3/单题页。"""
+    validate_group_state(PAPER, state, require_explicit=False)
+    group = group_for_state(PAPER, state)
+    numbers = list(group['questions'])
+    current = state.get('n') if state['kind'] == 'q' else None
+    qs = q_by_n()
+    rows, notes = [], []
+    for n in numbers:
+        options = ''.join(
+            f'<div class="option opt allow-wrap" data-label="{letter}">'
+            f'<b class="letter opt-label">{letter}.</b><span class="text option-text allow-wrap">{ESC(text)}</span></div>'
+            for letter, text in zip('ABCD', qs[n]['options']))
+        rows.append(f'<section class="question qg{" is-current" if current==n else ""}" data-n="{n}">'
+                    f'<div class="number n">{n}.</div><div class="options">{options}</div></section>')
+        if qs[n].get('unscored'):
+            notes.append(f'第 {n} 题：题源表述存疑，本题不计分。{ESC(qs[n]["source_note"])}')
+    note = '<footer class="source-note">'+'<br>'.join(notes)+'</footer>' if notes else ''
+    status = state.get('st', '采访播放中')
+    active = f'当前第 {current} 题　' if current else ''
+    countdown = f'　{ESC(state.get("cdl", ""))} {state["cd"]//60}:{state["cd"]%60:02d}' if 'cd' in state else ''
+    title = re.sub(r'\s+', ' ', group['title']).strip()
+    header = (f'<header class="header"><div class="heading group-title">{ESC(title)}</div>'
+              f'<div class="status">{active}第 {numbers[0]}—{numbers[-1]} 题　｜　{ESC(status)}{countdown}</div></header>')
+    # Same measurements as the approved preview; only two-digit groups reserve wider number column.
+    faces = BASE_CSS.split('*{margin', 1)[0].replace('FL/', B.FL.as_uri()+'/')
+    css = "@import url('"+(ROOT/'四级/tools/fonts/fonts.css').as_uri()+"');"+faces+r'''
+*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;background:#fff;color:#141414}
+body{font-family:TNR,"Times New Roman","Noto Serif SC",serif;padding:25px 48px 23px;display:flex;flex-direction:column}
+.header{height:65px;flex:none;border-bottom:2px solid #262626;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:8px}
+.heading{font-size:34px;font-weight:700;line-height:1.16;white-space:nowrap;padding-top:4px}
+.status{font-family:"Noto Serif SC",serif;font-size:25px;line-height:1.4;white-space:nowrap;padding-top:6px}
+.questions{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;--fs:42px}
+.question{display:grid;grid-template-columns:NUMBER_COLUMNpx minmax(0,1fr);gap:16px;padding:6px 0 7px;border-bottom:2px solid #000000;flex:none}
+.question:last-child{border-bottom:0;padding-bottom:0}
+.number{font-size:var(--fs);font-weight:700;line-height:1.12}
+.is-current>.number{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.options{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:36px;row-gap:4px;align-items:start}
+.option{display:grid;grid-template-columns:46px minmax(0,1fr);column-gap:6px;font-size:var(--fs);line-height:1.12;align-items:start}
+.letter{font-weight:700;white-space:nowrap}.text{white-space:normal;word-break:normal;overflow-wrap:normal;hyphens:none}
+.source-note{font-family:"Noto Serif SC",serif;font-size:23px;line-height:1.25;margin-top:12px;flex:none}
+'''
+    css = css.replace('NUMBER_COLUMN', '70' if max(numbers)>=10 else '48')
+    if DRAFT:
+        note += '<div style="position:absolute;left:48px;bottom:2px;font:18px Noto Serif SC;color:#666">待核样片 · 非成品</div>'
+    data_numbers = json.dumps(numbers, separators=(',', ':'))
+    body = (header+f'<main class="questions main pl full-group" data-group="{html.escape(group["id"],quote=True)}" '
+            f'data-numbers="{data_numbers}" data-page-count="1">'+''.join(rows)+'</main>'+note)
+    return '<!doctype html><html lang="en"><head><meta charset="utf-8"><style>'+css+'</style></head><body>'+body+'</body></html>'
+
+
 def page(s):
+    if s['kind'] in ('plist', 'q'):
+        return group_page(s)
     k = s['kind']
     p = PAPER
     top = '<div class="top"><b><em>PART I</em>LISTENING COMPREHENSION</b>'
@@ -480,19 +637,15 @@ FIT_JS = r'''(kind) => {
  });
  const mark=sel=>document.querySelectorAll(sel).forEach(e=>e.classList.add('allow-wrap'));
  if(!['q','plist','sheet'].includes(kind)&&rectok()&&one())return {mode:'2025-default'};
- if(kind==='q') {
-   mark('.ql .opt');
-   for(let fs=80;fs>=56;fs--) {
-     const stem=Math.min(84,fs+4),lh=fs*1.32;
-     setcss(`.qn{margin-bottom:18px}.stem{font-size:${stem}px;line-height:1.2;margin-bottom:26px}.ql .opt{font-size:${fs}px;line-height:${lh}px;padding:9px 0;align-items:flex-start}.ql .opt>span{flex:1;min-width:0}.ql .opt b{width:100px}.source-note{margin-top:14px}`);
-     if(rectok())return {mode:'question-wrap',font_size:fs,line_height:lh,stem_font_size:stem};
-   }
- } else if(kind==='plist') {
-   mark('.pl .opt,.pl .r > span,.inst2');
-   for(let fs=52;fs>=44;fs--) {
-     const lh=fs*1.28;
-     setcss(`.pl .sec{margin-bottom:24px}.pl .r{font-size:${fs}px;line-height:${lh}px}.pl .r>span{align-self:start;min-width:0}.pl .qg{padding:11px 0 12px}.pl .qg:first-child{padding-top:0}.pl .inst2{font-size:${fs}px;line-height:${lh}px;margin-bottom:20px}`);
-     if(rectok())return {mode:'preview-wrap',font_size:fs,line_height:lh};
+ if(kind==='plist'||kind==='q') {
+   const main=document.querySelector('.full-group');
+   if(!main)return {mode:'unfitted',reason:'missing complete interview group'};
+   mark('.full-group .opt,.full-group .option-text');
+   for(let fs=46;fs>=40;fs--){
+     main.style.setProperty('--fs',fs+'px');
+     const qs=[...main.querySelectorAll('.qg')],bounds=q=>{const rs=[...q.querySelectorAll('.n,.opt-label,.option-text')].map(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getBoundingClientRect();});return {top:Math.min(...rs.map(x=>x.top)),bottom:Math.max(...rs.map(x=>x.bottom))};};
+     const gaps=qs.slice(1).map((q,i)=>bounds(q).top-bounds(qs[i]).bottom);
+     if(rectok()&&gaps.every(x=>x>=16))return {mode:'interview-five-grid',font_size:fs,line_height:fs*1.12,columns:'AB/CD',question_count:5};
    }
  } else if(kind==='ansB') {
    mark('.ansb .qg');
@@ -530,8 +683,49 @@ def fit_layout(pg, state):
     return pg.evaluate(FIT_JS, state['kind'])
 
 
+GROUP_SCREEN_SNAPSHOT_JS = r'''() => {
+ const root=document.querySelector('.full-group');if(!root)return null;
+ const title=document.querySelector('.group-title');if(!title)throw new Error('采访题组缺少标题');
+ const main=root.getBoundingClientRect();
+ const rect=e=>{const r=e.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom};};
+ const textrect=e=>{const r=document.createRange();r.selectNodeContents(e);const b=r.getBoundingClientRect();return {left:b.left,top:b.top,right:b.right,bottom:b.bottom};};
+ const rows=[...root.querySelectorAll('.qg')];
+ const textbounds=q=>{const r=[...q.querySelectorAll('.n,.opt-label,.option-text')].map(textrect);return {top:Math.min(...r.map(x=>x.top)),bottom:Math.max(...r.map(x=>x.bottom))};};
+ const transparent=x=>x==='transparent'||/^rgba\([^,]+,[^,]+,[^,]+,\s*0(?:\.0*)?\s*\)$/.test(x)||/\/\s*0(?:\.0*)?\s*\)$/.test(x);
+ const visible=e=>{const r=e.getBoundingClientRect(),style=getComputedStyle(e);if(!r.width||!r.height||transparent(style.color)||transparent(style.webkitTextFillColor))return false;for(let p=e;p;p=p.parentElement){const c=getComputedStyle(p);if(c.display==='none'||c.visibility==='hidden'||Number(c.opacity)===0)return false;}return true;};
+ const scale=e=>{let n=1;for(let p=e;p;p=p.parentElement){const c=getComputedStyle(p);n*=Number(c.zoom)||1;if(c.transform!=='none'){const m=new DOMMatrixReadOnly(c.transform);n*=Math.min(Math.hypot(m.a,m.b),Math.hypot(m.c,m.d));}}return n;};
+ const clipped=e=>{
+   const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT);
+   for(let t=w.nextNode();t;t=w.nextNode()){if(!t.textContent.trim())continue;const r=document.createRange();r.selectNodeContents(t);for(const b of r.getClientRects()){if(b.width&&b.height&&(b.left<main.left-.5||b.top<main.top-.5||b.right>main.right+.5||b.bottom>main.bottom+.5))return true;}}
+   for(let p=e;p&&p!==root.parentElement;p=p.parentElement){const c=getComputedStyle(p);if(c.textOverflow==='ellipsis'||(c.webkitLineClamp!=='none'&&c.webkitLineClamp!=='0')||c.clipPath!=='none'||(c.maskImage&&c.maskImage!=='none')||((['hidden','clip'].includes(c.overflowX)||['hidden','clip'].includes(c.overflowY))&&(p.scrollHeight>p.clientHeight+1||p.scrollWidth>p.clientWidth+1)))return true;}
+   return false;
+ };
+ return {group:root.dataset.group,numbers:JSON.parse(root.dataset.numbers),page_count:Number(root.dataset.pageCount),
+   page_label:(title.textContent.match(/[（(]\s*\d+\s*\/\s*\d+\s*[）)]/)||[])[0]||'',
+   questions:rows.map((q,index)=>({n:Number(q.dataset.n),rect:rect(q),separator:{width:parseFloat(getComputedStyle(q).borderBottomWidth),color:getComputedStyle(q).borderBottomColor,style:getComputedStyle(q).borderBottomStyle,gap:index+1<rows.length?textbounds(rows[index+1]).top-textbounds(q).bottom:null},options:[...q.querySelectorAll('.opt')].map(o=>{
+     const pieces=[...o.querySelectorAll('.opt-label,.option-text')].filter(e=>e.textContent.trim());
+     const scales=pieces.map(scale),changed=scales.find(x=>Math.abs(x-1)>1e-6);
+     return {rect:rect(o),label_rect:textrect(o.querySelector('.opt-label')),text_rect:textrect(o.querySelector('.option-text')),grid:{label_column:parseFloat(getComputedStyle(o).gridTemplateColumns),column_gap:parseFloat(getComputedStyle(o).columnGap)},label:o.dataset.label,text:[...o.querySelectorAll('.option-text')].map(x=>x.textContent).join(''),
+       font_size:Math.min(...pieces.map(e=>parseFloat(getComputedStyle(e).fontSize)*scale(e))),
+       scale:changed===undefined?1:changed,visible:visible(o)&&pieces.every(visible),clipped:clipped(o)||pieces.some(clipped)};
+   })}))};
+}'''
+
+
+def group_screen_check(pg, state):
+    if state.get('kind') not in ('plist', 'q'):
+        return None
+    snapshot = pg.evaluate(GROUP_SCREEN_SNAPSHOT_JS)
+    validate_group_snapshot(PAPER, state, snapshot or {})
+    return dict(snapshot, status='PASS', expected_group=group_for_state(PAPER,state)['id'],
+                actual_question_count=len(snapshot['questions']),
+                actual_option_count=sum(len(q['options']) for q in snapshot['questions']),
+                minimum_option_font_size=min(o['font_size'] for q in snapshot['questions'] for o in q['options']))
+
+
 SPACING_JS = r'''() => {
- const errors=[], spaces=[] , labels=[], numbers=[];
+ const errors=[], spaces=[] , labels=[], numbers=[],natural_spaces=[];
+ const measure=document.createElement('canvas').getContext('2d');
  const rr=(node,a,b)=>{const r=document.createRange();r.setStart(node,a);r.setEnd(node,b);return r.getBoundingClientRect();};
  const textrect=e=>{const r=document.createRange();r.selectNodeContents(e);return r.getBoundingClientRect();};
  for(const root of document.querySelectorAll('.ln,.stem,.ql .opt,.pl .option-text,.instr,.ansb .answer-text,.ans .a,.ttl')){
@@ -543,7 +737,9 @@ SPACING_JS = r'''() => {
        const a=rr(node,i-1,i),sp=rr(node,i,i+1),b=rr(node,i+1,i+2);
        if(Math.abs(a.top-b.top)>2)continue;
        const em=sp.width/fs;spaces.push(em);
-       if(em<.275)errors.push('英文空格过窄 '+em.toFixed(3)+'em '+txt.slice(Math.max(0,i-12),i+14));
+       const inGroup=!!root.closest('.full-group');let assessed=em;
+       if(inGroup){const cs=getComputedStyle(node.parentElement);measure.font=cs.font;assessed=(measure.measureText(' ').width+(parseFloat(cs.wordSpacing)||0))/fs;natural_spaces.push(assessed);if((parseFloat(cs.letterSpacing)||0)<0)errors.push('英文字符间距被压缩');}
+       if(assessed<(inGroup?.22:.275))errors.push('英文空格过窄 '+em.toFixed(3)+'em '+txt.slice(Math.max(0,i-12),i+14));
        if(em>.55)errors.push('英文空格过宽 '+em.toFixed(3)+'em');
      }
    }
@@ -552,14 +748,19 @@ SPACING_JS = r'''() => {
    const label=opt.querySelector('b'),body=opt.querySelector('.option-text')||opt.querySelector('span');
    if(!label||!body)continue;
    const a=textrect(label),b=textrect(body),fs=parseFloat(getComputedStyle(opt).fontSize),gap=b.left-a.right;
-   labels.push(gap);if(gap<Math.max(16,fs*.28))errors.push('选项标签与正文间距不足 '+gap.toFixed(1)+'px '+opt.textContent.slice(0,25));
+   labels.push(gap);if(gap<(opt.closest('.full-group')?6:Math.max(16,fs*.28)))errors.push('选项标签与正文间距不足 '+gap.toFixed(1)+'px '+opt.textContent.slice(0,25));
  }
  for(const row of document.querySelectorAll('.pl .qg>.r:first-child')){
    const n=row.querySelector('.n'),opt=row.querySelector('.opt');if(!n||!opt)continue;
    const gap=textrect(opt.querySelector('b')).left-textrect(n).right;numbers.push(gap);
    if(gap<28)errors.push('题号与选项间距不足 '+gap.toFixed(1)+'px '+row.textContent.slice(0,25));
  }
- return {errors,spaces_checked:spaces.length,min_space_em:spaces.length?Math.min(...spaces):null,max_space_em:spaces.length?Math.max(...spaces):null,min_label_gap_px:labels.length?Math.min(...labels):null,min_question_number_gap_px:numbers.length?Math.min(...numbers):null};
+ for(const row of document.querySelectorAll('.full-group .qg')){
+   const n=row.querySelector('.n'),opt=row.querySelector('.opt');if(!n||!opt)continue;
+   const gap=textrect(opt.querySelector('b')).left-textrect(n).right;numbers.push(gap);
+   if(gap<28)errors.push('题号与选项间距不足 '+gap.toFixed(1)+'px '+row.textContent.slice(0,25));
+ }
+ return {errors,natural_space_probe_em:natural_spaces.length?Math.min(...natural_spaces):null,spaces_checked:spaces.length,min_space_em:spaces.length?Math.min(...spaces):null,max_space_em:spaces.length?Math.max(...spaces):null,min_label_gap_px:labels.length?Math.min(...labels):null,min_question_number_gap_px:numbers.length?Math.min(...numbers):null};
 }'''
 
 
@@ -572,12 +773,11 @@ def original_texts(s):
     elif k=='sheet':
         rows=SHEET_PAGES[s.get('page',0)]['rows']
         items += [r[1] for r in rows if r[0]!='col']
-    elif k=='plist':
-        g=next(g for g in PAPER['groups'] if g['id']==s['group'])
+    elif k in ('plist', 'q'):
+        g=group_for_state(PAPER,s)
         items += [g['title'],g.get('intro','')]
-        items += [v for n in s.get('numbers',g['questions']) for v in q_by_n()[n]['options']]
-    elif k=='q':
-        q=q_by_n()[s['n']];items += [q.get('stem',''),q.get('source_note','')]+q['options']
+        items += [v for n in g['questions'] for v in q_by_n()[n]['options']]
+        items += [q_by_n()[n].get('source_note','') for n in g['questions']]
     return [re.sub(r'\s+',' ',x).lower() for x in items]
 
 
@@ -600,9 +800,13 @@ def leak_check(s, htm):
 
 
 def question_gap_check(pg, s):
-    # 单题选项“70.”等数字是答案选项内容，不是多题题号；多题画面完整沿用间隔检查。
-    if s['kind']=='q':return []
-    return pg.evaluate(B.QGAP_JS,B.MIN_GAP)
+    if s.get('kind') in ('plist', 'q'):
+        try:
+            group_screen_check(pg, s)
+        except (ValueError, KeyError, TypeError) as exc:
+            return ['采访五题同屏门禁：'+str(exc)]
+        return []
+    return pg.evaluate(B.QGAP_JS, B.MIN_GAP)
 
 
 def trim_check(a, y, k, sr):
@@ -794,8 +998,13 @@ def render(sample=False, layout_only=False):
             require(pg.locator('body').get_attribute('data-render-key')==key,'浏览器展示了过期页面')
             fit=fit_layout(pg,s)
             spacing=pg.evaluate(SPACING_JS)
-            fitted.append({'state':s,'fit':fit,'spacing':spacing})
             bad=pg.evaluate(CHECK_JS)+question_gap_check(pg,s)+B.font_check(pg,pager.cdp)+leak_check(s,htm)+spacing['errors']
+            group_snapshot = None
+            try:
+                group_snapshot=group_screen_check(pg,s)
+            except (ValueError,KeyError,TypeError) as exc:
+                bad.append('采访五题同屏门禁：'+str(exc))
+            fitted.append({'state':s,'fit':fit,'spacing':spacing,'group_snapshot':group_snapshot})
             if bad:
                 errors.append({'state':s,'errors':sorted(set(bad))})
                 pg.screenshot(path=str(shots/(key+'.bad.png')))
@@ -882,7 +1091,7 @@ def layout_selftest():
         configure(td,Path(td)/'out')
         good={'kind':'q','n':7,'st':'作答','cd':7,'cdl':'作答'}
         sheet={'kind':'sheet','st':'检查答案','cd':125,'cdl':'检查'}
-        plist={'kind':'plist','group':'part2','numbers':[6,7,8],'display_page':2,'display_pages':2,'st':'选项预览'}
+        plist={'kind':'plist','group':'part2','numbers':[6,7,8,9,10],'display_page':1,'display_pages':1,'st':'选项预览'}
         with serving() as base,sync_playwright() as pw:
             br=pw.chromium.launch(executable_path=shutil.which('chromium'),args=['--no-sandbox'])
             pager=B.Pager(br,viewport={'width':1920,'height':1080},device_scale_factor=1)
@@ -893,7 +1102,10 @@ def layout_selftest():
                 (OUT/'page.html').write_text(htm,'utf-8')
                 pg=pager.load(base+'/render/page.html?attempt='+str(attempt[0]))
                 fit_layout(pg,state)
-                return pg.evaluate(CHECK_JS)+question_gap_check(pg,state)+B.font_check(pg,pager.cdp)+leak_check(state,htm)+pg.evaluate(SPACING_JS)['errors']
+                bad=pg.evaluate(CHECK_JS)+question_gap_check(pg,state)+B.font_check(pg,pager.cdp)+leak_check(state,htm)+pg.evaluate(SPACING_JS)['errors']
+                try:group_screen_check(pg,state)
+                except (ValueError,KeyError,TypeError) as exc:bad.append('采访五题同屏门禁：'+str(exc))
+                return bad
             for state in [good,sheet,dict(sheet,page=1),plist,{'kind':'title'},{'kind':'ansA','numbers':list(range(1,16))}]:
                 bad=check(page(state),state)
                 require(not bad,'正常画面被错误拦截：'+str(bad[:3]))
@@ -902,13 +1114,13 @@ def layout_selftest():
                 require(not check(page(state),state),'不计分标注屏排版失败')
             PAPER['questions'][0].pop('unscored');PAPER['questions'][0].pop('source_note')
             negatives=[
-                ('超长选项',page(good).replace('Mountain climbing.','Mountain climbing. '*35),good,None),
+                ('超长选项',page(good).replace('climbing.','climbing. '+'Mountain climbing. '*35),good,None),
                 ('答题卡泄露答案',page(sheet).replace('<div class="sheet blk">','<div class="sheet blk"><div>long-term memory</div>'),sheet,'答案泄露'),
-                ('题间距/细线缺失',page(plist).replace('class="qg"','class="missing-group"'),plist,None),
-                ('未知字体字形',page(good).replace('Question 7','Question 7 𝄞 ꙮ'),good,'字体回退'),
-                ('英文词间距压缩',page(good).replace('</style>','.ql .opt{word-spacing:-.2em!important}</style>'),good,'英文空格过窄'),
-                ('标签正文贴合',page(good).replace('</style>','.ql .opt b{width:auto!important}.ql .opt{column-gap:0!important}</style>'),good,'选项标签与正文间距不足'),
-                ('预览题号贴合',page(plist).replace('</style>','.pl .r{grid-template-columns:25px minmax(0,1fr) minmax(0,1fr);column-gap:0}</style>'),plist,'题号与选项间距不足'),
+                ('题间距/细线缺失',page(plist).replace('class="question qg','class="question missing-group'),plist,None),
+                ('未知字体字形',page(good).replace('climbing.','climbing. 𝄞 ꙮ'),good,'字体回退'),
+                ('英文词间距压缩',page(good).replace('</style>','.full-group .options{word-spacing:-.2em!important}</style>'),good,'英文空格过窄'),
+                ('标签正文贴合',page(good).replace('</style>','.full-group .opt{grid-template-columns:30px minmax(0,1fr)!important;column-gap:0!important}</style>'),good,'选项标签与正文间距不足'),
+                ('预览题号贴合',page(plist).replace('</style>','.full-group .qg{grid-template-columns:25px minmax(0,1fr)!important;column-gap:0!important}</style>'),plist,'题号与选项间距不足'),
             ]
             for name,htm,state,match in negatives:
                 bad=check(htm,state)
