@@ -214,11 +214,12 @@ def activate():
                 'control_sha256':pub.sha(CONTROL),'strict_cache_count':cache['strict_cache_count'],'workflow_run':None}
     pub.dump(STATE/'assembly-activation-result.json',activation)
     for _ in range(20):
-        result=json.loads(subprocess.check_output(['gh','run','list','--repo',pin['repository'],'--workflow','assemble-tem8-intensive-full.yml',
-                      '--commit',commit,'--limit','5','--json','databaseId,status,headSha,url'],cwd=ROOT,text=True))
+        # 首次在非默认分支触发时workflow文件名查询可短暂404；按完整提交查run不依赖该注册。
+        result=json.loads(subprocess.check_output(['gh','api','repos/'+pin['repository']+'/actions/runs?head_sha='+commit+'&per_page=100'],cwd=ROOT,text=True))['workflow_runs']
+        result=[r for r in result if r['path']=='.github/workflows/assemble-tem8-intensive-full.yml']
         if result:
-            assert all(r['headSha']==commit for r in result)
-            activation['workflow_run']=result[0];break
+            assert all(r['head_sha']==commit for r in result)
+            r=result[0];activation['workflow_run']={'databaseId':r['id'],'status':r['status'],'headSha':r['head_sha'],'url':r['html_url']};break
         time.sleep(15)
     pub.dump(STATE/'assembly-activation-result.json',activation)
     print('ASSEMBLY_ACTIVATED '+json.dumps(activation,ensure_ascii=False),flush=True)

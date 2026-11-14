@@ -1,0 +1,1903 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "checked_at": "2026-11-14T03:24:09.412468+00:00",
+  "run": "43549769019",
+  "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+  "annual_videos": 15,
+  "all_jobs_success": true,
+  "jobs": [
+    {
+      "id": 132309268258,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezj83Ig",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309268258",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309268258",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:21Z",
+      "started_at": "2026-11-14T03:05:22Z",
+      "completed_at": "2026-11-14T03:05:52Z",
+      "name": "list",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:23Z",
+          "completed_at": "2026-11-14T03:05:23Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:23Z",
+          "completed_at": "2026-11-14T03:05:38Z"
+        },
+        {
+          "name": "核15年完整目标及45个子段当前审批，跳过已核整套缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:05:38Z",
+          "completed_at": "2026-11-14T03:05:49Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:05:49Z",
+          "completed_at": "2026-11-14T03:05:50Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:05:50Z",
+          "completed_at": "2026-11-14T03:05:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309268258",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008466,
+      "runner_name": "GitHub Actions 1000008466",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416741,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7JQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416741",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416741",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:40Z",
+      "name": "assemble (2009)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:40Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:40Z",
+          "completed_at": "2026-11-14T03:06:47Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:47Z",
+          "completed_at": "2026-11-14T03:06:59Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:06:59Z",
+          "completed_at": "2026-11-14T03:08:25Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:25Z",
+          "completed_at": "2026-11-14T03:08:37Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:37Z",
+          "completed_at": "2026-11-14T03:08:39Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:39Z",
+          "completed_at": "2026-11-14T03:08:39Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:39Z",
+          "completed_at": "2026-11-14T03:08:39Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:39Z",
+          "completed_at": "2026-11-14T03:08:39Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416741",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008468,
+      "runner_name": "GitHub Actions 1000008468",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416772,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7RA",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416772",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416772",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:39Z",
+      "name": "assemble (2017)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:57Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:57Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:07:04Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:07:04Z",
+          "completed_at": "2026-11-14T03:07:12Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:12Z",
+          "completed_at": "2026-11-14T03:07:25Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:25Z",
+          "completed_at": "2026-11-14T03:08:25Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:25Z",
+          "completed_at": "2026-11-14T03:08:35Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:35Z",
+          "completed_at": "2026-11-14T03:08:37Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:37Z",
+          "completed_at": "2026-11-14T03:08:37Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:37Z",
+          "completed_at": "2026-11-14T03:08:37Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:37Z",
+          "completed_at": "2026-11-14T03:08:38Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416772",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008467,
+      "runner_name": "GitHub Actions 1000008467",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416780,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7TA",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416780",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416780",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:39Z",
+      "name": "assemble (2014)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:56Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:56Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:56Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:56Z",
+          "completed_at": "2026-11-14T03:07:03Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:03Z",
+          "completed_at": "2026-11-14T03:07:20Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:20Z",
+          "completed_at": "2026-11-14T03:08:26Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:26Z",
+          "completed_at": "2026-11-14T03:08:36Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:36Z",
+          "completed_at": "2026-11-14T03:08:38Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:38Z",
+          "completed_at": "2026-11-14T03:08:38Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:38Z",
+          "completed_at": "2026-11-14T03:08:38Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:38Z",
+          "completed_at": "2026-11-14T03:08:38Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416780",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008472,
+      "runner_name": "GitHub Actions 1000008472",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416797,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7XQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416797",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416797",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:35Z",
+      "name": "assemble (2019)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:57Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:57Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:53Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:53Z",
+          "completed_at": "2026-11-14T03:06:59Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:59Z",
+          "completed_at": "2026-11-14T03:07:16Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:16Z",
+          "completed_at": "2026-11-14T03:08:22Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:22Z",
+          "completed_at": "2026-11-14T03:08:32Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:32Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416797",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008469,
+      "runner_name": "GitHub Actions 1000008469",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416805,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7ZQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416805",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416805",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:10:02Z",
+      "name": "assemble (2013)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:05:56Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:56Z",
+          "completed_at": "2026-11-14T03:06:11Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:11Z",
+          "completed_at": "2026-11-14T03:06:50Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:50Z",
+          "completed_at": "2026-11-14T03:06:59Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:59Z",
+          "completed_at": "2026-11-14T03:07:34Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:34Z",
+          "completed_at": "2026-11-14T03:09:42Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:09:42Z",
+          "completed_at": "2026-11-14T03:09:56Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:09:56Z",
+          "completed_at": "2026-11-14T03:09:59Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:09:59Z",
+          "completed_at": "2026-11-14T03:09:59Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:09:59Z",
+          "completed_at": "2026-11-14T03:09:59Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:09:59Z",
+          "completed_at": "2026-11-14T03:10:00Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416805",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008475,
+      "runner_name": "GitHub Actions 1000008475",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416810,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7ag",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416810",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416810",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:36Z",
+      "name": "assemble (2010)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:57Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:57Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:53Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:53Z",
+          "completed_at": "2026-11-14T03:07:00Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:00Z",
+          "completed_at": "2026-11-14T03:07:18Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:18Z",
+          "completed_at": "2026-11-14T03:08:21Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:21Z",
+          "completed_at": "2026-11-14T03:08:32Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:32Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416810",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008470,
+      "runner_name": "GitHub Actions 1000008470",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416813,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7bQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416813",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416813",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:47Z",
+      "name": "assemble (2024)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:56Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:56Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:53Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:53Z",
+          "completed_at": "2026-11-14T03:07:01Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:01Z",
+          "completed_at": "2026-11-14T03:07:14Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:14Z",
+          "completed_at": "2026-11-14T03:08:32Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:32Z",
+          "completed_at": "2026-11-14T03:08:44Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:44Z",
+          "completed_at": "2026-11-14T03:08:46Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:46Z",
+          "completed_at": "2026-11-14T03:08:46Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:46Z",
+          "completed_at": "2026-11-14T03:08:46Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:46Z",
+          "completed_at": "2026-11-14T03:08:46Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416813",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008478,
+      "runner_name": "GitHub Actions 1000008478",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416818,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7cg",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416818",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416818",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:09:08Z",
+      "name": "assemble (2023)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:05:56Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:56Z",
+          "completed_at": "2026-11-14T03:06:11Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:11Z",
+          "completed_at": "2026-11-14T03:06:38Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:38Z",
+          "completed_at": "2026-11-14T03:06:46Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:46Z",
+          "completed_at": "2026-11-14T03:07:13Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:13Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:50Z",
+          "completed_at": "2026-11-14T03:09:03Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:09:03Z",
+          "completed_at": "2026-11-14T03:09:06Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:09:06Z",
+          "completed_at": "2026-11-14T03:09:06Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:09:06Z",
+          "completed_at": "2026-11-14T03:09:06Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:09:06Z",
+          "completed_at": "2026-11-14T03:09:06Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416818",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008476,
+      "runner_name": "GitHub Actions 1000008476",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416825,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7eQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416825",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416825",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:27Z",
+      "name": "assemble (2012)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:57Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:57Z",
+          "completed_at": "2026-11-14T03:06:09Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:09Z",
+          "completed_at": "2026-11-14T03:06:58Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:58Z",
+          "completed_at": "2026-11-14T03:07:05Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:05Z",
+          "completed_at": "2026-11-14T03:07:18Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:18Z",
+          "completed_at": "2026-11-14T03:08:13Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:13Z",
+          "completed_at": "2026-11-14T03:08:24Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:24Z",
+          "completed_at": "2026-11-14T03:08:26Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:26Z",
+          "completed_at": "2026-11-14T03:08:26Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:26Z",
+          "completed_at": "2026-11-14T03:08:26Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:26Z",
+          "completed_at": "2026-11-14T03:08:26Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416825",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008479,
+      "runner_name": "GitHub Actions 1000008479",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416830,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7fg",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416830",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416830",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:29Z",
+      "name": "assemble (2022)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:45Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:45Z",
+          "completed_at": "2026-11-14T03:06:51Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:51Z",
+          "completed_at": "2026-11-14T03:07:01Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:01Z",
+          "completed_at": "2026-11-14T03:08:14Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:14Z",
+          "completed_at": "2026-11-14T03:08:26Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:26Z",
+          "completed_at": "2026-11-14T03:08:28Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:28Z",
+          "completed_at": "2026-11-14T03:08:28Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:28Z",
+          "completed_at": "2026-11-14T03:08:28Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:28Z",
+          "completed_at": "2026-11-14T03:08:28Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416830",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008477,
+      "runner_name": "GitHub Actions 1000008477",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416844,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7jA",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416844",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416844",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:55Z",
+      "completed_at": "2026-11-14T03:09:02Z",
+      "name": "assemble (2011)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:05:58Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:58Z",
+          "completed_at": "2026-11-14T03:06:17Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:17Z",
+          "completed_at": "2026-11-14T03:07:07Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:07:07Z",
+          "completed_at": "2026-11-14T03:07:17Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:17Z",
+          "completed_at": "2026-11-14T03:08:01Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:08:01Z",
+          "completed_at": "2026-11-14T03:08:44Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:44Z",
+          "completed_at": "2026-11-14T03:08:56Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:56Z",
+          "completed_at": "2026-11-14T03:09:00Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:09:00Z",
+          "completed_at": "2026-11-14T03:09:00Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:09:00Z",
+          "completed_at": "2026-11-14T03:09:00Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:09:00Z",
+          "completed_at": "2026-11-14T03:09:00Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416844",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008471,
+      "runner_name": "GitHub Actions 1000008471",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416853,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7lQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416853",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416853",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:44Z",
+      "name": "assemble (2015)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:57Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:57Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:58Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:58Z",
+          "completed_at": "2026-11-14T03:07:06Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:07:06Z",
+          "completed_at": "2026-11-14T03:07:17Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:17Z",
+          "completed_at": "2026-11-14T03:08:31Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:31Z",
+          "completed_at": "2026-11-14T03:08:41Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:41Z",
+          "completed_at": "2026-11-14T03:08:43Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:43Z",
+          "completed_at": "2026-11-14T03:08:43Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:43Z",
+          "completed_at": "2026-11-14T03:08:43Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:43Z",
+          "completed_at": "2026-11-14T03:08:43Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416853",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008474,
+      "runner_name": "GitHub Actions 1000008474",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416873,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7qQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416873",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416873",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:52Z",
+      "name": "assemble (2021)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:05:56Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:56Z",
+          "completed_at": "2026-11-14T03:06:11Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:11Z",
+          "completed_at": "2026-11-14T03:06:47Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:47Z",
+          "completed_at": "2026-11-14T03:06:56Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:56Z",
+          "completed_at": "2026-11-14T03:07:16Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:16Z",
+          "completed_at": "2026-11-14T03:08:34Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:34Z",
+          "completed_at": "2026-11-14T03:08:48Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:48Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:50Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:50Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:50Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416873",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008480,
+      "runner_name": "GitHub Actions 1000008480",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416889,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF7uQ",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416889",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416889",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:51Z",
+      "name": "assemble (2018)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:42Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:42Z",
+          "completed_at": "2026-11-14T03:06:48Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:48Z",
+          "completed_at": "2026-11-14T03:07:07Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:07Z",
+          "completed_at": "2026-11-14T03:08:36Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:36Z",
+          "completed_at": "2026-11-14T03:08:48Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:48Z",
+          "completed_at": "2026-11-14T03:08:49Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:49Z",
+          "completed_at": "2026-11-14T03:08:49Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:49Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:50Z",
+          "completed_at": "2026-11-14T03:08:50Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416889",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008473,
+      "runner_name": "GitHub Actions 1000008473",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132309416950,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezkF79g",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132309416950",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132309416950",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:05:52Z",
+      "started_at": "2026-11-14T03:05:54Z",
+      "completed_at": "2026-11-14T03:08:56Z",
+      "name": "assemble (2016)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:05:54Z",
+          "completed_at": "2026-11-14T03:05:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:05:55Z",
+          "completed_at": "2026-11-14T03:06:10Z"
+        },
+        {
+          "name": "准备音视频封装核验环境（不安装NLP或浏览器）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:06:10Z",
+          "completed_at": "2026-11-14T03:06:41Z"
+        },
+        {
+          "name": "先核三个当前子段缓存，缺一则停止本年组装",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:06:41Z",
+          "completed_at": "2026-11-14T03:06:48Z"
+        },
+        {
+          "name": "准备同一canonical原采样率与声道PCM",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:06:48Z",
+          "completed_at": "2026-11-14T03:07:05Z"
+        },
+        {
+          "name": "从已核片段组装完整年份，再独立核画面、声音与同步",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-14T03:07:05Z",
+          "completed_at": "2026-11-14T03:08:39Z"
+        },
+        {
+          "name": "成功整套即时保存到独立持久缓存",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-11-14T03:08:39Z",
+          "completed_at": "2026-11-14T03:08:52Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-11-14T03:08:52Z",
+          "completed_at": "2026-11-14T03:08:54Z"
+        },
+        {
+          "name": "失败诊断（不作为合格整套成品发布）",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9,
+          "started_at": "2026-11-14T03:08:54Z",
+          "completed_at": "2026-11-14T03:08:54Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-11-14T03:08:54Z",
+          "completed_at": "2026-11-14T03:08:55Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-11-14T03:08:55Z",
+          "completed_at": "2026-11-14T03:08:55Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132309416950",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008481,
+      "runner_name": "GitHub Actions 1000008481",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 132310621560,
+      "run_id": 43549769019,
+      "workflow_name": "专八15年整套精听组装与发布",
+      "head_branch": "codex/tem8-listening-2009-2024",
+      "run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/runs/43549769019",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOU2JD9c8AAAAezlPdeA",
+      "head_sha": "1d6e5f3e6dc9c53ef4cc546add74a0dc715ae3df",
+      "url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/actions/jobs/132310621560",
+      "html_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43549769019/job/132310621560",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-14T03:10:02Z",
+      "started_at": "2026-11-14T03:10:04Z",
+      "completed_at": "2026-11-14T03:15:44Z",
+      "name": "publish",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-14T03:10:05Z",
+          "completed_at": "2026-11-14T03:10:06Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-14T03:10:06Z",
+          "completed_at": "2026-11-14T03:10:22Z"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-14T03:10:22Z",
+          "completed_at": "2026-11-14T03:10:31Z"
+        },
+        {
+          "name": "必须完整15套全部通过才发布，逐分包回下载核验",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-11-14T03:10:31Z",
+          "completed_at": "2026-11-14T03:15:41Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-11-14T03:15:41Z",
+          "completed_at": "2026-11-14T03:15:42Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-11-14T03:15:42Z",
+          "completed_at": "2026-11-14T03:15:42Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-14T03:15:42Z",
+          "completed_at": "2026-11-14T03:15:43Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/AlienCodes/university-entrance-examination/check-runs/132310621560",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 1000008483,
+      "runner_name": "GitHub Actions 1000008483",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
