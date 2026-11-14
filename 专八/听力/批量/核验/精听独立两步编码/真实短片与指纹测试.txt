@@ -1,0 +1,65 @@
+import sys,importlib.util,json,copy,hashlib,shutil,subprocess,types,ast
+from pathlib import Path
+import numpy as np,soundfile as sf
+ROOT=Path('/workspace/tem8-project');HERE=ROOT/'专八/听力/批量/tools';OUT=HERE.parent/'核验/精听独立两步编码';TMP=Path('/workspace/tem8-intensive-two-step');TMP.mkdir(exist_ok=True);sys.path.insert(0,str(HERE))
+def load(name,path):
+ s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);sys.modules[name]=m;s.loader.exec_module(m);return m
+old=load('original_engine_for_codec_test',HERE/'精听.py');W=load('two_stage_adapter_for_codec_test',HERE/'精听两步编码.py');new=W.E
+sha=old.sha
+before={str(p.relative_to(ROOT)):sha(p) for p in [HERE/'精听.py',HERE/'精听数据.py',HERE/'图片时钟核验.py',HERE/'发布汇集.py']}
+assert before['专八/听力/批量/tools/精听.py']=='02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df'
+# Wrapper replaces only the two intended function slots; all stage and verification source is original.
+assert new.encode is W.encode and new.fingerprint is W.fingerprint
+assert old.verify.__code__.co_code==new.verify.__code__.co_code and old.main.__code__.co_code==new.main.__code__.co_code
+# Fingerprint is bound to both original engine fp and the actual adapter bytes.
+basefp=W.BASE_FINGERPRINT;origsha=new.sha;W.BASE_FINGERPRINT=lambda *a:'a'*64
+fp=W.fingerprint(None,None,None);W.BASE_FINGERPRINT=lambda *a:'b'*64;assert W.fingerprint(None,None,None)!=fp
+W.BASE_FINGERPRINT=lambda *a:'a'*64
+new.sha=lambda p:'1'*64 if Path(p)==Path(W.__file__) else origsha(p);assert W.fingerprint(None,None,None)!=fp
+new.sha=origsha;W.BASE_FINGERPRINT=basefp
+# Encoding fixture: actual approved 2022 PNGs and source PCM. No new source/semantic approval.
+bundle=Path('/workspace/tem8-online-review-late-second/2022-A');reg=json.loads((HERE.parent/'审核登记.json').read_text())['entries']['intensive:2022-A'];approved=set(reg['shots'].values())
+from PIL import Image
+pool=[]
+for n in ['screen042','screen043','screen070','screen071']:
+ p=bundle/'shots'/(n+'.png');assert sha(p) in approved and Image.open(p).size==(3840,2160);pool.append({'file':str(p),'sha256':sha(p)})
+source=Path('/workspace/tem8-2022-complete-prep/原音.wav');sr=sf.info(source).samplerate;assert sr==44100
+ref,_=sf.read(source,start=100*sr,frames=round(6.3*sr),dtype='float32',always_2d=True);channels=ref.shape[1];assert channels==2
+y=np.concatenate([np.zeros((round(1.5*sr),channels),np.float32),ref,np.zeros((round(2.2*sr),channels),np.float32)]);assert len(y)==10*sr
+fr=[[0,'screen001'],[75,'screen002'],[150,'screen003'],[225,'screen004']];records=[];real_input=HERE.parent/'精听数据/2022-A.json'
+for name,e in [('old-E',old),('new-adapter',new)]:
+ out=TMP/name;out.mkdir(exist_ok=True)
+ for directory in ['data','tools']:shutil.copytree(bundle/'工作记录'/directory,out/directory,dirs_exist_ok=True)
+ (out/'shots').mkdir(exist_ok=True);(out/'audio').mkdir(exist_ok=True)
+ for i,row in enumerate(pool,1):
+  p=out/'shots'/f'screen{i:03d}.png'
+  if not p.exists():p.symlink_to(row['file'])
+ sf.write(out/'audio/native.wav',y,sr,subtype='FLOAT');src=out/'source.wav'
+ if not src.exists():src.symlink_to(source)
+ e.dump(out/'states.json',fr);e.dump(out/'prepared.json',{'draft':False,'input_sha256':sha(real_input),'manual_splits':{}})
+ p=json.loads((out/'data/vocab.json').read_text())['passages'][0]
+ tm={'file':'native.wav','audio_sha256':sha(out/'audio/native.wav'),'source_sha256':sha(source),'duration':10.0,'sample_rate':sr,'channels':channels,'aac_bitrate':'192k','window':[100,106.3],'kept_intervals':[[100,106.3]],'compressed_gaps':[],'protected_source_intervals':[],'sentences':[{'end':7.8}]}
+ m=e.engine(out)
+ # Four-screen time fixture only; no paragraph/layout rendering or whole-unit timing is asserted.
+ m.screens=lambda p:[None]*4;e.states=lambda *a:fr
+ e.audio_check(out,tm)
+ e.dump(out/'screens.json',{'fingerprint':e.fingerprint(m,p,tm),'problems':[],'shots':[{'file':f'screen{i:03d}.png','sha256':sha(out/'shots'/f'screen{i:03d}.png')} for i in range(1,5)]})
+ e.approve(m,p,tm,out,'Technical codec fixture only; approved existing PNG bytes, not a new whole-unit source approval.')
+ e.encode(m,p,tm,out,real_input)
+ mp4=out/m.video_name(p);verification=json.loads((out/'verification.json').read_text());assert verification['ok'] and all(x['ok'] for x in verification['checks'])
+ md5=subprocess.check_output(['ffmpeg','-v','error','-i',str(mp4),'-map','0:v:0','-an','-c:v','rawvideo','-pix_fmt','yuv420p','-f','framemd5','-']).decode();rows=[x for x in md5.splitlines() if x and not x.startswith('#')];assert len(rows)==300
+ vcl=subprocess.check_output(['ffmpeg','-v','error','-i',str(mp4),'-map','0:v:0','-c:v','copy','-bsf:v','filter_units=pass_types=1|5','-f','h264','-'])
+ pcm=subprocess.check_output(['ffmpeg','-v','error','-i',str(mp4),'-map','0:a:0','-f','f32le','-'])
+ packets=json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_packets','-show_entries','packet=pts,dts,duration','-of','json',str(mp4)]))['packets'];assert len(packets)==300
+ stream=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-of','json',str(mp4)]))['streams']
+ record={'name':name,'mp4':str(mp4),'mp4_sha256':sha(mp4),'all_300_YUV_frame_md5':rows,'VCL_sha256':hashlib.sha256(vcl).hexdigest(),'AAC_decoded_PCM_sha256':hashlib.sha256(pcm).hexdigest(),'video_packets':packets,'streams':stream,'original_E_verify':verification,'meta':json.loads((out/'meta.json').read_text()),'audio_precheck':json.loads((out/'audio-precheck.json').read_text())}
+ if name=='new-adapter':record['two_stage_proof']=json.loads((out/'two-stage-encoding.json').read_text())
+ records.append(record);print('ACTUAL_PASS',name,flush=True)
+a,b=records;assert a['all_300_YUV_frame_md5']==b['all_300_YUV_frame_md5'];assert a['VCL_sha256']==b['VCL_sha256'];assert a['video_packets']==b['video_packets'];assert a['AAC_decoded_PCM_sha256']==b['AAC_decoded_PCM_sha256']
+for r in records:
+ au=next(x for x in r['streams'] if x['codec_type']=='audio');assert int(au['sample_rate'])==44100 and au['channels']==2
+ assert r['meta']['kind']=='text' and r['meta']['label']==r['meta']['mp4']
+assert before=={f:sha(ROOT/f) for f in before}
+proof=b['two_stage_proof'];required=['schema','id','adapter_sha256','mp4_sha256','prepared_pcm_sha256','source_sha256','frames','sample_rate','channels','picture_argv','mux_argv'];assert all(k in proof for k in required) and proof['schema']==1 and proof['mp4_sha256']==b['mp4_sha256']
+report={'status':'PASS','adapter_sha256':sha(HERE/'精听两步编码.py'),'unchanged_original_files':before,'only_runtime_replacements':['encode','fingerprint'],'main_and_verify_code_unchanged':True,'fp_changed_if_original_fp_changes':True,'fp_changed_if_adapter_bytes_change':True,'fixture_scope':'10-second codec/clock/audio fixture using four actual approved PNGs and2022 native source100—106.3s plus1.5s/2.2s silent head/tail. E.states and m.screens only are substituted in diagnostic fixture; E.cached_check/approve/audio_check/fast_clock/verify run unchanged. Not a whole-unit semantic/time approval.','source':{'file':str(source),'sha256':sha(source),'sample_rate':44100,'channels':2,'body_window':[100,106.3]},'PNGs':pool,'all_300_YUV_frames_identical':True,'all_VCL_identical':True,'all_video_PTS_DTS_duration_identical':True,'AAC_decoded_PCM_identical':True,'both_original_E_verify_pass':True,'thresholds_changed':False,'records':records,'script_sha256':sha(OUT/'真实短片与指纹测试.txt')}
+(OUT/'真实短片与指纹测试.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print('PASS',report['adapter_sha256'],flush=True)

@@ -110,8 +110,10 @@ class FullPublication(unittest.TestCase):
                'evidence': '仅用于临时离线测试，不是实际审批或成品'}
         self.registry[ident] = row
         pub.dump(folder / 'evidence/审核登记.json', row)
-        pub.dump(folder / 'evidence/工作记录/verification.json',
-                 {'ok': True, 'draft': False, 'sha256': pub.sha(video)})
+        verification = {'ok': True, 'draft': False, 'sha256': pub.sha(video)}
+        pub.dump(folder / 'evidence/工作记录/verification.json', verification)
+        if ident in pub.INTENSIVE_TWO_STAGE_IDS:
+            self.two_stage_schema_fixture(ident, folder / 'evidence/工作记录', video, verification)
         source = self.prep(int(ident[:4]))
         pub.dump(folder / 'evidence/工作记录/源音频准备.json', source)
         meta = {'schema': 1, 'id': ident, 'year': int(ident[:4]), 'kind': 'intensive', 'mp4': name,
@@ -125,6 +127,57 @@ class FullPublication(unittest.TestCase):
         pub.dump(folder / 'meta.json', meta)
         pub.validate_stage(folder, 'intensive', ident, fp)
         return meta
+
+    def two_stage_schema_fixture(self, ident, work, video, report):
+        """完整结构夹具，全部写临时目录；不代表真实PCM/媒体检验或任何生产审批。"""
+        sample_rate, channels, duration, frames = 44100, 2, 10.0, 300
+        input_sha = pub.hash_json({'offline-schema-fixture': ident})
+        pcm_sha, source_sha = 'd' * 64, 'c' * 64
+        adapter_sha = pub.sha(HERE / '精听两步编码.py')
+        base_fingerprint = pub.hash_json({'test-only-base': ident})
+        fingerprint = pub.hash_json({'base_fingerprint': base_fingerprint,
+                                    'two_step_adapter_sha256': adapter_sha})
+        tm = {'file': 'TEST-ONLY-native.wav', 'duration': duration,
+              'sample_rate': sample_rate, 'channels': channels,
+              'audio_sha256': pcm_sha, 'source_sha256': source_sha,
+              'window': [100, 106.3],
+              'protected_source_intervals': [[102, 103]] if ident == '2022-A' else []}
+        picture_file = str(work / 'video-only-two-step.mp4')
+        picture = ['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', str(work / 'concat.txt'),
+                   '-vf', 'format=yuv420p,fps=30:start_time=0:round=near', '-fps_mode', 'cfr', '-r', '30',
+                   '-frames:v', str(frames), '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'stillimage',
+                   '-crf', '18', '-threads', '2', '-pix_fmt', 'yuv420p', '-g', '900', '-x264-params', 'scenecut=0',
+                   '-an', '-t', f'{frames / 30:.9f}', '-movflags', '+faststart', picture_file]
+        mux = ['ffmpeg', '-y', '-v', 'error', '-i', picture_file, '-i', str(work / 'audio' / tm['file']),
+               '-map', '0:v:0', '-map', '1:a:0', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k',
+               '-video_track_timescale', '15360', '-movie_timescale', str(sample_rate), '-movflags', '+faststart', str(video)]
+        checks = ['图片时钟全状态首尾及邻帧', '4K 16:9', '30帧恒定/帧数', '声画等长', '原采样率与声道',
+                  '原声逐样本核对', '片头1.5秒静音', '片尾至少2秒静音',
+                  '逐屏画面与截图一致（每屏中间一帧）', '成品附件大小']
+        if tm['protected_source_intervals']:
+            checks.append('2022窗口内低电平信号保护段完整保留')
+        report.update(id=ident, fingerprint=fingerprint, duration=duration, source_sha256=source_sha,
+                      checks=[{'item': item, 'ok': True, 'detail': 'OFFLINE SCHEMA FIXTURE ONLY'} for item in checks])
+        records = {
+            'verification.json': report,
+            'audio/timings.json': {'cet4_male': {ident: tm}},
+            'prepared.json': {'draft': False, 'input_sha256': input_sha, 'test_fixture_only': True},
+            'audio-precheck.json': {'ok': True, 'raw_exact_before_encoding': True,
+                                    'audio_sha256': pcm_sha, 'source_sha256': source_sha,
+                                    'sample_rate': sample_rate, 'channels': channels, 'test_fixture_only': True},
+            'meta.json': {'id': ident, 'kind': 'text', 'mp4': video.name,
+                          'mp4_sha256': pub.sha(video), '原音_sha256': source_sha,
+                          'input_sha256': input_sha, 'fingerprint': fingerprint, 'test_fixture_only': True},
+            'two-stage-encoding.json': {
+                'schema': 1, 'id': ident, 'adapter_sha256': adapter_sha,
+                'original_engine_sha256': pub.sha(HERE / '精听.py'),
+                'base_fingerprint': base_fingerprint, 'fingerprint': fingerprint,
+                'prepared_pcm_sha256': pcm_sha, 'source_sha256': source_sha,
+                'mp4_sha256': pub.sha(video), 'sample_rate': sample_rate, 'channels': channels,
+                'frames': frames, 'aac_bitrate': '192k', 'picture_argv': picture, 'mux_argv': mux,
+                'test_fixture_only': True}}
+        for name, value in records.items():
+            pub.dump(work / name, value)
 
     def full(self, year):
         year = m.year_id(year)

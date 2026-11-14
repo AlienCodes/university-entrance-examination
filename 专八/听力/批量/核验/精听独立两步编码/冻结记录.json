@@ -1,0 +1,49 @@
+{
+  "status": "FROZEN_short_codec_tests_passed_online_full_render_still_required",
+  "adapter_file": "专八/听力/批量/tools/精听两步编码.py",
+  "adapter_sha256": "af662afa2776fbb00576c130753e453ac490a53ed9586da84684cc303fc41b24",
+  "delegated_entry": "E.main() with only E.encode/E.fingerprint replaced in this process",
+  "no_ID_hardcoding": true,
+  "original_core_SHA_unchanged": {
+    "专八/听力/批量/tools/精听.py": "02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df",
+    "专八/听力/批量/tools/精听数据.py": "11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e",
+    "专八/听力/批量/tools/图片时钟核验.py": "824e3ce562b7de13193493e0273f56ba50fb193ddb51f6b857b266851f10c491",
+    "专八/听力/批量/tools/发布汇集.py": "049735dce3d1ed6f3d9e10b596b5979d1f2f250618424fb046bdb52d3ec2cf9e"
+  },
+  "proof_schema": {
+    "file": "work/two-stage-encoding.json",
+    "schema": 1,
+    "required_fields": [
+      "id",
+      "adapter_sha256",
+      "mp4_sha256",
+      "prepared_pcm_sha256",
+      "source_sha256",
+      "frames",
+      "sample_rate",
+      "channels",
+      "picture_argv",
+      "mux_argv"
+    ]
+  },
+  "actual_short_tests": {
+    "seconds": 10,
+    "frames": 300,
+    "resolution": [
+      3840,
+      2160
+    ],
+    "native_sample_rate": 44100,
+    "channels": 2,
+    "all_YUV_VCL_video_PTS_and_decoded_AAC_PCM_equal": true,
+    "original_E_verify_both_pass": true,
+    "FP_original_code_change_rejected": true,
+    "FP_adapter_code_change_rejected": true,
+    "meta_stage_interface_preserved": true
+  },
+  "proofs": {
+    "真实短片与指纹测试.json": "b6c5afe5b66f671741eb9c04ba22df449ab2345215fe1c32c07ca9cb417efa22",
+    "真实短片与指纹测试.txt": "2a62f535c39f7c5de2a097bd6b06b43b9095ce187e7b6b646a78b666761dc97b"
+  },
+  "scope": "Generic adapter; production ID approval and dependency scoping belong to root. No full local production rendering or workflow dispatch. Technical fixture substitutions are explicitly recorded in the test JSON."
+}

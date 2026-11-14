@@ -56,6 +56,16 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
     },
 }
 PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '专八/听力/批量/tools/发布汇集.py': {
+        'sha256': 'cca813ac3c0d2b1a3be30e96981d925825490b52ea0e554fcc5ad1775f192e90',
+        'audio': False, 'video': True,
+        'reason': '只读原音成品proof与发布汇集；新validate_two_stage_proof只经read_work读取JSON、哈希并断言真实argv和原E完整检查项，ffmpeg/-c:v/.mp4字面串仅用于核验，不执行媒体编码。原gh/git子进程与发布函数AST未改变；真正生产仍在原E/独立适配器。本精确SHA只处理静态字符串误判，不豁免音频/TTS、未知路径、改字节或未审核成品。',
+    },
+    '专八/听力/批量/tools/精听两步编码.py': {
+        'sha256': 'af662afa2776fbb00576c130753e453ac490a53ed9586da84684cc303fc41b24',
+        'audio': False, 'video': True,
+        'reason': '用户要求专八native原音；独立入口只在本进程替换encode/fingerprint，保留原E.validate/cached_check/截图审批/精确图片时钟及原E.verify。已SHA核定FLOAT PCM保持原采样率/声道；先-an编码画面，再copy视频并从原PCM单次AAC，禁止-ar/-ac/-af/-shortest及增益归一化。指纹同时绑定原引擎与此适配器完整SHA，成品仍独立核原声SNR/增益/秒级电平、帧数及全屏像素。不是TTS；本登记不代替外部生产ID审批，也不把10秒短片视为完整单元通过。',
+    },
     '专八/听力/批量/tools/整套精听.py': {
         'sha256': '642b53fb90087491845d24811ea7e32c344ecc7d69f0d6bed1d88cafe50c6ac0',
         'audio': False, 'video': True,

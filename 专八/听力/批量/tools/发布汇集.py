@@ -36,6 +36,8 @@ DATE = (2026, 11, 13, 0, 0, 0)
 CACHE_TAG = 'tem8-listening-render-cache-2009-2024'
 REVIEW_TAG = 'tem8-listening-review-2009-2024'
 REPO = os.getenv('GITHUB_REPOSITORY', 'AlienCodes/university-entrance-examination')
+# 仅恢复这两条中断任务；已成功的另外43条保留原指纹和原成品。
+INTENSIVE_TWO_STAGE_IDS = frozenset({'2022-A', '2024-A'})
 
 
 def sha(path):
@@ -124,7 +126,7 @@ def validate_source_preparation(prep, year, canonical_sha):
                          **({'origin':r['origin']} if 'origin' in r else {})} for r in actual]}
 
 
-def dependencies(kind):
+def dependencies(kind, ident=None):
     paths = [HERE / '原音准备.py', ROOT / 'tools/题目间隔.py',
              ROOT / '.github/actions/cet6-chalk-env/action.yml', ROOT / '.github/cet6-render-requirements.txt',
              ROOT / '.github/workflows/render-tem8-history.yml']
@@ -138,6 +140,8 @@ def dependencies(kind):
         bases = [ROOT / '专八/tools', ROOT / '四级/tools', ROOT / '六级/tools',
                  ROOT / '中考/tools/画面核查', ROOT / 'tools/video']
         paths += [ROOT / 'tools/text_rules.py']
+        if str(ident) in INTENSIVE_TWO_STAGE_IDS:
+            paths += [HERE / '精听两步编码.py', ROOT / '.github/workflows/render-tem8-intensive-two-stage.yml']
     extensions = {'.py', '.css', '.json', '.txt', '.woff', '.woff2', '.ttf', '.otf', '.svg'}
     # 仅跟踪仓库中的依赖；不将流水线临时JSON、缓存或pycache纳入指纹。
     tracked = subprocess.check_output(['git', 'ls-files', '-z', '--', *[relative(b) for b in bases]], cwd=ROOT).decode().split('\0')
@@ -164,7 +168,7 @@ def payload(kind, ident):
         assert p.is_file(), '缺少输入：' + str(p)
         value = read(p)
         assert not value.get('待核'), '输入有待核项：' + str(p)
-    dep = dependencies(kind)
+    dep = dependencies(kind, ident)
     assert all(p.is_file() for p in dep), '渲染依赖未完整检出：' + str([relative(p) for p in dep if not p.is_file()][:10])
     result={'kind': kind, 'id': str(ident), 'inputs': {relative(p): sha(p) for p in paths},
             'render_sources': {relative(p): sha(p) for p in dep}}
@@ -281,6 +285,58 @@ def cache_pairs(rel, kind, ident, fp):
     return pairs
 
 
+def validate_two_stage_proof(ident, read_work):
+    """两条恢复成品须绑定原PCM、原严检和实际无音轨编码/单次AAC命令。"""
+    if str(ident) not in INTENSIVE_TWO_STAGE_IDS:
+        return None
+    import math
+    proof = read_work('two-stage-encoding.json')
+    tm = read_work('audio/timings.json')['cet4_male'][str(ident)]
+    original = read_work('meta.json'); report = read_work('verification.json')
+    prepared = read_work('prepared.json'); audio = read_work('audio-precheck.json')
+    assert proof['schema'] == 1 and proof['id'] == str(ident) == original['id'] == report['id']
+    assert proof['adapter_sha256'] == sha(HERE / '精听两步编码.py')
+    assert proof['original_engine_sha256'] == sha(HERE / '精听.py')
+    assert proof['fingerprint'] == original['fingerprint'] == report['fingerprint'] == hash_json({
+        'base_fingerprint': proof['base_fingerprint'], 'two_step_adapter_sha256': proof['adapter_sha256']})
+    assert prepared['draft'] is False and prepared['input_sha256'] == original['input_sha256']
+    assert original['kind'] == 'text' and report['ok'] is True and report['draft'] is False
+    checks = ['图片时钟全状态首尾及邻帧', '4K 16:9', '30帧恒定/帧数', '声画等长', '原采样率与声道',
+              '原声逐样本核对', '片头1.5秒静音', '片尾至少2秒静音',
+              '逐屏画面与截图一致（每屏中间一帧）', '成品附件大小']
+    if any(a < tm['window'][1] and b > tm['window'][0] for a, b in tm.get('protected_source_intervals', [])):
+        checks.append('2022窗口内低电平信号保护段完整保留')
+    assert Counter(c['item'] for c in report['checks']) == Counter(checks), '原成品严检项目缺失或重复'
+    assert all(check['ok'] is True for check in report['checks'])
+    assert proof['mp4_sha256'] == original['mp4_sha256'] == report['sha256']
+    assert proof['source_sha256'] == tm['source_sha256'] == original['原音_sha256'] == report['source_sha256'] == audio['source_sha256']
+    assert proof['prepared_pcm_sha256'] == tm['audio_sha256'] == audio['audio_sha256']
+    assert audio['ok'] is True and audio['raw_exact_before_encoding'] is True
+    assert proof['sample_rate'] == tm['sample_rate'] == audio['sample_rate']
+    assert proof['channels'] == tm['channels'] == audio['channels']
+    frames = round(tm['duration'] * 30)
+    assert proof['frames'] == frames and report['duration'] == tm['duration']
+    assert proof['aac_bitrate'] == tm.get('aac_bitrate', '192k')
+    picture, mux = proof['picture_argv'], proof['mux_argv']
+    # 完整白名单检查，杜绝追加音量/重采样/变速选项或二次AAC混入。
+    assert picture[:5] == ['ffmpeg', '-y', '-v', 'error', '-f'] and picture[5] == 'concat'
+    assert len(picture) == 40 and picture[6:9] == ['-safe', '0', '-i']
+    assert Path(picture[9]).name == 'concat.txt'
+    assert picture[10:27] == ['-vf', 'format=yuv420p,fps=30:start_time=0:round=near', '-fps_mode', 'cfr',
+        '-r', '30', '-frames:v', str(frames), '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'stillimage', '-crf', '18', '-threads']
+    assert picture[27].isdigit() and 1 <= int(picture[27]) <= 8
+    assert picture[28:-1] == ['-pix_fmt', 'yuv420p', '-g', '900', '-x264-params', 'scenecut=0',
+        '-an', '-t', f'{frames / 30:.9f}', '-movflags', '+faststart']
+    assert Path(picture[-1]).name == 'video-only-two-step.mp4'
+    assert mux[:5] == ['ffmpeg', '-y', '-v', 'error', '-i'] and mux[5] == picture[-1] and mux[6] == '-i'
+    assert Path(mux[7]).name == Path(tm['file']).name
+    assert mux[8:-1] == ['-map', '0:v:0', '-map', '1:a:0', '-c:v', 'copy', '-c:a', 'aac',
+        '-b:a', tm.get('aac_bitrate', '192k'), '-video_track_timescale', '15360',
+        '-movie_timescale', str(math.lcm(tm['sample_rate'], 30)), '-movflags', '+faststart']
+    assert Path(mux[-1]).name == original['mp4']
+    return proof
+
+
 def cached_ready(rel, kind, ident, fp):
     have = {a['name']: a for a in rel['assets']}
     for video, ev in cache_pairs(rel, kind, ident, fp):
@@ -304,8 +360,11 @@ def cached_ready(rel, kind, ident, fp):
                     else: assert report.get('ok') is True and report.get('draft') is False and report['sha256'] == m['mp4_sha256']
                     source = json.loads(z.read('evidence/工作记录/源音频准备.json'))
                     assert m['source_record'] == validate_source_preparation(source, int(ident[:4]), m['source_sha256'])
+                    if kind == 'intensive':
+                        proof = validate_two_stage_proof(ident, lambda n: json.loads(z.read('evidence/工作记录/' + n)))
+                        if proof: assert proof['mp4_sha256'] == m['mp4_sha256'] and proof['source_sha256'] == m['source_sha256']
             return True
-        except (AssertionError, KeyError, zipfile.BadZipFile, subprocess.CalledProcessError):
+        except (AssertionError, KeyError, FileNotFoundError, zipfile.BadZipFile, subprocess.CalledProcessError):
             continue
     return False
 
@@ -391,6 +450,7 @@ def stage(kind, ident, work, out):
         assert original_meta['kind'] == 'text' and original_meta['id'] == ident
         assert report.get('ok') is True and report.get('draft') is False
         name = original_meta['mp4']; expected = original_meta['mp4_sha256']; source_sha = original_meta['原音_sha256']
+        validate_two_stage_proof(ident, lambda n: read(work / n))
     p = work / name
     source_record = validate_source_preparation(read(work / '源音频准备.json'), int(ident[:4]), source_sha)
     assert Path(name).name == name, '中文成品名必须是单个文件名'
@@ -439,6 +499,9 @@ def validate_stage(folder, kind, ident, fingerprint):
     assert (r.get('问题') == [] and r.get('原音模式') is True and r['成品sha256'] == m['mp4_sha256']) if kind == 'exam' else (r.get('ok') is True and r.get('draft') is False and r['sha256'] == m['mp4_sha256'])
     source = read(folder / 'evidence/工作记录/源音频准备.json')
     assert m['source_record'] == validate_source_preparation(source, int(str(ident)[:4]), m['source_sha256'])
+    if kind == 'intensive':
+        proof = validate_two_stage_proof(ident, lambda n: read(folder / 'evidence/工作记录' / n))
+        if proof: assert proof['mp4_sha256'] == m['mp4_sha256'] and proof['source_sha256'] == m['source_sha256']
     return m
 
 

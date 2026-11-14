@@ -1,0 +1,631 @@
+{
+  "status": "PASS",
+  "publisher_sha256": "cca813ac3c0d2b1a3be30e96981d925825490b52ea0e554fcc5ad1775f192e90",
+  "adapter_sha256": "af662afa2776fbb00576c130753e453ac490a53ed9586da84684cc303fc41b24",
+  "tested_function": "P.validate_two_stage_proof(ident, read_work)",
+  "positive_real_proof_sha256": "9d4fe66f6d0f868f366d3e8db6fe4a1e491a79484ac2e887df761f8be9fb2551",
+  "positive_real_MP4_sha256": "f8b12ad174cbe083618d8e19ec76ae295c9a3bc47de3d43753619e4e424e777f",
+  "positive_real_PCM_sha256": "ca930725de6637e433549fb2730114563c50c47cf1b507195b9abb2cb5017613",
+  "positive_real_probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "width": 3840,
+        "height": 2160,
+        "coded_width": 3840,
+        "coded_height": 2160,
+        "closed_captions": 0,
+        "film_grain": 0,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 51,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 153600,
+        "duration": "10.000000",
+        "bit_rate": "355256",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "300",
+        "extradata_size": 45,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "vendor_id": "[0][0][0][0]",
+          "encoder": "Lavc61.19.101 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "sample_fmt": "fltp",
+        "sample_rate": "44100",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/44100",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 441000,
+        "duration": "10.000000",
+        "bit_rate": "124107",
+        "nb_frames": "432",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler",
+          "vendor_id": "[0][0][0][0]"
+        }
+      }
+    ]
+  },
+  "fixture_timing": {
+    "cet4_male": {
+      "2022-A": {
+        "file": "native.wav",
+        "audio_sha256": "ca930725de6637e433549fb2730114563c50c47cf1b507195b9abb2cb5017613",
+        "source_sha256": "cc2bcead3fcfaf404840caa83e7a98efb7de446415388bd0fcc4803071e827a9",
+        "duration": 10.0,
+        "sample_rate": 44100,
+        "channels": 2,
+        "aac_bitrate": "192k",
+        "window": [
+          100,
+          106.3
+        ],
+        "kept_intervals": [
+          [
+            100,
+            106.3
+          ]
+        ],
+        "compressed_gaps": [],
+        "protected_source_intervals": [],
+        "sentences": [
+          {
+            "end": 7.8
+          }
+        ]
+      }
+    }
+  },
+  "cases": [
+    {
+      "case": "真实10秒4K原PCM与实际ffprobe相符的完整proof",
+      "expected": "accept",
+      "actual": "accept",
+      "passed": true,
+      "reason": "accepted"
+    },
+    {
+      "case": "篡改proof.id",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.adapter_sha256",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.original_engine_sha256",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.fingerprint",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.base_fingerprint",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.prepared_pcm_sha256",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.mp4_sha256",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.source_sha256",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.frames",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.sample_rate",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.channels",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改proof.aac_bitrate",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改meta原音SHA",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改meta成品SHA",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改原严检为未通过",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改prepared为草稿",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改audio原样登记",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改tm时长",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "篡改原核验时长",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-vf改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-c:v改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-preset改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-crf改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-g改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-x264-params改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-frames:v改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture参数-t改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux参数-c:v改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux参数-c:a改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux参数-b:a改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux参数-movie_timescale改变",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux追加-af volume=0.5",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux追加-ar 48000",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux追加-ac 1",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux追加-af loudnorm",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux追加-shortest",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "mux追加-c:a aac",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "picture追加第二vf",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "global ok为真但checks为空",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "checks字段被删除",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "KeyError: 'checks'"
+    },
+    {
+      "case": "额外未知检查即使ok为真",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "重复原生采样率项目",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "长度仍10但重复native替换原声项",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "global ok为真但原声项失败",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "原声项数字1不能冒充True",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "删除固定严检项:图片时钟全状态首尾及邻帧",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:4K 16:9",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:30帧恒定/帧数",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:声画等长",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:原采样率与声道",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:原声逐样本核对",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:片头1.5秒静音",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:片尾至少2秒静音",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:逐屏画面与截图一致（每屏中间一帧）",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "删除固定严检项:成品附件大小",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "保护区间有交集且11项唯一完整通过",
+      "expected": "accept",
+      "actual": "accept",
+      "passed": true,
+      "reason": "accepted"
+    },
+    {
+      "case": "保护区间有交集但缺保护检查",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "保护区间有交集但global真保护失败",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: "
+    },
+    {
+      "case": "保护检查重复不能补数量",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "有保护检查但删native",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "有保护检查但删原声核对",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "有保护检查但删图片时钟",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "无交集却伪加保护检查",
+      "expected": "reject",
+      "actual": "reject",
+      "passed": true,
+      "reason": "AssertionError: 原成品严检项目缺失或重复"
+    },
+    {
+      "case": "仅贴窗口左边界不算交集",
+      "expected": "accept",
+      "actual": "accept",
+      "passed": true,
+      "reason": "accepted"
+    },
+    {
+      "case": "仅贴窗口右边界不算交集",
+      "expected": "accept",
+      "actual": "accept",
+      "passed": true,
+      "reason": "accepted"
+    },
+    {
+      "case": "其余43段不读取新proof",
+      "expected": "ignore",
+      "actual": "ignore",
+      "passed": true
+    }
+  ],
+  "case_count": 67,
+  "production_files_modified": false,
+  "media_rendered": false,
+  "scope": "JSON proof cross-binding, exact complete/unique check Counter, protection-intersection branch and strict argv whitelist; genuine positive independently checks actual PCM/MP4 SHA and real ffprobe. The added protected-window branch is a synthetic contract fixture, not a new source or semantic approval. Existing stage/cache byte-level checks remain separate."
+}

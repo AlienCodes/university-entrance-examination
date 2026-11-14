@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "status": "pass",
+  "checked_at_utc": "2026-11-14T02:45:07.382296+00:00",
+  "workflow": {
+    "path": ".github/workflows/render-tem8-intensive-two-stage.yml",
+    "sha256": "455dfd870ecab0560a6b9195d4f89990ea9a9f7cfd288a5d5052609a923967e7"
+  },
+  "control": {
+    "path": ".github/tem8-listening-intensive-two-stage.json",
+    "sha256": "82bfcc868edffff9d9b5cdd81d29e8aef46f1ad22872fc97bac1d2aa50fa39f5"
+  },
+  "test_script_sha256": "6b71635232027d917c2e315fccca3aff033ca2cbd9189487c46503fe8b04785e",
+  "publisher_at_test_sha256": "cca813ac3c0d2b1a3be30e96981d925825490b52ea0e554fcc5ad1775f192e90",
+  "yaml_parser": {
+    "package": "PyYAML",
+    "version": "6.0.3"
+  },
+  "static_checks": [
+    "YAML与全部Shell语法",
+    "内嵌Python AST",
+    "精确分支及control push路径",
+    "仅2022-A/2024-A且三个目标字段一致",
+    "每run独立concurrency且不取消",
+    "max20/fail-fast=false",
+    "NLP原固定版本与browser153环境",
+    "无exam分支/旧45冻结依赖/原精听编码入口",
+    "precheck/approve/video/verify四阶段均新两步入口",
+    "原音准备与完整PNG gate、stage/store保留",
+    "Release target guard",
+    "冻结workflow/control测试前后字节不变"
+  ],
+  "positive_cases": [
+    {
+      "case": "两项待制作",
+      "passed": true
+    },
+    {
+      "case": "已缓存一项，仅一项待制作",
+      "passed": true
+    },
+    {
+      "case": "全部已缓存",
+      "passed": true
+    }
+  ],
+  "negative_cases": [
+    {
+      "case": "禁止cache_only=false",
+      "rejected": true
+    },
+    {
+      "case": "禁止render=false",
+      "rejected": true
+    },
+    {
+      "case": "禁止混入考试",
+      "rejected": true
+    },
+    {
+      "case": "禁止缺少一个目标",
+      "rejected": true
+    },
+    {
+      "case": "禁止render_intensive与目标不同",
+      "rejected": true
+    },
+    {
+      "case": "禁止render_targets与目标不同",
+      "rejected": true
+    },
+    {
+      "case": "禁止review阶段",
+      "rejected": true
+    },
+    {
+      "case": "禁止额外matrix目标",
+      "rejected": true
+    },
+    {
+      "case": "禁止matrix重复目标",
+      "rejected": true
+    },
+    {
+      "case": "禁止允许集合扩展到三篇",
+      "rejected": true
+    }
+  ],
+  "gate_and_matrix": "mock；load_control为当前实际发布器函数；不调用真实gate或GitHub",
+  "production_files_modified": false,
+  "network_access": false,
+  "git_commit_or_push": false,
+  "reproduce": "python3 专八/听力/批量/核验/精听独立两步编码/独立工作流校验.py"
+}
