@@ -1,0 +1,36 @@
+{
+  "status": "pass",
+  "negative_cases": [
+    {
+      "case": "wrong target",
+      "rejected": true
+    },
+    {
+      "case": "wrong run_id",
+      "rejected": true
+    },
+    {
+      "case": "wrong producer_commit",
+      "rejected": true
+    },
+    {
+      "case": "wrong payload_sha256",
+      "rejected": true
+    },
+    {
+      "case": "wrong intensive45_projection_sha256",
+      "rejected": true
+    },
+    {
+      "case": "wrong old_POST_never_sent",
+      "rejected": true
+    },
+    {
+      "case": "真实当前2009-A ZIP来源run错误拒绝",
+      "rejected": true,
+      "reason": "2009-A没有来自明确登记producer的当前严格缓存"
+    }
+  ],
+  "positive_real_evidence": "精听复合来源2009-A真实严格核验.json",
+  "scope": "只读/内存反例；没有改实际登记或重试/生成/写Git"
+}

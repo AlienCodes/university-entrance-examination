@@ -1,0 +1,607 @@
+﻿2026-11-14T02:11:52.6132553Z Current runner version: '2.338.2'
+2026-11-14T02:11:52.6151354Z ##[group]Runner Image Provisioner
+2026-11-14T02:11:52.6152054Z Hosted Compute Agent
+2026-11-14T02:11:52.6152511Z Version: 20261103.629
+2026-11-14T02:11:52.6152988Z Commit: 15dbd9ccb5dbf34fae002b6ed1a2670f52df37bc
+2026-11-14T02:11:52.6153804Z Build Date: 2026-11-03T17:26:59Z
+2026-11-14T02:11:52.6154297Z Worker ID: {e76895eb-f131-4dc8-a8b9-3e33f2110c2d}
+2026-11-14T02:11:52.6154823Z Region: us-east-1
+2026-11-14T02:11:52.6155238Z Cloud: AWS
+2026-11-14T02:11:52.6155658Z ##[endgroup]
+2026-11-14T02:11:52.6156716Z ##[group]Operating System
+2026-11-14T02:11:52.6157159Z Ubuntu
+2026-11-14T02:11:52.6157568Z 24.04.5
+2026-11-14T02:11:52.6157955Z LTS
+2026-11-14T02:11:52.6158340Z ##[endgroup]
+2026-11-14T02:11:52.6158732Z ##[group]Runner Image
+2026-11-14T02:11:52.6159170Z Image: ubuntu-24.04
+2026-11-14T02:11:52.6159614Z Version: 20261111.127.1
+2026-11-14T02:11:52.6160673Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261111.127/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-14T02:11:52.6161824Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261111.127
+2026-11-14T02:11:52.6162527Z ##[endgroup]
+2026-11-14T02:11:52.6163771Z ##[group]GITHUB_TOKEN Permissions
+2026-11-14T02:11:52.6165623Z Actions: read
+2026-11-14T02:11:52.6166075Z Contents: write
+2026-11-14T02:11:52.6166480Z Metadata: read
+2026-11-14T02:11:52.6166919Z ##[endgroup]
+2026-11-14T02:11:52.6168578Z Secret source: Actions
+2026-11-14T02:11:52.6169289Z Cache mode: write
+2026-11-14T02:11:52.6169900Z Prepare workflow directory
+2026-11-14T02:11:52.6397414Z Prepare all required actions
+2026-11-14T02:11:52.6435539Z Getting action download info
+2026-11-14T02:11:52.8230829Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-14T02:11:54.7827097Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-14T02:11:55.1247083Z Complete job name: render (intensive, 2024-A, 2024)
+2026-11-14T02:11:55.1938412Z ##[group]Run actions/checkout@v4
+2026-11-14T02:11:55.1939129Z with:
+2026-11-14T02:11:55.1939549Z   sparse-checkout-cone-mode: false
+2026-11-14T02:11:55.1940669Z   sparse-checkout: .github
+专八/听力/批量
+专八/听力/tools
+专八/听力/2025
+专八/听力/原文/tools
+专八/真题/2025年 英语专业八级真题.pdf
+专八/tools
+四级/tools
+六级/tools
+中考/tools/画面核查
+高考听力/精读/tools/本机预览.py
+tools
+!/tools/tts/models/
+
+2026-11-14T02:11:55.1941855Z   repository: AlienCodes/university-entrance-examination
+2026-11-14T02:11:55.1945679Z   token: ***
+2026-11-14T02:11:55.1946125Z   ssh-strict: true
+2026-11-14T02:11:55.1946531Z   ssh-user: git
+2026-11-14T02:11:55.1946985Z   persist-credentials: true
+2026-11-14T02:11:55.1947437Z   clean: true
+2026-11-14T02:11:55.1947842Z   fetch-depth: 1
+2026-11-14T02:11:55.1948279Z   fetch-tags: false
+2026-11-14T02:11:55.1948711Z   show-progress: true
+2026-11-14T02:11:55.1949160Z   lfs: false
+2026-11-14T02:11:55.1949583Z   submodules: false
+2026-11-14T02:11:55.1950015Z   set-safe-directory: true
+2026-11-14T02:11:55.1950634Z   allow-unsafe-pr-checkout: false
+2026-11-14T02:11:55.1951391Z ##[endgroup]
+2026-11-14T02:11:57.8902552Z Syncing repository: AlienCodes/university-entrance-examination
+2026-11-14T02:11:57.8904498Z ##[group]Getting Git version info
+2026-11-14T02:11:57.8905078Z Working directory is '/home/runner/work/university-entrance-examination/university-entrance-examination'
+2026-11-14T02:11:57.8905951Z [command]/usr/bin/git version
+2026-11-14T02:11:58.1485260Z git version 2.56.1
+2026-11-14T02:11:58.1500634Z ##[endgroup]
+2026-11-14T02:11:58.1511252Z Temporarily overriding HOME='/home/runner/work/_temp/34d076f4-244d-4d94-ab33-092cc5a1fa2a' before making global git config changes
+2026-11-14T02:11:58.1512033Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-14T02:11:58.1516312Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/university-entrance-examination/university-entrance-examination
+2026-11-14T02:11:58.1884002Z Deleting the contents of '/home/runner/work/university-entrance-examination/university-entrance-examination'
+2026-11-14T02:11:58.1887520Z ##[group]Initializing the repository
+2026-11-14T02:11:58.1891403Z [command]/usr/bin/git init /home/runner/work/university-entrance-examination/university-entrance-examination
+2026-11-14T02:11:58.2268870Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-14T02:11:58.2269490Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-14T02:11:58.2269948Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-14T02:11:58.2270452Z hint: call:
+2026-11-14T02:11:58.2270672Z hint:
+2026-11-14T02:11:58.2270998Z hint: 	git config --global init.defaultBranch <name>
+2026-11-14T02:11:58.2271416Z hint:
+2026-11-14T02:11:58.2271766Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-14T02:11:58.2272337Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-14T02:11:58.2272884Z hint:
+2026-11-14T02:11:58.2273171Z hint: 	git branch -m <name>
+2026-11-14T02:11:58.2273693Z hint:
+2026-11-14T02:11:58.2274040Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-14T02:11:58.2274672Z Initialized empty Git repository in /home/runner/work/university-entrance-examination/university-entrance-examination/.git/
+2026-11-14T02:11:58.2280770Z [command]/usr/bin/git remote add origin https://github.com/AlienCodes/university-entrance-examination
+2026-11-14T02:11:58.2316087Z ##[endgroup]
+2026-11-14T02:11:58.2316685Z ##[group]Disabling automatic garbage collection
+2026-11-14T02:11:58.2318800Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-14T02:11:58.2340514Z ##[endgroup]
+2026-11-14T02:11:58.2340985Z ##[group]Setting up auth
+2026-11-14T02:11:58.2345393Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-14T02:11:58.2370249Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-14T02:11:58.5965738Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-14T02:11:58.5990076Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-14T02:11:58.6142232Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-14T02:11:58.6166194Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-14T02:11:58.6310053Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-14T02:11:58.6335745Z ##[endgroup]
+2026-11-14T02:11:58.6336199Z ##[group]Fetching the repository
+2026-11-14T02:11:58.6346911Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +18609ae481cc530d041a95c2c61599569cd93bbc:refs/remotes/origin/codex/tem8-listening-2009-2024
+2026-11-14T02:11:59.0293961Z From https://github.com/AlienCodes/university-entrance-examination
+2026-11-14T02:11:59.0294784Z  * [new ref]         18609ae481cc530d041a95c2c61599569cd93bbc -> origin/codex/tem8-listening-2009-2024
+2026-11-14T02:11:59.0297246Z ##[endgroup]
+2026-11-14T02:11:59.0297863Z ##[group]Determining the checkout info
+2026-11-14T02:11:59.0299279Z ##[endgroup]
+2026-11-14T02:11:59.0299821Z ##[group]Setting up sparse checkout
+2026-11-14T02:11:59.0304498Z [command]/usr/bin/git config core.sparseCheckout true
+2026-11-14T02:11:59.0340245Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-11-14T02:11:59.0366675Z .git/info/sparse-checkout
+2026-11-14T02:11:59.0372008Z ##[endgroup]
+2026-11-14T02:11:59.0372579Z ##[group]Checking out the ref
+2026-11-14T02:11:59.0375878Z [command]/usr/bin/git checkout --progress --force -B codex/tem8-listening-2009-2024 refs/remotes/origin/codex/tem8-listening-2009-2024
+2026-11-14T02:12:10.9894166Z Updating files:   0% (1/5054)
+2026-11-14T02:12:10.9907873Z Updating files:   1% (51/5054)
+2026-11-14T02:12:10.9927893Z Updating files:   2% (102/5054)
+2026-11-14T02:12:10.9949432Z Updating files:   3% (152/5054)
+2026-11-14T02:12:11.0050235Z Updating files:   4% (203/5054)
+2026-11-14T02:12:11.0764429Z Updating files:   5% (253/5054)
+2026-11-14T02:12:11.1902309Z Updating files:   5% (267/5054)
+2026-11-14T02:12:11.2065528Z Updating files:   6% (304/5054)
+2026-11-14T02:12:11.2079366Z Updating files:   7% (354/5054)
+2026-11-14T02:12:11.2097746Z Updating files:   8% (405/5054)
+2026-11-14T02:12:11.2112882Z Updating files:   9% (455/5054)
+2026-11-14T02:12:11.2128060Z Updating files:  10% (506/5054)
+2026-11-14T02:12:11.2138508Z Updating files:  11% (556/5054)
+2026-11-14T02:12:11.2153894Z Updating files:  12% (607/5054)
+2026-11-14T02:12:11.2161838Z Updating files:  13% (658/5054)
+2026-11-14T02:12:11.2240403Z Updating files:  14% (708/5054)
+2026-11-14T02:12:11.2374055Z Updating files:  15% (759/5054)
+2026-11-14T02:12:11.2392011Z Updating files:  16% (809/5054)
+2026-11-14T02:12:11.2414296Z Updating files:  17% (860/5054)
+2026-11-14T02:12:11.2435163Z Updating files:  18% (910/5054)
+2026-11-14T02:12:11.2458210Z Updating files:  19% (961/5054)
+2026-11-14T02:12:11.2482300Z Updating files:  20% (1011/5054)
+2026-11-14T02:12:11.2532409Z Updating files:  21% (1062/5054)
+2026-11-14T02:12:11.2601268Z Updating files:  22% (1112/5054)
+2026-11-14T02:12:11.3902128Z Updating files:  23% (1163/5054)
+2026-11-14T02:12:11.3931480Z Updating files:  24% (1213/5054)
+2026-11-14T02:12:11.3967977Z Updating files:  25% (1264/5054)
+2026-11-14T02:12:11.4511597Z Updating files:  26% (1315/5054)
+2026-11-14T02:12:11.4540265Z Updating files:  27% (1365/5054)
+2026-11-14T02:12:11.4580171Z Updating files:  28% (1416/5054)
+2026-11-14T02:12:11.4609577Z Updating files:  29% (1466/5054)
+2026-11-14T02:12:11.4729758Z Updating files:  30% (1517/5054)
+2026-11-14T02:12:11.4744877Z Updating files:  31% (1567/5054)
+2026-11-14T02:12:11.4830382Z Updating files:  32% (1618/5054)
+2026-11-14T02:12:11.4912319Z Updating files:  33% (1668/5054)
+2026-11-14T02:12:11.4964799Z Updating files:  34% (1719/5054)
+2026-11-14T02:12:11.5077552Z Updating files:  35% (1769/5054)
+2026-11-14T02:12:11.5331509Z Updating files:  36% (1820/5054)
+2026-11-14T02:12:11.5373622Z Updating files:  37% (1870/5054)
+2026-11-14T02:12:11.5496867Z Updating files:  38% (1921/5054)
+2026-11-14T02:12:11.5669752Z Updating files:  39% (1972/5054)
+2026-11-14T02:12:11.5749756Z Updating files:  40% (2022/5054)
+2026-11-14T02:12:11.5976294Z Updating files:  41% (2073/5054)
+2026-11-14T02:12:11.6280586Z Updating files:  42% (2123/5054)
+2026-11-14T02:12:11.6358312Z Updating files:  43% (2174/5054)
+2026-11-14T02:12:11.6390542Z Updating files:  44% (2224/5054)
+2026-11-14T02:12:11.6696384Z Updating files:  45% (2275/5054)
+2026-11-14T02:12:11.6733274Z Updating files:  46% (2325/5054)
+2026-11-14T02:12:11.6766883Z Updating files:  47% (2376/5054)
+2026-11-14T02:12:11.6817229Z Updating files:  48% (2426/5054)
+2026-11-14T02:12:11.6920439Z Updating files:  49% (2477/5054)
+2026-11-14T02:12:11.7024795Z Updating files:  50% (2527/5054)
+2026-11-14T02:12:11.7066221Z Updating files:  51% (2578/5054)
+2026-11-14T02:12:11.7098107Z Updating files:  52% (2629/5054)
+2026-11-14T02:12:11.7143583Z Updating files:  53% (2679/5054)
+2026-11-14T02:12:11.7165321Z Updating files:  54% (2730/5054)
+2026-11-14T02:12:11.7272915Z Updating files:  55% (2780/5054)
+2026-11-14T02:12:11.7312851Z Updating files:  56% (2831/5054)
+2026-11-14T02:12:11.7374169Z Updating files:  57% (2881/5054)
+2026-11-14T02:12:11.7423942Z Updating files:  58% (2932/5054)
+2026-11-14T02:12:11.7613900Z Updating files:  59% (2982/5054)
+2026-11-14T02:12:11.7671804Z Updating files:  60% (3033/5054)
+2026-11-14T02:12:11.7950038Z Updating files:  61% (3083/5054)
+2026-11-14T02:12:11.7986517Z Updating files:  62% (3134/5054)
+2026-11-14T02:12:11.8018261Z Updating files:  63% (3185/5054)
+2026-11-14T02:12:11.8048969Z Updating files:  64% (3235/5054)
+2026-11-14T02:12:11.8079603Z Updating files:  65% (3286/5054)
+2026-11-14T02:12:11.8108344Z Updating files:  66% (3336/5054)
+2026-11-14T02:12:11.8139038Z Updating files:  67% (3387/5054)
+2026-11-14T02:12:11.8168029Z Updating files:  68% (3437/5054)
+2026-11-14T02:12:11.8193150Z Updating files:  69% (3488/5054)
+2026-11-14T02:12:11.8223829Z Updating files:  70% (3538/5054)
+2026-11-14T02:12:11.8251553Z Updating files:  71% (3589/5054)
+2026-11-14T02:12:11.8280130Z Updating files:  72% (3639/5054)
+2026-11-14T02:12:11.8310183Z Updating files:  73% (3690/5054)
+2026-11-14T02:12:11.8338411Z Updating files:  74% (3740/5054)
+2026-11-14T02:12:11.8365430Z Updating files:  75% (3791/5054)
+2026-11-14T02:12:11.8382000Z Updating files:  76% (3842/5054)
+2026-11-14T02:12:11.8405771Z Updating files:  77% (3892/5054)
+2026-11-14T02:12:11.8434196Z Updating files:  78% (3943/5054)
+2026-11-14T02:12:11.8460623Z Updating files:  79% (3993/5054)
+2026-11-14T02:12:11.8480430Z Updating files:  80% (4044/5054)
+2026-11-14T02:12:11.8498199Z Updating files:  81% (4094/5054)
+2026-11-14T02:12:11.8515337Z Updating files:  82% (4145/5054)
+2026-11-14T02:12:11.8647149Z Updating files:  83% (4195/5054)
+2026-11-14T02:12:11.8687721Z Updating files:  84% (4246/5054)
+2026-11-14T02:12:11.8806849Z Updating files:  85% (4296/5054)
+2026-11-14T02:12:11.8833905Z Updating files:  86% (4347/5054)
+2026-11-14T02:12:11.8851336Z Updating files:  87% (4397/5054)
+2026-11-14T02:12:11.8870397Z Updating files:  88% (4448/5054)
+2026-11-14T02:12:11.8888553Z Updating files:  89% (4499/5054)
+2026-11-14T02:12:11.8905468Z Updating files:  90% (4549/5054)
+2026-11-14T02:12:11.8922339Z Updating files:  91% (4600/5054)
+2026-11-14T02:12:11.8938568Z Updating files:  92% (4650/5054)
+2026-11-14T02:12:11.8951078Z Updating files:  93% (4701/5054)
+2026-11-14T02:12:11.8990413Z Updating files:  94% (4751/5054)
+2026-11-14T02:12:11.9019566Z Updating files:  95% (4802/5054)
+2026-11-14T02:12:11.9036639Z Updating files:  96% (4852/5054)
+2026-11-14T02:12:11.9090439Z Updating files:  97% (4903/5054)
+2026-11-14T02:12:11.9180429Z Updating files:  98% (4953/5054)
+2026-11-14T02:12:11.9199537Z Updating files:  99% (5004/5054)
+2026-11-14T02:12:11.9199916Z Updating files: 100% (5054/5054)
+2026-11-14T02:12:11.9200264Z Updating files: 100% (5054/5054), done.
+2026-11-14T02:12:11.9337240Z Switched to a new branch 'codex/tem8-listening-2009-2024'
+2026-11-14T02:12:11.9343544Z branch 'codex/tem8-listening-2009-2024' set up to track 'origin/codex/tem8-listening-2009-2024'.
+2026-11-14T02:12:11.9376703Z ##[endgroup]
+2026-11-14T02:12:11.9415711Z [command]/usr/bin/git log -1 --format=%H
+2026-11-14T02:12:11.9437260Z 18609ae481cc530d041a95c2c61599569cd93bbc
+2026-11-14T02:12:11.9728383Z Prepare all required actions
+2026-11-14T02:12:11.9728911Z Getting action download info
+2026-11-14T02:12:12.0391776Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-14T02:12:12.2158499Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-11-14T02:12:12.4857142Z ##[group]Run ./.github/actions/cet6-chalk-env
+2026-11-14T02:12:12.4857483Z with:
+2026-11-14T02:12:12.4857716Z   asr: false
+2026-11-14T02:12:12.4857929Z   browser: 153
+2026-11-14T02:12:12.4858148Z ##[endgroup]
+2026-11-14T02:12:12.4913155Z ##[start-action display=Run actions/setup-python@v5;id=__self.__actions_setup-python]
+2026-11-14T02:12:12.4981318Z ##[group]Run actions/setup-python@v5
+2026-11-14T02:12:12.4981602Z with:
+2026-11-14T02:12:12.4981860Z   python-version: 3.11.15
+2026-11-14T02:12:12.4982126Z   check-latest: false
+2026-11-14T02:12:12.4984325Z   token: ***
+2026-11-14T02:12:12.4984684Z   update-environment: true
+2026-11-14T02:12:12.4984951Z   allow-prereleases: false
+2026-11-14T02:12:12.4985183Z   freethreaded: false
+2026-11-14T02:12:12.4985407Z ##[endgroup]
+2026-11-14T02:12:12.6026622Z ##[group]Installed versions
+2026-11-14T02:12:12.6335301Z Version 3.11.15 was not found in the local cache
+2026-11-14T02:12:12.6798350Z (node:2182) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-14T02:12:12.6799244Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-14T02:12:13.2586011Z Version 3.11.15 is available for downloading
+2026-11-14T02:12:13.2586810Z Download from "https://github.com/actions/python-versions/releases/download/3.11.15-27649667267/python-3.11.15-linux-24.04-x64.tar.gz"
+2026-11-14T02:12:13.8831667Z Extract downloaded archive
+2026-11-14T02:12:13.8926366Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/1083a664-d828-470c-905f-c943090e6a6c -f /home/runner/work/_temp/eeaf493e-1840-4d48-9663-33f370372b4d
+2026-11-14T02:12:15.6184552Z Execute installation script
+2026-11-14T02:12:15.6259458Z Check if Python hostedtoolcache folder exist...
+2026-11-14T02:12:15.6259831Z Create Python 3.11.15 folder
+2026-11-14T02:12:15.6267276Z Copy Python binaries to hostedtoolcache folder
+2026-11-14T02:12:15.8470137Z Create additional symlinks (Required for the UsePythonVersion Azure Pipelines task and the setup-python GitHub Action)
+2026-11-14T02:12:15.8498919Z Upgrading pip...
+2026-11-14T02:12:17.5701264Z Collecting pip
+2026-11-14T02:12:17.6344416Z Downloading pip-26.3-py3-none-any.whl.metadata (4.6 kB)
+2026-11-14T02:12:17.6532791Z Downloading pip-26.3-py3-none-any.whl (2.0 MB)
+2026-11-14T02:12:17.7415543Z ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 23.2 MB/s eta 0:00:00
+2026-11-14T02:12:17.7416048Z 
+2026-11-14T02:12:17.8462874Z Installing collected packages: pip
+2026-11-14T02:12:17.8463349Z   Attempting uninstall: pip
+2026-11-14T02:12:17.8474088Z Found existing installation: pip 24.0
+2026-11-14T02:12:17.8684936Z Uninstalling pip-24.0:
+2026-11-14T02:12:17.8718675Z Successfully uninstalled pip-24.0
+2026-11-14T02:12:18.4209986Z Successfully installed pip-26.3
+2026-11-14T02:12:18.4852604Z Create complete file
+2026-11-14T02:12:18.4883519Z Successfully set up CPython (3.11.15)
+2026-11-14T02:12:18.4884615Z ##[endgroup]
+2026-11-14T02:12:18.4968157Z ##[end-action id=__self.__actions_setup-python;outcome=success;conclusion=success;duration_ms=6005]
+2026-11-14T02:12:18.4970786Z ##[start-action display=准备 /opt/ttsenv、/opt/pw-browsers（与本机同路径）;id=__self.__run]
+2026-11-14T02:12:18.4997802Z ##[group]Run sudo mkdir -p /opt/ttsenv /opt/pw-browsers
+2026-11-14T02:12:18.4998218Z [36;1msudo mkdir -p /opt/ttsenv /opt/pw-browsers[0m
+2026-11-14T02:12:18.4998604Z [36;1msudo chown -R "$(id -u):$(id -g)" /opt/ttsenv /opt/pw-browsers[0m
+2026-11-14T02:12:18.6878185Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-14T02:12:18.6878541Z env:
+2026-11-14T02:12:18.6879035Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.6879483Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:12:18.6879867Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.6880257Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.6880606Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.6881041Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:12:18.6881398Z ##[endgroup]
+2026-11-14T02:12:18.7113723Z ##[end-action id=__self.__run;outcome=success;conclusion=success;duration_ms=214]
+2026-11-14T02:12:18.7116084Z ##[start-action display=恢复 Python 环境（缓存）;id=__self.venv]
+2026-11-14T02:12:18.7592074Z ##[group]Run actions/cache@v4
+2026-11-14T02:12:18.7592366Z with:
+2026-11-14T02:12:18.7592581Z   path: /opt/ttsenv
+2026-11-14T02:12:18.7593033Z   key: cet6-ttsenv-ubuntu24.04-py3.11.15-b7e2ef17c75663aaebaa8bbbf215037ccfce8ccf6f38d6e3173082952b269972
+2026-11-14T02:12:18.7593688Z   enableCrossOsArchive: false
+2026-11-14T02:12:18.7593953Z   fail-on-cache-miss: false
+2026-11-14T02:12:18.7594535Z   lookup-only: false
+2026-11-14T02:12:18.7594818Z   save-always: false
+2026-11-14T02:12:18.7595026Z env:
+2026-11-14T02:12:18.7595308Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.7595788Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:12:18.7596219Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.7596562Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.7596889Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:18.7597253Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:12:18.7597544Z ##[endgroup]
+2026-11-14T02:12:18.8404885Z (node:2254) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-14T02:12:18.8405511Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-14T02:12:18.8938601Z Cache hit for: cet6-ttsenv-ubuntu24.04-py3.11.15-b7e2ef17c75663aaebaa8bbbf215037ccfce8ccf6f38d6e3173082952b269972
+2026-11-14T02:12:18.9040109Z (node:2254) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-14T02:12:19.6950181Z Received 170625657 of 170625657 (100.0%), 218.4 MBs/sec
+2026-11-14T02:12:19.6950823Z Cache Size: ~163 MB (170625657 B)
+2026-11-14T02:12:19.7006024Z [command]/usr/bin/tar -xf /home/runner/work/_temp/67d9737c-6e76-4864-a134-66b1d3ae533b/cache.tzst -P -C /home/runner/work/university-entrance-examination/university-entrance-examination --use-compress-program unzstd
+2026-11-14T02:12:20.3171418Z Cache restored successfully
+2026-11-14T02:12:20.4894628Z Cache restored from key: cet6-ttsenv-ubuntu24.04-py3.11.15-b7e2ef17c75663aaebaa8bbbf215037ccfce8ccf6f38d6e3173082952b269972
+2026-11-14T02:12:20.4999579Z ##[end-action id=__self.venv;outcome=success;conclusion=success;duration_ms=1788]
+2026-11-14T02:12:20.5004760Z ##[start-action display=安装 Python 包（固定版本）;id=__self.__run_2]
+2026-11-14T02:12:20.5013542Z ##[end-action id=__self.__run_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-14T02:12:20.5016023Z ##[start-action display=Playwright 1.56.0 的安装程序（它带的浏览器就是 chromium-1194）;id=__self.__run_3]
+2026-11-14T02:12:20.5031655Z ##[group]Run python -m venv /tmp/pw156 && /tmp/pw156/bin/pip install -q --disable-pip-version-check playwright==1.56.0
+2026-11-14T02:12:20.5032303Z [36;1mpython -m venv /tmp/pw156 && /tmp/pw156/bin/pip install -q --disable-pip-version-check playwright==1.56.0[0m
+2026-11-14T02:12:20.5059652Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-14T02:12:20.5060031Z env:
+2026-11-14T02:12:20.5060323Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:20.5060842Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:12:20.5061299Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:20.5061656Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:20.5062015Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:20.5062388Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:12:20.5062736Z ##[endgroup]
+2026-11-14T02:12:25.6477410Z ##[end-action id=__self.__run_3;outcome=success;conclusion=success;duration_ms=5146]
+2026-11-14T02:12:25.6480422Z ##[start-action display=恢复 Chromium（缓存）;id=__self.chromium]
+2026-11-14T02:12:25.6535708Z ##[group]Run actions/cache@v4
+2026-11-14T02:12:25.6535992Z with:
+2026-11-14T02:12:25.6536273Z   path: /opt/pw-browsers
+2026-11-14T02:12:25.6536535Z   key: pw-chromium-1243-ubuntu24.04-v1
+2026-11-14T02:12:25.6536809Z   enableCrossOsArchive: false
+2026-11-14T02:12:25.6537086Z   fail-on-cache-miss: false
+2026-11-14T02:12:25.6537349Z   lookup-only: false
+2026-11-14T02:12:25.6537633Z   save-always: false
+2026-11-14T02:12:25.6537855Z env:
+2026-11-14T02:12:25.6538104Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:25.6538574Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:12:25.6539108Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:25.6539478Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:25.6539857Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:25.6540251Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:12:25.6540582Z ##[endgroup]
+2026-11-14T02:12:25.7340932Z (node:2319) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-14T02:12:25.7341894Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-14T02:12:25.7821908Z Cache hit for: pw-chromium-1243-ubuntu24.04-v1
+2026-11-14T02:12:25.7895840Z (node:2319) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-14T02:12:26.8157234Z Received 268435456 of 283639622 (94.6%), 256.0 MBs/sec
+2026-11-14T02:12:26.9318087Z Received 283639622 of 283639622 (100.0%), 242.4 MBs/sec
+2026-11-14T02:12:26.9319146Z Cache Size: ~270 MB (283639622 B)
+2026-11-14T02:12:26.9349484Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ada7d238-3220-4c13-9416-338de05d0364/cache.tzst -P -C /home/runner/work/university-entrance-examination/university-entrance-examination --use-compress-program unzstd
+2026-11-14T02:12:27.6850414Z Cache restored successfully
+2026-11-14T02:12:27.6999015Z Cache restored from key: pw-chromium-1243-ubuntu24.04-v1
+2026-11-14T02:12:27.7097622Z ##[end-action id=__self.chromium;outcome=success;conclusion=success;duration_ms=2061]
+2026-11-14T02:12:27.7100228Z ##[start-action display=下载 Chromium 141.0.7390.37（chromium-1194）;id=__self.__run_4]
+2026-11-14T02:12:27.7110660Z ##[end-action id=__self.__run_4;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-14T02:12:27.7113738Z ##[start-action display=下载 Chrome for Testing 153.0.8010.12（chromium-1243，playwright 1.63.0 自带）;id=__self.__run_5]
+2026-11-14T02:12:27.7119093Z ##[end-action id=__self.__run_5;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-14T02:12:27.7121096Z ##[start-action display=系统依赖（Chromium 运行库与字体）+ ffmpeg;id=__self.__run_6]
+2026-11-14T02:12:27.7182786Z ##[group]Run sudo /tmp/pw156/bin/python -m playwright install-deps chromium > /tmp/install-deps.log 2>&1 || { tail -50 /tmp/install-deps.log; exit 1; }
+2026-11-14T02:12:27.7183860Z [36;1msudo /tmp/pw156/bin/python -m playwright install-deps chromium > /tmp/install-deps.log 2>&1 || { tail -50 /tmp/install-deps.log; exit 1; }[0m
+2026-11-14T02:12:27.7184675Z [36;1msudo apt-get install -y -q --no-install-recommends ffmpeg > /tmp/apt-ffmpeg.log 2>&1 || { tail -50 /tmp/apt-ffmpeg.log; exit 1; }[0m
+2026-11-14T02:12:27.7185215Z [36;1mif [ "153" = 153 ]; then[0m
+2026-11-14T02:12:27.7185612Z [36;1m  ln -sfn /opt/pw-browsers/chromium-1243/chrome-linux64/chrome /opt/pw-browsers/chromium[0m
+2026-11-14T02:12:27.7186096Z [36;1m  v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"[0m
+2026-11-14T02:12:27.7186715Z [36;1m  echo "$v" | grep -qx 'Google Chrome for Testing 153\.0\.8010\.12 *' || { echo "::error::浏览器版本不是 Chrome 153.0.8010.12：$v"; exit 1; }[0m
+2026-11-14T02:12:27.7187406Z [36;1m  sudo apt-get install -y -q --no-install-recommends fonts-inter > /tmp/apt-inter.log 2>&1 || { tail -50 /tmp/apt-inter.log; exit 1; }[0m
+2026-11-14T02:12:27.7187932Z [36;1melse[0m
+2026-11-14T02:12:27.7188280Z [36;1m  ln -sfn /opt/pw-browsers/chromium-1194/chrome-linux/chrome /opt/pw-browsers/chromium[0m
+2026-11-14T02:12:27.7188764Z [36;1m  v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"[0m
+2026-11-14T02:12:27.7189231Z [36;1m  echo "$v" | grep -qx 'Chromium 141\.0\.7390\.37 *' || { echo "::error::浏览器版本不是 Chromium 141.0.7390.37：$v"; exit 1; }[0m
+2026-11-14T02:12:27.7189666Z [36;1mfi[0m
+2026-11-14T02:12:27.7189940Z [36;1mffmpeg -version | head -1; dpkg-query -W ffmpeg[0m
+2026-11-14T02:12:27.7190415Z [36;1mffmpeg -version | head -1 | grep -q '^ffmpeg version 6\.1\.1' || { echo "::error::ffmpeg 不是 6.1.1"; exit 1; }[0m
+2026-11-14T02:12:27.7218011Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-14T02:12:27.7218442Z env:
+2026-11-14T02:12:27.7218726Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:27.7219174Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:12:27.7219560Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:27.7219922Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:27.7220304Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:12:27.7220667Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:12:27.7221037Z ##[endgroup]
+2026-11-14T02:13:05.3107166Z 浏览器：Google Chrome for Testing 153.0.8010.12 
+2026-11-14T02:13:07.5636023Z ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-11-14T02:13:07.5747708Z ffmpeg	7:6.1.1-3ubuntu5
+2026-11-14T02:13:07.6087027Z ##[end-action id=__self.__run_6;outcome=success;conclusion=success;duration_ms=39896]
+2026-11-14T02:13:07.6089556Z ##[start-action display=fontconfig 设置与本机对齐（/etc/fonts/conf.d 逐个相同）;id=__self.__run_7]
+2026-11-14T02:13:07.6107061Z ##[group]Run want="10-hinting-slight.conf 10-scale-bitmap-fonts.conf 10-sub-pixel-rgb.conf 10-yes-antialias.conf 11-lcdfilter-default.conf
+2026-11-14T02:13:07.6107933Z [36;1mwant="10-hinting-slight.conf 10-scale-bitmap-fonts.conf 10-sub-pixel-rgb.conf 10-yes-antialias.conf 11-lcdfilter-default.conf[0m
+2026-11-14T02:13:07.6108688Z [36;1m      20-unhint-small-dejavu-lgc-sans-mono.conf 20-unhint-small-dejavu-lgc-sans.conf 20-unhint-small-dejavu-lgc-serif.conf[0m
+2026-11-14T02:13:07.6109496Z [36;1m      20-unhint-small-dejavu-sans-mono.conf 20-unhint-small-dejavu-sans.conf 20-unhint-small-dejavu-serif.conf 20-unhint-small-vera.conf[0m
+2026-11-14T02:13:07.6110325Z [36;1m      25-wqy-zenhei.conf 30-metric-aliases.conf 30-opensymbol.conf 40-nonlatin.conf 45-generic.conf 45-latin.conf 48-spacing.conf[0m
+2026-11-14T02:13:07.6111040Z [36;1m      49-sansserif.conf 50-user.conf 51-local.conf 57-dejavu-sans-mono.conf 57-dejavu-sans.conf 57-dejavu-serif.conf[0m
+2026-11-14T02:13:07.6111734Z [36;1m      58-dejavu-lgc-sans-mono.conf 58-dejavu-lgc-sans.conf 58-dejavu-lgc-serif.conf 60-generic.conf 60-latin.conf 64-wqy-zenhei.conf[0m
+2026-11-14T02:13:07.6112468Z [36;1m      65-fonts-ipafont-gothic.conf 65-fonts-persian.conf 65-nonlatin.conf 69-unifont.conf 70-no-bitmaps-except-emoji.conf[0m
+2026-11-14T02:13:07.6112990Z [36;1m      80-delicious.conf 90-synthetic.conf"[0m
+2026-11-14T02:13:07.6113494Z [36;1mecho "原来的 conf.d：$(ls /etc/fonts/conf.d | tr '\n' ' ')"[0m
+2026-11-14T02:13:07.6114048Z [36;1msudo find /etc/fonts/conf.d -mindepth 1 ! -name README -delete[0m
+2026-11-14T02:13:07.6114432Z [36;1mfor f in $want; do[0m
+2026-11-14T02:13:07.6114916Z [36;1m  t=""; for d in /usr/share/fontconfig/conf.avail /etc/fonts/conf.avail; do [ -f "$d/$f" ] && { t="$d/$f"; break; }; done[0m
+2026-11-14T02:13:07.6115568Z [36;1m  if [ -n "$t" ]; then sudo ln -s "$t" "/etc/fonts/conf.d/$f"; else echo "::warning::本机有、这里没有的 fontconfig 设置：$f"; fi[0m
+2026-11-14T02:13:07.6116018Z [36;1mdone[0m
+2026-11-14T02:13:07.6116327Z [36;1mif [ "153" = 153 ]; then      # 新容器多出的两条（灰度抗锯齿、不微调；sans-serif 优先 Inter）[0m
+2026-11-14T02:13:07.6117097Z [36;1m  for f in "/home/runner/work/university-entrance-examination/university-entrance-examination/./.github/actions/cet6-chalk-env"/fontconf153/*.conf; do sudo cp "$f" /etc/fonts/conf.d/; done[0m
+2026-11-14T02:13:07.6117749Z [36;1mfi[0m
+2026-11-14T02:13:07.6118002Z [36;1msudo fc-cache -f > /dev/null[0m
+2026-11-14T02:13:07.6118370Z [36;1mecho "对齐后的 conf.d：$(ls /etc/fonts/conf.d | tr '\n' ' ')"[0m
+2026-11-14T02:13:07.6145763Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-14T02:13:07.6146160Z env:
+2026-11-14T02:13:07.6146445Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:07.6146871Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:13:07.6147396Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:07.6147796Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:07.6148178Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:07.6148536Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:13:07.6148888Z ##[endgroup]
+2026-11-14T02:13:07.6209017Z 原来的 conf.d：10-hinting-slight.conf 10-scale-bitmap-fonts.conf 10-sub-pixel-rgb.conf 10-yes-antialias.conf 11-lcdfilter-default.conf 20-unhint-small-dejavu-lgc-sans-mono.conf 20-unhint-small-dejavu-lgc-sans.conf 20-unhint-small-dejavu-lgc-serif.conf 20-unhint-small-dejavu-sans-mono.conf 20-unhint-small-dejavu-sans.conf 20-unhint-small-dejavu-serif.conf 20-unhint-small-vera.conf 25-wqy-zenhei.conf 30-metric-aliases.conf 40-nonlatin.conf 45-generic.conf 45-latin.conf 48-spacing.conf 49-sansserif.conf 50-user.conf 51-local.conf 57-dejavu-sans-mono.conf 57-dejavu-sans.conf 57-dejavu-serif.conf 58-dejavu-lgc-sans-mono.conf 58-dejavu-lgc-sans.conf 58-dejavu-lgc-serif.conf 60-generic.conf 60-latin.conf 64-wqy-zenhei.conf 65-fonts-ipafont-gothic.conf 65-fonts-persian.conf 65-nonlatin.conf 69-unifont.conf 70-no-bitmaps-except-emoji.conf 80-delicious.conf 90-synthetic.conf README 
+2026-11-14T02:13:07.6923786Z ##[warning]本机有、这里没有的 fontconfig 设置：30-opensymbol.conf
+2026-11-14T02:13:10.7304716Z 对齐后的 conf.d：10-hinting-slight.conf 10-scale-bitmap-fonts.conf 10-sub-pixel-rgb.conf 10-yes-antialias.conf 11-lcdfilter-default.conf 12-unhinted-grayscale.conf 20-unhint-small-dejavu-lgc-sans-mono.conf 20-unhint-small-dejavu-lgc-sans.conf 20-unhint-small-dejavu-lgc-serif.conf 20-unhint-small-dejavu-sans-mono.conf 20-unhint-small-dejavu-sans.conf 20-unhint-small-dejavu-serif.conf 20-unhint-small-vera.conf 25-wqy-zenhei.conf 30-metric-aliases.conf 40-nonlatin.conf 45-generic.conf 45-latin.conf 48-spacing.conf 49-sansserif.conf 50-user.conf 51-local.conf 56-prefer-inter.conf 57-dejavu-sans-mono.conf 57-dejavu-sans.conf 57-dejavu-serif.conf 58-dejavu-lgc-sans-mono.conf 58-dejavu-lgc-sans.conf 58-dejavu-lgc-serif.conf 60-generic.conf 60-latin.conf 64-wqy-zenhei.conf 65-fonts-ipafont-gothic.conf 65-fonts-persian.conf 65-nonlatin.conf 69-unifont.conf 70-no-bitmaps-except-emoji.conf 80-delicious.conf 90-synthetic.conf README 
+2026-11-14T02:13:10.7312504Z ##[end-action id=__self.__run_7;outcome=success;conclusion=success;duration_ms=3122]
+2026-11-14T02:13:10.7315328Z ##[start-action display=恢复语音识别模型（缓存）;id=__self.asr]
+2026-11-14T02:13:10.7319393Z ##[end-action id=__self.asr;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-14T02:13:10.7321558Z ##[start-action display=下载语音识别模型;id=__self.__run_8]
+2026-11-14T02:13:10.7325612Z ##[end-action id=__self.__run_8;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-11-14T02:13:10.7327269Z ##[start-action display=环境自检;id=__self.__run_9]
+2026-11-14T02:13:10.7341737Z ##[group]Run /opt/ttsenv/bin/python - <<'PY'
+2026-11-14T02:13:10.7342147Z [36;1m/opt/ttsenv/bin/python - <<'PY'[0m
+2026-11-14T02:13:10.7342497Z [36;1mimport sys, importlib.metadata as md[0m
+2026-11-14T02:13:10.7342836Z [36;1mfrom PIL import features[0m
+2026-11-14T02:13:10.7343992Z [36;1mfor m in ['numpy', 'scipy', 'soundfile', 'soxr', 'pyloudnorm', 'jieba', 'PIL', 'sherpa_onnx', 'playwright.sync_api', 'num2words']:[0m
+2026-11-14T02:13:10.7344587Z [36;1m    __import__(m)[0m
+2026-11-14T02:13:10.7345018Z [36;1mprint('Python', sys.version.split()[0], '｜', '，'.join(f'{p} {md.version(p)}' for p in[0m
+2026-11-14T02:13:10.7345718Z [36;1m      ['playwright', 'numpy', 'scipy', 'soundfile', 'soxr', 'pyloudnorm', 'jieba', 'pillow', 'sherpa-onnx', 'num2words']), '｜ libwebp', features.version('webp'))[0m
+2026-11-14T02:13:10.7346303Z [36;1massert sys.version.startswith('3.11.15'), sys.version[0m
+2026-11-14T02:13:10.7346732Z [36;1massert features.version('webp') == '1.6.0', features.version('webp')[0m
+2026-11-14T02:13:10.7347148Z [36;1mPY[0m
+2026-11-14T02:13:10.7348062Z [36;1mecho "CPU：$(grep -m1 'model name' /proc/cpuinfo | cut -d: -f2)，$(nproc) 核；内存 $(free -g | awk '/Mem/{print $2}') GB；磁盘剩余 $(df -h . | tail -1 | awk '{print $4}')"[0m
+2026-11-14T02:13:10.7375502Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-11-14T02:13:10.7375921Z env:
+2026-11-14T02:13:10.7376221Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:10.7376641Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:13:10.7377067Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:10.7377483Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:10.7377901Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:10.7378285Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:13:10.7378609Z ##[endgroup]
+2026-11-14T02:13:11.4332596Z Python 3.11.15 ｜ playwright 1.63.0，numpy 2.4.6，scipy 1.17.1，soundfile 0.14.0，soxr 1.1.0，pyloudnorm 0.2.0，jieba 0.42.1，pillow 12.3.0，sherpa-onnx 1.13.8，num2words 0.5.14 ｜ libwebp 1.6.0
+2026-11-14T02:13:11.5276923Z CPU： Intel(R) Xeon(R) 6975P-C，4 核；内存 15 GB；磁盘剩余 86G
+2026-11-14T02:13:11.5282565Z ##[end-action id=__self.__run_9;outcome=success;conclusion=success;duration_ms=795]
+2026-11-14T02:13:11.5331307Z ##[group]Run set -euo pipefail
+2026-11-14T02:13:11.5331666Z [36;1mset -euo pipefail[0m
+2026-11-14T02:13:11.5332241Z [36;1m/opt/ttsenv/bin/pip install -q --disable-pip-version-check spacy==3.8.7 thinc==8.3.6 preshed==3.0.9 cymem==2.0.11 murmurhash==1.0.12 typer==0.15.4 click==8.1.8[0m
+2026-11-14T02:13:11.5333202Z [36;1m/opt/ttsenv/bin/pip install -q --disable-pip-version-check --no-deps https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl[0m
+2026-11-14T02:13:11.5334226Z [36;1m/opt/ttsenv/bin/python -c "import spacy; spacy.load('en_core_web_sm')('It is ready.'); print('分屏NLP模型加载通过')"[0m
+2026-11-14T02:13:11.5362925Z shell: /usr/bin/bash -e {0}
+2026-11-14T02:13:11.5363254Z env:
+2026-11-14T02:13:11.5363705Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:11.5364140Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:13:11.5364650Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:11.5365059Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:11.5365423Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:11.5365819Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:13:11.5366145Z ##[endgroup]
+2026-11-14T02:13:23.4367306Z 分屏NLP模型加载通过
+2026-11-14T02:13:23.5276124Z ##[group]Run set -euo pipefail
+2026-11-14T02:13:23.5276457Z [36;1mset -euo pipefail[0m
+2026-11-14T02:13:23.5276947Z [36;1m/opt/ttsenv/bin/pip install -q --disable-pip-version-check pypdf==6.21.4 fonttools==4.68.0 cryptography==50.0.2[0m
+2026-11-14T02:13:23.5277454Z [36;1m/opt/ttsenv/bin/python 专八/听力/tools/取字体.py[0m
+2026-11-14T02:13:23.5277901Z [36;1m/opt/ttsenv/bin/python 专八/听力/批量/tools/发布汇集.py gate 'intensive' '2024-A'[0m
+2026-11-14T02:13:23.5303809Z shell: /usr/bin/bash -e {0}
+2026-11-14T02:13:23.5304121Z env:
+2026-11-14T02:13:23.5304495Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:23.5304959Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:13:23.5305367Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:23.5305737Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:23.5306128Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:23.5306620Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:13:23.5306940Z ##[endgroup]
+2026-11-14T02:13:24.4617789Z Times New Roman：PDF 原有映射 97 条逐条一致；有轮廓、可用的字 96 个 → TimesNewRoman.ttf
+2026-11-14T02:13:24.4618390Z Times New Roman Bold：PDF 原有映射 73 条逐条一致；有轮廓、可用的字 72 个 → TimesNewRomanBold.ttf
+2026-11-14T02:13:24.4619413Z Times New Roman Bold Italic：PDF 原有映射 68 条逐条一致；有轮廓、可用的字 67 个 → TimesNewRomanBoldItalic.ttf
+2026-11-14T02:13:24.4619881Z SimSun：PDF 原有映射 147 条逐条一致；有轮廓、可用的字 146 个 → SimSun.ttf
+2026-11-14T02:13:24.4620361Z Times New Roman Italic：PDF 原有映射 39 条逐条一致；有轮廓、可用的字 38 个 → TimesNewRomanItalic.ttf
+2026-11-14T02:13:24.7604321Z {"approved": true, "kind": "intensive", "id": "2024-A", "payload_sha256": "f3d2ea581e23cdf3b1cf79a2274fa0a56558f1a072103d36278d150185dfb125", "inputs": 1, "shots": 83}
+2026-11-14T02:13:24.7714980Z ##[group]Run set -euo pipefail
+2026-11-14T02:13:24.7715357Z [36;1mset -euo pipefail[0m
+2026-11-14T02:13:24.7715625Z [36;1mmkdir -p in work[0m
+2026-11-14T02:13:24.7715906Z [36;1mif [ '2024' = '2022' ]; then[0m
+2026-11-14T02:13:24.7716272Z [36;1m  /opt/ttsenv/bin/python 专八/听力/批量/tools/原音准备.py 2022 --out in/audio[0m
+2026-11-14T02:13:24.7716660Z [36;1melse[0m
+2026-11-14T02:13:24.7717230Z [36;1m  curl -fL --retry 5 --retry-delay 3 -o in/default.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-raw/default.zip[0m
+2026-11-14T02:13:24.7718000Z [36;1m  /opt/ttsenv/bin/python 专八/听力/批量/tools/原音准备.py '2024' --archive in/default.zip --out in/audio[0m
+2026-11-14T02:13:24.7718432Z [36;1m  rm in/default.zip[0m
+2026-11-14T02:13:24.7718686Z [36;1mfi[0m
+2026-11-14T02:13:24.7719016Z [36;1mcp in/audio/原音准备.json work/源音频准备.json[0m
+2026-11-14T02:13:24.7747392Z shell: /usr/bin/bash -e {0}
+2026-11-14T02:13:24.7747807Z env:
+2026-11-14T02:13:24.7748197Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:24.7748606Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:13:24.7749021Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:24.7749385Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:24.7749793Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:24.7750421Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:13:24.7750800Z ##[endgroup]
+2026-11-14T02:13:24.7846912Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-14T02:13:24.7847504Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-14T02:13:24.7847889Z 
+2026-11-14T02:13:24.8927584Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-14T02:13:24.8928437Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-14T02:13:25.6641507Z 
+2026-11-14T02:13:26.6641271Z  10 1277M   10  137M    0     0   156M      0  0:00:08 --:--:--  0:00:08  156M
+2026-11-14T02:13:27.6648394Z  24 1277M   24  316M    0     0   168M      0  0:00:07  0:00:01  0:00:06  179M
+2026-11-14T02:13:28.6750360Z  41 1277M   41  526M    0     0   182M      0  0:00:06  0:00:02  0:00:04  194M
+2026-11-14T02:13:29.6642409Z  52 1277M   52  671M    0     0   172M      0  0:00:07  0:00:03  0:00:04  177M
+2026-11-14T02:13:30.6644551Z  64 1277M   64  819M    0     0   168M      0  0:00:07  0:00:04  0:00:03  170M
+2026-11-14T02:13:31.5881212Z  81 1277M   81 1041M    0     0   177M      0  0:00:07  0:00:05  0:00:02  180M
+2026-11-14T02:13:31.5881774Z 100 1277M  100 1277M    0     0   187M      0  0:00:06  0:00:06 --:--:--  195M
+2026-11-14T02:13:37.6070457Z {"year": 2024, "duration": 1497.624, "sources": 1, "sample_rate": 24000, "channels": 2, "sha256": "6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213"}
+2026-11-14T02:13:37.7456733Z ##[group]Run set -euo pipefail
+2026-11-14T02:13:37.7457096Z [36;1mset -euo pipefail[0m
+2026-11-14T02:13:37.7457351Z [36;1mP=/opt/ttsenv/bin/python[0m
+2026-11-14T02:13:37.7457642Z [36;1mif [ 'intensive' = exam ]; then[0m
+2026-11-14T02:13:37.7457971Z [36;1m  D='专八/听力/批量/数据/2024-A'[0m
+2026-11-14T02:13:37.7458265Z [36;1m  $P 专八/听力/批量/tools/考试视频.py "$D" schema --out work[0m
+2026-11-14T02:13:37.7458716Z [36;1m  $P 专八/听力/批量/tools/考试视频.py "$D" audio --audio in/audio/原音.wav --out work[0m
+2026-11-14T02:13:37.7459095Z [36;1m  $P 专八/听力/批量/tools/考试视频.py "$D" stills --out work[0m
+2026-11-14T02:13:37.7459511Z [36;1melse[0m
+2026-11-14T02:13:37.7459796Z [36;1m  U='专八/听力/批量/精听数据/2024-A.json'[0m
+2026-11-14T02:13:37.7460277Z [36;1m  $P 专八/听力/批量/tools/精听.py "$U" precheck --autosplit --original in/audio/原音.wav --out work --browser /opt/pw-browsers/chromium[0m
+2026-11-14T02:13:37.7460786Z [36;1mfi[0m
+2026-11-14T02:13:37.7488938Z shell: /usr/bin/bash -e {0}
+2026-11-14T02:13:37.7489448Z env:
+2026-11-14T02:13:37.7489750Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:37.7490178Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:13:37.7490633Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:37.7491008Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:37.7491409Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:13:37.7491796Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:13:37.7492194Z   TEM8_BROWSER: /opt/pw-browsers/chromium
+2026-11-14T02:13:37.7492473Z   TEM8_THREADS: 2
+2026-11-14T02:13:37.7492697Z ##[endgroup]
+2026-11-14T02:14:22.2365231Z 2024-A（画面 C，下限 73/34）：不合格 [16, 18, 24, 26, 29, 32, 36, 41, 44, 57]；现有分屏合格 ['27', '34']
+2026-11-14T02:14:23.2617530Z   第 16 句（195 字符）不合格：['C:61/40']；停顿处可切 1 处
+2026-11-14T02:14:23.2618471Z     第二屏起： “or what we create”  对齐（错/对） [0, 4]  字号 {'C': [73, 40]}   中文： 我们了解到，人天生具有加工和生成自然人类语言的能力：既可以从接触到的语言中学习， ‖ 也能凭借与生俱来的普遍语法原则创造语言。
+2026-11-14T02:14:24.3793853Z   第 18 句（167 字符）不合格：['C:67/40']；停顿处可切 3 处
+2026-11-14T02:14:24.3795045Z     第二屏起： “no doubt you find”  对齐（错/对） [0, 2]  字号 {'C': [73, 40]}   中文： 不过，如果你尝试过掌握一门第二语言， ‖ 就一定会发现这是一项挑战，与学习第一语言的经历很不一样。
+2026-11-14T02:14:25.3166236Z   第 24 句（188 字符）不合格：['C:67/40']；停顿处可切 2 处
+2026-11-14T02:14:25.3167377Z     第二屏起： “such as word order”  对齐（错/对） [0, 3]  字号 {'C': [73, 40]}   中文： 因此，大脑中的语言机制已经设定了某些语言参数， ‖ 例如第一语言的语序，这使第二语言的学习大不相同。
+2026-11-14T02:14:27.2907034Z   第 26 句（232 字符）不合格：['C:61/40']；停顿处可切 3 处
+2026-11-14T02:14:27.2908329Z     第二屏起： “and mistakes often result”  对齐（错/对） [0, 1]  字号 {'C': [73, 40]}   中文： 学习第二语言时，第一语言往往会成为范本； ‖ 学习者取用目标语中的词，再按第一语言的规则将它们组合起来，就常常会犯错。
+2026-11-14T02:14:27.2909248Z     第二屏起： “because learners tend to”  对齐（错/对） [0, 1]  字号 {'C': [73, 40]}   中文： 学习第二语言时，第一语言往往会成为范本；学习者取用目标语中的词， ‖ 再按第一语言的规则将它们组合起来，就常常会犯错。
+2026-11-14T02:14:28.8909263Z   第 29 句（154 字符）不合格：['C:71/40']；停顿处可切 1 处
+2026-11-14T02:14:28.8910574Z     第二屏起： “from the first language”  对齐（错/对） [0, 2]  字号 {'C': [73, 40]}  无停顿（停顿处切不开）  中文： 此外，第二语言学习甚至可以被描述为一个逐步转变的过程： ‖ 从以第一语言为导向，转向以目标语为导向。
+2026-11-14T02:14:33.2261959Z   第 32 句（288 字符）不合格：['C:55/40']；停顿处可切 3 处
+2026-11-14T02:14:33.2263160Z     第二屏起： “proceeds more quickly with” | “it is the younger”  对齐（错/对） [0, 4]  字号 {'C': [73, 40]}   中文： 不过，在第二语言学习中，特别是在课堂环境下， ‖ 成年人和青少年起初比年幼儿童学得更快；但最终， ‖ 年幼儿童的第二语言水平会比成年人更熟练。
+2026-11-14T02:14:33.2264434Z     第二屏起： “proceeds more quickly with” | “although at the end”  对齐（错/对） [0, 4]  字号 {'C': [73, 40]}   中文： 不过，在第二语言学习中，特别是在课堂环境下， ‖ 成年人和青少年起初比年幼儿童学得更快； ‖ 但最终，年幼儿童的第二语言水平会比成年人更熟练。
+2026-11-14T02:14:36.5580377Z   第 36 句（237 字符）不合格：['C:59/40']；停顿处可切 5 处
+2026-11-14T02:14:36.5582538Z     第二屏起： “can facilitate second language”  对齐（错/对） [0, 4]  字号 {'C': [73, 40]}   中文： 大量研究表明，自信、动机、良好的自我形象和较低的焦虑等特质， ‖ 有助于第二语言学习；但这些特质对于第一语言习得，似乎都没有那么重要。
+2026-11-14T02:14:36.5583616Z     第二屏起： “good self-image and low”  对齐（错/对） [2, 2]  字号 {'C': [73, 40]}   中文： 大量研究表明，自信、动机、良好的自我形象和较低的焦虑等特质， ‖ 有助于第二语言学习；但这些特质对于第一语言习得，似乎都没有那么重要。
+2026-11-14T02:14:38.4183668Z   第 41 句（224 字符）不合格：['C:59/40']；停顿处可切 2 处
+2026-11-14T02:14:38.4184566Z     第二屏起： “the learner will probably”  对齐（错/对） [0, 4]  字号 {'C': [73, 40]}   中文： 如果课堂教师用目标语讲课时语速很快、句式复杂、话题又难懂， ‖ 那么第二语言学习者的学习过程很可能会更加困难。
+2026-11-14T02:14:38.4185396Z     第二屏起： “in complex sentences and”  对齐（错/对） [2, 2]  字号 {'C': [73, 40]}   中文： 如果课堂教师用目标语讲课时语速很快、句式复杂、话题又难懂， ‖ 那么第二语言学习者的学习过程很可能会更加困难。
+2026-11-14T02:14:39.9889263Z   第 44 句（180 字符）不合格：['C:69/40']；停顿处可切 3 处
+2026-11-14T02:14:39.9890571Z     第二屏起： “can acquire their first”  对齐（错/对） [0, 3]  字号 {'C': [73, 40]}   中文： 即使是非常安静的孩子，也就是不喜欢与人交谈的孩子， ‖ 也能以正常速度习得第一语言；但对第二语言学习者来说，情况就不同了。
+2026-11-14T02:14:40.9550696Z   第 57 句（206 字符）不合格：['C:65/40']；停顿处可切 1 处
+2026-11-14T02:14:40.9552017Z     第二屏起： “and you may have”  对齐（错/对） [0, 2]  字号 {'C': [73, 40]}   中文： 语言课上，老师常要求你们在不同语言之间翻译，作为练习或考核； ‖ 把一种语言转换成另一种语言时，你们可能已经遇到过困难。
+2026-11-14T02:15:29.4472814Z 写出 /home/runner/work/university-entrance-examination/university-entrance-examination/work/split-suggestions.json
+2026-11-14T02:15:29.4473730Z 1 篇：切分 10 句，整句译文 0 句；对不齐但没有整句候选 0 句
+2026-11-14T02:15:29.4474047Z 2024-A: 83张4K水墨截图，排版检查0处
+2026-11-14T02:15:29.6527710Z ##[group]Run set -euo pipefail
+2026-11-14T02:15:29.6527989Z [36;1mset -euo pipefail[0m
+2026-11-14T02:15:29.6528198Z [36;1mP=/opt/ttsenv/bin/python[0m
+2026-11-14T02:15:29.6528596Z [36;1m$P 专八/听力/批量/tools/发布汇集.py gate 'intensive' '2024-A' --work work --record current-review.json[0m
+2026-11-14T02:15:29.6528955Z [36;1mif [ 'intensive' = exam ]; then[0m
+2026-11-14T02:15:29.6529185Z [36;1m  D='专八/听力/批量/数据/2024-A'[0m
+2026-11-14T02:15:29.6529615Z [36;1m  $P 专八/听力/批量/tools/考试视频.py "$D" video --audio in/audio/原音.wav --out work --fast[0m
+2026-11-14T02:15:29.6529986Z [36;1m  $P 专八/听力/批量/tools/考试视频.py "$D" video --audio in/audio/原音.wav --out work[0m
+2026-11-14T02:15:29.6530333Z [36;1m  $P 专八/听力/批量/tools/考试视频.py "$D" verify --audio in/audio/原音.wav --out work[0m
+2026-11-14T02:15:29.6530604Z [36;1melse[0m
+2026-11-14T02:15:29.6530788Z [36;1m  U='专八/听力/批量/精听数据/2024-A.json'[0m
+2026-11-14T02:15:29.6531183Z [36;1m  NOTE=$(python3 -c 'import json;print(json.load(open("current-review.json"))["evidence"])')[0m
+2026-11-14T02:15:29.6531657Z [36;1m  $P 专八/听力/批量/tools/精听.py "$U" approve --review-note "$NOTE" --out work --browser /opt/pw-browsers/chromium[0m
+2026-11-14T02:15:29.6532100Z [36;1m  $P 专八/听力/批量/tools/精听.py "$U" video --out work --browser /opt/pw-browsers/chromium[0m
+2026-11-14T02:15:29.6532487Z [36;1m  $P 专八/听力/批量/tools/精听.py "$U" verify --out work --browser /opt/pw-browsers/chromium[0m
+2026-11-14T02:15:29.6532785Z [36;1mfi[0m
+2026-11-14T02:15:29.6561668Z shell: /usr/bin/bash -e {0}
+2026-11-14T02:15:29.6561905Z env:
+2026-11-14T02:15:29.6562133Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:15:29.6562486Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-11-14T02:15:29.6562835Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:15:29.6563140Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:15:29.6563629Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-11-14T02:15:29.6563969Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-11-14T02:15:29.6564253Z   TEM8_BROWSER: /opt/pw-browsers/chromium
+2026-11-14T02:15:29.6564487Z   TEM8_THREADS: 2
+2026-11-14T02:15:29.6564666Z ##[endgroup]
+2026-11-14T02:15:29.9352427Z {"approved": true, "kind": "intensive", "id": "2024-A", "payload_sha256": "f3d2ea581e23cdf3b1cf79a2274fa0a56558f1a072103d36278d150185dfb125", "inputs": 1, "shots": 83}
+2026-11-14T02:22:25.7020003Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.
+2026-11-14T02:22:26.0868391Z ##[error]The operation was canceled.
+2026-11-14T02:22:26.1029981Z Cleaning up orphan processes
+2026-11-14T02:22:26.1470422Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4, actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

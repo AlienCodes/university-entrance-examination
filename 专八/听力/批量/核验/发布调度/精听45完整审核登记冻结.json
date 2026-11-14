@@ -1,12 +1,15 @@
 {
-  "schema": 1,
-  "source_commit": "f25216794e383505baa132ca581e1380e82192c8",
-  "source_full_registry_sha256": "d80e98b4c5dc4243b64dfeb85e1bdc105a26a6c5d87396216b54dd50fb728e9e",
-  "intensive_entries_sha256": "5932d251ac0ae044b2cc8b19598684ef17e3f7daa69e7f8b3d3c5c2943ec77fd",
+  "schema": 2,
+  "basis": "root-approved-only-two-recovery-entries",
+  "source_approval": "专八/听力/批量/核验/精听独立两步编码/仅两条恢复重新绑定核验.json",
+  "source_approval_sha256": "d08f984353ec157d9c9ced2f040bb24ef898172cccee60cc3c02eb3a2be40c97",
+  "previous_snapshot_git_commit": "18609ae481cc530d041a95c2c61599569cd93bbc",
+  "source_full_registry_sha256": "1fa9b6a2c093c4d1317d2dc9b3d2c1203352e608c34c960d3a18771455637511",
+  "intensive_entries_sha256": "f820aec3d40f1a86021d2c7b1e1deefabe0ad101e3835dd017e7bf555058e9a1",
   "entries": {
     "intensive:2024-A": {
       "status": "approved",
-      "payload_sha256": "f3d2ea581e23cdf3b1cf79a2274fa0a56558f1a072103d36278d150185dfb125",
+      "payload_sha256": "124b5d1d9203669834594d8937ce971992505452379d42879ca58836ce501d9b",
       "kind": "intensive",
       "id": "2024-A",
       "inputs": {
@@ -16,6 +19,7 @@
         ".github/actions/cet6-chalk-env/action.yml": "1343c18cca6721d8587f75f2dbf8fbdf5e57c934c280deaa389ea85517b625b6",
         ".github/cet6-render-requirements.txt": "044a8d2ce192b64d701488ad04c7168346803e5753a5c752e42910dea80a7c5a",
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
+        ".github/workflows/render-tem8-intensive-two-stage.yml": "455dfd870ecab0560a6b9195d4f89990ea9a9f7cfd288a5d5052609a923967e7",
         "tools/text_rules.py": "7ced0ef58f03c9131ece6f6b22253c5de5bee00fd4a6c51c02493c7da0d2f300",
         "tools/video/fonts/NotoSansSC-Bold.ttf": "9a38ae0ab28cd5a256f9ea8e00dedc688aac17f7915fcb000572990afa956b96",
         "tools/video/fonts/NotoSansSC-Medium.ttf": "b30853d205f3ecdde938b1488c735ee15a2e870d31331b992fdc53971e23ec4a",
@@ -826,6 +830,7 @@
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/图片时钟核验.py": "824e3ce562b7de13193493e0273f56ba50fb193ddb51f6b857b266851f10c491",
         "专八/听力/批量/tools/精听.py": "02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df",
+        "专八/听力/批量/tools/精听两步编码.py": "af662afa2776fbb00576c130753e453ac490a53ed9586da84684cc303fc41b24",
         "专八/听力/批量/tools/精听数据.py": "11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e",
         "中考/tools/画面核查/canary.py": "ea2679e763b5acaa0c979a73a4db70f55cd1beadf62aba47ee912347718699c0",
         "中考/tools/画面核查/canary_layout.py": "b26c52fed6fb9b69ddf7e8cc1807abaa09c796f51d23f89c3b8256c58d82a384",
@@ -1304,7 +1309,7 @@
         "file": "专八/听力/批量/译注草稿/2024.json",
         "unit_sha256": "758108ffa6d7f82c555e1178db92a28837d02e8393c8e4b18fa05a850f37e5ae"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；2026-11-14仅本单元恢复入口改为独立两步编码，输入/母稿/既审全部PNG逐值保持。真实已审PNG与原音10秒编码等价对照、原E严检和40项proof正反例通过；本审批不冒称完整在线长片已通过，生产仍须完整PNG门禁、原E.verify及独立两步proof全过后才能stage/store。证据：核验/精听独立两步编码/真实短片与指纹测试.json、proof校验正反例结果.json。",
       "shots": {
         "shots/screen001.png": "d5cf5f298c89122ebe1b931bdf5f9f54098dd9b8dc6a843e1322737f7ec428cc",
         "shots/screen002.png": "ecbef2a5f4980b277c73cd450a808d86bd55fe387ea2edef95dc51640326f27f",
@@ -52439,7 +52444,7 @@
     },
     "intensive:2022-A": {
       "status": "approved",
-      "payload_sha256": "b327541b4227224d70b4f43844e83da05f9edd5a7e5909656cdeb4bda61e5648",
+      "payload_sha256": "a561fdd19c6d12fe226185f91e7cbd4ca86e86efcd7130419225304c2927db55",
       "kind": "intensive",
       "id": "2022-A",
       "inputs": {
@@ -52451,6 +52456,7 @@
         ".github/actions/cet6-chalk-env/action.yml": "1343c18cca6721d8587f75f2dbf8fbdf5e57c934c280deaa389ea85517b625b6",
         ".github/cet6-render-requirements.txt": "044a8d2ce192b64d701488ad04c7168346803e5753a5c752e42910dea80a7c5a",
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
+        ".github/workflows/render-tem8-intensive-two-stage.yml": "455dfd870ecab0560a6b9195d4f89990ea9a9f7cfd288a5d5052609a923967e7",
         "tools/text_rules.py": "7ced0ef58f03c9131ece6f6b22253c5de5bee00fd4a6c51c02493c7da0d2f300",
         "tools/video/fonts/NotoSansSC-Bold.ttf": "9a38ae0ab28cd5a256f9ea8e00dedc688aac17f7915fcb000572990afa956b96",
         "tools/video/fonts/NotoSansSC-Medium.ttf": "b30853d205f3ecdde938b1488c735ee15a2e870d31331b992fdc53971e23ec4a",
@@ -53261,6 +53267,7 @@
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/图片时钟核验.py": "824e3ce562b7de13193493e0273f56ba50fb193ddb51f6b857b266851f10c491",
         "专八/听力/批量/tools/精听.py": "02c7fac4ffdadd727c671053c765a9ed0ca2262a36306e8e8874d67b2e2997df",
+        "专八/听力/批量/tools/精听两步编码.py": "af662afa2776fbb00576c130753e453ac490a53ed9586da84684cc303fc41b24",
         "专八/听力/批量/tools/精听数据.py": "11b4ef9c00ef2bae834dcb54026d6905202e3e3c57ace801033b25b080d1bb3e",
         "中考/tools/画面核查/canary.py": "ea2679e763b5acaa0c979a73a4db70f55cd1beadf62aba47ee912347718699c0",
         "中考/tools/画面核查/canary_layout.py": "b26c52fed6fb9b69ddf7e8cc1807abaa09c796f51d23f89c3b8256c58d82a384",
@@ -53739,7 +53746,7 @@
         "file": "专八/听力/批量/译注草稿/2022.json",
         "unit_sha256": "c79e4139164213225de3229da578e0d2256c0fd5e8e69925ead88d07fbb85c80"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；2026-11-14仅本单元恢复入口改为独立两步编码，输入/母稿/既审全部PNG逐值保持。真实已审PNG与原音10秒编码等价对照、原E严检和40项proof正反例通过；本审批不冒称完整在线长片已通过，生产仍须完整PNG门禁、原E.verify及独立两步proof全过后才能stage/store。证据：核验/精听独立两步编码/真实短片与指纹测试.json、proof校验正反例结果.json。",
       "shots": {
         "shots/screen001.png": "bb1e1a90aa77aa39da5e1170f1522c943b756e46ea6b3a36b9a8c79e37c3a1d2",
         "shots/screen002.png": "07de02b7ee61e036700400b05cc6c64b90e265138bebd7b18ad5686e92a32f9b",
@@ -62125,5 +62132,5 @@
       "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
     }
   },
-  "policy": "完整45条精听登记的所有字段逐值/投影SHA冻结；只有exam侧登记可独立更新，不接受任何精听条目/源/PNG/审核证据变化。"
+  "policy": "完整45条逐值冻结；仅本次root明列2022-A/2024-A追加两步adapter/workflow；其余43完整原值和8生成文件不变，15exam仍可独立更新。"
 }

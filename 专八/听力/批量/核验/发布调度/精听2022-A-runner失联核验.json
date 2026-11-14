@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "status": "hosted-runner-lost-communication",
+  "unit": "2022-A",
+  "job_id": 132238965399,
+  "run_id": "43528080039",
+  "source_commit": "f25216794e383505baa132ca581e1380e82192c8",
+  "completed_at": "2026-11-14T02:02:22Z",
+  "annotation_message": "The hosted runner lost communication with the server. Anything in your workflow that terminates the runner process, starves it for CPU/Memory, or blocks its network access can cause this error.",
+  "exact_state": "job completed/failure，但ENC step仍in_progress、store仍pending，故此前不能依据step判断已完成或正常；无store成功",
+  "logs_endpoint": "connector fetch_workflow_job_logs returned BlobNotFound 404 at2026-11-14T02:10:12.8525408Z，未编造不存在日志",
+  "cause_limit": "GitHub仅明确runner与server失联；不据此擅自判定具体CPU/内存/网络原因",
+  "action": "只读核验并保存原JSON，不改core/输入/审批，不自行重试2022-A；full15自动激活保持阻断",
+  "source_files": {
+    "精听2022-A-原始annotations.json": "bfd333e90b2717ca293f7a7224492cb3fd2a55c414ad229c82a60e4e472849e9",
+    "精听2022-A-原始checkrun.json": "0331e9b69656a4f2d0447020e743f2bdd38c748d8e8f56679462dfc30a448479",
+    "精听2022-A-原始job.json": "81c3e5bde61430c1944926c4cbd78ed44ed95c60285d36dbb057e9f963e5da2e"
+  },
+  "checked_at": "2026-11-14T02:11:12.415991+00:00"
+}

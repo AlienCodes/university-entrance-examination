@@ -1,0 +1,31 @@
+{
+  "status": "second-failure-runner-shutdown-no-more-same-policy-retries",
+  "unit": "2024-A",
+  "old_original_run": "43528080039",
+  "old_job_id": 132238965743,
+  "independent_run": "43544278676",
+  "producer_commit": "18609ae481cc530d041a95c2c61599569cd93bbc",
+  "job_id": 132293554239,
+  "critical_original_lines": [
+    "2026-11-14T02:15:29.4474047Z 2024-A: 83张4K水墨截图，排版检查0处",
+    "2026-11-14T02:22:25.7020003Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+    "2026-11-14T02:22:26.0868391Z ##[error]The operation was canceled."
+  ],
+  "raw_log_file": "精听2024-A-run43544278676-job132293554239-connector.log",
+  "raw_log_sha256": "85a0f3d3d57d867680d898681ab2cb546c2b47208dbc742986a032928dcf0771",
+  "ENC_started_at": "2026-11-14T02:15:29.6527710Z",
+  "runner_shutdown_at": "2026-11-14T02:22:25.7020003Z",
+  "ENC_elapsed_seconds_before_shutdown": 416.049,
+  "old_original_ENC_elapsed_seconds_before_shutdown": 436.656,
+  "proven_passes": [
+    "完整预检：83张4K、排版0问题",
+    "原fp f3d2ea581e23cdf3b1cf79a2274fa0a56558f1a072103d36278d150185dfb125当前PNG gate approved"
+  ],
+  "not_completed": [
+    "fast/full最终核验无完成记录",
+    "store skipped，无本次成品"
+  ],
+  "action": "按一次恢复上限停止，未再次触发任何视频；不触发2022普通候选；full15仍阻断",
+  "cause_limit": "原始错误是runner收到shutdown signal，不能由时间相近臆断具体CPU/内存原因。",
+  "at": "2026-11-14T02:25:02.265862+00:00"
+}
