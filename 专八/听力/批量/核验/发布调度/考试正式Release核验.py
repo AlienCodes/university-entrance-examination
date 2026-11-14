@@ -2,6 +2,10 @@ import datetime,hashlib,importlib.util,json,pathlib,subprocess,urllib.request,zi
 import argparse
 a=argparse.ArgumentParser(description='正式考试Release服务器摘要及ZIP真实回下载逐成员核验');a.add_argument('--state',type=pathlib.Path,required=True);a.add_argument('--run',required=True);a.add_argument('--production-commit',required=True);a.add_argument('--producer-register',type=pathlib.Path,required=True);args=a.parse_args()
 root=pathlib.Path(__file__).resolve().parents[5];monitor=args.state;s=importlib.util.spec_from_file_location('pub',root/'专八/听力/批量/tools/发布汇集.py');p=importlib.util.module_from_spec(s);s.loader.exec_module(p)
+frozen=p.read(root/'专八/听力/批量/核验/考试正式发布/考试15完整审核登记冻结.json')
+current_exam={k:v for k,v in p.read(p.REGISTRY)['entries'].items() if k.startswith('exam:')}
+assert len(current_exam)==15 and current_exam==frozen['entries']
+assert p.hash_json(current_exam)==frozen['exam_entries_sha256']
 tag='tem8-listening-exam-2009-2024';rel=p.release(tag);assets={a['name']:a for a in rel['assets']};dest=monitor/'final-download';dest.mkdir(exist_ok=True)
 def fetch(name):
  a=assets[name];file=dest/name
@@ -14,13 +18,15 @@ def fetch(name):
     out.write(block)
  assert file.stat().st_size==a['size'] and a['digest']=='sha256:'+p.sha(file),(name,'server SHA mismatch')
  return file
-manifest=p.read(fetch('TEM8-manifest.json'));report=p.read(fetch('发布回下载核验.json'));sums={}
+report_name=next((n for n in ['TEM8-exam-download-verification.json','发布回下载核验.json','default.json'] if n in assets),None)
+assert report_name,'缺少实际发布回下载报告'
+manifest=p.read(fetch('TEM8-manifest.json'));report=p.read(fetch(report_name));sums={}
 for line in fetch('SHA256SUMS').read_text().splitlines():
  h,name=line.split('  ',1);sums[name]=h
 fetch('TEM8-filenames.txt')
 assert manifest['mode']==report['mode']=='complete_exam' and manifest['tag']==report['tag']==tag
 assert report['videos']==15 and report['server_digest'] is True and report['download_sha_crc_utf8'] is True
-videos=manifest['videos'];assert len(videos)==15 and [m['id'] for m in videos]==list(map(str,p.YEARS))
+videos=manifest['videos'];assert len(videos)==15 and len({m['id'] for m in videos})==15 and {m['id'] for m in videos}==set(map(str,p.YEARS))
 allowed={str(r['run_id']):r for r in p.read(args.producer_register)['runs'] if r.get('accept_media',True)}
 cache={r['id']:r for r in p.read(root/'专八/听力/批量/核验/考试正式发布/生产15缓存核验.json')['rows']}
 rows=[]
@@ -49,8 +55,10 @@ for archive in report['archives']:
  archives.append({**archive,'download_url':assets[file.name]['browser_download_url'],'server_and_download_verified':True})
  print('archive verified',file.name,len(members),'videos',flush=True)
 assert members==list(expected) and len(members)==15
-allowed={m['mp4'] for m in videos}|{m['mp4'][:-4]+'-evidence.zip' for m in videos}|{x['file'] for x in archives}|{'TEM8-manifest.json','TEM8-filenames.txt','SHA256SUMS','发布回下载核验.json'}
+allowed={m['mp4'] for m in videos}|{m['mp4'][:-4]+'-evidence.zip' for m in videos}|{x['file'] for x in archives}|{'TEM8-manifest.json','TEM8-filenames.txt','SHA256SUMS',report_name}
 extra=sorted(set(assets)-allowed)
-audit={'status':'PASS','release_url':rel['html_url'],'tag':tag,'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'mode':'complete_exam','videos':15,'manifest_source_commit':manifest['source_commit'],'server_digest_verified':True,'actual_download_zip_crc_utf8_member_sha256_verified':True,'rows':rows,'archives':archives,'unexpected_assets':extra,'release_report_sha256':p.sha(dest/'发布回下载核验.json'),'manifest_sha256':p.sha(dest/'TEM8-manifest.json')}
+audit={'status':'PASS','release_url':rel['html_url'],'tag':tag,'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'mode':'complete_exam','videos':15,'exam_entries_projection_sha256':frozen['exam_entries_sha256'],'manifest_source_commit':manifest['source_commit'],'server_digest_verified':True,'actual_download_zip_crc_utf8_member_sha256_verified':True,'rows':rows,'archives':archives,'unexpected_assets':extra,'release_report_asset':report_name,'release_report_sha256':p.sha(dest/report_name),'manifest_sha256':p.sha(dest/'TEM8-manifest.json')}
+if (monitor/'exam-publish-run.json').exists():
+ publication=p.read(monitor/'exam-publish-run.json');audit['publish_run_id']=publication['run_id'];audit['publish_run_url']=publication['html_url'];audit['control_commit']=publication['head_sha']
 p.dump(root/'专八/听力/批量/核验/考试正式发布/正式Release独立回下载核验.json',audit)
 print(json.dumps({'status':'PASS','url':rel['html_url'],'videos':15,'archives':archives,'unexpected_assets':extra},ensure_ascii=False),flush=True)

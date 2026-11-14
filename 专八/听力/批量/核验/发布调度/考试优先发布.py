@@ -124,8 +124,14 @@ def main():
     commit = pushed['commit']
     workflow_run = None
     for _ in range(20):
-        data = pub.gh('api', f'repos/{pub.REPO}/actions/workflows/publish-tem8-complete-exams.yml/runs?per_page=30&head_sha={commit}', json_output=True)
-        workflow_run = next((r for r in data['workflow_runs'] if r['head_sha'] == commit), None)
+        try:
+            data = pub.gh('api', f'repos/{pub.REPO}/actions/runs?per_page=100&head_sha={commit}', json_output=True)
+        except subprocess.CalledProcessError as exc:
+            emit({'run_discovery_retry': exc.returncode, 'commit': commit})
+            time.sleep(15)
+            continue
+        workflow_run = next((r for r in data['workflow_runs'] if r['head_sha'] == commit
+                             and r['path'] == '.github/workflows/publish-tem8-complete-exams.yml'), None)
         if workflow_run:
             break
         time.sleep(15)
@@ -150,7 +156,7 @@ def main():
                 leaves = pub.gh('api', f'repos/{pub.REPO}/actions/runs/{other["id"]}/jobs?per_page=100', json_output=True)['jobs']
                 active += sum(j['status'] == 'in_progress' for j in leaves)
             if active >= 20:
-                record = {'run_id': rid, 'production_run_id': args.run, 'main_running': active,
+                record = {'run_id': rid, 'production_run_id': args.run, 'repository_running': active,
                           'action': '通知root优先空槽；未取消任何任务'}
                 pub.dump(state / 'publish-queued-needs-priority.json', record)
                 emit({'PUBLISH_QUEUED_NEEDS_PRIORITY': record})
