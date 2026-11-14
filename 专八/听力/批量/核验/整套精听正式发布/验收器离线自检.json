@@ -1,0 +1,87 @@
+{
+  "status": "OFFLINE_SELFTEST_PASSED",
+  "media_validation_executed": false,
+  "media_pass_claimed": false,
+  "negative_cases": 19,
+  "results": [
+    {
+      "case": "45片段冒充15整套",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "虚构2020年",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "年度重复",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "缺失年度",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "子段跨年",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "B1与B2换序",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "中文名为内部片段",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "子段摘要非法",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "草稿整套",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "SNR不足但全局ok",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "增益超标",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "逐秒电平超标",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "非有限测量",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "异常额外资产",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "服务器与manifest摘要不同",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "SUMS漏来源证据",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "来源ZIP路径越界",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "来源ZIP隐藏附加文件",
+      "expected_rejection_observed": true
+    },
+    {
+      "case": "正式ZIP混入子段",
+      "expected_rejection_observed": true
+    }
+  ],
+  "script_sha256": "16a2b5d381755447d93f3a924c36257d1e86645c3fda8ca4fbe38b02e80eb330",
+  "test_sha256": "1fdd4619d467e7975c267ce619d11d5891e842a00ad2caa9a64ae2f40bb779f0",
+  "scope": "仅离线契约/异常反例，不代表实际正式Release或任何媒体已通过。"
+}
