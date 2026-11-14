@@ -1,6 +1,6 @@
 {
-  "updated_at_utc": "2026-11-14T10:33:25.583807+00:00",
-  "status": "ALL15_ACTUAL_IMAGES_APPROVED_FULL2015_PILOT_RUNNING",
+  "updated_at_utc": "2026-11-14T11:24:42.730722+00:00",
+  "status": "COMPLETE_PRODUCTION_AND_RELEASE_VERIFIED",
   "latest_user_requirement": "题间分隔线使用纯黑色；其余保持用户认可的固定AB/CD五题同屏模板。2025原视频不改。",
   "frozen": {
     "adapter": "41949dfa3810d5de453fab50c922ce10b4317658cb60a0b16610078a075da416",
@@ -27,12 +27,7 @@
   "current_control": ".github/tem8-five-question-screen.json",
   "current_registry": "专八/听力/批量/核验/五题同屏修复/审核登记.json",
   "next_steps": [
-    "先查看当前control；若已render15/publish=true，说明续产已启动，不要重复。",
-    "若仍render[2015]/publish=false：等43584409951 success，调用pipeline.cached_ready(2015,pipeline.release(CACHE_TAG))核持久完整缓存。",
-    "完整试产与缓存均通过后，把control.years改为2009—2019、2021—2024共15年，publish=true，改run_revision并提交推送；原2015由缓存自动跳过，仅14年实际续产。",
-    "新工作流收齐15个修复和2025原文件后自动发布16年ZIP，逐项核CRC/UTF8/顺序/成员SHA并真实回下载。",
-    "失败项按持久缓存续收，只改control.run_revision再推送，不因发布/打包问题重做已核视频。",
-    "最终核Release的TEM8-download-verification.json与服务器digest，再把旧两版考试Release说明链接到新修复版，向用户交付实际链接。"
+    "全部完成；直接向用户提供本Release实际链接。"
   ],
   "persistent_cache_tag": "tem8-listening-five-question-screen-cache",
   "final_release_tag": "tem8-listening-exam-five-question-fixed-2009-2025",
@@ -45,7 +40,15 @@
   "local_only_recovery_helpers": {
     "auto_continue": "/workspace/tem8-continue-after-pilot.py（session28444，已等pilot；success且缓存gate后自动提交续产控制）",
     "pilot_watch": "/workspace/tem8-watch-five-run.py 43584409951（session64286）",
-    "latest_run_snapshot": "/workspace/tem8-five-run-43584409951.json"
+    "latest_run_snapshot": "/workspace/tem8-five-run-43584409951.json",
+    "status": "historical; all production completed"
   },
-  "important": "此交接仅为已完成图审及运行中生产状态；不能将其当作修复成品或正式Release已完成。"
+  "important": "此交接仅为已完成图审及运行中生产状态；不能将其当作修复成品或正式Release已完成。",
+  "final_release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/tag/tem8-listening-exam-five-question-fixed-2009-2025",
+  "final_run_id": 43586569585,
+  "final_archive": {
+    "name": "TEM8-listening-exam-five-question-fixed-2009-2025.zip",
+    "bytes": 1428059227,
+    "sha256": "65df083e9ec2125ac47cce7031710a16381aa9317dd8e953d064db55a74c224f"
+  }
 }
