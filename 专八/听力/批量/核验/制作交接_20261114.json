@@ -1,0 +1,71 @@
+{
+  "updated_utc": "2026-11-14T00:40:18.519314+00:00",
+  "scope": "完成TEM8 2009—2024实际15年：15套考试+15个完整年度精听；45为内部制作分段，2020停考，2025旧成品保留。",
+  "branch": "codex/tem8-listening-2009-2024",
+  "github_checkpoint": "a6a485fdc4281325e885bfb85c62916c571d128c",
+  "render_core_epoch": "f25216794e383505baa132ca581e1380e82192c8",
+  "registry_sha256": "d80e98b4c5dc4243b64dfeb85e1bdc105a26a6c5d87396216b54dd50fb728e9e",
+  "intensive45_full_entry_projection_sha256": "5932d251ac0ae044b2cc8b19598684ef17e3f7daa69e7f8b3d3c5c2943ec77fd",
+  "media_status": {
+    "intensive_parts_success_at_last_agent_update": 26,
+    "intensive_parts_total": 45,
+    "intensive_failures": 0,
+    "exam_current_cache_pairs_at_0035": 0,
+    "formal_releases_created": false
+  },
+  "runs": [
+    {
+      "id": 43528080039,
+      "commit": "f25216794e383505baa132ca581e1380e82192c8",
+      "scope": "main15exam+45parts; many exam runner shutdown; intensive progressing"
+    },
+    {
+      "id": 43531376481,
+      "commit": "3890d4cc806908103d2c1de864962a94ede4fe80",
+      "scope": "retry2010 only via legacy fixed-five control with render_exam2010"
+    },
+    {
+      "id": 43532918536,
+      "commit": "2430e83b32917c5bca3ddadcbe3177e99a3496df",
+      "targets": [
+        2009,
+        2012,
+        2013,
+        2016,
+        2018,
+        2021
+      ]
+    },
+    {
+      "id": 43533787006,
+      "commit": "ad4daf1cbaad13ffcb5e633db9d84b55cc77be3b",
+      "targets": [
+        2014,
+        2023,
+        2024
+      ]
+    },
+    {
+      "id": 43534957160,
+      "commit": "a6a485fdc4281325e885bfb85c62916c571d128c",
+      "targets": [
+        2019
+      ]
+    }
+  ],
+  "infrastructure": "shutdown+cancel/SIGTERM across clouds/regions, no quality fail and no OOM evidence. Native job rerun rejected while main run active; independent repair scopes avoid redoing successes. Original2011/2015/2017/2022 last not final, do not presume completed.",
+  "resource_records": "CACHE_TAG tem8-resource-exam-YEAR-RUNID.json from last retry workflow, every2min; first retry6 logs only; old2010 no resource observer.",
+  "optimization": "NOT APPLIED. Benchmark medium18 with format=yuv420p beforefps saved24% on4real pages/10s/300frames, entireMP4 identical. veryfast16 had slightly higher glyph error. Keep production core frozen pending real retry diagnostics.",
+  "automation": {
+    "exam_agent": "tem8_exam_spec",
+    "exam_scripts": "核验/发布调度/考试优先发布.py 等4脚本",
+    "exam_producers": "核验/考试正式发布/生产与修复运行登记.json（每轮重读allowed runs）",
+    "exam_marker_dir": "/workspace/tem8-exam-release-monitor",
+    "intensive_agent": "tem8_asr_prep",
+    "intensive_activation_script": "核验/发布调度/精听缓存核齐与组装调度.py",
+    "intensive_monitor_dir": "/workspace/tem8-monitor-intensive-43528080039",
+    "intensive_ready_control": "/workspace/tem8-intensive-full-control-ready.json",
+    "git_mutex": ".git/tem8-control-publish.lock"
+  },
+  "next": "Keep monitoring/recover infra failures; 15 actual exam current caches trigger independent publish; 45 verified parts trigger online15whole join+formalpublish. Verify final serverdigests and ZIP download CRC/memberSHA/names. Commit final reports. No approval questions."
+}

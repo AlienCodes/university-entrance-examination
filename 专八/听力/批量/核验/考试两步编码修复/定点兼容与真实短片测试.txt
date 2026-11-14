@@ -1,0 +1,61 @@
+import sys,types,ast,json,hashlib,tempfile,copy,subprocess,os
+from pathlib import Path
+import numpy as np,soundfile as sf
+ROOT=Path('/workspace/tem8-project');BASE=ROOT/'专八/听力/tools/听力视频.py';AUDIT=ROOT/'专八/听力/批量/核验/考试两步编码修复';oldsource=(AUDIT/'BASE修复前.py.txt').read_text();newsource=BASE.read_text();TMP=Path('/workspace/tem8-exam-two-step');TMP.mkdir(exist_ok=True)
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def load(name,source):
+ m=types.ModuleType(name);m.__file__=str(BASE);sys.modules[name]=m;exec(compile(source,str(BASE),'exec'),m.__dict__);return m
+old=load('exam_before_two_step',oldsource);new=load('exam_after_two_step',newsource)
+# All default-2025 and exact-fast argv, listings and frame tables must remain byte identical.
+tests=[]
+def spy(m,fast,original,exact=None):
+ out=TMP/'spy';(out/'shots').mkdir(parents=True,exist_ok=True)
+ for k in ['a','b','c','d']:(out/'shots'/(k+'.png')).touch()
+ calls=[];m.OUT=out;m.NAME='fixture.mp4';m.ORIGINAL=original;m.key=lambda s:s['key'];m.audio_track=lambda w:([(-m.LEAD,{'key':'a'}),(1-m.LEAD,{'key':'b'}),(2-m.LEAD,{'key':'c'}),(2.5-m.LEAD,{'key':'d'})],3-m.LEAD,{'audioEnd':1},90,22050);m.verify=lambda *a:calls.append(['verify'])
+ class Spy:
+  def run(self,args,**kw):
+   calls.append([args,kw])
+   return types.SimpleNamespace(returncode=0,stdout=' '.join(str(i/30) for i in range(90)) if 'packet=pts_time' in args else '3.0')
+ m.subprocess=Spy();m.video('fixture.wav',fast,exact_image_fps=exact)
+ return {'calls':calls,'concat':(out/'list.txt').read_text(),'frames':(out/'帧表.json').read_text()}
+for fast in [False,True]:
+ for original in [False,True]:
+  assert spy(old,fast,original)==spy(new,fast,original);tests.append({'case':f'default_None_fast={fast}_ORIGINAL={original}_argv_listing_frames_identical','passed':True})
+for original in [False,True]:
+ assert spy(old,True,original,30)==spy(new,True,original,30);tests.append({'case':f'exact_fast_ORIGINAL={original}_argv_listing_frames_identical','passed':True})
+for original in [False,True]:
+ r=spy(new,False,original,30);cmds=[a[0] for a in r['calls'] if len(a)==2 and isinstance(a[0],list) and a[0][0]=='ffmpeg'];assert len(cmds)==2
+ v,a=cmds;assert v.count('-i')==1 and '-an' in v and v[v.index('-vf')+1]=='format=yuv420p,fps=30:start_time=0:round=near';assert '-frames:v' in v and '-t' in v and '-c:a' not in v;assert a.count('-i')==2 and a[a.index('-c:v')+1]=='copy' and a[a.index('-c:a')+1]=='aac' and '-shortest' not in a and '-frames:v' not in a
+ assert ('-ar' not in a and '-af' not in a) if original else ('-ar' in a and '-af' in a)
+ tests.append({'case':f'exact_full_two_finite_inputs_one_AAC_stream_copy_ORIGINAL={original}','passed':True})
+try:spy(new,False,True,24)
+except SystemExit:tests.append({'case':'different_fps_rejected_before_encoding','passed':True})
+else:raise AssertionError('invalid fps not rejected')
+def functions(s):return {x.name:ast.dump(x,include_attributes=False) for x in ast.parse(s).body if isinstance(x,ast.FunctionDef)}
+a,b=functions(oldsource),functions(newsource);changed=[k for k in a if a[k]!=b[k]];assert changed==['video'] and set(a)==set(b)
+(AUDIT/'兼容门禁.json').write_text(json.dumps({'status':'PASS','tests':tests,'only_changed_function':changed,'verify_AST_identical':a['verify']==b['verify'],'old_BASE_sha256':hashlib.sha256(oldsource.encode()).hexdigest(),'new_BASE_sha256':sha(BASE)},ensure_ascii=False,indent=2)+'\n');print('COMPAT_PASS',len(tests),flush=True)
+# Reload real subprocess and verify; actual production video() and unchanged verify() on 4 real PNG.
+source=Path('/workspace/tem8-canonical/2009/原音.wav');info=sf.info(source);sr=info.samplerate;ref,_=sf.read(source,start=100*sr,frames=6*sr,always_2d=True,dtype='float32');assert len(ref)==6*sr
+y=np.concatenate([np.zeros((round(1.5*sr),info.channels),dtype='float32'),ref,np.zeros((round(2.5*sr),info.channels),dtype='float32')]);assert len(y)==10*sr
+bench=json.loads((ROOT/'专八/听力/批量/核验/考试编码短基准/短基准结果.json').read_text());imgs=bench['source_images'];records=[]
+for name,src in [('old-combined',oldsource),('new-two-step',newsource)]:
+ m=load('actual_'+name.replace('-','_'),src);out=TMP/name;(out/'shots').mkdir(parents=True,exist_ok=True)
+ for i,row in enumerate(imgs):
+  p=out/'shots'/f'p{i}.png'
+  if not p.exists():p.symlink_to(row['file'])
+ m.OUT=out;m.D=out;m.NAME=name+'.mp4';m.ORIGINAL=True;m.key=lambda s:s['key']
+ def track(w,m=m,out=out):
+  sf.write(out/'audio.wav',y,sr,subtype='FLOAT');m.ORIG_REF=ref.astype('float64');m.ORIG_SR=sr
+  return [(-1.5+2.5*i,{'key':f'p{i}'}) for i in range(4)],8.5,{'audioEnd':6},300,sr
+ m.audio_track=track;m.video(source,False,exact_image_fps=30);video=out/m.NAME
+ probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(video)]));v=next(s for s in probe['streams'] if s['codec_type']=='video');au=next(s for s in probe['streams'] if s['codec_type']=='audio');assert (v['width'],v['height'],v['r_frame_rate'],int(v['nb_frames']))==(3840,2160,'30/1',300);assert int(au['sample_rate'])==sr and au['channels']==info.channels
+ pcm=subprocess.check_output(['ffmpeg','-v','error','-i',str(video),'-map','0:a:0','-f','f32le','-']);decoded=np.frombuffer(pcm,np.float32).reshape(-1,info.channels)
+ md5=subprocess.check_output(['ffmpeg','-v','error','-i',str(video),'-map','0:v:0','-an','-c:v','rawvideo','-pix_fmt','yuv420p','-f','framemd5','-']).decode();md5rows=[r for r in md5.splitlines() if r and not r.startswith('#')];assert len(md5rows)==300
+ vcl=subprocess.check_output(['ffmpeg','-v','error','-i',str(video),'-map','0:v:0','-c:v','copy','-bsf:v','filter_units=pass_types=1|5','-f','h264','-'])
+ pts=json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_packets','-show_entries','packet=pts,dts,duration','-of','json',str(video)]))['packets'];assert len(pts)==300
+ ap=json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','a:0','-show_packets','-show_entries','packet=pts,dts,duration,side_data_list','-of','json',str(video)]))['packets'];first=ap[0];skip=first.get('side_data_list',[{}])[0].get('skip_samples',0);assert int(first['pts'])+skip==0
+ records.append({'name':name,'file':str(video),'sha256':sha(video),'prepared_FLOAT_PCM_container_sha256':sha(out/'audio.wav'),'prepared_FLOAT_PCM_sha256':hashlib.sha256(sf.read(out/'audio.wav',dtype='float32',always_2d=True)[0].tobytes()).hexdigest(),'streams':probe['streams'],'BASE_VERIFY_report':json.loads((out/'核查报告.json').read_text()),'all_frame_YUV_MD5':md5rows,'all_frame_YUV_MD5_rows_sha256':hashlib.sha256('\n'.join(md5rows).encode()).hexdigest(),'all_video_VCL_sha256':hashlib.sha256(vcl).hexdigest(),'video_packets':pts,'audio_first_packet':first,'AAC_decoded_PCM_sha256':hashlib.sha256(pcm).hexdigest(),'AAC_decoded_frames':len(decoded),'AAC_native_rate':sr,'AAC_native_channels':info.channels,'audio_duration':au['duration'],'video_duration':v['duration']})
+ print('REAL_PASS',name,flush=True)
+a,b=records;assert a['prepared_FLOAT_PCM_sha256']==b['prepared_FLOAT_PCM_sha256'];assert a['all_frame_YUV_MD5']==b['all_frame_YUV_MD5'];assert a['all_video_VCL_sha256']==b['all_video_VCL_sha256'];assert a['video_packets']==b['video_packets'];assert all(not r['BASE_VERIFY_report']['问题'] for r in records)
+report={'status':'PASS','old_BASE_sha256':hashlib.sha256(oldsource.encode()).hexdigest(),'new_BASE_sha256':sha(BASE),'only_changed_function':'video','scope':'Actual production old/new video() + unchanged BASE.verify on 10s/300frames; actual approved 2019 four dense PNGs and native2009 canonical100-106s,1.5s lead+2.5s tail; no full-paper rendering.','source_PCM':{'file':str(source),'sha256':sha(source),'native_sample_rate':sr,'channels':info.channels,'source_window':[100,106],'head_silence':1.5,'tail_silence':2.5},'source_images':imgs,'records':records,'all_300_YUV_frames_identical':True,'all_VCL_bytes_identical':True,'all_video_packet_PTS_DTS_duration_identical':True,'prepared_FLOAT_PCM_identical':True,'AAC_decoded_PCM_identical':a['AAC_decoded_PCM_sha256']==b['AAC_decoded_PCM_sha256'],'unchanged_BASE_VERIFY_both_passed':True,'default_and_fast_compatibility_passed':True,'thresholds_changed':False,'adapter_source_registry_mainworkflow_modified':False,'script_sha256':sha(AUDIT/'定点兼容与真实短片测试.txt')}
+(AUDIT/'真实短片对照.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k not in ['source_PCM','source_images','records']},ensure_ascii=False))

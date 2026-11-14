@@ -2,7 +2,7 @@
   "entries": {
     "exam:2009": {
       "status": "approved",
-      "payload_sha256": "d12d3e7ba806aef445ce0af8d108149339a68ac8cb3f0c62d4cbc05f726e49b2",
+      "payload_sha256": "aae08c0f1bccce65e5484a8414a2949f8b9e8da1baf30044a8d78bb2740835da",
       "kind": "exam",
       "id": "2009",
       "inputs": {
@@ -15,7 +15,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -373,7 +373,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/004c7698ba50.png": "08c9c5686dfe9351eb355429a83fc9f17e57780878d9d434c4715659125af412",
         "shots/005647a7080a.png": "f03f215f0f55f4c88458f54c478bf7ef213975b966b944fd38ff34b869a3491f",
@@ -749,11 +749,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部366张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看12张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2009-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "39a352703eb041fe83682402b681071c433cece70f3cfb0fa0e8a89433c6fb58"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "d12d3e7ba806aef445ce0af8d108149339a68ac8cb3f0c62d4cbc05f726e49b2",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2010": {
       "status": "approved",
-      "payload_sha256": "475c17b3e26d2724220e710833af9a473e5830538db74ba4ad251c6b454a17c2",
+      "payload_sha256": "5be67bb2dba1579d9ce4ac18e37b9a647c624430e71afb14dc81f362b743f2d6",
       "kind": "exam",
       "id": "2010",
       "inputs": {
@@ -766,7 +772,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -1124,7 +1130,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/0040ca16fdcb.png": "f079507abae7b9c24488bedd09653e7808ed3f03503a806fdf7014ea8bd6251f",
         "shots/006fc6291651.png": "3d9edaae1303856107cac6b8816eb8c4c3f070fcd925859dcc00a6302b81f18f",
@@ -1504,11 +1510,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部371张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2010-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "73dfa739ea62be787eb3b7b41316da77c393596d2863709ccce950b91d0ac00b"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "475c17b3e26d2724220e710833af9a473e5830538db74ba4ad251c6b454a17c2",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2011": {
       "status": "approved",
-      "payload_sha256": "3a7cfef57800407fe6a7e630a1fdf30a2037c69cce5058743d4fc2773a084833",
+      "payload_sha256": "9ea26ecdb3892dfd4383cbc07d7b22f82964ee5b5215019e35ec75541fff0e5f",
       "kind": "exam",
       "id": "2011",
       "inputs": {
@@ -1521,7 +1533,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -1879,7 +1891,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/00c77a2b83c1.png": "633fc505aa2dca2eca6dfd6ab41795eeb502b6d582e42de9dea6656196c4a7e3",
         "shots/00ebf4a7c44b.png": "e1bf3e64faef2b7b4e0beaf37449e2aca1791fccc709fb650d418f5ea2e7c58f",
@@ -2259,11 +2271,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部371张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2011-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "2e92f2440e0d877a24565f79ea57e5ab7a71c635bf84c79b4d67d42b8fe07598"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "3a7cfef57800407fe6a7e630a1fdf30a2037c69cce5058743d4fc2773a084833",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2012": {
       "status": "approved",
-      "payload_sha256": "5da4b0b2f357d843c186561f6e35e385a2b6478d8822426648aef94b631268b4",
+      "payload_sha256": "750fa42f61d4c9849a34494c8434947270451bfd372b944426d2cd10425bcaf6",
       "kind": "exam",
       "id": "2012",
       "inputs": {
@@ -2276,7 +2294,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -2634,7 +2652,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/00f18fe0486f.png": "8018a0b18b99452eaf3009748d0aadcf3bdae8100a10cd4436d821416c4f633e",
         "shots/01bfe9a53867.png": "84b0391ad9a1c001c8bff97fa2b5a99679ed00fb0f738a27d2fa341ab152ca1a",
@@ -3010,11 +3028,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部366张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2012-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "4a69e6ca03224cd82fb01f2f54b0f26be7820e462cf6a381ef0b82169c598079"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "5da4b0b2f357d843c186561f6e35e385a2b6478d8822426648aef94b631268b4",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2013": {
       "status": "approved",
-      "payload_sha256": "8d5eedbf44369126499cee56a48f044c31fa9fc42380472b9ad27336a0898ac1",
+      "payload_sha256": "c596226f181c38af3a4e4080c37ac7d80bf4f1959fa8b3777f38e05c2c9e6845",
       "kind": "exam",
       "id": "2013",
       "inputs": {
@@ -3027,7 +3051,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -3385,7 +3409,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/006e43fa74b9.png": "6e8eb37f42a80ebfeadc26050c7dce36e326068c6f7dadf3590e7b25ce54e747",
         "shots/01643a9a602d.png": "b90563cfe22fa4ff520e77783f7dadcd72834fbbf4ff63731b0e828098558803",
@@ -3766,11 +3790,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部371张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2013-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "5066a29f4b4096b0483cfae4225e2df5159ec77588eb5d5283aa4c4fa2ed637f"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "8d5eedbf44369126499cee56a48f044c31fa9fc42380472b9ad27336a0898ac1",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2014": {
       "status": "approved",
-      "payload_sha256": "8952a3e34bfcc4a8d8faba31098dea1b0e5c840ba61c03da17c2b3dcdb6ee686",
+      "payload_sha256": "0a1f1512e208e76a0d5be371505e8236cb2d6484ec48ad677238c19691d407bb",
       "kind": "exam",
       "id": "2014",
       "inputs": {
@@ -3783,7 +3813,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -4141,7 +4171,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/0016bdce005f.png": "6e86281325ece3324f2d16c9e2aac9bc2fcad790a760da26a4842d7fc91b1636",
         "shots/00a86f8973c6.png": "12873dc8fd21062a74f9b714d7c67a5cfb23c3b6a458861650c838724442e679",
@@ -4523,11 +4553,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部372张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看9张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2014-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "469833d1bd86feeba50ef3850f8105de9ab0918a24804d0a0e0631c39ffd440d"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "8952a3e34bfcc4a8d8faba31098dea1b0e5c840ba61c03da17c2b3dcdb6ee686",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2015": {
       "status": "approved",
-      "payload_sha256": "3a4a6b5b9473ee691eec4f007f36138c8e24be358f0642a4885bc2a10fb84133",
+      "payload_sha256": "9702bf65927ece9b1d3218889c323e6289415681fda16427f2a445b3a1dbda65",
       "kind": "exam",
       "id": "2015",
       "inputs": {
@@ -4540,7 +4576,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -4898,7 +4934,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/014bdfb7a597.png": "b332965f60bfd9b973c47e6179c9111d90d3372f055432ccd4d62b7d78b1822d",
         "shots/021ef9fe79ce.png": "2c3edddd4116d1709d3b5788c083cd7b91ea0d105b26465ccbd7d4d308bcf32d",
@@ -5281,11 +5317,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部373张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2015-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "6f3677a4156a84dacdac0065b89de37ff524d2f150dee9b5de83dc91c881a292"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "3a4a6b5b9473ee691eec4f007f36138c8e24be358f0642a4885bc2a10fb84133",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2016": {
       "status": "approved",
-      "payload_sha256": "9aaefef0cb6d19a13a4aa8f824ff96e9075d766e448688f9116803cad3363eeb",
+      "payload_sha256": "3cbe455ccb6bab4857de838a9e4163ad1b1a85f397ecf02e69c2879c8391376d",
       "kind": "exam",
       "id": "2016",
       "inputs": {
@@ -5298,7 +5340,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -5656,7 +5698,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/001a8581ed80.png": "2ded1d69cd5f32faa18f47bb0628cb72cdba6aba20e593f61130cdf34f7576f5",
         "shots/010a316b4222.png": "200fe2136e116d209084c581df4bf7d292f7359fa88c809c4a94d53c951ea4ad",
@@ -6031,11 +6073,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部366张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2016-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "72847b3d87ff54a1f0d599bfd78994a7b6a37fe250e8c0f51970da78fef52cd2"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "9aaefef0cb6d19a13a4aa8f824ff96e9075d766e448688f9116803cad3363eeb",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2017": {
       "status": "approved",
-      "payload_sha256": "73a7dc8d0f31181667dbc759e44c31d28a39b6bbe32f4a055a73230929eb4ff7",
+      "payload_sha256": "b80e7498197259219fccc096958d2ef51992d89f34f80ac8118e3c8134229cb7",
       "kind": "exam",
       "id": "2017",
       "inputs": {
@@ -6048,7 +6096,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -6406,7 +6454,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/006bc77d7ad5.png": "247b1f333905bdaed9caf30ed7d9cc3c4d2ada0fea0517d0c11595f2e352847b",
         "shots/01798020474b.png": "e9288392bb9e94734bbfc102a80e7a0ffd347cdd7b1fe9aec8ba97ce85548a31",
@@ -6785,11 +6833,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部370张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2017-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "b513dc2803d9be2ba1821f57e8a9a0ad0594f6f77e4c6d623c642cdc17febbb0"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "73a7dc8d0f31181667dbc759e44c31d28a39b6bbe32f4a055a73230929eb4ff7",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2018": {
       "status": "approved",
-      "payload_sha256": "dd035a84fbc94b5c3c4af5582e242e9886ec073b7048ce541818af850d34f214",
+      "payload_sha256": "94a0c1195f4fbcdadbfca5b0f9d6c6b9a7a5d19ebb9433cf1f3a0152860fe0e6",
       "kind": "exam",
       "id": "2018",
       "inputs": {
@@ -6802,7 +6856,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -7160,7 +7214,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/00624ea387c2.png": "75e46e34ed5d84d5bb0e454374de509bd59a14de8343a744e1ef1fa9c1b4010f",
         "shots/00857901cddd.png": "133202b4fdec6adb4bd1918268b4d819b1de7f0acf7bbbcd4d2aa18e17a0b669",
@@ -7535,11 +7589,17 @@
         "evidence": "已核run43500403977的ZIP整包SHA/CRC、输入依赖及全部365张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看16张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43500403977/2018-实际审图.json。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "bbb707bc7715a120c2d63ae42c06496cd655ddfdab4933168fd781ab9556ef88"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "dd035a84fbc94b5c3c4af5582e242e9886ec073b7048ce541818af850d34f214",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2019": {
       "status": "approved",
-      "payload_sha256": "2582ab4dd6b3448aa6930689ed27b2af6fab7267060ccd76cc1c90af493aa794",
+      "payload_sha256": "00e751fbc17b2709d2ddb6fe8e23c5c8be9c4402dd563e7be92731c415a1eb98",
       "kind": "exam",
       "id": "2019",
       "inputs": {
@@ -7552,7 +7612,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -7910,7 +7970,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/0025f67c0d18.png": "a004def13260d8fc6957b5017b64e356ea6e4503412d9b19724ec45d5b321492",
         "shots/00931b59afee.png": "4a83e1a9c3b3fa922e492c39bd2180b565f704246758cd0c774fa6d9bee9668d",
@@ -8286,11 +8346,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部367张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2019-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "334ff1fc8978537f8a86664a27e7838ac50b78025430aaf6c815e7d9c2e67c95"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "2582ab4dd6b3448aa6930689ed27b2af6fab7267060ccd76cc1c90af493aa794",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2021": {
       "status": "approved",
-      "payload_sha256": "4f31dd73fa38580eb0099441e81da4144d4ed77030a8fa94936ced040f14a134",
+      "payload_sha256": "d70040fba3b79983bf2942bb65f2fe3d66560923a26d67f47c95f3bfc505a429",
       "kind": "exam",
       "id": "2021",
       "inputs": {
@@ -8303,7 +8369,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -8661,7 +8727,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/0035b280808e.png": "089227b4021683c00328706b997fc87fa0c690c9551bf548fd1adc45efea1342",
         "shots/003bb183cefb.png": "649dcaec09de02eed05d21604bb867d31930758e4afff8cadacab33ed38c2cc6",
@@ -9040,11 +9106,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部369张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2021-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "cf0d9c79b98b7767c73d2326e3e85a360860eddb03ad9b3499e65df0ce7d7cac"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "4f31dd73fa38580eb0099441e81da4144d4ed77030a8fa94936ced040f14a134",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2022": {
       "status": "approved",
-      "payload_sha256": "bbe4cdab6c1303edd8cd1bbf3b0ec0085fe510a36b524157c2c2241a9d47a617",
+      "payload_sha256": "9b3d3b82a0bdbc4743ce7c14cb4593d79335946593cded1fd329ac0ca179a9d7",
       "kind": "exam",
       "id": "2022",
       "inputs": {
@@ -9058,7 +9130,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -9416,7 +9488,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/003f29934999.png": "bfbb5eb308f9a67c80e80a28bb5a7289a923c05c19c1a5ba2e8dd6d25a26459f",
         "shots/0121734d7a52.png": "776f0dac7386088c07ac94c13e8940d9ea3d3238c410cb0145a269c5b7f8ce60",
@@ -9797,11 +9869,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部371张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2022-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "74d15ab5f67046b2df2f898092cba8be679cc8ef8768d1b0bfe45edf037a6eff"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "bbe4cdab6c1303edd8cd1bbf3b0ec0085fe510a36b524157c2c2241a9d47a617",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2023": {
       "status": "approved",
-      "payload_sha256": "172d57a61fbb4ab50708b7a2df035b4a0935703fdbd17a91edbb5262ce49c366",
+      "payload_sha256": "a64254f32406109f1ea659ba2d8646b749182bd06e4c11823c59b0840c2baa83",
       "kind": "exam",
       "id": "2023",
       "inputs": {
@@ -9814,7 +9892,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -10172,7 +10250,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/0071a3e741d0.png": "49a4fc6e3a752066b57c591d919043da585f0a920defccb5b89faa6cb132cee1",
         "shots/00c600bf9f5c.png": "c4c81726ab5866d3aac4697551ba097af2d008fcc09192a843b982a6bec07a18",
@@ -10550,11 +10628,17 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部368张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看8张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2023-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "73af042cd4c2185e647959883afcc6bdaa2996e6071b2c381cef5117680961e3"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "172d57a61fbb4ab50708b7a2df035b4a0935703fdbd17a91edbb5262ce49c366",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "exam:2024": {
       "status": "approved",
-      "payload_sha256": "084036db8544d87d4d475316629feedbb6d4d876ecbd7e9bee52b4afc8329fba",
+      "payload_sha256": "ecfa588885afe1ad4e9d762872f65fb36002b2917ac8ecb30d99cbef62805d92",
       "kind": "exam",
       "id": "2024",
       "inputs": {
@@ -10567,7 +10651,7 @@
         ".github/workflows/render-tem8-history.yml": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
         "tools/题目间隔.py": "4fbd41090447c6e8381581702a91cf05342c3d20c597aea732d597d005fdd434",
         "专八/听力/tools/取字体.py": "84c9cacab55669585a1dbc1679541b7602df875a3c24f3758dde0469c9083c70",
-        "专八/听力/tools/听力视频.py": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "专八/听力/tools/听力视频.py": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
         "专八/听力/批量/tools/原音准备.py": "59c4fb2afe7562e0560cea059044308fb3e41c7008a1de75a2302a30756a502d",
         "专八/听力/批量/tools/考试视频.py": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
         "专八/真题/2025年 英语专业八级真题.pdf": "7bf9e8b344c9327f4e7be42376c2fee993a955c6d9ca8d54296c6fa1c66ec51d",
@@ -10925,7 +11009,7 @@
         "四级/tools/fonts/files/noto-serif-sc-vietnamese-700-normal.woff2": "545a271f0bee8e4128a42766fac08d0c0498fefb044423935637347f855d6f87",
         "四级/tools/fonts/fonts.css": "25ada8970c36bca16eaf520f263ab5bbddf63a0ee379f03414058d3415460d96"
       },
-      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。",
+      "evidence": "根已读并接纳40份真实在线人工风险图审与原15考试及5精听图审；独立复跑图片时钟门禁、兼容与整套发布检查。逐项输入及母稿语义相同，只有冻结编码入口和AAC已证实差异，完整已审PNG多重集保留；批准当前PNG登记，所有60个MP4必须新精确时钟编码并独立核验，旧媒体不迁移。；保留已实际审过的完整 PNG 字节多重集；仅按冻结的编码时钟等价证据更新指纹。所有 MP4 必须重新编码并全核，生产逐 PNG 核验仍生效。；根已审BASE两阶段编码修复：仅exact完整4K先无声medium18，再从原FLOAT单次AAC并复制画面。9兼容及真实300帧VCL/YUV/PTS与AAC解码PCM对照全过，旧2025/fast/全部可见函数及原BASE_VERIFY未改。保留完整旧已审PNG，仍逐图核SHA；新整年线上样例和每套最终音画严检必需。详见核验/考试两步编码修复/根批准与15项指纹更新.json。",
       "shots": {
         "shots/005707b225e6.png": "c987214ef3c5421e3db03fe98bc630e898b69211401b576cfc3657e92a064c00",
         "shots/02009c7d4e39.png": "f110532877235749179233a13d7f440c0dc8fd370f72af6359a5e935e0de4b22",
@@ -11311,7 +11395,13 @@
         "evidence": "已核run43494958409的ZIP整包SHA/CRC、输入依赖及全部376张PNG摘要，schema/原音AAC预演/完整排版均0问题。实际看11张新增页/最长题/答案代表原PNG的完整联系图，未见版面阻断；详见核验/线上考试审图/43494958409/2024-实际审图.json。 当前仅精听条件步骤依赖修复导致workflow指纹变化，原审图来源仍为507127ac；考试路径不变，编码前重截图逐SHA一致才放行。；分页短tick修复仅省去旧页1/2帧冗余数字更新；已核15年完整状态/HTML/函数等价证明。此处保留已实际审阅PNG全体或严格子集，无新图片；生产仍逐PNG完整摘要核验。详见核验/分页短tick修复/root-登记刷新.json。",
         "shots_multiset_sha256": "5087b97f22a9bee8c1cdf087e1d225406693841fea1766a18099df4aeca299e9"
       },
-      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592"
+      "png_rebind_plan_sha256": "e24f5b235e2ddf1e30eb654d93b89a5fb17a3157be9826460c5e664d29856592",
+      "two_stage_revalidation": {
+        "old_payload_sha256": "084036db8544d87d4d475316629feedbb6d4d876ecbd7e9bee52b4afc8329fba",
+        "old_base_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+        "new_base_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+        "proof_sha256": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32"
+      }
     },
     "intensive:2024-A": {
       "status": "approved",

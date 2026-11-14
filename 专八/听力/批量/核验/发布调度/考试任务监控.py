@@ -15,7 +15,7 @@ while True:
   known={}
   for file in (root/'专八/听力/批量/核验/考试正式发布').glob('*-runner关闭证据.json'):
    proof=json.loads(file.read_text())
-   if any('runner has received a shutdown signal' in s for s in proof['observed_lines']):known[proof['job_id']]=str(file.relative_to(root))
+   if any('runner has received a shutdown signal' in s for s in proof['observed_lines']) or any('The hosted runner lost communication with the server.' in x.get('message','') for x in proof.get('annotations',[])):known[proof['job_id']]=str(file.relative_to(root))
   all_leaves=[];main_jobs=[]
   for r in register['runs']:
    data=json.loads(subprocess.check_output(['gh','api',f"repos/AlienCodes/university-entrance-examination/actions/runs/{r['run_id']}/jobs?per_page=100"],timeout=45))
@@ -28,10 +28,10 @@ while True:
      assert year in r['target_ids'],'repair出现未授权年份'
      assert j.get('head_sha',r['source_commit'])==r['source_commit'],'producer实际commit与登记不同'
      j['_producer']=r;all_leaves.append(j)
-  unknown=[j for j in all_leaves if j['status']=='completed' and j['conclusion']!='success' and j['id'] not in known and not (j['conclusion']=='cancelled' and j['_producer'].get('ignore_root_cancelled'))]
+  unknown=[j for j in all_leaves if j['_producer'].get('accept_media',True) and j['status']=='completed' and j['conclusion']!='success' and j['id'] not in known and not (j['conclusion']=='cancelled' and j['_producer'].get('ignore_root_cancelled'))]
   chosen=[];rows=[]
   for year in years:
-   candidates=[j for j in all_leaves if ident(j)==year]
+   candidates=[j for j in all_leaves if ident(j)==year and j['_producer'].get('accept_media',True)]
    successful=[j for j in candidates if j['conclusion']=='success' and store(j)=='success']
    active=[j for j in candidates if j['status']=='in_progress'];queued=[j for j in candidates if j['status']=='queued']
    selected=max(successful or active or queued or candidates,key=lambda j:j['id']) if candidates else None

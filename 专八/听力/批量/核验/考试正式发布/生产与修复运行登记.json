@@ -23,7 +23,10 @@
         "2022",
         "2023",
         "2024"
-      ]
+      ],
+      "accept_media": false,
+      "exam_generation_retired": true,
+      "retired_reason": "主run继续精听，不取消；exam15均无合格输出，旧单阶段exam来源退出当前生产。"
     },
     {
       "run_id": "43531376481",
@@ -32,7 +35,13 @@
       "target_ids": [
         "2010"
       ],
-      "note": "允许真实已核缓存，不要求2010必须由本run提供；root拟合并后续重试。"
+      "note": "允许真实已核缓存，不要求2010必须由本run提供；root拟合并后续重试。",
+      "accept_media": false,
+      "exam_generation_retired": true,
+      "superseded": true,
+      "ignore_root_cancelled": true,
+      "root_cancel_requested": true,
+      "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
     },
     {
       "run_id": "43532918536",
@@ -46,7 +55,13 @@
         "2018",
         "2021"
       ],
-      "note": "root确认生成命令/环境/core/registry原字节不变，仅增加30秒资源只读观测，最多5并行。"
+      "note": "root确认生成命令/环境/core/registry原字节不变，仅增加30秒资源只读观测，最多5并行。",
+      "accept_media": false,
+      "exam_generation_retired": true,
+      "superseded": true,
+      "ignore_root_cancelled": true,
+      "root_cancel_requested": true,
+      "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
     },
     {
       "run_id": "43533787006",
@@ -57,7 +72,28 @@
         "2023",
         "2024"
       ],
-      "note": "root第二批retry3，按run_id独立并发组，仅只读资源观测新增；core/registry/mainworkflow原字节未变。"
+      "note": "root第二批retry3，按run_id独立并发组，仅只读资源观测新增；core/registry/mainworkflow原字节未变。",
+      "accept_media": false,
+      "exam_generation_retired": true,
+      "superseded": true,
+      "ignore_root_cancelled": true,
+      "root_cancel_requested": true,
+      "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
+    },
+    {
+      "run_id": "43534957160",
+      "source_commit": "a6a485fdc4281325e885bfb85c62916c571d128c",
+      "scope": "root_authorized_infra_repair",
+      "target_ids": [
+        "2019"
+      ],
+      "note": "root单年补做，保持批量生成代码与审核门槛一致。",
+      "accept_media": false,
+      "exam_generation_retired": true,
+      "superseded": true,
+      "ignore_root_cancelled": true,
+      "root_cancel_requested": true,
+      "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
     }
   ]
 }

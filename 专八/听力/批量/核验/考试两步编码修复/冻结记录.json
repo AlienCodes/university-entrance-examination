@@ -1,0 +1,24 @@
+{
+  "status": "FROZEN_short_tests_passed_full_online_smoke_and_final_media_still_required",
+  "old_BASE_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+  "new_BASE_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+  "adapter_sha256": "c1a2389d70461df80422f92e378db87cd744c02b1205f6e356e72c7bff1e5df1",
+  "only_changed_function": "BASE.video",
+  "default_and_fast_argv_unchanged": true,
+  "production_visual_engine_and_states_unchanged": true,
+  "BASE_VERIFY_AST_and_thresholds_unchanged": true,
+  "real_300_frame_YUV_VCL_video_PTS_identical": true,
+  "prepared_and_AAC_decoded_PCM_identical": true,
+  "native_sample_rate": 22050,
+  "native_channels": 2,
+  "both_unchanged_BASE_VERIFY_pass": true,
+  "root_requested_changes_only": "exact full 4K video-only medium18/format then fps/nfr+t bound, then one AAC192 with native clock and video copy; no audio during long picture encoding",
+  "proofs": {
+    "兼容门禁.json": "870dc527d3deb4ccc6e9b5660802fdeb35c59ea2fb2c4bf961ab79cd0f2d2361",
+    "真实短片对照.json": "6071b57e29de1c51b6310b4302c3342c705cbe7308cf3a100abf5288dfaab859",
+    "定点兼容与真实短片测试.txt": "fdf8dbb052ae8d45eca5a5ec9305f1782baad04029e9a2f1d71f748849cef2d6",
+    "BASE修复前.py.txt": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb"
+  },
+  "scope_limit": "Only short10s sample and directed compatibility tests. This does not assert long runner shutdown resolved; root online production smoke and all final checks remain required.",
+  "registry_or_source_or_adapter_or_workflow_edited_by_this_patch": false
+}

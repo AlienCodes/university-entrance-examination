@@ -23,7 +23,7 @@ assert str(done['run_id']) == args.run
 assert len(done['jobs']) == 15 and all(j['conclusion'] == 'success' for j in done['jobs'])
 registration=p.read(args.producer_register)
 assert done['producer_register']==registration
-allowed={str(r['run_id']):r for r in registration['runs']}
+allowed={str(r['run_id']):r for r in registration['runs'] if r.get('accept_media',True)}
 rel = p.release(p.CACHE_TAG)
 have = {a['name']: a for a in rel['assets']}
 rows, captured, reviews, producer_heads = [], {}, {}, {}

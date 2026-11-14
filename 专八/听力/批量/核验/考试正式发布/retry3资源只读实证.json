@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "scope": "只读资源短窗；不代表全程或最终成品审核",
+  "run_id": 43533787006,
+  "asset": "tem8-resource-exam-2024-43533787006.json",
+  "asset_sha256": "e999e6701b917187f29d24c68d9ff93dcd579ff616f13ff26b96e87f3e7db353",
+  "samples": 5,
+  "observed": [
+    {
+      "utc": "2026-11-14T00:40:20.999650+00:00",
+      "host_memtotal_kib": 16078424,
+      "host_available_kib": 14234596,
+      "cgroup_current_bytes": null,
+      "cgroup_peak_bytes": null,
+      "cgroup_max_raw": null,
+      "cgroup_max_bytes": null,
+      "memory_events": {},
+      "ffmpeg_processes": [],
+      "mp4_bytes": {}
+    },
+    {
+      "utc": "2026-11-14T00:40:54.368689+00:00",
+      "host_memtotal_kib": 16078424,
+      "host_available_kib": 14186752,
+      "cgroup_current_bytes": null,
+      "cgroup_peak_bytes": null,
+      "cgroup_max_raw": null,
+      "cgroup_max_bytes": null,
+      "memory_events": {},
+      "ffmpeg_processes": [
+        "   4932 ffmpeg          263448 175       00:30"
+      ],
+      "mp4_bytes": {
+        "fast.mp4": 18087984
+      }
+    },
+    {
+      "utc": "2026-11-14T00:41:24.375574+00:00",
+      "host_memtotal_kib": 16078424,
+      "host_available_kib": 14344916,
+      "cgroup_current_bytes": null,
+      "cgroup_peak_bytes": null,
+      "cgroup_max_raw": null,
+      "cgroup_max_bytes": null,
+      "memory_events": {},
+      "ffmpeg_processes": [],
+      "mp4_bytes": {
+        "fast.mp4": 37801506
+      }
+    },
+    {
+      "utc": "2026-11-14T00:41:54.395755+00:00",
+      "host_memtotal_kib": 16078424,
+      "host_available_kib": 12828228,
+      "cgroup_current_bytes": null,
+      "cgroup_peak_bytes": null,
+      "cgroup_max_raw": null,
+      "cgroup_max_bytes": null,
+      "memory_events": {},
+      "ffmpeg_processes": [
+        "   5025 ffmpeg          1629804 222      00:01"
+      ],
+      "mp4_bytes": {
+        "fast.mp4": 37801506,
+        "2024年 专八听力 考试.mp4": 48
+      }
+    },
+    {
+      "utc": "2026-11-14T00:42:24.414867+00:00",
+      "host_memtotal_kib": 16078424,
+      "host_available_kib": 12367812,
+      "cgroup_current_bytes": null,
+      "cgroup_peak_bytes": null,
+      "cgroup_max_raw": null,
+      "cgroup_max_bytes": null,
+      "memory_events": {},
+      "ffmpeg_processes": [
+        "   5025 ffmpeg          2084124 372      00:31"
+      ],
+      "mp4_bytes": {
+        "fast.mp4": 37801506,
+        "2024年 专八听力 考试.mp4": 2359344
+      }
+    }
+  ],
+  "max_cgroup_limit_ratio": null,
+  "min_host_available_ratio": 0.7692179283243183,
+  "oom_kill_values": null,
+  "mp4_growth_bytes": {
+    "fast.mp4": 37801506,
+    "2024年 专八听力 考试.mp4": 2359344
+  },
+  "conclusion": {
+    "cgroup_limit_known": false,
+    "cgroup_near_limit_85pct": null,
+    "observed_oom_kill": null,
+    "ffmpeg_seen_in_every_sample": false,
+    "mp4_growth_observed": true,
+    "later_shutdown_or_oom": "未知，不能由短窗排除",
+    "host_memory_assessment": "最低MemAvailable约11.80GiB，占宿主15.33GiB的76.9%，此短窗未见接近宿主内存耗尽。",
+    "oom_assessment": "cgroup current/max/peak/events全未提供，不能判定cgroup余量或oom_kill，不能把null当0。"
+  },
+  "polls": 3,
+  "production_mutations": false,
+  "new_workflows_or_jobs": false,
+  "formal_last_two_sample_progress": {
+    "utc": [
+      "2026-11-14T00:41:54.395755+00:00",
+      "2026-11-14T00:42:24.414867+00:00"
+    ],
+    "process_lines": [
+      [
+        "   5025 ffmpeg          1629804 222      00:01"
+      ],
+      [
+        "   5025 ffmpeg          2084124 372      00:31"
+      ]
+    ],
+    "formal_mp4_bytes": [
+      48,
+      2359344
+    ],
+    "assessment": "同PID5025持续工作，CPU222→372%，RSS约1.55→1.99GiB，正式MP4增长。先前无ffmpeg的点为编码前或快片到正式的阶段转换，不算停止证据。"
+  }
+}

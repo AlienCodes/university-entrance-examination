@@ -668,7 +668,30 @@ def video(wav, fast=False, exact_image_fps=None):
         print('试跑：帧数', n, '应为', nfr, '声音', ad, '画面', n / FPS)
         if n != nfr or abs(ad - n / FPS) > 0.05: die('试跑帧数或声画时长不对')
         return
-    subprocess.run(cmd, check=True)
+    if exact_filter:
+        # 批量4K：先只编码画面，避免长音视频联合编码在尾部排队积压。
+        # 先转YUV再补帧；保持原medium/18、GOP、帧表及精确30fps不变。
+        picture = OUT / 'video_only.mp4'
+        picture_cmd = ['ffmpeg', '-y', '-v', 'error', '-f', 'concat', '-safe', '0', '-i', str(OUT / 'list.txt'),
+                       '-fps_mode', 'cfr', '-r', str(FPS), '-frames:v', str(nfr),
+                       '-vf', 'format=yuv420p,' + exact_filter, '-c:v', 'libx264', '-preset', 'medium',
+                       '-tune', 'stillimage', '-crf', '18', '-pix_fmt', 'yuv420p', '-g', '300', '-an',
+                       '-t', f'{nfr / FPS:.9f}', '-movflags', '+faststart', str(picture)]
+        subprocess.run(picture_cmd, check=True)
+        # 已构造的FLOAT原音仅AAC编码一次，画面直接复制；两个有限输入自然结束，
+        # 不用-shortest截帧，原音不重采样/不改声道。原采样率时间基保留AAC priming。
+        mux_cmd = ['ffmpeg', '-y', '-v', 'error', '-i', str(picture), '-i', str(OUT / 'audio.wav'),
+                   '-map', '0:v:0', '-map', '1:a:0', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k']
+        if not ORIGINAL: mux_cmd += ['-ar', '48000', '-af', 'aresample=48000']
+        mux_cmd += ['-video_track_timescale', '15360', '-movie_timescale', str(math.lcm(sr if ORIGINAL else 48000, FPS)),
+                    '-movflags', '+faststart', str(out)]
+        subprocess.run(mux_cmd, check=True)
+        (OUT / '两步编码命令.json').write_text(json.dumps({'picture_argv': picture_cmd, 'mux_argv': mux_cmd,
+            'video_encoding': 'one medium/crf18 encode; stream copy at mux',
+            'audio_encoding': 'one AAC192 encode from prepared PCM; native rate/channels in ORIGINAL mode'},
+            ensure_ascii=False, indent=2) + '\n', 'utf-8')
+    else:
+        subprocess.run(cmd, check=True)
     verify(out, T, total, fr)
 
 

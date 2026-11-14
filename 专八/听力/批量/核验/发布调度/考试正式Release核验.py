@@ -21,7 +21,7 @@ fetch('TEM8-filenames.txt')
 assert manifest['mode']==report['mode']=='complete_exam' and manifest['tag']==report['tag']==tag
 assert report['videos']==15 and report['server_digest'] is True and report['download_sha_crc_utf8'] is True
 videos=manifest['videos'];assert len(videos)==15 and [m['id'] for m in videos]==list(map(str,p.YEARS))
-allowed={str(r['run_id']):r for r in p.read(args.producer_register)['runs']}
+allowed={str(r['run_id']):r for r in p.read(args.producer_register)['runs'] if r.get('accept_media',True)}
 cache={r['id']:r for r in p.read(root/'专八/听力/批量/核验/考试正式发布/生产15缓存核验.json')['rows']}
 rows=[]
 for m in videos:
