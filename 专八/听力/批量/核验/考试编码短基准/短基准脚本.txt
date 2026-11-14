@@ -1,0 +1,45 @@
+import json,hashlib,subprocess,time,re,platform,os,sys
+from pathlib import Path
+import numpy as np
+from PIL import Image
+ROOT=Path('/workspace/tem8-project');OUT=ROOT/'专八/听力/批量/核验/考试编码短基准';TMP=Path('/workspace/tem8-exam-encode-microbench');TMP.mkdir(exist_ok=True)
+SRC=Path('/workspace/tem8-real-fast-gate/fpsfilter30/shots');D=Path('/workspace/tem8-2019-boundary');reg=json.loads((ROOT/'专八/听力/批量/审核登记.json').read_text())['entries']['exam:2019'];approved=set(reg['shots'].values())
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+states=json.loads((D/'local-states.json').read_text())['L'];fr=json.loads((D/'online/work/帧表.json').read_text());seen=set();pool=[]
+for (t,s),(f,k) in zip(states,fr):
+ if s['kind'] not in ['sheet','q']:continue
+ logical=json.dumps({a:b for a,b in s.items() if a not in ['cd','cdl','st']},sort_keys=True)
+ if logical in seen:continue
+ seen.add(logical);p=SRC/(k+'.png')
+ if not p.exists():continue
+ h=sha(p)
+ if h not in approved:continue
+ im=Image.open(p).convert('L');assert im.size==(3840,2160)
+ # Score actual body ink at quarter scale; keep distinct logical pages, not countdown variants.
+ arr=np.array(im.resize((960,540)));score=int((arr[39:529,22:938]<180).sum());pool.append((score,p,s,h))
+selected=sorted(pool,key=lambda r:r[0],reverse=True)[:4];assert len(selected)==4
+listing=[];images=[]
+for score,p,s,h in selected:
+ listing += ["file '"+str(p)+"'",'option framerate 30','duration 2.500000']
+ images.append({'file':str(p),'sha256':h,'size':[3840,2160],'state':s,'body_ink_quarter_scale':score,'matches_approved_PNG_SHA':True})
+listing += ["file '"+str(selected[-1][1])+"'",'option framerate 30'];(TMP/'list.txt').write_text('\n'.join(listing)+'\n')
+results=[]
+for preset,crf in [('medium',18),('veryfast',16)]:
+ name=preset+'-crf'+str(crf);video=TMP/(name+'.mp4');timelog=TMP/(name+'-time.txt')
+ cmd=['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',str(TMP/'list.txt'),'-f','lavfi','-i','anullsrc=r=48000:cl=stereo','-fps_mode','cfr','-r','30','-frames:v','300','-vf','fps=30:start_time=0:round=near','-c:v','libx264','-preset',preset,'-tune','stillimage','-crf',str(crf),'-threads','4','-pix_fmt','yuv420p','-g','300','-c:a','aac','-b:a','192k','-t','10','-movflags','+faststart',str(video)]
+ wrapper="import subprocess,resource,json,sys; from pathlib import Path; subprocess.run(sys.argv[2:],check=True); Path(sys.argv[1]).write_text(json.dumps({'max_RSS_kib':resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss}))"
+ start=time.perf_counter();subprocess.run([sys.executable,'-c',wrapper,str(timelog),*cmd],check=True);wall=time.perf_counter()-start
+ text=timelog.read_text();rss=json.loads(text)['max_RSS_kib']
+ probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(video)]));v=next(x for x in probe['streams'] if x['codec_type']=='video');assert (v['width'],v['height'],v['r_frame_rate'],int(v['nb_frames']))==(3840,2160,'30/1',300)
+ out=TMP/name;out.mkdir(exist_ok=True);sel='+'.join('eq(n\\,'+str(n)+')' for n in [37,112,187,262]);decode=['ffmpeg','-y','-v','error','-i',str(video),'-vf','select='+sel,'-fps_mode','vfr',str(out/'%02d.png')];subprocess.run(decode,check=True)
+ metrics=[]
+ for i,(_,p,s,h) in enumerate(selected,1):
+  actual=out/(f'{i:02d}.png');ref=np.asarray(Image.open(p).convert('RGB'),dtype=np.int16);dec=np.asarray(Image.open(actual).convert('RGB'),dtype=np.int16);err=np.abs(ref-dec)
+  # Existing production visual gate: 480x270 whole-picture RGB mean absolute error <=3.
+  a=np.asarray(Image.open(p).convert('RGB').resize((480,270)),dtype=np.float32);bb=np.asarray(Image.open(actual).convert('RGB').resize((480,270)),dtype=np.float32);prod=float(np.abs(a-bb).mean())
+  crop=err[156:2116,90:3750];mask=ref[156:2116,90:3750].mean(axis=2)<180
+  metrics.append({'source_png_sha256':h,'decoded_file':str(actual),'decoded_sha256':sha(actual),'frame':[37,112,187,262][i-1],'full_RGB_MAE':float(err.mean()),'full_RGB_max':int(err.max()),'full_RGB_p99':float(np.quantile(err,.99)),'text_body_rect':[90,156,3750,2116],'text_body_RGB_MAE':float(crop.mean()),'reference_dark_ink_RGB_MAE':float(crop[mask].mean()),'reference_dark_ink_pixels':int(mask.sum()),'existing_480p_RGB_MAE':prod,'existing_480p_threshold_unchanged':3,'existing_visual_gate_pass':prod<=3})
+ results.append({'preset':preset,'crf':crf,'command':cmd,'decode_command':decode,'wall_seconds':wall,'max_RSS_kib':rss,'file':str(video),'bytes':video.stat().st_size,'sha256':sha(video),'nb_frames':300,'duration_seconds':float(v['duration']),'resolution':[3840,2160],'fps':'30/1','metrics':metrics,'time_log':text})
+ print(json.dumps({'preset':preset,'crf':crf,'seconds':wall,'rss_kib':rss,'all_existing_visual_pass':all(x['existing_visual_gate_pass'] for x in metrics)},ensure_ascii=False),flush=True)
+report={'status':'completed_short_static_microbenchmark_not_production_approval','scope':'2019 actual approved 4K dense text pages; 4 distinct logical pages x2.5s=10s/300frames; silent test audio only; no source/core/registry/workflow modifications','limitations':['Local 4-thread short static encoding only, not an estimate of full GitHub-runner wall time or shutdown cause.','Full media audio, state clock and final production verification remain required.','Not all full-paper content or inter-page transition coding covered.'],'host':{'platform':platform.platform(),'cpu_count':os.cpu_count(),'ffmpeg':subprocess.check_output(['ffmpeg','-version'],text=True).splitlines()[0],'cpu_max':Path('/sys/fs/cgroup/cpu.max').read_text().strip() if Path('/sys/fs/cgroup/cpu.max').exists() else None,'threads_both':4},'source_approved_payload':reg['payload_sha256'],'source_images':images,'results':results,'speed_ratio_medium_over_veryfast':results[0]['wall_seconds']/results[1]['wall_seconds'],'all_existing_visual_gates_pass':all(m['existing_visual_gate_pass'] for r in results for m in r['metrics']),'production_thresholds_changed':False,'list_sha256':sha(TMP/'list.txt'),'script_sha256':sha(OUT/'短基准脚本.txt')}
+(OUT/'短基准结果.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'report':str(OUT/'短基准结果.json'),'speed_ratio':report['speed_ratio_medium_over_veryfast']},ensure_ascii=False))

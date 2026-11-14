@@ -1,0 +1,61 @@
+{
+  "status": "pass",
+  "scope": "仅内存mock registry，不改任何真实登记/源/程序；未创建control、未调用commit/push",
+  "projection_sha256": "5932d251ac0ae044b2cc8b19598684ef17e3f7daa69e7f8b3d3c5c2943ec77fd",
+  "cases": [
+    {
+      "case": "全45登记原值保持",
+      "accepted": true,
+      "expected": true,
+      "reason": ""
+    },
+    {
+      "case": "仅exam2009证据变化允许且45fp仍全部有效",
+      "accepted": true,
+      "expected": true,
+      "reason": ""
+    },
+    {
+      "case": "intensive任一证据字符串变化拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "45条完整精听审核登记改变，不激活（仅exam登记可独立更新）"
+    },
+    {
+      "case": "intensive任一PNG摘要变化拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "45条完整精听审核登记改变，不激活（仅exam登记可独立更新）"
+    },
+    {
+      "case": "intensive任一程序摘要变化拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "45条完整精听审核登记改变，不激活（仅exam登记可独立更新）"
+    },
+    {
+      "case": "intensive审批状态变化拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "45条完整精听审核登记改变，不激活（仅exam登记可独立更新）"
+    },
+    {
+      "case": "多余intensive条目拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "登记键范围改变，不能扩入陌生kind/year"
+    },
+    {
+      "case": "删除intensive条目拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "登记键范围改变，不能扩入陌生kind/year"
+    },
+    {
+      "case": "扩入陌生kind条目拒绝",
+      "accepted": false,
+      "expected": false,
+      "reason": "登记键范围改变，不能扩入陌生kind/year"
+    }
+  ]
+}

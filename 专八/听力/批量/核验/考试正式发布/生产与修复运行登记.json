@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "production_run_id": "43528080039",
+  "production_commit": "f25216794e383505baa132ca581e1380e82192c8",
+  "runs": [
+    {
+      "run_id": "43528080039",
+      "source_commit": "f25216794e383505baa132ca581e1380e82192c8",
+      "scope": "main",
+      "target_ids": [
+        "2009",
+        "2010",
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ]
+    },
+    {
+      "run_id": "43531376481",
+      "source_commit": "3890d4cc806908103d2c1de864962a94ede4fe80",
+      "scope": "root_authorized_infra_repair",
+      "target_ids": [
+        "2010"
+      ],
+      "note": "允许真实已核缓存，不要求2010必须由本run提供；root拟合并后续重试。"
+    },
+    {
+      "run_id": "43532918536",
+      "source_commit": "2430e83b32917c5bca3ddadcbe3177e99a3496df",
+      "scope": "root_authorized_infra_repair",
+      "target_ids": [
+        "2009",
+        "2012",
+        "2013",
+        "2016",
+        "2018",
+        "2021"
+      ],
+      "note": "root确认生成命令/环境/core/registry原字节不变，仅增加30秒资源只读观测，最多5并行。"
+    },
+    {
+      "run_id": "43533787006",
+      "source_commit": "ad4daf1cbaad13ffcb5e633db9d84b55cc77be3b",
+      "scope": "root_authorized_infra_repair",
+      "target_ids": [
+        "2014",
+        "2023",
+        "2024"
+      ],
+      "note": "root第二批retry3，按run_id独立并发组，仅只读资源观测新增；core/registry/mainworkflow原字节未变。"
+    }
+  ]
+}
