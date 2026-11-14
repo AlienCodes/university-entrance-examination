@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "commit_reviewed": "e193da49",
+  "elapsed_seconds": 15.69,
+  "code": {
+    "old_BASE_sha256": "9d38dd2b7598c105b28c592e731795be35d9f34855b0d27cdf6ba1a01b7891eb",
+    "current_BASE_sha256": "647d1ca38753305d7d7a376d9a0f6e43f130d991779f3b58be6698ba1491ce84",
+    "only_video_AST_changed": true,
+    "all_other_functions_constants_imports_identical": true,
+    "legacy_fast_prefix_and_final_verify_AST_identical": true,
+    "exact_full_picture": "silent libx264 medium/crf18/yuv420p/g300/exact FPS+nfr+duration",
+    "exact_full_mux": "video copy + one AAC192 from prepared FLOAT; ORIGINAL path no resampling/channel conversion/shortest",
+    "non_ORIGINAL": "仅保留旧非原音兼容路径的48000转换，本批适配器明确B.ORIGINAL=True",
+    "stage": "按试卷filename取唯一最终MP4，不枚举MP4，不会选video_only.mp4",
+    "15_final_filenames": [
+      "2009年 专八听力 考试（新题型优化版）.mp4",
+      "2010年 专八听力 考试（新题型优化版）.mp4",
+      "2011年 专八听力 考试（新题型优化版）.mp4",
+      "2012年 专八听力 考试（新题型优化版）.mp4",
+      "2013年 专八听力 考试（新题型优化版）.mp4",
+      "2014年 专八听力 考试（新题型优化版）.mp4",
+      "2015年 专八听力 考试（新题型优化版）.mp4",
+      "2016年 专八听力 考试.mp4",
+      "2017年 专八听力 考试.mp4",
+      "2018年 专八听力 考试.mp4",
+      "2019年 专八听力 考试.mp4",
+      "2021年 专八听力 考试.mp4",
+      "2022年 专八听力 考试.mp4",
+      "2023年 专八听力 考试.mp4",
+      "2024年 专八听力 考试.mp4"
+    ]
+  },
+  "registry": {
+    "old_snapshot_sha256": "d80e98b4c5dc4243b64dfeb85e1bdc105a26a6c5d87396216b54dd50fb728e9e",
+    "current_sha256": "ebd5a029cfeff6e1da96521288cce280c41a1dd839d9231e4fa0c2378e40cc3d",
+    "exam_changed": 15,
+    "exam_changed_fields_only": [
+      "evidence",
+      "payload_sha256",
+      "render_sources",
+      "two_stage_revalidation"
+    ],
+    "exam_only_dependency_delta": "BASE 9d38…→647d…",
+    "exam_inputs_and_PNG_multisets_unchanged": true,
+    "exam_PNG_count": 5537,
+    "intensive_full_entries_unchanged": 45,
+    "intensive_full_entry_projection_sha256": "5932d251ac0ae044b2cc8b19598684ef17e3f7daa69e7f8b3d3c5c2943ec77fd"
+  },
+  "proofs": {
+    "all_root_cited_proof_SHA_verified": {
+      "冻结记录.json": "98ea1b9ce43aff0b4c86f9c2281103dec68d4f2aee53922c3b7499f78dfafe32",
+      "真实短片对照.json": "6071b57e29de1c51b6310b4302c3342c705cbe7308cf3a100abf5288dfaab859",
+      "兼容门禁.json": "870dc527d3deb4ccc6e9b5660802fdeb35c59ea2fb2c4bf961ab79cd0f2d2361"
+    },
+    "compatibility_cases": 9,
+    "stored_real_short_clip_frames": 300,
+    "VCL_YUV_PTS_DTS_duration_FLOAT_PCM_AACdecodedPCM_and_native_rate_channels_equal": true,
+    "both_unchanged_BASE_VERIFY_zero_problem_reports": true,
+    "verification_thresholds_changed": false,
+    "scope": "只读复核已存真实短片数据，未生成/解码新媒体或看新图。"
+  },
+  "primary_workflow_sha256": "882725b80ae3b9e9d36f6c0875365a5bd8fb4b815763762ccf87a328f82c07ab",
+  "gate_once": {
+    "passed": 60,
+    "exam": 15,
+    "intensive": 45,
+    "errors": []
+  },
+  "unknown_differences": [],
+  "limits": [
+    "未改core/registry/主workflow/原D80报告；只新增本独立JSON。",
+    "本审计不判断2009完整长smoke43538865658最终成品结果，短片对照及审批不是全长成功。"
+  ]
+}
