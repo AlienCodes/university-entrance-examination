@@ -27,7 +27,8 @@ SOURCE_ZIPS = {
     'text': Path('/workspace/tem8-intensive-final-validation/downloads/TEM8-listening-intensive-2009-2024-part01.zip'),
 }
 SOURCE_2025 = Path('/workspace/tem8-rename-2025')
-MERGE_PROOF = BASE / '核验/改名补入2025/2025原文合并核验.json'
+MERGE_PROOF_LOGICAL = '专八/听力/批量/核验/改名补入2025/2025原文合并核验.json'
+MERGE_PROOF = ROOT / MERGE_PROOF_LOGICAL
 YEARS = list(range(2009, 2020)) + list(range(2021, 2026))
 DATE = (2026, 11, 14, 0, 0, 0)
 LIMIT = int(1.8 * 2**30)
@@ -99,7 +100,7 @@ def expected_rows(kind):
                      'source': {'type': 'authorized_packet_copy_concatenation', 'local_name': 'text-2025-full.mp4',
                                 'original_sources': [{'local_name': filename, 'sha256': sha, 'bytes': size, 'git_blob_ids': blobs}
                                                      for filename, name, sha, size, blobs in MEDIA_2025['text']],
-                                'verification_report': MERGE_PROOF.relative_to(ROOT).as_posix(),
+                                'verification_report': MERGE_PROOF_LOGICAL,
                                 'verification_report_sha256': digest(MERGE_PROOF),
                                 'video_and_audio_packets_preserved': True, 'container_bytes_changed': True}})
     else:
@@ -234,13 +235,18 @@ def publish(kind, out):
 
 
 def main():
+    global MERGE_PROOF
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['pack', 'publish', 'verify'])
     parser.add_argument('kind', choices=['exam', 'text'])
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--source-zip', type=Path)
     parser.add_argument('--source-2025', type=Path)
+    parser.add_argument('--merge-proof', type=Path, help='仅独立verify时读取下载回来的原始云端证明，逻辑来源路径不改')
     args = parser.parse_args()
+    if args.merge_proof:
+        need(args.command == 'verify' and args.kind == 'text', '--merge-proof仅用于text独立核验')
+        MERGE_PROOF = args.merge_proof
     if args.command == 'pack': pack(args.kind, args.out, args.source_zip, args.source_2025)
     elif args.command == 'publish': publish(args.kind, args.out)
     else: verify_package(args.kind, args.out)

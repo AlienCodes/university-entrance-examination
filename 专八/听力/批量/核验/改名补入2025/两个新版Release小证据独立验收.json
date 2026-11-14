@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "checked_at": "2026-11-14T00:33:42.309889-05:00",
+  "scope": "只独立复核实际服务器小清单、下载核验报告与真实运行器合并证明；两个整包的真实回下载逐成员由成功发布workflow完成，本验收未重复下载整ZIP。",
+  "deliveries": {
+    "exam": {
+      "release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/tag/tem8-listening-exam-2009-2025",
+      "zip_url": "https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-exam-2009-2025/TEM8-listening-exam-2009-2025.zip",
+      "videos": 16,
+      "first_name": "2025 听力真题.mp4",
+      "last_name": "2009 听力真题.mp4",
+      "bytes": 1305883879,
+      "sha256": "93994d992e92a43a6989fa038de8152f9f71de12d6f7101bfd14653cf7c3f1b5",
+      "actual_download_verification_report_sha256": "37707c133c373744de0a201bb2c936b4644fb562614aa705c77d5d0406289b69",
+      "manifest_sha256": "1a75c73ebffae8a4981cdce201768c66dc0d5b7d27dbce92d16c0ba0f5e58cd9",
+      "source_videos_unchanged": 16,
+      "workflow_run": 43561007175,
+      "producer_commit": "767c57af53ec709b057c56ebd08e7fe7f7d75ac6"
+    },
+    "text": {
+      "release_url": "https://github.com/AlienCodes/university-entrance-examination/releases/tag/tem8-listening-text-2009-2025",
+      "zip_url": "https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-text-2009-2025/TEM8-listening-text-2009-2025.zip",
+      "videos": 16,
+      "first_name": "2025 听力原文.mp4",
+      "last_name": "2009 听力原文.mp4",
+      "bytes": 941030260,
+      "sha256": "07db036f0d96270346e2ea99fac22ed5294f1f8e59ae21609187f2c94871261c",
+      "actual_download_verification_report_sha256": "89821d91eb0f5e9f48a5f3c4a93e84bae822bedeeb0126a0a3c1dc0434c23789",
+      "manifest_sha256": "acb4ef98cecaf34475f8b0f64512dc8b6a61e006fa505c5acfe9176effcaf8ff",
+      "source_videos_unchanged": 15,
+      "workflow_run": 43561563676,
+      "producer_commit": "8405c7e4578e61befb1495c3a824178ab24bfb59"
+    }
+  },
+  "unchanged_original_mp4_files": 31,
+  "year2025_text_mode": "用户授权三段音视频载荷原样合为单容器，未重编码；不声称MP4容器字节等于原三片。",
+  "cloud_proof_sha256": "21c276c769aa7a04594bd239a8bcde72f0be603755fcd1896c6f6205e4912c6a",
+  "artifact": {
+    "id": 14101215192,
+    "name": "tem8-renamed-text-publication-evidence",
+    "bytes": 7518,
+    "downloaded_sha256": "dd2b5006a52b08aad037e6d9c88c97fdf2eef781caa607bb123f1aa0e62a425f"
+  },
+  "checks": {
+    "two_releases_exact_four_assets_each": true,
+    "two_packages_each_16_exact_names": true,
+    "latest_first_no_2020": true,
+    "old_30_and_2025_exam_mp4_sha_unchanged": true,
+    "cloud_2025_text_all_packet_payloads_preserved": true,
+    "cloud_2025_text_native_frame_clock_and_six_boundary_frames_verified": true,
+    "cloud_2025_text_decoded_audio_measurements_verified": true,
+    "manifest_bound_to_actual_cloud_proof_and_output": true,
+    "server_zip_digest_size_equals_actual_download_report": true,
+    "no_repack_or_rerun_requested": true
+  }
+}
