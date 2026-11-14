@@ -8,6 +8,8 @@ import argparse
 import hashlib
 import json
 import os
+import re
+import sys
 from pathlib import Path
 import shutil
 import subprocess
@@ -59,7 +61,15 @@ def digest(source):
 
 
 def gh(*args, parsed=False):
-    result = subprocess.run(['gh', *map(str, args)], check=True, capture_output=True, text=True)
+    command = ['gh', *map(str, args)]
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode:
+        # 明确保留上传故障原因；仅对凭据形式脱敏，不输出环境变量或认证头。
+        detail = re.sub(r'(?:github_pat_|gh[pousr]_)[A-Za-z0-9_]+', '[REDACTED]', result.stderr)
+        detail = re.sub(r'(?im)^(.*authorization\s*:\s*).+$', r'\1[REDACTED]', detail)
+        detail = re.sub(r'(?i)((?:authorization|gh_token|github_token|token)[=:]\s*)([^\s&]+)', r'\1[REDACTED]', detail)
+        print(detail[:8000], file=sys.stderr, flush=True)
+        raise subprocess.CalledProcessError(result.returncode, command, output=result.stdout, stderr=detail)
     return json.loads(result.stdout) if parsed else result.stdout
 
 

@@ -1,0 +1,89 @@
+# token预算：约0万；仅从既有成品改名打包和上传，不生成或处理视频。
+name: 专八听力仅改名补2025并重新发布
+on:
+  push:
+    branches: ['codex/tem8-listening-2009-2024']
+    paths: ['.github/tem8-listening-renamed-release.json']
+permissions:
+  contents: write
+concurrency:
+  group: tem8-listening-renamed-release-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  publish-exam:
+    if: github.repository == 'AlienCodes/university-entrance-examination' && github.ref == 'refs/heads/codex/tem8-listening-2009-2024'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github
+            专八/听力/批量/tools/改名补入2025.py
+            专八/听力/批量/核验/发布调度/全部视频最终交付核验.json
+            专八/听力/最终视频
+      - name: 核只改名控制、分支发布规则和既有来源登记
+        run: |
+          set -euo pipefail
+          python3 .github/check-release-target.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('.github/tem8-listening-renamed-release.json').read_text())
+          assert c['mode']=='rename_existing_only' and c['targets']==['exam']
+          assert c['expected']['exam']['videos']==16
+          assert c['expected']['exam']['sha256']=='93994d992e92a43a6989fa038de8152f9f71de12d6f7101bfd14653cf7c3f1b5'
+          assert c['expected']['exam']['bytes']==1305883879
+          assert c['source']['exam']['sha256']=='a182f68a12040baa8df0349d578ec8ec509e734e4811607c8e3e3f8cbe826f02'
+          print('仅改名、补2025考试成品；不调用任何媒体程序。')
+          PY
+      - name: 下载既有15年成品包并恢复2025考试原字节
+        run: |
+          set -euo pipefail
+          mkdir -p in/2025
+          curl --fail --location --retry 3 --retry-delay 3 --output in/source.zip https://github.com/AlienCodes/university-entrance-examination/releases/download/tem8-listening-exam-2009-2024/TEM8-listening-exam-2009-2024-part01.zip
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          c=json.loads(Path('.github/tem8-listening-renamed-release.json').read_text())
+          with Path('in/source.zip').open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==c['source']['exam']['sha256']
+          lines=Path('.github/tem8-listening-release.txt').read_text().splitlines()
+          assert lines[2]=='df6e5f3a8995f8e416db36cae8316d8bc232ee64ecfbe9ba7f28359c1ea58ba4'
+          import shutil
+          with Path('in/2025/exam-2025.mp4').open('wb') as out:
+              for name in lines[3:]:
+                  if name.strip():
+                      with (Path('专八/听力/最终视频')/name).open('rb') as src:shutil.copyfileobj(src,out,1<<20)
+          with Path('in/2025/exam-2025.mp4').open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==lines[2]
+          PY
+      - name: 仅按用户文件名复制打包并核原视频SHA
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/改名补入2025.py pack exam --source-zip in/source.zip --source-2025 in/2025 --out out/exam
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          expected=json.loads(Path('.github/tem8-listening-renamed-release.json').read_text())['expected']['exam']
+          m=json.loads(Path('out/exam/TEM8-manifest.json').read_text())
+          assert m['videos']==expected['videos'] and m['archive']['sha256']==expected['sha256'] and m['archive']['bytes']==expected['bytes']
+          assert m['files'][0]['name']=='2025 听力真题.mp4' and m['files'][-1]['name']=='2009 听力真题.mp4'
+          print('与已核本地包逐字节相同；16个年份名称和原视频内容完全一致。')
+          PY
+      - name: 在现有新Release上传并实际回下载逐成员核验
+        run: |
+          set -euo pipefail
+          python3 专八/听力/批量/tools/改名补入2025.py publish exam --out out/exam
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tem8-renamed-exam-publication-evidence
+          path: |
+            out/exam/TEM8-manifest.json
+            out/exam/TEM8-download-verification.json
+            out/exam/SHA256SUMS
+            out/exam/notes.md
+          if-no-files-found: ignore
+          retention-days: 30

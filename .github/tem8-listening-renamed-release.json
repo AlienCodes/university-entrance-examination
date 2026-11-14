@@ -1,0 +1,19 @@
+{
+  "mode": "rename_existing_only",
+  "targets": ["exam"],
+  "source": {
+    "exam": {
+      "tag": "tem8-listening-exam-2009-2024",
+      "asset": "TEM8-listening-exam-2009-2024-part01.zip",
+      "sha256": "a182f68a12040baa8df0349d578ec8ec509e734e4811607c8e3e3f8cbe826f02"
+    }
+  },
+  "expected": {
+    "exam": {
+      "videos": 16,
+      "bytes": 1305883879,
+      "sha256": "93994d992e92a43a6989fa038de8152f9f71de12d6f7101bfd14653cf7c3f1b5"
+    }
+  },
+  "reason": "现有已核ZIP在本机uploads.github.com认证失败；仅切换GitHub运行器上传，同源固定包，不重新生成视频。"
+}
