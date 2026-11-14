@@ -38,6 +38,7 @@ def main():
     parser.add_argument('--run', required=True)
     parser.add_argument('--production-commit', required=True)
     parser.add_argument('--producer-register', type=Path, required=True)
+    parser.add_argument('--generation-approval', type=Path, required=True)
     args = parser.parse_args()
     state = args.state.resolve()
     state.mkdir(parents=True, exist_ok=True)
@@ -71,25 +72,37 @@ def main():
             subprocess.run(['git', 'merge-base', '--is-ancestor', args.production_commit, 'HEAD'], cwd=ROOT, check=True)
             remote = git('ls-remote', 'origin', 'refs/heads/' + BRANCH).split()[0]
             assert remote == git('rev-parse', 'HEAD'), '本地与远端分支不一致；不能自动推送'
-            for row in cache['rows']:
-                assert pub.gate('exam', row['id'])['payload_sha256'] == row['approval_payload_sha256']
             sixty = pub.read(SIXTY_AUDIT)
             assert sixty['status'] == 'PASS' and sixty['count'] == 60 and not sixty['unknown_differences']
-            assert sixty['registry_sha256'] == pub.sha(pub.REGISTRY)
+            approval = pub.read(args.generation_approval)
+            assert approval['status'] == 'root-approved-current-source-and-existing-PNG-full-online-smoke-required'
+            assert approval['registry_after_sha256'] == pub.sha(pub.REGISTRY)
+            assert approval['registry_before_sha256'] == sixty['registry_sha256']
+            assert approval['exam_count'] == len(approval['exam_payload_sha256']) == 15
+            assert set(approval['exam_payload_sha256']) == set(map(str, pub.YEARS))
+            assert approval['intensive45_unchanged'] is True
+            intensive = {k: v for k, v in pub.read(pub.REGISTRY)['entries'].items() if k.startswith('intensive:')}
+            assert len(intensive) == 45 and pub.hash_json(intensive) == approval['intensive45_full_entry_projection_sha256']
+            for row in cache['rows']:
+                current = pub.gate('exam', row['id'])
+                assert current['payload_sha256'] == row['approval_payload_sha256'] == approval['exam_payload_sha256'][row['id']]
+                assert approval['BASE_new_sha256'] in current['render_sources'].values()
             control = {'mode': 'complete_exam', 'stage': 'render', 'exam': pub.YEARS,
                        'intensive': [], 'render': False, 'collect_runs': [],
                        'reuse_releases': {'exam': [], 'intensive': []},
                        'production_run_id': args.run, 'production_commit': args.production_commit}
             if args.producer_register:
                 control['registered_producer_runs'] = pub.read(args.producer_register)['runs']
+            control['generation_approval'] = str(args.generation_approval.resolve().relative_to(ROOT))
             pub.dump(CONTROL, control)
             pub.load_control(CONTROL)
             paths = [CONTROL, SIXTY_AUDIT, CACHE_AUDIT,
                      *[HERE / n for n in ['考试优先发布.py', '考试缓存一次核验.py',
-                                          '考试正式Release核验.py', '考试任务监控.py']]]
+                                          '考试正式Release核验.py', '考试任务监控.py', '考试资源跟踪.py']]]
             if args.producer_register:
                 assert args.producer_register.is_relative_to(ROOT)
                 paths.append(args.producer_register)
+            paths.append(args.generation_approval.resolve())
             for year in pub.YEARS:
                 failure_record = ROOT / f'专八/听力/批量/核验/考试正式发布/{year}-runner关闭证据.json'
                 if failure_record.exists():

@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import zipfile
+import shutil
 from collections import Counter
 
 a = argparse.ArgumentParser(description=__doc__)
@@ -31,7 +32,15 @@ real_gh = p.gh
 
 def witness(*argv, **kwargs):
     # 真调用原helper；仅在其同次下载后读取meta，避免为记录producer再下载一次证据。
-    value = real_gh(*argv, **kwargs)
+    reused = False
+    if len(argv) > 1 and argv[:2] == ('release', 'download'):
+        pattern = argv[argv.index('-p') + 1]
+        saved = args.state / 'smoke-2009-validated' / pattern
+        if saved.is_file() and have[pattern]['digest'] == 'sha256:' + p.sha(saved):
+            target = Path(argv[argv.index('-D') + 1]) / pattern
+            shutil.copyfile(saved, target)
+            reused = True
+    value = '' if reused else real_gh(*argv, **kwargs)
     if len(argv) > 1 and argv[:2] == ('release', 'download'):
         folder = Path(argv[argv.index('-D') + 1])
         pattern = argv[argv.index('-p') + 1]

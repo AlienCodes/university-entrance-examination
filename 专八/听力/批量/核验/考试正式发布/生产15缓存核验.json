@@ -1,0 +1,446 @@
+{
+  "status": "PASS",
+  "production_run_id": "43528080039",
+  "production_commit": "f25216794e383505baa132ca581e1380e82192c8",
+  "producer_register": {
+    "schema": 1,
+    "production_run_id": "43528080039",
+    "production_commit": "f25216794e383505baa132ca581e1380e82192c8",
+    "runs": [
+      {
+        "run_id": "43528080039",
+        "source_commit": "f25216794e383505baa132ca581e1380e82192c8",
+        "scope": "main",
+        "target_ids": [
+          "2009",
+          "2010",
+          "2011",
+          "2012",
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "accept_media": false,
+        "exam_generation_retired": true,
+        "retired_reason": "主run继续精听，不取消；exam15均无合格输出，旧单阶段exam来源退出当前生产。"
+      },
+      {
+        "run_id": "43531376481",
+        "source_commit": "3890d4cc806908103d2c1de864962a94ede4fe80",
+        "scope": "root_authorized_infra_repair",
+        "target_ids": [
+          "2010"
+        ],
+        "note": "允许真实已核缓存，不要求2010必须由本run提供；root拟合并后续重试。",
+        "accept_media": false,
+        "exam_generation_retired": true,
+        "superseded": true,
+        "ignore_root_cancelled": true,
+        "root_cancel_requested": true,
+        "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
+      },
+      {
+        "run_id": "43532918536",
+        "source_commit": "2430e83b32917c5bca3ddadcbe3177e99a3496df",
+        "scope": "root_authorized_infra_repair",
+        "target_ids": [
+          "2009",
+          "2012",
+          "2013",
+          "2016",
+          "2018",
+          "2021"
+        ],
+        "note": "root确认生成命令/环境/core/registry原字节不变，仅增加30秒资源只读观测，最多5并行。",
+        "accept_media": false,
+        "exam_generation_retired": true,
+        "superseded": true,
+        "ignore_root_cancelled": true,
+        "root_cancel_requested": true,
+        "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
+      },
+      {
+        "run_id": "43533787006",
+        "source_commit": "ad4daf1cbaad13ffcb5e633db9d84b55cc77be3b",
+        "scope": "root_authorized_infra_repair",
+        "target_ids": [
+          "2014",
+          "2023",
+          "2024"
+        ],
+        "note": "root第二批retry3，按run_id独立并发组，仅只读资源观测新增；core/registry/mainworkflow原字节未变。",
+        "accept_media": false,
+        "exam_generation_retired": true,
+        "superseded": true,
+        "ignore_root_cancelled": true,
+        "root_cancel_requested": true,
+        "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
+      },
+      {
+        "run_id": "43534957160",
+        "source_commit": "a6a485fdc4281325e885bfb85c62916c571d128c",
+        "scope": "root_authorized_infra_repair",
+        "target_ids": [
+          "2019"
+        ],
+        "note": "root单年补做，保持批量生成代码与审核门槛一致。",
+        "accept_media": false,
+        "exam_generation_retired": true,
+        "superseded": true,
+        "ignore_root_cancelled": true,
+        "root_cancel_requested": true,
+        "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
+      },
+      {
+        "run_id": "43538865658",
+        "source_commit": "e193da497dbcfdc1c71becaf1505ecf5530489b4",
+        "scope": "root_authorized_bounded4k_smoke",
+        "target_ids": [
+          "2009"
+        ],
+        "accept_media": true,
+        "epoch": "bounded_two_step_4k",
+        "note": "完整长片smoke，先验证video_only→原PCM单次AAC→严检→store，其余14待本片过后再启动。"
+      },
+      {
+        "run_id": "43543083754",
+        "source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+        "scope": "root_authorized_bounded4k_remaining14",
+        "target_ids": [
+          "2010",
+          "2011",
+          "2012",
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ],
+        "accept_media": true,
+        "epoch": "bounded_two_step_4k",
+        "note": "完整2009样片strict通过后，仅其余14年，2009不重做；BASE647/registryEBD不变，max20。"
+      }
+    ],
+    "current_exam_epoch": "bounded_two_step_4k"
+  },
+  "checked_at": "2026-11-14T02:28:33.486829+00:00",
+  "cache_tag": "tem8-listening-render-cache-2009-2024",
+  "cached_ready_checks": 15,
+  "count": 15,
+  "rows": [
+    {
+      "id": "2009",
+      "approval_payload_sha256": "aae08c0f1bccce65e5484a8414a2949f8b9e8da1baf30044a8d78bb2740835da",
+      "ready": true,
+      "producer_run_id": "43538865658",
+      "producer_source_commit": "e193da497dbcfdc1c71becaf1505ecf5530489b4",
+      "actual_producer_head_sha": "e193da497dbcfdc1c71becaf1505ecf5530489b4",
+      "mp4_sha256": "f7e8bba6e2a77ea2cc55e5d23d68b68928d88c65c547bd9c6635905695d4c5fa",
+      "mp4_bytes": 69251635,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2009-aae08c0f1bccce65-f7e8bba6e2a7.mp4",
+          "video_bytes": 69251635,
+          "video_server_digest": "sha256:f7e8bba6e2a77ea2cc55e5d23d68b68928d88c65c547bd9c6635905695d4c5fa",
+          "evidence": "tem8-exam-2009-aae08c0f1bccce65-f7e8bba6e2a7-evidence.zip",
+          "evidence_bytes": 146895601,
+          "evidence_server_digest": "sha256:9c8604d7fe3a1d1a1ff92964ef8767710066d8f4244d8e359062ce4f5314de48"
+        }
+      ]
+    },
+    {
+      "id": "2010",
+      "approval_payload_sha256": "5be67bb2dba1579d9ce4ac18e37b9a647c624430e71afb14dc81f362b743f2d6",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "7becc8ca61a2d377de6229dfc2559f322af5b5dad762e8275f683c786a80b8f9",
+      "mp4_bytes": 91383174,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2010-5be67bb2dba1579d-7becc8ca61a2.mp4",
+          "video_bytes": 91383174,
+          "video_server_digest": "sha256:7becc8ca61a2d377de6229dfc2559f322af5b5dad762e8275f683c786a80b8f9",
+          "evidence": "tem8-exam-2010-5be67bb2dba1579d-7becc8ca61a2-evidence.zip",
+          "evidence_bytes": 162022403,
+          "evidence_server_digest": "sha256:05a27364c3df5e85da162151fcd3939b357f3b0f8c335ab55e7437b405aaef9f"
+        }
+      ]
+    },
+    {
+      "id": "2011",
+      "approval_payload_sha256": "9ea26ecdb3892dfd4383cbc07d7b22f82964ee5b5215019e35ec75541fff0e5f",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "22179858cd4c4ef3dd783110d1b29053a1498bdb5664846a4ce58b916d35f788",
+      "mp4_bytes": 81996372,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2011-9ea26ecdb3892dfd-22179858cd4c.mp4",
+          "video_bytes": 81996372,
+          "video_server_digest": "sha256:22179858cd4c4ef3dd783110d1b29053a1498bdb5664846a4ce58b916d35f788",
+          "evidence": "tem8-exam-2011-9ea26ecdb3892dfd-22179858cd4c-evidence.zip",
+          "evidence_bytes": 140141158,
+          "evidence_server_digest": "sha256:83d768fd6db19e93c76b21a58fbffdb7f47492ace5a86eb39cafe57331b0dd7d"
+        }
+      ]
+    },
+    {
+      "id": "2012",
+      "approval_payload_sha256": "750fa42f61d4c9849a34494c8434947270451bfd372b944426d2cd10425bcaf6",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "88ecd7b995c7d8182bdb3842a286381bcb35bdeb53bd1524a33db65745f0ab95",
+      "mp4_bytes": 80417342,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2012-750fa42f61d4c984-88ecd7b995c7.mp4",
+          "video_bytes": 80417342,
+          "video_server_digest": "sha256:88ecd7b995c7d8182bdb3842a286381bcb35bdeb53bd1524a33db65745f0ab95",
+          "evidence": "tem8-exam-2012-750fa42f61d4c984-88ecd7b995c7-evidence.zip",
+          "evidence_bytes": 134477498,
+          "evidence_server_digest": "sha256:88b5df49eecc6ae3fe5cbc92bbcabe5aa12f789308777ea84866c5ca59fe9762"
+        }
+      ]
+    },
+    {
+      "id": "2013",
+      "approval_payload_sha256": "c596226f181c38af3a4e4080c37ac7d80bf4f1959fa8b3777f38e05c2c9e6845",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "8645c757b901f98281cf46c48e288b9560a83bea2a44e1f2633d708e836be8e9",
+      "mp4_bytes": 76529967,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2013-c596226f181c38af-8645c757b901.mp4",
+          "video_bytes": 76529967,
+          "video_server_digest": "sha256:8645c757b901f98281cf46c48e288b9560a83bea2a44e1f2633d708e836be8e9",
+          "evidence": "tem8-exam-2013-c596226f181c38af-8645c757b901-evidence.zip",
+          "evidence_bytes": 139450585,
+          "evidence_server_digest": "sha256:5c479ac209295b0650792bb3a43e8eead0ec7ae36165844a39ed52463fd18d8c"
+        }
+      ]
+    },
+    {
+      "id": "2014",
+      "approval_payload_sha256": "0a1f1512e208e76a0d5be371505e8236cb2d6484ec48ad677238c19691d407bb",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "e32dcfa31ac098f174d1c7c6be50d0991420d64cd1951d91898ecbdc39821bbe",
+      "mp4_bytes": 75017611,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2014-0a1f1512e208e76a-e32dcfa31ac0.mp4",
+          "video_bytes": 75017611,
+          "video_server_digest": "sha256:e32dcfa31ac098f174d1c7c6be50d0991420d64cd1951d91898ecbdc39821bbe",
+          "evidence": "tem8-exam-2014-0a1f1512e208e76a-e32dcfa31ac0-evidence.zip",
+          "evidence_bytes": 126522871,
+          "evidence_server_digest": "sha256:9a0df8ddb066b169dcb90db38580217eb7d7bf85a395e2b4c8ae0558863d813f"
+        }
+      ]
+    },
+    {
+      "id": "2015",
+      "approval_payload_sha256": "9702bf65927ece9b1d3218889c323e6289415681fda16427f2a445b3a1dbda65",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "0ace503b4aece80f8413712be0b0ea045c8e4cd157c1ac643dc72aef7c30ddf0",
+      "mp4_bytes": 72706572,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2015-9702bf65927ece9b-0ace503b4aec.mp4",
+          "video_bytes": 72706572,
+          "video_server_digest": "sha256:0ace503b4aece80f8413712be0b0ea045c8e4cd157c1ac643dc72aef7c30ddf0",
+          "evidence": "tem8-exam-2015-9702bf65927ece9b-0ace503b4aec-evidence.zip",
+          "evidence_bytes": 124291851,
+          "evidence_server_digest": "sha256:2a6bf285f98942bce162400a5da668426f92f0d796b6c7ff4c8d25dfbc1038f7"
+        }
+      ]
+    },
+    {
+      "id": "2016",
+      "approval_payload_sha256": "3cbe455ccb6bab4857de838a9e4163ad1b1a85f397ecf02e69c2879c8391376d",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "5b57eaa70b10f1a4d94a76ce983c18a799e6e613e175575581c38d2e53cf6882",
+      "mp4_bytes": 79650771,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2016-3cbe455ccb6bab48-5b57eaa70b10.mp4",
+          "video_bytes": 79650771,
+          "video_server_digest": "sha256:5b57eaa70b10f1a4d94a76ce983c18a799e6e613e175575581c38d2e53cf6882",
+          "evidence": "tem8-exam-2016-3cbe455ccb6bab48-5b57eaa70b10-evidence.zip",
+          "evidence_bytes": 128153895,
+          "evidence_server_digest": "sha256:bdcd995aafc414c2325c9cd2675a029901d93d9fee1e05d3015461a21e040f90"
+        }
+      ]
+    },
+    {
+      "id": "2017",
+      "approval_payload_sha256": "b80e7498197259219fccc096958d2ef51992d89f34f80ac8118e3c8134229cb7",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "f86bc5137fa46a8002c2b795342fdc47aa64fae1d37a9fd9b3d2973944a12fcb",
+      "mp4_bytes": 73498321,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2017-b80e749819725921-f86bc5137fa4.mp4",
+          "video_bytes": 73498321,
+          "video_server_digest": "sha256:f86bc5137fa46a8002c2b795342fdc47aa64fae1d37a9fd9b3d2973944a12fcb",
+          "evidence": "tem8-exam-2017-b80e749819725921-f86bc5137fa4-evidence.zip",
+          "evidence_bytes": 137933598,
+          "evidence_server_digest": "sha256:db0774f758a44b9debe83dbb44dc9c98c676ca9234f47dcb073f0fd6540dfa49"
+        }
+      ]
+    },
+    {
+      "id": "2018",
+      "approval_payload_sha256": "94a0c1195f4fbcdadbfca5b0f9d6c6b9a7a5d19ebb9433cf1f3a0152860fe0e6",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "cc2ae0910af2c9b809e52b93eb0f1ed3aeccbc5961c42e1dd1db6760f7e4746a",
+      "mp4_bytes": 74892659,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2018-94a0c1195f4fbcda-cc2ae0910af2.mp4",
+          "video_bytes": 74892659,
+          "video_server_digest": "sha256:cc2ae0910af2c9b809e52b93eb0f1ed3aeccbc5961c42e1dd1db6760f7e4746a",
+          "evidence": "tem8-exam-2018-94a0c1195f4fbcda-cc2ae0910af2-evidence.zip",
+          "evidence_bytes": 128489485,
+          "evidence_server_digest": "sha256:63bf6e3848d38adc39f762d7ee6ede8b94fda8d8497a3a03b6453cac4aadfc4c"
+        }
+      ]
+    },
+    {
+      "id": "2019",
+      "approval_payload_sha256": "00e751fbc17b2709d2ddb6fe8e23c5c8be9c4402dd563e7be92731c415a1eb98",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "b28e4469775108c436651433c371b6ab0d580b9dcd24ba312244217e3807c380",
+      "mp4_bytes": 83732666,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2019-00e751fbc17b2709-b28e44697751.mp4",
+          "video_bytes": 83732666,
+          "video_server_digest": "sha256:b28e4469775108c436651433c371b6ab0d580b9dcd24ba312244217e3807c380",
+          "evidence": "tem8-exam-2019-00e751fbc17b2709-b28e44697751-evidence.zip",
+          "evidence_bytes": 137849175,
+          "evidence_server_digest": "sha256:88359161a4bb8cc924653491702aaabcd2bafa1a99a249e7e8c9d234dfc897ac"
+        }
+      ]
+    },
+    {
+      "id": "2021",
+      "approval_payload_sha256": "d70040fba3b79983bf2942bb65f2fe3d66560923a26d67f47c95f3bfc505a429",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "8e44a07b00229a9ca9047eed07ea05e4e739c5065f6fbb87b65a613591231bfe",
+      "mp4_bytes": 81235833,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2021-d70040fba3b79983-8e44a07b0022.mp4",
+          "video_bytes": 81235833,
+          "video_server_digest": "sha256:8e44a07b00229a9ca9047eed07ea05e4e739c5065f6fbb87b65a613591231bfe",
+          "evidence": "tem8-exam-2021-d70040fba3b79983-8e44a07b0022-evidence.zip",
+          "evidence_bytes": 132695835,
+          "evidence_server_digest": "sha256:02f6d67fb9a15c7ff162e35386b36c9eecee70776cea87ec0d3ffacd738cd743"
+        }
+      ]
+    },
+    {
+      "id": "2022",
+      "approval_payload_sha256": "9b3d3b82a0bdbc4743ce7c14cb4593d79335946593cded1fd329ac0ca179a9d7",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "d90b25f3e4d58bb33129923509389be4cdb9e7a8716c09691bdf80471b3cd0d2",
+      "mp4_bytes": 99888555,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2022-9b3d3b82a0bdbc47-d90b25f3e4d5.mp4",
+          "video_bytes": 99888555,
+          "video_server_digest": "sha256:d90b25f3e4d58bb33129923509389be4cdb9e7a8716c09691bdf80471b3cd0d2",
+          "evidence": "tem8-exam-2022-9b3d3b82a0bdbc47-d90b25f3e4d5-evidence.zip",
+          "evidence_bytes": 158955213,
+          "evidence_server_digest": "sha256:0d0765554690c9fdf8042738f33f3d8c2dd484dee0aa34ea231d47ed6b51c1b2"
+        }
+      ]
+    },
+    {
+      "id": "2023",
+      "approval_payload_sha256": "a64254f32406109f1ea659ba2d8646b749182bd06e4c11823c59b0840c2baa83",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "c885db2a592751017ff67a9ae2984dd736854b423ad2397ad8e90645d401c17f",
+      "mp4_bytes": 84976408,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2023-a64254f32406109f-c885db2a5927.mp4",
+          "video_bytes": 84976408,
+          "video_server_digest": "sha256:c885db2a592751017ff67a9ae2984dd736854b423ad2397ad8e90645d401c17f",
+          "evidence": "tem8-exam-2023-a64254f32406109f-c885db2a5927-evidence.zip",
+          "evidence_bytes": 133639456,
+          "evidence_server_digest": "sha256:4350ba6dbe44817ad9faa55150cf2dee133333f997eff41233d7873a05c69946"
+        }
+      ]
+    },
+    {
+      "id": "2024",
+      "approval_payload_sha256": "ecfa588885afe1ad4e9d762872f65fb36002b2917ac8ecb30d99cbef62805d92",
+      "ready": true,
+      "producer_run_id": "43543083754",
+      "producer_source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "actual_producer_head_sha": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "mp4_sha256": "db18ff73ce230eac0adce7237acb6058e6481308a14732c467400364aac721cd",
+      "mp4_bytes": 79638290,
+      "server_candidates": [
+        {
+          "video": "tem8-exam-2024-ecfa588885afe1ad-db18ff73ce23.mp4",
+          "video_bytes": 79638290,
+          "video_server_digest": "sha256:db18ff73ce230eac0adce7237acb6058e6481308a14732c467400364aac721cd",
+          "evidence": "tem8-exam-2024-ecfa588885afe1ad-db18ff73ce23-evidence.zip",
+          "evidence_bytes": 129297210,
+          "evidence_server_digest": "sha256:6fe9f24608d51d82b0131f6670f1e6f0ae4ee8bb3f1d855f8f2d1bec02b0f5de"
+        }
+      ]
+    }
+  ]
+}

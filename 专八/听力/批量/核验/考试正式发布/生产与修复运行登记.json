@@ -94,6 +94,42 @@
       "ignore_root_cancelled": true,
       "root_cancel_requested": true,
       "superseded_reason": "2009二次重试末端ffmpeg RSS突增且0通过exam缓存；root终止同路径重复，改验证有界两阶段完整4K。"
+    },
+    {
+      "run_id": "43538865658",
+      "source_commit": "e193da497dbcfdc1c71becaf1505ecf5530489b4",
+      "scope": "root_authorized_bounded4k_smoke",
+      "target_ids": [
+        "2009"
+      ],
+      "accept_media": true,
+      "epoch": "bounded_two_step_4k",
+      "note": "完整长片smoke，先验证video_only→原PCM单次AAC→严检→store，其余14待本片过后再启动。"
+    },
+    {
+      "run_id": "43543083754",
+      "source_commit": "72adfda0ebe41163a4765fc48c8f26026f809c03",
+      "scope": "root_authorized_bounded4k_remaining14",
+      "target_ids": [
+        "2010",
+        "2011",
+        "2012",
+        "2013",
+        "2014",
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ],
+      "accept_media": true,
+      "epoch": "bounded_two_step_4k",
+      "note": "完整2009样片strict通过后，仅其余14年，2009不重做；BASE647/registryEBD不变，max20。"
     }
-  ]
+  ],
+  "current_exam_epoch": "bounded_two_step_4k"
 }

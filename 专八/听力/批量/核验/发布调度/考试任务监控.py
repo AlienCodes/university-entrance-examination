@@ -9,6 +9,7 @@ def ident(j):
  m=re.match(r'render \(exam, (\d{4}),',j['name']);return m.group(1) if m else None
 def store(j):return next((s['conclusion'] for s in j.get('steps',[]) if s['name'].startswith('成功结果立即持久保存')),None)
 while True:
+ cycle_started=time.monotonic()
  now=datetime.datetime.now(datetime.timezone.utc).isoformat()
  try:
   register=json.loads(a.producer_register.read_text());assert str(register['production_run_id'])==a.run
@@ -18,8 +19,11 @@ while True:
    if any('runner has received a shutdown signal' in s for s in proof['observed_lines']) or any('The hosted runner lost communication with the server.' in x.get('message','') for x in proof.get('annotations',[])):known[proof['job_id']]=str(file.relative_to(root))
   all_leaves=[];main_jobs=[]
   for r in register['runs']:
-   data=json.loads(subprocess.check_output(['gh','api',f"repos/AlienCodes/university-entrance-examination/actions/runs/{r['run_id']}/jobs?per_page=100"],timeout=45))
-   (out/('run-'+r['run_id']+'-jobs.json')).write_text(json.dumps(data,ensure_ascii=False,indent=2))
+   cached=out/('run-'+r['run_id']+'-jobs.json')
+   if not r.get('accept_media',True) and r.get('scope')!='main' and cached.exists():data=json.loads(cached.read_text())
+   else:
+    data=json.loads(subprocess.check_output(['gh','api',f"repos/AlienCodes/university-entrance-examination/actions/runs/{r['run_id']}/jobs?per_page=100"],timeout=45))
+    cached.write_text(json.dumps(data,ensure_ascii=False,indent=2))
    if str(r['run_id'])==a.run:
     main_jobs=data['jobs'];(out/'jobs-current.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
    for j in data['jobs']:
@@ -48,4 +52,4 @@ while True:
   if all(r['status']=='success' for r in rows) and not unknown:
    (out/'exam-all-success.json').write_text(json.dumps({'run_id':a.run,'at':now,'producer_register':register,'jobs':chosen},ensure_ascii=False,indent=2));print('ALL_15_EXAMS_SUCCESS',flush=True);break
  except Exception as exc:print(json.dumps({'at':now,'monitor_error':type(exc).__name__,'message':str(exc)}),flush=True)
- time.sleep(55)
+ time.sleep(max(1,55-(time.monotonic()-cycle_started)))
