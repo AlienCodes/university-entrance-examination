@@ -1,0 +1,149 @@
+{
+  "status": "PASS_full_repository_guard_zero",
+  "guard_file": "tools/防复发/验证/意群响度入口.py",
+  "guard_sha256": "05b97d2ac4f8c1c28d2a1eecdd79b5ddff8d6ce85c5db8ab823e9328b61c1261",
+  "exact_pins": {
+    "专八/听力/批量/tools/精听两步编码.py": "af662afa2776fbb00576c130753e453ac490a53ed9586da84684cc303fc41b24",
+    "专八/听力/批量/tools/发布汇集.py": "cca813ac3c0d2b1a3be30e96981d925825490b52ea0e554fcc5ad1775f192e90",
+    "专八/听力/批量/tools/整套精听发布测试.py": "7658aed5cd2bf9b25cdac0e5027f18569f1e90b15b73e0fe12ef066f11a024cb"
+  },
+  "narrow_policy": {
+    "audio": false,
+    "video": true,
+    "constraints": "精确路径＋完整源码字节SHA；原路径源码/CRLF变更、未知路径复制、加TTS均拒绝。未放宽其它发现与响度/证据规则。"
+  },
+  "independent_review": {
+    "adapter": "E/D/clock完整SHA与冻结记录一致；运行时只替换本进程encode/fingerprint，原E严检保留；原PCM单AAC/native声道采样率，无-ar/-ac/-af/-shortest或音量处理。",
+    "stored_short_proof": "300帧YUV/VCL/PTS和AAC解码PCM逐项相同；两份原E.verify均ok，证明是10秒技术样例，不是整段审批。",
+    "publisher": "新proof函数只read_work/哈希/严格argv断言；原gh/git/上传/发布AST与e193da49相同；所有subprocess执行首项均为gh/git，无ffmpeg执行。",
+    "independently_found_and_closed": "原检查列表空集/删native项漏洞已报根并修：Counter要求10项完整唯一，保护active加第11项。独立真正例接受；空列表/删native/删原声/重复项4负例均拒绝。",
+    "test_entry": "仅TEST-ONLY临时假字节/JSON/内存远端；无subprocess/os媒体执行。可选真实历史技术样例只复制打包既有MP4。ASCII报告名改动只两处测试期望，已读diff。"
+  },
+  "tests": [
+    {
+      "file": "核验/精听独立两步编码/入口守卫独立复核/入口全量自测.log",
+      "sha256": "89101c89a873eda3405932af2c26dce8ca1d0b21480e684b46f5017f05b6b825",
+      "exit_code": 0,
+      "passed_marks": 91,
+      "summary": "意群响度入口双向验证：全部通过"
+    },
+    {
+      "file": "核验/精听独立两步编码/入口守卫独立复核/音频合格证自测.log",
+      "sha256": "ecd5499caf7858af7fb6afce163b032ceca53e1d6c784ce7500d2187334479d1",
+      "exit_code": 0,
+      "passed_marks": 24,
+      "summary": "check-audio-cert 自检：全部通过"
+    },
+    {
+      "file": "核验/精听独立两步编码/入口守卫独立复核/原音不动自测.log",
+      "sha256": "4fc949a1c21e82b0c588e3aad8015d694ac9f693cb4286596699331978d13524",
+      "exit_code": 0,
+      "passed_marks": 23,
+      "summary": "原音不动双向验证 通过"
+    },
+    {
+      "file": "核验/精听独立两步编码/入口守卫独立复核/整套发布12测试.log",
+      "sha256": "8ae35e847259f275f772238e87800b54158a493621f111b3323afb5c54b2d08f",
+      "exit_code": 0,
+      "passed_marks": 0,
+      "summary": "OK"
+    },
+    {
+      "file": "核验/精听独立两步编码/入口守卫独立复核/发布器自测.log",
+      "sha256": "95b5016379afda012e65a93723380b8402c7bedea3c15eccd66290272524d6c2",
+      "exit_code": 0,
+      "passed_marks": 0,
+      "summary": "发布自检通过：正常包/成品核验＋路径、重名、体积、过期、损坏、失败报告、缺项及样片隔离。"
+    }
+  ],
+  "original_core_not_modified_by_this_agent": true,
+  "other_source_registry_controls_workflows_not_modified_by_this_agent": true,
+  "changes_by_this_agent": "守卫窄pin＋本审计与日志；无P/E/D/core、registry或control修改，无GitHub触发。",
+  "limitations": [
+    "未新看图片，未重做4K样例/完整单元；短片不代表当前2022-A/2024-A完整长视频成功。",
+    "完整两条生产结果、60审批及15年度组装指纹由根独立汇总，本守卫审计不替代。"
+  ],
+  "exact_pin_positive_negative_cases": {
+    "专八/听力/批量/tools/精听两步编码.py": [
+      {
+        "case": "精听两步编码.py精确路径+完整SHA相同 → 不报",
+        "passed": true,
+        "actual_output": "0 处"
+      },
+      {
+        "case": "精听两步编码.py复制到未知路径 → 仍拦入口",
+        "passed": true,
+        "actual_output": "['新项目/tools/陌生_精听两步编码.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check']"
+      },
+      {
+        "case": "精听两步编码.py任一源码变化 → 旧SHA不放行",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/精听两步编码.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check', '专八/听力/批量/tools/精听两步编码.py：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行']"
+      },
+      {
+        "case": "精听两步编码.py仅换CRLF字节 → 旧SHA不放行",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/精听两步编码.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check', '专八/听力/批量/tools/精听两步编码.py：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行']"
+      },
+      {
+        "case": "精听两步编码.py加入TTS → 仍拦音频入口",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/精听两步编码.py：会合成或写出音频，却没接意群级处理与检查（render_passage / save_checked，或 segment + verify_loudness）', '专八/听力/批量/tools/精听两步编码.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check']"
+      }
+    ],
+    "专八/听力/批量/tools/发布汇集.py": [
+      {
+        "case": "发布汇集.py精确路径+完整SHA相同 → 不报",
+        "passed": true,
+        "actual_output": "0 处"
+      },
+      {
+        "case": "发布汇集.py复制到未知路径 → 仍拦入口",
+        "passed": true,
+        "actual_output": "['新项目/tools/陌生_发布汇集.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check']"
+      },
+      {
+        "case": "发布汇集.py任一源码变化 → 旧SHA不放行",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/发布汇集.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check', '专八/听力/批量/tools/发布汇集.py：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行']"
+      },
+      {
+        "case": "发布汇集.py仅换CRLF字节 → 旧SHA不放行",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/发布汇集.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check', '专八/听力/批量/tools/发布汇集.py：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行']"
+      },
+      {
+        "case": "发布汇集.py加入TTS → 仍拦音频入口",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/发布汇集.py：会合成或写出音频，却没接意群级处理与检查（render_passage / save_checked，或 segment + verify_loudness）', '专八/听力/批量/tools/发布汇集.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check']"
+      }
+    ],
+    "专八/听力/批量/tools/整套精听发布测试.py": [
+      {
+        "case": "整套精听发布测试.py精确路径+完整SHA相同 → 不报",
+        "passed": true,
+        "actual_output": "0 处"
+      },
+      {
+        "case": "整套精听发布测试.py复制到未知路径 → 仍拦入口",
+        "passed": true,
+        "actual_output": "['新项目/tools/陌生_整套精听发布测试.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check']"
+      },
+      {
+        "case": "整套精听发布测试.py任一源码变化 → 旧SHA不放行",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/整套精听发布测试.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check', '专八/听力/批量/tools/整套精听发布测试.py：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行']"
+      },
+      {
+        "case": "整套精听发布测试.py仅换CRLF字节 → 旧SHA不放行",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/整套精听发布测试.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check', '专八/听力/批量/tools/整套精听发布测试.py：已核原音/测试窄入口源码SHA变化，须重新核原样PCM守卫/测试范围；旧登记不放行']"
+      },
+      {
+        "case": "整套精听发布测试.py加入TTS → 仍拦音频入口",
+        "passed": true,
+        "actual_output": "['专八/听力/批量/tools/整套精听发布测试.py：会合成或写出音频，却没接意群级处理与检查（render_passage / save_checked，或 segment + verify_loudness）', '专八/听力/批量/tools/整套精听发布测试.py：生成视频却既没在生成前核对音频合格证（certificate_problems），也没在生成后跑 verify_videos.check']"
+      }
+    ]
+  }
+}

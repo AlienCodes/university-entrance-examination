@@ -56,6 +56,11 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
     },
 }
 PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '专八/听力/批量/tools/整套精听发布测试.py': {
+        'sha256': '7658aed5cd2bf9b25cdac0e5027f18569f1e90b15b73e0fe12ef066f11a024cb',
+        'audio': False, 'video': True,
+        'reason': '离线发布契约测试：临时目录内只有明确TEST-ONLY的假MP4字节、假PNG和JSON，ffmpeg编码参数仅为proof结构夹具，从未执行；无subprocess/os媒体调用，远端写入用内存服务替代。可选技术样例入口只复制并打包已存在MP4，不编码、不发布。本精确SHA仅消除参数字串误报，不赋予任何生产审批或音频/TTS豁免。',
+    },
     '专八/听力/批量/tools/发布汇集.py': {
         'sha256': 'cca813ac3c0d2b1a3be30e96981d925825490b52ea0e554fcc5ad1775f192e90',
         'audio': False, 'video': True,

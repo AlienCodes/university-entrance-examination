@@ -348,8 +348,8 @@ class FullPublication(unittest.TestCase):
                 names.extend(archive.namelist())
         self.assertEqual(set(names), {'专八听力精听/' + m.label(y) for y in m.YEARS})
         self.assertEqual(len(names), 15)
-        self.assertEqual(pub.read(out / '发布回下载核验.json')['videos'], 15)
-        self.assertIn('发布回下载核验.json', remote)
+        self.assertEqual(pub.read(out / 'TEM8-intensive-download-verification.json')['videos'], 15)
+        self.assertIn('TEM8-intensive-download-verification.json', remote)
         self.assertTrue(writes)
 
     def test_09_download_member_sha_and_archive_corruption_rejected(self):

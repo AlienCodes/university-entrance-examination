@@ -1,0 +1,25 @@
+  ✅ 合格的新音频 → 0：0 处
+  ✅ 没有合格证（旧处理链）→ 报：['audio/cet4_male/a01（v/x.mp3）：音频不是当前处理链 clause-v1 生成的（没有意群级电平统一与检查 / 没有合格证），不许生成视频、不许发布']
+  ✅ 手写最小合格证 → 报：["audio/cet4_male/a01（v/x.mp3）：音频合格证的上限 None 不是标准值 {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0, 'clause_nb': 1.2, 'clause_tail': 4.0}", 'audio/cet4_male/a01（v/x.mp3）：音频合格证没有 MP3 的 sha256']
+  ✅ 合格证里写超标值 → 报：['audio/cet4_male/a01（v/x.mp3）：音频合格证里的测量值超标：相邻意群 -1.9 LU']
+  ✅ 旁证 passed=False、timings 写 True → 报：['audio/cet4_male/a01（v/x.mp3）：合格证文件与 timings 里的合格证不一致（chain / passed / 测量值 / sha256 有不同）']
+  ✅ 上限被改宽 → 报：["audio/cet4_male/a01（v/x.mp3）：音频合格证的上限 {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0, 'clause_nb': 9, 'clause_tail': 4.0} 不是标准值 {'integrated': 0.7, 'sentence_dev': 2.0, 'short_term_std': 1.0, 'peak_db': -1.0, 'clause_nb': 1.2, 'clause_tail': 4.0}"]
+  ✅ 缺合格证文件 → 报：['audio/cet4_male/a01（v/x.mp3）：缺少合格证文件 x.loudness.json']
+  ✅ MP3 检查后被改过 → 报：['audio/cet4_male/a01（v/x.mp3）：合格证与 MP3 不符（MP3 在检查之后被改过）']
+  ✅ 目录里有没登记的 MP3 → 报：['v/别的.mp3：timings.json 里没有这个 MP3 的条目（来路不明，不许打包）']
+  ✅ GitHub 上没检出 MP3（--ci）：只核旁证 → 0：0 处
+  ✅ GitHub 上没检出 MP3（--ci）、旁证 passed=False → 报：['audio/cet4_male/a01（v/x.mp3）：合格证文件与 timings 里的合格证不一致（chain / passed / 测量值 / sha256 有不同）']
+  ✅ 本机磁盘和 git 里都没有 MP3 → 报：['audio/cet4_male/a01（v/x.mp3）：找不到 MP3 x.mp3（磁盘和 git 里都没有），无法核对 sha256']
+  ✅ 自己写 source=原音 → 报：['audio/cet4_male/a01（v/x.mp3）：音频不是当前处理链 clause-v1 生成的（没有意群级电平统一与检查 / 没有合格证），不许生成视频、不许发布']
+  ✅ 逐文件：合格 → 0：0 处
+  ✅ 逐文件：在子目录里（预览/）也照查 → 0：0 处
+  ✅ 逐文件：旁证 passed=False → 报：['讲解 甲.timings.json：合格证文件与 timings 里的合格证不一致（chain / passed / 测量值 / sha256 有不同）']
+  ✅ 逐文件：子目录里旁证不对 → 报：['预览/讲解 甲.timings.json：合格证文件与 timings 里的合格证不一致（chain / passed / 测量值 / sha256 有不同）']
+  ✅ 逐文件：缺合格证文件 → 报：['讲解 甲.timings.json：缺少合格证文件 讲解 甲.loudness.json']
+  ✅ 逐文件：MP3 被改过 → 报：['讲解 甲.timings.json：合格证与 MP3 不符（MP3 在检查之后被改过）']
+  ✅ 逐文件：旁边多一个没有 timings 的 MP3 → 报：['别的.mp3：timings.json 里没有这个 MP3 的条目（来路不明，不许打包）']
+  ✅ 逐文件：一份 timings 都没有 → 报：['/tmp/tmp2b2im7v7/audio：没有 timings.json（也没有逐文件的 *.timings.json）']
+  ✅ 逐文件：旧处理链（没有合格证）→ 报：['讲解 甲.timings.json：音频不是当前处理链 clause-v1 生成的（没有意群级电平统一与检查 / 没有合格证），不许生成视频、不许发布']
+  ✅ 命令行：不合格的目录 → 退出码非 0：退出码 1
+  ✅ 命令行：合格的目录 → 退出码 0：退出码 0
+check-audio-cert 自检：全部通过

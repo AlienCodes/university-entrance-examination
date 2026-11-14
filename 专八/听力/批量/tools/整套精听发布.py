@@ -480,7 +480,7 @@ def publish(c, art, out):
         with tempfile.TemporaryDirectory(prefix='tem8fullback_') as td:
             pub.gh('release', 'download', FINAL_TAG, '-R', pub.REPO, '-p', local.name, '-D', td)
             verify_download(local, Path(td) / local.name, members)
-    report = out / '发布回下载核验.json'
+    report = out / 'TEM8-intensive-download-verification.json'
     dump(report, {'tag': FINAL_TAG, 'mode': c['mode'], 'kind': KIND, 'videos': 15, 'internal_parts': 45,
                   'years': YEARS, 'archives': [r for _, r in archives], 'server_digest': True,
                   'download_sha_crc_utf8_member_sha': True})
