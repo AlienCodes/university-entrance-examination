@@ -8,7 +8,7 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: tem8-listening-exam-runner-retry
+  group: tem8-listening-exam-runner-retry-${{ github.run_id }}
   cancel-in-progress: false
 jobs:
   list:
@@ -133,12 +133,13 @@ jobs:
         env:
           TEM8_BROWSER: /opt/pw-browsers/chromium
           TEM8_THREADS: '2'
+          GH_TOKEN: '${{ github.token }}'
         run: |
           set -euo pipefail
           P=/opt/ttsenv/bin/python
           $P 专八/听力/批量/tools/发布汇集.py gate '${{ matrix.item.kind }}' '${{ matrix.item.id }}' --work work --record current-review.json
           if [ '${{ matrix.item.kind }}' = exam ]; then
-            python3 专八/听力/批量/核验/发布调度/运行资源观测.py --work work &
+            python3 专八/听力/批量/核验/发布调度/运行资源观测.py --work work --release-tag tem8-listening-render-cache-2009-2024 --asset-name 'tem8-resource-exam-${{ matrix.item.id }}-${{ github.run_id }}.json' &
             TEM8_MONITOR_PID=$!
             trap 'kill "$TEM8_MONITOR_PID" 2>/dev/null || true' EXIT
             D='专八/听力/批量/数据/${{ matrix.item.id }}'

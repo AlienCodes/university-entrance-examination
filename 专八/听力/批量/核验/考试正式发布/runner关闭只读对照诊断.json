@@ -1,0 +1,823 @@
+{
+  "schema": 1,
+  "checked_at_utc": "2026-11-14T00:17:39.008948+00:00",
+  "scope": "只读对照；未改renderer/core/registry/main工作流，未重算原音，未启动或取消任何任务。",
+  "production_run_id": 43528080039,
+  "production_commit": "f25216794e383505baa132ca581e1380e82192c8",
+  "old_run_id": 43508425588,
+  "old_commit": "c87cf30777f324ceabde3a0eba6a1a7ecfd54451",
+  "repair_run_id": 43514755833,
+  "conclusion": {
+    "observed": "7个长考试均在快片及精确frame探针通过后、正式4K阶段收到runner shutdown；物理根因未公开。",
+    "geography": "6 Azure跨eastus2/eastus/northcentralus/westus2，1 AWS us-east-1；不集中于单一地域或云。",
+    "same_pool_success": "同批6成功精听也用GitHub托管ubuntu-24.04，同runner/image版本，eastus同时存在考试失败和精听成功。",
+    "memory": "没有RSS、MemAvailable、cgroup OOM计数或内核日志观测，不可断言或排除OOM。未发现137/Out-of-memory类明确文本；2021为143/SIGTERM并随shutdown。",
+    "cancellation": "各job在不同时刻关闭，同run其他job继续；API快照overall conclusion=null，无整run取消证据。不能由公开API追溯托管runner服务收到shutdown的实际来源。",
+    "timeout": "仓库render timeout-minutes=300，现失败job23.35—35.45分钟，且快片后14.85—24.65分钟，不匹配本工作流超时或统一固定限时。",
+    "historical_quality": "旧成功仅作运行时间对照，绝不恢复旧图片时钟成品或审批。"
+  },
+  "timing_statistics": {
+    "historical_success_count": 10,
+    "historical_job_mean_seconds": 1624.9,
+    "historical_formal4k_plus_internal_verify_mean_seconds": 978.057,
+    "historical_formal4k_plus_internal_verify_min_seconds": 893.478,
+    "historical_formal4k_plus_internal_verify_max_seconds": 1252.949,
+    "definition": "从日志“试跑：帧数...”到第一次“成品核查全部通过”；包括4K编码和video()内置核验，并非纯编码时间。ffmpeg -v error不输出fps/speed，不能再细分。",
+    "repair_2010_seconds": 1325.687
+  },
+  "production_encoding_options_verified_in_git_at_both_commits": {
+    "preset": "medium",
+    "crf": "18",
+    "ffmpeg_log_level": "error",
+    "source_path": "专八/听力/tools/听力视频.py"
+  },
+  "historical_success_exams": [
+    {
+      "job_id": 132172217044,
+      "name": "render (exam, 2009, 2009)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217044",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:36:38Z",
+      "runner": {
+        "runner_id": 1000008059,
+        "runner_name": "GitHub Actions 1000008059",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1494.0,
+      "raw_log_sha256": "db83c2004befb73d1d9f7bfb9dd1d5405e2554717cb9e1c6a1a735afa174506d",
+      "selected_evidence": [
+        "2026-11-13T21:20:26.0072001Z 试跑：帧数 43220 应为 43220 声音 1440.666984 画面 1440.6666666666667",
+        "2026-11-13T21:35:23.2732927Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2009年 专八听力 考试（新题型优化版）.mp4",
+        "2026-11-13T21:36:21.0559327Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2009年 专八听力 考试（新题型优化版）.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:26.0072001Z",
+      "formal_4k_plus_internal_verify_seconds": 897.266,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217087,
+      "name": "render (exam, 2012, 2012)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217087",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:37:02Z",
+      "runner": {
+        "runner_id": 1000008061,
+        "runner_name": "GitHub Actions 1000008061",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus3",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1518.0,
+      "raw_log_sha256": "d6cbf3a41e2a93615053e69faf649dd2ecefdc79bf5f2d2143d688300f0c39c4",
+      "selected_evidence": [
+        "2026-11-13T21:20:21.0916656Z 试跑：帧数 45194 应为 45194 声音 1506.466009 画面 1506.4666666666667",
+        "2026-11-13T21:35:35.6316206Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2012年 专八听力 考试（新题型优化版）.mp4",
+        "2026-11-13T21:36:39.6896934Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2012年 专八听力 考试（新题型优化版）.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:21.0916656Z",
+      "formal_4k_plus_internal_verify_seconds": 914.54,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217090,
+      "name": "render (exam, 2018, 2018)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217090",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:43:09Z",
+      "runner": {
+        "runner_id": 1000008058,
+        "runner_name": "GitHub Actions 1000008058",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1885.0,
+      "raw_log_sha256": "3971bf36284fe8b3ec42c4e7884cfc58896dd6199fd2d5a99d2457ec564dbefd",
+      "selected_evidence": [
+        "2026-11-13T21:22:57.3767353Z 试跑：帧数 43462 应为 43462 声音 1448.733 画面 1448.7333333333333",
+        "2026-11-13T21:41:29.9161666Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2018年 专八听力 考试.mp4",
+        "2026-11-13T21:42:45.9255332Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2018年 专八听力 考试.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:22:57.3767353Z",
+      "formal_4k_plus_internal_verify_seconds": 1112.539,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217122,
+      "name": "render (exam, 2014, 2014)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217122",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:36:50Z",
+      "runner": {
+        "runner_id": 1000008062,
+        "runner_name": "GitHub Actions 1000008062",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "centralus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1506.0,
+      "raw_log_sha256": "bc0e1418e5ad1e95c26a0c4aa6ff05fb46782b9fe1ca7396aad6d4ae6b2c3f43",
+      "selected_evidence": [
+        "2026-11-13T21:20:19.0389473Z 试跑：帧数 43510 应为 43510 声音 1450.332993 画面 1450.3333333333333",
+        "2026-11-13T21:35:27.4995377Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2014年 专八听力 考试（新题型优化版）.mp4",
+        "2026-11-13T21:36:30.7864461Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2014年 专八听力 考试（新题型优化版）.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:19.0389473Z",
+      "formal_4k_plus_internal_verify_seconds": 908.461,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217154,
+      "name": "render (exam, 2013, 2013)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217154",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:37:16Z",
+      "runner": {
+        "runner_id": 1000008063,
+        "runner_name": "GitHub Actions 1000008063",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "centralus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1532.0,
+      "raw_log_sha256": "b0e5755fd432f2b0125049d543fac18b3be0b00a2f4519fb5c83622f571be5fc",
+      "selected_evidence": [
+        "2026-11-13T21:20:52.9928250Z 试跑：帧数 44246 应为 44246 声音 1474.866009 画面 1474.8666666666666",
+        "2026-11-13T21:35:48.8812459Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2013年 专八听力 考试（新题型优化版）.mp4",
+        "2026-11-13T21:36:55.1486899Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2013年 专八听力 考试（新题型优化版）.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:52.9928250Z",
+      "formal_4k_plus_internal_verify_seconds": 895.888,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217195,
+      "name": "render (exam, 2015, 2015)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217195",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:36:55Z",
+      "runner": {
+        "runner_id": 1000008060,
+        "runner_name": "GitHub Actions 1000008060",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1511.0,
+      "raw_log_sha256": "b784fd33eddb6767a31f58a23e7a2e0b9326c1e8307e18b4316d48ce569395eb",
+      "selected_evidence": [
+        "2026-11-13T21:20:39.7767841Z 试跑：帧数 43947 应为 43947 声音 1464.9 画面 1464.9",
+        "2026-11-13T21:35:33.2543549Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2015年 专八听力 考试（新题型优化版）.mp4",
+        "2026-11-13T21:36:39.1468155Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2015年 专八听力 考试（新题型优化版）.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:39.7767841Z",
+      "formal_4k_plus_internal_verify_seconds": 893.478,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217296,
+      "name": "render (exam, 2022, 2022)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217296",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:38:46Z",
+      "runner": {
+        "runner_id": 1000008066,
+        "runner_name": "GitHub Actions 1000008066",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1622.0,
+      "raw_log_sha256": "5a7ea6911e1b1c197cb5766d7ea6ee70188d1b8082b68d5d4681f163d37b1fa5",
+      "selected_evidence": [
+        "2026-11-13T21:20:44.2056716Z 试跑：帧数 47991 应为 47991 声音 1599.7 画面 1599.7",
+        "2026-11-13T21:37:13.4132972Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2022年 专八听力 考试.mp4",
+        "2026-11-13T21:38:26.7609790Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2022年 专八听力 考试.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:44.2056716Z",
+      "formal_4k_plus_internal_verify_seconds": 989.208,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217352,
+      "name": "render (exam, 2024, 2024)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217352",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:38:17Z",
+      "runner": {
+        "runner_id": 1000008073,
+        "runner_name": "GitHub Actions 1000008073",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261101.360.1"
+      },
+      "job_total_seconds": 1593.0,
+      "raw_log_sha256": "3154ddc430ca6735b597bb4d80eeb30ebb7832acc765f967d610f22f28e28cca",
+      "selected_evidence": [
+        "2026-11-13T21:21:03.3882790Z 试跑：帧数 46924 应为 46924 声音 1564.133 画面 1564.1333333333334",
+        "2026-11-13T21:36:55.8861526Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2024年 专八听力 考试.mp4",
+        "2026-11-13T21:37:53.9547510Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2024年 专八听力 考试.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:21:03.3882790Z",
+      "formal_4k_plus_internal_verify_seconds": 952.498,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217413,
+      "name": "render (exam, 2021, 2021)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217413",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:37:52Z",
+      "runner": {
+        "runner_id": 1000008075,
+        "runner_name": "GitHub Actions 1000008075",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1568.0,
+      "raw_log_sha256": "4e70a1b63459ef04e90bedd2dec9cf41de1781df7b4a8458d6683ad50843db1b",
+      "selected_evidence": [
+        "2026-11-13T21:20:23.0611472Z 试跑：帧数 46983 应为 46983 声音 1566.1 画面 1566.1",
+        "2026-11-13T21:36:26.8020520Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2021年 专八听力 考试.mp4",
+        "2026-11-13T21:37:34.8121622Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2021年 专八听力 考试.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:20:23.0611472Z",
+      "formal_4k_plus_internal_verify_seconds": 963.741,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132172217466,
+      "name": "render (exam, 2023, 2023)",
+      "run_id": 43508425588,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43508425588/job/132172217466",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:11:44Z",
+      "completed_at": "2026-11-13T21:45:24Z",
+      "runner": {
+        "runner_id": 1000008065,
+        "runner_name": "GitHub Actions 1000008065",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 2020.0,
+      "raw_log_sha256": "cc3d796b1cc20597cc7cfc09abe69ba3411fa60edc2ccf4796a3eb30d5e35af3",
+      "selected_evidence": [
+        "2026-11-13T21:22:54.4362513Z 试跑：帧数 48972 应为 48972 声音 1632.4 画面 1632.4",
+        "2026-11-13T21:43:47.3849955Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2023年 专八听力 考试.mp4",
+        "2026-11-13T21:45:00.4804492Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2023年 专八听力 考试.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T21:22:54.4362513Z",
+      "formal_4k_plus_internal_verify_seconds": 1252.949,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    }
+  ],
+  "current_shutdown_exams": [
+    {
+      "job_id": 132238959596,
+      "name": "render (exam, 2010, 2010)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959596",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:34:54Z",
+      "completed_at": "2026-11-13T23:59:03Z",
+      "runner": {
+        "runner_id": 1000008250,
+        "runner_name": "GitHub Actions 1000008250",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1449.0,
+      "raw_log_sha256": "9b54dd61da0549145be74fe793e8817c51bb7405a0505a82f6822ebfcf0d4a25",
+      "selected_evidence": [
+        "2026-11-13T23:43:12.3374792Z 试跑：帧数 47007 应为 47007 声音 1566.9 画面 1566.9",
+        "2026-11-13T23:43:12.3376439Z 快片全部状态边界通过 409 状态 1636 精确帧探针",
+        "2026-11-13T23:59:00.4547198Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+        "2026-11-13T23:59:01.3603898Z ##[error]The operation was canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:43:12.3374792Z",
+      "fast_to_runner_shutdown_seconds": 948.117,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959629,
+      "name": "render (exam, 2009, 2009)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959629",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:35:54Z",
+      "completed_at": "2026-11-14T00:09:35Z",
+      "runner": {
+        "runner_id": 1000008256,
+        "runner_name": "GitHub Actions 1000008256",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 2021.0,
+      "raw_log_sha256": "5eb04a1bd3026c1813767a388b7e76e4d1e39b44184fbdded405894b78c0df23",
+      "selected_evidence": [
+        "2026-11-13T23:47:13.3007198Z 试跑：帧数 43220 应为 43220 声音 1440.666984 画面 1440.6666666666667",
+        "2026-11-13T23:47:13.3009010Z 快片全部状态边界通过 398 状态 1592 精确帧探针",
+        "2026-11-14T00:09:33.0587689Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+        "2026-11-14T00:09:33.4367123Z ##[error]The operation was canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:47:13.3007198Z",
+      "fast_to_runner_shutdown_seconds": 1339.758,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959635,
+      "name": "render (exam, 2018, 2018)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959635",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:36:04Z",
+      "completed_at": "2026-11-14T00:03:07Z",
+      "runner": {
+        "runner_id": 1000008257,
+        "runner_name": "GitHub Actions 1000008257",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "AWS",
+        "region": "us-east-1",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.127.1"
+      },
+      "job_total_seconds": 1623.0,
+      "raw_log_sha256": "86a3e512cfefa96c6318ad4c2a2973e94096138b9ab243f49540105d197f3016",
+      "selected_evidence": [
+        "2026-11-13T23:44:40.4318809Z 试跑：帧数 43462 应为 43462 声音 1448.733 画面 1448.7333333333333",
+        "2026-11-13T23:44:40.4319240Z 快片全部状态边界通过 400 状态 1600 精确帧探针",
+        "2026-11-14T00:03:05.6528535Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+        "2026-11-14T00:03:06.0647810Z ##[error]The operation was canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:44:40.4318809Z",
+      "fast_to_runner_shutdown_seconds": 1105.221,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959645,
+      "name": "render (exam, 2013, 2013)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959645",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:34:54Z",
+      "completed_at": "2026-11-14T00:09:08Z",
+      "runner": {
+        "runner_id": 1000008252,
+        "runner_name": "GitHub Actions 1000008252",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 2054.0,
+      "raw_log_sha256": "ff3bb95ae7b87a565d54f40da78379f8ddc7732bc821e7799e7d10ced60d74eb",
+      "selected_evidence": [
+        "2026-11-13T23:45:42.9780883Z 试跑：帧数 44246 应为 44246 声音 1474.866009 画面 1474.8666666666666",
+        "2026-11-13T23:45:42.9782646Z 快片全部状态边界通过 405 状态 1619 精确帧探针",
+        "2026-11-14T00:09:05.3153364Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+        "2026-11-14T00:09:06.3658840Z ##[error]The operation was canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:45:42.9780883Z",
+      "fast_to_runner_shutdown_seconds": 1402.337,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959656,
+      "name": "render (exam, 2021, 2021)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959656",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:34:54Z",
+      "completed_at": "2026-11-14T00:10:21Z",
+      "runner": {
+        "runner_id": 1000008253,
+        "runner_name": "GitHub Actions 1000008253",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "northcentralus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 2127.0,
+      "raw_log_sha256": "5114927d09e3126f65a7fd89510ea3605ceefa133f4adf52a38297117d14e122",
+      "selected_evidence": [
+        "2026-11-13T23:45:39.3680978Z 试跑：帧数 46983 应为 46983 声音 1566.1 画面 1566.1",
+        "2026-11-13T23:45:39.3682629Z 快片全部状态边界通过 410 状态 1640 精确帧探针",
+        "2026-11-14T00:10:18.4267563Z ##[error]Process completed with exit code 143.",
+        "2026-11-14T00:10:18.4567534Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:45:39.3680978Z",
+      "fast_to_runner_shutdown_seconds": 1479.089,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959681,
+      "name": "render (exam, 2012, 2012)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959681",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:34:54Z",
+      "completed_at": "2026-11-14T00:03:56Z",
+      "runner": {
+        "runner_id": 1000008251,
+        "runner_name": "GitHub Actions 1000008251",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1742.0,
+      "raw_log_sha256": "a01ce0cf8f0d0605e0ff872a96dad0592afb0ac777f60c9a485e297ca5ae1274",
+      "selected_evidence": [
+        "2026-11-13T23:43:51.6559298Z 试跑：帧数 45194 应为 45194 声音 1506.466009 画面 1506.4666666666667",
+        "2026-11-13T23:43:51.6559848Z 快片全部状态边界通过 401 状态 1604 精确帧探针",
+        "2026-11-14T00:03:51.3598679Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+        "2026-11-14T00:03:52.2746757Z ##[error]The operation was canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:43:51.6559298Z",
+      "fast_to_runner_shutdown_seconds": 1199.704,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959794,
+      "name": "render (exam, 2016, 2016)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959794",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T23:42:10Z",
+      "completed_at": "2026-11-14T00:05:31Z",
+      "runner": {
+        "runner_id": 1000008266,
+        "runner_name": "GitHub Actions 1000008266",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1401.0,
+      "raw_log_sha256": "f6593c31b92231f43f45d00c2ea0a102dbff73e09b4a633df07328c13e379ba6",
+      "selected_evidence": [
+        "2026-11-13T23:50:36.0254611Z 试跑：帧数 45564 应为 45564 声音 1518.8 画面 1518.8",
+        "2026-11-13T23:50:36.0255008Z 快片全部状态边界通过 403 状态 1612 精确帧探针",
+        "2026-11-14T00:05:26.8554986Z ##[error]The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+        "2026-11-14T00:05:27.8164286Z ##[error]The operation was canceled."
+      ],
+      "fast_probe_finished_at": "2026-11-13T23:50:36.0254611Z",
+      "fast_to_runner_shutdown_seconds": 890.83,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    }
+  ],
+  "current_success_intensive": [
+    {
+      "job_id": 132238959808,
+      "name": "render (intensive, 2009-B2, 2009)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959808",
+      "conclusion": "success",
+      "started_at": "2026-11-13T23:36:14Z",
+      "completed_at": "2026-11-13T23:45:43Z",
+      "runner": {
+        "runner_id": 1000008258,
+        "runner_name": "GitHub Actions 1000008258",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westcentralus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 569.0,
+      "raw_log_sha256": "0176fd04d39d857909a5cf0b8c4ea1070962aa6ebaf795825696e81026def90e",
+      "selected_evidence": [],
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959947,
+      "name": "render (intensive, 2010-B1, 2010)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959947",
+      "conclusion": "success",
+      "started_at": "2026-11-13T23:39:02Z",
+      "completed_at": "2026-11-13T23:53:23Z",
+      "runner": {
+        "runner_id": 1000008263,
+        "runner_name": "GitHub Actions 1000008263",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westcentralus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 861.0,
+      "raw_log_sha256": "4b5519748b2a77f27a2543d15dce226faaad2b16e379db8d4fd0502eb9c7a631",
+      "selected_evidence": [],
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959956,
+      "name": "render (intensive, 2009-B1, 2009)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959956",
+      "conclusion": "success",
+      "started_at": "2026-11-13T23:40:43Z",
+      "completed_at": "2026-11-13T23:50:39Z",
+      "runner": {
+        "runner_id": 1000008264,
+        "runner_name": "GitHub Actions 1000008264",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 596.0,
+      "raw_log_sha256": "f99392ececc379fab67f788dc90bc10b9b4dc62460eae2efffc4f421ea231f02",
+      "selected_evidence": [],
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959975,
+      "name": "render (intensive, 2010-B2, 2010)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959975",
+      "conclusion": "success",
+      "started_at": "2026-11-13T23:50:41Z",
+      "completed_at": "2026-11-13T23:57:12Z",
+      "runner": {
+        "runner_id": 1000008273,
+        "runner_name": "GitHub Actions 1000008273",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus3",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 391.0,
+      "raw_log_sha256": "285df5dbaf0a5b8f02fee634790b73b33746c58fbe15ebd1d07a9b3064fcd363",
+      "selected_evidence": [],
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238959979,
+      "name": "render (intensive, 2010-A, 2010)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238959979",
+      "conclusion": "success",
+      "started_at": "2026-11-13T23:45:53Z",
+      "completed_at": "2026-11-14T00:05:57Z",
+      "runner": {
+        "runner_id": 1000008271,
+        "runner_name": "GitHub Actions 1000008271",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1204.0,
+      "raw_log_sha256": "2d8b3b15d29fbc766d95cfe7403b501a2527e1919f364bb4b7202bdc99c31855",
+      "selected_evidence": [],
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132238960004,
+      "name": "render (intensive, 2009-A, 2009)",
+      "run_id": 43528080039,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238960004",
+      "conclusion": "success",
+      "started_at": "2026-11-13T23:38:48Z",
+      "completed_at": "2026-11-13T23:57:26Z",
+      "runner": {
+        "runner_id": 1000008262,
+        "runner_name": "GitHub Actions 1000008262",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "westus3",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 1118.0,
+      "raw_log_sha256": "9e0230c60b94904c74cf68bbdb4c7b8a796341b4497d05c628185b7378dfb3a9",
+      "selected_evidence": [],
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    }
+  ],
+  "selected_old_repair_comparison": [
+    {
+      "job_id": 132193955314,
+      "name": "render (exam, 2010, 2010)",
+      "run_id": 43514755833,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43514755833/job/132193955314",
+      "conclusion": "success",
+      "started_at": "2026-11-13T21:54:41Z",
+      "completed_at": "2026-11-13T22:28:22Z",
+      "runner": {
+        "runner_id": 1000008096,
+        "runner_name": "GitHub Actions 1000008096",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "Azure",
+        "region": "eastus3",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.370.1"
+      },
+      "job_total_seconds": 2021.0,
+      "raw_log_sha256": "b036e598d5be10ab38ab34a7ffcfbf55d3d3c47bbb775c80e83b4a180ead1591",
+      "selected_evidence": [
+        "2026-11-13T22:04:19.9254552Z 试跑：帧数 47007 应为 47007 声音 1566.9 画面 1566.9",
+        "2026-11-13T22:26:25.6126607Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2010年 专八听力 考试（新题型优化版）.mp4",
+        "2026-11-13T22:28:00.3479506Z 成品核查全部通过： /home/runner/work/university-entrance-examination/university-entrance-examination/work/2010年 专八听力 考试（新题型优化版）.mp4"
+      ],
+      "fast_probe_finished_at": "2026-11-13T22:04:19.9254552Z",
+      "formal_4k_plus_internal_verify_seconds": 1325.687,
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    },
+    {
+      "job_id": 132193955466,
+      "name": "render (exam, 2019, 2019)",
+      "run_id": 43514755833,
+      "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43514755833/job/132193955466",
+      "conclusion": "failure",
+      "started_at": "2026-11-13T21:54:42Z",
+      "completed_at": "2026-11-13T22:19:51Z",
+      "runner": {
+        "runner_id": 1000008098,
+        "runner_name": "GitHub Actions 1000008098",
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "version": "'2.338.2'",
+        "cloud": "AWS",
+        "region": "us-west-2",
+        "image": "ubuntu-24.04",
+        "image_version": "20261111.127.1"
+      },
+      "job_total_seconds": 1509.0,
+      "raw_log_sha256": "6a60b858af1b1b81e27d77aed0cba05da80e574d4f3f60e297e6227337cd9288",
+      "selected_evidence": [
+        "2026-11-13T22:03:19.2745324Z 试跑：帧数 48007 应为 48007 声音 1600.232993 画面 1600.2333333333333",
+        "2026-11-13T22:19:46.9969308Z 停止：成品核查不通过，已删除成品",
+        "2026-11-13T22:19:47.0941231Z ##[error]Process completed with exit code 1."
+      ],
+      "fast_probe_finished_at": "2026-11-13T22:03:19.2745324Z",
+      "oom_text_observed": false,
+      "encoding_fps_or_memory_telemetry_available": false
+    }
+  ],
+  "minimal_recommendations": [
+    "按原代码和原质量关卡，只重试已证实关闭的失败年份，保留独立成功缓存；不改preset、源音、截图、门槛或主工作流。",
+    "独立retry工作流定期打印UTC、/proc/meminfo、进程comm/RSS/%CPU和MP4大小；如可读，可加cgroup memory.events/oom_kill。没有权限或未采样应写缺失，不能写成0。",
+    "新监测若再次被runner关闭，用最后已送出的资源记录定位；在取得实际内存/平台证据前，不通过提高超时或降低质量猜测修复。"
+  ],
+  "log_access": {
+    "method": "GitHub connector fetch_workflow_job_logs，解码真实job日志；公开job/check-run REST metadata与annotations。",
+    "cli_blob_requests": "直接gh logs暂时403，未影响connector取证。",
+    "raw_logs_workspace": "/workspace/tem8-runner-diagnosis",
+    "private_urls_or_credentials_recorded": false
+  }
+}
