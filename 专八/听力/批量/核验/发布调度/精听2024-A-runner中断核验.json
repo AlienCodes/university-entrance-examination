@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "status": "infra-runner-shutdown-not-content-error",
+  "run_id": "43528080039",
+  "production_commit": "f25216794e383505baa132ca581e1380e82192c8",
+  "unit": "2024-A",
+  "job_id": 132238965743,
+  "job_url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/43528080039/job/132238965743",
+  "connector": "github_fetch_workflow_job_logs",
+  "retrieved_at": "2026-11-14T01:21:18.117578+00:00",
+  "raw_log_file": "精听2024-A-run43528080039-job132238965743-connector.log",
+  "raw_log_sha256": "6443337168839eccfcdc08f783691f6ceea2639546d649853c16b5fa43860681",
+  "proven_passed": [
+    "source/input gate approved fp f3d2ea581e23cdf3b1cf79a2274fa0a56558f1a072103d36278d150185dfb125",
+    "native source 24000Hz stereo canonical6624d7334f190e6073e86b7424b4d25b0fbbc7729e94daaef2c09f4d2228a213",
+    "83张4K水墨截图、排版检查0处",
+    "complete PNG multiset gate approved"
+  ],
+  "interrupted_step": "核当前截图与真实审阅登记一致，再编码与独立核验",
+  "shutdown_signal_utc": "2026-11-14T01:19:28.8848837Z",
+  "exact_error": "The runner has received a shutdown signal. This can happen when the runner service is stopped, or a manually started runner is canceled.",
+  "followup_error": "The operation was canceled.",
+  "completion_not_claimed": [
+    "fastclock/full4K/成品verify是否已跑到哪一子阶段：日志无完成记录，不能声称通过",
+    "store被skipped，没有本次2024-A成品"
+  ],
+  "monitor_snapshot": {
+    "success": 38,
+    "failed": 1,
+    "running": 6
+  },
+  "automatic_assembly": "monitor stopped on first intensive failure; failure flag makes waiting scheduler reject; no full-control creation or push",
+  "action_taken": "read-only connector logs and evidence archival only; no source/core/registry mutation; no rerun"
+}
