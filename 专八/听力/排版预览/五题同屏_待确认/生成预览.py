@@ -35,7 +35,7 @@ body{font-family:Paper,"Times New Roman",serif;padding:25px 48px 23px;display:fl
 .heading{font-size:34px;font-weight:700;line-height:1.16;white-space:nowrap;padding-top:4px}
 .status{font-family:"Noto Serif CJK SC","Noto Serif SC",serif;font-size:25px;line-height:1.4;white-space:nowrap;padding-top:6px}
 .questions{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;--fs:42px}
-.question{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;padding:6px 0 7px;border-bottom:2px solid #707780;flex:none}
+.question{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;padding:6px 0 7px;border-bottom:2px solid #000000;flex:none}
 .question:last-child{border-bottom:0;padding-bottom:0}
 .number{font-size:var(--fs);font-weight:700;line-height:1.12}
 .options{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:36px;row-gap:4px;align-items:start}
@@ -74,7 +74,7 @@ body{font-family:Paper,"Times New Roman",serif;padding:25px 48px 23px;display:fl
         }''', expected)
         pg.screenshot(path=str(HERE/'五题同屏_整齐选项_预览.png'))
         br.close()
-    (HERE/'预览说明.json').write_text(json.dumps({'status':'USER_APPROVED_LAYOUT_WITH_REQUESTED_DARKER_SEPARATORS','scope':'用户认可五题同屏固定AB/CD排版；按本轮要求将题间线加深加粗。此目录仅为图片预览，不生成视频；2025保持原样。','separator':{'width_css_px':2,'color':'#707780'},'source_paper':PAPER.relative_to(ROOT).as_posix(),'source_sha256':hashlib.sha256(PAPER.read_bytes()).hexdigest(),'group':group,'pixels':[3840,2160],**result},ensure_ascii=False,indent=2)+'\n')
+    (HERE/'预览说明.json').write_text(json.dumps({'status':'USER_APPROVED_LAYOUT_WITH_REQUESTED_BLACK_SEPARATORS','scope':'用户认可五题同屏固定AB/CD排版；按本轮要求将题间线设为纯黑色（2px）。此目录仅为图片预览，不生成视频；2025保持原样。','separator':{'width_css_px':2,'color':'#000000'},'source_paper':PAPER.relative_to(ROOT).as_posix(),'source_sha256':hashlib.sha256(PAPER.read_bytes()).hexdigest(),'group':group,'pixels':[3840,2160],**result},ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(result,ensure_ascii=False))
 
 
