@@ -92,6 +92,10 @@ jobs:
       - name: review仅产完整截图；render须已审PNG才编码画面并复制原AAC
         run: |
           set -euo pipefail
+          # runner也预装更新版Chromium；适配器which('chromium')必须选固定153。
+          export PATH="/opt/pw-browsers:$PATH"
+          test "$(command -v chromium)" = /opt/pw-browsers/chromium
+          chromium --version | grep -qx 'Google Chrome for Testing 153\.0\.8010\.12 *'
           /opt/ttsenv/bin/python 专八/听力/批量/tools/五题同屏修复.py '${{ matrix.item.stage }}' '${{ matrix.item.year }}' --source source.mp4 --work work
       - uses: actions/upload-artifact@v4
         if: always()

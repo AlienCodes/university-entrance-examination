@@ -79,5 +79,30 @@
       "status": "PASS"
     }
   ],
-  "media_encoding_performed": false
+  "media_encoding_performed": false,
+  "workflow_sha256": "06e4fd29bd879b81f97d4c5a395c719169be6a03a93c3a0efd1da6f450f6d16f",
+  "adapter_sha256": "41949dfa3810d5de453fab50c922ce10b4317658cb60a0b16610078a075da416",
+  "workflow_recheck": {
+    "status": "PASS",
+    "bash_scripts": 6,
+    "embedded_python_blocks": 1,
+    "browser_selection_fixture_checks": [
+      {
+        "name": "固定153优先于runner浏览器",
+        "status": "PASS",
+        "actual_exit_code": 0
+      },
+      {
+        "name": "固定目录内157拒绝",
+        "status": "PASS",
+        "actual_exit_code": 1
+      },
+      {
+        "name": "153位于错误路径仍拒绝",
+        "status": "PASS",
+        "actual_exit_code": 1
+      }
+    ],
+    "scope": "仅静态语法和shell版本断言夹具；未运行截图/编码。"
+  }
 }
