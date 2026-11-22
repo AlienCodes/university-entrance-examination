@@ -200,7 +200,7 @@ def speech_tokens(text):
     from textnorm import ordinal
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
     # Match a printed ordinal to the same ordinal in the certified narration.
-    plain = re.sub(r'\b(\d+)(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)
+    plain = re.sub(r'\b(\d+)[ \t]*(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)
     return re.findall(r'[a-z0-9]+',plain)
 
 def reviewed_spelling(audio, timing, printed, recognised):

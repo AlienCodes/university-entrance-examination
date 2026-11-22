@@ -8,6 +8,7 @@ from lesson import PROJECT, ROOT, LESSON, PID, load, save
 sys.path.insert(0, str(ROOT / '六级/tools'))
 import make_audio as cet
 from gaokao_tts import certificate_problems
+from textnorm import ordinal
 import soundfile as sf
 import 去呼吸
 
@@ -17,6 +18,7 @@ class Reader(cet.G.Pronouncer):
         if PID != 'C20T1P1':
             # Asterisks refer to the printed footnotes and are silent in speech.
             text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
+            text = re.sub(r'\b(\d+)[ \t]+(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),text,flags=re.I)
             text = text.translate(str.maketrans({'[':'',']':'','&':' and ','ş':'sh'}))
             text = text.replace('10⁹','one billion').replace('3Q15','three Q fifteen').replace('ME2','Me Two').replace('1910s','nineteen tens')
             text = re.sub(r'(?<=\d)\s*m(?:3|³)\b',' cubic metres',text)
