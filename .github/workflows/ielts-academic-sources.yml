@@ -1,0 +1,39 @@
+name: IELTS Academic reading source extraction
+on:
+  push:
+    paths: ['雅思/学术阅读/academic-reading.csv', '.github/workflows/ielts-academic-sources.yml', '雅思/学术阅读/extract_sources.py']
+permissions:
+  contents: read
+jobs:
+  sources:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        book: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tesseract-ocr-eng tesseract-ocr
+          python -m pip install pymupdf==1.26.5
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download 雅思阅读 -p default.zip
+          echo '4fc16a9a1679f88bce64313c3aae622392ef729fd0a06f659dd7574e120dd45b  default.zip' | sha256sum --check
+      - env:
+          OMP_THREAD_LIMIT: '1'
+        run: python 雅思/学术阅读/extract_sources.py ${{ matrix.book }} default.zip 雅思/学术阅读/academic-reading.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: academic-source-review-book-${{ matrix.book }}
+          path: source-review/
+          if-no-files-found: error
