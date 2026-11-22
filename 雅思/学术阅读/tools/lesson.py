@@ -45,6 +45,9 @@ def load():
     book, test, part = (meta[key] for key in ('book','test','passage'))
     if PID != f'C{book}T{test}P{part}':
         raise ValueError('Lesson metadata points to another book or passage')
-    return dict(id=PID,paper=f'剑桥雅思 {book} · Test {test}',passage=f"Passage {part} · {meta['title']}",
-                fname=f'剑桥雅思{book} Test {test} Passage {part}',title=meta.get('title_zh','鸮鹦鹉'),genre=meta.get('genre','说明文 · 物种保护'),
+    source_path=PROJECT/'原稿'/(PID+'.json')
+    source=json.loads(source_path.read_text()) if source_path.is_file() else {}
+    printed_test=source.get('printed_test',test)
+    return dict(id=PID,paper=f'剑桥雅思 {book} · Test {printed_test}',passage=f"Passage {part} · {meta['title']}",
+                fname=f'剑桥雅思{book} Test {printed_test} Passage {part}',title=meta.get('title_zh','鸮鹦鹉'),genre=meta.get('genre','说明文 · 物种保护'),
                 words=sum(len(s['en'].split()) for pa in paragraphs for s in pa),paras=paragraphs)

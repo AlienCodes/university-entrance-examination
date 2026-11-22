@@ -80,7 +80,9 @@ def build_book(book,cache,out):
                         if writer is not None:writer.close()
                         path=out/f'Cambridge-IELTS-{book}-Academic-{len(packs)+1:02}.zip'
                         writer=zipfile.ZipFile(path,'w',compression=zipfile.ZIP_STORED,allowZip64=True);packs.append(path);current_size=0
-                    prefix=f'Test {test}/Passage {passage}/{pid}'
+                    source=read(PROJECT/'原稿'/(pid+'.json'))
+                    row['printed_test']=source.get('printed_test',test)
+                    prefix=f"Test {row['printed_test']}/Passage {passage}/{pid}"
                     writer.write(video,prefix+'.mp4');writer.write(pdf,prefix+'.pdf');current_size+=newsize
                     row=dict(row,archive=packs[-1].name,path=prefix,video_bytes=video.stat().st_size,pdf_bytes=pdf.stat().st_size)
                     rows.append(row);shutil.rmtree(folder)
@@ -113,8 +115,8 @@ def publish(part,tag,stage,out):
     (out/'manifest.json').write_text(json.dumps(dict(part=part,lessons=catalog,archives=assets),ensure_ascii=False,indent=1)+'\n')
     table=out/'contents.csv'
     with table.open('w',encoding='utf-8-sig',newline='') as f:
-        writer=csv.writer(f);writer.writerow(['篇目','英文标题','中文标题','秒','讲义页数','PDF字节','下载包','包内路径'])
-        for r in catalog:writer.writerow([r['lesson'],r['title'],r['title_zh'],r['video_seconds'],r['pages'],r['pdf_bytes'],r['archive'],r['path']])
+        writer=csv.writer(f);writer.writerow(['篇目','原书Test','英文标题','中文标题','秒','讲义页数','PDF字节','下载包','包内路径'])
+        for r in catalog:writer.writerow([r['lesson'],r['printed_test'],r['title'],r['title_zh'],r['video_seconds'],r['pages'],r['pdf_bytes'],r['archive'],r['path']])
     sums=out/'SHA256SUMS';sums.write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in assets)+''.join(f'{sha(f)}  {f.name}\n' for f in (table,out/'manifest.json')))
     subprocess.run(['gh','release','upload',tag,str(table),str(out/'manifest.json'),str(sums),'--clobber'],check=True)
     with tempfile.TemporaryDirectory(dir=out) as d:

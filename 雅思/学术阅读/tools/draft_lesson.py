@@ -11,11 +11,8 @@ import urllib.request
 
 from translation import translate_sentence
 
-SYSTEM = """你是面向中文考生的剑桥雅思学术阅读教材编辑。全文和前后文仅作语境，逐项编辑指定英文。
-1. 每句译成准确、自然的简体中文。先分析主干、施事、动作对象、修饰范围、指代、比较和时间。完整保留数量、否定、义务、推测强度与因果方向。原文没有的目的、情绪、结果或背景不能补进译句。保留英语学习者能一一对照的层次，同时避免翻译腔。不要机械逐词照搬语序。
-2. 标出值得雅思学生记忆的词、固定搭配和有意义的范围表达，注意上下文中的实际词性、义项和指代。例如 habitat to accommodate the expected increase 表示栖息地为预期增长留出空间，不是适应；a large population of males 表示雄鸟数量多，不能说它们聚在一起。下方译句和右栏可以用不同措辞，但必须是同一个语境义。右栏只给当句用得到的简洁释义，不罗列无关义项。短句如确实只有1、2个重点即可；普通句一般4至7个，重要词多时应选全。
-3. form 必须从输入这一句按原样连续摘录，包括连字符及词尾，head 是可供背诵的词典词形或固定短语，pos 是简短英文词性如 v.、n.、adj.、adv. 或 phr.。避免重叠选词、纯人名、冠词和无教学意义的凑数。一般不把句中整个意群当作单词。
-4. 只编辑「sentences」内的句子。每句包含独立翻译模型的译稿 translation、词典候选 candidates 和已核术语。保留正确的译文，纠正具体的漏译或错译。优先选全实际值得记忆的候选，词典列的多个义项只保留当句用到的。「context」仅供确定义项。按指定键 s1、s2 等输出译文和词条；必填字段 form 是英语原文词形，head 是英文原形，pos 是英语词性，meaning 是简体中文语境义。示例：“Populations are declining in this region.”可注 populations/population/n./种群、declining/decline/v./减少、region/region/n./地区。每个词条都须对读者有用。"""
+SYSTEM = """你是剑桥雅思学术阅读词汇编辑。每句 en 是试卷原文，translation 是英汉专用模型的独立初译，须据语法和上下文判断各词在这个句子里的意思。
+每个候选有编号、原文词形和词典提示。按原顺序给每一个编号填写简洁的简体中文语境义，通常2至8个汉字，不重复词性和英文。词典给多个义项时只选本句所用的意思，右栏跟整句可用不同措辞，语义必须一致。没有教学价值的简单词可用空字符串。重要的学术词、领域词、固定搭配、数量与范围表达应尽量保留。若有漏选的地道搭配或词，可写入 extras，包括精确连续英文原形、英文词头、词性和语境义。以原文为准。例如栖息地 accommodate 增长的种群表示为其留出空间；population 在生态学中是种群。只返回指定的 JSON 数据。"""
 AUDIT = """你是独立校对译文和双语词条的雅思教材编辑。逐个比较源句与稿件。检查遗漏/无端添加、范围或指代变化、数字、主从句、时态、可能性、否定、比较方向，以及每个词头及其语境义是否正确，右栏用词与整句译词可以不同。发现确切问题才改；不可为了文风任意改写。给出 JSON 对象 {"issues":[{"n":句号,"reason":"具体原词、错误与正确含义","zh":"整句修正，如无需则空字符串","v":[["只列需修正或新增的精确原形","词头","英语词性","当句释义"]]}]}。全组正确时给 {"issues":[]}。"""
 CUTS = """你为雅思学术阅读视频决定哪些长句确实需要分屏。每句优先保持完整。确需分开时只在语法和意义自然的分界处分为2屏，极长且含三个独立目标的可3屏。每屏中文恰好翻译该屏英文；保留否定、比较和插入语回指。原文和译文都不得改意。不要斩开固定搭配、专名、名词短语或比较两端。将已经审校的中文原样切开，只允许调整切口的标点，禁止改写句子。只报有合适分点的句子。JSON格式 {"a":[{"n":1,"at":["第二屏开头三至六个连续原词"],"zh":["第一屏译文，","第二屏译文。"]}]}，不需分则 {"a":[]}。"""
 NAMES = "从输入的中文教材译句和词条中，逐字摘录包含间隔号·的完整人名、作品或机构名。人名前的职业、国籍、在、说等不能算进人名，返回 JSON 对象 names，每项为一个原文中的完整名称；同一名字仅列一次。"
@@ -42,9 +39,8 @@ def reply_schema(instruction, data):
         vocab=record(form=TEXT,head=TEXT,pos={'type':'string','enum':sorted(POS)},meaning=TEXT)
         result={}
         for row in data['sentences']:
-            size=len(row['en'].split())
-            minimum=4 if size>=21 else 3 if size>=13 else 2 if size>=7 else 1
-            result['s'+str(row['n'])]=record(zh=TEXT,v={'type':'array','items':vocab,'minItems':minimum,'maxItems':max(minimum,min(12,size))})
+            keys={'w'+str(i):TEXT for i in range(1,len(row['candidates'])+1)}
+            result['s'+str(row['n'])]=record(terms=record(**keys),extras={'type':'array','items':vocab,'maxItems':5})
         return record(**result)
     if instruction in (AUDIT,CUTS):
         ids=[s['n'] for s in data['rows']]
@@ -112,16 +108,30 @@ def translate(rows,topic,context,grounding=None):
     good={}
     errors={}
     for attempt in range(3):
-        source=[dict(n=n,en=en,**grounding.get(n,{})) for n,en in remaining.items()]
+        source=[]
+        for n,en in remaining.items():
+            guide=grounding[n]
+            candidates={f'w{idx}':t for idx,t in enumerate(guide['candidates'],1)}
+            source.append(dict(n=n,en=en,translation=guide['translation'],candidates=candidates,term_hints=guide['term_hints']))
         out=ask(SYSTEM,{'title':topic,'surrounding_context':context,'sentences':source,'fix_if_repeated':errors},attempt)
         raw={n:out.get('s'+str(n),{}) for n in remaining}
         errors={}
         for n,en in list(remaining.items()):
             v=raw.get(n,{})
-            zh=v.get('zh','').strip()
-            terms=arranged(en,v.get('v',[]))
+            guide=grounding[n]
+            zh=guide['translation'].strip()
+            choices=v.get('terms',{})
+            values=[]
+            for idx,t in enumerate(guide['candidates'],1):
+                meaning=choices.get('w'+str(idx),'').strip()
+                if not meaning and t['form'] in guide['term_hints']:
+                    meaning=guide['term_hints'][t['form']]
+                if meaning:
+                    values.append([t['form'],t['head'],t['pos'],meaning])
+            values.extend(v.get('extras',[]))
+            terms=arranged(en,values)
             words=len(en.split())
-            minimum=3 if words>=15 else 2 if words>=7 else 1
+            minimum=min(7,max(1,(len(guide['candidates'])+1)//2),max(1,(words+2)//3))
             if not CJK.search(zh) or any(ch in zh for ch in '\t\n') or len(terms)<minimum:
                 errors[n]=f'请保留编号{n}，给完整中文并摘录至少{minimum}个本句中真实出现的不同词或搭配。已有{len(terms)}个可匹配。'
                 print('Review retry',n,'received',str(v)[:640],flush=True)
