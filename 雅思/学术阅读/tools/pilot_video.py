@@ -72,6 +72,19 @@ def select_lesson(name, look=True):
 engine.set_project = select_lesson
 engine.set_project(PROJECT_ID)
 
+_native_zh_html=engine.zh_html
+
+def ielts_zh_html(text,gloss=False,latin_words=False):
+    markup=_native_zh_html(text,gloss,latin_words)
+    if not gloss:
+        # Chromium 141 otherwise holds ‘大脑’ together with the following
+        # indivisible word and leaves room for the entire quotation unused.
+        markup=re.sub(r'’(?=(?:<nobr>)?[\u3400-\u9fff])','’<wbr>',markup)
+    return markup
+
+if PID!='C20T1P1':
+    engine.zh_html=ielts_zh_html
+
 def visible_words(sentence, lo, hi):
     words = []
     for word in sentence['w']:
@@ -156,7 +169,7 @@ def prepare():
         years={1:1996,2:2000,3:2002,4:2005,5:2006,6:2007,7:2009,8:2011,9:2013}
         p['year'] = int(meta.get('year',years.get(int(meta['book']),2005+int(meta['book']))))
         p['reading_header'] = meta.get('header',{})
-        display_code += inspect.getsource(batch_sentence_slide) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
+        display_code += inspect.getsource(batch_sentence_slide) + inspect.getsource(ielts_zh_html) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()
     save(PROJECT / 'data/vocab.json', {'passages':[p]})
     ann = PROJECT / 'ann' / (PID + '.txt')

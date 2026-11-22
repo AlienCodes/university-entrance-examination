@@ -8,7 +8,7 @@ import re
 import shutil
 import subprocess
 
-from material import current_key
+from material import current_key,verify_original
 from release_assets import inventory
 
 REPO = Path(__file__).resolve().parents[3]
@@ -53,6 +53,32 @@ def audio_for(folder,assets,readers):
     return None
 
 
+def update_book_index(book):
+    ids=[f'C{book}T{test}P{passage}' for test in range(1,5) for passage in range(1,4)]
+    if not all((PROJECT/'篇目'/pid/'content-review.json').is_file() for pid in ids):
+        return None
+    rows=[]
+    for pid in ids:
+        folder=PROJECT/'篇目'/pid
+        file=folder/'双语精读.tsv'
+        proof=read(folder/'content-review.json')
+        text_hash=hashlib.sha256(file.read_bytes()).hexdigest()
+        if text_hash!=proof['text_sha256']:
+            raise ValueError('Unsealed lesson in editorial index: '+pid)
+        lines=[line.split('\t') for line in file.read_text().splitlines() if line]
+        rows.append(dict(lesson=pid,title=read(folder/'篇目信息.json')['title'],
+                         material_sha256=current_key(PROJECT,pid),translation_sha256=text_hash,
+                         reading_units=len(lines),annotations=sum(len(line)-2 for line in lines),
+                         evidence=f'篇目/{pid}/content-review.json'))
+    index=PROJECT/'审校'/f'C{book}.json'
+    contents=json.dumps(dict(book=book,lessons=rows),ensure_ascii=False,indent=1)+'\n'
+    if index.is_file() and index.read_text()==contents:
+        return None
+    index.parent.mkdir(exist_ok=True)
+    index.write_text(contents)
+    return index
+
+
 def submit(approved_folder,ids,part):
     if len(ids)!=len(set(ids)):
         raise ValueError('A lesson was requested twice')
@@ -62,6 +88,7 @@ def submit(approved_folder,ids,part):
         if not valid or not last<=int(valid[1])<=first:
             raise ValueError(f'{pid} is outside the selected books')
         approved(approved_folder/pid)
+        verify_original(PROJECT,pid,approved_folder/pid/'双语精读.tsv')
 
     tag='ielts-academic-cache-'+part
     assets=set(inventory(tag))
@@ -94,6 +121,10 @@ def submit(approved_folder,ids,part):
         file.write_text(json.dumps(plan,ensure_ascii=False)+'\n')
         changed.append(file)
     if changed:
+        for book in sorted({int(pid[1:pid.index('T')]) for pid in ids}):
+            index=update_book_index(book)
+            if index is not None:
+                changed.append(index)
         files=[str(path.relative_to(REPO)) for path in changed]
         command('git','add','--',*files)
         command('git','commit','-qm','归档已核准的精读教材：'+', '.join(ids),'--',*files)

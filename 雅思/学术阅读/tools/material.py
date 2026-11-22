@@ -4,9 +4,9 @@ import json
 from pathlib import Path
 
 
-def verify_original(project,pid):
+def verify_original(project,pid,lesson_file=None):
     original=json.loads((project/'原稿'/(pid+'.json')).read_text())
-    text=(project/'篇目'/pid/'双语精读.tsv').read_text().strip()
+    text=(lesson_file or project/'篇目'/pid/'双语精读.tsv').read_text().strip()
     groups=[[line.split('\t',1)[0] for line in paragraph.splitlines()] for paragraph in text.split('\n\n')]
     if groups!=original['paragraphs']:
         raise ValueError(f'{pid}: English text or paragraph breaks differ from the verified academic paper')

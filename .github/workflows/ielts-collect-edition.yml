@@ -50,7 +50,7 @@ jobs:
           echo "part=$part" >> "$GITHUB_OUTPUT"
           echo "books=$books" >> "$GITHUB_OUTPUT"
           tag="ielts-academic-reading-$part"
-          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_REF_NAME" --draft --title "剑桥雅思学术阅读第 ${part/-/ 至 } 册 · 4K 精读视频与逐屏讲义" --notes '正在核验完整批次。'
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$revision" --draft --title "剑桥雅思学术阅读第 ${part/-/ 至 } 册 · 4K 精读视频与逐屏讲义" --notes '正在核验完整批次。'
   book:
     needs: select
     runs-on: ubuntu-24.04
