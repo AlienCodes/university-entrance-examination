@@ -163,7 +163,11 @@ def publish(part,tag,stage,out):
         if r['state']!='uploaded' or r['size']!=a['bytes'] or r['digest']!='sha256:'+a['sha256']:raise ValueError(a['name'])
     editable=book_sources(part,catalog,out)
     assets.append(dict(name=editable.name,sha256=sha(editable),bytes=editable.stat().st_size))
-    covers=[PROJECT/'封面'/f'Cambridge-IELTS-{part}-{ratio}.jpg' for ratio in ('16x9','4x3')]
+    covers = [
+        PROJECT / '封面' / f'Cambridge-IELTS-{part}-{ratio}{style}.jpg'
+        for ratio in ('16x9', '4x3')
+        for style in ('', '-Blue')
+    ]
     cover_index=[dict(name=f.name,sha256=sha(f),bytes=f.stat().st_size) for f in covers]
     (out/'manifest.json').write_text(json.dumps(dict(part=part,source_commit=os.environ.get('IELTS_SOURCE_REV',os.environ.get('GITHUB_SHA')),lessons=catalog,archives=assets,covers=cover_index),ensure_ascii=False,indent=1)+'\n')
     table=out/'contents.csv'
