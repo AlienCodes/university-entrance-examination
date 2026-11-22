@@ -204,6 +204,8 @@ def expected_screens(p):
                     raise ValueError(f'第 {number} 句：分屏切断词条 {word["h"]}')
         for lo, hi, zh, _ in parts:
             selected=visible_words(s,lo,hi)
+            if not selected:
+                raise ValueError(f'第 {number} 句的这一屏缺少对应的语境词条：{s["en"][lo:hi].strip()}')
             glosses=[w['m'] for w in selected]
             glosses=[engine.POS.match(t).group(2) if engine.POS.match(t) else t for t in glosses]
             numbers=[str(i) for i in range(1,len(selected)+1)]
