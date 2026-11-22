@@ -14,6 +14,21 @@ class Reader(cet.G.Pronouncer):
         if PID != 'C20T1P1':
             # Asterisks refer to the printed footnotes and are silent in speech.
             text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
+            text = text.translate(str.maketrans({'[':'',']':'','&':' and ','ş':'sh'}))
+            text = text.replace('ME2','Me Two').replace('1910s','nineteen tens')
+            text = re.sub(r'(?<=\d)\s*m(?:3|³)\b',' cubic metres',text)
+            text = re.sub(r'US\$(\d[\d,]*(?:\.\d+)?)',r'\1 U.S. dollars',text)
+            text = re.sub(r'€(\d[\d,]*(?:\.\d+)?)',r'\1 euros',text)
+            text = re.sub(r'£(\d+(?:\.\d+)?)m\b',r'\1 million pounds',text)
+            text = re.sub(r'°\s*C\b',' degrees Celsius',text).replace('°',' degrees')
+            text = text.replace('1/8','one eighth').replace('Nike+','Nike Plus')
+            text = text.replace('varieties/breeds','varieties or breeds').replace('(=ethical)','(meaning ethical)')
+            text = text.replace('World War II','World War Two')
+            for name,number in [('Charles II','Charles the Second'),('Henry VIII','Henry the Eighth'),('Amenhotep III','Amenhotep the Third'),('Napoleon III','Napoleon the Third')]:
+                text=text.replace(name,number)
+            text = re.sub(r'\bc\.?\s*(?=\d{3,4}\b)', 'circa ',text)
+            text = re.sub(r'(\d{4})[–-](\d{2})(?!\d)',lambda m: m[1]+' to '+m[1][:2]+m[2],text)
+            text = re.sub(r'(\d)\s*(BC|BCE|AD)\b',r'\1 \2',text)
             text = text.replace('CO2','carbon dioxide').replace('CO₂','carbon dioxide')
             for unit,spoken in [('cm','centimetres'),('mm','millimetres'),('km','kilometres'),('kg','kilograms')]:
                 text=re.sub(r'(\d)\s*'+unit+r'\b',r'\1 '+spoken,text)
