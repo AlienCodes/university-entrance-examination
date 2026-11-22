@@ -19,15 +19,17 @@ def save(path, obj):
 def load():
     meta = json.loads((LESSON / '篇目信息.json').read_text())
     paragraphs = []
+    sentence_number = 0
     for paragraph in TEXT.read_text().strip().split('\n\n'):
         rows = []
         for line in paragraph.splitlines():
+            sentence_number += 1
             en, zh, *glosses = line.split('\t')
             if not re.search(r'[一-龥]', zh) or not glosses:
                 raise ValueError(line)
             words = []
             occupied = set()
-            for entry in glosses:
+            for slot,entry in enumerate(glosses):
                 phrase, meaning = entry.split('|')
                 spans = list(re.finditer(r'(?<!\w)' + re.escape(phrase) + r'(?!\w)', en, re.I))
                 if not spans:
@@ -37,7 +39,7 @@ def load():
                 if occupied.intersection(char_range): raise ValueError(entry)
                 occupied.update(char_range)
                 words.append(dict(t='phr' if ' ' in phrase else 'core',
-                                  h=meta['lemmas'].get(phrase,phrase.lower()),m=meaning,sp=positions))
+                                  h=meta.get('row_lemmas',{}).get(f'{sentence_number}.{slot}',meta['lemmas'].get(phrase,phrase.lower())),m=meaning,sp=positions))
             rows.append(dict(en=en, zh=zh, w=words))
         paragraphs.append(rows)
     book, test, part = (meta[key] for key in ('book','test','passage'))

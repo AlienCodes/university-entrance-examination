@@ -109,7 +109,8 @@ def prepare():
     display_code = inspect.getsource(visible_words) + inspect.getsource(ielts_sentence_slide)
     if PID!='C20T1P1':
         meta = json.loads((LESSON/'篇目信息.json').read_text())
-        p['year'] = int(meta.get('year',2005+int(meta['book'])))
+        years={1:1996,2:2000,3:2002,4:2005,5:2006,6:2007,7:2009,8:2011,9:2013}
+        p['year'] = int(meta.get('year',years.get(int(meta['book']),2005+int(meta['book']))))
         p['reading_header'] = meta.get('header',{})
         display_code += inspect.getsource(batch_sentence_slide) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()

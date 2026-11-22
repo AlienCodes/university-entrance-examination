@@ -1,0 +1,73 @@
+name: 剑桥雅思学术阅读整批发布
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-release-plan.json']
+permissions:
+  contents: write
+env:
+  GH_TOKEN: ${{ github.token }}
+  GH_REPO: ${{ github.repository }}
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    outputs:
+      books: ${{ steps.plan.outputs.books }}
+      part: ${{ steps.plan.outputs.part }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: .github
+      - id: plan
+        run: |
+          set -euo pipefail
+          part=$(jq -r .part .github/ielts-release-plan.json)
+          case "$part" in
+            20-11) books='[20,19,18,17,16,15,14,13,12,11]';;
+            10-1) books='[10,9,8,7,6,5,4,3,2,1]';;
+            *) exit 1;;
+          esac
+          echo "part=$part" >> "$GITHUB_OUTPUT"
+          echo "books=$books" >> "$GITHUB_OUTPUT"
+          tag="ielts-academic-reading-$part"
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_REF_NAME" --draft --title "剑桥雅思学术阅读第 ${part/-/ 至 } 册 · 4K 精读视频与逐屏讲义" --notes '正在核验完整批次。'
+  book:
+    needs: select
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        n: ${{ fromJSON(needs.select.outputs.books) }}
+    env:
+      PART: ${{ needs.select.outputs.part }}
+      BOOK: ${{ matrix.n }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/book"
+          python '雅思/学术阅读/tools/collect_edition.py' book "$out" --part "$PART" --book "$BOOK"
+          gh release upload "ielts-academic-reading-$PART" "$out"/*.zip --clobber
+          gh release upload "ielts-academic-cache-$PART" "$out/book-$BOOK-index.json" --clobber
+          for f in "$out"/*.zip; do
+            gh release download "ielts-academic-reading-$PART" -p "$(basename "$f")" -D "$RUNNER_TEMP/back"
+            cmp "$f" "$RUNNER_TEMP/back/$(basename "$f")"
+            rm "$RUNNER_TEMP/back/$(basename "$f")"
+          done
+  publish:
+    needs: [select,book]
+    runs-on: ubuntu-24.04
+    env:
+      PART: ${{ needs.select.outputs.part }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - run: python '雅思/学术阅读/tools/collect_edition.py' publish "$RUNNER_TEMP/publish" --part "$PART"
