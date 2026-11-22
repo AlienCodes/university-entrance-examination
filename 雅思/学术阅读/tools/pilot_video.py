@@ -199,6 +199,7 @@ if PID.startswith('C21T'):
 def speech_tokens(text):
     from textnorm import ordinal
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
+    plain = re.sub(r'\bh\. (?=naledi\b)', 'homo ',plain)
     # Match a printed ordinal to the same ordinal in the certified narration.
     plain = re.sub(r'\b(\d+)[ \t]*(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)
     return re.findall(r'[a-z0-9]+',plain)

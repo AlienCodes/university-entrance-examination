@@ -30,6 +30,7 @@ class Reader(cet.G.Pronouncer):
             text = text.replace('1/8','one eighth').replace('Nike+','Nike Plus')
             text = text.replace('varieties/breeds','varieties or breeds').replace('(=ethical)','(meaning ethical)')
             text = text.replace('World War II','World War Two')
+            text = re.sub(r'\bH\. (?=naledi\b)', 'Homo ',text)
             for name,number in [('Charles II','Charles the Second'),('Henry VIII','Henry the Eighth'),('Amenhotep III','Amenhotep the Third'),('Napoleon III','Napoleon the Third')]:
                 text=text.replace(name,number)
             text = re.sub(r'\bc\.?\s*(?=\d{3,4}\b)', 'circa ',text)
