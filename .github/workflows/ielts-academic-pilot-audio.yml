@@ -34,15 +34,16 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq espeak-ng ffmpeg
           python -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
-          python -m pip install -q 'numpy<2.3' 'spacy==3.8.7' 'thinc==8.3.6' 'preshed==3.0.9' 'cymem==2.0.11' 'murmurhash==1.0.12' 'kokoro-onnx==0.6.1' 'misaki[en]==0.9.4' num2words soxr pyloudnorm soundfile lameenc scipy
+          python -m pip install -q 'click==8.1.8' 'typer==0.16.0' 'numpy<2.3' 'spacy==3.8.7' 'thinc==8.3.6' 'preshed==3.0.9' 'cymem==2.0.11' 'murmurhash==1.0.12' 'kokoro-onnx==0.6.1' 'misaki[en]==0.9.4' num2words soxr pyloudnorm soundfile lameenc scipy
           python -m pip install -q --no-deps https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+          python -c "import spacy; import misaki.en; spacy.load('en_core_web_sm')('A bird is foraging.')"
           python tools/tts/download_models.py
       - name: 合成与音频核验
         run: python -u 雅思/学术阅读/tools/audio_lesson.py
       - name: 存档完整音轨、逐句时刻与合格证
         run: |
           cd 雅思/学术阅读
-          zip -qr "$RUNNER_TEMP/audio-$GITHUB_RUN_ID.zip" audio
+          python -m zipfile -c "$RUNNER_TEMP/audio-$GITHUB_RUN_ID.zip" audio
           tag=ielts-academic-pilot-production
           gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_REF_NAME" --title '雅思阅读样片制作素材' --notes '剑桥雅思20 Test 1 Passage 1 的经核验制作素材。' --prerelease
           gh release upload "$tag" "$RUNNER_TEMP/audio-$GITHUB_RUN_ID.zip"
