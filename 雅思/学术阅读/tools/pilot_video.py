@@ -15,6 +15,7 @@ from pathlib import Path
 
 from lesson import LESSON, PID, PROJECT, ROOT, TEXT, load, save
 sys.path.insert(0, str(ROOT / '六级/tools'))
+sys.path.append(str(ROOT / 'tools/tts'))
 import make_video as engine
 
 PROJECT_ID = '雅思学术阅读'
@@ -180,7 +181,10 @@ def batch_sentence_slide(p,sentence,k,n,part=None):
 engine.sentence_slide = ielts_sentence_slide if PID=='C20T1P1' else batch_sentence_slide
 
 def speech_tokens(text):
+    from textnorm import ordinal
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
+    # Match a printed ordinal to the same ordinal in the certified narration.
+    plain = re.sub(r'\b(\d+)(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)
     return re.findall(r'[a-z0-9]+',plain)
 
 def reviewed_spelling(audio, timing, printed, recognised):
