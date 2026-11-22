@@ -1,5 +1,4 @@
 """Load an edited IELTS lesson. Each gloss is tied to a unique source span."""
-import hashlib
 import json
 import re
 from pathlib import Path
@@ -28,9 +27,9 @@ def load():
             for entry in glosses:
                 phrase, meaning = entry.split('|')
                 spans = list(re.finditer(r'(?<!\w)' + re.escape(phrase) + r'(?!\w)', en, re.I))
-                if len(spans) != 1:
+                if not spans:
                     raise ValueError(f'{phrase}: {en}')
-                begin, end = spans[0].span()
+                begin, end = spans[0].span()  # Introduce a repeated word at its first occurrence.
                 char_range = set(range(begin, end))
                 if occupied.intersection(char_range): raise ValueError(entry)
                 occupied.update(char_range)
