@@ -46,7 +46,8 @@ def validate_pages(path):
 
 
 def inspect_guides(folder, lesson, notes):
-    reading = ''.join(validate_pages(folder / READING))
+    reading_spreads = validate_pages(folder / READING)
+    reading = ''.join(reading_spreads)
     for q in lesson['questions']:
         no = q['numbers'][0]
         if normalized('第' + rng(q) + '题') not in reading or normalized('答案' + q['answer']) not in reading:
@@ -60,7 +61,7 @@ def inspect_guides(folder, lesson, notes):
         for field in ('heading', 'analysis', 'task', 'example', 'example_zh', 'usage'):
             if normalized(content[field]) not in page:
                 raise ValueError(f"{lesson['lesson']} sentence {content['sentence']}: printed {field} incomplete")
-    return len(validate_pages(folder / READING)), len(writing)
+    return len(reading_spreads), len(writing)
 
 
 def build(notes_dir, slides_dir, zip_path, receipt_path):
