@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import zipfile
 
+from material import current_key
 from lesson import LESSON, PID, PROJECT, TEXT, load, save
 from pilot_video import REVIEW, SHOTS, engine, expected_screens, prepare
 
@@ -63,7 +64,7 @@ def package(dest):
     presentation=json.loads(REVIEW.read_text())['screens']
     if len(presentation)!=pdf['pages'] or pdf['bytes']>20_000_000:
         raise ValueError('PDF does not cover all screens within its size limit')
-    receipt=dict(lesson=PID,book=int(PID[1:PID.index('T')]),run=os.environ.get('GITHUB_RUN_ID'),video_sha256=digest(original),
+    receipt=dict(lesson=PID,material_sha256=current_key(PROJECT,PID),book=int(PID[1:PID.index('T')]),run=os.environ.get('GITHUB_RUN_ID'),video_sha256=digest(original),
                  pdf_sha256=digest(dest/'Reading-notes.pdf'),pdf_bytes=pdf['bytes'],pages=pdf['pages'],
                  video_seconds=checks['duration'],video_bytes=original.stat().st_size,content_sha256=digest(TEXT))
     meta=json.loads((LESSON/'篇目信息.json').read_text())
@@ -73,7 +74,7 @@ def package(dest):
     package=dest/f'{PID}.zip'
     with zipfile.ZipFile(package,'w',compression=zipfile.ZIP_STORED,allowZip64=True) as z:
         z.write(original,PID+'.mp4');z.write(dest/'Reading-notes.pdf',PID+'.pdf');z.write(dest/'verification.json','verification.json')
-        for name in ('双语精读.tsv','篇目信息.json','content-review.json','分屏核对.json','visual-review.json'):
+        for name in ('双语精读.tsv','篇目信息.json','content-review.json','分屏.json','分屏核对.json','visual-review.json'):
             file=LESSON/name
             if file.is_file():z.write(file,'source/'+name)
     with zipfile.ZipFile(package) as z:

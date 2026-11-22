@@ -32,7 +32,9 @@ jobs:
               m=re.fullmatch(r'C(\d+)T[1-4]P[1-3]',pid)
               assert m and (11<=int(m[1])<=20 if q['part']=='20-11' else 1<=int(m[1])<=10)
               lesson=Path('雅思/学术阅读/篇目')/pid
-              assert json.loads((lesson/'content-review.json').read_text())['text_sha256']==hashlib.sha256((lesson/'双语精读.tsv').read_bytes()).hexdigest()
+              verified=json.loads((lesson/'content-review.json').read_text())
+              for key,name in [('text_sha256','双语精读.tsv'),('metadata_sha256','篇目信息.json'),('split_sha256','分屏.json')]:
+                  if key in verified:assert verified[key]==hashlib.sha256((lesson/name).read_bytes()).hexdigest()
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               print('lessons='+json.dumps(q['lessons']),file=f)
               print('stage=ielts-academic-cache-'+q['part'],file=f)
@@ -84,9 +86,15 @@ jobs:
           set -euo pipefail
           audioid=$(python -c 'import json,hashlib,os,pathlib;p=pathlib.Path(os.environ["TARGET"]+"/篇目")/os.environ["IELTS_LESSON"]; m=json.loads((p/"篇目信息.json").read_text()); text=[x.split("\t")[0] for x in (p/"双语精读.tsv").read_text().splitlines() if x]; print(hashlib.sha256(json.dumps([text,m.get("pronunciation",{}),pathlib.Path(os.environ["TARGET"]+"/tools/audio_lesson.py").read_text()],ensure_ascii=False).encode()).hexdigest()[:16])')
           asset="$IELTS_LESSON-audio-$audioid.zip"
+          accepted=$(jq -r --arg pid "$IELTS_LESSON" '.audio_assets[$pid] // empty' .github/ielts-series-render.json)
+          if [[ -n "$accepted" ]]; then
+            [[ "$accepted" =~ ^${IELTS_LESSON}-audio-[0-9a-f]{16}\.zip$ ]]
+            asset="$accepted"
+          fi
           if gh release download "$STAGING" -p "$asset" -D "$RUNNER_TEMP" 2>/dev/null; then
             python -m zipfile -e "$RUNNER_TEMP/$asset" "$TARGET"
           else
+            if [[ -n "$accepted" ]]; then echo "Cannot restore the selected certified audio $accepted"; exit 1; fi
             sudo apt-get install -y -qq espeak-ng
             python -m venv "$RUNNER_TEMP/speech"
             sp="$RUNNER_TEMP/speech/bin/python"
@@ -121,9 +129,12 @@ jobs:
           files=("$TARGET"/最终视频/*.mp4)
           /opt/ttsenv/bin/python "$TARGET/tools/reading_notes.py" "${files[0]}" "$out/Reading-notes.pdf" "$out/pdf-proof.json"
           /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" package --out "$out"
-          gh release upload "$STAGING" "$out/$IELTS_LESSON.zip" "$out/$IELTS_LESSON-receipt.json" --clobber
-          gh release download "$STAGING" -p "$IELTS_LESSON.zip" -D "$RUNNER_TEMP/check"
-          cmp "$out/$IELTS_LESSON.zip" "$RUNNER_TEMP/check/$IELTS_LESSON.zip"
+          key=$(jq -r .material_sha256 "$out/$IELTS_LESSON-receipt.json")
+          version="$IELTS_LESSON-${key:0:16}.zip"
+          mv "$out/$IELTS_LESSON.zip" "$out/$version"
+          gh release upload "$STAGING" "$out/$version" "$out/$IELTS_LESSON-receipt.json" --clobber
+          gh release download "$STAGING" -p "$version" -D "$RUNNER_TEMP/check"
+          cmp "$out/$version" "$RUNNER_TEMP/check/$version"
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

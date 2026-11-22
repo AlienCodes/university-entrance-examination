@@ -12,6 +12,7 @@ import tempfile
 import zipfile
 
 from lesson import PROJECT
+from material import current_key,legacy_inputs_match
 
 LIMIT = 1_850_000_000
 PILOT_TAG = 'ielts-academic-20-test-1-passage-1-pilot'
@@ -50,9 +51,22 @@ def unpack_lesson(pid,cache,folder):
         row=dict(lesson=pid,title='The kākāpō',title_zh='鸮鹦鹉',content_sha256=content['text_sha256'],
                  video_sha256=sha(video),pdf_sha256=sha(pdf),pages=rep['pdf']['pages'],video_seconds=rep['duration'])
     else:
-        get(cache,pid+'.zip',folder)
-        archive=folder/(pid+'.zip')
+        key=current_key(PROJECT,pid)
+        versioned=f'{pid}-{key[:16]}.zip'
+        status=subprocess.run(['gh','release','download',cache,'-p',versioned,'-D',str(folder)],stderr=subprocess.PIPE,text=True)
+        if status.returncode:
+            if 'no assets match' not in status.stderr.lower():
+                raise RuntimeError(status.stderr)
+            get(cache,pid+'.zip',folder)
+            archive=folder/(pid+'.zip')
+        else:
+            archive=folder/versioned
         with zipfile.ZipFile(archive) as media:
+            embedded=json.loads(media.read('verification.json'))['receipt']
+            if 'material_sha256' in embedded:
+                if embedded['material_sha256']!=key:raise ValueError(f'{pid}: incorrect content version')
+            elif not legacy_inputs_match(media,PROJECT,pid):
+                raise ValueError(f'{pid}: an earlier glossary or split in release archive')
             for name in (pid+'.mp4',pid+'.pdf','verification.json'):
                 with media.open(name) as f,(folder/name).open('wb') as dest:shutil.copyfileobj(f,dest,1<<20)
         archive.unlink();video=folder/(pid+'.mp4');pdf=folder/(pid+'.pdf');rep=read(folder/'verification.json');row=rep['receipt']
