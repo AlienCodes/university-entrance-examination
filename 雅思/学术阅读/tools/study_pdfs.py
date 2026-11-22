@@ -33,6 +33,9 @@ h1 { font-weight:750; font-size:24pt; line-height:1.28; margin:5px 0 7px; }
 .kind { font-size:9.8pt; color:#475b60; }
 .answer { margin-left:auto; color:#075d59; font-weight:730; font-size:12pt; }
 .prompt { margin:5px 0 4px; color:#20353d; font: 11.3pt/1.38 'Liberation Serif','Noto Serif',serif; }
+.options { margin:4px 0 7px; padding:0; list-style:none; font:10.4pt/1.38 'Liberation Serif',serif; }
+.options li { padding-left:22px; position:relative; }
+.options b { position:absolute; left:0; color:#31555c; }
 .evidence { margin:7px 0; padding:6px 10px; border-left:2.2px solid #568781; background:#f1f6f5; }
 .place { font-size:9pt; font-weight:660; color:#225751; }
 .en { font:11.4pt/1.40 'Liberation Serif','Noto Serif',serif; color:#182c34; }
@@ -80,6 +83,7 @@ def reading_doc(d,y):
             refs.append(f'<div class="place">{e(source_ref(s,i))}</div><p class="en">{e(s["en"])}</p><p class="zh">{e(s["zh"])}</p>')
         meta=[]
         if q.get('word_limit'):meta.append(e(q['word_limit']))
+        if q.get('marking'):meta.append(e(q['marking']))
         if q.get('accepted_variants'):meta.append('另可写 '+e(q['accepted_variants']))
         if len(q['numbers'])==2:meta.append('两个答案顺序不限，每个答案占一格')
         target=q.get('chosen_text','')
@@ -87,6 +91,9 @@ def reading_doc(d,y):
             meta.append('对应选项　'+e(target))
         parts=[f'<section class="card{" first" if idx==0 else ""}"><div class="qh"><span class="num">第 {rng(q)} 题</span><span class="kind">{e(KINDS[q["kind"]])}</span><span class="answer">答案　{e(q["answer"])}</span></div>',
                f'<p class="prompt" lang="en">{e(q["question"])}</p>']
+        if q.get('options'):
+            choices=''.join(f'<li><b>{e(k)}.</b>{e(v)}</li>' for k,v in q['options'].items())
+            parts.append(f'<ul class="options" lang="en">{choices}</ul>')
         if meta:parts.append('<p class="meta">'+'　·　'.join(meta)+'</p>')
         parts.extend(['<div class="evidence">',''.join(refs),'</div>',f'<p class="logic"><span class="label">推理　</span>{e(detail["logic"])}</p></section>'])
         blocks.extend(parts)
@@ -99,6 +106,8 @@ def grammar_doc(d,y):
         if idx==0:blocks.append(heading(d,'长难句与写作句式','先从原句里找主干，再读修饰成分。写作示例使用同类结构，给出了具体题目场景。'))
         else:blocks.append(f'<p class="scope">{e(d["display_title"])}　·　长难句与写作句式</p>')
         blocks.append(f'<h2>{e(r["heading"])}</h2><p class="place">{e(source_ref(s,no))}</p><div class="reading"><p class="en">{e(s["en"])}</p><p class="zh">{e(s["zh"])}</p></div>')
+        if r.get('subject') and r.get('verb'):
+            blocks.append(f'<p class="meta">主语核心　{e(r["subject"])}　　 谓语核心　{e(r["verb"])}</p>')
         for name,k in [('句子怎样读','analysis'),('可复用的结构','pattern'),('写作场景','task')]:
             blocks.append(f'<h3>{name}</h3><p class="{"pattern" if k=="pattern" else "logic"}">{e(r[k])}</p>')
         blocks.append(f'<div class="reading"><p class="en">{e(r["example"])}</p><p class="zh">{e(r["example_zh"])}</p></div><h3>运用提示</h3><p>{e(r["usage"])}</p></section>')

@@ -66,7 +66,13 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8176/health > /dev/null
           read -r -a lessons <<< "$LESSONS"
-          python -u '雅思/学术阅读/tools/study_editor.py' "$RUNNER_TEMP/study" "${lessons[@]}"
+          failed=0
+          for lesson in "${lessons[@]}"; do
+            if ! python -u '雅思/学术阅读/tools/study_editor.py' "$RUNNER_TEMP/study" "$lesson"; then
+              failed=1
+            fi
+          done
+          exit "$failed"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
