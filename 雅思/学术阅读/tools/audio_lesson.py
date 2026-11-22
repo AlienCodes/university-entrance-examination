@@ -77,6 +77,7 @@ def certified_audio(passage,config,engine,reader,dest):
     rates={}
     cleaned=set()
     flagged=set()
+    breaths=set()
 
     def synth(read,key,engine,pron,style,speed,settings):
         adjusted=speed*rates.get(key,1.0)
@@ -90,8 +91,10 @@ def certified_audio(passage,config,engine,reader,dest):
         return cet.G.render_passage(passage,cet.VOICE,config,engine,reader,dest,sentence_synth=synth)
 
     for factor in (1.00,1.00,1.015,.98,1.035,.96):
+        if flagged and not breaths and factor==1.00:
+            continue
+        cleaned.update(breaths)
         for key in flagged:
-            cleaned.add(key)
             rates[key]=factor
         try:
             result=cet.with_level_fallback(PID,render)
@@ -99,12 +102,15 @@ def certified_audio(passage,config,engine,reader,dest):
             result['pre_level_debreath']=sorted(cleaned)
             return result
         except cet.G.AudioVerificationError as failure:
-            if not failure.report.get('breath_count'):
-                raise
-            flagged=affected_sentences(failure)
+            breaths=affected_sentences(failure) if failure.report.get('breath_count') else set()
+            # The native final check identifies the exact sentence whose
+            # last vowel fades too far. Give that sentence another natural
+            # take and subject the encoded passage to the same checks.
+            soft_tails={f'{PID}:{k}' for k in re.findall(r'第(\d+)句第\d+段末尾（',str(failure))}
+            flagged=breaths|soft_tails
             if not flagged or factor==.96:
                 raise
-            print('按原音色重读检测到换气的句子：',sorted(flagged),flush=True)
+            print('按原音色重读未通过换气或段尾响度检查的句子：',sorted(flagged),flush=True)
 
 
 def main():
