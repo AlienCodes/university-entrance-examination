@@ -4,6 +4,8 @@ import difflib
 import hashlib
 import inspect
 import json
+import math
+import os
 import sys
 import tempfile
 import re
@@ -213,7 +215,10 @@ def encode():
     if reviewed:
         raise ValueError('成片漏掉了已审校的分屏')
     save(engine.SAMPLE_REG,{PID+'@3':{'指纹':review_data['fingerprint'],'截图':{s['file']:s['sha256'][:16] for s in review_data['screens']}}})
-    sys.argv=['make_video.py',PID,'--project',PROJECT_ID,'--out',str(PROJECT/'最终视频')]
+    # The certified MP3 retains its own duration. Give the renderer a separate
+    # presentation timeline with a whole-second endpoint and a four-second hold.
+    total = math.ceil(timings['sentences'][-1]['end'] + 4)
+    presentation = {**timings,'source_duration':timings['duration'],'duration':total}
     # The two native timing checks request many of the same frames. Both inspect the
     # same immutable MP4. Decode each distinct millisecond once, using the CET reader.
     sys.path.insert(0, str(ROOT / 'tools' / 'video'))
@@ -227,11 +232,22 @@ def encode():
             frames[key] = read_frame(mp4, seconds, temp_dir)
         return frames[key]
 
-    verify_videos.frame = frame_for_checks
-    try:
-        engine.main()
-    finally:
-        verify_videos.frame = read_frame
+    with tempfile.TemporaryDirectory() as temp:
+        timeline = Path(temp)
+        (timeline/engine.VOICE).symlink_to(audio_dir/engine.VOICE,target_is_directory=True)
+        save(timeline/'timings.json',{engine.VOICE:{PID:presentation}})
+        sys.argv=['make_video.py',PID,'--project',PROJECT_ID,'--out',str(PROJECT/'最终视频'),'--audio-root',str(timeline)]
+        previous = os.environ.get('IELTS_END_KEYFRAMES')
+        os.environ['IELTS_END_KEYFRAMES'] = f'{total-4},{total-2}'
+        verify_videos.frame = frame_for_checks
+        try:
+            engine.main()
+        finally:
+            verify_videos.frame = read_frame
+            if previous is None:
+                os.environ.pop('IELTS_END_KEYFRAMES',None)
+            else:
+                os.environ['IELTS_END_KEYFRAMES'] = previous
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()

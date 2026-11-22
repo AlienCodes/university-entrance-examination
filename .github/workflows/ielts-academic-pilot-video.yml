@@ -84,6 +84,13 @@ jobs:
       - name: 独立核对配音合格证，保存已经核验的成片
         if: steps.cfg.outputs.stage == 'video'
         run: python .github/check-audio-cert.py "$TARGET/audio"
+      - name: 核验音视频片尾、逐帧解码与浏览器自然播放结束
+        if: steps.cfg.outputs.stage == 'video'
+        run: |
+          shopt -s nullglob
+          files=("$TARGET"/最终视频/*.mp4)
+          test "${#files[@]}" -eq 1
+          /opt/ttsenv/bin/python "$TARGET/tools/check_ending.py" "${files[0]}" "$TARGET/样片/成品核查/ending.json"
       - uses: actions/upload-artifact@v4
         if: "!cancelled() && steps.cfg.outputs.stage == 'video'"
         with:
@@ -93,7 +100,7 @@ jobs:
             雅思/学术阅读/样片/成品核查/*.json
           compression-level: 0
           if-no-files-found: error
-      - name: 发布单篇样片并回下载核对
+      - name: 优先发布经过片尾核验的 MP4
         if: steps.cfg.outputs.stage == 'video'
         run: |
           set -euo pipefail
@@ -103,13 +110,26 @@ jobs:
           test "${#files[@]}" -eq 1 && test "${#reports[@]}" -eq 1
           jq -e '.ok == true and all(.checks[]; .ok == true)' "${reports[0]}"
           cp "${files[0]}" "$RUNNER_TEMP/$MEDIA"
-          cp "${reports[0]}" "$RUNNER_TEMP/verification.json"
-          /opt/ttsenv/bin/python "$TARGET/tools/reading_notes.py" "$RUNNER_TEMP/Reading-notes.pdf"
+          jq -s '.[0] + {ending: .[1]}' "${reports[0]}" "$TARGET/样片/成品核查/ending.json" > "$RUNNER_TEMP/verification.json"
           cd "$RUNNER_TEMP"
-          sha256sum "$MEDIA" verification.json Reading-notes.pdf > SHA256SUMS
-          gh release view "$FINAL" >/dev/null 2>&1 || gh release create "$FINAL" --target "$GITHUB_REF_NAME" --draft --title '剑桥雅思20 · Test 1 Passage 1《鸮鹦鹉》完整精读样片' --notes '学术类阅读。六级教室黑板版与四六级正式男声。MP4 为完整样片，PDF 含逐句原文、译文和本句词汇。'
-          gh release upload "$FINAL" "$MEDIA" verification.json Reading-notes.pdf SHA256SUMS
-          mkdir verify
-          gh release download "$FINAL" --dir verify --pattern "$MEDIA" --pattern verification.json --pattern Reading-notes.pdf --pattern SHA256SUMS
-          (cd verify && sha256sum -c SHA256SUMS)
+          gh release view "$FINAL" >/dev/null 2>&1 || gh release create "$FINAL" --target "$GITHUB_SHA" --draft --title '剑桥雅思20 · Test 1 Passage 1《鸮鹦鹉》完整精读样片' --notes '学术类阅读。视频采用六级教室黑板主题与四六级男声。逐屏截图讲义制作完成后将附在同一发布页。'
+          gh release upload "$FINAL" "$MEDIA" verification.json --clobber
+          mkdir -p mp4-verify
+          gh release download "$FINAL" --dir mp4-verify --pattern "$MEDIA" --pattern verification.json --clobber
+          cmp "$MEDIA" "mp4-verify/$MEDIA"
+          cmp verification.json mp4-verify/verification.json
           gh release edit "$FINAL" --draft=false --latest=false
+      - name: 从已发布的 4K 成片逐屏截帧，逐页核对像素并附上讲义
+        if: steps.cfg.outputs.stage == 'video'
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python -m pip -q install img2pdf==0.6.3 PyMuPDF==1.26.6
+          /opt/ttsenv/bin/python "$TARGET/tools/reading_notes.py" "$RUNNER_TEMP/$MEDIA" "$RUNNER_TEMP/Reading-notes.pdf" "$RUNNER_TEMP/pdf-proof.json"
+          cd "$RUNNER_TEMP"
+          jq -s '.[0] + {pdf: .[1]}' verification.json pdf-proof.json > media-and-pdf.json
+          mv media-and-pdf.json verification.json
+          sha256sum "$MEDIA" verification.json Reading-notes.pdf > SHA256SUMS
+          gh release upload "$FINAL" Reading-notes.pdf verification.json SHA256SUMS --clobber
+          gh release download "$FINAL" --dir mp4-verify --pattern Reading-notes.pdf --pattern verification.json --pattern SHA256SUMS --clobber
+          (cd mp4-verify && sha256sum -c SHA256SUMS)
+          gh release edit "$FINAL" --latest=false --notes '剑桥雅思 20 学术类 · Test 1 Passage 1《The kākāpō 鸮鹦鹉》。完整 4K 精读视频，时长 6 分 21 秒。全篇 51 句，47 句一屏读完，4 句按意群分屏，共收录 215 个不同的词与搭配。Reading-notes.pdf 含 57 页，每页直接从同一 MP4 截帧，已逐页核对全部像素。'

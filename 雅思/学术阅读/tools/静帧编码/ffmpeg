@@ -16,5 +16,9 @@ if '-loop' in args and '-frames:v' in args and '-vf' in args and '-i' in args:
         args[vf] += f',tpad=stop_mode=clone:stop={int(count)-1}'
         del args[loop:loop+2]
 
+# Give mobile players independent access points inside the closing hold.
+if 'concat' in args and 'libx264' in args and 'stillimage' in args and os.environ.get('IELTS_END_KEYFRAMES'):
+    args[-1:-1] = ['-force_key_frames', os.environ['IELTS_END_KEYFRAMES'], '-forced-idr', '1']
+
 binary = os.environ['IELTS_SYSTEM_FFMPEG']
 os.execv(binary, [binary, *args])
