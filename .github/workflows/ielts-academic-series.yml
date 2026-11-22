@@ -38,7 +38,7 @@ jobs:
               print('stage=ielts-academic-cache-'+q['part'],file=f)
           PY
           tag="ielts-academic-cache-$(jq -r .part .github/ielts-series-render.json)"
-          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_SHA" --prerelease --title "剑桥雅思学术阅读 · 逐篇核验存档" --notes '批次的可恢复制作素材和逐篇成品。'
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_REF_NAME" --prerelease --title "剑桥雅思学术阅读 · 逐篇核验存档" --notes '批次的可恢复制作素材和逐篇成品。'
   render:
     needs: plan
     runs-on: ubuntu-24.04

@@ -36,7 +36,7 @@ jobs:
               print('tag=ielts-academic-editorial-'+q['part'],file=f)
           PY
           tag="ielts-academic-editorial-$(jq -r .part .github/ielts-series-text.json)"
-          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_SHA" --prerelease --title "剑桥雅思学术阅读 · 教辅初校存档" --notes '初稿与检查结果，复核后进入视频制作。'
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_REF_NAME" --prerelease --title "剑桥雅思学术阅读 · 教辅初校存档" --notes '初稿与检查结果，复核后进入视频制作。'
       - uses: ./.github/actions/ielts-local-editor
   draft:
     needs: plan

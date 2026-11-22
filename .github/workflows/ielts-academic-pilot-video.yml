@@ -112,7 +112,7 @@ jobs:
           cp "${files[0]}" "$RUNNER_TEMP/$MEDIA"
           jq -s '.[0] + {ending: .[1]}' "${reports[0]}" "$TARGET/样片/成品核查/ending.json" > "$RUNNER_TEMP/verification.json"
           cd "$RUNNER_TEMP"
-          gh release view "$FINAL" >/dev/null 2>&1 || gh release create "$FINAL" --target "$GITHUB_SHA" --draft --title '剑桥雅思20 · Test 1 Passage 1《鸮鹦鹉》完整精读样片' --notes '学术类阅读。视频采用六级教室黑板主题与四六级男声。逐屏截图讲义制作完成后将附在同一发布页。'
+          gh release view "$FINAL" >/dev/null 2>&1 || gh release create "$FINAL" --target "$GITHUB_REF_NAME" --draft --title '剑桥雅思20 · Test 1 Passage 1《鸮鹦鹉》完整精读样片' --notes '学术类阅读。视频采用六级教室黑板主题与四六级男声。逐屏截图讲义制作完成后将附在同一发布页。'
           gh release upload "$FINAL" "$MEDIA" verification.json --clobber
           mkdir -p mp4-verify
           gh release download "$FINAL" --dir mp4-verify --pattern "$MEDIA" --pattern verification.json --clobber
