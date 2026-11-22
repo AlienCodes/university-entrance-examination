@@ -33,18 +33,20 @@ def fit_long_headwords(js):
     # A multi-word expression still wraps normally. Only its own label scales.
     anchor='const wide = () => {'
     adjustment=r"""
-      if (/[A-Za-z]{13}/.test(b.textContent)) {
+      if (/[\p{Script=Latin}\p{M}]{13}/u.test(b.textContent)) {
         b.style.fontSize = '';
         const cs = getComputedStyle(side), bounds = side.getBoundingClientRect();
         const right = bounds.left + side.clientLeft + side.clientWidth - parseFloat(cs.paddingRight);
         const cell = b.parentElement, left = cell.getBoundingClientRect().left + cell.clientLeft;
         const available = right - left;
         const walker = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
-        const range = document.createRange();
+        const words = [];
         let node, widest = 0;
         while ((node = walker.nextNode())) {
-          for (const m of node.data.matchAll(/[A-Za-z]{13,}/g)) {
+          for (const m of node.data.matchAll(/[\p{Script=Latin}\p{M}]{13,}/gu)) {
+            const range = document.createRange();
             range.setStart(node, m.index); range.setEnd(node, m.index + m[0].length);
+            words.push(range);
             widest = Math.max(widest, range.getBoundingClientRect().width);
           }
         }
@@ -52,12 +54,66 @@ def fit_long_headwords(js):
           const original = parseFloat(getComputedStyle(b).fontSize);
           const size = Math.max(34, Math.floor(original * (available - 1) / widest));
           if (size < original) b.style.fontSize = size + 'px';
+          // Keep the minimum glyph height for an unusually long single token.
+          // Its inline box must also shrink so the following gloss wraps normally.
+          for (const range of words.reverse()) {
+            const width = range.getBoundingClientRect().width;
+            if (width <= available + 0.5) continue;
+            const room = Math.max(1, available - parseFloat(getComputedStyle(b).marginRight) - 1);
+            const box = document.createElement('span'), ink = document.createElement('span');
+            box.style.cssText = 'display:inline-block;font:inherit;color:inherit;width:' + room + 'px';
+            ink.style.cssText = 'display:inline-block;font:inherit;color:inherit;white-space:nowrap;transform-origin:left center;transform:scaleX(' + room / width + ')';
+            ink.append(range.extractContents()); box.append(ink); range.insertNode(box);
+          }
         }
       }
     """
-    if js.count(anchor)!=1:
+    # The source word, its number and any attached punctuation have to fit as
+    # one unit. Resize only its letters, leaving the badge and punctuation alone.
+    body_anchor='const phr = () => { const lim = en.clientWidth;'
+    body_adjustment=r"""
+      for (const word of en.querySelectorAll('[data-ielts-long-word]')) word.style.fontSize = '';
+      const walker = document.createTreeWalker(en, NodeFilter.SHOW_TEXT), candidates = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        for (const m of node.data.matchAll(/[\p{Script=Latin}\p{M}]{13,}/gu)) {
+          candidates.push([node, m.index, m.index + m[0].length]);
+        }
+      }
+      for (const [text, start, end] of candidates.reverse()) {
+        const word = document.createRange();
+        word.setStart(text, start); word.setEnd(text, end);
+        const unit = word.cloneRange();
+        let tail = text, offset = end;
+        walker.currentNode = text;
+        while (tail) {
+          if (tail !== text && tail.parentElement.closest('sup, x-ps')) {
+            unit.setEndAfter(tail.parentElement.closest('sup, x-ps'));
+          } else {
+            const rest = tail.data.slice(offset);
+            const punctuation = rest.match(/^[.,:;!?%…’”')\]}/]+/u);
+            if (punctuation) unit.setEnd(tail, offset + punctuation[0].length);
+            if (rest.length > (punctuation ? punctuation[0].length : 0)) break;
+          }
+          tail = walker.nextNode(); offset = 0;
+        }
+        const width = unit.getBoundingClientRect().width;
+        if (width <= lim + 0.5) continue;
+        const letters = word.getBoundingClientRect().width;
+        const original = parseFloat(getComputedStyle(text.parentElement).fontSize);
+        let target = text.parentElement;
+        if (!target.hasAttribute('data-ielts-long-word')) {
+          target = document.createElement('span');
+          target.setAttribute('data-ielts-long-word', '');
+          target.style.font = 'inherit';
+          word.surroundContents(target);
+        }
+        target.style.fontSize = Math.max(1, Math.floor(original * (letters + lim - width - 1) / letters)) + 'px';
+      }
+    """
+    if js.count(anchor)!=1 or js.count(body_anchor)!=1:
         raise RuntimeError('无法定位六级主题的词头测量步骤')
-    return js.replace(anchor,adjustment+anchor)
+    return js.replace(anchor,adjustment+anchor).replace(body_anchor,body_anchor+body_adjustment)
 
 engine.FIT_JS=fit_long_headwords(engine.FIT_JS)
 
