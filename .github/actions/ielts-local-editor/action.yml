@@ -1,0 +1,30 @@
+name: 开源本地英汉编辑模型
+description: Pin and cache the CPU inference server and the quantized open-weight language model
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v4
+      id: cache
+      with:
+        path: ${{ runner.temp }}/ielts-editor
+        key: ielts-editor-qwen3-4b-2507-q4km-llama-b7058-v1
+    - if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        d="$RUNNER_TEMP/ielts-editor"
+        mkdir -p "$d"
+        curl -fsSL --retry 5 --retry-all-errors --max-time 1200 'https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF/resolve/ae44f08e1392f39c0e474af10c3ff8355c8b6688/Qwen_Qwen3-4B-Instruct-2507-Q4_K_M.gguf?download=true' -o "$d/model.gguf"
+        curl -fsSL --retry 3 'https://github.com/ggml-org/llama.cpp/releases/download/b7058/llama-b7058-bin-ubuntu-x64.zip' -o "$d/llama.zip"
+        (cd "$d" && echo 'fa15e06c195adc0673de7f992bed571b00db0b58068a3072943db531e42bb537  llama.zip' | sha256sum -c -)
+        unzip -q "$d/llama.zip" -d "$d/bin"
+        rm "$d/llama.zip"
+    - shell: bash
+      run: |
+        set -euo pipefail
+        d="$RUNNER_TEMP/ielts-editor"
+        (cd "$d" && echo '2fde00ce69dd4899c70d020845e2638353015bba0fdf161b3eb965f2bca4464e  model.gguf' | sha256sum -c -)
+        bin="$(find "$d/bin" -name llama-server -type f -print -quit)"
+        test -x "$bin"
+        echo "IELTS_EDITOR_BIN=$bin" >> "$GITHUB_ENV"
+        echo "IELTS_EDITOR_MODEL=$d/model.gguf" >> "$GITHUB_ENV"
