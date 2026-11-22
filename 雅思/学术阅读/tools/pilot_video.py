@@ -28,6 +28,39 @@ engine.PROJECTS[PROJECT_ID] = {
 }
 _cet_set_project = engine.set_project
 
+def fit_long_headwords(js):
+    # Measure indivisible words after the native layout restores the headword.
+    # A multi-word expression still wraps normally. Only its own label scales.
+    anchor='const wide = () => {'
+    adjustment=r"""
+      if (/[A-Za-z]{13}/.test(b.textContent)) {
+        b.style.fontSize = '';
+        const cs = getComputedStyle(side), bounds = side.getBoundingClientRect();
+        const right = bounds.left + side.clientLeft + side.clientWidth - parseFloat(cs.paddingRight);
+        const cell = b.parentElement, left = cell.getBoundingClientRect().left + cell.clientLeft;
+        const available = right - left;
+        const walker = document.createTreeWalker(b, NodeFilter.SHOW_TEXT);
+        const range = document.createRange();
+        let node, widest = 0;
+        while ((node = walker.nextNode())) {
+          for (const m of node.data.matchAll(/[A-Za-z]{13,}/g)) {
+            range.setStart(node, m.index); range.setEnd(node, m.index + m[0].length);
+            widest = Math.max(widest, range.getBoundingClientRect().width);
+          }
+        }
+        if (available > 0 && widest > available + 0.5) {
+          const original = parseFloat(getComputedStyle(b).fontSize);
+          const size = Math.max(34, Math.floor(original * (available - 1) / widest));
+          if (size < original) b.style.fontSize = size + 'px';
+        }
+      }
+    """
+    if js.count(anchor)!=1:
+        raise RuntimeError('无法定位六级主题的词头测量步骤')
+    return js.replace(anchor,adjustment+anchor)
+
+engine.FIT_JS=fit_long_headwords(engine.FIT_JS)
+
 def select_lesson(name, look=True):
     _cet_set_project(name, look)
     if name == PROJECT_ID and PID != 'C20T1P1':

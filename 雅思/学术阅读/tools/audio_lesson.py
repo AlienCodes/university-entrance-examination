@@ -1,4 +1,5 @@
 """Use the CET-6 narrator and its certified mastering pipeline."""
+import io
 import json
 import re
 import sys
@@ -7,6 +8,8 @@ from lesson import PROJECT, ROOT, LESSON, PID, load, save
 sys.path.insert(0, str(ROOT / '六级/tools'))
 import make_audio as cet
 from gaokao_tts import certificate_problems
+import soundfile as sf
+import 去呼吸
 
 class Reader(cet.G.Pronouncer):
     def read_text(self, original, key=None):
@@ -48,34 +51,61 @@ def certified_audio(passage,config,engine,reader,dest):
     cache={}
     rates={}
     flagged=set()
+    cleaned=set()
+    repaired_takes={}
+    class CleanedVoice:
+        def synth(self,phonemes,style,speed):
+            raw=engine.synth(phonemes,style,speed)
+            samples,removed=去呼吸.debreath(raw,cet.G.SR)
+            if len(samples)!=len(raw):
+                raise RuntimeError('清除句间换气后音频长度改变')
+            self.removed.extend(removed)
+            return samples
+    cleaned_voice=CleanedVoice()
     def synth(read,key,engine,pron,style,speed,settings):
         adjusted=speed*rates.get(key,1.0)
-        take=(key,read,adjusted)
+        take=(key,read,adjusted,key in cleaned)
         if take not in cache:
-            cache[take]=native_synth(read,key,engine,pron,style,adjusted,settings)
+            voice=engine
+            if key in cleaned:
+                cleaned_voice.removed=[]
+                voice=cleaned_voice
+            cache[take]=native_synth(read,key,voice,pron,style,adjusted,settings)
+            if key in cleaned:
+                repaired_takes[key]=len(cleaned_voice.removed)
         return cache[take]
     def check(mp3,items,target,span=None):
         report,errors=native_check(mp3,items,target,span)
         flagged.clear()
         if report.get('breath_count'):
-            import io
-            import soundfile as sf
-            import 去呼吸
             samples,sr=sf.read(io.BytesIO(mp3),dtype='float32')
+            diagnostics=PROJECT/'样片'/'语音复检'/PID
+            diagnostics.mkdir(parents=True,exist_ok=True)
+            suspected=[]
             for begin,end,level in 去呼吸.breath_check(samples,sr):
                 middle=(begin+end)/2
                 nearest=min(items,key=lambda row:max(row['start']-middle,middle-row['end'],0))
                 flagged.add(f"{PID}:{nearest['k']}")
+                name=f"sentence-{nearest['k']}.flac"
+                start=max(0,int((nearest['start']-.25)*sr))
+                stop=min(len(samples),int((nearest['end']+.25)*sr))
+                sf.write(str(diagnostics/name),samples[start:stop],sr)
+                suspected.append(dict(file=name,text=nearest['text'],parts=nearest['parts'],
+                                      start_in_clip=round(begin-start/sr,3),end_in_clip=round(end-start/sr,3),
+                                      peak_dbfs=level))
+            (diagnostics/'intervals.json').write_text(json.dumps(suspected,ensure_ascii=False,indent=2))
         return report,errors
     cet.G.synth_sentence=synth
     cet.G.final_check=check
     try:
-        for factor in (1.00,1.015,.98,1.035,.96):
+        for factor in (1.00,1.00,1.015,.98,1.035,.96):
             for key in flagged:
+                cleaned.add(key)
                 rates[key]=factor
             try:
                 result=cet.render_with_fallback(passage,config,engine,reader,dest)
                 result['sentence_speed_adjustments']=rates.copy()
+                result['pre_level_debreath']=repaired_takes.copy()
                 return result
             except RuntimeError as failure:
                 if not flagged or '呼吸声' not in str(failure) or factor==.96:
