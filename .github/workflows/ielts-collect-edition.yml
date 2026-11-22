@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       books: ${{ steps.plan.outputs.books }}
+      mode: ${{ steps.plan.outputs.mode }}
       part: ${{ steps.plan.outputs.part }}
       source_revision: ${{ steps.plan.outputs.source_revision }}
     steps:
@@ -41,11 +42,21 @@ jobs:
         run: |
           set -euo pipefail
           part="$SELECTED_PART"
-          if [[ -z "$part" ]]; then part=$(jq -r .part .github/ielts-release-plan.json); fi
+          mode=publish
+          if [[ -z "$part" ]]; then
+            part=$(jq -r .part .github/ielts-release-plan.json)
+            mode=$(jq -r '.mode // "publish"' .github/ielts-release-plan.json)
+          fi
           revision="${REQUESTED_REVISION:-$GITHUB_SHA}"
           [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
           echo "source_revision=$revision" >> "$GITHUB_OUTPUT"
           books=$(python '雅思/学术阅读/tools/editions.py' books "$part")
+          case "$mode" in
+            prepare) [[ "$part" == "21-11" ]]; books=$(jq -c 'map(select(. < 21))' <<< "$books") ;;
+            publish) ;;
+            *) exit 1 ;;
+          esac
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
           echo "part=$part" >> "$GITHUB_OUTPUT"
           echo "books=$books" >> "$GITHUB_OUTPUT"
           tag="ielts-academic-reading-$part"
@@ -72,17 +83,20 @@ jobs:
       - run: |
           set -euo pipefail
           out="$RUNNER_TEMP/book"
+          reuse=$(python '雅思/学术阅读/tools/collect_edition.py' reuse "$out" --part "$PART" --book "$BOOK")
+          if [[ "$reuse" == true ]]; then exit 0; fi
           python '雅思/学术阅读/tools/collect_edition.py' book "$out" --part "$PART" --book "$BOOK"
           gh release upload "ielts-academic-reading-$PART" "$out"/*.zip --clobber
           group=$(python '雅思/学术阅读/tools/editions.py' group "$BOOK")
-          gh release upload "ielts-academic-cache-$group" "$out/book-$BOOK-index.json" --clobber
           for f in "$out"/*.zip; do
             gh release download "ielts-academic-reading-$PART" -p "$(basename "$f")" -D "$RUNNER_TEMP/back"
             cmp "$f" "$RUNNER_TEMP/back/$(basename "$f")"
             rm "$RUNNER_TEMP/back/$(basename "$f")"
           done
+          gh release upload "ielts-academic-cache-$group" "$out/book-$BOOK-index.json" --clobber
   publish:
     needs: [select,book]
+    if: needs.select.outputs.mode == 'publish'
     runs-on: ubuntu-24.04
     env:
       PART: ${{ needs.select.outputs.part }}

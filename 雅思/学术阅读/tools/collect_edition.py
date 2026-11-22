@@ -82,6 +82,39 @@ def unpack_lesson(pid,cache,folder):
     return video,pdf,row
 
 
+def master_assets(book,cache):
+    originals=inventory(cache)
+    result={}
+    for pid in lesson_ids([book]):
+        if pid=='C20T1P1':
+            pilot=inventory(PILOT_TAG)
+            files=[asset for name,asset in pilot.items() if name.endswith('.mp4') or name in ('Reading-notes.pdf','verification.json')]
+            if len(files)!=3:raise ValueError('Incomplete pilot release')
+        else:
+            version=f'{pid}-{current_key(PROJECT,pid)[:16]}.zip'
+            files=[originals[version] if version in originals else originals[pid+'.zip']]
+        result[pid]={asset['name']:asset['digest'] for asset in files}
+        if not all(d and d.startswith('sha256:') for d in result[pid].values()):
+            raise ValueError(f'{pid}: missing GitHub master digest')
+    return result
+
+
+def reusable_book(book,part,out):
+    cache='ielts-academic-cache-'+production_group(book)
+    asset=inventory(cache).get(f'book-{book}-index.json')
+    if not asset:return False
+    index=read(fetch(asset,out))
+    rows=index['lessons']
+    if index['book']!=book or [r['lesson'] for r in rows]!=lesson_ids([book]):return False
+    if index.get('master_assets')!=master_assets(book,cache):return False
+    if any(row.get('material_sha256')!=current_key(PROJECT,row['lesson']) for row in rows):return False
+    remote=inventory('ielts-academic-reading-'+part)
+    packs=index['archives']
+    if {r['archive'] for r in rows}!={f['name'] for f in packs}:return False
+    return all(a['name'] in remote and remote[a['name']]['size']==a['bytes']
+               and remote[a['name']]['digest']=='sha256:'+a['sha256'] for a in packs)
+
+
 def build_book(book,cache,out):
     out.mkdir(parents=True,exist_ok=True)
     rows=[];packs=[];current_size=0;writer=None
@@ -100,6 +133,7 @@ def build_book(book,cache,out):
                         writer=zipfile.ZipFile(path,'w',compression=zipfile.ZIP_STORED,allowZip64=True);packs.append(path);current_size=0
                     source=read(PROJECT/'原稿'/(pid+'.json'))
                     row['printed_test']=source.get('printed_test',test)
+                    row['material_sha256']=current_key(PROJECT,pid)
                     prefix=f"Test {row['printed_test']}/Passage {passage}/{pid}"
                     writer.write(video,prefix+'.mp4');writer.write(pdf,prefix+'.pdf');current_size+=newsize
                     for report in reports:
@@ -115,7 +149,7 @@ def build_book(book,cache,out):
                 for ext,field in [('mp4','video_sha256'),('pdf','pdf_sha256')]:
                     with archive.open(r['path']+'.'+ext) as st:
                         if hash_file(st)!=r[field]:raise ValueError(f"Incorrect packed media {r['lesson']}")
-    return dict(book=book,lessons=rows,archives=[dict(name=p.name,sha256=sha(p),bytes=p.stat().st_size) for p in packs])
+    return dict(book=book,lessons=rows,master_assets=master_assets(book,cache),archives=[dict(name=p.name,sha256=sha(p),bytes=p.stat().st_size) for p in packs])
 
 
 def book_sources(part,catalog,out):
@@ -200,15 +234,18 @@ def publish(part,tag,out):
             get(tag,f.name,Path(d))
             if sha(Path(d)/f.name)!=sha(f):raise ValueError(f.name)
     notes=f'剑桥雅思学术阅读第 {volumes[0]} 至 {volumes[-1]} 册，共 {len(catalog)} 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 不超过 20 MB。每册 ZIP 的“核验”目录保存了各篇的成片、画面及换屏时间记录。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和原稿核对记录。'
-    subprocess.run(['gh','release','edit',tag,'--draft=false','--latest=false','--notes',notes],check=True)
+    options=['--target',os.environ['IELTS_SOURCE_REV']] if 'IELTS_SOURCE_REV' in os.environ else []
+    subprocess.run(['gh','release','edit',tag,'--draft=false','--latest=false',*options,'--notes',notes],check=True)
 
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['book','publish']);ap.add_argument('out',type=Path)
+    ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['book','reuse','publish']);ap.add_argument('out',type=Path)
     ap.add_argument('--part',required=True,choices=COLLECTIONS);ap.add_argument('--book',type=int);args=ap.parse_args()
     args.out.mkdir(parents=True,exist_ok=True)
-    if args.stage=='book':
-        if args.book not in books(args.part):ap.error('Book outside this collection')
+    if args.stage in ('book','reuse') and args.book not in books(args.part):ap.error('Book outside this collection')
+    if args.stage=='reuse':
+        print(str(reusable_book(args.book,args.part,args.out)).lower())
+    elif args.stage=='book':
         report=build_book(args.book,'ielts-academic-cache-'+production_group(args.book),args.out)
         (args.out/f'book-{args.book}-index.json').write_text(json.dumps(report,ensure_ascii=False,indent=1)+'\n')
     else:publish(args.part,'ielts-academic-reading-'+args.part,args.out)
