@@ -1,0 +1,137 @@
+name: 剑桥雅思学术阅读逐篇成片
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-series-render.json']
+permissions:
+  contents: write
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      lessons: ${{ steps.plan.outputs.lessons }}
+      stage: ${{ steps.plan.outputs.stage }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github/ielts-series-render.json
+            雅思/学术阅读/篇目
+          sparse-checkout-cone-mode: false
+      - id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os,re,hashlib
+          from pathlib import Path
+          q=json.loads(Path('.github/ielts-series-render.json').read_text())
+          assert q['part'] in ['20-11','10-1'] and len(q['lessons'])==len(set(q['lessons']))
+          for pid in q['lessons']:
+              m=re.fullmatch(r'C(\d+)T[1-4]P[1-3]',pid)
+              assert m and (11<=int(m[1])<=20 if q['part']=='20-11' else 1<=int(m[1])<=10)
+              lesson=Path('雅思/学术阅读/篇目')/pid
+              assert json.loads((lesson/'content-review.json').read_text())['text_sha256']==hashlib.sha256((lesson/'双语精读.tsv').read_bytes()).hexdigest()
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              print('lessons='+json.dumps(q['lessons']),file=f)
+              print('stage=ielts-academic-cache-'+q['part'],file=f)
+          PY
+          tag="ielts-academic-cache-$(jq -r .part .github/ielts-series-render.json)"
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_SHA" --prerelease --title "剑桥雅思学术阅读 · 逐篇核验存档" --notes '批次的可恢复制作素材和逐篇成品。'
+  render:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 200
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lesson: ${{ fromJSON(needs.plan.outputs.lessons) }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      IELTS_LESSON: ${{ matrix.lesson }}
+      STAGING: ${{ needs.plan.outputs.stage }}
+      TARGET: 雅思/学术阅读
+      OMP_NUM_THREADS: 3
+      OPENBLAS_NUM_THREADS: 1
+      PYTHONUNBUFFERED: 1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /雅思/学术阅读/
+            /tools/video/
+            /tools/tts/
+            /专八/tools/
+            /六级/tools/
+            /四级/tools/
+            /中考/tools/画面核查/
+      - uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '141'
+          asr: 'true'
+      - name: 逐屏检查排版、译文与语境标注
+        run: |
+          /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" stills
+          /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" lock
+      - name: 生成或恢复认证朗读
+        run: |
+          set -euo pipefail
+          audioid=$(python -c 'import json,hashlib,os,pathlib;p=pathlib.Path(os.environ["TARGET"]+"/篇目")/os.environ["IELTS_LESSON"]; m=json.loads((p/"篇目信息.json").read_text()); text=[x.split("\t")[0] for x in (p/"双语精读.tsv").read_text().splitlines() if x]; print(hashlib.sha256(json.dumps([text,m.get("pronunciation",{}),pathlib.Path(os.environ["TARGET"]+"/tools/audio_lesson.py").read_text()],ensure_ascii=False).encode()).hexdigest()[:16])')
+          asset="$IELTS_LESSON-audio-$audioid.zip"
+          if gh release download "$STAGING" -p "$asset" -D "$RUNNER_TEMP" 2>/dev/null; then
+            python -m zipfile -e "$RUNNER_TEMP/$asset" "$TARGET"
+          else
+            sudo apt-get install -y -qq espeak-ng
+            python -m venv "$RUNNER_TEMP/speech"
+            sp="$RUNNER_TEMP/speech/bin/python"
+            "$sp" -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+            "$sp" -m pip install -q 'click==8.1.8' 'typer==0.16.0' 'numpy<2.3' 'spacy==3.8.7' 'thinc==8.3.6' 'preshed==3.0.9' 'cymem==2.0.9' 'murmurhash==1.0.12' 'kokoro-onnx==0.6.1' 'misaki[en]==0.9.4' num2words soxr pyloudnorm soundfile lameenc scipy
+            "$sp" -m pip install -q --no-deps https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+            "$sp" tools/tts/download_models.py
+            "$sp" "$TARGET/tools/audio_lesson.py"
+            python .github/check-audio-cert.py "$TARGET/audio"
+            (cd "$TARGET" && python -m zipfile -c "$RUNNER_TEMP/$asset" audio)
+            gh release upload "$STAGING" "$RUNNER_TEMP/$asset" --clobber
+          fi
+          python .github/check-audio-cert.py "$TARGET/audio"
+      - name: 核对分屏朗读、渲染4K视频和验证片尾
+        env:
+          KEEP_FAILED: 1
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" align
+          export IELTS_SYSTEM_FFMPEG="$(command -v ffmpeg)"
+          export PATH="$PWD/$TARGET/tools/静帧编码:$PATH"
+          /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" video
+          mkdir -p "$RUNNER_TEMP/out"
+          files=("$TARGET"/最终视频/*.mp4)
+          test "${#files[@]}" -eq 1
+          /opt/ttsenv/bin/python "$TARGET/tools/check_ending.py" "${files[0]}" "$RUNNER_TEMP/out/ending.json"
+      - name: 逐屏导出20 MB以内讲义并回下载复核
+        run: |
+          set -euo pipefail
+          /opt/ttsenv/bin/python -m pip install -q img2pdf==0.6.3 PyMuPDF==1.26.6
+          out="$RUNNER_TEMP/out"
+          files=("$TARGET"/最终视频/*.mp4)
+          /opt/ttsenv/bin/python "$TARGET/tools/reading_notes.py" "${files[0]}" "$out/Reading-notes.pdf" "$out/pdf-proof.json"
+          /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" package --out "$out"
+          gh release upload "$STAGING" "$out/$IELTS_LESSON.zip" "$out/$IELTS_LESSON-receipt.json" --clobber
+          gh release download "$STAGING" -p "$IELTS_LESSON.zip" -D "$RUNNER_TEMP/check"
+          cmp "$out/$IELTS_LESSON.zip" "$RUNNER_TEMP/check/$IELTS_LESSON.zip"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: review-${{ matrix.lesson }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            雅思/学术阅读/样片/review.json
+            雅思/学术阅读/样片/成品核查/
+            雅思/学术阅读/最终视频/*.mp4
+            雅思/学术阅读/篇目/${{ matrix.lesson }}/分屏核对.json
+          if-no-files-found: ignore
+          compression-level: 0

@@ -1,11 +1,14 @@
 """Load an edited IELTS lesson. Each gloss is tied to a unique source span."""
 import json
+import os
 import re
 from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parents[1]
 ROOT = PROJECT.parents[1]
-PID = 'C20T1P1'
+PID = os.environ.get('IELTS_LESSON','C20T1P1')
+if not re.fullmatch(r'C(?:[1-9]|1[0-9]|20)T[1-4]P[1-3]',PID):
+    raise ValueError(f'Invalid IELTS passage ID: {PID}')
 LESSON = PROJECT / '篇目' / PID
 TEXT = LESSON / '双语精读.tsv'
 
@@ -37,6 +40,9 @@ def load():
                                   h=meta['lemmas'].get(phrase,phrase.lower()),m=meaning,sp=positions))
             rows.append(dict(en=en, zh=zh, w=words))
         paragraphs.append(rows)
-    return dict(id=PID,paper='剑桥雅思 20 · Test 1',passage='Passage 1 · The kākāpō',
-                fname='剑桥雅思20 Test 1 Passage 1',title='鸮鹦鹉',genre='说明文 · 物种保护',
+    book, test, part = (meta[key] for key in ('book','test','passage'))
+    if PID != f'C{book}T{test}P{part}':
+        raise ValueError('Lesson metadata points to another book or passage')
+    return dict(id=PID,paper=f'剑桥雅思 {book} · Test {test}',passage=f"Passage {part} · {meta['title']}",
+                fname=f'剑桥雅思{book} Test {test} Passage {part}',title=meta.get('title_zh','鸮鹦鹉'),genre=meta.get('genre','说明文 · 物种保护'),
                 words=sum(len(s['en'].split()) for pa in paragraphs for s in pa),paras=paragraphs)

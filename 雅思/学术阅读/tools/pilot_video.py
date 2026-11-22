@@ -23,8 +23,19 @@ engine.PROJECTS[PROJECT_ID] = {
     **engine.PROJECTS['六级'],
     'dir': '雅思/学术阅读', 'tag': 'IELTS · ACADEMIC READING', 'top': 'IELTS READING',
     'exam':'', 'sub_fit': True, 'max_mb': 1900, 'tmp':'ielts_reading_',
-    'name_re': r'剑桥雅思20 Test 1 Passage 1 鸮鹦鹉\.mp4',
+    'name_re': r'剑桥雅思(?:[1-9]|1[0-9]|20) Test [1-4] Passage [1-3] .+\.mp4',
 }
+_cet_set_project = engine.set_project
+
+def select_lesson(name, look=True):
+    _cet_set_project(name, look)
+    if name == PROJECT_ID and PID != 'C20T1P1':
+        meta = json.loads((LESSON/'篇目信息.json').read_text())
+        if (LESSON/'分屏.json').is_file():
+            engine.SPLIT.update(json.loads((LESSON/'分屏.json').read_text()))
+        engine.NAMES = list(dict.fromkeys(engine.NAMES + meta.get('zh_names',[])))
+
+engine.set_project = select_lesson
 engine.set_project(PROJECT_ID)
 
 def visible_words(sentence, lo, hi):
@@ -47,7 +58,13 @@ def ielts_sentence_slide(p, sentence, k, n, part=None):
     return re.sub(r'([\w-]+[ \u00a0]+[–—])(<span class="cont">\u00a0…</span>)',
                   r'<nobr>\1\2</nobr>',slide)
 
-engine.sentence_slide = ielts_sentence_slide
+def batch_sentence_slide(p,sentence,k,n,part=None):
+    header=p.get('reading_header',{})
+    if header:
+        p={**p,'passage':p['passage'].split(' · ',1)[0]+' · '+header['english'],'title':header['chinese']}
+    return ielts_sentence_slide(p,sentence,k,n,part)
+
+engine.sentence_slide = ielts_sentence_slide if PID=='C20T1P1' else batch_sentence_slide
 
 def speech_tokens(text):
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
@@ -90,6 +107,11 @@ def prepare():
     p = load()
     p['year'] = 2025   # Publication year of Cambridge IELTS 20; required by shared video QA.
     display_code = inspect.getsource(visible_words) + inspect.getsource(ielts_sentence_slide)
+    if PID!='C20T1P1':
+        meta = json.loads((LESSON/'篇目信息.json').read_text())
+        p['year'] = int(meta.get('year',2005+int(meta['book'])))
+        p['reading_header'] = meta.get('header',{})
+        display_code += inspect.getsource(batch_sentence_slide) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()
     save(PROJECT / 'data/vocab.json', {'passages':[p]})
     ann = PROJECT / 'ann' / (PID + '.txt')

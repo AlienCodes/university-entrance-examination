@@ -11,6 +11,13 @@ from gaokao_tts import certificate_problems
 class Reader(cet.G.Pronouncer):
     def read_text(self, original, key=None):
         text = original.replace('ā', 'a').replace('ō','o')
+        if PID != 'C20T1P1':
+            # Asterisks refer to the printed footnotes and are silent in speech.
+            text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
+            text = text.replace('CO2','carbon dioxide').replace('CO₂','carbon dioxide')
+            for unit,spoken in [('cm','centimetres'),('mm','millimetres'),('km','kilometres'),('kg','kilograms')]:
+                text=re.sub(r'(\d)\s*'+unit+r'\b',r'\1 '+spoken,text)
+            text=re.sub(r'(?<=\d)[–-](?=\d)', ' to ',text)
         text = text.replace('64 cm','sixty-four centimetres').replace('early 1800s','early eighteen hundreds')
         text = text.replace('mid-1900s','mid-nineteen hundreds').replace('1980–97','nineteen eighty to nineteen ninety-seven')
         text = text.replace('1–4','one to four').replace(' – ', ' — ')
