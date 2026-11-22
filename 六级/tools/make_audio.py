@@ -225,7 +225,11 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
     for i, x in enumerate(merged):
         if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
             raise RuntimeError(f'{key} 合成文字残留引号：{x}')
-        seg = G.segment(engine.synth(pron.phonemes(x, key), style, speed))
+        raw = engine.synth(pron.phonemes(x, key), style, speed)
+        if cfg.get('debreath_before_level'):
+            from 去呼吸 import debreath
+            raw, _ = debreath(raw, G.SR)
+        seg = G.segment(raw)
         spans.append((t, t + len(seg) / G.SR))
         out.append(seg)
         t += len(seg) / G.SR
@@ -312,10 +316,16 @@ G.verify_loudness = verify_loudness
 
 
 def render_with_fallback(p, vcfg, engine, pron, out_dir):
+    def render():
+        return G.render_passage(p, VOICE, vcfg, engine, pron, out_dir)
+    return with_level_fallback(p['id'], render)
+
+
+def with_level_fallback(pid, render):
     """短时响度波动刚好超过 1.0 LU 时（c14：1.01），只对这一篇把慢速电平的调节范围从 ±4 dB 依次放宽到 ±5、±6 dB 再试；
     检查标准一项不放宽，通过的篇目完全不受影响。用了哪一档记在 timings 的 leveler_rng 里。"""
     try:
-        r = G.render_passage(p, VOICE, vcfg, engine, pron, out_dir)
+        r = render()
         r['leveler_rng'] = 4.0
         return r
     except RuntimeError as e:
@@ -327,9 +337,9 @@ def render_with_fallback(p, vcfg, engine, pron, out_dir):
         for rng in (5.0, 6.0):
             G.compress = lambda x, sr, rng=rng: leveler(_comp(D.debuzz(x, sr), sr), sr, rng=rng)
             try:
-                r = G.render_passage(p, VOICE, vcfg, engine, pron, out_dir)
+                r = render()
                 r['leveler_rng'] = rng
-                print(f"  {p['id']}：慢速电平放宽到 ±{rng:g} dB 后通过", flush=True)
+                print(f"  {pid}：慢速电平放宽到 ±{rng:g} dB 后通过", flush=True)
                 return r
             except RuntimeError as e2:
                 if '短时响度波动' not in str(e2):

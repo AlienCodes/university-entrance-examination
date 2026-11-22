@@ -597,7 +597,17 @@ def file_stem(p):
     return f"{p['id']}_{p['year']}_{paper}_阅读{p['part']}"
 
 
-def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=print):
+class AudioVerificationError(RuntimeError):
+    """Carry the rejected encode and its native timings so a producer can diagnose it."""
+    def __init__(self,message,mp3,items,report):
+        super().__init__(message)
+        self.mp3=mp3
+        self.items=items
+        self.report=report
+
+
+def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=print, sentence_synth=None):
+    sentence_synth = sentence_synth or synth_sentence
     style = engine.style(vcfg['style'])
     speed = vcfg.get('speed', 1.0)
     pieces, items = [], []
@@ -609,7 +619,7 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
             k += 1
             key = f"{p['id']}:{k}"
             read = pron.read_text(s, key)
-            audio, parts = synth_sentence(read, key, engine, pron, style, speed, vcfg)
+            audio, parts = sentence_synth(read, key, engine, pron, style, speed, vcfg)
             dur = len(audio) / SR
             items.append({'k': k, 'para': pi + 1, 'start': round(t, 3), 'end': round(t + dur, 3),
                           'parts': [[round(t + a, 3), round(t + b, 3)] for a, b in parts],
@@ -634,7 +644,7 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
     if not cert['passed'] and not errs:
         errs = ['合格证核对未通过：' + '；'.join(CERT.cert_problems(cert))]
     if errs:
-        raise RuntimeError(f"{p['id']} {voice_name} 响度检查未通过，未输出文件：" + '；'.join(errs))
+        raise AudioVerificationError(f"{p['id']} {voice_name} 响度检查未通过，未输出文件：" + '；'.join(errs),mp3,items,rep)
     log(f"  响度检查通过：整体 {rep['integrated_lufs']} LUFS，句间最大偏差 {rep['sentence_max_dev_lu']} LU，"
         f"短时波动 {rep['short_term_std_lu']} LU，峰值 {rep['peak_dbfs']} dBFS；意群检查（{CHAIN}）：比相邻意群最多小 "
         f"{-rep.get('clause_nb_min_lu', 0):.2f} LU（上限 1.2），段尾最多小 {-rep.get('clause_tail_min_db', 0):.2f} dB（上限 4.0）")
