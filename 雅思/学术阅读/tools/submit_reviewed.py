@@ -4,12 +4,12 @@ import fcntl
 import hashlib
 import json
 from pathlib import Path
-import re
 import shutil
 import subprocess
 
 from material import current_key,verify_original
 from release_assets import inventory
+from editions import PRODUCTION_BOOKS, validate_lessons
 
 REPO = Path(__file__).resolve().parents[3]
 PROJECT = REPO / '雅思/学术阅读'
@@ -80,13 +80,8 @@ def update_book_index(book):
 
 
 def submit(approved_folder,ids,part):
-    if len(ids)!=len(set(ids)):
-        raise ValueError('A lesson was requested twice')
-    first,last=map(int,part.split('-'))
+    validate_lessons(part,ids)
     for pid in ids:
-        valid=re.fullmatch(r'C(\d+)T[1-4]P[1-3]',pid)
-        if not valid or not last<=int(valid[1])<=first:
-            raise ValueError(f'{pid} is outside the selected books')
         approved(approved_folder/pid)
         verify_original(PROJECT,pid,approved_folder/pid/'双语精读.tsv')
 
@@ -137,7 +132,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('approved_folder',type=Path)
     parser.add_argument('ids',nargs='+')
-    parser.add_argument('--part',choices=['20-11','10-1'],default='20-11')
+    parser.add_argument('--part',choices=PRODUCTION_BOOKS,default='20-11')
     args=parser.parse_args()
     gate=Path(command('git','rev-parse','--path-format=absolute','--git-path','ielts-submit.lock').strip())
     with gate.open('a') as lock:

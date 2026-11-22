@@ -18,19 +18,25 @@ jobs:
           sparse-checkout: |
             .github/ielts-series-render.json
             雅思/学术阅读/篇目
+            雅思/学术阅读/tools/editions.py
+            雅思/学术阅读/tools/release_assets.py
           sparse-checkout-cone-mode: false
       - id: plan
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python - <<'PY'
-          import json,os,re,hashlib
+          import json,os,sys,hashlib
           from pathlib import Path
+          sys.path.insert(0,'雅思/学术阅读/tools')
+          from editions import missing_masters,validate_lessons
+          from release_assets import inventory
           q=json.loads(Path('.github/ielts-series-render.json').read_text())
-          assert q['part'] in ['20-11','10-1'] and len(q['lessons'])==len(set(q['lessons']))
+          validate_lessons(q['part'],q['lessons'])
+          if q['part']=='21':
+              missing=missing_masters('20-11',inventory)
+              if missing:raise SystemExit('Finish the 20–11 masters first: '+', '.join(missing))
           for pid in q['lessons']:
-              m=re.fullmatch(r'C(\d+)T[1-4]P[1-3]',pid)
-              assert m and (11<=int(m[1])<=20 if q['part']=='20-11' else 1<=int(m[1])<=10)
               lesson=Path('雅思/学术阅读/篇目')/pid
               verified=json.loads((lesson/'content-review.json').read_text())
               for key,name in [('text_sha256','双语精读.tsv'),('metadata_sha256','篇目信息.json'),('split_sha256','分屏.json')]:
@@ -162,27 +168,26 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /雅思/学术阅读/tools/editions.py
+            /雅思/学术阅读/tools/release_assets.py
       - id: available
         run: |
           set -euo pipefail
-          part="${STAGING#ielts-academic-cache-}"
+          case "${STAGING#ielts-academic-cache-}" in
+            20-11) exit 0 ;;
+            21) part=21-11 ;;
+            10-1) part=10-1 ;;
+            *) exit 1 ;;
+          esac
           echo "part=$part" >> "$GITHUB_OUTPUT"
           if [[ "$(gh release view "ielts-academic-reading-$part" --json isDraft --jq .isDraft 2>/dev/null || true)" == false ]]; then exit 0; fi
-          base=$(gh release view "$STAGING" --json apiUrl --jq .apiUrl)
-          gh api --paginate --jq '.[] | @json' "$base/assets?per_page=100" > "$RUNNER_TEMP/ielts-assets.json"
-          python - <<'PY'
-          import json,os
-          from pathlib import Path
-          part=os.environ['STAGING'].split('cache-',1)[1]
-          top,bottom=map(int,part.split('-'))
-          want={f'C{b}T{t}P{p}-receipt.json' for b in range(top,bottom-1,-1) for t in range(1,5) for p in range(1,4)}
-          want.discard('C20T1P1-receipt.json')
-          rows=(Path(os.environ['RUNNER_TEMP'])/'ielts-assets.json').read_text().splitlines()
-          assets=[json.loads(row) for row in rows if row.strip()]
-          missing=want-{a['name'] for a in assets if a['size']>0}
-          print(f'{len(want)-len(missing)}/{len(want)} published master receipts.')
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:print('complete='+str(not missing).lower(),file=f)
-          PY
+          ready=$(python '雅思/学术阅读/tools/editions.py' ready "$part")
+          echo "complete=$ready" >> "$GITHUB_OUTPUT"
           revision=$(gh api "repos/$GH_REPO/commits/$GITHUB_REF_NAME" --jq .sha)
           echo "revision=$revision" >> "$GITHUB_OUTPUT"
   collection:

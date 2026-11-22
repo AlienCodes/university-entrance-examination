@@ -12,12 +12,12 @@ import subprocess
 import tempfile
 import zipfile
 
+from editions import COLLECTIONS, PILOT_TAG, books, lesson_ids, production_group
 from lesson import PROJECT
 from material import current_key,legacy_inputs_match,verify_original
 from release_assets import fetch,inventory
 
 LIMIT = 1_850_000_000
-PILOT_TAG = 'ielts-academic-20-test-1-passage-1-pilot'
 SCREEN_REPORTS = ('分屏核对.json','visual-review.json')
 
 
@@ -126,7 +126,8 @@ def book_sources(part,catalog,out):
             verify_original(PROJECT,pid)
             original=PROJECT/'原稿'/(pid+'.json')
             folder=PROJECT/'篇目'/pid
-            archive.write(original,pid+'/纸本来源.json')
+            source_label='Word来源.json' if int(pid[1:pid.index('T')])==21 else '纸本来源.json'
+            archive.write(original,f'{pid}/{source_label}')
             for name in ['双语精读.tsv','篇目信息.json','分屏.json','content-review.json']:
                 source=folder/name
                 if not source.is_file() and pid=='C20T1P1' and name=='分屏.json':
@@ -134,13 +135,27 @@ def book_sources(part,catalog,out):
                 archive.write(source,pid+'/'+name)
             if sha(folder/'双语精读.tsv')!=row['content_sha256']:raise ValueError('Edited source differs from packaged video: '+pid)
         archive.write(PROJECT/'精读选词规范.md','精读选词规范.md')
-        if part=='20-11':
+        if 21 in books(part):
+            word_dir=PROJECT/'来源'/'第21册'
+            word=word_dir/'21.docx'
+            handoff=read(word_dir/'篇目索引.json')
+            if handoff['upload_sha256']!=sha(word):
+                raise ValueError('Wrong original Word file')
+            archive.write(word,'第21册Word来源/21.docx')
+            archive.write(word_dir/'篇目索引.json','第21册Word来源/篇目索引.json')
+            for pid in lesson_ids([21]):
+                evidence=word_dir/'核对'/(pid+'.json')
+                if read(evidence)['source_sha256']!=sha(word):raise ValueError(pid)
+                archive.write(evidence,'第21册Word来源/核对/'+evidence.name)
+        if '20-11' in COLLECTIONS[part]:
             audit=PROJECT/'审校'
             archive.write(audit/'纸本页码.json','纸本核对/纸本页码.json')
             for report in sorted(audit.glob('*.json')):
+                if report.stem.startswith('C') and report.stem[1:].isdigit() and int(report.stem[1:]) not in books(part):continue
                 if report.name!='纸本页码.json':
                     archive.write(report,'审校/'+report.name)
             for page in sorted((audit/'sources').glob('C*/T*P*/source-pages.json')):
+                if int(page.parent.parent.name[1:]) not in books(part):continue
                 archive.write(page,'纸本核对/'+str(page.relative_to(audit)))
             for scan in sorted((audit/'书影').glob('*.png')):
                 archive.write(scan,'审校/书影/'+scan.name)
@@ -149,14 +164,17 @@ def book_sources(part,catalog,out):
     return file
 
 
-def publish(part,tag,stage,out):
-    books=list(range(20,10,-1)) if part=='20-11' else list(range(10,0,-1))
+def publish(part,tag,out):
+    volumes=books(part)
     catalog=[];assets=[]
-    for b in books:
+    for b in volumes:
+        stage='ielts-academic-cache-'+production_group(b)
         name=f'book-{b}-index.json';get(stage,name,out);idx=read(out/name)
         assert idx['book']==b and {x['lesson'] for x in idx['lessons']}=={f'C{b}T{t}P{p}' for t in range(1,5) for p in range(1,4)}
         catalog+=idx['lessons'];assets+=idx['archives']
-    if len({x['lesson'] for x in catalog})!=120:raise ValueError('Expected exactly 120 distinct academic passages')
+    expected=lesson_ids(volumes)
+    if [x['lesson'] for x in catalog]!=expected:
+        raise ValueError(f'Expected the complete {len(expected)}-passage collection in book order')
     remote=inventory(tag)
     for a in assets:
         r=remote[a['name']]
@@ -181,15 +199,16 @@ def publish(part,tag,stage,out):
         for f in supplemental:
             get(tag,f.name,Path(d))
             if sha(Path(d)/f.name)!=sha(f):raise ValueError(f.name)
-    notes=f'剑桥雅思学术阅读第 {books[0]} 至 {books[-1]} 册，共 120 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 小于 20 MB。每册 ZIP 的“核验”目录保存了各篇的成片、画面及换屏时间记录。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和纸本核对记录。'
+    notes=f'剑桥雅思学术阅读第 {volumes[0]} 至 {volumes[-1]} 册，共 {len(catalog)} 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 不超过 20 MB。每册 ZIP 的“核验”目录保存了各篇的成片、画面及换屏时间记录。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和原稿核对记录。'
     subprocess.run(['gh','release','edit',tag,'--draft=false','--latest=false','--notes',notes],check=True)
 
 
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['book','publish']);ap.add_argument('out',type=Path)
-    ap.add_argument('--part',required=True,choices=['20-11','10-1']);ap.add_argument('--book',type=int);args=ap.parse_args()
+    ap.add_argument('--part',required=True,choices=COLLECTIONS);ap.add_argument('--book',type=int);args=ap.parse_args()
     args.out.mkdir(parents=True,exist_ok=True)
     if args.stage=='book':
-        report=build_book(args.book,'ielts-academic-cache-'+args.part,args.out)
+        if args.book not in books(args.part):ap.error('Book outside this collection')
+        report=build_book(args.book,'ielts-academic-cache-'+production_group(args.book),args.out)
         (args.out/f'book-{args.book}-index.json').write_text(json.dumps(report,ensure_ascii=False,indent=1)+'\n')
-    else:publish(args.part,'ielts-academic-reading-'+args.part,'ielts-academic-cache-'+args.part,args.out)
+    else:publish(args.part,'ielts-academic-reading-'+args.part,args.out)

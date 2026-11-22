@@ -274,8 +274,9 @@ def run(source,out):
     (out/'双语精读.tsv').write_text(text)
     def save(name,obj):(out/name).write_text(json.dumps(obj,ensure_ascii=False,indent=1)+'\n')
     header={'english':meta.get('short_en',title),'chinese':meta['short_zh']}
+    location={k:data[k] for k in ('pdf_pages','docx_paragraphs','passage_provenance') if k in data}
     save('篇目信息.json',dict(id=data['id'],book=data['book'],test=data['test'],passage=data['passage'],title=title,title_zh=data.get('title_zh') or meta['title_zh'],
-         genre=meta['genre'],header=header,lemmas=lemma,row_lemmas=individual,pronunciation={},zh_names=confirmed_names(content),pdf_pages=data['pdf_pages']))
+         genre=meta['genre'],header=header,lemmas=lemma,row_lemmas=individual,pronunciation={},zh_names=confirmed_names(content),**location))
     save('分屏.json',{data['id']:cuts})
     save('draft-review.json',dict(source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),text_sha256=hashlib.sha256(text.encode()).hexdigest(),
          model='Tencent HY-MT1.5-1.8B Q8_0 translation and separate Qwen3-4B-Instruct-2507 Q4_K_M contextual editing, both local CPU',sentences=len(rows),annotations=sum(len(z['v']) for z in content),

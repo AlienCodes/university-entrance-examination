@@ -25,7 +25,7 @@ engine.PROJECTS[PROJECT_ID] = {
     **engine.PROJECTS['六级'],
     'dir': '雅思/学术阅读', 'tag': 'IELTS · ACADEMIC READING', 'top': 'IELTS READING',
     'exam':'', 'sub_fit': True, 'max_mb': 1900, 'tmp':'ielts_reading_',
-    'name_re': r'剑桥雅思(?:[1-9]|1[0-9]|20) Test [1-8] Passage [1-3] .+\.mp4',
+    'name_re': r'剑桥雅思(?:[1-9]|1[0-9]|2[01]) Test [1-8] Passage [1-3] .+\.mp4',
 }
 _cet_set_project = engine.set_project
 

@@ -7,7 +7,7 @@ from pathlib import Path
 PROJECT = Path(__file__).resolve().parents[1]
 ROOT = PROJECT.parents[1]
 PID = os.environ.get('IELTS_LESSON','C20T1P1')
-if not re.fullmatch(r'C(?:[1-9]|1[0-9]|20)T[1-4]P[1-3]',PID):
+if not re.fullmatch(r'C(?:[1-9]|1[0-9]|2[01])T[1-4]P[1-3]',PID):
     raise ValueError(f'Invalid IELTS passage ID: {PID}')
 LESSON = PROJECT / '篇目' / PID
 TEXT = LESSON / '双语精读.tsv'
