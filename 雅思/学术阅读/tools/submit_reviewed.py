@@ -91,8 +91,9 @@ def submit(approved_folder,ids,part):
         verify_original(PROJECT,pid,approved_folder/pid/'双语精读.tsv')
 
     tag='ielts-academic-cache-'+part
-    assets=set(inventory(tag))
-    history=command('git','log','-n','25','--format=%H','--',READER).splitlines()
+    revising=any((PROJECT/'篇目'/pid/'content-review.json').exists() for pid in ids)
+    assets=set(inventory(tag)) if revising else set()
+    history=command('git','log','-n','25','--format=%H','--',READER).splitlines() if revising else []
     readers=[command('git','show',rev+':'+READER) for rev in history]
     changed=[]
     queue=[]
