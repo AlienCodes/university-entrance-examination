@@ -4,7 +4,11 @@ from pathlib import Path
 from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 HERE = Path(__file__).resolve().parent
-EDITIONS = {'21-11': 'C17T1P1-21-11', '10-1': 'C10T1P1'}
+EDITIONS = {
+    '21-14': 'C17T1P1-21-14',
+    '21-11': 'C17T1P1-21-11',
+    '10-1': 'C10T1P1',
+}
 WIDTHS = {'16x9': 1920, '4x3': 1440}
 HEIGHT = 1080
 
