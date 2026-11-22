@@ -15,7 +15,7 @@ class Reader(cet.G.Pronouncer):
             # Asterisks refer to the printed footnotes and are silent in speech.
             text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
             text = text.translate(str.maketrans({'[':'',']':'','&':' and ','ş':'sh'}))
-            text = text.replace('ME2','Me Two').replace('1910s','nineteen tens')
+            text = text.replace('3Q15','three Q fifteen').replace('ME2','Me Two').replace('1910s','nineteen tens')
             text = re.sub(r'(?<=\d)\s*m(?:3|³)\b',' cubic metres',text)
             text = re.sub(r'US\$(\d[\d,]*(?:\.\d+)?)',r'\1 U.S. dollars',text)
             text = re.sub(r'€(\d[\d,]*(?:\.\d+)?)',r'\1 euros',text)
