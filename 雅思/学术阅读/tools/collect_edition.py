@@ -112,6 +112,26 @@ def build_book(book,cache,out):
     return dict(book=book,lessons=rows,archives=[dict(name=p.name,sha256=sha(p),bytes=p.stat().st_size) for p in packs])
 
 
+def book_sources(part,catalog,out):
+    file=out/f'Cambridge-IELTS-{part}-Editable.zip'
+    with zipfile.ZipFile(file,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=8) as archive:
+        for row in catalog:
+            pid=row['lesson']
+            original=PROJECT/'原稿'/(pid+'.json')
+            folder=PROJECT/'篇目'/pid
+            archive.write(original,pid+'/纸本来源.json')
+            for name in ['双语精读.tsv','篇目信息.json','分屏.json','content-review.json']:
+                source=folder/name
+                if not source.is_file() and pid=='C20T1P1' and name=='分屏.json':
+                    source=PROJECT/'tools/分屏.json'
+                archive.write(source,pid+'/'+name)
+            if sha(folder/'双语精读.tsv')!=row['content_sha256']:raise ValueError('Edited source differs from packaged video: '+pid)
+        archive.write(PROJECT/'精读选词规范.md','精读选词规范.md')
+    with zipfile.ZipFile(file) as archive:
+        if archive.testzip() is not None:raise ValueError('Invalid editable source archive')
+    return file
+
+
 def publish(part,tag,stage,out):
     books=list(range(20,10,-1)) if part=='20-11' else list(range(10,0,-1))
     catalog=[];assets=[]
@@ -120,24 +140,27 @@ def publish(part,tag,stage,out):
         assert idx['book']==b and {x['lesson'] for x in idx['lessons']}=={f'C{b}T{t}P{p}' for t in range(1,5) for p in range(1,4)}
         catalog+=idx['lessons'];assets+=idx['archives']
     if len({x['lesson'] for x in catalog})!=120:raise ValueError('Expected exactly 120 distinct academic passages')
-    release_id=subprocess.check_output(['gh','release','view',tag,'--json','databaseId','--jq','.databaseId'],text=True).strip()
+    release_id=subprocess.check_output(['gh','release','view',tag,'--json','apiUrl','--jq','.apiUrl'],text=True).strip().rsplit('/',1)[-1]
+    if not release_id.isdigit():raise ValueError('Invalid GitHub Release API identifier')
     info=json.loads(subprocess.check_output(['gh','api',f'repos/{os.environ["GH_REPO"]}/releases/{release_id}']))
     remote={x['name']:x for x in info['assets']}
     for a in assets:
         r=remote[a['name']]
         if r['state']!='uploaded' or r['size']!=a['bytes'] or r['digest']!='sha256:'+a['sha256']:raise ValueError(a['name'])
-    (out/'manifest.json').write_text(json.dumps(dict(part=part,lessons=catalog,archives=assets),ensure_ascii=False,indent=1)+'\n')
+    editable=book_sources(part,catalog,out)
+    assets.append(dict(name=editable.name,sha256=sha(editable),bytes=editable.stat().st_size))
+    (out/'manifest.json').write_text(json.dumps(dict(part=part,source_commit=os.environ.get('GITHUB_SHA'),lessons=catalog,archives=assets),ensure_ascii=False,indent=1)+'\n')
     table=out/'contents.csv'
     with table.open('w',encoding='utf-8-sig',newline='') as f:
         writer=csv.writer(f);writer.writerow(['篇目','原书Test','英文标题','中文标题','秒','讲义页数','PDF字节','下载包','包内路径'])
         for r in catalog:writer.writerow([r['lesson'],r['printed_test'],r['title'],r['title_zh'],r['video_seconds'],r['pages'],r['pdf_bytes'],r['archive'],r['path']])
     sums=out/'SHA256SUMS';sums.write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in assets)+''.join(f'{sha(f)}  {f.name}\n' for f in (table,out/'manifest.json')))
-    subprocess.run(['gh','release','upload',tag,str(table),str(out/'manifest.json'),str(sums),'--clobber'],check=True)
+    subprocess.run(['gh','release','upload',tag,str(table),str(out/'manifest.json'),str(sums),str(editable),'--clobber'],check=True)
     with tempfile.TemporaryDirectory(dir=out) as d:
-        for f in (table,out/'manifest.json',sums):
+        for f in (table,out/'manifest.json',sums,editable):
             get(tag,f.name,Path(d))
             if sha(Path(d)/f.name)!=sha(f):raise ValueError(f.name)
-    notes=f'剑桥雅思学术阅读第 {books[0]} 至 {books[-1]} 册，共 120 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 小于 20 MB。contents.csv 列出每篇标题、时长、页数和下载包。'
+    notes=f'剑桥雅思学术阅读第 {books[0]} 至 {books[-1]} 册，共 120 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 小于 20 MB。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和纸本核对记录。'
     subprocess.run(['gh','release','edit',tag,'--draft=false','--latest=false','--notes',notes],check=True)
 
 
