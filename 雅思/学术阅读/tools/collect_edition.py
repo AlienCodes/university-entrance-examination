@@ -163,16 +163,19 @@ def publish(part,tag,stage,out):
         if r['state']!='uploaded' or r['size']!=a['bytes'] or r['digest']!='sha256:'+a['sha256']:raise ValueError(a['name'])
     editable=book_sources(part,catalog,out)
     assets.append(dict(name=editable.name,sha256=sha(editable),bytes=editable.stat().st_size))
-    (out/'manifest.json').write_text(json.dumps(dict(part=part,source_commit=os.environ.get('IELTS_SOURCE_REV',os.environ.get('GITHUB_SHA')),lessons=catalog,archives=assets),ensure_ascii=False,indent=1)+'\n')
+    covers=[PROJECT/'封面'/f'Cambridge-IELTS-{part}-{ratio}.jpg' for ratio in ('16x9','4x3')]
+    cover_index=[dict(name=f.name,sha256=sha(f),bytes=f.stat().st_size) for f in covers]
+    (out/'manifest.json').write_text(json.dumps(dict(part=part,source_commit=os.environ.get('IELTS_SOURCE_REV',os.environ.get('GITHUB_SHA')),lessons=catalog,archives=assets,covers=cover_index),ensure_ascii=False,indent=1)+'\n')
     table=out/'contents.csv'
     with table.open('w',encoding='utf-8-sig',newline='') as f:
         writer=csv.writer(f);writer.writerow(['篇目','原书Test','英文标题','中文标题','秒','讲义页数','PDF字节','下载包','包内路径'])
         for r in catalog:writer.writerow([r['lesson'],r['printed_test'],r['title'],r['title_zh'],r['video_seconds'],r['pages'],r['pdf_bytes'],r['archive'],r['path']])
-    sums=out/'SHA256SUMS';sums.write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in assets)+''.join(f'{sha(f)}  {f.name}\n' for f in (table,out/'manifest.json')))
-    subprocess.run(['gh','release','upload',tag,str(table),str(out/'manifest.json'),str(sums),str(editable),'--clobber'],check=True)
+    sums=out/'SHA256SUMS';sums.write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in assets+cover_index)+''.join(f'{sha(f)}  {f.name}\n' for f in (table,out/'manifest.json')))
+    supplemental=[table,out/'manifest.json',sums,editable,*covers]
+    subprocess.run(['gh','release','upload',tag,*map(str,supplemental),'--clobber'],check=True)
     inventory.cache_clear()
     with tempfile.TemporaryDirectory(dir=out) as d:
-        for f in (table,out/'manifest.json',sums,editable):
+        for f in supplemental:
             get(tag,f.name,Path(d))
             if sha(Path(d)/f.name)!=sha(f):raise ValueError(f.name)
     notes=f'剑桥雅思学术阅读第 {books[0]} 至 {books[-1]} 册，共 120 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 小于 20 MB。每册 ZIP 的“核验”目录保存了各篇的成片、画面及换屏时间记录。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和纸本核对记录。'
