@@ -1,0 +1,76 @@
+name: 剑桥雅思阅读配套讲义编写
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-study-batch.json']
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    outputs:
+      batches: ${{ steps.matrix.outputs.batches }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github/ielts-study-batch.json
+            雅思/学术阅读/配套讲义/题目与证据
+          sparse-checkout-cone-mode: false
+      - id: matrix
+        name: 核对篇号与上限
+        run: |
+          python - <<'PY'
+          import json,os,pathlib
+          path=pathlib.Path('.github/ielts-study-batch.json')
+          batch=json.loads(path.read_text())
+          lessons=batch['lessons']
+          available={p.stem for p in pathlib.Path('雅思/学术阅读/配套讲义/题目与证据').glob('C*.json')}
+          assert lessons and len(set(lessons))==len(lessons) and set(lessons)<=available
+          count=min(20,len(lessons))
+          groups=[{'index':i+1,'lessons':lessons[i::count]} for i in range(count)]
+          with open(os.environ['GITHUB_OUTPUT'],'a') as stream:
+              print('batches='+json.dumps(groups,separators=(',',':')),file=stream)
+          PY
+  write:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 250
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        batch: ${{ fromJSON(needs.prepare.outputs.batches) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github/actions/ielts-local-editor
+            雅思/学术阅读/配套讲义/题目与证据
+            雅思/学术阅读/tools
+      - uses: ./.github/actions/ielts-local-editor
+      - name: 依据本篇原文及已核题号编写答题思路与写作迁移
+        env:
+          LESSONS: ${{ join(matrix.batch.lessons, ' ') }}
+          STUDY_EDITOR_URL: http://127.0.0.1:8176/v1/chat/completions
+        run: |
+          set -eu
+          LD_LIBRARY_PATH="$(dirname "$IELTS_EDITOR_BIN")" "$IELTS_EDITOR_BIN" -m "$IELTS_EDITOR_MODEL" -t 4 -tb 4 -c 12000 -np 1 -ngl 0 --host 127.0.0.1 --port 8176 --log-disable > "$RUNNER_TEMP/study-editor.log" 2>&1 &
+          editor_pid=$!
+          trap 'kill "$editor_pid" 2>/dev/null || true' EXIT
+          for i in {1..60}; do
+            if curl -fsS http://127.0.0.1:8176/health > /dev/null 2>&1; then break; fi
+            sleep 2
+          done
+          curl -fsS http://127.0.0.1:8176/health > /dev/null
+          read -r -a lessons <<< "$LESSONS"
+          python -u '雅思/学术阅读/tools/study_editor.py' "$RUNNER_TEMP/study" "${lessons[@]}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checked-input-study-draft-${{ matrix.batch.index }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/study/*.json
+          if-no-files-found: warn
+          retention-days: 7

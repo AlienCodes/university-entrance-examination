@@ -42,7 +42,10 @@ def question_batch(lesson,questions):
   # Candidate sentences guide retrieval. They do not gate a justified passage-wide judgement.
   row['candidate_sentences']=q['evidence']
   records.append(row)
- ans=invoke(QUESTION_SYSTEM,dict(title=lesson['display_title'],sentences=sentences,questions=records),obj(schema))
+ indices={i for q in questions for anchor in q['evidence'] for i in (anchor-1,anchor,anchor+1) if 1<=i<=len(sentences)}
+ anchors=[s for s in sentences if s['n'] in indices]
+ original=[dict(n=s['n'],en=s['en']) for s in sentences if s['n'] not in indices]
+ ans=invoke(QUESTION_SYSTEM,dict(title=lesson['display_title'],questions=records,sentences=anchors,other_original_sentences=original),obj(schema))
  out={}
  for q in questions:
   i=q['numbers'][0];cell=ans['q'+str(i)];ev=list(dict.fromkeys(cell['evidence']));logic=cell['reasoning'].strip()
