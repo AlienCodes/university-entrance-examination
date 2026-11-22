@@ -9,6 +9,7 @@ import shutil
 import subprocess
 
 from material import current_key
+from release_assets import inventory
 
 REPO = Path(__file__).resolve().parents[3]
 PROJECT = REPO / '雅思/学术阅读'
@@ -63,7 +64,7 @@ def submit(approved_folder,ids,part):
         approved(approved_folder/pid)
 
     tag='ielts-academic-cache-'+part
-    assets={a['name'] for a in json.loads(command('gh','release','view',tag,'--json','assets'))['assets']}
+    assets=set(inventory(tag))
     history=command('git','log','-n','25','--format=%H','--',READER).splitlines()
     readers=[command('git','show',rev+':'+READER) for rev in history]
     changed=[]

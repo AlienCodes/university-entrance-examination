@@ -2,6 +2,7 @@
 import argparse
 import csv
 import hashlib
+import fnmatch
 import io
 import json
 import os
@@ -13,6 +14,7 @@ import zipfile
 
 from lesson import PROJECT
 from material import current_key,legacy_inputs_match
+from release_assets import fetch,inventory
 
 LIMIT = 1_850_000_000
 PILOT_TAG = 'ielts-academic-20-test-1-passage-1-pilot'
@@ -30,7 +32,10 @@ def sha(path):
 
 
 def get(tag,name,folder):
-    subprocess.run(['gh','release','download',tag,'-p',name,'-D',str(folder),'--clobber'],check=True)
+    assets=inventory(tag)
+    matches=[a for n,a in assets.items() if fnmatch.fnmatchcase(n,name)]
+    if len(matches)!=1:raise ValueError(f'{tag}: expected one {name}, found {len(matches)}')
+    return fetch(matches[0],folder)
 
 
 def read(path):
@@ -53,14 +58,7 @@ def unpack_lesson(pid,cache,folder):
     else:
         key=current_key(PROJECT,pid)
         versioned=f'{pid}-{key[:16]}.zip'
-        status=subprocess.run(['gh','release','download',cache,'-p',versioned,'-D',str(folder)],stderr=subprocess.PIPE,text=True)
-        if status.returncode:
-            if 'no assets match' not in status.stderr.lower():
-                raise RuntimeError(status.stderr)
-            get(cache,pid+'.zip',folder)
-            archive=folder/(pid+'.zip')
-        else:
-            archive=folder/versioned
+        archive=get(cache,versioned if versioned in inventory(cache) else pid+'.zip',folder)
         with zipfile.ZipFile(archive) as media:
             embedded=json.loads(media.read('verification.json'))['receipt']
             if 'material_sha256' in embedded:
@@ -140,10 +138,7 @@ def publish(part,tag,stage,out):
         assert idx['book']==b and {x['lesson'] for x in idx['lessons']}=={f'C{b}T{t}P{p}' for t in range(1,5) for p in range(1,4)}
         catalog+=idx['lessons'];assets+=idx['archives']
     if len({x['lesson'] for x in catalog})!=120:raise ValueError('Expected exactly 120 distinct academic passages')
-    release_id=subprocess.check_output(['gh','release','view',tag,'--json','apiUrl','--jq','.apiUrl'],text=True).strip().rsplit('/',1)[-1]
-    if not release_id.isdigit():raise ValueError('Invalid GitHub Release API identifier')
-    info=json.loads(subprocess.check_output(['gh','api',f'repos/{os.environ["GH_REPO"]}/releases/{release_id}']))
-    remote={x['name']:x for x in info['assets']}
+    remote=inventory(tag)
     for a in assets:
         r=remote[a['name']]
         if r['state']!='uploaded' or r['size']!=a['bytes'] or r['digest']!='sha256:'+a['sha256']:raise ValueError(a['name'])
@@ -156,6 +151,7 @@ def publish(part,tag,stage,out):
         for r in catalog:writer.writerow([r['lesson'],r['printed_test'],r['title'],r['title_zh'],r['video_seconds'],r['pages'],r['pdf_bytes'],r['archive'],r['path']])
     sums=out/'SHA256SUMS';sums.write_text(''.join(f"{a['sha256']}  {a['name']}\n" for a in assets)+''.join(f'{sha(f)}  {f.name}\n' for f in (table,out/'manifest.json')))
     subprocess.run(['gh','release','upload',tag,str(table),str(out/'manifest.json'),str(sums),str(editable),'--clobber'],check=True)
+    inventory.cache_clear()
     with tempfile.TemporaryDirectory(dir=out) as d:
         for f in (table,out/'manifest.json',sums,editable):
             get(tag,f.name,Path(d))
