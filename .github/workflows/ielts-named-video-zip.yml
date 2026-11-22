@@ -1,0 +1,50 @@
+name: 剑桥雅思132篇中文文件名单一整包
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths:
+      - '.github/workflows/ielts-named-video-zip.yml'
+      - '雅思/学术阅读/tools/named_video_zip.py'
+      - '雅思/学术阅读/审校/第21至11册纯视频文件名.tsv'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: ielts-academic-reading-21-11-single-zip
+  cancel-in-progress: false
+env:
+  GH_REPO: ${{ github.repository }}
+  GH_TOKEN: ${{ github.token }}
+  PYTHONUNBUFFERED: '1'
+jobs:
+  single-zip:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - name: 为一个完整的 ZIP64 和单篇缓存留足临时磁盘
+        run: |
+          set -euo pipefail
+          free=$(df -B1 --output=avail "$RUNNER_TEMP" | tail -1)
+          if (( free < 15500000000 )); then
+            sudo rm -rf /usr/local/lib/android/sdk
+          fi
+          df -h "$RUNNER_TEMP"
+      - name: 核对中文篇名，顺序打包并逐个核对132个MP4
+        run: python '雅思/学术阅读/tools/named_video_zip.py' build "$RUNNER_TEMP/reading"
+      - name: 上传原始单个ZIP，保留原有中文文件名和顺序
+        id: delivery
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          path: ${{ runner.temp }}/reading/Cambridge-IELTS-21-11-132-Videos.zip
+          archive: false
+          if-no-files-found: error
+          retention-days: 90
+      - name: 从GitHub回下载完整文件、校验摘要并发布一个整包下载入口
+        env:
+          ARTIFACT_ID: ${{ steps.delivery.outputs.artifact-id }}
+        run: python '雅思/学术阅读/tools/named_video_zip.py' publish "$RUNNER_TEMP/reading"
