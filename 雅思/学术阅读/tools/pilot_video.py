@@ -212,11 +212,17 @@ def ielts_switch_time(audio, timing, english, cut):
             break
         # An independently checked spelling in this exact recording can still
         # have a measured onset. Require two exact words on both sides.
-        if tag == 'replace' and b-a == y-x == 1 and 0 < pos < len(operations)-1:
+        if tag == 'replace' and index == a and y-x == 1 and 0 < pos < len(operations)-1:
+            printed=' '.join(source[a:b])
+            heard=spoken[x][0]
+            if b-a>1:
+                compound='-'.join(source[a:b])
+                if not english[cut:].casefold().startswith(compound) or ''.join(source[a:b])!=heard:
+                    continue
             left, right = operations[pos-1], operations[pos+1]
             anchored = (left[0] == right[0] == 'equal' and
                         left[2]-left[1] >= 2 and right[2]-right[1] >= 2)
-            if anchored and reviewed_spelling(audio, timing, source[a], spoken[x][0]):
+            if anchored and reviewed_spelling(audio, timing, printed, heard):
                 onset = spoken[x][1]
                 break
     else:
