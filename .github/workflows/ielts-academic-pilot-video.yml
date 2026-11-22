@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 160
     env:
       GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
       STAGING: ielts-academic-pilot-production
       FINAL: ielts-academic-20-test-1-passage-1-pilot
       TARGET: 雅思/学术阅读
@@ -75,6 +76,18 @@ jobs:
       - name: 六级4K成片渲染与逐屏、逐句核验
         if: steps.cfg.outputs.stage == 'video'
         run: /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" video
+      - name: 独立核对配音合格证，保存已经核验的成片
+        if: steps.cfg.outputs.stage == 'video'
+        run: python .github/check-audio-cert.py "$TARGET/audio"
+      - uses: actions/upload-artifact@v4
+        if: steps.cfg.outputs.stage == 'video'
+        with:
+          name: C20T1P1-verified-video
+          path: |
+            雅思/学术阅读/最终视频/*.mp4
+            雅思/学术阅读/样片/成品核查/*.json
+          compression-level: 0
+          if-no-files-found: error
       - name: 发布单篇样片并回下载核对
         if: steps.cfg.outputs.stage == 'video'
         run: |
