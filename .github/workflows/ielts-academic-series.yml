@@ -185,7 +185,7 @@ jobs:
           set -euo pipefail
           case "${STAGING#ielts-academic-cache-}" in
             20-11) exit 0 ;;
-            21) part=21-11 ;;
+            21) exit 0 ;; # 第21至11册通过纯视频工作流发布。
             10-1) part=10-1 ;;
             *) exit 1 ;;
           esac

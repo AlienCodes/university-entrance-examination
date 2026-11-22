@@ -1,0 +1,82 @@
+name: 剑桥雅思第21至11册纯视频发布
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-video-release.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ielts-academic-video-release-21-11
+  cancel-in-progress: false
+env:
+  GH_REPO: ${{ github.repository }}
+  GH_TOKEN: ${{ github.token }}
+  VIDEO_RELEASE: ielts-academic-reading-21-11-videos
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    outputs:
+      pending: ${{ steps.plan.outputs.pending }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+          filter: blob:none
+      - id: plan
+        run: |
+          set -euo pipefail
+          test "$(jq -r .part .github/ielts-video-release.json)" = 21-11
+          if ! gh release view "$VIDEO_RELEASE" >/dev/null 2>&1; then
+            gh release create "$VIDEO_RELEASE" --draft --target "$GITHUB_SHA" --title '剑桥雅思学术阅读精读视频 · 第21～11册' --notes '正在按顺序归档视频。'
+          fi
+          echo "pending=$(gh release view "$VIDEO_RELEASE" --json isDraft --jq .isDraft)" >> "$GITHUB_OUTPUT"
+  book:
+    needs: select
+    if: needs.select.outputs.pending == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 11
+      matrix:
+        book: [21,20,19,18,17,16,15,14,13,12,11]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - name: 上传单篇视频、整册纯视频包并回下载逐篇核验
+        env:
+          BOOK: ${{ matrix.book }}
+        run: |
+          set -euo pipefail
+          if [[ "$BOOK" == 21 ]]; then
+            python - <<'PY'
+          import sys, time
+          sys.path.insert(0, '雅思/学术阅读/tools')
+          from video_edition import PROJECT, current_key, inventory, lesson_ids, stage
+          for attempt in range(60):
+              inventory.cache_clear()
+              assets = inventory(stage(21))
+              missing = [p for p in lesson_ids([21]) if f'{p}-{current_key(PROJECT,p)[:16]}.zip' not in assets]
+              if not missing:
+                  break
+              print('等待第21册成片', missing, flush=True)
+              time.sleep(30)
+          else:
+              raise SystemExit('第21册成片尚未全部入库')
+          PY
+          fi
+          python '雅思/学术阅读/tools/video_edition.py' book "$RUNNER_TEMP/edition" --book "$BOOK"
+  publish:
+    needs: [select, book]
+    if: needs.select.outputs.pending == 'true'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - name: 全量核对132个MP4、11个纯视频包及其逐篇顺序后公开
+        run: python '雅思/学术阅读/tools/video_edition.py' publish "$RUNNER_TEMP/edition"
