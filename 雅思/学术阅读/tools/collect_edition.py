@@ -18,6 +18,7 @@ from release_assets import fetch,inventory
 
 LIMIT = 1_850_000_000
 PILOT_TAG = 'ielts-academic-20-test-1-passage-1-pilot'
+SCREEN_REPORTS = ('分屏核对.json','visual-review.json')
 
 
 def hash_file(file):
@@ -53,6 +54,8 @@ def unpack_lesson(pid,cache,folder):
             raise ValueError('The published pilot must include the revised teaching material')
         if rep['指纹']!=read(PROJECT/'篇目'/pid/'visual-review.json')['fingerprint']:
             raise ValueError('Pilot release does not correspond to its latest approved visual review')
+        for name in SCREEN_REPORTS:
+            shutil.copyfile(PROJECT/'篇目'/pid/name,folder/name)
         row=dict(lesson=pid,title='The kākāpō',title_zh='鸮鹦鹉',content_sha256=content['text_sha256'],
                  video_sha256=sha(video),pdf_sha256=sha(pdf),pages=rep['pdf']['pages'],video_seconds=rep['duration'])
     else:
@@ -67,6 +70,8 @@ def unpack_lesson(pid,cache,folder):
                 raise ValueError(f'{pid}: an earlier glossary or split in release archive')
             for name in (pid+'.mp4',pid+'.pdf','verification.json'):
                 with media.open(name) as f,(folder/name).open('wb') as dest:shutil.copyfileobj(f,dest,1<<20)
+            for name in SCREEN_REPORTS:
+                (folder/name).write_bytes(media.read('source/'+name))
         archive.unlink();video=folder/(pid+'.mp4');pdf=folder/(pid+'.pdf');rep=read(folder/'verification.json');row=rep['receipt']
         if row['lesson']!=pid or row['content_sha256']!=read(PROJECT/'篇目'/pid/'content-review.json')['text_sha256']:
             raise ValueError(f'{pid}: package is obsolete or mismatched')
@@ -87,7 +92,8 @@ def build_book(book,cache,out):
                 for passage in range(1,4):
                     pid=f'C{book}T{test}P{passage}';folder=td/pid;folder.mkdir()
                     video,pdf,row=unpack_lesson(pid,cache,folder)
-                    newsize=video.stat().st_size+pdf.stat().st_size
+                    reports=[folder/name for name in ('verification.json',*SCREEN_REPORTS)]
+                    newsize=sum(f.stat().st_size for f in (video,pdf,*reports))
                     if writer is None or current_size+newsize+1_000_000>LIMIT:
                         if writer is not None:writer.close()
                         path=out/f'Cambridge-IELTS-{book}-Academic-{len(packs)+1:02}.zip'
@@ -96,6 +102,8 @@ def build_book(book,cache,out):
                     row['printed_test']=source.get('printed_test',test)
                     prefix=f"Test {row['printed_test']}/Passage {passage}/{pid}"
                     writer.write(video,prefix+'.mp4');writer.write(pdf,prefix+'.pdf');current_size+=newsize
+                    for report in reports:
+                        writer.write(report,f'核验/{pid}/{report.name}',compress_type=zipfile.ZIP_DEFLATED)
                     row=dict(row,archive=packs[-1].name,path=prefix,video_bytes=video.stat().st_size,pdf_bytes=pdf.stat().st_size)
                     rows.append(row);shutil.rmtree(folder)
         finally:
@@ -129,6 +137,9 @@ def book_sources(part,catalog,out):
         if part=='20-11':
             audit=PROJECT/'审校'
             archive.write(audit/'纸本页码.json','纸本核对/纸本页码.json')
+            for report in sorted(audit.glob('*.json')):
+                if report.name!='纸本页码.json':
+                    archive.write(report,'审校/'+report.name)
             for page in sorted((audit/'sources').glob('C*/T*P*/source-pages.json')):
                 archive.write(page,'纸本核对/'+str(page.relative_to(audit)))
             for scan in sorted((audit/'书影').glob('*.png')):
@@ -164,7 +175,7 @@ def publish(part,tag,stage,out):
         for f in (table,out/'manifest.json',sums,editable):
             get(tag,f.name,Path(d))
             if sha(Path(d)/f.name)!=sha(f):raise ValueError(f.name)
-    notes=f'剑桥雅思学术阅读第 {books[0]} 至 {books[-1]} 册，共 120 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 小于 20 MB。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和纸本核对记录。'
+    notes=f'剑桥雅思学术阅读第 {books[0]} 至 {books[-1]} 册，共 120 篇。按册下载 ZIP，每篇包含 4K 精读视频和直接从视频截帧的手机讲义，每份 PDF 小于 20 MB。每册 ZIP 的“核验”目录保存了各篇的成片、画面及换屏时间记录。contents.csv 列出每篇标题、纸本 Test 编号、时长、页数和下载包。Editable.zip 收录全部逐篇可编辑译稿、词汇、分屏和纸本核对记录。'
     subprocess.run(['gh','release','edit',tag,'--draft=false','--latest=false','--notes',notes],check=True)
 
 
