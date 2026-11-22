@@ -134,10 +134,22 @@ def ielts_switch_time(audio, timing, english, cut):
     source = speech_tokens(english)
     index = len(speech_tokens(english[:cut]))
     matches = difflib.SequenceMatcher(None, source, [w for w,_ in spoken], autojunk=False)
-    for block in matches.get_matching_blocks():
-        if block.a <= index < block.a + block.size:
-            onset = spoken[block.b + index - block.a][1]
+    operations = matches.get_opcodes()
+    for pos, (tag, a, b, x, y) in enumerate(operations):
+        if not a <= index < b:
+            continue
+        if tag == 'equal':
+            onset = spoken[x + index - a][1]
             break
+        # A single close ASR spelling of a name (e.g. Waibel / Weibel) can
+        # still have a measured onset. Require two exact words on both sides.
+        if tag == 'replace' and b-a == y-x == 1 and 0 < pos < len(operations)-1:
+            left, right = operations[pos-1], operations[pos+1]
+            anchored = (left[0] == right[0] == 'equal' and
+                        left[2]-left[1] >= 2 and right[2]-right[1] >= 2)
+            if anchored and difflib.SequenceMatcher(None, source[a], spoken[x][0]).ratio() >= .75:
+                onset = spoken[x][1]
+                break
     else:
         raise ValueError(f'读音中未定位到下一屏的开头：{english[cut:cut+45]}')
 
