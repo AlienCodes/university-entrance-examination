@@ -20,6 +20,7 @@ jobs:
           sparse-checkout: |
             .github
             雅思/学术阅读/原稿
+            雅思/学术阅读/备课
       - id: plan
         run: |
           python - <<'PY'
@@ -30,7 +31,9 @@ jobs:
           for pid in q['lessons']:
               m=re.fullmatch(r'C(\d+)T[1-4]P[1-3]',pid)
               assert m and (11<=int(m[1])<=20 if q['part']=='20-11' else 1<=int(m[1])<=10)
-              assert (Path('雅思/学术阅读/原稿')/(pid+'.json')).is_file()
+              source=json.loads((Path('雅思/学术阅读/原稿')/(pid+'.json')).read_text())
+              assert source.get('source_status','').startswith('已逐篇')
+              assert (Path('雅思/学术阅读/备课')/(pid+'.json')).is_file()
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:
               print('units='+json.dumps(q['lessons']),file=f)
               print('tag=ielts-academic-editorial-'+q['part'],file=f)
@@ -38,10 +41,11 @@ jobs:
           tag="ielts-academic-editorial-$(jq -r .part .github/ielts-series-text.json)"
           gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_REF_NAME" --prerelease --title "剑桥雅思学术阅读 · 教辅初校存档" --notes '初稿与检查结果，复核后进入视频制作。'
       - uses: ./.github/actions/ielts-local-editor
+      - uses: ./.github/actions/ielts-translation
   draft:
     needs: plan
     runs-on: ubuntu-24.04
-    timeout-minutes: 165
+    timeout-minutes: 275
     strategy:
       max-parallel: 18
       fail-fast: false
@@ -60,22 +64,43 @@ jobs:
             .github
             雅思/学术阅读
       - uses: ./.github/actions/ielts-local-editor
+      - uses: ./.github/actions/ielts-translation
       - name: 在运行器上离线起草与独立上下文复读
         run: |
           set -euo pipefail
+          LD_LIBRARY_PATH="$(dirname "$IELTS_MT_BIN")" "$IELTS_MT_BIN" -m "$IELTS_MT_MODEL" -t 4 -c 2200 --parallel 1 -ngl 0 --host 127.0.0.1 --port 8124 > "$RUNNER_TEMP/translation.log" 2>&1 &
+          translator=$!
           export LD_LIBRARY_PATH="$(dirname "$IELTS_EDITOR_BIN"):${LD_LIBRARY_PATH:-}"
           "$IELTS_EDITOR_BIN" -m "$IELTS_EDITOR_MODEL" -t 4 -c 10000 -np 1 -ngl 0 --host 127.0.0.1 --port 8123 --log-disable > "$RUNNER_TEMP/llama.log" 2>&1 &
           server=$!
-          trap 'kill "$server" 2>/dev/null || true' EXIT
+          trap 'kill "$server" "$translator" 2>/dev/null || true' EXIT
           for i in {1..60}; do
-            if curl -fsS http://127.0.0.1:8123/health >/dev/null; then break; fi
+            if curl -fsS http://127.0.0.1:8123/health >/dev/null && curl -fsS http://127.0.0.1:8124/health >/dev/null; then break; fi
             if ! kill -0 "$server"; then tail -50 "$RUNNER_TEMP/llama.log"; exit 1; fi
             sleep 2
+          done
+          mkdir -p "$RUNNER_TEMP/$PID"
+          src=$(sha256sum "雅思/学术阅读/原稿/$PID.json" | cut -c1-16)
+          for checkpoint in translation-progress draft-progress; do
+            saved="$PID-$src-$checkpoint.json"
+            if gh release download "$TAG" -p "$saved" -D "$RUNNER_TEMP" 2>/dev/null; then cp "$RUNNER_TEMP/$saved" "$RUNNER_TEMP/$PID/$checkpoint.json"; fi
           done
           python -u '雅思/学术阅读/tools/draft_lesson.py' "雅思/学术阅读/原稿/$PID.json" "$RUNNER_TEMP/$PID"
           cd "$RUNNER_TEMP"
           python -m zipfile -c "$PID-draft.zip" "$PID"
           gh release upload "$TAG" "$PID-draft.zip" --clobber
+      - if: failure()
+        name: 按原稿版本保存可恢复的审校进度
+        run: |
+          src=$(sha256sum "雅思/学术阅读/原稿/$PID.json" | cut -c1-16)
+          for key in translation-progress draft-progress; do
+            f="$RUNNER_TEMP/$PID/$key.json"
+            if test -s "$f"; then
+              save="$RUNNER_TEMP/$PID-$src-$key.json"
+              cp "$f" "$save"
+              gh release upload "$TAG" "$save" --clobber
+            fi
+          done
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

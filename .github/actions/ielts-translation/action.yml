@@ -1,0 +1,28 @@
+name: 英汉学术阅读离线翻译
+description: Verify the independently trained local translation model and native inference server
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v4
+      id: cache
+      with:
+        path: ${{ runner.temp }}/ielts-translation
+        key: ielts-hymt15-18b-q80-b8826-v1
+    - if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        d="$RUNNER_TEMP/ielts-translation"
+        mkdir -p "$d"
+        curl --fail --silent --show-error --location --retry 4 --retry-all-errors --max-time 1150 'https://huggingface.co/tencent/HY-MT1.5-1.8B-GGUF/resolve/265b2e615a7dc9b06c435dc878829ad99a512ba2/HY-MT1.5-1.8B-Q8_0.gguf?download=true' -o "$d/mt.gguf"
+        curl --fail --silent --show-error --location --retry 4 'https://github.com/ggml-org/llama.cpp/releases/download/b8826/llama-b8826-bin-ubuntu-x64.tar.gz' -o "$d/server.tar.gz"
+        (cd "$d" && echo '77dbfc6142b1ec9e4a48e853c0cd6b727c3ec6d88b806a9feb6cf650dcdc9e7a  server.tar.gz' | sha256sum -c -)
+        tar xzf "$d/server.tar.gz" -C "$d"
+        rm "$d/server.tar.gz"
+    - shell: bash
+      run: |
+        d="$RUNNER_TEMP/ielts-translation"
+        (cd "$d" && echo '6789b06d0902f2f5312c0e1703d56ccbddfcfb6c653d22519b7c720f7db9a98e  mt.gguf' | sha256sum -c -)
+        test -x "$d/llama-b8826/llama-server"
+        echo "IELTS_MT_BIN=$d/llama-b8826/llama-server" >> "$GITHUB_ENV"
+        echo "IELTS_MT_MODEL=$d/mt.gguf" >> "$GITHUB_ENV"
