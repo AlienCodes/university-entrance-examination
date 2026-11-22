@@ -119,7 +119,7 @@ jobs:
           cmp "$MEDIA" "mp4-verify/$MEDIA"
           cmp verification.json mp4-verify/verification.json
           gh release edit "$FINAL" --draft=false --latest=false
-      - name: 从已发布的 4K 成片逐屏截帧，逐页核对像素并附上讲义
+      - name: 从已发布的 4K 成片逐屏截帧并核对轻量讲义
         if: steps.cfg.outputs.stage == 'video'
         run: |
           set -euo pipefail
@@ -132,4 +132,4 @@ jobs:
           gh release upload "$FINAL" Reading-notes.pdf verification.json SHA256SUMS --clobber
           gh release download "$FINAL" --dir mp4-verify --pattern Reading-notes.pdf --pattern verification.json --pattern SHA256SUMS --clobber
           (cd mp4-verify && sha256sum -c SHA256SUMS)
-          gh release edit "$FINAL" --latest=false --notes '剑桥雅思 20 学术类 · Test 1 Passage 1《The kākāpō 鸮鹦鹉》。完整 4K 精读视频，时长 6 分 21 秒。全篇 51 句，47 句一屏读完，4 句按意群分屏，共收录 215 个不同的词与搭配。Reading-notes.pdf 含 57 页，每页直接从同一 MP4 截帧，已逐页核对全部像素。'
+          gh release edit "$FINAL" --latest=false --notes '剑桥雅思 20 学术类 · Test 1 Passage 1《The kākāpō 鸮鹦鹉》。完整 4K 精读视频，时长 6 分 21 秒。全篇 51 句，47 句一屏读完，4 句按意群分屏，共收录 215 个不同的词与搭配。Reading-notes.pdf 含 57 页，每页直接从同一 MP4 截帧并压缩，全册讲义小于 20 MB。'

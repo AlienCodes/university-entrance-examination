@@ -1,0 +1,37 @@
+name: 剑20首篇讲义手机压缩版
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-repack-pilot.txt']
+permissions:
+  contents: write
+jobs:
+  compact:
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ielts-academic-20-test-1-passage-1-pilot
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 从已发布成片导出轻量讲义
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install -q Pillow==11.3.0 img2pdf==0.6.3 PyMuPDF==1.26.6
+          mkdir -p "$RUNNER_TEMP/pilot"
+          gh release download "$TAG" --pattern '*.mp4' --pattern verification.json --dir "$RUNNER_TEMP/pilot"
+          python '雅思/学术阅读/tools/repack_pilot.py' "$RUNNER_TEMP/pilot"
+          cd "$RUNNER_TEMP/pilot"
+          sha256sum -c SHA256SUMS
+          gh release upload "$TAG" Reading-notes.pdf verification.json SHA256SUMS --clobber
+          mkdir verified
+          gh release download "$TAG" -p Reading-notes.pdf -p verification.json -p SHA256SUMS --dir verified
+          for f in Reading-notes.pdf verification.json SHA256SUMS; do cmp "$f" "verified/$f"; done
+          gh release edit "$TAG" --latest=false --notes "剑桥雅思 20 学术类 Test 1 Passage 1《The kākāpō 鸮鹦鹉》。4K 精读视频时长 6 分 21 秒。全篇 51 句、215 个不同词和搭配。Reading-notes.pdf 含 57 页，直接从同一 MP4 逐屏截帧并压缩，讲义小于 20 MB。06:06 的栖息地词汇在第 56 页。"

@@ -1,19 +1,14 @@
-"""Export one full-bleed, lossless PDF page from the middle of each final video screen."""
+"""Export one size-limited, full-bleed PDF page from the middle of each final video screen."""
 import argparse
-import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
-import tempfile
 
-import img2pdf
-import pymupdf
 from PIL import Image
+from compact_notes import write_compact
 from lesson import LESSON, PID, PROJECT, save
 
 FPS = 30
-PAGE = (960, 540)
 
 
 def screen_frames(timing, frame_count, splits):
@@ -55,50 +50,6 @@ def video_images(video, pages, width, height):
                 proc.kill()
 
 
-def verify_pdf(filename, records, dimensions):
-    with pymupdf.open(filename) as pdf:
-        if len(pdf) != len(records):
-            raise ValueError('PDF page count differs from the screen count')
-        for page,record in zip(pdf,records):
-            images = page.get_images(full=True)
-            if len(images) != 1 or page.get_text().strip() or tuple(page.rect)[2:] != PAGE:
-                raise ValueError(f"Unexpected PDF content or page size on page {record['page']}")
-            xref = images[0][0]
-            boxes = page.get_image_rects(xref)
-            if len(boxes) != 1 or max(abs(a-b) for a,b in zip(boxes[0],page.rect)) > .01:
-                raise ValueError(f"Page {record['page']} is cropped or contains margins")
-            pix = pymupdf.Pixmap(pdf,xref)
-            if (pix.width,pix.height) != dimensions or pix.n != 3 or hashlib.sha256(pix.samples_mv).hexdigest() != record['rgb_sha256']:
-                raise ValueError(f"Page {record['page']} pixels differ from its source frame")
-
-
-def write_pages(frames, output, dimensions):
-    records = []
-    with tempfile.TemporaryDirectory(dir=output.parent) as tmp:
-        tmp = Path(tmp)
-        images = []
-        for im,entry in frames:
-            record = dict(entry)
-            if im.size != dimensions or im.mode != 'RGB':
-                raise ValueError(f'Unexpected source image on page {len(images)+1}')
-            record['rgb_sha256'] = hashlib.sha256(im.tobytes()).hexdigest()
-            path = tmp/f"page-{record['page']:03}.png"
-            im.save(path,format='PNG',compress_level=3)
-            im.close()
-            images.append(str(path))
-            records.append(record)
-        if not images:
-            raise ValueError('No video screens')
-        candidate = tmp/'screens.pdf'
-        with candidate.open('wb') as dest:
-            img2pdf.convert(*images,outputstream=dest,engine=img2pdf.Engine.internal,
-                            layout_fun=img2pdf.get_layout_fun(pagesize=PAGE,fit=img2pdf.FitMode.exact),
-                            title='剑桥雅思20 · The kākāpō · 逐屏精读',nodate=True)
-        verify_pdf(candidate,records,dimensions)
-        os.replace(candidate,output)
-    return records
-
-
 def main(video, output, proof, timings):
     probe = subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_streams','-of','json',str(video)])
     v = json.loads(probe)['streams'][0]
@@ -111,10 +62,9 @@ def main(video, output, proof, timings):
     review = json.loads((PROJECT/'样片/review.json').read_text())
     if [x['screen'] for x in pages] != [x['label'] for x in review['screens']]:
         raise ValueError('PDF sequence differs from the approved video screens')
-    records = write_pages(video_images(video,pages,*size),output,size)
-    save(proof,{'pages':len(records),'source':'final_mp4','pixel_dimensions':size,'layout':'16:9, full bleed',
-                'rgb_pixels_identical_on_every_page':True,'frames':records})
-    print(f'{len(records)} pages, all full-frame pixels match the final MP4',flush=True)
+    info = write_compact(video_images(video,pages,*size),output,f'{PID} · 逐屏精读')
+    save(proof,info)
+    print(f"{info['pages']} screens, {info['bytes']:,} bytes",flush=True)
 
 
 if __name__ == '__main__':
