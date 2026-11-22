@@ -78,6 +78,7 @@ def certified_audio(passage,config,engine,reader,dest):
     cleaned=set()
     flagged=set()
     breaths=set()
+    quiet_clauses=set()
 
     def synth(read,key,engine,pron,style,speed,settings):
         adjusted=speed*rates.get(key,1.0)
@@ -88,11 +89,10 @@ def certified_audio(passage,config,engine,reader,dest):
         return cache[take]
 
     def render():
-        return cet.G.render_passage(passage,cet.VOICE,config,engine,reader,dest,sentence_synth=synth)
+        return cet.G.render_passage(passage,cet.VOICE,config,engine,reader,dest,
+                                    sentence_synth=synth,quiet_clauses=quiet_clauses)
 
     for factor in (1.00,1.00,1.015,.98,1.035,.96):
-        if flagged and not breaths and factor==1.00:
-            continue
         cleaned.update(breaths)
         for key in flagged:
             rates[key]=factor
@@ -100,14 +100,16 @@ def certified_audio(passage,config,engine,reader,dest):
             result=cet.with_level_fallback(PID,render)
             result['sentence_speed_adjustments']=rates.copy()
             result['pre_level_debreath']=sorted(cleaned)
+            if quiet_clauses:
+                result['adjusted_clause_endings']=sorted(quiet_clauses)
             return result
         except cet.G.AudioVerificationError as failure:
             breaths=affected_sentences(failure) if failure.report.get('breath_count') else set()
-            # The native final check identifies the exact sentence whose
-            # last vowel fades too far. Give that sentence another natural
-            # take and subject the encoded passage to the same checks.
-            soft_tails={f'{PID}:{k}' for k in re.findall(r'第(\d+)句第\d+段末尾（',str(failure))}
-            flagged=breaths|soft_tails
+            # Rebalance only the endings that the encoded-audio check flagged.
+            # Subsequent takes and the finished video use the original limits.
+            endings={(int(k),int(j)) for k,j in re.findall(r'第(\d+)句第(\d+)段末尾（',str(failure))}
+            quiet_clauses.update(endings)
+            flagged=breaths|{f'{PID}:{k}' for k,j in endings}
             if not flagged or factor==.96:
                 raise
             print('按原音色重读未通过换气或段尾响度检查的句子：',sorted(flagged),flush=True)

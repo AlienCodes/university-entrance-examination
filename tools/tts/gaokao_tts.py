@@ -504,12 +504,22 @@ def clause_trim(a, parts, sr=OUT_SR, rng=3.0):
     return (a * 10 ** (g / 20)).astype(np.float32)
 
 
-def master(a, target_lufs=-16.0, peak_db=-1.5, parts=None):
+def master(a, target_lufs=-16.0, peak_db=-1.5, parts=None, quiet_endings=()):
     """母带处理：重采样到 48k → 压缩 → 意群间再统一（parts，踩坑 85）→ 统一响度到 target_lufs → 前瞻限幅。"""
     import soxr
     import pyloudnorm as pyln
     a = soxr.resample(a, SR, OUT_SR, quality='VHQ').astype(np.float32)
     a = compress(a, OUT_SR)
+    for begin, end in quiet_endings:
+        # Ride the recorded phrase ending after compression, before loudness
+        # matching and the peak limiter. Ease the gain in and out smoothly.
+        first = round(max(begin, end - 1.25) * OUT_SR)
+        last = round(end * OUT_SR)
+        time_left = (last - np.arange(first, last)) / OUT_SR
+        attack = np.clip((1.25 - time_left) / .8, 0, 1)
+        release = np.minimum(time_left / .02, 1)
+        envelope = attack**2 * (3 - 2 * attack) * release
+        a[first:last] *= 10 ** (1.5 * envelope / 20)
     if parts:
         a = clause_trim(a, parts)
     meter = pyln.Meter(OUT_SR)
@@ -606,7 +616,8 @@ class AudioVerificationError(RuntimeError):
         self.report=report
 
 
-def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=print, sentence_synth=None):
+def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=print,
+                   sentence_synth=None, quiet_clauses=()):
     sentence_synth = sentence_synth or synth_sentence
     style = engine.style(vcfg['style'])
     speed = vcfg.get('speed', 1.0)
@@ -631,7 +642,9 @@ def render_passage(p, voice_name, vcfg, engine, pron, out_dir, wav=False, log=pr
             pieces.append(np.zeros(int(round(g * SR)), np.float32))
             t += int(round(g * SR)) / SR
     lufs = vcfg.get('lufs', -16.0)
-    a = master(np.concatenate(pieces), lufs, parts=[pt for it in items for pt in it['parts']])   # 意群间再统一（踩坑 85）
+    quiet_endings = [items[k - 1]['parts'][j - 1] for k, j in quiet_clauses]
+    a = master(np.concatenate(pieces), lufs, parts=[pt for it in items for pt in it['parts']],
+               quiet_endings=quiet_endings)
     dip = os.environ.get('LOUDNESS_TEST_DIP')        # 双向验证用：在真实流程里把第 k 句第 j 段压低 db（如 "3:1:2"），检查必须报错、不出文件
     if dip:
         k_, j_, db_ = dip.split(':')
