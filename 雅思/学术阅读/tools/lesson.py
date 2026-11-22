@@ -29,12 +29,12 @@ def load():
                 spans = list(re.finditer(r'(?<!\w)' + re.escape(phrase) + r'(?!\w)', en, re.I))
                 if not spans:
                     raise ValueError(f'{phrase}: {en}')
-                begin, end = spans[0].span()  # Introduce a repeated word at its first occurrence.
-                char_range = set(range(begin, end))
+                positions = [list(match.span()) for match in spans]
+                char_range = {i for begin, end in positions for i in range(begin, end)}
                 if occupied.intersection(char_range): raise ValueError(entry)
                 occupied.update(char_range)
                 words.append(dict(t='phr' if ' ' in phrase else 'core',
-                                  h=meta['lemmas'].get(phrase,phrase.lower()),m=meaning,sp=[[begin,end]]))
+                                  h=meta['lemmas'].get(phrase,phrase.lower()),m=meaning,sp=positions))
             rows.append(dict(en=en, zh=zh, w=words))
         paragraphs.append(rows)
     return dict(id=PID,paper='剑桥雅思 20 · Test 1',passage='Passage 1 · The kākāpō',

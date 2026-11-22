@@ -23,6 +23,24 @@ engine.PROJECTS[PROJECT_ID] = {
 }
 engine.set_project(PROJECT_ID)
 
+def visible_words(sentence, lo, hi):
+    words = []
+    for word in sentence['w']:
+        spans = [[a, b] for a, b in word['sp'] if lo <= a and b <= hi]
+        if spans:
+            words.append({**word, 'sp': spans})
+    return sorted(words, key=lambda word: word['sp'][0][0])
+
+cet_sentence_slide = engine.sentence_slide
+
+def ielts_sentence_slide(p, sentence, k, n, part=None):
+    if part:
+        lo, hi = part[:2]
+        sentence = {**sentence, 'w': visible_words(sentence, lo, hi)}
+    return cet_sentence_slide(p, sentence, k, n, part)
+
+engine.sentence_slide = ielts_sentence_slide
+
 def prepare():
     p = load()
     p['year'] = 2025   # Publication year of Cambridge IELTS 20; required by shared video QA.
@@ -47,7 +65,13 @@ def screen_text(page):
       };
       return {
         en:textWithout('.en','sup,.cont'), zh:document.querySelector('.zh').textContent,
-        glosses:[...document.querySelectorAll('.v .g')].map(e=>e.textContent)
+        glosses:[...document.querySelectorAll('.v .g')].map(e=>e.textContent),
+        heads:[...document.querySelectorAll('.v b')].map(e=>e.textContent),
+        numbers:[...document.querySelectorAll('.v em')].map(e=>e.textContent),
+        labels:[...document.querySelectorAll('.en sup')].map(e=>e.textContent),
+        forms:[...document.querySelectorAll('.en .w, .en .ph')].map(e=>{
+          const c=e.cloneNode(true); c.querySelectorAll('sup,x-ps').forEach(n=>n.remove()); return c.textContent;
+        })
       };
     }""")
 
@@ -58,16 +82,21 @@ def expected_screens(p):
     result=[]
     for number,s in enumerate((s for para in p['paras'] for s in para),1):
         for lo, hi, zh, _ in engine.split_parts(PID,number,s):
-            selected=[w for w in engine.ordered(s) if any(lo<=a and b<=hi for a,b in w['sp'])]
+            selected=visible_words(s,lo,hi)
             glosses=[w['m'] for w in selected]
             glosses=[engine.POS.match(t).group(2) if engine.POS.match(t) else t for t in glosses]
-            result.append(dict(en=s['en'][lo:hi],zh=zh,glosses=glosses))
+            numbers=[str(i) for i in range(1,len(selected)+1)]
+            spans=sorted((a,b) for w in selected for a,b in w['sp'])
+            labels=[str(i) for _,i in sorted((word['sp'][-1][0],i) for i,word in enumerate(selected,1))]
+            result.append(dict(en=s['en'][lo:hi],zh=zh,glosses=glosses,
+                               heads=[w['h'] for w in selected],numbers=numbers,labels=labels,
+                               forms=[s['en'][a:b] for a,b in spans]))
     return result
 
 def reference_errors(page, expected, label):
     got=screen_text(page)
     errors=[]
-    for k in ('en','zh','glosses'):
+    for k in expected:
         a,b=got[k],expected[k]
         a,b=([normalized(x) for x in z] if isinstance(z,list) else normalized(z) for z in (a,b))
         if a!=b: errors.append(f'{label} {k}: 实测 {a!r}，定稿 {b!r}')
