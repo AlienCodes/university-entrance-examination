@@ -76,7 +76,8 @@ jobs:
           src=$(sha256sum "雅思/学术阅读/原稿/$PID.json" | cut -c1-16)
           for checkpoint in translation-progress draft-progress; do
             saved="$PID-$src-$checkpoint.json"
-            if gh release download "$TAG" -p "$saved" -D "$RUNNER_TEMP" 2>/dev/null; then cp "$RUNNER_TEMP/$saved" "$RUNNER_TEMP/$PID/$checkpoint.json"; fi
+            python '雅思/学术阅读/tools/release_assets.py' "$TAG" "$saved" "$RUNNER_TEMP" --if-present
+            if [[ -s "$RUNNER_TEMP/$saved" ]]; then cp "$RUNNER_TEMP/$saved" "$RUNNER_TEMP/$PID/$checkpoint.json"; fi
           done
           bash .github/run-ielts-editors.sh python -u '雅思/学术阅读/tools/draft_lesson.py' "雅思/学术阅读/原稿/$PID.json" "$RUNNER_TEMP/$PID"
           cd "$RUNNER_TEMP"

@@ -1,5 +1,7 @@
 """Read all release assets, including pages beyond GitHub's first hundred."""
 from functools import lru_cache
+import argparse
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -15,11 +17,33 @@ def inventory(tag,repo=None):
 
 
 def fetch(asset,folder):
-    dest=Path(folder)/asset['name']
+    folder=Path(folder)
+    folder.mkdir(parents=True,exist_ok=True)
+    dest=folder/asset['name']
     tmp=dest.with_suffix(dest.suffix+'.partial')
     with tmp.open('wb') as f:
         subprocess.run(['gh','api','-H','Accept: application/octet-stream',asset['url']],stdout=f,check=True)
     if tmp.stat().st_size!=asset['size']:
         raise ValueError('Incomplete GitHub asset download: '+asset['name'])
+    digest=asset.get('digest')
+    if digest and digest.startswith('sha256:'):
+        with tmp.open('rb') as stream:
+            actual=hashlib.file_digest(stream,'sha256').hexdigest()
+        if actual!=digest.removeprefix('sha256:'):
+            raise ValueError('GitHub asset checksum differs: '+asset['name'])
     tmp.replace(dest)
     return dest
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('tag')
+    parser.add_argument('asset')
+    parser.add_argument('folder',type=Path)
+    parser.add_argument('--if-present',action='store_true')
+    args=parser.parse_args()
+    asset=inventory(args.tag).get(args.asset)
+    if asset is not None:
+        fetch(asset,args.folder)
+    elif not args.if_present:
+        raise SystemExit('Missing GitHub release asset: '+args.asset)

@@ -23,6 +23,7 @@ class Reader(cet.G.Pronouncer):
             text = re.sub(r'US\$(\d[\d,]*(?:\.\d+)?)',r'\1 U.S. dollars',text)
             text = re.sub(r'€(\d[\d,]*(?:\.\d+)?)',r'\1 euros',text)
             text = re.sub(r'£(\d+(?:\.\d+)?)m\b',r'\1 million pounds',text)
+            text = re.sub(r'−(?=\d)', 'minus ', text)
             text = re.sub(r'°\s*C\b',' degrees Celsius',text).replace('°',' degrees')
             text = text.replace('1/8','one eighth').replace('Nike+','Nike Plus')
             text = text.replace('varieties/breeds','varieties or breeds').replace('(=ethical)','(meaning ethical)')

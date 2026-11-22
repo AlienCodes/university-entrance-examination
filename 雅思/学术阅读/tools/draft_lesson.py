@@ -128,10 +128,22 @@ def translate(rows,topic,context,grounding=None):
                     meaning=guide['term_hints'][t['form']]
                 if meaning:
                     values.append([t['form'],t['head'],t['pos'],meaning])
-            values.extend(v.get('extras',[]))
-            terms=arranged(en,values)
+            extras=v.get('extras',[])
+            terms=arranged(en,values+extras)
             words=len(en.split())
             minimum=min(7,max(1,(len(guide['candidates'])+1)//2),max(1,(words+2)//3))
+            if len(terms)<minimum:
+                # A model may propose an entire clause as a single headword,
+                # swallowing several independently explained, useful terms.
+                # Keep concise collocations first, then the grounded entries.
+                compact=[extra for extra in extras if isinstance(extra,dict)
+                         and 1<len(extra.get('form','').split())<=4 and ' ' in extra.get('head','')]
+                for choices_for_screen in (values+compact,values):
+                    alternative=arranged(en,choices_for_screen)
+                    if len(alternative)>len(terms):
+                        terms=alternative
+                    if len(terms)>=minimum:
+                        break
             if not CJK.search(zh) or any(ch in zh for ch in '\t\n') or len(terms)<minimum:
                 errors[n]=f'请保留编号{n}，给完整中文并摘录至少{minimum}个本句中真实出现的不同词或搭配。已有{len(terms)}个可匹配。'
                 print('Review retry',n,'received',str(v)[:640],flush=True)

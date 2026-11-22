@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import zipfile
 
-from material import current_key
+from material import current_key,verify_original
 from lesson import LESSON, PID, PROJECT, TEXT, load, save
 from pilot_video import REVIEW, SHOTS, engine, expected_screens, prepare
 
@@ -17,6 +17,7 @@ def digest(p):
 
 
 def lock_review():
+    verify_original(PROJECT,PID)
     content=json.loads((LESSON/'content-review.json').read_text())
     if digest(TEXT)!=content['text_sha256']:
         raise ValueError('Reviewed lesson text changed')

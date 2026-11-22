@@ -13,7 +13,7 @@ import tempfile
 import zipfile
 
 from lesson import PROJECT
-from material import current_key,legacy_inputs_match
+from material import current_key,legacy_inputs_match,verify_original
 from release_assets import fetch,inventory
 
 LIMIT = 1_850_000_000
@@ -115,6 +115,7 @@ def book_sources(part,catalog,out):
     with zipfile.ZipFile(file,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=8) as archive:
         for row in catalog:
             pid=row['lesson']
+            verify_original(PROJECT,pid)
             original=PROJECT/'原稿'/(pid+'.json')
             folder=PROJECT/'篇目'/pid
             archive.write(original,pid+'/纸本来源.json')
@@ -125,6 +126,11 @@ def book_sources(part,catalog,out):
                 archive.write(source,pid+'/'+name)
             if sha(folder/'双语精读.tsv')!=row['content_sha256']:raise ValueError('Edited source differs from packaged video: '+pid)
         archive.write(PROJECT/'精读选词规范.md','精读选词规范.md')
+        if part=='20-11':
+            audit=PROJECT/'审校'
+            archive.write(audit/'纸本页码.json','纸本核对/纸本页码.json')
+            for page in sorted((audit/'sources').glob('C*/T*P*/source-pages.json')):
+                archive.write(page,'纸本核对/'+str(page.relative_to(audit)))
     with zipfile.ZipFile(file) as archive:
         if archive.testzip() is not None:raise ValueError('Invalid editable source archive')
     return file
