@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+"""Decode each native 4K still once. Carry its exact YUV frame through the hold."""
+import os
+import sys
+from pathlib import Path
+
+args = sys.argv[1:]
+if '-loop' in args and '-frames:v' in args and '-vf' in args and '-i' in args:
+    loop = args.index('-loop')
+    vf = args.index('-vf') + 1
+    source = Path(args[args.index('-i') + 1])
+    count = args[args.index('-frames:v') + 1]
+    if (args[loop:loop+4] == ['-loop', '1', '-framerate', '30']
+            and source.suffix.lower() == '.png' and args[vf] == 'format=yuv420p'
+            and count.isdigit() and int(count) > 0):
+        args[vf] += f',tpad=stop_mode=clone:stop={int(count)-1}'
+        del args[loop:loop+2]
+
+binary = os.environ['IELTS_SYSTEM_FFMPEG']
+os.execv(binary, [binary, *args])

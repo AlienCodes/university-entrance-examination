@@ -77,7 +77,10 @@ jobs:
         if: steps.cfg.outputs.stage == 'video'
         env:
           KEEP_FAILED: '1'
-        run: /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" video
+        run: |
+          export IELTS_SYSTEM_FFMPEG="$(command -v ffmpeg)"
+          export PATH="$PWD/$TARGET/tools/静帧编码:$PATH"
+          /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" video
       - name: 独立核对配音合格证，保存已经核验的成片
         if: steps.cfg.outputs.stage == 'video'
         run: python .github/check-audio-cert.py "$TARGET/audio"
