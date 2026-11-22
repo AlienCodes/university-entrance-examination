@@ -131,6 +131,8 @@ def book_sources(part,catalog,out):
             archive.write(audit/'纸本页码.json','纸本核对/纸本页码.json')
             for page in sorted((audit/'sources').glob('C*/T*P*/source-pages.json')):
                 archive.write(page,'纸本核对/'+str(page.relative_to(audit)))
+            for scan in sorted((audit/'书影').glob('*.png')):
+                archive.write(scan,'审校/书影/'+scan.name)
     with zipfile.ZipFile(file) as archive:
         if archive.testzip() is not None:raise ValueError('Invalid editable source archive')
     return file

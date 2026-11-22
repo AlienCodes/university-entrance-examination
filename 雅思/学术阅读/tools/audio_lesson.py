@@ -31,7 +31,14 @@ class Reader(cet.G.Pronouncer):
             for name,number in [('Charles II','Charles the Second'),('Henry VIII','Henry the Eighth'),('Amenhotep III','Amenhotep the Third'),('Napoleon III','Napoleon the Third')]:
                 text=text.replace(name,number)
             text = re.sub(r'\bc\.?\s*(?=\d{3,4}\b)', 'circa ',text)
-            text = re.sub(r'(\d{4})[–-](\d{2})(?!\d)',lambda m: m[1]+' to '+m[1][:2]+m[2],text)
+            def full_year_range(match):
+                first,suffix=match.groups()
+                scale=10**len(suffix)
+                end=int(first)//scale*scale+int(suffix)
+                if end<int(first):
+                    end+=scale
+                return f'{first} to {end}'
+            text = re.sub(r'\b(1\d{3}|20\d{2})[–-](\d{1,3})(?!\d)',full_year_range,text)
             text = re.sub(r'(\d)\s*(BC|BCE|AD)\b',r'\1 \2',text)
             text = text.replace('CO2','carbon dioxide').replace('CO₂','carbon dioxide')
             for unit,spoken in [('cm','centimetres'),('mm','millimetres'),('km','kilometres'),('kg','kilograms')]:
