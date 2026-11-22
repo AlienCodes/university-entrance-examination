@@ -149,7 +149,7 @@ def publish(part,tag,stage,out):
         if r['state']!='uploaded' or r['size']!=a['bytes'] or r['digest']!='sha256:'+a['sha256']:raise ValueError(a['name'])
     editable=book_sources(part,catalog,out)
     assets.append(dict(name=editable.name,sha256=sha(editable),bytes=editable.stat().st_size))
-    (out/'manifest.json').write_text(json.dumps(dict(part=part,source_commit=os.environ.get('GITHUB_SHA'),lessons=catalog,archives=assets),ensure_ascii=False,indent=1)+'\n')
+    (out/'manifest.json').write_text(json.dumps(dict(part=part,source_commit=os.environ.get('IELTS_SOURCE_REV',os.environ.get('GITHUB_SHA')),lessons=catalog,archives=assets),ensure_ascii=False,indent=1)+'\n')
     table=out/'contents.csv'
     with table.open('w',encoding='utf-8-sig',newline='') as f:
         writer=csv.writer(f);writer.writerow(['篇目','原书Test','英文标题','中文标题','秒','讲义页数','PDF字节','下载包','包内路径'])

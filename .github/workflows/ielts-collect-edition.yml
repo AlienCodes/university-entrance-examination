@@ -1,8 +1,19 @@
 name: 剑桥雅思学术阅读整批发布
 on:
+  workflow_call:
+    inputs:
+      part:
+        type: string
+        required: true
+      source_revision:
+        type: string
+        required: true
   push:
     branches: ['codex/ielts-academic-reading']
     paths: ['.github/ielts-release-plan.json']
+concurrency:
+  group: ielts-academic-collection-${{ inputs.part || github.ref_name }}
+  cancel-in-progress: false
 permissions:
   contents: write
 env:
@@ -14,15 +25,23 @@ jobs:
     outputs:
       books: ${{ steps.plan.outputs.books }}
       part: ${{ steps.plan.outputs.part }}
+      source_revision: ${{ steps.plan.outputs.source_revision }}
     steps:
       - uses: actions/checkout@v4
         with:
           filter: blob:none
           sparse-checkout: .github
       - id: plan
+        env:
+          SELECTED_PART: ${{ inputs.part }}
+          REQUESTED_REVISION: ${{ inputs.source_revision }}
         run: |
           set -euo pipefail
-          part=$(jq -r .part .github/ielts-release-plan.json)
+          part="$SELECTED_PART"
+          if [[ -z "$part" ]]; then part=$(jq -r .part .github/ielts-release-plan.json); fi
+          revision="${REQUESTED_REVISION:-$GITHUB_SHA}"
+          [[ "$revision" =~ ^[0-9a-f]{40}$ ]]
+          echo "source_revision=$revision" >> "$GITHUB_OUTPUT"
           case "$part" in
             20-11) books='[20,19,18,17,16,15,14,13,12,11]';;
             10-1) books='[10,9,8,7,6,5,4,3,2,1]';;
@@ -43,11 +62,13 @@ jobs:
         n: ${{ fromJSON(needs.select.outputs.books) }}
     env:
       PART: ${{ needs.select.outputs.part }}
+      IELTS_SOURCE_REV: ${{ needs.select.outputs.source_revision }}
       BOOK: ${{ matrix.n }}
     steps:
       - uses: actions/checkout@v4
         with:
           filter: blob:none
+          ref: ${{ needs.select.outputs.source_revision }}
           sparse-checkout: 雅思/学术阅读
       - run: |
           set -euo pipefail
@@ -65,9 +86,11 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       PART: ${{ needs.select.outputs.part }}
+      IELTS_SOURCE_REV: ${{ needs.select.outputs.source_revision }}
     steps:
       - uses: actions/checkout@v4
         with:
           filter: blob:none
+          ref: ${{ needs.select.outputs.source_revision }}
           sparse-checkout: 雅思/学术阅读
       - run: python '雅思/学术阅读/tools/collect_edition.py' publish "$RUNNER_TEMP/publish" --part "$PART"
