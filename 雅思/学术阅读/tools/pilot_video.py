@@ -1,5 +1,6 @@
 """Render the IELTS pilot with the original CET-6 layout and video checks."""
 import argparse
+import base64
 import difflib
 import hashlib
 import inspect
@@ -53,6 +54,16 @@ def ielts_sentence_slide(p, sentence, k, n, part=None):
         lo, hi = part[:2]
         sentence = {**sentence, 'w': visible_words(sentence, lo, hi)}
     slide = cet_sentence_slide(p, sentence, k, n, part)
+    if re.search(r'[⁰⁴-⁹₀-₉]',slide):
+        # Full Inter contains these glyphs; the Latin web subsets omit them.
+        # A unicode-range face covers both the passage and its vocabulary panel.
+        variable=Path(__file__).with_name('fonts')/'inter-notations.woff2'
+        data=base64.b64encode(variable.read_bytes()).decode('ascii')
+        slide=slide.replace("font-family:'Inter'", "font-family:'IELTS Inter Notation','Inter'")
+        face=("@font-face{font-family:'IELTS Inter Notation';font-style:normal;font-weight:100 900;"
+              "unicode-range:U+2070,U+2074-2079,U+2080-2089;src:url(data:font/woff2;base64,"+data+") format('woff2')}")
+        scope=".en,.en .w,.en .ph,.v b{font-family:'IELTS Inter Notation','Inter','ZH Regular',sans-serif}"
+        slide=slide.replace('</head>','<style>'+face+scope+'</style></head>',1)
     # Keep a dash introducing an appositive and its continuation on the same
     # line as the preceding word (e.g. "Rakiura – …").
     return re.sub(r'([\w-]+[ \u00a0]+[–—])(<span class="cont">\u00a0…</span>)',
