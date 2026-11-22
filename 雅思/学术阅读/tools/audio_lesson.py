@@ -38,6 +38,53 @@ class Reader(cet.G.Pronouncer):
         text = text.replace('1–4','one to four').replace(' – ', ' — ')
         return super().read_text(text, key)
 
+def certified_audio(passage,config,engine,reader,dest):
+    if PID=='C20T1P1':
+        return cet.render_with_fallback(passage,config,engine,reader,dest)
+    # Keep each native sentence take. A failed breath check can then be corrected
+    # by rereading only that sentence, preserving all other voice performances.
+    native_synth=cet.G.synth_sentence
+    native_check=cet.G.final_check
+    cache={}
+    rates={}
+    flagged=set()
+    def synth(read,key,engine,pron,style,speed,settings):
+        adjusted=speed*rates.get(key,1.0)
+        take=(key,read,adjusted)
+        if take not in cache:
+            cache[take]=native_synth(read,key,engine,pron,style,adjusted,settings)
+        return cache[take]
+    def check(mp3,items,target,span=None):
+        report,errors=native_check(mp3,items,target,span)
+        flagged.clear()
+        if report.get('breath_count'):
+            import io
+            import soundfile as sf
+            import 去呼吸
+            samples,sr=sf.read(io.BytesIO(mp3),dtype='float32')
+            for begin,end,level in 去呼吸.breath_check(samples,sr):
+                middle=(begin+end)/2
+                nearest=min(items,key=lambda row:max(row['start']-middle,middle-row['end'],0))
+                flagged.add(f"{PID}:{nearest['k']}")
+        return report,errors
+    cet.G.synth_sentence=synth
+    cet.G.final_check=check
+    try:
+        for factor in (1.00,1.015,.98,1.035,.96):
+            for key in flagged:
+                rates[key]=factor
+            try:
+                result=cet.render_with_fallback(passage,config,engine,reader,dest)
+                result['sentence_speed_adjustments']=rates.copy()
+                return result
+            except RuntimeError as failure:
+                if not flagged or '呼吸声' not in str(failure) or factor==.96:
+                    raise
+                print('按原音色重读检测到换气的句子：',sorted(flagged),flush=True)
+    finally:
+        cet.G.synth_sentence=native_synth
+        cet.G.final_check=native_check
+
 def main():
     passage = load()
     config = json.loads((cet.G.HERE / 'voices.json').read_text())[cet.VOICE]
@@ -45,7 +92,7 @@ def main():
     reader.lexicon.update(json.loads((LESSON / '篇目信息.json').read_text())['pronunciation'])
     passage['sents'] = [[s['en'] for s in pa] for pa in passage['paras']]
     path = PROJECT / 'audio'
-    timing = cet.render_with_fallback(passage,config,cet.G.Engine(),reader,path / cet.VOICE)
+    timing = certified_audio(passage,config,cet.G.Engine(),reader,path / cet.VOICE)
     problems = certificate_problems(timing,path / timing['file'])
     if problems: raise RuntimeError(problems)
     if [s['text'] for s in timing['sentences']] != [s for pa in passage['sents'] for s in pa]:
