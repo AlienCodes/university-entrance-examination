@@ -204,7 +204,9 @@ def publish(part,tag,out):
     for b in volumes:
         stage='ielts-academic-cache-'+production_group(b)
         name=f'book-{b}-index.json';get(stage,name,out);idx=read(out/name)
-        assert idx['book']==b and {x['lesson'] for x in idx['lessons']}=={f'C{b}T{t}P{p}' for t in range(1,5) for p in range(1,4)}
+        assert idx['book']==b and [x['lesson'] for x in idx['lessons']]==lesson_ids([b])
+        if idx['master_assets']!=master_assets(b,stage) or any(r['material_sha256']!=current_key(PROJECT,r['lesson']) for r in idx['lessons']):
+            raise ValueError(f'Book {b} was revised after its package was prepared')
         catalog+=idx['lessons'];assets+=idx['archives']
     expected=lesson_ids(volumes)
     if [x['lesson'] for x in catalog]!=expected:

@@ -175,6 +175,11 @@ jobs:
           sparse-checkout: |
             /雅思/学术阅读/tools/editions.py
             /雅思/学术阅读/tools/release_assets.py
+            /雅思/学术阅读/tools/material.py
+            /雅思/学术阅读/原稿/C21*.json
+            /雅思/学术阅读/篇目/C21*/双语精读.tsv
+            /雅思/学术阅读/篇目/C21*/篇目信息.json
+            /雅思/学术阅读/篇目/C21*/分屏.json
       - id: available
         run: |
           set -euo pipefail

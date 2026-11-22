@@ -2,6 +2,7 @@
 import argparse
 import json
 import sys
+from pathlib import Path
 
 PRODUCTION_BOOKS = {
     '20-11': tuple(range(20, 10, -1)),
@@ -33,7 +34,7 @@ def validate_lessons(group, ids):
         raise ValueError(f'Passages outside production group {group}: {sorted(extra)}')
 
 
-def missing_masters(group, inventory):
+def missing_masters(group, inventory, project=None):
     assets = inventory('ielts-academic-cache-' + group)
     missing = []
     for pid in lesson_ids(PRODUCTION_BOOKS[group]):
@@ -48,6 +49,16 @@ def missing_masters(group, inventory):
             item = assets.get('collection-21-11.C18T1P1.json')
         if not item or not item['size']:
             missing.append(pid)
+            continue
+        if group=='21' and project is not None:
+            from material import current_key
+            try:
+                edition=current_key(project,pid)
+            except FileNotFoundError:
+                missing.append(pid)
+                continue
+            if f'{pid}-{edition[:16]}.zip' not in assets:
+                missing.append(pid)
     return missing
 
 
@@ -62,7 +73,7 @@ if __name__ == '__main__':
         print(production_group(int(args.part)))
     else:
         from release_assets import inventory
-        absent = [pid for group in COLLECTIONS[args.part] for pid in missing_masters(group,inventory)]
+        absent = [pid for group in COLLECTIONS[args.part] for pid in missing_masters(group,inventory,Path(__file__).resolve().parents[1])]
         if absent:
             print('Waiting for verified masters: ' + ', '.join(absent),file=sys.stderr)
         print(str(not absent).lower())
