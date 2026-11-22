@@ -178,7 +178,23 @@ def batch_sentence_slide(p,sentence,k,n,part=None):
         p={**p,'passage':p['passage'].split(' · ',1)[0]+' · '+header['english'],'title':header['chinese']}
     return ielts_sentence_slide(p,sentence,k,n,part)
 
+def word_quotes(text):
+    # The Word transcription uses straight quotes. These one-character substitutions
+    # keep every source span and every recorded switch at its original offset.
+    text=re.sub(r"(?<=\w)'(?=\w)|(?<=s)'(?=\s)", '’', text)
+    text=re.sub(r'(^|(?<=[\s(—–]))"', '“', text).replace('"', '”')
+    return re.sub(r"(^|(?<=[\s(—–“]))'", '‘', text).replace("'", '’')
+
+
+def word_sentence_slide(p,sentence,k,n,part=None):
+    shown={**sentence,'en':word_quotes(sentence['en']),
+           'w':[{**word,'h':word_quotes(word['h'])} for word in sentence['w']]}
+    return batch_sentence_slide(p,shown,k,n,part)
+
+
 engine.sentence_slide = ielts_sentence_slide if PID=='C20T1P1' else batch_sentence_slide
+if PID.startswith('C21T'):
+    engine.sentence_slide = word_sentence_slide
 
 def speech_tokens(text):
     from textnorm import ordinal
@@ -256,6 +272,11 @@ def prepare():
         years={1:1996,2:2000,3:2002,4:2005,5:2006,6:2007,7:2009,8:2011,9:2013}
         p['year'] = int(meta.get('year',years.get(int(meta['book']),2005+int(meta['book']))))
         p['reading_header'] = meta.get('header',{})
+        if PID.startswith('C21T'):
+            p['passage']=word_quotes(p['passage'])
+            if p['reading_header']:
+                p['reading_header']={**p['reading_header'],'english':word_quotes(p['reading_header']['english'])}
+            display_code+=inspect.getsource(word_quotes)+inspect.getsource(word_sentence_slide)
         display_code += inspect.getsource(batch_sentence_slide) + inspect.getsource(ielts_zh_html) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()
     save(PROJECT / 'data/vocab.json', {'passages':[p]})
@@ -302,6 +323,7 @@ def expected_screens(p):
             for a,b in word['sp']:
                 if not any(lo <= a and b <= hi for lo,hi,_,_ in parts):
                     raise ValueError(f'第 {number} 句：分屏切断词条 {word["h"]}')
+        shown=word_quotes(s['en']) if PID.startswith('C21T') else s['en']
         for lo, hi, zh, _ in parts:
             selected=visible_words(s,lo,hi)
             if not selected:
@@ -311,9 +333,9 @@ def expected_screens(p):
             numbers=[str(i) for i in range(1,len(selected)+1)]
             spans=sorted((a,b) for w in selected for a,b in w['sp'])
             labels=[str(i) for _,i in sorted((word['sp'][-1][0],i) for i,word in enumerate(selected,1))]
-            result.append(dict(en=s['en'][lo:hi],zh=zh,glosses=glosses,
-                               heads=[w['h'] for w in selected],numbers=numbers,labels=labels,
-                               forms=[s['en'][a:b] for a,b in spans]))
+            heads=[word_quotes(w['h']) if PID.startswith('C21T') else w['h'] for w in selected]
+            result.append(dict(en=shown[lo:hi],zh=zh,glosses=glosses,
+                               heads=heads,numbers=numbers,labels=labels,forms=[shown[a:b] for a,b in spans]))
     return result
 
 def reference_errors(page, expected, label):
