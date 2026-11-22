@@ -57,6 +57,29 @@ def choose(en,doc,lex):
     # Return all candidates. The editor determines which words merit teaching on this screen.
     return [v for _,v in sorted(chosen)]
 
+def short_expression(en):
+    # These short rhetorical sentences and author bylines have no content-word POS.
+    phrases=[
+        (r'^by\b','by','prep.','由……撰写（作者署名）'),
+        (r"\bcan['’]t\b","can't",'modal.','无法'),
+        (r'\bwent really well\b','go well','phr.','进展顺利'),
+        (r'\bfrom time to time\b','from time to time','phr.','不时'),
+        (r'\band so on\b','and so on','phr.','等等'),
+        (r'\bmake it\b','make it','phr.','做到；成功'),
+        (r'\bmean for\b','mean for','phr.','对……意味着'),
+        (r'\bno-no\b','no-no','n.','禁忌'),
+        (r'\bamongst\b','amongst','prep.','在……之中'),
+        (r'\bwhy\b','why','adv.','为什么'),
+        (r'\bwhat\b','what','pron.','什么'),
+    ]
+    for expression,lemma,pos,meaning in phrases:
+        match=re.search(expression,en,re.I)
+        if match:
+            form=match.group()
+            return [{'form':form,'head':lemma,'pos':pos,'dictionary':meaning}],{form:meaning}
+    return [],{}
+
+
 
 def main(inputs,out,lexicon):
     import spacy
@@ -73,6 +96,9 @@ def main(inputs,out,lexicon):
             for en in g:
                 candidates=choose(en,docs[en],lex)
                 hints={a:b for a,b in TEACHING_TERMS.items() if re.search(r'(?<!\w)'+re.escape(a)+r'(?!\w)',en,re.I)}
+                if not candidates:
+                    candidates,extra=short_expression(en)
+                    hints.update(extra)
                 rows.append({'en':en,'candidates':candidates,'term_hints':hints})
         obj={'lesson':d['id'],'rows':rows}
         (out/(d['id']+'.json')).write_text(json.dumps(obj,ensure_ascii=False,separators=(',',':'))+'\n')
