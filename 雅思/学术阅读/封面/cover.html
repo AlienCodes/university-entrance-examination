@@ -1,67 +1,56 @@
 <!doctype html>
-<html lang="zh-CN">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>剑桥雅思学术阅读 · B站视频封面</title>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>搞定所有雅思单词 · 雅思阅读真题</title>
 <style>
-* {box-sizing:border-box}
-:root {--ink:#102e28; --paper:#fffbec; --yellow:#ffe05d; --soft:#d5e3d2}
-html,body {margin:0;width:100%;height:100%;overflow:hidden}
-body {font-family:"Noto Sans CJK SC","Source Han Sans SC",sans-serif}
-main {width:100vw;height:100vh;position:relative;isolation:isolate;overflow:hidden;
-  background:radial-gradient(ellipse at 82% 43%,#367961 0%,#205744 26%,transparent 60%),
-             linear-gradient(113deg,#092f29 0%,#103e33 56%,#174734 100%); color:var(--paper)}
-main::before {content:"";position:absolute;inset:0;z-index:-1;opacity:.33;
-  background:repeating-linear-gradient(116deg,transparent 0 2px,rgba(250,246,216,.028) 3px,transparent 4px)}
-main::after {content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:#f5dc73}
-.book {position:absolute;width:43%;right:1%;top:12.8%;filter:drop-shadow(0 21px 24px rgba(2,23,16,.42))}
-.copy {position:absolute;left:6.1%;top:0;bottom:0;width:58%;z-index:1}
-.kicker {position:absolute;top:9.4%;left:0;display:flex;align-items:center;gap:23px;margin:0;
-  color:#f4f5e6;font-size:48px;font-weight:700;line-height:1.3;letter-spacing:2px;white-space:nowrap}
-.kicker::before {content:"";width:67px;height:9px;display:block;background:var(--yellow)}
-h1 {position:absolute;top:22%;margin:0;font-weight:900;line-height:1.18;white-space:nowrap}
-h1 span {display:block; width:max-content}
-.subject {font-size:155px;letter-spacing:-5.5px;-webkit-text-stroke:1.3px currentColor}
-.method {font-size:176px;letter-spacing:-5.5px;color:var(--yellow);-webkit-text-stroke:1.4px currentColor}
-.features {position:absolute;top:66.3%;margin:0;display:flex;align-items:center;gap:21px;
-  font-size:50px;line-height:1.25;letter-spacing:2px;font-weight:500;color:var(--paper);white-space:nowrap}
-.divider {height:41px;width:2px;background:rgba(232,236,214,.63)}
-.edition {position:absolute;left:0;bottom:9.2%;display:flex;align-items:center;gap:28px;
-  font-size:48px;line-height:1;white-space:nowrap;font-weight:700}
-.range {height:91px;display:flex;align-items:center;gap:13px;padding:0 26px 3px;background:var(--yellow);color:var(--ink);border-radius:5px}
-.range strong {font:800 64px/1 Arial,"Noto Sans CJK SC",sans-serif;letter-spacing:-2px;font-variant-numeric:tabular-nums}
-.count {font-size:47px;letter-spacing:2px;color:#f7f4dc}
-.count strong {font:700 59px/1 Arial,"Noto Sans CJK SC",sans-serif;letter-spacing:-1px;margin-right:7px}
-@media(max-aspect-ratio: 3/2) {
-  .copy {left:5.65%;width:63%}
-  .book {width:45.5%;right:.4%;top:22.7%}
-  .kicker {font-size:43px;gap:20px;top:9.8%}
-  .kicker::before {width:58px;height:8px}
-  h1 {top:24%;line-height:1.22}
-  .subject {font-size:127px;letter-spacing:-5px}
-  .method {font-size:150px;letter-spacing:-5px}
-  .features {top:64.6%;font-size:43px;gap:16px;letter-spacing:1px}
-  .divider {height:34px}
-  .edition {bottom:12%;font-size:41px;gap:22px}
-  .range {height:82px;gap:10px;padding:0 22px 3px}
-  .range strong {font-size:56px}
-  .count {font-size:40px}
-  .count strong {font-size:51px}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{font-family:"Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:#fff}
+main{height:100vh;width:100vw;position:relative;isolation:isolate;overflow:hidden;background:#08091c}
+.backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2}
+main::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(5,5,23,.5),transparent 26%),
+  linear-gradient(90deg,rgba(5,6,26,.15) 0%,transparent 52%)}
+.brand{display:flex;align-items:center;gap:23px;position:absolute;left:7%;top:4.4%;height:73px;
+margin:0;font-size:55px;line-height:1;font-weight:800;letter-spacing:1px;white-space:nowrap;
+text-shadow:0 3px 0 #15143d}
+.brand::before{content:"";width:31px;height:44px;background:linear-gradient(90deg,#6df1ff 0 25%,transparent 25% 40%,#6df1ff 40% 100%);transform:skew(-17deg);margin-right:3px}
+.brand .academic{font-size:.76em;font-weight:700;color:#b8edf7;letter-spacing:3px}
+h1{position:absolute;margin:0;left:4.8%;top:13.3%;width:90.4%;line-height:0}
+h1 img{width:100%;height:auto}
+.features{position:absolute;left:6.8%;top:68.1%;display:flex;align-items:center;justify-content:center;gap:38px;
+  margin:0;padding:9px 51px 15px 42px;height:111px;white-space:nowrap;isolation:isolate;}
+.features::before{content:"";position:absolute;inset:0;z-index:-1;clip-path:polygon(1.3% 0,100% 0,98.4% 100%,0 100%);
+  background:linear-gradient(100deg,rgba(43,56,139,.96),rgba(23,27,69,.97) 56%,rgba(40,42,101,.94));border-top:3px solid #7491fc;border-bottom:2px solid #414c9b}
+.features span{font-size:73px;line-height:1;font-weight:900;font-style:oblique 5deg;letter-spacing:2px;
+  -webkit-text-stroke:.75px currentColor;text-shadow:0 3px 0 #14214c}
+.features i{display:block;height:49px;width:6px;transform:skewX(-18deg);background:#70eaff}
+.edition{position:absolute;left:6.6%;bottom:6.1%;height:126px;display:flex;align-items:center;gap:39px;white-space:nowrap}
+.range{height:100%;position:relative;isolation:isolate;display:flex;align-items:center;padding:0 39px 8px 33px;gap:10px;
+ color:#131228;font-size:76px;font-weight:900;line-height:1;-webkit-text-stroke:.6px currentColor;letter-spacing:1px}
+.range::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,#ffed68,#ffd323 75%);
+  clip-path:polygon(3% 0,100% 0,95% 100%,0 100%)}
+.range strong{font-family:Arial,"Noto Sans CJK SC",sans-serif;font-size:110px;font-weight:900;letter-spacing:-5px;line-height:1}
+.count{font-size:65px;font-weight:900;line-height:1;text-shadow:3px 3px 0 #201e5d}
+.count strong{font:900 85px/1 Arial,sans-serif;font-style:italic;margin-right:7px;letter-spacing:-4px}
+@media(max-aspect-ratio:3/2){
+  .backdrop{object-position:57% center}
+  .brand{left:6.8%;top:6.8%;font-size:49px;height:68px;gap:20px}
+  .brand::before{width:27px;height:39px}
+  h1{left:3%;width:94%;top:18.2%}
+  .features{left:5.7%;top:64%;height:101px;gap:27px;padding:8px 36px 12px 34px}
+  .features span{font-size:63px;letter-spacing:1px}
+  .features i{height:42px;width:5px}
+  .edition{left:5.8%;bottom:10.0%;height:121px;gap:30px}
+  .range{font-size:70px;padding:0 36px 8px 30px}
+  .range strong{font-size:104px}
+  .count{font-size:60px}
+  .count strong{font-size:81px}
 }
 </style>
 <main>
-  <img class="book" src="book.png" alt="">
-  <section class="copy">
-    <p class="kicker">剑桥雅思 · 学术类</p>
-    <h1><span class="subject">雅思阅读真题</span><span class="method">精读背单词</span></h1>
-    <p class="features"><span>原文朗读</span><i class="divider" aria-hidden="true"></i><span>逐句翻译</span><i class="divider" aria-hidden="true"></i><span>语境释义</span></p>
-    <div class="edition"><span class="range">第<strong id="volumes">20–11</strong>册</span><span class="count"><strong>120</strong>篇</span></div>
-  </section>
+ <img class="backdrop" src="background.png" alt="">
+ <p class="brand">剑桥雅思 <span class="academic">学术类 · 词汇挑战</span></p>
+ <h1><img src="headline.png" alt="搞定所有雅思单词　雅思阅读真题"></h1>
+ <p class="features"><span>原文精读</span><i aria-hidden="true"></i><span>逐句翻译</span><i aria-hidden="true"></i><span>单词释义</span></p>
+ <div class="edition"><span class="range">第<strong id="volumes">20–11</strong>册</span><span class="count"><strong>120</strong>篇</span></div>
 </main>
-<script>
-if (new URLSearchParams(location.search).get('edition')==='10-1') {
-  document.getElementById('volumes').textContent='10–1';
-  document.querySelector('.book').src='book-10.png';
-}
-</script>
-</html>
+<script>if(new URLSearchParams(location.search).get('edition')==='10-1')document.getElementById('volumes').textContent='10–1';</script></html>
