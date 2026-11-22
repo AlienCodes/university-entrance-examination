@@ -1,6 +1,8 @@
 """Render the IELTS pilot with the original CET-6 layout and video checks."""
 import argparse
+import difflib
 import hashlib
+import inspect
 import json
 import sys
 import tempfile
@@ -37,13 +39,56 @@ def ielts_sentence_slide(p, sentence, k, n, part=None):
     if part:
         lo, hi = part[:2]
         sentence = {**sentence, 'w': visible_words(sentence, lo, hi)}
-    return cet_sentence_slide(p, sentence, k, n, part)
+    slide = cet_sentence_slide(p, sentence, k, n, part)
+    # Keep a dash introducing an appositive and its continuation on the same
+    # line as the preceding word (e.g. "Rakiura – …").
+    return re.sub(r'([\w-]+[ \u00a0]+[–—])(<span class="cont">\u00a0…</span>)',
+                  r'<nobr>\1\2</nobr>',slide)
 
 engine.sentence_slide = ielts_sentence_slide
+
+def speech_tokens(text):
+    plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
+    return re.findall(r'[a-z0-9]+',plain)
+
+def ielts_switch_time(audio, timing, english, cut):
+    import numpy as np
+    samples, recognised = engine.asr_words(audio, timing)
+    spoken = [(word, onset) for text,onset in recognised for word in speech_tokens(text)]
+    source = speech_tokens(english)
+    index = len(speech_tokens(english[:cut]))
+    matches = difflib.SequenceMatcher(None, source, [w for w,_ in spoken], autojunk=False)
+    for block in matches.get_matching_blocks():
+        if block.a <= index < block.a + block.size:
+            onset = spoken[block.b + index - block.a][1]
+            break
+    else:
+        raise ValueError(f'读音中未定位到下一屏的开头：{english[cut:cut+45]}')
+
+    absolute = timing['start'] + onset
+    # Use the middle of a mastered clause pause when it precedes this word.
+    for prior, following in zip(timing['parts'], timing['parts'][1:]):
+        end, start = prior[1], following[0]
+        if end - .03 <= absolute <= start + .15:
+            return (end + start) / 2
+
+    # Inside uninterrupted speech, use the CET 60 ms energy measure close to
+    # the aligned word, so an earlier syllable cannot trigger the next screen.
+    start = max(0, round((onset-.12)*16000))
+    stop = min(len(samples), round((onset+.03)*16000))
+    half = 480
+    left, right = max(0,start-half), min(len(samples),stop+half)
+    energy = np.convolve(samples[left:right].astype(np.float64)**2, np.ones(half*2)/(half*2), mode='same')
+    lowest = start + int(np.argmin(energy[start-left:stop-left]))
+    return timing['start'] + lowest/16000
+
+engine.switch_time = ielts_switch_time
 
 def prepare():
     p = load()
     p['year'] = 2025   # Publication year of Cambridge IELTS 20; required by shared video QA.
+    display_code = inspect.getsource(visible_words) + inspect.getsource(ielts_sentence_slide)
+    p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()
     save(PROJECT / 'data/vocab.json', {'passages':[p]})
     ann = PROJECT / 'ann' / (PID + '.txt')
     ann.parent.mkdir(exist_ok=True)
@@ -153,6 +198,20 @@ def encode():
         raise ValueError('Unreviewed layout or unresolved layout problems.')
     if review_data['fingerprint'] != engine.fingerprint(PID,'3'):
         raise ValueError('Layout has changed since review.')
+    audio_dir = PROJECT/'audio'
+    timings = json.loads((audio_dir/'timings.json').read_text())[engine.VOICE][PID]
+    split_review = json.loads((LESSON/'分屏核对.json').read_text())
+    if timings['certificate']['mp3_sha256'] != split_review['mp3_sha256']:
+        raise ValueError('分屏核对所用音轨与成片音轨不同')
+    reviewed = {(x['sentence'],x['part']):x for x in split_review['cuts']}
+    for n,(s,timing) in enumerate(zip((s for para in load()['paras'] for s in para),timings['sentences']),1):
+        for part,(lo,hi,zh,_) in enumerate(engine.split_parts(PID,n,s)[1:],2):
+            row = reviewed.pop((n,part))
+            measured = engine.switch_time(audio_dir/timings['file'],timing,s['en'],lo)
+            if (s['en'][lo:hi].strip(),zh) != (row['en'],row['zh']) or abs(measured-row['screen_time']) > .08:
+                raise ValueError(f'第 {n} 句第 {part} 屏与已审校的中英分段或实际朗读切点不一致')
+    if reviewed:
+        raise ValueError('成片漏掉了已审校的分屏')
     save(engine.SAMPLE_REG,{PID+'@3':{'指纹':review_data['fingerprint'],'截图':{s['file']:s['sha256'][:16] for s in review_data['screens']}}})
     sys.argv=['make_video.py',PID,'--project',PROJECT_ID,'--out',str(PROJECT/'最终视频')]
     # The two native timing checks request many of the same frames. Both inspect the
