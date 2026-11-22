@@ -49,6 +49,7 @@ jobs:
           sparse-checkout: |
             .github/actions/ielts-local-editor
             雅思/学术阅读/配套讲义/题目与证据
+            雅思/学术阅读/配套讲义/教学讲解
             雅思/学术阅读/tools
       - uses: ./.github/actions/ielts-local-editor
       - name: 依据本篇原文及已核题号编写答题思路与写作迁移
@@ -66,8 +67,11 @@ jobs:
           done
           curl -fsS http://127.0.0.1:8176/health > /dev/null
           read -r -a lessons <<< "$LESSONS"
+          mkdir -p "$RUNNER_TEMP/study"
           failed=0
           for lesson in "${lessons[@]}"; do
+            saved="雅思/学术阅读/配套讲义/教学讲解/$lesson.json"
+            if [ -f "$saved" ]; then cp "$saved" "$RUNNER_TEMP/study/"; fi
             if ! python -u '雅思/学术阅读/tools/study_editor.py' "$RUNNER_TEMP/study" "$lesson"; then
               failed=1
             fi
@@ -80,3 +84,62 @@ jobs:
           path: ${{ runner.temp }}/study/*.json
           if-no-files-found: warn
           retention-days: 7
+  preserve:
+    if: ${{ always() && needs.prepare.result == 'success' }}
+    needs: [prepare, write]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/ielts-academic-reading
+          filter: blob:none
+          sparse-checkout: |
+            雅思/学术阅读/配套讲义
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: checked-input-study-draft-*
+          path: ${{ runner.temp }}/all-study-drafts
+      - name: 按篇保存原文可追溯的教学讲解
+        env:
+          DRAFT_PATH: ${{ runner.temp }}/all-study-drafts
+        run: |
+          set -eu
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          project=Path('雅思/学术阅读/配套讲义')
+          destination=project/'教学讲解'
+          destination.mkdir(exist_ok=True)
+          records={}
+          for f in sorted(Path(os.environ['DRAFT_PATH']).rglob('C*.json'),key=lambda f: int(f.parent.name.rsplit('-',1)[1])):
+              d=json.loads(f.read_text())
+              pid=d['lesson']
+              source=project/'题目与证据'/(pid+'.json')
+              if source.stem != f.stem or not source.is_file():
+                  raise ValueError(f'Unknown source for {pid}')
+              if d['input_sha256'] != hashlib.sha256(source.read_bytes()).hexdigest():
+                  raise ValueError(f'The question source changed for {pid}')
+              dest=destination/f.name
+              if dest.exists() and pid not in records:
+                  existing=json.loads(dest.read_text())
+                  if existing.get('version')==d.get('version') and existing['input_sha256']==d['input_sha256']:
+                      records[pid]=existing
+              saved=records.setdefault(pid,dict(lesson=pid,input_sha256=d['input_sha256'],version=d.get('version'),questions={}))
+              saved['questions'].update(d['questions'])
+              if d.get('grammar'):
+                  saved['grammar']=d['grammar']
+          if not records:
+              raise ValueError('No lessons were available to preserve')
+          for pid,data in records.items():
+              (destination/(pid+'.json')).write_text(json.dumps(data,ensure_ascii=False,indent=1)+'\n')
+          print('Saved',len(records),'teaching records')
+          PY
+          git add -- '雅思/学术阅读/配套讲义/教学讲解'
+          if ! git diff --cached --quiet; then
+            git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com commit -m "保存雅思逐篇教学讲解（Actions ${GITHUB_RUN_ID}）"
+            git pull --rebase origin codex/ielts-academic-reading
+            git push origin HEAD:codex/ielts-academic-reading
+          fi

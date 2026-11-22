@@ -52,8 +52,14 @@ def write_question(lesson,q):
         quote=result['quote'].strip().strip('“”"').strip()
         fragment=normalized_quote(quote)
         anchored=any(fragment and ' '+fragment+' ' in ' '+normalized_quote(line['en'])+' ' for line in original)
+        evidence=list(anchors)
+        if not anchored and len(fragment.split())>=4:
+            extra=next((line['n'] for line in nearby if ' '+fragment+' ' in ' '+normalized_quote(line['en'])+' '),None)
+            if extra is not None:
+                anchored=True
+                evidence=sorted([*anchors,extra])
         if len(CJK.findall(logic))>=26 and anchored and len(fragment.split())>=2:
-            return {'logic':logic,'evidence':anchors,'quote':quote}
+            return {'logic':logic,'evidence':evidence,'quote':quote}
         payload['verification']='请重写本题。quote 只复制 source_evidence 中一句话内连续的至少两个英文单词，不加省略号。'
     raise ValueError(f"{lesson['lesson']} question {q['numbers']} failed source verification")
 
@@ -107,16 +113,22 @@ def generate(pid,folder):
   draft={'lesson':pid,'input_sha256':key,'version':2,'questions':{}}
  if 'grammar' in lesson:
   draft['grammar']=lesson['grammar']
+ failed=[]
  for q in lesson['questions']:
   name=str(q['numbers'][0])
   if 'logic' in q:
    draft['questions'][name]={'logic':q['logic'],'evidence':q['evidence']}
   elif name not in draft['questions']:
-   draft['questions'][name]=write_question(lesson,q)
+   try:
+    draft['questions'][name]=write_question(lesson,q)
+   except ValueError as exc:
+    print(exc,flush=True)
+    failed.append(name)
   write(f,draft)
  if not draft.get('grammar'):
   draft['grammar']=grammar(lesson)
  write(f,draft)
+ if failed:raise ValueError(f'{pid}: unresolved questions {failed}')
  print(pid,len(draft['questions']),'question analyses;',len(draft['grammar']),'writing transfers',flush=True)
 if __name__=='__main__':
  ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('ids',nargs='+')
