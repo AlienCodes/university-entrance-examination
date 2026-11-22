@@ -9,8 +9,9 @@ import subprocess
 def inventory(tag,repo=None):
     flags=['--repo',repo] if repo else []
     endpoint=subprocess.check_output(['gh','release','view',tag,*flags,'--json','apiUrl','--jq','.apiUrl'],text=True).strip()
-    pages=json.loads(subprocess.check_output(['gh','api','--paginate','--slurp',endpoint+'/assets?per_page=100']))
-    return {asset['name']:asset for page in pages for asset in page if asset['state']=='uploaded'}
+    lines=subprocess.check_output(['gh','api','--paginate','--jq','.[] | @json',endpoint+'/assets?per_page=100'],text=True).splitlines()
+    assets=[json.loads(line) for line in lines if line.strip()]
+    return {asset['name']:asset for asset in assets if asset['state']=='uploaded'}
 
 
 def fetch(asset,folder):

@@ -167,7 +167,7 @@ jobs:
           echo "part=$part" >> "$GITHUB_OUTPUT"
           if [[ "$(gh release view "ielts-academic-reading-$part" --json isDraft --jq .isDraft 2>/dev/null || true)" == false ]]; then exit 0; fi
           base=$(gh release view "$STAGING" --json apiUrl --jq .apiUrl)
-          gh api --paginate --slurp "$base/assets?per_page=100" > "$RUNNER_TEMP/ielts-assets.json"
+          gh api --paginate --jq '.[] | @json' "$base/assets?per_page=100" > "$RUNNER_TEMP/ielts-assets.json"
           python - <<'PY'
           import json,os
           from pathlib import Path
@@ -175,8 +175,8 @@ jobs:
           top,bottom=map(int,part.split('-'))
           want={f'C{b}T{t}P{p}-receipt.json' for b in range(top,bottom-1,-1) for t in range(1,5) for p in range(1,4)}
           want.discard('C20T1P1-receipt.json')
-          pages=json.loads((Path(os.environ['RUNNER_TEMP'])/'ielts-assets.json').read_text())
-          assets=[asset for page in pages for asset in page if asset['state']=='uploaded']
+          rows=(Path(os.environ['RUNNER_TEMP'])/'ielts-assets.json').read_text().splitlines()
+          assets=[json.loads(row) for row in rows if row.strip()]
           missing=want-{a['name'] for a in assets if a['size']>0}
           print(f'{len(want)-len(missing)}/{len(want)} published master receipts.')
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:print('complete='+str(not missing).lower(),file=f)
