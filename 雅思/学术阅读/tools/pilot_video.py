@@ -81,7 +81,14 @@ def normalized(s):
 def expected_screens(p):
     result=[]
     for number,s in enumerate((s for para in p['paras'] for s in para),1):
-        for lo, hi, zh, _ in engine.split_parts(PID,number,s):
+        parts=engine.split_parts(PID,number,s)
+        if ''.join(s['en'][lo:hi] for lo,hi,_,_ in parts) != s['en'] or ''.join(zh for _,_,zh,_ in parts) != s['zh']:
+            raise ValueError(f'第 {number} 句：分屏后的中英文未完整还原定稿')
+        for word in s['w']:
+            for a,b in word['sp']:
+                if not any(lo <= a and b <= hi for lo,hi,_,_ in parts):
+                    raise ValueError(f'第 {number} 句：分屏切断词条 {word["h"]}')
+        for lo, hi, zh, _ in parts:
             selected=visible_words(s,lo,hi)
             glosses=[w['m'] for w in selected]
             glosses=[engine.POS.match(t).group(2) if engine.POS.match(t) else t for t in glosses]
@@ -120,7 +127,10 @@ def review(p):
             page.screenshot(path=str(png))
             path = SHOTS / f'screen{index+1:02}.webp'
             engine.small(png).save(path, 'WEBP', lossless=True, method=0)
-            report.append(dict(label=label,sizes=sizes,file=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+            entry=dict(label=label,sizes=sizes,file=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+            if fit:
+                entry.update({k:expected[index-1][k] for k in ('en','zh','heads')})
+            report.append(entry)
         br.close()
     for start in range(0,len(report),12):
         chunk = report[start:start+12]
@@ -145,7 +155,24 @@ def encode():
         raise ValueError('Layout has changed since review.')
     save(engine.SAMPLE_REG,{PID+'@3':{'指纹':review_data['fingerprint'],'截图':{s['file']:s['sha256'][:16] for s in review_data['screens']}}})
     sys.argv=['make_video.py',PID,'--project',PROJECT_ID,'--out',str(PROJECT/'最终视频')]
-    engine.main()
+    # The two native timing checks request many of the same frames. Both inspect the
+    # same immutable MP4. Decode each distinct millisecond once, using the CET reader.
+    sys.path.insert(0, str(ROOT / 'tools' / 'video'))
+    import verify_videos
+    read_frame = verify_videos.frame
+    frames = {}
+
+    def frame_for_checks(mp4, seconds, temp_dir):
+        key = (mp4, f'{seconds:.3f}')
+        if key not in frames:
+            frames[key] = read_frame(mp4, seconds, temp_dir)
+        return frames[key]
+
+    verify_videos.frame = frame_for_checks
+    try:
+        engine.main()
+    finally:
+        verify_videos.frame = read_frame
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()

@@ -75,14 +75,16 @@ jobs:
           PY
       - name: 六级4K成片渲染与逐屏、逐句核验
         if: steps.cfg.outputs.stage == 'video'
+        env:
+          KEEP_FAILED: '1'
         run: /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" video
       - name: 独立核对配音合格证，保存已经核验的成片
         if: steps.cfg.outputs.stage == 'video'
         run: python .github/check-audio-cert.py "$TARGET/audio"
       - uses: actions/upload-artifact@v4
-        if: steps.cfg.outputs.stage == 'video'
+        if: "!cancelled() && steps.cfg.outputs.stage == 'video'"
         with:
-          name: C20T1P1-verified-video
+          name: C20T1P1-${{ job.status == 'success' && 'verified-video' || 'review-needed' }}
           path: |
             雅思/学术阅读/最终视频/*.mp4
             雅思/学术阅读/样片/成品核查/*.json
