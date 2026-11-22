@@ -127,6 +127,15 @@ def speech_tokens(text):
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
     return re.findall(r'[a-z0-9]+',plain)
 
+def reviewed_spelling(audio, timing, printed, recognised):
+    evidence=json.loads((PROJECT/'审校/分屏词音对照.json').read_text())
+    known={row['mp3_sha256'] for row in evidence if row['lesson']==PID and row['sentence']==timing['k']
+           and row['printed'].casefold()==printed and row['recognized'].casefold()==recognised}
+    if not known:
+        return False
+    with Path(audio).open('rb') as stream:
+        return hashlib.file_digest(stream,'sha256').hexdigest() in known
+
 def ielts_switch_time(audio, timing, english, cut):
     import numpy as np
     samples, recognised = engine.asr_words(audio, timing)
@@ -141,13 +150,13 @@ def ielts_switch_time(audio, timing, english, cut):
         if tag == 'equal':
             onset = spoken[x + index - a][1]
             break
-        # A single close ASR spelling of a name (e.g. Waibel / Weibel) can
-        # still have a measured onset. Require two exact words on both sides.
+        # An independently checked spelling in this exact recording can still
+        # have a measured onset. Require two exact words on both sides.
         if tag == 'replace' and b-a == y-x == 1 and 0 < pos < len(operations)-1:
             left, right = operations[pos-1], operations[pos+1]
             anchored = (left[0] == right[0] == 'equal' and
                         left[2]-left[1] >= 2 and right[2]-right[1] >= 2)
-            if anchored and difflib.SequenceMatcher(None, source[a], spoken[x][0]).ratio() >= .75:
+            if anchored and reviewed_spelling(audio, timing, source[a], spoken[x][0]):
                 onset = spoken[x][1]
                 break
     else:
