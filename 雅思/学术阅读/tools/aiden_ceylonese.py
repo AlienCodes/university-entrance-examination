@@ -13,6 +13,8 @@ GUIDES = {
 }
 HINT = ("Pronounce Ceylonese as see-luh-NEEZ, /ˌsiːləˈniːz/. "
         "Link the three syllables naturally, with the strongest stress on NEEZ.")
+RENDERINGS = ("Ceylonese", "Ceelonese", "Seelunese", "Saylunese", "Ceylunese",
+              "Seelaneez", "Saylaneez")
 PHONES = {
     "see-luh-neez": "S IY L AH N IY Z", "say-luh-neez": "S EY L AH N IY Z",
     "sell-luh-neez": "S EH L AH N IY Z", "sil-oh-neez": "S IH L AA N IY Z",

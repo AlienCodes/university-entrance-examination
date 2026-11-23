@@ -18,11 +18,44 @@ def gh_json(endpoint):
     return json.loads(subprocess.check_output(["gh", "api", endpoint]))
 
 
+def rejected_seed(report, key, printed):
+    if not report.is_file():
+        return None
+    entry = json.loads(report.read_bytes())
+    if (entry.get("accepted") is not False or entry.get("key") != key or entry.get("printed") != printed
+            or type(entry.get("seed")) is not int or not entry.get("issue")):
+        return None
+    raw = report.with_suffix(".flac")
+    if raw.is_file() and hashlib.sha256(raw.read_bytes()).hexdigest() == entry.get("sha256"):
+        return entry["seed"]
+    return None
+
+
 def restore_archive(archive, folder):
     folder.mkdir(parents=True, exist_ok=True)
     restored = 0
     with zipfile.ZipFile(archive) as z:
         for note in z.namelist():
+            if re.fullmatch(r"aiden-takes/rejected/[0-9a-f]{64}\.json", note):
+                details = z.read(note)
+                data = json.loads(details)
+                key, printed, seed = (data.get(k) for k in ("key", "printed", "seed"))
+                if (data.get("accepted") is not False or not isinstance(key, str)
+                        or not re.fullmatch(re.escape(PID) + r":[1-9]\d*", key)
+                        or not printed or not data.get("issue") or type(seed) is not int
+                        or data.get("stage") == "mastered-mp3"):
+                    continue
+                rejected = folder / "rejected" / Path(note).name
+                previous = rejected_seed(rejected, key, printed)
+                if previous is not None and previous >= seed:
+                    continue
+                wav = z.read(note[:-5] + ".flac")
+                if not wav.startswith(b"fLaC") or hashlib.sha256(wav).hexdigest() != data.get("sha256"):
+                    raise ValueError("Rejected recording does not match its diagnostic evidence")
+                rejected.parent.mkdir(exist_ok=True)
+                rejected.with_suffix(".flac").write_bytes(wav)
+                rejected.write_bytes(details)
+                continue
             if not re.fullmatch(r"aiden-takes/[0-9a-f]{64}\.json", note):
                 continue
             details = z.read(note)

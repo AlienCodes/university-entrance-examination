@@ -6,7 +6,12 @@ import tempfile
 
 # NC State Extension and Oregon State University both give KWER-kus SOO-ber.
 NAME = "Quercus suber"
-HINT = "Pronounce the botanical name Quercus suber as KWER-kus SOO-ber."
+HINT = ("Pronounce the two-word botanical name KWER-kus SOO-ber, "
+        "with the /kw/ of 'quest' and the long /uː/ of 'soon'. Keep both syllables of each word connected.")
+# Use different render spellings only after a recording fails. Recognition and
+# phonetic checks always use the two printed words as their reference.
+RENDERINGS = ("Quercus suber", "Quercus Soo-ber", "Kwercus Soober", "Kwer-kus Soo-ber",
+              "Quercus Soober", "Kwerkus Soober", "Kwercuss Soober", "Kwer-kus Soober")
 GUIDES = [
     "https://plants.ces.ncsu.edu/plants/quercus-suber/",
     "https://landscapeplants.oregonstate.edu/plants/quercus-suber",

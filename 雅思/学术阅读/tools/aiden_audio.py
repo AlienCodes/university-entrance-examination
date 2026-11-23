@@ -11,8 +11,10 @@ import soundfile as sf
 import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
-from aiden_boundaries import POLICY, assess, words, reference
-from aiden_checkpoint import PeriodicSnapshot
+from aiden_boundaries import POLICY, assess, independent, words, reference
+from aiden_checkpoint import PeriodicSnapshot, rejected_seed
+import aiden_cork_oak
+import aiden_ceylonese
 import make_audio as cet
 import 听对
 
@@ -55,14 +57,12 @@ class Aiden:
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items()
                if name.casefold() != 'ceylonese' and re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
-        if words(script) in (['quercus','suber'], ['quirkus','soober']):
-            from aiden_cork_oak import HINT
-            instruction += ' ' + HINT
+        if script.strip(' ,.;:!?').casefold() in {s.casefold() for s in aiden_cork_oak.RENDERINGS}:
+            instruction += ' ' + aiden_cork_oak.HINT
         if re.search(r'\bLei Tzu\b',script,re.I):
             instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
-        if re.search(r'\b(?:Ceylonese|see-luh-neez)\b',script,re.I):
-            from aiden_ceylonese import HINT
-            instruction += ' ' + HINT
+        if any(re.search(r'\b'+re.escape(name)+r'\b',script,re.I) for name in aiden_ceylonese.RENDERINGS):
+            instruction += ' ' + aiden_ceylonese.HINT
         if 'I I N C E' in script:
             instruction += ' Read the five initials I, I, N, C, E clearly in one connected group, including both initial I sounds.'
         torch.manual_seed(seed)
@@ -74,6 +74,26 @@ class Aiden:
         if sr!=24000 or wave.ndim!=1 or len(wave)<.15*sr or not np.isfinite(wave).all() or not (np.max(np.abs(wave))>.01):
             raise ValueError('Invalid Aiden waveform')
         return cet.G.trim(wave,pad=.045)
+
+    def recheck_diagnostic(self,file,report,script,seed):
+        raw=self.folder/'rejected'/file.name
+        recording=raw.read_bytes()
+        digest=hashlib.sha256(recording).hexdigest()
+        if digest in self.rejected_master_takes:return None
+        wave,rate=sf.read(raw,dtype='float32')
+        if rate!=24000 or wave.ndim!=1:return None
+        transcript,timed=recognize(wave)
+        audio=soxr.resample(wave,rate,16000)
+        if not timed or words(transcript)!=words(script) or words(independent(audio))!=words(script):return None
+        try:
+            assess(audio,script,transcript)
+        except ValueError:
+            return None
+        file.write_bytes(recording)
+        data=dict(transcript=transcript,timed=timed,seed=seed,sha256=digest,
+                  policy=POLICY,rechecked_from_diagnostic=True)
+        report.write_text(json.dumps(data,ensure_ascii=False))
+        return wave,data
 
     def take(self,script,key,variant,pron):
         fingerprint=json.dumps([IDENTITY,script,key,variant,pron.lexicon],sort_keys=True,ensure_ascii=False)
@@ -108,8 +128,21 @@ class Aiden:
         number=int(key.split(':')[1]);seed=24830+number+variant*173
         if previous_seed is not None:
             seed=previous_seed+5*997
+        failed_seed=rejected_seed(self.folder/'rejected'/report.name,key,script)
+        if failed_seed is not None:
+            seed=max(seed,failed_seed+997)
+            checked=self.recheck_diagnostic(file,report,script,failed_seed)
+            if checked is not None:return checked
         spoken=script
-        for attempt in range(5):
+        spellings=()
+        if words(script)==['quercus','suber']:
+            spellings=aiden_cork_oak.RENDERINGS
+        elif 'ceylonese' in words(script):
+            spellings=aiden_ceylonese.RENDERINGS
+        for attempt in range(len(spellings) if spellings else 5):
+            if spellings and attempt:
+                # Preserve all surrounding printed words, even in a long phrase.
+                spoken=re.sub(re.escape(spellings[0]),spellings[attempt],script,flags=re.I)
             rendered_text=spoken
             wav=self.render(rendered_text,seed+attempt*997,pron)
             transcript,timed=recognize(wav)
@@ -123,10 +156,6 @@ class Aiden:
                     missing={w for op,a,b,_,_ in alignment.get_opcodes() if op in ('replace','delete')
                              for w in expected[a:b] if w in {'it','its','the','a','an','at','of','to','not'}}
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
-                if words(script) == ['quercus','suber']:
-                    spoken = 'Quirkus Soober'
-                elif 'ceylonese' in words(script):
-                    spoken = re.sub(r'\bCeylonese\b', 'see-luh-NEEZ', spoken, flags=re.I)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
             sf.write(file,wav,24000,subtype='PCM_24')

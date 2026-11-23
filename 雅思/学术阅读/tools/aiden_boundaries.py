@@ -36,6 +36,7 @@ class MasteredPhraseError(ValueError):
 
 def words(text):
     text = NOISE_INITIALS.sub('I I N C E', text)
+    text = re.sub(r"(?<!\w)O\.?K\.?(?!\w)", "okay", text, flags=re.I)
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
     text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)

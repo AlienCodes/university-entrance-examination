@@ -65,12 +65,14 @@ class Reader(cet.G.Pronouncer):
             text = re.sub(r'\bc\.?\s*(?=\d{3,4}\b)', 'circa ',text)
             def full_year_range(match):
                 first,suffix=match.groups()
+                if len(suffix)==4:
+                    return f'{first} to {suffix}'
                 scale=10**len(suffix)
                 end=int(first)//scale*scale+int(suffix)
                 if end<int(first):
                     end+=scale
                 return f'{first} to {end}'
-            text = re.sub(r'\b(1\d{3}|20\d{2})[–-](\d{1,3})(?!\d)',full_year_range,text)
+            text = re.sub(r'\b(1\d{3}|20\d{2})\s*[–—-]\s*(\d{1,4})(?!\d)',full_year_range,text)
             text = re.sub(r'(\d)\s*(BC|BCE|AD)\b',r'\1 \2',text)
             text = text.replace('CO2','carbon dioxide').replace('CO₂','carbon dioxide')
             for unit,spoken in [('cm','centimetres'),('mm','millimetres'),('km','kilometres'),('kg','kilograms')]:
