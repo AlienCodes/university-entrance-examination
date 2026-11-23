@@ -1,0 +1,70 @@
+{
+ "basis": "对照 df5dc7b 的原有逐屏基准，复核14篇实际已测教学文本的原文、译文、词形、词义和编号。含标题页的屏数如下。",
+ "measurements": [
+  {
+   "lesson": "C10T1P1",
+   "screens_with_cover": 51
+  },
+  {
+   "lesson": "C10T1P2",
+   "screens_with_cover": 50
+  },
+  {
+   "lesson": "C10T2P2",
+   "screens_with_cover": 50
+  },
+  {
+   "lesson": "C10T3P2",
+   "screens_with_cover": 49
+  },
+  {
+   "lesson": "C10T4P1",
+   "screens_with_cover": 46
+  },
+  {
+   "lesson": "C9T1P1",
+   "screens_with_cover": 53
+  },
+  {
+   "lesson": "C10T1P3",
+   "screens_with_cover": 61
+  },
+  {
+   "lesson": "C9T1P3",
+   "screens_with_cover": 51
+  },
+  {
+   "lesson": "C9T3P3",
+   "screens_with_cover": 47
+  },
+  {
+   "lesson": "C8T4P1",
+   "screens_with_cover": 54
+  },
+  {
+   "lesson": "C7T3P2",
+   "screens_with_cover": 42
+  },
+  {
+   "lesson": "C8T2P2",
+   "screens_with_cover": 47
+  },
+  {
+   "lesson": "C8T2P3",
+   "screens_with_cover": 40
+  },
+  {
+   "lesson": "C8T3P2",
+   "screens_with_cover": 50,
+   "probes": {
+    "whole_fits": 1,
+    "whole_rejected_but_aligned_parts_fit": 8,
+    "cut_expression_rejected": 1,
+    "missing_chinese_rejected": true,
+    "extra_screen_rejected": true,
+    "invalid_english_marker_rejected": true
+   }
+  }
+ ],
+ "regression": "C8T3P2 在 Chromium 141 的1920×1080、二倍像素密度下用正常投产页面和六级字体实测。原文太长的一整屏被拒收，原有对齐分段通过。词组内切屏、缺少中文、额外的译文及无效切点逐一拦截。"
+}

@@ -12,7 +12,7 @@ from lesson import LESSON, PID, PROJECT, save
 CLAUSES=re.compile(r'[,;:—–]\s+|\s+(?=(?:and|or|but|whereas|although|because|while|which|who|whose|when|so that|'
                    r'in order to|rather than|if|even if|even though|only if|as long as|as soon as|since|unless|'
                    r'provided that|as a result|including|to (?:provide|determine|obtain|ensure|enable|allow|help))\b)',re.I)
-VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|跨行|拆到两行|断行|连字符|续接号|行首缩进|行首破折号')
+VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|重叠|相交|跨行|拆到两行|断行|连字符|续接号|行首缩进|行首破折号')
 def movable(row):
     en=row['en']
     span=[(a,b) for w in row['w'] for a,b in w['sp']]
@@ -108,7 +108,7 @@ def subdivide(row,old,reason,can_display=None,rejected=()):
     raise ValueError('No verified bilingual repartition found for '+row['en'][:90])
 
 def native_probe(page,document,preview):
-    from pilot_video import engine
+    from pilot_video import engine, expected_sentence_screens, reference_errors
     total=sum(len(group) for group in document['paras'])
     def fit(html,start):
         preview.write_text(html,'utf-8');page.goto(preview.as_uri())
@@ -119,12 +119,18 @@ def native_probe(page,document,preview):
         return fit(html,None)
     def check(n,row,plan):
         if plan is None:plan={'at':[],'zh':[row['zh']]}
-        en=row['en'];points=[0,*[en.index(a) for a in plan['at']],len(en)];count=len(points)-1
+        en=row['en']
+        if any(not marker or en.count(marker)!=1 for marker in plan['at']):return False
+        points=[0,*[en.index(a) for a in plan['at']],len(en)];count=len(points)-1
+        if points!=sorted(set(points)) or len(plan['zh'])!=count:return False
         if any(not re.search(r'[ —]$',en[:i]) for i in points[1:-1]):return False
-        slides=[]
-        for i,(a,b,zh) in enumerate(zip(points,points[1:],plan['zh']),1):
-            part=(a,b,zh,f' · PART {i}/{count}' if count>1 else '')
-            slides.append(engine.sentence_slide(document,row,n,total,part))
+        parts=[(a,b,zh,f' · PART {i}/{count}' if count>1 else '')
+               for i,(a,b,zh) in enumerate(zip(points,points[1:],plan['zh']),1)]
+        try:
+            expected=list(expected_sentence_screens(n,row,parts))
+        except ValueError:
+            return False
+        slides=[engine.sentence_slide(document,row,n,total,part) for part in parts]
         sizes=[]
         for html in slides:
             fs,vs,fits=natural(html)
@@ -133,7 +139,9 @@ def native_probe(page,document,preview):
         shared=[min(s[0] for s in sizes),min(s[1] for s in sizes)]
         for i,html in enumerate(slides,1):
             actual=fit(html,shared)
-            if actual[:2]!=shared or engine.screen_checks(page,f'第 {n} 句 第 {i} 屏',True,actual):return False
+            label=f'第 {n} 句 第 {i} 屏'
+            if (actual[:2]!=shared or engine.screen_checks(page,label,True,actual)
+                    or reference_errors(page,expected[i-1],label)):return False
         return True
     return check
 
@@ -152,7 +160,7 @@ def main():
     document=prepare();rows=[s for g in document['paras'] for s in g]
     cuts=read(LESSON/FILES[2]);proof=read(LESSON/FILES[3]);before=digest(LESSON/FILES[2])
     if proof['text_sha256']!=digest(LESSON/FILES[0]):raise ValueError('Teaching text differs from its review')
-    changed=[];unresolved=[];previous=proof.setdefault('rejected_screen_plans',{})
+    changed=[];reunited=[];unresolved=[];previous=proof.setdefault('rejected_screen_plans',{})
     with tempfile.TemporaryDirectory() as td,sync_playwright() as pw:
         browser=pw.chromium.launch(executable_path='/opt/pw-browsers/chromium')
         page=browser.new_page(viewport=dict(width=engine.W,height=engine.H),device_scale_factor=2)
@@ -161,14 +169,18 @@ def main():
             old=cuts[PID].get(str(n));history=previous.setdefault(str(n),[])
             if old and old not in history:history.append(old)
             try:
-                cuts[PID][str(n)]=subdivide(rows[n-1],old,reasons,lambda plan:probe(n,rows[n-1],plan),history)
+                if old and probe(n,rows[n-1],None):
+                    del cuts[PID][str(n)]
+                    reunited.append(n)
+                else:
+                    cuts[PID][str(n)]=subdivide(rows[n-1],old,reasons,lambda plan:probe(n,rows[n-1],plan),history)
                 changed.append(n)
             except (ValueError,TimeoutError) as exc:
                 unresolved.append(n);print(f'{PID} 第 {n} 句换屏仍待复核：{exc}',flush=True)
         browser.close()
     if not changed:raise ValueError(f'{PID}: no screen change passed both the reading and the native layout for {unresolved}')
     save(LESSON/FILES[2],cuts);proof['split_sha256']=digest(LESSON/FILES[2]);proof['split_sentences']=len(cuts[PID]);proof['checked']=False
-    proof.setdefault('screen_reflow',[]).append({'previous_split_sha256':before,'reading_units':changed,'still_to_review':unresolved,'source_and_translation_unchanged':True})
+    proof.setdefault('screen_reflow',[]).append({'previous_split_sha256':before,'reading_units':changed,'reunited':reunited,'still_to_review':unresolved,'source_and_translation_unchanged':True})
     save(LESSON/FILES[3],proof);store_candidate()
 
 if __name__=='__main__':main()

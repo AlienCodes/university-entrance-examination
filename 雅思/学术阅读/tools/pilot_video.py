@@ -397,29 +397,32 @@ def screen_text(page):
 def normalized(s):
     return re.sub(r'\s+', '', unicodedata.normalize('NFKC',s)).replace('’',"'").replace('‐','-').replace('‑','-').replace('–','-')
 
+def expected_sentence_screens(number,s,parts):
+    if ''.join(s['en'][lo:hi] for lo,hi,_,_ in parts) != s['en'] or ''.join(zh for _,_,zh,_ in parts) != s['zh']:
+        raise ValueError(f'第 {number} 句：分屏后的中英文未完整还原定稿')
+    for word in s['w']:
+        for a,b in word['sp']:
+            if not any(lo <= a and b <= hi for lo,hi,_,_ in parts):
+                raise ValueError(f'第 {number} 句：分屏切断词条 {word["h"]}')
+    shown=word_quotes(s['en']) if PID.startswith('C21T') else s['en']
+    for lo, hi, zh, _ in parts:
+        selected=visible_words(s,lo,hi)
+        if not selected:
+            raise ValueError(f'第 {number} 句的这一屏缺少对应的语境词条：{s["en"][lo:hi].strip()}')
+        glosses=[w['m'] for w in selected]
+        glosses=[engine.POS.match(t).group(2) if engine.POS.match(t) else t for t in glosses]
+        numbers=[str(i) for i in range(1,len(selected)+1)]
+        spans=sorted((a,b) for w in selected for a,b in w['sp'])
+        labels=[str(i) for _,i in sorted((word['sp'][-1][0],i) for i,word in enumerate(selected,1))]
+        heads=[word_quotes(w['h']) if PID.startswith('C21T') else w['h'] for w in selected]
+        yield dict(en=shown[lo:hi],zh=zh,glosses=glosses,
+                           heads=heads,numbers=numbers,labels=labels,forms=[shown[a:b] for a,b in spans])
+
+
 def expected_screens(p):
     result=[]
     for number,s in enumerate((s for para in p['paras'] for s in para),1):
-        parts=engine.split_parts(PID,number,s)
-        if ''.join(s['en'][lo:hi] for lo,hi,_,_ in parts) != s['en'] or ''.join(zh for _,_,zh,_ in parts) != s['zh']:
-            raise ValueError(f'第 {number} 句：分屏后的中英文未完整还原定稿')
-        for word in s['w']:
-            for a,b in word['sp']:
-                if not any(lo <= a and b <= hi for lo,hi,_,_ in parts):
-                    raise ValueError(f'第 {number} 句：分屏切断词条 {word["h"]}')
-        shown=word_quotes(s['en']) if PID.startswith('C21T') else s['en']
-        for lo, hi, zh, _ in parts:
-            selected=visible_words(s,lo,hi)
-            if not selected:
-                raise ValueError(f'第 {number} 句的这一屏缺少对应的语境词条：{s["en"][lo:hi].strip()}')
-            glosses=[w['m'] for w in selected]
-            glosses=[engine.POS.match(t).group(2) if engine.POS.match(t) else t for t in glosses]
-            numbers=[str(i) for i in range(1,len(selected)+1)]
-            spans=sorted((a,b) for w in selected for a,b in w['sp'])
-            labels=[str(i) for _,i in sorted((word['sp'][-1][0],i) for i,word in enumerate(selected,1))]
-            heads=[word_quotes(w['h']) if PID.startswith('C21T') else w['h'] for w in selected]
-            result.append(dict(en=shown[lo:hi],zh=zh,glosses=glosses,
-                               heads=heads,numbers=numbers,labels=labels,forms=[shown[a:b] for a,b in spans]))
+        result.extend(expected_sentence_screens(number,s,engine.split_parts(PID,number,s)))
     return result
 
 def reference_errors(page, expected, label):
