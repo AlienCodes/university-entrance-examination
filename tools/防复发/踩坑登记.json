@@ -4683,9 +4683,9 @@
    ],
    "guards": [
     {
-     "where": "雅思/学术阅读/tools/aiden_audio.py:sentence、aiden_boundaries.py:check_media",
-     "runs": "完整意群独立录制，MP3 与最终 AAC 逐意群核查原音时长、信号连续性和停顿两侧",
-     "evidence": "旧版第3句真实 AAC 片段、分段独立识别结果及人为注入的280ms静音"
+     "where": "雅思/学术阅读/tools/aiden_audio.py:sentence、aiden_boundaries.py:check_media、aiden_encoded_audio.py:check",
+     "runs": "完整意群独立录制；核查停顿两侧，对照原音时长，逐 25 毫秒比对认证 MP3 和成片 AAC 的有声区间",
+     "evidence": "旧版和修订版公开 MP4 第3句的真实 AAC 片段、两侧独立识别结果、人工静音和截短样本"
     }
    ],
    "test": [

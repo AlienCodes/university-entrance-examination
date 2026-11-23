@@ -1,50 +1,75 @@
-"""Verify the recorded sectors incident, a clean join and a planted within-word mute."""
+"""Replay the reported broken word and the repaired word extracted from the two published MP4s."""
 import argparse
 import hashlib
 import json
 from pathlib import Path
 import sys
 
-ROOT=Path(__file__).resolve().parents[3]
-PROJECT=ROOT/'雅思/学术阅读'
-sys.path.insert(0,str(PROJECT/'tools'))
-from aiden_boundaries import independent, reference, verify_join, verify_reference
-from aiden_encoded_audio import compare_waveforms
 import numpy as np
 
-def rejects(fn,*args):
+ROOT = Path(__file__).resolve().parents[3]
+PROJECT = ROOT / "雅思/学术阅读"
+EVIDENCE = PROJECT / "审校/Aiden词内断音"
+sys.path.insert(0, str(PROJECT / "tools"))
+from aiden_boundaries import RATE, independent, reference, verify_join, verify_reference, words
+from aiden_encoded_audio import compare_waveforms
+
+
+def rejects(check, *args):
     try:
-        fn(*args)
+        check(*args)
     except ValueError:
         return
-    raise AssertionError('A known broken phrase was accepted')
+    raise AssertionError("A known broken phrase was accepted")
 
-def main(listen):
-    folder=PROJECT/'审校/Aiden词内断音'
-    bad=json.loads((folder/'旧版证据.json').read_text())
-    wave=folder/'旧版第3句停顿.flac'
-    assert hashlib.sha256(wave.read_bytes()).hexdigest()==bad['sha256']
-    phrases=bad['observed']
+
+def recorded_join(edition, listen):
+    record = json.loads((EVIDENCE / f"{edition}证据.json").read_text())
+    clip = EVIDENCE / f"{edition}第3句停顿.flac"
+    assert hashlib.sha256(clip.read_bytes()).hexdigest() == record["sha256"]
+    phrases = record["observed"]
+    assert len(phrases) == len(record["clip_16khz"]) == 2
     if listen:
         import soundfile as sf
-        raw,sr=sf.read(wave,dtype='float32')
-        assert sr==16000
-        for phrase,(a,b) in zip(phrases,bad['clip_16khz'],strict=True):
-            phrase['second_heard']=independent(raw[a:b])
-    rejects(verify_join,*phrases)
-    intact=[{'text':written,'second_heard':heard} for written,heard in bad['single_word_previous_sentence']]
-    verify_join(*intact)
-    sample=np.random.default_rng(235).normal(0,.08,24000).astype('float32')
-    ref=reference(sample)
-    verify_reference(sample*.81,ref)
-    changed=sample.copy();changed[10000:14480]=0
-    rejects(verify_reference,changed,ref)
-    rejects(verify_reference,sample[:-4480],ref)
-    compare_waveforms(sample,sample*.97)
-    rejects(compare_waveforms,sample,changed)
-    rejects(compare_waveforms,sample,sample[:-4480])
-    print('旧版 sectors 的真实断点与人为词内静音均被拦截，完整衔接通过。')
 
-if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--audio',action='store_true')
-    main(ap.parse_args().audio)
+        raw, rate = sf.read(clip, dtype="float32")
+        assert rate == RATE
+        for phrase, (start, end) in zip(phrases, record["clip_16khz"], strict=True):
+            assert 0 <= start < end <= len(raw)
+            phrase["second_heard"] = independent(raw[start:end])
+    return record
+
+
+def main(listen):
+    old = recorded_join("旧版", listen)
+    revised = recorded_join("修订版", listen)
+    assert old["source_video_sha256"] != revised["source_video_sha256"]
+    rejects(verify_join, *old["observed"])
+
+    left, right = revised["observed"]
+    verify_join(left, right)
+    assert words(left["second_heard"])[-2:] == ["export", "sectors"]
+    assert words(right["second_heard"])[:1] == ["which"]
+    left_end = revised["clip_16khz"][0][1]
+    right_start = revised["clip_16khz"][1][0]
+    assert abs((right_start - left_end) / RATE - 0.28) < 0.003
+
+    previous = [{"text": written, "second_heard": heard}
+                for written, heard in old["single_word_previous_sentence"]]
+    verify_join(*previous)
+    sample = np.random.default_rng(235).normal(0, 0.08, 24000).astype("float32")
+    ref = reference(sample)
+    verify_reference(sample * 0.81, ref)
+    compare_waveforms(sample, sample * 0.97)
+    muted = sample.copy()
+    muted[10000:14480] = 0
+    for damaged in (muted, sample[:-4480]):
+        rejects(verify_reference, damaged, ref)
+        rejects(compare_waveforms, sample, damaged)
+    print("旧版 sectors 断音、人工静音及截短均已拦截。修订版两个完整词和词间停顿均已核对。")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--audio", action="store_true")
+    main(parser.parse_args().audio)
