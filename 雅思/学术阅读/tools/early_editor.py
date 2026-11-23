@@ -170,6 +170,12 @@ def splits_coordinated_phrase(en, offset):
            r'even though|only if|as long as|as soon as|as well as|as much as|as many as|in order to|so that|rather than|provided that)\b')
     if any(m.start()<offset<m.end() for m in re.finditer(fixed,en,re.I)):return True
     if re.match(r'and\s+[\w-]+\s+as (?:much|many) as\b',en[offset:],re.I):return True
+    # A shared passive auxiliary governs both sides of a short pair, e.g.
+    # “being kicked or shoved”. Keep the example on one teaching screen.
+    participle=r'(?:[a-z]+(?:ed|en)|hit|hurt|put|set|cut|read|sold|built|lost|found|taught|paid|made|held|kept)'
+    if (re.search(r'\b(?:being|been|be|is|are|was|were)\s+(?:[a-z]+ly\s+)?'+participle+r'\s+$',en[:offset],re.I)
+            and re.match(r'(?:and|or)\s+(?:[a-z]+ly\s+)?'+participle+r'\b',en[offset:],re.I)):
+        return True
     # Keep the two names together in a parenthesis such as “- Amsterdam and Copenhagen -”.
     if (re.search(r'\s[-–—]\s+(?:[A-Z][\w’.-]*\s+){1,4}$',en[:offset])
             and re.match(r'and\s+[A-Z][\w’.-]*(?:\s+[A-Z][\w’.-]*){0,3}\s+[-–—]',en[offset:])):
@@ -408,6 +414,8 @@ def revision(value):
 # These explicit operators frequently disappear in a fluent Chinese paraphrase.
 # Alternatives are reading cues, not a compulsory word-for-word translation.
 SCOPE_CUES=(
+    (r'\bmonthly\b',r'月','monthly 的按月频率'),
+    (r'\bcompound annual (?:growth )?rate\b',r'复合|复利|复增','按年复合计算的增长率'),
     (r'\bneither\b[^.!?]*?\bnor\b',r'不|无|没|未|非|难|拒|排除|避免','neither 和 nor 所连接的两项均为否定'),
     (r'\beven if\b',r'即使|即便|哪怕|就算|纵使|纵然|退一步|退一万步|即令|即或|即便是|便是','even if 引出的假设性让步'),
     (r'\bno [\w -]{1,35} other than\b',r'除|只|仅|唯|惟|别无','no … other than 表示例外或唯一范围'),

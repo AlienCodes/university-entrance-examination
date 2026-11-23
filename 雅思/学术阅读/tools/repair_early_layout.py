@@ -64,7 +64,6 @@ def numbered_reflow(row,choices,old,can_display=None,rejected=()):
         options.append((seq,plan))
         if len(options)==6:break
     if not options:return None
-    if len(options)==1:return options[0][1]
     options_for_reader={}
     for i,(seq,plan) in enumerate(options,1):
         es=[0,*[e for e,z in seq],len(en)]
