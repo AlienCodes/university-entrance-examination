@@ -1,0 +1,42 @@
+name: IELTS English narrator audition
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths:
+      - '雅思/学术阅读/声音试听/sample.py'
+      - '.github/workflows/ielts-narrator-audition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      MALLOC_ARENA_MAX: '2'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            雅思/学术阅读/声音试听
+            雅思/学术阅读/原稿
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install the CPU speech runtime
+        run: |
+          sudo apt-get install -y -qq sox >/dev/null
+          pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install -q qwen-tts==0.1.1 soundfile
+      - name: Read the five sentences with Aiden and Ryan
+        run: python -u '雅思/学术阅读/声音试听/sample.py' audio
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ielts-english-voices
+          path: audio
+          if-no-files-found: error
+          retention-days: 7
