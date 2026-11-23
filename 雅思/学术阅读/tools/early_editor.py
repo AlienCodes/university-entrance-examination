@@ -170,6 +170,10 @@ def splits_coordinated_phrase(en, offset):
            r'even though|only if|as long as|as soon as|as well as|as much as|as many as|in order to|so that|rather than|provided that)\b')
     if any(m.start()<offset<m.end() for m in re.finditer(fixed,en,re.I)):return True
     if re.match(r'and\s+[\w-]+\s+as (?:much|many) as\b',en[offset:],re.I):return True
+    # Keep the two names together in a parenthesis such as “- Amsterdam and Copenhagen -”.
+    if (re.search(r'\s[-–—]\s+(?:[A-Z][\w’.-]*\s+){1,4}$',en[:offset])
+            and re.match(r'and\s+[A-Z][\w’.-]*(?:\s+[A-Z][\w’.-]*){0,3}\s+[-–—]',en[offset:])):
+        return True
     # In “..., Travel | and tourism is ...” the first noun was left with
     # the attribution on the preceding screen. Look at the current clause.
     leaf=re.split(r'[,;:“‘"]',en[:offset])[-1].strip()
