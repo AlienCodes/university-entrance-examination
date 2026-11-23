@@ -39,9 +39,15 @@ def digest(file):
 def corrections():
     return read(PROJECT/'审校/早期册语境校订.json').get(PID,{})
 
+def teaching_notes(project,pid):
+    source=project/'审校/逐篇语境重点-10至1.json'
+    return read(source).get(pid,[]) if source.is_file() else []
+
 def key_for(project,pid):
     manual=read(project/'审校/早期册语境校订.json').get(pid,{})
     inputs=[digest(project/'原稿'/(pid+'.json')),digest(project/'备课'/(pid+'.json')),VERSION,manual]
+    notes=teaching_notes(project,pid)
+    if notes:inputs.append(notes)
     fingerprint=hashlib.sha256(json.dumps(inputs,ensure_ascii=False,sort_keys=True).encode()).hexdigest()[:16]
     return f'{pid}-{fingerprint}'
 
@@ -110,7 +116,7 @@ def vocabulary(row,prior,notes):
         phrase=entry['english'];spans=positions(en,phrase)
         if spans and 1<=len(phrase.split())<=4 and all(phrase.casefold()!=t['form'].casefold() for t in items):
             # A course note may describe an entire clause. Only use the short cue as a dictionary entry when its own sense is supplied.
-            meaning=entry['check']
+            meaning=entry.get('meaning',entry['check'])
             if len(meaning)<=14 and not any(c in meaning for c in '，；。'):
                 a,b=spans[0];items.append(dict(form=en[a:b],head=phrase.lower(),pos='phr.' if ' ' in phrase else '',dictionary=meaning))
     byform={t['form'].casefold():t for t in items}
@@ -175,9 +181,10 @@ def good(en,parts,terms,zh,meanings,previous):
     return True
 
 def teach(index,source,prep,prior,previous,workdir):
-    n=index+1;en=prep['en'];terms=vocabulary(prep,prior.get(en,[]),source.get('language_review',[]))
+    n=index+1;en=prep['en']
+    notes=[a for a in source.get('language_review',[]) if a.get('scope_en',en)==en and a['english'].casefold() in en.casefold()]
+    terms=vocabulary(prep,prior.get(en,[]),notes)
     if not terms:raise ValueError(f'{PID} sentence {n} lacks a teachable entry')
-    notes=[a for a in source.get('language_review',[]) if a['english'].casefold() in en.casefold()]
     terms=choose_terms(en,terms,notes)
     patch=corrections().get(str(n))
     if patch and patch['en']!=en:raise ValueError(f'Manual revision for a different sentence {PID}/{n}')
@@ -231,6 +238,9 @@ def verify(group,source,all_rows):
 
 def editorial():
     source=read(PAPER);rows=read(PREP)['rows'];sentences=[s for g in source['paragraphs'] for s in g]
+    notes=teaching_notes(PROJECT,PID)
+    if any(sentences[n['sentence']-1]!=n['scope_en'] for n in notes):raise ValueError('A teaching note refers to another sentence')
+    source['language_review']=source.get('language_review',[])+notes
     if sentences!=[r['en'] for r in rows]:raise ValueError('Prepared vocabulary refers to other text')
     wp=work();assets=inventory(DRAFT);statefile=wp/(key()+'-work.json')
     if not statefile.exists() and statefile.name in assets:fetch(assets[statefile.name],wp)
