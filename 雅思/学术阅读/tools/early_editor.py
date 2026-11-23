@@ -1,5 +1,6 @@
 """Prepare the early-volume lessons from the checked paper and independently verify their teaching text."""
 import argparse
+from decimal import Decimal
 import hashlib
 import json
 import os
@@ -381,10 +382,39 @@ SCOPE_CUES=(
      r'似|好像|像是|像在|仿佛|看[来似]|看[起上]来|可能|大概|显[得示]|看上去|好象|看得出|看样子|表面|看起来','似乎、看来所表示的推测'),
 )
 
+def reversed_quantities(en, zh):
+    """Compare explicit bounds on the same figure, including Western and Chinese scales."""
+    number = r'\d+(?:,\d{3})*(?:\.\d+)?'
+    en_scales = {'thousand':1000, 'million':10**6, 'billion':10**9}
+    zh_scales = {'千':1000, '万':10**4, '百万':10**6, '千万':10**7, '亿':10**8}
+    en_bounds = re.compile(r'\b(no more than|not more than|up to|at most|as long as|as many as|'
+                           r'no fewer than|no less than|more than|at least)\s+\$?(' + number +
+                           r')(?:\s+(thousand|million|billion)\b)?', re.I)
+    zh_bounds = re.compile(r'(不超过|未超过|没有超过|不多于|至多|最多|高达|长达|多达|'
+                           r'至少|不少于|不低于|超过|多于|高于)\s*(?:约\s*)?(' + number +
+                           r')\s*(千万|百万|千|万|亿)?')
+    bounds = {}
+    for hit in en_bounds.finditer(en):
+        word, value, scale = hit.groups()
+        if re.search(r"\b(?:not|never|hardly)\s+$", en[:hit.start()], re.I):
+            continue
+        magnitude = Decimal(value.replace(',', '')) * en_scales.get((scale or '').lower(), 1)
+        lower = word.lower() in {'no fewer than', 'no less than', 'more than', 'at least'}
+        bounds.setdefault(magnitude, set()).add(lower)
+    for hit in zh_bounds.finditer(zh):
+        word, value, scale = hit.groups()
+        if re.search(r'并非|并未|不得|没有|不能|尚未', zh[max(0,hit.start()-2):hit.start()]):
+            continue
+        magnitude = Decimal(value.replace(',', '')) * zh_scales.get(scale, 1)
+        lower = word in {'至少', '不少于', '不低于', '超过', '多于', '高于'}
+        if bounds.get(magnitude) == {not lower}:
+            return ['数值上下限：' + hit.group().strip()]
+    return []
+
 def scope_gaps(en,zh):
     if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
         en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
-    return [label for pattern,equivalent,label in SCOPE_CUES
+    return reversed_quantities(en,zh) + [label for pattern,equivalent,label in SCOPE_CUES
             if re.search(pattern,en,re.I) and not re.search(equivalent,zh)]
 
 def ground_vocabulary(row,source,witness,preparation=None):

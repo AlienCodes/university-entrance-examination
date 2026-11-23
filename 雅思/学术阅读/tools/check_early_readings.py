@@ -22,6 +22,7 @@ CHECKS={
  'C7T3P3': [('30% and 50%','thirty percent and fifty percent')],
  'C6T4P2': [('105/1000','one hundred five per thousand')],
  'C10T1P2': [('18km/h','eighteen kilometres per hour')],
+ 'C9T4P1': [('1.5 grams','one point five grams')],
 }
 
 def check(pids):
@@ -32,6 +33,9 @@ def check(pids):
         audio_lesson.PID=pid
         paper=json.loads((PROJECT/'原稿'/(pid+'.json')).read_text())
         rows=[s for para in paper['paragraphs'] for s in para]
+        for first, second in zip(rows, rows[1:]):
+            if re.search(r'\d\.$', first) and re.match(r'\d', second):
+                raise ValueError(f'Check the printed page for a split decimal in {pid}: {first[-22:]} / {second[:22]}')
         result=[reader.read_text(s,f'{pid}:{n}') for n,s in enumerate(rows,1)]
         examples=[]
         for needle,expected in CHECKS.get(pid,[]):

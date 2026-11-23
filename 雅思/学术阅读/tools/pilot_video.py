@@ -118,6 +118,27 @@ def fit_long_headwords(js):
 
 engine.FIT_JS=fit_long_headwords(engine.FIT_JS)
 
+def fit_early_vocabulary(js):
+    # Test the ordinary spacing at the certified minimum independently of the
+    # shared starting size for a multi-screen sentence. Preserve the native
+    # margins for a screen that already fits at that size.
+    anchor = 'while (!sideFits() && vs > 16)'
+    if js.count(anchor) != 1:
+        raise RuntimeError('无法定位六级主题的词栏字号测量')
+    measure = """
+      const startVs = vs;
+      side.classList.remove('ielts-dense-side');
+      vs = MINVS;
+      r.setProperty('--vs', vs+'px');
+      if (!sideFits()) side.classList.add('ielts-dense-side');
+      vs = startVs;
+      r.setProperty('--vs', vs+'px');
+    """
+    return js.replace(anchor, measure + anchor)
+
+if int(PID[1:PID.index('T')]) <= 10:
+    engine.FIT_JS = fit_early_vocabulary(engine.FIT_JS)
+
 def select_lesson(name, look=True):
     _cet_set_project(name, look)
     if name == PROJECT_ID and PID != 'C20T1P1':
@@ -193,6 +214,10 @@ def word_sentence_slide(p,sentence,k,n,part=None):
 
 def early_sentence_slide(p,sentence,k,n,part=None):
     html=batch_sentence_slide(p,sentence,k,n,part)
+    compact = ('.side.ielts-dense-side{padding:18px 22px}'
+               '.ielts-dense-side #list{gap:calc(var(--vs)*.20)}'
+               '.ielts-dense-side .v{line-height:1.22;column-gap:9px}')
+    html = html.replace('</head>', '<style>' + compact + '</style></head>', 1)
     # Early printings use a spaced hyphen for a parenthesis or an appositive.
     # Keep the printed punctuation, its highlight and its continuation together.
     match=re.search(r'<div class="en">(.*?)</div>',html,re.S)
