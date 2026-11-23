@@ -85,7 +85,7 @@ def main():
     if not missing or args.check_only: return
     install = ['install','-y','--no-install-recommends',*missing]
     if apt(install,150):
-        audit = subprocess.check_output(['dpkg','--audit'],text=True,timeout=20).strip()
+        audit = subprocess.check_output(['sudo','-n','dpkg','--audit'],text=True,timeout=20).strip()
         if audit:
             print(audit,flush=True)
             subprocess.run(['sudo','-n','env','DEBIAN_FRONTEND=noninteractive',

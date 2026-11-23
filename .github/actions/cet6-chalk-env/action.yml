@@ -68,7 +68,9 @@ runs:
     - name: 系统依赖（Chromium 运行库与字体）+ ffmpeg
       shell: bash
       run: |
-        python .github/actions/cet6-chalk-env/prepare_packages.py "${{ inputs.browser }}"
+        voice_packages=()
+        if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then voice_packages=(--extra-packages espeak-ng sox); fi
+        python .github/actions/cet6-chalk-env/prepare_packages.py "${{ inputs.browser }}" "${voice_packages[@]}"
         if [ "${{ inputs.browser }}" = 153 ]; then
           ln -sfn /opt/pw-browsers/chromium-1243/chrome-linux64/chrome /opt/pw-browsers/chromium
           v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"
