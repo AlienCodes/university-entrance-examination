@@ -82,7 +82,7 @@ jobs:
         run: |
           echo "have=$(python "$TARGET/tools/aiden_parallel.py" have)" >> "$GITHUB_OUTPUT"
           echo "IELTS_WORK=$RUNNER_TEMP/compiled" >> "$GITHUB_ENV"
-      - if: steps.existing.outputs.have != 'true'
+      - if: steps.existing.outputs.have != 'true' && needs.plan.outputs.seed != ''
         name: 恢复单句实测通过的录音
         uses: actions/download-artifact@v4
         with:
@@ -101,6 +101,8 @@ jobs:
         run: python "$TARGET/tools/aiden_parallel.py" merge --incoming "$RUNNER_TEMP/incoming"
       - if: steps.existing.outputs.have != 'true'
         uses: ./.github/actions/ielts-aiden-speech
+      - if: steps.existing.outputs.have != 'true'
+        uses: ./.github/actions/ielts-phrase-listening
       - if: steps.existing.outputs.have != 'true'
         name: 按原正式标准统一整篇响度和停顿并检测整轨
         run: |

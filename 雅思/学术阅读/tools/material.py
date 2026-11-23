@@ -27,8 +27,8 @@ def source_key(text, meta, split, printed_test):
     names=sorted(set(name for name in meta.get('zh_names',[]) if name in text))
     items=[display,printed_test,rows,split,names,meta.get('pronunciation',{}),[i for i,l in enumerate(text.splitlines()) if not l]]
     if os.getenv('IELTS_NARRATOR') == 'Aiden':
-        from aiden_profile import IDENTITY
-        items.append({'narrator':IDENTITY})
+        from aiden_profile import IDENTITY, PAUSE_POLICY
+        items.append({'narrator':IDENTITY,'pause_policy':PAUSE_POLICY})
     if meta.get('section_headers'):
         items.append(meta['section_headers'])
     encoded=json.dumps(items,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()

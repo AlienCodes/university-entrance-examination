@@ -10,7 +10,7 @@ import subprocess
 from tempfile import TemporaryDirectory
 import zipfile
 
-from aiden_profile import IDENTITY, audio_asset, confirm
+from aiden_profile import IDENTITY, PAUSE_POLICY, audio_asset, confirm
 from lesson import LESSON, PID, PROJECT, save
 from material import verify_original
 from release_assets import fetch, inventory
@@ -33,19 +33,25 @@ def exists():
 def plan():
     config = json.loads(Path('.github/ielts-aiden-recovery.json').read_text())
     sentences = paper()
-    seed = config['measured_run']
+    seed = config.get('measured_run','')
     repo = os.environ['GH_REPO']
     main_run = json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{config["pilot_run"]}']))
     if (config['lesson'] != PID or config['batch'] != os.environ['IELTS_AIDEN_BATCH']
             or main_run['head_branch'] != 'codex/ielts-academic-reading'
             or main_run['path'] != '.github/workflows/ielts-aiden-production.yml'):
         raise ValueError('Recovery must refer to the specified pilot on the production branch')
-    data = json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{seed}/artifacts?per_page=100']))
-    prefix = 'aiden-measured-' + PID + '-'
-    done = {int(a['name'][len(prefix):]) for a in data['artifacts'] if a['name'].startswith(prefix)
-            and a['name'][len(prefix):].isdigit() and a.get('digest') and not a['expired']}
-    if done != set(config['measured_sentences']):
-        raise ValueError('The measured sentence artifacts do not match this recovery')
+    done=set()
+    if seed:
+        data = json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{seed}/artifacts?per_page=100']))
+        prefix = 'aiden-measured-' + PID + '-'
+        done = {int(a['name'][len(prefix):]) for a in data['artifacts'] if a['name'].startswith(prefix)
+                and a['name'][len(prefix):].isdigit() and a.get('digest') and not a['expired']}
+        if done != set(config['measured_sentences']):
+            raise ValueError('The measured sentence artifacts do not match this recovery')
+    if config.get('source_recording'):
+        src=config['source_recording']
+        if inventory(STAGE)[src['asset']]['digest']!='sha256:'+src['sha256']:
+            raise ValueError('Unverified source recording archive')
     remaining = [] if exists() else [n for n in range(1,len(sentences)+1) if n not in done]
     groups = [[] for _ in range(min(12,len(remaining)))]
     for n in sorted(remaining, key=lambda i:len(sentences[i-1].split()), reverse=True):
@@ -59,13 +65,36 @@ def plan():
 
 
 def record(numbers, folder):
-    from audio_lesson import Reader
+    from audio_lesson import Reader, cet
     from aiden_audio import Aiden
     from measure_aiden_sentence import measure
     reader = Reader()
     reader.lexicon.update(json.loads((LESSON/'篇目信息.json').read_text())['pronunciation'])
     engine = Aiden()
     sentences = paper()
+    config=json.loads(Path('.github/ielts-aiden-recovery.json').read_text())
+    if config.get('source_recording'):
+        src=config['source_recording']; remote=inventory(STAGE)[src['asset']]
+        if remote['digest']!='sha256:'+src['sha256']:
+            raise ValueError('Raw recording archive digest differs')
+        voice=json.loads((cet.G.HERE/'voices.json').read_text())[cet.VOICE]
+        seeds=set()
+        for n in numbers:
+            key=f'{PID}:{n}'
+            parts=cet.narration_phrases(reader.read_text(sentences[n-1],key),key,voice['clause_pause'])
+            if len(parts)==1: seeds.add(24830+n)
+        with TemporaryDirectory(dir=folder) as tmp:
+            with zipfile.ZipFile(fetch(remote,tmp)) as z:
+                for name in z.namelist():
+                    if not re.fullmatch(r'aiden-takes/[a-f0-9]{64}\.json',name):continue
+                    data=json.loads(z.read(name))
+                    if data['seed'] not in seeds:continue
+                    wave_name=name[:-5]+'.flac'
+                    wave=z.read(wave_name)
+                    if hashlib.sha256(wave).hexdigest()!=data['sha256']:
+                        raise ValueError('Damaged source take: '+name)
+                    (engine.folder/Path(wave_name).name).write_bytes(wave)
+                    (engine.folder/Path(name).name).write_bytes(z.read(name))
     for n in numbers:
         if exists():
             print('The original run has delivered a certified audio asset.',flush=True)
@@ -90,7 +119,8 @@ def merge(incoming, work):
         n = int(match.group(1))
         s = json.loads(f.read_text())
         if (n in reports or not 1<=n<=len(sentences) or s.get('model')!=IDENTITY
-                or s.get('text')!=sentences[n-1] or not s.get('passed') or not s['review'].get('recognized')):
+                or s.get('text')!=sentences[n-1] or not s.get('passed') or not s['review'].get('recognized')
+                or s['review'].get('method')!=PAUSE_POLICY):
             raise ValueError(f'Invalid sentence certificate {f.name}')
         reports[n] = s
     if sorted(reports)!=list(range(1,len(sentences)+1)):
@@ -141,7 +171,7 @@ def publish(work):
             with z.open('audio/'+accepted['file']) as stream:
                 if hashlib.file_digest(stream,'sha256').hexdigest()!=accepted['certificate']['mp3_sha256']:
                     raise ValueError('Remote sound does not match certificate')
-    evidence = work/(PID+'-recording-'+IDENTITY[:12]+'.zip')
+    evidence = work/(PID+'-recording-'+IDENTITY[:12]+'-'+PAUSE_POLICY+'.zip')
     with zipfile.ZipFile(evidence,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1) as z:
         z.write(work/'sentence-evidence.json','sentence-evidence.json')
         for p in sorted((work/'aiden-takes').iterdir()):

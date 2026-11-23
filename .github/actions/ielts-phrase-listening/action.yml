@@ -1,0 +1,21 @@
+name: 准备第二个英语识别器核验停顿两侧
+description: 缓存并校验固定的 Whisper base.en 英语模型
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v4
+      with:
+        path: tools/tts/models/sherpa-onnx-whisper-base.en
+        key: ielts-whisper-base-en-int8-475bc705
+    - shell: bash
+      run: |
+        set -euo pipefail
+        base=sherpa-onnx-whisper-base.en
+        folder="tools/tts/models/$base"
+        if [[ ! -s "$folder/base.en-decoder.int8.onnx" || ! -s "$folder/base.en-encoder.int8.onnx" || ! -s "$folder/base.en-tokens.txt" ]]; then
+          mkdir -p tools/tts/models
+          curl --fail --location --retry 4 --max-time 300 "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/$base.tar.bz2" -o "$RUNNER_TEMP/$base.tar.bz2"
+          echo "475bc7052ce299c007f6d5d5407ba8601f819a2867f6eecee510ed17df581542  $RUNNER_TEMP/$base.tar.bz2" | sha256sum -c -
+          tar -xjf "$RUNNER_TEMP/$base.tar.bz2" -C tools/tts/models "$base/base.en-decoder.int8.onnx" "$base/base.en-encoder.int8.onnx" "$base/base.en-tokens.txt"
+        fi
+        sha256sum -c .github/actions/ielts-phrase-listening/SHA256SUMS

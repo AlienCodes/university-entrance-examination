@@ -157,7 +157,9 @@ def main():
         from aiden_profile import PROFILE, confirm
         engine = Aiden()
         timing = certified_audio(passage,config,engine,reader,path / cet.VOICE,synthesize=engine.sentence)
-        timing.update(narrator=PROFILE,narration_review=engine.review)
+        from aiden_boundaries import check_media
+        timing.update(lesson=PID,narrator=PROFILE,narration_review=engine.review)
+        timing['phrase_audio_check']=check_media(path/timing['file'],timing)
         confirm(timing)
     else:
         timing = certified_audio(passage,config,cet.G.Engine(),reader,path / cet.VOICE)

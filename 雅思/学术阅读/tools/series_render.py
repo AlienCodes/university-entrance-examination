@@ -69,11 +69,17 @@ def package(dest):
                  pdf_sha256=digest(dest/'Reading-notes.pdf'),pdf_bytes=pdf['bytes'],pages=pdf['pages'],
                  video_seconds=checks['duration'],video_bytes=original.stat().st_size,content_sha256=digest(TEXT))
     if os.getenv('IELTS_NARRATOR')=='Aiden':
-        from aiden_profile import IDENTITY, confirm
+        from aiden_profile import IDENTITY, PAUSE_POLICY, confirm
         timing=json.loads((PROJECT/'audio/timings.json').read_text())[engine.VOICE][PID]
         confirm(timing)
         receipt.update(narrator=IDENTITY,speaker=timing['narrator']['speaker'],audio_sha256=timing['certificate']['mp3_sha256'])
-        save(dest/'narration.json',dict(profile=timing['narrator'],sentences=timing['narration_review'],certificate=timing['certificate']))
+        boundary=json.loads((dest/'phrase-playback.json').read_text())
+        if (boundary['policy']!=PAUSE_POLICY or boundary['passed'] is not True
+                or boundary['sha256']!=receipt['video_sha256'] or boundary['phrases']!=timing['phrase_audio_check']['phrases']):
+            raise ValueError('Encoded MP4 did not pass all isolated-phrase checks')
+        receipt.update(pause_policy=PAUSE_POLICY,verified_phrases=boundary['phrases'])
+        save(dest/'narration.json',dict(profile=timing['narrator'],sentences=timing['narration_review'],
+             certificate=timing['certificate'],mp3_check=timing['phrase_audio_check'],mp4_check=boundary))
     meta=json.loads((LESSON/'篇目信息.json').read_text())
     receipt['title']=meta['title'];receipt['title_zh']=meta['title_zh']
     save(dest/'verification.json',dict(**checks,ending=ending,pdf=pdf,receipt=receipt))

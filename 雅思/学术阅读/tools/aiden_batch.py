@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 
-from aiden_profile import IDENTITY
+from aiden_profile import IDENTITY, PAUSE_POLICY
 from editions import lesson_ids
 from material import current_key, verify_original
 from release_assets import fetch, inventory
@@ -20,7 +20,8 @@ def cached(pid,batch):
     if not receipt or not receipt.get('digest'): return False
     with tempfile.TemporaryDirectory() as tmp:
         data=json.loads(fetch(receipt,tmp).read_text())
-        if data.get('narrator')!=IDENTITY or data.get('lesson')!=pid or data.get('speaker')!='Aiden':
+        if (data.get('narrator')!=IDENTITY or data.get('lesson')!=pid or data.get('speaker')!='Aiden'
+                or data.get('pause_policy')!=PAUSE_POLICY or not data.get('verified_phrases')):
             return False
         if int(pid[1:pid.index('T')])<=10:
             from early_editor import key_for
