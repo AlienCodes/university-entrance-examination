@@ -10,7 +10,7 @@ import time
 import zipfile
 
 from editions import PRODUCTION_BOOKS, lesson_ids
-from release_assets import fetch, inventory
+from release_assets import fetch, inventory, upload
 
 STAGE='ielts-academic-cache-10-1'
 NOTES='ielts-academic-editorial-10-1'
@@ -180,7 +180,7 @@ def diagnostics():
                 member=str(p.relative_to(PROJECT)) if p.is_relative_to(PROJECT) else p.name
                 out.writestr(member,p.read_bytes()[-1_600_000:])
         out.writestr('run.txt',os.getenv('GITHUB_RUN_ID','')+' '+PID)
-    subprocess.run(['gh','release','upload',NOTES,str(name),'--clobber'],check=True)
+    upload(NOTES,name,replace=True)
 
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['plan','wait','admit','sync-notes','cached','diagnosis']);a=ap.parse_args()

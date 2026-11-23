@@ -14,7 +14,7 @@ from early_checkpoints import context as checkpoint_context, reusable
 from early_reference import collect as reference_readings
 from lesson import LESSON, PID, PROJECT, save
 from material import verify_original
-from release_assets import fetch, inventory
+from release_assets import fetch, inventory, upload
 from translation import translate_sentence
 
 VERSION = 'paper-context-5.1'
@@ -782,7 +782,7 @@ def editorial():
         item=donor['drafted'].get(i+1) or teach(i,source,rows[i],prior,sentences[i-1] if i else '',wp)
         state['drafted'].append(item);save(statefile,state)
         if i+1 in {3,7} or (i+1)%10==0:
-            subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
+            upload(DRAFT,statefile,replace=True)
         print(PID,'draft',i+1,'/',len(rows),flush=True)
     witness=reference_readings(source,wp)
     for i,old in enumerate(state['verified']):
@@ -796,7 +796,7 @@ def editorial():
         edited={r['n']:r for r in verify(needed,source,rows,witness)} if needed else {}
         state['verified'].extend(edited.get(r['n']) or donor['verified'][r['n']] for r in group);save(statefile,state)
         if len(state['verified'])%9==0:
-            subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
+            upload(DRAFT,statefile,replace=True)
         print(PID,'checked',len(state['verified']),'/',len(rows),flush=True)
     output(source,state['verified'],len(witness))
 
@@ -852,7 +852,7 @@ def output(source,rows,reference_count):
 def store_candidate():
     with zipfile.ZipFile(work()/(key()+'-teaching.zip'),'w',compression=zipfile.ZIP_DEFLATED) as z:
         for name in FILES:z.write(LESSON/name,name)
-    subprocess.run(['gh','release','upload',DRAFT,str(work()/(key()+'-teaching.zip')),'--clobber'],check=True)
+    upload(DRAFT,work()/(key()+'-teaching.zip'),replace=True)
 
 def restore():
     fingerprint=key()
@@ -894,7 +894,7 @@ def seal():
     p['checked']=True;p['mobile_layout']={'total_screens':len(screens)+1,'issues':0,'english_css_px':sorted({r['sizes'][0] for r in screens}),'vocabulary_css_px':sorted({r['sizes'][1] for r in screens})};save(LESSON/FILES[3],p)
     with zipfile.ZipFile(work()/(key()+'-reviewed.zip'),'w',compression=zipfile.ZIP_DEFLATED) as z:
         for name in FILES:z.write(LESSON/name,name)
-    subprocess.run(['gh','release','upload',DRAFT,str(work()/(key()+'-reviewed.zip')),'--clobber'],check=True)
+    upload(DRAFT,work()/(key()+'-reviewed.zip'),replace=True)
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('command',choices=['restore','edit','seal','checkpoint','key']);args=parser.parse_args()
@@ -904,4 +904,4 @@ if __name__=='__main__':
     if args.command=='key':print(key())
     if args.command=='checkpoint':
         f=work()/(key()+'-work.json')
-        if f.is_file():subprocess.run(['gh','release','upload',DRAFT,str(f),'--clobber'],check=True)
+        if f.is_file():upload(DRAFT,f,replace=True)

@@ -5,13 +5,12 @@ import json
 import os
 from pathlib import Path
 import shutil
-import subprocess
 import tempfile
 import unicodedata
 import zipfile
 
 from lesson import PROJECT
-from release_assets import fetch, inventory
+from release_assets import fetch, inventory, upload as upload_asset
 
 ART = PROJECT/'导入插图'
 CACHE = 'ielts-academic-aiden-cache-13-6'
@@ -134,7 +133,7 @@ def upload(source_dir, pid):
     result['screen_source']='decoded_final_mp4'
     path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     if name not in assets:
-        subprocess.run(['gh','release','upload',CACHE,str(outfile)],check=True)
+        upload_asset(CACHE,outfile)
     inventory.cache_clear()
     assets=inventory(CACHE)
     checked(pid,core,result,assets)
@@ -143,7 +142,7 @@ def upload(source_dir, pid):
     with tempfile.TemporaryDirectory(dir=source_dir) as d:
         if digest(fetch(assets[name],Path(d)))!=result['video_sha256']:
             raise ValueError('The downloaded illustrated film does not match')
-    subprocess.run(['gh','release','upload',CACHE,str(path),'--clobber'],check=True)
+    upload_asset(CACHE,path,replace=True)
     print(pid,name,result['frames'],'frames checked and remote download verified',flush=True)
 
 

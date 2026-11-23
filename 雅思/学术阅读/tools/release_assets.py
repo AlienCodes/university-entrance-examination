@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import time
 
 
 @lru_cache(maxsize=12)
@@ -33,6 +34,36 @@ def fetch(asset,folder):
             raise ValueError('GitHub asset checksum differs: '+asset['name'])
     tmp.replace(dest)
     return dest
+
+
+def upload(tag, file, *, replace=False):
+    """Recover a timed-out transfer without replacing an immutable asset."""
+    path=Path(file)
+    command=['gh','release','upload',tag,str(path)]
+    if replace:
+        command.append('--clobber')
+    for delay in (0,3,12,30):
+        if delay:
+            time.sleep(delay)
+        attempt=subprocess.run(command, capture_output=True, text=True)
+        inventory.cache_clear()
+        if attempt.returncode==0:
+            return
+        # GitHub can finish writing the file even when the response is lost.
+        try:
+            remote=inventory(tag).get(path.name,{})
+        except subprocess.CalledProcessError:
+            remote={}
+        if remote.get('size')==path.stat().st_size:
+            with path.open('rb') as stream:
+                expected='sha256:'+hashlib.file_digest(stream,'sha256').hexdigest()
+            if remote.get('digest')==expected:
+                return
+        reason=attempt.stderr.casefold()
+        if not any(s in reason for s in ('timeout','timed out','connection reset','unexpected eof',
+                                          'http 500','http 502','http 503','http 504','tls handshake')):
+            break
+    raise subprocess.CalledProcessError(attempt.returncode,command,stderr=attempt.stderr)
 
 
 if __name__=='__main__':
