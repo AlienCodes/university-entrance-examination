@@ -268,7 +268,7 @@ def scope_gaps(en,zh):
 def ground_vocabulary(row,source,witness):
     """Resolve glosses without a visible equivalent against this individual sentence."""
     zh=row['zh'];en=row['en']
-    exact={n['english'].casefold():n['meaning'] for n in source.get('language_review',[])
+    exact={n['english'].casefold():n for n in source.get('language_review',[])
            if n.get('meaning') and n.get('scope_en',en)==en and n['english'].casefold() in en.casefold()}
     polysemy={'account','address','approach','charge','current','diet','drink','figure','fresh','maintain','matter',
               'novel','object','party','plant','population','present','record','scale','spring','state','stock','subject','survey',
@@ -276,7 +276,8 @@ def ground_vocabulary(row,source,witness):
     meanings=[v[3] for v in row['v']]
     uncertain=[]
     for v in row['v']:
-        if v[0].casefold() in exact:v[3]=exact[v[0].casefold()]
+        if v[0].casefold() in exact:
+            note=exact[v[0].casefold()];v[3]=note['meaning'];v[2]=note.get('pos',v[2])
         elif v[1].casefold() in polysemy or meanings.count(v[3])>1 or not all(x in zh for x in re.split(r'[；;，、]',v[3]) if x):uncertain.append(v)
     for off in range(0,len(uncertain),6):
         batch=uncertain[off:off+6]

@@ -48,14 +48,32 @@ def wait_previous():
 
 def sync_notes():
     from lesson import PID,save
+    import hashlib
     branch='codex/ielts-academic-reading'
     subprocess.run(['git','fetch','--quiet','--no-tags','--filter=blob:none','--depth=1','origin',branch],check=True)
     revision=subprocess.check_output(['git','rev-parse','FETCH_HEAD'],text=True).strip()
-    sentences=[s for group in load(PROJECT/'原稿'/(PID+'.json'))['paragraphs'] for s in group]
+    def at_revision(path):
+        return subprocess.check_output(['git','show',revision+':'+path.relative_to(REPO).as_posix()])
+    summary=json.loads(at_revision(PROJECT/'审校/第10至1册正文与选词核对.json'))
+    evidence=next(r for r in summary['lessons'] if r['lesson']==PID)
+    paper_path=PROJECT/'原稿'/(PID+'.json');prep_path=PROJECT/'备课'/(PID+'.json')
+    paper_data=at_revision(paper_path);prep_data=at_revision(prep_path)
+    if (hashlib.sha256(paper_data).hexdigest(),hashlib.sha256(prep_data).hexdigest())!=(evidence['source_sha256'],evidence['vocabulary_prep_sha256']):
+        raise ValueError('Paper or vocabulary source differs from the stored print collation for '+PID)
+    paper=json.loads(paper_data);prep=json.loads(prep_data)
+    sentences=[s for group in paper['paragraphs'] for s in group]
+    if (paper['id']!=PID or prep['lesson']!=PID or not paper['source_status'].startswith('已逐篇') or
+            not sentences or sentences!=[r['en'] for r in prep['rows']]):
+        raise ValueError('The corrected source and teaching vocabulary do not refer to the same printed lesson')
+    current_paper=load(paper_path)
+    if current_paper.get('edition_scope') and current_paper['paragraphs']!=paper['paragraphs']:
+        raise ValueError('An edited excerpt needs its own reviewed revision')
+    if paper_path.read_bytes()!=paper_data:paper_path.write_bytes(paper_data)
+    if prep_path.read_bytes()!=prep_data:prep_path.write_bytes(prep_data)
     for filename in ('早期册语境校订.json','逐篇语境重点-10至1.json'):
         path=PROJECT/'审校'/filename
         current=load(path)
-        remote=json.loads(subprocess.check_output(['git','show',revision+':'+path.relative_to(REPO).as_posix()]))
+        remote=json.loads(at_revision(path))
         if current.get(PID)==remote.get(PID):continue
         entry=remote.get(PID)
         if entry is None:

@@ -18,6 +18,8 @@ CHECKS={
  'C4T3P2': [('1,350°C','one thousand three hundred fifty degrees celsius'),('7.49 a.m.','seven forty-nine a.m.')],
  'C3T4P1': [('PM10','p m ten')],
  'C7T2P3': [('Phase I,','phase one'),('Phase II,','phase two'),('Phase III,','phase three')],
+ 'C7T3P2': [('Paleo-Indian','paleo-indian')],
+ 'C7T3P3': [('30% and 50%','thirty percent and fifty percent')],
  'C6T4P2': [('105/1000','one hundred five per thousand')],
  'C10T1P2': [('18km/h','eighteen kilometres per hour')],
 }
