@@ -44,8 +44,43 @@ jobs:
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
       lesson: ${{ matrix.lesson }}
-  wait:
+  schedule:
     needs: [plan,sample]
+    runs-on: ubuntu-24.04
+    outputs:
+      immediate: ${{ steps.slots.outputs.immediate }}
+      deferred: ${{ steps.slots.outputs.deferred }}
+      immediate_limit: ${{ steps.slots.outputs.immediate_limit }}
+      deferred_limit: ${{ steps.slots.outputs.deferred_limit }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      IELTS_REMAINING: ${{ needs.plan.outputs.lessons }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读/tools
+      - id: slots
+        run: python '雅思/学术阅读/tools/early_plan.py' admit
+
+  production:
+    needs: schedule
+    if: needs.schedule.outputs.immediate != '[]'
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(needs.schedule.outputs.immediate_limit) }}
+      matrix:
+        lesson: ${{ fromJSON(needs.schedule.outputs.immediate) }}
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ matrix.lesson }}
+
+  wait:
+    needs: schedule
+    if: needs.schedule.outputs.deferred != '[]'
     runs-on: ubuntu-24.04
     timeout-minutes: 345
     env:
@@ -59,19 +94,24 @@ jobs:
             .github
             雅思/学术阅读/tools
       - run: python '雅思/学术阅读/tools/early_plan.py' wait
-  production:
-    needs: [plan,sample,wait]
-    if: needs.plan.outputs.lessons != '[]'
+
+  deferred:
+    needs: [schedule,wait]
+    if: needs.schedule.outputs.deferred != '[]'
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: ${{ fromJSON(needs.schedule.outputs.deferred_limit) }}
       matrix:
-        lesson: ${{ fromJSON(needs.plan.outputs.lessons) }}
+        lesson: ${{ fromJSON(needs.schedule.outputs.deferred) }}
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
       lesson: ${{ matrix.lesson }}
 
   delivery:
-    needs: [plan,sample,wait,production]
-    if: always() && !cancelled() && needs.plan.result == 'success' && needs.sample.result == 'success' && (needs.production.result == 'success' || needs.production.result == 'skipped')
+    needs: [plan,sample,schedule,production,wait,deferred]
+    if: >-
+      always() && !cancelled() && needs.plan.result == 'success' && needs.sample.result == 'success' &&
+      needs.schedule.result == 'success' && (needs.production.result == 'success' || needs.production.result == 'skipped') &&
+      (needs.wait.result == 'success' || needs.wait.result == 'skipped') &&
+      (needs.deferred.result == 'success' || needs.deferred.result == 'skipped')
     uses: ./.github/workflows/ielts-early-delivery.yml

@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import time
 import zipfile
@@ -45,6 +46,35 @@ def wait_previous():
             p=subprocess.run(['gh','run','view',str(int(rid)),'--json','status','--jq','.status'],text=True,stdout=subprocess.PIPE,check=True)
             if p.stdout.strip()=='completed':break
             time.sleep(50)
+
+def divide_pool(lessons,busy,active_lessons):
+    early_limit=max(0,20-busy);late_limit=20-early_limit
+    if not busy:return lessons,[],20,1
+    if not early_limit:return [],lessons,1,20
+    # Give the two groups proportional work once the older jobs finish.
+    # Leave passages whose first vocabulary draft is still running to the later group.
+    goal=(len(lessons)*early_limit+19)//20
+    immediate=[p for p in lessons if p not in active_lessons][:goal]
+    selected=set(immediate)
+    return immediate,[p for p in lessons if p not in selected],early_limit,late_limit
+
+def admit():
+    lessons=json.loads(os.environ['IELTS_REMAINING'])
+    active=[];busy=0
+    for rid in load(SPEC).get('after_runs',[]):
+        prior=json.loads(subprocess.check_output(['gh','run','view',str(int(rid)),'--json','status,jobs']))
+        if prior['status']=='completed':continue
+        drafts=[j for j in prior['jobs'] if re.search(r'\(C\d+T\dP\d\)',j['name'])]
+        if not drafts:
+            busy=20;continue
+        for job in drafts:
+            if job['status']!='completed':
+                busy+=1;active.append(re.search(r'C\d+T\dP\d',job['name'])[0])
+    lanes=divide_pool(lessons,min(20,busy),set(active))
+    with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+        for field,value in zip(('immediate','deferred','immediate_limit','deferred_limit'),lanes):
+            print(field+'='+json.dumps(value),file=out)
+    print(f'{busy} earlier lesson jobs active. Starting up to {min(len(lanes[0]),lanes[2])} more now; up to 20 after that group finishes.')
 
 def sync_notes():
     from lesson import PID,save
@@ -117,9 +147,10 @@ def diagnostics():
     subprocess.run(['gh','release','upload',NOTES,str(name),'--clobber'],check=True)
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['plan','wait','sync-notes','cached','diagnosis']);a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['plan','wait','admit','sync-notes','cached','diagnosis']);a=ap.parse_args()
     if a.stage=='plan':plan()
     elif a.stage=='wait':wait_previous()
+    elif a.stage=='admit':admit()
     elif a.stage=='sync-notes':sync_notes()
     elif a.stage=='cached':print(str(cached()).lower())
     else:diagnostics()
