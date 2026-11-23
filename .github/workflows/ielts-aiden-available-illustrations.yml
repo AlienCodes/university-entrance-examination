@@ -1,0 +1,85 @@
+name: 为已核准的雅思正文补齐篇首插图
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths: ['.github/ielts-aiden-available-illustrations.json']
+permissions:
+  contents: read
+  actions: read
+# The next production matrix waits for its pilot. Its workers can then reuse
+# the finished illustrations when they check their per-lesson receipts.
+concurrency:
+  group: ielts-early-lesson-C13T1P1
+  cancel-in-progress: false
+env:
+  GH_TOKEN: ${{ github.token }}
+  GH_REPO: ${{ github.repository }}
+  IELTS_NARRATOR: Aiden
+  TARGET: 雅思/学术阅读
+
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    outputs:
+      lessons: ${{ steps.plan.outputs.lessons }}
+      slots: ${{ steps.plan.outputs.slots }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读
+      - id: plan
+        name: 核对正文、音轨和已完成的篇目
+        shell: python
+        run: |
+          import json, os, re, subprocess, sys
+          from pathlib import Path
+          sys.path.insert(0, '雅思/学术阅读/tools')
+          from aiden_batch import BATCHES, cached
+          from editions import lesson_ids
+
+          spec = json.loads(Path('.github/ielts-aiden-available-illustrations.json').read_text())
+          edition = lesson_ids(BATCHES['13-6'])
+          requested = set(spec['lessons'])
+          if not requested <= set(edition):
+              raise ValueError('A requested lesson is outside books 13 to 6')
+          url = f"repos/{os.environ['GH_REPO']}/actions/runs/{int(spec['source_run'])}/jobs?per_page=100"
+          busy = subprocess.check_output(
+              ['gh','api','--paginate','--jq','.jobs[] | select(.status != "completed") | .name',url],
+              text=True).splitlines()
+          active = {m[1] for name in busy if (m := re.search(r'production \((C\d+T\d+P\d+)\)', name))}
+          slots = max(0, min(12, 19 - len(busy)))
+          lessons = [p for p in edition if slots and p in requested - active
+                     and cached(p, '13-6') and not cached(p, '13-6', include_illustration=True)]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              print('lessons=' + json.dumps(lessons, separators=(',', ':')), file=out)
+              print('slots=' + str(max(1, slots)), file=out)
+          print(f'{len(lessons)} verified sources ready for illustrations, {slots} worker slots available')
+
+  illustrate:
+    needs: select
+    if: needs.select.outputs.lessons != '[]'
+    permissions:
+      contents: write
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(needs.select.outputs.slots) }}
+      matrix:
+        lesson: ${{ fromJSON(needs.select.outputs.lessons) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      IELTS_LESSON: ${{ matrix.lesson }}
+      IELTS_AIDEN_BATCH: '13-6'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读
+      - name: 从已核准的正文插入同篇插图并实播、回下载
+        run: bash .github/actions/ielts-verified-master/illustrate.sh
