@@ -46,6 +46,29 @@ def wait_previous():
             if p.stdout.strip()=='completed':break
             time.sleep(50)
 
+def sync_notes():
+    from lesson import PID,save
+    branch='codex/ielts-academic-reading'
+    subprocess.run(['git','fetch','--quiet','--no-tags','--filter=blob:none','--depth=1','origin',branch],check=True)
+    revision=subprocess.check_output(['git','rev-parse','FETCH_HEAD'],text=True).strip()
+    sentences=[s for group in load(PROJECT/'原稿'/(PID+'.json'))['paragraphs'] for s in group]
+    for filename in ('早期册语境校订.json','逐篇语境重点-10至1.json'):
+        path=PROJECT/'审校'/filename
+        current=load(path)
+        remote=json.loads(subprocess.check_output(['git','show',revision+':'+path.relative_to(REPO).as_posix()]))
+        if current.get(PID)==remote.get(PID):continue
+        entry=remote.get(PID)
+        if entry is None:
+            current.pop(PID,None)
+        else:
+            anchors=((int(n),v['en']) for n,v in entry.items()) if isinstance(entry,dict) else ((v['sentence'],v['scope_en']) for v in entry)
+            if not all(1<=n<=len(sentences) and sentences[n-1]==en for n,en in anchors):
+                raise ValueError('New paper annotations refer to a different printed edition of '+PID)
+            current[PID]=entry
+        save(path,current)
+    if os.getenv('GITHUB_ENV'):
+        with open(os.environ['GITHUB_ENV'],'a') as out:print('IELTS_NOTES_REVISION='+revision,file=out)
+
 def cached():
     from early_editor import key
     from lesson import PID
@@ -76,8 +99,9 @@ def diagnostics():
     subprocess.run(['gh','release','upload',NOTES,str(name),'--clobber'],check=True)
 
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['plan','wait','cached','diagnosis']);a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('stage',choices=['plan','wait','sync-notes','cached','diagnosis']);a=ap.parse_args()
     if a.stage=='plan':plan()
     elif a.stage=='wait':wait_previous()
+    elif a.stage=='sync-notes':sync_notes()
     elif a.stage=='cached':print(str(cached()).lower())
     else:diagnostics()

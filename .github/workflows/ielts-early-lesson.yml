@@ -44,6 +44,7 @@ jobs:
           export IELTS_WORK="$RUNNER_TEMP/early"
           mkdir -p "$IELTS_WORK"
           echo "IELTS_WORK=$IELTS_WORK" >> "$GITHUB_ENV"
+          python "$TARGET/tools/early_plan.py" sync-notes
           done_master=$(python "$TARGET/tools/early_plan.py" cached)
           echo "done=$done_master" >> "$GITHUB_OUTPUT"
           if [[ "$done_master" != true ]]; then

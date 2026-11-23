@@ -15,7 +15,7 @@ from material import verify_original
 from release_assets import fetch, inventory
 from translation import translate_sentence
 
-VERSION = 'paper-context-5'
+VERSION = 'paper-context-5.1'
 PAPER_EDITION = 'paper-context-4'
 DRAFT = 'ielts-academic-editorial-10-1'
 FILES = ('双语精读.tsv', '篇目信息.json', '分屏.json', 'content-review.json')
@@ -247,6 +247,24 @@ def revision(value):
     reject={'正确','无误','留空','空字符串','原译正确','无需修改','无须修改','不需修改','无需改动','不变','保持不变','同原文','N/A'}
     return '' if value.strip() in reject else value.strip()
 
+# These explicit operators frequently disappear in a fluent Chinese paraphrase.
+# Alternatives are reading cues, not a compulsory word-for-word translation.
+SCOPE_CUES=(
+    (r'\b(?:often|frequently)\b',r'常|往往|时常|屡|频|惯|多有|多半|大多|多数|每每|反复|多会|多为|不时|动辄|多见|多次|很多时候|许多时候','频率（常常、往往）'),
+    (r'\b(?:sometimes|occasionally)\b',r'有时|偶|不时|间或|时而|有的|时有|也会|有些|有可能','偶尔或有时'),
+    (r'\b(?:rarely|seldom)\b',r'少|罕|难得|不常|几乎[不没]|鲜|寥|不多|不大|很难|难以','少有、罕见'),
+    (r'\bat least\b',r'至少|起码|不低于|不小于|不亚于|不逊|以上|最低|最少|下限|少说|少不了','最低限或至少'),
+    (r'\bat most\b',r'至多|最多|不超过|不高于|不多于|以内|不过|顶多|仅|上限|充其量','最高限或至多'),
+    (r'\bno longer\b',r'不再|再也不|已不|已经不|不复|再无|已无|已没有|已失去|失去|停止|结束|消失|取消|绝迹|已非|(?:不必|无需|不能|无法|不用|无力)再|已.{0,12}不(?:见|到|了|能|得|行|及)','不再'),
+    (r'\bnot until\b',r'才|直到|直至|之前|以前|在此之前','直到……才'),
+)
+
+def scope_gaps(en,zh):
+    if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
+        en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
+    return [label for pattern,equivalent,label in SCOPE_CUES
+            if re.search(pattern,en,re.I) and not re.search(equivalent,zh)]
+
 def ground_vocabulary(row,source,witness):
     """Resolve glosses without a visible equivalent against this individual sentence."""
     zh=row['zh'];en=row['en']
@@ -387,14 +405,15 @@ def verify(group,source,all_rows,witness=None):
         for r in auto:
             answer=resp['s'+str(r['n'])];row=dict(r);row['v']=[list(x) for x in r['v']]
             zh=revision(answer['translation']) or r['zh']
-            if not good(r['en'],[r['en']],row['v'],[zh],[x[3] for x in row['v']],all_rows[r['n']-2]['en'] if r['n']>1 else ''):
-                errors.append(r['n']);continue
+            gaps=scope_gaps(r['en'],zh)
+            if gaps or not good(r['en'],[r['en']],row['v'],[zh],[x[3] for x in row['v']],all_rows[r['n']-2]['en'] if r['n']>1 else ''):
+                errors.append((r['n'],gaps));continue
             row['zh']=zh;row['parts']=[zh];row['english_parts']=[r['en']]
             row['review_reason']=revision(answer['reason']) if zh!=r['zh'] else ''
             if zh!=r['zh'] and not row['review_reason']:row['review_reason']='据本句英文修订整句译文。'
             checked[r['n']]=row
         if not errors:break
-        payload['repair']='这些句子须给完整中文，不能放解释、字段名或相邻句的年份：'+str(errors)
+        payload['repair']='逐句查补上次译文漏掉的程度、频率或范围，再给完整译文。保留原文语气。需复核的字段：'+str(errors)
     else:raise ValueError(f'{PID}: no valid source-based translation at {errors}')
     for r in auto:
         row=checked[r['n']]
@@ -457,7 +476,7 @@ def output(source,rows,reference_count):
     known_names={name for row in corrections().values() for name in row['names']}
     meta.update(genre='剑桥雅思 · 学术阅读',header={'english':short_en,'chinese':short_zh},lemmas={},row_lemmas=terms,zh_names=confirmed_names(rows,known_names),pronunciation={})
     save(LESSON/'篇目信息.json',meta);save(LESSON/'分屏.json',{PID:cuts})
-    proof={'id':PID,'source_sha256':digest(PAPER),'candidate_sha256':digest(PREP),'editor_version':VERSION,'key':key(),'reading_units':len(rows),
+    proof={'id':PID,'source_sha256':digest(PAPER),'candidate_sha256':digest(PREP),'editor_version':VERSION,'paper_note_revision':os.getenv('IELTS_NOTES_REVISION',''),'key':key(),'reading_units':len(rows),
            'vocabulary_entries':sum(len(r['v']) for r in rows),'split_sentences':len(cuts),'translation_review':{'sentences_checked':len(rows),'paper_edited_sentences':sum(bool(r.get('paper_edited')) for r in rows),'aligned_independent_readings':reference_count,'corrections':marks,
            'model_basis':'Complete English sentences are drafted and reviewed before read-only bilingual segmentation. Alternative readings are consulted alongside the paper. Paper-edited lines retain their confirmed translation and glossary.'},
            'text_sha256':digest(LESSON/FILES[0]),'metadata_sha256':digest(LESSON/FILES[1]),'split_sha256':digest(LESSON/FILES[2]),'checked':False}
