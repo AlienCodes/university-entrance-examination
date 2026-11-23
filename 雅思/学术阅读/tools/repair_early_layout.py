@@ -9,7 +9,9 @@ from draft_lesson import TEXT, record, request_json
 from early_editor import FILES, ZH_CLAUSE, aligned_boundary, digest, finite_response, read, splits_coordinated_phrase, store_candidate, translation_anchors
 from lesson import LESSON, PID, PROJECT, save
 
-CLAUSES=re.compile(r'[,;:—–]\s+|\s+(?=(?:and|or|but|whereas|although|because|while|which|who|whose|when|so that|in order to|rather than|if|even though|as a result|including)\b)',re.I)
+CLAUSES=re.compile(r'[,;:—–]\s+|\s+(?=(?:and|or|but|whereas|although|because|while|which|who|whose|when|so that|'
+                   r'in order to|rather than|if|even if|even though|only if|as long as|as soon as|since|unless|'
+                   r'provided that|as a result|including|to (?:provide|determine|obtain|ensure|enable|allow|help))\b)',re.I)
 VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|跨行|拆到两行|断行|连字符|续接号|行首缩进')
 def movable(row):
     en=row['en']

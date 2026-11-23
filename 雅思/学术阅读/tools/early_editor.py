@@ -31,8 +31,9 @@ CLAUSE = re.compile(
     r'leading|showing|giving|providing|according|using|built|known)\b)|'
     r'\s+(?=(?:but|whereas|although|because|while|which|who|whose|when|so that|in order to|'
     r'rather than|if|even though|as a result|such as|including|during the|in contrast to|'
+    r'even if|only if|as long as|as soon as|since|unless|provided that|'
     r'and (?:it|they|he|she|the)|for [a-z]+ing|to (?:provide|determine|obtain|ensure|enable|allow|help))\b)',re.I)
-ZH_CLAUSE = re.compile(r'[，；：。！？]+[”’]?|(?=以便|从而|用于|以供|用来|供人|其中|因为|因此|同时|并且|而且|例如|包括|也就是|这意味着|而在|但却|然而)')
+ZH_CLAUSE = re.compile(r'(?:[，；：。！？]+|——+)[”’]?|(?=以便|从而|用于|以供|用来|供人|其中|因为|因此|同时|并且|而且|例如|包括|也就是|这意味着|而在|但却|然而)')
 EDITOR = ('你是雅思学术阅读教材责任编辑。source中的每个英文意群依次翻成准确、简洁、自然的简体中文。'
  '英文是唯一依据。译全动作、否定、程度、数字、单位和逻辑，上一句只能帮助确定指代。严禁补写上一句的内容。'
  '机器参照可能错译或发挥，应主动纠正。parts中每一项只译给定的一段，相邻中文拼起来就是自然的一句话。'
@@ -165,7 +166,8 @@ def aligned_boundary(anchors,e,z):
     return bool(left and right and not crossed)
 
 def splits_coordinated_phrase(en, offset):
-    fixed=r'\b(?:travel and tourism|research and development|supply and demand|trial and error)\b'
+    fixed=(r'\b(?:travel and tourism|research and development|supply and demand|trial and error|even if|'
+           r'even though|only if|as long as|as soon as|as well as|in order to|so that|rather than|provided that)\b')
     if any(m.start()<offset<m.end() for m in re.finditer(fixed,en,re.I)):return True
     # In “..., Travel | and tourism is ...” the first noun was left with
     # the attribution on the preceding screen. Look at the current clause.
@@ -401,6 +403,7 @@ def revision(value):
 # These explicit operators frequently disappear in a fluent Chinese paraphrase.
 # Alternatives are reading cues, not a compulsory word-for-word translation.
 SCOPE_CUES=(
+    (r'\beven if\b',r'即使|即便|哪怕|就算|纵使|纵然|退一步|退一万步|即令|即或|即便是|便是','even if 引出的假设性让步'),
     (r'\b(?:often|frequently)\b',r'常|往往|时常|屡|频|惯|多有|多半|大多|多数|每每|反复|多会|多为|不时|动辄|多见|多次|很多时候|许多时候','频率（常常、往往）'),
     (r'\b(?:sometimes|occasionally)\b',r'有时|偶|不时|间或|时而|有的|时有|也会|有些|有可能','偶尔或有时'),
     (r'\b(?:rarely|seldom)\b',r'少|罕|难得|不常|几乎[不没]|鲜|寥|不多|不大|很难|难以','少有、罕见'),

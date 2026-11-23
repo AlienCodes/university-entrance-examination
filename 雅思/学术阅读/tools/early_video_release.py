@@ -174,7 +174,7 @@ def publish(out):
     if not subprocess.run(['gh','release','view',TAG],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode:
         if official():raise ValueError('This edition has already been published; check its receipt before replacing it')
     else:
-        subprocess.run(['gh','release','create',TAG,'--draft','--target',receipt['source_revision'],'--title',TITLE,'--notes-file',str(notes)],check=True)
+        subprocess.run(['gh','release','create',TAG,'--draft','--target',BRANCH,'--title',TITLE,'--notes-file',str(notes)],check=True)
     files=[out/LAYOUT,DOWNLOAD_SCRIPT,out/RECEIPT]
     if info['bytes']<2**31:files.append(out/ZIP)
     subprocess.run(['gh','release','upload',TAG,*map(str,files),'--clobber'],check=True)
