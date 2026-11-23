@@ -237,6 +237,12 @@ def early_sentence_slide(p,sentence,k,n,part=None):
     # Keep the printed punctuation, its highlight and its continuation together.
     match=re.search(r'<div class="en">(.*?)</div>',html,re.S)
     body=match[1]
+    # Keep a closing quote with the final word even if its opening quote was
+    # on the previous screen. The superscript annotates the quoted word.
+    if (part and part[0] and part[1] == len(sentence['en'])
+            and '‘' in sentence['en'][:part[0]] and re.search(r'’[.!?]?$', sentence['en'])):
+        body = re.sub(r'(<sup(?: [^>]*)?>\d+</sup>)(</span>)(</nobr>)?([’])([.!?]?)$',
+                      r'<x-ps>\4</x-ps>\1\2\3\5', body)
     before_cont=r'(<span class="w">(?:(?!</span>).)*</span>|[\w’]+)([ \u00a0]+[-–—])(<span class="cont">\u00a0…</span>)'
     body=re.sub(before_cont,r'<nobr>\1\2\3</nobr>',body)
     body=re.sub(r'(?<![>\w])([A-Za-z0-9’]{1,16} - [A-Za-z0-9’]{1,16})(?![\w<])',r'<nobr>\1</nobr>',body)

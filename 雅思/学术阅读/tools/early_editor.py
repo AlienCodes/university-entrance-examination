@@ -156,6 +156,15 @@ def aligned_boundary(anchors,e,z):
     left,right,crossed=boundary_evidence(anchors,e,z)
     return bool(left and right and not crossed)
 
+def splits_coordinated_phrase(en, offset):
+    fixed=r'\b(?:travel and tourism|research and development|supply and demand|trial and error)\b'
+    if any(m.start()<offset<m.end() for m in re.finditer(fixed,en,re.I)):return True
+    # In “..., Travel | and tourism is ...” the first noun was left with
+    # the attribution on the preceding screen. Look at the current clause.
+    leaf=re.split(r'[,;:“‘"]',en[:offset])[-1].strip()
+    return bool(0<len(leaf.split())<=2 and re.match(
+        r'(?:and|or)\s+(?:[A-Za-z’\'-]+\s+){1,3}(?:is|are|was|were)\b',en[offset:],re.I))
+
 def screen_alignment(rows,cuts):
     checked=[];flags=[]
     for n,split in cuts.items():
@@ -167,9 +176,10 @@ def screen_alignment(rows,cuts):
         for part,(next_english,chinese) in enumerate(zip(split['at'],split['zh'][:-1],strict=True),2):
             if en.count(next_english)!=1:raise ValueError('Ambiguous English screen marker at '+n)
             offset+=len(chinese)
-            left,right,crossed=boundary_evidence(anchors,en.index(next_english),offset)
+            start=en.index(next_english);broken=splits_coordinated_phrase(en,start)
+            left,right,crossed=boundary_evidence(anchors,start,offset)
             checked.append((left,right,crossed))
-            if crossed>=2:flags.append({'sentence':int(n),'next_screen':part,'opposite_side_glosses':crossed,
+            if crossed>=2 or broken:flags.append({'sentence':int(n),'next_screen':part,'opposite_side_glosses':crossed,'divided_coordination':broken,
                                         'next_english':next_english,'next_chinese':split['zh'][part-1][:32]})
     return {'boundaries':len(checked),'with_glosses_on_both_sides':sum(bool(a and b) for a,b,c in checked),'flags':flags}
 
@@ -180,6 +190,7 @@ def boundaries(en,terms):
     result=[]
     for hit in CLAUSE.finditer(en):
         at=hit.end()
+        if splits_coordinated_phrase(en,at):continue
         if any(a<at<b for a,b in blocked) or not any(b<=at for a,b in blocked) or not any(a>=at for a,b in blocked):continue
         intro=en[:at].strip()
         if len(intro.split())<=11 and intro.endswith(',') and re.match(r'^(?:during|in|by|at|since|between|from|on)\b',intro,re.I):continue
@@ -415,7 +426,14 @@ def reversed_quantities(en, zh):
 def scope_gaps(en,zh):
     if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
         en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
-    return reversed_quantities(en,zh) + [label for pattern,equivalent,label in SCOPE_CUES
+    gaps=reversed_quantities(en,zh)
+    both_actions=re.search(r'\b(?:are|is|were|was|been|being)\s+(?:\w+ly\s+)?\w+ing\b[^.;!?]{1,95}?\band\s+(?:\w+ly\s+)?\w+ing\b',en,re.I)
+    if both_actions and not re.search(r'\b(?:or|either|whether)\b',en,re.I) and re.search(r'或者|抑或|要么',zh):
+        gaps.append('同时成立的两项活动，核查是否误译成二选一')
+    if (re.search(r'\bin order to\b',en,re.I) and re.search(r'(?:从而|因而|以致|以至)(?:无法|不能|无从)',zh)
+            and not re.search(r'\b(?:not|unable|cannot|impossible|failed?)\b',en,re.I)):
+        gaps.append('in order to 的目的关系，核查是否误译成否定的结果')
+    return gaps + [label for pattern,equivalent,label in SCOPE_CUES
             if re.search(pattern,en,re.I) and not re.search(equivalent,zh)]
 
 def ground_vocabulary(row,source,witness,preparation=None):

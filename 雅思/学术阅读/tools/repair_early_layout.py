@@ -6,7 +6,7 @@ import re
 import tempfile
 
 from draft_lesson import TEXT, record, request_json
-from early_editor import FILES, ZH_CLAUSE, aligned_boundary, digest, finite_response, read, store_candidate, translation_anchors
+from early_editor import FILES, ZH_CLAUSE, aligned_boundary, digest, finite_response, read, splits_coordinated_phrase, store_candidate, translation_anchors
 from lesson import LESSON, PID, PROJECT, save
 
 CLAUSES=re.compile(r'[,;:—–]\s+|\s+(?=(?:and|or|but|whereas|although|because|while|which|who|whose|when|so that|in order to|rather than|if|even though|as a result|including)\b)',re.I)
@@ -17,6 +17,7 @@ def movable(row):
     result={}
     for hit in CLAUSES.finditer(en):
         i=hit.end()
+        if splits_coordinated_phrase(en,i):continue
         if min(len(en[:i].split()),len(en[i:].split()))<4 or any(a<i<b for a,b in span):continue
         token=next((en[i:m.end()] for m in re.finditer(r'\S+',en) if m.end()>i and len(en[i:m.end()].split())>=2 and en.count(en[i:m.end()])==1),'')
         if token:result[i]=token
