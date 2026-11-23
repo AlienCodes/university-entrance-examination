@@ -1,0 +1,55 @@
+name: 归档剑桥雅思第10至1册原书页核对材料
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths: [.github/ielts-preserve-reading-sources.json]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/ielts-academic-reading
+          filter: blob:none
+          sparse-checkout: |
+            .github/ielts-preserve-reading-sources.json
+            雅思/学术阅读/审校
+          sparse-checkout-cone-mode: false
+      - id: input
+        run: |
+          echo "run=$(jq -er '.source_run | numbers' .github/ielts-preserve-reading-sources.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: academic-source-review-book-*
+          path: ${{ runner.temp }}/reading-source-pages
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.input.outputs.run }}
+      - name: 核对各册题号、起始页和原始识别文本
+        run: |
+          python - <<'PY'
+          import json, os, shutil
+          from pathlib import Path
+          base=Path('雅思/学术阅读/审校')
+          incoming=Path(os.environ['RUNNER_TEMP'])/'reading-source-pages'
+          plan=json.loads((base/'第10至1册制作清单.json').read_text())
+          for book in plan['books']:
+              b=book['book']
+              for article in book['academic_passages']:
+                  key=article['lesson'].split('T',1)[1]
+                  found,=(incoming/f'academic-source-review-book-{b}').rglob(f'T{key}/source-pages.json')
+                  pages=json.loads(found.read_text())
+                  assert pages[0]['pdf_page']==article['pdf_page']
+                  assert any(p['ocr'].strip() for p in pages)
+                  output=base/'sources'/f'C{b}'/f'T{key}'/'source-pages.json'
+                  output.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copyfile(found,output)
+          PY
+          git add -- 雅思/学术阅读/审校/sources
+          if ! git diff --cached --quiet; then
+            git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com commit -qm '保存第10至1册120篇的纸本版面文字与逐页OCR'
+            git pull --rebase origin codex/ielts-academic-reading
+            git push origin HEAD:codex/ielts-academic-reading
+          fi
