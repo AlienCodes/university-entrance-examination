@@ -12,6 +12,7 @@ import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
 from aiden_boundaries import POLICY, assess, words, reference
+from aiden_checkpoint import PeriodicSnapshot
 import make_audio as cet
 import 听对
 
@@ -36,6 +37,7 @@ class Aiden:
         self.review={}
         self.folder=Path(os.environ.get('IELTS_WORK',os.environ.get('RUNNER_TEMP','/tmp')))/'aiden-takes'
         self.folder.mkdir(parents=True,exist_ok=True)
+        self.snapshots=PeriodicSnapshot(self.folder)
 
     def style(self,_):
         return SPEAKER
@@ -126,6 +128,7 @@ class Aiden:
         # Each pause is between whole takes. No word is cut at an ASR timestamp.
         takes=[self.take(part,key,variant if len(parts)==1 else variant+1000*i,pron)
                for i,part in enumerate(parts,1)]
+        self.snapshots.after_sentence()
         chunks=[wave for wave,_ in takes]
         records=[data for _,data in takes]
         basis=POLICY

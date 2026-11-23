@@ -59,7 +59,7 @@ SINGULAR = {'millimeters': 'millimeter', 'milliliters': 'milliliter', 'kilograms
 ABBR = [
     (r'\bDr\.\s', 'Doctor '), (r'\bMr\.\s', 'Mister '), (r'\bMrs\.\s', 'Missus '),
     (r'\bProf\.\s', 'Professor '), (r'\bSt\.\s(?=Louis|Andrews)', 'Saint '),
-    (r'\be\.\s?g\.\s?', 'for example, '), (r'\bi\.e\.\s?', 'that is, '),
+    (r'\be\.\s?g\.\s?', 'for example, '), (r'\bi\.[ \t]*e\.\s?', 'that is, '),
     (r'\bNov\.\s(\d+)\b', lambda m: 'November ' + ordinal(int(m.group(1)))),
     (r'\betc\.(?=\s*$)', 'et cetera.'), (r'\betc\.', 'et cetera'),
 ]
