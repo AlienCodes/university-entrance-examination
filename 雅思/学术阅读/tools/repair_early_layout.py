@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import re
 
-from draft_lesson import TEXT, array, record, request_json
+from draft_lesson import TEXT, record, request_json
 from early_editor import FILES, digest, read, store_candidate
 from lesson import LESSON, PID, PROJECT, load, save
 
@@ -28,9 +28,11 @@ def subdivide(row,old,reason):
     instr=('已在实际手机字号的画面中发现排版问题。按英文从句、句意和朗读停顿，重新选择足够但不过量的屏幕。'
         '每一个切点给出后一个英文意群从哪个编号开始，并从整句中文精确摘出与它对应的开头若干字作为唯一定位符，'
         '保持两种语言的语义同步。已有的中文、词条和英文一字不改；不要拆开一个搭配或专名，各屏词汇和阅读量要均衡。')
-    schema=record(cuts=array(record(start={'type':'integer'},chinese_start=TEXT)))
+    slots=[f'cut{i+1}' for i in range(min(8,len(items),max(2,len(row['w'])//5+1)))]
+    schema=record(**{k:record(start={'type':'integer','enum':list(range(len(items)+1))},chinese_start=TEXT) for k in slots})
     for attempt in range(3):
-        selection=request_json(instr,prompt,schema,attempt)['cuts']
+        answer=request_json(instr+' 不用的字段填0和空字符串。',prompt,schema,attempt,token_limit=400)
+        selection=[answer[k] for k in slots if answer[k]['start']]
         try:
             if not selection or any(not 1<=v['start']<=len(items) or not v['chinese_start'].strip() or zh.count(v['chinese_start'].strip())!=1 for v in selection):raise ValueError
             pts=[items[v['start']-1] for v in selection];cn=[zh.index(v['chinese_start'].strip()) for v in selection]

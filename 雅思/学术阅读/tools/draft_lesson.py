@@ -57,9 +57,9 @@ def ask(instruction,data,attempt=0):
     return request_json(instruction,data,reply_schema(instruction,data),attempt)
 
 
-def request_json(instruction,data,schema,attempt=0):
+def request_json(instruction,data,schema,attempt=0,token_limit=3800):
     req={'messages':[{'role':'system','content':instruction},{'role':'user','content':json.dumps(data,ensure_ascii=False)}],
-         'temperature':.12 if not attempt else .25,'seed':751+attempt,'max_tokens':3800,
+         'temperature':.12 if not attempt else .25,'seed':751+attempt,'max_tokens':token_limit,
          'response_format':{'type':'json_schema','json_schema':{'name':'reading','strict':True,'schema':schema}},'cache_prompt':True}
     url=urllib.request.Request('http://127.0.0.1:8123/v1/chat/completions',data=json.dumps(req,ensure_ascii=False).encode(),headers={'Content-Type':'application/json'})
     with urllib.request.urlopen(url,timeout=1150) as response:

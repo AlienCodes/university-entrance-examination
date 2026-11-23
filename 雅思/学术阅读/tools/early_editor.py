@@ -8,13 +8,13 @@ import re
 import subprocess
 import zipfile
 
-from draft_lesson import CJK, TEXT as STRING, array, confirmed_names, record, request_json
+from draft_lesson import CJK, TEXT as STRING, record, request_json
 from lesson import LESSON, PID, PROJECT, save
 from material import verify_original
 from release_assets import fetch, inventory
 from translation import translate_sentence
 
-VERSION = 'paper-context-2'
+VERSION = 'paper-context-3'
 DRAFT = 'ielts-academic-editorial-10-1'
 FILES = ('双语精读.tsv', '篇目信息.json', '分屏.json', 'content-review.json')
 PAPER = PROJECT/'原稿'/(PID+'.json')
@@ -27,11 +27,6 @@ EDITOR = ('你是雅思学术阅读教材责任编辑。source中的每个英文
  '机器参照可能错译或发挥，应主动纠正。parts中每一项只译给定的一段，相邻中文拼起来就是自然的一句话。'
  '保留与本文相符的专名、引用和年份。为每个实际词条给语境中的中文义，尽量2至8个汉字，写出最贴切的一义。'
  '只给教材正文和词条。')
-VERIFY = ('你是独立校勘此页的第二位英汉教材编辑。逐项对照英文、对应的中文意群及每个词条。'
- '只在能够指出具体错误时修订，例如漏译、增译、主客体颠倒、专名年份、情态或数量范围、当句词义错误、中文病句。'
- '不得加入原文没有的背景。逐句依原意判断，切口前后语义必须对应。correct 为 true 表示每段中文及词条均可使用；'
- '若存在问题，correct 为 false，将改正后的完整分段译文写入 parts，在 corrections 中用词条的原编号写确实需要改正的词义，同时说明依据。'
- '若正确则 parts、corrections 均为空。不要仅为换同义词改稿。')
 CJK_POS = re.compile(r'^(?:名词|动词|形容词|副词|短语|n\.|v\.|adj\.|adv\.|phr\.)[：: ]*')
 def digest(file):
     return hashlib.sha256(file.read_bytes()).hexdigest()
@@ -101,10 +96,12 @@ def decide(en,terms):
     choices=boundaries(en,terms)
     if not choices:return [en]
     labels={str(i):en[pos:pos+52] for i,pos in enumerate(choices,1)}
-    schema=record(cuts={'type':'array','items':{'type':'integer','minimum':1,'maximum':len(choices)},'maxItems':min(9,len(choices))})
+    limit=min(len(choices),max(1,min(7,(len(terms)+5)//7,len(en.split())//8)))
+    fields={f'cut{i+1}':{'type':'integer','enum':list(range(len(choices)+1))} for i in range(limit)}
+    schema=record(**fields)
     instruction=('依据从句、并列和句意，判断是否应给手机屏幕分屏。优先保留完整句；文字确实较长，或一屏有太多词条，才按完整意群拆。'
                  '按需要选给定编号，让各屏阅读量接近，多项并列长句可超过两处分屏。不要让一侧堆满十几条、另一侧只有一两条。不要拆主谓宾、词组、比较结构或专名，中等长度的句子允许不分。')
-    proposed=request_json(instruction,{'sentence':en,'words':[t['form'] for t in terms],'possible_starts':labels},schema)['cuts']
+    proposed=request_json(instruction+' 只填候选编号；不需要的切口填0。',{'sentence':en,'words':[t['form'] for t in terms],'possible_starts':labels},schema,token_limit=100).values()
     selected=sorted(set(choices[i-1] for i in proposed if 1<=i<=len(choices)))
     spans=list(zip([0]+selected,selected+[len(en)]))
     if any(len(en[a:b].split())<6 or not any(a<=s and e<=b for t in terms for s,e in positions(en,t['form'])) for a,b in spans):return [en]
@@ -134,38 +131,16 @@ def vocabulary(row,prior,notes):
         used.update(pixels);result.append(t)
     return sorted(result,key=lambda t:positions(en,t['form'])[0][0])
 
-def choose_terms(en,items,notes):
-    positions_allowed=['n.','v.','adj.','adv.','prep.','conj.','pron.','num.','phr.']
-    form=record(form=STRING,head=STRING,pos={'type':'string','enum':positions_allowed})
-    instructions=('为雅思精读筛选当句值得掌握的词汇、义项、搭配和短语。尽量收全学术词、主题词、熟词生义、'
-        '短语动词、重要数量和逻辑表达。不要为凑数列孤立的普通助动词、时间地点常用词、代词。'
-        '如 were treated to、inch its way、be fundamental to 等，依实际句法选择完整而紧凑的搭配。'
-        '保留每个有学习价值的实词，不过分扩大词组而遮掉彼此独立的重点词。一个多词表达和其中的单词不要重复列出。'
-        '选择候选词时写其编号及此句正确词性；另外列出未列入的值得学的表达。添加表达的 form 必须逐字摘自本句，'
-        'head 为自然的词典词头，pos 为其在句中的词性。数量由难度决定，短句通常2至6条，困难的句子可以有十余条。')
-    schema=record(kept=array(record(number={'type':'integer'},pos={'type':'string','enum':positions_allowed})),additional=array(form))
-    prompt={'sentence':en,'dictionary_candidates':{str(i+1):t['form'] for i,t in enumerate(items)},'paper_notes':notes}
-    response=request_json(instructions,prompt,schema)
-    selected=[]
-    for t in response['additional']:
-        spans=positions(en,t['form'])
-        if not spans or not t['head'].strip() or len(t['head'])>70 or len(t['form'].split())>7:continue
-        a,b=spans[0]
-        if en[a:b].casefold()!=t['form'].casefold():continue
-        selected.append(dict(form=en[a:b],head=t['head'].strip(),pos=t['pos'],dictionary=''))
-    for t in response['kept']:
-        n=t['number']-1
-        if 0<=n<len(items):selected.append({**items[n],'pos':t['pos']})
-    # Paper-glossed technical terms retain priority over a generic selection.
-    anchors={x['english'].casefold() for x in notes}
-    for t in items:
-        if t['form'].casefold() in anchors and not any(i['form'].casefold()==t['form'].casefold() for i in selected):selected.insert(0,t)
-    filtered=[];used=set()
-    for t in selected or items:
-        points={i for a,b in positions(en,t['form']) for i in range(a,b)}
-        if points and not used.intersection(points):
-            filtered.append(t);used.update(points)
-    return sorted(filtered,key=lambda t:positions(en,t['form'])[0][0])
+def fields(prefix,n):
+    return [prefix+str(i+1) for i in range(n)]
+
+def finite_response(instruction,payload,schema,limit):
+    for trial in range(3):
+        try:
+            return request_json(instruction,payload,schema,trial,token_limit=limit)
+        except (ValueError,TimeoutError):
+            if trial==2:raise
+            payload={**payload,'output_rule':'各字段只填一条简洁结果，严格按既有字段作答，不重复。'}
 
 def assemble(n,en,parts,terms,meanings):
     return {'n':n,'en':en,'parts':parts,'zh':''.join(parts),'v':[[t['form'],t['head'],t.get('pos',''),m] for t,m in zip(terms,meanings,strict=True)]}
@@ -180,60 +155,106 @@ def good(en,parts,terms,zh,meanings,previous):
     if (years(previous)-years(en)) & (years(result)-years(en)):return False
     return True
 
+def gloss_value(value,fallback):
+    value=value.strip()
+    match=POS.match(value)
+    if match and match[1].lower() in {'n.','v.','adj.','adv.','prep.','conj.','aux.','num.','pron.','phr.','abbr.','interj.'}:
+        return match[1].lower(),CJK_POS.sub('',match[2].strip())
+    return fallback,CJK_POS.sub('',value)
+
+def confirmed_names(rows,known):
+    registered=set(known)
+    for r in rows:
+        for zh in [r['zh'],*[v[3] for v in r['v']]]:
+            locations=[m.start() for m in re.finditer(r'(?<=[\u4e00-\u9fff])·(?=[\u4e00-\u9fff])',zh)]
+            def covered(i):
+                return any(a<=i<a+len(n) for n in registered for a in [zh.find(n)] if a>=0) or any(
+                    m.start()<=i<m.end() for n in registered for m in re.finditer(re.escape(n),zh))
+            unknown=[i for i in locations if not covered(i)]
+            if not unknown:continue
+            keys=fields('name',len(unknown));samples={k:zh[max(0,i-10):i+13] for k,i in zip(keys,unknown)}
+            ans=finite_response('根据英文和译文，为每个间隔号摘出包含它的完整中文音译专名，逐字复制译文，不包含周围的连词或标点。',
+                {'English':r['en'],'Chinese':zh,'occurrences':samples},record(**dict.fromkeys(keys,STRING)),70+len(unknown)*48)
+            for k in keys:
+                word=ans[k].strip()
+                if '·' in word and word in zh and len(word)<=32:registered.add(word)
+            if not all(covered(i) for i in locations):raise ValueError(f'Unresolved transliterated name at {PID}/{r["n"]}')
+    return sorted(registered,key=lambda name:(-len(name),name))
+
 def teach(index,source,prep,prior,previous,workdir):
     n=index+1;en=prep['en']
+    patch=corrections().get(str(n))
+    if patch:
+        if patch['en']!=en or len(patch['parts'])!=1 or not all(positions(en,t[0]) for t in patch['terms']):
+            raise ValueError(f'Manual translation no longer matches {PID}/{n}')
+        return dict(n=n,en=en,zh=''.join(patch['parts']),parts=patch['parts'],english_parts=[en],v=patch['terms'],
+                    independent_translation='',paper_edited=True)
     notes=[a for a in source.get('language_review',[]) if a.get('scope_en',en)==en and a['english'].casefold() in en.casefold()]
     terms=vocabulary(prep,prior.get(en,[]),notes)
     if not terms:raise ValueError(f'{PID} sentence {n} lacks a teachable entry')
-    terms=choose_terms(en,terms,notes)
-    patch=corrections().get(str(n))
-    if patch and patch['en']!=en:raise ValueError(f'Manual revision for a different sentence {PID}/{n}')
-    chunks=[en] if patch and len(patch['parts'])==1 else decide(en,terms)
-    context=[{'en':t['form'],'lemma':t['head'],'pos':t['pos'],'dictionary':t.get('dictionary','')[:180],'sense_hint':prep['term_hints'].get(t['form'],t.get('earlier_sense',''))} for t in terms]
+    chunks=decide(en,terms)
     try:
         direct=translate_sentence(en,'',[],[])
     except ValueError:
         direct=''
     if not clean(direct):direct=''
-    identifiers=[f'w{i+1}' for i in range(len(terms))]
-    schema=record(parts={'type':'array','items':STRING,'minItems':len(chunks),'maxItems':len(chunks)},glosses=record(**{k:STRING for k in identifiers}))
-    args={'title':source['title'],'previous_for_pronouns_only':previous,'source':chunks,'translation_hypothesis':direct,'words':dict(zip(identifiers,context)),'paper_notes':notes}
+    phrases=fields('p',len(chunks));words=fields('w',len(terms))
+    schema=record(translation=record(**dict.fromkeys(phrases,STRING)),vocabulary=record(**dict.fromkeys(words,STRING)))
+    data={'passage':source['title'],'English':dict(zip(phrases,chunks)),'reference':direct,
+          'words':{k:[t['form'],t['head'],t.get('pos',''),t.get('dictionary','')[:115],
+                         prep['term_hints'].get(t['form'],t.get('earlier_sense',''))] for k,t in zip(words,terms)},
+          'paper_notes':[a['check'] for a in notes]}
+    # The paper context is already represented by its title and scoped terms.
+    # Keep the previous sentence out of the translation prompt to avoid carrying its quantities over.
+    instruction=(EDITOR+' translation的p字段逐段翻译，vocabulary每个w字段只写这个词此处的中文义。'
+                 '格式是英语词性加一个空格再加当句中文义，例如 v. 记录。按句法核对词性。普通助动词可留空，其余重要词与搭配请写全。')
     for attempt in range(3):
-        answer=request_json(EDITOR,args,schema,attempt)
-        zh=[x.strip() for x in answer['parts']]
-        meanings=[CJK_POS.sub('',answer['glosses'].get(k,'').strip()) for k in identifiers]
-        if good(en,chunks,terms,zh,meanings,previous):break
-        args['revise']='请提供每段的正文翻译以及每个词条的中文。清除说明文字、换行、无依据的年份、过长的词条释义。'
+        answer=finite_response(instruction,data,schema,min(2700,max(350,155+len(en)//2+len(terms)*31)))
+        zh=[answer['translation'][k].strip() for k in phrases]
+        senses=[gloss_value(answer['vocabulary'][k],t.get('pos','')) for k,t in zip(words,terms)]
+        values=[val for pos,val in senses]
+        keep=[i for i,x in enumerate(values) if x]
+        for nte in notes:
+            for i,t in enumerate(terms):
+                if nte.get('meaning') and t['form'].casefold()==nte['english'].casefold():
+                    values[i]=nte['meaning']
+                    if i not in keep:keep.append(i)
+        keep.sort();chosen=[{**terms[i],'pos':senses[i][0]} for i in keep];meanings=[values[i] for i in keep]
+        if chosen and good(en,chunks,chosen,zh,meanings,previous) and all(any(positions(ch,t['form']) for t in chosen) for ch in chunks):break
+        data['repair']='每一段要有忠实的中文和与本段英文对应的核心词。从全部候选中保留足够多的实词和搭配，只写简短语境义。'
     else:raise ValueError(f'{PID} sentence {n}: unusable initial translation or gloss')
-    if patch:
-        zh=patch['parts'];meanings=[patch['meanings'].get(t['form'],m) for t,m in zip(terms,meanings,strict=True)]
-        if not good(en,chunks,terms,zh,meanings,previous):raise ValueError(f'Incorrect manual edit at {PID}/{n}')
-    row=assemble(n,en,zh,terms,meanings);row['english_parts']=chunks;row['independent_translation']=direct
+    row=assemble(n,en,zh,chosen,meanings);row['english_parts']=chunks;row['independent_translation']=direct
     return row
 
 def verify(group,source,all_rows):
-    keys={f's{x["n"]}':record(correct={'type':'boolean'},reason=STRING,parts=array(STRING),
-              corrections=array(record(number={'type':'integer'},meaning=STRING))) for x in group}
-    payload={'title':source['title'],'rows':[{'n':r['n'],'en':r['english_parts'],'zh':r['parts'],'comparison':r['independent_translation'],'vocabulary':[(i+1,v[0],v[3]) for i,v in enumerate(r['v'])]} for r in group]}
+    manual={r['n']:dict(r,review_reason='依据原句逐词核定词形、语境义和完整译文。') for r in group if r.get('paper_edited')}
+    auto=[r for r in group if r['n'] not in manual]
+    if not auto:return [manual[r['n']] for r in group]
+    items={};schema={}
+    for r in auto:
+        k='s'+str(r['n']);pn=fields('p',len(r['parts']));wn=fields('w',len(r['v']))
+        items[k]={'English':dict(zip(pn,r['english_parts'])),'Chinese':dict(zip(pn,r['parts'])),'reference':r['independent_translation'],
+                  'terms':{w:[v[0],v[2],v[3]] for w,v in zip(wn,r['v'])}}
+        schema[k]=record(translation=record(**dict.fromkeys(pn,STRING)),glosses=record(**dict.fromkeys(wn,STRING)),reason=STRING)
+    instruction=('以英文为唯一依据校对简体中文教辅。每个p或w字段只在原译确实错时写改正后的完整译段或简短语境义，'
+                 '正确的字段留空字符串。reason 用简短中文指出有实际修改处的依据，全部正确则填空字符串。'
+                 '核对动作主体、否定、条件、数字、语气、词性和词义，不加背景。修正词性时写如 v. 记录。各屏中英文须对应。')
+    payload={'title':source['title'],'sentences':items}
     for attempt in range(3):
-        resp=request_json(VERIFY,payload,record(**keys),attempt);final=[];errors=[]
-        for r in group:
+        resp=finite_response(instruction,payload,record(**schema),max(450,min(2300,270+sum(len(r['v'])*29+len(r['en'])//2 for r in auto))))
+        checked=dict(manual);errors=[]
+        for r in auto:
             v=resp['s'+str(r['n'])];row=dict(r);row['v']=[list(x) for x in r['v']]
-            if not v['correct']:
-                if v['parts']:row['parts']=[x.strip() for x in v['parts']]
-                for c in v['corrections']:
-                    if 1<=c['number']<=len(row['v']):row['v'][c['number']-1][3]=c['meaning'].strip()
-                changed=row['parts']!=r['parts'] or row['v']!=r['v']
-                if not v['reason'].strip() or not changed:errors.append(r['n'])
-            patch=corrections().get(str(r['n']))
-            if patch:
-                row['parts']=patch['parts']
-                for term in row['v']:term[3]=patch['meanings'].get(term[0],term[3])
-            row['zh']=''.join(row['parts'])
-            if not good(r['en'],r['english_parts'],row['v'],row['parts'],[x[3] for x in row['v']],all_rows[r['n']-2]['en'] if r['n']>1 else ''):errors.append(r['n'])
-            row['review_reason']=v['reason'].strip() if not v['correct'] else '';final.append(row)
-        if not errors:return final
-        payload['repair']='下列句号的核对回复缺少完整意群或词义，请按给定英文更正：'+str(sorted(set(errors)))
+            row['parts']=[v['translation'][k].strip() or old for k,old in zip(fields('p',len(r['parts'])),r['parts'])]
+            for k,t in zip(fields('w',len(row['v'])),row['v']):
+                fix=v['glosses'][k].strip()
+                if fix:t[2],t[3]=gloss_value(fix,t[2])
+            row['zh']=''.join(row['parts']);changed=row['parts']!=r['parts'] or row['v']!=r['v']
+            row['review_reason']=v['reason'].strip() if changed else ''
+            if (changed and not row['review_reason']) or not good(r['en'],r['english_parts'],row['v'],row['parts'],[x[3] for x in row['v']],all_rows[r['n']-2]['en'] if r['n']>1 else ''):errors.append(r['n'])
+            checked[r['n']]=row
+        if not errors:return [checked[r['n']] for r in group]
+        payload['repair']='检查这些句号的译段和词义。若改正，请在reason中简述实际错误：'+str(errors)
     raise ValueError(f'{PID}: unresolved second review for {errors}')
 
 def editorial():
@@ -250,7 +271,7 @@ def editorial():
     for i in range(len(state['drafted']),len(rows)):
         item=teach(i,source,rows[i],prior,sentences[i-1] if i else '',wp)
         state['drafted'].append(item);save(statefile,state)
-        if (i+1)%10==0:
+        if i+1 in {3,7} or (i+1)%10==0:
             subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
         print(PID,'draft',i+1,'/',len(rows),flush=True)
     for i in range(len(state['verified']),len(rows),3):
@@ -280,11 +301,11 @@ def output(source,rows):
         lines.append('')
     (LESSON/'双语精读.tsv').write_text('\n'.join(lines),encoding='utf-8');verify_original(PROJECT,PID)
     # The full titles are anchored to the paper; the short forms only occupy the chalkboard header.
-    en_title=source['title'];zh_title=source['title_zh'];short_en=' '.join(en_title.split()[:5]);short_zh=zh_title.split('（')[0]
+    en_title=source['title'];zh_title=source['title_zh'];short_en=' '.join(en_title.split()[:5])+('…' if len(en_title.split())>5 else '');short_zh=zh_title.split('（')[0]
     if len(short_zh)>12:short_zh=short_zh[:11]+'…'
     meta={k:source[k] for k in ('id','book','test','passage','title','title_zh','pdf_pages')}
     known_names={name for row in corrections().values() for name in row['names']}
-    meta.update(genre='剑桥雅思 · 学术阅读',header={'english':short_en,'chinese':short_zh},lemmas={},row_lemmas=terms,zh_names=sorted(known_names.union(confirmed_names(rows)),key=lambda name:(-len(name),name)),pronunciation={})
+    meta.update(genre='剑桥雅思 · 学术阅读',header={'english':short_en,'chinese':short_zh},lemmas={},row_lemmas=terms,zh_names=confirmed_names(rows,known_names),pronunciation={})
     save(LESSON/'篇目信息.json',meta);save(LESSON/'分屏.json',{PID:cuts})
     proof={'id':PID,'source_sha256':digest(PAPER),'candidate_sha256':digest(PREP),'editor_version':VERSION,'key':key(),'reading_units':len(rows),
            'vocabulary_entries':sum(len(r['v']) for r in rows),'split_sentences':len(cuts),'translation_review':{'sentences_checked':len(rows),'corrections':marks,
