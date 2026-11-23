@@ -257,6 +257,10 @@ def early_sentence_slide(p,sentence,k,n,part=None):
     body=re.sub(r'(?<![>\w])(\d{4} [–—])(?= )',r'<nobr>\1</nobr>',body)
     body=re.sub(r'(?<![>\w])([A-Za-z0-9’]{1,16} - [A-Za-z0-9’]{1,16})(?![\w<])',r'<nobr>\1</nobr>',body)
     # A highlighted preceding word ends in HTML rather than a letter.
+    # Between two highlighted terms the dash closes the first phrase. Leave
+    # the regular space after it so the second phrase may start on a new line.
+    body=re.sub(r'(</span>) ([-–—])(?= (?:<nobr>)?<span class="(?:w|ph)">)',
+                lambda m:m[1]+'\u00a0'+m[2],body)
     body=re.sub(r' ([-–—]) <nobr>(?=<span class="(?:w|ph)">|[\w])',r' <nobr>\1 ',body)
     body=re.sub(r'(?<=>) ([-–—] (?:<span class="(?:w|ph)">(?:(?!</span>).)*</span>|[A-Za-z0-9’]+))',
                 r' <nobr>\1</nobr>',body)
