@@ -10,5 +10,5 @@ files=("$TARGET"/最终视频/*.mp4)
 test "${#files[@]}" -eq 1
 /opt/ttsenv/bin/python "$TARGET/tools/check_ending.py" "${files[0]}" "$RUNNER_TEMP/out/ending.json"
 if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
-  /opt/ttsenv/bin/python "$TARGET/tools/aiden_boundaries.py" "${files[0]}" "$RUNNER_TEMP/out/phrase-playback.json"
+  /opt/ttsenv/bin/python "$TARGET/tools/aiden_encoded_audio.py" "${files[0]}" "$RUNNER_TEMP/out/phrase-playback.json"
 fi

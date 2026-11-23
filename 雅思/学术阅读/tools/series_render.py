@@ -77,7 +77,9 @@ def package(dest):
         if (boundary['policy']!=PAUSE_POLICY or boundary['passed'] is not True
                 or boundary['sha256']!=receipt['video_sha256'] or boundary['phrases']!=timing['phrase_audio_check']['phrases']):
             raise ValueError('Encoded MP4 did not pass all isolated-phrase checks')
-        receipt.update(pause_policy=PAUSE_POLICY,verified_phrases=boundary['phrases'])
+        if boundary.get('reference_mp3_sha256')!=receipt['audio_sha256'] or not all(row.get('mp3_waveform') for row in boundary['checks']):
+            raise ValueError('The final AAC has no waveform comparison to its certified MP3')
+        receipt.update(pause_policy=PAUSE_POLICY,verified_phrases=boundary['phrases'],encoded_reference_sha256=receipt['audio_sha256'])
         save(dest/'narration.json',dict(profile=timing['narrator'],sentences=timing['narration_review'],
              certificate=timing['certificate'],mp3_check=timing['phrase_audio_check'],mp4_check=boundary))
     meta=json.loads((LESSON/'篇目信息.json').read_text())

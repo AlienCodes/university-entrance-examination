@@ -21,7 +21,8 @@ def cached(pid,batch):
     with tempfile.TemporaryDirectory() as tmp:
         data=json.loads(fetch(receipt,tmp).read_text())
         if (data.get('narrator')!=IDENTITY or data.get('lesson')!=pid or data.get('speaker')!='Aiden'
-                or data.get('pause_policy')!=PAUSE_POLICY or not data.get('verified_phrases')):
+                or data.get('pause_policy')!=PAUSE_POLICY or not data.get('verified_phrases')
+                or not data.get('audio_sha256') or data.get('encoded_reference_sha256')!=data['audio_sha256']):
             return False
         if int(pid[1:pid.index('T')])<=10:
             from early_editor import key_for

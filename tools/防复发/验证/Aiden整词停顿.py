@@ -9,6 +9,7 @@ ROOT=Path(__file__).resolve().parents[3]
 PROJECT=ROOT/'雅思/学术阅读'
 sys.path.insert(0,str(PROJECT/'tools'))
 from aiden_boundaries import independent, reference, verify_join, verify_reference
+from aiden_encoded_audio import compare_waveforms
 import numpy as np
 
 def rejects(fn,*args):
@@ -39,6 +40,9 @@ def main(listen):
     changed=sample.copy();changed[10000:14480]=0
     rejects(verify_reference,changed,ref)
     rejects(verify_reference,sample[:-4480],ref)
+    compare_waveforms(sample,sample*.97)
+    rejects(compare_waveforms,sample,changed)
+    rejects(compare_waveforms,sample,sample[:-4480])
     print('旧版 sectors 的真实断点与人为词内静音均被拦截，完整衔接通过。')
 
 if __name__=='__main__':

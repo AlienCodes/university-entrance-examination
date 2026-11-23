@@ -122,6 +122,7 @@ jobs:
       - if: steps.existing.outputs.have != 'true'
         name: 按原正式标准统一整篇响度和停顿并检测整轨
         run: |
+          python .github/actions/cet6-chalk-env/prepare_packages.py 141 --decoder-only
           "$RUNNER_TEMP/speech/bin/python" "$TARGET/tools/audio_lesson.py"
           python .github/check-audio-cert.py "$TARGET/audio"
           python "$TARGET/tools/aiden_profile.py" verify "$IELTS_LESSON"

@@ -71,11 +71,14 @@ def main():
     parser.add_argument('browser',choices=['141','153'])
     parser.add_argument('--plan-file',type=Path)
     parser.add_argument('--check-only',action='store_true')
+    parser.add_argument('--decoder-only',action='store_true')
     args=parser.parse_args()
-    plan = args.plan_file.read_text() if args.plan_file else subprocess.check_output(
-        ['/tmp/pw156/bin/python','-m','playwright','install-deps','--dry-run','chromium'],text=True,timeout=30)
-    required = browser_packages(plan) + ['ffmpeg']
-    if args.browser=='153': required.append('fonts-inter')
+    required=['ffmpeg']
+    if not args.decoder_only:
+        plan = args.plan_file.read_text() if args.plan_file else subprocess.check_output(
+            ['/tmp/pw156/bin/python','-m','playwright','install-deps','--dry-run','chromium'],text=True,timeout=30)
+        required.extend(browser_packages(plan))
+        if args.browser=='153': required.append('fonts-inter')
     missing = missing_packages(required)
     print(f'{len(set(required))} required browser, font and encoding packages; missing: {missing}',flush=True)
     if not missing or args.check_only: return
