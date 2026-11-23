@@ -81,6 +81,9 @@ def publish(folder):
         raise ValueError('Published asset differs from the validated MP4')
     if draft:
         subprocess.run(['gh','release','edit',tag,'--draft=false','--latest=false'], check=True)
+        # Draft assets can have a temporary untagged URL. Read the public one after publication.
+        inventory.cache_clear()
+        asset = inventory(tag)[file.name]
     public_download(asset, receipt)
     print(json.dumps(dict(url=asset['browser_download_url'], bytes=asset['size'],
                           sha256=receipt['video_sha256'], seconds=receipt['video_seconds'],
