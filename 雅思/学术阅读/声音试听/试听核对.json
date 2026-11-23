@@ -61,6 +61,32 @@
       "sha256": "224ddc5f9eb0236752ddaef742a4bc0f12f76ead2edef066900049a2cd39367e",
       "elapsed_synthesis_seconds": 287.99,
       "transcript": "On 8th of June 2004, more than half the population of the world were treated to a rare astronomical event. For over six hours, the planet Venus steadily inched its way over the surface of the Sun. This transit of Venus was the first since the 6th of December 1882. On that occasion, the American astronomer Professor Simon Newcomb led a party to South Africa to observe the event. They were based at a girls' school where, it is alleged, the combined forces of three schoolmistresses outperformed the professionals with the accuracy of their observations."
+    },
+    "xueren": {
+      "file": "xueren.mp3",
+      "duration": 41.605,
+      "lufs": -17.02,
+      "true_peak_dbtp": -1.77,
+      "sha256": "3f20224c0b5ce46046d28b6074fe7cf621a08624dceda78c538e4effc4709377",
+      "model": "Kokoro v1.0 ONNX",
+      "speaker": "am_michael 75%, am_fenrir 25% · 考研学人",
+      "speed": 0.95,
+      "voice_weights_sha256": "1f97658bb5a4280cc3f6c01dc644dff471bf57c970fc8b99f3049d6991c4f6c8",
+      "upstream": "alienalgorithm/postgraduate-vocabulary",
+      "upstream_commit": "b0f5126195b6dfc9cd215991946b717e6ddeb95d",
+      "upstream_file": "视频/工具/make_video.py",
+      "upstream_script_sha256": "4c85e1fbdd2e82c5646d5f58df63c85eca60af4ef521f1d36f765575a568d6f3",
+      "studio_filter_sha256": "4138814dceac7be3ca5ce543e2f50484e11556f06dac9ce5ad59d0d5bb49dca1",
+      "inter_sentence_seconds": 1.0,
+      "transcript": "On 8 June 2004, more than half the population of the world were treated to a rare astronomical event. For over six hours, the planet Venus steadily inched its way over the surface of the Sun. This transit of Venus was the first since the 6th of December 1882. On that occasion, the American astronomer Professor Simon Newcomb led a party to South Africa to observe the event. They were based at a girls' school, where, it is alleged, the combined forces of three schoolmistresses outperformed the professionals with the accuracy of their observations.",
+      "sentence_durations": [
+        7.72,
+        5.59,
+        4.91,
+        7.82,
+        11.285
+      ],
+      "local_chat_access": "The supplied /local page did not expose the conversation text. Project identity and method were verified in the 70-article 考研学人 project, in both its original speaker-selection record and its final rendering code."
     }
   },
   "short_comparison": {
@@ -81,7 +107,7 @@
     "raw_zip_bytes": 3343326,
     "raw_zip_sha256": "56d05cb9a646c3fc9a4e15867d321ae42caf900c52d59bfeb7cdda5098fba906"
   },
-  "text_check": "The five sentences, the two dates, Venus, Simon Newcomb, South Africa, and the ending were recognized in all four recordings. The Ryan transcript omits an article before the first ordinal; this is an ASR observation. Dates are spoken in the month-day order on the existing master and in the day-month order on the new samples.",
+  "text_check": "The five sentences, the two dates, Venus, Simon Newcomb, South Africa, and the ending were recognized in all five recordings. The Ryan transcript omits an article before the first ordinal; this is an ASR observation. Dates are spoken in the month-day order on the existing master and in the day-month order on the new samples.",
   "kokoro_alba_comparison": {
     "file": "compare-kokoro-alba.mp3",
     "duration": 20.77,
@@ -138,9 +164,31 @@
           4.461
         ],
         "mean": 4.329
+      },
+      "xueren": {
+        "sentences": [
+          4.456,
+          4.422,
+          4.425,
+          4.47,
+          4.481
+        ],
+        "mean": 4.451
       }
     },
     "method": "The released MP3 is decoded as mono PCM, split at sentence gaps, and the same speech-edge threshold with 100 ms of leading and trailing silence is applied to every excerpt. All 20 complete utterances are resampled to 16 kHz. UTMOS scores one utterance at a time using the original playback speed.",
-    "sample_size": "1 paragraph, 5 sentences × 4 voices. Predictions on this passage only."
+    "sample_size": "1 paragraph, 5 sentences × 5 voices. Predictions on this passage only."
+  },
+  "xueren_aiden_comparison": {
+    "file": "compare-xueren-aiden.mp3",
+    "duration": 24.965,
+    "lufs": -16.82,
+    "true_peak_dbtp": -1.86,
+    "start_seconds": {
+      "xueren": 0,
+      "aiden": 12.37
+    },
+    "sha256": "aaaf5b62294d286ac5b1c72d7024021c0db5689a2c692a2ffac3ac39fe3bcc01",
+    "transcript": "They were based at a girls' school, where, it is alleged, the combined forces of three schoolmistresses outperformed the professionals with the accuracy of their observations. They were based at a girls' school, where, it is alleged, the combined forces of three schoolmistresses outperformed the professionals with the accuracy of their observations."
   }
 }
