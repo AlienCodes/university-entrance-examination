@@ -35,6 +35,51 @@
       "attribution": "Alba MacKenna, Casual voice. Kyutai model and this voice are licensed CC BY 4.0. Generated speech and loudness normalization for this audition.",
       "voice_source": "https://huggingface.co/kyutai/tts-voices/blob/main/README.md#alba-mackenna",
       "license": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "aiden": {
+      "file": "aiden.mp3",
+      "duration": 39.91,
+      "lufs": -16.88,
+      "true_peak_dbtp": -1.85,
+      "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+      "weights": "0c0e3051f131929182e2c023b9537f8b1c68adfe",
+      "speaker": "Aiden",
+      "instructions": "Read to one interested adult listener in clear, relaxed American English. Use the cadence of a thoughtful science documentary. Group words by meaning. Let parenthetical remarks sit lightly within the sentence. Give dates and names clear diction. Speak at a comfortable listening pace, without sales-like emphasis.",
+      "sha256": "f9173e2c7ff49ea3f8675ea9ab6784cf7d7e989c83b1da2da6bd6d2395ed52cf",
+      "elapsed_synthesis_seconds": 220.91,
+      "transcript": "On the 8th of June, 2004, more than half the population of the world were treated to a rare astronomical event. For over six hours, the planet Venus steadily inched its way over the surface of the sun. This transit of Venus was the first since the 6th of December, 1882. On that occasion, the American astronomer Professor Simon Newcomb led a party to South Africa to observe the event. They were based at a girls' school, where, it is alleged, the combined forces of three schoolmistresses outperformed the professionals with the accuracy of their observations."
+    },
+    "ryan": {
+      "file": "ryan.mp3",
+      "duration": 49.81,
+      "lufs": -16.89,
+      "true_peak_dbtp": -1.92,
+      "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+      "weights": "0c0e3051f131929182e2c023b9537f8b1c68adfe",
+      "speaker": "Ryan",
+      "instructions": "Read to one interested adult listener in clear, relaxed American English. Use the cadence of a thoughtful science documentary. Group words by meaning. Let parenthetical remarks sit lightly within the sentence. Give dates and names clear diction. Speak at a comfortable listening pace, without sales-like emphasis.",
+      "sha256": "224ddc5f9eb0236752ddaef742a4bc0f12f76ead2edef066900049a2cd39367e",
+      "elapsed_synthesis_seconds": 287.99,
+      "transcript": "On 8th of June 2004, more than half the population of the world were treated to a rare astronomical event. For over six hours, the planet Venus steadily inched its way over the surface of the Sun. This transit of Venus was the first since the 6th of December 1882. On that occasion, the American astronomer Professor Simon Newcomb led a party to South Africa to observe the event. They were based at a girls' school where, it is alleged, the combined forces of three schoolmistresses outperformed the professionals with the accuracy of their observations."
     }
-  }
+  },
+  "short_comparison": {
+    "file": "compare-kokoro-aiden.mp3",
+    "duration": 23.63,
+    "lufs": -16.81,
+    "true_peak_dbtp": -1.85,
+    "start_seconds": {
+      "kokoro": 0,
+      "aiden": 11.03
+    },
+    "sha256": "fd1106d8f5ad12d9a9948067a572bf36fd0e358d961e18dd431c6cd52771320e"
+  },
+  "github_trial": {
+    "url": "https://github.com/AlienCodes/university-entrance-examination/actions/runs/45138821163",
+    "runner": "ubuntu-24.04 CPU",
+    "elapsed_job_seconds": 620,
+    "raw_zip_bytes": 3343326,
+    "raw_zip_sha256": "56d05cb9a646c3fc9a4e15867d321ae42caf900c52d59bfeb7cdda5098fba906"
+  },
+  "text_check": "The five sentences, the two dates, Venus, Simon Newcomb, South Africa, and the ending were recognized in all four recordings. The Ryan transcript omits an article before the first ordinal; this is an ASR observation. Dates are spoken in the month-day order on the existing master and in the day-month order on the new samples."
 }
