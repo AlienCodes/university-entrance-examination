@@ -41,6 +41,7 @@ def words(text):
     text = re.sub(r'\bman[ -]?made\b', 'man made', text, flags=re.I)
     text = re.sub(r'\bfibre(s?)\b', r'fiber\1', text, flags=re.I)
     text = re.sub(r'\bemphasis(e|es|ed|ing)\b', r'emphasiz\1', text, flags=re.I)
+    text = re.sub(r'\bcounsell(?=ing\b|ed\b|ors?\b)', 'counsel', text, flags=re.I)
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
     text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)
