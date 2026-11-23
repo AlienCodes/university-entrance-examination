@@ -1,6 +1,7 @@
 """Fingerprint what a learner sees and hears, including per-sentence headword overrides."""
 import hashlib
 import json
+import os
 from pathlib import Path
 
 
@@ -25,6 +26,9 @@ def source_key(text, meta, split, printed_test):
     display=[meta.get(k) for k in ('id','book','test','passage','title','title_zh','genre','header')]
     names=sorted(set(name for name in meta.get('zh_names',[]) if name in text))
     items=[display,printed_test,rows,split,names,meta.get('pronunciation',{}),[i for i,l in enumerate(text.splitlines()) if not l]]
+    if os.getenv('IELTS_NARRATOR') == 'Aiden':
+        from aiden_profile import IDENTITY
+        items.append({'narrator':IDENTITY})
     if meta.get('section_headers'):
         items.append(meta['section_headers'])
     encoded=json.dumps(items,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()

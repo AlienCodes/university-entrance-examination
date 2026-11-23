@@ -1,0 +1,51 @@
+name: 剑桥雅思 Aiden 精读视频
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths: ['.github/ielts-aiden-batch.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: ielts-aiden-production
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      IELTS_NARRATOR: Aiden
+    outputs:
+      batch: ${{ steps.queue.outputs.batch }}
+      pilot: ${{ steps.queue.outputs.pilot }}
+      remaining: ${{ steps.queue.outputs.remaining }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读
+      - id: queue
+        run: |
+          batch=$(jq -er .batch .github/ielts-aiden-batch.json)
+          python '雅思/学术阅读/tools/aiden_batch.py' plan "$batch"
+  pilot:
+    needs: plan
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ needs.plan.outputs.pilot }}
+      aiden_batch: ${{ needs.plan.outputs.batch }}
+  production:
+    needs: [plan,pilot]
+    if: needs.plan.outputs.remaining != '[]'
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lesson: ${{ fromJSON(needs.plan.outputs.remaining) }}
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ matrix.lesson }}
+      aiden_batch: ${{ needs.plan.outputs.batch }}

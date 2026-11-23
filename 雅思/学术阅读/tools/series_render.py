@@ -68,6 +68,12 @@ def package(dest):
     receipt=dict(lesson=PID,material_sha256=current_key(PROJECT,PID),book=int(PID[1:PID.index('T')]),run=os.environ.get('GITHUB_RUN_ID'),video_sha256=digest(original),
                  pdf_sha256=digest(dest/'Reading-notes.pdf'),pdf_bytes=pdf['bytes'],pages=pdf['pages'],
                  video_seconds=checks['duration'],video_bytes=original.stat().st_size,content_sha256=digest(TEXT))
+    if os.getenv('IELTS_NARRATOR')=='Aiden':
+        from aiden_profile import IDENTITY, confirm
+        timing=json.loads((PROJECT/'audio/timings.json').read_text())[engine.VOICE][PID]
+        confirm(timing)
+        receipt.update(narrator=IDENTITY,speaker=timing['narrator']['speaker'],audio_sha256=timing['certificate']['mp3_sha256'])
+        save(dest/'narration.json',dict(profile=timing['narrator'],sentences=timing['narration_review'],certificate=timing['certificate']))
     meta=json.loads((LESSON/'篇目信息.json').read_text())
     receipt['title']=meta['title'];receipt['title_zh']=meta['title_zh']
     save(dest/'verification.json',dict(**checks,ending=ending,pdf=pdf,receipt=receipt))
@@ -75,6 +81,7 @@ def package(dest):
     package=dest/f'{PID}.zip'
     with zipfile.ZipFile(package,'w',compression=zipfile.ZIP_STORED,allowZip64=True) as z:
         z.write(original,PID+'.mp4');z.write(dest/'Reading-notes.pdf',PID+'.pdf');z.write(dest/'verification.json','verification.json')
+        if (dest/'narration.json').is_file():z.write(dest/'narration.json','source/narration.json')
         for name in ('双语精读.tsv','篇目信息.json','content-review.json','分屏.json','分屏核对.json','visual-review.json'):
             file=LESSON/name
             if file.is_file():z.write(file,'source/'+name)

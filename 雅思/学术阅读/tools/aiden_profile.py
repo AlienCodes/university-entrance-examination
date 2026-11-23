@@ -1,0 +1,43 @@
+"""Identity of the fixed IELTS narrator chosen from the recorded audition."""
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+PROJECT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT / '声音试听'))
+from sample import DIRECTION, MODEL, REVISION
+
+SPEAKER = 'Aiden'
+PROFILE = dict(speaker=SPEAKER, model=MODEL, model_revision=REVISION, direction=DIRECTION,
+               language='English', runtime='qwen-tts==0.1.1', inference='cpu-float32-sdpa',
+               audition_sha256='f9173e2c7ff49ea3f8675ea9ab6784cf7d7e989c83b1da2da6bd6d2395ed52cf')
+IDENTITY = hashlib.sha256(json.dumps(PROFILE, sort_keys=True).encode()).hexdigest()
+
+
+def audio_asset(lesson_dir):
+    folder=Path(lesson_dir)
+    rows=[line.split('\t')[0] for line in (folder/'双语精读.tsv').read_text().splitlines() if line]
+    pron=json.loads((folder/'篇目信息.json').read_text()).get('pronunciation',{})
+    root=PROJECT.parents[1]
+    files=[Path(__file__),PROJECT/'tools/aiden_audio.py',PROJECT/'tools/audio_lesson.py',PROJECT/'声音试听/sample.py',
+           root/'六级/tools/make_audio.py',root/'tools/tts/textnorm.py',root/'tools/tts/voices.json',
+           root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
+    key=hashlib.sha256(json.dumps([rows,pron,IDENTITY],ensure_ascii=False).encode())
+    for file in files:key.update(hashlib.sha256(file.read_bytes()).digest())
+    return f'{folder.name}-aiden-{key.hexdigest()[:16]}.zip'
+
+
+def confirm(timing):
+    if timing.get('narrator') != PROFILE or not timing['certificate'].get('passed'):
+        raise ValueError('This recording does not have the approved Aiden voice and audio certificate')
+    proof=timing.get('narration_review',{})
+    if len(proof)!=len(timing['sentences']) or any(not x.get('recognized') for x in proof.values()):
+        raise ValueError('Missing independent Aiden sentence checks')
+
+
+if __name__=='__main__':
+    import argparse
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['asset','verify']);p.add_argument('lesson');a=p.parse_args()
+    if a.mode=='asset':print(audio_asset(PROJECT/'篇目'/a.lesson))
+    else:confirm(json.loads((PROJECT/'audio/timings.json').read_text())['cet4_male'][a.lesson])

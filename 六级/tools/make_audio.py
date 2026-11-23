@@ -204,8 +204,7 @@ def strip_quotes(t):
 
 # 用户要求（2026-10-07）：冒号、分号、破折号处的停顿与逗号完全一样（高考版分号、冒号是逗号的 1.4 倍）。
 # 复制高考 synth_sentence，只去掉 1.4 倍，其余（分段、补标点、淡入淡出）不变。
-def synth_sentence(read, key, engine, pron, style, speed, cfg):
-    cp = cfg.get('clause_pause', 0)
+def narration_phrases(read, key, cp):
     # 原文破折号两侧不留空格（pesticides—in fact），高考的切分规则要求标点后有空格，会漏掉这里的停顿；先补一个空格再切
     read = G.re.sub(r'—(?=\S)', '— ', read)
     read = strip_quotes(read)                       # 引号一律不停顿（踩坑 28）
@@ -221,11 +220,19 @@ def synth_sentence(read, key, engine, pron, style, speed, cfg):
             merged.append(x)
     merged = [x if i == len(merged) - 1 or G.re.search(r'[,;:—.!?]["”’)]*$', x) else x + ','
               for i, x in enumerate(merged)]
+    return merged
+
+
+def synth_sentence(read, key, engine, pron, style, speed, cfg, *, recorded=None):
+    cp = cfg.get('clause_pause', 0)
+    merged = narration_phrases(read, key, cp)
+    if recorded is not None and len(recorded) != len(merged):
+        raise ValueError(f'{key} 音频段数与意群数不符')
     out, spans, t = [], [], 0.0
     for i, x in enumerate(merged):
         if re.search(r'[“”"‘]|(?<![A-Za-z])’', x):    # 检查：送进模型的文字里不得残留引号
             raise RuntimeError(f'{key} 合成文字残留引号：{x}')
-        raw = engine.synth(pron.phonemes(x, key), style, speed)
+        raw = recorded[i] if recorded is not None else engine.synth(pron.phonemes(x, key), style, speed)
         if cfg.get('debreath_before_level'):
             from 去呼吸 import debreath
             raw, _ = debreath(raw, G.SR)

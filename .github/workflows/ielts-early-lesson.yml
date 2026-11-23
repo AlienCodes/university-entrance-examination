@@ -5,6 +5,9 @@ on:
       lesson:
         required: true
         type: string
+      aiden_batch:
+        type: string
+        default: ''
       current_tools:
         type: boolean
         default: false
@@ -21,7 +24,11 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
       IELTS_LESSON: ${{ inputs.lesson }}
-      STAGING: ielts-academic-cache-10-1
+      STAGING: ${{ inputs.aiden_batch && format('ielts-academic-aiden-cache-{0}', inputs.aiden_batch) || 'ielts-academic-cache-10-1' }}
+      IELTS_NARRATOR: ${{ inputs.aiden_batch && 'Aiden' || '' }}
+      IELTS_AIDEN_BATCH: ${{ inputs.aiden_batch }}
+      MALLOC_ARENA_MAX: '2'
+      HF_HUB_DISABLE_XET: '1'
       TARGET: 雅思/学术阅读
       OMP_NUM_THREADS: 3
       OPENBLAS_NUM_THREADS: 1
@@ -49,8 +56,20 @@ jobs:
           mkdir -p "$IELTS_WORK"
           echo "IELTS_WORK=$IELTS_WORK" >> "$GITHUB_ENV"
           echo "IELTS_TOOL_REVISION=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          if [[ -n "$IELTS_AIDEN_BATCH" && "$IELTS_LESSON" =~ ^C1[123]T ]]; then
+            echo 'early=false' >> "$GITHUB_OUTPUT"
+            python -c 'import os,sys;from pathlib import Path;p=Path(os.environ["TARGET"]);sys.path.insert(0,str(p/"tools"));from submit_reviewed import approved;from material import verify_original;pid=os.environ["IELTS_LESSON"];approved(p/"篇目"/pid);verify_original(p,pid)'
+            echo 'teaching=true' >> "$GITHUB_OUTPUT"
+            echo "done=$(python "$TARGET/tools/aiden_batch.py" cached "$IELTS_AIDEN_BATCH" --lesson "$IELTS_LESSON")" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo 'early=true' >> "$GITHUB_OUTPUT"
           python "$TARGET/tools/early_plan.py" sync-notes
-          done_master=$(python "$TARGET/tools/early_plan.py" cached)
+          if [[ -n "$IELTS_AIDEN_BATCH" ]]; then
+            done_master=$(python "$TARGET/tools/aiden_batch.py" cached "$IELTS_AIDEN_BATCH" --lesson "$IELTS_LESSON")
+          else
+            done_master=$(python "$TARGET/tools/early_plan.py" cached)
+          fi
           echo "done=$done_master" >> "$GITHUB_OUTPUT"
           if [[ "$done_master" != true ]]; then
             saved=$(python "$TARGET/tools/early_editor.py" restore)
@@ -68,9 +87,9 @@ jobs:
       - if: steps.cache.outputs.done != 'true'
         uses: ./.github/actions/ielts-verified-master
         with:
-          early_review: 'true'
+          early_review: ${{ steps.cache.outputs.early }}
       - name: 存档已完成的逐句工作和待修处
-        if: failure() && env.IELTS_WORK != ''
+        if: failure() && env.IELTS_WORK != '' && steps.cache.outputs.early == 'true'
         run: |
           python "$TARGET/tools/early_editor.py" checkpoint
           python "$TARGET/tools/early_plan.py" diagnosis

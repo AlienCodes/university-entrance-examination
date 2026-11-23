@@ -1,5 +1,6 @@
-"""Use the CET-6 narrator and its certified mastering pipeline."""
+"""Read with the chosen IELTS narrator and apply the certified CET mastering pipeline."""
 import io
+import os
 import json
 import re
 import sys
@@ -99,7 +100,7 @@ def affected_sentences(failure):
     return flagged
 
 
-def certified_audio(passage,config,engine,reader,dest):
+def certified_audio(passage,config,engine,reader,dest,*,synthesize=cet.synth_sentence):
     if PID=='C20T1P1':
         return cet.render_with_fallback(passage,config,engine,reader,dest)
     cache={}
@@ -114,7 +115,7 @@ def certified_audio(passage,config,engine,reader,dest):
         take=(key,read,adjusted,key in cleaned)
         if take not in cache:
             options={**settings,'debreath_before_level':key in cleaned}
-            cache[take]=cet.synth_sentence(read,key,engine,pron,style,adjusted,options)
+            cache[take]=synthesize(read,key,engine,pron,style,adjusted,options)
         return cache[take]
 
     def render():
@@ -151,7 +152,15 @@ def main():
     reader.lexicon.update(json.loads((LESSON / '篇目信息.json').read_text())['pronunciation'])
     passage['sents'] = [[s['en'] for s in pa] for pa in passage['paras']]
     path = PROJECT / 'audio'
-    timing = certified_audio(passage,config,cet.G.Engine(),reader,path / cet.VOICE)
+    if os.getenv('IELTS_NARRATOR') == 'Aiden':
+        from aiden_audio import Aiden
+        from aiden_profile import PROFILE, confirm
+        engine = Aiden()
+        timing = certified_audio(passage,config,engine,reader,path / cet.VOICE,synthesize=engine.sentence)
+        timing.update(narrator=PROFILE,narration_review=engine.review)
+        confirm(timing)
+    else:
+        timing = certified_audio(passage,config,cet.G.Engine(),reader,path / cet.VOICE)
     problems = certificate_problems(timing,path / timing['file'])
     if problems: raise RuntimeError(problems)
     if [s['text'] for s in timing['sentences']] != [s for pa in passage['sents'] for s in pa]:
