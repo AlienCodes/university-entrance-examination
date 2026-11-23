@@ -404,6 +404,7 @@ def revision(value):
 # These explicit operators frequently disappear in a fluent Chinese paraphrase.
 # Alternatives are reading cues, not a compulsory word-for-word translation.
 SCOPE_CUES=(
+    (r'\bneither\b[^.!?]*?\bnor\b',r'不|无|没|未|非|难|拒|排除|避免','neither 和 nor 所连接的两项均为否定'),
     (r'\beven if\b',r'即使|即便|哪怕|就算|纵使|纵然|退一步|退一万步|即令|即或|即便是|便是','even if 引出的假设性让步'),
     (r'\bno [\w -]{1,35} other than\b',r'除|只|仅|唯|惟|别无','no … other than 表示例外或唯一范围'),
     (r'\b(?:often|frequently)\b',r'常|往往|时常|屡|频|惯|多有|多半|大多|多数|每每|反复|多会|多为|不时|动辄|多见|多次|很多时候|许多时候','频率（常常、往往）'),
@@ -446,14 +447,27 @@ def reversed_quantities(en, zh):
             return ['数值上下限：' + hit.group().strip()]
     return []
 
+def sterling_list_mismatch(en,zh):
+    amounts=re.findall(r'£\s*([\d,]+(?:\.\d+)?)\s*m\b',en,re.I)
+    if len(amounts)<3:return False
+    translated=re.findall(r'(\d[\d,]*(?:\.\d+)?)\s*(千万|百万|千|万|亿)?\s*英镑',zh)
+    if len(translated)!=len(amounts):return False
+    scales={'':1,'千':1000,'万':10000,'百万':10**6,'千万':10**7,'亿':10**8}
+    printed=[Decimal(amount.replace(',',''))*10**6 for amount in amounts]
+    chinese=[Decimal(amount.replace(',',''))*scales[scale] for amount,scale in translated]
+    return printed!=chinese
+
 def scope_gaps(en,zh):
     if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
         en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
     gaps=reversed_quantities(en,zh)
+    if sterling_list_mismatch(en,zh):
+        gaps.append('逐项核对英镑金额以及百万、万、亿之间的换算')
     if (re.search(r'\bfirst quarter of the (?:\w+|\d+\w*) century\b',en,re.I)
             and re.search(r'(前半个?世纪|上半[个叶]|前(?:五十|50)年)',zh)):
         gaps.append('世纪的第一个四分之一为头25年')
     if (re.search(r'\b(?:doubled|doubling|doubles)\b',en,re.I)
+            and not re.search(r'\b(?:tripl(?:ed|es|ing)|threefold|200\s*(?:%|per cent))',en,re.I)
             and re.search(r'(?:增长|增加|提高)(?:了|超过)?(?:约|近)?(?:两|二|2)倍',zh)):
         gaps.append('翻倍指增至原来的两倍，核查增加量与增长后总量')
     for phrase, equivalent, suspect in (
