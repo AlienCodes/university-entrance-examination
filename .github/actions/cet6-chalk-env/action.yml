@@ -68,13 +68,11 @@ runs:
     - name: 系统依赖（Chromium 运行库与字体）+ ffmpeg
       shell: bash
       run: |
-        sudo /tmp/pw156/bin/python -m playwright install-deps chromium > /tmp/install-deps.log 2>&1 || { tail -50 /tmp/install-deps.log; exit 1; }
-        sudo apt-get install -y -q --no-install-recommends ffmpeg > /tmp/apt-ffmpeg.log 2>&1 || { tail -50 /tmp/apt-ffmpeg.log; exit 1; }
+        python .github/actions/cet6-chalk-env/prepare_packages.py "${{ inputs.browser }}"
         if [ "${{ inputs.browser }}" = 153 ]; then
           ln -sfn /opt/pw-browsers/chromium-1243/chrome-linux64/chrome /opt/pw-browsers/chromium
           v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"
           echo "$v" | grep -qx 'Google Chrome for Testing 153\.0\.8010\.12 *' || { echo "::error::浏览器版本不是 Chrome 153.0.8010.12：$v"; exit 1; }
-          sudo apt-get install -y -q --no-install-recommends fonts-inter > /tmp/apt-inter.log 2>&1 || { tail -50 /tmp/apt-inter.log; exit 1; }
         else
           ln -sfn /opt/pw-browsers/chromium-1194/chrome-linux/chrome /opt/pw-browsers/chromium
           v=$(/opt/pw-browsers/chromium --version 2>&1); echo "浏览器：$v"

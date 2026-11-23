@@ -120,6 +120,7 @@ jobs:
           python .github/check-audio-cert.py "$TARGET/audio"
           python "$TARGET/tools/aiden_profile.py" verify "$IELTS_LESSON"
       - name: 恢复黑板画面、浏览器和听对环境
+        timeout-minutes: 15
         if: inputs.verified_audio_only && steps.cache.outputs.done != 'true'
         uses: ./.github/actions/cet6-chalk-env
         with:
