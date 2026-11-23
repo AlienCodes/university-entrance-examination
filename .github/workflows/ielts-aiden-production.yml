@@ -11,66 +11,36 @@ concurrency:
   group: ielts-aiden-production
   cancel-in-progress: false
 jobs:
-  plan:
+  specification:
     runs-on: ubuntu-24.04
-    env:
-      GH_TOKEN: ${{ github.token }}
-      IELTS_NARRATOR: Aiden
     outputs:
-      batch: ${{ steps.queue.outputs.batch }}
-      pilot: ${{ steps.queue.outputs.pilot }}
-      remaining: ${{ steps.queue.outputs.remaining }}
-      pilot_only: ${{ steps.queue.outputs.pilot_only }}
-      certified_audio: ${{ steps.queue.outputs.certified_audio }}
+      batch: ${{ steps.read.outputs.batch }}
+      certified_audio: ${{ steps.read.outputs.certified_audio }}
+      pilot_only: ${{ steps.read.outputs.pilot_only }}
     steps:
       - uses: actions/checkout@v4
         with:
           filter: blob:none
-          sparse-checkout: |
-            .github
-            雅思/学术阅读
-      - id: queue
+          sparse-checkout: .github
+      - id: read
         run: |
-          batch=$(jq -er .batch .github/ielts-aiden-batch.json)
-          echo "pilot_only=$(jq -r '.pilot_only // false' .github/ielts-aiden-batch.json)" >> "$GITHUB_OUTPUT"
-          echo "certified_audio=$(jq -r '.certified_audio // false' .github/ielts-aiden-batch.json)" >> "$GITHUB_OUTPUT"
-          python '雅思/学术阅读/tools/aiden_batch.py' plan "$batch"
-  pilot:
-    needs: plan
-    uses: ./.github/workflows/ielts-early-lesson.yml
+          set -euo pipefail
+          file=.github/ielts-aiden-batch.json
+          jq -e '.speaker=="Aiden" and (.batch=="13-6" or .batch=="5-1")' "$file" >/dev/null
+          echo "batch=$(jq -r .batch "$file")" >> "$GITHUB_OUTPUT"
+          for option in certified_audio pilot_only; do
+            echo "$option=$(jq -r --arg k "$option" '.[$k] // false' "$file")" >> "$GITHUB_OUTPUT"
+          done
+  edition:
+    needs: specification
+    uses: ./.github/workflows/ielts-aiden-edition.yml
     with:
-      lesson: ${{ needs.plan.outputs.pilot }}
-      aiden_batch: ${{ needs.plan.outputs.batch }}
-      verified_audio_only: ${{ needs.plan.outputs.certified_audio == 'true' }}
-  preview:
-    needs: [plan, pilot]
-    if: needs.plan.outputs.pilot_only == 'true' || needs.plan.outputs.batch == '13-6'
-    runs-on: ubuntu-24.04
-    env:
-      GH_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
-      IELTS_NARRATOR: Aiden
-      IELTS_LESSON: ${{ needs.plan.outputs.pilot }}
-      IELTS_AIDEN_BATCH: ${{ needs.plan.outputs.batch }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          filter: blob:none
-          sparse-checkout: 雅思/学术阅读
-      - name: 发布单个 MP4 并从公开链接回下载整片
-        run: python '雅思/学术阅读/tools/aiden_preview.py' "$RUNNER_TEMP/preview"
-  production:
-    needs: [plan, pilot, preview]
-    if: >-
-      always() && !cancelled() && needs.plan.result == 'success' && needs.pilot.result == 'success' &&
-      (needs.preview.result == 'success' || (needs.plan.outputs.batch != '13-6' && needs.preview.result == 'skipped')) &&
-      needs.plan.outputs.pilot_only != 'true' && needs.plan.outputs.remaining != '[]'
-    strategy:
-      fail-fast: false
-      max-parallel: 20
-      matrix:
-        lesson: ${{ fromJSON(needs.plan.outputs.remaining) }}
-    uses: ./.github/workflows/ielts-early-lesson.yml
+      batch: ${{ needs.specification.outputs.batch }}
+      certified_audio: ${{ needs.specification.outputs.certified_audio == 'true' }}
+      pilot_only: ${{ needs.specification.outputs.pilot_only == 'true' }}
+  following:
+    needs: [specification, edition]
+    if: needs.specification.outputs.batch == '13-6' && needs.specification.outputs.pilot_only != 'true'
+    uses: ./.github/workflows/ielts-aiden-edition.yml
     with:
-      lesson: ${{ matrix.lesson }}
-      aiden_batch: ${{ needs.plan.outputs.batch }}
+      batch: 5-1

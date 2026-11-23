@@ -41,18 +41,22 @@ def plan():
             or main_run['path'] != '.github/workflows/ielts-aiden-production.yml'):
         raise ValueError('Recovery must refer to the specified pilot on the production branch')
     done=set()
-    prior=config.get('reuse_run')
-    successful=[]
-    if prior:
+    successful={}
+    for prior in config.get('reuse_runs', [config['reuse_run']] if config.get('reuse_run') else []):
         info=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{prior}']))
         if info['path']!='.github/workflows/ielts-aiden-pilot-recovery.yml' or info['head_branch']!=main_run['head_branch']:
             raise ValueError('The previous recordings are from a different workflow')
         jobs=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{prior}/jobs?per_page=100']))
+        groups=[]
         for job in jobs['jobs']:
             group=re.fullmatch(r'record \(([0-9_]+)\)',job['name'])
             if group and job['conclusion']=='success':
-                successful.append('aiden-recorded-'+PID+'-'+group[1])
-                done.update(map(int,group[1].split('_')))
+                numbers=set(map(int,group[1].split('_')))
+                if numbers<=done:continue
+                if numbers&done:raise ValueError('Overlapping earlier groups: '+group[1])
+                groups.append('aiden-recorded-'+PID+'-'+group[1])
+                done.update(numbers)
+        if groups:successful[str(prior)]=groups
     if seed:
         data = json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/actions/runs/{seed}/artifacts?per_page=100']))
         prefix = 'aiden-measured-' + PID + '-'
@@ -73,7 +77,7 @@ def plan():
     with open(os.environ['GITHUB_OUTPUT'],'a') as out:
         print('groups='+json.dumps(groups),file=out)
         print('seed='+str(seed),file=out)
-        print('prior='+str(prior or ''),file=out)
+        print('certify='+str(not exists()).lower(),file=out)
         print('verified_groups='+json.dumps(successful),file=out)
     print(f'{len(done)} measured sentences, {len(remaining)} remaining, {len(groups)} workers')
 

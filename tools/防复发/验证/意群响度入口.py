@@ -56,6 +56,18 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
     },
 }
 PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '.github/install-ielts-native-speech.sh': {
+        'sha256': '2e911af3fdcf916597c40f45722bff956c79a38a15feb92e56ed6513c939ae20', 'audio': True, 'video': False,
+        'reason': '只安装已锁定的语音、读音和检测依赖；脚本不产生音频文件。',
+    },
+    '雅思/学术阅读/tools/aiden_boundaries.py': {
+        'sha256': '0debd2e8ee03a66fb9e2cfc43cbfca3e0014cb4f27134323d526d4163063afb6', 'audio': True, 'video': False,
+        'reason': 'espeak 的 -q --ipa 只返回音标；ffmpeg 解码到内存，仅写逐意群核验 JSON。',
+    },
+    '雅思/学术阅读/声音试听/sample.py': {
+        'sha256': '9f32f7296e7204e4701843cb6c9d6b04e62b09a3835bd9b0458ac2c0094697b7', 'audio': True, 'video': False,
+        'reason': '归档的 Aiden 与 Ryan 原始试听，只输出对比用原录音。正式视频由 audio_lesson、encode 与 series_render 另行合成、认证和封装。',
+    },
     '专八/听力/批量/tools/五题同屏修复.py': {
         'sha256': 'b837ed392cc7ca456cf102f6b0c5deb3eb840421f2e5ceaba07e7ee28b5e656c',
         'audio': False, 'video': True,
@@ -445,6 +457,10 @@ def per_file(f, s, tree):
                 writes = {'write_mp3', 'write_wav'} & c or ('write_bytes' in c and 'mp3' in ast.unparse(fd))
                 if writes and fd.name not in GT_WRITE_EXEMPT and not {'final_check', 'verify_loudness', '_VERIFY_CORE'} & c:
                     errs.append(f'{f}：{fd.name} 写音频文件却没调 final_check / verify_loudness（踩坑 87：say 曾直接写文件）')
+        elif f=='雅思/学术阅读/tools/aiden_audio.py':
+            # This adapter writes only raw FLAC takes. The shared renderer certifies the assembled track.
+            if not {'render','take','assess','reference','synth_sentence'} <= calls(tree):
+                errs.append(f'{f}：意群原录音与受检的合成入口未接通')
         elif not wired(tree):
             errs.append(f'{f}：会合成或写出音频，却没接意群级处理与检查（render_passage / save_checked，或 segment + verify_loudness）')
         if '.synth(' in s and 'segment(' not in s:
@@ -498,6 +514,13 @@ def check(over=None, product=True):
         audio += [f] if is_a else []
         engines += [f] if is_v else []
         errs += e
+    if '雅思/学术阅读/tools/aiden_audio.py' in F:
+        for entry,required in {
+            '雅思/学术阅读/tools/audio_lesson.py': {'render_passage','check_media','confirm','certificate_problems'},
+            '雅思/学术阅读/tools/series_render.py': {'confirm','current_key','digest'},
+        }.items():
+            if not T.get(entry) or not required<=calls(T[entry]):
+                errs.append(f'{entry}：Aiden 原录音缺少整轨或成片认证')
     for f in EXEMPT:
         if f not in F:
             errs.append(f'豁免名单里的 {f} 已不存在：从 EXEMPT 删掉（豁免只许减少）')

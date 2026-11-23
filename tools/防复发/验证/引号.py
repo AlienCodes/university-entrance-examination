@@ -24,7 +24,11 @@ for p in PROJ:
     resid = re.compile(m.group(1))
     body = src[src.index('def synth_sentence'):]
     body = body[:body.index('\ndef ', 10)]
-    if 'strip_quotes(read)' not in body:
+    before_synthesis=body.split('for i, x in enumerate(',1)[0]
+    if 'narration_phrases(read, key, cp)' in before_synthesis:
+        start=src.index('def narration_phrases(')
+        before_synthesis+=src[start:src.index('\ndef ',start+4)]
+    if 'strip_quotes(read)' not in before_synthesis:
         bad.append(f'{p}：synth_sentence 合成前没调用 strip_quotes')
     for c in CASES:
         out = strip(c)

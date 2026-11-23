@@ -1,6 +1,10 @@
 name: 剑桥雅思第10至1册120篇视频正式整包
 on:
   workflow_call:
+    inputs:
+      aiden_batch:
+        type: string
+        default: ''
   push:
     branches: ['codex/ielts-academic-reading']
     paths: ['.github/ielts-early-delivery.json']
@@ -8,7 +12,7 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: ielts-10-1-single-zip-delivery
+  group: ielts-single-zip-delivery-${{ inputs.aiden_batch || '10-1' }}
   cancel-in-progress: false
 jobs:
   delivery:
@@ -20,6 +24,8 @@ jobs:
       TARGET: 雅思/学术阅读
       PYTHONUNBUFFERED: 1
       BRANCH: codex/ielts-academic-reading
+      IELTS_AIDEN_BATCH: ${{ inputs.aiden_batch }}
+      IELTS_NARRATOR: ${{ inputs.aiden_batch && 'Aiden' || '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,6 +46,14 @@ jobs:
           summary=$(python "$t" ready "$RUNNER_TEMP/reading")
           echo "$summary"
           echo "available=$(jq -r .ready <<<"$summary")" >> "$GITHUB_OUTPUT"
+          if [[ -n "$IELTS_AIDEN_BATCH" ]] && [[ "$(jq -r .ready <<<"$summary")" != true ]]; then exit 1; fi
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import os,sys
+          sys.path.insert(0,os.environ['TARGET']+'/tools')
+          import early_video_release as edition
+          print('zip='+edition.ZIP)
+          print('receipt='+str(edition.REPORTS/(edition.BOOK_LABEL+'视频发布核验.json')))
+          PY
       - if: steps.availability.outputs.available == 'true'
         name: 按纸本顺序写入一个ZIP，逐视频校验后存档可编辑源
         run: |
@@ -50,7 +64,7 @@ jobs:
           python "$TARGET/tools/early_video_release.py" pack "$RUNNER_TEMP/reading"
           git add -- "$TARGET/篇目" "$TARGET/审校"
           if ! git diff --cached --quiet; then
-            git commit -m 'Archive all 120 checked reading lessons, screen and audio alignment reports'
+            git commit -m 'Archive the checked reading lessons, screen and audio alignment reports'
             git pull --rebase origin "$BRANCH"
             git push origin "HEAD:$BRANCH"
           fi
@@ -59,7 +73,7 @@ jobs:
         id: artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          path: ${{ runner.temp }}/reading/Cambridge-IELTS-10-1-120-Videos.zip
+          path: ${{ runner.temp }}/reading/${{ steps.availability.outputs.zip }}
           archive: false
           if-no-files-found: error
           retention-days: 90
@@ -70,7 +84,7 @@ jobs:
         run: |
           set -euo pipefail
           python "$TARGET/tools/early_video_release.py" publish "$RUNNER_TEMP/reading"
-          git add -- "$TARGET/审校/第10至1册视频发布核验.json"
+          git add -- "${{ steps.availability.outputs.receipt }}"
           if ! git diff --cached --quiet; then
             git commit -m 'Record public early-volume video download verification'
             git pull --rebase origin "$BRANCH"

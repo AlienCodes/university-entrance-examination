@@ -27,7 +27,7 @@ jobs:
     outputs:
       groups: ${{ steps.queue.outputs.groups }}
       seed: ${{ steps.queue.outputs.seed }}
-      prior: ${{ steps.queue.outputs.prior }}
+      certify: ${{ steps.queue.outputs.certify }}
       verified_groups: ${{ steps.queue.outputs.verified_groups }}
     steps:
       - uses: actions/checkout@v4
@@ -76,7 +76,7 @@ jobs:
           if-no-files-found: ignore
   certify:
     needs: [plan,record]
-    if: needs.plan.outputs.groups != '[]'
+    if: always() && !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.certify == 'true' && (needs.record.result == 'success' || needs.record.result == 'skipped')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -94,24 +94,22 @@ jobs:
           run-id: ${{ needs.plan.outputs.seed }}
           pattern: aiden-measured-${{ env.IELTS_LESSON }}-*
           path: ${{ runner.temp }}/incoming/seed
-      - if: steps.existing.outputs.have != 'true'
+      - if: steps.existing.outputs.have != 'true' && needs.plan.outputs.groups != '[]'
         name: 恢复本次通过的所有录音
         uses: actions/download-artifact@v4
         with:
           pattern: aiden-recorded-${{ env.IELTS_LESSON }}-*
           path: ${{ runner.temp }}/incoming/group
-      - if: steps.existing.outputs.have != 'true' && needs.plan.outputs.prior != ''
+      - if: steps.existing.outputs.have != 'true' && needs.plan.outputs.verified_groups != '{}'
         name: 恢复上一轮已经逐句核定的意群原录音
         env:
-          PRIOR: ${{ needs.plan.outputs.prior }}
           GROUPS_JSON: ${{ needs.plan.outputs.verified_groups }}
         run: |
           python - <<'PY'
           import json,os,subprocess
           folder=os.environ['RUNNER_TEMP']+'/incoming/prior'
-          names=json.loads(os.environ['GROUPS_JSON'])
-          if names:
-              subprocess.run(['gh','run','download',os.environ['PRIOR'],'--dir',folder,
+          for run,names in json.loads(os.environ['GROUPS_JSON']).items():
+              subprocess.run(['gh','run','download',run,'--dir',folder,
                               *(arg for name in names for arg in ('--name',name))],check=True)
           PY
       - if: steps.existing.outputs.have != 'true'

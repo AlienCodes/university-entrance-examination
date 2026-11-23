@@ -94,9 +94,15 @@ def assess(audio, text, transcript=None):
     for start,end in interior_gaps(audio):
         left = isolated(audio[:start])
         right = isolated(audio[end:])
-        if not any(matches(expected[:i],words(left)) and matches(expected[i:],words(right))
-                   for i in range(1,len(expected))):
-            raise ValueError(f'Possible break inside a word at {start/RATE:.2f}–{end/RATE:.2f}s: {text!r} / {left!r} | {right!r}')
+        def split_matches(before,after):
+            return any(matches(expected[:i],words(before)) and matches(expected[i:],words(after))
+                       for i in range(1,len(expected)))
+        if not split_matches(left,right):
+            other_left=independent(audio[:start])
+            other_right=independent(audio[end:])
+            if not split_matches(other_left,other_right):
+                raise ValueError(f'Possible break inside a word at {start/RATE:.2f}–{end/RATE:.2f}s: {text!r} / '
+                                 f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
     if alternate is not None:

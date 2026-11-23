@@ -1,4 +1,4 @@
-"""恢复剑桥雅思第10至1册120篇纯视频ZIP。仅需 Python 3.9 或以上，无须安装依赖。"""
+"""从正式 GitHub 发布的清单恢复整本系列的纯视频 ZIP，只需 Python 3.9 或以上。"""
 import argparse
 import base64
 import hashlib
@@ -11,6 +11,11 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 MANIFEST='https://github.com/AlienCodes/university-entrance-examination/releases/download/ielts-academic-reading-10-1-single-zip/reading-10-1-layout.json'
+COUNTS={'restore_ielts_13-6_videos.py':('13-6',96),'restore_ielts_5-1_videos.py':('5-1',60)}
+EXPECTED=120
+if Path(__file__).name in COUNTS:
+    edition,EXPECTED=COUNTS[Path(__file__).name]
+    MANIFEST=f'https://github.com/AlienCodes/university-entrance-examination/releases/download/ielts-academic-aiden-{edition}-videos/reading-{edition}-layout.json'
 CHUNK=4 << 20
 
 def blocks(file,length):
@@ -88,5 +93,5 @@ if __name__=='__main__':
         data=json.loads(args.manifest.read_text(encoding='utf-8'))
     else:
         with urlopen(Request(MANIFEST,headers={'User-Agent':'Cambridge-reading-download'}),timeout=60) as response:data=json.load(response)
-    if Path(data['file']).name!=data['file'] or len(data['members'])!=120:sys.exit('清单有误，请从正式 Release 重新获取')
+    if Path(data['file']).name!=data['file'] or len(data['members'])!=EXPECTED:sys.exit('清单有误，请从正式 Release 重新获取')
     print(restore(data,args.directory))
