@@ -3,6 +3,7 @@ import hashlib
 import json
 from collections import defaultdict
 from pathlib import Path
+import re
 import subprocess
 
 from release_assets import fetch
@@ -15,6 +16,7 @@ LEGACY_EDITOR = 'paper-context-5.1'
 
 def context(paper, prep, manual, notes, paper_hash, prep_hash, editor):
     result = []
+    portable = []
     sentences = [s for paragraph in paper['paragraphs'] for s in paragraph]
     if sentences != [item['en'] for item in prep['rows']]:
         raise ValueError('Checkpoint inputs do not refer to the same reading')
@@ -26,13 +28,19 @@ def context(paper, prep, manual, notes, paper_hash, prep_hash, editor):
         fields = [common, sentences[n-2] if n>1 else '', preparation, terms, manual.get(str(n)), scoped]
         data = json.dumps(fields, ensure_ascii=False, sort_keys=True).encode()
         result.append(hashlib.sha256(data).hexdigest())
-    return {'schema':1,'editor':editor,'paper':paper_hash,'prep':prep_hash,'rows':result}
+        # A new sentence earlier in the passage can move the index of an
+        # unchanged note. Keep its exact English, gloss, preceding sentence
+        # and all other dependencies when matching across that move.
+        portable_notes = [{key: value for key, value in note.items() if key != 'sentence'} for note in scoped]
+        content = json.dumps([*fields[:-1], portable_notes], ensure_ascii=False, sort_keys=True).encode()
+        portable.append(hashlib.sha256(content).hexdigest())
+    return {'schema':1,'editor':editor,'paper':paper_hash,'prep':prep_hash,'rows':result,'content_rows':portable}
 
 
-def legacy_context(project, pid, current, fingerprint):
+def legacy_context(project, pid, current, fingerprint, revision=None):
     repo = project.parents[1]
-    revision = LEGACY_REVISION
-    if current['editor'] != LEGACY_EDITOR:
+    revision = revision or LEGACY_REVISION
+    if current['editor'] != LEGACY_EDITOR or not re.fullmatch(r'[a-f0-9]{40}', revision):
         return None
     available = subprocess.run(['git', 'cat-file', '-e', revision + '^{commit}'], cwd=repo, capture_output=True)
     if available.returncode:
@@ -59,28 +67,34 @@ def reusable(project, pid, state, assets, folder, sentences, fingerprint, good):
     result = {'drafted': {}, 'verified': {}}
     files = [asset for name, asset in assets.items() if name.startswith(pid + '-') and name.endswith('-work.json')
              and name != state['key'] + '-work.json']
-    legacy = None
-    looked_up = False
+    snapshots = project / '审校/早期册线上校订版本.json'
+    revisions = json.loads(snapshots.read_text()) if snapshots.is_file() else {}
+    legacy_sources = {}
     for asset in sorted(files, key=lambda a: a.get('updated_at', ''), reverse=True):
         rowset = json.loads(Path(fetch(asset, folder)).read_bytes())
         if rowset.get('id') != pid or asset['name'] != rowset.get('key', '') + '-work.json':
             continue
         before = rowset.get('context')
         if not before:
-            if not looked_up:
-                legacy = legacy_context(project, pid, current, fingerprint)
-                looked_up = True
+            revision = revisions.get(rowset['key'], LEGACY_REVISION)
+            if revision not in legacy_sources:
+                legacy_sources[revision] = legacy_context(project, pid, current, fingerprint, revision)
+            legacy = legacy_sources[revision]
             if not legacy or rowset['key'] != legacy[0]:
                 continue
             before = legacy[1]
         if before.get('schema') != current['schema'] or before.get('editor') != current['editor']:
             continue
+        previous_content = before.get('content_rows', before['rows'])
+        current_content = current.get('content_rows', current['rows'])
         for stage, rows in result.items():
             for item in rowset.get(stage, []):
                 old_n = item['n']
                 if not 1 <= old_n <= len(before['rows']):
                     continue
-                matches = [n for n in by_sentence[item['en']] if before['rows'][old_n-1] == current['rows'][n-1]]
+                matches = [n for n in by_sentence[item['en']]
+                           if before['rows'][old_n-1] == current['rows'][n-1]
+                           or previous_content[old_n-1] == current_content[n-1]]
                 if len(matches) != 1 or matches[0] in rows:
                     continue
                 n = matches[0]

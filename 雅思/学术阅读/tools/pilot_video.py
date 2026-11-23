@@ -227,6 +227,14 @@ def word_sentence_slide(p,sentence,k,n,part=None):
 
 def early_sentence_slide(p,sentence,k,n,part=None):
     html=batch_sentence_slide(p,sentence,k,n,part)
+    # Printed section names are needed for matching-heading questions.
+    # Show them in the existing footer so they do not enter the spoken prose.
+    headers = p.get('section_headers', {})
+    starts = [int(start) for start in headers if int(start) <= k]
+    if starts:
+        heading = headers[str(max(starts))]
+        if heading:
+            html = html.replace('<span>逐句精读</span>', '<span>' + engine.esc(heading) + '</span>', 1)
     compact = ('.main.ielts-punctuation-room{width:1100px}'
                '.ielts-tight-body .en{line-height:1.22}.ielts-tight-body .zh{margin-top:16px;line-height:1.36}'
                '.side.ielts-dense-side{padding:18px 22px}'
@@ -342,6 +350,8 @@ def prepare():
                 p['reading_header']={**p['reading_header'],'english':word_quotes(p['reading_header']['english'])}
             display_code+=inspect.getsource(word_quotes)+inspect.getsource(word_sentence_slide)
         elif int(meta['book'])<=10:
+            if meta.get('section_headers'):
+                p['section_headers'] = meta['section_headers']
             display_code+=inspect.getsource(early_sentence_slide)+inspect.getsource(fit_early_layout)
         display_code += inspect.getsource(batch_sentence_slide) + inspect.getsource(ielts_zh_html) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()

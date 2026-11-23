@@ -229,6 +229,8 @@ def aligned_parts(en,zh,vocab):
     return [en],[zh]
 
 COLLOCATIONS=[
+    (r'\b(?:hold|holds|held|holding) (?:her|his|their|our|my|your|one’s) breath\b',
+     'hold one’s breath','屏住呼吸'),
     (r'\b(?:am|is|are|was|were|be|been) based (?:at|in)\b','be based','以……为驻地'),
     (r'\bit is alleged\b','it is alleged','据称'),
     (r'\bcombined forces\b','combined forces','合力'),
@@ -272,6 +274,14 @@ COLLOCATIONS=[
 
 def vocabulary(row,prior,notes):
     en=row['en'];items=[]
+    # Prefer the sense specifically checked for this sentence when it is a
+    # multi-word unit. Its component words would otherwise reserve the span.
+    for note in notes:
+        form=note['english']
+        spans=positions(en,form)
+        if spans and 2<=len(form.split())<=4 and note.get('meaning'):
+            left,right=spans[0]
+            items.append(dict(form=en[left:right],head=form.lower(),pos=note.get('pos','phr.'),dictionary=note['meaning']))
     for pattern,head,meaning in COLLOCATIONS:
         hit=re.search(pattern,en,re.I)
         if hit:items.append(dict(form=hit[0],head=head,pos='phr.',dictionary=meaning))
@@ -427,12 +437,21 @@ def scope_gaps(en,zh):
     if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
         en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
     gaps=reversed_quantities(en,zh)
+    for phrase, equivalent, suspect in (
+            ('tens of millions', r'千[多余]?万|[1-9],?000[多余]?万|[1-9]0,000,000', r'(?:数|几|上|好几)百万'),
+            ('hundreds of thousands', r'十[多余]?万|[1-9]0[多余]?万|[1-9]00,000', r'(?:数|几|上)千|[几数]万'),
+            ('hundreds of millions', r'亿|[1-9]00,000,000', r'(?:数|几|上)[百千]万')):
+        if re.search(r'\b'+phrase+r'\b',en,re.I) and re.search(suspect,zh) and not re.search(equivalent,zh):
+            gaps.append('数量级：'+phrase)
     both_actions=re.search(r'\b(?:are|is|were|was|been|being)\s+(?:\w+ly\s+)?\w+ing\b[^.;!?]{1,95}?\band\s+(?:\w+ly\s+)?\w+ing\b',en,re.I)
     if both_actions and not re.search(r'\b(?:or|either|whether)\b',en,re.I) and re.search(r'或者|抑或|要么',zh):
         gaps.append('同时成立的两项活动，核查是否误译成二选一')
     if (re.search(r'\bin order to\b',en,re.I) and re.search(r'(?:从而|因而|以致|以至)(?:无法|不能|无从)',zh)
             and not re.search(r'\b(?:not|unable|cannot|impossible|failed?)\b',en,re.I)):
         gaps.append('in order to 的目的关系，核查是否误译成否定的结果')
+    if (re.search(r'\btimes (?:smaller|less) than\b',en,re.I)
+            and re.search(r'(?:小了|少了|缩小了|减少了)[约近]?\s*(?:[二两三四五六七八九十]|[2-9])\s*倍',zh)):
+        gaps.append('核查倍数比较的方向和基数，译成相应的分数')
     return gaps + [label for pattern,equivalent,label in SCOPE_CUES
             if re.search(pattern,en,re.I) and not re.search(equivalent,zh)]
 
@@ -712,6 +731,15 @@ def output(source,rows,reference_count):
     en_title=source['title'];zh_title=source['title_zh'];short_en=' '.join(en_title.split()[:5])+('…' if len(en_title.split())>5 else '');short_zh=zh_title.split('（')[0]
     if len(short_zh)>12:short_zh=short_zh[:11]+'…'
     meta={k:source[k] for k in ('id','book','test','passage','title','title_zh','pdf_pages')}
+    headings = source.get('reading_section_headings', {})
+    if headings:
+        starts = {}
+        offset = 1
+        for paragraph_number, paragraph in enumerate(source['paragraphs'], 1):
+            if str(paragraph_number) in headings:
+                starts[str(offset)] = headings[str(paragraph_number)]
+            offset += len(paragraph)
+        meta['section_headers'] = starts
     known_names={name for row in corrections().values() for name in row['names']}
     meta.update(genre='剑桥雅思 · 学术阅读',header={'english':short_en,'chinese':short_zh},lemmas={},row_lemmas=terms,zh_names=confirmed_names(rows,known_names),pronunciation={})
     save(LESSON/'篇目信息.json',meta);save(LESSON/'分屏.json',{PID:cuts})
