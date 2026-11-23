@@ -80,6 +80,9 @@ def clear_pos_conflicts(prepared,words):
     candidates={t['form'].casefold():t for t in prepared['candidates']}
     conflicts=[]
     for form,value in words:
+        if not CJK.search(value):
+            conflicts.append(form)
+            continue
         pos=POS.match(value);name=form.casefold()
         if not pos or ' ' in name:continue
         if pos[1]=='aux.' and re.fullmatch(r'[a-z]+',name) and name not in AUXILIARIES:

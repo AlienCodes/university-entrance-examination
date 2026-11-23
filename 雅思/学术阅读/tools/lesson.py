@@ -39,6 +39,8 @@ def load():
             occupied = set()
             for slot,entry in enumerate(glosses):
                 phrase, meaning = entry.split('|')
+                if not re.search(r'[\u3400-\u9fff]', meaning):
+                    raise ValueError(f'{PID}/{sentence_number}: missing Chinese meaning for {phrase!r}')
                 spans = list(re.finditer(r'(?<!\w)' + re.escape(phrase) + r'(?!\w)', en, re.I))
                 if not spans:
                     raise ValueError(f'{phrase}: {en}')
