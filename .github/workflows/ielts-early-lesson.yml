@@ -16,6 +16,7 @@ on:
         default: false
 permissions:
   contents: write
+  actions: read
 jobs:
   master:
     concurrency:
@@ -107,6 +108,9 @@ jobs:
           bash .github/run-ielts-editors.sh python -u "$TARGET/tools/early_editor.py" edit 2>&1 | tee "$IELTS_WORK/editor.log"
       - if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true'
         uses: ./.github/actions/ielts-phrase-listening
+      - name: 恢复同篇已核验的完整录音
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true'
+        run: python "$TARGET/tools/aiden_checkpoint.py"
       - if: steps.cache.outputs.done != 'true' && !inputs.verified_audio_only
         uses: ./.github/actions/ielts-verified-master
         with:

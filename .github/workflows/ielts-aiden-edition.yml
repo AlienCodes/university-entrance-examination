@@ -81,6 +81,7 @@ jobs:
     with:
       lesson: ${{ matrix.lesson }}
       aiden_batch: ${{ needs.plan.outputs.batch }}
+      current_tools: true
 
   delivery:
     needs: [plan, pilot, preview, production]

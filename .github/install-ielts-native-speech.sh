@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-sudo apt-get install -y -qq espeak-ng
+speech_packages=(espeak-ng)
+if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then speech_packages+=(sox); fi
+python .github/actions/cet6-chalk-env/prepare_packages.py 141 --decoder-only --extra-packages "${speech_packages[@]}"
 python -m venv "$RUNNER_TEMP/speech"
 sp="$RUNNER_TEMP/speech/bin/python"
 if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
-  sudo apt-get install -y -qq sox
   "$sp" -m pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
   "$sp" -m pip install -q qwen-tts==0.1.1 sherpa-onnx==1.13.8
 else

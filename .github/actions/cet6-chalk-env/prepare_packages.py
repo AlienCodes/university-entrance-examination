@@ -72,8 +72,9 @@ def main():
     parser.add_argument('--plan-file',type=Path)
     parser.add_argument('--check-only',action='store_true')
     parser.add_argument('--decoder-only',action='store_true')
+    parser.add_argument('--extra-packages', nargs='+', choices=('espeak-ng', 'sox'), default=[])
     args=parser.parse_args()
-    required=['ffmpeg']
+    required=['ffmpeg', *args.extra_packages]
     if not args.decoder_only:
         plan = args.plan_file.read_text() if args.plan_file else subprocess.check_output(
             ['/tmp/pw156/bin/python','-m','playwright','install-deps','--dry-run','chromium'],text=True,timeout=30)
