@@ -13,6 +13,7 @@ concurrency:
 jobs:
   specification:
     runs-on: ubuntu-24.04
+    timeout-minutes: 110
     outputs:
       batch: ${{ steps.read.outputs.batch }}
       certified_audio: ${{ steps.read.outputs.certified_audio }}
@@ -30,6 +31,23 @@ jobs:
           echo "batch=$(jq -r .batch "$file")" >> "$GITHUB_OUTPUT"
           for option in certified_audio pilot_only; do
             echo "$option=$(jq -r --arg k "$option" '.[$k] // false' "$file")" >> "$GITHUB_OUTPUT"
+          done
+      - name: 等待本批指定的首篇认证音轨
+        if: steps.read.outputs.certified_audio == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          run=$(jq -r '.after_audio_run // empty' .github/ielts-aiden-batch.json)
+          if [[ -z "$run" ]]; then exit 0; fi
+          while true; do
+            record=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run")
+            jq -e --arg ref "$GITHUB_REF_NAME" '.head_branch==$ref and .path==".github/workflows/ielts-aiden-pilot-recovery.yml"' <<<"$record" >/dev/null
+            if [[ "$(jq -r .status <<<"$record")" == completed ]]; then
+              jq -e '.conclusion=="success"' <<<"$record" >/dev/null
+              exit 0
+            fi
+            sleep 45
           done
   edition:
     needs: specification
