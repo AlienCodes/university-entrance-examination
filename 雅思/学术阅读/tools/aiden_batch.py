@@ -35,14 +35,8 @@ def cached(pid,batch,include_illustration=False):
             core_ok=bool(data.get('material_sha256')==key and asset and asset.get('digest'))
         if not core_ok or not include_illustration or batch!='13-6':
             return core_ok
-        from illustration_stage import checked, illustration
-        final=masters.get(pid+'-illustrated.json')
-        if not final or not final.get('digest'):return False
-        report=json.loads(fetch(final,tmp).read_text())
-        if (report.get('core_sha256'),report.get('illustration_sha256'))!=(data['video_sha256'],illustration(pid)):
-            return False
-        checked(pid,data,report,masters)
-        return True
+        from illustration_stage import cached_movie
+        return bool(cached_movie(pid,data,masters,tmp))
 
 def plan(batch):
     ids=lesson_ids(BATCHES[batch])

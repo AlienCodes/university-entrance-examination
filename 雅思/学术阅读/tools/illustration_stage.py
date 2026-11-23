@@ -47,8 +47,8 @@ def illustration(pid):
     return proof['sha256']
 
 
-def filenames(pid, core_hash, painted):
-    return f'{pid}-illustrated-{core_hash[:16]}-{painted[:16]}.mp4',f'{pid}-illustrated.json'
+def movie_name(pid, core_hash, painted, video_hash):
+    return f'{pid}-illustrated-{core_hash[:16]}-{painted[:16]}-{video_hash[:16]}.mp4'
 
 
 def page_plan(pages, source_frames):
@@ -66,7 +66,7 @@ def page_plan(pages, source_frames):
 
 def checked(pid, core, report, assets):
     painted=illustration(pid)
-    movie,_=filenames(pid,core['video_sha256'],painted)
+    movie=movie_name(pid,core['video_sha256'],painted,report['video_sha256'])
     item=assets.get(movie,{})
     ending=report.get('ending',{})
     audio=report.get('audio',{})
@@ -84,6 +84,18 @@ def checked(pid, core, report, assets):
     return item
 
 
+def cached_movie(pid, core, assets, work):
+    receipt=assets.get(pid+'-illustrated.json')
+    if not receipt or not receipt.get('digest'):
+        return None
+    report=read(fetch(receipt,work))
+    try:
+        return checked(pid,core,report,assets)
+    except (ValueError, KeyError, TypeError, IndexError):
+        # A changed illustration, replaced source, or missing hosted file needs a fresh render.
+        return None
+
+
 def upload(source_dir, pid):
     from aiden_profile import PAUSE_POLICY
     from check_ending import inspect
@@ -93,13 +105,11 @@ def upload(source_dir, pid):
     core=read(fetch(assets[pid+'-receipt.json'],source_dir))
     if core.get('speaker')!='Aiden' or core.get('pause_policy')!=PAUSE_POLICY:
         raise ValueError(pid+' is not the approved Aiden narration')
-    name,receipt=filenames(pid,core['video_sha256'],painted)
-    if name in assets and receipt in assets:
-        cached=read(fetch(assets[receipt],source_dir))
-        if (cached.get('core_sha256'),cached.get('illustration_sha256'))==(core['video_sha256'],painted):
-            checked(pid,core,cached,assets)
-            print(pid,'reused checked illustrated master',flush=True)
-            return
+    if cached_movie(pid,core,assets,source_dir):
+        print(pid,'reused checked illustrated master',flush=True)
+        return
+    receipt=pid+'-illustrated.json'
+    core_receipt_digest=assets[pid+'-receipt.json']['digest']
     version=f"{pid}-{core['material_sha256'][:16]}.zip"
     archive=fetch(assets[version],source_dir)
     video=source_dir/(pid+'-core.mp4')
@@ -112,9 +122,11 @@ def upload(source_dir, pid):
         or not voice['mp4_check']['passed'] or voice['mp4_check']['sha256']!=core['video_sha256']
         or voice['mp4_check']['phrases']!=core['verified_phrases']):
         raise ValueError(pid+' failed its source film check')
-    outfile=source_dir/name
+    outfile=source_dir/(pid+'-illustrated.mp4')
     path=source_dir/receipt
     result=build(pid,video,outfile,path,threads=min(4,os.cpu_count() or 2))
+    name=movie_name(pid,core['video_sha256'],painted,result['video_sha256'])
+    outfile=outfile.rename(source_dir/name)
     last_end=voice['mp3_check']['checks'][-1]['end']+1
     result.update(policy=POLICY,source_zip_sha256=assets[version]['digest'][7:],core_material_sha256=core['material_sha256'],
                   filename=name,source_phrases=core['verified_phrases'],ending=inspect(outfile,{'narrator':voice['profile'],'sentences':[{'end':last_end}]}),
@@ -126,6 +138,8 @@ def upload(source_dir, pid):
     inventory.cache_clear()
     assets=inventory(CACHE)
     checked(pid,core,result,assets)
+    if assets[pid+'-receipt.json']['digest']!=core_receipt_digest:
+        raise ValueError(pid+' source was updated during rendering')
     with tempfile.TemporaryDirectory(dir=source_dir) as d:
         if digest(fetch(assets[name],Path(d)))!=result['video_sha256']:
             raise ValueError('The downloaded illustrated film does not match')
