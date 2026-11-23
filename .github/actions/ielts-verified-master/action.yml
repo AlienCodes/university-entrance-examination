@@ -29,8 +29,8 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        for attempt in 1 2; do
-          bash .github/run-ielts-editors.sh python "$TARGET/tools/repair_early_layout.py"
+        for attempt in 1 2 3; do
+          bash .github/run-ielts-editors.sh /opt/ttsenv/bin/python "$TARGET/tools/repair_early_layout.py" 2>&1 | tee -a "$IELTS_WORK/native-reflow.log"
           if /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" stills > "$IELTS_WORK/native-layout.log" 2>&1; then
             /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" lock
             exit 0

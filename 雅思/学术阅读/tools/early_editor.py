@@ -256,6 +256,7 @@ COLLOCATIONS=[
     (r'\b(?:accounts?|accounted|accounting) for\b','account for','按文意区分“解释”“占”'),
     (r'\b(?:relies|relied|rely|relying) on\b','rely on','依靠'),
     (r'\b(?:keep(?:s|ing)?|kept) up with\b','keep up with','跟上'),
+    (r'\bper cent\b','per cent','百分之'),
 ]
 
 def vocabulary(row,prior,notes):
@@ -492,6 +493,21 @@ def confirmed_names(rows,known):
             for k in keys:
                 word=ans[k].strip()
                 if '·' in word and word in zh and len(word)<=32:registered.add(word)
+            for i in locations:
+                if covered(i):continue
+                # Selecting spans in the actual Chinese avoids the reader silently
+                # respelling a foreign name or substituting another middle dot.
+                left=re.search(r'[\u3400-\u9fff·-]{1,16}$',zh[:i])
+                right=re.match(r'[\u3400-\u9fff·-]{1,16}',zh[i+1:])
+                if not left or not right:continue
+                prefixes={k:left[0][-k:] for k in range(1,len(left[0])+1) if left[0][-k] not in '·-'}
+                suffixes={k:right[0][:k] for k in range(1,len(right[0])+1) if right[0][k-1] not in '·-'}
+                answer=finite_response('找出这个间隔号所属的人名或专名。从给定选项各选编号组成准确的“前半·后半”。不要包含相邻动词、介词或连词。不能确认时填两个0。',
+                    {'English':r['en'],'Chinese':zh,'occurrence':zh[max(0,i-15):i+16],
+                     'left_options':prefixes,'right_options':suffixes},
+                    record(left={'type':'integer','enum':[0,*prefixes]},right={'type':'integer','enum':[0,*suffixes]}),55)
+                a,b=answer['left'],answer['right']
+                if a and b:registered.add(prefixes[a]+'·'+suffixes[b])
             if not all(covered(i) for i in locations):raise ValueError(f'Unresolved transliterated name at {PID}/{r["n"]}')
     return sorted(registered,key=lambda name:(-len(name),name))
 
@@ -622,7 +638,7 @@ def editorial():
     state=read(statefile) if statefile.exists() else {'id':PID,'key':key(),'drafted':[],'verified':[]}
     if state['key']!=key():raise ValueError('Checkpoint belongs to a different source')
     state['context']=context
-    donor=reusable(PROJECT,PID,state,assets,wp,sentences,input_fingerprint,good) if not state['drafted'] else {'drafted':{},'verified':{}}
+    donor=reusable(PROJECT,PID,state,assets,wp,sentences,input_fingerprint,good) if len(state['verified'])<len(rows) else {'drafted':{},'verified':{}}
     donor['verified']={n:r for n,r in donor['verified'].items()
                        if not scope_gaps(r['en'],r['zh'])
                        and not clear_pos_conflicts(rows[n-1],[(v[0],v[2]+' '+v[3]) for v in r['v']])}

@@ -118,12 +118,13 @@ def fit_long_headwords(js):
 
 engine.FIT_JS=fit_long_headwords(engine.FIT_JS)
 
-def fit_early_vocabulary(js):
+def fit_early_layout(js):
     # Test the ordinary spacing at the certified minimum independently of the
     # shared starting size for a multi-screen sentence. Preserve the native
     # margins for a screen that already fits at that size.
     anchor = 'while (!sideFits() && vs > 16)'
-    if js.count(anchor) != 1:
+    body_anchor = 'while (box.scrollHeight > main.clientHeight && fs > 30)'
+    if js.count(anchor) != 1 or js.count(body_anchor) != 1:
         raise RuntimeError('无法定位六级主题的词栏字号测量')
     measure = """
       const startVs = vs;
@@ -134,10 +135,22 @@ def fit_early_vocabulary(js):
       vs = startVs;
       r.setProperty('--vs', vs+'px');
     """
-    return js.replace(anchor, measure + anchor)
+    body_measure = """
+      const startFs = fs;
+      main.classList.remove('ielts-tight-body', 'ielts-punctuation-room');
+      fs = BODY_FLOOR;
+      r.setProperty('--fs', fs+'px'); phr();
+      if (en.scrollWidth > en.clientWidth + 1) main.classList.add('ielts-punctuation-room');
+      phr();
+      if (box.scrollHeight > main.clientHeight) main.classList.add('ielts-tight-body');
+      fs = startFs;
+      r.setProperty('--fs', fs+'px'); phr();
+    """
+    floor = engine.SIZES[engine.PROJECTS[PROJECT_ID]['look']]['min_fs']
+    return js.replace(anchor, measure + anchor).replace(body_anchor, body_measure.replace('BODY_FLOOR', str(floor)) + body_anchor)
 
 if int(PID[1:PID.index('T')]) <= 10:
-    engine.FIT_JS = fit_early_vocabulary(engine.FIT_JS)
+    engine.FIT_JS = fit_early_layout(engine.FIT_JS)
 
 def select_lesson(name, look=True):
     _cet_set_project(name, look)
@@ -214,7 +227,9 @@ def word_sentence_slide(p,sentence,k,n,part=None):
 
 def early_sentence_slide(p,sentence,k,n,part=None):
     html=batch_sentence_slide(p,sentence,k,n,part)
-    compact = ('.side.ielts-dense-side{padding:18px 22px}'
+    compact = ('.main.ielts-punctuation-room{width:1100px}'
+               '.ielts-tight-body .en{line-height:1.22}.ielts-tight-body .zh{margin-top:16px;line-height:1.36}'
+               '.side.ielts-dense-side{padding:18px 22px}'
                '.ielts-dense-side #list{gap:calc(var(--vs)*.20)}'
                '.ielts-dense-side .v{line-height:1.22;column-gap:9px}')
     html = html.replace('</head>', '<style>' + compact + '</style></head>', 1)
@@ -226,7 +241,8 @@ def early_sentence_slide(p,sentence,k,n,part=None):
     body=re.sub(before_cont,r'<nobr>\1\2\3</nobr>',body)
     body=re.sub(r'(?<![>\w])([A-Za-z0-9’]{1,16} - [A-Za-z0-9’]{1,16})(?![\w<])',r'<nobr>\1</nobr>',body)
     # A highlighted preceding word ends in HTML rather than a letter.
-    body=re.sub(r'(?<=>) ([-–—] (?:<span class="w">(?:(?!</span>).)*</span>|[A-Za-z0-9’]+))',
+    body=re.sub(r' ([-–—]) <nobr>(?=<span class="(?:w|ph)">|[\w])',r' <nobr>\1 ',body)
+    body=re.sub(r'(?<=>) ([-–—] (?:<span class="(?:w|ph)">(?:(?!</span>).)*</span>|[A-Za-z0-9’]+))',
                 r' <nobr>\1</nobr>',body)
     return html[:match.start(1)]+body+html[match.end(1):]
 
@@ -320,7 +336,7 @@ def prepare():
                 p['reading_header']={**p['reading_header'],'english':word_quotes(p['reading_header']['english'])}
             display_code+=inspect.getsource(word_quotes)+inspect.getsource(word_sentence_slide)
         elif int(meta['book'])<=10:
-            display_code+=inspect.getsource(early_sentence_slide)
+            display_code+=inspect.getsource(early_sentence_slide)+inspect.getsource(fit_early_layout)
         display_code += inspect.getsource(batch_sentence_slide) + inspect.getsource(ielts_zh_html) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()
     save(PROJECT / 'data/vocab.json', {'passages':[p]})

@@ -171,7 +171,7 @@ def diagnostics():
     wp=work();name=wp/(key()+'-diagnosis.zip')
     reports=[PROJECT/'样片/review.json',LESSON/'分屏.json',LESSON/'visual-review.json',
              LESSON/'content-review.json',LESSON/'分屏核对.json',LESSON/'双语精读.tsv',wp.parent/'editor.log',
-             wp.parent/'native-layout.log',wp.parent/'native-video.log',wp.parent/'native-audio.log',wp.parent/'native-package.log']
+             wp.parent/'native-layout.log',wp.parent/'native-reflow.log',wp.parent/'native-video.log',wp.parent/'native-audio.log',wp.parent/'native-package.log']
     for subdir in ('成品核查','语音复检'):
         reports+=list((PROJECT/'样片'/subdir).rglob('*.json'))
     with zipfile.ZipFile(name,'w',compression=zipfile.ZIP_DEFLATED) as out:
