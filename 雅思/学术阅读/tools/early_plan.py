@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 import time
 import zipfile
 
@@ -19,6 +20,24 @@ SPEC=REPO/'.github/ielts-early-production.json'
 
 def load(path):
     return json.loads(path.read_text())
+
+def missing_editions(ids):
+    from early_editor import key_for
+    notes=inventory(NOTES);masters=inventory(STAGE)
+    missing=[]
+    with tempfile.TemporaryDirectory() as td:
+        for pid in ids:
+            fingerprint=key_for(PROJECT,pid)
+            teaching=notes.get(fingerprint+'-reviewed.zip');receipt=masters.get(pid+'-receipt.json')
+            if teaching and receipt and teaching.get('digest') and receipt.get('digest'):
+                with zipfile.ZipFile(fetch(teaching,td)) as z:proof=json.loads(z.read('content-review.json'))
+                record=load(fetch(receipt,td))
+                master=masters.get(pid+'-'+record['material_sha256'][:16]+'.zip')
+                if (proof['checked'] and proof['key']==fingerprint and record['lesson']==pid
+                    and record['content_sha256']==proof['text_sha256'] and master and master.get('digest')):
+                    continue
+            missing.append(pid)
+    return missing
 
 def plan():
     spec=load(SPEC)
@@ -36,7 +55,12 @@ def plan():
             raise ValueError(pid+' is not tied to the verified academic paper')
     samples=spec.get('samples',[spec.get('sample',ids[0])])
     if not samples or len(set(samples))!=len(samples) or not set(samples)<=set(ids):raise ValueError('Missing or repeated sample')
+    if spec.get('only_missing'):
+        outstanding=set(missing_editions(ids))
+        print(f'{len(outstanding)} of {len(ids)} lessons still need this paper and glossary edition.')
+        ids=[pid for pid in ids if pid in outstanding or pid in samples]
     with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+        print('current_tools='+('true' if spec.get('only_missing') else 'false'),file=out)
         print('samples='+json.dumps(samples),file=out)
         print('lessons='+json.dumps([i for i in all_ids if i in ids and i not in samples]),file=out)
 

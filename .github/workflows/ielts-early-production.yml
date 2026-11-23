@@ -15,6 +15,7 @@ jobs:
     outputs:
       samples: ${{ steps.select.outputs.samples }}
       lessons: ${{ steps.select.outputs.lessons }}
+      current_tools: ${{ steps.select.outputs.current_tools }}
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
@@ -26,6 +27,7 @@ jobs:
             .github
             雅思/学术阅读/原稿
             雅思/学术阅读/备课
+            雅思/学术阅读/审校
             雅思/学术阅读/配套讲义
             雅思/学术阅读/tools
       - id: select
@@ -44,6 +46,7 @@ jobs:
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
       lesson: ${{ matrix.lesson }}
+      current_tools: ${{ needs.plan.outputs.current_tools == 'true' }}
   schedule:
     needs: [plan,sample]
     runs-on: ubuntu-24.04
@@ -52,6 +55,7 @@ jobs:
       deferred: ${{ steps.slots.outputs.deferred }}
       immediate_limit: ${{ steps.slots.outputs.immediate_limit }}
       deferred_limit: ${{ steps.slots.outputs.deferred_limit }}
+      current_tools: ${{ needs.plan.outputs.current_tools }}
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
@@ -77,6 +81,7 @@ jobs:
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
       lesson: ${{ matrix.lesson }}
+      current_tools: ${{ needs.schedule.outputs.current_tools == 'true' }}
 
   wait:
     needs: schedule
@@ -106,6 +111,7 @@ jobs:
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
       lesson: ${{ matrix.lesson }}
+      current_tools: ${{ needs.schedule.outputs.current_tools == 'true' }}
 
   delivery:
     needs: [plan,sample,schedule,production,wait,deferred]

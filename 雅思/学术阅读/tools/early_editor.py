@@ -536,7 +536,9 @@ def output(source,rows,reference_count):
     known_names={name for row in corrections().values() for name in row['names']}
     meta.update(genre='剑桥雅思 · 学术阅读',header={'english':short_en,'chinese':short_zh},lemmas={},row_lemmas=terms,zh_names=confirmed_names(rows,known_names),pronunciation={})
     save(LESSON/'篇目信息.json',meta);save(LESSON/'分屏.json',{PID:cuts})
-    proof={'id':PID,'source_sha256':digest(PAPER),'candidate_sha256':digest(PREP),'editor_version':VERSION,'paper_note_revision':os.getenv('IELTS_NOTES_REVISION',''),'key':key(),'reading_units':len(rows),
+    proof={'id':PID,'source_sha256':digest(PAPER),'candidate_sha256':digest(PREP),'editor_version':VERSION,
+           'editor_revision':os.getenv('IELTS_TOOL_REVISION',os.getenv('GITHUB_SHA','')),
+           'paper_note_revision':os.getenv('IELTS_NOTES_REVISION',''),'key':key(),'reading_units':len(rows),
            'vocabulary_entries':sum(len(r['v']) for r in rows),'split_sentences':len(cuts),'translation_review':{'sentences_checked':len(rows),'paper_edited_sentences':sum(bool(r.get('paper_edited')) for r in rows),'aligned_independent_readings':reference_count,'corrections':marks,
            'model_basis':'Complete English sentences are drafted and reviewed before read-only bilingual segmentation. Alternative readings are consulted alongside the paper. Paper-edited lines retain their confirmed translation and glossary.'},
            'text_sha256':digest(LESSON/FILES[0]),'metadata_sha256':digest(LESSON/FILES[1]),'split_sha256':digest(LESSON/FILES[2]),'checked':False}

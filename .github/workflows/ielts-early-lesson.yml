@@ -5,6 +5,9 @@ on:
       lesson:
         required: true
         type: string
+      current_tools:
+        type: boolean
+        default: false
 permissions:
   contents: write
 jobs:
@@ -26,6 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.current_tools && 'codex/ielts-academic-reading' || github.sha }}
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
@@ -44,6 +48,7 @@ jobs:
           export IELTS_WORK="$RUNNER_TEMP/early"
           mkdir -p "$IELTS_WORK"
           echo "IELTS_WORK=$IELTS_WORK" >> "$GITHUB_ENV"
+          echo "IELTS_TOOL_REVISION=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
           python "$TARGET/tools/early_plan.py" sync-notes
           done_master=$(python "$TARGET/tools/early_plan.py" cached)
           echo "done=$done_master" >> "$GITHUB_OUTPUT"
