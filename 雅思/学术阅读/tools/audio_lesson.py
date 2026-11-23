@@ -16,6 +16,8 @@ import 去呼吸
 
 def early_reading_forms(text,pid):
     """Expand the printed abbreviations whose readings depend on the subject of these books."""
+    from aiden_boundaries import spoken_centuries
+    text=spoken_centuries(text)
     text=text.replace('￡','£').replace('℃','°C')
     text=re.sub(r'(\d)\s+%',r'\1%',text)
     text=re.sub(r'(\d[\d,.]*)\s*km/h\b',r'\1 kilometres per hour',text)

@@ -15,6 +15,7 @@ from aiden_boundaries import POLICY, assess, independent, words, reference
 from aiden_checkpoint import PeriodicSnapshot, rejected_seed
 import aiden_cork_oak
 import aiden_ceylonese
+import aiden_inuktitut
 import make_audio as cet
 import 听对
 
@@ -83,6 +84,10 @@ class Aiden:
             instruction += ' Read the five initials I, I, N, C, E clearly in one connected group, including both initial I sounds.'
         if words(script)[:5] == ['sugars','and','meats','or','oils']:
             instruction += ' Pronounce the opening word sugars /ˈʃʊɡɚz/, with a soft sh and a voiced final z.'
+        if re.search(r'\b(?:fusee|fuzee|fyoo-zee)\b',script,re.I):
+            instruction += ' Pronounce the clock term fusee in two connected syllables, fyoo-ZEE /fjuːˈziː/, with a clear final ee vowel.'
+        if any(form.casefold() in script.casefold() for form in aiden_inuktitut.RENDERINGS):
+            instruction += ' ' + aiden_inuktitut.HINT
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -132,7 +137,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and 'ceylonese' not in words(script)):
+                      and not {'ceylonese','fusee','qaujimajatuqangit'}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -157,6 +162,10 @@ class Aiden:
             spellings=aiden_cork_oak.RENDERINGS
         elif 'ceylonese' in words(script):
             spellings=aiden_ceylonese.RENDERINGS
+        elif 'fusee' in words(script):
+            spellings=('fusee','fuzee','fyoo-ZEE','fusee','fyoo-zee')
+        elif 'qaujimajatuqangit' in words(script):
+            spellings=aiden_inuktitut.RENDERINGS
         for attempt in range(len(spellings) if spellings else 5):
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.

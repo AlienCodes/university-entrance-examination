@@ -25,14 +25,21 @@ def audio_asset(lesson_dir, *, source_revision=None):
     files=[Path(__file__),PROJECT/'tools/aiden_audio.py',PROJECT/'tools/aiden_boundaries.py',PROJECT/'tools/audio_lesson.py',PROJECT/'声音试听/sample.py',
            root/'六级/tools/make_audio.py',root/'tools/tts/textnorm.py',root/'tools/tts/voices.json',
            root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
-    for name, filename in [('quercus suber','aiden_cork_oak.py'),('ceylonese','aiden_ceylonese.py')]:
-        if not any(name in row.lower() for row in rows):
+    term_checkers = {
+        'quercus suber': ('aiden_cork_oak.py',),
+        'ceylonese': ('aiden_ceylonese.py',),
+        'fusee': ('aiden_fusee.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
+        'qaujimajatuqangit': ('aiden_inuktitut.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
+    }
+    for term, names in term_checkers.items():
+        if not any(term in row.lower() for row in rows):
             continue
-        checker=PROJECT/'tools'/filename
-        if source_revision is None or subprocess.run(
-                ['git','cat-file','-e',source_revision+':'+checker.relative_to(root).as_posix()],
-                cwd=root,capture_output=True).returncode==0:
-            files.append(checker)
+        checkers = [PROJECT/'tools'/name for name in names]
+        if source_revision is not None:
+            primary = source_revision + ':' + checkers[0].relative_to(root).as_posix()
+            if subprocess.run(['git', 'cat-file', '-e', primary], cwd=root, capture_output=True).returncode:
+                continue
+        files.extend(checker for checker in checkers if checker not in files)
     key=hashlib.sha256(json.dumps([rows,pron,IDENTITY],ensure_ascii=False).encode())
     for file in files:
         data=file.read_bytes() if source_revision is None else subprocess.check_output(

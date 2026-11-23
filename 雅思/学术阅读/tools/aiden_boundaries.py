@@ -13,7 +13,7 @@ import unicodedata
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT/'tools/tts'))
-from textnorm import normalize
+from textnorm import decade, normalize
 
 from aiden_profile import PAUSE_POLICY as POLICY
 RATE = 16000
@@ -34,10 +34,16 @@ class MasteredPhraseError(ValueError):
         super().__init__(f'Sentence {sentence}, phrase {phrase}, {start:.3f}–{end:.3f}s: {reason}')
 
 
+def spoken_centuries(text):
+    # Whisper can print the same century as 1400s or 1,400s.
+    return re.sub(r'\b1,?([1-9])00s\b', lambda m: decade(int('1' + m[1] + '00')), text, flags=re.I)
+
+
 def spoken_spelling(text):
     # These British and American forms have the same spoken word. Preserve
     # grammatical endings, including plural -s, and keep all printed text intact.
-    text = re.sub(r'\b(homogen|util|dramat|mechan|colon|emphas|critic|vulgar)is(e|es|ed|ing|er|ers|ation|ations)\b',
+    text = spoken_centuries(text)
+    text = re.sub(r'\b(homogen|util|dramat|mechan|colon|emphas|critic|vulgar|container)is(e|es|ed|ing|er|ers|ation|ations)\b',
                   r'\1iz\2', text, flags=re.I)
     text = re.sub(r'\banalys(e|ed|ing)\b', r'analyz\1', text, flags=re.I)
     text = re.sub(r'\bageing\b', 'aging', text, flags=re.I)
@@ -53,6 +59,7 @@ def words(text):
     text = spoken_spelling(text)
     text = re.sub(r'\blife[ -]+span(s?)\b', r'lifespan\1', text, flags=re.I)
     text = re.sub(r'\bnorth[ -]+east\b', 'northeast', text, flags=re.I)
+    text = re.sub(r'\binter[ -]+modal\b', 'intermodal', text, flags=re.I)
     # P IH CH B L EH N D in CMUdict. Keep this one word when checking both sides of a pause.
     text = re.sub(r'\bpitch[ -]+blend\b', 'pitchblende', text, flags=re.I)
     text = re.sub(r'\bhally\b','halley',text,flags=re.I)
@@ -141,10 +148,21 @@ def assess(audio, text, transcript=None):
                 'botanical_pronunciation':proof,
                 'checked_internal_gaps':[[round(a/RATE,3),round(b/RATE,3)] for a,b in pauses]}
     name_evidence = None
+    clock_evidence = None
+    inuit_evidence = None
     if 'ceylonese' in expected:
         from aiden_ceylonese import verify
         alternate = independent(audio)
         name_evidence = verify(audio, text, transcript, alternate)
+    elif 'fusee' in expected:
+        from aiden_fusee import verify
+        alternate = independent(audio)
+        clock_evidence = verify(audio, text, transcript, alternate)
+        alternate = clock_evidence['context_transcript']
+    elif 'qaujimajatuqangit' in expected:
+        from aiden_inuktitut import verify
+        alternate = independent(audio)
+        inuit_evidence = verify(audio,text,transcript,alternate)
     elif NOISE_INITIALS.search(text):
         alternate = independent(audio)
         if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
@@ -178,6 +196,10 @@ def assess(audio, text, transcript=None):
         result['second_heard']=alternate
     if name_evidence is not None:
         result['ceylonese_pronunciation']=name_evidence
+    if clock_evidence is not None:
+        result['fusee_pronunciation']=clock_evidence
+    if inuit_evidence is not None:
+        result['inuktitut_pronunciation']=inuit_evidence
     return result
 
 
