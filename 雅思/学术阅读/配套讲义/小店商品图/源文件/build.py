@@ -124,6 +124,10 @@ def main():
     parser.add_argument('--output', type=Path, default=HERE.parent)
     args = parser.parse_args()
     ledger = json.loads(args.ledger.read_text())
+    shop = json.loads((HERE.parent.parent / '按视频全名打包核验.json').read_text())
+    named_sample = shop['contents'][0]
+    if shop['source_zip_sha256'] != ledger['zip_sha256'] or named_sample['lesson'] != 'C21T1P1':
+        raise ValueError('Unexpected per-video delivery edition')
     if (ledger['passages'], ledger['questions'], ledger['files']) != (96,1280,288) or sha(args.archive) != ledger['zip_sha256']:
         raise ValueError('Unexpected student edition')
     args.output.mkdir(parents=True, exist_ok=True)
@@ -174,7 +178,7 @@ def main():
     with zipfile.ZipFile(args.output/ZIP) as packed:
         if packed.namelist()!=list(FILES) or packed.testzip() is not None:
             raise ValueError('Invalid image gallery ZIP')
-    (args.output / '核验.json').write_text(json.dumps(dict(source_sha256=ledger['zip_sha256'], displayed_passages=90, delivered_passages=ledger['passages'], folder_capture={'app':'Thunar', 'source':index['C21T1P1'], 'capture_sha256':sha(HERE/'folder-student.png')}, images=items, zip_sha256=sha(args.output/ZIP)),ensure_ascii=False,indent=2)+'\n')
+    (args.output / '核验.json').write_text(json.dumps(dict(source_sha256=ledger['zip_sha256'], displayed_passages=90, delivered_passages=ledger['passages'], folder_capture={'app':'Thunar', 'source':named_sample, 'shop_zip_sha256':shop['zip_sha256'], 'capture_sha256':sha(HERE/'folder-student.png')}, images=items, zip_sha256=sha(args.output/ZIP)),ensure_ascii=False,indent=2)+'\n')
 
 
 if __name__ == '__main__':
