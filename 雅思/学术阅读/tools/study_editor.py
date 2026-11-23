@@ -9,10 +9,16 @@ import time
 import unicodedata
 import urllib.request
 
+import illustrated_answers
+
 PROJECT = Path(__file__).resolve().parents[1]
 CJK = re.compile(r'[\u3400-\u9fff]')
 QUESTION_SYSTEM = """你是给中国考生写雅思学术阅读解析的编辑。每题有原书答案与题目，材料含本题的核定答案、定位原句和上下文。以原文事实为准，自己写两到三句简洁具体的中文推理，约70至130字。第一步指出题干究竟问的是哪件事；第二步把原文的具体事实或对应短语与题干比较，说明为什么应当作此判断。比如一项没查地点的购买记录不能证明是在法国画廊购买，不要只说“未提及”三个字。选择题点出一个实际出现的干扰项为何不合，双选分别解释两个正确选项。填空说明语法位置、同义改写或单复数中真正关键的一点。段落标题要概括段落，不以例子替代主旨。所引英文必须是题目或原文中真实出现的短片段。不要补写文中未给的事实，不要改变答案，不要重复大段原句。给出1到3个实际原文句号（材料索引），每个序号选准确。全文都可查。每次只解析当前这一个题目。保留题目给出的人名拼写，不能自拟译名。已知答案和定位均列在材料。证据不足以判断时，指出原文谈到了什么、缺少哪项信息。返回 reasoning（中文，可含对应英文词组），quote（从定位原句逐字复制一个连续的短语）。不要在讲解里另编句号。"""
 GRAMMAR_SYSTEM = """你是中国学生的雅思阅读与写作老师。每次给你一个完整的原文长句及其中译。为每个原句写一条细读讲解和一条写作迁移。heading 是本句具体结构，analysis 用中文清楚指出真实主句主语、完整谓语、主要从句或非谓语修饰谁，说明连接词或指代如何改变意思。pattern 是能复用的英文骨架。task 为一个具体的 IELTS Writing Task 1 或 Task 2 写作情境，如“Task 2 · 城市是否应增加低价出租房”。example 为针对该场景的一个原创、语法自然的英文句子，真正用到所讲结构。example_zh 译得准确流畅。usage 用中文说清这个写法在示例中表达什么、使用时一个具体限制。不可给未经提供的研究数字或杜撰的事实，不用空泛的万能句。subject 和 verb 从原句主句中逐字摘出主语核心及谓语核心，各取连续的英文词，不加省略号。所有场景和例句都针对这一个句子的结构。"""
+
+DETAILED_QUESTION_SYSTEM = """你为中国考生编写剑桥雅思学术阅读逐题解析。依据所给原书题干、正式答案和通篇原文，写一条学生可以复做的解题过程。各字段不要复述彼此。focus 指出本题问的对象、关系以及影响判断的限定词。locate 说明用哪个题干线索在文章何处找到对应内容。evidence 填实际支持讲解的原文句号（含给定证据）；quote 从其中一句逐字抄一个关键短语。logic 逐步连起题干说法、原文的同义改写或关键区别和答案；需要两个条件时分开论证，涉及数量、时间、否定或比较时交代其作用。check 按题型做最后核对：填空把原文词放回完整句，核对字数、词形和限制；判断说明是同义、矛盾还是原文未提供哪一项必要信息；段落标题区分主旨与局部细节；匹配题说明最容易混的段落、人物或结尾哪里对不上；选择题指出容易漏读的条件。单项和双项选择在 distractors 中逐个标出实际错误选项及可以核对的不符之处，双选同时解释两个入选项；其他题型只有确有印出的易混选项时才列。不要凭插图、常识或答案倒编原文，尤其不要把“没说”解释为“相反”。answer 复制正式答案。输出简洁、自然的中文，英文引语保持原意，篇幅由题目决定。"""
+
+
 def obj(fields):
  return {'type':'object','properties':fields,'required':list(fields),'additionalProperties':False}
 STR={'type':'string'}
@@ -36,6 +42,26 @@ def sentences_for(lesson):
 def normalized_quote(s):
     s=unicodedata.normalize('NFKC',s).casefold()
     return ' '.join(re.findall(r"[a-z0-9]+",s))
+
+
+def write_detailed_question(lesson, question):
+    source=sentences_for(lesson)
+    payload={'title':lesson['display_title'],'question':question,'passage':source}
+    number_list={'type':'array','items':{'type':'integer'}}
+    choices={'type':'array','items':obj({'option':STR,'why':STR})}
+    schema=obj({**{k:STR for k in ('focus','locate','quote','logic','check','answer')},
+                'evidence':number_list,'distractors':choices})
+    for attempt in range(3):
+        note=invoke(DETAILED_QUESTION_SYSTEM,payload,schema,max_tokens=1900,seed=721+attempt)
+        try:
+            illustrated_answers.check_reasoning(lesson,question,note)
+            return note
+        except (ValueError,KeyError,TypeError) as err:
+            if attempt==2:
+                raise ValueError(f"{lesson['lesson']} Q{question['numbers'][0]}: {err}") from err
+            payload['verification']=str(err)
+
+
 def write_question(lesson,q):
     sentences=sentences_for(lesson)
     anchors=q['evidence']
@@ -109,14 +135,28 @@ def generate(pid,folder):
  src=PROJECT/'配套讲义/题目与证据'/(pid+'.json');lesson=json.loads(src.read_text());folder.mkdir(parents=True,exist_ok=True);f=folder/(pid+'.json')
  key=hashlib.sha256(src.read_bytes()).hexdigest()
  draft=json.loads(f.read_text()) if f.is_file() else {}
- if draft.get('input_sha256')!=key or draft.get('version')!=2:
-  draft={'lesson':pid,'input_sha256':key,'version':2,'questions':{}}
+ detailed=illustrated_answers.applies(pid)
+ version=3 if detailed else 2
+ if draft.get('input_sha256')!=key or draft.get('version')!=version:
+  draft={'lesson':pid,'input_sha256':key,'version':version,'questions':{}}
  if 'grammar' in lesson:
   draft['grammar']=lesson['grammar']
  failed=[]
  for q in lesson['questions']:
   name=str(q['numbers'][0])
-  if 'logic' in q:
+  if detailed:
+   if name in draft['questions']:
+    try:
+     illustrated_answers.check_reasoning(lesson,q,draft['questions'][name])
+     continue
+    except (ValueError,KeyError,TypeError):
+     del draft['questions'][name]
+   try:
+    draft['questions'][name]=write_detailed_question(lesson,q)
+   except ValueError as exc:
+    print(exc,flush=True)
+    failed.append(name)
+  elif 'logic' in q:
    draft['questions'][name]={'logic':q['logic'],'evidence':q['evidence']}
   elif name not in draft['questions']:
    try:

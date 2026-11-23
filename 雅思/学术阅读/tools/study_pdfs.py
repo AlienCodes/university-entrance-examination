@@ -4,8 +4,10 @@ import hashlib
 import html
 import json
 from pathlib import Path
+import re
 
 from playwright.sync_api import sync_playwright
+import illustrated_answers
 
 PROJECT = Path(__file__).resolve().parents[1]
 KINDS = {
@@ -44,6 +46,16 @@ h1 { font-weight:750; font-size:24pt; line-height:1.28; margin:5px 0 7px; }
 .label { color:#245852; font-weight:700; }
 .meta { color:#4b6262; margin-top:4px; font-size:9pt; }
 .subject { font-weight:720; color:#234a4a; }
+.illustrated-cover { border-bottom:0; padding-bottom:0; margin-bottom:16px; break-inside:avoid; }
+.illustrated-cover h1 { font-size:21pt; margin:5px 0 10px; }
+.passage-art { display:block; width:100%; height:auto; }
+.answer-step { margin:4px 0; }
+.evidence strong { color:#104f49; }
+.conclusion { border-top:1px solid #ccd9d6; margin-top:7px; padding-top:5px; font-weight:700; color:#075d59; }
+.detailed .evidence { break-inside:avoid; }
+.detailed.card { break-inside:avoid; }
+.detailed .qh, .detailed .prompt { break-after:avoid; }
+.detailed .answer-step, .detailed li, .detailed .conclusion { break-inside:avoid; }
 .grammar { break-before: page; }
 .grammar.first { break-before:auto; }
 .grammar h2 { font-size:18pt; color:#183d43; margin:8px 0 10px; line-height:1.35; }
@@ -67,35 +79,65 @@ def heading(lesson,title,desc):
     coordinate,name=lesson['display_title'].split(' ',1)
     book,test,part=coordinate.split('-')
     return f'<header class="cover"><p class="scope">剑桥雅思 {book}　·　Academic Reading　·　Test {test}　·　Passage {part}</p><h1>{e(title)}</h1><p class="sub">{e(name)}</p><p class="summary">{e(desc)}</p></header>'
-def reading_doc(d,y):
-    blocks=[heading(d,'逐题解析','题号沿用原书。原文定位使用的句子编号与同篇精读视频、逐屏讲义左下角一致。')]
+def reading_doc(d,y,movie=None):
+    detailed=illustrated_answers.applies(d['lesson'])
+    if detailed:
+        path,_=illustrated_answers.artwork(d,movie or {})
+        coord,title=d['display_title'].split(' ',1)
+        book,test,part=coord.split('-')
+        blocks=[f'<header class="cover illustrated-cover"><p class="scope">剑桥雅思 {book}　·　Test {test}　·　Passage {part}　｜　逐题解析</p><h1>{e(title)}</h1>{illustrated_answers.image_tag(path)}</header>']
+    else:
+        blocks=[heading(d,'逐题解析','题号沿用原书。原文定位使用的句子编号与同篇精读视频、逐屏讲义左下角一致。')]
     used=set()
     for idx,q in enumerate(d['questions']):
         qn=q['numbers'][0]
         assert not used.intersection(q['numbers'])
         used.update(q['numbers'])
         detail=y['questions'][str(qn)]
+        if detailed:
+            illustrated_answers.check_reasoning(d,q,detail)
         evidence=detail['evidence']
         if not evidence:raise ValueError((d['lesson'],qn,'no evidence'))
         refs=[]
         for i in evidence:
             s=d['sentences'][i-1]
-            refs.append(f'<div class="place">{e(source_ref(s,i))}</div><p class="en">{e(s["en"])}</p><p class="zh">{e(s["zh"])}</p>')
+            place=source_ref(s,i)
+            if detailed and not s['tag']:
+                place=f'第 {s["p"]} 段 · {place}'
+            original=s['en']
+            printed=e(original)
+            if detailed:
+                match=re.search(re.escape(detail['quote']),original,re.IGNORECASE)
+                if match:
+                    printed=e(original[:match.start()])+'<strong>'+e(match[0])+'</strong>'+e(original[match.end():])
+            refs.append(f'<div class="place">{e(place)}</div><p class="en">{printed}</p><p class="zh">{e(s["zh"])}</p>')
         meta=[]
         if q.get('word_limit'):meta.append(e(q['word_limit']))
         if q.get('marking'):meta.append(e(q['marking']))
         if q.get('accepted_variants'):meta.append('另可写 '+e(q['accepted_variants']))
         if len(q['numbers'])==2:meta.append('两个答案顺序不限，每个答案占一格')
         target=q.get('chosen_text','')
-        if target:
+        if target and not detailed:
             meta.append('对应选项　'+e(target))
-        parts=[f'<section class="card{" first" if idx==0 else ""}"><div class="qh"><span class="num">第 {rng(q)} 题</span><span class="kind">{e(KINDS[q["kind"]])}</span><span class="answer">答案　{e(q["answer"])}</span></div>',
+        answer='' if detailed else f'<span class="answer">答案　{e(q["answer"])}</span>'
+        parts=[f'<section class="card{" first" if idx==0 else ""}{" detailed" if detailed else ""}"><div class="qh"><span class="num">第 {rng(q)} 题</span><span class="kind">{e(KINDS[q["kind"]])}</span>{answer}</div>',
                f'<p class="prompt" lang="en">{e(q["question"])}</p>']
         if q.get('options'):
             choices=''.join(f'<li><b>{e(k)}.</b>{e(v)}</li>' for k,v in q['options'].items())
             parts.append(f'<ul class="options" lang="en">{choices}</ul>')
         if meta:parts.append('<p class="meta">'+'　·　'.join(meta)+'</p>')
-        parts.extend(['<div class="evidence">',''.join(refs),'</div>',f'<p class="logic"><span class="label">推理　</span>{e(detail["logic"])}</p></section>'])
+        if detailed:
+            def step(label, text):
+                return f'<p class="answer-step"><span class="label">{label}　</span>{e(text)}</p>'
+            parts.extend([step('读题',detail['focus']),step('定位',detail['locate']),
+                          '<div class="evidence">'+''.join(refs)+'</div>',step('推导',detail['logic']),
+                          step('复核',detail['check'])])
+            for choice in detail['distractors']:
+                parts.append(step('排除 '+e(choice['option']),choice['why']))
+            conclusion=e(q['answer'])+(f'　{e(target)}' if target else '')
+            parts.append(f'<p class="conclusion">答案　{conclusion}</p></section>')
+        else:
+            parts.extend(['<div class="evidence">',''.join(refs),'</div>',f'<p class="logic"><span class="label">推理　</span>{e(detail["logic"])}</p></section>'])
         blocks.extend(parts)
     return doc(d['display_title']+' · 逐题解析',''.join(blocks))
 def grammar_doc(d,y):
@@ -112,7 +154,7 @@ def grammar_doc(d,y):
             blocks.append(f'<h3>{name}</h3><p class="{"pattern" if k=="pattern" else "logic"}">{e(r[k])}</p>')
         blocks.append(f'<div class="reading"><p class="en">{e(r["example"])}</p><p class="zh">{e(r["example_zh"])}</p></div><h3>运用提示</h3><p>{e(r["usage"])}</p></section>')
     return doc(d['display_title']+' · 长难句与写作句式',''.join(blocks))
-def render(browser,pid,editor,out):
+def render(browser,pid,editor,out,movie=None):
     src=PROJECT/'配套讲义/题目与证据'/(pid+'.json')
     d=json.loads(src.read_text()); y=json.loads((editor/(pid+'.json')).read_text())
     assert y['lesson']==pid and y['input_sha256']==hashlib.sha256(src.read_bytes()).hexdigest()
@@ -120,17 +162,22 @@ def render(browser,pid,editor,out):
     folder=out/d['display_title']; folder.mkdir(parents=True,exist_ok=True)
     page=browser.new_page()
     try:
-        for name,body in [('逐题解析',reading_doc(d,y)),('长难句与写作句式',grammar_doc(d,y))]:
+        for name,body in [('逐题解析',reading_doc(d,y,movie)),('长难句与写作句式',grammar_doc(d,y))]:
             page.set_content(body,wait_until='load')
             page.evaluate('document.fonts.ready')
             footer=f'<div style="font:8px sans-serif;width:100%;padding:0 64px;color:#58696b;display:flex;justify-content:space-between"><span>{e(d["display_title"])} · {name}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>'
             target=folder/(name+'.pdf')
             page.pdf(path=str(target),format='A4',prefer_css_page_size=True,print_background=True,display_header_footer=True,header_template='<span></span>',footer_template=footer)
+            if name=='逐题解析' and illustrated_answers.applies(pid):
+                illustrated_answers.check_first_page(target,d,movie)
     finally:page.close()
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('editor',type=Path);a.add_argument('out',type=Path);a.add_argument('ids',nargs='+')
+    a.add_argument('--movie-receipts',type=Path,help='directory of verified PID-illustrated.json files for volumes 13–6')
     args=a.parse_args()
     with sync_playwright() as p:
         b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--disable-dev-shm-usage'])
-        for pid in args.ids:render(b,pid,args.editor,args.out)
+        for pid in args.ids:
+            movie=json.loads((args.movie_receipts/(pid+'-illustrated.json')).read_text()) if args.movie_receipts else None
+            render(b,pid,args.editor,args.out,movie)
         b.close()

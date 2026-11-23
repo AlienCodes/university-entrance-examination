@@ -9,6 +9,7 @@ from difflib import SequenceMatcher
 
 from study_editor import normalized_quote
 from study_pdfs import PROJECT
+import illustrated_answers
 
 
 def result_codes(logic):
@@ -46,6 +47,9 @@ def audit(folder, ids):
         for q in d['questions']:
             n = q['numbers'][0]
             r = y['questions'][str(n)]
+            detailed = illustrated_answers.applies(pid)
+            if detailed:
+                illustrated_answers.check_reasoning(d, q, r)
             if 'Completion' in q['kind'] and '____' not in q['question']:
                 raise ValueError(f'{pid} Q{n}: completion prompt has no visible gap')
             bank = q.get('word_bank', {})
@@ -57,7 +61,7 @@ def audit(folder, ids):
                 raise ValueError(f'{pid} Q{n}: evidence outside passage')
             if not set(q['evidence']) <= set(r['evidence']):
                 raise ValueError(f'{pid} Q{n}: an approved source reference was lost')
-            if 'logic' in q:
+            if 'logic' in q and not detailed:
                 if r['logic'] != q['logic']:
                     raise ValueError(f'{pid} Q{n}: reviewed explanation changed')
             else:

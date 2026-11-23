@@ -111,7 +111,8 @@ def ingest(out):
             if AIDEN=='13-6':
                 row=rows[-1]
                 proof_asset=masters[pid+'-illustrated.json']
-                painted=read(fetch(proof_asset,tmp))
+                proof_path=fetch(proof_asset,tmp)
+                painted=read(proof_path)
                 hosted=art.checked(pid,receipt_data,painted,masters)
                 row.update(core_sha256=row['sha256'],core_bytes=row['bytes'],core_screens=row['screens'],
                            sha256=painted['video_sha256'],bytes=painted['video_bytes'],screens=len(painted['screens']),
@@ -120,7 +121,7 @@ def ingest(out):
                            illustrated_receipt_sha256=proof_asset['digest'][7:])
                 destination=REPORTS/'篇目'/pid
                 destination.mkdir(parents=True,exist_ok=True)
-                save(destination/'插图成片核验.json',painted)
+                shutil.copyfile(proof_path,destination/'插图成片核验.json')
     if [r['lesson'] for r in rows]!=IDS or len(set(unicodedata.normalize('NFC',r['filename']).casefold() for r in rows))!=len(IDS):raise ValueError('Invalid book order or duplicate names')
     if not AIDEN:
         for book in VOLUMES:update_book_index(book)
