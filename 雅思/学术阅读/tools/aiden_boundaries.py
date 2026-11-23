@@ -43,6 +43,8 @@ def words(text):
     text = re.sub(r'\bemphasis(e|es|ed|ing)\b', r'emphasiz\1', text, flags=re.I)
     text = re.sub(r'\bcriticis(e|es|ed|ing)\b', r'criticiz\1', text, flags=re.I)
     text = re.sub(r'\bvulgarisation(s?)\b', r'vulgarization\1', text, flags=re.I)
+    # P IH CH B L EH N D in CMUdict. Keep this one word when checking both sides of a pause.
+    text = re.sub(r'\bpitch[ -]+blend\b', 'pitchblende', text, flags=re.I)
     text = re.sub(r'\bcounsell(?=ing\b|ed\b|ors?\b)', 'counsel', text, flags=re.I)
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
