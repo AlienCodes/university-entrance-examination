@@ -1,5 +1,6 @@
 """Load an edited IELTS lesson. Each gloss is tied to a unique source span."""
 import json
+import math
 import os
 import re
 from pathlib import Path
@@ -11,6 +12,13 @@ if not re.fullmatch(r'C(?:[1-9]|1[0-9]|2[01])T[1-4]P[1-3]',PID):
     raise ValueError(f'Invalid IELTS passage ID: {PID}')
 LESSON = PROJECT / '篇目' / PID
 TEXT = LESSON / '双语精读.tsv'
+
+
+def presentation_frames(timing):
+    end = timing['sentences'][-1]['end']
+    if timing.get('narrator', {}).get('speaker') == 'Aiden':
+        return math.ceil((end + 2) * 30)
+    return math.ceil(end + 4) * 30
 
 def save(path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)

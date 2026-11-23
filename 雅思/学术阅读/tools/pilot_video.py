@@ -13,7 +13,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-from lesson import LESSON, PID, PROJECT, ROOT, TEXT, load, save
+from lesson import LESSON, PID, PROJECT, ROOT, TEXT, load, presentation_frames, save
 sys.path.insert(0, str(ROOT / '六级/tools'))
 sys.path.append(str(ROOT / 'tools/tts'))
 import make_video as engine
@@ -488,10 +488,9 @@ def encode():
     if reviewed:
         raise ValueError('成片漏掉了已审校的分屏')
     save(engine.SAMPLE_REG,{PID+'@3':{'指纹':review_data['fingerprint'],'截图':{s['file']:s['sha256'][:16] for s in review_data['screens']}}})
-    # The certified MP3 retains its own duration. Give the renderer a separate
-    # presentation timeline with a whole-second endpoint and a four-second hold.
-    total = math.ceil(timings['sentences'][-1]['end'] + 4)
-    presentation = {**timings,'source_duration':timings['duration'],'duration':total}
+    # Keep the certified MP3 timing intact. Snap the closing hold to the video clock.
+    total = presentation_frames(timings) / 30
+    presentation = {**timings,'source_duration':timings['duration'],'duration':math.nextafter(total,0)}
     # The two native timing checks request many of the same frames. Both inspect the
     # same immutable MP4. Decode each distinct millisecond once, using the CET reader.
     sys.path.insert(0, str(ROOT / 'tools' / 'video'))

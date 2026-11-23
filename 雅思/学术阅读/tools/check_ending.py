@@ -2,7 +2,6 @@
 import argparse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
-import math
 from pathlib import Path
 import re
 import shutil
@@ -11,7 +10,7 @@ import subprocess
 import threading
 
 from playwright.sync_api import sync_playwright
-from lesson import PID, PROJECT, save
+from lesson import PID, PROJECT, presentation_frames, save
 
 
 def atoms(path):
@@ -120,7 +119,8 @@ def inspect(video,timing):
                        '-of','json',str(video)]))
     v=next(s for s in p['streams'] if s['codec_type']=='video')
     a=next(s for s in p['streams'] if s['codec_type']=='audio')
-    end=math.ceil(timing['sentences'][-1]['end']+4)
+    frame_count=presentation_frames(timing)
+    end=frame_count/30
     durations=[float(p['format']['duration']),float(v['duration']),float(a['duration'])]
     if (v['codec_name'],v['pix_fmt'],v['r_frame_rate'],a['codec_name'],a['profile'])!=('h264','yuv420p','30/1','aac','LC') or max(abs(x-end) for x in durations)>.002:
         raise ValueError(f'Media clocks/codecs differ: {durations}, {v}, {a}')
@@ -131,14 +131,14 @@ def inspect(video,timing):
         if any(b<=a for a,b in zip(dts,dts[1:])):raise ValueError('Non-monotone decoding timestamps')
         ends.append(max(float(p['pts_time'])+float(p['duration_time']) for p in stream))
     if max(abs(x-end) for x in ends)>.002:raise ValueError(f'Packets end early: {ends}')
-    pts=sorted(float(p['pts_time']) for p in streams[0]); frame_count=30*end
+    pts=sorted(float(p['pts_time']) for p in streams[0])
     if len(pts)!=frame_count or any(abs(x-i/30)>.001 for i,x in enumerate(pts)):raise ValueError('Missing presentation frames')
     atimes=[float(p['pts_time']) for p in streams[1]]
     if max(b-a for a,b in zip(atimes,atimes[1:]))>.03:raise ValueError('Audio packets contain a gap')
     keys=[float(p['pts_time']) for p in streams[0] if 'K' in p['flags']]
     if not all(any(abs(key-t)<.033 for key in keys) for t in (end-4,end-2)):raise ValueError('Missing tail keyframes')
     frame_size=64*36
-    tail=read(['ffmpeg','-v','error','-xerror','-err_detect','explode','-ss',str(end-3),'-i',str(video),'-map','0:v:0','-an',
+    tail=read(['ffmpeg','-v','error','-xerror','-err_detect','explode','-ss',str(end-3-.0005),'-i',str(video),'-map','0:v:0','-an',
                '-vf','scale=64:36,format=gray','-fps_mode','passthrough','-f','rawvideo','-'])
     if len(tail)!=90*frame_size:raise ValueError(f'Decoded {len(tail)/frame_size} of final 90 frames')
     subprocess.run(['ffmpeg','-v','error','-xerror','-err_detect','explode','-ss',str(end-5),'-i',str(video),'-map','0:a:0','-f','null','-'],check=True)

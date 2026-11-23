@@ -20,6 +20,7 @@ jobs:
       batch: ${{ steps.queue.outputs.batch }}
       pilot: ${{ steps.queue.outputs.pilot }}
       remaining: ${{ steps.queue.outputs.remaining }}
+      pilot_only: ${{ steps.queue.outputs.pilot_only }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +31,7 @@ jobs:
       - id: queue
         run: |
           batch=$(jq -er .batch .github/ielts-aiden-batch.json)
+          echo "pilot_only=$(jq -r '.pilot_only // false' .github/ielts-aiden-batch.json)" >> "$GITHUB_OUTPUT"
           python '雅思/学术阅读/tools/aiden_batch.py' plan "$batch"
   pilot:
     needs: plan
@@ -37,9 +39,26 @@ jobs:
     with:
       lesson: ${{ needs.plan.outputs.pilot }}
       aiden_batch: ${{ needs.plan.outputs.batch }}
+  preview:
+    needs: [plan, pilot]
+    if: needs.plan.outputs.pilot_only == 'true'
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      IELTS_NARRATOR: Aiden
+      IELTS_LESSON: ${{ needs.plan.outputs.pilot }}
+      IELTS_AIDEN_BATCH: ${{ needs.plan.outputs.batch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - name: 发布单个 MP4 并从公开链接回下载整片
+        run: python '雅思/学术阅读/tools/aiden_preview.py' "$RUNNER_TEMP/preview"
   production:
     needs: [plan,pilot]
-    if: needs.plan.outputs.remaining != '[]'
+    if: needs.plan.outputs.pilot_only != 'true' && needs.plan.outputs.remaining != '[]'
     strategy:
       fail-fast: false
       max-parallel: 20

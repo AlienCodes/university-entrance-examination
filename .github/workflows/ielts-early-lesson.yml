@@ -77,6 +77,24 @@ jobs:
           fi
       - if: steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching != 'true'
         uses: ./.github/actions/ielts-local-editor
+      - name: 恢复试听版的固定 Aiden 模型
+        if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true'
+        id: model_cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/ielts-aiden-model
+          key: ielts-aiden-audition-${{ hashFiles('雅思/学术阅读/tools/aiden-model-lock.json') }}
+      - name: 按原版清单校验 Aiden 模型和语音分词器
+        if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true'
+        run: |
+          python "$TARGET/tools/aiden_model.py" "$RUNNER_TEMP/ielts-aiden-model"
+          echo "IELTS_AIDEN_MODEL_PATH=$RUNNER_TEMP/ielts-aiden-model" >> "$GITHUB_ENV"
+      - name: 保存通过原版校验的模型供下次使用
+        if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true' && steps.model_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/ielts-aiden-model
+          key: ${{ steps.model_cache.outputs.cache-primary-key }}
       - if: steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching != 'true'
         uses: ./.github/actions/ielts-translation
       - name: 逐句翻译、筛选适合背记的词与搭配，再对照原书校订
@@ -93,3 +111,13 @@ jobs:
         run: |
           python "$TARGET/tools/early_editor.py" checkpoint
           python "$TARGET/tools/early_plan.py" diagnosis
+      - name: 保存样片的逐句录音与原始检查记录
+        if: failure() && inputs.aiden_batch != '' && env.IELTS_WORK != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiden-${{ inputs.lesson }}-checks-${{ github.run_attempt }}
+          path: |
+            ${{ env.IELTS_WORK }}/native-*.log
+            ${{ env.IELTS_WORK }}/aiden-takes
+          retention-days: 14
+          if-no-files-found: ignore

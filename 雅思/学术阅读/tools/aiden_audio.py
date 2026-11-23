@@ -11,7 +11,7 @@ import numpy as np
 import soundfile as sf
 import soxr
 
-from aiden_profile import DIRECTION, IDENTITY, MODEL, PROFILE, REVISION, SPEAKER
+from aiden_profile import DIRECTION, IDENTITY, SPEAKER
 import make_audio as cet
 import 听对
 
@@ -90,11 +90,11 @@ class Aiden:
     def render(self,script,seed,pron):
         import torch
         if self.model is None:
-            from huggingface_hub import snapshot_download
+            from aiden_model import restore
             from qwen_tts import Qwen3TTSModel
             torch.set_num_threads(min(4,len(os.sched_getaffinity(0))))
-            folder=snapshot_download(MODEL,revision=REVISION)
-            self.model=Qwen3TTSModel.from_pretrained(folder,dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
+            folder=restore(Path(os.environ['IELTS_AIDEN_MODEL_PATH']),verify_only=True)
+            self.model=Qwen3TTSModel.from_pretrained(str(folder),dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
         instruction=DIRECTION
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items() if re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
@@ -124,7 +124,7 @@ class Aiden:
                 sf.write(file,wav,24000,subtype='PCM_24')
                 data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,sha256=hashlib.sha256(file.read_bytes()).hexdigest())
                 report.write_text(json.dumps(data,ensure_ascii=False))
-                return wav,data
+                return sf.read(file,dtype='float32')[0],data
         raise ValueError(f'{key} Aiden transcript needs review: {script!r} / {transcript!r}')
 
     def sentence(self,read,key,engine,pron,style,speed,settings):
