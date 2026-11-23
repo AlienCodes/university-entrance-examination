@@ -77,29 +77,8 @@ runs:
         KEEP_FAILED: 1
       shell: bash
       run: |
-        if [[ -n "${IELTS_WORK:-}" ]]; then exec > >(tee "$IELTS_WORK/native-video.log") 2>&1; fi
-        set -euo pipefail
-        /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" align
-        export IELTS_SYSTEM_FFMPEG="$(command -v ffmpeg)"
-        export PATH="$PWD/$TARGET/tools/静帧编码:$PATH"
-        /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" video
-        mkdir -p "$RUNNER_TEMP/out"
-        files=("$TARGET"/最终视频/*.mp4)
-        test "${#files[@]}" -eq 1
-        /opt/ttsenv/bin/python "$TARGET/tools/check_ending.py" "${files[0]}" "$RUNNER_TEMP/out/ending.json"
+        bash .github/actions/ielts-verified-master/encode.sh
     - name: 逐屏导出20 MB以内讲义并回下载复核
       shell: bash
       run: |
-        if [[ -n "${IELTS_WORK:-}" ]]; then exec > >(tee "$IELTS_WORK/native-package.log") 2>&1; fi
-        set -euo pipefail
-        /opt/ttsenv/bin/python -m pip install -q img2pdf==0.6.3 PyMuPDF==1.26.6
-        out="$RUNNER_TEMP/out"
-        files=("$TARGET"/最终视频/*.mp4)
-        /opt/ttsenv/bin/python "$TARGET/tools/reading_notes.py" "${files[0]}" "$out/Reading-notes.pdf" "$out/pdf-proof.json"
-        /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" package --out "$out"
-        key=$(jq -r .material_sha256 "$out/$IELTS_LESSON-receipt.json")
-        version="$IELTS_LESSON-${key:0:16}.zip"
-        mv "$out/$IELTS_LESSON.zip" "$out/$version"
-        gh release upload "$STAGING" "$out/$version" "$out/$IELTS_LESSON-receipt.json" --clobber
-        python "$TARGET/tools/release_assets.py" "$STAGING" "$version" "$RUNNER_TEMP/check"
-        cmp "$out/$version" "$RUNNER_TEMP/check/$version"
+        bash .github/actions/ielts-verified-master/publish.sh

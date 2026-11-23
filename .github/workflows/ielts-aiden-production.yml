@@ -21,6 +21,7 @@ jobs:
       pilot: ${{ steps.queue.outputs.pilot }}
       remaining: ${{ steps.queue.outputs.remaining }}
       pilot_only: ${{ steps.queue.outputs.pilot_only }}
+      certified_audio: ${{ steps.queue.outputs.certified_audio }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,6 +33,7 @@ jobs:
         run: |
           batch=$(jq -er .batch .github/ielts-aiden-batch.json)
           echo "pilot_only=$(jq -r '.pilot_only // false' .github/ielts-aiden-batch.json)" >> "$GITHUB_OUTPUT"
+          echo "certified_audio=$(jq -r '.certified_audio // false' .github/ielts-aiden-batch.json)" >> "$GITHUB_OUTPUT"
           python '雅思/学术阅读/tools/aiden_batch.py' plan "$batch"
   pilot:
     needs: plan
@@ -39,6 +41,7 @@ jobs:
     with:
       lesson: ${{ needs.plan.outputs.pilot }}
       aiden_batch: ${{ needs.plan.outputs.batch }}
+      verified_audio_only: ${{ needs.plan.outputs.certified_audio == 'true' }}
   preview:
     needs: [plan, pilot]
     if: needs.plan.outputs.pilot_only == 'true'

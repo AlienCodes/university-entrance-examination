@@ -8,6 +8,9 @@ on:
       aiden_batch:
         type: string
         default: ''
+      verified_audio_only:
+        type: boolean
+        default: false
       current_tools:
         type: boolean
         default: false
@@ -78,19 +81,19 @@ jobs:
       - if: steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching != 'true'
         uses: ./.github/actions/ielts-local-editor
       - name: 恢复试听版的固定 Aiden 模型
-        if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true'
         id: model_cache
         uses: actions/cache/restore@v4
         with:
           path: ${{ runner.temp }}/ielts-aiden-model
           key: ielts-aiden-audition-${{ hashFiles('雅思/学术阅读/tools/aiden-model-lock.json') }}
       - name: 按原版清单校验 Aiden 模型和语音分词器
-        if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true'
         run: |
           python "$TARGET/tools/aiden_model.py" "$RUNNER_TEMP/ielts-aiden-model"
           echo "IELTS_AIDEN_MODEL_PATH=$RUNNER_TEMP/ielts-aiden-model" >> "$GITHUB_ENV"
       - name: 保存通过原版校验的模型供下次使用
-        if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true' && steps.model_cache.outputs.cache-hit != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.model_cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: ${{ runner.temp }}/ielts-aiden-model
@@ -102,10 +105,39 @@ jobs:
         run: |
           set -euo pipefail
           bash .github/run-ielts-editors.sh python -u "$TARGET/tools/early_editor.py" edit 2>&1 | tee "$IELTS_WORK/editor.log"
-      - if: steps.cache.outputs.done != 'true'
+      - if: steps.cache.outputs.done != 'true' && !inputs.verified_audio_only
         uses: ./.github/actions/ielts-verified-master
         with:
           early_review: ${{ steps.cache.outputs.early }}
+      - name: 恢复整篇认证录音并对音色与 SHA-256
+        if: inputs.verified_audio_only && steps.cache.outputs.done != 'true'
+        run: |
+          set -euo pipefail
+          test "$IELTS_NARRATOR" = Aiden
+          asset=$(python "$TARGET/tools/aiden_profile.py" asset "$IELTS_LESSON")
+          python "$TARGET/tools/release_assets.py" "$STAGING" "$asset" "$RUNNER_TEMP"
+          python -m zipfile -e "$RUNNER_TEMP/$asset" "$TARGET"
+          python .github/check-audio-cert.py "$TARGET/audio"
+          python "$TARGET/tools/aiden_profile.py" verify "$IELTS_LESSON"
+      - name: 恢复黑板画面、浏览器和听对环境
+        if: inputs.verified_audio_only && steps.cache.outputs.done != 'true'
+        uses: ./.github/actions/cet6-chalk-env
+        with:
+          browser: '141'
+          asr: 'true'
+      - name: 生成并复核每一屏的版式与词汇标注
+        if: inputs.verified_audio_only && steps.cache.outputs.done != 'true'
+        run: |
+          /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" stills
+          /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" lock
+      - name: 按真实录音对齐分屏、编码4K整片并实播片尾
+        if: inputs.verified_audio_only && steps.cache.outputs.done != 'true'
+        env:
+          KEEP_FAILED: 1
+        run: bash .github/actions/ielts-verified-master/encode.sh
+      - name: 对照画面、认证母版并回下载
+        if: inputs.verified_audio_only && steps.cache.outputs.done != 'true'
+        run: bash .github/actions/ielts-verified-master/publish.sh
       - name: 存档已完成的逐句工作和待修处
         if: failure() && env.IELTS_WORK != '' && steps.cache.outputs.early == 'true'
         run: |
