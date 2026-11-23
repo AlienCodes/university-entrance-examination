@@ -1,0 +1,26 @@
+name: 补做已定位问题的雅思单篇
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-early-repair.json']
+permissions:
+  contents: write
+jobs:
+  select:
+    runs-on: ubuntu-24.04
+    outputs:
+      lesson: ${{ steps.read.outputs.lesson }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: .github
+      - id: read
+        run: |
+          lesson=$(jq -er '.lesson | select(test("^C([1-9]|10)T[1-4]P[1-3]$"))' .github/ielts-early-repair.json)
+          echo "lesson=$lesson" >> "$GITHUB_OUTPUT"
+  repair:
+    needs: select
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ needs.select.outputs.lesson }}

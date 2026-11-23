@@ -191,10 +191,23 @@ def word_sentence_slide(p,sentence,k,n,part=None):
            'w':[{**word,'h':word_quotes(word['h'])} for word in sentence['w']]}
     return batch_sentence_slide(p,shown,k,n,part)
 
+def early_sentence_slide(p,sentence,k,n,part=None):
+    html=batch_sentence_slide(p,sentence,k,n,part)
+    # Early printings use a spaced hyphen for a parenthesis or an appositive.
+    # Keep the printed punctuation, its highlight and its continuation together.
+    match=re.search(r'<div class="en">(.*?)</div>',html,re.S)
+    body=match[1]
+    before_cont=r'(<span class="w">(?:(?!</span>).)*</span>|[\w’]+)([ \u00a0]+[-–—])(<span class="cont">\u00a0…</span>)'
+    body=re.sub(before_cont,r'<nobr>\1\2\3</nobr>',body)
+    body=re.sub(r'(?<![>\w])([A-Za-z0-9’]{1,16} - [A-Za-z0-9’]{1,16})(?![\w<])',r'<nobr>\1</nobr>',body)
+    return html[:match.start(1)]+body+html[match.end(1):]
+
 
 engine.sentence_slide = ielts_sentence_slide if PID=='C20T1P1' else batch_sentence_slide
 if PID.startswith('C21T'):
     engine.sentence_slide = word_sentence_slide
+elif int(PID[1:PID.index('T')])<=10:
+    engine.sentence_slide = early_sentence_slide
 
 def speech_tokens(text):
     from textnorm import ordinal
@@ -278,6 +291,8 @@ def prepare():
             if p['reading_header']:
                 p['reading_header']={**p['reading_header'],'english':word_quotes(p['reading_header']['english'])}
             display_code+=inspect.getsource(word_quotes)+inspect.getsource(word_sentence_slide)
+        elif int(meta['book'])<=10:
+            display_code+=inspect.getsource(early_sentence_slide)
         display_code += inspect.getsource(batch_sentence_slide) + inspect.getsource(ielts_zh_html) + json.dumps(meta.get('zh_names',[]),ensure_ascii=False)
     p['ielts_display_sha256'] = hashlib.sha256(display_code.encode()).hexdigest()
     save(PROJECT / 'data/vocab.json', {'passages':[p]})

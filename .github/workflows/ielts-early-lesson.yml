@@ -9,6 +9,9 @@ permissions:
   contents: write
 jobs:
   master:
+    concurrency:
+      group: ielts-early-lesson-${{ inputs.lesson }}
+      cancel-in-progress: false
     runs-on: ubuntu-24.04
     timeout-minutes: 355
     env:
