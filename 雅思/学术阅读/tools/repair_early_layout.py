@@ -8,7 +8,7 @@ from early_editor import FILES, digest, read, store_candidate
 from lesson import LESSON, PID, PROJECT, load, save
 
 CLAUSES=re.compile(r'[,;:—–]\s+|\s+(?=(?:and|or|but|whereas|although|because|while|which|who|whose|when|so that|in order to|rather than|if|even though|as a result|including|with|without)\b)',re.I)
-VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|跨行|拆到两行|断行')
+VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|跨行|拆到两行|断行|连字符|续接号|行首缩进')
 def movable(row):
     en=row['en']
     span=[(a,b) for w in row['w'] for a,b in w['sp']]

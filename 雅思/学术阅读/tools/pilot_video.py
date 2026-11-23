@@ -200,6 +200,9 @@ def early_sentence_slide(p,sentence,k,n,part=None):
     before_cont=r'(<span class="w">(?:(?!</span>).)*</span>|[\w’]+)([ \u00a0]+[-–—])(<span class="cont">\u00a0…</span>)'
     body=re.sub(before_cont,r'<nobr>\1\2\3</nobr>',body)
     body=re.sub(r'(?<![>\w])([A-Za-z0-9’]{1,16} - [A-Za-z0-9’]{1,16})(?![\w<])',r'<nobr>\1</nobr>',body)
+    # A highlighted preceding word ends in HTML rather than a letter.
+    body=re.sub(r'(?<=>) ([-–—] (?:<span class="w">(?:(?!</span>).)*</span>|[A-Za-z0-9’]+))',
+                r' <nobr>\1</nobr>',body)
     return html[:match.start(1)]+body+html[match.end(1):]
 
 

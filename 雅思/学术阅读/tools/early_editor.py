@@ -38,6 +38,21 @@ EDITOR = ('你是雅思学术阅读教材责任编辑。source中的每个英文
  '保留与本文相符的专名、引用和年份。为每个实际词条给语境中的中文义，尽量2至8个汉字，写出最贴切的一义。'
  '只给教材正文和词条。')
 CJK_POS = re.compile(r'^(?:名词|动词|形容词|副词|短语|n\.|v\.|adj\.|adv\.|phr\.)[：: ]*')
+POS_NAMES=('n.','v.','adj.','adv.','prep.','conj.','phr.','pron.','det.','num.','aux.','abbr.','interj.')
+DICTIONARY_POS={'n':'n.','v':'v.','vt':'v.','vi':'v.','a':'adj.','adj':'adj.','ad':'adv.','adv':'adv.',
+                'prep':'prep.','conj':'conj.','pron':'pron.','det':'det.','num':'num.','aux':'aux.','interj':'interj.'}
+
+def possible_pos(term):
+    form=term['form'].casefold()
+    if ' ' in form:return list(POS_NAMES)
+    senses={DICTIONARY_POS[m.group()] for m in re.finditer(r'(?<![a-z])(?:interj|prep|conj|pron|det|num|aux|adj|adv|vt|vi|ad|[nva])(?=\.)',term.get('dictionary','').lower())}
+    if form != term['head'].casefold() and (form.endswith('ing') or form.endswith('ed') or form.endswith('en')):
+        senses.update(('n.','v.','adj.'))
+    if not senses:senses=set(POS_NAMES)
+    if form not in {'am','is','are','was','were','be','been','being','do','does','did','have','has','had','can','could','may','might','must','ought','should','would','will','shall','need','dare','used'}:
+        senses.discard('aux.')
+    return [pos for pos in POS_NAMES if pos in senses] or list(POS_NAMES)
+
 def digest(file):
     return hashlib.sha256(file.read_bytes()).hexdigest()
 
@@ -245,7 +260,6 @@ def recover_translation(en,previous,data):
 
 def recover_glosses(en,zh,terms,notes):
     checked={n['english'].casefold():n for n in notes if n.get('meaning')}
-    pos={'type':'string','enum':['n.','v.','adj.','adv.','prep.','conj.','phr.','pron.','det.','num.','aux.','abbr.','interj.']}
     result={}
     for t in terms:
         note=checked.get(t['form'].casefold())
@@ -254,7 +268,7 @@ def recover_glosses(en,zh,terms,notes):
     for width in (5,1,1):
         for i in range(0,len(pending),width):
             batch=pending[i:i+width]
-            schema=record(**{t['form']:record(pos=pos,meaning=STRING) for t in batch})
+            schema=record(**{t['form']:record(pos={'type':'string','enum':possible_pos(t)},meaning=STRING) for t in batch})
             prompt={'English':en,'checked_Chinese':zh,'words':{t['form']:t['head'] for t in batch}}
             try:
                 ans=finite_response('核对每个指定英文词在本句的词性和意思。只给能独立记忆的当句义，通常2至8个汉字，勿抄整句。',
@@ -299,6 +313,8 @@ SCOPE_CUES=(
     (r'\bat most\b',r'至多|最多|不超过|不高于|不多于|以内|不过|顶多|仅|上限|充其量','最高限或至多'),
     (r'\bno longer\b',r'不再|再也不|已不|已经不|不复|再无|已无|已没有|已失去|失去|停止|结束|消失|取消|绝迹|已非|(?:不必|无需|不能|无法|不用|无力)再|已.{0,12}不(?:见|到|了|能|得|行|及)','不再'),
     (r'\bnot until\b',r'才|直到|直至|之前|以前|在此之前','直到……才'),
+    (r'\b(?:appear(?:s|ed)?|seem(?:s|ed)?)\s+to\s+(?:be|have|do|make|work|show|play|prefer|favou?r|suggest|indicate|lead|support|follow|hold|exist|result|contradict|reflect|lack|depend|require|produce|occur|differ|take|represent|agree|contain|confirm|fit|cause|understand|use|raise|rely|give)\b',
+     r'似|好像|像是|像在|仿佛|看[来似]|看[起上]来|可能|大概|显[得示]|看上去|好象|看得出|看样子|表面|看起来','似乎、看来所表示的推测'),
 )
 
 def scope_gaps(en,zh):
@@ -307,7 +323,7 @@ def scope_gaps(en,zh):
     return [label for pattern,equivalent,label in SCOPE_CUES
             if re.search(pattern,en,re.I) and not re.search(equivalent,zh)]
 
-def ground_vocabulary(row,source,witness):
+def ground_vocabulary(row,source,witness,preparation=None):
     """Resolve glosses without a visible equivalent against this individual sentence."""
     zh=row['zh'];en=row['en']
     exact={n['english'].casefold():n for n in source.get('language_review',[])
@@ -315,16 +331,27 @@ def ground_vocabulary(row,source,witness):
     polysemy={'account','address','approach','charge','current','diet','drink','figure','fresh','maintain','matter',
               'novel','object','party','plant','population','present','record','scale','spring','state','stock','subject','survey',
               'sustain','track','train','trial','volume','water','yet','accommodate'}
+    prepared={t['form'].casefold():t for t in (preparation or {}).get('candidates',[])}
+    restrictions={};open_classes={}
+    for v in row['v']:
+        term=prepared.get(v[0].casefold(),{'form':v[0],'head':v[1]})
+        allowed=possible_pos(term)
+        open_classes[v[0]]=[p for p in POS_NAMES if p not in {'aux.','interj.','num.'} or p in allowed]
+        # An attributive noun and a participle can reasonably be analysed more than one way.
+        # Only constrain normal review when the proposed closed class or an unambiguous adverb conflicts.
+        if (v[0].casefold().endswith('ly') and allowed==['adv.']) or (v[2] in {'aux.','interj.','num.'} and v[2] not in allowed):
+            restrictions[v[0]]=allowed
+            if len(allowed)==1:v[2]=allowed[0]
     meanings=[v[3] for v in row['v']]
     uncertain=[]
     for v in row['v']:
         if v[0].casefold() in exact:
             note=exact[v[0].casefold()];v[3]=note['meaning'];v[2]=note.get('pos',v[2])
-        elif v[1].casefold() in polysemy or meanings.count(v[3])>1 or not all(x in zh for x in re.split(r'[；;，、]',v[3]) if x):uncertain.append(v)
+        elif v[0] in restrictions or v[1].casefold() in polysemy or meanings.count(v[3])>1 or not all(x in zh for x in re.split(r'[；;，、]',v[3]) if x):uncertain.append(v)
     for off in range(0,len(uncertain),6):
         batch=uncertain[off:off+6]
-        pos={'type':'string','enum':['n.','v.','adj.','adv.','prep.','conj.','phr.','pron.','det.','num.','aux.','abbr.','interj.']}
-        schema=record(**{v[0]:record(pos=pos,equivalent=STRING,gloss=STRING) for v in batch})
+        schema=record(**{v[0]:record(pos={'type':'string','enum':restrictions.get(v[0],open_classes[v[0]])},
+                                     equivalent=STRING,gloss=STRING) for v in batch})
         payload={'English':en,'reviewed_translation':zh,'second_reading':witness,
                  'words':{v[0]:v[1] for v in batch}}
         instruction=('只核对这一句的词义。逐个读取以实际英文词形命名的字段。先判断这个词在英文中的词性和所指。'
@@ -348,7 +375,11 @@ def ground_vocabulary(row,source,witness):
                 selected.append((ans['pos'],val))
             if not errors:break
             payload['repair']='这些词要给短的、能独立使用的语境义：'+'、'.join(errors)
-        else:raise ValueError('Unresolved contextual glossary '+str(errors))
+        else:
+            missing_terms=[prepared.get(v[0].casefold(),{'form':v[0],'head':v[1],'pos':v[2]}) for v in batch if v[0] in errors]
+            revised, glosses=recover_glosses(en,zh,missing_terms,list(exact.values()))
+            replacements={t['form'].casefold():(t['pos'],g) for t,g in zip(revised,glosses,strict=True)}
+            selected=[replacements.get(v[0].casefold(),value) for v,value in zip(batch,selected,strict=True)]
         for v,(pos,meaning) in zip(batch,selected,strict=True):v[2:]=[pos,meaning]
 
 def confirmed_names(rows,known):
@@ -453,8 +484,11 @@ def verify(group,source,all_rows,witness=None):
                  '若修正了明确错误，reason简述依据，否则留空。')
     payload={'passage':source['title'],'sentences':items}
     for attempt in range(3):
-        resp=finite_response(instruction,payload,record(**schema),max(380,min(2300,210+sum(len(r['en'])*2 for r in auto))))
         checked=dict(manual);errors=[]
+        try:resp=finite_response(instruction,payload,record(**schema),max(380,min(2300,210+sum(len(r['en'])*2 for r in auto))))
+        except (ValueError,TimeoutError):
+            errors=[(r['n'],scope_gaps(r['en'],r['zh'])) for r in auto]
+            continue
         for r in auto:
             answer=resp['s'+str(r['n'])];row=dict(r);row['v']=[list(x) for x in r['v']]
             zh=revision(answer['translation']) or r['zh']
@@ -467,10 +501,16 @@ def verify(group,source,all_rows,witness=None):
             checked[r['n']]=row
         if not errors:break
         payload['repair']='逐句查补上次译文漏掉的程度、频率或范围，再给完整译文。保留原文语气。需复核的字段：'+str(errors)
-    else:raise ValueError(f'{PID}: no valid source-based translation at {errors}')
+    else:
+        for n,gaps in errors:
+            r=next(r for r in auto if r['n']==n);row=dict(r);row['v']=[list(v) for v in r['v']]
+            zh=recover_translation(r['en'],all_rows[n-2]['en'] if n>1 else '',
+                                   {**items['s'+str(n)],'unresolved_scope':gaps,'passage':source['title']})
+            row.update(zh=zh,parts=[zh],english_parts=[r['en']],review_reason='单独对照本句的语法、语气与限定重新核定。')
+            checked[n]=row
     for r in auto:
         row=checked[r['n']]
-        ground_vocabulary(row,source,(witness or {}).get(r['n'],''))
+        ground_vocabulary(row,source,(witness or {}).get(r['n'],''),all_rows[r['n']-1])
         changed=[(old[0],old[3],new[3]) for old,new in zip(r['v'],row['v']) if old[2:]!=new[2:]]
         if changed:row['review_reason']+=' 词义、词性对照本句复核：'+'、'.join(x[0] for x in changed)+'。'
         row['english_parts'],row['parts']=aligned_parts(row['en'],row['zh'],row['v'])
