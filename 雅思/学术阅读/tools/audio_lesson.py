@@ -150,13 +150,18 @@ def certified_audio(passage,config,engine,reader,dest,*,synthesize=cet.synth_sen
 
 
 def certified_aiden(passage,config,reader,path):
-    from aiden_audio import Aiden
+    from aiden_audio import Aiden, UnverifiedTake
     from aiden_profile import PROFILE, confirm
     from aiden_boundaries import MasteredPhraseError, check_media
     engine = Aiden()
     attempts={}
     while True:
-        timing = certified_audio(passage,config,engine,reader,path / cet.VOICE,synthesize=engine.sentence)
+        try:
+            timing = certified_audio(passage,config,engine,reader,path / cet.VOICE,synthesize=engine.sentence)
+        except UnverifiedTake as failure:
+            if engine.snapshots.stage:
+                engine.save_remaining_takes(passage,config,reader,failure)
+            raise
         timing.update(lesson=PID,narrator=PROFILE,narration_review=engine.review)
         try:
             timing['phrase_audio_check']=check_media(path/timing['file'],timing)

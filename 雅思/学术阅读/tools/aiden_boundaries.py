@@ -149,6 +149,11 @@ def assess(audio, text, transcript=None):
         alternate = independent(audio)
         if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
             raise ValueError(f'The five spoken letters I I N C E or their context differ: {transcript!r} / {alternate!r}')
+    elif expected[:5] == ['sugars','and','meats','or','oils']:
+        # In the printed list of ant baits, one real recording was heard as "chuggers".
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript,alternate)):
+            raise ValueError(f'Ant bait names or their context differ: {transcript!r} / {alternate!r}')
     elif not matches(expected, words(transcript)):
         alternate = independent(audio)
         # If the two decoders disagree, only the full printed sequence can resolve it.

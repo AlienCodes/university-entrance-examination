@@ -19,6 +19,18 @@ import make_audio as cet
 import 听对
 
 
+class UnverifiedTake(ValueError):
+    def __init__(self, key, position, reason):
+        self.key = key
+        self.position = position
+        super().__init__(f'{key}: {reason}')
+
+
+def planned_takes(read,key,settings,variant=0):
+    parts=cet.narration_phrases(read,key,settings['clause_pause'])
+    return [(part,variant if len(parts)==1 else variant+1000*i) for i,part in enumerate(parts,1)]
+
+
 def recognize(audio):
     rec=听对.recognizer()
     stream=rec.create_stream()
@@ -69,6 +81,8 @@ class Aiden:
             instruction += ' ' + aiden_ceylonese.HINT
         if 'I I N C E' in script:
             instruction += ' Read the five initials I, I, N, C, E clearly in one connected group, including both initial I sounds.'
+        if words(script)[:5] == ['sugars','and','meats','or','oils']:
+            instruction += ' Pronounce the opening word sugars /ˈʃʊɡɚz/, with a soft sh and a voiced final z.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -99,7 +113,7 @@ class Aiden:
         report.write_text(json.dumps(data,ensure_ascii=False))
         return wave,data
 
-    def take(self,script,key,variant,pron):
+    def take(self,script,key,variant,pron,position=0):
         fingerprint=json.dumps([IDENTITY,script,key,variant,pron.lexicon],sort_keys=True,ensure_ascii=False)
         name=hashlib.sha256(fingerprint.encode()).hexdigest()
         file=self.folder/(name+'.flac');report=self.folder/(name+'.json')
@@ -180,21 +194,40 @@ class Aiden:
                       seed=seed+attempt*997, transcript=transcript, issue=issue,
                       sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
         (rejected/report.name).write_text(json.dumps(evidence,ensure_ascii=False))
-        raise ValueError(f'{key}: {issue}')
+        raise UnverifiedTake(key,position,issue)
+
+    def save_remaining_takes(self,passage,config,pron,failure):
+        first=int(failure.key.rsplit(':',1)[1])
+        sentences=(text for paragraph in passage['sents'] for text in paragraph)
+        failures=[str(failure)]
+        for number,text in enumerate(sentences,1):
+            if number<first:
+                continue
+            key=f'{passage["id"]}:{number}'
+            read=pron.read_text(text,key)
+            for index,(part,variant) in enumerate(planned_takes(read,key,config)):
+                if number==first and index<=failure.position:
+                    continue
+                try:
+                    self.take(part,key,variant,pron,index)
+                except UnverifiedTake as error:
+                    failures.append(str(error))
+            self.snapshots.after_sentence()
+        self.snapshots.after_sentence(force=True)
+        print('Unverified recordings still required before mastering:',*failures,sep='\n',flush=True)
 
     def sentence(self,read,key,engine,pron,style,speed,settings):
-        parts=cet.narration_phrases(read,key,settings['clause_pause'])
         variant=round((speed/settings['speed']-1)*1000)
+        plan=planned_takes(read,key,settings,variant)
         # Each pause is between whole takes. No word is cut at an ASR timestamp.
-        takes=[self.take(part,key,variant if len(parts)==1 else variant+1000*i,pron)
-               for i,part in enumerate(parts,1)]
+        takes=[self.take(part,key,offset,pron,i) for i,(part,offset) in enumerate(plan)]
         self.snapshots.after_sentence()
         chunks=[wave for wave,_ in takes]
         records=[data for _,data in takes]
         basis=POLICY
-        self.review[key]=dict(recognized=True,method=basis,groups=len(parts),
+        self.review[key]=dict(recognized=True,method=basis,groups=len(plan),
             phrases=[dict(text=text,sha256=data['sha256'],reference=reference(soxr.resample(wave,24000,16000)))
-                     for text,(wave,data) in zip(parts,takes)],
+                     for (text,_),(wave,data) in zip(plan,takes)],
             transcripts=[r['transcript'] for r in records],seeds=[r['seed'] for r in records])
         print(key,basis,len(chunks),'groups',flush=True)
         return cet.synth_sentence(read,key,engine,pron,style,speed,settings,recorded=chunks)

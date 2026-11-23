@@ -19,7 +19,8 @@ def gh_json(endpoint):
 
 
 def rejected_seed(report, key, printed):
-    if not report.is_file():
+    if (not isinstance(key,str) or not re.fullmatch(re.escape(PID) + r":[1-9]\d*",key)
+            or not isinstance(printed,str) or not printed.strip() or not report.is_file()):
         return None
     entry = json.loads(report.read_bytes())
     if (entry.get("accepted") is not False or entry.get("key") != key or entry.get("printed") != printed
@@ -101,6 +102,15 @@ def pack_snapshot(folder, archive):
             recordings[note.stem] = digest
             result.write(wav, "aiden-takes/" + wav.name)
             result.write(note, "aiden-takes/" + note.name, compress_type=zipfile.ZIP_DEFLATED)
+        for note in sorted((folder / "rejected").glob("*.json")):
+            if not re.fullmatch(r"[0-9a-f]{64}", note.stem):
+                continue
+            data = json.loads(note.read_bytes())
+            if data.get("stage") == "mastered-mp3" or rejected_seed(note,data.get("key"),data.get("printed")) is None:
+                continue
+            wav = note.with_suffix(".flac")
+            result.write(wav, "aiden-takes/rejected/" + wav.name)
+            result.write(note, "aiden-takes/rejected/" + note.name, compress_type=zipfile.ZIP_DEFLATED)
         manifest = dict(lesson=PID, narrator=IDENTITY, policy=PAUSE_POLICY, takes=recordings)
         result.writestr("snapshot.json", json.dumps(manifest, sort_keys=True))
     return len(recordings)
@@ -148,15 +158,16 @@ class PeriodicSnapshot:
         self.next_check = time.monotonic() + 600
         self.saved_files = set()
 
-    def after_sentence(self):
+    def after_sentence(self, *, force=False):
         now = time.monotonic()
-        if not self.stage or now < self.next_check:
+        if not self.stage or (not force and now < self.next_check):
             return
         self.next_check = now + 600
-        files = {note.name for note in self.folder.glob("*.json")}
-        if not files or files == self.saved_files:
-            return
         try:
+            files = {(str(note.relative_to(self.folder)),hashlib.sha256(note.read_bytes()).digest())
+                     for pattern in ("*.json","rejected/*.json") for note in self.folder.glob(pattern)}
+            if not files or files == self.saved_files:
+                return
             inventory.cache_clear()
             remote = inventory(self.stage)
             names = snapshot_names()
