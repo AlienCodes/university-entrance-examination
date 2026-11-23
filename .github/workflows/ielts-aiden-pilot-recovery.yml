@@ -1,0 +1,121 @@
+name: 同一篇 Aiden 录音分句制作与整轨复核
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths: ['.github/ielts-aiden-recovery.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: ielts-aiden-single-pilot-audio
+  cancel-in-progress: false
+env:
+  TARGET: 雅思/学术阅读
+  IELTS_NARRATOR: Aiden
+  IELTS_LESSON: C13T1P1
+  IELTS_AIDEN_BATCH: 13-6
+  GH_TOKEN: ${{ github.token }}
+  GH_REPO: ${{ github.repository }}
+  MALLOC_ARENA_MAX: '2'
+  HF_HUB_DISABLE_XET: '1'
+  OMP_NUM_THREADS: 3
+  OPENBLAS_NUM_THREADS: 1
+  PYTHONUNBUFFERED: 1
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      groups: ${{ steps.queue.outputs.groups }}
+      seed: ${{ steps.queue.outputs.seed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: &checkout
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读
+            tools/tts
+            六级/tools
+            四级/tools
+      - id: queue
+        run: python "$TARGET/tools/aiden_parallel.py" plan
+  record:
+    needs: plan
+    if: needs.plan.outputs.groups != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        group: ${{ fromJSON(needs.plan.outputs.groups) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: *checkout
+      - id: existing
+        run: |
+          echo "have=$(python "$TARGET/tools/aiden_parallel.py" have)" >> "$GITHUB_OUTPUT"
+          echo "IELTS_WORK=$RUNNER_TEMP/recordings" >> "$GITHUB_ENV"
+      - if: steps.existing.outputs.have != 'true'
+        uses: ./.github/actions/ielts-aiden-speech
+      - if: steps.existing.outputs.have != 'true'
+        name: 录音并逐句听对
+        env:
+          NUMBERS: ${{ matrix.group }}
+        run: '"$RUNNER_TEMP/speech/bin/python" -u "$TARGET/tools/aiden_parallel.py" record --numbers "$NUMBERS"'
+      - if: always() && steps.existing.outputs.have != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiden-recorded-${{ env.IELTS_LESSON }}-${{ matrix.group }}
+          path: ${{ runner.temp }}/recordings
+          retention-days: 14
+          if-no-files-found: ignore
+  certify:
+    needs: [plan,record]
+    if: needs.plan.outputs.groups != '[]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: *checkout
+      - id: existing
+        run: |
+          echo "have=$(python "$TARGET/tools/aiden_parallel.py" have)" >> "$GITHUB_OUTPUT"
+          echo "IELTS_WORK=$RUNNER_TEMP/compiled" >> "$GITHUB_ENV"
+      - if: steps.existing.outputs.have != 'true'
+        name: 恢复单句实测通过的录音
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.plan.outputs.seed }}
+          pattern: aiden-measured-${{ env.IELTS_LESSON }}-*
+          path: ${{ runner.temp }}/incoming/seed
+      - if: steps.existing.outputs.have != 'true'
+        name: 恢复本次通过的所有录音
+        uses: actions/download-artifact@v4
+        with:
+          pattern: aiden-recorded-${{ env.IELTS_LESSON }}-*
+          path: ${{ runner.temp }}/incoming/group
+      - if: steps.existing.outputs.have != 'true'
+        name: 核对原文、音色、逐句覆盖和录音指纹
+        run: python "$TARGET/tools/aiden_parallel.py" merge --incoming "$RUNNER_TEMP/incoming"
+      - if: steps.existing.outputs.have != 'true'
+        uses: ./.github/actions/ielts-aiden-speech
+      - if: steps.existing.outputs.have != 'true'
+        name: 按原正式标准统一整篇响度和停顿并检测整轨
+        run: |
+          "$RUNNER_TEMP/speech/bin/python" "$TARGET/tools/audio_lesson.py"
+          python .github/check-audio-cert.py "$TARGET/audio"
+          python "$TARGET/tools/aiden_profile.py" verify "$IELTS_LESSON"
+      - if: steps.existing.outputs.have != 'true'
+        name: 发布并回下载整条认证音轨及原句记录
+        run: python "$TARGET/tools/aiden_parallel.py" publish
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiden-pilot-assembly-review
+          path: |
+            ${{ runner.temp }}/compiled
+            雅思/学术阅读/样片/语音复检
+          retention-days: 14
+          if-no-files-found: ignore

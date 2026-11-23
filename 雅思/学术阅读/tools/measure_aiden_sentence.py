@@ -13,15 +13,18 @@ from aiden_profile import IDENTITY
 from lesson import save
 
 
-def measure(number, output):
-    sentences = [row['en'] for paragraph in load()['paras'] for row in paragraph]
+def measure(number, output, engine=None, reader=None, sentences=None):
+    if sentences is None:
+        sentences = [row['en'] for paragraph in load()['paras'] for row in paragraph]
     original = sentences[number - 1]
-    reader = Reader()
-    reader.lexicon.update(json.loads((LESSON / '篇目信息.json').read_text())['pronunciation'])
+    if reader is None:
+        reader = Reader()
+        reader.lexicon.update(json.loads((LESSON / '篇目信息.json').read_text())['pronunciation'])
     config = json.loads((cet.G.HERE / 'voices.json').read_text())[cet.VOICE]
     key = f'{PID}:{number}'
     reading = reader.read_text(original, key)
-    engine = aiden_audio.Aiden()
+    if engine is None:
+        engine = aiden_audio.Aiden()
     result = dict(lesson=PID, sentence=number, model=IDENTITY, text=original, read=reading,
                   groups=cet.narration_phrases(reading, key, config['clause_pause']),
                   cores=len(os.sched_getaffinity(0)), calls=[])

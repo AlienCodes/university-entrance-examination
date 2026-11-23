@@ -1,0 +1,29 @@
+name: 恢复认证 Aiden 语音工作环境
+description: 使用原试听权重、正式录音依赖和同一语音识别器
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11.15'
+    - uses: actions/cache/restore@v4
+      with:
+        path: ${{ runner.temp }}/ielts-aiden-model
+        key: ielts-aiden-audition-${{ hashFiles('雅思/学术阅读/tools/aiden-model-lock.json') }}
+    - name: 核对语音模型
+      shell: bash
+      run: |
+        python "$TARGET/tools/aiden_model.py" "$RUNNER_TEMP/ielts-aiden-model"
+        echo "IELTS_AIDEN_MODEL_PATH=$RUNNER_TEMP/ielts-aiden-model" >> "$GITHUB_ENV"
+    - uses: actions/cache/restore@v4
+      id: asr
+      with:
+        path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+        key: asr-sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+    - if: steps.asr.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p tools/tts/models
+        curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar xj -C tools/tts/models
+    - shell: bash
+      run: bash .github/install-ielts-native-speech.sh
