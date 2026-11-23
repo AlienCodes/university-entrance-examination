@@ -92,5 +92,55 @@
       "alba": 11.03
     },
     "sha256": "9bc07a1c5bb1438adc1f9caad344dcb4c4ce5bfb29811c34b69430ace9363980"
+  },
+  "naturalness_prediction": {
+    "estimator": "UTMOS22 strong, permission-free ONNX export of SpeechMOS",
+    "source": "https://huggingface.co/TigreGotico/utmos-onnx/tree/ff41b8f440cb12ecda18261f9ff7326d058275ce",
+    "file_sha256": "ece7ddb0999d0f12ffe8d7586b3618b8b6fa89269b5152288e4440d686409f69",
+    "unit": "5 paired complete sentences taken from each delivered MP3, using original playback speed and the same edge padding for each voice. Independent predictions; these are not ratings by human listeners.",
+    "voices": {
+      "alba": {
+        "sentences": [
+          4.451,
+          4.402,
+          4.428,
+          4.355,
+          4.484
+        ],
+        "mean": 4.424
+      },
+      "kokoro": {
+        "sentences": [
+          4.505,
+          4.021,
+          4.388,
+          4.471,
+          4.489
+        ],
+        "mean": 4.375
+      },
+      "aiden": {
+        "sentences": [
+          4.525,
+          4.475,
+          4.451,
+          4.497,
+          4.493
+        ],
+        "mean": 4.488
+      },
+      "ryan": {
+        "sentences": [
+          4.024,
+          4.383,
+          4.433,
+          4.344,
+          4.461
+        ],
+        "mean": 4.329
+      }
+    },
+    "method": "The released MP3 is decoded as mono PCM, split at sentence gaps, and the same speech-edge threshold with 100 ms of leading and trailing silence is applied to every excerpt. All 20 complete utterances are resampled to 16 kHz. UTMOS scores one utterance at a time using the original playback speed.",
+    "sample_size": "1 paragraph, 5 sentences × 4 voices. Predictions on this passage only."
   }
 }
