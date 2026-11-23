@@ -1,0 +1,25 @@
+name: 发布六篇已核验的雅思 Aiden 精读视频
+on:
+  push:
+    tags:
+      - ielts-academic-aiden-six-preview
+permissions:
+  contents: write
+concurrency:
+  group: ielts-academic-aiden-six-preview
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      IELTS_NARRATOR: Aiden
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: 雅思/学术阅读
+      - name: 打包六个已通过核验的 MP4 并回下载正式附件
+        run: python '雅思/学术阅读/tools/aiden_six_preview.py' "$RUNNER_TEMP/preview" --publish
