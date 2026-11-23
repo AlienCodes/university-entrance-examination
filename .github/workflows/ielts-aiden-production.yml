@@ -55,9 +55,3 @@ jobs:
       batch: ${{ needs.specification.outputs.batch }}
       certified_audio: ${{ needs.specification.outputs.certified_audio == 'true' }}
       pilot_only: ${{ needs.specification.outputs.pilot_only == 'true' }}
-  following:
-    needs: [specification, edition]
-    if: needs.specification.outputs.batch == '13-6' && needs.specification.outputs.pilot_only != 'true'
-    uses: ./.github/workflows/ielts-aiden-edition.yml
-    with:
-      batch: 5-1
