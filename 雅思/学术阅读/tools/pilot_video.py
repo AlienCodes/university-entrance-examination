@@ -276,8 +276,10 @@ elif int(PID[1:PID.index('T')])<=10:
     engine.sentence_slide = early_sentence_slide
 
 def speech_tokens(text):
+    from aiden_boundaries import spoken_spelling
     from textnorm import ordinal
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
+    plain = spoken_spelling(plain)
     plain = re.sub(r'\bh\. (?=naledi\b)', 'homo ',plain)
     # Match a printed ordinal to the same ordinal in the certified narration.
     plain = re.sub(r'\b(\d+)[ \t]*(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)

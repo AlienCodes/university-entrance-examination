@@ -34,15 +34,25 @@ class MasteredPhraseError(ValueError):
         super().__init__(f'Sentence {sentence}, phrase {phrase}, {start:.3f}–{end:.3f}s: {reason}')
 
 
+def spoken_spelling(text):
+    # These British and American forms have the same spoken word. Preserve
+    # grammatical endings, including plural -s, and keep all printed text intact.
+    text = re.sub(r'\b(homogen|util|dramat|mechan|colon|emphas|critic|vulgar)is(e|es|ed|ing|er|ers|ation|ations)\b',
+                  r'\1iz\2', text, flags=re.I)
+    text = re.sub(r'\banalys(e|ed|ing)\b', r'analyz\1', text, flags=re.I)
+    text = re.sub(r'\bageing\b', 'aging', text, flags=re.I)
+    return re.sub(r'\btonne(s?)\b', r'ton\1', text, flags=re.I)
+
+
 def words(text):
     text = NOISE_INITIALS.sub('I I N C E', text)
     text = re.sub(r"(?<!\w)O\.?K\.?(?!\w)", "okay", text, flags=re.I)
     text = re.sub(r"\brock\s*['’]n['’]\s*roll\b", 'rock and roll', text, flags=re.I)
     text = re.sub(r'\bman[ -]?made\b', 'man made', text, flags=re.I)
     text = re.sub(r'\bfibre(s?)\b', r'fiber\1', text, flags=re.I)
-    text = re.sub(r'\bemphasis(e|es|ed|ing)\b', r'emphasiz\1', text, flags=re.I)
-    text = re.sub(r'\bcriticis(e|es|ed|ing)\b', r'criticiz\1', text, flags=re.I)
-    text = re.sub(r'\bvulgarisation(s?)\b', r'vulgarization\1', text, flags=re.I)
+    text = spoken_spelling(text)
+    text = re.sub(r'\blife[ -]+span(s?)\b', r'lifespan\1', text, flags=re.I)
+    text = re.sub(r'\bnorth[ -]+east\b', 'northeast', text, flags=re.I)
     # P IH CH B L EH N D in CMUdict. Keep this one word when checking both sides of a pause.
     text = re.sub(r'\bpitch[ -]+blend\b', 'pitchblende', text, flags=re.I)
     text = re.sub(r'\bhally\b','halley',text,flags=re.I)
