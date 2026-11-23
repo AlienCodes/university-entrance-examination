@@ -53,3 +53,23 @@ def pad(core, target, source_samples):
                 end=p.pts+duration
             if end!=source_samples:
                 raise ValueError('Original audio does not cover the rendered picture')
+
+
+def check_packets(core, movie, source_samples):
+    """Match every original compressed AAC access unit on the 48 kHz timeline."""
+    import hashlib
+    with av.open(str(core)) as original, av.open(str(movie)) as rendered:
+        old=(p for p in original.demux(audio=0) if p.pts is not None and p.pts<source_samples)
+        new=(p for p in rendered.demux(audio=0) if p.pts is not None)
+        first=next(old)
+        pkt=next(new)
+        while pkt.pts<first.pts+RATE:
+            pkt=next(new)
+        count=0
+        fingerprint=hashlib.sha256()
+        for left,right in zip(chain([first],old),chain([pkt],new),strict=True):
+            if right.pts-left.pts!=RATE or bytes(left)!=bytes(right):
+                raise ValueError(f'Original AAC access unit differs at {left.pts}/{RATE}')
+            fingerprint.update(bytes(right))
+            count+=1
+        return dict(original_aac_packets=count, original_aac_payload_sha256=fingerprint.hexdigest())

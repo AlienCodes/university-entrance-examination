@@ -12,3 +12,4 @@ mv "$out/$IELTS_LESSON.zip" "$out/$version"
 gh release upload "$STAGING" "$out/$version" "$out/$IELTS_LESSON-receipt.json" --clobber
 python "$TARGET/tools/release_assets.py" "$STAGING" "$version" "$RUNNER_TEMP/check"
 cmp "$out/$version" "$RUNNER_TEMP/check/$version"
+bash .github/actions/ielts-verified-master/illustrate.sh

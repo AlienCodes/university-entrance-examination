@@ -22,6 +22,7 @@ from named_video_zip import inspect_archive
 from release_assets import fetch, inventory
 from submit_reviewed import approved, update_book_index
 
+import illustration_stage as art
 from aiden_batch import BATCHES
 from aiden_profile import IDENTITY, PAUSE_POLICY
 
@@ -57,6 +58,9 @@ def reviewed_assets():
     missing=[];available={}
     for pid in IDS:
         receipt=masters.get(pid+'-receipt.json')
+        if AIDEN=='13-6' and pid+'-illustrated.json' not in masters:
+            missing.append(pid)
+            continue
         if AIDEN and int(pid[1:pid.index('T')])>10:
             if receipt and receipt.get('digest'):
                 available[pid]=(None,receipt)
@@ -104,6 +108,19 @@ def ingest(out):
             rows.append(dict(lesson=pid,filename=name,source=source,sha256=receipt_data['video_sha256'],bytes=receipt_data['video_bytes'],
                         seconds=receipt_data['video_seconds'],screens=receipt_data['pages'],material_sha256=key,source_sha256=asset['digest'][7:],
                         asset_url=asset['browser_download_url'],units=len(text),terms=sum(len(line)-2 for line in text)))
+            if AIDEN=='13-6':
+                row=rows[-1]
+                proof_asset=masters[pid+'-illustrated.json']
+                painted=read(fetch(proof_asset,tmp))
+                hosted=art.checked(pid,receipt_data,painted,masters)
+                row.update(core_sha256=row['sha256'],core_bytes=row['bytes'],core_screens=row['screens'],
+                           sha256=painted['video_sha256'],bytes=painted['video_bytes'],screens=len(painted['screens']),
+                           seconds=painted['video_seconds'],source=hosted['name'],asset_url=hosted['browser_download_url'],
+                           source_sha256=hosted['digest'][7:],illustration_sha256=painted['illustration_sha256'],
+                           illustrated_receipt_sha256=proof_asset['digest'][7:])
+                destination=REPORTS/'篇目'/pid
+                destination.mkdir(parents=True,exist_ok=True)
+                save(destination/'插图成片核验.json',painted)
     if [r['lesson'] for r in rows]!=IDS or len(set(unicodedata.normalize('NFC',r['filename']).casefold() for r in rows))!=len(IDS):raise ValueError('Invalid book order or duplicate names')
     if not AIDEN:
         for book in VOLUMES:update_book_index(book)
@@ -136,7 +153,7 @@ def pack(out):
                     if AIDEN:
                         voice=json.loads(archive.read('source/narration.json'))
                         playback=voice['mp4_check']
-                        if (not playback['passed'] or playback['policy']!=PAUSE_POLICY or playback['sha256']!=row['sha256']
+                        if (not playback['passed'] or playback['policy']!=PAUSE_POLICY or playback['sha256']!=row.get('core_sha256',row['sha256'])
                                 or playback['phrases']!=len(playback['checks']) or len(voice['sentences'])!=row['units']
                                 or voice['mp3_check']['phrases']!=playback['phrases']):
                             raise ValueError(pid+' has an incomplete rendered speech track')
@@ -144,16 +161,22 @@ def pack(out):
                     for name in FILES:
                         if archive.read('source/'+name)!=(PROJECT/'篇目'/pid/name).read_bytes():raise ValueError(pid+' signed source differs from media')
                 video,pdf,receipt=unpack_lesson(pid,STAGE,tmp,inspect)
-                if row['sha256']!=receipt['video_sha256'] or video.stat().st_size!=row['bytes']:raise ValueError('Master differs from the verified remote receipt')
+                if row.get('core_sha256',row['sha256'])!=receipt['video_sha256'] or video.stat().st_size!=row.get('core_bytes',row['bytes']):raise ValueError('Master differs from the verified remote receipt')
                 report=read(tmp/'verification.json');ending=report['ending']
                 if (ending['decoded_last_three_seconds_frames']!=90 or not ending['desktop_html5_playback']['ended']
-                     or report['pdf']['pages']!=row['screens']):raise ValueError('Incomplete tail or screen certificate '+pid)
+                     or report['pdf']['pages']!=row.get('core_screens',row['screens'])):raise ValueError('Incomplete tail or screen certificate '+pid)
                 for filename in ('分屏核对.json','visual-review.json'):
                     destination=(REPORTS/'篇目' if AIDEN else PROJECT/'篇目')/pid
                     destination.mkdir(parents=True,exist_ok=True)
                     shutil.copyfile(tmp/filename,destination/filename)
                 row['verification_report_sha256']=sha(tmp/'verification.json')
                 row['native_checks']=len(report['checks'])
+                if AIDEN=='13-6':
+                    video.unlink()
+                    video=fetch(inventory(STAGE)[row['source']],tmp)
+                    if sha(video)!=row['sha256'] or video.stat().st_size!=row['bytes']:
+                        raise ValueError('Staged illustrated film changed: '+pid)
+                    row['data_offset']=0
                 member=zipfile.ZipInfo(row['filename'],(2026,11,23,0,0,0));member.file_size=row['bytes'];member.create_system=3;member.external_attr=0o100644<<16
                 with video.open('rb') as src,target.open(member,'w') as dest:shutil.copyfileobj(src,dest,8<<20)
             if i%12==0:print(f'{i}/{len(rows)} confirmed and packed',flush=True)

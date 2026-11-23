@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 
-from illustration_audio import pad
+from illustration_audio import check_packets, pad
 
 import numpy as np
 
@@ -160,6 +160,7 @@ def build(pid, core, output, proof, excerpt=None, width=None, threads=3):
         or any(abs(float(s['start_time']))>.001 or abs(float(s['duration'])-length)>.002 for s in (v,a))):
         raise ValueError('Audio/video stream lengths or frame rate disagree')
     rms=check_audio(core,pending,count)
+    rms.update(check_packets(core,pending,count*(48000//FPS)))
     pictures=check_pictures(core,pending,art,count,width,height)
     receipt=dict(lesson=pid,full_movie=count==src_count,core_sha256=sha(core),illustration_sha256=sha(art),
                  video_sha256=sha(pending),video_bytes=pending.stat().st_size,video_seconds=round(length,6),

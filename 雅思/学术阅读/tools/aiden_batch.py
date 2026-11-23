@@ -14,7 +14,7 @@ from release_assets import fetch, inventory
 ROOT=Path(__file__).resolve().parents[1]
 BATCHES={'13-6':range(13,5,-1),'5-1':range(5,0,-1)}
 
-def cached(pid,batch):
+def cached(pid,batch,include_illustration=False):
     stage='ielts-academic-aiden-cache-'+batch
     masters=inventory(stage); receipt=masters.get(pid+'-receipt.json')
     if not receipt or not receipt.get('digest'): return False
@@ -28,10 +28,21 @@ def cached(pid,batch):
             from early_editor import key_for
             from early_plan import NOTES, valid_master
             key=key_for(ROOT,pid); teaching=inventory(NOTES).get(key+'-reviewed.zip')
-            return bool(teaching and teaching.get('digest') and valid_master(pid,key,teaching,data,masters,tmp))
-        key=current_key(ROOT,pid)
-        asset=masters.get(f'{pid}-{key[:16]}.zip')
-        return bool(data.get('material_sha256')==key and asset and asset.get('digest'))
+            core_ok=bool(teaching and teaching.get('digest') and valid_master(pid,key,teaching,data,masters,tmp))
+        else:
+            key=current_key(ROOT,pid)
+            asset=masters.get(f'{pid}-{key[:16]}.zip')
+            core_ok=bool(data.get('material_sha256')==key and asset and asset.get('digest'))
+        if not core_ok or not include_illustration or batch!='13-6':
+            return core_ok
+        from illustration_stage import checked, illustration
+        final=masters.get(pid+'-illustrated.json')
+        if not final or not final.get('digest'):return False
+        report=json.loads(fetch(final,tmp).read_text())
+        if (report.get('core_sha256'),report.get('illustration_sha256'))!=(data['video_sha256'],illustration(pid)):
+            return False
+        checked(pid,data,report,masters)
+        return True
 
 def plan(batch):
     ids=lesson_ids(BATCHES[batch])
@@ -44,7 +55,7 @@ def plan(batch):
     if result.returncode:
         subprocess.run(['gh','release','create',stage,'--target',os.environ['GITHUB_SHA'],'--prerelease','--latest=false',
             '--title',f'剑桥雅思 {batch} · Aiden 逐篇制作存档','--notes','存放本批次核验通过的精读音轨、视频和恢复记录。'],check=True)
-    outstanding=[pid for pid in ids if not cached(pid,batch)]
+    outstanding=[pid for pid in ids if not cached(pid,batch,include_illustration=True)]
     with open(os.environ['GITHUB_OUTPUT'],'a') as out:
         print('batch='+batch,file=out)
         print('pilot='+ids[0],file=out)
