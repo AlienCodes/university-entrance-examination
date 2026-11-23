@@ -1,0 +1,52 @@
+name: 发布按视频全名分类的 96 篇雅思 PDF 讲义
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths:
+      - '.github/workflows/ielts-study-by-video-release.yml'
+      - '雅思/学术阅读/配套讲义/按视频全名打包核验.json'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ielts-study-21-14-by-video
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET: 雅思/学术阅读
+      RELEASE_TAG: ielts-academic-study-21-14-by-video
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            雅思/学术阅读/tools
+            雅思/学术阅读/原稿
+            雅思/学术阅读/配套讲义
+            雅思/学术阅读/审校
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 恢复原讲义，只按视频全名整理三份 PDF
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/handouts"
+          mkdir -p "$out"
+          original=Cambridge-IELTS-21-14-Reading-Study-96.zip
+          gh release download ielts-academic-study-21-14 --pattern "$original" --dir "$out"
+          python "$TARGET/tools/video_folder_handouts.py" "$out/$original" "$out" "$out/actual.json"
+          python - "$TARGET/配套讲义/按视频全名打包核验.json" "$out/actual.json" <<'PY'
+          import json,sys
+          ref,actual=(json.load(open(p)) for p in sys.argv[1:])
+          for k in ('books','passages','files','source_zip_sha256','contents'):
+              if ref[k]!=actual[k]: raise ValueError('Mismatch in '+k)
+          print(actual['zip_name'],actual['zip_bytes'],actual['zip_sha256'])
+          PY
+      - name: 发布单 ZIP 并从公开下载地址回读校验
+        run: |
+          set -euo pipefail
+          python "$TARGET/tools/publish_video_folder_handouts.py" "$RUNNER_TEMP/handouts"
