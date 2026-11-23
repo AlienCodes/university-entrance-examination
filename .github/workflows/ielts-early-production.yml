@@ -1,0 +1,67 @@
+name: 剑桥雅思学术阅读第10至1册精读视频
+on:
+  push:
+    branches: ['codex/ielts-academic-reading']
+    paths: ['.github/ielts-early-production.json']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: ielts-academic-early-production
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      sample: ${{ steps.select.outputs.sample }}
+      lessons: ${{ steps.select.outputs.lessons }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读/原稿
+            雅思/学术阅读/备课
+            雅思/学术阅读/配套讲义
+            雅思/学术阅读/tools
+      - id: select
+        run: |
+          set -euo pipefail
+          python '雅思/学术阅读/tools/early_plan.py' plan
+          tag=ielts-academic-cache-10-1
+          gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_SHA" --prerelease --title '剑桥雅思学术阅读第10至1册 · 逐篇母版' --notes '按篇保存核验通过的 4K 视频和制作记录，供整包恢复使用。'
+  sample:
+    needs: plan
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ needs.plan.outputs.sample }}
+  wait:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 345
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github
+            雅思/学术阅读/tools
+      - run: python '雅思/学术阅读/tools/early_plan.py' wait
+  production:
+    needs: [plan,sample,wait]
+    if: needs.plan.outputs.lessons != '[]'
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lesson: ${{ fromJSON(needs.plan.outputs.lessons) }}
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ matrix.lesson }}

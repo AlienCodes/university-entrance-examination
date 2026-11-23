@@ -1,0 +1,67 @@
+name: 雅思早期册单篇教学定稿与成片
+on:
+  workflow_call:
+    inputs:
+      lesson:
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  master:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      IELTS_LESSON: ${{ inputs.lesson }}
+      STAGING: ielts-academic-cache-10-1
+      TARGET: 雅思/学术阅读
+      OMP_NUM_THREADS: 3
+      OPENBLAS_NUM_THREADS: 1
+      PYTHONUNBUFFERED: 1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/
+            /雅思/学术阅读/
+            /tools/video/
+            /tools/tts/
+            /专八/tools/
+            /六级/tools/
+            /四级/tools/
+            /中考/tools/画面核查/
+      - name: 核对本篇的原稿版本和现成视频
+        id: cache
+        run: |
+          set -euo pipefail
+          export IELTS_WORK="$RUNNER_TEMP/early"
+          mkdir -p "$IELTS_WORK"
+          echo "IELTS_WORK=$IELTS_WORK" >> "$GITHUB_ENV"
+          done_master=$(python "$TARGET/tools/early_plan.py" cached)
+          echo "done=$done_master" >> "$GITHUB_OUTPUT"
+          if [[ "$done_master" != true ]]; then
+            saved=$(python "$TARGET/tools/early_editor.py" restore)
+            echo "teaching=$saved" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching != 'true'
+        uses: ./.github/actions/ielts-local-editor
+      - if: steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching != 'true'
+        uses: ./.github/actions/ielts-translation
+      - name: 逐句翻译、筛选适合背记的词与搭配，再对照原书校订
+        if: steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching != 'true'
+        run: |
+          set -euo pipefail
+          bash .github/run-ielts-editors.sh python -u "$TARGET/tools/early_editor.py" edit 2>&1 | tee "$IELTS_WORK/editor.log"
+      - if: steps.cache.outputs.done != 'true'
+        uses: ./.github/actions/ielts-verified-master
+        with:
+          early_review: 'true'
+      - name: 存档已完成的逐句工作和待修处
+        if: failure() && env.IELTS_WORK != ''
+        run: |
+          python "$TARGET/tools/early_editor.py" checkpoint
+          python "$TARGET/tools/early_plan.py" diagnosis

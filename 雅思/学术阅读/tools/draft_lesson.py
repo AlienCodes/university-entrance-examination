@@ -54,7 +54,10 @@ def reply_schema(instruction, data):
 
 
 def ask(instruction,data,attempt=0):
-    schema=reply_schema(instruction,data)
+    return request_json(instruction,data,reply_schema(instruction,data),attempt)
+
+
+def request_json(instruction,data,schema,attempt=0):
     req={'messages':[{'role':'system','content':instruction},{'role':'user','content':json.dumps(data,ensure_ascii=False)}],
          'temperature':.12 if not attempt else .25,'seed':751+attempt,'max_tokens':3800,
          'response_format':{'type':'json_schema','json_schema':{'name':'reading','strict':True,'schema':schema}},'cache_prompt':True}
