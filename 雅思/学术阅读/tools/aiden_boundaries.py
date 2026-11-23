@@ -21,10 +21,14 @@ RATE = 16000
 
 def words(text):
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
+    for written, spoken in (('Henry VIII','Henry the eighth'),('Charles II','Charles the second'),
+                            ('Amenhotep III','Amenhotep the third'),('Napoleon III','Napoleon the third')):
+        text = re.sub(r'\b'+re.escape(written)+r'\b', spoken, text, flags=re.I)
     text = normalize(text.replace('’', "'"))
     text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode().lower()
     text = text.replace('colour', 'color').replace('centre', 'center').replace('metre', 'meter')
     text = text.replace('travell', 'travel').replace('organis', 'organiz').replace('customis', 'customiz')
+    text = text.replace('civilis', 'civiliz').replace('favour', 'favor').replace('behaviour', 'behavior')
     return re.findall('[a-z0-9]+', text.replace("'", ''))
 
 
@@ -85,6 +89,14 @@ def assess(audio, text, transcript=None):
     expected = words(text)
     transcript = isolated(audio) if transcript is None else transcript
     alternate = None
+    if expected == ['quercus', 'suber']:
+        from aiden_cork_oak import verify
+        alternate = independent(audio)
+        pauses = interior_gaps(audio)
+        proof = verify(audio, transcript, alternate, pauses)
+        return {'text':text, 'heard':transcript, 'second_heard':alternate,
+                'botanical_pronunciation':proof,
+                'checked_internal_gaps':[[round(a/RATE,3),round(b/RATE,3)] for a,b in pauses]}
     if not matches(expected, words(transcript)):
         alternate = independent(audio)
         # If the two decoders disagree, only the full printed sequence can resolve it.

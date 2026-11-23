@@ -8,6 +8,7 @@ sp="$RUNNER_TEMP/speech/bin/python"
 if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
   "$sp" -m pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
   "$sp" -m pip install -q qwen-tts==0.1.1 sherpa-onnx==1.13.8
+  if [[ "${IELTS_LESSON:-}" == C12T1P1 ]]; then "$sp" -m pip install -q pocketsphinx==5.0.4; fi
 else
   "$sp" -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu
 fi

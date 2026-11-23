@@ -51,6 +51,9 @@ class Aiden:
         instruction=DIRECTION
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items() if re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
+        if words(script) in (['quercus','suber'], ['quirkus','soober']):
+            from aiden_cork_oak import HINT
+            instruction += ' ' + HINT
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -68,7 +71,7 @@ class Aiden:
         if file.is_file() and report.is_file():
             data=json.loads(report.read_text());wave,sr=sf.read(file,dtype='float32')
             if sr==24000 and hashlib.sha256(file.read_bytes()).hexdigest()==data['sha256']:
-                if data.get('policy') == POLICY:
+                if data.get('policy') == POLICY and words(script) != ['quercus','suber']:
                     return wave,data
                 try:
                     assess(soxr.resample(wave,sr,16000),script,data['transcript'])
@@ -93,6 +96,8 @@ class Aiden:
                     missing={w for op,a,b,_,_ in alignment.get_opcodes() if op in ('replace','delete')
                              for w in expected[a:b] if w in {'it','its','the','a','an','at','of','to','not'}}
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
+                if words(script) == ['quercus','suber']:
+                    spoken = 'Quirkus Soober'
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
             sf.write(file,wav,24000,subtype='PCM_24')
