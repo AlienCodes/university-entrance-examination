@@ -167,8 +167,9 @@ def aligned_boundary(anchors,e,z):
 
 def splits_coordinated_phrase(en, offset):
     fixed=(r'\b(?:travel and tourism|research and development|supply and demand|trial and error|even if|'
-           r'even though|only if|as long as|as soon as|as well as|in order to|so that|rather than|provided that)\b')
+           r'even though|only if|as long as|as soon as|as well as|as much as|as many as|in order to|so that|rather than|provided that)\b')
     if any(m.start()<offset<m.end() for m in re.finditer(fixed,en,re.I)):return True
+    if re.match(r'and\s+[\w-]+\s+as (?:much|many) as\b',en[offset:],re.I):return True
     # In “..., Travel | and tourism is ...” the first noun was left with
     # the attribution on the preceding screen. Look at the current clause.
     leaf=re.split(r'[,;:“‘"]',en[:offset])[-1].strip()
@@ -404,6 +405,7 @@ def revision(value):
 # Alternatives are reading cues, not a compulsory word-for-word translation.
 SCOPE_CUES=(
     (r'\beven if\b',r'即使|即便|哪怕|就算|纵使|纵然|退一步|退一万步|即令|即或|即便是|便是','even if 引出的假设性让步'),
+    (r'\bno [\w -]{1,35} other than\b',r'除|只|仅|唯|惟|别无','no … other than 表示例外或唯一范围'),
     (r'\b(?:often|frequently)\b',r'常|往往|时常|屡|频|惯|多有|多半|大多|多数|每每|反复|多会|多为|不时|动辄|多见|多次|很多时候|许多时候','频率（常常、往往）'),
     (r'\b(?:sometimes|occasionally)\b',r'有时|偶|不时|间或|时而|有的|时有|也会|有些|有可能','偶尔或有时'),
     (r'\b(?:rarely|seldom)\b',r'少|罕|难得|不常|几乎[不没]|鲜|寥|不多|不大|很难|难以','少有、罕见'),
@@ -411,7 +413,7 @@ SCOPE_CUES=(
     (r'\bat most\b',r'至多|最多|不超过|不高于|不多于|以内|不过|顶多|仅|上限|充其量','最高限或至多'),
     (r'\bno longer\b',r'不再|再也不|已不|已经不|不复|再无|已无|已没有|已失去|失去|停止|结束|消失|取消|绝迹|已非|(?:不必|无需|不能|无法|不用|无力)再|已.{0,12}不(?:见|到|了|能|得|行|及)','不再'),
     (r'\bnot until\b',r'才|直到|直至|之前|以前|在此之前','直到……才'),
-    (r'\b(?:appear(?:s|ed)?|seem(?:s|ed)?)\s+to\s+(?:be|have|do|make|work|show|play|prefer|favou?r|suggest|indicate|lead|support|follow|hold|exist|result|contradict|reflect|lack|depend|require|produce|occur|differ|take|represent|agree|contain|confirm|fit|cause|understand|use|raise|rely|give)\b',
+    (r'\b(?:appear(?:s|ed)?|seem(?:s|ed)?)\s+to\s+(?:be|have|do|make|work|show|play|prefer|favou?r|suggest|indicate|lead|support|follow|hold|exist|result|contradict|reflect|lack|depend|require|produce|occur|differ|take|represent|agree|contain|confirm|fit|cause|understand|use|raise|rely|give|eliminate|reduce|explain)\b',
      r'似|好像|像是|像在|仿佛|看[来似]|看[起上]来|可能|大概|显[得示]|看上去|好象|看得出|看样子|表面|看起来','似乎、看来所表示的推测'),
 )
 

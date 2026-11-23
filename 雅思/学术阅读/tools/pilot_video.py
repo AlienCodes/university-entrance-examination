@@ -253,6 +253,8 @@ def early_sentence_slide(p,sentence,k,n,part=None):
                       r'<x-ps>\4</x-ps>\1\2\3\5', body)
     before_cont=r'(<span class="w">(?:(?!</span>).)*</span>|[\w’]+)([ \u00a0]+[-–—])(<span class="cont">\u00a0…</span>)'
     body=re.sub(before_cont,r'<nobr>\1\2\3</nobr>',body)
+    # A year followed by a spaced dash must travel with the dash at a line wrap.
+    body=re.sub(r'(?<![>\w])(\d{4} [–—])(?= )',r'<nobr>\1</nobr>',body)
     body=re.sub(r'(?<![>\w])([A-Za-z0-9’]{1,16} - [A-Za-z0-9’]{1,16})(?![\w<])',r'<nobr>\1</nobr>',body)
     # A highlighted preceding word ends in HTML rather than a letter.
     body=re.sub(r' ([-–—]) <nobr>(?=<span class="(?:w|ph)">|[\w])',r' <nobr>\1 ',body)

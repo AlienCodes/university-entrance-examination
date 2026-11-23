@@ -25,6 +25,8 @@ def source_key(text, meta, split, printed_test):
     display=[meta.get(k) for k in ('id','book','test','passage','title','title_zh','genre','header')]
     names=sorted(set(name for name in meta.get('zh_names',[]) if name in text))
     items=[display,printed_test,rows,split,names,meta.get('pronunciation',{}),[i for i,l in enumerate(text.splitlines()) if not l]]
+    if meta.get('section_headers'):
+        items.append(meta['section_headers'])
     encoded=json.dumps(items,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
     return hashlib.sha256(encoded).hexdigest()
 
