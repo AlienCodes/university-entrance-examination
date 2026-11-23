@@ -21,6 +21,24 @@ SPEC=REPO/'.github/ielts-early-production.json'
 def load(path):
     return json.loads(path.read_text())
 
+def valid_master(pid,fingerprint,teaching,record,masters,folder):
+    from early_editor import edition_pos_conflicts, screen_alignment, scope_gaps
+    from material import source_key
+    paper=load(PROJECT/'原稿'/(pid+'.json'));prep=load(PROJECT/'备课'/(pid+'.json'))
+    with zipfile.ZipFile(fetch(teaching,folder)) as z:
+        proof=json.loads(z.read('content-review.json'))
+        text=z.read('双语精读.tsv').decode()
+        meta=json.loads(z.read('篇目信息.json'));cuts=json.loads(z.read('分屏.json'))[pid]
+    rows=[line.split('\t') for line in text.splitlines() if line]
+    if ([r[0] for r in rows]!=[r['en'] for r in prep['rows']] or any(scope_gaps(r[0],r[1]) for r in rows)
+            or screen_alignment(rows,cuts)['flags'] or edition_pos_conflicts(rows,prep)):
+        return False
+    source=source_key(text,meta,cuts,paper.get('printed_test',paper['test']))
+    master=masters.get(pid+'-'+source[:16]+'.zip')
+    return bool(proof['checked'] and proof['key']==fingerprint and record['lesson']==pid
+                and record['content_sha256']==proof['text_sha256'] and record['material_sha256']==source
+                and master and master.get('digest'))
+
 def missing_editions(ids):
     from early_editor import key_for
     notes=inventory(NOTES);masters=inventory(STAGE)
@@ -30,12 +48,8 @@ def missing_editions(ids):
             fingerprint=key_for(PROJECT,pid)
             teaching=notes.get(fingerprint+'-reviewed.zip');receipt=masters.get(pid+'-receipt.json')
             if teaching and receipt and teaching.get('digest') and receipt.get('digest'):
-                with zipfile.ZipFile(fetch(teaching,td)) as z:proof=json.loads(z.read('content-review.json'))
                 record=load(fetch(receipt,td))
-                master=masters.get(pid+'-'+record['material_sha256'][:16]+'.zip')
-                if (proof['checked'] and proof['key']==fingerprint and record['lesson']==pid
-                    and record['content_sha256']==proof['text_sha256'] and master and master.get('digest')):
-                    continue
+                if valid_master(pid,fingerprint,teaching,record,masters,td):continue
             missing.append(pid)
     return missing
 
@@ -149,9 +163,7 @@ def cached():
     if not receipt or not reviewed:return False
     folder=Path(os.environ['IELTS_WORK'])/PID
     row=load(fetch(receipt,folder))
-    with zipfile.ZipFile(fetch(reviewed,folder)) as z:proof=json.loads(z.read('content-review.json'))
-    asset=masters.get(PID+'-'+row['material_sha256'][:16]+'.zip')
-    return bool(asset and asset.get('digest') and proof['checked'] and proof['key']==key() and row['lesson']==PID and row['content_sha256']==proof['text_sha256'])
+    return valid_master(PID,key(),reviewed,row,masters,folder)
 
 def diagnostics():
     from early_editor import key,work

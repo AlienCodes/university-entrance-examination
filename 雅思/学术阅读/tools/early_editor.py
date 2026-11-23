@@ -39,6 +39,8 @@ EDITOR = ('你是雅思学术阅读教材责任编辑。source中的每个英文
  '只给教材正文和词条。')
 CJK_POS = re.compile(r'^(?:名词|动词|形容词|副词|短语|n\.|v\.|adj\.|adv\.|phr\.)[：: ]*')
 POS_NAMES=('n.','v.','adj.','adv.','prep.','conj.','phr.','pron.','det.','num.','aux.','abbr.','interj.')
+AUXILIARIES={'am','is','are','was','were','be','been','being','do','does','did','have','has','had','can','could','may',
+             'might','must','ought','should','would','will','shall','need','dare','used','cannot','done','doing','having','’d',"'d",'’ll',"'ll"}
 DICTIONARY_POS={'n':'n.','v':'v.','vt':'v.','vi':'v.','a':'adj.','adj':'adj.','ad':'adv.','adv':'adv.',
                 'prep':'prep.','conj':'conj.','pron':'pron.','det':'det.','num':'num.','aux':'aux.','interj':'interj.'}
 
@@ -49,9 +51,29 @@ def possible_pos(term):
     if form != term['head'].casefold() and (form.endswith('ing') or form.endswith('ed') or form.endswith('en')):
         senses.update(('n.','v.','adj.'))
     if not senses:senses=set(POS_NAMES)
-    if form not in {'am','is','are','was','were','be','been','being','do','does','did','have','has','had','can','could','may','might','must','ought','should','would','will','shall','need','dare','used'}:
+    if form not in AUXILIARIES:
         senses.discard('aux.')
     return [pos for pos in POS_NAMES if pos in senses] or list(POS_NAMES)
+
+def clear_pos_conflicts(prepared,words):
+    candidates={t['form'].casefold():t for t in prepared['candidates']}
+    conflicts=[]
+    for form,value in words:
+        pos=POS.match(value);name=form.casefold()
+        if not pos or ' ' in name:continue
+        if pos[1]=='aux.' and re.fullmatch(r'[a-z]+',name) and name not in AUXILIARIES:
+            conflicts.append(form)
+        elif name.endswith('ly') and name in candidates and possible_pos(candidates[name])==['adv.'] and pos[1]!='adv.':
+            conflicts.append(form)
+    return conflicts
+
+def edition_pos_conflicts(rows,preparation):
+    result=[]
+    for n,(row,prepared) in enumerate(zip(rows,preparation['rows'],strict=True),1):
+        if row[0]!=prepared['en']:raise ValueError(f'Parts of speech refer to another sentence at {n}')
+        words=clear_pos_conflicts(prepared,[cell.split('|',1) for cell in row[2:]])
+        if words:result.append({'sentence':n,'words':words})
+    return result
 
 def digest(file):
     return hashlib.sha256(file.read_bytes()).hexdigest()
@@ -109,6 +131,47 @@ def positions(sentence,surface):
     # roman numeral or ellipsis that would expand under Unicode normalization.
     return [m.span() for m in re.finditer(r'(?<!\w)'+re.escape(surface)+r'(?!\w)',sentence,re.I)]
 
+def translation_anchors(zh,words):
+    anchors=[]
+    for spans,meaning in words:
+        meaning=re.sub(r'^(?:[a-z]+\.)\s*','',meaning).strip()
+        if (not spans or not 2<=len(meaning)<=18 or not re.fullmatch(r'[\u3400-\u9fff]+',meaning)
+            or zh.count(meaning)!=1):
+            continue
+        start=zh.index(meaning)
+        anchors.append((tuple(spans),start,start+len(meaning)))
+    return anchors
+
+def boundary_evidence(anchors,english_offset,chinese_offset):
+    left=set();right=set();crossed=set()
+    for spans,a,b in anchors:
+        if all(end<=english_offset for _,end in spans):
+            (left if b<=chinese_offset else crossed).add((a,b))
+        elif all(start>=english_offset for start,_ in spans):
+            (right if a>=chinese_offset else crossed).add((a,b))
+    return len(left),len(right),len(crossed)
+
+def aligned_boundary(anchors,e,z):
+    left,right,crossed=boundary_evidence(anchors,e,z)
+    return bool(left and right and not crossed)
+
+def screen_alignment(rows,cuts):
+    checked=[];flags=[]
+    for n,split in cuts.items():
+        en,zh,*cells=rows[int(n)-1]
+        if ''.join(split['zh'])!=zh:raise ValueError('Chinese screen text does not reconstruct sentence '+n)
+        words=[t.split('|',1) for t in cells]
+        anchors=translation_anchors(zh,[(positions(en,form),gloss) for form,gloss in words])
+        offset=0
+        for part,(next_english,chinese) in enumerate(zip(split['at'],split['zh'][:-1],strict=True),2):
+            if en.count(next_english)!=1:raise ValueError('Ambiguous English screen marker at '+n)
+            offset+=len(chinese)
+            left,right,crossed=boundary_evidence(anchors,en.index(next_english),offset)
+            checked.append((left,right,crossed))
+            if crossed>=2:flags.append({'sentence':int(n),'next_screen':part,'opposite_side_glosses':crossed,
+                                        'next_english':next_english,'next_chinese':split['zh'][part-1][:32]})
+    return {'boundaries':len(checked),'with_glosses_on_both_sides':sum(bool(a and b) for a,b,c in checked),'flags':flags}
+
 def boundaries(en,terms):
     blocked=[(a,b) for v in terms for a,b in positions(en,v['form'])]
     if len(en.split())<31 and len(en)<200 and len(terms)<=9:
@@ -128,6 +191,7 @@ def aligned_parts(en,zh,vocab):
     starts=boundaries(en,terms)
     offsets=sorted({m.end() for m in ZH_CLAUSE.finditer(zh) if 4<=m.end()<=len(zh)-4})
     if not starts or not offsets:return [en],[zh]
+    anchors=translation_anchors(zh,[(positions(en,v[0]),v[3]) for v in vocab])
     ens={str(i):en[pos:pos+60] for i,pos in enumerate(starts,1)}
     zhs={str(i):zh[pos:pos+28] for i,pos in enumerate(offsets,1)}
     count=min(len(starts),len(offsets),max(1,min(6,(len(terms)+4)//7,len(en.split())//10)))
@@ -143,7 +207,7 @@ def aligned_parts(en,zh,vocab):
         if not pairs:break
         if all(i and j for i,j in pairs):
             es=[starts[i-1] for i,j in pairs];zs=[offsets[j-1] for i,j in pairs]
-            if es==sorted(set(es)) and zs==sorted(set(zs)):
+            if es==sorted(set(es)) and zs==sorted(set(zs)) and all(aligned_boundary(anchors,e,z) for e,z in zip(es,zs)):
                 chunks=[en[a:b] for a,b in zip([0]+es,es+[len(en)])]
                 parts=[zh[a:b] for a,b in zip([0]+zs,zs+[len(zh)])]
                 if (all(len(chunk.split())>=6 and any(positions(chunk,t['form']) for t in terms) for chunk in chunks)
@@ -529,6 +593,9 @@ def editorial():
     if state['key']!=key():raise ValueError('Checkpoint belongs to a different source')
     state['context']=context
     donor=reusable(PROJECT,PID,state,assets,wp,sentences,input_fingerprint,good) if not state['drafted'] else {'drafted':{},'verified':{}}
+    donor['verified']={n:r for n,r in donor['verified'].items()
+                       if not scope_gaps(r['en'],r['zh'])
+                       and not clear_pos_conflicts(rows[n-1],[(v[0],v[2]+' '+v[3]) for v in r['v']])}
     if donor['drafted']:print(PID,'matching saved rows:',len(donor['drafted']),'including reviewed:',len(donor['verified']),flush=True)
     prior=old_terms()
     for i in range(len(state['drafted']),len(rows)):
@@ -538,6 +605,11 @@ def editorial():
             subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
         print(PID,'draft',i+1,'/',len(rows),flush=True)
     witness=reference_readings(source,wp)
+    for i,old in enumerate(state['verified']):
+        tagged=[(v[0],v[2]+' '+v[3]) for v in old['v']]
+        if clear_pos_conflicts(rows[i],tagged) or scope_gaps(old['en'],old['zh']):
+            state['verified'][i]=verify([state['drafted'][i]],source,rows,witness)[0]
+            save(statefile,state)
     for i in range(len(state['verified']),len(rows),3):
         group=state['drafted'][i:i+3]
         needed=[r for r in group if r['n'] not in donor['verified']]
@@ -568,6 +640,9 @@ def output(source,rows,reference_count):
                 cuts[str(i)]={'at':anchors,'zh':r['parts']}
             if r['review_reason']:marks.append({'n':i,'reason':r['review_reason']})
         lines.append('')
+    full_rows=[line.split('\t') for line in lines if line]
+    crossed={str(issue['sentence']) for issue in screen_alignment(full_rows,cuts)['flags']}
+    for n in crossed:del cuts[n]
     (LESSON/'双语精读.tsv').write_text('\n'.join(lines),encoding='utf-8');verify_original(PROJECT,PID)
     # The full titles are anchored to the paper; the short forms only occupy the chalkboard header.
     en_title=source['title'];zh_title=source['title_zh'];short_en=' '.join(en_title.split()[:5])+('…' if len(en_title.split())>5 else '');short_zh=zh_title.split('（')[0]
@@ -582,6 +657,7 @@ def output(source,rows,reference_count):
            'vocabulary_entries':sum(len(r['v']) for r in rows),'split_sentences':len(cuts),'translation_review':{'sentences_checked':len(rows),'paper_edited_sentences':sum(bool(r.get('paper_edited')) for r in rows),'aligned_independent_readings':reference_count,'corrections':marks,
            'model_basis':'Complete English sentences are drafted and reviewed before read-only bilingual segmentation. Alternative readings are consulted alongside the paper. Paper-edited lines retain their confirmed translation and glossary.'},
            'text_sha256':digest(LESSON/FILES[0]),'metadata_sha256':digest(LESSON/FILES[1]),'split_sha256':digest(LESSON/FILES[2]),'checked':False}
+    if crossed:proof['reunited_for_native_review']=sorted(map(int,crossed))
     save(LESSON/'content-review.json',proof);store_candidate()
 
 def store_candidate():
@@ -601,12 +677,31 @@ def restore():
             for f in FILES:(LESSON/f).write_bytes(z.read(f))
     p=read(LESSON/FILES[3])
     if p['key']!=fingerprint or p['source_sha256']!=digest(PAPER) or p['candidate_sha256']!=digest(PREP) or any(digest(LESSON/f)!=p[k] for f,k in zip(FILES[:3],('text_sha256','metadata_sha256','split_sha256'))):raise ValueError('Restored teaching material does not match paper')
-    verify_original(PROJECT,PID);return True
+    verify_original(PROJECT,PID)
+    rows=[line.split('\t') for line in (LESSON/FILES[0]).read_text().splitlines() if line]
+    if edition_pos_conflicts(rows,read(PREP)) or any(scope_gaps(r[0],r[1]) for r in rows):return False
+    cuts=read(LESSON/FILES[2]);review=screen_alignment(rows,cuts[PID])
+    if review['flags']:
+        affected={str(f['sentence']) for f in review['flags']}
+        # Reunite the exact English and Chinese before measuring the full sentence.
+        # The native layout pass will choose a new bilingual boundary only if it needs one.
+        for n in affected:del cuts[PID][n]
+        save(LESSON/FILES[2],cuts)
+        p.setdefault('screen_reflow',[]).append({'previous_split_sha256':p['split_sha256'],
+            'reading_units':sorted(map(int,affected)),'source_and_translation_unchanged':True})
+        p.update(split_sha256=digest(LESSON/FILES[2]),split_sentences=len(cuts[PID]),checked=False)
+        save(LESSON/FILES[3],p)
+    return True
 
 def seal():
     report=read(PROJECT/'样片/review.json');p=read(LESSON/FILES[3]);screens=report['screens'][1:]
     if report['lesson']!=PID or report['problems'] or not screens:raise ValueError('Unresolved visual review')
     if len(screens)!=p['reading_units']+sum(len(s['at']) for s in read(LESSON/'分屏.json')[PID].values()):raise ValueError('Unexpected number of reading screens')
+    rows=[line.split('\t') for line in (LESSON/FILES[0]).read_text().splitlines() if line]
+    p['bilingual_boundaries']=screen_alignment(rows,read(LESSON/FILES[2])[PID])
+    if p['bilingual_boundaries']['flags']:raise ValueError('Check English and Chinese screen boundaries '+str(p['bilingual_boundaries']['flags']))
+    conflicts=edition_pos_conflicts(rows,read(PREP))
+    if conflicts:raise ValueError('Check printed vocabulary word classes '+str(conflicts))
     p['checked']=True;p['mobile_layout']={'total_screens':len(screens)+1,'issues':0,'english_css_px':sorted({r['sizes'][0] for r in screens}),'vocabulary_css_px':sorted({r['sizes'][1] for r in screens})};save(LESSON/FILES[3],p)
     with zipfile.ZipFile(work()/(key()+'-reviewed.zip'),'w',compression=zipfile.ZIP_DEFLATED) as z:
         for name in FILES:z.write(LESSON/name,name)

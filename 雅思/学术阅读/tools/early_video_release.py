@@ -13,7 +13,7 @@ import unicodedata
 import zipfile
 
 from collect_edition import sha, unpack_lesson
-from early_editor import FILES, key_for
+from early_editor import FILES, edition_pos_conflicts, key_for, scope_gaps, screen_alignment
 from early_plan import NOTES, STAGE
 from editions import PRODUCTION_BOOKS, lesson_ids
 from lesson import PROJECT, save
@@ -55,7 +55,7 @@ def reviewed_assets():
 def ingest(out):
     available,missing=reviewed_assets()
     if missing:raise ValueError('Waiting for reviewed video masters: '+', '.join(missing))
-    masters=inventory(STAGE);rows=[]
+    masters=inventory(STAGE);rows=[];boundaries={}
     with tempfile.TemporaryDirectory(dir=out) as td:
         tmp=Path(td)
         for pid,(teaching,receipt) in available.items():
@@ -64,6 +64,13 @@ def ingest(out):
                 if set(z.namelist())!=set(FILES):raise ValueError(pid+' has inconsistent editable files')
                 for f in FILES:(folder/f).write_bytes(z.read(f))
             proof=approved(folder);verify_original(PROJECT,pid)
+            text=[line.split('\t') for line in (folder/FILES[0]).read_text().splitlines() if line]
+            boundaries[pid]=screen_alignment(text,read(folder/FILES[2])[pid])
+            if boundaries[pid]['flags']:raise ValueError(pid+' has a bilingual boundary to review: '+str(boundaries[pid]['flags']))
+            conflicts=edition_pos_conflicts(text,read(PROJECT/'备课'/(pid+'.json')))
+            if conflicts:raise ValueError(pid+' has a word class to review: '+str(conflicts))
+            scope=[(i,missing) for i,row in enumerate(text,1) if (missing:=scope_gaps(row[0],row[1]))]
+            if scope:raise ValueError(pid+' has a qualifier to review: '+str(scope))
             if proof['key']!=key_for(PROJECT,pid) or proof['reading_units']!=proof['translation_review']['sentences_checked']:raise ValueError(pid+' has incomplete editorial coverage')
             receipt_data=read(fetch(receipt,tmp));paper=read(PROJECT/'原稿'/(pid+'.json'))
             key=current_key(PROJECT,pid);source=pid+'-'+key[:16]+'.zip'
@@ -78,6 +85,7 @@ def ingest(out):
                         asset_url=asset['browser_download_url'],units=proof['reading_units'],terms=proof['vocabulary_entries']))
     if [r['lesson'] for r in rows]!=IDS or len(set(unicodedata.normalize('NFC',r['filename']).casefold() for r in rows))!=len(IDS):raise ValueError('Invalid book order or duplicate names')
     for book in PRODUCTION_BOOKS['10-1']:update_book_index(book)
+    save(PROJECT/'审校/第10至1册分屏对读复核.json',boundaries)
     save(out/'rows.json',rows)
     return rows
 
