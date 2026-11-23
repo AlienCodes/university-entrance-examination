@@ -9,6 +9,7 @@ import subprocess
 import zipfile
 
 from draft_lesson import CJK, TEXT as STRING, record, request_json
+from early_checkpoints import context as checkpoint_context, reusable
 from early_reference import collect as reference_readings
 from lesson import LESSON, PID, PROJECT, save
 from material import verify_original
@@ -47,15 +48,17 @@ def teaching_notes(project,pid):
     source=project/'审校/逐篇语境重点-10至1.json'
     return read(source).get(pid,[]) if source.is_file() else []
 
-def key_for(project,pid):
-    manual=read(project/'审校/早期册语境校订.json').get(pid,{})
-    paper=project/'原稿'/(pid+'.json')
-    manual_complete=len(manual)==sum(map(len,read(paper)['paragraphs']))
-    inputs=[digest(paper),digest(project/'备课'/(pid+'.json')),PAPER_EDITION if manual_complete else VERSION,manual]
-    notes=teaching_notes(project,pid)
+def input_fingerprint(pid,paper_hash,prep_hash,sentence_count,manual,notes):
+    inputs=[paper_hash,prep_hash,PAPER_EDITION if len(manual)==sentence_count else VERSION,manual]
     if notes:inputs.append(notes)
     fingerprint=hashlib.sha256(json.dumps(inputs,ensure_ascii=False,sort_keys=True).encode()).hexdigest()[:16]
     return f'{pid}-{fingerprint}'
+
+def key_for(project,pid):
+    paper=project/'原稿'/(pid+'.json')
+    manual=read(project/'审校/早期册语境校订.json').get(pid,{})
+    return input_fingerprint(pid,digest(paper),digest(project/'备课'/(pid+'.json')),
+                             sum(map(len,read(paper)['paragraphs'])),manual,teaching_notes(project,pid))
 
 def key():
     return key_for(PROJECT,PID)
@@ -229,6 +232,45 @@ def good(en,parts,terms,zh,meanings,previous):
     if (years(previous)-years(en)) & (years(result)-years(en)):return False
     return True
 
+def recover_translation(en,previous,data):
+    prompt={'English':en,**data}
+    for trial in range(3):
+        response=finite_response('按这一个英文原句翻成完整的简体中文。核对主语、修饰关系、数字和语气。只写自然的教材译文。',
+                                 prompt,record(translation=STRING),max(225,len(en)*2))
+        zh=response['translation'].strip()
+        gaps=scope_gaps(en,zh)
+        if good(en,[en],[],[zh],[],previous) and not gaps:return zh
+        prompt['check']='请重新对照英文，修正长短、混入上下文或漏译问题。'+'、'.join(gaps)
+    raise ValueError(f'{PID}: unresolved complete translation for {en[:65]}')
+
+def recover_glosses(en,zh,terms,notes):
+    checked={n['english'].casefold():n for n in notes if n.get('meaning')}
+    pos={'type':'string','enum':['n.','v.','adj.','adv.','prep.','conj.','phr.','pron.','det.','num.','aux.','abbr.','interj.']}
+    result={}
+    for t in terms:
+        note=checked.get(t['form'].casefold())
+        if note:result[t['form']]=(note.get('pos',t.get('pos','')),note['meaning'])
+    pending=[t for t in terms if t['form'] not in result]
+    for width in (5,1,1):
+        for i in range(0,len(pending),width):
+            batch=pending[i:i+width]
+            schema=record(**{t['form']:record(pos=pos,meaning=STRING) for t in batch})
+            prompt={'English':en,'checked_Chinese':zh,'words':{t['form']:t['head'] for t in batch}}
+            try:
+                ans=finite_response('核对每个指定英文词在本句的词性和意思。只给能独立记忆的当句义，通常2至8个汉字，勿抄整句。',
+                                    prompt,schema,160+90*len(batch))
+            except (ValueError,TimeoutError):
+                if width!=1:continue
+                raise
+            for t in batch:
+                form=t['form'];v=ans[form];meaning=v['meaning'].strip()
+                if clean(meaning) and len(meaning)<=24 and not re.search(r'[|；，、]|在此处|本句中',meaning):
+                    result[form]=(v['pos'],meaning)
+        pending=[t for t in pending if t['form'] not in result]
+        if not pending:break
+    if pending:raise ValueError(f'{PID}: unresolved glossary for '+', '.join(t['form'] for t in pending))
+    return [{**t,'pos':result[t['form']][0]} for t in terms],[result[t['form']][1] for t in terms]
+
 def gloss_value(value,fallback):
     text=value.strip()
     aliases={'a.':'adj.','ad.':'adv.','vt.':'v.','vi.':'v.','v.t.':'v.','v.i.':'v.','pl.':'n.','phrase.':'phr.'}
@@ -366,8 +408,10 @@ def teach(index,source,prep,prior,previous,workdir):
     instruction=(EDITOR+' 先作为整句理解全文。translation的p1只写一次整句译文，不重复分句，紧贴主从关系。准确处理原文的单位、地点、比较和从属关系。'
                  '只表达英文所含的程度、语气与目的。vocabulary每个w字段只写这个词此处的中文义。'
                  '格式是英语词性加一个空格再加当句中文义，例如 v. 记录。按句法核对词性。普通助动词可留空，其余重要词与搭配请写全。')
+    complete=False
     for attempt in range(3):
-        answer=finite_response(instruction,data,schema,min(2700,max(350,155+len(en)//2+len(terms)*31)))
+        try:answer=finite_response(instruction,data,schema,min(2700,max(350,155+len(en)//2+len(terms)*31)))
+        except (ValueError,TimeoutError):break
         zh=[answer['translation'][k].strip() for k in phrases]
         senses=[gloss_value(answer['vocabulary'][k],t.get('pos','')) for k,t in zip(words,terms)]
         values=[val for pos,val in senses]
@@ -378,9 +422,17 @@ def teach(index,source,prep,prior,previous,workdir):
                     values[i]=nte['meaning']
                     if i not in keep:keep.append(i)
         keep.sort();chosen=[{**terms[i],'pos':senses[i][0]} for i in keep];meanings=[values[i] for i in keep]
-        if chosen and good(en,chunks,chosen,zh,meanings,previous) and all(any(positions(ch,t['form']) for t in chosen) for ch in chunks):break
+        if chosen and good(en,chunks,chosen,zh,meanings,previous) and all(any(positions(ch,t['form']) for t in chosen) for ch in chunks):
+            complete=True
+            break
         data['repair']='每一段要有忠实的中文和与本段英文对应的核心词。从全部候选中保留足够多的实词和搭配，只写简短语境义。'
-    else:raise ValueError(f'{PID} sentence {n}: unusable initial translation or gloss')
+    if not complete:
+        witness=reference_readings(source,workdir).get(n,'')
+        zh=[recover_translation(en,previous,{'passage':source['title'],'independent_reading':direct,
+                                            'second_reading':witness,'paper_notes':data['paper_notes']})]
+        chosen,meanings=recover_glosses(en,zh[0],terms,notes)
+        if not chosen or not good(en,chunks,chosen,zh,meanings,previous):
+            raise ValueError(f'{PID} sentence {n}: recovered fields do not agree with the paper')
     row=assemble(n,en,zh,chosen,meanings);row['english_parts']=chunks;row['independent_translation']=direct
     return row
 
@@ -425,25 +477,32 @@ def verify(group,source,all_rows,witness=None):
     return [checked[r['n']] for r in group]
 
 def editorial():
-    source=read(PAPER);rows=read(PREP)['rows'];sentences=[s for g in source['paragraphs'] for s in g]
+    source=read(PAPER);prep=read(PREP);rows=prep['rows'];sentences=[s for g in source['paragraphs'] for s in g]
     notes=teaching_notes(PROJECT,PID)
     if any(sentences[n['sentence']-1]!=n['scope_en'] for n in notes):raise ValueError('A teaching note refers to another sentence')
+    context=checkpoint_context(source,prep,corrections(),notes,digest(PAPER),digest(PREP),VERSION)
     source['language_review']=source.get('language_review',[])+notes
     if sentences!=[r['en'] for r in rows]:raise ValueError('Prepared vocabulary refers to other text')
     wp=work();assets=inventory(DRAFT);statefile=wp/(key()+'-work.json')
     if not statefile.exists() and statefile.name in assets:fetch(assets[statefile.name],wp)
     state=read(statefile) if statefile.exists() else {'id':PID,'key':key(),'drafted':[],'verified':[]}
     if state['key']!=key():raise ValueError('Checkpoint belongs to a different source')
+    state['context']=context
+    donor=reusable(PROJECT,PID,state,assets,wp,sentences,input_fingerprint,good) if not state['drafted'] else {'drafted':{},'verified':{}}
+    if donor['drafted']:print(PID,'matching saved rows:',len(donor['drafted']),'including reviewed:',len(donor['verified']),flush=True)
     prior=old_terms()
     for i in range(len(state['drafted']),len(rows)):
-        item=teach(i,source,rows[i],prior,sentences[i-1] if i else '',wp)
+        item=donor['drafted'].get(i+1) or teach(i,source,rows[i],prior,sentences[i-1] if i else '',wp)
         state['drafted'].append(item);save(statefile,state)
         if i+1 in {3,7} or (i+1)%10==0:
             subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
         print(PID,'draft',i+1,'/',len(rows),flush=True)
     witness=reference_readings(source,wp)
     for i in range(len(state['verified']),len(rows),3):
-        state['verified'].extend(verify(state['drafted'][i:i+3],source,rows,witness));save(statefile,state)
+        group=state['drafted'][i:i+3]
+        needed=[r for r in group if r['n'] not in donor['verified']]
+        edited={r['n']:r for r in verify(needed,source,rows,witness)} if needed else {}
+        state['verified'].extend(edited.get(r['n']) or donor['verified'][r['n']] for r in group);save(statefile,state)
         if len(state['verified'])%9==0:
             subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
         print(PID,'checked',len(state['verified']),'/',len(rows),flush=True)
