@@ -68,7 +68,7 @@ def heading(lesson,title,desc):
     book,test,part=coordinate.split('-')
     return f'<header class="cover"><p class="scope">剑桥雅思 {book}　·　Academic Reading　·　Test {test}　·　Passage {part}</p><h1>{e(title)}</h1><p class="sub">{e(name)}</p><p class="summary">{e(desc)}</p></header>'
 def reading_doc(d,y):
-    blocks=[heading(d,'逐题解析','题号沿用原书。定位中的句号与同篇精读视频、逐屏讲义左下角的句子序号一致。')]
+    blocks=[heading(d,'逐题解析','题号沿用原书。原文定位使用的句子编号与同篇精读视频、逐屏讲义左下角一致。')]
     used=set()
     for idx,q in enumerate(d['questions']):
         qn=q['numbers'][0]
@@ -103,7 +103,7 @@ def grammar_doc(d,y):
     for idx,r in enumerate(y['grammar']):
         no=r['sentence'];s=d['sentences'][no-1]
         blocks.append(f'<section class="grammar{" first" if idx==0 else ""}">')
-        if idx==0:blocks.append(heading(d,'长难句与写作句式','先从原句里找主干，再读修饰成分。写作示例使用同类结构，给出了具体题目场景。'))
+        if idx==0:blocks.append(heading(d,'长难句与写作句式','先从原句里找主干，再读修饰成分。每页附写作场景、英文例句与中译。例句中的人物、数据和情境用于示范。'))
         else:blocks.append(f'<p class="scope">{e(d["display_title"])}　·　长难句与写作句式</p>')
         blocks.append(f'<h2>{e(r["heading"])}</h2><p class="place">{e(source_ref(s,no))}</p><div class="reading"><p class="en">{e(s["en"])}</p><p class="zh">{e(s["zh"])}</p></div>')
         if r.get('subject') and r.get('verb'):

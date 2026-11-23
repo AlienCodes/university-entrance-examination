@@ -15,6 +15,17 @@ def result_codes(logic):
     return re.findall(r'(?:故选|所以选|应选|答案(?:应为|是|为)|因此选)\s*[“「‘\']?\s*((?:NOT GIVEN|TRUE|FALSE|YES|NO|[A-K])\b)', logic, re.IGNORECASE | re.ASCII)
 
 
+def fill_results(question, reasoning):
+    if 'Completion' not in question['kind'] or question.get('word_bank'):
+        return []
+    quoted = re.findall(
+        r'(?:答案(?:应该|应为|应|即|就是|为|是|须填入)|故填|应填写|应填入|所以填|因此填|应填)'
+        r'\s*[‘\'“「]([a-zA-Z][a-zA-Z -]*)[’\'”」]', reasoning)
+    variants = [question['answer'], *question.get('accepted_variants', '').split('/')]
+    accepted = {v.strip().casefold() for v in variants if v.strip()}
+    return [v for v in quoted if v.strip().casefold() not in accepted]
+
+
 def audit(folder, ids):
     counts = Counter()
     examples = {}
@@ -35,6 +46,11 @@ def audit(folder, ids):
         for q in d['questions']:
             n = q['numbers'][0]
             r = y['questions'][str(n)]
+            if 'Completion' in q['kind'] and '____' not in q['question']:
+                raise ValueError(f'{pid} Q{n}: completion prompt has no visible gap')
+            bank = q.get('word_bank', {})
+            if q['answer'] in bank and q.get('chosen_text') != bank[q['answer']]:
+                raise ValueError(f'{pid} Q{n}: answer label differs from the printed choice')
             if len(re.findall(r'[\u3400-\u9fff]', r['logic'])) < 24 or not r['evidence']:
                 raise ValueError(f'{pid} Q{n}: no usable reasoning or evidence')
             if not all(isinstance(x, int) and 1 <= x <= sentence_count for x in r['evidence']):
@@ -56,6 +72,9 @@ def audit(folder, ids):
             answers = set(q['answer'].upper().split('、'))
             if codes and re.fullmatch(r'(?:TRUE|FALSE|NOT GIVEN|YES|NO|[A-K](?:、[A-K])*)', q['answer']) and not set(codes) <= answers:
                 warnings.append({'lesson':pid,'q':n,'answer':q['answer'],'explicit':codes,'reasoning':r['logic']})
+            conflicts = fill_results(q, r['logic'])
+            if conflicts:
+                warnings.append({'lesson':pid,'q':n,'answer':q['answer'],'explicit':conflicts,'reasoning':r['logic']})
             counts['questions'] += len(q['numbers'])
             counts['groups'] += 1
         grammar = y.get('grammar', [])

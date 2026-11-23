@@ -1,24 +1,33 @@
 {
  "lesson": "C18T1P1",
- "input_sha256": "d7e5eec9c0da45c1764d529a58285b4adfad88a46001bd7c885a3c09b1ee8594",
+ "input_sha256": "78514a9c28e196057444c70fd5dfcd693f2b7eb8e504047ea310a1eafd27acde",
  "version": 2,
  "questions": {
   "1": {
-   "logic": "题干问的是‘垂直管中除了草莓外还种植什么’，原文明确指出‘从相同的垂直管里长出一排排生菜’，并具体列出‘生菜’（lettuc es）在竖管中生长，与草莓并列。而香草如罗勒、鼠尾草等是‘在生菜旁边’生长，非在垂直管中。因此‘lettuc es’是唯一符合‘垂直管中种植’的作物。",
+   "logic": "题干已经给出草莓和香草，要找并列清单中另一种作物。作者先写长出草莓的塑料管，随后写相同的竖管里长着一排排生菜。照原文取复数 lettuces。",
    "evidence": [
     6
    ],
    "quote": "From identical vertical tubes nearby burst row upon row of lettuces;"
   },
   "2": {
-   "logic": "题干问的是未来每日收获的果蔬总重量，原文明确指出当剩余三分之二的场地投入生产时，20名员工每天最多可采收1,000公斤果蔬。该数字是具体且直接对应的数值，符合‘daily harvest of as much as’的表述。其他信息如品种数量（35种）或空间面积（1.4万平方米）与重量无关，无法支撑答案。因此答案应为‘1,000 kg’。",
+   "logic": "抓住 eventually、daily 和 in weight 三处限定。其余场地投入生产后，预计每天最多收获 1,000 kg 果蔬。35 指可能种植的品种数，20 指员工数，都不是重量。答案要带上单位。",
    "evidence": [
     11
    ],
    "quote": "up to 1,000 kg of perhaps 35 different varieties of fruit and vegetables, every day."
   },
+  "3": {
+   "logic": "先分清 10% 的分母。哈迪说这种方式无法供应整座城市，随后估计若能利用闲置空间，可争取满足全市消费量的 5% 至 10%。题干用 as much as 10% 取估计范围的上限，of the city’s 后应填 consumption。这个数是可能达到的目标，并非当前农场的收成。",
+   "evidence": [
+    12,
+    13,
+    14
+   ],
+   "quote": "between 5% and 10% of consumption"
+  },
   "4": {
-   "logic": "题干问的是‘广泛使用的什么’，根据原文第17段提到‘most of the fruit and vegetables we eat have been treated with something like 17 different pesticides’，明确指出果蔬使用了大约17种不同农药，因此答案应为‘pesticides’。原文直接提及‘17 different pesticides’，与‘wide range of’形成对应，符合‘广泛使用’的语义。",
+   "logic": "题干 wide range of 问使用了哪一大类物质。原文说常规种植的果蔬经过大约 17 种不同农药处理。different 提示种类多，空格应填复数 pesticides。",
    "evidence": [
     17
    ],
@@ -39,7 +48,7 @@
    "quote": "not the producers’"
   },
   "7": {
-   "logic": "题干问的是‘选择作物的原因’，原文明确指出‘You can select crop varieties for their flavour, not their resistance to the transport and storage chain’，说明选种是基于风味而非运输或储存耐受性。因此‘flavour’是唯一符合原文事实的答案。",
+   "logic": "题干问的是‘选择作物的原因’，原文明确指出‘You can select crop varieties for their flavour, not their resistance to the transport and storage chain’，说明选种是基于风味而非运输或储存耐受性。因此‘flavour’是符合原文事实的答案。",
    "evidence": [
     21
    ],
@@ -87,5 +96,43 @@
    ],
    "quote": "And beans tend to take up a lot of space for not much return."
   }
- }
+ },
+ "grammar": [
+  {
+   "sentence": 14,
+   "subject": "there",
+   "verb": "’s",
+   "heading": "if 条件、存在句与双重否定",
+   "analysis": "if 从句要求先把足够的闲置空间利用起来。主句 there’s no reason why you shouldn’t … 用双重否定表达“可以把……定为目标”。eventually 和 maybe 都限制这个目标的确定性，5% 至 10% 说的是消费量占比。",
+   "pattern": "If …, there is no reason why … should not aim to …",
+   "task": "Task 2 · 利用学校空地开展园艺活动",
+   "example": "If a school can provide water throughout the summer, there is no reason why it should not aim to turn an unused courtyard into a teaching garden.",
+   "example_zh": "如果学校整个夏季都能供水，就完全可以把将闲置庭院改为教学花园作为目标。",
+   "usage": "aim to 说的是目标，不能拿来证明项目已完成。没有可靠统计时，讨论目标无需自拟百分比。"
+  },
+  {
+   "sentence": 15,
+   "subject": "this",
+   "verb": "is",
+   "heading": "同位语识别机构，which 补充其业务",
+   "analysis": "主句 this is a real-life showcase 说明这一农场可实际展示咨询公司的工作。Agripolis 是 consultancy 的名称。which is currently fielding enquiries 的先行词是该咨询公司，to design, build and equip 并列说明这些业务咨询涉及什么。",
+   "pattern": "X is a showcase for Y, which …",
+   "task": "Task 2 · 公共示范项目的教育价值",
+   "example": "The renovated library is a showcase for the local design team, which helps schools adapt older buildings for pupils with limited mobility.",
+   "example_zh": "这座翻修后的图书馆展示了当地设计团队的成果，该团队帮助学校改造旧楼，方便行动不便的学生使用。",
+   "usage": "将 which 紧接在要补充说明的名词之后。避免在 showcase 与它展示的成果之间插入容易误解的定语。"
+  },
+  {
+   "sentence": 22,
+   "subject": "the water",
+   "verb": "is recycled",
+   "heading": "并列事实、定语从句与结果",
+   "analysis": "第一层先说没有土壤被耗竭。and 接出另一个主句，其主语为 the water，that gently showers … 修饰 water，谓语是 is recycled。so 引出同等产量下耗水量更少的结果，for the same yield 为比较设定共同基准。",
+   "pattern": "X is reused, so the process requires less Y for the same output.",
+   "task": "Task 1 · 比较两种假设的生产流程",
+   "example": "In the second process, cooling water is collected and reused, so less fresh water is required to produce the same number of bottles.",
+   "example_zh": "在第二种流程中，冷却水被收集后重复使用，因此生产同样数量的瓶子需要的淡水更少。",
+   "usage": "只有图示支持水循环时才可这样描述。比较投入量时写出相同的产出，读者才能理解比较的基础。"
+  }
+ ]
 }
