@@ -28,7 +28,7 @@ jobs:
           set -euo pipefail
           test "$(jq -r .part .github/ielts-video-release.json)" = 21-11
           if ! gh release view "$VIDEO_RELEASE" >/dev/null 2>&1; then
-            gh release create "$VIDEO_RELEASE" --draft --target "$GITHUB_SHA" --title '剑桥雅思学术阅读精读视频 · 第21～11册' --notes '正在按顺序归档视频。'
+          gh release create "$VIDEO_RELEASE" --draft --target "$GITHUB_REF_NAME" --title '剑桥雅思学术阅读精读视频 · 第21～11册' --notes '正在按顺序归档视频。'
           fi
           echo "pending=$(gh release view "$VIDEO_RELEASE" --json isDraft --jq .isDraft)" >> "$GITHUB_OUTPUT"
   book:

@@ -56,6 +56,12 @@ def possible_pos(term):
         senses.discard('aux.')
     return [pos for pos in POS_NAMES if pos in senses] or list(POS_NAMES)
 
+def relative_predicate(sentence,term):
+    if term.get('pos')!='v.':return False
+    pattern=(r'\b(?:who|which|that)\s+'+re.escape(term['form'])+
+             r'\s+(?:my|his|her|your|our|their|its|these|those|most|many|several)\b')
+    return bool(re.search(pattern,sentence,re.I))
+
 def clear_pos_conflicts(prepared,words):
     candidates={t['form'].casefold():t for t in prepared['candidates']}
     conflicts=[]
@@ -63,6 +69,8 @@ def clear_pos_conflicts(prepared,words):
         pos=POS.match(value);name=form.casefold()
         if not pos or ' ' in name:continue
         if pos[1]=='aux.' and re.fullmatch(r'[a-z]+',name) and name not in AUXILIARIES:
+            conflicts.append(form)
+        elif pos[1]!='v.' and name in candidates and relative_predicate(prepared['en'],candidates[name]):
             conflicts.append(form)
         elif name.endswith('ly') and name in candidates and possible_pos(candidates[name])==['adv.'] and pos[1]!='adv.':
             conflicts.append(form)
@@ -462,7 +470,7 @@ def ground_vocabulary(row,source,witness,preparation=None):
            if n.get('meaning') and n.get('scope_en',en)==en and n['english'].casefold() in en.casefold()}
     polysemy={'account','address','approach','charge','current','diet','drink','figure','fresh','maintain','matter',
               'novel','object','party','plant','population','present','record','scale','spring','state','stock','subject','survey',
-              'sustain','track','train','trial','volume','water','yet','accommodate'}
+              'sustain','track','train','trial','volume','water','yet','accommodate','sell','place','plague','explosion'}
     prepared={t['form'].casefold():t for t in (preparation or {}).get('candidates',[])}
     restrictions={};open_classes={}
     for v in row['v']:
@@ -471,7 +479,9 @@ def ground_vocabulary(row,source,witness,preparation=None):
         open_classes[v[0]]=[p for p in POS_NAMES if p not in {'aux.','interj.','num.'} or p in allowed]
         # An attributive noun and a participle can reasonably be analysed more than one way.
         # Only constrain normal review when the proposed closed class or an unambiguous adverb conflicts.
-        if (v[0].casefold().endswith('ly') and allowed==['adv.']) or (v[2] in {'aux.','interj.','num.'} and v[2] not in allowed):
+        if relative_predicate(en,term):
+            restrictions[v[0]]=['v.']
+        elif (v[0].casefold().endswith('ly') and allowed==['adv.']) or (v[2] in {'aux.','interj.','num.'} and v[2] not in allowed):
             restrictions[v[0]]=allowed
             if len(allowed)==1:v[2]=allowed[0]
     meanings=[v[3] for v in row['v']]
@@ -479,29 +489,32 @@ def ground_vocabulary(row,source,witness,preparation=None):
     for v in row['v']:
         if v[0].casefold() in exact:
             note=exact[v[0].casefold()];v[3]=note['meaning'];v[2]=note.get('pos',v[2])
-        elif v[0] in restrictions or v[1].casefold() in polysemy or meanings.count(v[3])>1 or not all(x in zh for x in re.split(r'[；;，、]',v[3]) if x):uncertain.append(v)
+        elif (v[0] in restrictions or v[1].casefold() in polysemy or meanings.count(v[3])>1
+              or prepared.get(v[0].casefold(),{}).get('pos',v[2])!=v[2]
+              or not all(x in zh for x in re.split(r'[；;，、]',v[3]) if x)):uncertain.append(v)
     for off in range(0,len(uncertain),6):
         batch=uncertain[off:off+6]
         schema=record(**{v[0]:record(pos={'type':'string','enum':restrictions.get(v[0],open_classes[v[0]])},
                                      equivalent=STRING,gloss=STRING) for v in batch})
         payload={'English':en,'reviewed_translation':zh,'second_reading':witness,
-                 'words':{v[0]:v[1] for v in batch}}
+                 'words':{v[0]:{'lemma':v[1],'possible_senses':prepared.get(v[0].casefold(),{}).get('dictionary','')[:160]}
+                          for v in batch}}
         instruction=('只核对这一句的词义。逐个读取以实际英文词形命名的字段。先判断这个词在英文中的词性和所指。'
                      '如果审定译句中有适合单独背诵的对应短语，将其逐字摘入equivalent；不是同一意思或不能独立成义就填空。'
                      'gloss中始终只给当句最贴切的一义，一般2至8个汉字，不写“此处指”、释义列表、词性或整段说明。若几个并列词分别对应几个用途，应按顺序核对，不能把相邻一项的意思给当前词。短语的词性可填phr.。'
-                     'second_reading可用于辨别指代，但摘录仅来自reviewed_translation。')
+                     '若是比喻或动词与宾语的搭配，依据实际宾语选择动词义，不能把宾语本身抄作动词义，例如sell an idea指让别人接受想法。'
+                     'possible_senses仅供参考。second_reading可用于辨别指代，但摘录仅来自reviewed_translation。')
         for attempt in range(2):
             response=finite_response(instruction,payload,schema,140+len(batch)*68)
             selected=[];errors=[]
             for v in batch:
                 ans=response[v[0]];quote=ans['equivalent'].strip();gloss=ans['gloss'].strip()
-                usable=bool(quote and quote in zh and len(quote)<=12 and clean(quote)
-                            and not re.search(r'[，,；;。？！：:、“”/|]',quote))
-                val=quote if usable else gloss
-                if not usable:
-                    senses=[s.strip() for s in re.split(r'[，；、]',val)]
-                    supported=[s for s in senses if len(s)>=2 and s in zh]
-                    if len(senses)>1 and len(supported)==1:val=supported[0]
+                # A fluent translation can render a verb and its object together.
+                # The card must still define the headword, even when its best gloss
+                # does not occur verbatim in the translation.
+                val=gloss
+                senses=[s.strip() for s in re.split(r'[，；、]',val)]
+                if len(senses)>1 and quote in senses and quote in zh:val=quote
                 if (not clean(val) or not 0<len(val)<=24 or re.search(r'[|；，、]|此处指|在此处|这里特指|本句中',val)):
                     errors.append(v[0])
                 selected.append((ans['pos'],val))
