@@ -1,4 +1,4 @@
-name: 剑桥雅思第10至1册120篇视频正式整包
+name: 剑桥雅思学术阅读视频正式整包
 on:
   workflow_call:
     inputs:
@@ -32,7 +32,7 @@ jobs:
           ref: codex/ielts-academic-reading
           filter: blob:none
           sparse-checkout: 雅思/学术阅读
-      - name: 按原稿和词汇版本核对120个成片
+      - name: 按本批原稿和词汇版本核对成片
         id: availability
         run: |
           set -euo pipefail

@@ -1,0 +1,14 @@
+name: 发布剑桥雅思第13至6册已核验的视频
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths: ['.github/ielts-aiden-publish-13-6.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    uses: ./.github/workflows/ielts-early-delivery.yml
+    with:
+      aiden_batch: '13-6'

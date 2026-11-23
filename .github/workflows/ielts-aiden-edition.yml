@@ -89,7 +89,8 @@ jobs:
       always() && !cancelled() && needs.plan.outputs.pilot_only != 'true' &&
       needs.plan.result == 'success' && needs.pilot.result == 'success' &&
       (needs.preview.result == 'success' || (needs.plan.outputs.batch != '13-6' && needs.preview.result == 'skipped')) &&
-      (needs.production.result == 'success' || (needs.plan.outputs.remaining == '[]' && needs.production.result == 'skipped'))
+      (needs.production.result == 'success' || (needs.plan.outputs.remaining == '[]' && needs.production.result == 'skipped') ||
+       (needs.plan.outputs.batch == '13-6' && needs.production.result == 'failure'))
     uses: ./.github/workflows/ielts-early-delivery.yml
     with:
       aiden_batch: ${{ needs.plan.outputs.batch }}
