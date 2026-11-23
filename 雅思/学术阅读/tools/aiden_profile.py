@@ -2,6 +2,7 @@
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import sys
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -16,7 +17,7 @@ PROFILE = dict(speaker=SPEAKER, model=MODEL, model_revision=REVISION, direction=
 IDENTITY = hashlib.sha256(json.dumps(PROFILE, sort_keys=True).encode()).hexdigest()
 
 
-def audio_asset(lesson_dir):
+def audio_asset(lesson_dir, *, source_revision=None):
     folder=Path(lesson_dir)
     rows=[line.split('\t')[0] for line in (folder/'双语精读.tsv').read_text().splitlines() if line]
     pron=json.loads((folder/'篇目信息.json').read_text()).get('pronunciation',{})
@@ -25,9 +26,16 @@ def audio_asset(lesson_dir):
            root/'六级/tools/make_audio.py',root/'tools/tts/textnorm.py',root/'tools/tts/voices.json',
            root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
     if any('quercus suber' in row.lower() for row in rows):
-        files.append(PROJECT/'tools/aiden_cork_oak.py')
+        oak=PROJECT/'tools/aiden_cork_oak.py'
+        if source_revision is None or subprocess.run(
+                ['git','cat-file','-e',source_revision+':'+oak.relative_to(root).as_posix()],
+                cwd=root,capture_output=True).returncode==0:
+            files.append(oak)
     key=hashlib.sha256(json.dumps([rows,pron,IDENTITY],ensure_ascii=False).encode())
-    for file in files:key.update(hashlib.sha256(file.read_bytes()).digest())
+    for file in files:
+        data=file.read_bytes() if source_revision is None else subprocess.check_output(
+            ['git','show',source_revision+':'+file.relative_to(root).as_posix()],cwd=root)
+        key.update(hashlib.sha256(data).digest())
     return f'{folder.name}-aiden-{key.hexdigest()[:16]}.zip'
 
 
