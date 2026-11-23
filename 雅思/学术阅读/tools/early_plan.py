@@ -33,11 +33,11 @@ def plan():
         paper=load(PROJECT/'原稿'/(pid+'.json'));prep=load(PROJECT/'备课'/(pid+'.json'))
         if not paper['source_status'].startswith('已逐篇') or [s for g in paper['paragraphs'] for s in g]!=[r['en'] for r in prep['rows']]:
             raise ValueError(pid+' is not tied to the verified academic paper')
-    sample=spec.get('sample',ids[0])
-    if sample not in ids:raise ValueError('Missing sample')
+    samples=spec.get('samples',[spec.get('sample',ids[0])])
+    if not samples or len(set(samples))!=len(samples) or not set(samples)<=set(ids):raise ValueError('Missing or repeated sample')
     with open(os.environ['GITHUB_OUTPUT'],'a') as out:
-        print('sample='+sample,file=out)
-        print('lessons='+json.dumps([i for i in all_ids if i in ids and i!=sample]),file=out)
+        print('samples='+json.dumps(samples),file=out)
+        print('lessons='+json.dumps([i for i in all_ids if i in ids and i not in samples]),file=out)
 
 def wait_previous():
     for rid in load(SPEC).get('after_runs',[]):

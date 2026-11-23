@@ -13,7 +13,7 @@ jobs:
   plan:
     runs-on: ubuntu-24.04
     outputs:
-      sample: ${{ steps.select.outputs.sample }}
+      samples: ${{ steps.select.outputs.samples }}
       lessons: ${{ steps.select.outputs.lessons }}
     env:
       GH_TOKEN: ${{ github.token }}
@@ -36,9 +36,14 @@ jobs:
           gh release view "$tag" >/dev/null 2>&1 || gh release create "$tag" --target "$GITHUB_SHA" --prerelease --title '剑桥雅思学术阅读第10至1册 · 逐篇母版' --notes '按篇保存核验通过的 4K 视频和制作记录，供整包恢复使用。'
   sample:
     needs: plan
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        lesson: ${{ fromJSON(needs.plan.outputs.samples) }}
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
-      lesson: ${{ needs.plan.outputs.sample }}
+      lesson: ${{ matrix.lesson }}
   wait:
     needs: [plan,sample]
     runs-on: ubuntu-24.04

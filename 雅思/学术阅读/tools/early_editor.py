@@ -9,12 +9,13 @@ import subprocess
 import zipfile
 
 from draft_lesson import CJK, TEXT as STRING, record, request_json
+from early_reference import collect as reference_readings
 from lesson import LESSON, PID, PROJECT, save
 from material import verify_original
 from release_assets import fetch, inventory
 from translation import translate_sentence
 
-VERSION = 'paper-context-3'
+VERSION = 'paper-context-4'
 DRAFT = 'ielts-academic-editorial-10-1'
 FILES = ('双语精读.tsv', '篇目信息.json', '分屏.json', 'content-review.json')
 PAPER = PROJECT/'原稿'/(PID+'.json')
@@ -107,8 +108,34 @@ def decide(en,terms):
     if any(len(en[a:b].split())<6 or not any(a<=s and e<=b for t in terms for s,e in positions(en,t['form'])) for a,b in spans):return [en]
     return [en[a:b] for a,b in spans]
 
+COLLOCATIONS=[
+    (r'\b(?:am|is|are|was|were|be|been) based (?:at|in)\b','be based','以……为驻地'),
+    (r'\bit is alleged\b','it is alleged','据称'),
+    (r'\bcombined forces\b','combined forces','合力'),
+    (r'\bput (?:it |this |that |them )(?:all )?down to\b','put … down to','将……归因于'),
+    (r'\bthe four corners of the globe\b','the four corners of the globe','世界各地'),
+    (r'\bat the whim of\b','at the whim of','随……的意愿'),
+    (r'\bkeep(?:s|ing)? pace with\b|\bkept pace with\b','keep pace with','跟上'),
+    (r'\b(?:pins?|pinned|pinning) down\b','pin down','确切地确定'),
+    (r'\b(?:ruled?|rules|ruling) out\b','rule out','排除'),
+    (r'\b(?:paves?|paved|paving) the way for\b','pave the way for','为……铺平道路'),
+    (r'\b(?:sets?|setting) out on\b','set out on','动身踏上'),
+    (r'\b(?:come|comes|came|coming) up with\b','come up with','想出；提出'),
+    (r'\b(?:give|gives|gave|given|giving) rise to\b','give rise to','引起'),
+    (r'\bat the expense of\b','at the expense of','以……为代价'),
+    (r'\bin its own right\b','in its own right','凭其自身'),
+    (r'\b(?:taking|takes?|took|taken) (?:it |this )?for granted\b','take for granted','视为理所当然'),
+    (r'\bno longer\b','no longer','不再'),
+    (r'\bnot necessarily\b','not necessarily','未必'),
+    (r'\bat least as\b','at least as','至少同样'),
+]
+
 def vocabulary(row,prior,notes):
-    en=row['en'];items=[dict(t) for t in row['candidates']]
+    en=row['en'];items=[]
+    for pattern,head,meaning in COLLOCATIONS:
+        hit=re.search(pattern,en,re.I)
+        if hit:items.append(dict(form=hit[0],head=head,pos='phr.',dictionary=meaning))
+    items.extend(dict(t) for t in row['candidates'])
     for entry in notes:
         phrase=entry['english'];spans=positions(en,phrase)
         if spans and 1<=len(phrase.split())<=4 and all(phrase.casefold()!=t['form'].casefold() for t in items):
@@ -156,11 +183,22 @@ def good(en,parts,terms,zh,meanings,previous):
     return True
 
 def gloss_value(value,fallback):
-    value=value.strip()
-    match=POS.match(value)
-    if match and match[1].lower() in {'n.','v.','adj.','adv.','prep.','conj.','aux.','num.','pron.','phr.','abbr.','interj.'}:
-        return match[1].lower(),CJK_POS.sub('',match[2].strip())
-    return fallback,CJK_POS.sub('',value)
+    text=value.strip()
+    aliases={'a.':'adj.','ad.':'adv.','vt.':'v.','vi.':'v.','v.t.':'v.','v.i.':'v.','pl.':'n.','phrase.':'phr.'}
+    allowed={'n.','v.','adj.','adv.','prep.','conj.','aux.','num.','pron.','phr.','abbr.','interj.'}
+    pos=fallback
+    for i in range(3):
+        match=re.match(r'^([a-z.]{1,10}\.)\s*',text,re.I)
+        if not match:break
+        found=aliases.get(match[1].lower(),match[1].lower())
+        if found not in allowed:break
+        pos=found
+        text=text[match.end():]
+    return pos,CJK_POS.sub('',text.strip())
+
+def revision(value):
+    reject={'正确','无误','留空','空字符串','原译正确','无需修改','无须修改','不需修改','无需改动','不变','保持不变','同原文','N/A'}
+    return '' if value.strip() in reject else value.strip()
 
 def confirmed_names(rows,known):
     registered=set(known)
@@ -185,9 +223,19 @@ def teach(index,source,prep,prior,previous,workdir):
     n=index+1;en=prep['en']
     patch=corrections().get(str(n))
     if patch:
-        if patch['en']!=en or len(patch['parts'])!=1 or not all(positions(en,t[0]) for t in patch['terms']):
+        anchors=patch.get('cuts',[])
+        if patch['en']!=en or any(en.count(a)!=1 for a in anchors):
             raise ValueError(f'Manual translation no longer matches {PID}/{n}')
-        return dict(n=n,en=en,zh=''.join(patch['parts']),parts=patch['parts'],english_parts=[en],v=patch['terms'],
+        marks=[en.index(a) for a in anchors]
+        chunks=[en[a:b] for a,b in zip([0]+marks,marks+[len(en)])]
+        terms=patch['terms']
+        spans=[positions(en,t[0]) for t in terms]
+        if (marks!=sorted(set(marks)) or not all(spans) or
+                any(a<cut<b for offsets in spans for a,b in offsets for cut in marks) or
+                not all(any(positions(chunk,t[0]) for t in terms) for chunk in chunks) or
+                not good(en,chunks,terms,patch['parts'],[t[3] for t in terms],previous)):
+            raise ValueError(f'Manual translation, vocabulary or screen boundary differs from {PID}/{n}')
+        return dict(n=n,en=en,zh=''.join(patch['parts']),parts=patch['parts'],english_parts=chunks,v=terms,
                     independent_translation='',paper_edited=True)
     notes=[a for a in source.get('language_review',[]) if a.get('scope_en',en)==en and a['english'].casefold() in en.casefold()]
     terms=vocabulary(prep,prior.get(en,[]),notes)
@@ -200,13 +248,13 @@ def teach(index,source,prep,prior,previous,workdir):
     if not clean(direct):direct=''
     phrases=fields('p',len(chunks));words=fields('w',len(terms))
     schema=record(translation=record(**dict.fromkeys(phrases,STRING)),vocabulary=record(**dict.fromkeys(words,STRING)))
-    data={'passage':source['title'],'English':dict(zip(phrases,chunks)),'reference':direct,
+    data={'passage':source['title'],'English':dict(zip(phrases,chunks)),
           'words':{k:[t['form'],t['head'],t.get('pos',''),t.get('dictionary','')[:115],
                          prep['term_hints'].get(t['form'],t.get('earlier_sense',''))] for k,t in zip(words,terms)},
           'paper_notes':[a['check'] for a in notes]}
     # The paper context is already represented by its title and scoped terms.
     # Keep the previous sentence out of the translation prompt to avoid carrying its quantities over.
-    instruction=(EDITOR+' translation的p字段逐段翻译，vocabulary每个w字段只写这个词此处的中文义。'
+    instruction=(EDITOR+' 不把一般的合作译成作战，不为普通比较添入“远远、大大”，不把上文推知的目的写入当句。translation的p字段逐段翻译，vocabulary每个w字段只写这个词此处的中文义。'
                  '格式是英语词性加一个空格再加当句中文义，例如 v. 记录。按句法核对词性。普通助动词可留空，其余重要词与搭配请写全。')
     for attempt in range(3):
         answer=finite_response(instruction,data,schema,min(2700,max(350,155+len(en)//2+len(terms)*31)))
@@ -226,28 +274,28 @@ def teach(index,source,prep,prior,previous,workdir):
     row=assemble(n,en,zh,chosen,meanings);row['english_parts']=chunks;row['independent_translation']=direct
     return row
 
-def verify(group,source,all_rows):
+def verify(group,source,all_rows,witness=None):
     manual={r['n']:dict(r,review_reason='依据原句逐词核定词形、语境义和完整译文。') for r in group if r.get('paper_edited')}
     auto=[r for r in group if r['n'] not in manual]
     if not auto:return [manual[r['n']] for r in group]
     items={};schema={}
     for r in auto:
         k='s'+str(r['n']);pn=fields('p',len(r['parts']));wn=fields('w',len(r['v']))
-        items[k]={'English':dict(zip(pn,r['english_parts'])),'Chinese':dict(zip(pn,r['parts'])),'reference':r['independent_translation'],
+        items[k]={'English':dict(zip(pn,r['english_parts'])),'Chinese':dict(zip(pn,r['parts'])),'alternative_translation':r['independent_translation'],'second_reading':(witness or {}).get(r['n'],''),
                   'terms':{w:[v[0],v[2],v[3]] for w,v in zip(wn,r['v'])}}
         schema[k]=record(translation=record(**dict.fromkeys(pn,STRING)),glosses=record(**dict.fromkeys(wn,STRING)),reason=STRING)
     instruction=('以英文为唯一依据校对简体中文教辅。每个p或w字段只在原译确实错时写改正后的完整译段或简短语境义，'
                  '正确的字段留空字符串。reason 用简短中文指出有实际修改处的依据，全部正确则填空字符串。'
-                 '核对动作主体、否定、条件、数字、语气、词性和词义，不加背景。修正词性时写如 v. 记录。各屏中英文须对应。')
+                 '两种参考译法只辅助判断，也可能有误。不得照搬，只依据英文核对动作主体、否定、条件、数字、语气、词性和词义。删除无英文依据的程度副词、军事比喻、目的解释。修正词性时写如 v. 记录。各屏中英文须对应。')
     payload={'title':source['title'],'sentences':items}
     for attempt in range(3):
         resp=finite_response(instruction,payload,record(**schema),max(450,min(2300,270+sum(len(r['v'])*29+len(r['en'])//2 for r in auto))))
         checked=dict(manual);errors=[]
         for r in auto:
             v=resp['s'+str(r['n'])];row=dict(r);row['v']=[list(x) for x in r['v']]
-            row['parts']=[v['translation'][k].strip() or old for k,old in zip(fields('p',len(r['parts'])),r['parts'])]
+            row['parts']=[revision(v['translation'][k]) or old for k,old in zip(fields('p',len(r['parts'])),r['parts'])]
             for k,t in zip(fields('w',len(row['v'])),row['v']):
-                fix=v['glosses'][k].strip()
+                fix=revision(v['glosses'][k])
                 if fix:t[2],t[3]=gloss_value(fix,t[2])
             row['zh']=''.join(row['parts']);changed=row['parts']!=r['parts'] or row['v']!=r['v']
             row['review_reason']=v['reason'].strip() if changed else ''
@@ -274,12 +322,13 @@ def editorial():
         if i+1 in {3,7} or (i+1)%10==0:
             subprocess.run(['gh','release','upload',DRAFT,str(statefile),'--clobber'],check=True)
         print(PID,'draft',i+1,'/',len(rows),flush=True)
+    witness=reference_readings(source,wp)
     for i in range(len(state['verified']),len(rows),3):
-        state['verified'].extend(verify(state['drafted'][i:i+3],source,rows));save(statefile,state)
+        state['verified'].extend(verify(state['drafted'][i:i+3],source,rows,witness));save(statefile,state)
         print(PID,'checked',len(state['verified']),'/',len(rows),flush=True)
-    output(source,state['verified'])
+    output(source,state['verified'],len(witness))
 
-def output(source,rows):
+def output(source,rows,reference_count):
     LESSON.mkdir(parents=True,exist_ok=True)
     terms={};lines=[];cuts={};marks=[];i=0
     for group in source['paragraphs']:
@@ -308,8 +357,8 @@ def output(source,rows):
     meta.update(genre='剑桥雅思 · 学术阅读',header={'english':short_en,'chinese':short_zh},lemmas={},row_lemmas=terms,zh_names=confirmed_names(rows,known_names),pronunciation={})
     save(LESSON/'篇目信息.json',meta);save(LESSON/'分屏.json',{PID:cuts})
     proof={'id':PID,'source_sha256':digest(PAPER),'candidate_sha256':digest(PREP),'editor_version':VERSION,'key':key(),'reading_units':len(rows),
-           'vocabulary_entries':sum(len(r['v']) for r in rows),'split_sentences':len(cuts),'translation_review':{'sentences_checked':len(rows),'corrections':marks,
-           'model_basis':'Independent sentence-only HY-MT reference, Qwen contextual editor and separate source-based correction; kept Chinese parts, surface forms and local meanings.'},
+           'vocabulary_entries':sum(len(r['v']) for r in rows),'split_sentences':len(cuts),'translation_review':{'sentences_checked':len(rows),'paper_edited_sentences':sum(bool(r.get('paper_edited')) for r in rows),'aligned_independent_readings':reference_count,'corrections':marks,
+           'model_basis':'English-first teaching draft; source-based review with independent HY-MT and tightly aligned published readings where available. Paper-edited lines retain the confirmed translation and glossary.'},
            'text_sha256':digest(LESSON/FILES[0]),'metadata_sha256':digest(LESSON/FILES[1]),'split_sha256':digest(LESSON/FILES[2]),'checked':False}
     save(LESSON/'content-review.json',proof);store_candidate()
 
@@ -319,14 +368,17 @@ def store_candidate():
     subprocess.run(['gh','release','upload',DRAFT,str(work()/(key()+'-teaching.zip')),'--clobber'],check=True)
 
 def restore():
-    name=key()+'-teaching.zip';assets=inventory(DRAFT)
-    if name not in assets:return False
-    path=fetch(assets[name],work());LESSON.mkdir(parents=True,exist_ok=True)
-    with zipfile.ZipFile(path) as z:
-        if set(z.namelist())!=set(FILES):raise ValueError('Unexpected teaching material')
-        for f in FILES:(LESSON/f).write_bytes(z.read(f))
+    fingerprint=key()
+    local=(LESSON/FILES[3]).is_file() and all((LESSON/f).is_file() for f in FILES[:3])
+    if not local or read(LESSON/FILES[3]).get('key')!=fingerprint:
+        name=fingerprint+'-teaching.zip';assets=inventory(DRAFT)
+        if name not in assets:return False
+        path=fetch(assets[name],work());LESSON.mkdir(parents=True,exist_ok=True)
+        with zipfile.ZipFile(path) as z:
+            if set(z.namelist())!=set(FILES):raise ValueError('Unexpected teaching material')
+            for f in FILES:(LESSON/f).write_bytes(z.read(f))
     p=read(LESSON/FILES[3])
-    if p['key']!=key() or any(digest(LESSON/f)!=p[k] for f,k in zip(FILES[:3],('text_sha256','metadata_sha256','split_sha256'))):raise ValueError('Restored teaching material does not match paper')
+    if p['key']!=fingerprint or p['source_sha256']!=digest(PAPER) or p['candidate_sha256']!=digest(PREP) or any(digest(LESSON/f)!=p[k] for f,k in zip(FILES[:3],('text_sha256','metadata_sha256','split_sha256'))):raise ValueError('Restored teaching material does not match paper')
     verify_original(PROJECT,PID);return True
 
 def seal():
