@@ -10,6 +10,8 @@ files=("$TARGET"/最终视频/*.mp4)
 test "${#files[@]}" -eq 1
 /opt/ttsenv/bin/python "$TARGET/tools/check_ending.py" "${files[0]}" "$RUNNER_TEMP/out/ending.json"
 if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
-  if [[ "$IELTS_LESSON" == C12T1P1 ]]; then /opt/ttsenv/bin/python -m pip install -q pocketsphinx==5.0.4; fi
+  case "$IELTS_LESSON" in
+    C12T1P1|C13T2P1) /opt/ttsenv/bin/python -m pip install -q pocketsphinx==5.0.4 ;;
+  esac
   /opt/ttsenv/bin/python "$TARGET/tools/aiden_encoded_audio.py" "${files[0]}" "$RUNNER_TEMP/out/phrase-playback.json"
 fi

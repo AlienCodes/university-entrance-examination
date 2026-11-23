@@ -52,13 +52,19 @@ class Aiden:
             folder=restore(Path(os.environ['IELTS_AIDEN_MODEL_PATH']),verify_only=True)
             self.model=Qwen3TTSModel.from_pretrained(str(folder),dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
         instruction=DIRECTION
-        names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items() if re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
+        names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items()
+               if name.casefold() != 'ceylonese' and re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
         if words(script) in (['quercus','suber'], ['quirkus','soober']):
             from aiden_cork_oak import HINT
             instruction += ' ' + HINT
         if re.search(r'\bLei Tzu\b',script,re.I):
             instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
+        if re.search(r'\b(?:Ceylonese|see-luh-neez)\b',script,re.I):
+            from aiden_ceylonese import HINT
+            instruction += ' ' + HINT
+        if 'I I N C E' in script:
+            instruction += ' Read the five initials I, I, N, C, E clearly in one connected group, including both initial I sounds.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -87,7 +93,8 @@ class Aiden:
                                       issue=self.rejected_master_takes[data['sha256']])
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
-                elif data.get('policy') == POLICY and words(script) != ['quercus','suber']:
+                elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
+                      and 'ceylonese' not in words(script)):
                     return wave,data
                 else:
                     try:
@@ -118,6 +125,8 @@ class Aiden:
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
                 if words(script) == ['quercus','suber']:
                     spoken = 'Quirkus Soober'
+                elif 'ceylonese' in words(script):
+                    spoken = re.sub(r'\bCeylonese\b', 'see-luh-NEEZ', spoken, flags=re.I)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
             sf.write(file,wav,24000,subtype='PCM_24')

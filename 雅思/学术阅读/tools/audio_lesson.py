@@ -33,6 +33,8 @@ def early_reading_forms(text,pid):
     text=re.sub(r'\b(\d{1,2})\.(\d{2})(?=\s+[ap]\.m\.)',r'\1 \2',text)
     if pid=='C8T1P2':
         text=re.sub(r'(\d[\d,]*)m\b',r'\1 metres',text)
+    if pid=='C9T2P1':
+        text=text.replace('I-INCE','I I N C E')
     if pid=='C4T3P3':
         text=re.sub(r'_{1,}', 'blank', text)
     return text

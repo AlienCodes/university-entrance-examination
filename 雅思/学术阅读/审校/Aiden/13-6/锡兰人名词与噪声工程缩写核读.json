@@ -1,0 +1,161 @@
+{
+ "lessons": [
+  "C13T2P1",
+  "C9T2P1"
+ ],
+ "stage": "词典真人录音与既有 Aiden 原声对照。新版 Aiden 成片另需通过整篇音轨及 MP4 实测。",
+ "references": [
+  {
+   "source": "Cambridge Dictionary, US",
+   "page": "https://dictionary.cambridge.org/pronunciation/english/ceylonese",
+   "audio": "https://dictionary.cambridge.org/media/english/us_pron/e/eus/eus70/eus70765.mp3",
+   "ipa": "ˌsiː.ləˈniːz"
+  },
+  {
+   "source": "Merriam-Webster",
+   "page": "https://www.merriam-webster.com/dictionary/Ceylonese",
+   "audio": "https://media.merriam-webster.com/audio/prons/en/us/mp3/gg/ggceyl03.mp3",
+   "transcription": "¦sālə¦nēz"
+  }
+ ],
+ "ceylonese": [
+  {
+   "case": "Cambridge American",
+   "sha256_source": "bf3c92a31cd751bb88f7b9a0695aa96f4c7121e36fd1db20b70c7acb48bf3666",
+   "passed": true,
+   "asr": [
+    "Ceylonese",
+    "seal a knees"
+   ],
+   "assessment": {
+    "dictionary_reading": "see-luh-neez",
+    "score": 0.525,
+    "start": 0.01,
+    "end": 0.91
+   }
+  },
+  {
+   "case": "Merriam-Webster American",
+   "sha256_source": "6f5ef63aca8b58b03112a2fed04657de676b9b3757bc23d0bedc4aff969127ea",
+   "passed": true,
+   "asr": [
+    "Ceylonese",
+    "Salenese"
+   ],
+   "assessment": {
+    "dictionary_reading": "say-luh-neez",
+    "score": 0.715,
+    "start": 0.02,
+    "end": 1.01
+   }
+  },
+  {
+   "case": "former Aiden sentence 22 pronunciation",
+   "sha256_source": "64737f08ff91ef3d4ab75c3912c3132b7c2d990ea24d6dfe6cc32d68b2a2ee0e",
+   "passed": false,
+   "asr": [
+    "and so enslaved many other members of the Silanese native population.",
+    "and so enslaved many other members of the Cylonese native population."
+   ],
+   "assessment": {
+    "reason": "Ceylonese differs from the selected dictionary readings: ['sell-luh-neez']"
+   }
+  },
+  {
+   "case": "middle of word interrupted for 280 ms",
+   "sha256_source": "bf3c92a31cd751bb88f7b9a0695aa96f4c7121e36fd1db20b70c7acb48bf3666",
+   "passed": false,
+   "asr": [
+    "See Lines",
+    "seal an ease."
+   ],
+   "assessment": {
+    "reason": "Ceylonese differs from the selected dictionary readings: ['see-luh-nee']"
+   }
+  },
+  {
+   "case": "missing final syllable",
+   "sha256_source": "6f5ef63aca8b58b03112a2fed04657de676b9b3757bc23d0bedc4aff969127ea",
+   "passed": false,
+   "asr": [
+    "Salini",
+    "salinity"
+   ],
+   "assessment": {
+    "reason": "Neither independent transcription heard the ending of Ceylonese"
+   }
+  },
+  {
+   "case": "different printed context",
+   "sha256_source": "64737f08ff91ef3d4ab75c3912c3132b7c2d990ea24d6dfe6cc32d68b2a2ee0e",
+   "passed": false,
+   "asr": [
+    "and so enslaved many other members of the Silanese native population.",
+    "and so enslaved many other members of the Cylonese native population."
+   ],
+   "assessment": {
+    "reason": "The two sides of Ceylonese or its onset differ from the printed phrase"
+   }
+  }
+ ],
+ "old_source": {
+  "run": 45216943280,
+  "lesson": "C13T2P1",
+  "sentence": 22,
+  "archive_sha256": "67418fe6530034fdaf6adaa5c5d529eac7a93f9686b59e1c1462cb7db70fde76"
+ },
+ "acronym_script_regression": {
+  "lesson": "C9T2P1",
+  "sentence": 11,
+  "printed": "The International Institute of Noise Control Engineering (I-INCE), on the advice of the World Health Organization, has established an international working party, which includes New Zealand, to evaluate noise and reverberation control for school rooms.",
+  "spoken": "The International Institute of Noise Control Engineering, I I N C E, on the advice of the World Health Organization, has established an international working party, which includes New Zealand, to evaluate noise and reverberation control for school rooms.",
+  "group": "I I N C E,",
+  "transcript_cases": [
+   [
+    "I I N C E",
+    true
+   ],
+   [
+    "Eye eye en see ee",
+    true
+   ],
+   [
+    "I.I.N.C.E.",
+    true
+   ],
+   [
+    "I N C E",
+    false
+   ],
+   [
+    "I I N E",
+    false
+   ],
+   [
+    "I I C E",
+    false
+   ],
+   [
+    "I I N C",
+    false
+   ],
+   [
+    "I I N C E E",
+    false
+   ],
+   [
+    "I-INCE",
+    false
+   ],
+   [
+    "INCES",
+    false
+   ],
+   [
+    "I",
+    false
+   ]
+  ],
+  "official_abbreviation": "https://i-ince.org/rules/"
+ }
+}

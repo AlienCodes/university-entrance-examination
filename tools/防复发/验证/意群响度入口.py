@@ -61,12 +61,12 @@ PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整�
         'reason': '在 APT 依赖清单中声明 espeak-ng、sox 和 ffmpeg，实际执行安装与检查。脚本不调用朗读模型，不处理或写出音频。',
     },
     '.github/install-ielts-native-speech.sh': {
-        'sha256': 'd25c09ec3cd4a7319f930785b11c69bcf204d3f2daa20f766d74465ee0147150', 'audio': True, 'video': False,
+        'sha256': 'd913cdac74b5f6804c3922ee3e7d0be48889a06e56ddf4837ce799eda859e513', 'audio': True, 'video': False,
         'reason': '只安装已锁定的语音、读音和检测依赖；脚本不产生音频文件。',
     },
     '雅思/学术阅读/tools/aiden_boundaries.py': {
-        'sha256': '4e9c10e36be768c1d4f6b3bf7f5d44e850c8cf198a780911707a3ea7b71cc868', 'audio': True, 'video': False,
-        'reason': 'espeak 的 -q --ipa 只返回音标，ffmpeg 解码到内存。人名同音拼写和栓皮栎学名核读均不写音频，仅输出逐意群核验 JSON。',
+        'sha256': '10bbe556f3328fbbce1ccebe53d6f021f35b8bdf24b629027dcfebd12e2a1c8b', 'audio': True, 'video': False,
+        'reason': 'espeak 的 -q --ipa 只返回音标，ffmpeg 解码到内存。人名同音拼写、栓皮栎学名、Ceylonese 两种美音词典录音及 I-INCE 五个字母的核读均不写音频，仅输出逐意群核验 JSON。',
     },
     '雅思/学术阅读/声音试听/sample.py': {
         'sha256': '9f32f7296e7204e4701843cb6c9d6b04e62b09a3835bd9b0458ac2c0094697b7', 'audio': True, 'video': False,

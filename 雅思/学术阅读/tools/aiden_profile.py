@@ -25,12 +25,14 @@ def audio_asset(lesson_dir, *, source_revision=None):
     files=[Path(__file__),PROJECT/'tools/aiden_audio.py',PROJECT/'tools/aiden_boundaries.py',PROJECT/'tools/audio_lesson.py',PROJECT/'声音试听/sample.py',
            root/'六级/tools/make_audio.py',root/'tools/tts/textnorm.py',root/'tools/tts/voices.json',
            root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
-    if any('quercus suber' in row.lower() for row in rows):
-        oak=PROJECT/'tools/aiden_cork_oak.py'
+    for name, filename in [('quercus suber','aiden_cork_oak.py'),('ceylonese','aiden_ceylonese.py')]:
+        if not any(name in row.lower() for row in rows):
+            continue
+        checker=PROJECT/'tools'/filename
         if source_revision is None or subprocess.run(
-                ['git','cat-file','-e',source_revision+':'+oak.relative_to(root).as_posix()],
+                ['git','cat-file','-e',source_revision+':'+checker.relative_to(root).as_posix()],
                 cwd=root,capture_output=True).returncode==0:
-            files.append(oak)
+            files.append(checker)
     key=hashlib.sha256(json.dumps([rows,pron,IDENTITY],ensure_ascii=False).encode())
     for file in files:
         data=file.read_bytes() if source_revision is None else subprocess.check_output(

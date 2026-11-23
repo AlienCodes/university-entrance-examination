@@ -17,6 +17,9 @@ from textnorm import normalize
 
 from aiden_profile import PAUSE_POLICY as POLICY
 RATE = 16000
+# The institute spells its initialism I-INCE. Require both I's in the spoken expansion.
+NOISE_INITIALS = re.compile(r'\b(?:I|eye)[\s.,-]+(?:I|eye)[\s.,-]+(?:N|en)[\s.,-]+'
+                            r'(?:C|see|sea)[\s.,-]+(?:E|ee)\b', re.I)
 
 
 class JoinError(ValueError):
@@ -32,6 +35,7 @@ class MasteredPhraseError(ValueError):
 
 
 def words(text):
+    text = NOISE_INITIALS.sub('I I N C E', text)
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
     text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)
@@ -113,7 +117,16 @@ def assess(audio, text, transcript=None):
         return {'text':text, 'heard':transcript, 'second_heard':alternate,
                 'botanical_pronunciation':proof,
                 'checked_internal_gaps':[[round(a/RATE,3),round(b/RATE,3)] for a,b in pauses]}
-    if not matches(expected, words(transcript)):
+    name_evidence = None
+    if 'ceylonese' in expected:
+        from aiden_ceylonese import verify
+        alternate = independent(audio)
+        name_evidence = verify(audio, text, transcript, alternate)
+    elif NOISE_INITIALS.search(text):
+        alternate = independent(audio)
+        if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
+            raise ValueError(f'The five spoken letters I I N C E or their context differ: {transcript!r} / {alternate!r}')
+    elif not matches(expected, words(transcript)):
         alternate = independent(audio)
         # If the two decoders disagree, only the full printed sequence can resolve it.
         if words(alternate) != expected:
@@ -135,6 +148,8 @@ def assess(audio, text, transcript=None):
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
     if alternate is not None:
         result['second_heard']=alternate
+    if name_evidence is not None:
+        result['ceylonese_pronunciation']=name_evidence
     return result
 
 
