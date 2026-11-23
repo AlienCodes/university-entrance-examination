@@ -8,7 +8,7 @@ import re
 import subprocess
 import zipfile
 
-from draft_lesson import CJK, TEXT as STRING, array, confirmed_names, positions, record, request_json
+from draft_lesson import CJK, TEXT as STRING, array, confirmed_names, record, request_json
 from lesson import LESSON, PID, PROJECT, save
 from material import verify_original
 from release_assets import fetch, inventory
@@ -73,6 +73,11 @@ def old_terms():
 
 def clean(text):
     return isinstance(text,str) and CJK.search(text) and not NOISE.search(text)
+
+def positions(sentence,surface):
+    # Screen offsets must point into the printed string even after a unit symbol,
+    # roman numeral or ellipsis that would expand under Unicode normalization.
+    return [m.span() for m in re.finditer(r'(?<!\w)'+re.escape(surface)+r'(?!\w)',sentence,re.I)]
 
 def boundaries(en,terms):
     blocked=[(a,b) for v in terms for a,b in positions(en,v['form'])]

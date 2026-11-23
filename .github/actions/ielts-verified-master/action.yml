@@ -12,11 +12,32 @@ runs:
         browser: '141'
         asr: 'true'
     - name: 逐屏检查排版、译文与语境标注
+      id: native_layout
+      continue-on-error: ${{ inputs.early_review == 'true' }}
       shell: bash
       run: |
         if [[ -n "${IELTS_WORK:-}" ]]; then exec > >(tee "$IELTS_WORK/native-layout.log") 2>&1; fi
         /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" stills
         /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" lock
+
+    - uses: ./.github/actions/ielts-local-editor
+      if: inputs.early_review == 'true' && steps.native_layout.outcome == 'failure' && env.IELTS_EDITOR_BIN == ''
+    - uses: ./.github/actions/ielts-translation
+      if: inputs.early_review == 'true' && steps.native_layout.outcome == 'failure' && env.IELTS_MT_BIN == ''
+    - name: 按实测画面重排超出的意群并重新核验
+      if: inputs.early_review == 'true' && steps.native_layout.outcome == 'failure'
+      shell: bash
+      run: |
+        set -euo pipefail
+        for attempt in 1 2; do
+          bash .github/run-ielts-editors.sh python "$TARGET/tools/repair_early_layout.py"
+          if /opt/ttsenv/bin/python "$TARGET/tools/pilot_video.py" stills > "$IELTS_WORK/native-layout.log" 2>&1; then
+            /opt/ttsenv/bin/python "$TARGET/tools/series_render.py" lock
+            exit 0
+          fi
+        done
+        cat "$IELTS_WORK/native-layout.log"
+        exit 1
     - name: 保存早期册逐屏复核定稿
       if: inputs.early_review == 'true'
       shell: bash

@@ -12,8 +12,34 @@ from textnorm import ordinal
 import soundfile as sf
 import 去呼吸
 
+
+def early_reading_forms(text,pid):
+    """Expand the printed abbreviations whose readings depend on the subject of these books."""
+    text=text.replace('￡','£').replace('℃','°C')
+    text=re.sub(r'(\d)\s+%',r'\1%',text)
+    text=re.sub(r'(\d[\d,.]*)\s*km/h\b',r'\1 kilometres per hour',text)
+    text=re.sub(r'(\d)\s+ml\b',r'\1 millilitres',text)
+    text=re.sub(r'\$\s+(?=\d)','$',text)
+    text=re.sub(r'\$US\s*([\d,]+(?:\.\d+)?)\s+(million|billion)\b',r'\1 \2 U.S. dollars',text)
+    text=text.replace('ADD/ADHD','A D D or A D H D').replace('(= family)','(meaning family)')
+    text=text.replace('el niño / la niña','El Niño and La Niña').replace('105/1000','105 per thousand')
+    text=text.replace('February/ March','February or March').replace('mind/body/spirit','mind, body and spirit')
+    text=text.replace('house/ hotel','house or hotel').replace('Korn/Ferry/Carre/Orban','Korn Ferry Carre Orban').replace('Korn/Ferry','Korn Ferry')
+    text=text.replace('Phase III','Phase Three').replace('Phase II','Phase Two').replace('Phase I','Phase One')
+    text=text.replace('George III','George the Third').replace('PM10','P M ten')
+    text=text.replace('S.K.I.','S K I').replace('Y.W.C.A.','Y W C A')
+    text=text.replace('«','“').replace('»','”')
+    text=re.sub(r'\b(\d{1,2})\.(\d{2})(?=\s+[ap]\.m\.)',r'\1 \2',text)
+    if pid=='C8T1P2':
+        text=re.sub(r'(\d[\d,]*)m\b',r'\1 metres',text)
+    if pid=='C4T3P3':
+        text=re.sub(r'_{1,}', 'blank', text)
+    return text
+
 class Reader(cet.G.Pronouncer):
     def read_text(self, original, key=None):
+        if int(PID[1:PID.index('T')]) <= 10:
+            original = early_reading_forms(original,PID)
         text = original.replace('ā', 'a').replace('ō','o')
         if PID != 'C20T1P1':
             # Asterisks refer to the printed footnotes and are silent in speech.
