@@ -65,18 +65,25 @@ def page_plan(pages, source_frames):
 
 def checked(pid, core, report, assets):
     painted=illustration(pid)
-    movie=movie_name(pid,core['video_sha256'],painted,report['video_sha256'])
+    current_name=movie_name(pid,core['video_sha256'],painted,report['video_sha256'])
+    prior_name=f"{pid}-illustrated-{core['video_sha256'][:16]}-{painted[:16]}.mp4"
+    movie=report.get('filename')
+    if movie not in (current_name,prior_name):
+        raise ValueError(pid+' illustrated file name does not identify this source and picture')
     item=assets.get(movie,{})
     ending=report.get('ending',{})
+    required_tail={report['frames']-120,report['frames']-60}
+    actual_tail={round(seconds*30) for seconds in ending.get('tail_keyframes',[])}
     audio=report.get('audio',{})
     if (report.get('policy')!=POLICY or report.get('lesson')!=pid or report.get('full_movie') is not True
         or report.get('core_sha256')!=core['video_sha256'] or report.get('illustration_sha256')!=painted
-        or report.get('core_material_sha256')!=core['material_sha256'] or report.get('filename')!=movie
+        or report.get('core_material_sha256')!=core['material_sha256']
         or (report['plate_start'],report['plate_frames'],report['first_reading_frame'])!=(45,30,75)
         or report['frames']!=report['source_frames']+30 or (report['width'],report['height'])!=(3840,2160)
         or abs(report['video_seconds']-core['video_seconds']-1)>.002
         or not audio.get('original_aac_packets') or report.get('source_phrases')!=core['verified_phrases']
         or ending.get('decoded_last_three_seconds_frames')!=90 or not ending.get('desktop_html5_playback',{}).get('ended')
+        or not required_tail<=actual_tail
         or len(report['screens'])!=core['pages']+1 or report['screens'][1]!=dict(page=2,screen='篇目插图',frame=60)
         or item.get('digest')!='sha256:'+report['video_sha256'] or item.get('size')!=report['video_bytes']):
         raise ValueError(pid+' illustrated master or its remote receipt does not match the current text, picture and audio')
