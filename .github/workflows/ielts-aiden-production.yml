@@ -22,7 +22,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           filter: blob:none
-          sparse-checkout: .github
+          sparse-checkout: |
+            .github
+            雅思/学术阅读
+            六级/tools
+            tools/tts
       - id: read
         run: |
           set -euo pipefail
@@ -36,17 +40,12 @@ jobs:
         if: steps.read.outputs.certified_audio == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          IELTS_NARRATOR: Aiden
+          IELTS_AIDEN_BATCH: ${{ steps.read.outputs.batch }}
         run: |
           set -euo pipefail
-          run=$(jq -r '.after_audio_run // empty' .github/ielts-aiden-batch.json)
-          if [[ -z "$run" ]]; then exit 0; fi
-          while true; do
-            record=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run")
-            jq -e --arg ref "$GITHUB_REF_NAME" '.head_branch==$ref and .path==".github/workflows/ielts-aiden-pilot-recovery.yml"' <<<"$record" >/dev/null
-            if [[ "$(jq -r .status <<<"$record")" == completed ]]; then
-              jq -e '.conclusion=="success"' <<<"$record" >/dev/null
-              exit 0
-            fi
+          export IELTS_LESSON="C${IELTS_AIDEN_BATCH%-*}T1P1"
+          while [[ "$(python '雅思/学术阅读/tools/aiden_parallel.py' have)" != true ]]; do
             sleep 45
           done
   edition:
