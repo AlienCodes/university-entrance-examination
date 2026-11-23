@@ -35,6 +35,7 @@ class Aiden:
     def __init__(self):
         self.model=None
         self.review={}
+        self.rejected_master_takes={}
         self.folder=Path(os.environ.get('IELTS_WORK',os.environ.get('RUNNER_TEMP','/tmp')))/'aiden-takes'
         self.folder.mkdir(parents=True,exist_ok=True)
         self.snapshots=PeriodicSnapshot(self.folder)
@@ -72,20 +73,34 @@ class Aiden:
         fingerprint=json.dumps([IDENTITY,script,key,variant,pron.lexicon],sort_keys=True,ensure_ascii=False)
         name=hashlib.sha256(fingerprint.encode()).hexdigest()
         file=self.folder/(name+'.flac');report=self.folder/(name+'.json')
+        previous_seed=None
         if file.is_file() and report.is_file():
             data=json.loads(report.read_text());wave,sr=sf.read(file,dtype='float32')
             if sr==24000 and hashlib.sha256(file.read_bytes()).hexdigest()==data['sha256']:
-                if data.get('policy') == POLICY and words(script) != ['quercus','suber']:
+                if data['sha256'] in self.rejected_master_takes:
+                    rejected=self.folder/'rejected'
+                    rejected.mkdir(exist_ok=True)
+                    failed=rejected/(data['sha256']+'.flac')
+                    if not failed.exists():
+                        failed.write_bytes(file.read_bytes())
+                        evidence=dict(data,accepted=False,key=key,printed=script,stage='mastered-mp3',
+                                      issue=self.rejected_master_takes[data['sha256']])
+                        failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
+                    previous_seed=data['seed']
+                elif data.get('policy') == POLICY and words(script) != ['quercus','suber']:
                     return wave,data
-                try:
-                    assess(soxr.resample(wave,sr,16000),script,data['transcript'])
-                except ValueError:
-                    pass
                 else:
-                    data['policy']=POLICY
-                    report.write_text(json.dumps(data,ensure_ascii=False))
-                    return wave,data
+                    try:
+                        assess(soxr.resample(wave,sr,16000),script,data['transcript'])
+                    except ValueError:
+                        pass
+                    else:
+                        data['policy']=POLICY
+                        report.write_text(json.dumps(data,ensure_ascii=False))
+                        return wave,data
         number=int(key.split(':')[1]);seed=24830+number+variant*173
+        if previous_seed is not None:
+            seed=previous_seed+5*997
         spoken=script
         for attempt in range(5):
             rendered_text=spoken

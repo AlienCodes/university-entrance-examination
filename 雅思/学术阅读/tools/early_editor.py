@@ -63,6 +63,19 @@ def relative_predicate(sentence,term):
              r'\s+(?:my|his|her|your|our|their|its|these|those|most|many|several)\b')
     return bool(re.search(pattern,sentence,re.I))
 
+def review_word_classes(term,allowed):
+    form=term['form']
+    if (term.get('pos')=='adj.' and allowed==['adj.'] and
+            form.lower().endswith(('ous','ive','ful','less','ical','ant','ent','able','ible','ary'))):
+        return ['adj.']
+    choices=[p for p in POS_NAMES if p not in {'aux.','interj.','num.'} or p in allowed]
+    # Keep real abbreviations such as DVDs and proper initials eligible. A word
+    # like "historical" has a full spelling and a positive dictionary analysis.
+    if (form.isascii() and form.islower() and form.isalpha() and len(form)>=5 and
+            'abbr.' not in allowed and not re.search(r'缩写|略写|简称|\babbr\.',term.get('dictionary',''),re.I)):
+        choices.remove('abbr.')
+    return choices
+
 def clear_pos_conflicts(prepared,words):
     candidates={t['form'].casefold():t for t in prepared['candidates']}
     conflicts=[]
@@ -74,6 +87,8 @@ def clear_pos_conflicts(prepared,words):
         elif pos[1]!='v.' and name in candidates and relative_predicate(prepared['en'],candidates[name]):
             conflicts.append(form)
         elif name.endswith('ly') and name in candidates and possible_pos(candidates[name])==['adv.'] and pos[1]!='adv.':
+            conflicts.append(form)
+        elif name in candidates and pos[1] not in review_word_classes(candidates[name],possible_pos(candidates[name])):
             conflicts.append(form)
     return conflicts
 
@@ -532,11 +547,14 @@ def ground_vocabulary(row,source,witness,preparation=None):
     for v in row['v']:
         term=prepared.get(v[0].casefold(),{'form':v[0],'head':v[1]})
         allowed=possible_pos(term)
-        open_classes[v[0]]=[p for p in POS_NAMES if p not in {'aux.','interj.','num.'} or p in allowed]
+        open_classes[v[0]]=review_word_classes(term,allowed)
         # An attributive noun and a participle can reasonably be analysed more than one way.
         # Only constrain normal review when the proposed closed class or an unambiguous adverb conflicts.
         if relative_predicate(en,term):
             restrictions[v[0]]=['v.']
+        elif v[2] not in open_classes[v[0]]:
+            restrictions[v[0]]=open_classes[v[0]]
+            if len(restrictions[v[0]])==1:v[2]=restrictions[v[0]][0]
         elif (v[0].casefold().endswith('ly') and allowed==['adv.']) or (v[2] in {'aux.','interj.','num.'} and v[2] not in allowed):
             restrictions[v[0]]=allowed
             if len(allowed)==1:v[2]=allowed[0]
@@ -581,7 +599,14 @@ def ground_vocabulary(row,source,witness,preparation=None):
             revised, glosses=recover_glosses(en,zh,missing_terms,list(exact.values()))
             replacements={t['form'].casefold():(t['pos'],g) for t,g in zip(revised,glosses,strict=True)}
             selected=[replacements.get(v[0].casefold(),value) for v,value in zip(batch,selected,strict=True)]
-        for v,(pos,meaning) in zip(batch,selected,strict=True):v[2:]=[pos,meaning]
+        for v,(pos,meaning) in zip(batch,selected,strict=True):
+            choices=restrictions.get(v[0],open_classes[v[0]])
+            if pos not in choices:
+                prepared_class=prepared.get(v[0].casefold(),{}).get('pos')
+                if len(choices)==1:pos=choices[0]
+                elif prepared_class in choices:pos=prepared_class
+                else:raise ValueError(f'Unresolved word class for {v[0]} in {en}')
+            v[2:]=[pos,meaning]
 
 def confirmed_names(rows,known):
     registered=set(known)

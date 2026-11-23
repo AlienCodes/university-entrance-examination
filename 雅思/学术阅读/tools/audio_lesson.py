@@ -155,12 +155,31 @@ def main():
     if os.getenv('IELTS_NARRATOR') == 'Aiden':
         from aiden_audio import Aiden
         from aiden_profile import PROFILE, confirm
+        from aiden_boundaries import MasteredPhraseError, check_media
         engine = Aiden()
-        timing = certified_audio(passage,config,engine,reader,path / cet.VOICE,synthesize=engine.sentence)
-        from aiden_boundaries import check_media
-        timing.update(lesson=PID,narrator=PROFILE,narration_review=engine.review)
-        timing['phrase_audio_check']=check_media(path/timing['file'],timing)
-        confirm(timing)
+        attempts={}
+        while True:
+            timing = certified_audio(passage,config,engine,reader,path / cet.VOICE,synthesize=engine.sentence)
+            timing.update(lesson=PID,narrator=PROFILE,narration_review=engine.review)
+            try:
+                timing['phrase_audio_check']=check_media(path/timing['file'],timing)
+            except MasteredPhraseError as failure:
+                key=f'{PID}:{failure.sentence}'
+                # A join checks two different recordings. Recover both sides together.
+                indexes=[failure.phrase-1]
+                if failure.includes_previous and failure.phrase>1:
+                    indexes.append(failure.phrase-2)
+                group=(key,failure.phrase)
+                attempts[group]=attempts.get(group,0)+1
+                if attempts[group]>2:
+                    raise
+                for position in indexes:
+                    phrase=engine.review[key]['phrases'][position]
+                    engine.rejected_master_takes[phrase['sha256']]=str(failure)
+                print(f'{failure}. Rerecording the affected whole take(s) with the same narrator.',flush=True)
+                continue
+            confirm(timing)
+            break
     else:
         timing = certified_audio(passage,config,cet.G.Engine(),reader,path / cet.VOICE)
     problems = certificate_problems(timing,path / timing['file'])

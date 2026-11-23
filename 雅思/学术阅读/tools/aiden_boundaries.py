@@ -19,6 +19,18 @@ from aiden_profile import PAUSE_POLICY as POLICY
 RATE = 16000
 
 
+class JoinError(ValueError):
+    pass
+
+
+class MasteredPhraseError(ValueError):
+    def __init__(self, sentence, phrase, start, end, reason):
+        self.sentence = sentence
+        self.phrase = phrase
+        self.includes_previous = isinstance(reason, JoinError)
+        super().__init__(f'Sentence {sentence}, phrase {phrase}, {start:.3f}–{end:.3f}s: {reason}')
+
+
 def words(text):
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
@@ -177,7 +189,7 @@ def verify_join(left,right):
     ends=bool(left_heard and edge_matches(left_ref[-1], left_heard[-1]))
     starts=bool(right_heard and edge_matches(right_ref[0], right_heard[0]))
     if not (ends or starts):
-        raise ValueError(f'Both sides of the pause differ: {left["text"]!r} / {left["second_heard"]!r}, '
+        raise JoinError(f'Both sides of the pause differ: {left["text"]!r} / {left["second_heard"]!r}, '
                          f'{right["text"]!r} / {right["second_heard"]!r}')
 
 
@@ -210,7 +222,7 @@ def check_media(path, timing):
                     if previous:verify_join(previous,item)
                     previous=item
             except ValueError as error:
-                raise ValueError(f'Sentence {number}, phrase {j}, {start:.3f}–{end:.3f}s: {error}') from error
+                raise MasteredPhraseError(number, j, start, end, error) from error
             results.append(dict(sentence=number,phrase=j,start=start,end=end,**item))
     with Path(path).open('rb') as stream:
         digest = hashlib.file_digest(stream,'sha256').hexdigest()
