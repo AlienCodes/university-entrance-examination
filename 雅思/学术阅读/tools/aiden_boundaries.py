@@ -41,6 +41,8 @@ def words(text):
     text = re.sub(r'\bman[ -]?made\b', 'man made', text, flags=re.I)
     text = re.sub(r'\bfibre(s?)\b', r'fiber\1', text, flags=re.I)
     text = re.sub(r'\bemphasis(e|es|ed|ing)\b', r'emphasiz\1', text, flags=re.I)
+    text = re.sub(r'\bcriticis(e|es|ed|ing)\b', r'criticiz\1', text, flags=re.I)
+    text = re.sub(r'\bvulgarisation(s?)\b', r'vulgarization\1', text, flags=re.I)
     text = re.sub(r'\bcounsell(?=ing\b|ed\b|ors?\b)', 'counsel', text, flags=re.I)
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
@@ -51,6 +53,8 @@ def words(text):
                             ('Amenhotep III','Amenhotep the third'),('Napoleon III','Napoleon the third')):
         text = re.sub(r'\b'+re.escape(written)+r'\b', spoken, text, flags=re.I)
     text = normalize(text.replace('’', "'"))
+    # A printed dash separates clauses even when there are no spaces around it.
+    text = text.replace('—', ' ').replace('–', ' ')
     text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode().lower()
     text = text.replace('colour', 'color').replace('centre', 'center').replace('metre', 'meter')
     text = text.replace('travell', 'travel').replace('organis', 'organiz').replace('customis', 'customiz')
