@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 275
     strategy:
-      max-parallel: 12
+      max-parallel: 20
       fail-fast: false
       matrix:
         lesson: ${{ fromJSON(needs.plan.outputs.units) }}
