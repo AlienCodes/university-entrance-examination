@@ -469,10 +469,29 @@ def sterling_list_mismatch(en,zh):
     chinese=[Decimal(amount.replace(',',''))*scales[scale] for amount,scale in translated]
     return printed!=chinese
 
+def untranslated_prose(en,zh):
+    """Find ordinary printed English left in the middle of a Chinese clause."""
+    for match in re.finditer(r'(?<![A-Za-z])[a-z]{4,}(?: +[a-z]{2,})*(?![A-Za-z])',zh):
+        before=zh[:match.start()].rstrip();after=zh[match.end():].lstrip()
+        if (not re.search(r'[\u3400-\u9fff][，、。：；！？]?$',before)
+                or not re.match(r'[，、。：；！？]?[\u3400-\u9fff]',after)):
+            continue
+        # A passage may be explaining a word or its spelling in another
+        # language. Such terms belong in the Chinese, along with proper names.
+        if re.search(r'词源|一词|学名|拉丁语|希腊语|哥特语|语中|英文|拼[作写]|写[作成]|读作|意为|称为|这个词',before[-38:]):
+            continue
+        if re.search(r'\b(?:word|term|spelling|expression|denoted as)\s+[‘“\'"]?'+re.escape(match[0])+r'\b',en,re.I):
+            continue
+        if re.search(r'(?<!\w)'+re.escape(match[0])+r'(?!\w)',en):
+            return match[0]
+    return None
+
 def scope_gaps(en,zh):
     if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
         en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
     gaps=reversed_quantities(en,zh)
+    copied=untranslated_prose(en,zh)
+    if copied:gaps.append('中文正文里保留了未译的英文：'+copied)
     if sterling_list_mismatch(en,zh):
         gaps.append('逐项核对英镑金额以及百万、万、亿之间的换算')
     if (re.search(r'\bfirst quarter of the (?:\w+|\d+\w*) century\b',en,re.I)
