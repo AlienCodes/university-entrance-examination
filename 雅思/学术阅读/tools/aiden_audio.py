@@ -54,6 +54,8 @@ class Aiden:
         if words(script) in (['quercus','suber'], ['quirkus','soober']):
             from aiden_cork_oak import HINT
             instruction += ' ' + HINT
+        if re.search(r'\bLei Tzu\b',script,re.I):
+            instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -84,7 +86,8 @@ class Aiden:
         number=int(key.split(':')[1]);seed=24830+number+variant*173
         spoken=script
         for attempt in range(5):
-            wav=self.render(spoken,seed+attempt*997,pron)
+            rendered_text=spoken
+            wav=self.render(rendered_text,seed+attempt*997,pron)
             transcript,timed=recognize(wav)
             try:
                 assess(soxr.resample(wav,24000,16000),script,transcript)
@@ -105,6 +108,16 @@ class Aiden:
                       sha256=hashlib.sha256(file.read_bytes()).hexdigest(),policy=POLICY)
             report.write_text(json.dumps(data,ensure_ascii=False))
             return sf.read(file,dtype='float32')[0],data
+        # Retain the actual sound for reviewing a name or dropout. Only flat,
+        # certified take files are eligible for restoration or mastering.
+        rejected=self.folder/'rejected'
+        rejected.mkdir(exist_ok=True)
+        candidate=rejected/file.name
+        sf.write(candidate,wav,24000,subtype='PCM_24')
+        evidence=dict(accepted=False, key=key, printed=script, rendered=rendered_text,
+                      seed=seed+attempt*997, transcript=transcript, issue=issue,
+                      sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
+        (rejected/report.name).write_text(json.dumps(evidence,ensure_ascii=False))
         raise ValueError(f'{key}: {issue}')
 
     def sentence(self,read,key,engine,pron,style,speed,settings):
