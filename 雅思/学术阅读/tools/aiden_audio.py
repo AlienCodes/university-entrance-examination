@@ -61,6 +61,10 @@ class Aiden:
             instruction += ' ' + aiden_cork_oak.HINT
         if re.search(r'\bLei Tzu\b',script,re.I):
             instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
+        if re.search(r'\b(?:Halley|Hally)\b',script,re.I):
+            instruction += ' Read the astronomer’s surname Halley in two connected syllables /ˈhæli/, with an audible initial h.'
+        if re.search(r"\bPerkin['’]s\b",script,re.I):
+            instruction += ' Read the possessive of Perkin as /ˈpɝkɪnz/: two syllables in total, ending in a single /z/.'
         if any(re.search(r'\b'+re.escape(name)+r'\b',script,re.I) for name in aiden_ceylonese.RENDERINGS):
             instruction += ' ' + aiden_ceylonese.HINT
         if 'I I N C E' in script:
@@ -143,6 +147,9 @@ class Aiden:
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.
                 spoken=re.sub(re.escape(spellings[0]),spellings[attempt],script,flags=re.I)
+            elif attempt in (1,3) and re.search(r'\bHalley\b',script,re.I):
+                # CMUdict transcribes Halley and Hally identically. Verify the result against the paper.
+                spoken=re.sub(r'\bHalley\b','Hally',script,flags=re.I)
             rendered_text=spoken
             wav=self.render(rendered_text,seed+attempt*997,pron)
             transcript,timed=recognize(wav)
