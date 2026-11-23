@@ -450,6 +450,12 @@ def scope_gaps(en,zh):
     if re.search(r'\b(?:how|less|more|as) (?:often|frequently)\b',en,re.I) and re.search(r'次|频|多久|多长时间|多少回|较[多低高少]',zh):
         en=re.sub(r'\b(?:how|less|more|as) (?:often|frequently)\b','',en,flags=re.I)
     gaps=reversed_quantities(en,zh)
+    if (re.search(r'\bfirst quarter of the (?:\w+|\d+\w*) century\b',en,re.I)
+            and re.search(r'(前半个?世纪|上半[个叶]|前(?:五十|50)年)',zh)):
+        gaps.append('世纪的第一个四分之一为头25年')
+    if (re.search(r'\b(?:doubled|doubling|doubles)\b',en,re.I)
+            and re.search(r'(?:增长|增加|提高)(?:了|超过)?(?:约|近)?(?:两|二|2)倍',zh)):
+        gaps.append('翻倍指增至原来的两倍，核查增加量与增长后总量')
     for phrase, equivalent, suspect in (
             ('tens of millions', r'千[多余]?万|[1-9],?000[多余]?万|[1-9]0,000,000', r'(?:数|几|上|好几)百万'),
             ('hundreds of thousands', r'十[多余]?万|[1-9]0[多余]?万|[1-9]00,000', r'(?:数|几|上)千|[几数]万'),

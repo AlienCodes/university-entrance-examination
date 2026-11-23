@@ -12,7 +12,7 @@ from lesson import LESSON, PID, PROJECT, save
 CLAUSES=re.compile(r'[,;:—–]\s+|\s+(?=(?:and|or|but|whereas|although|because|while|which|who|whose|when|so that|'
                    r'in order to|rather than|if|even if|even though|only if|as long as|as soon as|since|unless|'
                    r'provided that|as a result|including|to (?:provide|determine|obtain|ensure|enable|allow|help))\b)',re.I)
-VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|跨行|拆到两行|断行|连字符|续接号|行首缩进')
+VISUAL=re.compile(r'溢出|超出|越界|放不下|字号|孤[字词行]|孤悬|单落|单独|压住|字体|边界|截断|超宽|挤|遮挡|跨行|拆到两行|断行|连字符|续接号|行首缩进|行首破折号')
 def movable(row):
     en=row['en']
     span=[(a,b) for w in row['w'] for a,b in w['sp']]
