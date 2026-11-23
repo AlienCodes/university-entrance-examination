@@ -40,7 +40,7 @@ jobs:
     with:
       lesson: ${{ needs.plan.outputs.sample }}
   wait:
-    needs: plan
+    needs: [plan,sample]
     runs-on: ubuntu-24.04
     timeout-minutes: 345
     env:
@@ -65,3 +65,8 @@ jobs:
     uses: ./.github/workflows/ielts-early-lesson.yml
     with:
       lesson: ${{ matrix.lesson }}
+
+  delivery:
+    needs: [plan,sample,wait,production]
+    if: always() && !cancelled() && needs.plan.result == 'success' && needs.sample.result == 'success' && (needs.production.result == 'success' || needs.production.result == 'skipped')
+    uses: ./.github/workflows/ielts-early-delivery.yml

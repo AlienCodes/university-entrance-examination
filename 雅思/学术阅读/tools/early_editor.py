@@ -39,12 +39,14 @@ def digest(file):
 def corrections():
     return read(PROJECT/'审校/早期册语境校订.json').get(PID,{})
 
-def token_id():
-    inputs=[digest(PAPER),digest(PREP),VERSION,corrections()]
-    return hashlib.sha256(json.dumps(inputs,ensure_ascii=False,sort_keys=True).encode()).hexdigest()[:16]
+def key_for(project,pid):
+    manual=read(project/'审校/早期册语境校订.json').get(pid,{})
+    inputs=[digest(project/'原稿'/(pid+'.json')),digest(project/'备课'/(pid+'.json')),VERSION,manual]
+    fingerprint=hashlib.sha256(json.dumps(inputs,ensure_ascii=False,sort_keys=True).encode()).hexdigest()[:16]
+    return f'{pid}-{fingerprint}'
 
 def key():
-    return f'{PID}-{token_id()}'
+    return key_for(PROJECT,PID)
 
 def work():
     path=Path(os.environ['IELTS_WORK'])/PID

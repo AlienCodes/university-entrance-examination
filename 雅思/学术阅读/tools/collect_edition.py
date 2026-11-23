@@ -43,7 +43,7 @@ def read(path):
     return json.loads(path.read_text())
 
 
-def unpack_lesson(pid,cache,folder):
+def unpack_lesson(pid,cache,folder,inspect_master=None):
     if pid=='C20T1P1':
         get(PILOT_TAG,'*.mp4',folder)
         for f in ('Reading-notes.pdf','verification.json','SHA256SUMS'):get(PILOT_TAG,f,folder)
@@ -63,6 +63,8 @@ def unpack_lesson(pid,cache,folder):
         versioned=f'{pid}-{key[:16]}.zip'
         archive=get(cache,versioned if versioned in inventory(cache) else pid+'.zip',folder)
         with zipfile.ZipFile(archive) as media:
+            if inspect_master is not None:
+                inspect_master(archive,media)
             embedded=json.loads(media.read('verification.json'))['receipt']
             if 'material_sha256' in embedded:
                 if embedded['material_sha256']!=key:raise ValueError(f'{pid}: incorrect content version')
