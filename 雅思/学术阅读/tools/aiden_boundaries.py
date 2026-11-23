@@ -21,6 +21,8 @@ RATE = 16000
 
 def words(text):
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
+    # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
+    text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)
     for written, spoken in (('Henry VIII','Henry the eighth'),('Charles II','Charles the second'),
                             ('Amenhotep III','Amenhotep the third'),('Napoleon III','Napoleon the third')):
         text = re.sub(r'\b'+re.escape(written)+r'\b', spoken, text, flags=re.I)

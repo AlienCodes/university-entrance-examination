@@ -56,13 +56,17 @@ SILENT_DIAGNOSTICS = {  # 仅此已核无音轨的PNG编码复现；路径和完
     },
 }
 PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整源码字节SHA；变更须重核
+    '.github/actions/cet6-chalk-env/prepare_packages.py': {
+        'sha256': '6bcc37bb150c66810745e404a64fe44529116e53500c78784689a0adeee00945', 'audio': True, 'video': False,
+        'reason': '在 APT 依赖清单中声明 espeak-ng、sox 和 ffmpeg，实际执行安装与检查。脚本不调用朗读模型，不处理或写出音频。',
+    },
     '.github/install-ielts-native-speech.sh': {
-        'sha256': '2e911af3fdcf916597c40f45722bff956c79a38a15feb92e56ed6513c939ae20', 'audio': True, 'video': False,
+        'sha256': 'd25c09ec3cd4a7319f930785b11c69bcf204d3f2daa20f766d74465ee0147150', 'audio': True, 'video': False,
         'reason': '只安装已锁定的语音、读音和检测依赖；脚本不产生音频文件。',
     },
     '雅思/学术阅读/tools/aiden_boundaries.py': {
-        'sha256': '0debd2e8ee03a66fb9e2cfc43cbfca3e0014cb4f27134323d526d4163063afb6', 'audio': True, 'video': False,
-        'reason': 'espeak 的 -q --ipa 只返回音标；ffmpeg 解码到内存，仅写逐意群核验 JSON。',
+        'sha256': '62358cb36b217720f2c050c9a393f4decc6c831d9d67147534f49e05195de957', 'audio': True, 'video': False,
+        'reason': 'espeak 的 -q --ipa 只返回音标，ffmpeg 解码到内存。人名同音拼写和栓皮栎学名核读均不写音频，仅输出逐意群核验 JSON。',
     },
     '雅思/学术阅读/声音试听/sample.py': {
         'sha256': '9f32f7296e7204e4701843cb6c9d6b04e62b09a3835bd9b0458ac2c0094697b7', 'audio': True, 'video': False,
