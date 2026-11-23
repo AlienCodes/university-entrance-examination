@@ -1,0 +1,40 @@
+name: 发布已核验的剑桥雅思 21 至 14 册讲义
+on:
+  push:
+    branches: ['codex/ielts-study-upload-*']
+    paths: ['.github/ielts-study-upload/index.json']
+permissions:
+  contents: write
+concurrency:
+  group: ielts-academic-study-21-14-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PROJECT: 雅思/学术阅读
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            .github/ielts-study-upload
+            雅思/学术阅读/tools
+            雅思/学术阅读/配套讲义
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 读取原视频逐屏讲义并核对每篇摘要
+        run: |
+          python -m pip install --disable-pip-version-check pymupdf
+          python "$PROJECT/tools/fetch_study_slides.py" "$RUNNER_TEMP/slides"
+      - name: 恢复已核验的整包并发布
+        run: |
+          set -eu
+          receipt="$PROJECT/配套讲义/讲义打包核验.json"
+          archive="$RUNNER_TEMP/Cambridge-IELTS-21-14-Reading-Study-96.zip"
+          python "$PROJECT/tools/transfer_study_pack.py" restore .github/ielts-study-upload "$receipt" "$RUNNER_TEMP/slides" "$archive"
+          target=$(cat .github/ielts-study-upload/source-commit)
+          python "$PROJECT/tools/publish_study_pack.py" "$archive" "$receipt" "$target"
