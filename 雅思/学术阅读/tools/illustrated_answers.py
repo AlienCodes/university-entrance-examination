@@ -75,7 +75,7 @@ def image_tag(path):
     return f'<img class="passage-art" width="1600" height="900" alt="本篇视频的篇首插图" src="data:image/jpeg;base64,{payload}">'
 
 
-def check_first_page(pdf_path, lesson, movie):
+def check_first_page(pdf_path, lesson, movie, slides_pdf=None):
     import fitz
     from PIL import Image, ImageChops, ImageStat
 
@@ -99,10 +99,20 @@ def check_first_page(pdf_path, lesson, movie):
         pix = page.get_pixmap(clip=box, colorspace=fitz.csRGB, alpha=False)
         visible = Image.frombytes('RGB', (pix.width, pix.height), pix.samples)
         target = (256, 144)
-        difference = ImageChops.difference(visible.resize(target, Image.Resampling.LANCZOS),
-                                           original.convert('RGB').resize(target, Image.Resampling.LANCZOS))
+        visible = visible.resize(target, Image.Resampling.LANCZOS)
+        difference = ImageChops.difference(visible, original.convert('RGB').resize(target, Image.Resampling.LANCZOS))
         error = sum(ImageStat.Stat(difference).mean) / 3
         if error > 4:
             raise ValueError(f'{pdf_path}: printed picture differs from film illustration (mean error {error:.2f})')
-        return dict(lesson=lesson['lesson'], page=1, illustration_sha256=art_sha,
-                    video_sha256=movie['video_sha256'], image_error_255=round(error, 3))
+        proof = dict(lesson=lesson['lesson'], page=1, illustration_sha256=art_sha,
+                     video_sha256=movie['video_sha256'], image_error_255=round(error, 3))
+        if slides_pdf is not None:
+            with fitz.open(slides_pdf) as slides:
+                screen = slides[1].get_pixmap(colorspace=fitz.csRGB, alpha=False)
+                frame = Image.frombytes('RGB', (screen.width, screen.height), screen.samples)
+                difference = ImageChops.difference(visible, frame.resize(target, Image.Resampling.LANCZOS))
+                screen_error = sum(ImageStat.Stat(difference).mean) / 3
+                if screen_error > 8:
+                    raise ValueError(f'{pdf_path}: answer artwork does not match the actual video slide (error {screen_error:.2f})')
+                proof.update(companion_page=2, companion_video_frame=60, companion_error_255=round(screen_error, 3))
+        return proof

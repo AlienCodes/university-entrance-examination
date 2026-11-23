@@ -154,13 +154,14 @@ def grammar_doc(d,y):
             blocks.append(f'<h3>{name}</h3><p class="{"pattern" if k=="pattern" else "logic"}">{e(r[k])}</p>')
         blocks.append(f'<div class="reading"><p class="en">{e(r["example"])}</p><p class="zh">{e(r["example_zh"])}</p></div><h3>运用提示</h3><p>{e(r["usage"])}</p></section>')
     return doc(d['display_title']+' · 长难句与写作句式',''.join(blocks))
-def render(browser,pid,editor,out,movie=None):
+def render(browser,pid,editor,out,movie=None,slides_pdf=None):
     src=PROJECT/'配套讲义/题目与证据'/(pid+'.json')
     d=json.loads(src.read_text()); y=json.loads((editor/(pid+'.json')).read_text())
     assert y['lesson']==pid and y['input_sha256']==hashlib.sha256(src.read_bytes()).hexdigest()
     assert {int(k) for k in y['questions']}=={q['numbers'][0] for q in d['questions']} and len(y['grammar'])==3
     folder=out/d['display_title']; folder.mkdir(parents=True,exist_ok=True)
     page=browser.new_page()
+    cover_check=None
     try:
         for name,body in [('逐题解析',reading_doc(d,y,movie)),('长难句与写作句式',grammar_doc(d,y))]:
             page.set_content(body,wait_until='load')
@@ -169,8 +170,9 @@ def render(browser,pid,editor,out,movie=None):
             target=folder/(name+'.pdf')
             page.pdf(path=str(target),format='A4',prefer_css_page_size=True,print_background=True,display_header_footer=True,header_template='<span></span>',footer_template=footer)
             if name=='逐题解析' and illustrated_answers.applies(pid):
-                illustrated_answers.check_first_page(target,d,movie)
+                cover_check=illustrated_answers.check_first_page(target,d,movie,slides_pdf)
     finally:page.close()
+    return cover_check
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('editor',type=Path);a.add_argument('out',type=Path);a.add_argument('ids',nargs='+')
     a.add_argument('--movie-receipts',type=Path,help='directory of verified PID-illustrated.json files for volumes 13–6')

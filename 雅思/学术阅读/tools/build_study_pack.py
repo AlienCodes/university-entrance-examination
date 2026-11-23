@@ -132,7 +132,7 @@ def build(notes_dir, slides_dir, zip_path, receipt_path, edition='21-14'):
                     with fitz.open(slide) as pdf:
                         if len(pdf) != source['pages']:
                             raise ValueError(f'{pid}: missing original slide')
-                    render(browser, pid, notes_dir, work, movie)
+                    cover_check = render(browser, pid, notes_dir, work, movie, slide if illustrated else None)
                     folder = work / lesson['display_title']
                     reading_pages, writing_pages = inspect_guides(folder, lesson, notes, movie)
                     printed = [(READING, folder / READING, reading_pages), (WRITING, folder / WRITING, writing_pages), (SLIDES, slide, source['pages'])]
@@ -146,7 +146,7 @@ def build(notes_dir, slides_dir, zip_path, receipt_path, edition='21-14'):
                     receipts.append({'lesson': pid, 'folder': lesson['display_title'], 'numbers': sum(len(q['numbers']) for q in lesson['questions']), 'files': assets})
                     if illustrated:
                         receipts[-1].update(answer_illustration_sha256=movie['illustration_sha256'],
-                                            video_sha256=movie['video_sha256'])
+                                            video_sha256=movie['video_sha256'], answer_opening=cover_check)
                     shutil.rmtree(folder)
                     print(f'{len(receipts)}/{len(ids)} {pid}', flush=True)
             finally:
