@@ -1,0 +1,131 @@
+{
+  "run": 45247801732,
+  "input": "Public verified 3840x2160 Aiden cores",
+  "test_picture_size": [
+    640,
+    360
+  ],
+  "sample_rate": 48000,
+  "C9T2P3": {
+    "job": 138013256142,
+    "source_sha256": "45844e823521146ea6edc81f62792b1b858380e714c01330a910026ca3499f22",
+    "test_video_sha256": "bdec07c80fe45cdc7ef355c6ec20616f94863c0b65ffde640586e96cc2f259fc",
+    "source_aac_duration_ts": 19155216,
+    "expected_source_samples": 19155200,
+    "ending": {
+      "expected_seconds": 400.06666666666666,
+      "container_seconds": 400.066667,
+      "video_seconds": 400.066667,
+      "audio_seconds": 400.066667,
+      "video_packet_end": 400.06666600000005,
+      "audio_packet_end": 400.066666,
+      "actual_video_frames": 12002,
+      "decoded_last_three_seconds_frames": 90,
+      "silence_after_narration_seconds": 2.007,
+      "tail_keyframes": [
+        396.066667,
+        398.066667
+      ],
+      "mp4_boxes": [
+        "ftyp",
+        "moov",
+        "free",
+        "mdat"
+      ],
+      "desktop_html5_playback": {
+        "ended": true,
+        "duration": 400.066667,
+        "end": 400.066667,
+        "start": 394.866667,
+        "last_frame": 400.033333,
+        "frame_callbacks": 155,
+        "error": 0
+      },
+      "final_aac": {
+        "original_aac_packets": 18708,
+        "original_aac_payload_sha256": "56c534ec7694d2e44adc005aac2e3395ea9c2c1302cb6656cefa917da0051765",
+        "final_packet_duration_adjustment_samples": -16,
+        "sample_rate": 48000
+      }
+    },
+    "opening_frame_errors_255": {
+      "title": 0.3204,
+      "illustration": 0.5424,
+      "reading": 0.3308
+    },
+    "final_speech": {
+      "verified_voiced_windows": 13142,
+      "window_ms": 25,
+      "offset_samples": 16000,
+      "minimum_correlation": 1.0,
+      "max_level_difference_db": 0.0
+    },
+    "original_tail_keyframe_indexes": [
+      11883,
+      11943
+    ],
+    "verified_tail_keyframe_indexes": [
+      11882,
+      11942
+    ]
+  },
+  "C9T3P2": {
+    "job": 138014164517,
+    "source_sha256": "aac085305201a89406267fc5379546a2f5b46c67ab6fbbe9b0d81e92ead74afc",
+    "test_video_sha256": "fbc803e6f1cab27bd0b9fab0007e6bd3aa71fd253f3d5b8737004505a38a38e2",
+    "source_aac_duration_ts": 15121584,
+    "expected_source_samples": 15121600,
+    "ending": {
+      "expected_seconds": 316.03333333333336,
+      "container_seconds": 316.033333,
+      "video_seconds": 316.033333,
+      "audio_seconds": 316.033333,
+      "video_packet_end": 316.033333,
+      "audio_packet_end": 316.033333,
+      "actual_video_frames": 9481,
+      "decoded_last_three_seconds_frames": 90,
+      "silence_after_narration_seconds": 2.008,
+      "tail_keyframes": [
+        312.033333,
+        314.033333
+      ],
+      "mp4_boxes": [
+        "ftyp",
+        "moov",
+        "free",
+        "mdat"
+      ],
+      "desktop_html5_playback": {
+        "ended": true,
+        "duration": 316.033333,
+        "end": 316.033333,
+        "start": 310.833333,
+        "last_frame": 316,
+        "frame_callbacks": 155,
+        "error": 0
+      },
+      "final_aac": {
+        "original_aac_packets": 14769,
+        "original_aac_payload_sha256": "53df8cf46bc09ab0fb9f0bf35f254402acc1f2ba267423656b41b6bdb5ff947d",
+        "final_packet_duration_adjustment_samples": 16,
+        "sample_rate": 48000
+      }
+    },
+    "opening_frame_errors_255": {
+      "title": 0.2912,
+      "illustration": 0.5723,
+      "reading": 0.3722
+    },
+    "final_speech": {
+      "verified_voiced_windows": 10825,
+      "window_ms": 25,
+      "offset_samples": 16000,
+      "minimum_correlation": 1.0,
+      "max_level_difference_db": 0.0
+    }
+  },
+  "refused": {
+    "genuine_two_second_shortfall": "Original audio ends at sample 15121584, picture at 15217600",
+    "audible_tail": "The final AAC block is not part of the verified silent hold"
+  }
+}

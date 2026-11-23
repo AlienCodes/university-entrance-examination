@@ -124,13 +124,16 @@ def encode(core, art, sound, output, count, width, height, threads):
         f'[body]trim=start_frame={TITLE}:end_frame={count},setpts=PTS-STARTPTS[c]',
         '[a][b][c]concat=n=3:v=1:a=0,settb=1/30,setpts=N[v]'
     ]
-    seconds = (count+PLATE)/FPS
-    force = sorted({0., 1.5, 2.5, max(2.5,seconds-4), max(2.5,seconds-2)})
+    frame_count = count+PLATE
+    first_reading = TITLE+PLATE
+    access_points = sorted({0, TITLE, first_reading,
+                            max(first_reading,frame_count-4*FPS), max(first_reading,frame_count-2*FPS)})
+    force = 'expr:' + '+'.join(f'eq(n,{frame})' for frame in access_points)
     subprocess.run(['ffmpeg','-nostdin','-v','error','-xerror','-y','-threads',str(threads),'-t',f'{count/FPS:.9f}',
         '-i',str(core),'-loop','1','-framerate','30','-t','1','-i',str(art),'-i',str(sound),'-filter_complex_threads',str(min(threads,3)),
         '-filter_complex',';'.join(graphs),'-map','[v]','-map','2:a:0','-r','30','-fps_mode','cfr',
         '-c:v','libx264','-preset','veryfast','-crf','16','-threads',str(threads),'-pix_fmt','yuv420p',
-        '-force_key_frames',','.join(f'{t:.6f}' for t in force),'-video_track_timescale','15360',
+        '-force_key_frames',force,'-forced-idr','1','-video_track_timescale','15360',
         '-c:a','copy','-movie_timescale','48000','-use_editlist','1','-movflags','+faststart',str(output)],check=True)
 
 

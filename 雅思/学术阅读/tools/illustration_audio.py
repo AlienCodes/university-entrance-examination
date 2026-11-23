@@ -6,10 +6,25 @@ import subprocess
 import tempfile
 
 import av
+import numpy as np
 
 RATE = 48000
 BLOCK = 1024
 TIME_BASE = Fraction(1,RATE)
+
+
+def silent_rounded_end(core, end, target, packet_start):
+    # The core muxer stores its edit length in whole milliseconds. At 30 fps
+    # this can trim 16 samples from the declared length of a silent AAC block.
+    if end % (RATE // 1000) or not 0 < target-end <= RATE // 2000 or target > packet_start+BLOCK:
+        raise ValueError(f'Original audio ends at sample {end}, picture at {target}')
+    tail = subprocess.check_output([
+        'ffmpeg','-nostdin','-v','error','-xerror','-sseof','-0.15','-i',str(core),
+        '-map','0:a:0','-ac','1','-ar',str(RATE),'-f','f32le','-'
+    ])
+    samples = np.frombuffer(tail,dtype='<f4')
+    if len(samples) < RATE//10 or not np.all(np.abs(samples) < .001):
+        raise ValueError('The final AAC block is not part of the verified silent hold')
 
 
 def put(output, stream, payload, pts, duration):
@@ -34,6 +49,7 @@ def pad(core, target, source_samples):
             if (track.codec_context.name,track.codec_context.channels,track.time_base)!=('aac',1,TIME_BASE):
                 raise ValueError('Expected native mono AAC at 48 kHz')
             sound = clip.add_stream_from_template(track)
+            track_end = track.start_time + track.duration
             packets = (p for p in original.demux(track) if p.pts is not None)
             first = next(packets)
             # 47 AAC packets cover 48,128 samples. The container edit removes the
@@ -49,6 +65,9 @@ def pad(core, target, source_samples):
                 if p.pts!=end or p.dts!=p.pts:
                     raise ValueError('The original AAC timeline has a discontinuity')
                 duration=min(p.duration or BLOCK,source_samples-p.pts)
+                if p.pts+duration == track_end < source_samples:
+                    silent_rounded_end(core,track_end,source_samples,p.pts)
+                    duration=source_samples-p.pts
                 put(clip,sound,bytes(p),p.pts+RATE,duration)
                 end=p.pts+duration
             if end!=source_samples:
@@ -72,4 +91,7 @@ def check_packets(core, movie, source_samples):
                 raise ValueError(f'Original AAC access unit differs at {left.pts}/{RATE}')
             fingerprint.update(bytes(right))
             count+=1
-        return dict(original_aac_packets=count, original_aac_payload_sha256=fingerprint.hexdigest())
+        if right.pts+right.duration != source_samples+RATE:
+            raise ValueError('Final AAC packet does not end on the final picture boundary')
+        return dict(original_aac_packets=count, original_aac_payload_sha256=fingerprint.hexdigest(),
+                    final_packet_duration_adjustment_samples=right.duration-left.duration, sample_rate=RATE)

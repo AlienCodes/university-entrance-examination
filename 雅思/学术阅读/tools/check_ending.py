@@ -136,7 +136,11 @@ def inspect(video,timing):
     atimes=[float(p['pts_time']) for p in streams[1]]
     if max(b-a for a,b in zip(atimes,atimes[1:]))>.03:raise ValueError('Audio packets contain a gap')
     keys=[float(p['pts_time']) for p in streams[0] if 'K' in p['flags']]
-    if not all(any(abs(key-t)<.033 for key in keys) for t in (end-4,end-2)):raise ValueError('Missing tail keyframes')
+    expected_keys={frame_count-4*30,frame_count-2*30}
+    actual_keys={round(t*30) for t in keys}
+    if not expected_keys <= actual_keys:
+        raise ValueError(f'Missing tail keyframes {sorted(expected_keys-actual_keys)}; '
+                         f'observed near the end: {sorted(k for k in actual_keys if k>=frame_count-5*30)}')
     frame_size=64*36
     tail=read(['ffmpeg','-v','error','-xerror','-err_detect','explode','-ss',str(end-3-.0005),'-i',str(video),'-map','0:v:0','-an',
                '-vf','scale=64:36,format=gray','-fps_mode','passthrough','-f','rawvideo','-'])
