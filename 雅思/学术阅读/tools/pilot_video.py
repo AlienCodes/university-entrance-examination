@@ -261,7 +261,7 @@ def early_sentence_slide(p,sentence,k,n,part=None):
     # A highlighted preceding word ends in HTML rather than a letter.
     # Bind a typographic dash to the preceding highlight. A spaced ASCII
     # dash binds to the next word below so it cannot resemble a cut compound.
-    body=re.sub(r'(</span>) ([–—])(?= (?:<nobr>)?<span class="(?:w|ph)">)',
+    body=re.sub(r'(</span>(?:</nobr>)?) ([–—])(?= \S)',
                 lambda m:m[1]+'\u00a0'+m[2],body)
     body=re.sub(r' ([-–—]) <nobr>(?=<span class="(?:w|ph)">|[\w])',r' <nobr>\1 ',body)
     body=re.sub(r'(?<=>) ([-–—] (?:<span class="(?:w|ph)">(?:(?!</span>).)*</span>|[A-Za-z0-9’]+))',
