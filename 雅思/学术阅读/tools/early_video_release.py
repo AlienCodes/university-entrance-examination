@@ -159,6 +159,8 @@ def publish(out):
     notes.write_text(f"## [一次下载全部 120 篇精读视频]({url})\n\n"
         f"登录 GitHub 后点击即可下载一个 ZIP（{info['bytes']/1e9:.2f} GB）。打开后是 120 个 MP4，按剑桥雅思第 10 册到第 1 册排列，各册按原书 Test 和 Passage 顺序。第一篇是 `{info['members'][0]['filename']}`。\n\n"
         "第 3 册 Test 1 Passage 1 和第 1 册 Test 1 Passage 1 为历史与科学内容节选，文件名内标有「节选」。\n\n"
+        "两处原书表述需要结合史实阅读。9-2-2 原文把圣赫勒拿岛写作位于南太平洋，岛屿实际位于南大西洋。[地理资料](https://www.britannica.com/place/Saint-Helena-island-South-Atlantic-Ocean)\n\n"
+        "5-1-1 沿用上传试卷印出的 1764 和 1775。约翰逊签订词典合同的实际年份为 1746，词典于 1755 年出版。[合同记载](https://en.wikipedia.org/wiki/Samuel_Johnson#A_Dictionary_of_the_English_Language) · [出版资料](https://www.britannica.com/topic/A-Dictionary-of-the-English-Language-by-Johnson)\n\n"
         f"文件大小为 {info['bytes']:,} 字节，SHA-256 为 `{info['sha256']}`。一键下载链接有效至 {item['expires_at'][:10]}（UTC）。\n\n"
         f"也可随时[下载恢复程序]({base}/{DOWNLOAD_SCRIPT.name})，使用 Python 运行 `python {DOWNLOAD_SCRIPT.name}`。程序从逐篇母版恢复同一个 ZIP，支持中断后继续，并核对每个文件和整个 ZIP 的 SHA-256。\n",encoding='utf-8')
     if not subprocess.run(['gh','release','view',TAG],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode:
