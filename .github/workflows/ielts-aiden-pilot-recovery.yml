@@ -27,6 +27,8 @@ jobs:
     outputs:
       groups: ${{ steps.queue.outputs.groups }}
       seed: ${{ steps.queue.outputs.seed }}
+      prior: ${{ steps.queue.outputs.prior }}
+      verified_groups: ${{ steps.queue.outputs.verified_groups }}
     steps:
       - uses: actions/checkout@v4
         with: &checkout
@@ -58,6 +60,8 @@ jobs:
           echo "IELTS_WORK=$RUNNER_TEMP/recordings" >> "$GITHUB_ENV"
       - if: steps.existing.outputs.have != 'true'
         uses: ./.github/actions/ielts-aiden-speech
+      - if: steps.existing.outputs.have != 'true'
+        uses: ./.github/actions/ielts-phrase-listening
       - if: steps.existing.outputs.have != 'true'
         name: 录音并逐句听对
         env:
@@ -96,6 +100,20 @@ jobs:
         with:
           pattern: aiden-recorded-${{ env.IELTS_LESSON }}-*
           path: ${{ runner.temp }}/incoming/group
+      - if: steps.existing.outputs.have != 'true' && needs.plan.outputs.prior != ''
+        name: 恢复上一轮已经逐句核定的意群原录音
+        env:
+          PRIOR: ${{ needs.plan.outputs.prior }}
+          GROUPS_JSON: ${{ needs.plan.outputs.verified_groups }}
+        run: |
+          python - <<'PY'
+          import json,os,subprocess
+          folder=os.environ['RUNNER_TEMP']+'/incoming/prior'
+          names=json.loads(os.environ['GROUPS_JSON'])
+          if names:
+              subprocess.run(['gh','run','download',os.environ['PRIOR'],'--dir',folder,
+                              *(arg for name in names for arg in ('--name',name))],check=True)
+          PY
       - if: steps.existing.outputs.have != 'true'
         name: 核对原文、音色、逐句覆盖和录音指纹
         run: python "$TARGET/tools/aiden_parallel.py" merge --incoming "$RUNNER_TEMP/incoming"

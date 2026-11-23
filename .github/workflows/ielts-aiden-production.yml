@@ -44,7 +44,7 @@ jobs:
       verified_audio_only: ${{ needs.plan.outputs.certified_audio == 'true' }}
   preview:
     needs: [plan, pilot]
-    if: needs.plan.outputs.pilot_only == 'true'
+    if: needs.plan.outputs.pilot_only == 'true' || needs.plan.outputs.batch == '13-6'
     runs-on: ubuntu-24.04
     env:
       GH_TOKEN: ${{ github.token }}
@@ -60,8 +60,11 @@ jobs:
       - name: 发布单个 MP4 并从公开链接回下载整片
         run: python '雅思/学术阅读/tools/aiden_preview.py' "$RUNNER_TEMP/preview"
   production:
-    needs: [plan,pilot]
-    if: needs.plan.outputs.pilot_only != 'true' && needs.plan.outputs.remaining != '[]'
+    needs: [plan, pilot, preview]
+    if: >-
+      always() && !cancelled() && needs.plan.result == 'success' && needs.pilot.result == 'success' &&
+      (needs.preview.result == 'success' || (needs.plan.outputs.batch != '13-6' && needs.preview.result == 'skipped')) &&
+      needs.plan.outputs.pilot_only != 'true' && needs.plan.outputs.remaining != '[]'
     strategy:
       fail-fast: false
       max-parallel: 20

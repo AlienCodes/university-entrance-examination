@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+from difflib import SequenceMatcher
 
 import numpy as np
 import soundfile as sf
@@ -78,13 +79,20 @@ class Aiden:
                     report.write_text(json.dumps(data,ensure_ascii=False))
                     return wave,data
         number=int(key.split(':')[1]);seed=24830+number+variant*173
-        for attempt in range(3):
-            wav=self.render(script,seed+attempt*997,pron)
+        spoken=script
+        for attempt in range(5):
+            wav=self.render(spoken,seed+attempt*997,pron)
             transcript,timed=recognize(wav)
             try:
                 assess(soxr.resample(wav,24000,16000),script,transcript)
             except ValueError as error:
                 issue=str(error)
+                if attempt >= 1:
+                    expected=words(script)
+                    alignment=SequenceMatcher(None,expected,words(transcript),autojunk=False)
+                    missing={w for op,a,b,_,_ in alignment.get_opcodes() if op in ('replace','delete')
+                             for w in expected[a:b] if w in {'it','its','the','a','an','at','of','to','not'}}
+                    spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
             sf.write(file,wav,24000,subtype='PCM_24')

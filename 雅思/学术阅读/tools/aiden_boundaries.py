@@ -84,8 +84,12 @@ def interior_gaps(audio):
 def assess(audio, text, transcript=None):
     expected = words(text)
     transcript = isolated(audio) if transcript is None else transcript
+    alternate = None
     if not matches(expected, words(transcript)):
-        raise ValueError(f'Phrase endpoints or wording differ: {text!r} / {transcript!r}')
+        alternate = independent(audio)
+        # If the two decoders disagree, only the full printed sequence can resolve it.
+        if words(alternate) != expected:
+            raise ValueError(f'Phrase endpoints or wording differ: {text!r} / {transcript!r} / {alternate!r}')
     gaps = []
     for start,end in interior_gaps(audio):
         left = isolated(audio[:start])
@@ -94,7 +98,10 @@ def assess(audio, text, transcript=None):
                    for i in range(1,len(expected))):
             raise ValueError(f'Possible break inside a word at {start/RATE:.2f}–{end/RATE:.2f}s: {text!r} / {left!r} | {right!r}')
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
-    return {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    if alternate is not None:
+        result['second_heard']=alternate
+    return result
 
 
 def reference(audio):
@@ -176,7 +183,8 @@ def check_media(path, timing):
                 item = assess(segment,phrase['text'])
                 item['source_lag_ms']=verify_reference(segment,phrase['reference'])
                 if len(phrases)>1:
-                    item['second_heard']=independent(segment)
+                    if 'second_heard' not in item:
+                        item['second_heard']=independent(segment)
                     if previous:verify_join(previous,item)
                     previous=item
             except ValueError as error:

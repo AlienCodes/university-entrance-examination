@@ -4669,6 +4669,34 @@
    ],
    "status": "自动拦截+有双向验证",
    "gap": "纯状态/DOM快照双向验证不替代真实浏览器排版、PNG审阅和重做成品的全画面核验；本次15年修复视频完成状态见批次实际生产记录。 用户确认的生产外观为固定AB/CD双栏、2px纯黑分隔线及局部16px文字间距；旧inline候选即使机械测试PASS也不是版式批准，不能恢复到生产。"
+  },
+  {
+   "id": "137",
+   "title": "Aiden在sectors的词中插入意群停顿",
+   "stages": [
+    "配音",
+    "合成后",
+    "视频成品"
+   ],
+   "projects": [
+    "雅思学术阅读 Aiden"
+   ],
+   "guards": [
+    {
+     "where": "雅思/学术阅读/tools/aiden_audio.py:sentence、aiden_boundaries.py:check_media",
+     "runs": "完整意群独立录制，MP3 与最终 AAC 逐意群核查原音时长、信号连续性和停顿两侧",
+     "evidence": "旧版第3句真实 AAC 片段、分段独立识别结果及人为注入的280ms静音"
+    }
+   ],
+   "test": [
+    {
+     "cmd": "python3 tools/防复发/验证/Aiden整词停顿.py",
+     "needs": "pip",
+     "expect": "exit 0"
+    }
+   ],
+   "status": "自动拦截+有双向验证",
+   "gap": "长句连读时多个识别器均可能借助上下文补词。完整意群的录音边界、原音与成片对照以及双侧核查共同把关。"
   }
  ],
  "_复盘豁免": [
