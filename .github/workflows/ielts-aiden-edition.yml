@@ -29,6 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.batch == '13-6' && !inputs.pilot_only && 'codex/ielts-academic-reading' || github.sha }}
           filter: blob:none
           sparse-checkout: |
             .github
