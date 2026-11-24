@@ -1,10 +1,54 @@
-"""Check the recorded pronunciations of Janzen, Hawley-Dolan and Shenggen Fan."""
+"""Check surnames in the reading passages against speech and printed context."""
 from functools import lru_cache
 from itertools import product
 
 from aiden_boundaries import RATE, interior_gaps, words
 from aiden_ceylonese import timed_words
 from aiden_pronunciation import grammar_decoder, locate_sound
+
+
+ZAPPATERRA_READINGS = {
+    'italian':'D Z AA P AH T EH R AH', 'us':'Z AE P AH T EH R AH', 'zah':'Z AA P AH T EH R AH',
+    'ts':'T S AA P AH T EH R AH', 'zah-pah':'Z AA P AA T EH R AH', 'short':'Z AE P T EH R AH',
+    'zapatero':'Z AE P AH T EH R OW', 'taro':'Z AA P AH T AA R OW', 'zapata':'Z AH P AA T AH',
+    'sapatero':'S AA P AH T EH R OW', 'missing-start':'P AH T EH R AH', 'last-i':'Z AE P AH T EH R IY',
+    'zap':'Z AE P', 'zahp':'Z AA P', 'sapat':'S AA P AH T EH R AH', 'zip':'Z IH P AH T EH R AH',
+    'zapater':'Z AE P AH T ER', 'spat':'S P AE T', 'zorp':'Z AO P AH T EH R AH','tsapa':'T S AA P AA T EH R AH',
+}
+ZAPPATERRA_SPELLINGS = {'zappaterra','zapaterra','zapatera','zapatero','zepatera','zappatera','zuppetera'}
+
+
+@lru_cache(maxsize=1)
+def zappaterra_decoder():
+    markers = {'mauro':'M AW R OW','doctor':'D AA K T ER','learned':'L ER N D','began':'B IH G AE N'}
+    return grammar_decoder(ZAPPATERRA_READINGS,markers,'[mauro | doctor] {term} [learned | began | mauro]')
+
+
+def zappaterra_words(tokens):
+    return ['zappaterra' if w in ZAPPATERRA_SPELLINGS else w for w in tokens]
+
+
+def verify_zappaterra(audio,expected,first,second):
+    timed = timed_words(audio)
+    for observed in (words(first),words(second),[w for w,t in timed]):
+        if zappaterra_words(observed) != expected:
+            raise ValueError('The words surrounding the physician’s name differ from the passage')
+    index = expected.index('zappaterra')
+    if index == 0 and expected[1:4] == ['learned','about','alternative']:
+        start,stop = 0,timed[3][1]+200
+    elif index > 0 and expected[index-1:index+3] == ['mauro','zappaterra','began','his']:
+        start,stop = max(0,timed[index-1][1]-500),timed[index+2][1]+200
+    else:
+        raise ValueError('Unrecognised context for Mauro Zappaterra')
+    key,p,begin,end = locate_sound(audio[start:stop],zappaterra_decoder(),ZAPPATERRA_READINGS)
+    # Two introductions to his Mangu.tv interview have a final unstressed a.
+    # English recognizers spell even the interview recording with final -o.
+    if (key not in {'italian','us','zah','zah-pah','ts','tsapa'} or p < .22
+            or not .32*RATE <= end-begin <= 1.12*RATE
+            or any(begin < (a+b)/2 < end for a,b in interior_gaps(audio[start:stop]))):
+        raise ValueError('A syllable or the final vowel in Zappaterra differs: '+ZAPPATERRA_READINGS[key])
+    return dict(phones=ZAPPATERRA_READINGS[key],confidence=round(p,3),
+                start=round((start+begin)/RATE,3),end=round((start+end)/RATE,3))
 
 
 def forms(*parts):

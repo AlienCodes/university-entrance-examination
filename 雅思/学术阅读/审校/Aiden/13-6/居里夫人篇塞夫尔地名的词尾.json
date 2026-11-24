@@ -1,0 +1,115 @@
+{
+ "lesson": "C9T4P1",
+ "sentence": 21,
+ "source_run": 45298679101,
+ "artifact": 14892894338,
+ "artifact_sha256": "9420397534f12ed4410576e32e29ca266b30cea7154ddcea84a5177214a278f8",
+ "reference": {
+  "url": "https://www.ahdictionary.com/word/search.html?q=S%C3%A8vres",
+  "sha256": "b87e74c06f193386a6c4108851c7d7f924f3b4e3d0840372dfd78c623642ebcc",
+  "phones": "S EH V R AH",
+  "score": 0.536,
+  "start": 0.02,
+  "end": 0.6
+ },
+ "original_takes": [
+  {
+   "sha256": "22c3fc16fe7a136e7fc33e26544d222caad34384599e34ee284329d0abf1a66a",
+   "source": "22c3fc16fe7a136e7fc33e26544d222caad34384599e34ee284329d0abf1a66a.flac",
+   "printed": "She was appointed lecturer in physics at the Ecole Normale Superieure for girls in Sevres,",
+   "subject": "sevres",
+   "expected": false,
+   "tests": [
+    {
+     "accepted": false,
+     "codec": "flac",
+     "sha256": "22c3fc16fe7a136e7fc33e26544d222caad34384599e34ee284329d0abf1a66a",
+     "reads": [
+      "She was appointed lecturer in physics at the École Normale Supérieure for girls in Sevres,",
+      "She was appointed lecturer in physics at the Occol Normal Superur for girls in Severs."
+     ],
+     "gaps": [
+      [
+       3.83,
+       4.36
+      ]
+     ],
+     "evidence": {
+      "reason": "Unclear Sèvres or an extra ending: S EH V ER AH S"
+     }
+    }
+   ]
+  },
+  {
+   "sha256": "24fcccc9d4a08c140b5823790a36da59b2e602a86fc28329893945c14fd26df0",
+   "source": "24fcccc9d4a08c140b5823790a36da59b2e602a86fc28329893945c14fd26df0.flac",
+   "printed": "She was appointed lecturer in physics at the Ecole Normale Superieure for girls in Sevres,",
+   "subject": "sevres",
+   "expected": false,
+   "tests": [
+    {
+     "accepted": false,
+     "codec": "flac",
+     "sha256": "24fcccc9d4a08c140b5823790a36da59b2e602a86fc28329893945c14fd26df0",
+     "reads": [
+      "She was appointed lecturer in physics at the École Normale Supérieure for Girls in Severus,",
+      "She was appointed lecturer in physics at the Akole Normale Superure for Girls and Severs."
+     ],
+     "gaps": [],
+     "evidence": {
+      "reason": "Unclear Sèvres or an extra ending: S EH V ER AH S"
+     }
+    },
+    {
+     "accepted": false,
+     "codec": "mp3",
+     "sha256": "3c9014509577e9362aa867a858b68dab7151f5797dd2ebfaa302d7accb6c46a9",
+     "reads": [
+      "She was appointed lecturer in physics at the École Normale Supérieure for Girls in Severus,",
+      "She was appointed lecturer in physics at the Akole Normale Superure for Girls and Severs."
+     ],
+     "gaps": [],
+     "evidence": {
+      "reason": "Unclear Sèvres or an extra ending: S EH V ER AH S"
+     }
+    },
+    {
+     "accepted": false,
+     "codec": "m4a",
+     "sha256": "c3ac65a1f3c4c5d8734b906e1e9599e299756fed5885424a6987670eb889fda2",
+     "reads": [
+      "She was appointed lecturer in physics at the École Normale Superieur for Girls in Severus,",
+      "She was appointed lecturer in physics at the Akole Normale Superure for Girls and Severs."
+     ],
+     "gaps": [],
+     "evidence": {
+      "reason": "Unclear Sèvres or an extra ending: S EH V ER AH S"
+     }
+    }
+   ]
+  },
+  {
+   "sha256": "ff0596f06a85d0964bd2bcecdb863b47d3b5caa12a32d34428d2490b9a1d2f9f",
+   "source": "ff0596f06a85d0964bd2bcecdb863b47d3b5caa12a32d34428d2490b9a1d2f9f.flac",
+   "printed": "She was appointed lecturer in physics at the Ecole Normale Superieure for girls in Sevres,",
+   "subject": "sevres",
+   "expected": false,
+   "tests": [
+    {
+     "accepted": false,
+     "codec": "flac",
+     "sha256": "ff0596f06a85d0964bd2bcecdb863b47d3b5caa12a32d34428d2490b9a1d2f9f",
+     "reads": [
+      "She was appointed lecturer in physics at the École Normale Supérieure for Girls in Sevres.",
+      "She was appointed lecturer in physics at the A-Gold Normal Superyear for girls in severies."
+     ],
+     "gaps": [],
+     "evidence": {
+      "reason": "Unclear Sèvres or an extra ending: S EH V ER IH S"
+     }
+    }
+   ]
+  }
+ ],
+ "method": "以《美国传统词典》地名词条的实际录音为参照。地名末尾的 s 不发音。三份旧录音在词尾多读了 s，需用同一 Aiden 将包含地名的意群重新朗读。"
+}

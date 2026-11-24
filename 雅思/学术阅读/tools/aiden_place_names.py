@@ -123,6 +123,18 @@ def pause_after_migration_names(expected, left, right, start, evidence):
             and migration_context(tuple(expected[:split])).fullmatch(' '.join(left)) is not None)
 
 
+def pause_before_ancestral_groups(expected, left, right, end, evidence):
+    # The same complete Aleut has already been measured near the end of
+    # this waveform. The earlier pause is between Asia and of. Check every
+    # other word on the two independent pieces across that earlier pause.
+    if expected[-4:] != ['modern','eskimo','and','aleut'] or 'asia' not in expected:
+        return False
+    split = expected.index('asia')+1
+    return (expected[split:split+2] == ['of','groups'] and left == expected[:split]
+            and end/RATE < evidence['aleut']['start']-.20
+            and migration_context(tuple(expected[split:])).fullmatch(' '.join(right)) is not None)
+
+
 @lru_cache(maxsize=5)
 def decoder(context):
     if context == 'hunters':

@@ -174,6 +174,10 @@ class Aiden:
             instruction += ' ' + aiden_india.HINT
         if re.search(r'\bresearched the chemistry\b', script, re.I):
             instruction += ' Read researched in the past tense: end it with the sound cht, then link naturally to the chemistry.'
+        if re.search(r'for girls in', script, re.I) and re.search(r'\b(?:[ÉE]cole|ay-kol)\b', script, re.I):
+            instruction += ' Link École Normale Supérieure naturally in the surrounding English. ' \
+                           'The town Sèvres is /sɛvʁ/, or /ˈsɛvrə/ in English. ' \
+                           'The written final s is silent. Finish on the vr sound with at most a light final schwa.'
         if re.search(r'\b(?:Pithecanthropus|Pith-ih|pith-uh)\b', script, re.I):
             instruction += ' In Pithecanthropus erectus, say pith-ih-KAN-thruh-puhs ih-REK-tuhs. Both th sounds are as in thin. Read the scientific name in a single connected phrase.'
         torch.manual_seed(seed)
@@ -226,7 +230,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
-                      and not {'llewyn','aleut'}.intersection(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
+                      and not {'llewyn','aleut','zappaterra','sevres'}.intersection(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes'] and words(script)[-2:] != ['norm','referenced']
                       and not cited_phrase(words(script))
                       and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
@@ -274,6 +278,13 @@ class Aiden:
             spellings=('norm-referenced','norm referenced','norm REH-fuh-renst','norm-referenced','norm REH-frenst')
         elif 'llewyn' in words(script):
             spellings=LLEWYN_READINGS
+        elif 'sevres' in words(script):
+            spellings=('Ecole Normale Superieure for girls in Sevres',
+                       'École Normale Supérieure for girls in Sèvres',
+                       'École Normale Supérieure for girls in Sèvre',
+                       'École Normale Supérieure for girls in SEV-ruh',
+                       'École Normale Supérieure for girls in SEV-r',
+                       'ay-kol normal süpérieur for girls in SEV-ruh')
         elif 'pithecanthropus' in words(script):
             spellings=('Pithecanthropus erectus','Pith-ih-KAN-thruh-puhs ih-REK-tuhs',
                        'Pithecanthropus erectus','Pith-uh-KAN-thruh-pus ih-REK-tus','Pithecanthropus erectus')

@@ -65,7 +65,7 @@ PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整�
         'reason': '只安装已锁定的语音、读音和检测依赖；脚本不产生音频文件。',
     },
     '雅思/学术阅读/tools/aiden_boundaries.py': {
-        'sha256': '7458f8fb0b30f6df7573065a81c62241a85a2ba52bece0dcae7b1196da068835', 'audio': True, 'video': False,
+        'sha256': '92e98279b44f47a7ac08480f70cfd409eefc843df4c250cf6f34becedf4e9b94', 'audio': True, 'video': False,
         'reason': 'espeak 的 -q --ipa 返回音标，ffmpeg 将既有音轨解码到内存。逐意群核对停顿、读音及词尾，把声学证据写入 JSON。',
     },
     '雅思/学术阅读/tools/illustration_audio.py': {

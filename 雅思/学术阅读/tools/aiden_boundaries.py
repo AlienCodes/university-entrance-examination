@@ -219,6 +219,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
     surname = None
     craftsmen = None
     welsh = None
+    zappaterra = None
+    sevres = None
     fish = None
     opening = None
     ganzfeld = None
@@ -227,6 +229,14 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_lynx import verify, pause_after_name
         alternate = independent(audio)
         welsh = verify(audio,expected,transcript,alternate)
+    elif 'zappaterra' in expected:
+        from aiden_surnames import verify_zappaterra, zappaterra_words
+        alternate = independent(audio)
+        zappaterra = verify_zappaterra(audio,expected,transcript,alternate)
+    elif 'sevres' in expected:
+        from aiden_sevres import verify
+        alternate = independent(audio)
+        sevres = verify(audio,expected,transcript,alternate)
     elif expected == ['cod','sole','perch','and','pollock']:
         from aiden_pronunciation import verify_groundfish_list
         alternate = independent(audio)
@@ -304,7 +314,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
         alternate = independent(audio)
         geographical = verify_na_dene(audio,transcript,alternate)
     elif 'aleut' in expected:
-        from aiden_place_names import verify_migration_names, pause_after_migration_names
+        from aiden_place_names import verify_migration_names, pause_after_migration_names, pause_before_ancestral_groups
         alternate = independent(audio)
         migration_names = verify_migration_names(audio,expected,transcript,alternate)
     elif has_diels(expected):
@@ -394,7 +404,11 @@ def assess(audio, text, transcript=None, *, recheck=False):
             right_words = words(after)
             if welsh and pause_after_name(audio,start,end,expected,left_words,right_words,welsh):
                 return True
+            if zappaterra and start/RATE >= zappaterra['end']:
+                left_words = zappaterra_words(left_words)
             if migration_names and pause_after_migration_names(expected,left_words,right_words,start,migration_names):
+                return True
+            if migration_names and pause_before_ancestral_groups(expected,left_words,right_words,end,migration_names):
                 return True
             if chemists and gap_after_attention(start,expected,left_words,right_words,chemists):
                 return True
@@ -491,6 +505,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['craftsmen_pronunciation']=craftsmen
     if welsh is not None:
         result['welsh_name']=welsh
+    if zappaterra is not None:
+        result['physician_surname']=zappaterra
+    if sevres is not None:
+        result['sevres_pronunciation']=sevres
     if fish is not None:
         result['groundfish_list']=fish
     if opening is not None:
