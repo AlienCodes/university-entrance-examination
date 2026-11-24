@@ -13,11 +13,16 @@ from aiden_ceylonese import timed_words
 PRINTED = 'şehirliliştiremediklerimizdensiniz'
 ORAL = 'shehirlilishtiremediklerimizdensiniz'
 SYLLABLES = ('şe', 'hir', 'li', 'liş', 'ti', 're', 'me', 'dik', 'le', 'ri', 'miz', 'den', 'si', 'niz')
-RENDERINGS = (ORAL, PRINTED, 'sheh-heer-lee-leesh-tee-reh-meh-deek-leh-ree-meez-den-see-neez',
-              'şehirli-liştiremediklerimizdensiniz', PRINTED)
-HINT = ('The printed Turkish example is one continuous word with fourteen syllables: '
-        'şe-hir-li-liş-ti-re-me-dik-le-ri-miz-den-si-niz. Say both li syllables and the entire ending. '
-        'Keep the syllables connected, with no pauses or separately pronounced hyphens.')
+RENDERINGS = (ORAL, 'şehirli liştire mediklerimiz densiniz',
+              'shehirli lishtire mediklerimiz densiniz', PRINTED,
+              'shehheerlee leeshtireh mediklerimeez denseeneez',
+              'şehirli-liştire-mediklerimiz-densiniz',
+              'sheh-heer-lee-leesh-tee-reh-meh-deek-leh-ree-meez-den-see-neez')
+HINT = ('Read the introductory English words in the same voice. The Turkish example that follows is '
+        'one continuous word with fourteen evenly linked syllables: '
+        'şe-hir-li-liş-ti-re-me-dik-le-ri-miz-den-si-niz. The letter ş is sh and each i is ee. '
+        'Link the four groups şehirli, liştire, mediklerimiz, densiniz without silence. '
+        'Keep both li syllables, the k in dik, and the z at the end of miz and niz.')
 MODEL = Path(__file__).resolve().parents[3] / 'tools/tts/models/ielts-turkish-ctc'
 
 
