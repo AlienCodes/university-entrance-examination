@@ -91,6 +91,10 @@ class Aiden:
             instruction += ' ' + aiden_inuktitut.HINT
         if any(form.casefold() in script.casefold() for form in aiden_sobchack.RENDERINGS):
             instruction += ' Read the family name Sobchack in two syllables: sob-chack. Go directly from b to ch and pronounce the final k.'
+        if 'Deane dived down' in script:
+            instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
+        if 'Doctor Phil Rasch' in script:
+            instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():

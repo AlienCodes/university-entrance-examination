@@ -67,6 +67,13 @@ def words(text):
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
     text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)
+    # CMUdict: Berger/Burger B ER G ER, Deane/Dean D IY N, Rasch/Rash R AE SH.
+    # Preserve the possessive, the past tense and the speaker's actual title.
+    text = re.sub(r"\bthan (?:berger|burger)['’]?s\b", "than Berger's", text, flags=re.I)
+    text = re.sub(r'\bdeane?(?= dived? down\b)', 'Deane', text, flags=re.I)
+    text = re.sub(r'\b(dr\.?|doctor) phil (?:rasch|rash)\b', 'Doctor Phil Rasch', text, flags=re.I)
+    text = re.sub(r'\bu\.?\s*s\.?[ -]+based\b', 'U S based', text, flags=re.I)
+    text = re.sub(r'\bgeo[ -]engineering\b', 'geoengineering', text, flags=re.I)
     # Lei Tzu (嫘祖, Léi Zǔ): recognizers also join the two syllables as Leitzu or Leitsu.
     text = re.sub(r'\bLei(?:tzu|tsu)\b', 'Lei Tzu', text, flags=re.I)
     for written, spoken in (('Henry VIII','Henry the eighth'),('Charles II','Charles the second'),
@@ -168,6 +175,10 @@ def assess(audio, text, transcript=None):
         from aiden_sobchack import verify
         alternate = independent(audio)
         film_names = verify(audio,text,transcript,alternate)
+    elif expected == ['deane', 'dived', 'down'] or expected[:4] == ['and', 'doctor', 'phil', 'rasch']:
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript, alternate)):
+            raise ValueError(f'Unclear past-tense ending or spoken introduction: {transcript!r} / {alternate!r}')
     elif NOISE_INITIALS.search(text):
         alternate = independent(audio)
         if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):

@@ -49,6 +49,8 @@ class Reader(cet.G.Pronouncer):
         if PID == 'C11T4P2':
             # The test prints Sobochack twice. Both authors publish as Sobchack.
             text = re.sub(r'\bSobochack\b', 'Sobchack', text)
+        if PID == 'C11T1P3':
+            text = text.replace('Dr Phil Rasch', 'Doctor Phil Rasch')
         if PID != 'C20T1P1':
             # Asterisks refer to the printed footnotes and are silent in speech.
             text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
