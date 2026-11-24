@@ -23,7 +23,7 @@ def fetch(asset,folder):
     dest=folder/asset['name']
     tmp=dest.with_suffix(dest.suffix+'.partial')
     with tmp.open('wb') as f:
-        subprocess.run(['gh','api','-H','Accept: application/octet-stream',asset['url']],stdout=f,check=True)
+        subprocess.run(['gh','api','-H','Accept: application/octet-stream',asset['url']],stdout=f,stderr=subprocess.PIPE,check=True)
     if tmp.stat().st_size!=asset['size']:
         raise ValueError('Incomplete GitHub asset download: '+asset['name'])
     digest=asset.get('digest')

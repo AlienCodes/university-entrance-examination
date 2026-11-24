@@ -15,6 +15,18 @@ ROOT=Path(__file__).resolve().parents[1]
 BATCHES={'13-6':range(13,5,-1),'5-1':range(5,0,-1)}
 
 def cached(pid,batch,include_illustration=False):
+    # A worker can replace its per-lesson receipt while another worker reads the
+    # edition. A new asset ID must be evaluated with its own digest and film.
+    try:
+        return cached_from_inventory(pid, batch, include_illustration)
+    except subprocess.CalledProcessError as exc:
+        if 'HTTP 404' not in str(exc.stderr):
+            raise
+        inventory.cache_clear()
+        return cached_from_inventory(pid, batch, include_illustration)
+
+
+def cached_from_inventory(pid,batch,include_illustration):
     stage='ielts-academic-aiden-cache-'+batch
     masters=inventory(stage); receipt=masters.get(pid+'-receipt.json')
     if not receipt or not receipt.get('digest'): return False
