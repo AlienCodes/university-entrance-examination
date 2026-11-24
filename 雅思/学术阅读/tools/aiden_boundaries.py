@@ -214,6 +214,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     fish = None
     opening = None
     ganzfeld = None
+    stepwell_tiers = None
     cork_taint = None
     kite_names = None
     word_windows = None
@@ -292,9 +293,13 @@ def assess(audio, text, transcript=None, *, recheck=False):
         alternate = independent(audio)
         surname = verify(audio,expected,transcript,alternate)
     elif 'ganzfeld' in expected:
-        from aiden_ganzfeld import verify
+        from aiden_ganzfeld import pause_outside_name, verify
         alternate = independent(audio)
         ganzfeld = verify(audio,expected,transcript,alternate)
+    elif expected == ['often','in','tiers']:
+        from aiden_pronunciation import verify_often_in_tiers
+        alternate = independent(audio)
+        stepwell_tiers = verify_often_in_tiers(audio,transcript,alternate)
     elif 'ceylonese' in expected:
         from aiden_ceylonese import verify
         alternate = independent(audio)
@@ -424,6 +429,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if ganzfeld:
+                return pause_outside_name(expected,left_words,right_words,start,end,ganzfeld)
             if kite_names:
                 return bool(left_words and right_words and kite_words(left_words + right_words) == expected)
             if welsh and pause_after_name(audio,start,end,expected,left_words,right_words,welsh):
@@ -549,6 +556,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['unpadded_opening_excerpt']=opening
     if ganzfeld is not None:
         result['ganzfeld_pronunciation']=ganzfeld
+    if stepwell_tiers is not None:
+        result['stepwell_tiers']=stepwell_tiers
     if cork_taint is not None:
         result['cork_taint_pronunciation']=cork_taint
     return result

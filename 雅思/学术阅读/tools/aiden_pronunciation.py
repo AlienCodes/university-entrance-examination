@@ -38,6 +38,29 @@ def locate_sound(audio, decoder, phones):
 
 
 @lru_cache(maxsize=1)
+def tiers_decoder():
+    # Cambridge uses the same US recording for tier and tear (from the eye).
+    # Compete against tear (rip), a missing plural, and a missing r.
+    forms = {'tiers': 'T IH R Z', 'tiers-tense': 'T IY R Z', 'tears-rips': 'T EH R Z',
+             'tier': 'T IH R', 'tier-tense': 'T IY R', 'tare': 'T EH R',
+             'years': 'Y IH R Z', 'teas': 'T IY Z', 'cheers': 'CH IH R Z'}
+    context = {'often': 'AO F AH N', 'oftent': 'AO F T AH N', 'offen': 'AA F AH N', 'in': 'IH N'}
+    return grammar_decoder(forms, context, '[often | oftent | offen] [in] {term}'), forms
+
+
+def verify_often_in_tiers(audio, first, second):
+    from aiden_boundaries import interior_gaps, words
+    if any(words(s) not in (['often','in','tiers'], ['often','in','tears']) for s in (first, second)):
+        raise ValueError('The recording does not contain the complete phrase often in tiers')
+    decoder, forms = tiers_decoder()
+    label, score, start, end = locate_sound(audio, decoder, forms)
+    if (label not in {'tiers', 'tiers-tense'} or score < .4 or not .18*RATE <= end-start <= .9*RATE
+            or any(start < (a+b)/2 < end for a,b in interior_gaps(audio))):
+        raise ValueError('The vowel, plural ending, or continuity of tiers is unclear: '+forms[label])
+    return dict(phones=forms[label], confidence=round(score,3), start=start/RATE, end=end/RATE)
+
+
+@lru_cache(maxsize=1)
 def craftsmen_decoder():
     from itertools import product
     forms = product(('K R AE F T', 'K R AE F', 'K R AE T', 'K R AH F T'),

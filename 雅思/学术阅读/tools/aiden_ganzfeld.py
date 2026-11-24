@@ -36,16 +36,26 @@ def check_sound(sample):
     return dict(phones=FORMS[label], confidence=round(confidence,3), start=start/RATE, end=end/RATE)
 
 
+def complete_context(expected, tokens, index):
+    return (len(tokens) == len(expected) and tokens[index] in SPELLINGS
+            and tokens[:index] == expected[:index] and tokens[index+1:] == expected[index+1:])
+
+
+def pause_outside_name(expected, before, after, start, end, proof):
+    index = expected.index('ganzfeld')
+    if not before or not after or not complete_context(expected, before + after, index):
+        return False
+    if len(before) <= index:
+        return end <= round(proof['start'] * RATE)
+    return start >= round(proof['end'] * RATE)
+
+
 def verify(audio, expected, first, second):
     index = expected.index('ganzfeld')
-    def check_context(tokens):
-        if (len(tokens) != len(expected) or tokens[index] not in SPELLINGS
-                or tokens[:index] != expected[:index] or tokens[index+1:] != expected[index+1:]):
-            raise ValueError('The context or the position of ganzfeld differs from the paper')
-    check_context(words(first))
-    check_context(words(second))
     timed = timed_words(audio)
-    check_context([word for word,_ in timed])
+    for tokens in (words(first), words(second), [word for word, _ in timed]):
+        if not complete_context(expected, tokens, index):
+            raise ValueError('The context or the position of ganzfeld differs from the paper')
     lo = max(0,timed[index][1] - round(.08*RATE))
     hi = timed[index+1][1] if index+1 < len(timed) else len(audio)
     proof = check_sound(audio[lo:hi])

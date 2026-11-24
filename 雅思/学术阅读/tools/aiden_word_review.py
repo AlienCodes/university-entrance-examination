@@ -138,6 +138,8 @@ def hear_differences(audio, text, secondary, observations=None):
 # These spellings occur in speech-recognition output from the verified name checkers.
 # Apply a spelling only when that checker has measured the sounds on this very phrase.
 MEASURED_NAMES = {
+    'ganzfeld_pronunciation': {'gansfeld':'ganzfeld', 'gensfeld':'ganzfeld'},
+    'stepwell_tiers': {'tears':'tiers'},
     'surname_pronunciation': {'koole':'kuhl', 'holly':'hawley', 'jansen':'janzen', 'amagoalick':'amagoalik'},
     'floris_pronunciation': {'florus':'floris', 'floress':'floriss'},
     'diels_pronunciation': {'deals':'diels'},

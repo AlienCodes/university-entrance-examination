@@ -13,7 +13,8 @@ EVIDENCE = PROJECT / "审校/Aiden词内断音"
 sys.path.insert(0, str(PROJECT / "tools"))
 from aiden_boundaries import RATE, independent, reference, verify_join, verify_reference, words
 from aiden_encoded_audio import compare_waveforms
-from aiden_word_review import same_words
+from aiden_ganzfeld import pause_outside_name
+from aiden_word_review import measured_words, same_words
 
 
 def rejects(check, *args):
@@ -83,6 +84,13 @@ def main(listen):
     verify_join(oak, material)
     rejects(verify_join, bark, dict(oak, botanical_pronunciation={"heard": ["corkus", "suber"]}))
     rejects(verify_join, oak, dict(material, heard="a remarkable material"))
+    phrase = words("however: that the most impressive evidence so far has come from the so-called ganzfeld experiments,")
+    right_side = ["gansfeld" if t == "ganzfeld" else t for t in phrase[1:]]
+    location = {"start": 4.26, "end": 5.34}
+    assert pause_outside_name(phrase, ["however"], right_side, 7520, 11680, location)
+    assert not pause_outside_name(phrase, ["however"], right_side[1:], 7520, 11680, location)
+    assert not pause_outside_name(phrase, ["however"], right_side, 72000, 76480, location)
+    assert measured_words(["tears"], {}) == ["tears"]
     assert words(left["second_heard"])[-2:] == ["export", "sectors"]
     assert words(right["second_heard"])[:1] == ["which"]
     left_end = revised["clip_16khz"][0][1]
