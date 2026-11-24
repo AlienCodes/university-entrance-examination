@@ -1,0 +1,212 @@
+{
+  "lesson": "C11T4P3",
+  "sentence": 22,
+  "original_print_pages": [
+    96,
+    97
+  ],
+  "printed_word": "şehirliliştiremediklerimizdensiniz",
+  "paper_pdf_page": 97,
+  "paper_image_crop_sha256": "30abafa686d84788a03723ab90895c035fe443d4a439917b4fb5841ef7b3d6d6",
+  "reviewed_english_sha256": "de64fc9e74c096dd0368c5782a5e41f8ca7b24b21d721fdf133d31af25b846aa",
+  "published_author_form": "şehirlileştiremediklerimizdensiniz",
+  "source": "https://us.macmillan.com/books/9780805080124/theunfoldingoflanguage/",
+  "secondary_source": "https://linguistlist.org/issues/16/1797/",
+  "original_Aiden_flac": "42f2bdd9a5d8f19302e0379a340990446e14a8658ecd2f626fd44f76b033ef7f",
+  "run_id": 45247801732,
+  "original_turkish_character_recognition": "şey halışçıy emerikloreminedinsiniz",
+  "reference_type": "Synthetic Turkish controls used only to evaluate the recognizer, never as production audio",
+  "reference_voice": [
+    "Google Translate Turkish playback",
+    "rhasspy/piper-voices Turkish DFKI, e5349433ed883a32f893a434dc43a6c66b95ef7c"
+  ],
+  "reference_sha256": "10e6843f95ff794d04ab53f5be83c6466f804177b2da8b7143ea71a17dc48d95",
+  "model_revision": "3b2c54bdba684411155e09f6e91841ec66da2c8f",
+  "model_sha256": "f2b12b5d6f7a29d1f380b0e0c293815a1c52e072d5c6c452696a13524a9dd38f",
+  "tests": [
+    {
+      "test": "The model recognises the complete printed form",
+      "accepted": true,
+      "result": {
+        "heard": "şehirliliştiremediklerimizdensiniz",
+        "syllables": [
+          "şe",
+          "hir",
+          "li",
+          "liş",
+          "ti",
+          "re",
+          "me",
+          "dik",
+          "le",
+          "ri",
+          "miz",
+          "den",
+          "si",
+          "niz"
+        ],
+        "start": 0.18,
+        "end": 2.965
+      }
+    },
+    {
+      "test": "Turkish comparison publisher",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirlileştiremediklerimizdensiniz'"
+    },
+    {
+      "test": "Turkish comparison lost-li",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirleştiremediklerimizdensiniz'"
+    },
+    {
+      "test": "Turkish comparison lost-middle",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirliliştiremediklerdensiniz'"
+    },
+    {
+      "test": "Turkish comparison lost-end",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirliliştiremediklerimizden'"
+    },
+    {
+      "test": "Independent Turkish control dfki-lost-end-0.92",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirleştiremediklerimizden'"
+    },
+    {
+      "test": "Independent Turkish control dfki-lost-end-1.10",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehireleştiremediklerimizden'"
+    },
+    {
+      "test": "Independent Turkish control dfki-lost-middle-0.92",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirliliştiremediklerdensiniz'"
+    },
+    {
+      "test": "Independent Turkish control dfki-lost-middle-1.10",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirliiştiremediklerdensiniz'"
+    },
+    {
+      "test": "Printed form with a real 280ms dropout inserted",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şehirliliştiremedikklerimizdensiniz'"
+    },
+    {
+      "test": "Rejected Aiden target without its English lead-in",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şeyhalışçıyemerikloreminedinsiniz'"
+    },
+    {
+      "test": "reference-fixture.wav",
+      "accepted": true,
+      "result": {
+        "text": "The Turkish word shehirlilishtiremediklerimizdensiniz,",
+        "heard": "The Turkish word Shehir lilishtere me di klirimis dansinis",
+        "checked_internal_gaps": [],
+        "second_heard": "The Turkish word",
+        "turkish_word": {
+          "heard": "şehirliliştiremediklerimizdensiniz",
+          "syllables": [
+            "şe",
+            "hir",
+            "li",
+            "liş",
+            "ti",
+            "re",
+            "me",
+            "dik",
+            "le",
+            "ri",
+            "miz",
+            "den",
+            "si",
+            "niz"
+          ],
+          "start": 1.17,
+          "end": 3.955
+        }
+      }
+    },
+    {
+      "test": "reference-fixture.mp3",
+      "accepted": true,
+      "result": {
+        "text": "The Turkish word shehirlilishtiremediklerimizdensiniz,",
+        "heard": "The Turkish word Shehir lilihtere me di klirimis dancinis",
+        "checked_internal_gaps": [],
+        "second_heard": "The Turkish word",
+        "turkish_word": {
+          "heard": "şehirliliştiremediklerimizdensiniz",
+          "syllables": [
+            "şe",
+            "hir",
+            "li",
+            "liş",
+            "ti",
+            "re",
+            "me",
+            "dik",
+            "le",
+            "ri",
+            "miz",
+            "den",
+            "si",
+            "niz"
+          ],
+          "start": 1.17,
+          "end": 3.955
+        }
+      }
+    },
+    {
+      "test": "reference-fixture.m4a",
+      "accepted": true,
+      "result": {
+        "text": "The Turkish word shehirlilishtiremediklerimizdensiniz,",
+        "heard": "The Turkish word Shehir lichre me di klirimis dancinis",
+        "checked_internal_gaps": [],
+        "second_heard": "The Turkish word",
+        "turkish_word": {
+          "heard": "şehirliliştiremediklerimizdensiniz",
+          "syllables": [
+            "şe",
+            "hir",
+            "li",
+            "liş",
+            "ti",
+            "re",
+            "me",
+            "dik",
+            "le",
+            "ri",
+            "miz",
+            "den",
+            "si",
+            "niz"
+          ],
+          "start": 1.17,
+          "end": 3.955
+        }
+      }
+    },
+    {
+      "test": "actual-previous-take.wav",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şiyhralıstımerikloremnezdinsiniz' / Turkish recognizer did not hear the entire printed word: 'şiyhalıaştımerikloremnezdimsiniz' / Turkish recognizer did not hear the entire printed word: 'eşiyhralıştıymerikloremnezdinsiniz'"
+    },
+    {
+      "test": "actual-previous-take.mp3",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şiyhalıstımerikloremnezdinsiniz' / Turkish recognizer did not hear the entire printed word: 'şiyhalıstımerikloremnezdimsiniz' / Turkish recognizer did not hear the entire printed word: 'eşiyhralıstıyemerikloremnezdinsiniz'"
+    },
+    {
+      "test": "actual-previous-take.m4a",
+      "accepted": false,
+      "reason": "Turkish recognizer did not hear the entire printed word: 'şiyhalıstımerikloremnezdinsiniz' / Turkish recognizer did not hear the entire printed word: 'şeyhralıstımerikloremnezdinsiniz' / Turkish recognizer did not hear the entire printed word: 'eşiyhralıstiemerikloremnezdinsiniz'"
+    }
+  ],
+  "status": "旧录音漏音继续拦截。须使用Aiden完整重读意群，在MP3和最终AAC上复验。"
+}

@@ -19,3 +19,17 @@ runs:
           tar -xjf "$RUNNER_TEMP/$base.tar.bz2" -C tools/tts/models "$base/base.en-decoder.int8.onnx" "$base/base.en-encoder.int8.onnx" "$base/base.en-tokens.txt"
         fi
         sha256sum -c .github/actions/ielts-phrase-listening/SHA256SUMS
+    - name: 准备用于核听土耳其语长词的字符识别器
+      if: env.IELTS_LESSON == 'C11T4P3'
+      shell: bash
+      run: |
+        set -euo pipefail
+        folder=tools/tts/models/ielts-turkish-ctc
+        model=https://huggingface.co/onnx-community/wav2vec2-base-760-turkish-ONNX/resolve/3b2c54bdba684411155e09f6e91841ec66da2c8f
+        mkdir -p "$folder"
+        for file in onnx/model_int8.onnx vocab.json; do
+          curl -fsSL --retry 4 --max-time 200 "$model/$file" -o "$folder/${file##*/}"
+        done
+        cd "$folder"
+        echo 'f2b12b5d6f7a29d1f380b0e0c293815a1c52e072d5c6c452696a13524a9dd38f  model_int8.onnx' | sha256sum -c -
+        echo '863a1d6ad236b11ad47d7761cbe3363862eb02715e0ec4de0057f48801b51a96  vocab.json' | sha256sum -c -

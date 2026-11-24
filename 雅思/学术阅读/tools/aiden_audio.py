@@ -18,6 +18,7 @@ import aiden_ceylonese
 import aiden_inuktitut
 import aiden_sobchack
 import aiden_de_dreu
+import aiden_turkish
 import make_audio as cet
 import 听对
 
@@ -70,7 +71,7 @@ class Aiden:
             self.model=Qwen3TTSModel.from_pretrained(str(folder),dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
         instruction=DIRECTION
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items()
-               if name.casefold() != 'ceylonese' and re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
+               if name.casefold() not in {'ceylonese', aiden_turkish.ORAL} and re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
         if script.strip(' ,.;:!?').casefold() in {s.casefold() for s in aiden_cork_oak.RENDERINGS}:
             instruction += ' ' + aiden_cork_oak.HINT
@@ -94,6 +95,8 @@ class Aiden:
             instruction += ' Read the family name Sobchack in two syllables: sob-chack. Go directly from b to ch and pronounce the final k.'
         if any(form.casefold() in script.casefold() for form in aiden_de_dreu.RENDERINGS):
             instruction += ' ' + aiden_de_dreu.HINT
+        if any(form.casefold() in script.casefold() for form in aiden_turkish.RENDERINGS):
+            instruction += ' ' + aiden_turkish.HINT
         if 'Deane dived down' in script:
             instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
         if 'Doctor Phil Rasch' in script:
@@ -119,9 +122,9 @@ class Aiden:
         audio=soxr.resample(wave,rate,16000)
         if not timed:
             return None
-        # The De Dreu check matches all surrounding words in both recognizers
-        # and measures the name itself, even when transcribed as De Drew.
-        if 'dreu' not in words(script) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
+        # Dedicated acoustic checks require both recognizers to match the
+        # English context even when they transcribe a foreign word differently.
+        if not {'dreu',aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
             return None
         try:
             assess(audio,script,transcript)
@@ -152,7 +155,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu'}.intersection(words(script))):
+                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu',aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -185,6 +188,8 @@ class Aiden:
             spellings=aiden_sobchack.RENDERINGS
         elif re.search(r'\bDe Dreu\b',script,re.I):
             spellings=aiden_de_dreu.RENDERINGS
+        elif aiden_turkish.ORAL in words(script):
+            spellings=aiden_turkish.RENDERINGS
         for attempt in range(len(spellings) if spellings else 5):
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.

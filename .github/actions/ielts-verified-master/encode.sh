@@ -12,6 +12,7 @@ test "${#files[@]}" -eq 1
 if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
   case "$IELTS_LESSON" in
     C6T1P3|C8T1P1|C11T4P2|C12T1P1|C13T2P1|C13T2P2) /opt/ttsenv/bin/python -m pip install -q pocketsphinx==5.0.4 ;;
+    C11T4P3) /opt/ttsenv/bin/python -m pip install -q onnxruntime==1.32.0 ;;
   esac
   /opt/ttsenv/bin/python "$TARGET/tools/aiden_encoded_audio.py" "${files[0]}" "$RUNNER_TEMP/out/phrase-playback.json"
 fi
