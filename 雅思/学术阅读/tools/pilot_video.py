@@ -277,12 +277,16 @@ elif int(PID[1:PID.index('T')])<=10:
 
 def speech_tokens(text):
     from aiden_boundaries import spoken_spelling
-    from textnorm import ordinal
+    from textnorm import number, ordinal
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
     plain = spoken_spelling(plain)
     plain = re.sub(r'\bh\. (?=naledi\b)', 'homo ',plain)
     # Match a printed ordinal to the same ordinal in the certified narration.
     plain = re.sub(r'\b(\d+)[ \t]*(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)
+    # The timed recognizer writes ordinary quantities in either form. Keep a
+    # bare four-digit year intact, since a year can have a distinct reading.
+    plain = re.sub(r'(?<![\w.,])(?:\d{1,3}(?:,\d{3})+|\d{1,3})(?:\.\d+)?(?!\w|[.,]\d)',
+                   lambda m: number(m[0]), plain)
     return re.findall(r'[a-z0-9]+',plain)
 
 def reviewed_spelling(audio, timing, printed, recognised):

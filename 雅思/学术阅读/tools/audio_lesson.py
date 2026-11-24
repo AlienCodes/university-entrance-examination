@@ -53,6 +53,9 @@ class Reader(cet.G.Pronouncer):
             text = text.replace('Dr Phil Rasch', 'Doctor Phil Rasch')
         if PID != 'C20T1P1':
             # Asterisks refer to the printed footnotes and are silent in speech.
+            # A trailing ellipsis closes an unfinished quotation. Mark the
+            # endpoint on the final spoken word instead of recording a bare period.
+            text = re.sub(r"(?:…|\.{3})[.…]*([’'\"”]*)(?:\.)?\s*$", r".\1", text)
             text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
             text = re.sub(r'\b(\d+)[ \t]+(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),text,flags=re.I)
             text = text.translate(str.maketrans({'[':'',']':'','&':' and ','ş':'sh'}))
