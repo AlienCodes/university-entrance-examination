@@ -429,6 +429,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
                 return True
             if zappaterra and start/RATE >= zappaterra['end']:
                 left_words = zappaterra_words(left_words)
+            if sevres and sevres.get('reviewed_recording') and left_words == expected[:-4]:
+                from aiden_sevres import TOWN_SPELLINGS
+                if len(right_words) == 4 and right_words[:3] == ['for','girls','in'] and right_words[-1] in TOWN_SPELLINGS:
+                    return True
             if migration_names and pause_after_migration_names(expected,left_words,right_words,start,migration_names):
                 return True
             if migration_names and pause_before_ancestral_groups(expected,left_words,right_words,end,migration_names):
