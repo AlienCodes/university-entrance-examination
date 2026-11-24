@@ -9,7 +9,7 @@ import subprocess
 import tempfile
 import zipfile
 
-from aiden_profile import IDENTITY, PAUSE_POLICY, audio_asset, confirm
+from aiden_profile import IDENTITY, PAUSE_POLICY, RejectedSource, audio_asset, confirm
 from lesson import LESSON, PID, PROJECT, ROOT
 from release_assets import fetch, inventory
 
@@ -152,7 +152,10 @@ def stage_recording(stage, destination):
     archive = fetch(item, destination)
     with zipfile.ZipFile(archive) as saved:
         timing = json.loads(saved.read('audio/timings.json'))['cet4_male'][PID]
-        confirm(timing)
+        try:
+            confirm(timing)
+        except RejectedSource:
+            return 'previous'
     return 'current'
 
 

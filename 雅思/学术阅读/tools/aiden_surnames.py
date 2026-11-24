@@ -57,6 +57,73 @@ def forms(*parts):
 
 
 @lru_cache(maxsize=1)
+def henri_decoder():
+    readings = forms(('OW N','AA N','AO N','AH N','OW','AA','AO','EH N','HH EH N','AE N','EH','AE','IY','EY'),
+                     ('R IY','ER IY','R','IY'))
+    return readings, grammar_decoder(readings, {}, '{term}')
+
+
+def verify_henri(audio, expected, first, second):
+    timed = timed_words(audio)
+    index = expected.index('henri')
+    if expected[index+1:index+2] not in (['becquerel'], ['becquerels']):
+        raise ValueError('The expected surname does not follow Henri')
+    equivalent = dict(becarell='becquerel', bekarell='becquerel',
+                      becarells='becquerels', bekarells='becquerels')
+    for heard in (words(first), words(second), [word for word, _ in timed]):
+        if len(heard) != len(expected) or heard[index] not in {'henri','henry'}:
+            raise ValueError('The full name Henri Becquerel and its context could not be located')
+        normalized = heard[:index] + ['henri', equivalent.get(heard[index+1], heard[index+1])] + heard[index+2:]
+        if normalized != expected:
+            raise ValueError('The words around Henri or the ending of Becquerel differ from the passage')
+    start, stop = timed[index][1], timed[index+1][1]
+    if any(start < (a+b)/2 < stop for a,b in interior_gaps(audio)):
+        raise ValueError('A pause interrupts the given name Henri')
+    readings, decoder = henri_decoder()
+    results = []
+    # Two windows across the transition to the surname retain the vowel-initial
+    # ahn-REE heard in the native reference. The old take gave HH EH N (Henry).
+    for before, after in ((.04,.04), (0,.02)):
+        lo = max(0, start-round(before*RATE))
+        hi = min(len(audio), stop+round(after*RATE))
+        key, score, begin, end = locate_sound(audio[lo:hi], decoder, readings)
+        phones = readings[key]
+        syllables = phones.split()
+        if (syllables[0] not in {'AA','AO','AH','OW'} or syllables[1:] not in (['N','R','IY'], ['N','ER','IY'])
+                or score < .18 or not .2*RATE <= end-begin <= .8*RATE):
+            raise ValueError('The printed Henri is not clear in the recording: '+phones)
+        results.append(dict(phones=phones, confidence=round(score,3)))
+    return dict(given_name='Henri', surname=expected[index+1], start=round(start/RATE,3),
+                end=round(stop/RATE,3), windows=results)
+
+
+@lru_cache(maxsize=1)
+def vandam_decoder():
+    readings = forms(('V','F','B',''), ('AE N','AH N','AO N','EH N','AA N','AE','EH',''),
+                     ('D','T',''), ('AE M','AY M','EH M','AA M','AE N','AH M','AE','IH M'))
+    return readings, grammar_decoder(readings, {'says':'S EH Z','mark':'M AA R K'}, '[says | mark] {term}')
+
+
+def verify_vandam(audio, expected, first, second):
+    timed = timed_words(audio)
+    prefix = len(expected) - 1
+    for tokens in (words(first), words(second), [word for word, _ in timed]):
+        if tokens[:prefix] != expected[:prefix] or ''.join(tokens[prefix:]) not in {'vandam','vandamme','vandaam'}:
+            raise ValueError('The quote attributed to VanDam differs from the printed wording')
+    onset = max(0, timed[prefix-1][1] - 1100)
+    readings, decoder = vandam_decoder()
+    key, score, begin, end = locate_sound(audio[onset:], decoder, readings)
+    # CMUdict has V AE N D AE M for both VanDam and Van Damme. American short a
+    # can raise before n. Check the audible v and the complete last syllable.
+    if (readings[key] not in {'V AE N D AE M','V EH N D AE M'} or score < .13
+            or not .33*RATE <= end-begin <= 1.35*RATE
+            or any(onset+begin < (a+b)/2 < onset+end for a,b in interior_gaps(audio))):
+        raise ValueError('The spoken surname at the end of the quote differs: '+readings[key])
+    return dict(phones=readings[key], confidence=round(score,3),
+                start=round((begin+onset)/RATE,3), end=round((end+onset)/RATE,3))
+
+
+@lru_cache(maxsize=1)
 def amagoalik_decoders():
     # The chair introduces John Amagoalik and he then introduces himself
     # in the Canadian House of Commons, NDDN hearing 37, 3 November 2009.

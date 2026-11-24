@@ -9,7 +9,7 @@ import tempfile
 import time
 import zipfile
 
-from aiden_profile import IDENTITY, PAUSE_POLICY
+from aiden_profile import IDENTITY, PAUSE_POLICY, rejected_sources
 from lesson import PID, PROJECT
 from release_assets import fetch, inventory
 
@@ -22,21 +22,7 @@ REVIEW_TAKES = 5
 
 
 def reviewed_master_failures():
-    """Recover editorial rejections that were measured on a complete mastered passage."""
-    path = PROJECT / '审校/Aiden/13-6/复验原声' / (PID + '.退回.json')
-    if not path.is_file():
-        return {}
-    review = json.loads(path.read_text(encoding='utf-8'))
-    if review['lesson'] != PID or review['narrator'] != IDENTITY:
-        raise ValueError('The mastered recording review belongs to a different lesson or voice')
-    failures = {}
-    for row in review['takes']:
-        digest = row['flac_sha256']
-        if (not re.fullmatch(r'[0-9a-f]{64}', digest) or not row['issue']
-                or not re.fullmatch(r'[0-9a-f]{64}', row['master_mp3_sha256'])):
-            raise ValueError('Incomplete evidence for a rejected mastered recording')
-        failures[digest] = row['issue']
-    return failures
+    return rejected_sources(PID)
 
 
 def diagnostic_reports(report):

@@ -241,9 +241,10 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
-                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik'}.intersection(words(script))
+                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
-                      and words(script)[:3] != ['the','team','theorizes'] and words(script)[-2:] != ['norm','referenced']
+                      and words(script)[:3] != ['the','team','theorizes']
+                      and words(script)[-2:] not in (['norm','referenced'], ['says','vandam'], ['percent','longer'])
                       and not cited_phrase(words(script))
                       and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data

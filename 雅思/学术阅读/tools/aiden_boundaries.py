@@ -68,6 +68,9 @@ def words(text):
     # and “6.8 mm”, the two forms emitted by the independent recognizers.
     text = re.sub(r'(?<=\d)\s+(?=mm\b)', '', text, flags=re.I)
     text = re.sub(r'\bsub[- ]?millimet(?:er|re)(s?)\b', r'submillimeter\1', text, flags=re.I)
+    text = re.sub(r'\bper\s+cent\b', 'percent', text, flags=re.I)
+    # Both possessives are B EY B IY Z in CMUdict. Keep the paper’s written plural on screen.
+    text = re.sub(r"\bheld baby['’]s attention\b", 'held babies attention', text, flags=re.I)
     text = spoken_spelling(text)
     text = re.sub(r'\brapa nui\b', 'rapanui', text, flags=re.I)
     text = re.sub(r'\bwindlashed\b', 'wind lashed', text, flags=re.I)
@@ -250,6 +253,18 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_sevres import verify
         alternate = independent(audio)
         sevres = verify(audio,expected,transcript,alternate)
+    elif 'henri' in expected and any(w in {'becquerel','becquerels'} for w in expected):
+        from aiden_surnames import verify_henri
+        alternate = independent(audio)
+        surname = verify_henri(audio, expected, transcript, alternate)
+    elif expected[-2:] == ['says','vandam']:
+        from aiden_surnames import verify_vandam
+        alternate = independent(audio)
+        surname = verify_vandam(audio, expected, transcript, alternate)
+    elif expected[:5] == ['they','found','that','the','infant'] and expected[-2:] == ['percent','longer']:
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript, alternate)):
+            raise ValueError(f'The reported comparison of infant attention differs: {transcript!r} / {alternate!r}')
     elif expected == ['cod','sole','perch','and','pollock']:
         from aiden_pronunciation import verify_groundfish_list
         alternate = independent(audio)

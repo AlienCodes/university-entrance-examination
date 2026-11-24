@@ -1,0 +1,103 @@
+{
+ "historical_asset_names": {
+  "7a59540": {
+   "C13T3P2": "C13T3P2-aiden-a2660fe6be6aefa1.zip",
+   "C9T4P1": "C9T4P1-aiden-d5742f67133c649a.zip",
+   "C8T1P1": "C8T1P1-aiden-5b4c724911624011.zip",
+   "C12T1P1": "C12T1P1-aiden-0bb3bfad09240707.zip",
+   "C8T3P1": "C8T3P1-aiden-88534212a24ec381.zip",
+   "C11T3P1": "C11T3P1-aiden-9474faa944910ee5.zip"
+  },
+  "35cfab3": {
+   "C13T3P2": "C13T3P2-aiden-ac581b41c4674c46.zip",
+   "C9T4P1": "C9T4P1-aiden-9d14675991f0383d.zip",
+   "C8T1P1": "C8T1P1-aiden-e2b41e95de4b84f5.zip",
+   "C12T1P1": "C12T1P1-aiden-8cbe20a9a11d8ae7.zip",
+   "C8T3P1": "C8T3P1-aiden-018e6ee8d811fec4.zip",
+   "C11T3P1": "C11T3P1-aiden-ba0dd84b2486900f.zip"
+  },
+  "9f609ae": {
+   "C13T3P2": "C13T3P2-aiden-bb0376101c3ac083.zip",
+   "C9T4P1": "C9T4P1-aiden-bc0f08203c245dff.zip",
+   "C8T1P1": "C8T1P1-aiden-42d1a913f5076115.zip",
+   "C12T1P1": "C12T1P1-aiden-0e50ab9ff15a1bcd.zip",
+   "C8T3P1": "C8T3P1-aiden-883a84acadc9cdef.zip",
+   "C11T3P1": "C11T3P1-aiden-bc00ac92671f60bf.zip"
+  },
+  "c9d34f9": {
+   "C13T3P2": "C13T3P2-aiden-f49feb1fcd71507a.zip",
+   "C9T4P1": "C9T4P1-aiden-db7f2c8df2c96a72.zip",
+   "C8T1P1": "C8T1P1-aiden-e7ed002e34e3ae1c.zip",
+   "C12T1P1": "C12T1P1-aiden-7460d425117de106.zip",
+   "C8T3P1": "C8T3P1-aiden-e9aebb0df74c372e.zip",
+   "C11T3P1": "C11T3P1-aiden-3fb255b37653d449.zip"
+  },
+  "e54fc68e": {
+   "C13T3P2": "C13T3P2-aiden-f23674fd5bc642c7.zip",
+   "C9T4P1": "C9T4P1-aiden-612e859187056d72.zip",
+   "C8T1P1": "C8T1P1-aiden-5f0b40f3773f2470.zip",
+   "C12T1P1": "C12T1P1-aiden-662999b06b6f8052.zip",
+   "C8T3P1": "C8T3P1-aiden-358b6d5fcbeb578f.zip",
+   "C11T3P1": "C11T3P1-aiden-3e583756b9e31d1c.zip"
+  },
+  "c1b0ff99": {
+   "C13T3P2": "C13T3P2-aiden-376f98c64e24f8b3.zip",
+   "C9T4P1": "C9T4P1-aiden-6fd4afa3612234f8.zip",
+   "C8T1P1": "C8T1P1-aiden-91353ef8a92d3998.zip",
+   "C12T1P1": "C12T1P1-aiden-261ed4df3022cac5.zip",
+   "C8T3P1": "C8T3P1-aiden-a74e8b464b79e24c.zip",
+   "C11T3P1": "C11T3P1-aiden-6b160d5b8eb19bad.zip"
+  }
+ },
+ "test": "逐版提取当时的 audio_asset 和它读取的源文件，实际计算归档名，再与当前恢复入口对照。六个版本的六篇全部相同。",
+ "actual_masters": [
+  {
+   "lesson": "C9T4P1",
+   "raw_phrases": 96,
+   "reviewed_rejections": [
+    "e2751bbbca0a4b150050e6cfae00d7c01824b2eb72176fb49d13da4d45ae7489",
+    "10daba8a4a00367e3a1e387b03cc81ebb53f6c938114aec43fb1f15315fecdc7"
+   ],
+   "reason": "Sentence 3, phrase 3: the given name Henri is pronounced as English Henry throughout the source and mastered track.",
+   "current_name_with_old_voice": "previous"
+  },
+  {
+   "lesson": "C7T3P2",
+   "raw_phrases": 78,
+   "reviewed_rejections": [
+    "fc4edcdda20a60d4683526f07185c7a27194584fca069b8e1e18285c31a251ae"
+   ],
+   "reason": "Sentence 28, phrase 4: the final consonant of Eskimo-Aleut is ambiguous after mastering. Rerecord this complete phrase."
+  },
+  {
+   "lesson": "C6T1P3",
+   "raw_phrases": 83,
+   "reviewed_rejections": []
+  },
+  {
+   "lesson": "C13T4P2",
+   "raw_phrases": 96,
+   "reviewed_rejections": []
+  }
+ ],
+ "old_split_word_regression": [
+  {
+   "version": "old",
+   "file": "13-1-1 案例研究：新西兰旅游局网站.mp4",
+   "sha256": "ad99d8d38def3319524bcb91865981d2d593d84f0e4f849715b26bc1f5cae6c8",
+   "join_passed": false
+  },
+  {
+   "version": "corrected",
+   "file": "C13T1P1-core.mp4",
+   "sha256": "65d55efd25cb50600d444351e22b63727cd4a6462c19e07686a1ade885bb8a1a",
+   "join_passed": true
+  },
+  {
+   "version": "illustrated",
+   "file": "C13T1P1-illustrated-65d55efd25cb5060-1a9a077fd4ca5fe1-dd91b2a6bc251da9.mp4",
+   "sha256": "dd91b2a6bc251da9036fa7d6a6b50f1c022327a8781d7b9ca92a62ae6cba1c77",
+   "join_passed": true
+  }
+ ]
+}

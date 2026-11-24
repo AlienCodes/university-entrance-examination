@@ -69,7 +69,7 @@ def package(dest):
                  pdf_sha256=digest(dest/'Reading-notes.pdf'),pdf_bytes=pdf['bytes'],pages=pdf['pages'],
                  video_seconds=checks['duration'],video_bytes=original.stat().st_size,content_sha256=digest(TEXT))
     if os.getenv('IELTS_NARRATOR')=='Aiden':
-        from aiden_profile import IDENTITY, PAUSE_POLICY, confirm, verified_subject_terms
+        from aiden_profile import IDENTITY, PAUSE_POLICY, confirm, source_take_digests, verified_subject_terms
         timing=json.loads((PROJECT/'audio/timings.json').read_text())[engine.VOICE][PID]
         confirm(timing)
         receipt.update(narrator=IDENTITY,speaker=timing['narrator']['speaker'],audio_sha256=timing['certificate']['mp3_sha256'])
@@ -80,6 +80,7 @@ def package(dest):
         if boundary.get('reference_mp3_sha256')!=receipt['audio_sha256'] or not all(row.get('mp3_waveform') for row in boundary['checks']):
             raise ValueError('The final AAC has no waveform comparison to its certified MP3')
         receipt.update(pause_policy=PAUSE_POLICY,verified_phrases=boundary['phrases'],encoded_reference_sha256=receipt['audio_sha256'])
+        receipt['source_take_sha256'] = source_take_digests(PID, timing['narration_review'])
         if PID == 'C8T1P1':
             def checked_stars(checks):
                 return [x['sentence'] for x in checks if x.get('decans_pronunciation')]

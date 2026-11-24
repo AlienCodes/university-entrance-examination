@@ -24,7 +24,7 @@ from submit_reviewed import approved, update_book_index
 
 import illustration_stage as art
 from aiden_batch import BATCHES
-from aiden_profile import IDENTITY, PAUSE_POLICY, verified_subject_terms
+from aiden_profile import IDENTITY, PAUSE_POLICY, source_take_digests, verified_subject_terms
 
 AIDEN=os.environ.get('IELTS_AIDEN_BATCH','')
 if AIDEN and (AIDEN not in BATCHES or os.environ.get('IELTS_NARRATOR')!='Aiden'):
@@ -154,6 +154,12 @@ def pack(out):
                     if AIDEN:
                         voice=json.loads(archive.read('source/narration.json'))
                         playback=voice['mp4_check']
+                        core = json.loads(archive.read('verification.json'))['receipt']
+                        if not verified_subject_terms(pid, core):
+                            raise ValueError(pid+' contains an unresolved source recording')
+                        if ('source_take_sha256' in core
+                                and core['source_take_sha256'] != source_take_digests(pid, voice['sentences'])):
+                            raise ValueError(pid+' source recordings differ between its receipt and its narration')
                         if (not playback['passed'] or playback['policy']!=PAUSE_POLICY or playback['sha256']!=row.get('core_sha256',row['sha256'])
                                 or playback['phrases']!=len(playback['checks']) or len(voice['sentences'])!=row['units']
                                 or voice['mp3_check']['phrases']!=playback['phrases']):
