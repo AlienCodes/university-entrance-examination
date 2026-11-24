@@ -1,0 +1,72 @@
+{
+  "lesson": "C13T4P2",
+  "sentence": 16,
+  "phrase": 3,
+  "certified_start": 132.695,
+  "certified_end": 138.875,
+  "mp3_sha256": "b65a0de93b75472dbbb7ca1361063b57e1c946a0dde074cc6287256ecd3c7d93",
+  "actual_aac_excerpt": {
+    "text": "but then when the plants die and decay these nutrients are returned directly to the soil.",
+    "heard": "But then, when the plants die and decay, these nutrients are returned directly to the soil.",
+    "checked_internal_gaps": [
+      [
+        0.58,
+        1.05
+      ],
+      [
+        2.97,
+        3.48
+      ]
+    ],
+    "verified_with_quiet_context": [
+      [
+        0.58,
+        1.05
+      ]
+    ],
+    "second_heard": "But then, when the plants die and decay, these nutrients are returned directly to the soil.",
+    "source_lag_ms": 20,
+    "mp3_waveform": {
+      "lag_samples": 0,
+      "worst_window_correlation": 0.99217,
+      "average_correlation": 0.999567,
+      "max_level_difference_db": 0.242
+    }
+  },
+  "source_and_final": "原始MP3与尝试编码的AAC均有相同的停顿。保留停顿内35或80毫秒短静音以分别识别两侧。只有同一识别器从两段相互不重叠的音频中还原完整词串，才接受该分界。",
+  "reported_sectors_regression": [
+    {
+      "source": "旧版",
+      "sha256": "f4db298dc97f76bf1d91283e9b8cb01c36e09b3747d0bcd28aa49924d2548b85",
+      "complete": false,
+      "assessment": {
+        "error": "Incomplete or interrupted plural in export sectors: S EH K"
+      }
+    },
+    {
+      "source": "修订版",
+      "sha256": "3a04f17ec8071ba2a0a527f06497fb738d83a1215669f9b663d437865fe890fd",
+      "complete": true,
+      "assessment": {
+        "text": "Unlike other export sectors, which make products and then sell them overseas,",
+        "heard": "Unlike other export sectors, which make products and then sell them overseas.",
+        "checked_internal_gaps": [
+          [
+            1.83,
+            2.2
+          ],
+          [
+            3.26,
+            3.41
+          ]
+        ],
+        "export_sectors_pronunciation": {
+          "phones": "S EH K T ER Z",
+          "start": 1.19,
+          "end": 1.82,
+          "confidence": 1.0
+        }
+      }
+    }
+  ]
+}

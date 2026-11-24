@@ -128,6 +128,10 @@ class Aiden:
             instruction += ' In "Deane dived down", finish the past tense /daɪvd/ with an audible d release. Carry the voice through “down and found” in the same thought.'
         if re.search(r'\bwind[- ]lashed\b',script,re.I):
             instruction += ' In wind-lashed infertile fields, finish lashed with /ʃt/ before the first vowel of infertile.'
+        if words(script)[:3] == ['the','team','theorizes']:
+            instruction += ' Begin with the article the and the noun team /ðə tiːm/. Close the lips on m before continuing smoothly with theorizes.'
+        if re.search(r'\bnorm[- ]',script,re.I):
+            instruction += ' In norm-referenced, finish referenced with the final consonants /nst/, including a light t release.'
         if re.search(r"\bapproached the helicopter",script,re.I):
             instruction += ' The first verb is in the past. Finish approached with /tʃt/ before the following word.'
         if 'Villamil' in script or 'vee-yah-MEEL' in script:
@@ -208,7 +212,9 @@ class Aiden:
                                       issue=self.rejected_master_takes[data['sha256']])
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
-                elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
+                elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
+                      and words(script)[:3] != ['the','team','theorizes'] and words(script)[-2:] != ['norm','referenced']
+                      and not cited_phrase(words(script))
                       and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
@@ -248,6 +254,10 @@ class Aiden:
             spellings=aiden_india.RENDERINGS
         elif words(script)[:3] == ['researched','the','chemistry']:
             spellings=('researched', 'RESEARCHED', 'researched', 'RESEARCHED', 'researched')
+        elif words(script)[:3] == ['the','team','theorizes']:
+            spellings=('The team theorizes','The TEAM theorizes','THE TEAM theorizes','The team theorizes','The TEAM theorizes')
+        elif 'norm-referenced' in script.casefold():
+            spellings=('norm-referenced','norm referenced','norm REH-fuh-renst','norm-referenced','norm REH-frenst')
         elif 'pithecanthropus' in words(script):
             spellings=('Pithecanthropus erectus','Pith-ih-KAN-thruh-puhs ih-REK-tuhs',
                        'Pithecanthropus erectus','Pith-uh-KAN-thruh-pus ih-REK-tus','Pithecanthropus erectus')

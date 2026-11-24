@@ -136,12 +136,12 @@ def matches(expected, heard):
             and all(max(b-a,d-c) <= 2 for op,a,b,c,d in seq.get_opcodes() if op != 'equal'))
 
 
-def isolated(audio):
+def isolated(audio, *, padding=2400):
     import numpy as np
     from 听对 import recognizer
     rec = recognizer()
     stream = rec.create_stream()
-    stream.accept_waveform(RATE, np.pad(audio,(2400,2400)).astype('float32'))
+    stream.accept_waveform(RATE, np.pad(audio,(padding,padding)).astype('float32'))
     rec.decode_stream(stream)
     return stream.result.text
 
@@ -168,11 +168,15 @@ def complete_words_at_gap(audio, start, end, expected, first, second):
     printed = ''.join(expected)
     if not any(''.join(words(h)) == printed for h in (first, second)):
         return False
-    context = min(80 * RATE // 1000, (end - start) // 2)
-    left = ''.join(words(isolated(audio[:start + context])))
-    right = ''.join(words(isolated(audio[end - context:])))
-    return any(left == ''.join(expected[:i]) and right == ''.join(expected[i:])
-               for i in range(1, len(expected)))
+    divisions = {(''.join(expected[:i]), ''.join(expected[i:])) for i in range(1,len(expected))}
+    for millis in (80, 35):
+        context = min(millis * RATE // 1000, (end - start) // 2)
+        for listen in (isolated, independent):
+            left = ''.join(words(listen(audio[:start + context])))
+            right = ''.join(words(listen(audio[end - context:])))
+            if (left, right) in divisions:
+                return True
+    return False
 
 
 def assess(audio, text, transcript=None, *, recheck=False):
@@ -209,9 +213,31 @@ def assess(audio, text, transcript=None, *, recheck=False):
     turkish_word = None
     chemists = None
     surname = None
+    craftsmen = None
+    opening = None
     ganzfeld = None
     cork_taint = None
-    if 'trichloroanisole' in expected:
+    if expected == ['the','ancient','craftsmen']:
+        from aiden_pronunciation import verify_ancient_craftsmen
+        alternate = independent(audio)
+        craftsmen = verify_ancient_craftsmen(audio,transcript,alternate)
+    elif expected[:3] == ['the','team','theorizes'] or expected[-2:] == ['norm','referenced']:
+        alternate = independent(audio)
+        if expected[:3] == ['the','team','theorizes']:
+            # The old take is sometimes transcribed correctly only when padded
+            # or given the whole sentence. Check the audible opening on its own.
+            opening = isolated(audio[:round(2.5*RATE)],padding=0)
+            if words(opening)[:3] != expected[:3]:
+                raise ValueError(f'The opening the team theorizes is unclear: {opening!r}')
+        for text_heard in (transcript,alternate):
+            heard = words(text_heard)
+            # The baby-language recording lost its initial article and the m in team.
+            # The giftedness recording lost the past-participle ending in referenced.
+            same_edge = (heard[:3] == expected[:3] if expected[:3] == ['the','team','theorizes']
+                         else heard[-2:] == expected[-2:])
+            if not same_edge or not matches(expected,heard):
+                raise ValueError(f'Unclear printed phrase: {text!r} / {transcript!r} / {alternate!r}')
+    elif 'trichloroanisole' in expected:
         from aiden_cork_taint import verify, verify_pause_before_locants
         alternate = independent(audio)
         cork_taint = verify(audio,text,transcript,alternate)
@@ -437,6 +463,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['chemists_surnames']=chemists
     if surname is not None:
         result['surname_pronunciation']=surname
+    if craftsmen is not None:
+        result['craftsmen_pronunciation']=craftsmen
+    if opening is not None:
+        result['unpadded_opening_excerpt']=opening
     if ganzfeld is not None:
         result['ganzfeld_pronunciation']=ganzfeld
     if cork_taint is not None:

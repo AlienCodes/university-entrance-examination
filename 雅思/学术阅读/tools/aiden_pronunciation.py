@@ -37,6 +37,39 @@ def locate_sound(audio, decoder, phones):
     return match.word, match.prob, start, stop
 
 
+@lru_cache(maxsize=1)
+def craftsmen_decoder():
+    from itertools import product
+    forms = product(('K R AE F T', 'K R AE F', 'K R AE T', 'K R AH F T'),
+                    ('S M', 'M', 'S', ''), ('AH N', 'EH N', 'IH N', 'AE N', 'N', 'AH', ''))
+    phones = {f'form-{i}': ' '.join(p for p in form if p) for i, form in enumerate(forms)}
+    return grammar_decoder(phones, {}, '{term}'), phones
+
+
+def verify_ancient_craftsmen(audio, first, second):
+    from aiden_boundaries import interior_gaps, words
+    from aiden_ceylonese import timed_words
+    timed = timed_words(audio)
+    for read in (words(first), words(second), [w for w,_ in timed]):
+        if (read[:2] != ['the', 'ancient'] or len(read) != 3 or
+                read[-1] not in {'craftsmen', 'craftsman'}):
+            raise ValueError('The ancient craftsmen or its introduction differs')
+    offset = max(0, timed[-1][1] - 1700)
+    decoder, phones = craftsmen_decoder()
+    key, score, begin, end = locate_sound(audio[offset:], decoder, phones)
+    # The Oxford US recordings give /ˈkræftsmən/ for both numbers. The
+    # stressed /mɛn/ plural is also possible; neither permits a missing n.
+    pronounced = phones[key].split()
+    if (pronounced[:4] != ['K','R','AE','F'] or pronounced[-4:-2] != ['S','M'] or
+            pronounced[-2] not in {'AH','EH','IH'} or pronounced[-1] != 'N' or
+            score < .065 or not .38*RATE <= end-begin <= 1.25*RATE):
+        raise ValueError('The recording lacks the complete word craftsmen: '+phones[key])
+    if any(begin < (a+b)/2 < end for a,b in interior_gaps(audio[offset:])):
+        raise ValueError('A silence interrupts the word craftsmen')
+    return dict(phones=phones[key],score=round(score,3),
+                start=round((offset+begin)/RATE,3),end=round((offset+end)/RATE,3))
+
+
 _OR_FORMS = {'or': 'AO R', 'weak-or': 'ER', 'or-ah': 'AH R', 'for': 'F AO R',
              'weak-for': 'F ER', 'fa': 'F AH', 'off': 'AO F', 'uh': 'AH', 'of': 'AH V'}
 

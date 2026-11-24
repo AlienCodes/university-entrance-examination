@@ -27,6 +27,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
            root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
     term_checkers = {
         'quercus suber': ('aiden_cork_oak.py',),
+        'the ancient craftsmen': ('aiden_pronunciation.py', 'aiden_ceylonese.py'),
         'ceylonese': ('aiden_ceylonese.py',),
         'decans': ('aiden_decans.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'perkin': ('aiden_perkin.py', 'aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),

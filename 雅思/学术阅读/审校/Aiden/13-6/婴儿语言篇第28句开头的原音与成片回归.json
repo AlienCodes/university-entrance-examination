@@ -1,0 +1,83 @@
+{
+  "lesson": "C13T3P2",
+  "sentence": 28,
+  "source_artifact": 14893742631,
+  "source_artifact_sha256": "62351773d16d16c4e1ebe7b286063cc9bcd5a2758c09c3f6a5bbdca189d252fe",
+  "old_master_time": [
+    250.66,
+    257.425
+  ],
+  "actual": [
+    {
+      "media": "已认证旧MP3",
+      "sha256": "e5afa077c4578ac3efb42e2485c2188dcb34ca90d73bcb3ebd943e69217bef7d",
+      "first": "Patin theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "second": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "issue": "The opening the team theorizes is unclear: 'Patim theorizes that this attraction to other'"
+    },
+    {
+      "media": "用旧MP3另编码的AAC",
+      "sha256": "b6da2fe15470834498df45832ddbfabe00cfdecfadcbd14a29384c2c85cef50b",
+      "first": "Patin theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "second": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "issue": "The opening the team theorizes is unclear: 'Petim theorizes that this attraction to other'"
+    }
+  ],
+  "measures": [
+    {
+      "case": "e35a7eebd380bc727d4ed4171c0d3eeb56c785fdaf05cdad686e4958f7856369",
+      "codec": "flac",
+      "passed": false,
+      "issue": "The opening the team theorizes is unclear: 'Pateem theorizes that this attraction to other'",
+      "first": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "second": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech."
+    },
+    {
+      "case": "e35a7eebd380bc727d4ed4171c0d3eeb56c785fdaf05cdad686e4958f7856369",
+      "codec": "mp3",
+      "passed": false,
+      "issue": "The opening the team theorizes is unclear: 'Pateem theorizes that this attraction to other'",
+      "first": "Patin theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "second": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech."
+    },
+    {
+      "case": "e35a7eebd380bc727d4ed4171c0d3eeb56c785fdaf05cdad686e4958f7856369",
+      "codec": "m4a",
+      "passed": false,
+      "issue": "The opening the team theorizes is unclear: 'Pateem theorizes that this attraction to other people'",
+      "first": "But team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "second": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech."
+    },
+    {
+      "case": "只用于检测的对照样本，用本篇第25句的同词开头",
+      "codec": "flac",
+      "passed": true,
+      "text": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "heard": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "checked_internal_gaps": [],
+      "second_heard": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "unpadded_opening_excerpt": "The team theorizes that this attraction to other"
+    },
+    {
+      "case": "只用于检测的对照样本，用本篇第25句的同词开头",
+      "codec": "mp3",
+      "passed": true,
+      "text": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "heard": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "checked_internal_gaps": [],
+      "second_heard": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "unpadded_opening_excerpt": "The team theorizes that this attraction to other"
+    },
+    {
+      "case": "只用于检测的对照样本，用本篇第25句的同词开头",
+      "codec": "m4a",
+      "passed": true,
+      "text": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "heard": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "checked_internal_gaps": [],
+      "second_heard": "The team theorizes that this attraction to other infant sounds could help launch the learning process that leads to speech.",
+      "unpadded_opening_excerpt": "The team theorizes that this attraction to other"
+    }
+  ],
+  "scope": "两次整句识别和实际旧成片日志发现，第28句开头 the team 可被听成 Patin 或 Poutine。对照样本只用于测试。正式音轨使用Aiden完整重读的自然意群。"
+}
