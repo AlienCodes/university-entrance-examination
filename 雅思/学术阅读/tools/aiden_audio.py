@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+import tempfile
 from collections import deque
 from difflib import SequenceMatcher
 
@@ -13,7 +14,7 @@ import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
 from aiden_boundaries import POLICY, assess, words, reference, salmon_phrase
-from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed
+from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed, reviewed_master_failures
 import aiden_cork_oak
 import aiden_cork_taint
 import aiden_ceylonese
@@ -70,7 +71,7 @@ class Aiden:
     def __init__(self):
         self.model=None
         self.review={}
-        self.rejected_master_takes={}
+        self.rejected_master_takes=reviewed_master_failures()
         self.folder=Path(os.environ.get('IELTS_WORK',os.environ.get('RUNNER_TEMP','/tmp')))/'aiden-takes'
         self.folder.mkdir(parents=True,exist_ok=True)
         self.snapshots=PeriodicSnapshot(self.folder)
@@ -115,9 +116,14 @@ class Aiden:
         if words(script)[:5] == ['sugars','and','meats','or','oils']:
             instruction += ' Pronounce the opening word sugars /ˈʃʊɡɚz/, with a soft sh and a voiced final z.'
         if re.search(r'\bsock[ -]?eye\b', script, re.I):
-            instruction += ' The salmon name sockeye is /ˈsɑk.aɪ/. Link sock directly to eye in two syllables, stressing sock.'
+            instruction += (' This is a list of Pacific salmon. Sockeye and red are two names for the same fish. '
+                            'Say the compound SOCK-eye /ˈsɑk.aɪ/ as one word, with the beat on SOCK. '
+                            'Link or red naturally and finish red with its d sound.')
         if re.search(r'^pump through Alaska\b', script, re.I):
-            instruction += ' Say the present-tense verb pump, ending in p. Go directly into the th of through.'
+            instruction += (' In this quotation the subject is salmon. The fish pump through Alaska. '
+                            'Read only the supplied words. Finish the present-tense pump with the lips, '
+                            'then let air flow between the teeth for through. Give through the same '
+                            'voiceless th after blood.')
         if re.search(r'\b(?:fusee|fuzee|fyoo-zee)\b',script,re.I):
             instruction += ' Pronounce the clock term fusee in two connected syllables, fyoo-ZEE /fjuːˈziː/, with a clear final ee vowel.'
         if any(form.casefold() in script.casefold() for form in aiden_decans.RENDERINGS):
@@ -343,6 +349,13 @@ class Aiden:
             transcript,timed=recognize(wav)
             try:
                 assess(soxr.resample(wav,24000,16000),script,transcript)
+                with tempfile.TemporaryDirectory(dir=self.folder) as temp:
+                    candidate = Path(temp) / file.name
+                    save_raw_take(candidate, wav)
+                    digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
+                    if digest in self.rejected_master_takes:
+                        raise ValueError(self.rejected_master_takes[digest])
+                    candidate.replace(file)
             except ValueError as error:
                 issue=str(error)
                 attempts.append((wav, rendered_text, seed + attempt * 997, transcript, issue))
@@ -354,9 +367,7 @@ class Aiden:
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
-            save_raw_take(file, wav)
-            data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,
-                      sha256=hashlib.sha256(file.read_bytes()).hexdigest(),policy=POLICY)
+            data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,sha256=digest,policy=POLICY)
             report.write_text(json.dumps(data,ensure_ascii=False))
             return sf.read(file,dtype='float32')[0],data
         # Preserve distinct attempts for comparison after a pronunciation correction.
