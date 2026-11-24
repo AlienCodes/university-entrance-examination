@@ -121,9 +121,16 @@ def input_fingerprint(pid,paper_hash,prep_hash,sentence_count,manual,notes):
 
 def key_for(project,pid):
     paper=project/'原稿'/(pid+'.json')
+    source=read(paper)
+    sentences=[line for paragraph in source['paragraphs'] for line in paragraph]
+    text=' '.join(sentences)
+    for excluded in source.get('source_review',{}).get('excluded_page_furniture',[]):
+        tokens=re.findall(r'\w+',excluded)
+        if tokens and re.search(r'\b'+r'[\W_]+'.join(map(re.escape,tokens))+r'\b',text,re.I):
+            raise ValueError(f'{pid}: a printed header or footer remains in the reading: {excluded!r}')
     manual=read(project/'审校/早期册语境校订.json').get(pid,{})
     return input_fingerprint(pid,digest(paper),digest(project/'备课'/(pid+'.json')),
-                             sum(map(len,read(paper)['paragraphs'])),manual,teaching_notes(project,pid))
+                             len(sentences),manual,teaching_notes(project,pid))
 
 def key():
     return key_for(PROJECT,PID)
