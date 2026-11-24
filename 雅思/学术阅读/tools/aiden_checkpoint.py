@@ -197,6 +197,14 @@ def recover():
     runs = config.get("recover_runs", [])
     work = Path(os.environ["IELTS_WORK"])
     stage = os.environ.get("STAGING", "")
+    if stage == "ielts-academic-aiden-cache-13-6":
+        # A later rejected take can supersede an intact earlier recording in a
+        # runner snapshot. Restore independently checked originals first. Their
+        # filenames still bind them to the text, reading profile and phrase.
+        reviewed = Path(__file__).resolve().parents[1] / "审校/Aiden/13-6/复验原声" / (PID + ".zip")
+        if reviewed.is_file():
+            count = restore_archive(reviewed, work / "aiden-takes")
+            print(f"{PID}: restored {count} independently reviewed original recordings", flush=True)
     if stage in ("ielts-academic-aiden-cache-13-6", "ielts-academic-aiden-cache-5-1"):
         restore_snapshot(stage, work / "aiden-takes")
     if not runs:
