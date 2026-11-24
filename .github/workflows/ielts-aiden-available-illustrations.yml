@@ -42,7 +42,9 @@ jobs:
           from aiden_profile import IDENTITY
           from early_editor import key_for
           from editions import lesson_ids
+          from material import verify_original
           from release_assets import fetch, inventory
+          from submit_reviewed import approved
           import tempfile
 
           spec = json.loads(Path('.github/ielts-aiden-available-illustrations.json').read_text())
@@ -67,8 +69,15 @@ jobs:
               lessons = []
               with tempfile.TemporaryDirectory() as temp:
                   for p in available:
-                      if p not in measured or measured[p]['key'] != key_for(root, p):
+                      # The next edition's pilot has its own worker in this workflow's concurrency group.
+                      if p == edition[0]:
                           continue
+                      if int(p[1:p.index('T')]) <= 10:
+                          if p not in measured or measured[p]['key'] != key_for(root, p):
+                              continue
+                      else:
+                          approved(root / '篇目' / p)
+                          verify_original(root, p)
                       source = assets.get(p + '-receipt.json')
                       if not source or not source.get('digest') or cached(p, '13-6'):
                           continue
