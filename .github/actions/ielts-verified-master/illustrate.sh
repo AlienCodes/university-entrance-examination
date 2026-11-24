@@ -2,6 +2,14 @@
 set -euo pipefail
 if [[ "${IELTS_AIDEN_BATCH:-}" != "13-6" ]]; then exit 0; fi
 
+# This check uses only the standard library. Reuse the matching, downloaded
+# 4K master before setting up video tools on a fresh runner.
+complete=$(python "$TARGET/tools/aiden_batch.py" cached 13-6 --lesson "$IELTS_LESSON" --with-illustration)
+if [[ "$complete" == true ]]; then
+  echo "$IELTS_LESSON already has its checked illustrated 4K video"
+  exit 0
+fi
+
 python_bin=/opt/ttsenv/bin/python
 if [[ ! -x "$python_bin" ]] || ! "$python_bin" -c 'import av,numpy,playwright; assert hasattr(av.container.OutputContainer,"add_stream_from_template")' 2>/dev/null; then
   python -m venv "$RUNNER_TEMP/illustrated-env"

@@ -58,9 +58,10 @@ def plan(batch):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('mode',choices=['plan','cached']);p.add_argument('batch',choices=BATCHES);p.add_argument('--lesson')
+    p.add_argument('--with-illustration',action='store_true')
     a=p.parse_args()
     if os.getenv('IELTS_NARRATOR')!='Aiden':raise ValueError('Wrong narrator for this series')
     if a.mode=='plan':plan(a.batch)
     else:
         if a.lesson not in lesson_ids(BATCHES[a.batch]):raise ValueError('Outside series: '+str(a.lesson))
-        print(str(cached(a.lesson,a.batch)).lower())
+        print(str(cached(a.lesson,a.batch,include_illustration=a.with_illustration)).lower())
