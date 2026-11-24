@@ -19,6 +19,14 @@ def input_signature(passage, reader, config):
     return hashlib.sha256(json.dumps(fields, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
 
 
+def reviewed_track(stage):
+    if stage == 'ielts-academic-aiden-cache-13-6':
+        track = PROJECT / '审校/Aiden/13-6/复验整篇录音' / (PID + '.zip')
+        if track.is_file():
+            return track
+    return None
+
+
 def eligible_legacy_names():
     # Earlier certified archives lack the runtime input signature. Rebuild their
     # exact artifact names from the authorized recovery runs and today's text.
@@ -94,21 +102,27 @@ def recover_master(stage, passage, reader, config, target):
     try:
         available=inventory(stage)
     except (OSError,subprocess.SubprocessError) as exc:
-        print(f'{PID}: unable to read complete-audio inventory ({type(exc).__name__}), using saved takes',flush=True)
-        return None
+        print(f'{PID}: unable to read complete-audio inventory ({type(exc).__name__})',flush=True)
+        available={}
     assets=[a for n,a in available.items()
             if re.fullmatch(re.escape(PID)+r'-aiden-[a-f0-9]{16}\.zip',n) and a.get('digest')]
-    if not assets:
+    candidates=sorted(assets,key=lambda a:a['id'],reverse=True)
+    local=reviewed_track(stage)
+    if local is not None:
+        candidates.append({'name':local.name,'path':local,
+                           'digest':'sha256:'+hashlib.sha256(local.read_bytes()).hexdigest()})
+    if not candidates:
         return None
     legacy=None
     signature=input_signature(passage,reader,config)
-    for item in sorted(assets,key=lambda a:a['id'],reverse=True):
+    for item in candidates:
         try:
             with tempfile.TemporaryDirectory(dir=os.environ['IELTS_WORK']) as temp:
-                folder=Path(temp);archive=fetch(item,folder)
+                folder=Path(temp)
+                archive=item['path'] if 'path' in item else fetch(item,folder)
                 with zipfile.ZipFile(archive) as z:
                     prior=json.loads(z.read('audio/timings.json'))['cet4_male'][PID]
-                if not prior.get('spoken_inputs_sha256') and legacy is None:
+                if not prior.get('spoken_inputs_sha256') and 'path' not in item and legacy is None:
                     legacy=eligible_legacy_names()
                 ready=folder/'checked'
                 timing,payload=read_archive(archive,ready,signature,item['name'] in (legacy or ()),passage,reader,config)
@@ -134,7 +148,7 @@ def stage_recording(stage, destination):
     if not item or not item.get('digest'):
         previous = any(re.fullmatch(re.escape(PID) + r'-aiden-[a-f0-9]{16}\.zip', n) and a.get('digest')
                        for n, a in assets.items())
-        return 'previous' if previous else 'missing'
+        return 'previous' if previous or reviewed_track(stage) else 'missing'
     archive = fetch(item, destination)
     with zipfile.ZipFile(archive) as saved:
         timing = json.loads(saved.read('audio/timings.json'))['cet4_male'][PID]
