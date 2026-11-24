@@ -241,7 +241,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
-                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri'}.intersection(words(script))
+                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes']
                       and words(script)[-2:] not in (['norm','referenced'], ['says','vandam'], ['percent','longer'])

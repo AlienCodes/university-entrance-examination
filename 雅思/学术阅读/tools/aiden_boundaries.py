@@ -257,6 +257,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_surnames import verify_henri
         alternate = independent(audio)
         surname = verify_henri(audio, expected, transcript, alternate)
+    elif expected == ['says','co','author','patricia','kuhl']:
+        from aiden_surnames import verify_kuhl
+        alternate = independent(audio)
+        surname = verify_kuhl(audio, expected, transcript, alternate)
     elif expected[-2:] == ['says','vandam']:
         from aiden_surnames import verify_vandam
         alternate = independent(audio)

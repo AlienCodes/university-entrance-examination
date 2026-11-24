@@ -57,6 +57,31 @@ def forms(*parts):
 
 
 @lru_cache(maxsize=1)
+def kuhl_decoder():
+    readings = forms(('K','G','T','P',''), ('UW','UH','OW','AH','OY','IY','AO','AA'),
+                     ('L','L IY','D','T','M','N','','L Z','L D'))
+    context = {'says':'S EH Z','coauthor':'K OW AO TH ER','patricia':'P AH T R IH SH AH'}
+    return readings, grammar_decoder(readings, context, '[says] [coauthor] [patricia] {term}')
+
+
+def verify_kuhl(audio, expected, first, second):
+    for reading in (first, second):
+        heard = words(reading)
+        if heard[:-1] != expected[:-1] or heard[-1:] not in (['kuhl'], ['cool'], ['koole'], ['coole']):
+            raise ValueError('The attribution to Patricia Kuhl differs from the printed quotation')
+    # The researcher is introduced on Science Friday and MEGIN Spotlights.
+    # Compare the complete syllable against coal, cull, lost onsets and lost endings.
+    readings, decoder = kuhl_decoder()
+    key, score, begin, end = locate_sound(audio, decoder, readings)
+    context = [s.word for s in decoder.seg() if s.word in {'says','coauthor','patricia'}]
+    if (context != ['says','coauthor','patricia'] or readings[key] != 'K UW L' or score < .13
+            or not .18*RATE <= end-begin <= .75*RATE
+            or any(begin < (a+b)/2 < end for a,b in interior_gaps(audio))):
+        raise ValueError('The surname or its surrounding words are unclear: '+readings[key])
+    return dict(phones=readings[key],confidence=round(score,3),start=round(begin/RATE,3),end=round(end/RATE,3))
+
+
+@lru_cache(maxsize=1)
 def henri_decoder():
     readings = forms(('OW N','AA N','AO N','AH N','OW','AA','AO','EH N','HH EH N','AE N','EH','AE','IY','EY'),
                      ('R IY','ER IY','R','IY'))
