@@ -21,6 +21,7 @@ import aiden_inuktitut
 import aiden_sobchack
 import aiden_de_dreu
 import aiden_decans
+import aiden_india
 from aiden_macfarlane import cited_phrase
 import aiden_turkish
 import aiden_heyerdahl
@@ -134,6 +135,12 @@ class Aiden:
             instruction += ' In Macfarlane, end the surname with an n, as in a short unstressed “lun”. Do not add a d. Sound the z only for a written possessive.'
         if re.search(r'\bJanzen\b',script,re.I):
             instruction += ' Read Janzen in two syllables, JAN-zuhn, with the vowel of jam and a voiced z in the middle.'
+        if re.search(r'\bnotes of (?:Ind|Ynde)\b', script, re.I):
+            instruction += ' ' + aiden_india.HINT
+        if re.search(r'\bresearched the chemistry\b', script, re.I):
+            instruction += ' Read researched in the past tense: end it with the sound cht, then link naturally to the chemistry.'
+        if re.search(r'\b(?:Pithecanthropus|Pith-ih|pith-uh)\b', script, re.I):
+            instruction += ' In Pithecanthropus erectus, say pith-ih-KAN-thruh-puhs ih-REK-tuhs. Both th sounds are as in thin. Read the scientific name in a single connected phrase.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -184,7 +191,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
-                      and not {'ceylonese','fusee','decans','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -219,6 +226,13 @@ class Aiden:
             spellings=('fusee','fuzee','fyoo-ZEE','fusee','fyoo-zee')
         elif 'decans' in words(script):
             spellings=aiden_decans.RENDERINGS
+        elif words(script)[-3:] == ['notes','of','ynde']:
+            spellings=aiden_india.RENDERINGS
+        elif words(script)[:3] == ['researched','the','chemistry']:
+            spellings=('researched', 'RESEARCHED', 'researched', 'RESEARCHED', 'researched')
+        elif 'pithecanthropus' in words(script):
+            spellings=('Pithecanthropus erectus','Pith-ih-KAN-thruh-puhs ih-REK-tuhs',
+                       'Pithecanthropus erectus','Pith-uh-KAN-thruh-pus ih-REK-tus','Pithecanthropus erectus')
         elif 'qaujimajatuqangit' in words(script):
             spellings=aiden_inuktitut.RENDERINGS
         elif 'sobchack' in words(script):

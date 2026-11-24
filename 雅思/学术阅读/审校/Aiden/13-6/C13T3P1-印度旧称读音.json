@@ -1,0 +1,143 @@
+{
+ "lesson": "C13T3P1",
+ "sentence": 3,
+ "sources": [
+  "https://dsl.ac.uk/entry/dost00100171",
+  "https://www.merriam-webster.com/dictionary/Ind",
+  "https://media.merriam-webster.com/audio/prons/en/us/mp3/i/ind00001.mp3"
+ ],
+ "original_flac_sha256": "933cb119544979e06bb3df846ad40ed4d008f333fc5a90e92def5608aade772d",
+ "native_ind_sha256": "b3d4af9511a7cb42f3960befc6a882918a010bf2551362d8e1c39ef536e79ea5",
+ "note": "Reference and truncated fixtures replace only the last word for this test; course production always synthesises the whole phrase in the auditioned voice.",
+ "checks": [
+  {
+   "label": "rejected-Aiden",
+   "codec": ".flac",
+   "expected": false,
+   "passed": false,
+   "first": "and among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of Inde,",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of In Day.",
+   "measurement": "The name Ynde must end with one full syllable: IH N D EY"
+  },
+  {
+   "label": "rejected-Aiden",
+   "codec": ".mp3",
+   "expected": false,
+   "passed": false,
+   "first": "and among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of Inde,",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of In Day.",
+   "measurement": "The name Ynde must end with one full syllable: IH N D EY"
+  },
+  {
+   "label": "rejected-Aiden",
+   "codec": ".m4a",
+   "expected": false,
+   "passed": false,
+   "first": "and among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of Inde,",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of In Day.",
+   "measurement": "The name Ynde must end with one full syllable: IH N D EY"
+  },
+  {
+   "label": "published-dictionary-long",
+   "codec": ".wav",
+   "expected": true,
+   "passed": true,
+   "first": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of \"Find.\"",
+   "measurement": {
+    "text": "and among the mid-fourteenth-century travel writings of Sir John Mandeville there is mention of great Notes of Ynde,",
+    "heard": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+    "checked_internal_gaps": [
+     [
+      4.29,
+      4.55
+     ]
+    ],
+    "second_heard": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of \"Find.\"",
+    "ynde_pronunciation": {
+     "phones": "AY N D",
+     "confidence": 0.465,
+     "start": 6.41,
+     "end": 6.93
+    }
+   }
+  },
+  {
+   "label": "published-dictionary-long",
+   "codec": ".mp3",
+   "expected": true,
+   "passed": true,
+   "first": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of \"find\"",
+   "measurement": {
+    "text": "and among the mid-fourteenth-century travel writings of Sir John Mandeville there is mention of great Notes of Ynde,",
+    "heard": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+    "checked_internal_gaps": [
+     [
+      4.29,
+      4.55
+     ]
+    ],
+    "second_heard": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of \"find\"",
+    "ynde_pronunciation": {
+     "phones": "AY N D",
+     "confidence": 0.466,
+     "start": 6.41,
+     "end": 6.93
+    }
+   }
+  },
+  {
+   "label": "published-dictionary-long",
+   "codec": ".m4a",
+   "expected": true,
+   "passed": true,
+   "first": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of \"find\"",
+   "measurement": {
+    "text": "and among the mid-fourteenth-century travel writings of Sir John Mandeville there is mention of great Notes of Ynde,",
+    "heard": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+    "checked_internal_gaps": [
+     [
+      4.29,
+      4.55
+     ]
+    ],
+    "second_heard": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of \"find\"",
+    "ynde_pronunciation": {
+     "phones": "AY N D",
+     "confidence": 0.512,
+     "start": 6.41,
+     "end": 6.94
+    }
+   }
+  },
+  {
+   "label": "truncated",
+   "codec": ".wav",
+   "expected": false,
+   "passed": false,
+   "first": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of...",
+   "measurement": "Neither reader heard a place name after Notes of"
+  },
+  {
+   "label": "truncated",
+   "codec": ".mp3",
+   "expected": false,
+   "passed": false,
+   "first": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of",
+   "measurement": "Neither reader heard a place name after Notes of"
+  },
+  {
+   "label": "truncated",
+   "codec": ".m4a",
+   "expected": false,
+   "passed": false,
+   "first": "And among the mid fourteenth century travel writings of Sir John Mandeville there is mention of great notes of",
+   "second": "And among the mid-14th century travel writings of Sir John Mandeville, there is mention of great notes of",
+   "measurement": "Neither reader heard a place name after Notes of"
+  }
+ ]
+}

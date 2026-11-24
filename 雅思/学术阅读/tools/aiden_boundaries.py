@@ -171,6 +171,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
                 'botanical_pronunciation':proof,
                 'checked_internal_gaps':[[round(a/RATE,3),round(b/RATE,3)] for a,b in pauses]}
     name_evidence = None
+    india = None
     star_groups = None
     clock_evidence = None
     inuit_evidence = None
@@ -194,6 +195,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_decans import verify
         alternate = independent(audio)
         star_groups = verify(audio, expected, transcript, alternate)
+    elif expected[-3:] == ['notes', 'of', 'ynde']:
+        from aiden_india import verify
+        alternate = independent(audio)
+        india = verify(audio, text, transcript, alternate)
     elif 'fusee' in expected:
         from aiden_fusee import verify
         alternate = independent(audio)
@@ -271,11 +276,18 @@ def assess(audio, text, transcript=None, *, recheck=False):
         right = isolated(audio[end:])
         def split_matches(before,after):
             left_words = words(before)
+            right_words = words(after)
+            if india and end/RATE < india['start']:
+                from aiden_india import TRANSCRIPT_ENDINGS
+                for k in (2,1):
+                    if ' '.join(right_words[-k:]) in TRANSCRIPT_ENDINGS:
+                        right_words = [*right_words[:-k], 'ynde']
+                        break
             # A later comma does not change the surname already checked on this
             # waveform. Keep every other word and the far side of the gap intact.
             if historian and start/RATE > historian['end'] and left_words[:1] == ['mcfarlands']:
                 left_words = ['macfarlanes', *left_words[1:]]
-            return any(matches(expected[:i],left_words) and matches(expected[i:],words(after))
+            return any(matches(expected[:i],left_words) and matches(expected[i:],right_words)
                        for i in range(1,len(expected)))
         if not split_matches(left,right):
             other_left=independent(audio[:start])
@@ -293,6 +305,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['ceylonese_pronunciation']=name_evidence
     if star_groups is not None:
         result['decans_pronunciation'] = star_groups
+    if india is not None:
+        result['ynde_pronunciation'] = india
     if clock_evidence is not None:
         result['fusee_pronunciation']=clock_evidence
     if inuit_evidence is not None:
