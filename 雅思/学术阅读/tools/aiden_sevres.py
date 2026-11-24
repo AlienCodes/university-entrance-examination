@@ -12,6 +12,7 @@ READINGS = {
     'severahs':'S EH V R AH S','sev':'S EH V','sair':'S EH R','saverus':'S EY V ER AH S',
     'seevres':'S IY V ER AH','sivers':'S IH V ER Z','severs':'S EH V ER Z',
     'safe':'S EY F','sif':'S IH F',
+    'sev-roo':'S EH V R UW','sever-oo':'S EH V ER UW',
 }
 
 

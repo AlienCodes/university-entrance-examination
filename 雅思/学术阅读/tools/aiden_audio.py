@@ -114,6 +114,10 @@ class Aiden:
             instruction += ' Read the five initials I, I, N, C, E clearly in one connected group, including both initial I sounds.'
         if words(script)[:5] == ['sugars','and','meats','or','oils']:
             instruction += ' Pronounce the opening word sugars /ˈʃʊɡɚz/, with a soft sh and a voiced final z.'
+        if re.search(r'\bsock[ -]?eye\b', script, re.I):
+            instruction += ' The salmon name sockeye is /ˈsɑk.aɪ/. Link sock directly to eye in two syllables, stressing sock.'
+        if re.search(r'^pump through Alaska\b', script, re.I):
+            instruction += ' Say the present-tense verb pump, ending in p. Go directly into the th of through.'
         if re.search(r'\b(?:fusee|fuzee|fyoo-zee)\b',script,re.I):
             instruction += ' Pronounce the clock term fusee in two connected syllables, fyoo-ZEE /fjuːˈziː/, with a clear final ee vowel.'
         if any(form.casefold() in script.casefold() for form in aiden_decans.RENDERINGS):
@@ -177,7 +181,7 @@ class Aiden:
         if re.search(r'for girls in', script, re.I) and re.search(r'\b(?:[ÉE]cole|ay-kol)\b', script, re.I):
             instruction += ' Link École Normale Supérieure naturally in the surrounding English. ' \
                            'The town Sèvres is /sɛvʁ/, or /ˈsɛvrə/ in English. ' \
-                           'The written final s is silent. Finish on the vr sound with at most a light final schwa.'
+                           'Finish on the vr sound with at most the light, unrounded final vowel of sofa. The written final s is silent.'
         if re.search(r'\b(?:Pithecanthropus|Pith-ih|pith-uh)\b', script, re.I):
             instruction += ' In Pithecanthropus erectus, say pith-ih-KAN-thruh-puhs ih-REK-tuhs. Both th sounds are as in thin. Read the scientific name in a single connected phrase.'
         torch.manual_seed(seed)
@@ -274,6 +278,10 @@ class Aiden:
             spellings=('researched', 'RESEARCHED', 'researched', 'RESEARCHED', 'researched')
         elif words(script)[:3] == ['the','team','theorizes']:
             spellings=('The team theorizes','The TEAM theorizes','THE TEAM theorizes','The team theorizes','The TEAM theorizes')
+        elif words(script) == ['sockeye','or','red']:
+            spellings=('sockeye','sock-eye','SOCK-eye','sock eye','sockeye')
+        elif words(script)[:3] == ['pump','through','alaska']:
+            spellings=('pump through Alaska','PUMP through Alaska','Pump through Alaska','PUMP through Alaska','pump through Alaska')
         elif 'norm-referenced' in script.casefold():
             spellings=('norm-referenced','norm referenced','norm REH-fuh-renst','norm-referenced','norm REH-frenst')
         elif 'llewyn' in words(script):
@@ -281,10 +289,10 @@ class Aiden:
         elif 'sevres' in words(script):
             spellings=('Ecole Normale Superieure for girls in Sevres',
                        'École Normale Supérieure for girls in Sèvres',
-                       'École Normale Supérieure for girls in Sèvre',
-                       'École Normale Supérieure for girls in SEV-ruh',
-                       'École Normale Supérieure for girls in SEV-r',
-                       'ay-kol normal süpérieur for girls in SEV-ruh')
+                       'École normale supérieure for girls in Sevra',
+                       'École normale supérieure for girls in Sèvra',
+                       'École normale supérieure for girls in Sevrah',
+                       'École normale supérieure for girls in Sèvr')
         elif 'pithecanthropus' in words(script):
             spellings=('Pithecanthropus erectus','Pith-ih-KAN-thruh-puhs ih-REK-tuhs',
                        'Pithecanthropus erectus','Pith-uh-KAN-thruh-pus ih-REK-tus','Pithecanthropus erectus')

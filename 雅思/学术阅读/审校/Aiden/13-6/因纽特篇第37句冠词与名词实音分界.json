@@ -1,0 +1,147 @@
+{
+ "sentence": 37,
+ "phrase": 3,
+ "text": "an Inuit leader and politician.",
+ "start": 309.48,
+ "end": 311.91,
+ "master_sha256": "43aba772f0bc3c688beca7e3b5e9ae62516668a33e7b338f863c5aff4623db5c",
+ "probe_aac_sha256": "d5881aa47dfceed1436bf0368bd0c8190318eeb9ea3871a8c19841a7431d6e97",
+ "source_flac_sha256": "86757df24a020005c4291431647dd1de8e075ad9b8c5136f91069305c1ca80c3",
+ "mp3": {
+  "text": "an Inuit leader and politician.",
+  "heard": "an Inuit leader and politician,",
+  "checked_internal_gaps": [
+   [
+    0.23,
+    0.41
+   ]
+  ],
+  "second_heard": "an Inuit leader and politician."
+ },
+ "aac": {
+  "text": "an Inuit leader and politician.",
+  "heard": "an Inuit leader and politician,",
+  "checked_internal_gaps": [
+   [
+    0.23,
+    0.41
+   ]
+  ],
+  "verified_with_quiet_context": [
+   [
+    0.23,
+    0.41
+   ]
+  ],
+  "second_heard": "an Inuit leader and politician.",
+  "source_lag_ms": 20,
+  "mp3_waveform": {
+   "lag_samples": 0,
+   "worst_window_correlation": 0.982688,
+   "average_correlation": 0.999363,
+   "max_level_difference_db": 0.181
+  }
+ },
+ "disagreements_before_recovery": [
+  "Then",
+  "and"
+ ],
+ "independent_endpoints": {
+  "left_with_200ms_padding": "An",
+  "left_with_300ms_padding": "An",
+  "right": [
+   "Inuit leader and politician",
+   "Inuit leader and politician."
+  ]
+ },
+ "negative_controls": [
+  {
+   "control": "then in place of an",
+   "reads": [
+    "Then Inuit leader and politician.",
+    "Then, Inuit leader and politician."
+   ],
+   "rejected": true,
+   "reason": "Restored recording differs from the printed phrase: 'Then Inuit leader and politician.' / 'Then, Inuit leader and politician.'",
+   "pause_proved_with_simulated_whole_transcripts": false
+  },
+  {
+   "control": "and in place of an",
+   "reads": [
+    "and Inuit leader and politician",
+    "and Inuit leader and politician"
+   ],
+   "rejected": true,
+   "reason": "Restored recording differs from the printed phrase: 'and Inuit leader and politician' / 'and Inuit leader and politician'",
+   "pause_proved_with_simulated_whole_transcripts": false
+  },
+  {
+   "control": "split Inuit at 0.68s",
+   "reads": [
+    "an Inuit leader and politician,",
+    "an Inuit leader and politician."
+   ],
+   "rejected": true,
+   "reason": "Possible break inside a word at 0.68–0.96s: 'an Inuit leader and politician.' / 'And in you' | 'Leader and politician.'; 'and in you' | 'Soviet leader and politician.'",
+   "pause_proved_with_simulated_whole_transcripts": false
+  }
+ ],
+ "lesson": "C6T1P3",
+ "source_run": 45298679101,
+ "source_artifact": 14896341975,
+ "source_archive_sha256": "c00e179fcbad9069db4259b7d5545d57ab5af3d9ad3242ba24937731028d2c43",
+ "sources": [
+  {
+   "word": "an",
+   "url": "https://dictionary.cambridge.org/media/english/us_pron/a/an_/an___/an.mp3",
+   "entry": "https://dictionary.cambridge.org/pronunciation/english/an",
+   "written": "",
+   "sha256": "b4c8918cb701e3375caefa864458cbc6561fc652a40a4a8fa9e6f7d76508bf5c"
+  },
+  {
+   "word": "then",
+   "url": "https://dictionary.cambridge.org/media/english/us_pron/t/the/then_/then.mp3",
+   "entry": "https://dictionary.cambridge.org/pronunciation/english/then",
+   "written": "",
+   "sha256": "1b2e07c55a417f0e27636bfb5d0a99159394b8c1b1a72c3da61fc777c2187328"
+  },
+  {
+   "word": "and",
+   "url": "https://dictionary.cambridge.org/media/english/us_pron/a/and/and__/and.mp3",
+   "entry": "https://dictionary.cambridge.org/pronunciation/english/and",
+   "written": "",
+   "sha256": "3e838b675ec071ecadfb74986995c849c8c1e926cde0d845d013f47fafad4964"
+  }
+ ],
+ "earlier_regression": [
+  {
+   "video": "old",
+   "sha256": "ad99d8d38def3319524bcb91865981d2d593d84f0e4f849715b26bc1f5cae6c8",
+   "word_check": "Incomplete or interrupted plural in export sectors: S EH K",
+   "accepted": false
+  },
+  {
+   "video": "corrected",
+   "sha256": "65d55efd25cb50600d444351e22b63727cd4a6462c19e07686a1ade885bb8a1a",
+   "word_check": {
+    "phones": "S EH K T ER Z",
+    "start": 1.19,
+    "end": 1.82,
+    "confidence": 1.0
+   },
+   "accepted": true
+  },
+  {
+   "video": "illustrated",
+   "sha256": "dd91b2a6bc251da9036fa7d6a6b50f1c022327a8781d7b9ca92a62ae6cba1c77",
+   "word_check": {
+    "phones": "S EH K T ER Z",
+    "start": 1.19,
+    "end": 1.82,
+    "confidence": 1.0
+   },
+   "accepted": true
+  }
+ ],
+ "comment": "源录音来自 GitHub。第37句在 an 后停顿，两侧均为完整单词。检查整段、冠词和后续单词，对照真正的 then、and 以及单词 Inuit 被截断的录音。末级 AAC 为试编码，正式成片另作逐段检查。"
+}

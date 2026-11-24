@@ -179,6 +179,15 @@ def complete_words_at_gap(audio, start, end, expected, first, second):
             right = ''.join(words(listen(audio[end - context:])))
             if (left, right) in divisions:
                 return True
+    # A 0.2-second leading article can sound like “then” to an isolated-word
+    # decoder after AAC encoding. Keep the actual pause untouched. Require
+    # both whole readings, both readings of the following words, and the same
+    # article at two different amounts of *external* decoder padding.
+    if (len(expected) > 2 and expected[0] in {'a', 'an', 'the'} and start <= .45 * RATE
+            and words(first) == expected and words(second) == expected):
+        if all(words(listen(audio[end:])) == expected[1:] for listen in (isolated, independent)):
+            return all(words(isolated(audio[:start], padding=padding)) == expected[:1]
+                       for padding in (RATE // 5, 3 * RATE // 10))
     return False
 
 
