@@ -20,6 +20,7 @@ import aiden_cork_oak
 import aiden_cork_taint
 import aiden_ceylonese
 import aiden_inuktitut
+import aiden_printed_names
 import aiden_sobchack
 import aiden_de_dreu
 import aiden_decans
@@ -112,6 +113,12 @@ class Aiden:
             instruction += ' Read the astronomer’s surname Halley in two connected syllables /ˈhæli/, with an audible initial h.'
         if re.search(r'\bIsle of (?:Eigg|Egg)\b',script,re.I):
             instruction += ' Say the Scottish island Eigg like the English word egg, in one syllable /ɛɡ/. Link it naturally to shows.'
+        if re.search(r'\bpithecanthropus\b',script,re.I):
+            instruction += ' Say Pithecanthropus erectus in two complete words, /ˌpɪθɪˈkænθroʊpəs ɪˈrɛktəs/. Keep the final s of both words.'
+        if re.search(r"\bDollo['’]s law\b",script,re.I):
+            instruction += ' Pronounce the Belgian scientist’s name and possessive as /ˈdɑloʊz/, then say law.'
+        if re.search(r"\bClemmons['’]s interest\b",script,re.I):
+            instruction += ' Say the possessive Clemmons’s /ˈklɛmənzɪz/ completely before interest.'
         if re.search(r'\bPerkin (?:saw|set|spent)\b',script,re.I):
             instruction += ' William Perkin is singular. Finish the name on n, then begin the verb with its own s.'
         if re.search(r"\bPerkin['’]s\b",script,re.I):
@@ -256,6 +263,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
+                      and aiden_printed_names.target(words(script)) is None
                       and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
                       and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl','clemmons','willeke'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']

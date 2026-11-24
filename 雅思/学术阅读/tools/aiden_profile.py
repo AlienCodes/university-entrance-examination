@@ -67,7 +67,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
            root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
     term_checkers = {
         'clemmons': ('aiden_kite_names.py', 'aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py',
-                     '读音对照/Clemmons.flac'),
+                     '读音对照/Clemmons.flac', 'aiden_printed_names.py'),
         'vandam': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'henri becquerel': ('aiden_place_names.py', 'aiden_surnames.py', 'aiden_pronunciation.py'),
         'quercus suber': ('aiden_cork_oak.py',),
@@ -90,6 +90,8 @@ def audio_asset(lesson_dir, *, source_revision=None):
         'monbusho': ('aiden_place_names.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'aleyska': ('aiden_place_names.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'makete': ('aiden_place_names.py',),
+        'pithecanthropus': ('aiden_printed_names.py',), 'isabela': ('aiden_printed_names.py',),
+        'dollo': ('aiden_printed_names.py',),
         'na-dene': ('aiden_place_names.py', 'aiden_boundaries.py', 'aiden_pronunciation.py'),
         'floris': ('aiden_floris.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'fusee': ('aiden_fusee.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),

@@ -68,6 +68,17 @@ def main(listen):
     assert same_words(words("Dr Margaret Rule"), words("Doctor Margaret Rule"))
     assert not same_words(words("Green Dr"), words("Green Doctor"))
     assert not same_words(words("Halley was aware"), words("Hallie was aware"))
+    assert same_words(words("1.5 million km"), words("one point five million kilometers"))
+    assert same_words(words("3,000 MHz"), words("three thousand megahertz"))
+    assert not same_words(words("3,000 MHz"), words("3,000 mHz"))
+    assert not same_words(words("3,000 MHz"), words("3,000 kHz"))
+    assert same_words(words("Kellogg's Corn Flakes"), words("Kellogg's Cornflakes"))
+    assert not same_words(words("on-line inspection"), words("offline inspection"))
+    # A free recognizer can spell the bare surname and its possessive identically.
+    # A measured additional syllable is required for the printed Clemmons's.
+    assert not same_words(words("Clemmons's interest"), measured_words(words("Clemens' interest"), {}))
+    assert same_words(words("Clemmons's interest"),
+                      measured_words(words("Clemens' interest"), {"clemmonss_reading":{"name":"clemmonss"}}))
     for printed, recognized in (("artefacts", "artifacts"), ("sceptical", "skeptical"),
                                 ("unravelling", "unraveling"), ("counter-productive", "counterproductive"),
                                 ("Counter-intuitively", "Counterintuitively"),

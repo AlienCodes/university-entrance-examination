@@ -42,6 +42,12 @@ def spoken_spelling(text):
     # These British and American forms have the same spoken word. Preserve
     # grammatical endings, including plural -s, and keep all printed text intact.
     text = spoken_centuries(text)
+    # The radio-astronomy passage prints MHz. Capital M and lower-case m
+    # specify different units, even when the two transcriptions use words.
+    text = re.sub(r'\bMHz\b', 'megahertz', text)
+    text = re.sub(r'\bmHz\b', 'millihertz', text)
+    text = re.sub(r'\bkHz\b', 'kilohertz', text)
+    text = re.sub(r'\bmillion km\b', 'million kilometers', text, flags=re.I)
     # An ASR may attach a currency symbol as well as writing "US dollars".
     # Preserve the actual number, currency and every spoken occurrence of "dollars".
     text = re.sub(r'\$(?=\d[\d,]*(?:\.\d+)?\s+(?:(?:thousand|million|billion)\s+)?U\.?\s*S\.?\s+dollars?\b)',
@@ -184,6 +190,7 @@ def salmon_phrase(tokens):
 
 
 def assess(audio, text, transcript=None, *, recheck=False):
+    import aiden_printed_names
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     from aiden_perkin import cited as has_perkin, verify as verify_perkin, gap_after_attention
     from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
@@ -228,12 +235,16 @@ def assess(audio, text, transcript=None, *, recheck=False):
     ganzfeld = None
     stepwell_tiers = None
     measured_name = None
+    printed_name = None
     cork_taint = None
     kite_names = None
     word_windows = None
     if expected in (INTRO, CONCLUSION, WENDRICH):
         alternate = independent(audio)
         kite_names = verify_kite_names(audio, expected, transcript, alternate)
+    elif name := aiden_printed_names.target(expected):
+        alternate = independent(audio)
+        printed_name = aiden_printed_names.verify(audio,name,expected,transcript,alternate)
     elif expected[:3] == ['halley','was','aware'] or expected[-4:] == ['isle','of','eigg','shows']:
         from aiden_pronunciation import verify_name_in_phrase
         alternate = independent(audio)
@@ -450,6 +461,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if printed_name:
+                return aiden_printed_names.pause_outside_name(expected,left_words,right_words,start,end,printed_name)
             if ganzfeld:
                 return pause_outside_name(expected,left_words,right_words,start,end,ganzfeld)
             if kite_names:
@@ -523,6 +536,9 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['second_heard']=alternate
     if measured_name:
         result[measured_name['name']+'_pronunciation'] = measured_name
+    if printed_name:
+        key, proof = printed_name
+        result[key] = proof
     if name_evidence is not None:
         result['ceylonese_pronunciation']=name_evidence
     if star_groups is not None:

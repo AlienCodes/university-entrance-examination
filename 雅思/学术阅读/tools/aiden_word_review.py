@@ -23,6 +23,8 @@ SPELLINGS = {
     'artefacts':'artifacts', 'sceptical':'skeptical', 'skilful':'skillful',
     'unravelling':'unraveling', 'odourless':'odorless', 'meagre':'meager',
     'leukaemia':'leukemia', 'archipelagoes':'archipelagos', 'palaeontologist':'paleontologist',
+    'litre':'liter', 'litres':'liters', 'flavour':'flavor', 'faecal':'fecal',
+    'paediatrics':'pediatrics', 'manoeuvre':'maneuver', 'cocoanuts':'coconuts',
 }
 
 # Both spellings occur in the two recognizers' readings of these printed compounds.
@@ -38,6 +40,8 @@ COMPOUND_SPELLINGS = {
     ('sub', 'continent'), ('super', 'colony'), ('super', 'hot'), ('super', 'viruses'),
     ('thunder', 'clouds'), ('time', 'keeping'), ('train', 'spotters'), ('train', 'spotting'),
     ('watch', 'towers'), ('wind', 'blown'), ('co', 'operate'), ('co', 'ordinate'),
+    ('corn', 'flakes'), ('on', 'line'), ('anti', 'fungal'), ('anti', 'social'),
+    ('re', 'routing'), ('re', 'directed'), ('blue', 'stocking'), ('for', 'ever'), ('steel', 'works'),
 }
 
 
@@ -139,6 +143,12 @@ def hear_differences(audio, text, secondary, observations=None):
 # These spellings occur in speech-recognition output from the verified name checkers.
 # Apply a spelling only when that checker has measured the sounds on this very phrase.
 MEASURED_NAMES = {
+    'pithecanthropus_reading': dict.fromkeys(
+        ('pithocanthropus','pithacanthropus','pythacanthropus','pythakantropus','pithakentropus',
+         'pithicanthropus','pythocanthropus','pythaganthropus'), 'pithecanthropus'),
+    'isabela_reading': {'isabella':'isabela'},
+    'clemmonss_reading': dict.fromkeys(('clemens','clemenss','clemons','clemonss','clemmons'), 'clemmonss'),
+    'dollos_reading': dict.fromkeys(('dalos','dallos','dollows'), 'dollos'),
     'halley_pronunciation': {'hallie':'halley'},
     'eigg_pronunciation': {'egg':'eigg', 'eig':'eigg'},
     'ganzfeld_pronunciation': {'gansfeld':'ganzfeld', 'gensfeld':'ganzfeld'},
