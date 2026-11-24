@@ -97,6 +97,10 @@ class Aiden:
             if any(re.search(r'\b'+re.escape(form)+r'\b',script,re.I) for form in spellings):
                 instruction += ' ' + guidance
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
+        if any(name in script.casefold() for name in ('wendrich', 'vendrik', 'ven-drick', 'vendrick')):
+            instruction += (' Say the Dutch name Willeke Wendrich in two connected groups: '
+                            'VIL-uh-kuh VEN-drick. Keep both unstressed vowels in the first name short, '
+                            'and finish the surname with k.')
         if script.strip(' ,.;:!?').casefold() in {s.casefold() for s in aiden_cork_oak.RENDERINGS}:
             instruction += ' ' + aiden_cork_oak.HINT
         if any(form.casefold() in script.casefold() for form in aiden_cork_taint.RENDERINGS):
@@ -241,7 +245,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
-                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl'}.intersection(words(script))
+                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl','clemmons','willeke'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes']
                       and words(script)[-2:] not in (['norm','referenced'], ['says','vandam'], ['percent','longer'])
@@ -295,6 +299,8 @@ class Aiden:
             spellings=('norm-referenced','norm referenced','norm REH-fuh-renst','norm-referenced','norm REH-frenst')
         elif 'llewyn' in words(script):
             spellings=LLEWYN_READINGS
+        elif 'willeke' in words(script):
+            spellings=('Willeke Wendrich', 'Villeka Vendrik', 'VIL-uh-kuh VEN-drick', 'Villika Vendrick', 'Villeke Vendrik')
         elif 'sevres' in words(script):
             spellings=('Ecole Normale Superieure for girls in Sevres',
                        'École Normale Supérieure for girls in Sèvres',

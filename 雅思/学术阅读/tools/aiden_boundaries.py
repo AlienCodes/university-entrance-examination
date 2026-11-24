@@ -202,6 +202,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     from aiden_perkin import cited as has_perkin, verify as verify_perkin, gap_after_attention
     from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
+    from aiden_kite_names import INTRO, CONCLUSION, WENDRICH, printed_words as kite_words, verify as verify_kite_names
     expected = words(text)
     transcript = isolated(audio) if transcript is None or salmon_phrase(expected) else transcript
     alternate = None
@@ -241,7 +242,11 @@ def assess(audio, text, transcript=None, *, recheck=False):
     opening = None
     ganzfeld = None
     cork_taint = None
-    if 'llewyn' in expected:
+    kite_names = None
+    if expected in (INTRO, CONCLUSION, WENDRICH):
+        alternate = independent(audio)
+        kite_names = verify_kite_names(audio, expected, transcript, alternate)
+    elif 'llewyn' in expected:
         from aiden_lynx import verify, pause_after_name
         alternate = independent(audio)
         welsh = verify(audio,expected,transcript,alternate)
@@ -444,6 +449,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if kite_names:
+                return bool(left_words and right_words and kite_words(left_words + right_words) == expected)
             if welsh and pause_after_name(audio,start,end,expected,left_words,right_words,welsh):
                 return True
             if zappaterra and start/RATE >= zappaterra['end']:
@@ -547,6 +554,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['chemists_surnames']=chemists
     if surname is not None:
         result['surname_pronunciation']=surname
+    if kite_names:
+        result['kite_researchers'] = kite_names
     if craftsmen is not None:
         result['craftsmen_pronunciation']=craftsmen
     if welsh is not None:
