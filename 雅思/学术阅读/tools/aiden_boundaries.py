@@ -224,7 +224,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     ganzfeld = None
     cork_taint = None
     if 'llewyn' in expected:
-        from aiden_lynx import verify
+        from aiden_lynx import verify, pause_after_name
         alternate = independent(audio)
         welsh = verify(audio,expected,transcript,alternate)
     elif expected == ['cod','sole','perch','and','pollock']:
@@ -392,6 +392,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if welsh and pause_after_name(audio,start,end,expected,left_words,right_words,welsh):
+                return True
             if migration_names and pause_after_migration_names(expected,left_words,right_words,start,migration_names):
                 return True
             if chemists and gap_after_attention(start,expected,left_words,right_words,chemists):

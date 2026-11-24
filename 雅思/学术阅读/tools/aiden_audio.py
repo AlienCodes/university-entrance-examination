@@ -30,7 +30,7 @@ import make_audio as cet
 import 听对
 
 
-LLEWYN_READINGS = ('llewyn', 'hlehwin', 'hLEH-win', 'thleh-win', 'hléwin', 'hleh-win')
+LLEWYN_READINGS = ('llewyn', 'shlehwin', 'sleh-winn', 'thlehwinn', 'hlehwinn', 'shleh-winn', 'thléwin')
 
 
 def save_raw_take(path, samples):
@@ -148,7 +148,8 @@ class Aiden:
             instruction += ' Puerto Villamil ends in a stressed meel with a final l. Link the following words “on Isabela” without adding a vowel to the town name.'
         if any(name.casefold() in script.casefold() for name in LLEWYN_READINGS):
             instruction += ' For the Welsh word llewyn, start with the voiceless lateral fricative /ɬ/. ' \
-                           'Keep the tongue in the l position and blow air around its sides into EH-win. ' \
+                           'Keep the tongue in the l position and blow air around its sides into the short e of bed. ' \
+                           'Glide directly from that e into the word win, in a single breath. ' \
                            'Read the two syllables as one word in the American English sentence.'
         if words(script)[:2]==['forested','hills']:
             instruction += ' In forested hills, start with a clear f followed by the stressed first syllable of forest. Sound the complete three-syllable adjective before hills.'
