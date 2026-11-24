@@ -179,7 +179,8 @@ class Aiden:
         if re.search(r'\bresearched the chemistry\b', script, re.I):
             instruction += ' Read researched in the past tense: end it with the sound cht, then link naturally to the chemistry.'
         if re.search(r'for girls in', script, re.I) and re.search(r'\b(?:[ÉE]cole|ay-kol)\b', script, re.I):
-            instruction += ' Link École Normale Supérieure naturally in the surrounding English. ' \
+            instruction += ' Read the French school name École normale supérieure as /e.kɔl nɔʁ.mal sy.pe.ʁjœʁ/. ' \
+                           'Then say the English location phrase “for girls in” with a clear /ɪn/ before the town. ' \
                            'The town Sèvres is /sɛvʁ/, or /ˈsɛvrə/ in English. ' \
                            'Finish on the vr sound with at most the light, unrounded final vowel of sofa. The written final s is silent.'
         if re.search(r'\b(?:Pithecanthropus|Pith-ih|pith-uh)\b', script, re.I):
@@ -292,8 +293,8 @@ class Aiden:
                        'École Normale Supérieure for girls in Sèvres',
                        'École normale supérieure for girls in Sevra',
                        'École normale supérieure for girls in Sèvra',
-                       'École normale supérieure for girls in Sevrah',
-                       'École normale supérieure for girls in Sèvr')
+                       'École normale supérieure for girls IN Sèvres',
+                       'ay-KOL nor-MAL sü-pé-ryœur for girls IN Sevra')
         elif 'pithecanthropus' in words(script):
             spellings=('Pithecanthropus erectus','Pith-ih-KAN-thruh-puhs ih-REK-tuhs',
                        'Pithecanthropus erectus','Pith-uh-KAN-thruh-pus ih-REK-tus','Pithecanthropus erectus')
