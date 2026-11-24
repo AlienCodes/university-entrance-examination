@@ -149,8 +149,10 @@ class Aiden:
             instruction += ' End clamp with a short, clear p release after m, without adding a vowel.'
         if re.search(r'\b(?:Dowman|Dow Man)\b',script,re.I):
             instruction += ' Say Captain Dowman’s name with the vowel in cow, then man. Keep the two syllables joined.'
-        if re.search(r'\bwith modell?ed birds\b',script,re.I):
-            instruction += ' In “with modeled birds”, link the soft final d in modeled directly to birds.'
+        if re.search(r"\bwith (?:modell?ed|model['’]d|mah-duhld) birds\b",script,re.I):
+            instruction += (' Here, modeled means shaped into a sculpture. Say the two connected syllables of '
+                            'model as in “modelled on”, with a voiced middle d and a brief final d. '
+                            'Carry the last consonant straight into birds at the same pace.')
         if 'appreciate the mathematical way' in script.casefold():
             instruction += ' Link “appreciate the mathematical way” naturally, including the unstressed article the.'
         if re.search(r'\bDeane? dived down\b',script,re.I):
@@ -292,6 +294,10 @@ class Aiden:
             spellings=aiden_ceylonese.RENDERINGS
         elif 'fusee' in words(script):
             spellings=('fusee','fuzee','fyoo-ZEE','fusee','fyoo-zee')
+        elif 'with modeled birds' in script.casefold():
+            # The same narrator gave a clear reading of "modelled on" in C11T1P3.
+            # Only the synthesis input varies. Each take is checked against the printed sentence.
+            spellings=('modeled', 'modelled', 'MODELLED', "model'd", 'MAH-duhld')
         elif 'decans' in words(script):
             spellings=aiden_decans.RENDERINGS
         elif words(script)[-3:] == ['notes','of','ynde']:
