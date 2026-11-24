@@ -1,0 +1,181 @@
+{
+ "lesson": "C8T1P3",
+ "references": [
+  {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/fc/LL-Q1860_%28eng%29-Vealhurl-ganzfeld.wav",
+   "sha256": "6b3c2bf7974cf961815d3c8c0bea3a74eae427c1fd48b9d1829c2198afa2188c",
+   "proof": {
+    "phones": "G AA N Z F EH L D",
+    "confidence": 0.213,
+    "start": 0.22,
+    "end": 1.22
+   }
+  },
+  {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/8a/LL-Q1860_%28eng%29-Vealhurl-ganzfeld2.wav",
+   "sha256": "857fc72bd214cad0f42000a3975970ab73ed77dcd9e7285b0f3dc4dd9f837cb0",
+   "proof": {
+    "phones": "G AE N Z F EH L D",
+    "confidence": 0.299,
+    "start": 0.14,
+    "end": 1.09
+   }
+  }
+ ],
+ "artifact": 14886330360,
+ "flac_sha256": [
+  "96b23989f1f2168a760a46e9669436819225683daae6a3cbedc54c76d6c34d26",
+  "3f7af9946d57e82169f6c6d2037ea22d2902a65f0af2bd0d5914324836887e90"
+ ],
+ "cases": [
+  {
+   "case": "intact",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "In early ganzfeld experiments,",
+    "heard": "In early Gensfeld experiments,",
+    "checked_internal_gaps": [],
+    "second_heard": "in early-gensfeld experiments.",
+    "ganzfeld_pronunciation": {
+     "phones": "G AE N Z F EH L D",
+     "confidence": 0.242,
+     "start": 0.38,
+     "end": 1.15
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "In early ganzfeld experiments,",
+    "heard": "In early Gensfeld experiments,",
+    "checked_internal_gaps": [],
+    "second_heard": "in early-gensfeld experiments.",
+    "ganzfeld_pronunciation": {
+     "phones": "G AE N Z F EH L D",
+     "confidence": 0.247,
+     "start": 0.38,
+     "end": 1.15
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "In early ganzfeld experiments,",
+    "heard": "In early Gensfeld experiments,",
+    "checked_internal_gaps": [],
+    "second_heard": "in early-gensfeld experiments.",
+    "ganzfeld_pronunciation": {
+     "phones": "G AE N Z F EH L D",
+     "confidence": 0.225,
+     "start": 0.38,
+     "end": 1.15
+    }
+   }
+  },
+  {
+   "case": "incomplete second syllable",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context or the position of ganzfeld differs from the paper"
+   }
+  },
+  {
+   "case": "incomplete second syllable",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context or the position of ganzfeld differs from the paper"
+   }
+  },
+  {
+   "case": "incomplete second syllable",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context or the position of ganzfeld differs from the paper"
+   }
+  },
+  {
+   "case": "inside word",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context or the position of ganzfeld differs from the paper"
+   }
+  },
+  {
+   "case": "inside word",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context or the position of ganzfeld differs from the paper"
+   }
+  },
+  {
+   "case": "inside word",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context or the position of ganzfeld differs from the paper"
+   }
+  },
+  {
+   "case": "wrong first vowel and ending",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Incomplete or different pronunciation of ganzfeld: G OW N S F EH D"
+   }
+  },
+  {
+   "case": "wrong first vowel and ending",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Incomplete or different pronunciation of ganzfeld: G OW N S F EH D"
+   }
+  },
+  {
+   "case": "wrong first vowel and ending",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Incomplete or different pronunciation of ganzfeld: G OW N S F EH D"
+   }
+  }
+ ],
+ "native_24kHz_diagnostic_recovery": [
+  {
+   "clip": "96b23989f1f2168a760a46e9669436819225683daae6a3cbedc54c76d6c34d26",
+   "paper": "In early ganzfeld experiments,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "clip": "3f7af9946d57e82169f6c6d2037ea22d2902a65f0af2bd0d5914324836887e90",
+   "paper": "it’s unlikely to be detected by a typical ganzfeld study involving around forty people:",
+   "accepted": false,
+   "expected": false
+  }
+ ]
+}

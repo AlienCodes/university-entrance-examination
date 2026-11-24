@@ -74,7 +74,10 @@ class Aiden:
             from aiden_model import restore
             from qwen_tts import Qwen3TTSModel
             torch.set_num_threads(min(4,len(os.sched_getaffinity(0))))
-            folder=restore(Path(os.environ['IELTS_AIDEN_MODEL_PATH']),verify_only=True)
+            # A previous complete recording is rechecked first. Fetch the
+            # pinned weights only if that check actually calls for a new take.
+            folder=restore(Path(os.environ['IELTS_AIDEN_MODEL_PATH']),
+                           verify_only=os.getenv('IELTS_AIDEN_FETCH_IF_NEEDED') != 'true')
             self.model=Qwen3TTSModel.from_pretrained(str(folder),dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
         instruction=DIRECTION
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items()
@@ -120,7 +123,9 @@ class Aiden:
         if re.search(r'\b(?:Dowman|Dow Man)\b',script,re.I):
             instruction += ' Say Captain Dowman’s name with the vowel in cow, then man. Keep the two syllables joined.'
         if re.search(r'\bDeane? dived down\b',script,re.I):
-            instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
+            instruction += ' In "Deane dived down", finish the past tense /daɪvd/ with an audible d release. Carry the voice through “down and found” in the same thought.'
+        if re.search(r'\bwind[- ]lashed\b',script,re.I):
+            instruction += ' In wind-lashed infertile fields, finish lashed with /ʃt/ before the first vowel of infertile.'
         if re.search(r"\bapproached the helicopter",script,re.I):
             instruction += ' The first verb is in the past. Finish approached with /tʃt/ before the following word.'
         if 'Villamil' in script or 'vee-yah-MEEL' in script:
@@ -139,6 +144,9 @@ class Aiden:
             instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
         if re.search(r'\b(?:Mac|Mc)farlane\b',script,re.I):
             instruction += ' In Macfarlane, end the surname with an n, as in a short unstressed “lun”. Do not add a d. Sound the z only for a written possessive.'
+        if re.search(r'\bganzfeld\b',script,re.I):
+            from aiden_ganzfeld import HINT
+            instruction += ' ' + HINT
         if re.search(r'\bJanzen\b',script,re.I):
             instruction += ' Read Janzen in two syllables, JAN-zuhn, with the vowel of jam and a voiced z in the middle.'
         if re.search(r'\bnotes of (?:Ind|Ynde)\b', script, re.I):
@@ -197,7 +205,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
-                      and not {'diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -245,7 +253,7 @@ class Aiden:
             spellings=aiden_sobchack.RENDERINGS
         elif re.search(r'\bDe Dreu\b',script,re.I):
             spellings=aiden_de_dreu.RENDERINGS
-        elif words(script)==['deane','dived','down']:
+        elif words(script)[:3]==['deane','dived','down']:
             spellings=('Deane dived down','Dean DIVED down','Deane DIVED down','Dean dived down','Deane dived down')
         elif words(script)[:3]==['approached','the','helicopters']:
             spellings=('approached','APPROACHED','approached','Approached','APPROACHED')

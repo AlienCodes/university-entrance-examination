@@ -54,6 +54,7 @@ def spoken_spelling(text):
     text = re.sub(spelling, r'\1iz\2', text, flags=re.I)
     text = re.sub(r'\banalys(e|ed|ing)\b', r'analyz\1', text, flags=re.I)
     text = re.sub(r'\bageing\b', 'aging', text, flags=re.I)
+    text = re.sub(r'\btravell(?=ed\b|ing\b|ers?\b)', 'travel', text, flags=re.I)
     return re.sub(r'\btonne(s?)\b', r'ton\1', text, flags=re.I)
 
 
@@ -68,6 +69,8 @@ def words(text):
     text = re.sub(r'(?<=\d)\s+(?=mm\b)', '', text, flags=re.I)
     text = re.sub(r'\bsub[- ]?millimet(?:er|re)(s?)\b', r'submillimeter\1', text, flags=re.I)
     text = spoken_spelling(text)
+    text = re.sub(r'\brapa nui\b', 'rapanui', text, flags=re.I)
+    text = re.sub(r'\bwindlashed\b', 'wind lashed', text, flags=re.I)
     text = re.sub(r'\blife[ -]+span(s?)\b', r'lifespan\1', text, flags=re.I)
     text = re.sub(r'\bnorth[ -]+east\b', 'northeast', text, flags=re.I)
     text = re.sub(r'\binter[ -]+modal\b', 'intermodal', text, flags=re.I)
@@ -99,7 +102,7 @@ def words(text):
     text = text.replace('—', ' ').replace('–', ' ')
     text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode().lower()
     text = text.replace('colour', 'color').replace('centre', 'center').replace('metre', 'meter')
-    text = text.replace('travell', 'travel').replace('organis', 'organiz').replace('customis', 'customiz')
+    text = text.replace('organis', 'organiz').replace('customis', 'customiz')
     text = text.replace('civilis', 'civiliz').replace('favour', 'favor').replace('behaviour', 'behavior')
     return re.findall('[a-z0-9]+', text.replace("'", ''))
 
@@ -203,11 +206,16 @@ def assess(audio, text, transcript=None, *, recheck=False):
     falkirk = None
     explorer = None
     turkish_word = None
+    ganzfeld = None
     cork_taint = None
     if 'trichloroanisole' in expected:
-        from aiden_cork_taint import verify
+        from aiden_cork_taint import verify, verify_pause_before_locants
         alternate = independent(audio)
         cork_taint = verify(audio,text,transcript,alternate)
+    elif 'ganzfeld' in expected:
+        from aiden_ganzfeld import verify
+        alternate = independent(audio)
+        ganzfeld = verify(audio,expected,transcript,alternate)
     elif 'ceylonese' in expected:
         from aiden_ceylonese import verify
         alternate = independent(audio)
@@ -280,10 +288,14 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_turkish import verify
         alternate = independent(audio)
         turkish_word = verify(audio,text,transcript,alternate)
-    elif expected == ['deane', 'dived', 'down'] or expected[:4] == ['and', 'doctor', 'phil', 'rasch']:
+    elif expected[:3] == ['deane', 'dived', 'down'] or expected[:4] == ['and', 'doctor', 'phil', 'rasch']:
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):
             raise ValueError(f'Unclear past-tense ending or spoken introduction: {transcript!r} / {alternate!r}')
+    elif expected[-4:] == ['wind','lashed','infertile','fields'] or expected[-2:] == ['wind','lashed']:
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript, alternate)):
+            raise ValueError(f'The Rapanui passage requires the complete adjective wind-lashed: {transcript!r} / {alternate!r}')
     elif expected[:4] == ['from', 'a', 'single', 'thickness']:
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):
@@ -356,6 +368,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
                     inuit_gap = verify_pause_before_inuit(audio,start,end,expected,left,right,inuit_evidence)
                 if inuit_gap:
                     inuit_evidence['separate_words_after_pause'] = inuit_gap
+                elif cork_taint and verify_pause_before_locants(audio, start, end, expected, (left, other_left), cork_taint):
+                    gaps_with_quiet_context.append([round(start/RATE,3), round(end/RATE,3)])
                 elif complete_words_at_gap(audio, start, end, expected, transcript, alternate):
                     gaps_with_quiet_context.append([round(start/RATE,3), round(end/RATE,3)])
                 else:
@@ -403,6 +417,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['heyerdahl_pronunciation']=explorer
     if turkish_word is not None:
         result['turkish_word']=turkish_word
+    if ganzfeld is not None:
+        result['ganzfeld_pronunciation']=ganzfeld
     if cork_taint is not None:
         result['cork_taint_pronunciation']=cork_taint
     return result

@@ -62,23 +62,25 @@ def check_sound(sample):
 def locate(tokens,expected):
     # Separate encodings of the same human reference produced aniso and anacol.
     # Return the spelling as evidence. The final s and l must also be heard.
-    term_index = next((i for i,w in enumerate(tokens) if re.fullmatch(r'trichlor[a-z]{1,6}(?:sole?|so|col)',w)),None)
-    if term_index is None:
-        raise ValueError('The recognizer could not find trichloroanisole')
-    for digits in (['two','four','six'],['two','hundred','forty','six']):
-        start = term_index-len(digits)
-        if start>=0 and tokens[start:term_index]==digits:
-            normalized = tokens[:start]+['two','four','six',TERM]+tokens[term_index+1:]
-            if normalized==expected:
-                return start,term_index+1,tokens[term_index]
+    for term_index, token in enumerate(tokens):
+        end = term_index+1
+        if token == 'trichloro' and end < len(tokens):
+            token += tokens[end]
+            end += 1
+        if not re.fullmatch(r'trichlor[a-z]{1,6}(?:sole?|so|col)',token):
+            continue
+        for digits in (['two','four','six'],['two','hundred','forty','six']):
+            start = term_index-len(digits)
+            if start >= 0 and tokens[start:term_index] == digits:
+                normalized = tokens[:start]+['two','four','six',TERM]+tokens[end:]
+                if normalized == expected:
+                    return start,end,token
     raise ValueError('The context of 2,4,6-trichloroanisole differs from the paper')
 
 
 def verify(audio,text,first,second):
     expected = words(text)
     heard_names = [locate(words(heard),expected)[2] for heard in (first,second)]
-    if not any(re.search(r'sole?$',name) for name in heard_names):
-        raise ValueError('Neither independent transcript heard the complete chemical name ending')
     timed = timed_words(audio)
     start,end,_ = locate([word for word,_ in timed],expected)
     lo = max(0,timed[start][1]-round(.11*RATE))
@@ -87,4 +89,29 @@ def verify(audio,text,first,second):
     for part in segments:
         for edge in ('start','end'):
             part[edge] = round(part[edge]+lo/RATE,3)
+    if not any(re.search(r'sole?$',name) for name in heard_names):
+        # Full-sentence decoders have written a real final “sole” as both “so”
+        # and “col” in AAC. Listen again to the measured syllable in isolation.
+        from aiden_boundaries import isolated, independent
+        tail = segments[-1]
+        sample = audio[round(tail['start']*RATE):min(len(audio),round((tail['end']+.06)*RATE))]
+        for heard in (isolated(sample),independent(sample)):
+            syllable = words(heard)
+            if (not syllable or syllable[-1] not in {'sole','soul','sol','saul'}
+                    or syllable[:-1] not in ([], ['a'], ['the'])):
+                raise ValueError('The isolated final syllable of trichloroanisole is unclear: '+heard)
     return segments
+
+def verify_pause_before_locants(audio, start, end, expected, left_reads, whole):
+    if (expected[-5:] != ['called', 'two', 'four', 'six', TERM]
+            or any(words(heard) != expected[:-4] for heard in left_reads)):
+        return False
+    # Independently decode the three numbers and the full name on the far
+    # side of the silence. Each phone group must land on the same waveform.
+    cut = (start + end) // 2
+    if cut / RATE >= whole[0]['start'] or abs(end / RATE - whole[0]['start']) > .12:
+        return False
+    right = check_sound(audio[cut:])
+    return all(a['phones'] == b['phones']
+               and all(abs(cut / RATE + b[k] - a[k]) < .09 for k in ('start', 'end'))
+               for a, b in zip(whole, right, strict=True))

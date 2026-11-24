@@ -85,23 +85,28 @@ jobs:
         id: recorded
         if: inputs.aiden_batch == '13-6' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.cache.outputs.teaching == 'true'
         run: |
-          ready=$(python "$TARGET/tools/aiden_saved_master.py" "$STAGING" "$RUNNER_TEMP")
-          echo "ready=$ready" >> "$GITHUB_OUTPUT"
-          if [[ "$ready" == true ]]; then echo "IELTS_AUDIO_STAGED=true" >> "$GITHUB_ENV"; fi
+          recording=$(python "$TARGET/tools/aiden_saved_master.py" "$STAGING" "$RUNNER_TEMP")
+          echo "source=$recording" >> "$GITHUB_OUTPUT"
+          if [[ "$recording" != missing ]]; then
+            echo "defer_weights=true" >> "$GITHUB_OUTPUT"
+            echo "IELTS_AIDEN_MODEL_PATH=$RUNNER_TEMP/ielts-aiden-model" >> "$GITHUB_ENV"
+            echo "IELTS_AIDEN_FETCH_IF_NEEDED=true" >> "$GITHUB_ENV"
+          fi
+          if [[ "$recording" == current ]]; then echo "IELTS_AUDIO_STAGED=true" >> "$GITHUB_ENV"; fi
       - name: 恢复试听版的固定 Aiden 模型
-        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.ready != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.defer_weights != 'true'
         id: model_cache
         uses: actions/cache/restore@v4
         with:
           path: ${{ runner.temp }}/ielts-aiden-model
           key: ielts-aiden-audition-${{ hashFiles('雅思/学术阅读/tools/aiden-model-lock.json') }}
       - name: 按原版清单校验 Aiden 模型和语音分词器
-        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.ready != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.defer_weights != 'true'
         run: |
           python "$TARGET/tools/aiden_model.py" "$RUNNER_TEMP/ielts-aiden-model"
           echo "IELTS_AIDEN_MODEL_PATH=$RUNNER_TEMP/ielts-aiden-model" >> "$GITHUB_ENV"
       - name: 保存通过原版校验的模型供下次使用
-        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.ready != 'true' && steps.model_cache.outputs.cache-hit != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.defer_weights != 'true' && steps.model_cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: ${{ runner.temp }}/ielts-aiden-model
@@ -116,7 +121,7 @@ jobs:
       - if: inputs.aiden_batch != '' && steps.cache.outputs.done != 'true'
         uses: ./.github/actions/ielts-phrase-listening
       - name: 恢复同篇已核验的完整录音
-        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.ready != 'true'
+        if: inputs.aiden_batch != '' && !inputs.verified_audio_only && steps.cache.outputs.done != 'true' && steps.recorded.outputs.source != 'current'
         run: python "$TARGET/tools/aiden_checkpoint.py"
       - if: steps.cache.outputs.done != 'true' && !inputs.verified_audio_only
         uses: ./.github/actions/ielts-verified-master

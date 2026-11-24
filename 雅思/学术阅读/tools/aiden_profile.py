@@ -29,6 +29,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
         'quercus suber': ('aiden_cork_oak.py',),
         'ceylonese': ('aiden_ceylonese.py',),
         'decans': ('aiden_decans.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
+        'ganzfeld': ('aiden_ganzfeld.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'ynde': ('aiden_india.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'export sectors': ('aiden_sectors.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'diels': ('aiden_diels.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),

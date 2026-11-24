@@ -1,0 +1,153 @@
+{
+ "lesson": "C13T2P2",
+ "source_flac_sha256": "cc451ab784f09a307cdbab2d1a7576f030c4ab27ba6343b6bbef616de9d28fab",
+ "source_artifact": 14892460886,
+ "cases": [
+  {
+   "test": "complete",
+   "codec": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to De Dreu,",
+    "heard": "According to Da Drew,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Da Drew,",
+    "de_dreu_pronunciation": {
+     "phones": "D AH D R UW",
+     "score": 0.638,
+     "start": 0.53,
+     "end": 1.29
+    }
+   }
+  },
+  {
+   "test": "complete",
+   "codec": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to De Dreu,",
+    "heard": "According to Da Drew,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Da Drew,",
+    "de_dreu_pronunciation": {
+     "phones": "D AH D R UW",
+     "score": 0.633,
+     "start": 0.53,
+     "end": 1.29
+    }
+   }
+  },
+  {
+   "test": "complete",
+   "codec": "aac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to De Dreu,",
+    "heard": "According to Da Drew,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Da Drew,",
+    "de_dreu_pronunciation": {
+     "phones": "D AH D R UW",
+     "score": 0.635,
+     "start": 0.53,
+     "end": 1.29
+    }
+   }
+  },
+  {
+   "test": "D initial in place of a weak particle",
+   "codec": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The speech recognizer could not locate De Dreu"
+   }
+  },
+  {
+   "test": "D initial in place of a weak particle",
+   "codec": "aac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The speech recognizer could not locate De Dreu"
+   }
+  },
+  {
+   "test": "weak particle alternate take",
+   "codec": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to De Dreu,",
+    "heard": "According to Duh Drew,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Da Drew,",
+    "de_dreu_pronunciation": {
+     "phones": "D AH D R UW",
+     "score": 1.0,
+     "start": 0.73,
+     "end": 1.64
+    }
+   }
+  },
+  {
+   "test": "weak particle alternate take",
+   "codec": "aac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to De Dreu,",
+    "heard": "According to Duh Drew,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Da Drew,",
+    "de_dreu_pronunciation": {
+     "phones": "D AH D R UW",
+     "score": 1.0,
+     "start": 0.73,
+     "end": 1.64
+    }
+   }
+  },
+  {
+   "test": "silence inside surname",
+   "codec": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The speech recognizer could not locate De Dreu"
+   }
+  },
+  {
+   "test": "silence inside surname",
+   "codec": "aac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The speech recognizer could not locate De Dreu"
+   }
+  }
+ ],
+ "native_24kHz_diagnostic_recovery": [
+  {
+   "clip": "cc451ab784f09a307cdbab2d1a7576f030c4ab27ba6343b6bbef616de9d28fab",
+   "paper": "According to De Dreu,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "clip": "f8aa87b92cb47fdd5d951abe4d77eef2f78f4f9be027b8e477ddd69fb86421df",
+   "paper": "According to De Dreu,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "clip": "60dfb88024ec7e4789531b9c3b9084fb6a21747af81f662bfb21903c6b66ebd5",
+   "paper": "According to De Dreu,",
+   "accepted": false,
+   "expected": false
+  }
+ ]
+}

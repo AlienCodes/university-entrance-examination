@@ -280,6 +280,7 @@ def speech_tokens(text):
     from textnorm import number, ordinal
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
     plain = spoken_spelling(plain)
+    plain = re.sub(r'\bco[2₂]\b', 'carbon dioxide', plain)
     plain = re.sub(r'\bh\. (?=naledi\b)', 'homo ',plain)
     # Keep an amount as one alignment key. £23m cannot share the initial
     # "twenty" of £29m, and a million cannot match a billion.

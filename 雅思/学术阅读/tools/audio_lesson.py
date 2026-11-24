@@ -49,6 +49,12 @@ class Reader(cet.G.Pronouncer):
         if PID == 'C11T4P2':
             # The test prints Sobochack twice. Both authors publish as Sobchack.
             text = re.sub(r'\bSobochack\b', 'Sobchack', text)
+        if key == 'C11T2P1:15' and os.environ.get('IELTS_NARRATOR') == 'Aiden':
+            # The two past-tense verbs share a subject. Read them in the same breath.
+            text = text.replace('Deane dived down, and found', 'Deane dived down and found')
+        if key == 'C11T2P2:30' and os.environ.get('IELTS_NARRATOR') == 'Aiden':
+            # Both adjectives modify fields. Preserve the past-participle ending before infertile.
+            text = text.replace('wind-lashed, infertile fields', 'wind-lashed infertile fields')
         if PID == 'C11T1P3':
             text = text.replace('Dr Phil Rasch', 'Doctor Phil Rasch')
         if PID != 'C20T1P1':

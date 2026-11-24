@@ -1,0 +1,246 @@
+{
+ "lesson": "C12T1P1",
+ "source_flac_sha256": "1997f10ce8f746231e5393c0bc0e94a55a1d1e901aaf61e10dea6e905c4f4748",
+ "source_artifact": 14891987658,
+ "cases": [
+  {
+   "test": "complete",
+   "codec": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+    "heard": "This is caused by a chemical compound called two four six trichloro anisole.",
+    "checked_internal_gaps": [
+     [
+      2.69,
+      3.01
+     ]
+    ],
+    "verified_with_quiet_context": [
+     [
+      2.69,
+      3.01
+     ]
+    ],
+    "second_heard": "This is caused by a chemical compound called 2-4-6 trichloroannasol.",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 2.97,
+      "end": 3.25
+     },
+     {
+      "phones": "F AO R",
+      "start": 3.25,
+      "end": 3.75
+     },
+     {
+      "phones": "S IH K S",
+      "start": 3.75,
+      "end": 4.18
+     },
+     {
+      "phones": "T R AY",
+      "start": 4.18,
+      "end": 4.49
+     },
+     {
+      "phones": "K L AO R OW",
+      "start": 4.49,
+      "end": 5.04
+     },
+     {
+      "phones": "AE N AH",
+      "start": 5.04,
+      "end": 5.46
+     },
+     {
+      "phones": "S OW L",
+      "start": 5.46,
+      "end": 5.95
+     }
+    ]
+   }
+  },
+  {
+   "test": "complete",
+   "codec": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+    "heard": "This is caused by a chemical compound called two four six trichloro anisole.",
+    "checked_internal_gaps": [
+     [
+      2.69,
+      3.01
+     ]
+    ],
+    "verified_with_quiet_context": [
+     [
+      2.69,
+      3.01
+     ]
+    ],
+    "second_heard": "This is caused by a chemical compound called 2-4-6 trichloroannasol.",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 2.97,
+      "end": 3.25
+     },
+     {
+      "phones": "F AO R",
+      "start": 3.25,
+      "end": 3.75
+     },
+     {
+      "phones": "S IH K S",
+      "start": 3.75,
+      "end": 4.18
+     },
+     {
+      "phones": "T R AY",
+      "start": 4.18,
+      "end": 4.49
+     },
+     {
+      "phones": "K L AO R OW",
+      "start": 4.49,
+      "end": 5.04
+     },
+     {
+      "phones": "AE N AH",
+      "start": 5.04,
+      "end": 5.46
+     },
+     {
+      "phones": "S OW L",
+      "start": 5.46,
+      "end": 5.95
+     }
+    ]
+   }
+  },
+  {
+   "test": "complete",
+   "codec": "aac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+    "heard": "This is caused by a chemical compound called two four six trichloro aniso.",
+    "checked_internal_gaps": [
+     [
+      2.69,
+      3.01
+     ]
+    ],
+    "verified_with_quiet_context": [
+     [
+      2.69,
+      3.01
+     ]
+    ],
+    "second_heard": "This is caused by a chemical compound called 2-4-6 trichloroanacol.",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 2.97,
+      "end": 3.25
+     },
+     {
+      "phones": "F AO R",
+      "start": 3.25,
+      "end": 3.75
+     },
+     {
+      "phones": "S IH K S",
+      "start": 3.75,
+      "end": 4.18
+     },
+     {
+      "phones": "T R AY",
+      "start": 4.18,
+      "end": 4.49
+     },
+     {
+      "phones": "K L AO R OW",
+      "start": 4.49,
+      "end": 5.04
+     },
+     {
+      "phones": "AE N AH",
+      "start": 5.04,
+      "end": 5.46
+     },
+     {
+      "phones": "S OW L",
+      "start": 5.46,
+      "end": 5.95
+     }
+    ]
+   }
+  },
+  {
+   "test": "missing four",
+   "codec": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context of 2,4,6-trichloroanisole differs from the paper"
+   }
+  },
+  {
+   "test": "missing four",
+   "codec": "aac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context of 2,4,6-trichloroanisole differs from the paper"
+   }
+  },
+  {
+   "test": "silence inside chemical",
+   "codec": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro an sole"
+   }
+  },
+  {
+   "test": "silence inside chemical",
+   "codec": "aac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro an sole"
+   }
+  },
+  {
+   "test": "silence inside called",
+   "codec": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The context of 2,4,6-trichloroanisole differs from the paper"
+   }
+  }
+ ],
+ "native_24kHz_diagnostic_recovery": [
+  {
+   "clip": "1997f10ce8f746231e5393c0bc0e94a55a1d1e901aaf61e10dea6e905c4f4748",
+   "paper": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "clip": "a5c5fc031026895624aeccbf687fb43e2f42d0b81b43c452d15f0a8306ca05e1",
+   "paper": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+   "accepted": false,
+   "expected": false
+  }
+ ]
+}

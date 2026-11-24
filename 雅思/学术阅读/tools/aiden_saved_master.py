@@ -124,19 +124,22 @@ def recover_master(stage, passage, reader, config, target):
     return None
 
 
-def stage_current_audio(stage, destination):
-    """Download an exact, versioned track before preparing the synthesis weights."""
+def stage_recording(stage, destination):
+    """Classify available recordings so a picture edit only loads weights if it needs new speech."""
     if not (LESSON / '双语精读.tsv').is_file() or not (LESSON / '篇目信息.json').is_file():
-        return False
+        return 'missing'
     name = audio_asset(LESSON)
-    item = inventory(stage).get(name)
+    assets = inventory(stage)
+    item = assets.get(name)
     if not item or not item.get('digest'):
-        return False
+        previous = any(re.fullmatch(re.escape(PID) + r'-aiden-[a-f0-9]{16}\.zip', n) and a.get('digest')
+                       for n, a in assets.items())
+        return 'previous' if previous else 'missing'
     archive = fetch(item, destination)
     with zipfile.ZipFile(archive) as saved:
         timing = json.loads(saved.read('audio/timings.json'))['cet4_male'][PID]
         confirm(timing)
-    return True
+    return 'current'
 
 
 if __name__ == '__main__':
@@ -145,4 +148,4 @@ if __name__ == '__main__':
     parser.add_argument('stage')
     parser.add_argument('destination', type=Path)
     args = parser.parse_args()
-    print(str(stage_current_audio(args.stage, args.destination)).lower())
+    print(stage_recording(args.stage, args.destination))

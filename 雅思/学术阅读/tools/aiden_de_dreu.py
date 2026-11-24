@@ -29,7 +29,7 @@ def recognizer():
 def check_word(sample):
     key, score, start, end = locate_sound(sample, recognizer(), PHONES)
     phones = PHONES[key].split()
-    if (len(phones) != 5 or phones[-2:] != ['R', 'UW']
+    if (len(phones) != 5 or phones[1] not in {'AH','IH'} or phones[-2:] != ['R', 'UW']
             or not .27 * RATE <= end - start <= 1.2 * RATE or score < .09):
         raise ValueError(f'Unclear particle or final vowel in De Dreu: {PHONES[key]}')
     if any(start < (a + b) / 2 < end for a, b in interior_gaps(sample)):
@@ -41,7 +41,7 @@ def name_span(tokens):
     for i, word in enumerate(tokens):
         if word in {'dedrew', 'dedreu', 'deidreux'}:
             return i, i + 1
-        if word in {'de', 'der', 'duh'} and tokens[i + 1:i + 2] in (['drew'], ['dreu'], ['dru'], ['droo']):
+        if word in {'de', 'der', 'duh', 'da'} and tokens[i + 1:i + 2] in (['drew'], ['dreu'], ['dreux'], ['dru'], ['droo']):
             return i, i + 2
     raise ValueError('The speech recognizer could not locate De Dreu')
 
