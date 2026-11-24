@@ -49,6 +49,7 @@ jobs:
       lesson: ${{ needs.plan.outputs.pilot }}
       aiden_batch: ${{ needs.plan.outputs.batch }}
       verified_audio_only: ${{ needs.plan.outputs.certified_audio == 'true' }}
+      current_tools: ${{ needs.plan.outputs.batch == '13-6' && needs.plan.outputs.pilot_only != 'true' }}
   preview:
     needs: [plan, pilot]
     if: needs.plan.outputs.pilot_only == 'true' || needs.plan.outputs.batch == '13-6'
