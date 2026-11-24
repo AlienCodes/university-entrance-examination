@@ -12,7 +12,7 @@ import soundfile as sf
 import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
-from aiden_boundaries import POLICY, assess, words, reference
+from aiden_boundaries import POLICY, assess, words, reference, salmon_phrase
 from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed
 import aiden_cork_oak
 import aiden_cork_taint
@@ -234,7 +234,8 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
-                      and not {'llewyn','aleut','zappaterra','sevres'}.intersection(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
+                      and not {'llewyn','aleut','zappaterra','sevres','amagoalik'}.intersection(words(script))
+                      and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes'] and words(script)[-2:] != ['norm','referenced']
                       and not cited_phrase(words(script))
                       and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):

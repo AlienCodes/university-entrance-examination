@@ -36,6 +36,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
         'shenggen': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'janzen': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'zappaterra': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
+        'amagoalik': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'sevres': ('aiden_sevres.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'hawley-dolan': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'ganzfeld': ('aiden_ganzfeld.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),

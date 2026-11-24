@@ -56,6 +56,56 @@ def forms(*parts):
             for i,pronunciation in enumerate(product(*parts))}
 
 
+@lru_cache(maxsize=1)
+def amagoalik_decoders():
+    # The chair introduces John Amagoalik and he then introduces himself
+    # in the Canadian House of Commons, NDDN hearing 37, 3 November 2009.
+    # Compare the complete name and independently test the final stop against
+    # the extra s in the recognizer's “Alex” and endings that lose the k.
+    starts = ('AA M AH','AE M AH','AH M AH','EH M AH','AA M AA','AE M AA','AY M AH','IH M AH','AH M','M AH')
+    middles = ('G OW AE','G W AH','G UW AH','G OW AH','G W AA','G UW AE','G AO AE','G W EH',
+               'HH OW AH','HH OW AE','G UW','G AH','G OW')
+    readings = forms(starts,middles,('L IH K','L IY K','L EH K S','L IH K S','L IY','L IH'))
+    context = {'says':'S EH Z','john':'JH AA N','mister':'M IH S T ER','im':'AY M'}
+    final = {'lick':'L IH K','leek':'L IY K','lex':'L EH K S','licks':'L IH K S','leeks':'L IY K S',
+             'lek':'L EH K','lee':'L IY','li':'L IH','lig':'L IH G','leez':'L IY Z','kuh':'L IH K AH'}
+    return (readings,grammar_decoder(readings,context,'[says] [john | mister] {term} [im]'),
+            final,grammar_decoder(final,{},'{term}'))
+
+
+def verify_amagoalik(audio, first, second):
+    timed = timed_words(audio)
+    familiar = {'amagoalik','amagoalick','amagualic','amagualik','amagulik'}
+    alternatives = {'imagoalex','imagoalec','amagoalic'}
+    spellings = []
+    for tokens in (words(first),words(second),[word for word,_ in timed]):
+        if tokens[:2] != ['says','john'] or not 1 <= len(tokens[2:]) <= 4:
+            raise ValueError('The attribution to John Amagoalik is incomplete')
+        joined = ''.join(tokens[2:])
+        if joined not in familiar | alternatives:
+            raise ValueError('Unrecognised sounds in the surname after John: '+joined)
+        spellings.append(joined)
+    if not familiar.intersection(spellings):
+        raise ValueError('Neither recognizer identified a spelling of the recorded surname')
+    readings,decoder,endings,tail_decoder = amagoalik_decoders()
+    key,score,start,end = locate_sound(audio,decoder,readings)
+    phones = readings[key].split()
+    if (phones[:3] not in (['AA','M','AH'],['AE','M','AH'],['AH','M','AH'])
+            or phones[3:-3] not in (['G','AO','AE'],['G','OW','AE'],['G','OW','AH'],['G','UW','AH'],['G','W','AH'])
+            or phones[-3:] not in (['L','IH','K'],['L','IY','K'])
+            or score < .15 or not .44*RATE <= end-start <= 1.16*RATE):
+        raise ValueError('A vowel group or the final syllable of Amagoalik differs: '+readings[key])
+    if any(start < (a+b)/2 < end for a,b in interior_gaps(audio)):
+        raise ValueError('A pause interrupts Amagoalik')
+    offset = max(start,end-RATE//2)
+    tail_key,tail_score,_,tail_end = locate_sound(audio[offset:],tail_decoder,endings)
+    if (endings[tail_key] not in {'L IH K','L IY K'} or tail_score < .30
+            or end - offset - tail_end > .10*RATE or len(audio) - (offset+tail_end) > .13*RATE):
+        raise ValueError('The speaker must finish Amagoalik on k: '+endings[tail_key])
+    return dict(phones=readings[key],confidence=round(score,3),ending=endings[tail_key],
+                ending_confidence=round(tail_score,3),start=round(start/RATE,3),end=round(end/RATE,3))
+
+
 JANZEN = forms(('JH AE N','Y AE N','JH EH N','JH IH N','JH AA N','JH AE','S AE N'),
                ('Z','S','T S',''), ('AH N','IH N','AH','N',''))
 HAWLEY = forms(('HH',''),('AO','AA','AE','AH','AY','OW','AA R','AO R'),('L IY','L IH','L','IY'))

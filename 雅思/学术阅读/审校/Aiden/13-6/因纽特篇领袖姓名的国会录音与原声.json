@@ -1,0 +1,443 @@
+{
+ "lesson": "C6T1P3",
+ "sentence": 37,
+ "text": "says John Amagoalik,",
+ "reference": {
+  "webcast": "https://www.ourcommons.ca/webcast/40-2/NDDN/37",
+  "transcript": "https://www.ourcommons.ca/DocumentViewer/en/40-2/NDDN/meeting-37/evidence",
+  "audio": "floor",
+  "source_audio_sha256": "4a4ad5b1b51f9364fffe17718ffa16f96fcc3fc42c228a678c1f584051888a3b",
+  "speaker_and_words": [
+   {
+    "speaker": "chair-announcement",
+    "source_begin": 83.65,
+    "source_end": 85.68,
+    "reads": [
+     "Uh John Amagulic.",
+     "John Amagulik"
+    ],
+    "words": [
+     [
+      "uh",
+      83.66
+     ],
+     [
+      "john",
+      83.9
+     ],
+     [
+      "amagulic",
+      84.38
+     ]
+    ]
+   },
+   {
+    "speaker": "chair-address",
+    "source_begin": 93.91,
+    "source_end": 95.27,
+    "reads": [
+     "Mr Amagulik.",
+     "Mr. Amagulik"
+    ],
+    "words": [
+     [
+      "mr",
+      93.92
+     ],
+     [
+      "amagulik",
+      94.24
+     ]
+    ]
+   },
+   {
+    "speaker": "witness-introduction",
+    "source_begin": 104.42,
+    "source_end": 107.9,
+    "reads": [
+     "Chairman, my name is John R.",
+     "My name is John."
+    ],
+    "words": [
+     [
+      "chairman",
+      104.51
+     ],
+     [
+      "my",
+      106.51
+     ],
+     [
+      "name",
+      106.75
+     ],
+     [
+      "is",
+      106.99
+     ],
+     [
+      "john",
+      107.47
+     ],
+     [
+      "r",
+      107.71
+     ]
+    ]
+   },
+   {
+    "speaker": "witness-continued",
+    "source_begin": 105.4,
+    "source_end": 110.7,
+    "reads": [
+     "My name is John Amaolic. I'm the policy advisor to the",
+     "My name is John Amaholic. I'm the policy advisor to the"
+    ],
+    "words": [
+     [
+      "my",
+      106.45
+     ],
+     [
+      "name",
+      106.77
+     ],
+     [
+      "is",
+      107.01
+     ],
+     [
+      "john",
+      107.41
+     ],
+     [
+      "amaolic",
+      107.81
+     ],
+     [
+      "im",
+      108.61
+     ],
+     [
+      "the",
+      108.77
+     ],
+     [
+      "policy",
+      109.25
+     ],
+     [
+      "advisor",
+      109.73
+     ],
+     [
+      "to",
+      110.29
+     ],
+     [
+      "the",
+      110.37
+     ]
+    ]
+   }
+  ]
+ },
+ "source_artifact": {
+  "transcript": "Says John Amagoalik.",
+  "timed": [
+   [
+    "says",
+    0.07999999821186066
+   ],
+   [
+    "john",
+    0.47999998927116394
+   ],
+   [
+    "amagoalik",
+    0.8799999952316284
+   ]
+  ],
+  "seed": 376849,
+  "sha256": "20cc256e412446865c4b3c2d7ef56e3caa45b591411159b5e608fa1b7a2127c3",
+  "policy": "intact-phrase-v1",
+  "archive": "C6T1P3-leader-0759.zip",
+  "artifact": 14896341975,
+  "member": "aiden-takes/31a30273d15e3388f63a2f8900d7f7be552ab49832c73aba8937c4955e494dc2.json"
+ },
+ "contexts": [
+  {
+   "recording": "github-flac",
+   "first": "says John Amagoalick.",
+   "second": "Says John I'm a go Alec.",
+   "passed": true,
+   "result": {
+    "phones": "AA M AH G AO AE L IH K",
+    "confidence": 0.336,
+    "ending": "L IH K",
+    "ending_confidence": 0.559,
+    "start": 1.06,
+    "end": 1.76
+   }
+  },
+  {
+   "recording": "whole-mp3",
+   "first": "says John Amagoalick.",
+   "second": "Says John Imago-Alex.",
+   "passed": true,
+   "result": {
+    "phones": "AA M AH G AO AE L IH K",
+    "confidence": 0.289,
+    "ending": "L IH K",
+    "ending_confidence": 0.543,
+    "start": 1.08,
+    "end": 1.78
+   }
+  },
+  {
+   "recording": "whole-aac",
+   "first": "says John Amagoalick.",
+   "second": "Says John Amago-Alic.",
+   "passed": true,
+   "result": {
+    "phones": "AA M AH G AO AE L IH K",
+    "confidence": 0.278,
+    "ending": "L IH K",
+    "ending_confidence": 0.549,
+    "start": 1.08,
+    "end": 1.78
+   }
+  },
+  {
+   "recording": "cut-before-k",
+   "first": "Says John, I'm a goalie.",
+   "second": "Says John, I'm a go-al",
+   "passed": false,
+   "result": "Unrecognised sounds in the surname after John: imagoalie",
+   "perfect_spelling_test": {
+    "accepted": false,
+    "evidence": "Unrecognised sounds in the surname after John: imagoalie"
+   }
+  },
+  {
+   "recording": "first-half-only",
+   "first": "Says John Amago.",
+   "second": "Says John, I'm a-",
+   "passed": false,
+   "result": "Unrecognised sounds in the surname after John: amago",
+   "perfect_spelling_test": {
+    "accepted": false,
+    "evidence": "Unrecognised sounds in the surname after John: amago"
+   }
+  },
+  {
+   "recording": "cut-interior",
+   "first": "Says John, I'm a go alcoholic.",
+   "second": "Says John, I'm a go-alike.",
+   "passed": false,
+   "result": "Unrecognised sounds in the surname after John: imagoalcoholic",
+   "perfect_spelling_test": {
+    "accepted": false,
+    "evidence": "Unrecognised sounds in the surname after John: imagoalcoholic"
+   }
+  },
+  {
+   "recording": "added-s",
+   "first": "Says John I'm a goalick.",
+   "second": "Says John, I'm a go I like to",
+   "passed": false,
+   "result": "Unrecognised sounds in the surname after John: imagoalick",
+   "perfect_spelling_test": {
+    "accepted": false,
+    "evidence": "Unrecognised sounds in the surname after John: imagoalick"
+   }
+  }
+ ],
+ "encoded_waveforms": {
+  "lag_samples": 0,
+  "worst_window_correlation": 0.996031,
+  "average_correlation": 0.999667,
+  "max_level_difference_db": 0.173
+ },
+ "comparison": "原书第37句引述 John Amagoalik。官方委员会原声在84.38秒和94.24秒介绍其姓名，他在107.81秒起自报姓名。对照两段英文介绍、本人自述、完整意群的原录音及合成后的相同区段，检查连续音节及词尾 /k/。末音截短、添加擦音和词内插入静音都应被拦下。",
+ "original_and_encoded_phone_trials": [
+  {
+   "source": "chair-first",
+   "reads": [
+    "John Amagulick.",
+    "John and my garlic"
+   ],
+   "evidence": {
+    "full": [
+     "AY M AH G W AH L IY K",
+     0.177,
+     84.38,
+     85.35
+    ],
+    "0.0": [
+     "L IH G",
+     0.321,
+     84.9,
+     85.21
+    ],
+    "0.05": [
+     "L IH G",
+     0.356,
+     84.9,
+     85.21
+    ]
+   }
+  },
+  {
+   "source": "chair-second",
+   "reads": [
+    "Mr Amagulik.",
+    "Mr. Amagulik"
+   ],
+   "evidence": {
+    "full": [
+     "AH M AH G UW L IH",
+     0.06,
+     94.23,
+     94.93
+    ],
+    "0.0": [
+     "L EH K",
+     0.536,
+     94.49,
+     94.69
+    ],
+    "0.05": [
+     "L EH K S",
+     0.478,
+     94.5,
+     94.72
+    ]
+   }
+  },
+  {
+   "source": "witness-self",
+   "reads": [
+    "Uh John and Maholik MD.",
+    "I'm trying to make a whole company"
+   ],
+   "evidence": {
+    "full": [
+     "AH M AH HH OW AH L IY",
+     0.048,
+     107.86,
+     108.33
+    ],
+    "error": "The recording does not contain one complete, identifiable target word"
+   }
+  },
+  {
+   "source": "20cc256e412446865c4b3c2d7ef56e3caa45b591411159b5e608fa1b7a2127c3",
+   "reads": [
+    "says John Amagoalick.",
+    "Says John I'm a go Alec."
+   ],
+   "evidence": {
+    "full": [
+     "AA M AH G AO AE L IH K",
+     0.337,
+     1.06,
+     1.76
+    ],
+    "0.0": [
+     "L IH K",
+     0.583,
+     1.27,
+     1.73
+    ],
+    "0.05": [
+     "L IH K",
+     0.56,
+     1.27,
+     1.76
+    ]
+   }
+  },
+  {
+   "source": "7320f4a60472a2e98a1bb74e26c09e39b584d7577247ca7e1eeb8277b4fd7547",
+   "reads": [
+    "says John Amagualic.",
+    "Says John Amagualik"
+   ],
+   "evidence": {
+    "full": [
+     "AE M AH G OW AE L IH K",
+     0.214,
+     0.81,
+     1.48
+    ],
+    "0.0": [
+     "L IH",
+     0.465,
+     0.99,
+     1.46
+    ],
+    "0.05": [
+     "L EH K",
+     0.297,
+     0.99,
+     1.48
+    ]
+   }
+  },
+  {
+   "source": ".mp3",
+   "reads": [
+    "says John Amagoalick.",
+    "Says John Imago-Alex."
+   ],
+   "evidence": {
+    "full": [
+     "AA M AH G AO AE L IH K",
+     0.286,
+     1.08,
+     1.78
+    ],
+    "0.0": [
+     "L IH K",
+     0.565,
+     1.29,
+     1.75
+    ],
+    "0.05": [
+     "L IH K",
+     0.541,
+     1.28,
+     1.77
+    ]
+   }
+  },
+  {
+   "source": ".m4a",
+   "reads": [
+    "says John Amagoalick.",
+    "Says John Amago-Alic."
+   ],
+   "evidence": {
+    "full": [
+     "AA M AH G AO AE L IH K",
+     0.278,
+     1.08,
+     1.78
+    ],
+    "0.0": [
+     "L IH K",
+     0.581,
+     1.28,
+     1.75
+    ],
+    "0.05": [
+     "L IH K",
+     0.55,
+     1.28,
+     1.78
+    ]
+   }
+  }
+ ]
+}

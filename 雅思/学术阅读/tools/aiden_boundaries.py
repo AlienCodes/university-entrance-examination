@@ -191,12 +191,16 @@ def complete_words_at_gap(audio, start, end, expected, first, second):
     return False
 
 
+def salmon_phrase(tokens):
+    return tokens == ['sockeye','or','red'] or tokens == ['pump','through','alaska','like','blood','through','a','heart']
+
+
 def assess(audio, text, transcript=None, *, recheck=False):
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     from aiden_perkin import cited as has_perkin, verify as verify_perkin, gap_after_attention
     from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
     expected = words(text)
-    transcript = isolated(audio) if transcript is None else transcript
+    transcript = isolated(audio) if transcript is None or salmon_phrase(expected) else transcript
     alternate = None
     historian = None
     if expected == ['quercus', 'suber']:
@@ -277,6 +281,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
     elif has_perkin(expected):
         alternate = independent(audio)
         chemists = verify_perkin(audio,expected,transcript,alternate)
+    elif expected == ['says','john','amagoalik']:
+        from aiden_surnames import verify_amagoalik
+        alternate = independent(audio)
+        surname = verify_amagoalik(audio,transcript,alternate)
     elif expected == ['shenggen','fan']:
         from aiden_surnames import verify_shenggen
         alternate = independent(audio)
@@ -365,6 +373,12 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_turkish import verify
         alternate = independent(audio)
         turkish_word = verify(audio,text,transcript,alternate)
+    elif salmon_phrase(expected):
+        # Accepted cache records contain “pump” even where replay reports “pumped”.
+        # Replay this take with both recognizers before reusing its original report.
+        alternate = independent(audio)
+        if any(words(read) != expected for read in (transcript, alternate)):
+            raise ValueError(f'The fish name or tense differs in the Alaska passage: {transcript!r} / {alternate!r}')
     elif expected[:3] == ['deane', 'dived', 'down'] or expected[:4] == ['and', 'doctor', 'phil', 'rasch']:
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):
