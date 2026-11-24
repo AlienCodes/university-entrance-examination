@@ -21,7 +21,8 @@ SPELLINGS = {
     'modelled':'modeled', 'modelling':'modeling', 'millilitres':'milliliters', 'grey':'gray',
     'archaeologists':'archeologists', 'archaeologist':'archeologist',
     'artefacts':'artifacts', 'sceptical':'skeptical', 'skilful':'skillful',
-    'unravelling':'unraveling',
+    'unravelling':'unraveling', 'odourless':'odorless', 'meagre':'meager',
+    'leukaemia':'leukemia', 'archipelagoes':'archipelagos', 'palaeontologist':'paleontologist',
 }
 
 # Both spellings occur in the two recognizers' readings of these printed compounds.
@@ -36,7 +37,7 @@ COMPOUND_SPELLINGS = {
     ('night', 'dress'), ('rain', 'forests'), ('sound', 'track'), ('steam', 'ships'),
     ('sub', 'continent'), ('super', 'colony'), ('super', 'hot'), ('super', 'viruses'),
     ('thunder', 'clouds'), ('time', 'keeping'), ('train', 'spotters'), ('train', 'spotting'),
-    ('watch', 'towers'), ('wind', 'blown'),
+    ('watch', 'towers'), ('wind', 'blown'), ('co', 'operate'), ('co', 'ordinate'),
 }
 
 
@@ -138,6 +139,8 @@ def hear_differences(audio, text, secondary, observations=None):
 # These spellings occur in speech-recognition output from the verified name checkers.
 # Apply a spelling only when that checker has measured the sounds on this very phrase.
 MEASURED_NAMES = {
+    'halley_pronunciation': {'hallie':'halley'},
+    'eigg_pronunciation': {'egg':'eigg', 'eig':'eigg'},
     'ganzfeld_pronunciation': {'gansfeld':'ganzfeld', 'gensfeld':'ganzfeld'},
     'stepwell_tiers': {'tears':'tiers'},
     'surname_pronunciation': {'koole':'kuhl', 'holly':'hawley', 'jansen':'janzen', 'amagoalick':'amagoalik'},

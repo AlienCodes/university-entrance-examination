@@ -37,6 +37,58 @@ def locate_sound(audio, decoder, phones):
     return match.word, match.prob, start, stop
 
 
+@lru_cache(maxsize=4)
+def name_decoder(name, with_context):
+    if name == 'halley':
+        forms = {'halley':'HH AE L IY', 'haley':'HH EY L IY', 'hawley':'HH AO L IY',
+                 'holly':'HH AA L IY', 'allie':'AE L IY', 'pally':'P AE L IY',
+                 'tally':'T AE L IY', 'hall':'HH AE L', 'hay':'HH EY'}
+        context, rule = {'was':'W AH Z','aware':'AH W EH R'}, '{term} [was] [aware]'
+    else:
+        forms = {'egg':'EH G', 'ag':'AE G', 'ayg':'EY G', 'eeg':'IY G',
+                 'ig':'IH G', 'eye':'AY', 'eggy':'EH G IY', 'eck':'EH K',
+                 'vowel':'EH', 'eight':'EY T'}
+        context, rule = {'isle':'AY L','of':'AH V','shows':'SH OW Z'}, '[isle] [of] {term} [shows]'
+    return grammar_decoder(forms, context if with_context else {}, rule if with_context else '{term}'), forms
+
+
+def verify_name_in_phrase(audio, expected, first, second):
+    from aiden_boundaries import interior_gaps, words
+    from aiden_ceylonese import timed_words
+
+    halley = expected[:3] == ['halley','was','aware']
+    name, target, index = ('halley','halley',0) if halley else ('eigg','egg',expected.index('eigg'))
+    spellings = {'halley','hallie'} if halley else {'egg','eigg','eig'}
+    for transcript in (first, second):
+        tokens = words(transcript)
+        if (len(tokens) != len(expected) or tokens[index] not in spellings
+                or tokens[:index] + tokens[index+1:] != expected[:index] + expected[index+1:]):
+            raise ValueError(f'The name or its surrounding printed words differ: {transcript!r}')
+    timed = timed_words(audio)
+    if len(timed) != len(expected):
+        raise ValueError(f'Unclear word boundaries around {name}')
+    if halley:
+        if [w for w,_ in timed[1:3]] != ['was','aware']:
+            raise ValueError('Missing context after Halley')
+        begin, end = 0, min(len(audio),timed[2][1]+round(.07*RATE))
+        left, right = 0, timed[1][1]
+    else:
+        if [w for w,_ in timed[index-2:index]] != ['isle','of'] or timed[index+1][0] != 'shows':
+            raise ValueError('Missing spoken context around Eigg')
+        begin, end = max(0,timed[index-2][1]-round(.08*RATE)),len(audio)
+        left, right = max(0,timed[index][1]-round(.04*RATE)),min(len(audio),timed[index+1][1]+round(.03*RATE))
+    readings=[]
+    for low, high, context in ((begin,end,True),(left,right,False)):
+        decoder, forms = name_decoder(name,context)
+        label, score, start, finish = locate_sound(audio[low:high],decoder,forms)
+        if (label != target or score < .25 or finish-start < (.18 if halley else .11)*RATE
+                or any(low+start < (a+b)/2 < low+finish for a,b in interior_gaps(audio))):
+            raise ValueError(f'Incomplete or unclear {name}: {forms[label]}')
+        readings.append(dict(phones=forms[label],confidence=round(score,3),
+                             start=(low+start)/RATE,end=(low+finish)/RATE))
+    return dict(name=name, context=readings[0], isolated=readings[1])
+
+
 @lru_cache(maxsize=1)
 def tiers_decoder():
     # Cambridge uses the same US recording for tier and tear (from the eye).

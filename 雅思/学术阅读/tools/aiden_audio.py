@@ -110,6 +110,8 @@ class Aiden:
             instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
         if re.search(r'\b(?:Halley|Hally)\b',script,re.I):
             instruction += ' Read the astronomer’s surname Halley in two connected syllables /ˈhæli/, with an audible initial h.'
+        if re.search(r'\bIsle of (?:Eigg|Egg)\b',script,re.I):
+            instruction += ' Say the Scottish island Eigg like the English word egg, in one syllable /ɛɡ/. Link it naturally to shows.'
         if re.search(r'\bPerkin (?:saw|set|spent)\b',script,re.I):
             instruction += ' William Perkin is singular. Finish the name on n, then begin the verb with its own s.'
         if re.search(r"\bPerkin['’]s\b",script,re.I):
@@ -342,6 +344,8 @@ class Aiden:
             spellings=('approached','APPROACHED','approached','Approached','APPROACHED')
         elif place := next((rule for name,rule in PLACE_READINGS.items() if re.search(r'\b'+name+r'\b',script,re.I)), None):
             spellings = place[0]
+        elif 'Isle of Eigg' in script:
+            spellings=('Isle of Eigg','Isle of Egg','Isle of egg','Isle of Egg','Isle of EGG')
         elif 'Puerto Villamil' in script:
             spellings=('Puerto Villamil','Puerto vee-yah-MEEL','Puerto Villamil','Puerto vee-yah-MEEL','Puerto Villamil')
         elif words(script)[:2]==['forested','hills']:

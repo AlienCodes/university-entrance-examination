@@ -42,6 +42,18 @@ def spoken_spelling(text):
     # These British and American forms have the same spoken word. Preserve
     # grammatical endings, including plural -s, and keep all printed text intact.
     text = spoken_centuries(text)
+    # An ASR may attach a currency symbol as well as writing "US dollars".
+    # Preserve the actual number, currency and every spoken occurrence of "dollars".
+    text = re.sub(r'\$(?=\d[\d,]*(?:\.\d+)?\s+(?:(?:thousand|million|billion)\s+)?U\.?\s*S\.?\s+dollars?\b)',
+                  '', text, flags=re.I)
+    text = re.sub(r'\bU\.?\s*S\.?\s+(?=dollars?\b)', 'U S ', text, flags=re.I)
+    # The two geographical references in the Dutch town passage use the older spelling.
+    text = re.sub(r'\bmodern Leiden\b', 'modern Leyden', text, flags=re.I)
+    text = re.sub(r'\bLeiden(?= in Holland\b)', 'Leyden', text, flags=re.I)
+    # Title before a named person in these lessons. "Dr" in a street address has a different reading.
+    text = re.sub(r'\bDr\.?\s+(?=(?:Bahaj\b|Cameron Petrie\b|Dan Lunt\b|Margaret Rule\b|'
+                  r'Martin Sommerkorn\b|Ravindanath Singh\b|Samuel Johnson\b|Yama Dixit\b))',
+                  'Doctor ', text, flags=re.I)
     # The printed Japanese building name and the experiment's compound are
     # sometimes hyphenated by the recognizer. Keep every syllable and word ending.
     text = re.sub(r'\bkasumi[ -]?ga[ -]?seki\b', 'Kasumigaseki', text, flags=re.I)
@@ -215,12 +227,21 @@ def assess(audio, text, transcript=None, *, recheck=False):
     opening = None
     ganzfeld = None
     stepwell_tiers = None
+    measured_name = None
     cork_taint = None
     kite_names = None
     word_windows = None
     if expected in (INTRO, CONCLUSION, WENDRICH):
         alternate = independent(audio)
         kite_names = verify_kite_names(audio, expected, transcript, alternate)
+    elif expected[:3] == ['halley','was','aware'] or expected[-4:] == ['isle','of','eigg','shows']:
+        from aiden_pronunciation import verify_name_in_phrase
+        alternate = independent(audio)
+        measured_name = verify_name_in_phrase(audio, expected, transcript, alternate)
+    elif expected[-2:] == ['modern','leyden'] or 'ex-vessel value' in text.casefold():
+        alternate = independent(audio)
+        if not all(matches(expected, words(heard)) for heard in (transcript,alternate)):
+            raise ValueError(f'Unclear Dutch town name or catch value: {transcript!r} / {alternate!r}')
     elif 'llewyn' in expected:
         from aiden_lynx import verify, pause_after_name
         alternate = independent(audio)
@@ -500,6 +521,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['historian_pronunciation'] = historian
     if alternate is not None:
         result['second_heard']=alternate
+    if measured_name:
+        result[measured_name['name']+'_pronunciation'] = measured_name
     if name_evidence is not None:
         result['ceylonese_pronunciation']=name_evidence
     if star_groups is not None:

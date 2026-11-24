@@ -58,6 +58,16 @@ def main(listen):
                            ("they did not return", "they did return"), ("walked", "walk")):
         assert not same_words(words(written), words(heard))
     assert same_words(words("with modelled birds"), words("with modeled birds"))
+    amount = words("over two hundred sixty million U.S. dollars")
+    assert same_words(amount, words("over $260 million US dollars"))
+    for other in ("$260 million US dollars", "over $250 million US dollars",
+                  "over 260 million dollars US dollars", "over 260 million Canadian dollars"):
+        assert not same_words(amount, words(other))
+    assert same_words(words("modern Leyden"), words("modern Leiden"))
+    assert not same_words(words("modern Leyden"), words("modern lighten"))
+    assert same_words(words("Dr Margaret Rule"), words("Doctor Margaret Rule"))
+    assert not same_words(words("Green Dr"), words("Green Doctor"))
+    assert not same_words(words("Halley was aware"), words("Hallie was aware"))
     for printed, recognized in (("artefacts", "artifacts"), ("sceptical", "skeptical"),
                                 ("unravelling", "unraveling"), ("counter-productive", "counterproductive"),
                                 ("Counter-intuitively", "Counterintuitively"),
