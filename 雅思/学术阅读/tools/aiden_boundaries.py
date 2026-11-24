@@ -63,6 +63,10 @@ def words(text):
     text = re.sub(r"\brock\s*['’]n['’]\s*roll\b", 'rock and roll', text, flags=re.I)
     text = re.sub(r'\bman[ -]?made\b', 'man made', text, flags=re.I)
     text = re.sub(r'\bfibre(s?)\b', r'fiber\1', text, flags=re.I)
+    # Reuse textnorm's spoken unit and singular/plural rules for both “6.8mm”
+    # and “6.8 mm”, the two forms emitted by the independent recognizers.
+    text = re.sub(r'(?<=\d)\s+(?=mm\b)', '', text, flags=re.I)
+    text = re.sub(r'\bsub[- ]?millimet(?:er|re)(s?)\b', r'submillimeter\1', text, flags=re.I)
     text = spoken_spelling(text)
     text = re.sub(r'\blife[ -]+span(s?)\b', r'lifespan\1', text, flags=re.I)
     text = re.sub(r'\bnorth[ -]+east\b', 'northeast', text, flags=re.I)
@@ -73,7 +77,7 @@ def words(text):
     text = re.sub(r'\bcounsell(?=ing\b|ed\b|ors?\b)', 'counsel', text, flags=re.I)
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
-    text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)
+    text = re.sub(r'\bmcfarlane\b', 'macfarlane', text, flags=re.I)
     # The US dictionary transcribes both Dingle and Dingell as D IH NG G AH L.
     # A genuine Tingle has a different initial consonant.
     text = re.sub(r'\bdingell\b','dingle',text,flags=re.I)
@@ -228,6 +232,10 @@ def assess(audio, text, transcript=None):
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):
             raise ValueError(f'Unclear past-tense ending or spoken introduction: {transcript!r} / {alternate!r}')
+    elif expected[:4] == ['from', 'a', 'single', 'thickness']:
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript, alternate)):
+            raise ValueError(f'Glass thickness or its units differ: {transcript!r} / {alternate!r}')
     elif NOISE_INITIALS.search(text):
         alternate = independent(audio)
         if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
