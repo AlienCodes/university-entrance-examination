@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import re
+from collections import deque
 from difflib import SequenceMatcher
 
 import numpy as np
@@ -11,8 +12,8 @@ import soundfile as sf
 import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
-from aiden_boundaries import POLICY, assess, independent, words, reference
-from aiden_checkpoint import PeriodicSnapshot, rejected_seed
+from aiden_boundaries import POLICY, assess, words, reference
+from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed
 import aiden_cork_oak
 import aiden_cork_taint
 import aiden_ceylonese
@@ -140,8 +141,8 @@ class Aiden:
             raise ValueError('Invalid Aiden waveform')
         return cet.G.trim(wave,pad=.045)
 
-    def recheck_diagnostic(self,file,report,script,seed):
-        raw=self.folder/'rejected'/file.name
+    def recheck_diagnostic(self,file,report,script,seed,source_report):
+        raw=source_report.with_suffix('.flac')
         recording=raw.read_bytes()
         digest=hashlib.sha256(recording).hexdigest()
         if digest in self.rejected_master_takes:return None
@@ -151,12 +152,8 @@ class Aiden:
         audio=soxr.resample(wave,rate,16000)
         if not timed:
             return None
-        # Dedicated acoustic checks require both recognizers to match the
-        # English context even when they transcribe a foreign word differently.
-        if not cited_phrase(words(script)) and not {'dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
-            return None
         try:
-            assess(audio,script,transcript)
+            assess(audio,script,transcript,recheck=True)
         except ValueError:
             return None
         file.write_bytes(recording)
@@ -198,10 +195,14 @@ class Aiden:
         number=int(key.split(':')[1]);seed=24830+number+variant*173
         if previous_seed is not None:
             seed=previous_seed+5*997
-        failed_seed=rejected_seed(self.folder/'rejected'/report.name,key,script)
-        if failed_seed is not None:
-            seed=max(seed,failed_seed+997)
-            checked=self.recheck_diagnostic(file,report,script,failed_seed)
+        candidates = []
+        for candidate in diagnostic_reports(report):
+            failed_seed = rejected_seed(candidate, key, script)
+            if failed_seed is not None:
+                candidates.append((failed_seed, candidate))
+                seed = max(seed, failed_seed + 997)
+        for failed_seed, candidate in sorted(candidates, reverse=True):
+            checked=self.recheck_diagnostic(file,report,script,failed_seed,candidate)
             if checked is not None:return checked
         spoken=script
         spellings=()
@@ -237,6 +238,7 @@ class Aiden:
             spellings=('Macfarlane','McFarlane','Macfarlane','McFarlane','Macfarlane')
         elif aiden_turkish.ORAL in words(script):
             spellings=aiden_turkish.RENDERINGS
+        attempts = deque(maxlen=REVIEW_TAKES)
         for attempt in range(len(spellings) if spellings else 5):
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.
@@ -251,6 +253,7 @@ class Aiden:
                 assess(soxr.resample(wav,24000,16000),script,transcript)
             except ValueError as error:
                 issue=str(error)
+                attempts.append((wav, rendered_text, seed + attempt * 997, transcript, issue))
                 if attempt >= 1:
                     expected=words(script)
                     alignment=SequenceMatcher(None,expected,words(transcript),autojunk=False)
@@ -264,16 +267,17 @@ class Aiden:
                       sha256=hashlib.sha256(file.read_bytes()).hexdigest(),policy=POLICY)
             report.write_text(json.dumps(data,ensure_ascii=False))
             return sf.read(file,dtype='float32')[0],data
-        # Retain the actual sound for reviewing a name or dropout. Only flat,
-        # certified take files are eligible for restoration or mastering.
-        rejected=self.folder/'rejected'
-        rejected.mkdir(exist_ok=True)
-        candidate=rejected/file.name
-        sf.write(candidate,wav,24000,subtype='PCM_24')
-        evidence=dict(accepted=False, key=key, printed=script, rendered=rendered_text,
-                      seed=seed+attempt*997, transcript=transcript, issue=issue,
-                      sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
-        (rejected/report.name).write_text(json.dumps(evidence,ensure_ascii=False))
+        # Preserve distinct attempts for comparison after a pronunciation correction.
+        # Only recordings rechecked with the current rules can enter the master.
+        (self.folder / 'rejected').mkdir(exist_ok=True)
+        for target, take in zip(diagnostic_reports(report), reversed(attempts)):
+            wave, rendered, take_seed, heard, reason = take
+            candidate = target.with_suffix('.flac')
+            sf.write(candidate, wave, 24000, subtype='PCM_24')
+            evidence = dict(accepted=False, key=key, printed=script, rendered=rendered,
+                            seed=take_seed, transcript=heard, issue=reason,
+                            sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())
+            target.write_text(json.dumps(evidence, ensure_ascii=False))
         raise UnverifiedTake(key,position,issue)
 
     def save_remaining_takes(self,passage,config,pron,failure):

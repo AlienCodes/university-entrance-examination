@@ -156,7 +156,7 @@ def interior_gaps(audio):
             if b-a >= 15 and a >= 10 and b <= len(db)-10]
 
 
-def assess(audio, text, transcript=None):
+def assess(audio, text, transcript=None, *, recheck=False):
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     expected = words(text)
     transcript = isolated(audio) if transcript is None else transcript
@@ -243,13 +243,18 @@ def assess(audio, text, transcript=None):
         historian = verify_macfarlane(audio,expected,transcript,alternate)
     elif NOISE_INITIALS.search(text):
         alternate = independent(audio)
-        if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
+        accepted = all if recheck else any
+        if not accepted(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
             raise ValueError(f'The five spoken letters I I N C E or their context differ: {transcript!r} / {alternate!r}')
     elif expected[:5] == ['sugars','and','meats','or','oils']:
         # In the printed list of ant baits, one real recording was heard as "chuggers".
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript,alternate)):
             raise ValueError(f'Ant bait names or their context differ: {transcript!r} / {alternate!r}')
+    elif recheck:
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript, alternate)):
+            raise ValueError(f'Restored recording differs from the printed phrase: {transcript!r} / {alternate!r}')
     elif not matches(expected, words(transcript)):
         alternate = independent(audio)
         # If the two decoders disagree, only the full printed sequence can resolve it.

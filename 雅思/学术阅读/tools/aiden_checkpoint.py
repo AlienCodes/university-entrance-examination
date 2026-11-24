@@ -18,6 +18,18 @@ def gh_json(endpoint):
     return json.loads(subprocess.check_output(["gh", "api", endpoint]))
 
 
+REVIEW_TAKES = 5
+
+
+def diagnostic_reports(report):
+    """Keep the latest attempt at its original path and four prior attempts in bounded slots."""
+    latest = report.parent / 'rejected' / report.name
+    yield latest
+    for slot in range(1, REVIEW_TAKES):
+        stem = hashlib.sha256(f'{report.stem}:rereading:{slot}'.encode()).hexdigest()
+        yield latest.with_name(stem + '.json')
+
+
 def rejected_seed(report, key, printed):
     if (not isinstance(key,str) or not re.fullmatch(re.escape(PID) + r":[1-9]\d*",key)
             or not isinstance(printed,str) or not printed.strip() or not report.is_file()):
