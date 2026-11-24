@@ -19,6 +19,7 @@ import aiden_inuktitut
 import aiden_sobchack
 import aiden_de_dreu
 import aiden_turkish
+import aiden_heyerdahl
 import make_audio as cet
 import 听对
 
@@ -97,6 +98,8 @@ class Aiden:
             instruction += ' ' + aiden_de_dreu.HINT
         if any(form.casefold() in script.casefold() for form in aiden_turkish.RENDERINGS):
             instruction += ' ' + aiden_turkish.HINT
+        if script.strip(' ,.;:!?').casefold() in {form.casefold() for form in aiden_heyerdahl.RENDERINGS}:
+            instruction += ' ' + aiden_heyerdahl.HINT
         if 'Deane dived down' in script:
             instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
         if 'Doctor Phil Rasch' in script:
@@ -124,7 +127,7 @@ class Aiden:
             return None
         # Dedicated acoustic checks require both recognizers to match the
         # English context even when they transcribe a foreign word differently.
-        if not {'dreu',aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
+        if not {'dreu','heyerdahl',aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
             return None
         try:
             assess(audio,script,transcript)
@@ -155,7 +158,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu',aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl',aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -188,6 +191,8 @@ class Aiden:
             spellings=aiden_sobchack.RENDERINGS
         elif re.search(r'\bDe Dreu\b',script,re.I):
             spellings=aiden_de_dreu.RENDERINGS
+        elif words(script) == ['thor', 'heyerdahl']:
+            spellings=aiden_heyerdahl.RENDERINGS
         elif aiden_turkish.ORAL in words(script):
             spellings=aiden_turkish.RENDERINGS
         for attempt in range(len(spellings) if spellings else 5):

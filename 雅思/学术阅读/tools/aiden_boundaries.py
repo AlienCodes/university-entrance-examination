@@ -159,6 +159,7 @@ def assess(audio, text, transcript=None):
     inuit_evidence = None
     film_names = None
     psychologist = None
+    explorer = None
     turkish_word = None
     if 'ceylonese' in expected:
         from aiden_ceylonese import verify
@@ -181,6 +182,10 @@ def assess(audio, text, transcript=None):
         from aiden_de_dreu import verify
         alternate = independent(audio)
         psychologist = verify(audio,text,transcript,alternate)
+    elif expected == ['thor', 'heyerdahl']:
+        from aiden_heyerdahl import verify
+        alternate = independent(audio)
+        explorer = verify(audio,transcript,alternate)
     elif 'shehirlilishtiremediklerimizdensiniz' in expected:
         from aiden_turkish import verify
         alternate = independent(audio)
@@ -230,6 +235,8 @@ def assess(audio, text, transcript=None):
         result['film_surnames']=film_names
     if psychologist is not None:
         result['de_dreu_pronunciation']=psychologist
+    if explorer is not None:
+        result['heyerdahl_pronunciation']=explorer
     if turkish_word is not None:
         result['turkish_word']=turkish_word
     return result

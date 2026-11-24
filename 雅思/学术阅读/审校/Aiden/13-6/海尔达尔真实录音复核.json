@@ -1,0 +1,155 @@
+{
+  "lesson": "C11T2P2",
+  "sentence": 7,
+  "run_id": 45265727081,
+  "job_id": 138132558123,
+  "artifact_id": 14879656233,
+  "printed": "Thor Heyerdahl,",
+  "sources": {
+    "Merriam-Webster": [
+      "https://www.merriam-webster.com/dictionary/Heyerdahl",
+      "ˈhā-ər-ˌdäl",
+      "https://media.merriam-webster.com/audio/prons/en/us/mp3/bix/bixhey02.mp3",
+      "41cb97cee9d32af6a927f56dbc4cdda127df475287a23a9d6466326302da015a"
+    ],
+    "American Heritage 5th edition": [
+      "https://www.ahdictionary.com/word/search.html?q=Heyerdahl",
+      "hā′ər-däl′, hī′-",
+      "https://www.ahdictionary.com/application/resources/wavs/H0182600.wav",
+      "c9a5f31e4209999e5a09031feeb26f94bbc20ad8f492730a56d8946745e0f268"
+    ]
+  },
+  "rejected_previous_FLAC_sha256": "76cb07e35f965b4bf37dc59b901d0d3978f80b7463ec954923957ed01af83468",
+  "reusable_Aiden_FLAC_sha256": "5359721b70453a9941e7d2e4035fcb583dc3b6bfe2b25e21c6dd54897cf4d46f",
+  "tests": [
+    {
+      "test": "76cb07e35f.wav",
+      "accepted": false,
+      "result": "Thor Heyerdahl differs from the dictionary pronunciations: ['thor'], HH AY ER D AE L"
+    },
+    {
+      "test": "76cb07e35f.mp3",
+      "accepted": false,
+      "result": "Thor Heyerdahl differs from the dictionary pronunciations: ['thor'], HH AY ER D AE L"
+    },
+    {
+      "test": "76cb07e35f.m4a",
+      "accepted": false,
+      "result": "Thor Heyerdahl differs from the dictionary pronunciations: ['thor'], HH AY ER D AE L"
+    },
+    {
+      "test": "native 76cb07e35f965b4bf37dc59b901d0d3978f80b7463ec954923957ed01af83468",
+      "accepted": false,
+      "result": "Thor Heyerdahl differs from the dictionary pronunciations: ['thor'], HH AY ER D AE L"
+    },
+    {
+      "test": "bcb0b96a78.wav",
+      "accepted": true,
+      "result": {
+        "text": "Thor Heyerdahl,",
+        "heard": "Thor hired all",
+        "checked_internal_gaps": [],
+        "second_heard": "Thor hired all",
+        "heyerdahl_pronunciation": {
+          "first_name": "thor",
+          "phones": "HH AY ER D AA L",
+          "score": 0.326,
+          "start": 0.23,
+          "end": 0.9
+        }
+      }
+    },
+    {
+      "test": "bcb0b96a78.mp3",
+      "accepted": true,
+      "result": {
+        "text": "Thor Heyerdahl,",
+        "heard": "Thor hired all",
+        "checked_internal_gaps": [],
+        "second_heard": "Thor hired all",
+        "heyerdahl_pronunciation": {
+          "first_name": "thor",
+          "phones": "HH AY ER D AA L",
+          "score": 0.312,
+          "start": 0.23,
+          "end": 0.9
+        }
+      }
+    },
+    {
+      "test": "bcb0b96a78.m4a",
+      "accepted": true,
+      "result": {
+        "text": "Thor Heyerdahl,",
+        "heard": "Thor hired all",
+        "checked_internal_gaps": [],
+        "second_heard": "Thor hired all",
+        "heyerdahl_pronunciation": {
+          "first_name": "thor",
+          "phones": "HH AY ER D AA L",
+          "score": 0.321,
+          "start": 0.23,
+          "end": 0.9
+        }
+      }
+    },
+    {
+      "test": "native bcb0b96a78d3a0d38feb5869a29d46c6a6f73efcbba7079319be21d468f84357",
+      "accepted": true,
+      "result": {
+        "first_name": "thor",
+        "phones": "HH AY ER D AA L",
+        "score": 0.325,
+        "start": 0.23,
+        "end": 0.9
+      }
+    },
+    {
+      "test": "pause_inside_surname",
+      "accepted": false,
+      "result": "The complete name Thor Heyerdahl was not identified: 'Store hired all' / 'Thor hired a dog.'"
+    },
+    {
+      "test": "missing_last_syllable",
+      "accepted": false,
+      "result": "The complete name Thor Heyerdahl was not identified: 'Store hired.' / 'Thor hired'"
+    },
+    {
+      "test": "missing_Thor",
+      "accepted": false,
+      "result": "The complete name Thor Heyerdahl was not identified: 'Hired all.' / \"I'm tired\""
+    },
+    {
+      "test": "missing_Thor_and_final_syllable",
+      "accepted": false,
+      "result": "The complete name Thor Heyerdahl was not identified: 'Hired.' / 'Hired'"
+    },
+    {
+      "test": "dictionary surname alone mw.mp3",
+      "phones": "HH EY ER D AA L",
+      "seconds": [
+        0.01,
+        0.73
+      ]
+    },
+    {
+      "test": "Aiden lead-in plus dictionary, diagnostic only mw.mp3",
+      "status": "reference contains no matching two-word take",
+      "result": "The complete name Thor Heyerdahl was not identified: 'Thor Hayerdahl' / 'or hair doll'"
+    },
+    {
+      "test": "dictionary surname alone americanheritage.wav",
+      "phones": "EY ER D AA L",
+      "seconds": [
+        0.04,
+        0.69
+      ]
+    },
+    {
+      "test": "Aiden lead-in plus dictionary, diagnostic only americanheritage.wav",
+      "status": "reference contains no matching two-word take",
+      "result": "Thor Heyerdahl differs from the dictionary pronunciations: ['thor'], EY ER D AA L"
+    }
+  ],
+  "status": "This is evidence for one authentic intact phrase. The full recovered passage still requires mastering and final AAC checks."
+}
