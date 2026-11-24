@@ -23,6 +23,8 @@ def early_reading_forms(text,pid):
     text=re.sub(r'(\d[\d,.]*)\s*km/h\b',r'\1 kilometres per hour',text)
     text=re.sub(r'(\d)\s+ml\b',r'\1 millilitres',text)
     text=re.sub(r'\$\s+(?=\d)','$',text)
+    if pid=='C6T4P1':
+        text=text.replace('$1,000 honoraria', 'one thousand dollar honoraria')
     text=re.sub(r'\$US\s*([\d,]+(?:\.\d+)?)\s+(million|billion)\b',r'\1 \2 U.S. dollars',text)
     text=text.replace('ADD/ADHD','A D D or A D H D').replace('(= family)','(meaning family)')
     text=text.replace('el niño / la niña','El Niño and La Niña').replace('105/1000','105 per thousand')

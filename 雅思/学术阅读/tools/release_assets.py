@@ -5,14 +5,30 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import time
+
+
+def read_github(command):
+    for delay in (0, 2, 8):
+        if delay:
+            time.sleep(delay)
+        try:
+            return subprocess.check_output(command, text=True, stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError as exc:
+            reason = (exc.stderr or '').lower()
+            if delay == 8 or not any(s in reason for s in
+                    ('http 500', 'http 502', 'http 503', 'http 504', 'timed out', 'unexpected eof', 'connection reset')):
+                if exc.stderr:
+                    sys.stderr.write(exc.stderr)
+                raise
 
 
 @lru_cache(maxsize=12)
 def inventory(tag,repo=None):
     flags=['--repo',repo] if repo else []
-    endpoint=subprocess.check_output(['gh','release','view',tag,*flags,'--json','apiUrl','--jq','.apiUrl'],text=True).strip()
-    lines=subprocess.check_output(['gh','api','--paginate','--jq','.[] | @json',endpoint+'/assets?per_page=100'],text=True).splitlines()
+    endpoint=read_github(['gh','release','view',tag,*flags,'--json','apiUrl','--jq','.apiUrl']).strip()
+    lines=read_github(['gh','api','--paginate','--jq','.[] | @json',endpoint+'/assets?per_page=100']).splitlines()
     assets=[json.loads(line) for line in lines if line.strip()]
     return {asset['name']:asset for asset in assets if asset['state']=='uploaded'}
 

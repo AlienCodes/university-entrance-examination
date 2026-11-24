@@ -35,6 +35,14 @@ DOLLO = {
     'dollos':'D AA L OW Z', 'rounded':'D AO L OW Z', 'bare':'D AA L OW', 'bare-rounded':'D AO L OW',
     'doblo':'D AA B L OW Z', 'dole':'D OW L Z', 'dollars':'D AA L ER Z', 'dah-loss':'D AA L AO S',
     'dala':'D AA L AH Z', 'dallas':'D AE L AH S', 'dallow':'D AE L OW Z', 'doy':'D OY L OW Z',
+    'tolo':'T OW L OW Z', 'tonlo':'T AA N L OW Z', 'donlo':'D AA N L OW Z', 'talo':'T AA L OW Z',
+    'dullo':'D AH L OW Z', 'donlows':'D OW N L OW Z',
+}
+GHARIB = {
+    'full':'G AH R IY B', 'ae':'G AE R IY B', 'eh':'G EH R IY B', 'short-i':'G AH R IH B',
+    'lost-onset':'AH R IY B', 'unvoiced-g':'K AH R IY B', 'lost-b':'G AH R IY',
+    'unvoiced-b':'G AH R IY P', 'lost-first-syllable':'R IY B', 'cluster':'G R IY B',
+    'lost-ree':'G AH B', 'garban':'G AA R B AH N', 'grab':'G R AE B',
 }
 CONTEXT = {
     'pithecanthropus': (FOSSIL, {'erectus':'IH R EH K T AH S','is':'IH Z'}, '{term} [erectus] [is]',
@@ -44,6 +52,8 @@ CONTEXT = {
                   '[sparked] {term} [interest]', {'full','full-alt','schwa'}, .38),
     'dollos': (DOLLO, {'as':'AE Z','if':'IH F','law':'L AO'}, '[as | if] {term} [law]',
                {'dollos','rounded'}, .24),
+    'gharib': (GHARIB, {'and':'AE N D','shortand':'AH N','graff':'G R AE F','set':'S EH T'},
+               '{term} [and | shortand] [graff] [set]', {'full','ae','eh'}, .25),
 }
 
 
@@ -54,6 +64,8 @@ def target(tokens):
         return 'isabela'
     if tokens[-2:] == ['clemmonss','interest']:
         return 'clemmonss'
+    if tokens[:4] == ['gharib','and','graff','set']:
+        return 'gharib'
     if any(tokens[i:i+2] == ['dollos','law'] for i in range(len(tokens)-1)):
         return 'dollos'
     return None
@@ -95,6 +107,8 @@ def verify(audio, name, expected, first, second):
         windows = [(0,timed[2][1] + round(.14*RATE),True),(0,stop,False)]
     elif name == 'isabela':
         windows = [(max(0,start-round(.04*RATE)),stop,False),(start,stop+round(.05*RATE),False)]
+    elif name == 'gharib':
+        windows = [(0,timed[3][1]+round(.05*RATE),True),(0,stop+round(.01*RATE),False)]
     else:
         lead = max(0,timed[index-1][1]-round(.08*RATE)) if index else 0
         tail = timed[index+2][1] if index+2 < len(timed) else len(audio)

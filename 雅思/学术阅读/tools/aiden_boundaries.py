@@ -16,6 +16,7 @@ from textnorm import decade, normalize
 from aiden_profile import PAUSE_POLICY as POLICY
 from aiden_word_review import check_known_span, hear_differences, known_span, measured_words, same_words as matches
 RATE = 16000
+CHECKED_INFLECTIONS = ('the existent organisms', 'who was more than anyone else responsible')
 # The institute spells its initialism I-INCE. Require both I's in the spoken expansion.
 NOISE_INITIALS = re.compile(r'\b(?:I|eye)[\s.,-]+(?:I|eye)[\s.,-]+(?:N|en)[\s.,-]+'
                             r'(?:C|see|sea)[\s.,-]+(?:E|ee)\b', re.I)
@@ -414,6 +415,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         alternate = independent(audio)
         if any(words(read) != expected for read in (transcript, alternate)):
             raise ValueError(f'The fish name or tense differs in the Alaska passage: {transcript!r} / {alternate!r}')
+    elif text.casefold().startswith(CHECKED_INFLECTIONS):
+        alternate = independent(audio)
+        if not all(matches(expected, words(heard)) for heard in (transcript, alternate)):
+            raise ValueError(f'The printed inflection or its context differs: {transcript!r} / {alternate!r}')
     elif expected[:3] == ['deane', 'dived', 'down'] or expected[:4] == ['and', 'doctor', 'phil', 'rasch']:
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):

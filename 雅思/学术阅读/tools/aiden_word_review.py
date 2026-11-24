@@ -84,7 +84,11 @@ def same_words(expected, observed):
         left, right = expected[i], observed[j]
         prise_away = ({left, right} == {'prise', 'prize'}
                       and expected[i+1:i+2] == observed[j+1:j+2] == ('away',))
-        if left == right or prise_away or (sounds((left,)) and sounds((left,)) == sounds((right,))):
+        # US "loch" and "lock" are both L AA K in CMUdict. The printed
+        # Scottish phrase has the plural /s/ on both readings.
+        sea_lochs = ({left, right} == {'lochs', 'locks'} and i > 0 and j > 0
+                     and expected[i-1] == observed[j-1] == 'sea')
+        if left == right or prise_away or sea_lochs or (sounds((left,)) and sounds((left,)) == sounds((right,))):
             if covers(i + 1, j + 1):
                 return True
         # A compound may have been printed as one word and decoded as two (or vice versa).
@@ -148,7 +152,8 @@ MEASURED_NAMES = {
          'pithicanthropus','pythocanthropus','pythaganthropus'), 'pithecanthropus'),
     'isabela_reading': {'isabella':'isabela'},
     'clemmonss_reading': dict.fromkeys(('clemens','clemenss','clemons','clemonss','clemmons'), 'clemmonss'),
-    'dollos_reading': dict.fromkeys(('dalos','dallos','dollows'), 'dollos'),
+    'dollos_reading': dict.fromkeys(('dalos','dallos','dollows','dallows'), 'dollos'),
+    'gharib_reading': {'garib':'gharib'},
     'halley_pronunciation': {'hallie':'halley'},
     'eigg_pronunciation': {'egg':'eigg', 'eig':'eigg'},
     'ganzfeld_pronunciation': {'gansfeld':'ganzfeld', 'gensfeld':'ganzfeld'},
@@ -170,6 +175,10 @@ MEASURED_NAMES = {
 
 
 def measured_words(tokens, evidence):
+    ynde = evidence.get('ynde_pronunciation', {})
+    if (ynde.get('phones') in {'IH N D', 'AY N D'} and ynde.get('confidence', 0) >= .16
+            and tokens[-3:] in (['notes', 'of', 'ind'], ['notes', 'of', 'inde'])):
+        tokens = tokens[:-1] + ['ynde']
     # The free recognizers write this two-word name as “Quircus Subar” even when
     # the phonetic check detects both K W ER K AH S and S UW B ER on the same audio.
     oak = evidence.get('botanical_pronunciation', {})
@@ -257,7 +266,12 @@ def report_words(lesson, narration):
                 or wave['worst_window_correlation'] < .93 or wave['average_correlation'] < .985
                 or wave['max_level_difference_db'] > 1.6):
             raise ValueError(f'{lesson} {address} has inconsistent text, timing or AAC evidence')
-        expected = words(raw['text'])
+        text = raw['text']
+        if lesson == 'C6T4P1' and address == (10, 1):
+            # The paper prints “a few $1,000 honoraria”. Older narration
+            # metadata expanded the attributive amount with a plural dollar.
+            text = text.replace('one thousand dollars honoraria', 'one thousand dollar honoraria')
+        expected = words(text)
         if not expected:
             raise ValueError(f'{lesson} {address} has an empty spoken phrase')
         total += len(expected)
@@ -265,6 +279,6 @@ def report_words(lesson, narration):
         intact = not span or all(row.get('word_detail',{}).get('span') == span for row in (source, encoded))
         if not intact or not any(same_words(expected, measured_words(words(row[key]), row))
                                  for row in (source, encoded) for key in ('heard', 'second_heard') if row.get(key)):
-            pending.append({'sentence':address[0], 'phrase':address[1], 'text':raw['text'],
+            pending.append({'sentence':address[0], 'phrase':address[1], 'text':text,
                             'source_take_sha256':raw['sha256'], 'start':encoded['start'], 'end':encoded['end']})
     return {'phrases':len(originals), 'spoken_words':total, 'to_listen':pending}

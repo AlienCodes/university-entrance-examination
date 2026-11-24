@@ -13,7 +13,7 @@ import soundfile as sf
 import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
-from aiden_boundaries import POLICY, assess, words, reference, salmon_phrase
+from aiden_boundaries import CHECKED_INFLECTIONS, POLICY, assess, words, reference, salmon_phrase
 from aiden_word_review import POLICY as WORD_POLICY
 from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed, reviewed_master_failures
 import aiden_cork_oak
@@ -119,6 +119,13 @@ class Aiden:
             instruction += ' Pronounce the Belgian scientist’s name and possessive as /ˈdɑloʊz/, then say law.'
         if re.search(r"\bClemmons['’]s interest\b",script,re.I):
             instruction += ' Say the possessive Clemmons’s /ˈklɛmənzɪz/ completely before interest.'
+        if script.casefold().startswith('gharib and graff set'):
+            instruction += (' Say Gharib in two syllables, guh-REEB, with a voiced final b linked to and. '
+                            'Graff rhymes with staff. Read the measurement as four point five meter.')
+        if script.casefold().startswith('the existent organisms'):
+            instruction += ' Pronounce existent as /ɪɡˈzɪstənt/, with a clear final nt linked to organisms.'
+        if script.casefold().startswith('who was more than anyone else responsible'):
+            instruction += ' Read the past tense was with an audible w in “who was more”, in a continuous phrase.'
         if re.search(r'\bPerkin (?:saw|set|spent)\b',script,re.I):
             instruction += ' William Perkin is singular. Finish the name on n, then begin the verb with its own s.'
         if re.search(r"\bPerkin['’]s\b",script,re.I):
@@ -264,6 +271,7 @@ class Aiden:
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
                       and aiden_printed_names.target(words(script)) is None
+                      and not script.casefold().startswith(CHECKED_INFLECTIONS)
                       and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
                       and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl','clemmons','willeke'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
