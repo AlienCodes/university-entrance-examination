@@ -43,6 +43,10 @@ def spoken_spelling(text):
     # These British and American forms have the same spoken word. Preserve
     # grammatical endings, including plural -s, and keep all printed text intact.
     text = spoken_centuries(text)
+    # The printed Japanese building name and the experiment's compound are
+    # sometimes hyphenated by the recognizer. Keep every syllable and word ending.
+    text = re.sub(r'\bkasumi[ -]?ga[ -]?seki\b', 'Kasumigaseki', text, flags=re.I)
+    text = re.sub(r'\bauto[ -]ganzfeld\b', 'autoganzfeld', text, flags=re.I)
     # Productive -ize stems actually printed in these papers. Exclude exercise,
     # advise, promise and the other verbs for which this spelling change is invalid.
     spelling = (r'\b(categor|central|character|civil|colon|computer|container|critic|custom|dramat|emphas|'

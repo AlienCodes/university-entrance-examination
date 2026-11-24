@@ -177,9 +177,11 @@ class Aiden:
             instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
         if re.search(r'\b(?:Mac|Mc)farlane\b',script,re.I):
             instruction += ' In Macfarlane, end the surname with an n, as in a short unstressed “lun”. Do not add a d. Sound the z only for a written possessive.'
-        if re.search(r'\bganzfeld\b',script,re.I):
+        if re.search(r'\b(?:auto[ -]?)?ganzfeld\b',script,re.I):
             from aiden_ganzfeld import HINT
             instruction += ' ' + HINT
+            if re.search(r'\bauto[ -]?ganzfeld\b', script, re.I):
+                instruction += ' Say auto as in automobile and link it to ganzfeld. Complete feld before tests or trials.'
         if re.search(r'\bSh(?:eng|ung)[- ]?(?:gen|gun) Fan\b',script,re.I):
             instruction += ' Shenggen has two syllables. End the first with ng in sing, begin the second with a hard g and end it with n. Then say Fan.'
         if re.search(r'\bJanzen\b',script,re.I):
@@ -301,6 +303,8 @@ class Aiden:
             spellings=LLEWYN_READINGS
         elif 'willeke' in words(script):
             spellings=('Willeke Wendrich', 'Villeka Vendrik', 'VIL-uh-kuh VEN-drick', 'Villika Vendrick', 'Villeke Vendrik')
+        elif 'autoganzfeld' in words(script):
+            spellings=('autoganzfeld', 'auto-ganzfeld', 'auto ganzfeld', 'auto-GANZfeld', 'autoganzfeld')
         elif 'sevres' in words(script):
             spellings=('Ecole Normale Superieure for girls in Sevres',
                        'École Normale Supérieure for girls in Sèvres',
