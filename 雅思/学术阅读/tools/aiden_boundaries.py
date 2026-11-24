@@ -210,6 +210,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     soil_scientist = None
     physicist = None
     geographical = None
+    migration_names = None
     ant_tools = None
     falkirk = None
     explorer = None
@@ -302,6 +303,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_place_names import verify_na_dene
         alternate = independent(audio)
         geographical = verify_na_dene(audio,transcript,alternate)
+    elif 'aleut' in expected:
+        from aiden_place_names import verify_migration_names, pause_after_migration_names
+        alternate = independent(audio)
+        migration_names = verify_migration_names(audio,expected,transcript,alternate)
     elif has_diels(expected):
         alternate = independent(audio)
         physicist = verify_diels(audio,expected,transcript,alternate)
@@ -387,6 +392,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if migration_names and pause_after_migration_names(expected,left_words,right_words,start,migration_names):
+                return True
             if chemists and gap_after_attention(start,expected,left_words,right_words,chemists):
                 return True
             if india and end/RATE < india['start']:
@@ -462,6 +469,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['floris_pronunciation'] = soil_scientist
     if geographical is not None:
         result['geographic_name'] = geographical
+    if migration_names is not None:
+        result['migration_names'] = migration_names
     if physicist is not None:
         result['diels_pronunciation'] = physicist
     if ant_tools is not None:

@@ -225,7 +225,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
-                      and 'llewyn' not in words(script) and words(script) != ['cod','sole','perch','and','pollock']
+                      and not {'llewyn','aleut'}.intersection(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes'] and words(script)[-2:] != ['norm','referenced']
                       and not cited_phrase(words(script))
                       and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
@@ -311,6 +311,8 @@ class Aiden:
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.
                 spoken=re.sub(re.escape(spellings[0]),spellings[attempt],script,flags=re.I)
+                if spellings[0] in ('Na-Dene','Na-Denes'):
+                    spoken=re.sub(r'\bAleut\b', PLACE_READINGS['Aleut'][0][attempt], spoken, flags=re.I)
             elif attempt in (1,3) and re.search(r'\bHalley\b',script,re.I):
                 # CMUdict transcribes Halley and Hally identically. Verify the result against the paper.
                 spoken=re.sub(r'\bHalley\b','Hally',script,flags=re.I)

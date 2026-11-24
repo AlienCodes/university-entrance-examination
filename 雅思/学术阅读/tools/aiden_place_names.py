@@ -1,5 +1,6 @@
 """Pronunciation targets for names in the geography, education and language passages."""
 from functools import lru_cache
+import re
 
 from aiden_boundaries import RATE, interior_gaps, words
 from aiden_ceylonese import timed_words
@@ -20,7 +21,13 @@ READINGS = {
     'Na-Dene': (
         ('Na-Dene','Nah-day-nee','Na-Dené','nah-DAY-nee','nah-day-NAY'),
         'Na-Dene is the language-family name. Read the three connected syllables nah-DAY-nee, '
-        'with DAY in the middle and the final vowel audible before hunters.'),
+        'with DAY in the middle and an audible final vowel.'),
+    'Na-Denes': (
+        ('Na-Denes','nah-DAY-neez','Nah-day-nees','nah-day-NAYZ','nah-DAY-neez'),
+        'Read the printed plural in three connected syllables, nah-DAY-neez. Finish on a voiced z.'),
+    'Aleut': (
+        ('Aleut','uh-LOOT','uh-loot','Aleut','uh-LOOT'),
+        'The name Aleut is uh-LOOT, two linked syllables. Finish on t.'),
 }
 
 JAPANESE = {
@@ -49,6 +56,71 @@ NA_DENE = {
     'no-final-vowel':'N AA D EY N', 'not-n':'N AA D EY', 'weak':'N AH D AH N', 'no-first':'D EY N IY',
     'denay':'D EY N EY', 'n-dee':'N D IY', 'none':'N AH',
 }
+
+NA_NUMBERS = {**NA_DENE, **{k+'-plural':v+' Z' for k,v in NA_DENE.items()},
+              **{k+'-s':v+' S' for k,v in NA_DENE.items()}}
+ALEUT = {
+    'uh-loot':'AH L UW T','al-ee-oot':'AE L IY UW T','al-yoot':'AE L Y UW T',
+    'ee-loot':'IH L UW T','ay-loot':'EY L UW T','ah-loot':'AA L UW T','yah':'Y AH L UW T',
+    'uh-lut':'AH L AH T','loot':'L UW T','uh-loo':'AH L UW','ee-lude':'IH L UW D',
+    'uh-lude':'AH L UW D','allot':'AH L AA T','ay-luh':'EY L AH','ell':'EH L',
+    'uh-li-ot':'AH L IY AA T','elit':'AH L IY T',
+}
+
+
+@lru_cache(maxsize=2)
+def migration_decoder(name):
+    if name == 'na':
+        return grammar_decoder(NA_NUMBERS, {'of':'AH V','for':'F AO R','and':'AE N D'}, '[of | for] {term} and')
+    return grammar_decoder(ALEUT, {'eskimo':'EH S K AH M OW','and':'AE N D'}, '[eskimo] [and] {term}')
+
+
+@lru_cache(maxsize=12)
+def migration_context(expected):
+    # Keep every printed word around the names. Different tokenizations of the
+    # names are resolved by their own competing acoustic readings below.
+    pattern = re.escape(' '.join(expected)).replace(r'\ ', ' ')
+    for printed in ('na denes','na dene','aleut'):
+        if printed in pattern:
+            pattern = pattern.replace(printed, r'(?:[\w\x27]+ ){0,2}[\w\x27]+', 1)
+    return re.compile(pattern)
+
+
+def verify_migration_names(audio, expected, first, second):
+    timed = timed_words(audio)
+    observed = [word for word,_ in timed]
+    context = migration_context(tuple(expected))
+    if not all(context.fullmatch(' '.join(tokenized)) for tokenized in (observed, words(first), words(second))):
+        raise ValueError('The words surrounding the migration names differ from the paper')
+    evidence = {}
+    def inspect(name, forms, allowed, lo, hi):
+        key, score, onset, offset = locate_sound(audio[lo:hi], migration_decoder(name), forms)
+        onset, offset = lo+onset, lo+offset
+        if (key not in allowed or score < .25 or offset-onset < .24*RATE
+                or any(onset < (a+b)/2 < offset for a,b in interior_gaps(audio))):
+            raise ValueError(f'Incomplete migration name {name}: {forms[key]}')
+        evidence[name] = dict(phones=forms[key], confidence=round(score,3),
+                              start=round(onset/RATE,3), end=round(offset/RATE,3))
+    if 'na' in expected:
+        name = expected.index('na')
+        prep = expected[name-1]
+        where = max(i for i,w in enumerate(observed) if w == prep)
+        eskimo = observed.index('eskimo',where+1)
+        number = '-plural' if expected[name+1] == 'denes' else ''
+        inspect('na', NA_NUMBERS, {'na-day-nee'+number,'na-day-nay'+number},
+                max(0,timed[where][1]-950), min(len(audio),timed[eskimo][1]+550))
+    anchor = observed.index('eskimo') if 'eskimo' in expected else observed.index('and')
+    following = expected[expected.index('aleut')+1:]
+    hi = timed[observed.index(following[0],anchor+1)][1]+300 if following else len(audio)
+    inspect('aleut', ALEUT, {'uh-loot','al-ee-oot','al-yoot'},
+            max(0,timed[anchor][1]-300), min(hi,len(audio)))
+    return evidence
+
+
+def pause_after_migration_names(expected, left, right, start, evidence):
+    split = expected.index('aleut')+1
+    return (start/RATE >= evidence['aleut']['end']-.01 and right == expected[split:]
+            and migration_context(tuple(expected[:split])).fullmatch(' '.join(left)) is not None)
 
 
 @lru_cache(maxsize=5)
