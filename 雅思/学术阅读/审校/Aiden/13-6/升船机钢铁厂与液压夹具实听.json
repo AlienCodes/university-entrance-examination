@@ -1,0 +1,221 @@
+{
+  "lesson": "C11T1P2",
+  "run": 45265727081,
+  "job": 138132558419,
+  "artifact": 14880130129,
+  "printed": [
+    "at Butterley Engineering's Steelworks in Derbyshire,",
+    "A hydraulic clamp,"
+  ],
+  "actual_flac": {
+    "8fc0bc19cadb1e6d2765ed35d0d9ba98b10cec8a08e3f50836c9b6bfe78a572f.flac": "8598488750fa4acb64309aa99f9fe5d402cd4e07af7608f5ce087354e95669d0",
+    "51785f9b1a15b012cd7dd994ee69ba2f269005ad480f019f6f87d444af01f5ea.flac": "51785f9b1a15b012cd7dd994ee69ba2f269005ad480f019f6f87d444af01f5ea",
+    "0bde72ca4bad98afd3fd0373c21b122c7d0da4e9e0b987539cb36994d0079709.flac": "0bde72ca4bad98afd3fd0373c21b122c7d0da4e9e0b987539cb36994d0079709",
+    "39ba912c45b6394e287418553f5c026676ccd0ec1b0feb87bc94ec69a9aadde2.flac": "6626e7bd9943cb0638e2d0ef73399d6bd31d8462aded2efb83dea6ad4a33bef1",
+    "97ceeb812164dc5e1f5d126ffe30cf496e32494f70529644f129b0cdd5a71a47.flac": "97ceeb812164dc5e1f5d126ffe30cf496e32494f70529644f129b0cdd5a71a47"
+  },
+  "dictionary_controls": {
+    "clamp": {
+      "page": "https://www.merriam-webster.com/dictionary/clamp",
+      "sha256": "a5e1a0428381d3c879632398f0dbb289a43dd9d156a1ab167cb9bb4667855f8f"
+    },
+    "clam": {
+      "page": "https://www.merriam-webster.com/dictionary/clam",
+      "sha256": "64adc4a4c39d67fc8c2fd29e26f7a69f3c685315a588c707ca6c58868b67f671"
+    }
+  },
+  "scope": "The dictionary clips are controls only. Reuse Aiden only after verification on the reclaimed recording and eventual full master. Reread the mechanical term as a complete phrase if needed.",
+  "tests": [
+    {
+      "case": "0bde72ca4bad98afd3fd0373c21b122c7d0da4e9e0b987539cb36994d0079709.flac",
+      "accepted": false,
+      "result": "The possessive ending in Engineering’s or its context is unclear: IY R IH NG"
+    },
+    {
+      "case": "0bde72ca4bad98afd3fd0373c21b122c7d0da4e9e0b987539cb36994d0079709.mp3",
+      "accepted": false,
+      "result": "The possessive ending in Engineering’s or its context is unclear: IY R IH NG"
+    },
+    {
+      "case": "0bde72ca4bad98afd3fd0373c21b122c7d0da4e9e0b987539cb36994d0079709.m4a",
+      "accepted": false,
+      "result": "The possessive ending in Engineering’s or its context is unclear: IY R IH NG"
+    },
+    {
+      "case": "97ceeb812164dc5e1f5d126ffe30cf496e32494f70529644f129b0cdd5a71a47.flac",
+      "accepted": true,
+      "result": {
+        "text": "at Butterley Engineering's Steelworks in Derbyshire,",
+        "heard": "at Butterley Engineering Steel Works in Derbyshire.",
+        "checked_internal_gaps": [],
+        "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
+        "engineering_possessive": {
+          "ending_phones": "IY R IH NG Z",
+          "score": 0.731,
+          "start": 0.95,
+          "end": 1.31
+        }
+      }
+    },
+    {
+      "case": "97ceeb812164dc5e1f5d126ffe30cf496e32494f70529644f129b0cdd5a71a47.mp3",
+      "accepted": true,
+      "result": {
+        "text": "at Butterley Engineering's Steelworks in Derbyshire,",
+        "heard": "at Butterley Engineering Steel Works in Derbyshire.",
+        "checked_internal_gaps": [],
+        "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
+        "engineering_possessive": {
+          "ending_phones": "IY R IH NG Z",
+          "score": 0.72,
+          "start": 0.95,
+          "end": 1.31
+        }
+      }
+    },
+    {
+      "case": "97ceeb812164dc5e1f5d126ffe30cf496e32494f70529644f129b0cdd5a71a47.m4a",
+      "accepted": true,
+      "result": {
+        "text": "at Butterley Engineering's Steelworks in Derbyshire,",
+        "heard": "at Butterley Engineering Steel Works in Derbyshire.",
+        "checked_internal_gaps": [],
+        "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
+        "engineering_possessive": {
+          "ending_phones": "IY R IH NG Z",
+          "score": 0.725,
+          "start": 0.95,
+          "end": 1.31
+        }
+      }
+    },
+    {
+      "case": "8fc0bc19cadb1e6d2765ed35d0d9ba98b10cec8a08e3f50836c9b6bfe78a572f.flac",
+      "accepted": true,
+      "result": {
+        "text": "at Butterley Engineering's Steelworks in Derbyshire,",
+        "heard": "at Butterleigh Engineering Steelworks in Derbyshire,",
+        "checked_internal_gaps": [],
+        "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
+        "engineering_possessive": {
+          "ending_phones": "IY R IH NG Z",
+          "score": 0.48,
+          "start": 0.91,
+          "end": 1.22
+        }
+      }
+    },
+    {
+      "case": "8fc0bc19cadb1e6d2765ed35d0d9ba98b10cec8a08e3f50836c9b6bfe78a572f.mp3",
+      "accepted": true,
+      "result": {
+        "text": "at Butterley Engineering's Steelworks in Derbyshire,",
+        "heard": "at Butterleigh Engineering Steelworks in Derbyshire,",
+        "checked_internal_gaps": [],
+        "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
+        "engineering_possessive": {
+          "ending_phones": "IY R IH NG Z",
+          "score": 0.48,
+          "start": 0.91,
+          "end": 1.22
+        }
+      }
+    },
+    {
+      "case": "8fc0bc19cadb1e6d2765ed35d0d9ba98b10cec8a08e3f50836c9b6bfe78a572f.m4a",
+      "accepted": true,
+      "result": {
+        "text": "at Butterley Engineering's Steelworks in Derbyshire,",
+        "heard": "at Butterleigh Engineering Steelworks in Derbyshire,",
+        "checked_internal_gaps": [],
+        "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
+        "engineering_possessive": {
+          "ending_phones": "IY R IH NG Z",
+          "score": 0.464,
+          "start": 0.91,
+          "end": 1.22
+        }
+      }
+    },
+    {
+      "case": "39ba912c45b6394e287418553f5c026676ccd0ec1b0feb87bc94ec69a9aadde2.flac",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam.' / 'a hydraulic clamp'"
+    },
+    {
+      "case": "39ba912c45b6394e287418553f5c026676ccd0ec1b0feb87bc94ec69a9aadde2.mp3",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam.' / 'a hydraulic clamp'"
+    },
+    {
+      "case": "39ba912c45b6394e287418553f5c026676ccd0ec1b0feb87bc94ec69a9aadde2.m4a",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam.' / 'a hydraulic clamp'"
+    },
+    {
+      "case": "51785f9b1a15b012cd7dd994ee69ba2f269005ad480f019f6f87d444af01f5ea.flac",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam' / 'a hydraulic clamp,'"
+    },
+    {
+      "case": "51785f9b1a15b012cd7dd994ee69ba2f269005ad480f019f6f87d444af01f5ea.mp3",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam' / 'a hydraulic clamp'"
+    },
+    {
+      "case": "51785f9b1a15b012cd7dd994ee69ba2f269005ad480f019f6f87d444af01f5ea.m4a",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam' / 'a hydraulic clamp'"
+    },
+    {
+      "case": "full-clamp.wav",
+      "accepted": true,
+      "result": {
+        "text": "A hydraulic clamp,",
+        "heard": "A hydraulic clamp.",
+        "checked_internal_gaps": [],
+        "second_heard": "a hydraulic clamp"
+      }
+    },
+    {
+      "case": "full-clamp.mp3",
+      "accepted": true,
+      "result": {
+        "text": "A hydraulic clamp,",
+        "heard": "A hydraulic clamp.",
+        "checked_internal_gaps": [],
+        "second_heard": "A hydraulic clamp."
+      }
+    },
+    {
+      "case": "full-clamp.m4a",
+      "accepted": true,
+      "result": {
+        "text": "A hydraulic clamp,",
+        "heard": "A hydraulic clamp.",
+        "checked_internal_gaps": [],
+        "second_heard": "a hydraulic clamp"
+      }
+    },
+    {
+      "case": "full-clam.wav",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam.' / 'a hydraulic clam'"
+    },
+    {
+      "case": "full-clam.mp3",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam.' / 'a hydraulic clam'"
+    },
+    {
+      "case": "full-clam.m4a",
+      "accepted": false,
+      "result": "The final p in hydraulic clamp is unclear: 'A hydraulic clam.' / 'a hydraulic clam'"
+    },
+    {
+      "case": "280ms interrupted Engineering’s",
+      "accepted": false,
+      "result": "The possessive ending in Engineering’s or its context is unclear: IY R IH NG"
+    }
+  ]
+}

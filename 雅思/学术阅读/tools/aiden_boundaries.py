@@ -159,6 +159,7 @@ def assess(audio, text, transcript=None):
     inuit_evidence = None
     film_names = None
     psychologist = None
+    falkirk = None
     explorer = None
     turkish_word = None
     if 'ceylonese' in expected:
@@ -182,6 +183,14 @@ def assess(audio, text, transcript=None):
         from aiden_de_dreu import verify
         alternate = independent(audio)
         psychologist = verify(audio,text,transcript,alternate)
+    elif expected == ['at','butterley','engineerings','steelworks','in','derbyshire']:
+        from aiden_falkirk import verify
+        alternate = independent(audio)
+        falkirk = verify(audio,transcript,alternate)
+    elif expected == ['a','hydraulic','clamp']:
+        alternate = independent(audio)
+        if any(words(heard) != expected for heard in (transcript, alternate)):
+            raise ValueError(f'The final p in hydraulic clamp is unclear: {transcript!r} / {alternate!r}')
     elif expected == ['thor', 'heyerdahl']:
         from aiden_heyerdahl import verify
         alternate = independent(audio)
@@ -235,6 +244,8 @@ def assess(audio, text, transcript=None):
         result['film_surnames']=film_names
     if psychologist is not None:
         result['de_dreu_pronunciation']=psychologist
+    if falkirk is not None:
+        result['engineering_possessive']=falkirk
     if explorer is not None:
         result['heyerdahl_pronunciation']=explorer
     if turkish_word is not None:
