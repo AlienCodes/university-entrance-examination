@@ -30,6 +30,16 @@ import make_audio as cet
 import 听对
 
 
+LLEWYN_READINGS = ('llewyn', 'hlehwin', 'hLEH-win', 'thleh-win', 'hléwin', 'hleh-win')
+
+
+def save_raw_take(path, samples):
+    """Preserve an original 24 kHz take as lossless PCM for listening or rechecking."""
+    if path.suffix != '.flac':
+        raise ValueError('Raw Aiden takes must be stored as FLAC')
+    sf.write(path, samples, 24000, subtype='PCM_24')
+
+
 class UnverifiedTake(ValueError):
     def __init__(self, key, position, reason):
         self.key = key
@@ -136,8 +146,10 @@ class Aiden:
             instruction += ' The first verb is in the past. Finish approached with /tʃt/ before the following word.'
         if 'Villamil' in script or 'vee-yah-MEEL' in script:
             instruction += ' Puerto Villamil ends in a stressed meel with a final l. Link the following words “on Isabela” without adding a vowel to the town name.'
-        if 'llewyn' in script.casefold():
-            instruction += ' For the Welsh word llewyn, begin with Welsh ll /ɬ/, with voiceless air flowing past the sides of the tongue into the vowel.'
+        if any(name.casefold() in script.casefold() for name in LLEWYN_READINGS):
+            instruction += ' For the Welsh word llewyn, start with the voiceless lateral fricative /ɬ/. ' \
+                           'Keep the tongue in the l position and blow air around its sides into EH-win. ' \
+                           'Read the two syllables as one word in the American English sentence.'
         if words(script)[:2]==['forested','hills']:
             instruction += ' In forested hills, start with a clear f followed by the stressed first syllable of forest. Sound the complete three-syllable adjective before hills.'
         if words(script)[-1:]==['bottlenecks']:
@@ -213,6 +225,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
+                      and 'llewyn' not in words(script) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes'] and words(script)[-2:] != ['norm','referenced']
                       and not cited_phrase(words(script))
                       and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
@@ -258,6 +271,8 @@ class Aiden:
             spellings=('The team theorizes','The TEAM theorizes','THE TEAM theorizes','The team theorizes','The TEAM theorizes')
         elif 'norm-referenced' in script.casefold():
             spellings=('norm-referenced','norm referenced','norm REH-fuh-renst','norm-referenced','norm REH-frenst')
+        elif 'llewyn' in words(script):
+            spellings=LLEWYN_READINGS
         elif 'pithecanthropus' in words(script):
             spellings=('Pithecanthropus erectus','Pith-ih-KAN-thruh-puhs ih-REK-tuhs',
                        'Pithecanthropus erectus','Pith-uh-KAN-thruh-pus ih-REK-tus','Pithecanthropus erectus')
@@ -315,7 +330,7 @@ class Aiden:
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
-            sf.write(file,wav,24000,subtype='PCM_24')
+            save_raw_take(file, wav)
             data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,
                       sha256=hashlib.sha256(file.read_bytes()).hexdigest(),policy=POLICY)
             report.write_text(json.dumps(data,ensure_ascii=False))
@@ -326,7 +341,7 @@ class Aiden:
         for target, take in zip(diagnostic_reports(report), reversed(attempts)):
             wave, rendered, take_seed, heard, reason = take
             candidate = target.with_suffix('.flac')
-            sf.write(candidate, wave, 24000, subtype='PCM_24')
+            save_raw_take(candidate, wave)
             evidence = dict(accepted=False, key=key, printed=script, rendered=rendered,
                             seed=take_seed, transcript=heard, issue=reason,
                             sha256=hashlib.sha256(candidate.read_bytes()).hexdigest())

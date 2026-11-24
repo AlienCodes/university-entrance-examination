@@ -1,5 +1,6 @@
 """Measure the production voice and recognizer separately on a specified printed sentence."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -13,7 +14,7 @@ from aiden_profile import IDENTITY
 from lesson import save
 
 
-def measure(number, output, engine=None, reader=None, sentences=None):
+def measure(number, output, engine=None, reader=None, sentences=None, *, keep_rendered=False):
     if sentences is None:
         sentences = [row['en'] for paragraph in load()['paras'] for row in paragraph]
     original = sentences[number - 1]
@@ -36,6 +37,13 @@ def measure(number, output, engine=None, reader=None, sentences=None):
         wav = generate(text, seed, pron)
         row = dict(phase='generate', seed=seed, seconds=round(time.monotonic()-now, 3),
                    audio_seconds=round(len(wav)/24000, 3), text=text)
+        if keep_rendered:
+            folder = output.parent / 'rendered'
+            folder.mkdir(exist_ok=True)
+            path = folder / f'{PID}-{number}-{len(result["calls"])}-{seed}.flac'
+            aiden_audio.save_raw_take(path, wav)
+            row['recording'] = path.relative_to(output.parent).as_posix()
+            row['sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
         result['calls'].append(row)
         save(output, result)
         print(row, flush=True)
@@ -69,5 +77,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('sentence', type=int)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--keep-rendered', action='store_true')
     args = parser.parse_args()
-    measure(args.sentence, args.output)
+    measure(args.sentence, args.output, keep_rendered=args.keep_rendered)

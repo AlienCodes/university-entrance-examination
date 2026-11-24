@@ -70,6 +70,45 @@ def verify_ancient_craftsmen(audio, first, second):
                 start=round((offset+begin)/RATE,3),end=round((offset+end)/RATE,3))
 
 
+_FISH_FORMS = {
+    'cod':'K AA D', 'cot':'K AA T', 'cawed':'K AO D', 'cad':'K AE D', 'con':'K AA N',
+    'todd':'T AA D', 'tad':'T AE D', 'god':'G AA D', 'got':'G AA T', 'goad':'G OW D',
+    'awed':'AO D', 'odd':'AA D', 'caught':'K AO T', 'cut-short':'K AA',
+    'dot':'D AA T', 'cud':'K AH D',
+}
+
+
+@lru_cache(maxsize=1)
+def fish_decoder():
+    return grammar_decoder(_FISH_FORMS, {'sole':'S OW L','soul':'S OW UH L'}, '{term} [sole | soul]')
+
+
+def verify_groundfish_list(audio, first, second):
+    from aiden_boundaries import independent, interior_gaps, words
+    from aiden_ceylonese import timed_words
+    def complete(h):
+        return bool(h and h[0] in {'cod','todd','god'} and
+                    ''.join(h[1:]).replace('soul','sole') == 'soleperchandpollock')
+    heard = [words(first), words(second)]
+    if complete(heard[0]) and not complete(heard[1]):
+        # A short AAC excerpt occasionally produces a repeated phrase when
+        # decoded in isolation. Keep the whole signal and 40 ms of quiet at each end.
+        second = independent(np.pad(audio,(640,640)))
+        heard[1] = words(second)
+    if not all(complete(h) for h in heard):
+        raise ValueError(f'The four printed fish names differ: {first!r} / {second!r}')
+    if not any(tokens[:1] == ['cod'] for tokens in heard):
+        raise ValueError('Neither full phrase identifies the first fish as cod')
+    timing = timed_words(audio)
+    end = next((s for word,s in timing if word == 'perch'), len(audio))
+    key, score, begin, stop = locate_sound(audio[:min(end,round(.85*RATE))], fish_decoder(), _FISH_FORMS)
+    if (key != 'cod' or score < .3 or not .18*RATE <= stop-begin <= .8*RATE or
+            any(begin < (a+b)/2 < stop for a,b in interior_gaps(audio))):
+        raise ValueError('The first fish name is incomplete or has another initial: '+_FISH_FORMS[key])
+    return dict(phones=_FISH_FORMS[key], confidence=round(score,3), start=begin/RATE, end=stop/RATE,
+                second_identification=second)
+
+
 _OR_FORMS = {'or': 'AO R', 'weak-or': 'ER', 'or-ah': 'AH R', 'for': 'F AO R',
              'weak-for': 'F ER', 'fa': 'F AH', 'off': 'AO F', 'uh': 'AH', 'of': 'AH V'}
 

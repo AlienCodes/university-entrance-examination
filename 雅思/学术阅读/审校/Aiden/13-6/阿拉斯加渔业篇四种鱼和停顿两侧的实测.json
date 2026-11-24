@@ -1,0 +1,154 @@
+{
+ "lesson": "C7T4P2",
+ "sentence": 7,
+ "source_artifact": 14895142968,
+ "artifact_sha256": "f0dc24795d3d4204ed20f1a71c8bc13657298bfbacf505a2898038409b07e1a3",
+ "left_original_sha256": "95d83895e94a361fb3114db920d4c2580b267f8d5cf86310edb3eb8313032e28",
+ "right_original_sha256": "4f7f9cf8b8337796653ad265b4fe046bacf7613a791904b3a964b7441218969d",
+ "references": {
+  "cod": {
+   "url": "https://dictionary.cambridge.org/pronunciation/english/cod",
+   "sha256": "1c803741fc84a55c7e3aebd0fb92b59614d91aa9fecd3f0823088bf8e9246324",
+   "phones": "K AA D",
+   "score": 0.532
+  },
+  "todd": {
+   "url": "https://dictionary.cambridge.org/pronunciation/english/todd",
+   "sha256": "76b6c724db0b557915313b6b989c7dc42eedc227dc777bdc16328b30b2170845",
+   "phones": "T AA D",
+   "score": 0.811
+  },
+  "god": {
+   "url": "https://dictionary.cambridge.org/pronunciation/english/god",
+   "sha256": "54739a7eeec9d0cc166d7ad3e648522da989ae1f37b9da41fb91209782c1046e",
+   "phones": "G AA D",
+   "score": 1.0
+  }
+ },
+ "checks": [
+  {
+   "sample": "original",
+   "codec": "flac",
+   "left": {
+    "text": "and well over a million tonnes of groundfish,",
+    "heard": "and well over a million tons of ground fish.",
+    "checked_internal_gaps": [],
+    "second_heard": "and well over a million tons of ground fish."
+   },
+   "right": {
+    "text": "cod, sole, perch and pollock,",
+    "heard": "Cod, Soul, Perch, and Pollock,",
+    "checked_internal_gaps": [],
+    "second_heard": "God, soul, perch, and Pollock.",
+    "groundfish_list": {
+     "phones": "K AA D",
+     "confidence": 0.909,
+     "start": 0.04,
+     "end": 0.45,
+     "second_identification": "God, soul, perch, and Pollock."
+    }
+   }
+  },
+  {
+   "sample": "original",
+   "codec": "mp3",
+   "left": {
+    "text": "and well over a million tonnes of groundfish,",
+    "heard": "and well over a million tons of ground fish.",
+    "checked_internal_gaps": [],
+    "second_heard": "and well over a million tons of ground fish."
+   },
+   "right": {
+    "text": "cod, sole, perch and pollock,",
+    "heard": "Cod, Soul, Perch, and Pollock,",
+    "checked_internal_gaps": [],
+    "second_heard": "God, soul, perch, and Pollock.",
+    "groundfish_list": {
+     "phones": "K AA D",
+     "confidence": 0.918,
+     "start": 0.03,
+     "end": 0.45,
+     "second_identification": "God, soul, perch, and Pollock."
+    }
+   }
+  },
+  {
+   "sample": "original",
+   "codec": "m4a",
+   "left": {
+    "text": "and well over a million tonnes of groundfish,",
+    "heard": "and well over a million tons of ground fish.",
+    "checked_internal_gaps": [],
+    "second_heard": "and well over a million tons of ground fish."
+   },
+   "right": {
+    "text": "cod, sole, perch and pollock,",
+    "heard": "Cod, Soul, Perch, and Pollock,",
+    "checked_internal_gaps": [],
+    "second_heard": "God soul God soul",
+    "groundfish_list": {
+     "phones": "K AA D",
+     "confidence": 0.943,
+     "start": 0.04,
+     "end": 0.45,
+     "second_identification": "God, soul, perch, and Pollock."
+    }
+   }
+  },
+  {
+   "sample": "todd",
+   "codec": "flac",
+   "exception": "The four printed fish names differ: 'Todd, Sol Perch and Pollock' / 'Todd, Soul Perch and Pollock,'",
+   "transcripts": [
+    "Todd, Sol Perch and Pollock",
+    "Todd, Soul Perch and Pollock,"
+   ]
+  },
+  {
+   "sample": "todd",
+   "codec": "mp3",
+   "exception": "The four printed fish names differ: 'Todd, Sol Perch and Pollock' / 'Todd, Soul, Perch and Pollock,'",
+   "transcripts": [
+    "Todd, Sol Perch and Pollock",
+    "Todd, Soul, Perch and Pollock,"
+   ]
+  },
+  {
+   "sample": "todd",
+   "codec": "m4a",
+   "exception": "The four printed fish names differ: 'Todd, Sol Perch and Pollock.' / 'Todd, Soul, Perch and Pollock,'",
+   "transcripts": [
+    "Todd, Sol Perch and Pollock.",
+    "Todd, Soul, Perch and Pollock,"
+   ]
+  },
+  {
+   "sample": "god",
+   "codec": "flac",
+   "exception": "Neither full phrase identifies the first fish as cod",
+   "transcripts": [
+    "God soul perch and pollock",
+    "God, soul, perch and Pollock."
+   ]
+  },
+  {
+   "sample": "god",
+   "codec": "mp3",
+   "exception": "Neither full phrase identifies the first fish as cod",
+   "transcripts": [
+    "God soul perch and pollock",
+    "God, soul, perch and Pollock."
+   ]
+  },
+  {
+   "sample": "god",
+   "codec": "m4a",
+   "exception": "Neither full phrase identifies the first fish as cod",
+   "transcripts": [
+    "God soul perch and pollock",
+    "God, soul, perch, and Pollock."
+   ]
+  }
+ ],
+ "method": "比较列举的四种鱼。对 cod 的起始清辅音和词尾单独核听。对照中的 Todd 和 God 取自真人词典，只用于检验首辅音。"
+}

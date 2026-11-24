@@ -71,6 +71,9 @@ def words(text):
     text = spoken_spelling(text)
     text = re.sub(r'\brapa nui\b', 'rapanui', text, flags=re.I)
     text = re.sub(r'\bwindlashed\b', 'wind lashed', text, flags=re.I)
+    text = re.sub(r'\bground[ -]fish\b', 'groundfish', text, flags=re.I)
+    # In an American reading the tap in Professor Pretty sounds like Priddy.
+    text = re.sub(r'\b(professor(?: jules)?) (?:priddy|pritty)\b', r'\1 Pretty', text, flags=re.I)
     text = re.sub(r'\blife[ -]+span(s?)\b', r'lifespan\1', text, flags=re.I)
     text = re.sub(r'\bnorth[ -]+east\b', 'northeast', text, flags=re.I)
     text = re.sub(r'\binter[ -]+modal\b', 'intermodal', text, flags=re.I)
@@ -214,10 +217,20 @@ def assess(audio, text, transcript=None, *, recheck=False):
     chemists = None
     surname = None
     craftsmen = None
+    welsh = None
+    fish = None
     opening = None
     ganzfeld = None
     cork_taint = None
-    if expected == ['the','ancient','craftsmen']:
+    if 'llewyn' in expected:
+        from aiden_lynx import verify
+        alternate = independent(audio)
+        welsh = verify(audio,expected,transcript,alternate)
+    elif expected == ['cod','sole','perch','and','pollock']:
+        from aiden_pronunciation import verify_groundfish_list
+        alternate = independent(audio)
+        fish = verify_groundfish_list(audio,transcript,alternate)
+    elif expected == ['the','ancient','craftsmen']:
         from aiden_pronunciation import verify_ancient_craftsmen
         alternate = independent(audio)
         craftsmen = verify_ancient_craftsmen(audio,transcript,alternate)
@@ -465,6 +478,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['surname_pronunciation']=surname
     if craftsmen is not None:
         result['craftsmen_pronunciation']=craftsmen
+    if welsh is not None:
+        result['welsh_name']=welsh
+    if fish is not None:
+        result['groundfish_list']=fish
     if opening is not None:
         result['unpadded_opening_excerpt']=opening
     if ganzfeld is not None:
@@ -524,6 +541,10 @@ def verify_join(left,right):
     right_ref, right_heard = words(right['text']), words(right['second_heard'])
     ends=bool(left_heard and edge_matches(left_ref[-1], left_heard[-1]))
     starts=bool(right_heard and edge_matches(right_ref[0], right_heard[0]))
+    if left_ref[-1:] == ['groundfish'] and right_ref == ['cod','sole','perch','and','pollock']:
+        if ends and right.get('groundfish_list',{}).get('phones') == 'K AA D':
+            return
+        raise JoinError('The groundfish example needs a complete groundfish and an audible cod')
     if not (ends or starts):
         raise JoinError(f'Both sides of the pause differ: {left["text"]!r} / {left["second_heard"]!r}, '
                          f'{right["text"]!r} / {right["second_heard"]!r}')
