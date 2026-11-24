@@ -1,0 +1,508 @@
+{
+ "human_reference_AAC_full_sentence": "The independent decoder hears the complete original reference. The first decoder misses the earlier article the. Its full-context test rejects; the name and locants still pass independently.",
+ "fixture_use": "Only QA: the human reference is never part of the distributed Aiden audio. The rejected production FLAC requires a complete new reading.",
+ "lesson": "C12T1P1",
+ "sentence": 28,
+ "run": 45265727081,
+ "artifact": 14880349783,
+ "raw_sha256": "3fdd475b14a438de5826d43695ed128a16d4dc70a43102fa22539f569a886436",
+ "source": {
+  "episode": "Trichloroanisole – Wine cork taint: Chemistry in its element",
+  "feed": "https://rss.libsyn.com/shows/84867/destinations/405840.xml",
+  "link": "https://chemistryinitselement.libsyn.com/trichloroanisole-wine-cork-taint-chemistry-in-its-element",
+  "mp3": "https://traffic.libsyn.com/secure/chemistryinitselement/Ciie_Trichloroanisole.mp3?dest-id=405840"
+ },
+ "complete_reference_seconds": [
+  45.28,
+  55.0
+ ],
+ "target_window_seconds": [
+  50.36,
+  53.04
+ ],
+ "original_wording": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+ "checks": [
+  {
+   "test": "Chemistry World.flac digits and sound",
+   "accepted": true,
+   "expected": true,
+   "observation": [
+    {
+     "phones": "T UW",
+     "start": 0.12,
+     "end": 0.42
+    },
+    {
+     "phones": "F AO R",
+     "start": 0.42,
+     "end": 0.71
+    },
+    {
+     "phones": "S IH K S",
+     "start": 0.71,
+     "end": 1.18
+    },
+    {
+     "phones": "T R AY",
+     "start": 1.18,
+     "end": 1.38
+    },
+    {
+     "phones": "K L AO R",
+     "start": 1.38,
+     "end": 1.77
+    },
+    {
+     "phones": "AE N AH",
+     "start": 1.77,
+     "end": 2.0
+    },
+    {
+     "phones": "S AH L",
+     "start": 2.0,
+     "end": 2.41
+    }
+   ]
+  },
+  {
+   "test": "Chemistry World.flac source and context",
+   "accepted": true,
+   "expected": true,
+   "observation": {
+    "text": "One of the two main causes of a wine being contaminated with cork taint is the chemical 2,4,6-trichloroanisole or TCA for short",
+    "heard": "One of the two main causes of a wine being contaminated with cork taint is the chemical 246 trichloroanisole or TCA for short.",
+    "checked_internal_gaps": [],
+    "second_heard": "One of the two main causes of a wine being contaminated with cork taint is the chemical 246 trichloranosol or TCA for short.",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 5.2,
+      "end": 5.5
+     },
+     {
+      "phones": "F AO R",
+      "start": 5.5,
+      "end": 5.79
+     },
+     {
+      "phones": "S IH K S",
+      "start": 5.79,
+      "end": 6.26
+     },
+     {
+      "phones": "T R AY",
+      "start": 6.26,
+      "end": 6.46
+     },
+     {
+      "phones": "K L AO R",
+      "start": 6.46,
+      "end": 6.85
+     },
+     {
+      "phones": "AE N AH",
+      "start": 6.85,
+      "end": 7.08
+     },
+     {
+      "phones": "S AH L",
+      "start": 7.08,
+      "end": 7.49
+     }
+    ]
+   }
+  },
+  {
+   "test": "Chemistry World.flac missing locant four",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two six try cloro anu sul"
+  },
+  {
+   "test": "Chemistry World.flac clipped name ending",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try cloro"
+  },
+  {
+   "test": "Chemistry World.flac internal 280ms silence",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try cloro unn sul"
+  },
+  {
+   "test": "Chemistry World.mp3 digits and sound",
+   "accepted": true,
+   "expected": true,
+   "observation": [
+    {
+     "phones": "T UW",
+     "start": 0.12,
+     "end": 0.42
+    },
+    {
+     "phones": "F AO R",
+     "start": 0.42,
+     "end": 0.71
+    },
+    {
+     "phones": "S IH K S",
+     "start": 0.71,
+     "end": 1.18
+    },
+    {
+     "phones": "T R AY",
+     "start": 1.18,
+     "end": 1.38
+    },
+    {
+     "phones": "K L AO R AH",
+     "start": 1.38,
+     "end": 1.8
+    },
+    {
+     "phones": "AE N AH",
+     "start": 1.8,
+     "end": 2.0
+    },
+    {
+     "phones": "S AH L",
+     "start": 2.0,
+     "end": 2.41
+    }
+   ]
+  },
+  {
+   "test": "Chemistry World.mp3 source and context",
+   "accepted": true,
+   "expected": true,
+   "observation": {
+    "text": "One of the two main causes of a wine being contaminated with cork taint is the chemical 2,4,6-trichloroanisole or TCA for short",
+    "heard": "One of the two main causes of a wine being contaminated with cork taint is the chemical 246 trichloroanisole or TCA for short.",
+    "checked_internal_gaps": [
+     [
+      7.74,
+      7.89
+     ]
+    ],
+    "second_heard": "One of the two main causes of a wine being contaminated with cork taint is the chemical 246 trichloranosol or TCA for short.",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 5.2,
+      "end": 5.5
+     },
+     {
+      "phones": "F AO R",
+      "start": 5.5,
+      "end": 5.79
+     },
+     {
+      "phones": "S IH K S",
+      "start": 5.79,
+      "end": 6.26
+     },
+     {
+      "phones": "T R AY",
+      "start": 6.26,
+      "end": 6.46
+     },
+     {
+      "phones": "K L AO R",
+      "start": 6.46,
+      "end": 6.85
+     },
+     {
+      "phones": "AE N AH",
+      "start": 6.85,
+      "end": 7.08
+     },
+     {
+      "phones": "S AH L",
+      "start": 7.08,
+      "end": 7.49
+     }
+    ]
+   }
+  },
+  {
+   "test": "Chemistry World.mp3 missing locant four",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two six try cloro anu sul"
+  },
+  {
+   "test": "Chemistry World.mp3 clipped name ending",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try cloro"
+  },
+  {
+   "test": "Chemistry World.mp3 internal 280ms silence",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try cloro unn sul"
+  },
+  {
+   "test": "Chemistry World.m4a digits and sound",
+   "accepted": true,
+   "expected": true,
+   "observation": [
+    {
+     "phones": "T UW",
+     "start": 0.12,
+     "end": 0.42
+    },
+    {
+     "phones": "F AO R",
+     "start": 0.42,
+     "end": 0.71
+    },
+    {
+     "phones": "S IH K S",
+     "start": 0.71,
+     "end": 1.18
+    },
+    {
+     "phones": "T R AY",
+     "start": 1.18,
+     "end": 1.38
+    },
+    {
+     "phones": "K L AO R AH",
+     "start": 1.38,
+     "end": 1.81
+    },
+    {
+     "phones": "AE N AH",
+     "start": 1.81,
+     "end": 2.0
+    },
+    {
+     "phones": "S AH L",
+     "start": 2.0,
+     "end": 2.41
+    }
+   ]
+  },
+  {
+   "test": "Chemistry World.m4a source and context",
+   "accepted": false,
+   "expected": false,
+   "observation": "The context of 2,4,6-trichloroanisole differs from the paper"
+  },
+  {
+   "test": "Chemistry World.m4a missing locant four",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two six try cloro anu sul"
+  },
+  {
+   "test": "Chemistry World.m4a clipped name ending",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try cloro"
+  },
+  {
+   "test": "Chemistry World.m4a internal 280ms silence",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try cloro unn sul"
+  },
+  {
+   "test": "Aiden.flac digits and sound",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro eena sole"
+  },
+  {
+   "test": "Aiden.flac source and context",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro eena sole"
+  },
+  {
+   "test": "Aiden.mp3 digits and sound",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro eena sole"
+  },
+  {
+   "test": "Aiden.mp3 source and context",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro eena sole"
+  },
+  {
+   "test": "Aiden.m4a digits and sound",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro eena sole"
+  },
+  {
+   "test": "Aiden.m4a source and context",
+   "accepted": false,
+   "expected": false,
+   "observation": "Unclear locants, syllable or ending in trichloroanisole: two four six try chloro eena sole"
+  },
+  {
+   "test": "Printed Cambridge lead with human pronunciation, QA fixture only .flac",
+   "accepted": true,
+   "expected": true,
+   "observation": {
+    "text": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+    "heard": "This is caused by a chemical compound called two four six trichloroaniso.",
+    "checked_internal_gaps": [
+     [
+      2.62,
+      2.99
+     ]
+    ],
+    "second_heard": "This is caused by a chemical compound called 2-4-6 trichloroanosol",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 3.01,
+      "end": 3.31
+     },
+     {
+      "phones": "F AO R",
+      "start": 3.31,
+      "end": 3.6
+     },
+     {
+      "phones": "S IH K S",
+      "start": 3.6,
+      "end": 4.07
+     },
+     {
+      "phones": "T R AY",
+      "start": 4.07,
+      "end": 4.27
+     },
+     {
+      "phones": "K L AO R AH",
+      "start": 4.27,
+      "end": 4.69
+     },
+     {
+      "phones": "AE N AH",
+      "start": 4.69,
+      "end": 4.89
+     },
+     {
+      "phones": "S AH L",
+      "start": 4.89,
+      "end": 5.3
+     }
+    ]
+   }
+  },
+  {
+   "test": "Printed Cambridge lead with human pronunciation, QA fixture only .mp3",
+   "accepted": true,
+   "expected": true,
+   "observation": {
+    "text": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+    "heard": "This is caused by a chemical compound called two four six trichloroanisole.",
+    "checked_internal_gaps": [
+     [
+      2.62,
+      2.99
+     ]
+    ],
+    "second_heard": "This is caused by a chemical compound called 2-4-6 trichloranosol",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 3.01,
+      "end": 3.31
+     },
+     {
+      "phones": "F AO R",
+      "start": 3.31,
+      "end": 3.6
+     },
+     {
+      "phones": "S IH K S",
+      "start": 3.6,
+      "end": 4.07
+     },
+     {
+      "phones": "T R AY",
+      "start": 4.07,
+      "end": 4.27
+     },
+     {
+      "phones": "K L AO R AH",
+      "start": 4.27,
+      "end": 4.69
+     },
+     {
+      "phones": "AE N AH",
+      "start": 4.69,
+      "end": 4.89
+     },
+     {
+      "phones": "S AH L",
+      "start": 4.89,
+      "end": 5.3
+     }
+    ]
+   }
+  },
+  {
+   "test": "Printed Cambridge lead with human pronunciation, QA fixture only .m4a",
+   "accepted": true,
+   "expected": true,
+   "observation": {
+    "text": "This is caused by a chemical compound called two,four,six-trichloroanisole,",
+    "heard": "This is caused by a chemical compound called two four six trichloroanisole.",
+    "checked_internal_gaps": [
+     [
+      2.62,
+      2.99
+     ]
+    ],
+    "second_heard": "This is caused by a chemical compound called 2-4-6 trichloroanacol",
+    "cork_taint_pronunciation": [
+     {
+      "phones": "T UW",
+      "start": 3.01,
+      "end": 3.31
+     },
+     {
+      "phones": "F AO R",
+      "start": 3.31,
+      "end": 3.6
+     },
+     {
+      "phones": "S IH K S",
+      "start": 3.6,
+      "end": 4.07
+     },
+     {
+      "phones": "T R AY",
+      "start": 4.07,
+      "end": 4.27
+     },
+     {
+      "phones": "K L AO R AH",
+      "start": 4.27,
+      "end": 4.69
+     },
+     {
+      "phones": "AE N AH",
+      "start": 4.69,
+      "end": 4.89
+     },
+     {
+      "phones": "S AH L",
+      "start": 4.89,
+      "end": 5.3
+     }
+    ]
+   }
+  }
+ ]
+}

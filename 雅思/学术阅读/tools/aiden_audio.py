@@ -14,6 +14,7 @@ from aiden_profile import DIRECTION, IDENTITY, SPEAKER
 from aiden_boundaries import POLICY, assess, independent, words, reference
 from aiden_checkpoint import PeriodicSnapshot, rejected_seed
 import aiden_cork_oak
+import aiden_cork_taint
 import aiden_ceylonese
 import aiden_inuktitut
 import aiden_sobchack
@@ -76,6 +77,8 @@ class Aiden:
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
         if script.strip(' ,.;:!?').casefold() in {s.casefold() for s in aiden_cork_oak.RENDERINGS}:
             instruction += ' ' + aiden_cork_oak.HINT
+        if any(form.casefold() in script.casefold() for form in aiden_cork_taint.RENDERINGS):
+            instruction += ' ' + aiden_cork_taint.HINT
         if re.search(r'\bLei Tzu\b',script,re.I):
             instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
         if re.search(r'\b(?:Halley|Hally)\b',script,re.I):
@@ -106,8 +109,18 @@ class Aiden:
             instruction += ' End clamp with a short, clear p release after m, without adding a vowel.'
         if re.search(r'\b(?:Dowman|Dow Man)\b',script,re.I):
             instruction += ' Say Captain Dowman’s name with the vowel in cow, then man. Keep the two syllables joined.'
-        if 'Deane dived down' in script:
+        if re.search(r'\bDeane? dived down\b',script,re.I):
             instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
+        if re.search(r"\bapproached the helicopter",script,re.I):
+            instruction += ' The first verb is in the past. Finish approached with /tʃt/ before the following word.'
+        if 'Villamil' in script or 'vee-yah-MEEL' in script:
+            instruction += ' Puerto Villamil ends in a stressed meel with a final l. Link the following words “on Isabela” without adding a vowel to the town name.'
+        if 'llewyn' in script.casefold():
+            instruction += ' For the Welsh word llewyn, begin with Welsh ll /ɬ/, with voiceless air flowing past the sides of the tongue into the vowel.'
+        if words(script)[:2]==['forested','hills']:
+            instruction += ' In forested hills, start with a clear f followed by the stressed first syllable of forest. Sound the complete three-syllable adjective before hills.'
+        if words(script)[-1:]==['bottlenecks']:
+            instruction += ' Finish the plural bottlenecks with the whole final syllable, including the k and s sounds.'
         if 'Sommerkorn' in script or 'Zommerkorn' in script:
             instruction += ' Read Martin Sommerkorn with a voiced z, a short first vowel and the final consonants in korn, as in his own introduction. Use one connected surname.'
         if 'Doctor Phil Rasch' in script:
@@ -135,7 +148,7 @@ class Aiden:
             return None
         # Dedicated acoustic checks require both recognizers to match the
         # English context even when they transcribe a foreign word differently.
-        if not {'dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
+        if not {'dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
             return None
         try:
             assess(audio,script,transcript)
@@ -166,7 +179,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -189,6 +202,8 @@ class Aiden:
         spellings=()
         if words(script)==['quercus','suber']:
             spellings=aiden_cork_oak.RENDERINGS
+        elif aiden_cork_taint.TERM in words(script):
+            spellings=aiden_cork_taint.RENDERINGS
         elif 'ceylonese' in words(script):
             spellings=aiden_ceylonese.RENDERINGS
         elif 'fusee' in words(script):
@@ -199,6 +214,14 @@ class Aiden:
             spellings=aiden_sobchack.RENDERINGS
         elif re.search(r'\bDe Dreu\b',script,re.I):
             spellings=aiden_de_dreu.RENDERINGS
+        elif words(script)==['deane','dived','down']:
+            spellings=('Deane dived down','Dean DIVED down','Deane DIVED down','Dean dived down','Deane dived down')
+        elif words(script)[:3]==['approached','the','helicopters']:
+            spellings=('approached','APPROACHED','approached','Approached','APPROACHED')
+        elif 'Puerto Villamil' in script:
+            spellings=('Puerto Villamil','Puerto vee-yah-MEEL','Puerto Villamil','Puerto vee-yah-MEEL','Puerto Villamil')
+        elif words(script)[:2]==['forested','hills']:
+            spellings=('forested hills','Forested hills','FORESTED hills','Forested hills','forested hills')
         elif words(script) == ['dowman','was','determined']:
             spellings=('Dowman','Dow Man','Dowman','Dow-man','Dowman')
         elif 'sommerkorn' in words(script):

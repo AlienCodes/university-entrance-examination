@@ -7,7 +7,7 @@ from aiden_ceylonese import timed_words
 from aiden_pronunciation import grammar_decoder, locate_sound
 
 
-RENDERINGS = ('De Dreu', 'de Drew', 'duh Drew', 'de Drew', 'De Dreu')
+RENDERINGS = ('De Dreu', 'de Drew', 'duh DROO', 'de Droo', 'duh Drew')
 HINT = 'Read the psychologist’s surname as two connected syllables, with a weak first syllable and Drew rhyming with true.'
 # Include the dropped particle, missing stop or r, and the final vowel of the
 # rejected recording in the competition. Unvoiced stops occur in the interview.
@@ -41,7 +41,7 @@ def name_span(tokens):
     for i, word in enumerate(tokens):
         if word in {'dedrew', 'dedreu', 'deidreux'}:
             return i, i + 1
-        if word in {'de', 'der', 'duh'} and tokens[i + 1:i + 2] in (['drew'], ['dreu'], ['dru']):
+        if word in {'de', 'der', 'duh'} and tokens[i + 1:i + 2] in (['drew'], ['dreu'], ['dru'], ['droo']):
             return i, i + 2
     raise ValueError('The speech recognizer could not locate De Dreu')
 

@@ -74,6 +74,9 @@ def words(text):
     text = re.sub(r'\bwww(?:\.[a-z0-9-]+)+', lambda m:m.group().replace('.', ' dot '), text, flags=re.I)
     # CMUdict gives both surnames M AH0 K F AA1 R L AH0 N. Keep the printed name on screen.
     text = re.sub(r'\bAlan McFarlane\b', 'Alan Macfarlane', text, flags=re.I)
+    # The US dictionary transcribes both Dingle and Dingell as D IH NG G AH L.
+    # A genuine Tingle has a different initial consonant.
+    text = re.sub(r'\bdingell\b','dingle',text,flags=re.I)
     # CMUdict: Berger/Burger B ER G ER, Deane/Dean D IY N, Rasch/Rash R AE SH.
     # Preserve the possessive, the past tense and the speaker's actual title.
     text = re.sub(r"\bthan (?:berger|burger)['’]?s\b", "than Berger's", text, flags=re.I)
@@ -171,7 +174,12 @@ def assess(audio, text, transcript=None):
     falkirk = None
     explorer = None
     turkish_word = None
-    if 'ceylonese' in expected:
+    cork_taint = None
+    if 'trichloroanisole' in expected:
+        from aiden_cork_taint import verify
+        alternate = independent(audio)
+        cork_taint = verify(audio,text,transcript,alternate)
+    elif 'ceylonese' in expected:
         from aiden_ceylonese import verify
         alternate = independent(audio)
         name_evidence = verify(audio, text, transcript, alternate)
@@ -271,6 +279,8 @@ def assess(audio, text, transcript=None):
         result['heyerdahl_pronunciation']=explorer
     if turkish_word is not None:
         result['turkish_word']=turkish_word
+    if cork_taint is not None:
+        result['cork_taint_pronunciation']=cork_taint
     return result
 
 
