@@ -1,4 +1,4 @@
-name: 为已核准的雅思正文补齐篇首插图
+name: 完成已核准录音的雅思画面与篇首插图
 on:
   push:
     branches: [codex/ielts-academic-reading]
@@ -23,6 +23,7 @@ jobs:
     outputs:
       lessons: ${{ steps.plan.outputs.lessons }}
       slots: ${{ steps.plan.outputs.slots }}
+      revised: ${{ steps.plan.outputs.revised }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,29 +39,56 @@ jobs:
           from pathlib import Path
           sys.path.insert(0, '雅思/学术阅读/tools')
           from aiden_batch import BATCHES, cached
+          from aiden_profile import IDENTITY
+          from early_editor import key_for
           from editions import lesson_ids
+          from release_assets import fetch, inventory
+          import tempfile
 
           spec = json.loads(Path('.github/ielts-aiden-available-illustrations.json').read_text())
           edition = lesson_ids(BATCHES['13-6'])
           requested = set(spec['lessons'])
           if not requested <= set(edition):
               raise ValueError('A requested lesson is outside books 13 to 6')
+          revised = spec.get('reviewed_text', False)
+          if type(revised) is not bool:
+              raise ValueError('Invalid edition selector')
           url = f"repos/{os.environ['GH_REPO']}/actions/runs/{int(spec['source_run'])}/jobs?per_page=100"
           busy = subprocess.check_output(
               ['gh','api','--paginate','--jq','.jobs[] | select(.status != "completed") | .name',url],
               text=True).splitlines()
           active = {m[1] for name in busy if (m := re.search(r'production \((C\d+T\d+P\d+)\)', name))}
           slots = max(0, min(12, 19 - len(busy)))
-          lessons = [p for p in edition if slots and p in requested - active
-                     and cached(p, '13-6') and not cached(p, '13-6', include_illustration=True)]
+          available = [p for p in edition if slots and p in requested - active]
+          if revised:
+              root = Path('雅思/学术阅读')
+              measured = json.loads((root / '审校/Aiden/13-6/原书与版式复核.json').read_text())
+              assets = inventory('ielts-academic-aiden-cache-13-6')
+              lessons = []
+              with tempfile.TemporaryDirectory() as temp:
+                  for p in available:
+                      if p not in measured or measured[p]['key'] != key_for(root, p):
+                          continue
+                      source = assets.get(p + '-receipt.json')
+                      if not source or not source.get('digest') or cached(p, '13-6'):
+                          continue
+                      receipt = json.loads(fetch(source, temp).read_bytes())
+                      if (receipt.get('lesson') == p and receipt.get('narrator') == IDENTITY
+                              and receipt.get('verified_phrases') and receipt.get('audio_sha256')
+                              and receipt['audio_sha256'] == receipt.get('encoded_reference_sha256')):
+                          lessons.append(p)
+          else:
+              lessons = [p for p in available if cached(p, '13-6')
+                         and not cached(p, '13-6', include_illustration=True)]
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               print('lessons=' + json.dumps(lessons, separators=(',', ':')), file=out)
               print('slots=' + str(max(1, slots)), file=out)
-          print(f'{len(lessons)} verified sources ready for illustrations, {slots} worker slots available')
+              print('revised=' + str(revised).lower(), file=out)
+          print(f'{len(lessons)} lessons with verified recordings, {slots} worker slots available')
 
   illustrate:
     needs: select
-    if: needs.select.outputs.lessons != '[]'
+    if: needs.select.outputs.lessons != '[]' && needs.select.outputs.revised != 'true'
     permissions:
       contents: write
       actions: read
@@ -83,3 +111,20 @@ jobs:
             雅思/学术阅读
       - name: 从已核准的正文插入同篇插图并实播、回下载
         run: bash .github/actions/ielts-verified-master/illustrate.sh
+
+  remaster:
+    needs: select
+    if: needs.select.outputs.lessons != '[]' && needs.select.outputs.revised == 'true'
+    permissions:
+      contents: write
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(needs.select.outputs.slots) }}
+      matrix:
+        lesson: ${{ fromJSON(needs.select.outputs.lessons) }}
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ matrix.lesson }}
+      aiden_batch: '13-6'
+      current_tools: true
