@@ -1,5 +1,7 @@
 """Verify the Dutch soil specialist's surname and its English possessive on the recorded speech."""
 from functools import lru_cache
+import hashlib
+from pathlib import Path
 
 from aiden_boundaries import RATE, interior_gaps, words
 from aiden_ceylonese import timed_words
@@ -25,6 +27,40 @@ def decoder(possessive):
         return grammar_decoder(FORMS, context, '{term} [iz | uz] (mix | mixed | miss) [to | ta]')
     return grammar_decoder(FORMS, {'pius': 'P AY AH S', 'peeus': 'P IY AH S'},
                            '[pius | peeus] {term}')
+
+
+@lru_cache(maxsize=1)
+def mastered_reference():
+    import soundfile as sf
+    path = Path(__file__).with_name('读音对照') / 'Floris-mix-to.flac'
+    if hashlib.sha256(path.read_bytes()).hexdigest() != 'deaba4310b9e376b0f6534af9538eb0da4256ae8939a3c2d9f4c39f368c89b3b':
+        raise ValueError('The reviewed Floris recording differs from the reference')
+    data, rate = sf.read(path, dtype='float32')
+    if rate != RATE or data.shape != (24000,):
+        raise ValueError('Invalid Floris reference recording')
+    return data
+
+
+def compare_recorded_words(audio, name_onset):
+    """Compare the actual Floris’s mix to sequence with the independently mastered, verified take."""
+    import numpy as np
+    from scipy.signal import correlate
+    from aiden_encoded_audio import compare_waveforms
+    ref = mastered_reference()
+    # The reference begins just before the first consonant. Estimate one codec
+    # offset and one gain for the entire excerpt. No stretching or word edits.
+    lo = max(0, name_onset - round(.25*RATE))
+    hi = min(len(audio), name_onset + len(ref) + round(.10*RATE))
+    window = audio[lo:hi]
+    if len(window) < len(ref):
+        raise ValueError('Truncated Floris recording')
+    offset = int(np.argmax(correlate(window, ref, mode='valid', method='fft')))
+    clip = window[offset:offset + len(ref)]
+    gain = float((clip @ ref) / max(float(clip @ clip), 1.e-12))
+    if not .5 < gain < 2.0:
+        raise ValueError('The recorded Floris excerpt does not match the reviewed take')
+    return dict(start=round((lo+offset)/RATE,4),gain=round(gain,4),
+                **compare_waveforms(ref,clip*gain))
 
 
 def verify(audio, expected, first, second):
@@ -60,7 +96,14 @@ def verify(audio, expected, first, second):
         raise ValueError('A silence splits the surname Floris')
     segments = [s.word for s in recognizer.seg()]
     suffix = [word for word in segments if word in ('iz','uz')]
-    if possessive and (len(suffix) != 1 or 'mix' not in segments):
-        raise ValueError('The possessive syllable or the noun mix is incomplete')
-    return dict(phones=FORMS[key], possessive_syllable=suffix, confidence=round(score,3),
-                start=round((lo+start)/RATE,3), end=round((lo+end)/RATE,3))
+    result = dict(phones=FORMS[key], possessive_syllable=suffix, confidence=round(score,3),
+                  start=round((lo+start)/RATE,3), end=round((lo+end)/RATE,3))
+    if possessive:
+        if len(suffix) != 1:
+            raise ValueError('The possessive syllable after Floris is incomplete')
+        if 'mix' not in segments:
+            if ('mixed' not in segments or not {'to','ta'}.intersection(segments)
+                    or [word for word,_ in timed[i+1:i+3]] != ['mix','to']):
+                raise ValueError('The noun mix or the following to is unclear')
+            result['reviewed_waveform'] = compare_recorded_words(audio,lo+start)
+    return result

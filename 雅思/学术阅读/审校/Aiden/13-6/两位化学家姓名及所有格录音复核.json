@@ -1,0 +1,344 @@
+{
+ "lesson": "C9T1P1",
+ "source_run": 45298679101,
+ "source_artifact": 14893680237,
+ "source_archive_sha256": "f3221e5a0228d83d96084de6f8fd97fa4054dbea4198d90fc8ba9e89995c51f1",
+ "method": "从未处理的录音与上下文分别检查 Perkin 和 Hofmann 的词尾。名字后面是 saw 和 set 时，动词自己的 s 不属于姓氏。在两个所有格中核验各有一个 z。",
+ "dictionary": {
+  "perkin": "P ER K IH N",
+  "perkins": "P ER K AH N Z",
+  "hofmann": "HH AA F M AH N",
+  "hoffman": "HH AO F M AH N"
+ },
+ "references": [
+  "https://github.com/cmusphinx/cmudict"
+ ],
+ "native_recovery": [
+  {
+   "sha256": "e61381b46a9d4508dbd7d3b377253151b461e6425c0886bc045053c0b5171e67",
+   "printed": "Perkin's scientific gifts soon caught Hofmann's attention and within two years,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "sha256": "360011dd80d3f1f3fb3d042b1e623ef60e77965dfa665fb703fe3958444322ae",
+   "printed": "Perkin set up a factory not far from London.",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "sha256": "4986a27fd215a1e119d8822d53552aba5ffd884791eeecd6c1d891c0da356c91",
+   "printed": "Perkin saw the potential of his unexpected find.",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "sha256": "525d904a032e87ec99ae0955e79b3e83460658c72e6ff3ddd50f8e6cbd2198f3",
+   "printed": "Perkin set up a factory not far from London.",
+   "accepted": false,
+   "expected": false
+  },
+  {
+   "sha256": "29da970fdeb2e548f48f7d51bde3fb00d85cde7621b94680ca62ed3397becf71",
+   "printed": "Perkin's scientific gifts soon caught Hofmann's attention and within two years,",
+   "accepted": false,
+   "expected": false
+  }
+ ],
+ "codec_checks": [
+  {
+   "source_sha256": "e61381b46a9d4508dbd7d3b377253151b461e6425c0886bc045053c0b5171e67",
+   "sentence": "C9T1P1:9",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin's scientific gifts soon caught Hofmann's attention and within two years,",
+    "heard": "Perkins's scientific gifts soon caught Hoffmann's attention, and within two years",
+    "checked_internal_gaps": [
+     [
+      1.5,
+      1.98
+     ],
+     [
+      3.75,
+      4.11
+     ]
+    ],
+    "second_heard": "Perkins' scientific gifts soon caught Hoffman's attention and within two years",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N Z",
+      "confidence": 0.328,
+      "start": 0.03,
+      "end": 0.44
+     },
+     "Hofmann": {
+      "phones": "HH AA F M IH N Z",
+      "confidence": 0.31,
+      "start": 2.61,
+      "end": 3.14
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "e61381b46a9d4508dbd7d3b377253151b461e6425c0886bc045053c0b5171e67",
+   "sentence": "C9T1P1:9",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin's scientific gifts soon caught Hofmann's attention and within two years,",
+    "heard": "Perkins' scientific gifts, soon caught Hoffmann's attention, and within two years",
+    "checked_internal_gaps": [
+     [
+      1.5,
+      1.98
+     ],
+     [
+      3.75,
+      4.11
+     ]
+    ],
+    "second_heard": "Perkins' scientific gifts soon caught Hoffman's attention and within two years",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N Z",
+      "confidence": 0.325,
+      "start": 0.03,
+      "end": 0.44
+     },
+     "Hofmann": {
+      "phones": "HH AA F M IH N Z",
+      "confidence": 0.318,
+      "start": 2.61,
+      "end": 3.14
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "e61381b46a9d4508dbd7d3b377253151b461e6425c0886bc045053c0b5171e67",
+   "sentence": "C9T1P1:9",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin's scientific gifts soon caught Hofmann's attention and within two years,",
+    "heard": "Perkins' scientific gifts, soon caught Hoffmann's attention, and within two years",
+    "checked_internal_gaps": [
+     [
+      1.5,
+      1.98
+     ],
+     [
+      3.75,
+      4.11
+     ]
+    ],
+    "second_heard": "Perkins' scientific gifts soon caught Hoffman's attention and within two years",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N Z",
+      "confidence": 0.321,
+      "start": 0.03,
+      "end": 0.44
+     },
+     "Hofmann": {
+      "phones": "HH AA F M IH N Z",
+      "confidence": 0.317,
+      "start": 2.61,
+      "end": 3.14
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "360011dd80d3f1f3fb3d042b1e623ef60e77965dfa665fb703fe3958444322ae",
+   "sentence": "C9T1P1:33",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin set up a factory not far from London.",
+    "heard": "Perkins set up a factory not far from London,",
+    "checked_internal_gaps": [],
+    "second_heard": "Perkins set up a factory not far from London.",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N",
+      "confidence": 0.227,
+      "start": 0.03,
+      "end": 0.4
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "360011dd80d3f1f3fb3d042b1e623ef60e77965dfa665fb703fe3958444322ae",
+   "sentence": "C9T1P1:33",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin set up a factory not far from London.",
+    "heard": "Perkins set up a factory not far from London.",
+    "checked_internal_gaps": [],
+    "second_heard": "Perkins set up a factory not far from London.",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N",
+      "confidence": 0.24,
+      "start": 0.03,
+      "end": 0.4
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "360011dd80d3f1f3fb3d042b1e623ef60e77965dfa665fb703fe3958444322ae",
+   "sentence": "C9T1P1:33",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin set up a factory not far from London.",
+    "heard": "Perkins set up a factory not far from London,",
+    "checked_internal_gaps": [],
+    "second_heard": "Perkins set up a factory not far from London.",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N",
+      "confidence": 0.218,
+      "start": 0.03,
+      "end": 0.4
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "4986a27fd215a1e119d8822d53552aba5ffd884791eeecd6c1d891c0da356c91",
+   "sentence": "C9T1P1:21",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin saw the potential of his unexpected find.",
+    "heard": "Perkins saw the potential of his unexpected find.",
+    "checked_internal_gaps": [],
+    "second_heard": "Perkins saw the potential of his unexpected find.",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N",
+      "confidence": 0.426,
+      "start": 0.05,
+      "end": 0.36
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "4986a27fd215a1e119d8822d53552aba5ffd884791eeecd6c1d891c0da356c91",
+   "sentence": "C9T1P1:21",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin saw the potential of his unexpected find.",
+    "heard": "Perkins saw the potential of his unexpected find.",
+    "checked_internal_gaps": [],
+    "second_heard": "Perkins saw the potential of his unexpected find.",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N",
+      "confidence": 0.424,
+      "start": 0.05,
+      "end": 0.36
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "4986a27fd215a1e119d8822d53552aba5ffd884791eeecd6c1d891c0da356c91",
+   "sentence": "C9T1P1:21",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Perkin saw the potential of his unexpected find.",
+    "heard": "Perkins saw the potential of his unexpected find.",
+    "checked_internal_gaps": [],
+    "second_heard": "Perkins saw the potential of his unexpected find.",
+    "chemists_surnames": {
+     "Perkin": {
+      "phones": "P ER K IH N",
+      "confidence": 0.274,
+      "start": 0.04,
+      "end": 0.36
+     }
+    }
+   }
+  },
+  {
+   "source_sha256": "525d904a032e87ec99ae0955e79b3e83460658c72e6ff3ddd50f8e6cbd2198f3",
+   "sentence": "C9T1P1:33",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear surname or possessive for Perkin: P ER K IH N Z"
+   }
+  },
+  {
+   "source_sha256": "525d904a032e87ec99ae0955e79b3e83460658c72e6ff3ddd50f8e6cbd2198f3",
+   "sentence": "C9T1P1:33",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear surname or possessive for Perkin: P ER K IH N Z"
+   }
+  },
+  {
+   "source_sha256": "525d904a032e87ec99ae0955e79b3e83460658c72e6ff3ddd50f8e6cbd2198f3",
+   "sentence": "C9T1P1:33",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear surname or possessive for Perkin: P ER K IH N Z"
+   }
+  },
+  {
+   "source_sha256": "29da970fdeb2e548f48f7d51bde3fb00d85cde7621b94680ca62ed3397becf71",
+   "sentence": "C9T1P1:9",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear surname or possessive for Perkin: P ER K IH N"
+   }
+  },
+  {
+   "source_sha256": "29da970fdeb2e548f48f7d51bde3fb00d85cde7621b94680ca62ed3397becf71",
+   "sentence": "C9T1P1:9",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear surname or possessive for Perkin: P ER K IH N"
+   }
+  },
+  {
+   "source_sha256": "29da970fdeb2e548f48f7d51bde3fb00d85cde7621b94680ca62ed3397becf71",
+   "sentence": "C9T1P1:9",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear surname or possessive for Perkin: P ER K IH N"
+   }
+  }
+ ]
+}

@@ -1,0 +1,202 @@
+{
+ "lesson": "C11T2P3",
+ "source_run": 45298679101,
+ "source_artifact": 14891553736,
+ "source_archive_sha256": "a9026d8ec30a35fb31b8f257be31bc346f7231eb6f6c14ad4977dd0f7fd1d93e",
+ "method": "论文署名为 Angelina Hawley-Dolan。Aiden 在 caught 和 cot 使用合流的美式元音，必须核准 Hawley 的 h、两个音节、Dolan 的首元音和词尾 n。",
+ "dictionary": {
+  "hawley": "HH AO L IY",
+  "holly": "HH AA L IY",
+  "dolan": "D OW L AH N",
+  "dolen": "D OW L AH N"
+ },
+ "references": [
+  "https://github.com/cmusphinx/cmudict",
+  "https://pubmed.ncbi.nlm.nih.gov/21372327/",
+  "https://languagelog.ldc.upenn.edu/myl/YangPopulation.pdf"
+ ],
+ "native_recovery": [
+  {
+   "sha256": "f89a1ab6ad2149e60f8d08f82ba395166b8b07430532c9fb09df78e9d5fdcb99",
+   "printed": "Angelina Hawley-Dolan,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "sha256": "3f2759c4611d7e95a5f1449608da1970dfeab73f2fabad6fb9a9fbf3a16e905f",
+   "printed": "Angelina Hawley-Dolan,",
+   "accepted": false,
+   "expected": false
+  },
+  {
+   "sha256": "7724c58b86921355f0d655b22dfe89ced0c5f3f7f9f11a2e477a0c5bccbc54de",
+   "printed": "Angelina Hawley-Dolan,",
+   "accepted": false,
+   "expected": false
+  }
+ ],
+ "codec_checks": [
+  {
+   "case": "intact",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Angelina Hawley-Dolan,",
+    "heard": "Angelina Holly Dolan.",
+    "checked_internal_gaps": [],
+    "second_heard": "Angelina Holly Dolan",
+    "surname_pronunciation": {
+     "phones": "HH AA L IY / D OW L AH N",
+     "score": 0.842,
+     "start": 0.57,
+     "end": 1.5
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Angelina Hawley-Dolan,",
+    "heard": "Angelina Holly Dolan",
+    "checked_internal_gaps": [],
+    "second_heard": "Angelina Holly Dolan",
+    "surname_pronunciation": {
+     "phones": "HH AA L IY / D OW L AH N",
+     "score": 0.844,
+     "start": 0.57,
+     "end": 1.5
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Angelina Hawley-Dolan,",
+    "heard": "Angelina Holly Dolan.",
+    "checked_internal_gaps": [],
+    "second_heard": "Angelina Holly Dolan",
+    "surname_pronunciation": {
+     "phones": "HH AA L IY / D OW L AH N",
+     "score": 0.837,
+     "start": 0.57,
+     "end": 1.5
+    }
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina harley doline"
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina harley doline"
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina holly doline"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina harley dolan"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear Hawley-Dolan: HH AA L IY / dylan"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear Hawley-Dolan: HH AA L IY / dylan"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina houghly dolan"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina houghly dolan"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The two surnames or the first name Angelina differ: angelina houghly dolan"
+   }
+  }
+ ],
+ "aiden_caught": [
+  {
+   "sha256": "1b9e0003f2cc98fa4554246b9943551de2aa63b03918bffcc0cc608e8f62a47a",
+   "phones": "K AA T",
+   "confidence": 0.92
+  },
+  {
+   "sha256": "29da970fdeb2e548f48f7d51bde3fb00d85cde7621b94680ca62ed3397becf71",
+   "phones": "K AA T",
+   "confidence": 0.88
+  },
+  {
+   "sha256": "2e33ae3795451253a44d2297cf7ea5e25f308c35a8d4af60c29d6387eb8a64e4",
+   "phones": "K AA T",
+   "confidence": 0.7
+  },
+  {
+   "sha256": "e61381b46a9d4508dbd7d3b377253151b461e6425c0886bc045053c0b5171e67",
+   "phones": "K AA T",
+   "confidence": 0.93
+  },
+  {
+   "sha256": "efa999b8aa2b14e1fd6c70019b1143f086462f95d73551341c5c345751daf0d8",
+   "phones": "K AA T",
+   "confidence": 0.85
+  }
+ ]
+}

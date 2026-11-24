@@ -177,6 +177,7 @@ def complete_words_at_gap(audio, start, end, expected, first, second):
 
 def assess(audio, text, transcript=None, *, recheck=False):
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
+    from aiden_perkin import cited as has_perkin, verify as verify_perkin, gap_after_attention
     from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
     expected = words(text)
     transcript = isolated(audio) if transcript is None else transcript
@@ -206,12 +207,25 @@ def assess(audio, text, transcript=None, *, recheck=False):
     falkirk = None
     explorer = None
     turkish_word = None
+    chemists = None
+    surname = None
     ganzfeld = None
     cork_taint = None
     if 'trichloroanisole' in expected:
         from aiden_cork_taint import verify, verify_pause_before_locants
         alternate = independent(audio)
         cork_taint = verify(audio,text,transcript,alternate)
+    elif has_perkin(expected):
+        alternate = independent(audio)
+        chemists = verify_perkin(audio,expected,transcript,alternate)
+    elif expected == ['shenggen','fan']:
+        from aiden_surnames import verify_shenggen
+        alternate = independent(audio)
+        surname = verify_shenggen(audio,transcript,alternate)
+    elif expected in (['according','to','janzen'], ['angelina','hawley','dolan']):
+        from aiden_surnames import verify
+        alternate = independent(audio)
+        surname = verify(audio,expected,transcript,alternate)
     elif 'ganzfeld' in expected:
         from aiden_ganzfeld import verify
         alternate = independent(audio)
@@ -334,6 +348,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if chemists and gap_after_attention(start,expected,left_words,right_words,chemists):
+                return True
             if india and end/RATE < india['start']:
                 from aiden_india import TRANSCRIPT_ENDINGS
                 for k in (2,1):
@@ -417,6 +433,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['heyerdahl_pronunciation']=explorer
     if turkish_word is not None:
         result['turkish_word']=turkish_word
+    if chemists is not None:
+        result['chemists_surnames']=chemists
+    if surname is not None:
+        result['surname_pronunciation']=surname
     if ganzfeld is not None:
         result['ganzfeld_pronunciation']=ganzfeld
     if cork_taint is not None:

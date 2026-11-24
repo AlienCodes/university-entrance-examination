@@ -1,0 +1,125 @@
+{
+ "original": "334a4ef8bb8693653c79c6705539e9fbc2d2b627aff2e14aa61b7eb5ae6c90ca",
+ "negative": "3deab363c5347654d6ee54a75a68846d328b21aa6541c32af4b35fde6e4ec26b",
+ "master_sha256": "b65a0de93b75472dbbb7ca1361063b57e1c946a0dde074cc6287256ecd3c7d93",
+ "aac_sha256": "0840c3996bd02f35a3b15452b7bd40e9cb59b7b95a323f2f42c5d909b46baa3c",
+ "seconds": [
+  242.785,
+  246.43
+ ],
+ "tests": [
+  {
+   "case": "original-24k",
+   "expected": true,
+   "accepted": true,
+   "details": {
+    "text": "When they applied Floris's mix to the desert-like test plots,",
+    "heard": "When they applied Flores's mix to the desert like test plots,",
+    "checked_internal_gaps": [],
+    "second_heard": "When they applied Flores' mix to the desert-like test plots,",
+    "floris_pronunciation": {
+     "phones": "F L AO R IH S",
+     "possessive_syllable": [
+      "iz"
+     ],
+     "confidence": 0.403,
+     "start": 0.75,
+     "end": 1.3
+    }
+   }
+  },
+  {
+   "case": "full-mp3",
+   "expected": true,
+   "accepted": true,
+   "details": {
+    "text": "When they applied Floris's mix to the desert-like test plots,",
+    "heard": "When they applied Flores's mix to the desert like test plots,",
+    "checked_internal_gaps": [],
+    "second_heard": "When they applied Flores' mix to the desert-like test plots,",
+    "floris_pronunciation": {
+     "phones": "F L AO R IH S",
+     "possessive_syllable": [
+      "iz"
+     ],
+     "confidence": 0.335,
+     "start": 0.77,
+     "end": 1.33,
+     "reviewed_waveform": {
+      "start": 0.65,
+      "gain": 0.9913,
+      "lag_samples": 0,
+      "worst_window_correlation": 0.992671,
+      "average_correlation": 0.999192,
+      "max_level_difference_db": 0.401
+     }
+    }
+   }
+  },
+  {
+   "case": "whole-mp3-to-aac",
+   "expected": true,
+   "accepted": true,
+   "details": {
+    "text": "When they applied Floris's mix to the desert-like test plots,",
+    "heard": "When they applied Flores's mix to the desert like test plots,",
+    "checked_internal_gaps": [],
+    "second_heard": "When they applied floruses mixed to the desert-like test plots,",
+    "floris_pronunciation": {
+     "phones": "F L AO R IH S",
+     "possessive_syllable": [
+      "iz"
+     ],
+     "confidence": 0.304,
+     "start": 0.77,
+     "end": 1.33,
+     "reviewed_waveform": {
+      "start": 0.65,
+      "gain": 0.9969,
+      "lag_samples": 0,
+      "worst_window_correlation": 0.987056,
+      "average_correlation": 0.998196,
+      "max_level_difference_db": 0.419
+     }
+    }
+   }
+  },
+  {
+   "case": "different-natural-take",
+   "expected": false,
+   "accepted": false,
+   "details": "The noun mix or the following to is unclear"
+  },
+  {
+   "case": "missing-possessive-syllable",
+   "expected": false,
+   "accepted": false,
+   "details": "The wording around Floris differs: 'When they applied fluorocid mix to the desert like test plots,'"
+  },
+  {
+   "case": "split-surname-280ms",
+   "expected": false,
+   "accepted": false,
+   "details": "The wording around Floris differs: 'When they applied floor verses mixed to the desert-like test plots,'"
+  }
+ ],
+ "lesson": "C13T4P2",
+ "sentence": 28,
+ "phrase": 1,
+ "source_run": 45298679101,
+ "source_artifact": 14891704896,
+ "previous_issue": "原始词尾、所有格和 mix 均经独立比对。将全部真实录音按生产参数合成为母带后，声学模型将跨词 ks t 错分到 mixed 的词尾。",
+ "reference": {
+  "file": "tools/读音对照/Floris-mix-to.flac",
+  "sha256": "deaba4310b9e376b0f6534af9538eb0da4256ae8939a3c2d9f4c39f368c89b3b",
+  "source_interval": [
+   0.65,
+   2.15
+  ],
+  "derivation": "保留来自原始录音的单个完整意群，按既有六级同款段电平、陷波和48 kHz母带链独立处理，再取1.50秒无损片段；对整篇MP3和AAC中同一段只作一次时移和整体增益归一，逐25毫秒比对。",
+  "native_references": [
+   "https://anchor.fm/s/febd994/podcast/rss",
+   "https://forvo.com/word/floris/#nl"
+  ]
+ }
+}

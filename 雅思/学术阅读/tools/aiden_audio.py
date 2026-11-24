@@ -94,6 +94,8 @@ class Aiden:
             instruction += ' Pronounce Lei Tzu (Léi Zǔ) in two connected syllables: lay tsoo, with /ts/ at the start of tsoo.'
         if re.search(r'\b(?:Halley|Hally)\b',script,re.I):
             instruction += ' Read the astronomer’s surname Halley in two connected syllables /ˈhæli/, with an audible initial h.'
+        if re.search(r'\bPerkin (?:saw|set|spent)\b',script,re.I):
+            instruction += ' William Perkin is singular. Finish the name on n, then begin the verb with its own s.'
         if re.search(r"\bPerkin['’]s\b",script,re.I):
             instruction += ' Read the possessive of Perkin as /ˈpɝkɪnz/: two syllables in total, ending in a single /z/.'
         if any(re.search(r'\b'+re.escape(name)+r'\b',script,re.I) for name in aiden_ceylonese.RENDERINGS):
@@ -147,9 +149,11 @@ class Aiden:
         if re.search(r'\bganzfeld\b',script,re.I):
             from aiden_ganzfeld import HINT
             instruction += ' ' + HINT
+        if re.search(r'\bSh(?:eng|ung)[- ]?(?:gen|gun) Fan\b',script,re.I):
+            instruction += ' Shenggen has two syllables. End the first with ng in sing, begin the second with a hard g and end it with n. Then say Fan.'
         if re.search(r'\bJanzen\b',script,re.I):
             instruction += ' Read Janzen in two syllables, JAN-zuhn, with the vowel of jam and a voiced z in the middle.'
-        if re.search(r'\bnotes of (?:Ind|Ynde)\b', script, re.I):
+        if re.search(r'\bnotes of (?:Ind|Ynde|Eynd)\b', script, re.I):
             instruction += ' ' + aiden_india.HINT
         if re.search(r'\bresearched the chemistry\b', script, re.I):
             instruction += ' Read researched in the past tense: end it with the sound cht, then link naturally to the chemistry.'
@@ -205,7 +209,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
-                      and not {'ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'perkin','perkins','shenggen','janzen','hawley','ganzfeld','diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -253,6 +257,8 @@ class Aiden:
             spellings=aiden_sobchack.RENDERINGS
         elif re.search(r'\bDe Dreu\b',script,re.I):
             spellings=aiden_de_dreu.RENDERINGS
+        elif words(script)==['shenggen','fan']:
+            spellings=('Shenggen Fan','Sheng-gen Fan','Sheng-gun Fan','Shung-gen Fan','Shenggen Fan')
         elif words(script)[:3]==['deane','dived','down']:
             spellings=('Deane dived down','Dean DIVED down','Deane DIVED down','Dean dived down','Deane dived down')
         elif words(script)[:3]==['approached','the','helicopters']:

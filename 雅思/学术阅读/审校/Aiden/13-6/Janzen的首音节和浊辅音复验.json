@@ -1,0 +1,173 @@
+{
+ "lesson": "C9T2P1",
+ "source_run": 45298679101,
+ "source_artifact": 14891909138,
+ "source_archive_sha256": "f863eafc1557613d3ea740d58d9619d8a4c90cd06abefc5595b77dae9deff19b",
+ "method": "Janzen 的中间是浊辅音 /z/，首音节为 /dʒæn/。两套转写允许提供候选，词内辅音、尾音和停音均从实际录音判断。",
+ "dictionary": {
+  "janzen": "JH AE N Z AH N",
+  "jansen": "JH AE N S AH N",
+  "janssen": "JH AE N S AH N",
+  "jensen": "JH EH N S AH N"
+ },
+ "references": [
+  "https://github.com/cmusphinx/cmudict"
+ ],
+ "native_recovery": [
+  {
+   "sha256": "c6d2ce205a43ee07c2355f2f4d26790861cdf2ef68fcb0a6dca53668cb24a7a3",
+   "printed": "According to Janzen,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "sha256": "27550e090ab241c217aa836d25e511dac473874d5aefa3b783e3033f6c7c6fb2",
+   "printed": "According to Janzen,",
+   "accepted": false,
+   "expected": false
+  },
+  {
+   "sha256": "a46baec8f5b1f84bc7e6927daf1dab10342bafc0a22d738181d1cca3e93a47bf",
+   "printed": "According to Janzen,",
+   "accepted": false,
+   "expected": false
+  }
+ ],
+ "codec_checks": [
+  {
+   "case": "intact",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to Janzen,",
+    "heard": "According to Jansen,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Janssen,",
+    "surname_pronunciation": {
+     "phones": "JH AE N Z IH N",
+     "score": 0.222,
+     "start": 0.53,
+     "end": 1.19
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to Janzen,",
+    "heard": "According to Jansen,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Janssen,",
+    "surname_pronunciation": {
+     "phones": "JH AE N Z IH N",
+     "score": 0.225,
+     "start": 0.53,
+     "end": 1.19
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "According to Janzen,",
+    "heard": "According to Jansen,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Janssen,",
+    "surname_pronunciation": {
+     "phones": "JH AE N Z IH N",
+     "score": 0.239,
+     "start": 0.53,
+     "end": 1.19
+    }
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear initial, voiced z or final n in Janzen: Y AE N Z IH N"
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear initial, voiced z or final n in Janzen: Y AE N Z IH N"
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear initial, voiced z or final n in Janzen: Y AE N Z IH N"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear initial, voiced z or final n in Janzen: JH AE N Z AH"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear initial, voiced z or final n in Janzen: JH AE N Z AH"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear initial, voiced z or final n in Janzen: JH AE N Z AH"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The introduction or the position of the surname Janzen differs"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The introduction or the position of the surname Janzen differs"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The introduction or the position of the surname Janzen differs"
+   }
+  }
+ ]
+}

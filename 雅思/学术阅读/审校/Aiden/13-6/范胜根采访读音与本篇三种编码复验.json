@@ -1,0 +1,182 @@
+{
+ "lesson": "C12T2P1",
+ "source_run": 45298679101,
+ "source_artifact": 14891229558,
+ "source_archive_sha256": "f29f1dee203e6c25099ffa32327dd6fd07fc19c330978c9c4a31287907961269",
+ "method": "比对杜克大学采访中主持人第二次介绍范胜根的读音。逐个核实首音节 ng、次音节的塞音起始、词尾 n 和姓氏 Fan。",
+ "dictionary": {},
+ "references": [
+  "https://wfpc.sanford.duke.edu/podcasts/shenggen-fan-hunger-climate-change-and-hope-innovation/"
+ ],
+ "native_recovery": [
+  {
+   "sha256": "64c0b68c2d1d706d6626f5d6bfd49c017089cfda19f9212f06993959ab9cd991",
+   "printed": "Shenggen Fan,",
+   "accepted": true,
+   "expected": true
+  },
+  {
+   "sha256": "3057da5c3548ac031c1474eb5c9df6c20402c3e59f05b0717fd90dcfc8271844",
+   "printed": "Shenggen Fan,",
+   "accepted": false,
+   "expected": false
+  },
+  {
+   "sha256": "88c27511a8edd292a8ad6db1584f55b56d09f365bdd36e9fc95e45f25b4cb9a5",
+   "printed": "Shenggen Fan,",
+   "accepted": false,
+   "expected": false
+  }
+ ],
+ "codec_checks": [
+  {
+   "case": "intact",
+   "format": "flac",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Shenggen Fan,",
+    "heard": "Shingen Fan",
+    "checked_internal_gaps": [],
+    "second_heard": "Shingen Fan",
+    "surname_pronunciation": {
+     "phones": "SH IH NG G IH N / F AE N",
+     "score": 0.144,
+     "start": 0.05,
+     "end": 0.52
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "mp3",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Shenggen Fan,",
+    "heard": "Shingen Fan",
+    "checked_internal_gaps": [],
+    "second_heard": "shingen fan",
+    "surname_pronunciation": {
+     "phones": "SH IH NG G IH N / F AE N",
+     "score": 0.147,
+     "start": 0.05,
+     "end": 0.52
+    }
+   }
+  },
+  {
+   "case": "intact",
+   "format": "m4a",
+   "accepted": true,
+   "expected": true,
+   "proof": {
+    "text": "Shenggen Fan,",
+    "heard": "Shingen fan.",
+    "checked_internal_gaps": [],
+    "second_heard": "shingen fan",
+    "surname_pronunciation": {
+     "phones": "SH IH NG G IH N / F AE N",
+     "score": 0.143,
+     "start": 0.05,
+     "end": 0.52
+    }
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear syllable or surname in Shenggen Fan: SH EH N G EH N / fan"
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear syllable or surname in Shenggen Fan: SH EH N G EH N / fan"
+   }
+  },
+  {
+   "case": "wrong first sound or surrounding names",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The economist’s given name or surname differs: chingen fan"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear syllable or surname in Shenggen Fan: SH AE NG G EH N / fan"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear syllable or surname in Shenggen Fan: SH AE NG G EH N / fan"
+   }
+  },
+  {
+   "case": "wrong reading or incomplete ending",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "Unclear syllable or surname in Shenggen Fan: SH AE NG G EH N / fan"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "flac",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The economist’s given name or surname differs: shingling in fan"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "mp3",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The economist’s given name or surname differs: shingling in fan"
+   }
+  },
+  {
+   "case": "internal 280ms pause",
+   "format": "m4a",
+   "accepted": false,
+   "expected": false,
+   "proof": {
+    "reason": "The economist’s given name or surname differs: shingling in fan"
+   }
+  }
+ ],
+ "publisher_audio": {
+  "url": "https://traffic.libsyn.com/secure/leading-voices-in-food/Shenggen_Fan_on_Hunger_Climate_Change_and_the_Hope_of_Innovation.mp3?dest-id=860036",
+  "byte_range": [
+   0,
+   1599999
+  ],
+  "sha256": "54801c94290ace5b4a0d71d33e3ce54e0a08f4d0acbde527700d85651fffe0db",
+  "given_name_seconds": [
+   37.36,
+   37.76
+  ],
+  "phones": "SH IH NG G AH N",
+  "surname": "F AE N"
+ }
+}

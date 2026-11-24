@@ -7,8 +7,9 @@ from aiden_pronunciation import grammar_decoder, locate_sound
 
 # Dictionaries of the Scots Language records the historical spelling Ynde under
 # Ind. Merriam-Webster's American noun Ind has single-syllable /ɪnd/ and /aɪnd/.
-RENDERINGS = ('Ynde', 'Ind', 'Ind', 'Ind', 'Ind')
-HINT = ('At the end of the quotation, read the old name for India, Ind, in one '
+RENDERINGS = ('Ynde', 'Ind', 'Eynd', 'Ind', 'Eynd')
+HINT = ('Read the traveller’s surname Mandeville as MAN-duh-vill, with the short i '
+        'of village. At the end of the quotation, read the old name for India in one '
         'syllable, rhyming with kind. End with nd and no vowel after the d.')
 PHONES = {
     'short-ind': 'IH N D', 'long-ind': 'AY N D',
