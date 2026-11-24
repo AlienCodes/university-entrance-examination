@@ -7,9 +7,8 @@ python -m venv "$RUNNER_TEMP/speech"
 sp="$RUNNER_TEMP/speech/bin/python"
 if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
   "$sp" -m pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
-  "$sp" -m pip install -q qwen-tts==0.1.1 sherpa-onnx==1.13.8
+  "$sp" -m pip install -q qwen-tts==0.1.1 sherpa-onnx==1.13.8 pocketsphinx==5.0.4
   case "${IELTS_LESSON:-}" in
-    C6T1P3|C8T1P1|C11T1P2|C11T1P3|C11T2P2|C11T4P2|C12T1P1|C13T2P1|C13T2P2|C13T4P1) "$sp" -m pip install -q pocketsphinx==5.0.4 ;;
     C11T4P3) "$sp" -m pip install -q onnxruntime==1.32.0 ;;
   esac
 else
