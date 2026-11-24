@@ -43,8 +43,15 @@ def spoken_spelling(text):
     # These British and American forms have the same spoken word. Preserve
     # grammatical endings, including plural -s, and keep all printed text intact.
     text = spoken_centuries(text)
-    text = re.sub(r'\b(homogen|util|dramat|mechan|colon|emphas|critic|vulgar|container)is(e|es|ed|ing|er|ers|ation|ations)\b',
-                  r'\1iz\2', text, flags=re.I)
+    # Productive -ize stems actually printed in these papers. Exclude exercise,
+    # advise, promise and the other verbs for which this spelling change is invalid.
+    spelling = (r'\b(categor|central|character|civil|colon|computer|container|critic|custom|dramat|emphas|'
+                r'fertil|financial|general|global|harmon|homogen|incentiv|industrial|institutional|'
+                r'interior|ion|jeopard|local|marginal|maxim|mechan|memor|minim|mobil|motor|neutral|'
+                r'organ|personal|public|real|recogn|revital|revolution|scrutin|special|standard|'
+                r'summar|synchron|systemat|unrecogn|util|victim|visual|vulgar)'
+                r'is(e|es|ed|ing|er|ers|ation|ations|ational)\b')
+    text = re.sub(spelling, r'\1iz\2', text, flags=re.I)
     text = re.sub(r'\banalys(e|ed|ing)\b', r'analyz\1', text, flags=re.I)
     text = re.sub(r'\bageing\b', 'aging', text, flags=re.I)
     return re.sub(r'\btonne(s?)\b', r'ton\1', text, flags=re.I)
