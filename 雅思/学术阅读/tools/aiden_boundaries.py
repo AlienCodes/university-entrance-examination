@@ -157,9 +157,11 @@ def interior_gaps(audio):
 
 
 def assess(audio, text, transcript=None):
+    from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     expected = words(text)
     transcript = isolated(audio) if transcript is None else transcript
     alternate = None
+    historian = None
     if expected == ['quercus', 'suber']:
         from aiden_cork_oak import verify
         alternate = independent(audio)
@@ -236,6 +238,9 @@ def assess(audio, text, transcript=None):
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):
             raise ValueError(f'Glass thickness or its units differ: {transcript!r} / {alternate!r}')
+    elif cited_phrase(expected):
+        alternate = independent(audio)
+        historian = verify_macfarlane(audio,expected,transcript,alternate)
     elif NOISE_INITIALS.search(text):
         alternate = independent(audio)
         if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
@@ -255,7 +260,12 @@ def assess(audio, text, transcript=None):
         left = isolated(audio[:start])
         right = isolated(audio[end:])
         def split_matches(before,after):
-            return any(matches(expected[:i],words(before)) and matches(expected[i:],words(after))
+            left_words = words(before)
+            # A later comma does not change the surname already checked on this
+            # waveform. Keep every other word and the far side of the gap intact.
+            if historian and start/RATE > historian['end'] and left_words[:1] == ['mcfarlands']:
+                left_words = ['macfarlanes', *left_words[1:]]
+            return any(matches(expected[:i],left_words) and matches(expected[i:],words(after))
                        for i in range(1,len(expected)))
         if not split_matches(left,right):
             other_left=independent(audio[:start])
@@ -265,6 +275,8 @@ def assess(audio, text, transcript=None):
                                  f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    if historian is not None:
+        result['historian_pronunciation'] = historian
     if alternate is not None:
         result['second_heard']=alternate
     if name_evidence is not None:

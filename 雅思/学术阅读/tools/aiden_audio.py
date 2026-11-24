@@ -19,6 +19,7 @@ import aiden_ceylonese
 import aiden_inuktitut
 import aiden_sobchack
 import aiden_de_dreu
+from aiden_macfarlane import cited_phrase
 import aiden_turkish
 import aiden_heyerdahl
 import make_audio as cet
@@ -125,6 +126,10 @@ class Aiden:
             instruction += ' Read Martin Sommerkorn with a voiced z, a short first vowel and the final consonants in korn, as in his own introduction. Use one connected surname.'
         if 'Doctor Phil Rasch' in script:
             instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
+        if re.search(r'\b(?:Mac|Mc)farlane\b',script,re.I):
+            instruction += ' In Macfarlane, end the surname with an n, as in a short unstressed “lun”. Do not add a d. Sound the z only for a written possessive.'
+        if re.search(r'\bJanzen\b',script,re.I):
+            instruction += ' Read Janzen in two syllables, JAN-zuhn, with the vowel of jam and a voiced z in the middle.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -148,7 +153,7 @@ class Aiden:
             return None
         # Dedicated acoustic checks require both recognizers to match the
         # English context even when they transcribe a foreign word differently.
-        if not {'dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
+        if not cited_phrase(words(script)) and not {'dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
             return None
         try:
             assess(audio,script,transcript)
@@ -178,7 +183,7 @@ class Aiden:
                                       issue=self.rejected_master_takes[data['sha256']])
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
-                elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
+                elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
                       and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
@@ -228,6 +233,8 @@ class Aiden:
             spellings=('Sommerkorn','Zommerkorn','Sommerkorn','Zommer-korn','Sommerkorn')
         elif words(script) == ['thor', 'heyerdahl']:
             spellings=aiden_heyerdahl.RENDERINGS
+        elif cited_phrase(words(script)):
+            spellings=('Macfarlane','McFarlane','Macfarlane','McFarlane','Macfarlane')
         elif aiden_turkish.ORAL in words(script):
             spellings=aiden_turkish.RENDERINGS
         for attempt in range(len(spellings) if spellings else 5):

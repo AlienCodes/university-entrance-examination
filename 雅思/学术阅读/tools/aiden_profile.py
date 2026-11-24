@@ -31,6 +31,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
         'fusee': ('aiden_fusee.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'qaujimajatuqangit': ('aiden_inuktitut.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'sobochack': ('aiden_sobchack.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
+        'macfarlane': ('aiden_macfarlane.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
     }
     for term, names in term_checkers.items():
         if not any(term in row.lower() for row in rows):
