@@ -167,6 +167,7 @@ def assess(audio, text, transcript=None):
     film_names = None
     psychologist = None
     captain = None
+    arctic_advisor = None
     falkirk = None
     explorer = None
     turkish_word = None
@@ -195,6 +196,10 @@ def assess(audio, text, transcript=None):
         from aiden_dowman import verify
         alternate = independent(audio)
         captain = verify(audio,transcript,alternate)
+    elif expected[-2:] == ['martin','sommerkorn']:
+        from aiden_sommerkorn import verify
+        alternate = independent(audio)
+        arctic_advisor = verify(audio,transcript,alternate)
     elif expected == ['at','butterley','engineerings','steelworks','in','derbyshire']:
         from aiden_falkirk import verify
         alternate = independent(audio)
@@ -258,6 +263,8 @@ def assess(audio, text, transcript=None):
         result['de_dreu_pronunciation']=psychologist
     if captain is not None:
         result['captain_pronunciation']=captain
+    if arctic_advisor is not None:
+        result['advisor_pronunciation']=arctic_advisor
     if falkirk is not None:
         result['engineering_possessive']=falkirk
     if explorer is not None:

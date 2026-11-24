@@ -108,6 +108,8 @@ class Aiden:
             instruction += ' Say Captain Dowman’s name with the vowel in cow, then man. Keep the two syllables joined.'
         if 'Deane dived down' in script:
             instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
+        if 'Sommerkorn' in script or 'Zommerkorn' in script:
+            instruction += ' Read Martin Sommerkorn with a voiced z, a short first vowel and the final consonants in korn, as in his own introduction. Use one connected surname.'
         if 'Doctor Phil Rasch' in script:
             instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
         torch.manual_seed(seed)
@@ -133,7 +135,7 @@ class Aiden:
             return None
         # Dedicated acoustic checks require both recognizers to match the
         # English context even when they transcribe a foreign word differently.
-        if not {'dreu','heyerdahl','butterley','dowman',aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
+        if not {'dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_turkish.ORAL}.intersection(words(script)) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
             return None
         try:
             assess(audio,script,transcript)
@@ -164,7 +166,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman',aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -199,6 +201,8 @@ class Aiden:
             spellings=aiden_de_dreu.RENDERINGS
         elif words(script) == ['dowman','was','determined']:
             spellings=('Dowman','Dow Man','Dowman','Dow-man','Dowman')
+        elif 'sommerkorn' in words(script):
+            spellings=('Sommerkorn','Zommerkorn','Sommerkorn','Zommer-korn','Sommerkorn')
         elif words(script) == ['thor', 'heyerdahl']:
             spellings=aiden_heyerdahl.RENDERINGS
         elif aiden_turkish.ORAL in words(script):

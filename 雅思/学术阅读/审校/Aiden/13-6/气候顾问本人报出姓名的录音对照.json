@@ -1,0 +1,121 @@
+{
+ "id": "C11T1P3",
+ "sentence": 36,
+ "run": 45265727081,
+ "artifact": 14880536118,
+ "Aiden_FLAC": "f32e5106a2b90fa7f08b198ecdc874388e422794ae1c4c11d68e645e24bd8cd2",
+ "source": {
+  "publisher": "APTN News",
+  "page": "https://www.aptnnews.ca/ourstories/theplacethatthaws/",
+  "feed": "https://rss.libsyn.com/shows/510718/destinations/4381093.xml",
+  "episode": "Arctic Fever",
+  "passage": "At 264.25 seconds Sommerkorn introduces himself; at 266.17 seconds he says he is German.",
+  "window_seconds": [
+   265.06,
+   266.17
+  ],
+  "speaker_self_introduction": {
+   "phones": "Z AH M AH K AO R N",
+   "start": 0.01,
+   "end": 0.74,
+   "confidence": 0.21
+  },
+  "speaker_identity": "https://www.arcticwwf.org/about/meet-the-team/sommerkorn/"
+ },
+ "tests": [
+  {
+   "variant": "production_native",
+   "accepted": true,
+   "observation": {
+    "text": "According to Dr Martin Sommerkorn,",
+    "heard": "According to Dr. Martin Zomercorn,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Dr. Martin Zomarkorn,",
+    "advisor_pronunciation": {
+     "phones": "Z AA M ER K AO R N",
+     "start": 1.49,
+     "end": 2.31,
+     "confidence": 0.379
+    }
+   }
+  },
+  {
+   "variant": ".flac",
+   "accepted": true,
+   "observation": {
+    "text": "According to Dr Martin Sommerkorn,",
+    "heard": "According to doctor Martin Zomerkorn,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Dr. Martin Zomarkorn,",
+    "advisor_pronunciation": {
+     "phones": "Z AA M ER K AO R N",
+     "start": 1.49,
+     "end": 2.31,
+     "confidence": 0.38
+    }
+   }
+  },
+  {
+   "variant": ".flac 0.28-s internal dropout",
+   "accepted": false,
+   "observation": "The introduction to Martin Sommerkorn differs: 'According to doctor Martin Zamercorn,'"
+  },
+  {
+   "variant": ".flac missing second half of surname",
+   "accepted": false,
+   "observation": "The introduction to Martin Sommerkorn differs: 'According to Dr. Martin Zomerk,'"
+  },
+  {
+   "variant": ".mp3",
+   "accepted": true,
+   "observation": {
+    "text": "According to Dr Martin Sommerkorn,",
+    "heard": "According to doctor Martin Zomercorn,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Dr. Martin Zomarkorn,",
+    "advisor_pronunciation": {
+     "phones": "Z AA M ER K AO R N",
+     "start": 1.49,
+     "end": 2.31,
+     "confidence": 0.362
+    }
+   }
+  },
+  {
+   "variant": ".mp3 0.28-s internal dropout",
+   "accepted": false,
+   "observation": "The introduction to Martin Sommerkorn differs: 'According to doctor Martin Zamercorn,'"
+  },
+  {
+   "variant": ".mp3 missing second half of surname",
+   "accepted": false,
+   "observation": "The introduction to Martin Sommerkorn differs: 'According to Dr. Martin Zomerk,'"
+  },
+  {
+   "variant": ".m4a",
+   "accepted": true,
+   "observation": {
+    "text": "According to Dr Martin Sommerkorn,",
+    "heard": "According to doctor Martin Zomerkorn,",
+    "checked_internal_gaps": [],
+    "second_heard": "According to Dr. Martin Zomarkorn,",
+    "advisor_pronunciation": {
+     "phones": "Z AA M ER K AO R N",
+     "start": 1.49,
+     "end": 2.31,
+     "confidence": 0.362
+    }
+   }
+  },
+  {
+   "variant": ".m4a 0.28-s internal dropout",
+   "accepted": false,
+   "observation": "The introduction to Martin Sommerkorn differs: 'According to Doctor Martin Zamercorn,'"
+  },
+  {
+   "variant": ".m4a missing second half of surname",
+   "accepted": false,
+   "observation": "The introduction to Martin Sommerkorn differs: 'According to Dr. Martin Zomerk,'"
+  }
+ ]
+}
