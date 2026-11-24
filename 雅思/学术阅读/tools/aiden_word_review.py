@@ -29,6 +29,14 @@ SPELLINGS = {
 COMPOUND_SPELLINGS = {
     ('counter', 'productive'), ('counter', 'intuitively'), ('north', 'western'),
     ('south', 'western'), ('semi', 'circular'), ('re', 'tooling'), ('cork', 'strippers'),
+    ('counter', 'intuitive'), ('re', 'enactment'), ('bar', 'code'), ('bar', 'codes'),
+    ('best', 'selling'), ('brain', 'stem'), ('bow', 'strings'), ('code', 'names'),
+    ('data', 'bank'), ('film', 'maker'), ('fire', 'fighting'), ('glass', 'house'),
+    ('glass', 'makers'), ('hard', 'wired'), ('main', 'spring'), ('micro', 'technology'),
+    ('night', 'dress'), ('rain', 'forests'), ('sound', 'track'), ('steam', 'ships'),
+    ('sub', 'continent'), ('super', 'colony'), ('super', 'hot'), ('super', 'viruses'),
+    ('thunder', 'clouds'), ('time', 'keeping'), ('train', 'spotters'), ('train', 'spotting'),
+    ('watch', 'towers'), ('wind', 'blown'),
 }
 
 
@@ -147,6 +155,14 @@ MEASURED_NAMES = {
 
 
 def measured_words(tokens, evidence):
+    # The free recognizers write this two-word name as “Quircus Subar” even when
+    # the phonetic check detects both K W ER K AH S and S UW B ER on the same audio.
+    oak = evidence.get('botanical_pronunciation', {})
+    if (evidence.get('text', '').strip(' ,.;:').casefold() == 'quercus suber'
+            and oak.get('heard') == ['quercus', 'suber'] and len(tokens) == 2
+            and tokens[0] in {'quercus', 'quircus', 'quirkus', 'quirkous'}
+            and tokens[1] in {'suber', 'subar', 'subaru'}):
+        return ['quercus', 'suber']
     value = ' ' + ' '.join(tokens) + ' '
     for key, spellings in MEASURED_NAMES.items():
         if evidence.get(key):

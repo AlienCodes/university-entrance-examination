@@ -60,6 +60,8 @@ def main(listen):
     for printed, recognized in (("artefacts", "artifacts"), ("sceptical", "skeptical"),
                                 ("unravelling", "unraveling"), ("counter-productive", "counterproductive"),
                                 ("Counter-intuitively", "Counterintuitively"),
+                                ("the re-enactment of historical events", "the reenactment of historical events"),
+                                ("steam ships", "steamships"), ("the film-maker", "the filmmaker"),
                                 ("travelled to north-western India", "traveled to northwestern India"),
                                 ("south-western Tanzania", "southwestern Tanzania"),
                                 ("terrestrial re-tooling", "terrestrial retooling"),
@@ -70,8 +72,17 @@ def main(listen):
     for printed, recognized in (("it is now evident", "it is no evident"),
                                 ("artefacts", "artifact"), ("unravelling", "unravelled"),
                                 ("north-western", "north-eastern"), ("nowhere", "now here"),
-                                ("cork-strippers", "cork stripper"), ("Makete", "Makati")):
+                                ("cork-strippers", "cork stripper"), ("Makete", "Makati"),
+                                ("steam ships", "steamship"), ("timekeeping", "time kept")):
         assert not same_words(words(printed), words(recognized))
+    oak = dict(text="Quercus suber,", heard="Quircus Subar.", second_heard="Quirkous Subaru",
+               botanical_pronunciation={"heard": ["quercus", "suber"]})
+    bark = dict(text="the thick bark of the cork oak tree,", heard="the thick bark of the cork oak tree")
+    material = dict(text="is a remarkable material.", heard="is a remarkable material")
+    verify_join(bark, oak)
+    verify_join(oak, material)
+    rejects(verify_join, bark, dict(oak, botanical_pronunciation={"heard": ["corkus", "suber"]}))
+    rejects(verify_join, oak, dict(material, heard="a remarkable material"))
     assert words(left["second_heard"])[-2:] == ["export", "sectors"]
     assert words(right["second_heard"])[:1] == ["which"]
     left_end = revised["clip_16khz"][0][1]
