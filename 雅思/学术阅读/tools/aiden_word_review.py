@@ -20,6 +20,15 @@ SPELLINGS = {
     'channelled':'channeled', 'fuelled':'fueled', 'signalled':'signaled',
     'modelled':'modeled', 'modelling':'modeling', 'millilitres':'milliliters', 'grey':'gray',
     'archaeologists':'archeologists', 'archaeologist':'archeologist',
+    'artefacts':'artifacts', 'sceptical':'skeptical', 'skilful':'skillful',
+    'unravelling':'unraveling',
+}
+
+# Both spellings occur in the two recognizers' readings of these printed compounds.
+# List the exact split so an arbitrary new word boundary cannot be accepted.
+COMPOUND_SPELLINGS = {
+    ('counter', 'productive'), ('counter', 'intuitively'), ('north', 'western'),
+    ('south', 'western'), ('semi', 'circular'), ('re', 'tooling'), ('cork', 'strippers'),
 }
 
 
@@ -60,7 +69,9 @@ def same_words(expected, observed):
         if i == len(expected) or j == len(observed):
             return i == len(expected) and j == len(observed)
         left, right = expected[i], observed[j]
-        if left == right or (sounds((left,)) and sounds((left,)) == sounds((right,))):
+        prise_away = ({left, right} == {'prise', 'prize'}
+                      and expected[i+1:i+2] == observed[j+1:j+2] == ('away',))
+        if left == right or prise_away or (sounds((left,)) and sounds((left,)) == sounds((right,))):
             if covers(i + 1, j + 1):
                 return True
         # A compound may have been printed as one word and decoded as two (or vice versa).
@@ -69,7 +80,8 @@ def same_words(expected, observed):
             for a, b in ((size, 1), (1, size)):
                 x, y = expected[i:i+a], observed[j:j+b]
                 if (len(x) == a and len(y) == b and ''.join(x) == ''.join(y)
-                        and sounds(x) and sounds(x) == sounds(y) and covers(i+a, j+b)):
+                        and (x in COMPOUND_SPELLINGS or y in COMPOUND_SPELLINGS
+                             or (sounds(x) and sounds(x) == sounds(y))) and covers(i+a, j+b)):
                     return True
         return False
 

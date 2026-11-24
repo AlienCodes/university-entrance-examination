@@ -57,6 +57,21 @@ def main(listen):
                            ("they did not return", "they did return"), ("walked", "walk")):
         assert not same_words(words(written), words(heard))
     assert same_words(words("with modelled birds"), words("with modeled birds"))
+    for printed, recognized in (("artefacts", "artifacts"), ("sceptical", "skeptical"),
+                                ("unravelling", "unraveling"), ("counter-productive", "counterproductive"),
+                                ("Counter-intuitively", "Counterintuitively"),
+                                ("travelled to north-western India", "traveled to northwestern India"),
+                                ("south-western Tanzania", "southwestern Tanzania"),
+                                ("terrestrial re-tooling", "terrestrial retooling"),
+                                ("skilful cork-strippers prise away a semi-circular husk",
+                                 "skillful corkstrippers prize away a semicircular husk")):
+        assert same_words(words(printed), words(recognized))
+        assert same_words(words(recognized), words(printed))
+    for printed, recognized in (("it is now evident", "it is no evident"),
+                                ("artefacts", "artifact"), ("unravelling", "unravelled"),
+                                ("north-western", "north-eastern"), ("nowhere", "now here"),
+                                ("cork-strippers", "cork stripper"), ("Makete", "Makati")):
+        assert not same_words(words(printed), words(recognized))
     assert words(left["second_heard"])[-2:] == ["export", "sectors"]
     assert words(right["second_heard"])[:1] == ["which"]
     left_end = revised["clip_16khz"][0][1]
