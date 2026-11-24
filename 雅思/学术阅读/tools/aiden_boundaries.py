@@ -171,6 +171,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
                 'botanical_pronunciation':proof,
                 'checked_internal_gaps':[[round(a/RATE,3),round(b/RATE,3)] for a,b in pauses]}
     name_evidence = None
+    star_groups = None
     clock_evidence = None
     inuit_evidence = None
     film_names = None
@@ -189,6 +190,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_ceylonese import verify
         alternate = independent(audio)
         name_evidence = verify(audio, text, transcript, alternate)
+    elif 'decans' in expected:
+        from aiden_decans import verify
+        alternate = independent(audio)
+        star_groups = verify(audio, expected, transcript, alternate)
     elif 'fusee' in expected:
         from aiden_fusee import verify
         alternate = independent(audio)
@@ -286,6 +291,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['second_heard']=alternate
     if name_evidence is not None:
         result['ceylonese_pronunciation']=name_evidence
+    if star_groups is not None:
+        result['decans_pronunciation'] = star_groups
     if clock_evidence is not None:
         result['fusee_pronunciation']=clock_evidence
     if inuit_evidence is not None:

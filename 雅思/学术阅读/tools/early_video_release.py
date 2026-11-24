@@ -24,7 +24,7 @@ from submit_reviewed import approved, update_book_index
 
 import illustration_stage as art
 from aiden_batch import BATCHES
-from aiden_profile import IDENTITY, PAUSE_POLICY
+from aiden_profile import IDENTITY, PAUSE_POLICY, verified_subject_terms
 
 AIDEN=os.environ.get('IELTS_AIDEN_BATCH','')
 if AIDEN and (AIDEN not in BATCHES or os.environ.get('IELTS_NARRATOR')!='Aiden'):
@@ -99,7 +99,7 @@ def ingest(out):
             key=current_key(PROJECT,pid);source=pid+'-'+key[:16]+'.zip'
             if (receipt_data['lesson'],receipt_data['material_sha256'],receipt_data['content_sha256'],receipt_data['title_zh'],receipt_data['title'])!=(pid,key,proof['text_sha256'],title_zh,paper['title']):
                 raise ValueError(pid+' has unaligned teaching/print/video editions')
-            if AIDEN and (receipt_data.get('narrator')!=IDENTITY or receipt_data.get('pause_policy')!=PAUSE_POLICY or not receipt_data.get('verified_phrases')):
+            if AIDEN and (not verified_subject_terms(pid,receipt_data) or receipt_data.get('narrator')!=IDENTITY or receipt_data.get('pause_policy')!=PAUSE_POLICY or not receipt_data.get('verified_phrases')):
                 raise ValueError(pid+' does not have the approved voice and recorded phrase checks')
             asset=masters.get(source)
             if not asset or not asset.get('digest','').startswith('sha256:'):raise ValueError('Missing immutable master '+pid)

@@ -28,6 +28,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
     term_checkers = {
         'quercus suber': ('aiden_cork_oak.py',),
         'ceylonese': ('aiden_ceylonese.py',),
+        'decans': ('aiden_decans.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'fusee': ('aiden_fusee.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'qaujimajatuqangit': ('aiden_inuktitut.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'sobochack': ('aiden_sobchack.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
@@ -48,6 +49,12 @@ def audio_asset(lesson_dir, *, source_revision=None):
             ['git','show',source_revision+':'+file.relative_to(root).as_posix()],cwd=root)
         key.update(hashlib.sha256(data).digest())
     return f'{folder.name}-aiden-{key.hexdigest()[:16]}.zip'
+
+
+def verified_subject_terms(pid, receipt):
+    # The three printed plurals in the timekeeping paper have each been read as
+    # deacons on a previous track. Require the corrected vowel in the final AAC.
+    return pid != 'C8T1P1' or receipt.get('decans_checked_in_mp3_and_aac') == [10, 11, 12]
 
 
 def confirm(timing):

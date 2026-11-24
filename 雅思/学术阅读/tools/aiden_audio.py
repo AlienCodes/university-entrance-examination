@@ -20,6 +20,7 @@ import aiden_ceylonese
 import aiden_inuktitut
 import aiden_sobchack
 import aiden_de_dreu
+import aiden_decans
 from aiden_macfarlane import cited_phrase
 import aiden_turkish
 import aiden_heyerdahl
@@ -95,6 +96,8 @@ class Aiden:
             instruction += ' Pronounce the opening word sugars /ˈʃʊɡɚz/, with a soft sh and a voiced final z.'
         if re.search(r'\b(?:fusee|fuzee|fyoo-zee)\b',script,re.I):
             instruction += ' Pronounce the clock term fusee in two connected syllables, fyoo-ZEE /fjuːˈziː/, with a clear final ee vowel.'
+        if any(form.casefold() in script.casefold() for form in aiden_decans.RENDERINGS):
+            instruction += ' In the Egyptian star name decans /ˈdɛkənz/, use the short e of deck, an unstressed second syllable and a final z. Keep both syllables together.'
         if any(form.casefold() in script.casefold() for form in aiden_inuktitut.RENDERINGS):
             instruction += ' ' + aiden_inuktitut.HINT
         if any(form.casefold() in script.casefold() for form in aiden_sobchack.RENDERINGS):
@@ -181,7 +184,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
-                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ceylonese','fusee','decans','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -214,6 +217,8 @@ class Aiden:
             spellings=aiden_ceylonese.RENDERINGS
         elif 'fusee' in words(script):
             spellings=('fusee','fuzee','fyoo-ZEE','fusee','fyoo-zee')
+        elif 'decans' in words(script):
+            spellings=aiden_decans.RENDERINGS
         elif 'qaujimajatuqangit' in words(script):
             spellings=aiden_inuktitut.RENDERINGS
         elif 'sobchack' in words(script):
