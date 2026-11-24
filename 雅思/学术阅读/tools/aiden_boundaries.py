@@ -71,6 +71,7 @@ def words(text):
     text = re.sub(r'\blife[ -]+span(s?)\b', r'lifespan\1', text, flags=re.I)
     text = re.sub(r'\bnorth[ -]+east\b', 'northeast', text, flags=re.I)
     text = re.sub(r'\binter[ -]+modal\b', 'intermodal', text, flags=re.I)
+    text = re.sub(r'\bpaint[ -]+brush(es)?\b', r'paintbrush\1', text, flags=re.I)
     # P IH CH B L EH N D in CMUdict. Keep this one word when checking both sides of a pause.
     text = re.sub(r'\bpitch[ -]+blend\b', 'pitchblende', text, flags=re.I)
     text = re.sub(r'\bhally\b','halley',text,flags=re.I)
@@ -195,6 +196,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     captain = None
     arctic_advisor = None
     soil_scientist = None
+    ant_tools = None
     falkirk = None
     explorer = None
     turkish_word = None
@@ -232,6 +234,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_floris import verify
         alternate = independent(audio)
         soil_scientist = verify(audio,expected,transcript,alternate)
+    elif expected == ['or','fingers']:
+        from aiden_pronunciation import verify_or_fingers
+        alternate = independent(audio)
+        ant_tools = verify_or_fingers(audio,(transcript,alternate))
     elif 'dreu' in expected:
         from aiden_de_dreu import verify
         alternate = independent(audio)
@@ -320,10 +326,17 @@ def assess(audio, text, transcript=None, *, recheck=False):
             if not split_matches(other_left,other_right):
                 if alternate is None:
                     alternate = independent(audio)
-                if not complete_words_at_gap(audio, start, end, expected, transcript, alternate):
+                inuit_gap = None
+                if inuit_evidence:
+                    from aiden_inuktitut import verify_pause_before_inuit
+                    inuit_gap = verify_pause_before_inuit(audio,start,end,expected,left,right,inuit_evidence)
+                if inuit_gap:
+                    inuit_evidence['separate_words_after_pause'] = inuit_gap
+                elif complete_words_at_gap(audio, start, end, expected, transcript, alternate):
+                    gaps_with_quiet_context.append([round(start/RATE,3), round(end/RATE,3)])
+                else:
                     raise ValueError(f'Possible break inside a word at {start/RATE:.2f}–{end/RATE:.2f}s: {text!r} / '
                                      f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
-                gaps_with_quiet_context.append([round(start/RATE,3), round(end/RATE,3)])
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
     if sectors:
@@ -354,6 +367,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['advisor_pronunciation']=arctic_advisor
     if soil_scientist is not None:
         result['floris_pronunciation'] = soil_scientist
+    if ant_tools is not None:
+        result['spoken_or_fingers'] = ant_tools
     if falkirk is not None:
         result['engineering_possessive']=falkirk
     if explorer is not None:

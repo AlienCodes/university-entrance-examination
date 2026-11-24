@@ -1,0 +1,219 @@
+{
+ "lesson": "C8T4P3",
+ "sentence": 14,
+ "printed": "forceps, a fine, moistened paint brush, or fingers,",
+ "sources": [
+  {
+   "artifact": 14886132679,
+   "member": "aiden-takes/e90cd44e02b0d54f63e7258caeafebe09ef97b36df53ccba33d4236cc3db9b67.flac",
+   "sha256": "0f237ee09d1023e1fb9413335afc9d07380f5a0dbeeff8bb9f36de7bf702020a",
+   "transcript": "or fingers."
+  },
+  {
+   "artifact": 14886132679,
+   "member": "aiden-takes/rejected/0ed08fbbce8393234034b3bf3d47f5cfaf799457e5a3273fb72cabb391428da5.flac",
+   "sha256": "0ed08fbbce8393234034b3bf3d47f5cfaf799457e5a3273fb72cabb391428da5",
+   "transcript": "Or fingers."
+  },
+  {
+   "artifact": 14886132679,
+   "member": "aiden-takes/286e1d4f9a4ca007e5f4ad99bff058ba40540328ccc8680fa1aed7cb438a10a2.flac",
+   "sha256": "6862d8060991a27a7782db3510b8daa158701c8706d7cd84d0358bf69bbb25a4",
+   "transcript": "Forceps, a fine moistened paintbrush."
+  }
+ ],
+ "tests": [
+  {
+   "case": "0f237ee09d1023e1fb9413335afc9d07380f5a0dbeeff8bb9f36de7bf702020a",
+   "format": "wav",
+   "passed": true,
+   "expected": true,
+   "proof": {
+    "text": "or fingers,",
+    "heard": "or fingers",
+    "checked_internal_gaps": [],
+    "second_heard": "For fingers",
+    "spoken_or_fingers": {
+     "phones": "AO R",
+     "confidence": 0.901,
+     "start": 0.05,
+     "end": 0.15,
+     "final_sibilant_frames_20ms": 5
+    }
+   }
+  },
+  {
+   "case": "0f237ee09d1023e1fb9413335afc9d07380f5a0dbeeff8bb9f36de7bf702020a",
+   "format": "mp3",
+   "passed": true,
+   "expected": true,
+   "proof": {
+    "text": "or fingers,",
+    "heard": "or fingers",
+    "checked_internal_gaps": [],
+    "second_heard": "For fingers",
+    "spoken_or_fingers": {
+     "phones": "AO R",
+     "confidence": 0.827,
+     "start": 0.05,
+     "end": 0.15,
+     "final_sibilant_frames_20ms": 5
+    }
+   }
+  },
+  {
+   "case": "0f237ee09d1023e1fb9413335afc9d07380f5a0dbeeff8bb9f36de7bf702020a",
+   "format": "m4a",
+   "passed": true,
+   "expected": true,
+   "proof": {
+    "text": "or fingers,",
+    "heard": "or fingers",
+    "checked_internal_gaps": [],
+    "second_heard": "For fingers",
+    "spoken_or_fingers": {
+     "phones": "AO R",
+     "confidence": 0.833,
+     "start": 0.05,
+     "end": 0.15,
+     "final_sibilant_frames_20ms": 5
+    }
+   }
+  },
+  {
+   "case": "0ed08fbbce8393234034b3bf3d47f5cfaf799457e5a3273fb72cabb391428da5",
+   "format": "wav",
+   "passed": true,
+   "expected": true,
+   "proof": {
+    "text": "or fingers,",
+    "heard": "or fingers.",
+    "checked_internal_gaps": [],
+    "second_heard": "or fingers",
+    "spoken_or_fingers": {
+     "phones": "AO R",
+     "confidence": 0.891,
+     "start": 0.05,
+     "end": 0.39,
+     "final_sibilant_frames_20ms": 6
+    }
+   }
+  },
+  {
+   "case": "0ed08fbbce8393234034b3bf3d47f5cfaf799457e5a3273fb72cabb391428da5",
+   "format": "mp3",
+   "passed": true,
+   "expected": true,
+   "proof": {
+    "text": "or fingers,",
+    "heard": "or fingers.",
+    "checked_internal_gaps": [],
+    "second_heard": "for fingers",
+    "spoken_or_fingers": {
+     "phones": "AO R",
+     "confidence": 0.857,
+     "start": 0.05,
+     "end": 0.39,
+     "final_sibilant_frames_20ms": 6
+    }
+   }
+  },
+  {
+   "case": "0ed08fbbce8393234034b3bf3d47f5cfaf799457e5a3273fb72cabb391428da5",
+   "format": "m4a",
+   "passed": true,
+   "expected": true,
+   "proof": {
+    "text": "or fingers,",
+    "heard": "Or fingers.",
+    "checked_internal_gaps": [],
+    "second_heard": "or fingers",
+    "spoken_or_fingers": {
+     "phones": "AO R",
+     "confidence": 0.866,
+     "start": 0.05,
+     "end": 0.39,
+     "final_sibilant_frames_20ms": 6
+    }
+   }
+  },
+  {
+   "case": "initial-f-from-forceps",
+   "format": "wav",
+   "passed": false,
+   "expected": false,
+   "proof": {
+    "reason": "The recorded alternative “or fingers” differs from the paper"
+   }
+  },
+  {
+   "case": "initial-f-from-forceps",
+   "format": "mp3",
+   "passed": false,
+   "expected": false,
+   "proof": {
+    "reason": "The recorded alternative “or fingers” differs from the paper"
+   }
+  },
+  {
+   "case": "initial-f-from-forceps",
+   "format": "m4a",
+   "passed": false,
+   "expected": false,
+   "proof": {
+    "reason": "The recorded alternative “or fingers” differs from the paper"
+   }
+  },
+  {
+   "case": "missing-plural-ending",
+   "format": "wav",
+   "passed": false,
+   "expected": false,
+   "proof": {
+    "reason": "The plural sibilant in fingers is cut short"
+   }
+  },
+  {
+   "case": "missing-plural-ending",
+   "format": "mp3",
+   "passed": false,
+   "expected": false,
+   "proof": {
+    "reason": "The plural sibilant in fingers is cut short"
+   }
+  },
+  {
+   "case": "missing-plural-ending",
+   "format": "m4a",
+   "passed": false,
+   "expected": false,
+   "proof": {
+    "reason": "The plural sibilant in fingers is cut short"
+   }
+  }
+ ],
+ "left": {
+  "text": "forceps, a fine, moistened paint brush,",
+  "heard": "forceps, a fine moistened paint brush,",
+  "checked_internal_gaps": [
+   [
+    0.55,
+    0.89
+   ]
+  ],
+  "second_heard": "Forceps, a fine moistened paintbrush."
+ },
+ "right": {
+  "text": "or fingers,",
+  "heard": "or fingers",
+  "checked_internal_gaps": [],
+  "second_heard": "For fingers",
+  "spoken_or_fingers": {
+   "phones": "AO R",
+   "confidence": 0.888,
+   "start": 0.05,
+   "end": 0.15,
+   "final_sibilant_frames_20ms": 5
+  }
+ }
+}

@@ -89,3 +89,23 @@ def verify(audio,text,first,second):
     if anchored_by_inuit and report['start']<anchor/RATE+.18:
         raise ValueError('The audio attributed to the term overlaps the start of Inuit')
     return report
+
+
+def verify_pause_before_inuit(audio, start, end, expected, left, right, whole):
+    if (expected[-2:] != ['inuit', TERM.lower()] or words(left) != expected[:-2]
+            or words(right)[:1] != ['inuit'] or end/RATE >= whole['start']):
+        return None
+    # Re-decode the far side, including the natural quiet before the onset
+    # of Inuit. Both the English word and all seven Inuktitut syllables must
+    # be present, at the same position as in the full phrase.
+    cut = (start + end) // 2
+    word = check_word(audio[cut:])
+    prefix = [s for s in phone_recognizer().seg() if s.word == 'inuit']
+    if len(prefix) != 1 or prefix[0].end_frame - prefix[0].start_frame < 20:
+        raise ValueError('The complete word Inuit is missing after the pause')
+    onset, stop = cut/RATE + word['start'], cut/RATE + word['end']
+    if (word['phones'] != whole['phones'] or abs(onset-whole['start']) > .12
+            or abs(stop-whole['end']) > .065):
+        raise ValueError('The isolated Inuktitut term differs from the complete recording')
+    return dict(phones=word['phones'], start=round(onset,3), end=round(stop,3),
+                gap=[round(start/RATE,3), round(end/RATE,3)])

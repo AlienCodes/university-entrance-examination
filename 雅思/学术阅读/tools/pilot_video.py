@@ -281,6 +281,13 @@ def speech_tokens(text):
     plain = ''.join(c for c in unicodedata.normalize('NFD', text.lower()) if not unicodedata.combining(c))
     plain = spoken_spelling(plain)
     plain = re.sub(r'\bh\. (?=naledi\b)', 'homo ',plain)
+    # Keep an amount as one alignment key. £23m cannot share the initial
+    # "twenty" of £29m, and a million cannot match a billion.
+    def sterling(match):
+        digits = match[1].replace(',', '').replace('.', 'p')
+        unit = {'m':'m', 'million':'m', 'bn':'bn', 'billion':'bn'}.get(match[2], '')
+        return ' gbp' + digits + unit + ' '
+    plain = re.sub(r'[£￡]\s*(\d[\d,]*(?:\.\d+)?)(?:\s*(million|billion|bn|m)\b)?', sterling, plain)
     # Match a printed ordinal to the same ordinal in the certified narration.
     plain = re.sub(r'\b(\d+)[ \t]*(?:st|nd|rd|th)\b',lambda m:ordinal(int(m[1])),plain)
     # The timed recognizer writes ordinary quantities in either form. Keep a
@@ -301,7 +308,14 @@ def reviewed_spelling(audio, timing, printed, recognised):
 def ielts_switch_time(audio, timing, english, cut):
     import numpy as np
     samples, recognised = engine.asr_words(audio, timing)
-    spoken = [(word, onset) for text,onset in recognised for word in speech_tokens(text)]
+    spoken = []
+    for text, onset in recognised:
+        for word in speech_tokens(text):
+            if word in ('million','billion') and spoken and re.fullmatch(r'gbp\d+(?:p\d+)?',spoken[-1][0]):
+                amount, start = spoken[-1]
+                spoken[-1] = (amount + ('m' if word == 'million' else 'bn'), start)
+            else:
+                spoken.append((word, onset))
     source = speech_tokens(english)
     index = len(speech_tokens(english[:cut]))
     matches = difflib.SequenceMatcher(None, source, [w for w,_ in spoken], autojunk=False)

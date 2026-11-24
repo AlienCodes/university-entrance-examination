@@ -1,0 +1,171 @@
+{
+ "lesson": "C6T1P3",
+ "sentence": 35,
+ "source_run": 45265727081,
+ "artifact": 14885811932,
+ "source_FLAC_sha256": "8fd9c4f4a41b473ccd1837fba56ed63da12f3c1c574e1350c4bb9c026ef97580",
+ "reference": "https://plato.acadiau.ca/courses/pols/inspired/iq/qaujimajatuqangit.htm",
+ "prior_native_comparison": "因纽特术语发音实测.json",
+ "method": "分别核对整段、停顿左侧的英语、右侧的 Inuit 和七个音节。复查右侧人声与整句同一词的起止时间。",
+ "tests": [
+  {
+   "case": "original",
+   "expected": true,
+   "codec": "wav",
+   "recognition": {
+    "text": "increasingly referred to as Inuit Qaujimajatuqangit,",
+    "heard": "increasingly referred to as Inuit Koyi Maya Toknet,",
+    "checked_internal_gaps": [
+     [
+      1.88,
+      2.37
+     ]
+    ],
+    "second_heard": "increasingly referred to as \"inuit koi maya tok nith\".",
+    "inuktitut_pronunciation": {
+     "phones": "K OW Y IY M AA Y AA T UW K AA NG IH T",
+     "score": 1.0,
+     "start": 2.97,
+     "end": 4.86,
+     "separate_words_after_pause": {
+      "phones": "K OW Y IY M AA Y AA T UW K AA NG IH T",
+      "start": 2.895,
+      "end": 4.855,
+      "gap": [
+       1.88,
+       2.37
+      ]
+     }
+    }
+   },
+   "passed": true
+  },
+  {
+   "case": "original",
+   "expected": true,
+   "codec": "mp3",
+   "recognition": {
+    "text": "increasingly referred to as Inuit Qaujimajatuqangit,",
+    "heard": "increasingly referred to as Inuit Koyi Maya Tok Ned.",
+    "checked_internal_gaps": [
+     [
+      1.87,
+      2.37
+     ]
+    ],
+    "second_heard": "increasingly referred to as \"inuit koi maya tok nith\"",
+    "inuktitut_pronunciation": {
+     "phones": "K OW Y IY M AA Y AA T UW K AA NG IH T",
+     "score": 1.0,
+     "start": 2.96,
+     "end": 4.86,
+     "separate_words_after_pause": {
+      "phones": "K OW Y IY M AA Y AA T UW K AA NG IH T",
+      "start": 2.9,
+      "end": 4.86,
+      "gap": [
+       1.87,
+       2.37
+      ]
+     }
+    }
+   },
+   "passed": true
+  },
+  {
+   "case": "original",
+   "expected": true,
+   "codec": "m4a",
+   "recognition": {
+    "text": "increasingly referred to as Inuit Qaujimajatuqangit,",
+    "heard": "increasingly referred to as Inuit Koyi Maya Tok Net.",
+    "checked_internal_gaps": [
+     [
+      1.87,
+      2.37
+     ]
+    ],
+    "second_heard": "increasingly referred to as \"inuit koi maya tok nith\"",
+    "inuktitut_pronunciation": {
+     "phones": "K OW Y IY M AA Y AA T UW K AA NG IH T",
+     "score": 1.0,
+     "start": 2.97,
+     "end": 4.86,
+     "separate_words_after_pause": {
+      "phones": "K OW Y IY M AA Y AA T UW K AA NG IH T",
+      "start": 2.9,
+      "end": 4.86,
+      "gap": [
+       1.87,
+       2.37
+      ]
+     }
+    }
+   },
+   "passed": true
+  },
+  {
+   "case": "missing last syllable",
+   "expected": false,
+   "codec": "wav",
+   "reason": "The recording does not contain one complete, identifiable target word",
+   "passed": false
+  },
+  {
+   "case": "missing last syllable",
+   "expected": false,
+   "codec": "mp3",
+   "reason": "The recording does not contain one complete, identifiable target word",
+   "passed": false
+  },
+  {
+   "case": "missing last syllable",
+   "expected": false,
+   "codec": "m4a",
+   "reason": "The recording does not contain one complete, identifiable target word",
+   "passed": false
+  },
+  {
+   "case": "split within the term",
+   "expected": false,
+   "codec": "wav",
+   "reason": "A pause interrupts Qaujimajatuqangit",
+   "passed": false
+  },
+  {
+   "case": "split within the term",
+   "expected": false,
+   "codec": "mp3",
+   "reason": "A pause interrupts Qaujimajatuqangit",
+   "passed": false
+  },
+  {
+   "case": "split within the term",
+   "expected": false,
+   "codec": "m4a",
+   "reason": "A pause interrupts Qaujimajatuqangit",
+   "passed": false
+  },
+  {
+   "case": "without Inuit",
+   "expected": false,
+   "codec": "wav",
+   "reason": "The surrounding English words differ for Qaujimajatuqangit",
+   "passed": false
+  },
+  {
+   "case": "without Inuit",
+   "expected": false,
+   "codec": "mp3",
+   "reason": "The surrounding English words differ for Qaujimajatuqangit",
+   "passed": false
+  },
+  {
+   "case": "without Inuit",
+   "expected": false,
+   "codec": "m4a",
+   "reason": "The surrounding English words differ for Qaujimajatuqangit",
+   "passed": false
+  }
+ ]
+}
