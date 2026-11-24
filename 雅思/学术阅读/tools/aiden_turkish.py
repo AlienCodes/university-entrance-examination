@@ -13,11 +13,11 @@ from aiden_ceylonese import timed_words
 PRINTED = 'şehirliliştiremediklerimizdensiniz'
 ORAL = 'shehirlilishtiremediklerimizdensiniz'
 SYLLABLES = ('şe', 'hir', 'li', 'liş', 'ti', 're', 'me', 'dik', 'le', 'ri', 'miz', 'den', 'si', 'niz')
-RENDERINGS = (ORAL, 'şehirli liştire mediklerimiz densiniz',
-              'shehirli lishtire mediklerimiz densiniz', PRINTED,
-              'shehheerlee leeshtireh mediklerimeez denseeneez',
-              'şehirli-liştire-mediklerimiz-densiniz',
-              'sheh-heer-lee-leesh-tee-reh-meh-deek-leh-ree-meez-den-see-neez')
+RENDERINGS = (ORAL, PRINTED, 'Şehirli liştiremediklerimizden siniz',
+              'şehirli·liştire·mediklerimizden·siniz',
+              'шехирлилиштиремедиклеримизденсиниз',
+              'шехирли лиштире медиклеримизден синиз',
+              'şehirli-liştiremediklerimizden-siniz', PRINTED)
 HINT = ('Read the introductory English words in the same voice. The Turkish example that follows is '
         'one continuous word with fourteen evenly linked syllables: '
         'şe-hir-li-liş-ti-re-me-dik-le-ri-miz-den-si-niz. The letter ş is sh and each i is ee. '

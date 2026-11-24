@@ -30,7 +30,7 @@ import make_audio as cet
 import 听对
 
 
-LLEWYN_READINGS = ('llewyn', 'shlehwin', 'sleh-winn', 'thlehwinn', 'hlehwinn', 'shleh-winn', 'thléwin')
+LLEWYN_READINGS = ('llewyn', 'Llewyn', 'llèwin', 'Llehwin', 'slehwin', 'Llewinn', 'llewyn')
 
 
 def save_raw_take(path, samples):

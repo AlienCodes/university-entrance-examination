@@ -19,15 +19,16 @@ READINGS = {
         'Read the Tanzanian district of Makete in three connected Swahili syllables: mah-KEH-teh. '
         'Both written e vowels are sounded.'),
     'Na-Dene': (
-        ('Na-Dene','Nah-day-nee','Na-Dené','nah-DAY-nee','nah-day-NAY'),
+        ('Na-Dene','Nah-day-nee','Na-Dené','nah-DAY-nee','nah-day-NAY','Na Day Nee','Na-Dene'),
         'Na-Dene is the language-family name. Read the three connected syllables nah-DAY-nee, '
         'with DAY in the middle and an audible final vowel.'),
     'Na-Denes': (
-        ('Na-Denes','nah-DAY-neez','Nah-day-nees','nah-day-NAYZ','nah-DAY-neez'),
+        ('Na-Denes','nah-DAY-neez','Nah-day-neez','nah-day-NAYZ','Nah Day Neez','Nahdayneez','Na-Denes'),
         'Read the printed plural in three connected syllables, nah-DAY-neez. Finish on a voiced z.'),
     'Aleut': (
-        ('Aleut','uh-LOOT','uh-loot','Aleut','uh-LOOT'),
-        'The name Aleut is uh-LOOT, two linked syllables. Finish on t.'),
+        ('Aleut','Alley-oot','AL-ee-oot','Allyoot','uh-LOOT','Alleyoot','Aleut'),
+        'Read Aleut continuously. For the two-syllable form say uh-LOOT. '
+        'For the three-syllable form link AL-ee-oot. Finish with a clear t.'),
 }
 
 JAPANESE = {

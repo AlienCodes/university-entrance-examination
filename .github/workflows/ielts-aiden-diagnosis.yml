@@ -10,8 +10,7 @@ jobs:
   plan:
     runs-on: ubuntu-24.04
     outputs:
-      lesson: ${{ steps.sample.outputs.lesson }}
-      numbers: ${{ steps.sample.outputs.numbers }}
+      matrix: ${{ steps.sample.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,22 +18,22 @@ jobs:
           filter: blob:none
       - id: sample
         run: |
-          echo "lesson=$(jq -er .lesson .github/ielts-aiden-diagnosis.json)" >> "$GITHUB_OUTPUT"
-          echo "numbers=$(jq -c .numbers .github/ielts-aiden-diagnosis.json)" >> "$GITHUB_OUTPUT"
+          jq -erc '. as $request | (.cases // [$request.numbers[] | {lesson: $request.lesson, number: .}])
+            | "matrix=" + ({include: .} | tojson)' .github/ielts-aiden-diagnosis.json >> "$GITHUB_OUTPUT"
   sentence:
+    name: sentence (${{ matrix.lesson }}, ${{ matrix.number }})
     needs: plan
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     strategy:
       fail-fast: false
       max-parallel: 3
-      matrix:
-        number: ${{ fromJSON(needs.plan.outputs.numbers) }}
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     env:
       TARGET: 雅思/学术阅读
       GH_TOKEN: ${{ github.token }}
       IELTS_NARRATOR: Aiden
-      IELTS_LESSON: ${{ needs.plan.outputs.lesson }}
+      IELTS_LESSON: ${{ matrix.lesson }}
       MALLOC_ARENA_MAX: '2'
       HF_HUB_DISABLE_XET: '1'
       OMP_NUM_THREADS: 3
