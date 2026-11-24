@@ -40,6 +40,24 @@ def public_download(asset, expected):
             time.sleep(2 ** (attempt + 1))
 
 
+def check_approved_preview():
+    """Replay the published audition by its recorded hash when resuming a full batch."""
+    if PID != 'C13T1P1' or os.environ.get('IELTS_AIDEN_BATCH') != '13-6':
+        raise ValueError('The approved audition belongs to C13T1P1')
+    evidence = json.loads((PROJECT / '审校/Aiden词内断音/修订样片公开核验.json').read_text())
+    words = [p['second_heard'].lower().strip('.,') for p in evidence['reference_checks']
+             if p['sentence'] == 3]
+    if (evidence['native_end_frames'] != 90 or not evidence['desktop']['ended']
+            or len(words) < 2 or words[0].split()[-1:] != ['sectors'] or words[1].split()[:1] != ['which']):
+        raise ValueError('The archived audition lacks its pronunciation or playback verification')
+    release = 'ielts-academic-aiden-preview-c13t1p1-r2'
+    asset = inventory(release)['13-1-1-Aiden.mp4']
+    if (asset['size'], asset['digest']) != (evidence['bytes'], 'sha256:' + evidence['sha256']):
+        raise ValueError('The published audition differs from the reviewed file')
+    public_download(asset, {'video_bytes': evidence['bytes'], 'video_sha256': evidence['sha256']})
+    print(f"Verified previously published audition: {asset['name']} ({evidence['bytes']} bytes)", flush=True)
+
+
 def repair_original_link(tag, stage, file, label, receipt, notes):
     inventory.cache_clear()
     asset = inventory(tag).get(file.name)
@@ -134,4 +152,9 @@ def publish(folder):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('folder', type=Path)
-    publish(parser.parse_args().folder)
+    parser.add_argument('--check-approved', action='store_true')
+    args = parser.parse_args()
+    if args.check_approved:
+        check_approved_preview()
+    else:
+        publish(args.folder)

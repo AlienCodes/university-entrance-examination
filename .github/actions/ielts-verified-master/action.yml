@@ -58,11 +58,17 @@ runs:
           [[ "$accepted" =~ ^${IELTS_LESSON}-audio-[0-9a-f]{16}\.zip$ ]]
           asset="$accepted"
         fi
-        python "$TARGET/tools/release_assets.py" "$STAGING" "$asset" "$RUNNER_TEMP" --if-present
+        if [[ "${IELTS_AUDIO_STAGED:-}" != true || ! -s "$RUNNER_TEMP/$asset" ]]; then
+          python "$TARGET/tools/release_assets.py" "$STAGING" "$asset" "$RUNNER_TEMP" --if-present
+        fi
         if [[ -s "$RUNNER_TEMP/$asset" ]]; then
           python -m zipfile -e "$RUNNER_TEMP/$asset" "$TARGET"
         else
           if [[ -n "$accepted" ]]; then echo "Cannot restore the selected certified audio $accepted"; exit 1; fi
+          if [[ "${IELTS_AUDIO_STAGED:-}" == true ]]; then
+            export IELTS_AIDEN_MODEL_PATH="$RUNNER_TEMP/ielts-aiden-model"
+            python "$TARGET/tools/aiden_model.py" "$IELTS_AIDEN_MODEL_PATH"
+          fi
           bash .github/install-ielts-native-speech.sh
           sp="$RUNNER_TEMP/speech/bin/python"
           "$sp" "$TARGET/tools/audio_lesson.py"

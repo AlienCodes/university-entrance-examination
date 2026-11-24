@@ -4,6 +4,7 @@ import math
 import os
 import re
 from pathlib import Path
+from material import gloss_head
 
 PROJECT = Path(__file__).resolve().parents[1]
 ROOT = PROJECT.parents[1]
@@ -49,7 +50,7 @@ def load():
                 if occupied.intersection(char_range): raise ValueError(entry)
                 occupied.update(char_range)
                 words.append(dict(t='phr' if ' ' in phrase else 'core',
-                                  h=meta.get('row_lemmas',{}).get(f'{sentence_number}.{slot}',meta['lemmas'].get(phrase,phrase.lower())),m=meaning,sp=positions))
+                                  h=gloss_head(meta,sentence_number,slot,phrase),m=meaning,sp=positions))
             rows.append(dict(en=en, zh=zh, w=words))
         paragraphs.append(rows)
     book, test, part = (meta[key] for key in ('book','test','passage'))

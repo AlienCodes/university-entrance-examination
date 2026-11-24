@@ -2,7 +2,24 @@
 import hashlib
 import json
 import os
+from functools import lru_cache
 from pathlib import Path
+
+
+@lru_cache(maxsize=1)
+def proper_headwords():
+    folder = Path(__file__).resolve().parents[1] / '审校/Aiden/13-6'
+    return json.loads((folder / '侧栏专名与缩写.json').read_text(encoding='utf-8'))
+
+
+def gloss_head(meta, sentence, slot, form):
+    base = meta.get('lemmas', {}).get(form, form.lower())
+    head = meta.get('row_lemmas', {}).get(f'{sentence}.{slot}', base)
+    if os.getenv('IELTS_NARRATOR') == 'Aiden' and 6 <= int(meta.get('book', 0)) <= 13:
+        edited = proper_headwords().get(form)
+        if edited and edited.casefold() == head.casefold():
+            return edited
+    return head
 
 
 def verify_original(project,pid,lesson_file=None):
@@ -20,7 +37,7 @@ def source_key(text, meta, split, printed_test):
         terms=[]
         for n,annotation in enumerate(annotations):
             form,meaning=annotation.split('|')
-            head=meta.get('row_lemmas',{}).get(f'{i}.{n}',meta.get('lemmas',{}).get(form,form.lower()))
+            head=gloss_head(meta,i,n,form)
             terms.append([form,head,meaning])
         rows.append([en,zh,terms])
     display=[meta.get(k) for k in ('id','book','test','passage','title','title_zh','genre','header')]

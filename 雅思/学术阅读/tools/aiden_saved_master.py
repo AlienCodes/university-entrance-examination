@@ -122,3 +122,27 @@ def recover_master(stage, passage, reader, config, target):
         except (ValueError,KeyError,OSError,RuntimeError,subprocess.SubprocessError,zipfile.BadZipFile) as exc:
             print(f"{PID}: prior audio {item['name']} unable to pass current checks: {str(exc)[:260]}",flush=True)
     return None
+
+
+def stage_current_audio(stage, destination):
+    """Download an exact, versioned track before preparing the synthesis weights."""
+    if not (LESSON / '双语精读.tsv').is_file() or not (LESSON / '篇目信息.json').is_file():
+        return False
+    name = audio_asset(LESSON)
+    item = inventory(stage).get(name)
+    if not item or not item.get('digest'):
+        return False
+    archive = fetch(item, destination)
+    with zipfile.ZipFile(archive) as saved:
+        timing = json.loads(saved.read('audio/timings.json'))['cet4_male'][PID]
+        confirm(timing)
+    return True
+
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('stage')
+    parser.add_argument('destination', type=Path)
+    args = parser.parse_args()
+    print(str(stage_current_audio(args.stage, args.destination)).lower())

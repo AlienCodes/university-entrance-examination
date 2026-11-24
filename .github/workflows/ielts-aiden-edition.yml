@@ -66,7 +66,11 @@ jobs:
         with:
           filter: blob:none
           sparse-checkout: 雅思/学术阅读
+      - name: 从公开下载入口复核已审样片
+        if: needs.plan.outputs.batch == '13-6' && needs.plan.outputs.pilot_only != 'true'
+        run: python '雅思/学术阅读/tools/aiden_preview.py' "$RUNNER_TEMP/preview" --check-approved
       - name: 发布单个 MP4 并从公开链接回下载整片
+        if: needs.plan.outputs.pilot_only == 'true'
         run: python '雅思/学术阅读/tools/aiden_preview.py' "$RUNNER_TEMP/preview"
   production:
     needs: [plan, pilot, preview]
