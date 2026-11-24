@@ -16,6 +16,7 @@ from aiden_checkpoint import PeriodicSnapshot, rejected_seed
 import aiden_cork_oak
 import aiden_ceylonese
 import aiden_inuktitut
+import aiden_sobchack
 import make_audio as cet
 import 听对
 
@@ -88,6 +89,8 @@ class Aiden:
             instruction += ' Pronounce the clock term fusee in two connected syllables, fyoo-ZEE /fjuːˈziː/, with a clear final ee vowel.'
         if any(form.casefold() in script.casefold() for form in aiden_inuktitut.RENDERINGS):
             instruction += ' ' + aiden_inuktitut.HINT
+        if any(form.casefold() in script.casefold() for form in aiden_sobchack.RENDERINGS):
+            instruction += ' Read the family name Sobchack in two syllables: sob-chack. Go directly from b to ch and pronounce the final k.'
         torch.manual_seed(seed)
         cap=min(1800,max(200,len(script.split())*14+120))
         with torch.inference_mode():
@@ -137,7 +140,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and not {'ceylonese','fusee','qaujimajatuqangit'}.intersection(words(script))):
+                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack'}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -166,6 +169,8 @@ class Aiden:
             spellings=('fusee','fuzee','fyoo-ZEE','fusee','fyoo-zee')
         elif 'qaujimajatuqangit' in words(script):
             spellings=aiden_inuktitut.RENDERINGS
+        elif 'sobchack' in words(script):
+            spellings=aiden_sobchack.RENDERINGS
         for attempt in range(len(spellings) if spellings else 5):
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.

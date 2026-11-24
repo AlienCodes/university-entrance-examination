@@ -9,7 +9,7 @@ if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
   "$sp" -m pip install -q torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
   "$sp" -m pip install -q qwen-tts==0.1.1 sherpa-onnx==1.13.8
   case "${IELTS_LESSON:-}" in
-    C6T1P3|C8T1P1|C12T1P1|C13T2P1) "$sp" -m pip install -q pocketsphinx==5.0.4 ;;
+    C6T1P3|C8T1P1|C11T4P2|C12T1P1|C13T2P1) "$sp" -m pip install -q pocketsphinx==5.0.4 ;;
   esac
 else
   "$sp" -m pip install -q torch --index-url https://download.pytorch.org/whl/cpu

@@ -150,6 +150,7 @@ def assess(audio, text, transcript=None):
     name_evidence = None
     clock_evidence = None
     inuit_evidence = None
+    film_names = None
     if 'ceylonese' in expected:
         from aiden_ceylonese import verify
         alternate = independent(audio)
@@ -163,6 +164,10 @@ def assess(audio, text, transcript=None):
         from aiden_inuktitut import verify
         alternate = independent(audio)
         inuit_evidence = verify(audio,text,transcript,alternate)
+    elif 'sobchack' in expected:
+        from aiden_sobchack import verify
+        alternate = independent(audio)
+        film_names = verify(audio,text,transcript,alternate)
     elif NOISE_INITIALS.search(text):
         alternate = independent(audio)
         if not any(NOISE_INITIALS.search(heard) and words(heard) == expected for heard in (transcript, alternate)):
@@ -200,6 +205,8 @@ def assess(audio, text, transcript=None):
         result['fusee_pronunciation']=clock_evidence
     if inuit_evidence is not None:
         result['inuktitut_pronunciation']=inuit_evidence
+    if film_names is not None:
+        result['film_surnames']=film_names
     return result
 
 

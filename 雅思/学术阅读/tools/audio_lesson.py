@@ -46,6 +46,9 @@ class Reader(cet.G.Pronouncer):
         if int(PID[1:PID.index('T')]) <= 10:
             original = early_reading_forms(original,PID)
         text = original.replace('ā', 'a').replace('ō','o')
+        if PID == 'C11T4P2':
+            # The test prints Sobochack twice. Both authors publish as Sobchack.
+            text = re.sub(r'\bSobochack\b', 'Sobchack', text)
         if PID != 'C20T1P1':
             # Asterisks refer to the printed footnotes and are silent in speech.
             text = text.replace('*','').replace('…', ' — ').replace('...', ' — ')
