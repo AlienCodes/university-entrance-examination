@@ -14,6 +14,7 @@ import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
 from aiden_boundaries import POLICY, assess, words, reference, salmon_phrase
+from aiden_word_review import POLICY as WORD_POLICY
 from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed, reviewed_master_failures
 import aiden_cork_oak
 import aiden_cork_taint
@@ -148,6 +149,10 @@ class Aiden:
             instruction += ' End clamp with a short, clear p release after m, without adding a vowel.'
         if re.search(r'\b(?:Dowman|Dow Man)\b',script,re.I):
             instruction += ' Say Captain Dowman’s name with the vowel in cow, then man. Keep the two syllables joined.'
+        if re.search(r'\bwith modell?ed birds\b',script,re.I):
+            instruction += ' In “with modeled birds”, link the soft final d in modeled directly to birds.'
+        if 'appreciate the mathematical way' in script.casefold():
+            instruction += ' Link “appreciate the mathematical way” naturally, including the unstressed article the.'
         if re.search(r'\bDeane? dived down\b',script,re.I):
             instruction += ' In "Deane dived down", finish the past tense /daɪvd/ with an audible d release. Carry the voice through “down and found” in the same thought.'
         if re.search(r'\bwind[- ]lashed\b',script,re.I):
@@ -224,7 +229,7 @@ class Aiden:
             return None
         file.write_bytes(recording)
         data=dict(transcript=transcript,timed=timed,seed=seed,sha256=digest,
-                  policy=POLICY,rechecked_from_diagnostic=True)
+                  policy=POLICY,word_policy=WORD_POLICY,rechecked_from_diagnostic=True)
         report.write_text(json.dumps(data,ensure_ascii=False))
         return wave,data
 
@@ -246,7 +251,8 @@ class Aiden:
                                       issue=self.rejected_master_takes[data['sha256']])
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
-                elif (data.get('policy') == POLICY and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
+                elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
+                      and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
                       and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl','clemmons','willeke'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
                       and words(script)[:3] != ['the','team','theorizes']
@@ -256,11 +262,12 @@ class Aiden:
                     return wave,data
                 else:
                     try:
-                        assess(soxr.resample(wave,sr,16000),script,data['transcript'])
+                        assess(soxr.resample(wave,sr,16000),script)
                     except ValueError:
-                        pass
+                        previous_seed=data['seed']
                     else:
                         data['policy']=POLICY
+                        data['word_policy']=WORD_POLICY
                         report.write_text(json.dumps(data,ensure_ascii=False))
                         return wave,data
         number=int(key.split(':')[1]);seed=24830+number+variant*173
@@ -378,7 +385,7 @@ class Aiden:
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
-            data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,sha256=digest,policy=POLICY)
+            data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,sha256=digest,policy=POLICY,word_policy=WORD_POLICY)
             report.write_text(json.dumps(data,ensure_ascii=False))
             return sf.read(file,dtype='float32')[0],data
         # Preserve distinct attempts for comparison after a pronunciation correction.

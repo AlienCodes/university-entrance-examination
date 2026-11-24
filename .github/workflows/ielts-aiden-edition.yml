@@ -34,6 +34,10 @@ jobs:
           sparse-checkout: |
             .github
             雅思/学术阅读
+            tools/tts
+            高考语法填空/tools
+      - if: inputs.batch == '13-6' && !inputs.pilot_only
+        uses: ./.github/actions/ielts-word-listening
       - id: queue
         env:
           EDITION: ${{ inputs.batch }}

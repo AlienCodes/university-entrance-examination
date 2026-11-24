@@ -31,7 +31,11 @@ jobs:
         with:
           ref: codex/ielts-academic-reading
           filter: blob:none
-          sparse-checkout: 雅思/学术阅读
+          sparse-checkout: |
+            .github
+            雅思/学术阅读
+            tools/tts
+            高考语法填空/tools
       - name: 按本批原稿和词汇版本核对成片
         id: availability
         run: |
@@ -54,6 +58,10 @@ jobs:
           print('zip='+edition.ZIP)
           print('receipt='+str(edition.REPORTS/(edition.BOOK_LABEL+'视频发布核验.json')))
           PY
+      - if: steps.availability.outputs.available == 'true' && inputs.aiden_batch == '13-6'
+        uses: ./.github/actions/ielts-word-listening
+        with:
+          require-all: 'true'
       - if: steps.availability.outputs.available == 'true'
         name: 按纸本顺序写入一个ZIP，逐视频校验后存档可编辑源
         run: |
@@ -61,7 +69,9 @@ jobs:
           if (( $(df -B1 --output=avail "$RUNNER_TEMP" | tail -1) < 30000000000 )); then
             sudo rm -rf /usr/local/lib/android/sdk
           fi
-          python "$TARGET/tools/early_video_release.py" pack "$RUNNER_TEMP/reading"
+          pack_python=python
+          if [[ "$IELTS_AIDEN_BATCH" == 13-6 ]]; then pack_python="$RUNNER_TEMP/word-review/bin/python"; fi
+          "$pack_python" "$TARGET/tools/early_video_release.py" pack "$RUNNER_TEMP/reading"
           git add -- "$TARGET/篇目" "$TARGET/审校"
           if ! git diff --cached --quiet; then
             git commit -m 'Archive the checked reading lessons, screen and audio alignment reports'

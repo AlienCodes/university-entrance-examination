@@ -1,0 +1,48 @@
+name: 逐词复核 Aiden 成片
+description: 复用已有音轨的核听记录，从带图 MP4 复听待核意群
+inputs:
+  require-all:
+    description: 发布时要求 96 篇均已通过
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11.15'
+    - uses: actions/cache/restore@v4
+      id: asr
+      with:
+        path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+        key: asr-sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+    - if: steps.asr.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p tools/tts/models
+        curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar xj -C tools/tts/models
+    - uses: ./.github/actions/ielts-phrase-listening
+    - shell: bash
+      env:
+        REQUIRE_ALL: ${{ inputs.require-all }}
+      run: |
+        set -euo pipefail
+        python .github/actions/cet6-chalk-env/prepare_packages.py 141 --decoder-only
+        python -m venv "$RUNNER_TEMP/word-review"
+        sp="$RUNNER_TEMP/word-review/bin/python"
+        "$sp" -m pip install -q 'numpy<2.3' scipy sherpa-onnx==1.13.8 pocketsphinx==5.0.4 num2words==0.5.14 requests
+        args=()
+        if [[ "$REQUIRE_ALL" == true ]]; then args+=(--require-all); fi
+        "$sp" '雅思/学术阅读/tools/aiden_word_gate.py' "${args[@]}"
+    - if: always()
+      shell: bash
+      run: |
+        set -euo pipefail
+        base='雅思/学术阅读/审校/Aiden/13-6'
+        if [[ ! -d "$base/逐词核音" ]]; then exit 0; fi
+        git add -- "$base/逐词核音" "$base/复验原声"
+        if git diff --cached --quiet; then exit 0; fi
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git commit -m 'Save illustrated audio word checks and specific retakes'
+        git pull --rebase origin codex/ielts-academic-reading
+        git push origin HEAD:codex/ielts-academic-reading

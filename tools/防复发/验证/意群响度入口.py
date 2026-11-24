@@ -64,10 +64,6 @@ PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整�
         'sha256': '93b4f5093f4ead3d2e7fc471a0ec634bbaa64c083bb4062031e15eab5662fd5d', 'audio': True, 'video': False,
         'reason': '只安装已锁定的语音、读音和检测依赖；脚本不产生音频文件。',
     },
-    '雅思/学术阅读/tools/aiden_boundaries.py': {
-        'sha256': 'bcf76b3e5403f59005f09810a9d50443c98800fa8d72d3cfd6953a2187a01b44', 'audio': True, 'video': False,
-        'reason': 'espeak 的 -q --ipa 返回音标，ffmpeg 将既有音轨解码到内存。逐意群核对停顿、读音及词尾，把声学证据写入 JSON。',
-    },
     '雅思/学术阅读/tools/illustration_audio.py': {
         'sha256': '1a52a530d2cdb71424ad42e564412405ed7278da28ae5f0cbad565d81afce1ba', 'audio': True, 'video': False,
         'reason': '只编码插图片头的静音。原旁白 AAC 包逐个复制，check_packets 对原包与最终 MP4 的载荷、时间戳及片尾采样点逐个比对。',
@@ -663,6 +659,10 @@ def main():
     case('静音诊断脚本任一源码变更 → 旧SHA不放行', only(diag, {diag: ds + '\n# changed\n'}), '源码SHA变化')
     case('已核诊断路径加入陌生TTS → 仍报音频入口', only(diag, {diag: ds + '\nfrom gtts import gTTS\ngTTS("hi").save("o.mp3")\n'}), '没接意群级')
     case('已核诊断路径加入音频视频输入 → 旧SHA不放行', only(diag, {diag: ds + '\nsubprocess.run(["ffmpeg", "-i", "unknown.wav", "-c:v", "libx264", "o.mp4"])\n'}), '生成视频却')
+    listener = '雅思/学术阅读/tools/aiden_boundaries.py'
+    case('逐词核音只解码到内存', only(listener, {listener: rd(listener)}), None)
+    case('逐词核音改为输出MP3须校验响度',
+         only(listener, {listener: rd(listener) + '\nsubprocess.run(["ffmpeg", "-i", "in.wav", "-c:a", "libmp3lame", "out.mp3"])\n'}), '没接意群级')
     for pinned, spec in PINNED_ORIGINAL_ENTRIES.items():
         original = rd(pinned)
         kind = '生成视频却' if spec['video'] else '没接意群级'

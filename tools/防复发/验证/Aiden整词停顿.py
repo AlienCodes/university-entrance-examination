@@ -13,6 +13,7 @@ EVIDENCE = PROJECT / "审校/Aiden词内断音"
 sys.path.insert(0, str(PROJECT / "tools"))
 from aiden_boundaries import RATE, independent, reference, verify_join, verify_reference, words
 from aiden_encoded_audio import compare_waveforms
+from aiden_word_review import same_words
 
 
 def rejects(check, *args):
@@ -48,6 +49,14 @@ def main(listen):
 
     left, right = revised["observed"]
     verify_join(left, right)
+    # One complete bordering word cannot make up for the other being clipped.
+    rejects(verify_join, dict(text="export sectors", second_heard="export se"), right)
+    rejects(verify_join, left, dict(text="which make products", second_heard="make products"))
+    for written, heard in (("appreciate the mathematical way", "appreciate mathematical way"),
+                           ("with modelled birds", "with model birds"),
+                           ("they did not return", "they did return"), ("walked", "walk")):
+        assert not same_words(words(written), words(heard))
+    assert same_words(words("with modelled birds"), words("with modeled birds"))
     assert words(left["second_heard"])[-2:] == ["export", "sectors"]
     assert words(right["second_heard"])[:1] == ["which"]
     left_end = revised["clip_16khz"][0][1]

@@ -1,12 +1,10 @@
 """Listen to each side of every planned pause, on the isolated take and the distributed audio."""
 import base64
-from difflib import SequenceMatcher
 from functools import lru_cache
 import hashlib
 import json
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import sys
 import unicodedata
@@ -16,6 +14,7 @@ sys.path.insert(0, str(ROOT/'tools/tts'))
 from textnorm import decade, normalize
 
 from aiden_profile import PAUSE_POLICY as POLICY
+from aiden_word_review import check_known_span, hear_differences, known_span, measured_words, same_words as matches
 RATE = 16000
 # The institute spells its initialism I-INCE. Require both I's in the spoken expansion.
 NOISE_INITIALS = re.compile(r'\b(?:I|eye)[\s.,-]+(?:I|eye)[\s.,-]+(?:N|en)[\s.,-]+'
@@ -117,35 +116,6 @@ def words(text):
     return re.findall('[a-z0-9]+', text.replace("'", ''))
 
 
-@lru_cache(maxsize=4096)
-def pronunciation(word):
-    binary = shutil.which('espeak-ng') or shutil.which('espeak')
-    if not binary:
-        return ''
-    result = subprocess.run([binary, '-q', '--ipa', '-v', 'en-us', '--', word],
-                            capture_output=True, text=True, timeout=4)
-    return result.stdout.strip() if result.returncode == 0 else ''
-
-
-def edge_matches(written, heard):
-    return written == heard or bool(pronunciation(written) and pronunciation(written) == pronunciation(heard))
-
-
-def matches(expected, heard):
-    if not expected or not heard:
-        return False
-    if ''.join(expected) == ''.join(heard):
-        return True
-    if not edge_matches(expected[0], heard[0]) or not edge_matches(expected[-1], heard[-1]):
-        return False
-    if len(expected) <= 4:
-        return len(expected) == len(heard) and all(edge_matches(a,b) for a,b in zip(expected,heard))
-    seq = SequenceMatcher(None, expected, heard, autojunk=False)
-    matched = sum(block.size for block in seq.get_matching_blocks())
-    return (matched >= .8*max(len(expected),len(heard))
-            and all(max(b-a,d-c) <= 2 for op,a,b,c,d in seq.get_opcodes() if op != 'equal'))
-
-
 def isolated(audio, *, padding=2400):
     import numpy as np
     from 听对 import recognizer
@@ -175,16 +145,15 @@ def complete_words_at_gap(audio, start, end, expected, first, second):
     # 80 ms of the measured quiet interval on each side, with no shared samples.
     # Both halves and a reading of the whole phrase must cover exactly the
     # printed words. The split has to be between two words.
-    printed = ''.join(expected)
-    if not any(''.join(words(h)) == printed for h in (first, second)):
+    if not any(matches(expected, words(h)) for h in (first, second)):
         return False
-    divisions = {(''.join(expected[:i]), ''.join(expected[i:])) for i in range(1,len(expected))}
     for millis in (80, 35):
         context = min(millis * RATE // 1000, (end - start) // 2)
         for listen in (isolated, independent):
-            left = ''.join(words(listen(audio[:start + context])))
-            right = ''.join(words(listen(audio[end - context:])))
-            if (left, right) in divisions:
+            left = words(listen(audio[:start + context]))
+            right = words(listen(audio[end - context:]))
+            if any(matches(expected[:i], left) and matches(expected[i:], right)
+                   for i in range(1, len(expected))):
                 return True
     # A 0.2-second leading article can sound like “then” to an isolated-word
     # decoder after AAC encoding. Keep the actual pause untouched. Require
@@ -247,6 +216,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     ganzfeld = None
     cork_taint = None
     kite_names = None
+    word_windows = None
     if expected in (INTRO, CONCLUSION, WENDRICH):
         alternate = independent(audio)
         kite_names = verify_kite_names(audio, expected, transcript, alternate)
@@ -434,13 +404,14 @@ def assess(audio, text, transcript=None, *, recheck=False):
             raise ValueError(f'Ant bait names or their context differ: {transcript!r} / {alternate!r}')
     elif recheck:
         alternate = independent(audio)
-        if any(words(heard) != expected for heard in (transcript, alternate)):
+        if not all(matches(expected, words(heard)) for heard in (transcript, alternate)):
             raise ValueError(f'Restored recording differs from the printed phrase: {transcript!r} / {alternate!r}')
     elif not matches(expected, words(transcript)):
         alternate = independent(audio)
-        # If the two decoders disagree, only the full printed sequence can resolve it.
-        if words(alternate) != expected:
-            raise ValueError(f'Phrase endpoints or wording differ: {text!r} / {transcript!r} / {alternate!r}')
+        if not matches(expected, words(alternate)):
+            word_windows = hear_differences(audio, text, alternate)
+            if not word_windows:
+                raise ValueError(f'Phrase endpoints or wording differ: {text!r} / {transcript!r} / {alternate!r}')
     sectors = None
     if expected[:4] == ['unlike', 'other', 'export', 'sectors']:
         from aiden_sectors import verify
@@ -512,6 +483,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
                                      f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    if span := known_span(expected):
+        result['word_detail'] = check_known_span(audio, span)
     if sectors:
         result['export_sectors_pronunciation'] = sectors
     if gaps_with_quiet_context:
@@ -560,6 +533,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['surname_pronunciation']=surname
     if kite_names:
         result['kite_researchers'] = kite_names
+    if word_windows:
+        result['word_listening'] = word_windows
     if craftsmen is not None:
         result['craftsmen_pronunciation']=craftsmen
     if welsh is not None:
@@ -625,17 +600,21 @@ def independent(audio):
 
 
 def verify_join(left,right):
-    left_ref, left_heard = words(left['text']), words(left['second_heard'])
-    right_ref, right_heard = words(right['text']), words(right['second_heard'])
-    ends=bool(left_heard and edge_matches(left_ref[-1], left_heard[-1]))
-    starts=bool(right_heard and edge_matches(right_ref[0], right_heard[0]))
+    def edge(item, index):
+        target = words(item['text'])
+        for key in ('second_heard', 'heard'):
+            heard = measured_words(words(item.get(key, '')), item)
+            if heard and (matches([target[index]], [heard[index]]) or matches(target, heard)):
+                return True
+        return False
+    left_ref, right_ref = words(left['text']), words(right['text'])
+    ends, starts = edge(left, -1), edge(right, 0)
     if left_ref[-1:] == ['groundfish'] and right_ref == ['cod','sole','perch','and','pollock']:
         if ends and right.get('groundfish_list',{}).get('phones') == 'K AA D':
             return
         raise JoinError('The groundfish example needs a complete groundfish and an audible cod')
-    if not (ends or starts):
-        raise JoinError(f'Both sides of the pause differ: {left["text"]!r} / {left["second_heard"]!r}, '
-                         f'{right["text"]!r} / {right["second_heard"]!r}')
+    if not (ends and starts):
+        raise JoinError(f'An unconfirmed word borders the pause: {left["text"]!r} / {right["text"]!r}')
 
 
 def check_media(path, timing):

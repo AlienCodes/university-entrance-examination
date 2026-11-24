@@ -155,6 +155,10 @@ def pack(out):
                         voice=json.loads(archive.read('source/narration.json'))
                         playback=voice['mp4_check']
                         core = json.loads(archive.read('verification.json'))['receipt']
+                        if AIDEN == '13-6':
+                            from aiden_word_gate import require
+                            film = read(REPORTS/'篇目'/pid/'插图成片核验.json')
+                            row['verified_spoken_words'] = require(pid, core, film, voice)
                         if not verified_subject_terms(pid, core):
                             raise ValueError(pid+' contains an unresolved source recording')
                         if ('source_take_sha256' in core

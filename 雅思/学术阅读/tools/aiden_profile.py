@@ -101,6 +101,8 @@ def audio_asset(lesson_dir, *, source_revision=None):
         profile_path = Path(__file__).resolve().relative_to(root).as_posix()
         profile_source = subprocess.check_output(['git', 'show', f'{source_revision}:{profile_path}'], cwd=root)
         term_checkers = historical_checkers(profile_source)
+    if source_revision is None or b"PROJECT/'tools/aiden_word_review.py'" in profile_source:
+        files.append(PROJECT/'tools/aiden_word_review.py')
     for term, names in term_checkers.items():
         if not any(term in row.lower() for row in rows):
             continue
