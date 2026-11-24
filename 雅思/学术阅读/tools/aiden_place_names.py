@@ -69,10 +69,12 @@ ALEUT = {
 }
 
 
-@lru_cache(maxsize=2)
+@lru_cache(maxsize=3)
 def migration_decoder(name):
     if name == 'na':
         return grammar_decoder(NA_NUMBERS, {'of':'AH V','for':'F AO R','and':'AE N D'}, '[of | for] {term} and')
+    if name == 'na-only':
+        return grammar_decoder(NA_NUMBERS, {}, '{term}')
     return grammar_decoder(ALEUT, {'eskimo':'EH S K AH M OW','and':'AE N D'}, '[eskimo] [and] {term}')
 
 
@@ -108,8 +110,22 @@ def verify_migration_names(audio, expected, first, second):
         where = max(i for i,w in enumerate(observed) if w == prep)
         eskimo = observed.index('eskimo',where+1)
         number = '-plural' if expected[name+1] == 'denes' else ''
-        inspect('na', NA_NUMBERS, {'na-day-nee'+number,'na-day-nay'+number},
-                max(0,timed[where][1]-950), min(len(audio),timed[eskimo][1]+550))
+        allowed = {'na-day-nee'+number,'na-day-nay'+number}
+        # In “migrations of Na-Denes” starting before “of” can make the
+        # recognizer score the end of “migrations” as if it were the name.
+        begin = timed[where][1] if number else max(0,timed[where][1]-950)
+        inspect('na', NA_NUMBERS, allowed, begin, min(len(audio),timed[eskimo][1]+550))
+        if number:
+            conjunction = observed.index('and',where+1,eskimo)
+            lo = max(0,timed[where+1][1]-round(.09*RATE))
+            hi = min(len(audio),timed[conjunction][1]+round(.04*RATE))
+            key,score,b,e = locate_sound(audio[lo:hi],migration_decoder('na-only'),NA_NUMBERS)
+            contextual = evidence['na']
+            if (key not in allowed or score < .25 or (e-b)/RATE < .24
+                    or abs((lo+b)/RATE-contextual['start']) > .14 or abs((lo+e)/RATE-contextual['end']) > .12):
+                raise ValueError('The isolated plural Na-Denes differs from its surrounding phrase: '+NA_NUMBERS[key])
+            contextual['isolated_phones'] = NA_NUMBERS[key]
+            contextual['isolated_confidence'] = round(score,3)
     anchor = observed.index('eskimo') if 'eskimo' in expected else observed.index('and')
     following = expected[expected.index('aleut')+1:]
     hi = timed[observed.index(following[0],anchor+1)][1]+300 if following else len(audio)
