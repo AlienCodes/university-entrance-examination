@@ -7,6 +7,12 @@ from aiden_ceylonese import timed_words
 from aiden_pronunciation import grammar_decoder, locate_sound
 
 READINGS = {
+    'Henri Becquerel': (
+        ('Henri Becquerel', 'Ahn-ree Becquerel', 'Onree Becquerel',
+         'ahn-REE Becquerel', 'On-ree Beck-er-ell'),
+        'Read the French physicist’s given name Henri as two linked syllables, '
+        'ahn-REE /ɑ̃.ʁi/, starting directly on the vowel. '
+        'Pronounce the surname /ˌbɛk.əˈrɛl/ in English and keep any possessive ending.'),
     'Monbusho': (
         ('Monbusho','Mohn-boo-shoh','Mombushō','mohn-boo-shoh','Monbushō'),
         'Read the former Japanese ministry Monbushō as one name: mo-n-bu-shō. '
