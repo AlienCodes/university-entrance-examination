@@ -21,6 +21,7 @@ import aiden_inuktitut
 import aiden_sobchack
 import aiden_de_dreu
 import aiden_decans
+from aiden_place_names import READINGS as PLACE_READINGS
 import aiden_india
 from aiden_macfarlane import cited_phrase
 import aiden_turkish
@@ -78,6 +79,9 @@ class Aiden:
         instruction=DIRECTION
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items()
                if name.casefold() not in {'ceylonese', aiden_turkish.ORAL} and re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
+        for spellings, guidance in PLACE_READINGS.values():
+            if any(re.search(r'\b'+re.escape(form)+r'\b',script,re.I) for form in spellings):
+                instruction += ' ' + guidance
         if names:instruction+=' Pronunciation of names in this sentence: '+', '.join(names)+'.'
         if script.strip(' ,.;:!?').casefold() in {s.casefold() for s in aiden_cork_oak.RENDERINGS}:
             instruction += ' ' + aiden_cork_oak.HINT
@@ -193,7 +197,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
-                      and not {'ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'diels','dielss','dene','makete','monbusho','aleyska','ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -245,6 +249,8 @@ class Aiden:
             spellings=('Deane dived down','Dean DIVED down','Deane DIVED down','Dean dived down','Deane dived down')
         elif words(script)[:3]==['approached','the','helicopters']:
             spellings=('approached','APPROACHED','approached','Approached','APPROACHED')
+        elif place := next((rule for name,rule in PLACE_READINGS.items() if re.search(r'\b'+name+r'\b',script,re.I)), None):
+            spellings = place[0]
         elif 'Puerto Villamil' in script:
             spellings=('Puerto Villamil','Puerto vee-yah-MEEL','Puerto Villamil','Puerto vee-yah-MEEL','Puerto Villamil')
         elif words(script)[:2]==['forested','hills']:

@@ -174,6 +174,7 @@ def complete_words_at_gap(audio, start, end, expected, first, second):
 
 def assess(audio, text, transcript=None, *, recheck=False):
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
+    from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
     expected = words(text)
     transcript = isolated(audio) if transcript is None else transcript
     alternate = None
@@ -196,6 +197,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
     captain = None
     arctic_advisor = None
     soil_scientist = None
+    physicist = None
+    geographical = None
     ant_tools = None
     falkirk = None
     explorer = None
@@ -230,6 +233,17 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_sobchack import verify
         alternate = independent(audio)
         film_names = verify(audio,text,transcript,alternate)
+    elif expected[:1] == ['monbusho'] or expected[-3:] == ['land','mass','aleyska']:
+        from aiden_place_names import verify
+        alternate = independent(audio)
+        geographical = verify(audio,expected,transcript,alternate)
+    elif expected == ['brought','na','dene','hunters']:
+        from aiden_place_names import verify_na_dene
+        alternate = independent(audio)
+        geographical = verify_na_dene(audio,transcript,alternate)
+    elif has_diels(expected):
+        alternate = independent(audio)
+        physicist = verify_diels(audio,expected,transcript,alternate)
     elif 'floris' in expected or 'floriss' in expected:
         from aiden_floris import verify
         alternate = independent(audio)
@@ -316,6 +330,16 @@ def assess(audio, text, transcript=None, *, recheck=False):
                         break
             # A later comma does not change the surname already checked on this
             # waveform. Keep every other word and the far side of the gap intact.
+            if geographical and (start+end)/(2*RATE) > geographical['end'] and expected[0] == 'monbusho':
+                # This exact waveform has already supplied all three vowels and the final shō.
+                # Keep independent recognition of every word following the name.
+                tail = next((i for i,token in enumerate(left_words[:4]) if token == expected[1]), None)
+                if tail is not None and tail > 0:
+                    left_words = ['monbusho', *left_words[tail:]]
+                elif 0 < len(left_words) <= 3 and right_words == expected[1:]:
+                    left_words = ['monbusho']
+            if physicist and expected[0] == 'diels' and start/RATE > physicist['end'] and left_words and left_words[0] in diels_spellings:
+                left_words = ['diels', *left_words[1:]]
             if historian and start/RATE > historian['end'] and left_words[:1] == ['mcfarlands']:
                 left_words = ['macfarlanes', *left_words[1:]]
             return any(matches(expected[:i],left_words) and matches(expected[i:],right_words)
@@ -367,6 +391,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['advisor_pronunciation']=arctic_advisor
     if soil_scientist is not None:
         result['floris_pronunciation'] = soil_scientist
+    if geographical is not None:
+        result['geographic_name'] = geographical
+    if physicist is not None:
+        result['diels_pronunciation'] = physicist
     if ant_tools is not None:
         result['spoken_or_fingers'] = ant_tools
     if falkirk is not None:
