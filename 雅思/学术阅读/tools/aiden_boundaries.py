@@ -158,6 +158,7 @@ def assess(audio, text, transcript=None):
     clock_evidence = None
     inuit_evidence = None
     film_names = None
+    psychologist = None
     if 'ceylonese' in expected:
         from aiden_ceylonese import verify
         alternate = independent(audio)
@@ -175,6 +176,10 @@ def assess(audio, text, transcript=None):
         from aiden_sobchack import verify
         alternate = independent(audio)
         film_names = verify(audio,text,transcript,alternate)
+    elif 'dreu' in expected:
+        from aiden_de_dreu import verify
+        alternate = independent(audio)
+        psychologist = verify(audio,text,transcript,alternate)
     elif expected == ['deane', 'dived', 'down'] or expected[:4] == ['and', 'doctor', 'phil', 'rasch']:
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript, alternate)):
@@ -218,6 +223,8 @@ def assess(audio, text, transcript=None):
         result['inuktitut_pronunciation']=inuit_evidence
     if film_names is not None:
         result['film_surnames']=film_names
+    if psychologist is not None:
+        result['de_dreu_pronunciation']=psychologist
     return result
 
 

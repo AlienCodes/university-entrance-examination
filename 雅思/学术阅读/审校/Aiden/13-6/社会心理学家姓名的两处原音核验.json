@@ -1,0 +1,209 @@
+{
+  "lesson": "C13T2P2",
+  "paper": {
+    "25": "Meanwhile, Carsten De Dreu at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favouritism:",
+    "26": "According to De Dreu,"
+  },
+  "references": {
+    "publisher": "https://www.socialsciencespace.com/2023/07/carsten-de-dreu-on-why-people-fight/",
+    "interview": "https://traffic.libsyn.com/socialsciencebites/Carsten_MixSesM.mp3",
+    "interviewer": "David Edmonds, Social Science Bites",
+    "interview_time_ranges_seconds": [
+      [
+        27.79,
+        28.62
+      ],
+      [
+        34.75,
+        35.58
+      ]
+    ],
+    "opening_bytes": 2400000,
+    "opening_sha256": "aaffc6a8e182dd8024a04ab5d7d4c70f7b4acb2719bcec2a8d24cae3e9701c6e"
+  },
+  "production": {
+    "run": 45247801732,
+    "artifact": 14859681761,
+    "actual_Aiden_FLAC_sha256": {
+      "sentence_25": "3d4d9b310a9b4858b12f915219d8d85341f7f186f965a7f00f7af5d3ba6b36d5",
+      "sentence_26": "21f779b5aff418ed65c076d8f0c198b4a3c0837dfa56097a010fb908dcbf5fe8"
+    }
+  },
+  "checks": [
+    {
+      "test": "English interview, name 1",
+      "accepted": true,
+      "details": {
+        "phones": "T AH T R UW",
+        "score": 0.154,
+        "start": 0.12,
+        "end": 0.62
+      }
+    },
+    {
+      "test": "English interview, first syllable only 1",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: D R AH"
+    },
+    {
+      "test": "English interview, clipped onset 1",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: R AH"
+    },
+    {
+      "test": "English interview, mid-name 280ms silence 1",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: R UW"
+    },
+    {
+      "test": "English interview, name 2",
+      "accepted": true,
+      "details": {
+        "phones": "T AH T R UW",
+        "score": 0.157,
+        "start": 0.17,
+        "end": 0.56
+      }
+    },
+    {
+      "test": "English interview, first syllable only 2",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: D AH"
+    },
+    {
+      "test": "English interview, clipped onset 2",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: D OW"
+    },
+    {
+      "test": "English interview, mid-name 280ms silence 2",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: T AH D R AH"
+    },
+    {
+      "test": "Aiden sentence 25 .flac",
+      "accepted": true,
+      "details": {
+        "text": "Meanwhile, Carsten De Dreu at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favouritism:",
+        "heard": "Meanwhile, Carsten de Drew at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favoritism.",
+        "checked_internal_gaps": [
+          [
+            0.65,
+            0.86
+          ],
+          [
+            4.96,
+            5.21
+          ]
+        ],
+        "second_heard": "Meanwhile, Carsten Deidreux at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favoritism.",
+        "de_dreu_pronunciation": {
+          "phones": "D IH D R UW",
+          "score": 0.413,
+          "start": 1.26,
+          "end": 1.96
+        }
+      }
+    },
+    {
+      "test": "Aiden sentence 26 .flac",
+      "accepted": false,
+      "reason": "The speech recognizer could not locate De Dreu"
+    },
+    {
+      "test": "Aiden rejected surname, acoustics alone .flac",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: D IY D R OW"
+    },
+    {
+      "test": "Aiden sentence 25, inserted 280ms within Dreu .flac",
+      "accepted": false,
+      "reason": "The speech recognizer could not locate De Dreu"
+    },
+    {
+      "test": "Aiden sentence 25 .mp3",
+      "accepted": true,
+      "details": {
+        "text": "Meanwhile, Carsten De Dreu at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favouritism:",
+        "heard": "Meanwhile, Carsten de Drew at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favoritism.",
+        "checked_internal_gaps": [
+          [
+            0.65,
+            0.86
+          ],
+          [
+            4.96,
+            5.21
+          ]
+        ],
+        "second_heard": "Meanwhile, Carsten Deidreux at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favoritism.",
+        "de_dreu_pronunciation": {
+          "phones": "D IH D R UW",
+          "score": 0.404,
+          "start": 1.26,
+          "end": 1.96
+        }
+      }
+    },
+    {
+      "test": "Aiden sentence 26 .mp3",
+      "accepted": false,
+      "reason": "The speech recognizer could not locate De Dreu"
+    },
+    {
+      "test": "Aiden rejected surname, acoustics alone .mp3",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: D IY D R OW"
+    },
+    {
+      "test": "Aiden sentence 25, inserted 280ms within Dreu .mp3",
+      "accepted": false,
+      "reason": "The words surrounding De Dreu differ from the printed phrase"
+    },
+    {
+      "test": "Aiden sentence 25 .m4a",
+      "accepted": true,
+      "details": {
+        "text": "Meanwhile, Carsten De Dreu at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favouritism:",
+        "heard": "Meanwhile, Carsten de Drew at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favoritism.",
+        "checked_internal_gaps": [
+          [
+            0.65,
+            0.86
+          ],
+          [
+            4.96,
+            5.21
+          ]
+        ],
+        "second_heard": "Meanwhile, Carsten Deidreux at the University of Amsterdam in the Netherlands discovered that volunteers given oxytocin showed favoritism.",
+        "de_dreu_pronunciation": {
+          "phones": "D IH D R UW",
+          "score": 0.407,
+          "start": 1.26,
+          "end": 1.96
+        }
+      }
+    },
+    {
+      "test": "Aiden sentence 26 .m4a",
+      "accepted": false,
+      "reason": "The speech recognizer could not locate De Dreu"
+    },
+    {
+      "test": "Aiden rejected surname, acoustics alone .m4a",
+      "accepted": false,
+      "reason": "Unclear particle or final vowel in De Dreu: D IY D R OW"
+    },
+    {
+      "test": "Aiden sentence 25, inserted 280ms within Dreu .m4a",
+      "accepted": false,
+      "reason": "The speech recognizer could not locate De Dreu"
+    }
+  ],
+  "status": "首处现成音轨在两种编码后仍有完整的姓名；旧第26句尾元音不符，整意群补读后再核验。没有将参考访谈音频用于成片。",
+  "diagnostic_recovery": {
+    "25": "stored intact recording reused byte-for-byte",
+    "26": "rejected recording requires a new whole phrase"
+  }
+}

@@ -17,6 +17,7 @@ import aiden_cork_oak
 import aiden_ceylonese
 import aiden_inuktitut
 import aiden_sobchack
+import aiden_de_dreu
 import make_audio as cet
 import 听对
 
@@ -91,6 +92,8 @@ class Aiden:
             instruction += ' ' + aiden_inuktitut.HINT
         if any(form.casefold() in script.casefold() for form in aiden_sobchack.RENDERINGS):
             instruction += ' Read the family name Sobchack in two syllables: sob-chack. Go directly from b to ch and pronounce the final k.'
+        if any(form.casefold() in script.casefold() for form in aiden_de_dreu.RENDERINGS):
+            instruction += ' ' + aiden_de_dreu.HINT
         if 'Deane dived down' in script:
             instruction += ' In "Deane dived down", articulate the past tense /daɪvd/, linking its final d naturally into "down".'
         if 'Doctor Phil Rasch' in script:
@@ -114,7 +117,12 @@ class Aiden:
         if rate!=24000 or wave.ndim!=1:return None
         transcript,timed=recognize(wave)
         audio=soxr.resample(wave,rate,16000)
-        if not timed or words(transcript)!=words(script) or words(independent(audio))!=words(script):return None
+        if not timed:
+            return None
+        # The De Dreu check matches all surrounding words in both recognizers
+        # and measures the name itself, even when transcribed as De Drew.
+        if 'dreu' not in words(script) and (words(transcript)!=words(script) or words(independent(audio))!=words(script)):
+            return None
         try:
             assess(audio,script,transcript)
         except ValueError:
@@ -144,7 +152,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber']
-                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack'}.intersection(words(script))):
+                      and not {'ceylonese','fusee','qaujimajatuqangit','sobchack','dreu'}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -175,6 +183,8 @@ class Aiden:
             spellings=aiden_inuktitut.RENDERINGS
         elif 'sobchack' in words(script):
             spellings=aiden_sobchack.RENDERINGS
+        elif re.search(r'\bDe Dreu\b',script,re.I):
+            spellings=aiden_de_dreu.RENDERINGS
         for attempt in range(len(spellings) if spellings else 5):
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.
