@@ -61,12 +61,20 @@ PINNED_ORIGINAL_ENTRIES = {  # 原音整套/测试只豁免精确路径+完整�
         'reason': '在 APT 依赖清单中声明 espeak-ng、sox 和 ffmpeg，实际执行安装与检查。脚本不调用朗读模型，不处理或写出音频。',
     },
     '.github/install-ielts-native-speech.sh': {
-        'sha256': 'd913cdac74b5f6804c3922ee3e7d0be48889a06e56ddf4837ce799eda859e513', 'audio': True, 'video': False,
+        'sha256': '93b4f5093f4ead3d2e7fc471a0ec634bbaa64c083bb4062031e15eab5662fd5d', 'audio': True, 'video': False,
         'reason': '只安装已锁定的语音、读音和检测依赖；脚本不产生音频文件。',
     },
     '雅思/学术阅读/tools/aiden_boundaries.py': {
-        'sha256': '10bbe556f3328fbbce1ccebe53d6f021f35b8bdf24b629027dcfebd12e2a1c8b', 'audio': True, 'video': False,
-        'reason': 'espeak 的 -q --ipa 只返回音标，ffmpeg 解码到内存。人名同音拼写、栓皮栎学名、Ceylonese 两种美音词典录音及 I-INCE 五个字母的核读均不写音频，仅输出逐意群核验 JSON。',
+        'sha256': '3c52bf47e1bf812609758d5954359f125565d32264693fed51895ccbd6ec7d32', 'audio': True, 'video': False,
+        'reason': 'espeak 的 -q --ipa 返回音标，ffmpeg 将既有音轨解码到内存。逐意群核对停顿、读音及词尾，把声学证据写入 JSON。',
+    },
+    '雅思/学术阅读/tools/illustration_audio.py': {
+        'sha256': '1a52a530d2cdb71424ad42e564412405ed7278da28ae5f0cbad565d81afce1ba', 'audio': True, 'video': False,
+        'reason': '只编码插图片头的静音。原旁白 AAC 包逐个复制，check_packets 对原包与最终 MP4 的载荷、时间戳及片尾采样点逐个比对。',
+    },
+    '雅思/学术阅读/tools/illustrated_video.py': {
+        'sha256': 'fd864d5aab2b32f0f6b46b5a2c35cba19dace3005d1b0db416f6b8bbc442d2d8', 'audio': False, 'video': True,
+        'reason': 'illustration_stage 先验证 Aiden 原成片和逐意群回执。插图重排使用音频流复制，输出逐包核对并以 25 毫秒窗比对实际音轨，随后验证片头、正文与片尾播放。',
     },
     '雅思/学术阅读/声音试听/sample.py': {
         'sha256': '9f32f7296e7204e4701843cb6c9d6b04e62b09a3835bd9b0458ac2c0094697b7', 'audio': True, 'video': False,
@@ -522,6 +530,7 @@ def check(over=None, product=True):
         for entry,required in {
             '雅思/学术阅读/tools/audio_lesson.py': {'render_passage','check_media','confirm','certificate_problems'},
             '雅思/学术阅读/tools/series_render.py': {'confirm','current_key','digest'},
+            '雅思/学术阅读/tools/illustration_stage.py': {'build','checked','digest','inspect'},
         }.items():
             if not T.get(entry) or not required<=calls(T[entry]):
                 errs.append(f'{entry}：Aiden 原录音缺少整轨或成片认证')

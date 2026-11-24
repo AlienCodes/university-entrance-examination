@@ -1,0 +1,471 @@
+{
+ "paper": "C8T3P2",
+ "sentence": 9,
+ "phrase": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+ "source_take_sha256": "32ea6c5f8179da1baf9da77cde939bfbc07bd979c98a1fac0406cfa00bfac4a6",
+ "source_run": 45265727081,
+ "source_job_artifact": 14884850874,
+ "wrong_take_sha256": "e5dd607a54c355283b262908e61963bde65734e830e79b667a1937cdf27febf8",
+ "reconstructed_mastering_case": {
+  "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+  "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+  "checked_internal_gaps": [
+   [
+    0.67,
+    1.16
+   ],
+   [
+    3.49,
+    4.03
+   ],
+   [
+    4.49,
+    4.81
+   ]
+  ],
+  "verified_with_quiet_context": [
+   [
+    3.49,
+    4.03
+   ]
+  ],
+  "second_heard": "Egghead Blue stocking, wise acre, no all Boffin' and [buzzer]"
+ },
+ "codec_tests": [
+  {
+   "case": "原录音",
+   "format": "wav",
+   "passed": true,
+   "expected": true,
+   "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+   "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+   "checked_internal_gaps": [
+    [
+     0.61,
+     1.1
+    ],
+    [
+     3.43,
+     3.97
+    ],
+    [
+     4.43,
+     4.75
+    ]
+   ]
+  },
+  {
+   "case": "原录音",
+   "format": "mp3",
+   "passed": true,
+   "expected": true,
+   "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+   "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+   "checked_internal_gaps": [
+    [
+     0.61,
+     1.1
+    ],
+    [
+     3.43,
+     3.97
+    ],
+    [
+     4.43,
+     4.75
+    ]
+   ]
+  },
+  {
+   "case": "原录音",
+   "format": "m4a",
+   "passed": true,
+   "expected": true,
+   "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+   "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+   "checked_internal_gaps": [
+    [
+     0.61,
+     1.1
+    ],
+    [
+     3.43,
+     3.97
+    ],
+    [
+     4.43,
+     4.75
+    ]
+   ],
+   "verified_with_quiet_context": [
+    [
+     3.43,
+     3.97
+    ]
+   ],
+   "second_heard": "Egghead Blue stocking Wise Acre No All Boffin and"
+  },
+  {
+   "case": "有顿读的原MP3边界",
+   "format": "wav",
+   "passed": true,
+   "expected": true,
+   "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+   "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+   "checked_internal_gaps": [
+    [
+     0.67,
+     1.16
+    ],
+    [
+     3.49,
+     4.03
+    ],
+    [
+     4.5,
+     4.81
+    ]
+   ],
+   "verified_with_quiet_context": [
+    [
+     3.49,
+     4.03
+    ]
+   ],
+   "second_heard": "Egghead Blue stocking, wise acre, no all Boffin' and..."
+  },
+  {
+   "case": "有顿读的原MP3边界",
+   "format": "mp3",
+   "passed": true,
+   "expected": true,
+   "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+   "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+   "checked_internal_gaps": [
+    [
+     0.67,
+     1.16
+    ],
+    [
+     3.49,
+     4.03
+    ],
+    [
+     4.49,
+     4.81
+    ]
+   ],
+   "verified_with_quiet_context": [
+    [
+     3.49,
+     4.03
+    ]
+   ],
+   "second_heard": "Egghead Blue stocking, wise acre, no all Boffin' and [buzzer]"
+  },
+  {
+   "case": "有顿读的原MP3边界",
+   "format": "m4a",
+   "passed": true,
+   "expected": true,
+   "text": "egghead, blue-stocking, wiseacre, know-all, boffin and,",
+   "heard": "Egghead, Bluestocking, Wiseacre, Know All, Boffin, and",
+   "checked_internal_gaps": [
+    [
+     0.67,
+     1.16
+    ],
+    [
+     3.49,
+     4.03
+    ],
+    [
+     4.5,
+     4.81
+    ]
+   ]
+  },
+  {
+   "case": "误读的另一次录音",
+   "format": "wav",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 0.63–1.19s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead' | 'Bluestocking, Wiseacre, Know All, Buffin, and'; 'Egg head.' | 'loose stocking, wizaker, no all, buffen and...'"
+  },
+  {
+   "case": "误读的另一次录音",
+   "format": "mp3",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 0.63–1.19s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead' | 'Bluestocking, Wiseacre, Know All, Buffin, and'; 'Egg head' | 'loose stocking, wizaker, no all, buffen and...'"
+  },
+  {
+   "case": "误读的另一次录音",
+   "format": "m4a",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 0.63–1.19s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead' | 'Bluestocking, Wiseacre, Know All, Buffin, and'; 'Egg head.' | 'loose stocking, wizaker, no all, buffen and...'"
+  },
+  {
+   "case": "boffin词内断开",
+   "format": "wav",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 3.43–3.97s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead Bluestocking Wise Acre Know All' | 'Boston and'; 'Egghead Blue stocking, wizaker, no all' | 'and'"
+  },
+  {
+   "case": "boffin词内断开",
+   "format": "mp3",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 3.43–3.97s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead Bluestocking Wise Acre Know All' | 'Boston and'; 'Egghead Blue stocking, wizaker, no all' | 'and'"
+  },
+  {
+   "case": "boffin词内断开",
+   "format": "m4a",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 3.43–3.97s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead Bluestocking Wise Acre Know All' | 'Boston. And'; 'Egghead Blue stocking, wizaker, no all' | 'and'"
+  },
+  {
+   "case": "boffin缺失",
+   "format": "wav",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 0.61–1.10s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead' | 'Blue Stocking, Wise Acre, Know All and'; 'Egg head.' | 'Blue stocking, wise acre, no all, and [buzzer]'"
+  },
+  {
+   "case": "boffin缺失",
+   "format": "mp3",
+   "passed": false,
+   "expected": false,
+   "reason": "Possible break inside a word at 0.61–1.10s: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead' | 'Bluestocking, Wiseacre, Know All and'; 'Egg head.' | 'Blue stocking, wise acre, no all. And [buzzer]'"
+  },
+  {
+   "case": "boffin缺失",
+   "format": "m4a",
+   "passed": false,
+   "expected": false,
+   "reason": "Phrase endpoints or wording differ: 'egghead, blue-stocking, wiseacre, know-all, boffin and,' / 'Egghead, Bluestocking, Wiseacre, Know All and' / 'Egghead, blue stocking, wizaker, no all, and...'"
+  },
+  {
+   "case": "修订版完整sectors",
+   "format": "wav",
+   "passed": true,
+   "expected": true,
+   "text": "Unlike other export sectors, which make products and then sell them overseas,",
+   "heard": "Unlike other export sectors, which make products and then sell them overseas.",
+   "checked_internal_gaps": [
+    [
+     1.83,
+     2.2
+    ],
+    [
+     3.26,
+     3.41
+    ]
+   ],
+   "export_sectors_pronunciation": {
+    "phones": "S EH K T ER Z",
+    "start": 1.19,
+    "end": 1.82,
+    "confidence": 1.0
+   }
+  },
+  {
+   "case": "修订版完整sectors",
+   "format": "mp3",
+   "passed": true,
+   "expected": true,
+   "text": "Unlike other export sectors, which make products and then sell them overseas,",
+   "heard": "Unlike other export sectors, which make products and then sell them overseas.",
+   "checked_internal_gaps": [
+    [
+     1.83,
+     2.2
+    ],
+    [
+     3.26,
+     3.41
+    ]
+   ],
+   "export_sectors_pronunciation": {
+    "phones": "S EH K T ER Z",
+    "start": 1.19,
+    "end": 1.82,
+    "confidence": 1.0
+   }
+  },
+  {
+   "case": "修订版完整sectors",
+   "format": "m4a",
+   "passed": true,
+   "expected": true,
+   "text": "Unlike other export sectors, which make products and then sell them overseas,",
+   "heard": "Unlike other export sectors, which make products and then sell them overseas.",
+   "checked_internal_gaps": [
+    [
+     1.83,
+     2.2
+    ],
+    [
+     3.26,
+     3.41
+    ]
+   ],
+   "export_sectors_pronunciation": {
+    "phones": "S EH K T ER Z",
+    "start": 1.19,
+    "end": 1.82,
+    "confidence": 1.0
+   }
+  },
+  {
+   "case": "原片中sectors词内断音",
+   "format": "wav",
+   "passed": false,
+   "expected": false,
+   "reason": "Incomplete or interrupted plural in export sectors: S EH K"
+  },
+  {
+   "case": "原片中sectors词内断音",
+   "format": "mp3",
+   "passed": false,
+   "expected": false,
+   "reason": "Incomplete or interrupted plural in export sectors: S EH K"
+  },
+  {
+   "case": "原片中sectors词内断音",
+   "format": "m4a",
+   "passed": false,
+   "expected": false,
+   "reason": "Incomplete or interrupted plural in export sectors: S EH K"
+  }
+ ],
+ "downloaded_original_MP4s": [
+  {
+   "version": "old",
+   "file": "13-1-1 案例研究：新西兰旅游局网站.mp4",
+   "sha256": "ad99d8d38def3319524bcb91865981d2d593d84f0e4f849715b26bc1f5cae6c8",
+   "clip_start_sec": 19.16,
+   "first_phrase": {
+    "error": "Incomplete or interrupted plural in export sectors: S EH K"
+   },
+   "combined": {
+    "error": "Incomplete or interrupted plural in export sectors: S EH K"
+   },
+   "join_passed": false,
+   "join_transcripts": [
+    {
+     "text": "Unlike other export sectors,",
+     "second_heard": "Unlike other exports, sex..."
+    },
+    {
+     "text": "which make products and then sell them overseas,",
+     "second_heard": "Ders which make products and then sell them overseas,"
+    }
+   ]
+  },
+  {
+   "version": "corrected",
+   "file": "C13T1P1-core.mp4",
+   "sha256": "65d55efd25cb50600d444351e22b63727cd4a6462c19e07686a1ade885bb8a1a",
+   "clip_start_sec": 19.635,
+   "first_phrase": {
+    "text": "Unlike other export sectors,",
+    "heard": "Unlike other export sectors,",
+    "checked_internal_gaps": [],
+    "export_sectors_pronunciation": {
+     "phones": "S EH K T ER Z",
+     "start": 1.19,
+     "end": 1.82,
+     "confidence": 1.0
+    }
+   },
+   "combined": {
+    "text": "Unlike other export sectors, which make products and then sell them overseas,",
+    "heard": "Unlike other export sectors, which make products and then sell them overseas.",
+    "checked_internal_gaps": [
+     [
+      1.83,
+      2.2
+     ],
+     [
+      3.26,
+      3.41
+     ]
+    ],
+    "export_sectors_pronunciation": {
+     "phones": "S EH K T ER Z",
+     "start": 1.19,
+     "end": 1.82,
+     "confidence": 1.0
+    }
+   },
+   "join_passed": true,
+   "join_transcripts": [
+    {
+     "text": "Unlike other export sectors,",
+     "second_heard": "Unlike other export sectors."
+    },
+    {
+     "text": "which make products and then sell them overseas,",
+     "second_heard": "which make products and then sell them overseas."
+    }
+   ]
+  },
+  {
+   "version": "illustrated",
+   "file": "C13T1P1-illustrated-65d55efd25cb5060-1a9a077fd4ca5fe1-dd91b2a6bc251da9.mp4",
+   "sha256": "dd91b2a6bc251da9036fa7d6a6b50f1c022327a8781d7b9ca92a62ae6cba1c77",
+   "clip_start_sec": 20.635,
+   "first_phrase": {
+    "text": "Unlike other export sectors,",
+    "heard": "Unlike other export sectors,",
+    "checked_internal_gaps": [],
+    "export_sectors_pronunciation": {
+     "phones": "S EH K T ER Z",
+     "start": 1.19,
+     "end": 1.82,
+     "confidence": 1.0
+    }
+   },
+   "combined": {
+    "text": "Unlike other export sectors, which make products and then sell them overseas,",
+    "heard": "Unlike other export sectors, which make products and then sell them overseas.",
+    "checked_internal_gaps": [
+     [
+      1.83,
+      2.2
+     ],
+     [
+      3.26,
+      3.41
+     ]
+    ],
+    "export_sectors_pronunciation": {
+     "phones": "S EH K T ER Z",
+     "start": 1.19,
+     "end": 1.82,
+     "confidence": 1.0
+    }
+   },
+   "join_passed": true,
+   "join_transcripts": [
+    {
+     "text": "Unlike other export sectors,",
+     "second_heard": "Unlike other export sectors."
+    },
+    {
+     "text": "which make products and then sell them overseas,",
+     "second_heard": "which make products and then sell them overseas."
+    }
+   ]
+  }
+ ],
+ "sources": [
+  "https://www.merriam-webster.com/dictionary/boffin",
+  "https://www.merriam-webster.com/dictionary/wiseacre"
+ ],
+ "method": "从 FLAC 解码，复查完整读词和停顿两侧。仅在原静音段内向两侧各保留不超过 80 毫秒，前后语音不重叠，须逐字匹配。对实际旧片、修订母版和带图4K最终AAC另验原词的结尾和被截断的竞争读音。"
+}

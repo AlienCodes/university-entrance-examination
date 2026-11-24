@@ -156,6 +156,21 @@ def interior_gaps(audio):
             if b-a >= 15 and a >= 10 and b <= len(db)-10]
 
 
+def complete_words_at_gap(audio, start, end, expected, first, second):
+    # The first low-energy bins can still contain an unvoiced onset. Keep up to
+    # 80 ms of the measured quiet interval on each side, with no shared samples.
+    # Both halves and a reading of the whole phrase must cover exactly the
+    # printed words. The split has to be between two words.
+    printed = ''.join(expected)
+    if not any(''.join(words(h)) == printed for h in (first, second)):
+        return False
+    context = min(80 * RATE // 1000, (end - start) // 2)
+    left = ''.join(words(isolated(audio[:start + context])))
+    right = ''.join(words(isolated(audio[end - context:])))
+    return any(left == ''.join(expected[:i]) and right == ''.join(expected[i:])
+               for i in range(1, len(expected)))
+
+
 def assess(audio, text, transcript=None, *, recheck=False):
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     expected = words(text)
@@ -179,6 +194,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     psychologist = None
     captain = None
     arctic_advisor = None
+    soil_scientist = None
     falkirk = None
     explorer = None
     turkish_word = None
@@ -212,6 +228,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_sobchack import verify
         alternate = independent(audio)
         film_names = verify(audio,text,transcript,alternate)
+    elif 'floris' in expected or 'floriss' in expected:
+        from aiden_floris import verify
+        alternate = independent(audio)
+        soil_scientist = verify(audio,expected,transcript,alternate)
     elif 'dreu' in expected:
         from aiden_de_dreu import verify
         alternate = independent(audio)
@@ -270,7 +290,12 @@ def assess(audio, text, transcript=None, *, recheck=False):
         # If the two decoders disagree, only the full printed sequence can resolve it.
         if words(alternate) != expected:
             raise ValueError(f'Phrase endpoints or wording differ: {text!r} / {transcript!r} / {alternate!r}')
+    sectors = None
+    if expected[:4] == ['unlike', 'other', 'export', 'sectors']:
+        from aiden_sectors import verify
+        sectors = verify(audio, expected)
     gaps = []
+    gaps_with_quiet_context = []
     for start,end in interior_gaps(audio):
         left = isolated(audio[:start])
         right = isolated(audio[end:])
@@ -293,10 +318,18 @@ def assess(audio, text, transcript=None, *, recheck=False):
             other_left=independent(audio[:start])
             other_right=independent(audio[end:])
             if not split_matches(other_left,other_right):
-                raise ValueError(f'Possible break inside a word at {start/RATE:.2f}–{end/RATE:.2f}s: {text!r} / '
-                                 f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
+                if alternate is None:
+                    alternate = independent(audio)
+                if not complete_words_at_gap(audio, start, end, expected, transcript, alternate):
+                    raise ValueError(f'Possible break inside a word at {start/RATE:.2f}–{end/RATE:.2f}s: {text!r} / '
+                                     f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
+                gaps_with_quiet_context.append([round(start/RATE,3), round(end/RATE,3)])
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    if sectors:
+        result['export_sectors_pronunciation'] = sectors
+    if gaps_with_quiet_context:
+        result['verified_with_quiet_context'] = gaps_with_quiet_context
     if historian is not None:
         result['historian_pronunciation'] = historian
     if alternate is not None:
@@ -319,6 +352,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['captain_pronunciation']=captain
     if arctic_advisor is not None:
         result['advisor_pronunciation']=arctic_advisor
+    if soil_scientist is not None:
+        result['floris_pronunciation'] = soil_scientist
     if falkirk is not None:
         result['engineering_possessive']=falkirk
     if explorer is not None:

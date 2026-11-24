@@ -129,6 +129,8 @@ class Aiden:
             instruction += ' Finish the plural bottlenecks with the whole final syllable, including the k and s sounds.'
         if 'Sommerkorn' in script or 'Zommerkorn' in script:
             instruction += ' Read Martin Sommerkorn with a voiced z, a short first vowel and the final consonants in korn, as in his own introduction. Use one connected surname.'
+        if re.search(r'\b(?:Floris|Floor-iss)\b',script,re.I):
+            instruction += ' Read the soil specialist’s surname Floris in two connected syllables, FLOOR-iss. In the possessive, add a short iz before mix.'
         if 'Doctor Phil Rasch' in script:
             instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
         if re.search(r'\b(?:Mac|Mc)farlane\b',script,re.I):
@@ -191,7 +193,7 @@ class Aiden:
                         failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
                     previous_seed=data['seed']
                 elif (data.get('policy') == POLICY and words(script) != ['quercus','suber'] and not cited_phrase(words(script))
-                      and not {'ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
+                      and not {'ceylonese','fusee','decans','ynde','qaujimajatuqangit','sobchack','dreu','heyerdahl','butterley','dowman','sommerkorn','floris','floriss',aiden_cork_taint.TERM,aiden_turkish.ORAL}.intersection(words(script))):
                     return wave,data
                 else:
                     try:
@@ -251,6 +253,8 @@ class Aiden:
             spellings=('Dowman','Dow Man','Dowman','Dow-man','Dowman')
         elif 'sommerkorn' in words(script):
             spellings=('Sommerkorn','Zommerkorn','Sommerkorn','Zommer-korn','Sommerkorn')
+        elif {'floris','floriss'}.intersection(words(script)):
+            spellings=('Floris','Floor-iss','Floris','FLOOR-iss','Floris')
         elif words(script) == ['thor', 'heyerdahl']:
             spellings=aiden_heyerdahl.RENDERINGS
         elif cited_phrase(words(script)):
