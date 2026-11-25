@@ -68,6 +68,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
     term_checkers = {
         'allied themselves with kandy': ('aiden_kandy_nannie.py', 'aiden_pronunciation.py', 'aiden_ceylonese.py'),
         'witch called nannie': ('aiden_kandy_nannie.py', 'aiden_pronunciation.py', 'aiden_ceylonese.py'),
+        'katherine hepburn': ('aiden_kandy_nannie.py', 'aiden_pronunciation.py', 'aiden_ceylonese.py'),
         'taro seedlings': ('aiden_voyages.py', 'aiden_pronunciation.py', 'aiden_ceylonese.py'),
         'clemmons': ('aiden_kite_names.py', 'aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py',
                      '读音对照/Clemmons.flac', 'aiden_printed_names.py'),
