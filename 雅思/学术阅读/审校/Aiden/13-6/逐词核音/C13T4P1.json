@@ -2,10 +2,10 @@
  "lesson": "C13T4P1",
  "policy": "ordered-spoken-words-v1",
  "rules_sha256": "5dd72c1212582fa86f06c9fead60331bdc5e82e9feb4dd35ed12abe81da4c741",
- "source_mp3_sha256": "31da06733016eb0e76784f3c521e7f3b475407c93743dadf477d33606813648f",
- "core_sha256": "efe0d435dfd3c424b988114e212fa034c55def32b8988fd6162a528b2c202cf1",
- "video_sha256": "8817faf2f316d866e4f4f7895138b6adae9f5cc8b5c30fc1add5a29a04b8d51f",
- "original_aac_packets": 16936,
+ "source_mp3_sha256": "aded329604313051e133af050024594b2006c25d93df833f3fd2b305044f78ce",
+ "core_sha256": "ad1269bdb5839632dba780432f9526f8a81c7d0ede4a8b5085174ea956e7429c",
+ "video_sha256": "8297355b538a2f7513ce4841a7f6a011740de3190f3c1a527bc745d0176acc8f",
+ "original_aac_packets": 16961,
  "illustrated_intro_frames": 30,
  "phrases": 119,
  "spoken_words": 900,
@@ -14,15 +14,15 @@
    "sentence": 6,
    "phrase": 2,
    "text": "is chased by a witch called Nannie,",
-   "source_take_sha256": "c7d4d28d30d8bb6e03438050f51ddcb2bf334274e02dd8e972c3f714135cc6ba",
+   "source_take_sha256": "a25f0760cc54c9ec6a01969f356d5e66378010ea6d412105dfc4f949de4beb19",
    "start": 53.37,
-   "end": 55.655,
+   "end": 55.405,
    "source_lag_ms": 20,
    "final_start_sample": 869920,
-   "final_end_sample": 906480,
-   "decoded_sha256": "70778ad444714fe505b5511bde6a676ca8bcebeb19ce348ae167f72d8ad40f3a",
-   "heard": "is chased by a witch called Nani,",
-   "second_heard": "is chased by a witch called Nani.",
+   "final_end_sample": 902480,
+   "decoded_sha256": "69791479c879a197933b4d97c23de74bcdcbdf3ee0bdcd6bb2331b272e7cf812",
+   "heard": "is chased by a witch called Nanny,",
+   "second_heard": "is chased by a witch called Nanny.",
    "focused_listening": [
     {
      "printed_words": [
@@ -34,269 +34,43 @@
       7
      ],
      "expected_window": "a witch called nannie",
-     "start_sample": 13520,
-     "end_sample": 36560,
-     "heard": "by a witch called Nanny,",
-     "second_heard": "a witch called Nani."
+     "start_sample": 12240,
+     "end_sample": 32560,
+     "heard": "the witch called Nanny.",
+     "second_heard": "a witch called Nanny."
     }
    ],
-   "passed": false,
+   "passed": true,
    "window_review": {
-    "version": "two-reader-context-v1",
+    "version": "kandy-nannie-v1",
     "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "nannie"
-      ],
-      "heard": [
-       "nani"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         16240,
-         36560
-        ],
-        "expected": [
-         "witch",
-         "called",
-         "nannie"
-        ],
-        "first": "witch called Nanny,",
-        "second": "witch called Nani."
-       },
-       {
-        "samples": [
-         22640,
-         36560
-        ],
-        "expected": [
-         "called",
-         "nannie"
-        ],
-        "first": "called Nanny,",
-        "second": "called Nani."
-       }
-      ]
-     }
-    ]
-   }
-  },
-  {
-   "sentence": 15,
-   "phrase": 1,
-   "text": "However, Cutty Sark never lived up to the high expectations of her owner,",
-   "source_take_sha256": "2577261535d1031c77f8e28aeae4e3856c6e038d421da0e74cc494c27b71f72b",
-   "start": 129.775,
-   "end": 133.98,
-   "source_lag_ms": 20,
-   "final_start_sample": 2092400,
-   "final_end_sample": 2159680,
-   "decoded_sha256": "0d9cec14770e35cf365ad57537d83a6f9242a01beae5d73ba213f11ab17c1adc",
-   "heard": "However, Cuddy Sark never lived up to the high expectations of her owner.",
-   "second_heard": "However, Cuddy Sark never lived up to the high expectations of her owner.",
-   "focused_listening": [
-    {
-     "printed_words": [
-      1,
-      2
+    "pronunciation": {
+     "term": "nannie",
+     "readings": [
+      "is chased by a witch called Nanny,",
+      "is chased by a witch called Nanny."
      ],
-     "checked_words": [
-      0,
-      5
-     ],
-     "expected_window": "however cutty sark never lived",
-     "start_sample": 0,
-     "end_sample": 32160,
-     "heard": "However, Cuddy Sark never lived.",
-     "second_heard": "However, Cutty Sark never lived a..."
+     "measurements": [
+      {
+       "phones": "N AE N IY",
+       "confidence": 0.349,
+       "samples": [
+        26000,
+        32080
+       ]
+      },
+      {
+       "phones": "N AE N IY",
+       "confidence": 0.303,
+       "samples": [
+        25840,
+        32080
+       ]
+      }
+     ]
     }
-   ],
-   "passed": false,
-   "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "cutty"
-      ],
-      "heard": [
-       "cuddy"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         0,
-         28320
-        ],
-        "expected": [
-         "however",
-         "cutty",
-         "sark",
-         "never"
-        ],
-        "first": "However, Cuddy Sark never",
-        "second": "However, Cutty Sark never-"
-       },
-       {
-        "samples": [
-         0,
-         24480
-        ],
-        "expected": [
-         "however",
-         "cutty",
-         "sark"
-        ],
-        "first": "However, Cuddy Sark naught.",
-        "second": "However, Cutty Sark n-"
-       }
-      ]
-     }
-    ]
-   }
-  },
-  {
-   "sentence": 29,
-   "phrase": 2,
-   "text": "Richard Woodget,",
-   "source_take_sha256": "31176a1e86af7a1a22a9a9eb025112f5de104095f499833fce3ed839909736eb",
-   "start": 251.525,
-   "end": 252.445,
-   "source_lag_ms": 20,
-   "final_start_sample": 4040400,
-   "final_end_sample": 4055120,
-   "decoded_sha256": "01b808ae56e3ab881f92c017738f5d314e86e14be6ebcf996b7886c7cf9b15db",
-   "heard": "Richard Woodgett,",
-   "second_heard": "Richard would get",
-   "focused_listening": [
-    {
-     "printed_words": [
-      1,
-      2
-     ],
-     "checked_words": [
-      0,
-      2
-     ],
-     "expected_window": "richard woodget",
-     "start_sample": 0,
-     "end_sample": 14720,
-     "heard": "Richard Woodgett,",
-     "second_heard": "Richard would get"
-    }
-   ],
-   "passed": false,
-   "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "woodget"
-      ],
-      "heard": [
-       "woodgett"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         0,
-         14720
-        ],
-        "expected": [
-         "richard",
-         "woodget"
-        ],
-        "first": "Richard Woodgett,",
-        "second": "Richard would get"
-       }
-      ]
-     }
-    ]
-   }
-  },
-  {
-   "sentence": 30,
-   "phrase": 3,
-   "text": "and Woodget took her further south than any previous captain,",
-   "source_take_sha256": "eaee5b40c45770effd5fb012394b29b127fe366229a7d5e48beeb3954f74982a",
-   "start": 264.655,
-   "end": 267.805,
-   "source_lag_ms": 20,
-   "final_start_sample": 4250480,
-   "final_end_sample": 4300880,
-   "decoded_sha256": "4245859922004ad2f8b39bc3294ff4a111694f28e2d1810a3047a774152ebd29",
-   "heard": "and Woodgate took her further south than any previous captain.",
-   "second_heard": "and would get took her further south than any previous captain.",
-   "focused_listening": [
-    {
-     "printed_words": [
-      1,
-      2
-     ],
-     "checked_words": [
-      0,
-      5
-     ],
-     "expected_window": "and woodget took her further",
-     "start_sample": 0,
-     "end_sample": 20640,
-     "heard": "And Woodgate took her further south.",
-     "second_heard": "and would get took her further s"
-    }
-   ],
-   "passed": false,
-   "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "woodget"
-      ],
-      "heard": [
-       "woodgate"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         0,
-         15520
-        ],
-        "expected": [
-         "and",
-         "woodget",
-         "took",
-         "her"
-        ],
-        "first": "And Woodgate took her first.",
-        "second": "and would get took her"
-       },
-       {
-        "samples": [
-         0,
-         12960
-        ],
-        "expected": [
-         "and",
-         "woodget",
-         "took"
-        ],
-        "first": "And Woodgate took her.",
-        "second": "and would get took"
-       }
-      ]
-     }
-    ]
    }
   }
  ],
- "passed": false
+ "passed": true
 }
