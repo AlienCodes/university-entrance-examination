@@ -40,7 +40,80 @@
      "second_heard": "The hunt for CR memetics grew out of a"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "mimetics"
+      ],
+      "heard": [
+       "memetics"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         4720,
+         34720
+        ],
+        "expected": [
+         "for",
+         "cr",
+         "mimetics",
+         "grew",
+         "out"
+        ],
+        "first": "For CR memetics grew out",
+        "second": "and for CR memetics grew up"
+       },
+       {
+        "samples": [
+         4720,
+         32160
+        ],
+        "expected": [
+         "for",
+         "cr",
+         "mimetics",
+         "grew"
+        ],
+        "first": "",
+        "second": "and for CR memetics grew"
+       },
+       {
+        "samples": [
+         7280,
+         34720
+        ],
+        "expected": [
+         "cr",
+         "mimetics",
+         "grew",
+         "out"
+        ],
+        "first": "For CR memetics grew up.",
+        "second": "CR memetics grew up"
+       },
+       {
+        "samples": [
+         7280,
+         32160
+        ],
+        "expected": [
+         "cr",
+         "mimetics",
+         "grew"
+        ],
+        "first": "For CR memetics grew",
+        "second": "CR memetics grew"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 19,
@@ -87,7 +160,51 @@
      "second_heard": "CR memetics would alter fundamental"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "mimetics"
+      ],
+      "heard": [
+       "memetics"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         28320
+        ],
+        "expected": [
+         "cr",
+         "mimetics",
+         "would",
+         "alter"
+        ],
+        "first": "CR memetics would alter",
+        "second": "CR memetics would alter"
+       },
+       {
+        "samples": [
+         0,
+         21920
+        ],
+        "expected": [
+         "cr",
+         "mimetics",
+         "would"
+        ],
+        "first": "CR memetics would R.",
+        "second": "CR memetics would"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 27,
@@ -119,7 +236,51 @@
      "second_heard": "prototype caloric restriction memetic works."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "mimetic"
+      ],
+      "heard": [
+       "memetic"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         14960,
+         50640
+        ],
+        "expected": [
+         "caloric",
+         "restriction",
+         "mimetic",
+         "works"
+        ],
+        "first": "Caloric Restriction Mimetic Works",
+        "second": "caloric restriction memetic works."
+       },
+       {
+        "samples": [
+         25200,
+         50640
+        ],
+        "expected": [
+         "restriction",
+         "mimetic",
+         "works"
+        ],
+        "first": "Restriction Mimetic Works.",
+        "second": "restriction memetic works"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

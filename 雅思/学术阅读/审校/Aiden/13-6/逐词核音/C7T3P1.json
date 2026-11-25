@@ -55,7 +55,51 @@
      "second_heard": "Yet Holdobler and Wilson's magnificent"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hoelldobler"
+      ],
+      "heard": [
+       "holdobler"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         27040
+        ],
+        "expected": [
+         "yet",
+         "hoelldobler",
+         "and",
+         "wilsons"
+        ],
+        "first": "Yet Holdobler and Wilson's magic",
+        "second": "Yet Holdobler and Wilson's man"
+       },
+       {
+        "samples": [
+         0,
+         18080
+        ],
+        "expected": [
+         "yet",
+         "hoelldobler",
+         "and"
+        ],
+        "first": "Yet Holdobler and",
+        "second": "yet hold obler and"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 39,
@@ -87,7 +131,80 @@
      "second_heard": "Rheabko and Resnikova have found evidence."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "reznikova"
+      ],
+      "heard": [
+       "reznykova"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         38560
+        ],
+        "expected": [
+         "ryabko",
+         "and",
+         "reznikova",
+         "have",
+         "found"
+        ],
+        "first": "Ryabko and Reznikova have found",
+        "second": "Rheabko and Resnikova have found"
+       },
+       {
+        "samples": [
+         0,
+         34720
+        ],
+        "expected": [
+         "ryabko",
+         "and",
+         "reznikova",
+         "have"
+        ],
+        "first": "Ryabko and Reznykova have found",
+        "second": "Ryabko and Reznikova have found"
+       },
+       {
+        "samples": [
+         12400,
+         38560
+        ],
+        "expected": [
+         "and",
+         "reznikova",
+         "have",
+         "found"
+        ],
+        "first": "Benresnykova have found",
+        "second": "and Resnickova have found"
+       },
+       {
+        "samples": [
+         12400,
+         34720
+        ],
+        "expected": [
+         "and",
+         "reznikova",
+         "have"
+        ],
+        "first": "and Rezny Kova have found",
+        "second": "and Resnickova have found"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

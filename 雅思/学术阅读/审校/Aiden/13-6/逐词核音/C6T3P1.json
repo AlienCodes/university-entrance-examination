@@ -40,7 +40,49 @@
      "second_heard": "others opened their cinematograph."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "cinematographe"
+      ],
+      "heard": [
+       "cinematograph"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         17520,
+         39120
+        ],
+        "expected": [
+         "opened",
+         "their",
+         "cinematographe"
+        ],
+        "first": "opened their cinematograph.",
+        "second": "opened their cinematograph."
+       },
+       {
+        "samples": [
+         21360,
+         39120
+        ],
+        "expected": [
+         "their",
+         "cinematographe"
+        ],
+        "first": "and their cinematograph.",
+        "second": "their cinematograph."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 1,
@@ -72,7 +114,80 @@
      "second_heard": "14. Boulevard des Capicines in Paris."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "capucines"
+      ],
+      "heard": [
+       "capusines"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         12400,
+         51760
+        ],
+        "expected": [
+         "boulevard",
+         "des",
+         "capucines",
+         "in",
+         "paris"
+        ],
+        "first": "and Boulevard des Capicines in Paris,",
+        "second": "of our Des Capicines in Paris."
+       },
+       {
+        "samples": [
+         12400,
+         44960
+        ],
+        "expected": [
+         "boulevard",
+         "des",
+         "capucines",
+         "in"
+        ],
+        "first": "and Boulevard des Capucines in Paris.",
+        "second": "of our desk capicines and"
+       },
+       {
+        "samples": [
+         22640,
+         51760
+        ],
+        "expected": [
+         "des",
+         "capucines",
+         "in",
+         "paris"
+        ],
+        "first": "des Capicines in Paris",
+        "second": "Des Capucines in Paris."
+       },
+       {
+        "samples": [
+         22640,
+         44960
+        ],
+        "expected": [
+         "des",
+         "capucines",
+         "in"
+        ],
+        "first": "Des capicines in par",
+        "second": "desk capicines and"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 8,
@@ -104,7 +219,51 @@
      "second_heard": "The Russian director André Tarkovsky"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "andrei"
+      ],
+      "heard": [
+       "andrey"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         9840,
+         46560
+        ],
+        "expected": [
+         "russian",
+         "director",
+         "andrei",
+         "tarkovsky"
+        ],
+        "first": "The Russian director Andrey Tarkovsky.",
+        "second": "Russian director Andrzeit Tarkovsky"
+       },
+       {
+        "samples": [
+         16240,
+         46560
+        ],
+        "expected": [
+         "director",
+         "andrei",
+         "tarkovsky"
+        ],
+        "first": "Director Andrey Tarkovsky.",
+        "second": "Director André Tarkovsky"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 29,
@@ -136,7 +295,51 @@
      "second_heard": "film in massive encyclopedic detail."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "encyclopaedic"
+      ],
+      "heard": [
+       "encyclopedic"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         54640,
+         100560
+        ],
+        "expected": [
+         "in",
+         "massive",
+         "encyclopaedic",
+         "detail"
+        ],
+        "first": "in massive encyclopedic detail,",
+        "second": "in massive encyclopedic detail."
+       },
+       {
+        "samples": [
+         58480,
+         100560
+        ],
+        "expected": [
+         "massive",
+         "encyclopaedic",
+         "detail"
+        ],
+        "first": "massive encyclopedic detail.",
+        "second": "massive encyclopedic detail."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

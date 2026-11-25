@@ -40,7 +40,80 @@
      "second_heard": "They found that their game allotypes could be d-"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "gm"
+      ],
+      "heard": [
+       "game"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         6000,
+         33440
+        ],
+        "expected": [
+         "that",
+         "their",
+         "gm",
+         "allotypes",
+         "could"
+        ],
+        "first": "found that their game allotypes could be",
+        "second": "that their game allotypes could be"
+       },
+       {
+        "samples": [
+         6000,
+         30880
+        ],
+        "expected": [
+         "that",
+         "their",
+         "gm",
+         "allotypes"
+        ],
+        "first": "Found that their game allotypes could",
+        "second": "that their game allotypes"
+       },
+       {
+        "samples": [
+         8560,
+         33440
+        ],
+        "expected": [
+         "their",
+         "gm",
+         "allotypes",
+         "could"
+        ],
+        "first": "But their game allotypes could be",
+        "second": "that their game allotypes could be"
+       },
+       {
+        "samples": [
+         8560,
+         30880
+        ],
+        "expected": [
+         "their",
+         "gm",
+         "allotypes"
+        ],
+        "first": "At their game allotypes could",
+        "second": "their game allotypes"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 28,
@@ -72,7 +145,39 @@
      "second_heard": "All Native American languages belong to a single"
     }
    ],
-   "passed": false
+   "passed": true,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "belong"
+      ],
+      "heard": [
+       "belonged"
+      ],
+      "confirmed": true,
+      "windows": [
+       {
+        "samples": [
+         23920,
+         52640
+        ],
+        "expected": [
+         "american",
+         "languages",
+         "belong",
+         "to",
+         "a"
+        ],
+        "first": "American languages belong to a",
+        "second": "American languages belong to a"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 31,
@@ -104,7 +209,81 @@
      "second_heard": "given for the migration should nevertheless be"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "migrations"
+      ],
+      "heard": [
+       "migration"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         11120,
+         44960
+        ],
+        "expected": [
+         "for",
+         "the",
+         "migrations",
+         "should",
+         "nevertheless"
+        ],
+        "first": "for the migration should nevertheless be",
+        "second": "for the migration should nevertheless be"
+       },
+       {
+        "samples": [
+         11120,
+         33440
+        ],
+        "expected": [
+         "for",
+         "the",
+         "migrations",
+         "should"
+        ],
+        "first": "for the migration should",
+        "second": "for the migration should"
+       },
+       {
+        "samples": [
+         13680,
+         44960
+        ],
+        "expected": [
+         "the",
+         "migrations",
+         "should",
+         "nevertheless"
+        ],
+        "first": "The migration should nevertheless be",
+        "second": "the migration should nevertheless be"
+       },
+       {
+        "samples": [
+         13680,
+         33440
+        ],
+        "expected": [
+         "the",
+         "migrations",
+         "should"
+        ],
+        "first": "The migration should",
+        "second": "the migration should."
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   }
  ],
  "passed": false

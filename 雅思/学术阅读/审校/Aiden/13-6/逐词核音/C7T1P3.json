@@ -40,7 +40,81 @@
      "second_heard": "while studying it, then the content on"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "than"
+      ],
+      "heard": [
+       "then"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         76400,
+         110240
+        ],
+        "expected": [
+         "studying",
+         "it",
+         "than",
+         "the",
+         "content"
+        ],
+        "first": "Studying it, then the content",
+        "second": "studying it, then the content."
+       },
+       {
+        "samples": [
+         76400,
+         101280
+        ],
+        "expected": [
+         "studying",
+         "it",
+         "than",
+         "the"
+        ],
+        "first": "Studying it, then the",
+        "second": "studying it, then the"
+       },
+       {
+        "samples": [
+         84080,
+         110240
+        ],
+        "expected": [
+         "it",
+         "than",
+         "the",
+         "content"
+        ],
+        "first": "Then the content",
+        "second": "it, then the content."
+       },
+       {
+        "samples": [
+         84080,
+         101280
+        ],
+        "expected": [
+         "it",
+         "than",
+         "the"
+        ],
+        "first": "Then the copy.",
+        "second": "it in the"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   },
   {
    "sentence": 6,
@@ -72,7 +146,81 @@
      "second_heard": "lecture we listen to with great"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "listened"
+      ],
+      "heard": [
+       "listen"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         13680,
+         39840
+        ],
+        "expected": [
+         "lecture",
+         "we",
+         "listened",
+         "to",
+         "with"
+        ],
+        "first": "Lecture we listened to with",
+        "second": "lecture we listen to with"
+       },
+       {
+        "samples": [
+         13680,
+         36000
+        ],
+        "expected": [
+         "lecture",
+         "we",
+         "listened",
+         "to"
+        ],
+        "first": "Lecture we listen to",
+        "second": "lecture we listen to"
+       },
+       {
+        "samples": [
+         21360,
+         39840
+        ],
+        "expected": [
+         "we",
+         "listened",
+         "to",
+         "with"
+        ],
+        "first": "We listen to with",
+        "second": "we listen to with"
+       },
+       {
+        "samples": [
+         21360,
+         36000
+        ],
+        "expected": [
+         "we",
+         "listened",
+         "to"
+        ],
+        "first": "We listen to",
+        "second": "We listen to"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   },
   {
    "sentence": 39,
@@ -104,7 +252,81 @@
      "second_heard": "insisting that the suggestive panic session be conducted"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "suggestopedic"
+      ],
+      "heard": [
+       "suggested",
+       "pitok"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         38000,
+         75680
+        ],
+        "expected": [
+         "that",
+         "the",
+         "suggestopedic",
+         "session",
+         "be"
+        ],
+        "first": "that the suggested pitick session be conducted.",
+        "second": "that the suggestive panic session be con-"
+       },
+       {
+        "samples": [
+         38000,
+         71840
+        ],
+        "expected": [
+         "that",
+         "the",
+         "suggestopedic",
+         "session"
+        ],
+        "first": "that the suggestive pitic session",
+        "second": "that the suggestive panic session"
+       },
+       {
+        "samples": [
+         41840,
+         75680
+        ],
+        "expected": [
+         "the",
+         "suggestopedic",
+         "session",
+         "be"
+        ],
+        "first": "That the suggested pitic session be conducted.",
+        "second": "that the suggestive panic session be con-"
+       },
+       {
+        "samples": [
+         41840,
+         71840
+        ],
+        "expected": [
+         "the",
+         "suggestopedic",
+         "session"
+        ],
+        "first": "that the suggestive pit exception",
+        "second": "at the Suggesto critic session."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 39,
@@ -136,7 +358,51 @@
      "second_heard": "trained and accredited, suggestabidic teachers."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "suggestopedic"
+      ],
+      "heard": [
+       "suggestibitic"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         14960,
+         58320
+        ],
+        "expected": [
+         "and",
+         "accredited",
+         "suggestopedic",
+         "teachers"
+        ],
+        "first": "and accredited suggestivitic teachers.",
+        "second": "and accredited, suggestabotic teachers."
+       },
+       {
+        "samples": [
+         18800,
+         58320
+        ],
+        "expected": [
+         "accredited",
+         "suggestopedic",
+         "teachers"
+        ],
+        "first": "and accredited suggestivic teachers.",
+        "second": "accredited, suggest emitic teachers."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

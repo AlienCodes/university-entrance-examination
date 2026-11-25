@@ -40,7 +40,80 @@
      "second_heard": "The disastrous hand-chain earthquake in 1990-"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hanshin"
+      ],
+      "heard": [
+       "hansin"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         36000
+        ],
+        "expected": [
+         "the",
+         "disastrous",
+         "hanshin",
+         "earthquake",
+         "in"
+        ],
+        "first": "The disastrous Hansen earthquake in the United States",
+        "second": "The disastrous hand-sheen earthquake and..."
+       },
+       {
+        "samples": [
+         0,
+         33440
+        ],
+        "expected": [
+         "the",
+         "disastrous",
+         "hanshin",
+         "earthquake"
+        ],
+        "first": "The disastrous Hansen earthquake",
+        "second": "The disastrous hand-sheen earthquake"
+       },
+       {
+        "samples": [
+         2160,
+         36000
+        ],
+        "expected": [
+         "disastrous",
+         "hanshin",
+         "earthquake",
+         "in"
+        ],
+        "first": "Disastrous Henchin earthquake in 1919.",
+        "second": "disastrous hand-chain earthquake and"
+       },
+       {
+        "samples": [
+         2160,
+         33440
+        ],
+        "expected": [
+         "disastrous",
+         "hanshin",
+         "earthquake"
+        ],
+        "first": "Disastrous Henchin earthquake at",
+        "second": "disastrous hand-sheen earthquake."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 9,
@@ -72,7 +145,81 @@
      "second_heard": "The master builder, Kobadei, she had no hesitation."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "kobodaishi"
+      ],
+      "heard": [
+       "kobudai",
+       "shi"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         2160,
+         38560
+        ],
+        "expected": [
+         "master",
+         "builder",
+         "kobodaishi",
+         "had",
+         "no"
+        ],
+        "first": "Master Builder Kobadei she had no",
+        "second": "Master Builder Kobadei had no"
+       },
+       {
+        "samples": [
+         2160,
+         36000
+        ],
+        "expected": [
+         "master",
+         "builder",
+         "kobodaishi",
+         "had"
+        ],
+        "first": "Master Builder Kobade she had none.",
+        "second": "master builder Kobadei she had"
+       },
+       {
+        "samples": [
+         7280,
+         38560
+        ],
+        "expected": [
+         "builder",
+         "kobodaishi",
+         "had",
+         "no"
+        ],
+        "first": "Builder Kobodai she had no",
+        "second": "builder COBA day she had no"
+       },
+       {
+        "samples": [
+         7280,
+         36000
+        ],
+        "expected": [
+         "builder",
+         "kobodaishi",
+         "had"
+        ],
+        "first": "Builder Kobodai she had",
+        "second": "builder COVID-day she had"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 30,
@@ -104,7 +251,51 @@
      "second_heard": "The Shinbishiro was acting like..."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "shinbashira"
+      ],
+      "heard": [
+       "shinbashiro"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         21920
+        ],
+        "expected": [
+         "the",
+         "shinbashira",
+         "was",
+         "acting"
+        ],
+        "first": "The Shinbashiro was acting",
+        "second": "The Shinbashiro was acting"
+       },
+       {
+        "samples": [
+         0,
+         18080
+        ],
+        "expected": [
+         "the",
+         "shinbashira",
+         "was"
+        ],
+        "first": "The Shinbashiro was active.",
+        "second": "The Shinbashiro was"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 31,
@@ -136,7 +327,50 @@
      "second_heard": "The ancient craftsman"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "craftsmen"
+      ],
+      "heard": [
+       "craftsman"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         22400
+        ],
+        "expected": [
+         "the",
+         "ancient",
+         "craftsmen"
+        ],
+        "first": "The ancient craftsman",
+        "second": "The ancient craftsman"
+       },
+       {
+        "samples": [
+         2160,
+         22400
+        ],
+        "expected": [
+         "ancient",
+         "craftsmen"
+        ],
+        "first": "The ancient craftsman",
+        "second": "ancient craftsman"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   }
  ],
  "passed": false

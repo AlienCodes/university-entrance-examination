@@ -40,7 +40,49 @@
      "second_heard": "Strasburg hosted the first"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "strasbourg"
+      ],
+      "heard": [
+       "strasburg"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         23200
+        ],
+        "expected": [
+         "strasbourg",
+         "hosted",
+         "the"
+        ],
+        "first": "Strasbourg hosted the",
+        "second": "Strasburg hosted the"
+       },
+       {
+        "samples": [
+         0,
+         20640
+        ],
+        "expected": [
+         "strasbourg",
+         "hosted"
+        ],
+        "first": "Strasburg hosted the",
+        "second": "Strasburg hosted the"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 15,
@@ -72,7 +114,80 @@
      "second_heard": "urban environment, an unrivaled area of freedom,"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "unrivalled"
+      ],
+      "heard": [
+       "unrivaled"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         68720,
+         106400
+        ],
+        "expected": [
+         "environment",
+         "an",
+         "unrivalled",
+         "area",
+         "of"
+        ],
+        "first": "environment an unrivaled area of",
+        "second": "environment, an unrivaled area of"
+       },
+       {
+        "samples": [
+         68720,
+         103840
+        ],
+        "expected": [
+         "environment",
+         "an",
+         "unrivalled",
+         "area"
+        ],
+        "first": "environment, an unrivaled area of",
+        "second": "environment, an unrivaled area."
+       },
+       {
+        "samples": [
+         81520,
+         106400
+        ],
+        "expected": [
+         "an",
+         "unrivalled",
+         "area",
+         "of"
+        ],
+        "first": "An unrivaled area of",
+        "second": "an unrivaled area of"
+       },
+       {
+        "samples": [
+         81520,
+         103840
+        ],
+        "expected": [
+         "an",
+         "unrivalled",
+         "area"
+        ],
+        "first": "An unrivaled area of",
+        "second": "an unrivaled area."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 22,
@@ -119,7 +234,37 @@
      "second_heard": "called Euro Silva"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "eurosilva"
+      ],
+      "heard": [
+       "euro",
+       "silva"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         22320
+        ],
+        "expected": [
+         "called",
+         "eurosilva"
+        ],
+        "first": "called Euro Silva.",
+        "second": "called Euro Silva"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 44,
@@ -166,7 +311,85 @@
      "second_heard": "commits them to ongoing discussion between government"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "on",
+       "going"
+      ],
+      "heard": [
+       "ongoing"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         23920,
+         55200
+        ],
+        "expected": [
+         "them",
+         "to",
+         "on",
+         "going",
+         "discussion",
+         "between"
+        ],
+        "first": "them to ongoing discussion between",
+        "second": "to ongoing discussion between"
+       },
+       {
+        "samples": [
+         23920,
+         50080
+        ],
+        "expected": [
+         "them",
+         "to",
+         "on",
+         "going",
+         "discussion"
+        ],
+        "first": "them to ongoing discussion.",
+        "second": "to ongoing discussion."
+       },
+       {
+        "samples": [
+         26480,
+         55200
+        ],
+        "expected": [
+         "to",
+         "on",
+         "going",
+         "discussion",
+         "between"
+        ],
+        "first": "to ongoing discussion between",
+        "second": "to ongoing discussion between"
+       },
+       {
+        "samples": [
+         26480,
+         50080
+        ],
+        "expected": [
+         "to",
+         "on",
+         "going",
+         "discussion"
+        ],
+        "first": "to ongoing discussion.",
+        "second": "to ongoing discussion."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false
