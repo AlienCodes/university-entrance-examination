@@ -37,6 +37,40 @@ def locate_sound(audio, decoder, phones):
     return match.word, match.prob, start, stop
 
 
+@lru_cache(maxsize=2)
+def carnwath_decoder(with_context):
+    onsets = ('K AA R N', 'K AH R N', 'K AA R N AH', 'G AA R N', 'K AA N')
+    endings = ('W AA TH', 'W AO TH', 'W AH TH', 'W AA F', 'W AO F', 'W AA', 'W AO', 'W AA T', 'W AE TH')
+    forms = {f'p{i*len(endings)+j}': f'{start} {end}'
+             for i, start in enumerate(onsets) for j, end in enumerate(endings)}
+    context = {'last': 'AE L IH S AH N', 'lastalt': 'AE L AH S AH N'} if with_context else {}
+    rule = '[last | lastalt] {term}' if with_context else '{term}'
+    return grammar_decoder(forms, context, rule), forms
+
+
+def carnwath_ending(audio):
+    from aiden_boundaries import interior_gaps
+    from aiden_ceylonese import timed_words
+
+    timed = timed_words(audio)
+    if len(timed) != 3 or timed[0][0] != 'as' or timed[1][0] not in ('alison', 'allison'):
+        raise ValueError('Missing the spoken context before Carnwath')
+    spans = []
+    for offset, with_context in ((timed[1][1]-700, True), (timed[2][1]-640, False)):
+        offset = max(0, offset)
+        decoder, forms = carnwath_decoder(with_context)
+        label, score, start, end = locate_sound(audio[offset:], decoder, forms)
+        phones = forms[label]
+        start, end = offset+start, offset+end
+        if (phones not in ('K AA R N W AA TH', 'K AA R N W AO TH', 'K AA R N W AE TH')
+                or any(start < (a+b)/2 < end for a,b in interior_gaps(audio))):
+            raise ValueError(f'Incomplete or unclear Carnwath: {phones}')
+        spans.append(dict(phones=phones, start=start/RATE, end=end/RATE, score=round(score, 3)))
+    if spans[0]['phones'] != spans[1]['phones']:
+        raise ValueError('The contextual and isolated readings of Carnwath differ')
+    return spans
+
+
 @lru_cache(maxsize=4)
 def name_decoder(name, with_context):
     if name == 'halley':

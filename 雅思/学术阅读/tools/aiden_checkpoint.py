@@ -48,6 +48,33 @@ def rejected_seed(report, key, printed):
     return None
 
 
+def save_master_failure(raw, data, key, printed, issue):
+    digest = data["sha256"]
+    if type(data.get("seed")) is not int or data.get("policy") != PAUSE_POLICY:
+        raise ValueError("Missing seed or narration policy for a mastered recording")
+    folder = raw.parent / "rejected"
+    folder.mkdir(exist_ok=True)
+    note = folder / (digest + ".json")
+    if rejected_seed(note, key, printed) == data["seed"]:
+        return
+    content = raw.read_bytes()
+    if not content.startswith(b"fLaC") or hashlib.sha256(content).hexdigest() != digest:
+        raise ValueError("A mastered failure must refer to its original FLAC")
+    note.with_suffix(".flac").write_bytes(content)
+    evidence = dict(data, accepted=False, key=key, printed=printed, stage="mastered-mp3", issue=issue)
+    note.write_text(json.dumps(evidence, ensure_ascii=False))
+
+
+def previous_master_failures(folder, key, printed):
+    for note in (folder / "rejected").glob("*.json"):
+        data = json.loads(note.read_bytes())
+        if (data.get("stage") == "mastered-mp3" and data.get("policy") == PAUSE_POLICY
+                and data.get("sha256") == note.stem
+                and data.get("key") == key and data.get("printed") == printed
+                and rejected_seed(note, key, printed) is not None):
+            yield note.stem, data["seed"], data["issue"]
+
+
 def restore_archive(archive, folder):
     folder.mkdir(parents=True, exist_ok=True)
     restored = 0
@@ -59,8 +86,11 @@ def restore_archive(archive, folder):
                 key, printed, seed = (data.get(k) for k in ("key", "printed", "seed"))
                 if (data.get("accepted") is not False or not isinstance(key, str)
                         or not re.fullmatch(re.escape(PID) + r":[1-9]\d*", key)
-                        or not printed or not data.get("issue") or type(seed) is not int
-                        or data.get("stage") == "mastered-mp3"):
+                        or not printed or not data.get("issue") or type(seed) is not int):
+                    continue
+                if data.get("stage") == "mastered-mp3" and (
+                    Path(note).stem != data.get("sha256") or data.get("policy") != PAUSE_POLICY
+                ):
                     continue
                 rejected = folder / "rejected" / Path(note).name
                 previous = rejected_seed(rejected, key, printed)
@@ -122,7 +152,11 @@ def pack_snapshot(folder, archive):
             if not re.fullmatch(r"[0-9a-f]{64}", note.stem):
                 continue
             data = json.loads(note.read_bytes())
-            if data.get("stage") == "mastered-mp3" or rejected_seed(note,data.get("key"),data.get("printed")) is None:
+            if data.get("stage") == "mastered-mp3" and (
+                note.stem != data.get("sha256") or data.get("policy") != PAUSE_POLICY
+            ):
+                continue
+            if rejected_seed(note,data.get("key"),data.get("printed")) is None:
                 continue
             wav = note.with_suffix(".flac")
             result.write(wav, "aiden-takes/rejected/" + wav.name)

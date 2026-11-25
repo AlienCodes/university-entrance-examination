@@ -15,7 +15,8 @@ import soxr
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
 from aiden_boundaries import CHECKED_INFLECTIONS, RECHECKED_SPANS, POLICY, assess, words, reference, salmon_phrase
 from aiden_word_review import POLICY as WORD_POLICY
-from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed, reviewed_master_failures
+from aiden_checkpoint import (PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, previous_master_failures,
+                              rejected_seed, reviewed_master_failures, save_master_failure)
 import aiden_cork_oak
 import aiden_cork_taint
 import aiden_ceylonese
@@ -80,6 +81,26 @@ class Aiden:
 
     def style(self,_):
         return SPEAKER
+
+    def record_master_failure(self, key, positions, issue):
+        entry = self.review[key]
+        phrases = entry['phrases']
+        failed = {phrases[i]['sha256']: (phrases[i]['text'], entry['seeds'][i]) for i in positions}
+        self.rejected_master_takes.update(dict.fromkeys(failed, issue))
+        for note in self.folder.glob('*.json'):
+            data = json.loads(note.read_bytes())
+            digest = data.get('sha256')
+            raw = note.with_suffix('.flac')
+            if digest in failed and data.get('seed') == failed[digest][1] and raw.is_file():
+                try:
+                    save_master_failure(raw, data, key, failed[digest][0], issue)
+                except (FileNotFoundError, ValueError) as error:
+                    print(f'{key}: rejected source {digest} could not be archived: {error}', flush=True)
+                    continue
+                del failed[digest]
+                if not failed:
+                    return
+        print(f'{key}: {len(failed)} rejected source(s) unavailable to archive; rerecording required', flush=True)
 
     def render(self,script,seed,pron):
         import torch
@@ -283,15 +304,13 @@ class Aiden:
             data=json.loads(report.read_text());wave,sr=sf.read(file,dtype='float32')
             if sr==24000 and hashlib.sha256(file.read_bytes()).hexdigest()==data['sha256']:
                 if data['sha256'] in self.rejected_master_takes:
-                    rejected=self.folder/'rejected'
-                    rejected.mkdir(exist_ok=True)
-                    failed=rejected/(data['sha256']+'.flac')
-                    if not failed.exists():
-                        failed.write_bytes(file.read_bytes())
-                        evidence=dict(data,accepted=False,key=key,printed=script,stage='mastered-mp3',
-                                      issue=self.rejected_master_takes[data['sha256']])
-                        failed.with_suffix('.json').write_text(json.dumps(evidence,ensure_ascii=False))
+                    save_master_failure(file, data, key, script, self.rejected_master_takes[data['sha256']])
                     previous_seed=data['seed']
+                    # Consult the earlier attempts only after this source has failed
+                    # the current master or has been returned by a recorded review.
+                    for digest, tried_seed, issue in previous_master_failures(self.folder, key, script):
+                        self.rejected_master_takes[digest] = issue
+                        previous_seed = max(previous_seed, tried_seed)
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
                       and aiden_printed_names.target(words(script)) is None
                       and not script.casefold().startswith(CHECKED_INFLECTIONS)

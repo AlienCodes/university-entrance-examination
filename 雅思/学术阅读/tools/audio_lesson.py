@@ -191,11 +191,10 @@ def certified_aiden(passage,config,reader,path):
                 indexes.append(failure.phrase-2)
             group=(key,failure.phrase)
             attempts[group]=attempts.get(group,0)+1
+            engine.record_master_failure(key, indexes, str(failure))
             if attempts[group]>2:
+                engine.snapshots.after_sentence(force=True)
                 raise
-            for position in indexes:
-                phrase=engine.review[key]['phrases'][position]
-                engine.rejected_master_takes[phrase['sha256']]=str(failure)
             print(f'{failure}. Rerecording the affected whole take(s) with the same narrator.',flush=True)
             continue
         confirm(timing)

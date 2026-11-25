@@ -1,0 +1,123 @@
+{
+ "workflow_runs": [
+  45562432885,
+  45569988313
+ ],
+ "lesson": "C7T4P2",
+ "repeated_master_failures": [
+  "Sentence 11, phrase 4, 120.465–121.950s: Possible break inside a word at 0.67–0.94s: 'coho, or silver;' / 'Koho' | 'or silver.'; 'Koho' | 'or silver'",
+  "Sentence 11, phrase 5, 122.675–124.065s: The salmon name or the following words differ: 'sockeye or red,' / 'Sakai or Red'",
+  "Sentence 11, phrase 5, 122.675–124.480s: The salmon name or the following words differ: 'Sake eye or red' / 'Sock eye or red?'",
+  "Sentence 30, phrase 3, 308.450–318.735s: Possible break inside a word at 3.08–3.27s: 'which gathers information and opinions from fishermen, biologists, government officials, industry representatives, non-governmental organisations and others.' / 'which gathers information and opinions from fishermen,' | 'biologists, government officials, industry representatives, nongovernmental organizations and others.'; 'which gathers information and opinions from Fisherman.' | 'biologists, government officials, industry representatives, non-governmental organizations and others.'",
+  "Sentence 13, phrase 3, 150.010–154.525s: Unclear Dutch town name or catch value: 'with an ex vessel value of over two hundred sixty million US dollars,' / 'with an ex-vessel value of over US$260 million.'"
+ ],
+ "checkpoint_test": {
+  "passage": "C7T4P2:11",
+  "printed": "coho, or silver;",
+  "source_sha256": [
+   "e0ee1cc71d1f4421d8eee426cfcf4ea968444f5f6b87ef61ca5bddb98be27c58",
+   "3c7616515029664dbd56d45bc6c294b08178b7f64d5f56fe2e03b354789d0439"
+  ],
+  "seeds": [
+   722823,
+   727808
+  ],
+  "next_seed": 732793,
+  "tests": [
+   "ordinary cached take still reusable before current failure",
+   "two independent restarts preserve returns",
+   "other sentence or text isolated",
+   "known failed seeds skipped after current failure",
+   "damaged source rejected"
+  ],
+  "corruption": "Rejected recording does not match its diagnostic evidence"
+ },
+ "return_test_method": "The two source FLACs are actual recordings. The regression explicitly returned each inside an isolated checkpoint, then restored it twice. This does not label the second FLAC a rejected production take.",
+ "encoded_check": {
+  "lesson": "C12T4P3",
+  "printed": "12-8-3 英国公司需要更有效的董事会",
+  "input": "Certified production MP3 plus a local AAC encode using the same options and duration as the failed job. Final MP4 is checked by the production workflow.",
+  "stage_audio": "C12T4P3-aiden-44d54657101eebbc.zip",
+  "zip_sha256": "9181b019c4217b8cd44758e02dcce175d71f83003d399b18a82fde7345691ba3",
+  "mp3_sha256": "9c67371a65d7936e32cb95f659c4b1d1b88de2818b010d275a62b5431dcc100c",
+  "aac_sha256": "cf292545cb4131cd1dfd2f8951113bd15657298bf887883d049cad2fee2220e0",
+  "phrases": 62,
+  "passed": true,
+  "previous_join": "An unconfirmed word borders the pause: 'as Alison Carnwath,' / \"chair of Barclays Bank's remuneration committee,\"",
+  "left": {
+   "sentence": 27,
+   "phrase": 2,
+   "start": 304.36,
+   "end": 305.915,
+   "text": "as Alison Carnwath,",
+   "heard": "As Allison Carnwath.",
+   "second_heard": "As Allison Carnewath",
+   "certified_spelling": "as Alison Carnwath,",
+   "checked_internal_gaps": [],
+   "carnwath_ending": {
+    "mp3": [
+     {
+      "phones": "K AA R N W AA TH",
+      "start": 0.90625,
+      "end": 1.52625,
+      "score": 0.269
+     },
+     {
+      "phones": "K AA R N W AA TH",
+      "start": 0.89,
+      "end": 1.53,
+      "score": 0.228
+     }
+    ],
+    "aac": [
+     {
+      "phones": "K AA R N W AA TH",
+      "start": 0.90625,
+      "end": 1.52625,
+      "score": 0.219
+     },
+     {
+      "phones": "K AA R N W AA TH",
+      "start": 0.9,
+      "end": 1.53,
+      "score": 0.199
+     }
+    ],
+    "padded_readings": [
+     "As Allison Carnwath.",
+     "As Allison Carnwath,"
+    ],
+    "default_reading": "As Alison Carnwa"
+   },
+   "source_lag_ms": 20,
+   "mp3_waveform": {
+    "lag_samples": 0,
+    "worst_window_correlation": 0.999811,
+    "average_correlation": 0.999978,
+    "max_level_difference_db": 0.049
+   }
+  },
+  "right": {
+   "text": "chair of Barclays Bank's remuneration committee,",
+   "heard": "Chair of Barclays Bank's Remuneration Committee,",
+   "second_heard": "Chair of Barclays Bank's Remuneration Committee.",
+   "start": 306.195,
+   "end": 308.8
+  },
+  "negative_controls": {
+   "mute_last_120ms": {
+    "phone": "Incomplete or unclear Carnwath: K AA R N W AA",
+    "waveform": "The final AAC differs audibly from the certified audio: {'lag_samples': 0, 'worst_window_correlation': 0.0, 'average_correlation': 0.919242, 'max_level_difference_db': 131.862}"
+   },
+   "mute_last_220ms": {
+    "phone": "Incomplete or unclear Carnwath: K AA R N W AO",
+    "waveform": "The final AAC differs audibly from the certified audio: {'lag_samples': 0, 'worst_window_correlation': 0.0, 'average_correlation': 0.844607, 'max_level_difference_db': 134.129}"
+   },
+   "mute_inside_280ms": {
+    "phone": "Incomplete or unclear Carnwath: K AA R N W AA T",
+    "waveform": "The final AAC differs audibly from the certified audio: {'lag_samples': 0, 'worst_window_correlation': 0.0, 'average_correlation': 0.804973, 'max_level_difference_db': 139.137}"
+   }
+  }
+ },
+ "regression": "Published broken sectors, inserted midword silence and truncation were rejected. The corrected sectors/which join passed with a 0.28-second pause."
+}

@@ -79,6 +79,21 @@ def inspect_phrase(source, encoded, certified, raw, multi):
                       certified_spelling=certified['text'],checked_internal_gaps=[[a/RATE,b/RATE] for a,b in gaps])
     if multi and 'second_heard' not in observed:
         observed['second_heard']=independent(encoded)
+    if (multi and observed.get('certified_spelling') and words(certified['text']) == ['as','alison','carnwath']
+            and all(words(observed[k])[-1:] != ['carnwath'] for k in ('heard','second_heard'))):
+        from aiden_pronunciation import carnwath_ending
+
+        master = carnwath_ending(source)
+        aac = carnwath_ending(encoded)
+        if master[0]['phones'] != aac[0]['phones']:
+            raise ValueError('Carnwath differs between the certified MP3 and encoded audio')
+        # Change only silence outside the observation, never a sample of speech.
+        rereads = [isolated(encoded, padding=n) for n in (RATE//10, RATE//5)]
+        if any(words(s) not in (['as','alison','carnwath'], ['as','allison','carnwath']) for s in rereads):
+            raise ValueError('The complete last word before the pause is still unconfirmed')
+        observed['carnwath_ending'] = dict(mp3=master, aac=aac, padded_readings=rereads,
+                                           default_reading=observed['heard'])
+        observed['heard'] = rereads[0]
     return dict(**observed,source_lag_ms=lag,mp3_waveform=comparison)
 
 
