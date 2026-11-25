@@ -40,7 +40,51 @@
      "second_heard": "Peter Tuhe at the University"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "toohey"
+      ],
+      "heard": [
+       "tuhay"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         21920
+        ],
+        "expected": [
+         "peter",
+         "toohey",
+         "at",
+         "the"
+        ],
+        "first": "Peter Tuhay at the University of",
+        "second": "Peter Tuhe at the"
+       },
+       {
+        "samples": [
+         0,
+         20640
+        ],
+        "expected": [
+         "peter",
+         "toohey",
+         "at"
+        ],
+        "first": "Peter Tuhay at the",
+        "second": "Peter Tuhe at the"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 8,
@@ -72,7 +116,80 @@
      "second_heard": "the University of Constance in Germany, have"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "konstanz"
+      ],
+      "heard": [
+       "constance"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         23920,
+         57760
+        ],
+        "expected": [
+         "university",
+         "of",
+         "konstanz",
+         "in",
+         "germany"
+        ],
+        "first": "University of Constanz in Germany,",
+        "second": "University of Constance in Germany."
+       },
+       {
+        "samples": [
+         23920,
+         48800
+        ],
+        "expected": [
+         "university",
+         "of",
+         "konstanz",
+         "in"
+        ],
+        "first": "University of Constance in Germany",
+        "second": "University of Constance and Jer-"
+       },
+       {
+        "samples": [
+         31600,
+         57760
+        ],
+        "expected": [
+         "of",
+         "konstanz",
+         "in",
+         "germany"
+        ],
+        "first": "be of Constanz in Germany,",
+        "second": "of Constance in Germany."
+       },
+       {
+        "samples": [
+         31600,
+         48800
+        ],
+        "expected": [
+         "of",
+         "konstanz",
+         "in"
+        ],
+        "first": "We have Constance and Germany",
+        "second": "of Constance and Jer..."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 44,
@@ -104,7 +221,80 @@
      "second_heard": "It's boring and gets stuck in anyway."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "get"
+      ],
+      "heard": [
+       "gets"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         9840,
+         36000
+        ],
+        "expected": [
+         "boring",
+         "and",
+         "get",
+         "stuck",
+         "in"
+        ],
+        "first": "boring and gets stuck in it.",
+        "second": "boring and get stuck in it."
+       },
+       {
+        "samples": [
+         9840,
+         30880
+        ],
+        "expected": [
+         "boring",
+         "and",
+         "get",
+         "stuck"
+        ],
+        "first": "boring and gets stuck.",
+        "second": "boring and get stuck"
+       },
+       {
+        "samples": [
+         17520,
+         36000
+        ],
+        "expected": [
+         "and",
+         "get",
+         "stuck",
+         "in"
+        ],
+        "first": "And get stuck in it.",
+        "second": "and get stuck in it."
+       },
+       {
+        "samples": [
+         17520,
+         30880
+        ],
+        "expected": [
+         "and",
+         "get",
+         "stuck"
+        ],
+        "first": "and gets stuck.",
+        "second": "and get stuck"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 45,
@@ -136,7 +326,152 @@
      "second_heard": "Psychologist Franz Waz-Wemelsfelder speculates that our"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "wemelsfelder"
+      ],
+      "heard": [
+       "wemmelsfelder"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         55200
+        ],
+        "expected": [
+         "psychologist",
+         "francoise",
+         "wemelsfelder",
+         "speculates",
+         "that"
+        ],
+        "first": "Psychologist Francoise Wemmelsfelder speculates that",
+        "second": "Psychologist Franz Waz-Wemelsfelder speculates that..."
+       },
+       {
+        "samples": [
+         0,
+         51360
+        ],
+        "expected": [
+         "psychologist",
+         "francoise",
+         "wemelsfelder",
+         "speculates"
+        ],
+        "first": "Psychologist Francoise Wemmelsfelder speculates",
+        "second": "Psychologist Franz Waz-Wemelsfelder speculates"
+       },
+       {
+        "samples": [
+         12400,
+         55200
+        ],
+        "expected": [
+         "francoise",
+         "wemelsfelder",
+         "speculates",
+         "that"
+        ],
+        "first": "Francoise Wemmelsfelder speculates that",
+        "second": "French was, Wemmel's filter speculates that"
+       },
+       {
+        "samples": [
+         12400,
+         51360
+        ],
+        "expected": [
+         "francoise",
+         "wemelsfelder",
+         "speculates"
+        ],
+        "first": "Francoise Wemmelsfelder speculates",
+        "second": "French was Wemmel's filter speculates."
+       }
+      ]
+     },
+     {
+      "printed": [
+       "over",
+       "connected"
+      ],
+      "heard": [
+       "overconnected"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         50800,
+         88480
+        ],
+        "expected": [
+         "that",
+         "our",
+         "over",
+         "connected",
+         "lifestyles",
+         "might"
+        ],
+        "first": "that our overconnected lifestyles might",
+        "second": "that our over-connected lifestyles might"
+       },
+       {
+        "samples": [
+         50800,
+         84640
+        ],
+        "expected": [
+         "that",
+         "our",
+         "over",
+         "connected",
+         "lifestyles"
+        ],
+        "first": "that our overconnected lifestyles",
+        "second": "that are over-connected lifestyles."
+       },
+       {
+        "samples": [
+         54640,
+         88480
+        ],
+        "expected": [
+         "our",
+         "over",
+         "connected",
+         "lifestyles",
+         "might"
+        ],
+        "first": "But our overconnected lifestyles might",
+        "second": "our over-connected lifestyles might"
+       },
+       {
+        "samples": [
+         54640,
+         84640
+        ],
+        "expected": [
+         "our",
+         "over",
+         "connected",
+         "lifestyles"
+        ],
+        "first": "our overconnected lifestyles,",
+        "second": "our over-connected lifestyles."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

@@ -40,7 +40,49 @@
      "second_heard": "a witch called Nani."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "nannie"
+      ],
+      "heard": [
+       "nani"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         16240,
+         36560
+        ],
+        "expected": [
+         "witch",
+         "called",
+         "nannie"
+        ],
+        "first": "witch called Nanny,",
+        "second": "witch called Nani."
+       },
+       {
+        "samples": [
+         22640,
+         36560
+        ],
+        "expected": [
+         "called",
+         "nannie"
+        ],
+        "first": "called Nanny,",
+        "second": "called Nani."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 15,
@@ -72,7 +114,51 @@
      "second_heard": "However, Cutty Sark never lived a..."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "cutty"
+      ],
+      "heard": [
+       "cuddy"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         28320
+        ],
+        "expected": [
+         "however",
+         "cutty",
+         "sark",
+         "never"
+        ],
+        "first": "However, Cuddy Sark never",
+        "second": "However, Cutty Sark never-"
+       },
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "however",
+         "cutty",
+         "sark"
+        ],
+        "first": "However, Cuddy Sark naught.",
+        "second": "However, Cutty Sark n-"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 29,
@@ -104,7 +190,36 @@
      "second_heard": "Richard would get"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "woodget"
+      ],
+      "heard": [
+       "woodgett"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         14720
+        ],
+        "expected": [
+         "richard",
+         "woodget"
+        ],
+        "first": "Richard Woodgett,",
+        "second": "Richard would get"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 30,
@@ -136,7 +251,51 @@
      "second_heard": "and would get took her further s"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "woodget"
+      ],
+      "heard": [
+       "woodgate"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         15520
+        ],
+        "expected": [
+         "and",
+         "woodget",
+         "took",
+         "her"
+        ],
+        "first": "And Woodgate took her first.",
+        "second": "and would get took her"
+       },
+       {
+        "samples": [
+         0,
+         12960
+        ],
+        "expected": [
+         "and",
+         "woodget",
+         "took"
+        ],
+        "first": "And Woodgate took her.",
+        "second": "and would get took"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

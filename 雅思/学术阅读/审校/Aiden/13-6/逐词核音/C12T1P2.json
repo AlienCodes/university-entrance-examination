@@ -40,7 +40,51 @@
      "second_heard": "An arch-topylist collects teddy bears,"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "archtophilist"
+      ],
+      "heard": [
+       "archtopolist"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         42400
+        ],
+        "expected": [
+         "an",
+         "archtophilist",
+         "collects",
+         "teddy"
+        ],
+        "first": "An archtopolist collects teddy",
+        "second": "An arch-toplist collects teddy"
+       },
+       {
+        "samples": [
+         0,
+         36000
+        ],
+        "expected": [
+         "an",
+         "archtophilist",
+         "collects"
+        ],
+        "first": "An archtopolist collects",
+        "second": "An archtoplist collects"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 2,
@@ -72,7 +116,51 @@
      "second_heard": "A vitalist collects postage stamps."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "philatelist"
+      ],
+      "heard": [
+       "valetalist"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         25760
+        ],
+        "expected": [
+         "a",
+         "philatelist",
+         "collects",
+         "postage"
+        ],
+        "first": "A valetalist collects postage.",
+        "second": "A vitalist collects postage."
+       },
+       {
+        "samples": [
+         0,
+         18080
+        ],
+        "expected": [
+         "a",
+         "philatelist",
+         "collects"
+        ],
+        "first": "A valetalist collects",
+        "second": "A vitalist collects"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

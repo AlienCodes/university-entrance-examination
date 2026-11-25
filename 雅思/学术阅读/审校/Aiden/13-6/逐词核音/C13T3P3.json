@@ -40,7 +40,81 @@
      "second_heard": "and yet seem to have left"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "seemed"
+      ],
+      "heard": [
+       "seem"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         18080
+        ],
+        "expected": [
+         "and",
+         "yet",
+         "seemed",
+         "to",
+         "have"
+        ],
+        "first": "And yet seem to have lost.",
+        "second": "and yet seem to have"
+       },
+       {
+        "samples": [
+         0,
+         15520
+        ],
+        "expected": [
+         "and",
+         "yet",
+         "seemed",
+         "to"
+        ],
+        "first": "And yet seem to",
+        "second": "and yet seem to"
+       },
+       {
+        "samples": [
+         3440,
+         18080
+        ],
+        "expected": [
+         "yet",
+         "seemed",
+         "to",
+         "have"
+        ],
+        "first": "Yet seemed to have lost",
+        "second": "yet seem to have"
+       },
+       {
+        "samples": [
+         3440,
+         15520
+        ],
+        "expected": [
+         "yet",
+         "seemed",
+         "to"
+        ],
+        "first": "Yet seemed to",
+        "second": "yet seem to"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   },
   {
    "sentence": 16,
@@ -72,7 +146,80 @@
      "second_heard": "Together with Dr. Ravindana Singh, a"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hindu"
+      ],
+      "heard": [
+       "hindoo"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         41840,
+         76960
+        ],
+        "expected": [
+         "of",
+         "banaras",
+         "hindu",
+         "university",
+         "in"
+        ],
+        "first": "of Banares Hindu University in",
+        "second": "of Banaras Hindu University in a"
+       },
+       {
+        "samples": [
+         41840,
+         74400
+        ],
+        "expected": [
+         "of",
+         "banaras",
+         "hindu",
+         "university"
+        ],
+        "first": "of Banaras Hindoo University in",
+        "second": "of Banaras Hindu University."
+       },
+       {
+        "samples": [
+         45680,
+         76960
+        ],
+        "expected": [
+         "banaras",
+         "hindu",
+         "university",
+         "in"
+        ],
+        "first": "of Banaras Hindu University in India.",
+        "second": "of Banaras Hindu University in"
+       },
+       {
+        "samples": [
+         45680,
+         74400
+        ],
+        "expected": [
+         "banaras",
+         "hindu",
+         "university"
+        ],
+        "first": "of Banaras Hindu University in",
+        "second": "of Banaras Hindu University."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 20,
@@ -104,7 +251,49 @@
      "second_heard": "Research published by Dr. Yamadixit and"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hodell"
+      ],
+      "heard": [
+       "hodel"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         58480,
+         81120
+        ],
+        "expected": [
+         "professor",
+         "david",
+         "hodell"
+        ],
+        "first": "and Professor David Hodell",
+        "second": "and Professor David Hoddell"
+       },
+       {
+        "samples": [
+         67440,
+         81120
+        ],
+        "expected": [
+         "david",
+         "hodell"
+        ],
+        "first": "Sir David Hodell,",
+        "second": "David Hoddell"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 24,
@@ -136,7 +325,36 @@
      "second_heard": "Hodeleads"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "hodell"
+      ],
+      "heard": [
+       "hodel"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         13280
+        ],
+        "expected": [
+         "hodell",
+         "adds"
+        ],
+        "first": "Hodel adds",
+        "second": "Hodeleads"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 27,
@@ -168,7 +386,80 @@
      "second_heard": "great cities at Mahonja Darrow and Harappa."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "mohenjodaro"
+      ],
+      "heard": [
+       "mohonjadaro"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         73840,
+         117920
+        ],
+        "expected": [
+         "cities",
+         "at",
+         "mohenjodaro",
+         "and",
+         "harappa"
+        ],
+        "first": "cities at Mohonjadaro and Harappa.",
+        "second": "cities at Mahonjadaro and Harappa."
+       },
+       {
+        "samples": [
+         73840,
+         103840
+        ],
+        "expected": [
+         "cities",
+         "at",
+         "mohenjodaro",
+         "and"
+        ],
+        "first": "cities at Mohonjadaro and",
+        "second": "cities at Mahonja Daro and"
+       },
+       {
+        "samples": [
+         81520,
+         117920
+        ],
+        "expected": [
+         "at",
+         "mohenjodaro",
+         "and",
+         "harappa"
+        ],
+        "first": "at Mohonja Daro and Harappa.",
+        "second": "at Mahonja Daro and Harappa."
+       },
+       {
+        "samples": [
+         81520,
+         103840
+        ],
+        "expected": [
+         "at",
+         "mohenjodaro",
+         "and"
+        ],
+        "first": "At Mohonjadaro and Harry.",
+        "second": "at Mahonja Daro and"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 28,
@@ -200,7 +491,80 @@
      "second_heard": "Petrian sings team is now a"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "singhs"
+      ],
+      "heard": [
+       "sings"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         27040
+        ],
+        "expected": [
+         "petrie",
+         "and",
+         "singhs",
+         "team",
+         "is"
+        ],
+        "first": "Petri and Sing's team is now",
+        "second": "Petrian sings team is now"
+       },
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "petrie",
+         "and",
+         "singhs",
+         "team"
+        ],
+        "first": "Petri and Sing's team is",
+        "second": "Petrian sings team is"
+       },
+       {
+        "samples": [
+         7280,
+         27040
+        ],
+        "expected": [
+         "and",
+         "singhs",
+         "team",
+         "is"
+        ],
+        "first": "Yin Sing's team is now",
+        "second": "and sings team is now"
+       },
+       {
+        "samples": [
+         7280,
+         24480
+        ],
+        "expected": [
+         "and",
+         "singhs",
+         "team"
+        ],
+        "first": "And Sing's team is",
+        "second": "and sings team"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

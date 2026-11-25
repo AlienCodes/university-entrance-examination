@@ -40,7 +40,49 @@
      "second_heard": "a city called VITCO's"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "vitcos"
+      ],
+      "heard": [
+       "vitkos"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         34160,
+         55520
+        ],
+        "expected": [
+         "city",
+         "called",
+         "vitcos"
+        ],
+        "first": "a city called Vitkos,",
+        "second": "city called VITCO's"
+       },
+       {
+        "samples": [
+         39280,
+         55520
+        ],
+        "expected": [
+         "called",
+         "vitcos"
+        ],
+        "first": "called vitkos.",
+        "second": "called VICOs"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 4,
@@ -72,7 +114,51 @@
      "second_heard": "Valley of the Orubama River."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "urubamba"
+      ],
+      "heard": [
+       "orubamba"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         64880,
+         86320
+        ],
+        "expected": [
+         "of",
+         "the",
+         "urubamba",
+         "river"
+        ],
+        "first": "of the Urubamba River.",
+        "second": "of the Urubama River."
+       },
+       {
+        "samples": [
+         66160,
+         86320
+        ],
+        "expected": [
+         "the",
+         "urubamba",
+         "river"
+        ],
+        "first": "of the Urubamba River.",
+        "second": "of the Orubama River."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 6,
@@ -104,7 +190,80 @@
      "second_heard": "the river at Alante Tombow and take an a..."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "ollantaytambo"
+      ],
+      "heard": [
+       "olantaitambo"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         38000,
+         74400
+        ],
+        "expected": [
+         "river",
+         "at",
+         "ollantaytambo",
+         "and",
+         "taken"
+        ],
+        "first": "the river at Olantaitambo and take an",
+        "second": "river at El Antaitombo and take an"
+       },
+       {
+        "samples": [
+         38000,
+         69280
+        ],
+        "expected": [
+         "river",
+         "at",
+         "ollantaytambo",
+         "and"
+        ],
+        "first": "the river at Olantaitambo and",
+        "second": "River at El Antaitombo, an"
+       },
+       {
+        "samples": [
+         41840,
+         74400
+        ],
+        "expected": [
+         "at",
+         "ollantaytambo",
+         "and",
+         "taken"
+        ],
+        "first": "Varettol on Taitambo and take an opportunity to",
+        "second": "Veredal on Titanbo and taken a"
+       },
+       {
+        "samples": [
+         41840,
+         69280
+        ],
+        "expected": [
+         "at",
+         "ollantaytambo",
+         "and"
+        ],
+        "first": "Varettel on Taitambo, and",
+        "second": "Veretta on Titanbo, and"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 26,
@@ -151,7 +310,49 @@
      "second_heard": "The Emperor Pachakuti"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "pachacuti"
+      ],
+      "heard": [
+       "pachakuti"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         23680
+        ],
+        "expected": [
+         "the",
+         "emperor",
+         "pachacuti"
+        ],
+        "first": "The Emperor Pachakuti,",
+        "second": "The Emperor Pachakuti"
+       },
+       {
+        "samples": [
+         2160,
+         23680
+        ],
+        "expected": [
+         "emperor",
+         "pachacuti"
+        ],
+        "first": "The Emperor Pachakuti",
+        "second": "The Emperor Pachakuti"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 31,
@@ -183,7 +384,49 @@
      "second_heard": "Pachakudi's descendants built other s-"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "pachacutis"
+      ],
+      "heard": [
+       "pachakutis"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         29600
+        ],
+        "expected": [
+         "pachacutis",
+         "descendants",
+         "built"
+        ],
+        "first": "Pachakuti's descendants built",
+        "second": "Pachakuri's descendants built"
+       },
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "pachacutis",
+         "descendants"
+        ],
+        "first": "Pachakuti's descendants",
+        "second": "Pachakuri's descendants"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

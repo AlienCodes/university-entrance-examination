@@ -55,7 +55,51 @@
      "second_heard": "says Nairan Ramirez Esparza of the"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "nairan"
+      ],
+      "heard": [
+       "nairon"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         42400
+        ],
+        "expected": [
+         "says",
+         "nairan",
+         "ramirez",
+         "esparza"
+        ],
+        "first": "says Niran Ramirez Esparza",
+        "second": "Says Nairan Ramirez Esparza"
+       },
+       {
+        "samples": [
+         0,
+         28320
+        ],
+        "expected": [
+         "says",
+         "nairan",
+         "ramirez"
+        ],
+        "first": "says Niran Ramirez,",
+        "second": "says Nairan Ramirez"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 22,
@@ -87,7 +131,67 @@
      "second_heard": "found that babies seemed to like listening."
     }
    ],
-   "passed": false
+   "passed": true,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "seem"
+      ],
+      "heard": [
+       "seemed"
+      ],
+      "confirmed": true,
+      "windows": [
+       {
+        "samples": [
+         86640,
+         111520
+        ],
+        "expected": [
+         "that",
+         "babies",
+         "seem",
+         "to",
+         "like"
+        ],
+        "first": "and that babies seem to like",
+        "second": "that babies seem to like."
+       },
+       {
+        "samples": [
+         86640,
+         107680
+        ],
+        "expected": [
+         "that",
+         "babies",
+         "seem",
+         "to"
+        ],
+        "first": "and that babies seem to love.",
+        "second": "that babies seem to like."
+       },
+       {
+        "samples": [
+         90480,
+         111520
+        ],
+        "expected": [
+         "babies",
+         "seem",
+         "to",
+         "like"
+        ],
+        "first": "Babies seem to like",
+        "second": "Babies seem to like"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 33,

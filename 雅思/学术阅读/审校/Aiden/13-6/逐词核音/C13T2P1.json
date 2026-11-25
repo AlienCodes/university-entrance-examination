@@ -40,7 +40,51 @@
      "second_heard": "The Selagama then gave the f-"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "salagama"
+      ],
+      "heard": [
+       "selagama"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "the",
+         "salagama",
+         "then",
+         "gave"
+        ],
+        "first": "The Saligama then gave the",
+        "second": "The Selagama then gave the"
+       },
+       {
+        "samples": [
+         0,
+         19360
+        ],
+        "expected": [
+         "the",
+         "salagama",
+         "then"
+        ],
+        "first": "The Saligama then",
+        "second": "The Selagama then..."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 26,
@@ -72,7 +116,49 @@
      "second_heard": "allied themselves with candy."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "kandy"
+      ],
+      "heard": [
+       "candy"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         16240,
+         35120
+        ],
+        "expected": [
+         "themselves",
+         "with",
+         "kandy"
+        ],
+        "first": "themselves with candy.",
+        "second": "themselves with candy."
+       },
+       {
+        "samples": [
+         22640,
+         35120
+        ],
+        "expected": [
+         "with",
+         "kandy"
+        ],
+        "first": "with candy.",
+        "second": "with candy."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false
