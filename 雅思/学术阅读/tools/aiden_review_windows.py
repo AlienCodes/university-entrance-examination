@@ -13,10 +13,13 @@ VERSION = 'two-reader-context-v1'
 
 
 def review_version(text):
+    from aiden_english_spelling import SPELLINGS
     from aiden_printed_names import CINEMA_PHRASE
     expected = tuple(words(text))
     if expected == CINEMA_PHRASE:
         return 'cinematographe-phonemes-v1'
+    if any(word in SPELLINGS for word in expected):
+        return 'printed-british-spelling-v1'
     if expected == ('at','butterley','engineerings','steelworks','in','derbyshire'):
         return 'butterley-possessive-v1'
     return 'kandy-nannie-v1' if expected in aiden_kandy_nannie.PHRASES else VERSION
@@ -91,6 +94,12 @@ def recheck(clip, audio, raw):
                 from aiden_boundaries import assess
                 key = 'engineering_possessive' if version == 'butterley-possessive-v1' else 'cinematographe_reading'
                 measured = assess(audio, clip['text'], recheck=True)[key]
+            elif version == 'printed-british-spelling-v1':
+                import aiden_english_spelling
+                from aiden_boundaries import assess
+                detail = assess(audio, clip['text'], recheck=True)
+                measured = detail.get('english_spellings') or aiden_english_spelling.verify(
+                    audio, expected, detail['heard'], detail.get('second_heard') or independent(audio))
             elif version == 'kandy-nannie-v1':
                 measured = aiden_kandy_nannie.verify(audio, expected)
             else:

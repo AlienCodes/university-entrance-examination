@@ -193,6 +193,7 @@ def salmon_phrase(tokens):
 
 
 def assess(audio, text, transcript=None, *, recheck=False):
+    import aiden_english_spelling
     import aiden_printed_names
     import aiden_voyages
     import aiden_kandy_nannie
@@ -246,6 +247,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     cork_taint = None
     kite_names = None
     word_windows = None
+    spelling_checks = None
     voyage_term = None
     contextual_name = None
     if tuple(expected) in aiden_kandy_nannie.PHRASES:
@@ -468,6 +470,9 @@ def assess(audio, text, transcript=None, *, recheck=False):
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript,alternate)):
             raise ValueError(f'Ant bait names or their context differ: {transcript!r} / {alternate!r}')
+    elif any(word in aiden_english_spelling.SPELLINGS for word in expected):
+        alternate = independent(audio)
+        spelling_checks = aiden_english_spelling.verify(audio, expected, transcript, alternate)
     elif recheck:
         alternate = independent(audio)
         if not all(matches(expected, words(heard)) for heard in (transcript, alternate)):
@@ -498,6 +503,9 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if (spelling_checks and left_words and right_words
+                    and aiden_english_spelling.normalized(left_words + right_words) == aiden_english_spelling.normalized(expected)):
+                return True
             if (voyage_term and voyage_term['term'] == 'taro' and left_words in (['their','livestock'], ['theyre','livestock'])
                     and right_words[:1] in (['taro'], ['tarot']) and right_words[1:] == expected[3:]
                     and end <= min(m['samples'][0] for m in voyage_term['measurements']) + round(.02*RATE)):
@@ -628,6 +636,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['kite_researchers'] = kite_names
     if word_windows:
         result['word_listening'] = word_windows
+    if spelling_checks:
+        result['english_spellings'] = spelling_checks
     if craftsmen is not None:
         result['craftsmen_pronunciation']=craftsmen
     if welsh is not None:
@@ -702,6 +712,9 @@ def verify_join(left,right):
         for key in ('second_heard', 'heard'):
             heard = measured_words(words(item.get(key, '')), item)
             if heard and (matches([target[index]], [heard[index]]) or matches(target, heard)):
+                return True
+            if heard and any(row['printed'] == target[index] and row['transcribed'] == heard[index]
+                             for row in item.get('english_spellings', [])):
                 return True
         return False
     left_ref, right_ref = words(left['text']), words(right['text'])
