@@ -13,7 +13,7 @@ import soundfile as sf
 import soxr
 
 from aiden_profile import DIRECTION, IDENTITY, SPEAKER
-from aiden_boundaries import CHECKED_INFLECTIONS, POLICY, assess, words, reference, salmon_phrase
+from aiden_boundaries import CHECKED_INFLECTIONS, RECHECKED_SPANS, POLICY, assess, words, reference, salmon_phrase
 from aiden_word_review import POLICY as WORD_POLICY
 from aiden_checkpoint import PeriodicSnapshot, REVIEW_TAKES, diagnostic_reports, rejected_seed, reviewed_master_failures
 import aiden_cork_oak
@@ -122,6 +122,15 @@ class Aiden:
         if 'toeless ancestors' in script.casefold():
             instruction += (' Read re-evolved as /ˌriː.ɪˈvɑlvd/, with the long re- prefix and the past-tense d. '
                             'Link it to toes /toʊz/. Finish toeless /ˈtoʊləs/ with an unvoiced s.')
+        if 'in eastern france' in script.casefold() and 'mountains in germany' in script.casefold():
+            instruction += (' Read Vosges in one syllable, /voʊʒ/, with the consonant in measure. '
+                            'The German range Harz sounds like hearts /hɑrts/. Finish the ts before mountains.')
+        if 'expense of energy' in script.casefold():
+            instruction += ' Link the noun expense to the separate word of /əv/ in the expense of energy.'
+        if 'anticipate the two thousand eight crash' in script.casefold():
+            instruction += ' Read the full year two thousand eight, with the diphthong and final t of eight before crash.'
+        if 'chair of the remuneration committee' in script.casefold():
+            instruction += ' Read the short article the /ðə/ before remuneration; keep its initial r on remuneration.'
         if script.casefold().startswith('the material of which the organism is formed'):
             instruction += ' Start with a clearly audible unstressed “the” /ðə/, linked naturally to “material”.'
         if re.search(r'\broad (?:hauliers|haul-ee-erz|hall-ee-erz) and railways\b',script,re.I):
@@ -150,6 +159,8 @@ class Aiden:
             instruction += (' This is a list of Pacific salmon. Sockeye and red are two names for the same fish. '
                             'Say the compound SOCK-eye /ˈsɑk.aɪ/ as one word, with the beat on SOCK. '
                             'Link or red naturally and finish red with its d sound.')
+        if words(script) == ['coho', 'or', 'silver']:
+            instruction += ' Say the salmon name coho /ˈkoʊhoʊ/ in two connected syllables and link it naturally to or silver.'
         if re.search(r'^pump through Alaska\b', script, re.I):
             instruction += (' In this quotation the subject is salmon. The fish pump through Alaska. '
                             'Read only the supplied words. Finish the present-tense pump with the lips, '
@@ -282,6 +293,8 @@ class Aiden:
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
                       and aiden_printed_names.target(words(script)) is None
                       and not script.casefold().startswith(CHECKED_INFLECTIONS)
+                      and 'vosges' not in words(script)
+                      and not any(span in script.casefold() for span in RECHECKED_SPANS)
                       and words(script) not in (['quercus','suber'], ['the','ancient','craftsmen'])
                       and not {'llewyn','aleut','zappaterra','sevres','amagoalik','henri','kuhl','clemmons','willeke'}.intersection(words(script))
                       and not salmon_phrase(words(script)) and words(script) != ['cod','sole','perch','and','pollock']
@@ -334,6 +347,12 @@ class Aiden:
             spellings=('researched', 'RESEARCHED', 'researched', 'RESEARCHED', 'researched')
         elif words(script)[:3] == ['the','team','theorizes']:
             spellings=('The team theorizes','The TEAM theorizes','THE TEAM theorizes','The team theorizes','The TEAM theorizes')
+        elif 'vosges' in words(script) and 'harz' in words(script):
+            spellings=('Harz','Harts','HARTS','hearts','Harz')
+        elif 'the expense of energy' in script.casefold():
+            spellings=('expense of energy','expense OF energy','expense of energy','EXPENSE of energy','expense of energy')
+        elif 'the two thousand eight crash' in script.casefold():
+            spellings=('two thousand eight','two thousand EIGHT','2008','two thousand eight','two thousand EIGHT')
         elif 'road hauliers and railways' in script.casefold():
             spellings=('hauliers','HAUL-ee-erz','hauliers','hall-ee-erz','hauliers')
         elif 're-evolved toes from toeless' in script.casefold():

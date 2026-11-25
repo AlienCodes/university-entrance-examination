@@ -57,6 +57,10 @@ def dictionary():
         token, _, phones = line.partition(' ')
         word = re.sub(r'\(\d+\)$', '', token)
         entries.setdefault(word, set()).add(phones)
+    # The bundled lexicon gives singular "tern" the final z of the plural.
+    # Merriam-Webster records singular tern and turn with the same final n.
+    if entries.get('tern') == {'T ER N Z'}:
+        entries['tern'] = {'T ER N'}
     return entries
 
 
@@ -180,6 +184,23 @@ MEASURED_NAMES = {
 
 
 def measured_words(tokens, evidence):
+    mountains = evidence.get('mountain_names', {})
+    if (mountains and len(tokens) == 11 and tokens[0] == 'the'
+            and tokens[2:7] == ['in', 'eastern', 'france', 'and', 'the']
+            and tokens[8:] == ['mountains', 'in', 'germany']):
+        vosges = [window.get('phones') for window in mountains.get('vosges', [])]
+        harz = [window.get('phones') for window in mountains.get('harz', [])]
+        if vosges == ['V OW ZH'] * 2 and harz == ['HH AA R T S'] * 2:
+            return ['the', 'vosges', *tokens[2:7], 'harz', *tokens[8:]]
+    place = evidence.get('geographic_name', {})
+    if place.get('name') == 'aleyska' and place.get('isolated_name'):
+        # Both acoustic windows must have found Alyeska, including the final
+        # syllable. Only the final proper name and the spacing of land mass vary.
+        for land in (['landmass'], ['land','mass']):
+            ending = ['this', *land]
+            if (tokens[-len(ending)-1:-1] == ending
+                    and tokens[-1] in {'alyeska','aleyska','aliska','aliesca','aliaska','aliasca'}):
+                return tokens[:-len(ending)-1] + ['this','land','mass','aleyska']
     ynde = evidence.get('ynde_pronunciation', {})
     if (ynde.get('phones') in {'IH N D', 'AY N D'} and ynde.get('confidence', 0) >= .16
             and tokens[-3:] in (['notes', 'of', 'ind'], ['notes', 'of', 'inde'])):

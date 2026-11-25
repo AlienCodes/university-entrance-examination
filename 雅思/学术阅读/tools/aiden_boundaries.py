@@ -18,6 +18,7 @@ from aiden_word_review import check_known_span, hear_differences, known_span, me
 RATE = 16000
 CHECKED_INFLECTIONS = ('the existent organisms', 'who was more than anyone else responsible',
                        'the material of which the organism is formed')
+RECHECKED_SPANS = ('the expense of energy', 'the two thousand eight crash', 'chair of the remuneration committee')
 # The institute spells its initialism I-INCE. Require both I's in the spoken expansion.
 NOISE_INITIALS = re.compile(r'\b(?:I|eye)[\s.,-]+(?:I|eye)[\s.,-]+(?:N|en)[\s.,-]+'
                             r'(?:C|see|sea)[\s.,-]+(?:E|ee)\b', re.I)
@@ -221,6 +222,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     soil_scientist = None
     physicist = None
     geographical = None
+    mountains = None
     migration_names = None
     ant_tools = None
     falkirk = None
@@ -360,6 +362,12 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_sobchack import verify
         alternate = independent(audio)
         film_names = verify(audio,text,transcript,alternate)
+    elif 'vosges' in expected and 'harz' in expected:
+        from aiden_place_names import MOUNTAINS, verify_mountains
+        if expected != MOUNTAINS:
+            raise ValueError('The two mountain names do not match their printed phrase')
+        alternate = independent(audio)
+        mountains = verify_mountains(audio,transcript,alternate)
     elif expected[:1] == ['monbusho'] or expected[-3:] == ['land','mass','aleyska']:
         from aiden_place_names import verify
         alternate = independent(audio)
@@ -460,6 +468,14 @@ def assess(audio, text, transcript=None, *, recheck=False):
             word_windows = hear_differences(audio, text, alternate)
             if not word_windows:
                 raise ValueError(f'Phrase endpoints or wording differ: {text!r} / {transcript!r} / {alternate!r}')
+    for span in RECHECKED_SPANS:
+        if span not in ' '.join(expected):
+            continue
+        if alternate is None:
+            alternate = independent(audio)
+        for heard in (transcript,alternate):
+            if (' '+span+' ') not in (' '+' '.join(words(heard))+' '):
+                raise ValueError(f'The printed words {span!r} are unclear: {heard!r}')
     sectors = None
     if expected[:4] == ['unlike', 'other', 'export', 'sectors']:
         from aiden_sectors import verify
@@ -572,6 +588,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['floris_pronunciation'] = soil_scientist
     if geographical is not None:
         result['geographic_name'] = geographical
+    if mountains is not None:
+        result['mountain_names'] = mountains
     if migration_names is not None:
         result['migration_names'] = migration_names
     if physicist is not None:

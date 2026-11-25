@@ -94,6 +94,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
         'diels': ('aiden_diels.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'monbusho': ('aiden_place_names.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'aleyska': ('aiden_place_names.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
+        'vosges': ('aiden_place_names.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'makete': ('aiden_place_names.py',),
         'pithecanthropus': ('aiden_printed_names.py',), 'isabela': ('aiden_printed_names.py',),
         'dollo': ('aiden_printed_names.py',),

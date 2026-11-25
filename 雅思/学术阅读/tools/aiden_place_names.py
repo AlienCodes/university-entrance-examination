@@ -172,6 +172,53 @@ def decoder(context):
     return grammar_decoder(JAPANESE, {'also':'AO L S OW','decides':'D IH S AY D Z'}, '{term} [also] [decides]')
 
 
+MOUNTAINS = 'the vosges in eastern france and the harz mountains in germany'.split()
+MOUNTAIN_SOUNDS = {
+    'vosges': (
+        {'vozh':'V OW ZH','back':'V AO ZH','vosh':'V OW SH','vawsh':'V AO SH','vos':'V OW S',
+         'voz':'V OW Z','vo':'V OW','vouch':'V AW CH','voches':'V OW CH IH Z','vauches':'V AO CH IH Z',
+         'vouchers':'V AW CH ER Z','vojes':'V OW JH IH Z','voshes':'V OW SH IH Z','vazhes':'V AO ZH IH Z'},
+        {'the':'DH AH','thee':'DH IY','in':'IH N'}, '[the | thee] {term} [in]', 'V OW ZH'),
+    'harz': (
+        {'harts':'HH AA R T S','nonrhotic':'HH AA T S','hars':'HH AA R S','hahs':'HH AA S',
+         'harsh':'HH AA R SH','harz':'HH AA R Z','hurts':'HH ER T S','hardz':'HH AA R D Z',
+         'har':'HH AA R','hart':'HH AA R T','arts':'AA R T S','hash':'HH AE SH'},
+        {'the':'DH AH','thee':'DH IY','mountains':'M AW N T AH N Z','mountns':'M AW N AH N Z'},
+        '[the | thee] {term} [mountains | mountns]', 'HH AA R T S'),
+}
+
+
+@lru_cache(maxsize=4)
+def mountain_decoder(name, context):
+    forms, neighbours, grammar, _ = MOUNTAIN_SOUNDS[name]
+    return grammar_decoder(forms, neighbours if context else {}, grammar if context else '{term}')
+
+
+def verify_mountains(audio, first, second):
+    timed = timed_words(audio)
+    for tokens in (words(first), words(second), [w for w,_ in timed]):
+        if (len(tokens) != len(MOUNTAINS) or tokens[0] != 'the'
+                or tokens[2:7] != MOUNTAINS[2:7] or tokens[8:] != MOUNTAINS[8:]):
+            raise ValueError('The words surrounding the Vosges or the Harz differ from the page')
+    result = {}
+    gaps = interior_gaps(audio)
+    for i in (1, 7):
+        name = MOUNTAINS[i]
+        forms, _, _, wanted = MOUNTAIN_SOUNDS[name]
+        readings = []
+        for context, begin, end in ((True,timed[i-1][1]-640,timed[i+2][1]),
+                                    (False,timed[i][1]-640,timed[i+1][1]+320)):
+            begin = max(0,begin)
+            key, score, left, right = locate_sound(audio[begin:end],mountain_decoder(name,context),forms)
+            if (forms[key] != wanted or score < .15 or right-left < .17*RATE
+                    or any(begin+left < (a+b)/2 < begin+right for a,b in gaps)):
+                raise ValueError(f'The printed mountain name {name} is unclear: {forms[key]}')
+            readings.append(dict(phones=forms[key], confidence=round(score,3),
+                                 start=(left+begin)/RATE, end=(right+begin)/RATE))
+        result[name] = readings
+    return result
+
+
 def verify_na_dene(audio, first, second):
     for transcript in (first, second):
         heard = words(transcript)
@@ -188,11 +235,16 @@ def verify_na_dene(audio, first, second):
 def verify(audio, expected, first, second):
     japan = expected[0]=='monbusho'
     index = 0 if japan else len(expected)-1
+    alaska = expected[-4:] == ['this','land','mass','aleyska']
+    def printed_context(hypothesis):
+        if alaska:
+            return [w for token in hypothesis for w in (('land','mass') if token=='landmass' else (token,))]
+        return hypothesis
     def unchanged_context(hypothesis):
         count = len(hypothesis) - len(expected) + 1
         return (1 <= count <= 3 and hypothesis[:index] == expected[:index]
                 and hypothesis[index+count:] == expected[index+1:])
-    heard = [words(first),words(second)]
+    heard = [printed_context(words(first)),printed_context(words(second))]
     surrounding = expected[:index]+expected[index+1:]
     # A recognizer may omit a non-English name. One must retain the name, both
     # must retain every surrounding word, and the acoustic tests must find it.
@@ -200,8 +252,9 @@ def verify(audio, expected, first, second):
             or any(tokens != surrounding and not unchanged_context(tokens) for tokens in heard)):
         raise ValueError(f'The words surrounding {expected[index]} differ from the source')
     timed = timed_words(audio)
-    if not unchanged_context([w for w,t in timed]):
+    if not unchanged_context(printed_context([w for w,t in timed])):
         raise ValueError(f'Cannot locate {expected[index]} in the recording')
+    timed_index = index - int(alaska and any(w == 'landmass' for w, _ in timed))
     if japan:
         context = expected[1]
         count = len(timed) - len(expected) + 1
@@ -211,14 +264,14 @@ def verify(audio, expected, first, second):
         forms, permitted = JAPANESE, JAPANESE_OK
     else:
         context = 'mass'
-        lo, hi = max(0,timed[index-1][1] - round(.0625*RATE)), len(audio)
+        lo, hi = max(0,timed[timed_index-1][1] - round(.0625*RATE)), len(audio)
         forms, permitted = ALASKAN, ALASKAN_OK
     key, confidence, begin, finish = locate_sound(audio[lo:hi], decoder(context), forms)
     begin, finish = lo+begin, lo+finish
     if not japan:
         # The context decoder can supply a missing stressed vowel after "mass",
         # or stop early after "yes". Check the name separately up to its actual end.
-        isolated_start = max(0, timed[index][1] - round(.14*RATE))
+        isolated_start = max(0, timed[timed_index][1] - round(.14*RATE))
         isolated_key, isolated_score, start, end = locate_sound(audio[isolated_start:], decoder('aleut-name'), forms)
         if isolated_key not in permitted or isolated_score < .20:
             raise ValueError(f'Incomplete isolated pronunciation of Aleyska: {forms[isolated_key]}')
@@ -228,5 +281,10 @@ def verify(audio, expected, first, second):
     if (key not in permitted or confidence < .15 or finish-begin < .40*RATE
             or any(begin < (a+b)/2 < finish for a,b in interior_gaps(audio))):
         raise ValueError(f'Incomplete or incorrect pronunciation of {expected[index]}: {forms[key]}')
-    return dict(name=expected[index], phones=forms[key], confidence=round(confidence,3),
-                start=round(begin/RATE,3), end=round(finish/RATE,3))
+    result = dict(name=expected[index], phones=forms[key], confidence=round(confidence,3),
+                  start=round(begin/RATE,3), end=round(finish/RATE,3))
+    if not japan:
+        result['isolated_name'] = dict(phones=forms[isolated_key], confidence=round(isolated_score,3),
+                                       start=round((isolated_start+start)/RATE,3),
+                                       end=round((isolated_start+end)/RATE,3))
+    return result
