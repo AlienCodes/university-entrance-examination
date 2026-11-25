@@ -71,6 +71,27 @@ def recognize(audio):
     return stream.result.text,timed
 
 
+def reread_focus(printed, transcript):
+    """Find a short stretch of the printed line surrounding a failed reading."""
+    tokens = list(re.finditer(r"[^\W_]+(?:[-’'][^\W_]+)*", printed))
+    expected = []
+    locations = []
+    for token in tokens:
+        spoken = words(token[0])
+        expected.extend(spoken)
+        locations.extend([token.span()] * len(spoken))
+    # Some dates, units and abbreviations acquire their reading from adjacent
+    # words. Leave their existing pronunciation instructions in control.
+    if not expected or not transcript or expected != words(printed):
+        return None
+    for kind, left, right, _, _ in SequenceMatcher(None, expected, words(transcript), autojunk=False).get_opcodes():
+        if kind != 'equal':
+            start = max(0, left - 1)
+            stop = min(len(expected), max(left + 1, right) + 1, start + 6)
+            return printed[locations[start][0]:locations[stop-1][1]]
+    return None
+
+
 class Aiden:
     def __init__(self):
         self.model=None
@@ -103,7 +124,7 @@ class Aiden:
                     return
         print(f'{key}: {len(failed)} rejected source(s) unavailable to archive; rerecording required', flush=True)
 
-    def render(self,script,seed,pron):
+    def render(self,script,seed,pron,*,focus=None):
         import torch
         if self.model is None:
             from aiden_model import restore
@@ -115,6 +136,12 @@ class Aiden:
                            verify_only=os.getenv('IELTS_AIDEN_FETCH_IF_NEEDED') != 'true')
             self.model=Qwen3TTSModel.from_pretrained(str(folder),dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
         instruction=DIRECTION
+        if focus:
+            instruction += (f' In this line, say the printed words “{focus}” in order with clear word endings,'
+                            ' at the same natural pace as the surrounding words.')
+        if re.fullmatch(r'(?:Reed|Reid) (?:adds|adze)[,.]?',script,re.I):
+            instruction += (' Read the two-word attribution smoothly: Reed rhymes with need.'
+                            ' In adds, keep the d and finish with a short voiced z, without another syllable.')
         names=[f'{name} /{ipa}/' for name,ipa in pron.lexicon.items()
                if name.casefold() not in {'ceylonese', aiden_turkish.ORAL} and re.search(r'\b'+re.escape(name)+r'\b',script,re.I)]
         for spellings, guidance in PLACE_READINGS.values():
@@ -317,17 +344,17 @@ class Aiden:
         name=hashlib.sha256(fingerprint.encode()).hexdigest()
         file=self.folder/(name+'.flac');report=self.folder/(name+'.json')
         previous_seed=None
+        # A restored FLAC can pass in isolation yet have failed in the mastered
+        # lesson. Read its recorded outcome before using even a valid raw cache.
+        for digest, tried_seed, issue in previous_master_failures(self.folder,key,script):
+            self.rejected_master_takes[digest] = issue
+            previous_seed = max(previous_seed or 0, tried_seed)
         if file.is_file() and report.is_file():
             data=json.loads(report.read_text());wave,sr=sf.read(file,dtype='float32')
             if sr==24000 and hashlib.sha256(file.read_bytes()).hexdigest()==data['sha256']:
                 if data['sha256'] in self.rejected_master_takes:
                     save_master_failure(file, data, key, script, self.rejected_master_takes[data['sha256']])
-                    previous_seed=data['seed']
-                    # Consult the earlier attempts only after this source has failed
-                    # the current master or has been returned by a recorded review.
-                    for digest, tried_seed, issue in previous_master_failures(self.folder, key, script):
-                        self.rejected_master_takes[digest] = issue
-                        previous_seed = max(previous_seed, tried_seed)
+                    previous_seed=max(previous_seed or 0,data['seed'])
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
                       and tuple(words(script)) not in aiden_kandy_nannie.PHRASES
                       and aiden_printed_names.target(words(script)) is None
@@ -347,7 +374,7 @@ class Aiden:
                     try:
                         assess(soxr.resample(wave,sr,16000),script)
                     except ValueError:
-                        previous_seed=data['seed']
+                        previous_seed=max(previous_seed or 0,data['seed'])
                     else:
                         data['policy']=POLICY
                         data['word_policy']=WORD_POLICY
@@ -365,9 +392,12 @@ class Aiden:
         for failed_seed, candidate in sorted(candidates, reverse=True):
             checked=self.recheck_diagnostic(file,report,script,failed_seed,candidate)
             if checked is not None:return checked
+        focus = reread_focus(script,json.loads(max(candidates)[1].read_bytes()).get('transcript')) if candidates else None
         spoken=script
         spellings=()
-        if words(script)==['quercus','suber']:
+        if words(script)==['reed','adds']:
+            spellings=('Reed adds','Reed ADDS','Reid adds','Reed adze','Reed adds')
+        elif words(script)==['quercus','suber']:
             spellings=aiden_cork_oak.RENDERINGS
         elif aiden_cork_taint.TERM in words(script):
             spellings=aiden_cork_taint.RENDERINGS
@@ -475,7 +505,10 @@ class Aiden:
                 # CMUdict transcribes Halley and Hally identically. Verify the result against the paper.
                 spoken=re.sub(r'\bHalley\b','Hally',script,flags=re.I)
             rendered_text=spoken
-            wav=self.render(rendered_text,seed+attempt*997,pron)
+            if focus:
+                wav=self.render(rendered_text,seed+attempt*997,pron,focus=focus)
+            else:
+                wav=self.render(rendered_text,seed+attempt*997,pron)
             transcript,timed=recognize(wav)
             try:
                 assess(soxr.resample(wav,24000,16000),script,transcript)
@@ -489,6 +522,7 @@ class Aiden:
             except ValueError as error:
                 issue=str(error)
                 attempts.append((wav, rendered_text, seed + attempt * 997, transcript, issue))
+                focus = reread_focus(script,transcript)
                 if attempt >= 1:
                     expected=words(script)
                     alignment=SequenceMatcher(None,expected,words(transcript),autojunk=False)
