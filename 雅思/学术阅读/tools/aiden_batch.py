@@ -57,8 +57,11 @@ def plan(batch):
         s=json.loads((ROOT/'原稿'/(pid+'.json')).read_text())
         if s['id']!=pid or not s['paragraphs']:raise ValueError('Missing paper '+pid)
     stage='ielts-academic-aiden-cache-'+batch
-    result=subprocess.run(['gh','release','view',stage],capture_output=True)
-    if result.returncode:
+    try:
+        inventory(stage)
+    except subprocess.CalledProcessError as exc:
+        if "http 404" not in (exc.stderr or "").lower():
+            raise
         subprocess.run(['gh','release','create',stage,'--target',os.environ['GITHUB_SHA'],'--prerelease','--latest=false',
             '--title',f'剑桥雅思 {batch} · Aiden 逐篇制作存档','--notes','存放本批次核验通过的精读音轨、视频和恢复记录。'],check=True)
     outstanding=[pid for pid in ids if not cached(pid,batch,include_illustration=True)]

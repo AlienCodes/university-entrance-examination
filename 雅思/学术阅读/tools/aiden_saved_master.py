@@ -10,6 +10,7 @@ import tempfile
 import zipfile
 
 from aiden_profile import IDENTITY, PAUSE_POLICY, RejectedSource, audio_asset, confirm
+from aiden_recovery_index import recording_source
 from lesson import LESSON, PID, PROJECT, ROOT
 from release_assets import fetch, inventory
 
@@ -35,13 +36,8 @@ def eligible_legacy_names():
     for run in settings.get('recover_runs', []):
         if type(run) is not int or run < 1:
             continue
-        endpoint = f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{run}"
-        info = json.loads(subprocess.check_output(['gh','api',endpoint]))
+        info, _ = recording_source(os.environ['GITHUB_REPOSITORY'], run)
         revision = info['head_sha']
-        if (info['head_branch'] != 'codex/ielts-academic-reading' or
-                info['path'] != '.github/workflows/ielts-aiden-production.yml' or
-                not re.fullmatch('[a-f0-9]{40}',revision)):
-            continue
         if subprocess.run(['git','cat-file','-e',revision+'^{commit}'],cwd=ROOT,capture_output=True).returncode:
             subprocess.run(['git','fetch','--quiet','--no-tags','--depth=1','--filter=blob:none','origin',revision],cwd=ROOT,check=True)
         # Preserve global pronunciation overrides and the exact mastering settings.

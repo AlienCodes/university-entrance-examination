@@ -1,4 +1,5 @@
 """Recover completed phrase recordings from an earlier run of this production workflow."""
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -10,12 +11,9 @@ import time
 import zipfile
 
 from aiden_profile import IDENTITY, PAUSE_POLICY, rejected_sources
+from aiden_recovery_index import list_recordings, recording_source
 from lesson import PID, PROJECT
-from release_assets import fetch, inventory, read_github, transient_read_error
-
-
-def gh_json(endpoint):
-    return json.loads(read_github(["gh", "api", "--jq", ".", endpoint]))
+from release_assets import fetch, inventory, rate_limit_delay, transient_read_error
 
 
 REVIEW_TAKES = 5
@@ -260,6 +258,11 @@ def download_historical_artifact(base, asset, path):
         reason = result.stderr.decode(errors="replace").lower()
         if "http 404" in reason or "http 410" in reason:
             break
+        reset_delay = rate_limit_delay(reason, attempt)
+        if reset_delay is not None:
+            if attempt < 2:
+                time.sleep(reset_delay)
+            continue
         if not any(error in reason for error in ("http 500", "http 502", "http 503", "http 504",
                                                  "timed out", "timeout", "unexpected eof", "connection reset",
                                                  "tls handshake", "blob.core.windows.net")):
@@ -285,29 +288,24 @@ def recover():
         restore_snapshot(stage, work / "aiden-takes")
     if not runs:
         return
-    base = "repos/" + os.environ["GITHUB_REPOSITORY"]
+    repository = os.environ["GITHUB_REPOSITORY"]
+    base = "repos/" + repository
     for run_id in runs:
         if type(run_id) is not int or run_id < 1:
             raise ValueError("Invalid source run")
         try:
-            run = gh_json(f"{base}/actions/runs/{run_id}")
-            if (run["head_branch"] != "codex/ielts-academic-reading"
-                    or run["path"] != ".github/workflows/ielts-aiden-production.yml"):
-                raise ValueError("The recordings are from a different production workflow")
-            run_artifacts = read_github([
-                "gh", "api", "--paginate", "--jq", ".artifacts[] | @json",
-                f"{base}/actions/runs/{run_id}/artifacts?per_page=100"
-            ])
+            info, artifacts = recording_source(repository, run_id)
+            if artifacts is None:
+                artifacts = list_recordings(repository, info)
         except subprocess.CalledProcessError as error:
             if not transient_read_error(error):
                 raise
             print(f"{PID}: old run {run_id} unavailable after retries; retaining verified takes", flush=True)
             continue
         prefix = "aiden-" + PID + "-checks-"
-        artifacts = [json.loads(line) for line in run_artifacts.splitlines() if line]
-        for asset in sorted(artifacts, key=lambda x: x["id"], reverse=True):
-            if (asset["expired"] or not asset["name"].startswith(prefix)
-                    or not asset["name"][len(prefix):].isdigit()):
+        for asset in artifacts:
+            if (not asset["name"].startswith(prefix) or not asset["name"][len(prefix):].isdigit()
+                    or datetime.fromisoformat(asset["expires_at"]) <= datetime.now(timezone.utc)):
                 continue
             with tempfile.TemporaryDirectory(dir=work) as temp:
                 path = Path(temp) / "recordings.zip"

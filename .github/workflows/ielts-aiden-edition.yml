@@ -5,6 +5,9 @@ on:
       batch:
         type: string
         required: true
+      recovery_index:
+        type: string
+        default: ''
       pilot_only:
         type: boolean
         default: false
@@ -78,6 +81,7 @@ jobs:
       lesson: ${{ needs.plan.outputs.pilot }}
       aiden_batch: ${{ needs.plan.outputs.batch }}
       verified_audio_only: ${{ needs.plan.outputs.certified_audio == 'true' }}
+      recovery_index: ${{ inputs.recovery_index }}
       current_tools: ${{ needs.plan.outputs.batch == '13-6' && needs.plan.outputs.pilot_only != 'true' }}
   preview:
     needs: [plan, pilot]
@@ -115,6 +119,7 @@ jobs:
     with:
       lesson: ${{ matrix.lesson }}
       aiden_batch: ${{ needs.plan.outputs.batch }}
+      recovery_index: ${{ inputs.recovery_index }}
       current_tools: true
 
   delivery:
