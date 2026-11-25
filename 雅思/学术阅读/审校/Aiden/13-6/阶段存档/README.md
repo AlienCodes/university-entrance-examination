@@ -1,5 +1,9 @@
 # 剑桥雅思第 13–6 册制作存档
 
+## 恢复制作
+
+2026-11-25 16:28（纽约时间）从已验收的 58 篇继续。剩余 38 篇的易错词预检和录音恢复清单已保存。逐篇复用合格录音，遇到错读只补对应的完整意群。[本轮 38 篇制作](https://github.com/AlienCodes/university-entrance-examination/actions/runs/45704370513) · [全册复验和正式视频发布](https://github.com/AlienCodes/university-entrance-examination/actions/runs/45704437528)
+
 ## 暂停交接
 
 2026-11-25 16:19（纽约时间）核对，96 篇中有 **58 篇带插图的 Aiden 成片通过最终验收**。另有 21 篇已有带图视频、仍需补读或复验，17 篇已有阶段录音、待完成带图视频。生产运行及其候补均已停止，两小时跟进已暂停。
