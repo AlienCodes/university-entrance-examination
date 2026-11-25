@@ -11,7 +11,7 @@ import time
 import zipfile
 
 from aiden_profile import IDENTITY, PAUSE_POLICY, rejected_sources
-from aiden_recovery_index import list_recordings, recording_source
+from aiden_recovery_index import AUXILIARY, WORKFLOW, list_recordings, recording_source, recovery_runs
 from lesson import PID, PROJECT
 from release_assets import fetch, inventory, rate_limit_delay, transient_read_error
 
@@ -200,8 +200,10 @@ class PeriodicSnapshot:
         self.folder = folder
         group = os.environ.get("IELTS_AIDEN_BATCH", "")
         self.stage = os.environ.get("STAGING") if group in ("13-6", "5-1") else None
+        allowed = (WORKFLOW, AUXILIARY) if group == "13-6" else (WORKFLOW,)
+        workflow_ref = os.environ.get("GITHUB_WORKFLOW_REF", "")
         if (self.stage != "ielts-academic-aiden-cache-" + group
-                or ".github/workflows/ielts-aiden-production.yml@" not in os.environ.get("GITHUB_WORKFLOW_REF", "")):
+                or not any("/" + path + "@" in workflow_ref for path in allowed)):
             self.stage = None
         self.next_check = time.monotonic() + 600
         self.saved_files = set()
@@ -273,7 +275,7 @@ def download_historical_artifact(base, asset, path):
 
 def recover():
     config = json.loads(Path(".github/ielts-aiden-batch.json").read_text())
-    runs = config.get("recover_runs", [])
+    runs = recovery_runs(config)
     work = Path(os.environ["IELTS_WORK"])
     stage = os.environ.get("STAGING", "")
     if stage == "ielts-academic-aiden-cache-13-6":

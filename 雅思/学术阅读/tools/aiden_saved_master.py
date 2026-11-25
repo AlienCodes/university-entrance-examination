@@ -10,7 +10,7 @@ import tempfile
 import zipfile
 
 from aiden_profile import IDENTITY, PAUSE_POLICY, RejectedSource, audio_asset, confirm
-from aiden_recovery_index import recording_source
+from aiden_recovery_index import recording_source, recovery_runs
 from lesson import LESSON, PID, PROJECT, ROOT
 from release_assets import fetch, inventory
 
@@ -33,7 +33,7 @@ def eligible_legacy_names():
     # exact artifact names from the authorized recovery runs and today's text.
     settings = json.loads((ROOT / '.github/ielts-aiden-batch.json').read_text())
     names = set()
-    for run in settings.get('recover_runs', []):
+    for run in recovery_runs(settings):
         if type(run) is not int or run < 1:
             continue
         info, _ = recording_source(os.environ['GITHUB_REPOSITORY'], run)

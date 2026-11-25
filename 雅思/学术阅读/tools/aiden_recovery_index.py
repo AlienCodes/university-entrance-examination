@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[3]
 SAVED = ROOT / ".github/ielts-aiden-recovery-index.json"
 BRANCH = "codex/ielts-academic-reading"
 WORKFLOW = ".github/workflows/ielts-aiden-production.yml"
+AUXILIARY = ".github/workflows/ielts-aiden-available-illustrations.yml"
 RECORDING = re.compile(r"aiden-C[1-9]\d*T[1-4]P[1-3]-checks-[1-9]\d*")
 
 
@@ -24,8 +25,25 @@ def read_index(path, repository):
     return data["runs"]
 
 
+@lru_cache(maxsize=1)
+def additional_runs():
+    # Register a supplementary renderer explicitly. Its job artifacts use the
+    # same signed Aiden recording format as the primary production workflow.
+    path = ROOT / ".github/ielts-aiden-recording-sources.json"
+    numbers = json.loads(path.read_bytes()) if path.is_file() else []
+    if not isinstance(numbers, list) or any(type(n) is not int or n <= 0 for n in numbers):
+        raise ValueError("Invalid supplementary recording sources")
+    return tuple(numbers)
+
+
+def recovery_runs(config):
+    extra = additional_runs() if config.get("batch") == "13-6" else ()
+    return list(dict.fromkeys((*extra, *config.get("recover_runs", []))))
+
+
 def check_run(info, number):
-    if (info["id"] != number or info["head_branch"] != BRANCH or info["path"] != WORKFLOW
+    expected_path = AUXILIARY if number in additional_runs() else WORKFLOW
+    if (info["id"] != number or info["head_branch"] != BRANCH or info["path"] != expected_path
             or not re.fullmatch(r"[0-9a-f]{40}", info["head_sha"])):
         raise ValueError(f"Run {number} is not an authorized recording source")
     return info
@@ -57,10 +75,9 @@ def list_recordings(repository, info):
 @lru_cache(maxsize=1)
 def indexes(repository):
     shared_path = os.environ.get("IELTS_AIDEN_RECOVERY_INDEX")
-    if shared_path:
-        return read_index(Path(shared_path), repository), {}
+    shared = read_index(Path(shared_path), repository) if shared_path else {}
     saved = read_index(SAVED, repository) if SAVED.is_file() else {}
-    return {}, saved
+    return shared, saved
 
 
 @lru_cache(maxsize=32)
@@ -83,7 +100,7 @@ def build(destination, settled_only=False):
     config = json.loads((ROOT / ".github/ielts-aiden-batch.json").read_bytes())
     stored = read_index(SAVED, repository) if SAVED.is_file() else {}
     records = {}
-    for number in config.get("recover_runs", []):
+    for number in recovery_runs(config):
         try:
             info = run_info(repository, number)
             if settled_only and info["status"] != "completed":
