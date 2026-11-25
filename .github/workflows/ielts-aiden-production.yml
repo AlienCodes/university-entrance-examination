@@ -18,6 +18,7 @@ jobs:
       batch: ${{ steps.read.outputs.batch }}
       certified_audio: ${{ steps.read.outputs.certified_audio }}
       pilot_only: ${{ steps.read.outputs.pilot_only }}
+      repair_lessons: ${{ steps.read.outputs.repair_lessons }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +34,14 @@ jobs:
           file=.github/ielts-aiden-batch.json
           jq -e '.speaker=="Aiden" and (.batch=="13-6" or .batch=="5-1")' "$file" >/dev/null
           echo "batch=$(jq -r .batch "$file")" >> "$GITHUB_OUTPUT"
+          repair=$(jq -ce '
+            (.repair_lessons // []) as $ids |
+            if ($ids | type) == "array" and ($ids | length) == ($ids | unique | length)
+               and all($ids[]; type == "string" and test("^C(1[0-3]|[6-9])T[1-4]P[1-3]$"))
+               and (($ids | length) == 0 or (.batch == "13-6" and (.pilot_only != true) and (.certified_audio != true)))
+            then $ids else error("Invalid list of individual lessons to repair") end
+          ' "$file")
+          echo "repair_lessons=$repair" >> "$GITHUB_OUTPUT"
           for option in certified_audio pilot_only; do
             echo "$option=$(jq -r --arg k "$option" '.[$k] // false' "$file")" >> "$GITHUB_OUTPUT"
           done
@@ -50,8 +59,23 @@ jobs:
           done
   edition:
     needs: specification
+    if: needs.specification.outputs.repair_lessons == '[]'
     uses: ./.github/workflows/ielts-aiden-edition.yml
     with:
       batch: ${{ needs.specification.outputs.batch }}
       certified_audio: ${{ needs.specification.outputs.certified_audio == 'true' }}
       pilot_only: ${{ needs.specification.outputs.pilot_only == 'true' }}
+
+  repair:
+    needs: specification
+    if: needs.specification.outputs.repair_lessons != '[]'
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lesson: ${{ fromJSON(needs.specification.outputs.repair_lessons) }}
+    uses: ./.github/workflows/ielts-early-lesson.yml
+    with:
+      lesson: ${{ matrix.lesson }}
+      aiden_batch: ${{ needs.specification.outputs.batch }}
+      current_tools: true

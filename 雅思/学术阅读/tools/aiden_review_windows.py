@@ -4,6 +4,7 @@ import hashlib
 import re
 
 from aiden_boundaries import RATE, independent, isolated, verify_reference, words
+import aiden_kandy_nannie
 from aiden_ceylonese import timed_words
 from aiden_word_review import check_known_span, dictionary, known_span, same_words
 
@@ -12,7 +13,8 @@ VERSION = 'two-reader-context-v1'
 
 
 def needs_review(clip):
-    return not clip['passed'] and clip.get('window_review', {}).get('version') != VERSION
+    version = 'kandy-nannie-v1' if tuple(words(clip['text'])) in aiden_kandy_nannie.PHRASES else VERSION
+    return not clip['passed'] and clip.get('window_review', {}).get('version') != version
 
 
 def contains_words(tokens, phrase):
@@ -73,14 +75,17 @@ def recheck(clip, audio, raw):
     lag = verify_reference(audio, raw['reference'])
     from aiden_voyages import TARO, VOYAGES, verify
     expected = words(clip['text'])
-    if expected in (TARO, VOYAGES):
+    name = tuple(expected) in aiden_kandy_nannie.PHRASES
+    if name or expected in (TARO, VOYAGES):
+        version = 'kandy-nannie-v1' if name else VERSION
+        check = aiden_kandy_nannie.verify if name else verify
         try:
-            measured = verify(audio, expected)
+            measured = check(audio, expected)
         except ValueError as error:
-            clip['window_review'] = dict(version=VERSION, source_lag_ms=lag, pronunciation_issue=str(error))
+            clip['window_review'] = dict(version=version, source_lag_ms=lag, pronunciation_issue=str(error))
             clip['passed'] = False
         else:
-            clip['window_review'] = dict(version=VERSION, source_lag_ms=lag, pronunciation=measured)
+            clip['window_review'] = dict(version=version, source_lag_ms=lag, pronunciation=measured)
             clip['passed'] = True
         return
     timed = timed_words(audio)

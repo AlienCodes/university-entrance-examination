@@ -22,6 +22,7 @@ import aiden_cork_taint
 import aiden_ceylonese
 import aiden_inuktitut
 import aiden_printed_names
+import aiden_kandy_nannie
 import aiden_sobchack
 import aiden_de_dreu
 import aiden_decans
@@ -324,6 +325,7 @@ class Aiden:
                         self.rejected_master_takes[digest] = issue
                         previous_seed = max(previous_seed, tried_seed)
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
+                      and tuple(words(script)) not in aiden_kandy_nannie.PHRASES
                       and aiden_printed_names.target(words(script)) is None
                       and not any(s in script.casefold() for s in ('taro seedlings', 're-create those early voyages'))
                       and not script.casefold().startswith(CHECKED_INFLECTIONS)

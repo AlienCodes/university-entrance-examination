@@ -195,6 +195,7 @@ def salmon_phrase(tokens):
 def assess(audio, text, transcript=None, *, recheck=False):
     import aiden_printed_names
     import aiden_voyages
+    import aiden_kandy_nannie
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     from aiden_perkin import cited as has_perkin, verify as verify_perkin, gap_after_attention
     from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
@@ -246,7 +247,11 @@ def assess(audio, text, transcript=None, *, recheck=False):
     kite_names = None
     word_windows = None
     voyage_term = None
-    if expected in (aiden_voyages.TARO, aiden_voyages.VOYAGES):
+    contextual_name = None
+    if tuple(expected) in aiden_kandy_nannie.PHRASES:
+        alternate = independent(audio)
+        contextual_name = aiden_kandy_nannie.verify(audio, expected, transcript, alternate)
+    elif expected in (aiden_voyages.TARO, aiden_voyages.VOYAGES):
         alternate = independent(audio)
         voyage_term = aiden_voyages.verify(audio, expected, transcript, alternate)
     elif expected in (INTRO, CONCLUSION, WENDRICH):
@@ -560,6 +565,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
                                      f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    if contextual_name is not None:
+        result['contextual_name'] = contextual_name
     if voyage_term is not None:
         result['voyage_term'] = voyage_term
     if span := known_span(expected):
@@ -698,7 +705,9 @@ def verify_join(left,right):
                 return True
         return False
     left_ref, right_ref = words(left['text']), words(right['text'])
-    ends, starts = edge(left, -1), edge(right, 0)
+    from aiden_kandy_nannie import confirmed_ending
+    ends = edge(left, -1) or confirmed_ending(left, left_ref)
+    starts = edge(right, 0)
     if left_ref[-1:] == ['groundfish'] and right_ref == ['cod','sole','perch','and','pollock']:
         if ends and right.get('groundfish_list',{}).get('phones') == 'K AA D':
             return

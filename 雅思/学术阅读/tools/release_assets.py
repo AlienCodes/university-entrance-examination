@@ -9,6 +9,13 @@ import sys
 import time
 
 
+def transient_read_error(error):
+    reason = (error.stderr or '').lower()
+    return any(part in reason for part in (
+        'http 500', 'http 502', 'http 503', 'http 504', 'timed out', 'unexpected eof',
+        'unexpected end of json input', 'connection reset'))
+
+
 def read_github(command):
     for delay in (0, 2, 8):
         if delay:
@@ -16,9 +23,7 @@ def read_github(command):
         try:
             return subprocess.check_output(command, text=True, stderr=subprocess.PIPE)
         except subprocess.CalledProcessError as exc:
-            reason = (exc.stderr or '').lower()
-            if delay == 8 or not any(s in reason for s in
-                    ('http 500', 'http 502', 'http 503', 'http 504', 'timed out', 'unexpected eof', 'connection reset')):
+            if delay == 8 or not transient_read_error(exc):
                 if exc.stderr:
                     sys.stderr.write(exc.stderr)
                 raise

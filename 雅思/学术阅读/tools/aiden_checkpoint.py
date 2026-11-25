@@ -11,11 +11,11 @@ import zipfile
 
 from aiden_profile import IDENTITY, PAUSE_POLICY, rejected_sources
 from lesson import PID, PROJECT
-from release_assets import fetch, inventory, read_github
+from release_assets import fetch, inventory, read_github, transient_read_error
 
 
 def gh_json(endpoint):
-    return json.loads(read_github(["gh", "api", endpoint]))
+    return json.loads(read_github(["gh", "api", "--jq", ".", endpoint]))
 
 
 REVIEW_TAKES = 5
@@ -289,14 +289,20 @@ def recover():
     for run_id in runs:
         if type(run_id) is not int or run_id < 1:
             raise ValueError("Invalid source run")
-        run = gh_json(f"{base}/actions/runs/{run_id}")
-        if (run["head_branch"] != "codex/ielts-academic-reading"
-                or run["path"] != ".github/workflows/ielts-aiden-production.yml"):
-            raise ValueError("The recordings are from a different production workflow")
-        run_artifacts = read_github([
-            "gh", "api", "--paginate", "--jq", ".artifacts[] | @json",
-            f"{base}/actions/runs/{run_id}/artifacts?per_page=100"
-        ])
+        try:
+            run = gh_json(f"{base}/actions/runs/{run_id}")
+            if (run["head_branch"] != "codex/ielts-academic-reading"
+                    or run["path"] != ".github/workflows/ielts-aiden-production.yml"):
+                raise ValueError("The recordings are from a different production workflow")
+            run_artifacts = read_github([
+                "gh", "api", "--paginate", "--jq", ".artifacts[] | @json",
+                f"{base}/actions/runs/{run_id}/artifacts?per_page=100"
+            ])
+        except subprocess.CalledProcessError as error:
+            if not transient_read_error(error):
+                raise
+            print(f"{PID}: old run {run_id} unavailable after retries; retaining verified takes", flush=True)
+            continue
         prefix = "aiden-" + PID + "-checks-"
         artifacts = [json.loads(line) for line in run_artifacts.splitlines() if line]
         for asset in sorted(artifacts, key=lambda x: x["id"], reverse=True):
