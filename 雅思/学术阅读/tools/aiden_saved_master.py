@@ -109,8 +109,10 @@ def recover_master(stage, passage, reader, config, target):
     candidates=sorted(assets,key=lambda a:a['id'],reverse=True)
     local=reviewed_track(stage)
     if local is not None:
-        candidates.append({'name':local.name,'path':local,
-                           'digest':'sha256:'+hashlib.sha256(local.read_bytes()).hexdigest()})
+        # The reviewed whole track can contain replacements for returned sources
+        # in older release assets. It goes through the same full audio checks.
+        candidates.insert(0, {'name':local.name, 'path':local,
+                              'digest':'sha256:'+hashlib.sha256(local.read_bytes()).hexdigest()})
     if not candidates:
         return None
     legacy=None
