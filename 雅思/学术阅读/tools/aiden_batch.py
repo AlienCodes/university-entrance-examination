@@ -65,6 +65,9 @@ def plan(batch):
         subprocess.run(['gh','release','create',stage,'--target',os.environ['GITHUB_SHA'],'--prerelease','--latest=false',
             '--title',f'剑桥雅思 {batch} · Aiden 逐篇制作存档','--notes','存放本批次核验通过的精读音轨、视频和恢复记录。'],check=True)
     outstanding=[pid for pid in ids if not cached(pid,batch,include_illustration=True)]
+    if batch == '13-6' and os.getenv('PILOT_ONLY', 'false') != 'true':
+        from aiden_preflight import save_batch_plan
+        save_batch_plan(outstanding, Path(os.getenv('RUNNER_TEMP', tempfile.gettempdir()))/'pronunciation-plan.json')
     with open(os.environ['GITHUB_OUTPUT'],'a') as out:
         print('batch='+batch,file=out)
         print('pilot='+ids[0],file=out)

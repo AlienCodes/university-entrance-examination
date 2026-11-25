@@ -74,6 +74,12 @@ jobs:
           echo "pilot_only=$PILOT_ONLY" >> "$GITHUB_OUTPUT"
           echo "certified_audio=$CERTIFIED_AUDIO" >> "$GITHUB_OUTPUT"
           python '雅思/学术阅读/tools/aiden_batch.py' plan "$EDITION"
+      - uses: actions/upload-artifact@v4
+        if: inputs.batch == '13-6' && !inputs.pilot_only
+        with:
+          name: aiden-pronunciation-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pronunciation-plan.json
+          if-no-files-found: error
   pilot:
     needs: plan
     uses: ./.github/workflows/ielts-early-lesson.yml

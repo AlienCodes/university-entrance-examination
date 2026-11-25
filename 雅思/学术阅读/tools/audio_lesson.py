@@ -172,6 +172,9 @@ def certified_aiden(passage,config,reader,path):
     from aiden_profile import PROFILE, confirm
     from aiden_boundaries import MasteredPhraseError, check_media
     engine = Aiden()
+    if os.getenv('IELTS_AIDEN_BATCH') == '13-6':
+        from aiden_preflight import prepare
+        prepare(engine,passage,config,reader)
     attempts={}
     while True:
         try:

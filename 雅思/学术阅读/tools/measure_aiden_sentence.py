@@ -32,9 +32,9 @@ def measure(number, output, engine=None, reader=None, sentences=None, *, keep_re
     generate = engine.render
     recognize = aiden_audio.recognize
 
-    def timed_render(text, seed, pron):
+    def timed_render(text, seed, pron, *, focus=None, pronunciation_cue=None):
         now = time.monotonic()
-        wav = generate(text, seed, pron)
+        wav = generate(text, seed, pron, focus=focus, pronunciation_cue=pronunciation_cue)
         row = dict(phase='generate', seed=seed, seconds=round(time.monotonic()-now, 3),
                    audio_seconds=round(len(wav)/24000, 3), text=text)
         if keep_rendered:

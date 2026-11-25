@@ -46,6 +46,17 @@ jobs:
           for option in certified_audio pilot_only; do
             echo "$option=$(jq -r --arg k "$option" '.[$k] // false' "$file")" >> "$GITHUB_OUTPUT"
           done
+      - name: 在补做篇目启动前按每组最多20篇找出易错词
+        if: steps.read.outputs.repair_lessons != '[]'
+        env:
+          LESSONS: ${{ steps.read.outputs.repair_lessons }}
+        run: python '雅思/学术阅读/tools/aiden_preflight.py' "$LESSONS" "$RUNNER_TEMP/pronunciation-plan.json"
+      - uses: actions/upload-artifact@v4
+        if: steps.read.outputs.repair_lessons != '[]'
+        with:
+          name: aiden-pronunciation-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pronunciation-plan.json
+          if-no-files-found: error
       - name: 统一读取本批可恢复的录音清单
         id: index
         if: steps.read.outputs.batch == '13-6' && steps.read.outputs.pilot_only != 'true'

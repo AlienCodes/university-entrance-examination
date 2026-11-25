@@ -188,6 +188,7 @@ jobs:
           name: aiden-${{ inputs.lesson }}-checks-${{ github.run_attempt }}
           path: |
             ${{ env.IELTS_WORK }}/native-*.log
+            ${{ env.IELTS_WORK }}/native-pronunciation.json
             ${{ env.IELTS_WORK }}/aiden-takes
           retention-days: 14
           if-no-files-found: ignore

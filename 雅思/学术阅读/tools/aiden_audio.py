@@ -124,7 +124,7 @@ class Aiden:
                     return
         print(f'{key}: {len(failed)} rejected source(s) unavailable to archive; rerecording required', flush=True)
 
-    def render(self,script,seed,pron,*,focus=None):
+    def render(self,script,seed,pron,*,focus=None,pronunciation_cue=None):
         import torch
         if self.model is None:
             from aiden_model import restore
@@ -136,6 +136,8 @@ class Aiden:
                            verify_only=os.getenv('IELTS_AIDEN_FETCH_IF_NEEDED') != 'true')
             self.model=Qwen3TTSModel.from_pretrained(str(folder),dtype=torch.float32,device_map='cpu',attn_implementation='sdpa')
         instruction=DIRECTION
+        if pronunciation_cue:
+            instruction += ' ' + pronunciation_cue
         if focus:
             instruction += (f' In this line, say the printed words “{focus}” in order with clear word endings,'
                             ' at the same natural pace as the surrounding words.')
@@ -339,7 +341,7 @@ class Aiden:
         report.write_text(json.dumps(data,ensure_ascii=False))
         return wave,data
 
-    def take(self,script,key,variant,pron,position=0):
+    def take(self,script,key,variant,pron,position=0,*,phase=None,initial_focus=None):
         fingerprint=json.dumps([IDENTITY,script,key,variant,pron.lexicon],sort_keys=True,ensure_ascii=False)
         name=hashlib.sha256(fingerprint.encode()).hexdigest()
         file=self.folder/(name+'.flac');report=self.folder/(name+'.json')
@@ -389,10 +391,13 @@ class Aiden:
             if failed_seed is not None:
                 candidates.append((failed_seed, candidate))
                 seed = max(seed, failed_seed + 997)
-        for failed_seed, candidate in sorted(candidates, reverse=True):
-            checked=self.recheck_diagnostic(file,report,script,failed_seed,candidate)
-            if checked is not None:return checked
-        focus = reread_focus(script,json.loads(max(candidates)[1].read_bytes()).get('transcript')) if candidates else None
+        if phase != 'resume':
+            for failed_seed, candidate in sorted(candidates, reverse=True):
+                checked=self.recheck_diagnostic(file,report,script,failed_seed,candidate)
+                if checked is not None:return checked
+        previous_transcript = json.loads(max(candidates)[1].read_bytes()).get('transcript') if candidates else None
+        focus = reread_focus(script, previous_transcript)
+        focus = focus or initial_focus
         spoken=script
         spellings=()
         if words(script)==['reed','adds']:
@@ -490,7 +495,13 @@ class Aiden:
         elif aiden_turkish.ORAL in words(script):
             spellings=aiden_turkish.RENDERINGS
         attempts = deque(maxlen=REVIEW_TAKES)
-        for attempt in range(len(spellings) if spellings else 5):
+        limit = len(spellings) if spellings else 5
+        first = 1 if phase == 'resume' else 0
+        stop = 1 if phase == 'probe' else limit
+        for attempt in range(first, stop):
+            # A resumed probe has already stored its seed in the rejected takes.
+            # Continue with the next spelling and next unused seed.
+            take_seed = seed + (attempt - first) * 997
             if spellings and attempt:
                 # Preserve all surrounding printed words, even in a long phrase.
                 spoken=re.sub(re.escape(spellings[0]),spellings[attempt],script,flags=re.I)
@@ -505,10 +516,16 @@ class Aiden:
                 # CMUdict transcribes Halley and Hally identically. Verify the result against the paper.
                 spoken=re.sub(r'\bHalley\b','Hally',script,flags=re.I)
             rendered_text=spoken
-            if focus:
-                wav=self.render(rendered_text,seed+attempt*997,pron,focus=focus)
+            pronunciation_cue = None
+            if phase and previous_transcript:
+                from aiden_preflight import dictionary_contrast
+                pronunciation_cue = dictionary_contrast(script, previous_transcript, pron.lexicon)
+            if pronunciation_cue:
+                wav=self.render(rendered_text,take_seed,pron,focus=focus,pronunciation_cue=pronunciation_cue)
+            elif focus:
+                wav=self.render(rendered_text,take_seed,pron,focus=focus)
             else:
-                wav=self.render(rendered_text,seed+attempt*997,pron)
+                wav=self.render(rendered_text,take_seed,pron)
             transcript,timed=recognize(wav)
             try:
                 assess(soxr.resample(wav,24000,16000),script,transcript)
@@ -521,7 +538,8 @@ class Aiden:
                     candidate.replace(file)
             except ValueError as error:
                 issue=str(error)
-                attempts.append((wav, rendered_text, seed + attempt * 997, transcript, issue))
+                attempts.append((wav, rendered_text, take_seed, transcript, issue))
+                previous_transcript = transcript
                 focus = reread_focus(script,transcript)
                 if attempt >= 1:
                     expected=words(script)
@@ -531,13 +549,18 @@ class Aiden:
                     spoken=re.sub(r'\b[a-z]+\b',lambda m:m[0].upper() if m[0] in missing else m[0],script)
                 print(f'{key} rereading intact phrase: {issue}',flush=True)
                 continue
-            data=dict(transcript=transcript,timed=timed,seed=seed+attempt*997,sha256=digest,policy=POLICY,word_policy=WORD_POLICY)
+            data=dict(transcript=transcript,timed=timed,seed=take_seed,sha256=digest,policy=POLICY,word_policy=WORD_POLICY)
             report.write_text(json.dumps(data,ensure_ascii=False))
             return sf.read(file,dtype='float32')[0],data
         # Preserve distinct attempts for comparison after a pronunciation correction.
         # Only recordings rechecked with the current rules can enter the master.
         (self.folder / 'rejected').mkdir(exist_ok=True)
-        for target, take in zip(diagnostic_reports(report), reversed(attempts)):
+        slots = list(diagnostic_reports(report))
+        for old, new in reversed(list(zip(slots, slots[len(attempts):]))):
+            if old.is_file() and old.with_suffix('.flac').is_file():
+                old.with_suffix('.flac').replace(new.with_suffix('.flac'))
+                old.replace(new)
+        for target, take in zip(slots, reversed(attempts)):
             wave, rendered, take_seed, heard, reason = take
             candidate = target.with_suffix('.flac')
             save_raw_take(candidate, wave)
