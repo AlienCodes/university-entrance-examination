@@ -40,7 +40,60 @@
      "second_heard": "at Butterley Engineering Steelworks in Derbyshire."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "butterley",
+       "engineerings",
+       "steelworks"
+      ],
+      "heard": [
+       "butterleigh",
+       "engineering",
+       "steel",
+       "works"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         44240
+        ],
+        "expected": [
+         "at",
+         "butterley",
+         "engineerings",
+         "steelworks",
+         "in",
+         "derbyshire"
+        ],
+        "first": "at Butterleigh Engineering Steel Works in Derbyshire,",
+        "second": "at Butterley Engineering Steelworks in Derbyshire."
+       },
+       {
+        "samples": [
+         0,
+         33440
+        ],
+        "expected": [
+         "at",
+         "butterley",
+         "engineerings",
+         "steelworks",
+         "in"
+        ],
+        "first": "At Butterley Engineering Steelworks in",
+        "second": "at Butterley Engineering Steelworks and"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

@@ -40,7 +40,49 @@
      "second_heard": "May's 1992"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "meis"
+      ],
+      "heard": [
+       "mays"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "meis",
+         "nineteen",
+         "ninety"
+        ],
+        "first": "Mays 1992.",
+        "second": "May's 1990s"
+       },
+       {
+        "samples": [
+         0,
+         19360
+        ],
+        "expected": [
+         "meis",
+         "nineteen"
+        ],
+        "first": "Mays 19",
+        "second": "May's 19."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 26,
@@ -72,7 +114,49 @@
      "second_heard": "McIntosh and Goldner"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "goeldner"
+      ],
+      "heard": [
+       "goldner"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         23760
+        ],
+        "expected": [
+         "mcintosh",
+         "and",
+         "goeldner"
+        ],
+        "first": "McIntosh and Goldner.",
+        "second": "McIntosh and Goldner"
+       },
+       {
+        "samples": [
+         12400,
+         23760
+        ],
+        "expected": [
+         "and",
+         "goeldner"
+        ],
+        "first": "and Goldner.",
+        "second": "and goldner"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

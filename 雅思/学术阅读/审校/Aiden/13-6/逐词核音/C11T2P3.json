@@ -55,7 +55,49 @@
      "second_heard": "Pepperal and his collaborators"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "pepperell"
+      ],
+      "heard": [
+       "pepperel"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         14240
+        ],
+        "expected": [
+         "pepperell",
+         "and",
+         "his"
+        ],
+        "first": "Pepperyll and his cold.",
+        "second": "Pepperalin is cl-"
+       },
+       {
+        "samples": [
+         0,
+         11680
+        ],
+        "expected": [
+         "pepperell",
+         "and"
+        ],
+        "first": "Pepperyll and his",
+        "second": "Pepperalin is"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 25,
@@ -87,7 +129,51 @@
      "second_heard": "Alex Forsyth of the University"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "forsythe"
+      ],
+      "heard": [
+       "forsyth"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         25760
+        ],
+        "expected": [
+         "alex",
+         "forsythe",
+         "of",
+         "the"
+        ],
+        "first": "Alex Forsythe of the",
+        "second": "Alex Forsyth of the"
+       },
+       {
+        "samples": [
+         0,
+         23200
+        ],
+        "expected": [
+         "alex",
+         "forsythe",
+         "of"
+        ],
+        "first": "Alex Forsyth of",
+        "second": "Alex Forsyth of"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

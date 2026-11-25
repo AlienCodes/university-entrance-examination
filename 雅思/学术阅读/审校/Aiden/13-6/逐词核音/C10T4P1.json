@@ -40,7 +40,37 @@
      "second_heard": "says Dominic Koolakowski."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "dominik"
+      ],
+      "heard": [
+       "dominick"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         32720
+        ],
+        "expected": [
+         "says",
+         "dominik",
+         "kulakowski"
+        ],
+        "first": "says Dominick Kulakowski,",
+        "second": "says Dominic Koolakowski."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 25,
@@ -72,7 +102,38 @@
      "second_heard": "says Kim's Garris."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "kim",
+       "zagaris"
+      ],
+      "heard": [
+       "kimzagaris"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         24960
+        ],
+        "expected": [
+         "says",
+         "kim",
+         "zagaris"
+        ],
+        "first": "says Kimzagaris,",
+        "second": "Says Kim's Garris."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

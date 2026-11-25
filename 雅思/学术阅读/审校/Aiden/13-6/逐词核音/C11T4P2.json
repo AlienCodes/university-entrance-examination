@@ -40,7 +40,51 @@
      "second_heard": "in Ant introduction to film."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "an"
+      ],
+      "heard": [
+       "ant"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "in",
+         "an",
+         "introduction",
+         "to"
+        ],
+        "first": "In ant introduction to",
+        "second": "In an introduction to"
+       },
+       {
+        "samples": [
+         0,
+         20640
+        ],
+        "expected": [
+         "in",
+         "an",
+         "introduction"
+        ],
+        "first": "In end introduction,",
+        "second": "In end introduction"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 18,
@@ -72,7 +116,51 @@
      "second_heard": "character played by Catherine Hepburn."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "katherine"
+      ],
+      "heard": [
+       "catherine"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         77680,
+         100400
+        ],
+        "expected": [
+         "played",
+         "by",
+         "katherine",
+         "hepburn"
+        ],
+        "first": "Played by Catherine Hepburn.",
+        "second": "played by Catherine Hepburn."
+       },
+       {
+        "samples": [
+         81520,
+         100400
+        ],
+        "expected": [
+         "by",
+         "katherine",
+         "hepburn"
+        ],
+        "first": "It by Catherine Hepburn.",
+        "second": "by Catherine Hepburn."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

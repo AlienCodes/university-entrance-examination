@@ -40,7 +40,67 @@
      "second_heard": "in determining our personality's behavior and vulnerability."
     }
    ],
-   "passed": false
+   "passed": true,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "personalities"
+      ],
+      "heard": [
+       "personalitys"
+      ],
+      "confirmed": true,
+      "windows": [
+       {
+        "samples": [
+         73840,
+         116640
+        ],
+        "expected": [
+         "determining",
+         "our",
+         "personalities",
+         "behavior",
+         "and"
+        ],
+        "first": "determining our personality's behavior and",
+        "second": "determining our personality's behavior and"
+       },
+       {
+        "samples": [
+         73840,
+         112800
+        ],
+        "expected": [
+         "determining",
+         "our",
+         "personalities",
+         "behavior"
+        ],
+        "first": "Determining our personality's behavior and",
+        "second": "determining our personality's behavior,"
+       },
+       {
+        "samples": [
+         84080,
+         116640
+        ],
+        "expected": [
+         "our",
+         "personalities",
+         "behavior",
+         "and"
+        ],
+        "first": "our personalities, behavior, and",
+        "second": "our personalities, behavior and"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 33,
@@ -56,7 +116,25 @@
    "heard": "Read ads",
    "second_heard": "Read ads.",
    "focused_listening": [],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "reed",
+       "adds"
+      ],
+      "heard": [
+       "read",
+       "ads"
+      ],
+      "confirmed": false,
+      "windows": []
+     }
+    ]
+   }
   }
  ],
  "passed": false

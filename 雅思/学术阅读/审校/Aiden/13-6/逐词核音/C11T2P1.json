@@ -40,7 +40,51 @@
      "second_heard": "and mud carried by the Soland currents."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "solent"
+      ],
+      "heard": [
+       "soland"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         39280,
+         65840
+        ],
+        "expected": [
+         "carried",
+         "by",
+         "solent",
+         "currents"
+        ],
+        "first": "carried by solent currents.",
+        "second": "carried by Soland Currents."
+       },
+       {
+        "samples": [
+         44400,
+         65840
+        ],
+        "expected": [
+         "by",
+         "solent",
+         "currents"
+        ],
+        "first": "by solent currents.",
+        "second": "by Soland Currents."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 13,
@@ -72,7 +116,80 @@
      "second_heard": "fisherman in the Solon found that their"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "solent"
+      ],
+      "heard": [
+       "solon"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         11120,
+         32160
+        ],
+        "expected": [
+         "in",
+         "the",
+         "solent",
+         "found",
+         "that"
+        ],
+        "first": "and in the Solon found at",
+        "second": "and in the soul and found it"
+       },
+       {
+        "samples": [
+         11120,
+         29600
+        ],
+        "expected": [
+         "in",
+         "the",
+         "solent",
+         "found"
+        ],
+        "first": "and in the solan found",
+        "second": "in the Solon found"
+       },
+       {
+        "samples": [
+         12400,
+         32160
+        ],
+        "expected": [
+         "the",
+         "solent",
+         "found",
+         "that"
+        ],
+        "first": "In the Solon found at",
+        "second": "in the soul and found it."
+       },
+       {
+        "samples": [
+         12400,
+         29600
+        ],
+        "expected": [
+         "the",
+         "solent",
+         "found"
+        ],
+        "first": "In the solen found",
+        "second": "the soul and found"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 14,
@@ -104,7 +221,81 @@
      "second_heard": "and the fisherman approached him."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "fishermen"
+      ],
+      "heard": [
+       "fisherman"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         25920
+        ],
+        "expected": [
+         "and",
+         "the",
+         "fishermen",
+         "approached",
+         "him"
+        ],
+        "first": "and the fisherman approached him,",
+        "second": "and the fisherman approached him."
+       },
+       {
+        "samples": [
+         0,
+         20640
+        ],
+        "expected": [
+         "and",
+         "the",
+         "fishermen",
+         "approached"
+        ],
+        "first": "and the fisherman approached",
+        "second": "and the fishermen approached"
+       },
+       {
+        "samples": [
+         3440,
+         25920
+        ],
+        "expected": [
+         "the",
+         "fishermen",
+         "approached",
+         "him"
+        ],
+        "first": "The fisherman approached him,",
+        "second": "And the fisherman approached him."
+       },
+       {
+        "samples": [
+         3440,
+         20640
+        ],
+        "expected": [
+         "the",
+         "fishermen",
+         "approached"
+        ],
+        "first": "And the fisherman approached",
+        "second": "In the fishermen approached"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   }
  ],
  "passed": false

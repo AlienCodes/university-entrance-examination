@@ -40,7 +40,54 @@
      "second_heard": "or Rapunui as it is"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "rapu",
+       "nui"
+      ],
+      "heard": [
+       "rapunui"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         29600
+        ],
+        "expected": [
+         "or",
+         "rapu",
+         "nui",
+         "as",
+         "it"
+        ],
+        "first": "or rapunui as it is",
+        "second": "or Rapunui as an"
+       },
+       {
+        "samples": [
+         0,
+         28320
+        ],
+        "expected": [
+         "or",
+         "rapu",
+         "nui",
+         "as"
+        ],
+        "first": "or rapunui as a",
+        "second": "or Rapunui as a"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 38,
@@ -72,7 +119,80 @@
      "second_heard": "Moreover, Hunt and Leibo are convinced that the"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "lipo"
+      ],
+      "heard": [
+       "lippo"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         12400,
+         51360
+        ],
+        "expected": [
+         "hunt",
+         "and",
+         "lipo",
+         "are",
+         "convinced"
+        ],
+        "first": "Hunt and Lippo are convinced",
+        "second": "Hunt and Leopo are convinced."
+       },
+       {
+        "samples": [
+         12400,
+         41120
+        ],
+        "expected": [
+         "hunt",
+         "and",
+         "lipo",
+         "are"
+        ],
+        "first": "Hunt and Lipo are",
+        "second": "Hunt and Leopo, arc"
+       },
+       {
+        "samples": [
+         21360,
+         51360
+        ],
+        "expected": [
+         "and",
+         "lipo",
+         "are",
+         "convinced"
+        ],
+        "first": "and Lippo are convinced",
+        "second": "and Lipo are convinced."
+       },
+       {
+        "samples": [
+         21360,
+         41120
+        ],
+        "expected": [
+         "and",
+         "lipo",
+         "are"
+        ],
+        "first": "And Lipo are c",
+        "second": "and Lipo, our"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false
