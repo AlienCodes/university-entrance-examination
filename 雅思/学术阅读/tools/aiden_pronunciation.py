@@ -184,6 +184,97 @@ def verify_groundfish_list(audio, first, second):
                 second_identification=second)
 
 
+_SOCKEYE = {
+    'sockeye':'S AA K AY', 'rounded':'S AO K AY', 'sake-eye':'S EY K AY',
+    'saki':'S AA K IY', 'saki-eye':'S AA K IY AY', 'soakeye':'S OW K AY',
+    'sock':'S AA K', 'saw-eye':'S AO AY', 'soccer':'S AA K ER', 'sock-uh-eye':'S AA K AH AY',
+    'socket':'S AA K IH T', 'kay':'K AY', 'eye':'AY', 'sake':'S EY K',
+}
+_SALMON_OR = {
+    'or':'AO R', 'weak-or':'ER', 'or-ah':'AH R', 'and':'AE N D', 'an':'AH N',
+    'ann':'AE N', 'for':'F AO R', 'are':'AA R', 'nor':'N AO R', 'uh':'AH', 'oh':'OW',
+}
+_SALMON_RED = {
+    'red':'R EH D', 'wren':'R EH N', 'ret':'R EH T', 'read':'R IY D', 'ray':'R EY',
+    'rest':'R EH S T', 're':'R EH',
+}
+
+
+@lru_cache(maxsize=1)
+def sockeye_decoders():
+    connector = '(' + ' | '.join(_SALMON_OR) + ')'
+    ending = '(' + ' | '.join(_SALMON_RED) + ')'
+    return (
+        grammar_decoder(_SOCKEYE, {**_SALMON_OR, **_SALMON_RED}, '{term} ['+connector+'] ['+ending+']'),
+        grammar_decoder(_SOCKEYE, {}, '{term}'),
+        grammar_decoder(_SALMON_OR, {'red':'R EH D'}, '{term} [red]'),
+        grammar_decoder(_SALMON_RED, _SALMON_OR, '['+connector+'] {term}'),
+    )
+
+
+def sockeye_release(audio):
+    decoder = grammar_decoder({'release':_SOCKEYE['sock-uh-eye']}, {}, '{term}')
+    pcm = (np.clip(np.pad(audio,(2400,2400)),-1,1)*32767).astype('<i2').tobytes()
+    decoder.set_align_text('release')
+    try:
+        for align_phones in (False, True):
+            if align_phones:
+                decoder.set_alignment()
+            decoder.start_utt()
+            decoder.process_raw(pcm,False,True)
+            decoder.end_utt()
+    except RuntimeError as exc:
+        raise ValueError('Cannot align the release of k in sockeye') from exc
+    for word in decoder.get_alignment() or ():
+        if word.name == 'release':
+            return {phone.name:phone.duration*10 for phone in word}
+    raise ValueError('Cannot locate the release of k in sockeye')
+
+
+def verify_sockeye(audio, first, second):
+    from aiden_boundaries import interior_gaps, words
+    from aiden_ceylonese import timed_words
+
+    printed, split = ['sockeye','or','red'], ['sock','eye','or','red']
+    reads = [words(t) for t in (first, second)]
+    if printed not in reads or any(r not in (printed, split) for r in reads):
+        raise ValueError(f'The salmon name or the following words differ: {first!r} / {second!r}')
+    timed = timed_words(audio)
+    if [w for w,_ in timed] not in (printed, split):
+        raise ValueError('Unclear word boundaries in sockeye or red')
+    or_onset = timed[-2][1]
+    context, isolated_name, middle, ending = sockeye_decoders()
+    name = locate_sound(audio, context, _SOCKEYE)
+    alone = locate_sound(audio[:or_onset], isolated_name, _SOCKEYE)
+    # Cambridge US has /ˈsɑːk.aɪ/. Read the same waveform with and without
+    # the following words so the vowel of “or” cannot complete the fish name.
+    valid = {'sockeye','rounded'}
+    release = None
+    if alone[0] == 'sock-uh-eye' and name[0] in valid:
+        # A short release after /k/ is also measurable in the Cambridge US
+        # recording. A sustained third vowel changes the word's rhythm.
+        release = sockeye_release(audio[:or_onset])
+        if 0 < release['AH'] <= min(70,release['AY']/3):
+            valid = valid | {'sock-uh-eye'}
+    for key, score, start, stop in (name, alone):
+        if (key not in valid or score < .2 or not .25*RATE <= stop-start <= 1.1*RATE
+                or any(start < (a+b)/2 < stop for a,b in interior_gaps(audio))):
+            raise ValueError('The two syllables of sockeye are incomplete or interrupted')
+    offset = name[3]
+    link = locate_sound(audio[offset:], middle, _SALMON_OR)
+    red = locate_sound(audio[offset:], ending, _SALMON_RED)
+    if (link[0] not in {'or','weak-or','or-ah'} or red[0] != 'red' or min(link[1], red[1]) < .2
+            or not link[2] < link[3] <= red[2]+round(.04*RATE) < red[3]):
+        raise ValueError('The conjunction or the final d in sockeye or red is unclear')
+    def reading(observation, forms, start=0):
+        key, score, begin, end = observation
+        return dict(phones=forms[key], confidence=round(score,3), start=(start+begin)/RATE,
+                    end=(start+end)/RATE)
+    return dict(name=reading(name,_SOCKEYE), isolated_name=reading(alone,_SOCKEYE),
+                isolated_release_ms=release,
+                conjunction=reading(link,_SALMON_OR,offset), final_word=reading(red,_SALMON_RED,offset))
+
+
 _OR_FORMS = {'or': 'AO R', 'weak-or': 'ER', 'or-ah': 'AH R', 'for': 'F AO R',
              'weak-for': 'F ER', 'fa': 'F AH', 'off': 'AO F', 'uh': 'AH', 'of': 'AH V'}
 

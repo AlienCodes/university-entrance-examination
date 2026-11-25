@@ -120,11 +120,13 @@ class Aiden:
         if re.search(r"\bClemmons['’]s (?:interest|unlikely)\b",script,re.I):
             instruction += ' Say the possessive Clemmons’s /ˈklɛmənzɪz/ completely before the next word.'
         if 'toeless ancestors' in script.casefold():
-            instruction += ' Read toes as /toʊz/ and toeless as /ˈtoʊləs/, ending with an unvoiced s.'
+            instruction += (' Read re-evolved as /ˌriː.ɪˈvɑlvd/, with the long re- prefix and the past-tense d. '
+                            'Link it to toes /toʊz/. Finish toeless /ˈtoʊləs/ with an unvoiced s.')
         if script.casefold().startswith('the material of which the organism is formed'):
             instruction += ' Start with a clearly audible unstressed “the” /ðə/, linked naturally to “material”.'
-        if 'road hauliers and railways' in script.casefold():
-            instruction += ' Say hauliers with the vowel of haul, then lee-erz. Keep the final plural z audible.'
+        if re.search(r'\broad (?:hauliers|haul-ee-erz|hall-ee-erz) and railways\b',script,re.I):
+            instruction += (' Use the vowel of haul or hall in hauliers /ˈhɔːliərz/, followed by lee-erz. '
+                            'Keep the plural z and link it to and railways.')
         if script.casefold().startswith('gharib and graff set'):
             instruction += (' Say Gharib in two syllables, guh-REEB, with a voiced final b linked to and. '
                             'Graff rhymes with staff. Read the measurement as four point five meter.')
@@ -332,6 +334,10 @@ class Aiden:
             spellings=('researched', 'RESEARCHED', 'researched', 'RESEARCHED', 'researched')
         elif words(script)[:3] == ['the','team','theorizes']:
             spellings=('The team theorizes','The TEAM theorizes','THE TEAM theorizes','The team theorizes','The TEAM theorizes')
+        elif 'road hauliers and railways' in script.casefold():
+            spellings=('hauliers','HAUL-ee-erz','hauliers','hall-ee-erz','hauliers')
+        elif 're-evolved toes from toeless' in script.casefold():
+            spellings=('re-evolved','REE-evolved','re-evolved','ree-evolved','re-evolved')
         elif words(script) == ['sockeye','or','red']:
             spellings=('sockeye','sock-eye','SOCK-eye','sock eye','sockeye')
         elif words(script)[:3] == ['pump','through','alaska']:

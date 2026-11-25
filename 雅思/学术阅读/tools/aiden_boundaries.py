@@ -233,6 +233,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
     zappaterra = None
     sevres = None
     fish = None
+    sockeye = None
     opening = None
     ganzfeld = None
     stepwell_tiers = None
@@ -410,6 +411,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         from aiden_turkish import verify
         alternate = independent(audio)
         turkish_word = verify(audio,text,transcript,alternate)
+    elif expected == ['sockeye','or','red']:
+        from aiden_pronunciation import verify_sockeye
+        alternate = independent(audio)
+        sockeye = verify_sockeye(audio,transcript,alternate)
     elif salmon_phrase(expected):
         # Accepted cache records contain “pump” even where replay reports “pumped”.
         # Replay this take with both recognizers before reusing its original report.
@@ -597,6 +602,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['sevres_pronunciation']=sevres
     if fish is not None:
         result['groundfish_list']=fish
+    if sockeye is not None:
+        result['sockeye_reading']=sockeye
     if opening is not None:
         result['unpadded_opening_excerpt']=opening
     if ganzfeld is not None:
