@@ -259,6 +259,8 @@ class Aiden:
             instruction += ' Say "And Doctor" as two clearly distinguishable words. The scientist’s surname rhymes with rash.'
         if re.search(r'\b(?:Mac|Mc)farlane\b',script,re.I):
             instruction += ' In Macfarlane, end the surname with an n, as in a short unstressed “lun”. Do not add a d. Sound the z only for a written possessive.'
+        if re.search(r'Anthony\s+(?:Synott|Synnott|Sinnott|SIN[- ]uht)\s+at\b',script,re.I):
+            instruction += ' Read Anthony’s surname as SIN-uht, with the short i of sit and the stress on the first syllable. Complete its final t and link naturally to the separate word at.'
         if re.search(r'\b(?:auto[ -]?)?ganzfeld\b',script,re.I):
             from aiden_ganzfeld import HINT
             instruction += ' ' + HINT
@@ -451,6 +453,10 @@ class Aiden:
             spellings=aiden_heyerdahl.RENDERINGS
         elif cited_phrase(words(script)):
             spellings=('Macfarlane','McFarlane','Macfarlane','McFarlane','Macfarlane')
+        elif 'by anthony synott at' in script.casefold():
+            # Both Synnott and Sinnott are S IH1 N AH0 T in CMUdict.
+            # The original spelling remains in the lesson and all listening checks.
+            spellings=('Synott','Synnott','Sinnott','SIN-uht','Synnott')
         elif aiden_turkish.ORAL in words(script):
             spellings=aiden_turkish.RENDERINGS
         attempts = deque(maxlen=REVIEW_TAKES)
