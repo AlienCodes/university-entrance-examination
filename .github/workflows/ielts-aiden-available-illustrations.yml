@@ -24,6 +24,7 @@ jobs:
       lessons: ${{ steps.plan.outputs.lessons }}
       slots: ${{ steps.plan.outputs.slots }}
       revised: ${{ steps.plan.outputs.revised }}
+      recovery_index: ${{ steps.index.outputs.artifact }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,16 +54,34 @@ jobs:
           if not requested <= set(edition):
               raise ValueError('A requested lesson is outside books 13 to 6')
           revised = spec.get('reviewed_text', False)
-          if type(revised) is not bool:
+          read_repair = spec.get('recover_failed_reads', False)
+          if type(revised) is not bool or type(read_repair) is not bool or (revised and read_repair):
               raise ValueError('Invalid edition selector')
-          url = f"repos/{os.environ['GH_REPO']}/actions/runs/{int(spec['source_run'])}/jobs?per_page=100"
-          busy = subprocess.check_output(
-              ['gh','api','--paginate','--jq','.jobs[] | select(.status != "completed") | .name',url],
-              text=True).splitlines()
-          active = {m[1] for name in busy if (m := re.search(r'production \((C\d+T\d+P\d+)\)', name))}
+          source = f"repos/{os.environ['GH_REPO']}/actions/runs/{int(spec['source_run'])}"
+          route = source + '/jobs?per_page=100'
+          listing = subprocess.check_output(['gh','api','--paginate',route,'--jq',
+              '.jobs[] | {name,status,conclusion,failed:[.steps[]? | select(.conclusion=="failure") | .name]} | @json'],
+              text=True)
+          jobs = [json.loads(line) for line in listing.splitlines()]
+          busy = [job for job in jobs if job['status'] != 'completed']
+          active = {m[1] for job in busy if (m := re.search(r'production \((C\d+T\d+P\d+)\)', job['name']))}
           slots = max(0, min(12, 19 - len(busy)))
-          available = [p for p in edition if slots and p in requested - active]
-          if revised:
+          available = [p for p in edition if slots and p in requested - active and p != edition[0]]
+          if read_repair:
+              info = json.loads(subprocess.check_output(['gh','api',source,'--jq','{head_branch,path}']))
+              if info != dict(head_branch='codex/ielts-academic-reading', path='.github/workflows/ielts-aiden-production.yml'):
+                  raise ValueError('Unexpected source for previously failed recording reads')
+              inflight = json.loads(Path('.github/ielts-aiden-batch.json').read_text()).get('repair_lessons', [])
+              # This workflow holds the next full edition at its pilot. The queued individual
+              # repairs can start without that pilot, so reserve their slots as well.
+              slots = max(0, min(12, 19 - len(busy) - len(inflight)))
+              failed_steps = {'恢复同篇已核验的完整录音', '核对本篇的原稿版本和现成视频'}
+              failed_reads = {m[1] for job in jobs if job['conclusion'] == 'failure'
+                              and failed_steps.intersection(job['failed'])
+                              and (m := re.search(r'production \((C\d+T\d+P\d+)\)', job['name']))}
+              lessons = [p for p in available if slots and p in failed_reads and p not in inflight
+                         and not cached(p, '13-6', include_illustration=True)]
+          elif revised:
               root = Path('雅思/学术阅读')
               measured = json.loads((root / '审校/Aiden/13-6/原书与版式复核.json').read_text())
               assets = inventory('ielts-academic-aiden-cache-13-6')
@@ -92,8 +111,22 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               print('lessons=' + json.dumps(lessons, separators=(',', ':')), file=out)
               print('slots=' + str(max(1, slots)), file=out)
-              print('revised=' + str(revised).lower(), file=out)
-          print(f'{len(lessons)} lessons with verified recordings, {slots} worker slots available')
+              print('revised=' + str(revised or read_repair).lower(), file=out)
+          print(f'{len(lessons)} lessons selected, {slots} worker slots available')
+
+      - name: 读取本轮各篇共用的历史录音清单
+        id: index
+        if: steps.plan.outputs.revised == 'true' && steps.plan.outputs.lessons != '[]'
+        run: |
+          python '雅思/学术阅读/tools/aiden_recovery_index.py' "$RUNNER_TEMP/recordings.json"
+          echo "artifact=aiden-recovery-index-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        if: steps.index.outputs.artifact != ''
+        with:
+          name: ${{ steps.index.outputs.artifact }}
+          path: ${{ runner.temp }}/recordings.json
+          if-no-files-found: error
+          retention-days: 14
 
   illustrate:
     needs: select
@@ -137,3 +170,4 @@ jobs:
       lesson: ${{ matrix.lesson }}
       aiden_batch: '13-6'
       current_tools: true
+      recovery_index: ${{ needs.select.outputs.recovery_index }}
