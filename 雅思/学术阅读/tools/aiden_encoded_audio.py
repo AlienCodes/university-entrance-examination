@@ -54,6 +54,25 @@ def compare_waveforms(source, encoded):
     return result
 
 
+def recheck_encoded_sockeye(encoded, certified):
+    from aiden_pronunciation import verify_sockeye
+
+    if interior_gaps(encoded):
+        raise ValueError('A pause interrupts the short phrase sockeye, or red')
+    readings = []
+    for padding_ms in (50, 100):
+        # Give both recognizers silence outside the clip. The MP4 samples are untouched.
+        window = np.pad(encoded, RATE * padding_ms // 1000)
+        first, second = isolated(window), independent(window)
+        acoustic = verify_sockeye(window, first, second)
+        for part in ('name', 'isolated_name', 'conjunction', 'final_word'):
+            if acoustic[part]['phones'] != certified['sockeye_reading'][part]['phones']:
+                raise ValueError('The encoded salmon name or its following words differ from the certified MP3')
+        readings.append(dict(padding_ms=padding_ms, heard=first, second_heard=second, acoustic=acoustic))
+    return dict(text=certified['text'], heard=readings[0]['heard'], second_heard=readings[0]['second_heard'],
+                checked_internal_gaps=[], sockeye_listening_windows=readings)
+
+
 def inspect_phrase(source, encoded, certified, raw, multi):
     # Always compare the actual signals before using a certified spelling.
     comparison=compare_waveforms(source,encoded)
@@ -61,6 +80,10 @@ def inspect_phrase(source, encoded, certified, raw, multi):
     try:
         observed=assess(encoded,certified['text'])
     except ValueError as error:
+        if (str(error).startswith('The salmon name or the following words differ:')
+                and words(certified['text']) == ['sockeye','or','red'] and certified.get('sockeye_reading')):
+            observed = recheck_encoded_sockeye(encoded, certified)
+            return dict(**observed, source_lag_ms=lag, mp3_waveform=comparison)
         if not str(error).startswith('Phrase endpoints or wording differ:'):
             raise
         printed=words(certified['text'])
