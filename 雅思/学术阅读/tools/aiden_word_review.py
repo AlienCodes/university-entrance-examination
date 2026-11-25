@@ -155,6 +155,7 @@ MEASURED_NAMES = {
     'dollos_reading': dict.fromkeys(('dalos','dallos','dollows','dallows'), 'dollos'),
     'gharib_reading': {'garib':'gharib'},
     'existent_reading': {'existing':'existent'},
+    'hauliers_reading': dict.fromkeys(('halliers','halleers','holliers','haulers'), 'hauliers'),
     'toeless_reading': dict.fromkeys(('tolless','tollis','toless','toalous','tolus'), 'toeless'),
     'autoganzfeld_reading': {prefix+suffix:'autoganzfeld' for prefix in ('otto','auto','otto ','auto ')
                              for suffix in ('ganzfeld','gansfeld','gensfeld')},

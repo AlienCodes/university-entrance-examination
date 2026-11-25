@@ -1,7 +1,7 @@
 """Verify the syllables of disputed names and terms in their printed context."""
 from functools import lru_cache
 
-from aiden_boundaries import RATE, interior_gaps, words
+from aiden_boundaries import RATE, independent, interior_gaps, isolated, words
 from aiden_ceylonese import timed_words
 from aiden_pronunciation import grammar_decoder, locate_sound
 from aiden_surnames import forms
@@ -47,6 +47,7 @@ GHARIB = {
 }
 EXISTENT = forms(('IH G Z','EH G Z','IH K S','EH K S','G Z'),
                  ('IH S T','IH S','EH S T'), ('AH N T','N T','AH N','IH N','IH NG','AH N S',''))
+HAULIERS = forms(('HH',''), ('AO','AA','AE','AH'), ('L IY ER','L Y ER','L IY AH','L IH ER','L ER','L Y','L IY'), ('Z','S',''))
 TOELESS = forms(('T','D',''), ('OW','AO','UW','AA'),
                 ('L AH S','L IH S','L IH Z','L S','L IH','L AY S','L AH','L IY S','D L AH S',''))
 AUTOGANZFELD = forms(('AO T OW','AA T OW','AO T AH','AO T','OW T OW','AE T OW',''),
@@ -68,6 +69,10 @@ CONTEXT = {
                  '[the | thee] {term} [organisms]',
                  {key for key,sound in EXISTENT.items() if sound in
                   {'IH G Z IH S T AH N T','EH G Z IH S T AH N T','IH G Z IH S T N T','EH G Z IH S T N T'}}, .30),
+    'hauliers': (HAULIERS, {'road':'R OW D','and':'AE N D','weakand':'AH N D'},
+                 '[road] {term} [and | weakand]',
+                 {key for key, sound in HAULIERS.items() if sound.startswith(('HH AA L','HH AO L'))
+                  and sound.endswith(('L IY ER Z','L Y ER Z','L IY AH Z'))}, .28),
     'toeless': (TOELESS, {'from':'F R AH M','ancestors':'AE N S EH S T ER Z'},
                 '[from] {term} [ancestors]',
                 {key for key,sound in TOELESS.items() if sound in {'T OW L AH S','T OW L IH S'}}, .24),
@@ -88,11 +93,14 @@ def target(tokens):
         return 'clemmonss'
     if tokens[:2] == ['the','existent']:
         return 'existent'
+    if tokens[-4:] == ['road','hauliers','and','railways']:
+        return 'hauliers'
     if 'toeless' in tokens and tokens[:3] == ['the','toed','species']:
         return 'toeless'
     if 'autoganzfeld' in tokens:
         return 'autoganzfeld'
-    if tokens[:4] == ['gharib','and','graff','set']:
+    if (tokens[:4] == ['gharib','and','graff','set'] or tokens[-2:] in
+            (['gharib','says'], ['says','gharib'], ['gharib','realised'])):
         return 'gharib'
     if any(tokens[i:i+2] == ['dollos','law'] for i in range(len(tokens)-1)):
         return 'dollos'
@@ -114,7 +122,7 @@ def compound_words(tokens):
     return [word for word,_ in join_compound((token,0) for token in tokens)]
 
 
-def pause_outside_name(expected, before, after, start, end, result):
+def pause_outside_name(expected, before, after, start, end, result, audio=None):
     key, proof = result
     index = expected.index(proof['name'])
     if proof['name'] == 'autoganzfeld':
@@ -126,14 +134,31 @@ def pause_outside_name(expected, before, after, start, end, result):
     if not same_words(expected, joined):
         return False
     observations = proof['readings']
-    if len(before) <= index:
-        return end <= min(round(row['start']*RATE) for row in observations)
-    return start >= max(round(row['end']*RATE) for row in observations)
+    on_right = len(before) <= index
+    if on_right and end <= min(round(row['start']*RATE) for row in observations):
+        return True
+    if not on_right and start >= max(round(row['end']*RATE) for row in observations):
+        return True
+    if proof['name'] != 'gharib' or audio is None or len(before) not in (index,index+1):
+        return False
+    # Low-energy bins can include a soft stop onset. Keep its end of the gap,
+    # as complete_words_at_gap does, without crossing the middle of the gap.
+    margin = min((end-start)//2, round(.08*RATE))
+    side, printed = (audio[end-margin:], expected[index:]) if on_right else (audio[:start+margin],expected[:index+1])
+    try:
+        verify(side,'gharib',printed,isolated(side),independent(side))
+    except ValueError:
+        return False
+    return True
 
 
-@lru_cache(maxsize=8)
-def decoder(name, context):
+@lru_cache(maxsize=24)
+def decoder(name, context, attribution=False):
     forms, neighbours, rule, _, _ = CONTEXT[name]
+    if name == 'gharib' and context and attribution:
+        neighbours = {'says':'S EH Z','stunned':'S T AH N D','force':'F AO R S','matter':'M AE T ER',
+                      'method':'M EH TH AH D','realised':'R IY AH L AY Z D'}
+        rule = '[stunned | force | matter | method | says] {term} [says | realised]'
     return grammar_decoder(forms, neighbours if context else {}, rule if context else '{term}')
 
 
@@ -154,13 +179,14 @@ def verify(audio, name, expected, first, second):
             raise ValueError(f'The name or its surrounding words differ: {first!r} / {second!r}')
     start = max(0,timed[index][1] - round(.04*RATE))
     stop = timed[index+1][1] if index+1 < len(timed) else len(audio)
+    gharib_intro = name == 'gharib' and expected[:4] == ['gharib','and','graff','set']
     if name == 'pithecanthropus':
         windows = [(0,timed[2][1] + round(.14*RATE),True),(0,stop,False)]
     elif name == 'isabela':
         windows = [(max(0,start-round(.04*RATE)),stop,False),(start,stop+round(.05*RATE),False)]
-    elif name == 'gharib':
+    elif gharib_intro:
         windows = [(0,timed[3][1]+round(.05*RATE),True),(0,stop+round(.01*RATE),False)]
-    elif name in ('autoganzfeld','existent','toeless'):
+    elif name in ('autoganzfeld','existent','toeless','hauliers'):
         lead = max(0,timed[index-1][1]-round(.04*RATE)) if index else 0
         tail = timed[index+2][1] if index+2 < len(timed) else len(audio)
         windows = [(lead,tail,True),(max(0,start-round(.02*RATE)),min(len(audio),stop+round(.02*RATE)),False)]
@@ -172,7 +198,8 @@ def verify(audio, name, expected, first, second):
     gaps = interior_gaps(audio)
     proof = []
     for begin,end,with_context in windows:
-        label, score, left, right = locate_sound(audio[begin:end], decoder(name,with_context), forms)
+        model = decoder(name,with_context,name == 'gharib' and not gharib_intro)
+        label, score, left, right = locate_sound(audio[begin:end], model, forms)
         if (label not in permitted or score < .16 or right-left < min_seconds*RATE
                 or any(begin+left < (a+b)/2 < begin+right for a,b in gaps)):
             raise ValueError(f'Incomplete or different pronunciation of {name}: {forms[label]}')

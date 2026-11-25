@@ -86,6 +86,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
         'ganzfeld': ('aiden_ganzfeld.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'autoganzfeld': ('aiden_printed_names.py', 'aiden_surnames.py'),
         'existent organisms': ('aiden_printed_names.py', 'aiden_surnames.py'),
+        'road hauliers': ('aiden_printed_names.py', 'aiden_surnames.py'),
         'toeless ancestors': ('aiden_printed_names.py', 'aiden_surnames.py'),
         'ynde': ('aiden_india.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),
         'export sectors': ('aiden_sectors.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),

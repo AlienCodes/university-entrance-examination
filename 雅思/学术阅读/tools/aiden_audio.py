@@ -121,11 +121,15 @@ class Aiden:
             instruction += ' Say the possessive Clemmons’s /ˈklɛmənzɪz/ completely before the next word.'
         if 'toeless ancestors' in script.casefold():
             instruction += ' Read toes as /toʊz/ and toeless as /ˈtoʊləs/, ending with an unvoiced s.'
+        if script.casefold().startswith('the material of which the organism is formed'):
+            instruction += ' Start with a clearly audible unstressed “the” /ðə/, linked naturally to “material”.'
         if 'road hauliers and railways' in script.casefold():
             instruction += ' Say hauliers with the vowel of haul, then lee-erz. Keep the final plural z audible.'
         if script.casefold().startswith('gharib and graff set'):
             instruction += (' Say Gharib in two syllables, guh-REEB, with a voiced final b linked to and. '
                             'Graff rhymes with staff. Read the measurement as four point five meter.')
+        elif 'gharib' in script.casefold():
+            instruction += ' Say Gharib in two syllables, guh-REEB, and finish the voiced b before moving on.'
         if script.casefold().startswith('the existent organisms'):
             instruction += ' Pronounce existent as /ɪɡˈzɪstənt/, with a clear final nt linked to organisms.'
         if script.casefold().startswith('who was more than anyone else responsible'):

@@ -16,7 +16,8 @@ from textnorm import decade, normalize
 from aiden_profile import PAUSE_POLICY as POLICY
 from aiden_word_review import check_known_span, hear_differences, known_span, measured_words, same_words as matches
 RATE = 16000
-CHECKED_INFLECTIONS = ('the existent organisms', 'who was more than anyone else responsible')
+CHECKED_INFLECTIONS = ('the existent organisms', 'who was more than anyone else responsible',
+                       'the material of which the organism is formed')
 # The institute spells its initialism I-INCE. Require both I's in the spoken expansion.
 NOISE_INITIALS = re.compile(r'\b(?:I|eye)[\s.,-]+(?:I|eye)[\s.,-]+(?:N|en)[\s.,-]+'
                             r'(?:C|see|sea)[\s.,-]+(?:E|ee)\b', re.I)
@@ -467,7 +468,7 @@ def assess(audio, text, transcript=None, *, recheck=False):
             left_words = words(before)
             right_words = words(after)
             if printed_name:
-                return aiden_printed_names.pause_outside_name(expected,left_words,right_words,start,end,printed_name)
+                return aiden_printed_names.pause_outside_name(expected,left_words,right_words,start,end,printed_name,audio)
             if ganzfeld:
                 return pause_outside_name(expected,left_words,right_words,start,end,ganzfeld)
             if kite_names:

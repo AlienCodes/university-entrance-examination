@@ -11,11 +11,11 @@ import zipfile
 
 from aiden_profile import IDENTITY, PAUSE_POLICY, rejected_sources
 from lesson import PID, PROJECT
-from release_assets import fetch, inventory
+from release_assets import fetch, inventory, read_github
 
 
 def gh_json(endpoint):
-    return json.loads(subprocess.check_output(["gh", "api", endpoint]))
+    return json.loads(read_github(["gh", "api", endpoint]))
 
 
 REVIEW_TAKES = 5
@@ -208,6 +208,32 @@ class PeriodicSnapshot:
             print(f"{PID}: snapshot pending after {type(exc).__name__}; retrying during this recording", flush=True)
 
 
+def download_historical_artifact(base, asset, path):
+    endpoint = f"{base}/actions/artifacts/{asset['id']}/zip"
+    for attempt, delay in enumerate((0, 2, 8)):
+        if delay:
+            time.sleep(delay)
+        # A new redirect avoids reusing an expired signed storage URL.
+        url = endpoint if not attempt else f"{endpoint}?retry={time.time_ns()}"
+        with path.open("wb") as output:
+            result = subprocess.run(["gh", "api", url], stdout=output, stderr=subprocess.PIPE)
+        if result.returncode == 0:
+            with path.open("rb") as source:
+                digest = hashlib.file_digest(source, "sha256").hexdigest()
+            if path.stat().st_size != asset["size_in_bytes"] or "sha256:" + digest != asset["digest"]:
+                raise ValueError(f"Incomplete or altered recording archive {asset['id']}")
+            return True
+        reason = result.stderr.decode(errors="replace").lower()
+        if "http 404" in reason or "http 410" in reason:
+            break
+        if not any(error in reason for error in ("http 500", "http 502", "http 503", "http 504",
+                                                 "timed out", "timeout", "unexpected eof", "connection reset",
+                                                 "tls handshake", "blob.core.windows.net")):
+            raise RuntimeError(f"Cannot retrieve job artifact {asset['id']} (gh exit {result.returncode})")
+    print(f"{PID}: historical artifact {asset['id']} unavailable; using the other saved recordings", flush=True)
+    return False
+
+
 def recover():
     config = json.loads(Path(".github/ielts-aiden-batch.json").read_text())
     runs = config.get("recover_runs", [])
@@ -233,10 +259,10 @@ def recover():
         if (run["head_branch"] != "codex/ielts-academic-reading"
                 or run["path"] != ".github/workflows/ielts-aiden-production.yml"):
             raise ValueError("The recordings are from a different production workflow")
-        run_artifacts = subprocess.check_output([
+        run_artifacts = read_github([
             "gh", "api", "--paginate", "--jq", ".artifacts[] | @json",
             f"{base}/actions/runs/{run_id}/artifacts?per_page=100"
-        ], text=True)
+        ])
         prefix = "aiden-" + PID + "-checks-"
         artifacts = [json.loads(line) for line in run_artifacts.splitlines() if line]
         for asset in sorted(artifacts, key=lambda x: x["id"], reverse=True):
@@ -245,13 +271,8 @@ def recover():
                 continue
             with tempfile.TemporaryDirectory(dir=work) as temp:
                 path = Path(temp) / "recordings.zip"
-                with path.open("wb") as out:
-                    subprocess.run(["gh","api",f"{base}/actions/artifacts/{asset['id']}/zip"],
-                                   stdout=out,check=True)
-                with path.open("rb") as fetched:
-                    digest = hashlib.file_digest(fetched, "sha256").hexdigest()
-                if path.stat().st_size != asset["size_in_bytes"] or "sha256:" + digest != asset["digest"]:
-                    raise ValueError("Incomplete or altered recording archive")
+                if not download_historical_artifact(base, asset, path):
+                    continue
                 count = restore_archive(path, work / "aiden-takes")
             print(f"{PID} recovered {count} complete recordings from job artifact {asset['id']}", flush=True)
 
