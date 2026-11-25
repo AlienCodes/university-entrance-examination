@@ -2,140 +2,72 @@
  "lesson": "C11T4P1",
  "policy": "ordered-spoken-words-v1",
  "rules_sha256": "5dd72c1212582fa86f06c9fead60331bdc5e82e9feb4dd35ed12abe81da4c741",
- "source_mp3_sha256": "07b468c18abd21b7906f33d291dc985c6c8887a4f089712bfeabf44020597134",
- "core_sha256": "e63e803da34739c9c44a229b923fa43973112b93b20831e17a581de30c7dea59",
- "video_sha256": "371beb2709b2984e9cc942706ef6c351e9394fff42a3d296517ff3d39d83b278",
- "original_aac_packets": 17030,
+ "source_mp3_sha256": "2c029a2e95a98978a1fac5afee2d198bf633651f1275d4b23c85778e6a5379a4",
+ "core_sha256": "ef04179e0d2b112a6358f8fdebcc37e9a841a4a07fb6268659ac6af7a7fafa21",
+ "video_sha256": "b8e7e45afddf1fb7d5185e4a5a606d46f71c7bc34ee721f81076ff5fc93f1a3b",
+ "original_aac_packets": 17031,
  "illustrated_intro_frames": 30,
  "phrases": 79,
  "spoken_words": 867,
  "clips": [
   {
-   "sentence": 6,
-   "phrase": 4,
-   "text": "have been crucial to understanding the interplay of nature and nurture in determining our personalities, behavior, and vulnerability to disease.",
-   "source_take_sha256": "64de5dce7cdc52db0b979aaeb40e81c9d29513b9658c516988918140e7a0dd04",
-   "start": 74.325,
-   "end": 83.57,
-   "source_lag_ms": 20,
-   "final_start_sample": 1205200,
-   "final_end_sample": 1353120,
-   "decoded_sha256": "5dcf5dcfeed17e83e219114957b48d28577f98d591da44d8ca19f379be52ab56",
-   "heard": "have been crucial to understanding the interplay of nature and nurture in determining our personality's behavior and vulnerability to disease.",
-   "second_heard": "have been crucial to understanding the interplay of nature and nurture in determining our personality's behavior and vulnerability to disease.",
-   "focused_listening": [
-    {
-     "printed_words": [
-      14,
-      15
-     ],
-     "checked_words": [
-      11,
-      18
-     ],
-     "expected_window": "in determining our personalities behavior and vulnerability",
-     "start_sample": 69840,
-     "end_sample": 133280,
-     "heard": "In determining our personalities, behavior and vulnerability,",
-     "second_heard": "in determining our personality's behavior and vulnerability."
-    }
-   ],
-   "passed": true,
-   "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "personalities"
-      ],
-      "heard": [
-       "personalitys"
-      ],
-      "confirmed": true,
-      "windows": [
-       {
-        "samples": [
-         73840,
-         116640
-        ],
-        "expected": [
-         "determining",
-         "our",
-         "personalities",
-         "behavior",
-         "and"
-        ],
-        "first": "determining our personality's behavior and",
-        "second": "determining our personality's behavior and"
-       },
-       {
-        "samples": [
-         73840,
-         112800
-        ],
-        "expected": [
-         "determining",
-         "our",
-         "personalities",
-         "behavior"
-        ],
-        "first": "Determining our personality's behavior and",
-        "second": "determining our personality's behavior,"
-       },
-       {
-        "samples": [
-         84080,
-         116640
-        ],
-        "expected": [
-         "our",
-         "personalities",
-         "behavior",
-         "and"
-        ],
-        "first": "our personalities, behavior, and",
-        "second": "our personalities, behavior and"
-       }
-      ]
-     }
-    ]
-   }
-  },
-  {
    "sentence": 33,
    "phrase": 2,
    "text": "Reed adds,",
-   "source_take_sha256": "80c90cfc65ed48da8a897cdf23589f64b02b082b3843b973d2478f161114a04f",
-   "start": 331.07,
-   "end": 332.05,
-   "source_lag_ms": 30,
-   "final_start_sample": 5313120,
-   "final_end_sample": 5328800,
-   "decoded_sha256": "752f3aa15069f6870dff445b55f17354eb8184227cdeb8ad81b2812562ddfd07",
+   "source_take_sha256": "a19a9753d63b939b72c2b7303a6247d45a366fcab2ec0e54eb8866e7894ee5d9",
+   "start": 331.23,
+   "end": 332.07,
+   "source_lag_ms": 20,
+   "final_start_sample": 5315680,
+   "final_end_sample": 5329120,
+   "decoded_sha256": "a76ffeabeb6861c292649f9a27ae50fb7e99e946c881b89e77508c55118981b6",
    "heard": "Read ads",
    "second_heard": "Read ads.",
    "focused_listening": [],
-   "passed": false,
+   "passed": true,
    "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 30,
-    "differences": [
-     {
-      "printed": [
-       "reed",
-       "adds"
-      ],
-      "heard": [
-       "read",
-       "ads"
-      ],
-      "confirmed": false,
-      "windows": []
-     }
-    ]
+    "version": "reed-adds-pronunciation-v1",
+    "source_lag_ms": 20,
+    "pronunciation": {
+     "reed": [
+      {
+       "phones": "R IY D",
+       "confidence": 0.537,
+       "samples": [
+        1440,
+        6400
+       ]
+      },
+      {
+       "phones": "R IY D",
+       "confidence": 0.628,
+       "samples": [
+        1680,
+        6480
+       ]
+      }
+     ],
+     "adds": [
+      {
+       "phones": "AE D Z",
+       "confidence": 0.504,
+       "samples": [
+        6240,
+        12800
+       ]
+      },
+      {
+       "phones": "AE D Z",
+       "confidence": 0.483,
+       "samples": [
+        6320,
+        12720
+       ]
+      }
+     ]
+    }
    }
   }
  ],
- "passed": false
+ "passed": true
 }
