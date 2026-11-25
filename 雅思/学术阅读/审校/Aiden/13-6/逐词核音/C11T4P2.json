@@ -2,101 +2,25 @@
  "lesson": "C11T4P2",
  "policy": "ordered-spoken-words-v1",
  "rules_sha256": "5dd72c1212582fa86f06c9fead60331bdc5e82e9feb4dd35ed12abe81da4c741",
- "source_mp3_sha256": "b0cce3e099ef38425ef4d3d079b8add695953bb443899da16cfdfa0a46edaa73",
- "core_sha256": "b51edd92970dde64acc029d29149be887ff098850303ae82e6c9565328ac5c3a",
- "video_sha256": "f2da7ae5770e20931149d52cdfa04827e7dd98c7764244ce8109de0b0249dae4",
- "original_aac_packets": 16656,
+ "source_mp3_sha256": "ec406ad56022776a3f599dc7f33c7aaf7fb225792dbff749376c7e762e13939b",
+ "core_sha256": "de13acf4f2d0aa9b2c88335908e78b9ef3874d3fa350a7c975b362bee414ee84",
+ "video_sha256": "c06c3c05ace4b20694c444d925627ca65c5429fe309f62eac4ffb6975f6669cb",
+ "original_aac_packets": 16664,
  "illustrated_intro_frames": 30,
  "phrases": 79,
  "spoken_words": 848,
  "clips": [
   {
-   "sentence": 16,
-   "phrase": 2,
-   "text": "in An Introduction to Film,",
-   "source_take_sha256": "f9646ed2d5eef3ef6777b1d5ffc8c380b2caf64464dd1dd6a800b26d0ec5160e",
-   "start": 125.42,
-   "end": 127.455,
-   "source_lag_ms": 20,
-   "final_start_sample": 2022720,
-   "final_end_sample": 2055280,
-   "decoded_sha256": "c58d34c0a95c01eed4dff9106d05b46c2e7ade70626fc88dbe4a35b2204e651d",
-   "heard": "In ant introduction to film",
-   "second_heard": "in Ant introduction to film.",
-   "focused_listening": [
-    {
-     "printed_words": [
-      1,
-      2
-     ],
-     "checked_words": [
-      0,
-      5
-     ],
-     "expected_window": "in an introduction to film",
-     "start_sample": 0,
-     "end_sample": 32560,
-     "heard": "In ant introduction to film",
-     "second_heard": "in Ant introduction to film."
-    }
-   ],
-   "passed": false,
-   "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "an"
-      ],
-      "heard": [
-       "ant"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         0,
-         24480
-        ],
-        "expected": [
-         "in",
-         "an",
-         "introduction",
-         "to"
-        ],
-        "first": "In ant introduction to",
-        "second": "In an introduction to"
-       },
-       {
-        "samples": [
-         0,
-         20640
-        ],
-        "expected": [
-         "in",
-         "an",
-         "introduction"
-        ],
-        "first": "In end introduction,",
-        "second": "In end introduction"
-       }
-      ]
-     }
-    ]
-   }
-  },
-  {
    "sentence": 18,
    "phrase": 1,
    "text": "This use of dialogue underscores not only the dizzy quality of the character played by Katherine Hepburn,",
-   "source_take_sha256": "d2b35c26daacf866ff88bfc31fa17425923e723cde772e8780f3a705c8d2fa7d",
-   "start": 145.32,
-   "end": 151.595,
+   "source_take_sha256": "327202ff9be16b65a406619ad20ec29808b4291bef570c73b18015bb6ab90fb0",
+   "start": 144.915,
+   "end": 151.265,
    "source_lag_ms": 20,
-   "final_start_sample": 2341120,
-   "final_end_sample": 2441520,
-   "decoded_sha256": "8d0e9cfd8c7c8c5053757eebc07b8aa4eaeb2995fec20529f01cb93544e773a2",
+   "final_start_sample": 2334640,
+   "final_end_sample": 2436240,
+   "decoded_sha256": "5aad7ccebf74a3c0825a9e25a1b8c872ea8037b5723ebd2be18d2038ba6490ce",
    "heard": "This use of dialogue underscores not only the dizzy quality of the character played by Catherine Hepburn,",
    "second_heard": "This use of dialogue underscores not only the dizzy quality of the character played by Catherine Hepburn.",
    "focused_listening": [
@@ -110,58 +34,43 @@
       17
      ],
      "expected_window": "character played by katherine hepburn",
-     "start_sample": 68560,
-     "end_sample": 100400,
-     "heard": "a character played by Catherine Hepurn,",
+     "start_sample": 67280,
+     "end_sample": 101600,
+     "heard": "a character played by Catherine Hepburn,",
      "second_heard": "character played by Catherine Hepburn."
     }
    ],
-   "passed": false,
+   "passed": true,
    "window_review": {
-    "version": "two-reader-context-v1",
+    "version": "hepburn-pronunciation-v1",
     "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "katherine"
-      ],
-      "heard": [
-       "catherine"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         77680,
-         100400
-        ],
-        "expected": [
-         "played",
-         "by",
-         "katherine",
-         "hepburn"
-        ],
-        "first": "Played by Catherine Hepburn.",
-        "second": "played by Catherine Hepburn."
-       },
-       {
-        "samples": [
-         81520,
-         100400
-        ],
-        "expected": [
-         "by",
-         "katherine",
-         "hepburn"
-        ],
-        "first": "It by Catherine Hepburn.",
-        "second": "by Catherine Hepburn."
-       }
-      ]
-     }
-    ]
+    "pronunciation": {
+     "term": "katherine",
+     "readings": [
+      "This use of dialogue underscores not only the dizzy quality of the character played by Catherine Hepburn,",
+      "This use of dialogue underscores not only the dizzy quality of the character played by Catherine Hepburn."
+     ],
+     "measurements": [
+      {
+       "phones": "K AE TH R IH N",
+       "confidence": 0.344,
+       "samples": [
+        84720,
+        92400
+       ]
+      },
+      {
+       "phones": "K AE TH R IH N",
+       "confidence": 0.311,
+       "samples": [
+        84640,
+        92160
+       ]
+      }
+     ]
+    }
    }
   }
  ],
- "passed": false
+ "passed": true
 }
