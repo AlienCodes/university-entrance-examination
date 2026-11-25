@@ -12,9 +12,15 @@ from aiden_word_review import check_known_span, dictionary, known_span, same_wor
 VERSION = 'two-reader-context-v1'
 
 
+def review_version(text):
+    expected = tuple(words(text))
+    if expected == ('at','butterley','engineerings','steelworks','in','derbyshire'):
+        return 'butterley-possessive-v1'
+    return 'kandy-nannie-v1' if expected in aiden_kandy_nannie.PHRASES else VERSION
+
+
 def needs_review(clip):
-    version = 'kandy-nannie-v1' if tuple(words(clip['text'])) in aiden_kandy_nannie.PHRASES else VERSION
-    return not clip['passed'] and clip.get('window_review', {}).get('version') != version
+    return not clip['passed'] and clip.get('window_review', {}).get('version') != review_version(clip['text'])
 
 
 def contains_words(tokens, phrase):
@@ -75,12 +81,16 @@ def recheck(clip, audio, raw):
     lag = verify_reference(audio, raw['reference'])
     from aiden_voyages import TARO, VOYAGES, verify
     expected = words(clip['text'])
-    name = tuple(expected) in aiden_kandy_nannie.PHRASES
-    if name or expected in (TARO, VOYAGES):
-        version = 'kandy-nannie-v1' if name else VERSION
-        check = aiden_kandy_nannie.verify if name else verify
+    version = review_version(clip['text'])
+    if version != VERSION or expected in (TARO, VOYAGES):
         try:
-            measured = check(audio, expected)
+            if version == 'butterley-possessive-v1':
+                from aiden_boundaries import assess
+                measured = assess(audio, clip['text'], recheck=True)['engineering_possessive']
+            elif version == 'kandy-nannie-v1':
+                measured = aiden_kandy_nannie.verify(audio, expected)
+            else:
+                measured = verify(audio, expected)
         except ValueError as error:
             clip['window_review'] = dict(version=version, source_lag_ms=lag, pronunciation_issue=str(error))
             clip['passed'] = False

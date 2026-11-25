@@ -40,88 +40,18 @@
      "second_heard": "at Butterley Engineering Steelworks in Derbyshire."
     }
    ],
-   "passed": false,
+   "passed": true,
    "window_review": {
-    "version": "two-reader-context-v1",
+    "version": "butterley-possessive-v1",
     "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "engineerings",
-       "steelworks"
-      ],
-      "heard": [
-       "engineering",
-       "steel",
-       "works"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         0,
-         45520
-        ],
-        "expected": [
-         "at",
-         "butterley",
-         "engineerings",
-         "steelworks",
-         "in",
-         "derbyshire"
-        ],
-        "first": "at Butterley Engineering Steel Works in Derbyshire,",
-        "second": "at Butterley Engineering Steelworks in Derbyshire."
-       },
-       {
-        "samples": [
-         0,
-         33440
-        ],
-        "expected": [
-         "at",
-         "butterley",
-         "engineerings",
-         "steelworks",
-         "in"
-        ],
-        "first": "At Butterley Engineering Steel Works in",
-        "second": "At Butterly Engineering Steelworks in"
-       },
-       {
-        "samples": [
-         2160,
-         45520
-        ],
-        "expected": [
-         "butterley",
-         "engineerings",
-         "steelworks",
-         "in",
-         "derbyshire"
-        ],
-        "first": "at Butterleigh Engineering Steel Works in Derbyshire.",
-        "second": "butterly engineering steel works in Derbyshire."
-       },
-       {
-        "samples": [
-         2160,
-         33440
-        ],
-        "expected": [
-         "butterley",
-         "engineerings",
-         "steelworks",
-         "in"
-        ],
-        "first": "At Butterly Engineering Steel Works in",
-        "second": "Butterly engineering steel works and"
-       }
-      ]
-     }
-    ]
+    "pronunciation": {
+     "ending_phones": "IY R IH NG Z",
+     "score": 0.401,
+     "start": 0.92,
+     "end": 1.23
+    }
    }
   }
  ],
- "passed": false
+ "passed": true
 }
