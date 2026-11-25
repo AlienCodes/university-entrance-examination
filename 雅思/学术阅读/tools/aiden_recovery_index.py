@@ -38,7 +38,11 @@ def additional_runs():
 
 def recovery_runs(config):
     extra = additional_runs() if config.get("batch") == "13-6" else ()
-    return list(dict.fromkeys((*extra, *config.get("recover_runs", []))))
+    # Workers can check out a newer branch that already lists their own run
+    # as a source for the queued batch. That run has no finished input for itself.
+    current = os.getenv("GITHUB_RUN_ID")
+    return [number for number in dict.fromkeys((*extra, *config.get("recover_runs", [])))
+            if str(number) != current]
 
 
 def check_run(info, number):
