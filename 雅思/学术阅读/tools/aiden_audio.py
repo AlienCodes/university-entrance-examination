@@ -131,6 +131,8 @@ class Aiden:
             instruction += ' Read the full year two thousand eight, with the diphthong and final t of eight before crash.'
         if 'chair of the remuneration committee' in script.casefold():
             instruction += ' Read the short article the /ðə/ before remuneration; keep its initial r on remuneration.'
+        if words(script) == ['as', 'alison', 'carnwath']:
+            instruction += ' Link as to Alison /ˈælɪsən/ and read the full surname Carnwath, including the final th, before pausing.'
         if script.casefold().startswith('the material of which the organism is formed'):
             instruction += ' Start with a clearly audible unstressed “the” /ðə/, linked naturally to “material”.'
         if re.search(r'\broad (?:hauliers|haul-ee-erz|hall-ee-erz) and railways\b',script,re.I):
@@ -139,7 +141,7 @@ class Aiden:
         if script.casefold().startswith('gharib and graff set'):
             instruction += (' Say Gharib in two syllables, guh-REEB, with a voiced final b linked to and. '
                             'Graff rhymes with staff. Read the measurement as four point five meter.')
-        elif 'gharib' in script.casefold():
+        elif re.search(r'\b(?:gharib|guh-reeb|gah-reeb|gha-reeb)\b', script, re.I):
             instruction += ' Say Gharib in two syllables, guh-REEB, and finish the voiced b before moving on.'
         if script.casefold().startswith('the existent organisms'):
             instruction += ' Pronounce existent as /ɪɡˈzɪstənt/, with a clear final nt linked to organisms.'
@@ -349,6 +351,10 @@ class Aiden:
             spellings=('The team theorizes','The TEAM theorizes','THE TEAM theorizes','The team theorizes','The TEAM theorizes')
         elif 'vosges' in words(script) and 'harz' in words(script):
             spellings=('Harz','Harts','HARTS','hearts','Harz')
+        elif words(script) == ['gharib', 'realized']:
+            spellings=('Gharib', 'guh-REEB', 'gah-REEB', 'gha-REEB', 'Gharib')
+        elif words(script) == ['as', 'alison', 'carnwath']:
+            spellings=('Alison Carnwath', 'Alison CARNWATH', 'ALISON Carnwath', 'Alison Carnwath', 'Alison Carnwath')
         elif 'the expense of energy' in script.casefold():
             spellings=('expense of energy','expense OF energy','expense of energy','EXPENSE of energy','expense of energy')
         elif 'the two thousand eight crash' in script.casefold():
@@ -418,6 +424,11 @@ class Aiden:
                 spoken=re.sub(re.escape(spellings[0]),spellings[attempt],script,flags=re.I)
                 if spellings[0] in ('Na-Dene','Na-Denes'):
                     spoken=re.sub(r'\bAleut\b', PLACE_READINGS['Aleut'][0][attempt], spoken, flags=re.I)
+                elif spellings[0] == 'Harz':
+                    # Both names occur in this one phrase. The latest "Harts"
+                    # takes retained the spurious second syllable of Vosges.
+                    vosges = ('Vosges', 'Vohzh', 'Vozh', 'VOHZH', 'Vosges')
+                    spoken=re.sub(r'\bVosges\b', vosges[attempt], spoken, flags=re.I)
             elif attempt in (1,3) and re.search(r'\bHalley\b',script,re.I):
                 # CMUdict transcribes Halley and Hally identically. Verify the result against the paper.
                 spoken=re.sub(r'\bHalley\b','Hally',script,flags=re.I)

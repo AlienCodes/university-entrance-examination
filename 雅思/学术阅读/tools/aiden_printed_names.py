@@ -100,7 +100,7 @@ def target(tokens):
     if 'autoganzfeld' in tokens:
         return 'autoganzfeld'
     if (tokens[:4] == ['gharib','and','graff','set'] or tokens[-2:] in
-            (['gharib','says'], ['says','gharib'], ['gharib','realised'])):
+            (['gharib','says'], ['says','gharib'], ['gharib','realized'])):
         return 'gharib'
     if any(tokens[i:i+2] == ['dollos','law'] for i in range(len(tokens)-1)):
         return 'dollos'
