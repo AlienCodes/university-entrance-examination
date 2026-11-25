@@ -1,0 +1,29 @@
+name: 雅思已录原声归档
+on:
+  push:
+    branches: [codex/ielts-academic-reading]
+    paths: ['雅思/学术阅读/审校/Aiden/13-6/阶段存档/录音续作清单.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ielts-aiden-recording-archive
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout: |
+            雅思/学术阅读/tools
+            雅思/学术阅读/审校/Aiden/13-6/阶段存档
+      - name: 保存录音及原始校验记录并回下载
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 '雅思/学术阅读/tools/archive_aiden_recordings.py' '雅思/学术阅读/审校/Aiden/13-6/阶段存档/录音续作清单.json'
