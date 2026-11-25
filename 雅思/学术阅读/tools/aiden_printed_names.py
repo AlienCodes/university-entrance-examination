@@ -1,9 +1,10 @@
-"""Listen to the complete spoken names at the specific checkpoints in the reading passages."""
+"""Verify the syllables of disputed names and terms in their printed context."""
 from functools import lru_cache
 
 from aiden_boundaries import RATE, interior_gaps, words
 from aiden_ceylonese import timed_words
 from aiden_pronunciation import grammar_decoder, locate_sound
+from aiden_surnames import forms
 from aiden_word_review import MEASURED_NAMES, same_words
 
 
@@ -44,16 +45,37 @@ GHARIB = {
     'unvoiced-b':'G AH R IY P', 'lost-first-syllable':'R IY B', 'cluster':'G R IY B',
     'lost-ree':'G AH B', 'garban':'G AA R B AH N', 'grab':'G R AE B',
 }
+EXISTENT = forms(('IH G Z','EH G Z','IH K S','EH K S','G Z'),
+                 ('IH S T','IH S','EH S T'), ('AH N T','N T','AH N','IH N','IH NG','AH N S',''))
+TOELESS = forms(('T','D',''), ('OW','AO','UW','AA'),
+                ('L AH S','L IH S','L IH Z','L S','L IH','L AY S','L AH','L IY S','D L AH S',''))
+AUTOGANZFELD = forms(('AO T OW','AA T OW','AO T AH','AO T','OW T OW','AE T OW',''),
+                     ('G AE N Z','G AA N Z','G AE N S','G AA N S','G AE N T S','G AA N T S','G EY N Z','JH EH N Z','G AE N',''),
+                     ('F EH L D','F EH L T','F IY L D','F EH L','F EH D',''))
+AUTOGANZFELD = {label: sound for label, sound in AUTOGANZFELD.items() if sound}
 CONTEXT = {
     'pithecanthropus': (FOSSIL, {'erectus':'IH R EH K T AH S','is':'IH Z'}, '{term} [erectus] [is]',
                         {'full','schwa','stop','schwa-stop','reduced'}, .5),
     'isabela': (ISLAND, {}, '{term}', {'english','unvoiced','long','spanish','spanish-reduced'}, .33),
-    'clemmonss': (CLEMMONS, {'sparked':'S P AA R K T','interest':'IH N T R AH S T'},
-                  '[sparked] {term} [interest]', {'full','full-alt','schwa'}, .38),
+    'clemmonss': (CLEMMONS, {'sparked':'S P AA R K T','interest':'IH N T R AH S T',
+                             'put':'P UH T','unlikely':'AH N L AY K L IY'},
+                  '[sparked | put] {term} [interest | unlikely]', {'full','full-alt','schwa'}, .38),
     'dollos': (DOLLO, {'as':'AE Z','if':'IH F','law':'L AO'}, '[as | if] {term} [law]',
                {'dollos','rounded'}, .24),
     'gharib': (GHARIB, {'and':'AE N D','shortand':'AH N','graff':'G R AE F','set':'S EH T'},
                '{term} [and | shortand] [graff] [set]', {'full','ae','eh'}, .25),
+    'existent': (EXISTENT, {'the':'DH AH','thee':'DH IY','organisms':'AO R G AH N IH Z AH M Z'},
+                 '[the | thee] {term} [organisms]',
+                 {key for key,sound in EXISTENT.items() if sound in
+                  {'IH G Z IH S T AH N T','EH G Z IH S T AH N T','IH G Z IH S T N T','EH G Z IH S T N T'}}, .30),
+    'toeless': (TOELESS, {'from':'F R AH M','ancestors':'AE N S EH S T ER Z'},
+                '[from] {term} [ancestors]',
+                {key for key,sound in TOELESS.items() if sound in {'T OW L AH S','T OW L IH S'}}, .24),
+    'autoganzfeld': (AUTOGANZFELD, {'to':'T UW','weakto':'T AH','of':'AH V','in':'IH N','tests':'T EH S T S','trials':'T R AY AH L Z'},
+                     '[to | weakto | of | in] {term} [tests | trials]',
+                     {key for key,sound in AUTOGANZFELD.items()
+                      if sound.startswith(('AO T OW G','AA T OW G')) and sound.endswith(('F EH L D','F EH L T'))
+                      and any(mid in sound for mid in ('G AE N Z F','G AA N Z F','G AE N S F','G AA N S F','G AE N T S F','G AA N T S F'))}, .56),
 }
 
 
@@ -62,8 +84,14 @@ def target(tokens):
         return 'pithecanthropus'
     if 'isabela' in tokens:
         return 'isabela'
-    if tokens[-2:] == ['clemmonss','interest']:
+    if tokens[-2:] == ['clemmonss','interest'] or tokens[:5] == ['the','team','put','clemmonss','unlikely']:
         return 'clemmonss'
+    if tokens[:2] == ['the','existent']:
+        return 'existent'
+    if 'toeless' in tokens and tokens[:3] == ['the','toed','species']:
+        return 'toeless'
+    if 'autoganzfeld' in tokens:
+        return 'autoganzfeld'
     if tokens[:4] == ['gharib','and','graff','set']:
         return 'gharib'
     if any(tokens[i:i+2] == ['dollos','law'] for i in range(len(tokens)-1)):
@@ -71,9 +99,26 @@ def target(tokens):
     return None
 
 
+def join_compound(parts):
+    joined = []
+    for word, time in parts:
+        if joined and joined[-1][0] in ('auto','otto') and word in ('ganzfeld','gansfeld','gensfeld'):
+            prefix, onset = joined[-1]
+            joined[-1] = (prefix+word, onset)
+        else:
+            joined.append((word, time))
+    return joined
+
+
+def compound_words(tokens):
+    return [word for word,_ in join_compound((token,0) for token in tokens)]
+
+
 def pause_outside_name(expected, before, after, start, end, result):
     key, proof = result
     index = expected.index(proof['name'])
+    if proof['name'] == 'autoganzfeld':
+        before, after = compound_words(before), compound_words(after)
     joined = before + after
     if not before or not after or len(joined) != len(expected):
         return False
@@ -97,7 +142,13 @@ def verify(audio, name, expected, first, second):
     key = name + '_reading'
     spellings = MEASURED_NAMES[key]
     timed = timed_words(audio)
-    for tokens in (words(first), words(second), [w for w,_ in timed]):
+    readings = [words(first), words(second)]
+    if name == 'existent' and not any(name in tokens for tokens in readings):
+        raise ValueError('Neither independent full-phrase reading identified existent')
+    if name == 'autoganzfeld':
+        timed = join_compound(timed)
+        readings = [compound_words(tokens) for tokens in readings]
+    for tokens in (*readings, [w for w,_ in timed]):
         if (len(tokens) != len(expected) or spellings.get(tokens[index],tokens[index]) != name
                 or not same_words(expected, tokens[:index] + [name] + tokens[index+1:])):
             raise ValueError(f'The name or its surrounding words differ: {first!r} / {second!r}')
@@ -109,6 +160,10 @@ def verify(audio, name, expected, first, second):
         windows = [(max(0,start-round(.04*RATE)),stop,False),(start,stop+round(.05*RATE),False)]
     elif name == 'gharib':
         windows = [(0,timed[3][1]+round(.05*RATE),True),(0,stop+round(.01*RATE),False)]
+    elif name in ('autoganzfeld','existent','toeless'):
+        lead = max(0,timed[index-1][1]-round(.04*RATE)) if index else 0
+        tail = timed[index+2][1] if index+2 < len(timed) else len(audio)
+        windows = [(lead,tail,True),(max(0,start-round(.02*RATE)),min(len(audio),stop+round(.02*RATE)),False)]
     else:
         lead = max(0,timed[index-1][1]-round(.08*RATE)) if index else 0
         tail = timed[index+2][1] if index+2 < len(timed) else len(audio)

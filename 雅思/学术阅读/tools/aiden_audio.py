@@ -117,8 +117,12 @@ class Aiden:
             instruction += ' Say Pithecanthropus erectus in two complete words, /ˌpɪθɪˈkænθroʊpəs ɪˈrɛktəs/. Keep the final s of both words.'
         if re.search(r"\bDollo['’]s law\b",script,re.I):
             instruction += ' Pronounce the Belgian scientist’s name and possessive as /ˈdɑloʊz/, then say law.'
-        if re.search(r"\bClemmons['’]s interest\b",script,re.I):
-            instruction += ' Say the possessive Clemmons’s /ˈklɛmənzɪz/ completely before interest.'
+        if re.search(r"\bClemmons['’]s (?:interest|unlikely)\b",script,re.I):
+            instruction += ' Say the possessive Clemmons’s /ˈklɛmənzɪz/ completely before the next word.'
+        if 'toeless ancestors' in script.casefold():
+            instruction += ' Read toes as /toʊz/ and toeless as /ˈtoʊləs/, ending with an unvoiced s.'
+        if 'road hauliers and railways' in script.casefold():
+            instruction += ' Say hauliers with the vowel of haul, then lee-erz. Keep the final plural z audible.'
         if script.casefold().startswith('gharib and graff set'):
             instruction += (' Say Gharib in two syllables, guh-REEB, with a voiced final b linked to and. '
                             'Graff rhymes with staff. Read the measurement as four point five meter.')

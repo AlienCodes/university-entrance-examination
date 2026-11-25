@@ -154,6 +154,10 @@ MEASURED_NAMES = {
     'clemmonss_reading': dict.fromkeys(('clemens','clemenss','clemons','clemonss','clemmons'), 'clemmonss'),
     'dollos_reading': dict.fromkeys(('dalos','dallos','dollows','dallows'), 'dollos'),
     'gharib_reading': {'garib':'gharib'},
+    'existent_reading': {'existing':'existent'},
+    'toeless_reading': dict.fromkeys(('tolless','tollis','toless','toalous','tolus'), 'toeless'),
+    'autoganzfeld_reading': {prefix+suffix:'autoganzfeld' for prefix in ('otto','auto','otto ','auto ')
+                             for suffix in ('ganzfeld','gansfeld','gensfeld')},
     'halley_pronunciation': {'hallie':'halley'},
     'eigg_pronunciation': {'egg':'eigg', 'eig':'eigg'},
     'ganzfeld_pronunciation': {'gansfeld':'ganzfeld', 'gensfeld':'ganzfeld'},
