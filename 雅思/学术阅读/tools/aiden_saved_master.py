@@ -149,20 +149,23 @@ def stage_recording(stage, destination):
         previous = any(re.fullmatch(re.escape(PID) + r'-aiden-[a-f0-9]{16}\.zip', n) and a.get('digest')
                        for n, a in assets.items())
         return 'previous' if previous or reviewed_track(stage) else 'missing'
-    archive = fetch(item, destination)
+    return archive_status(fetch(item, destination))
+
+
+def archive_status(archive):
     with zipfile.ZipFile(archive) as saved:
         timing = json.loads(saved.read('audio/timings.json'))['cet4_male'][PID]
-        try:
-            confirm(timing)
-        except RejectedSource:
-            return 'previous'
+    try:
+        confirm(timing)
+    except RejectedSource:
+        return 'previous'
     return 'current'
 
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('stage')
-    parser.add_argument('destination', type=Path)
+    parser.add_argument('source', help='release tag to inspect or a downloaded recording archive')
+    parser.add_argument('destination', type=Path, nargs='?', help='download directory when inspecting a release')
     args = parser.parse_args()
-    print(stage_recording(args.stage, args.destination))
+    print(stage_recording(args.source, args.destination) if args.destination else archive_status(args.source))

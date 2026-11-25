@@ -61,7 +61,14 @@ runs:
         if [[ "${IELTS_AUDIO_STAGED:-}" != true || ! -s "$RUNNER_TEMP/$asset" ]]; then
           python "$TARGET/tools/release_assets.py" "$STAGING" "$asset" "$RUNNER_TEMP" --if-present
         fi
+        recording=missing
         if [[ -s "$RUNNER_TEMP/$asset" ]]; then
+          recording=current
+          if [[ "${IELTS_NARRATOR:-}" == Aiden ]]; then
+            recording=$(python "$TARGET/tools/aiden_saved_master.py" "$RUNNER_TEMP/$asset")
+          fi
+        fi
+        if [[ "$recording" == current ]]; then
           python -m zipfile -e "$RUNNER_TEMP/$asset" "$TARGET"
         else
           if [[ -n "$accepted" ]]; then echo "Cannot restore the selected certified audio $accepted"; exit 1; fi
