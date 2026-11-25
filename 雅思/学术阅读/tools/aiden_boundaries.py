@@ -706,7 +706,8 @@ def verify_join(left,right):
         return False
     left_ref, right_ref = words(left['text']), words(right['text'])
     from aiden_kandy_nannie import confirmed_ending
-    ends = edge(left, -1) or confirmed_ending(left, left_ref)
+    from aiden_printed_names import confirmed_cinema_ending
+    ends = edge(left, -1) or confirmed_ending(left, left_ref) or confirmed_cinema_ending(left, left_ref)
     starts = edge(right, 0)
     if left_ref[-1:] == ['groundfish'] and right_ref == ['cod','sole','perch','and','pollock']:
         if ends and right.get('groundfish_list',{}).get('phones') == 'K AA D':

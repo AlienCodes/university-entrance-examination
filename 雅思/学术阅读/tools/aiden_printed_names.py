@@ -54,7 +54,30 @@ AUTOGANZFELD = forms(('AO T OW','AA T OW','AO T AH','AO T','OW T OW','AE T OW','
                      ('G AE N Z','G AA N Z','G AE N S','G AA N S','G AE N T S','G AA N T S','G EY N Z','JH EH N Z','G AE N',''),
                      ('F EH L D','F EH L T','F IY L D','F EH L','F EH D',''))
 AUTOGANZFELD = {label: sound for label, sound in AUTOGANZFELD.items() if sound}
+CINEMA_PHRASE = ('the','lumiere','brothers','opened','their','cinematographe')
+CINEMA_READINGS = forms(('S IH N AH','S IH N IH'), ('M AE T AH','M AE D AH'), ('G R AE F','G R AA F'))
+# Compete the English forms heard in the dictionaries against changes to the
+# initial syllables, stressed vowel and final consonants, and against related words.
+CINEMA = {
+    **CINEMA_READINGS,
+    'long-i':'S IH N IY M AE T AH G R AE F', 'lost-vowel':'S IH N M AE T AH G R AE F',
+    'sine':'S AY N AH M AE T AH G R AE F', 'sen':'S EH N AH M AE T AH G R AE F',
+    'sh':'SH IH N AH M AE T AH G R AE F', 'no-s':'IH N AH M AE T AH G R AE F',
+    'weak-first':'S AH N AH M AE T AH G R AE F',
+    'maht':'S IH N AH M AA T AH G R AE F', 'maht-uk':'S IH N AH M AA T AH G R AA F',
+    'mayt':'S IH N AH M EY T AH G R AE F', 'weak-stress':'S IH N AH M AH T AH G R AE F',
+    'missing-t':'S IH N AH M AE AH G R AE F', 'short-middle':'S IH N AH M AE T G R AE F',
+    'no-middle':'S IH N AH G R AE F', 'weak-final':'S IH N AH M AE T AH G R AH F',
+    'no-f':'S IH N AH M AE T AH G R AE', 'no-f-uk':'S IH N AH M AE T AH G R AA',
+    'no-g':'S IH N AH M AE T AH R AE F', 'grayf':'S IH N AH M AE T AH G R EY F',
+    'grass':'S IH N AH M AE T AH G R AE S', 'cinema':'S IH N AH M AH',
+    'short':'S IH N AH M AE T AH', 'grapher':'S IH N AH M AE T AH G R AE F ER',
+    'graphy':'S IH N AH M AE T AH G R AE F IY', 'graphic':'S IH N AH M AE T AH G R AE F IH K',
+}
+
 CONTEXT = {
+    'cinematographe': (CINEMA, {'their':'DH EH R'}, '[their] {term}',
+                       set(CINEMA_READINGS), .57),
     'pithecanthropus': (FOSSIL, {'erectus':'IH R EH K T AH S','is':'IH Z'}, '{term} [erectus] [is]',
                         {'full','schwa','stop','schwa-stop','reduced'}, .5),
     'isabela': (ISLAND, {}, '{term}', {'english','unvoiced','long','spanish','spanish-reduced'}, .33),
@@ -85,6 +108,8 @@ CONTEXT = {
 
 
 def target(tokens):
+    if tuple(tokens) == CINEMA_PHRASE:
+        return 'cinematographe'
     if tokens[:2] == ['pithecanthropus','erectus']:
         return 'pithecanthropus'
     if 'isabela' in tokens:
@@ -122,6 +147,22 @@ def compound_words(tokens):
     return [word for word,_ in join_compound((token,0) for token in tokens)]
 
 
+def recognized_spellings(key):
+    if key == 'cinematographe_reading':
+        return {'cinematograph':'cinematographe'}
+    return MEASURED_NAMES[key]
+
+
+def confirmed_cinema_ending(item, expected):
+    if tuple(expected) != CINEMA_PHRASE:
+        return False
+    proof = item.get('cinematographe_reading', {})
+    readings = proof.get('readings', [])
+    return (proof.get('name') == 'cinematographe' and len(readings) == 2
+            and all(row['phones'] in CINEMA_READINGS.values() and row['confidence'] >= .16
+                    and row['end'] - row['start'] >= .57 for row in readings))
+
+
 def pause_outside_name(expected, before, after, start, end, result, audio=None):
     key, proof = result
     index = expected.index(proof['name'])
@@ -130,7 +171,7 @@ def pause_outside_name(expected, before, after, start, end, result, audio=None):
     joined = before + after
     if not before or not after or len(joined) != len(expected):
         return False
-    joined[index] = MEASURED_NAMES[key].get(joined[index], joined[index])
+    joined[index] = recognized_spellings(key).get(joined[index], joined[index])
     if not same_words(expected, joined):
         return False
     observations = proof['readings']
@@ -165,7 +206,7 @@ def decoder(name, context, attribution=False):
 def verify(audio, name, expected, first, second):
     index = expected.index(name)
     key = name + '_reading'
-    spellings = MEASURED_NAMES[key]
+    spellings = recognized_spellings(key)
     timed = timed_words(audio)
     readings = [words(first), words(second)]
     if name == 'existent' and not any(name in tokens for tokens in readings):
@@ -180,7 +221,9 @@ def verify(audio, name, expected, first, second):
     start = max(0,timed[index][1] - round(.04*RATE))
     stop = timed[index+1][1] if index+1 < len(timed) else len(audio)
     gharib_intro = name == 'gharib' and expected[:4] == ['gharib','and','graff','set']
-    if name == 'pithecanthropus':
+    if name == 'cinematographe':
+        windows = [(max(0,timed[index-1][1]-400),len(audio),True),(max(0,start-400),len(audio),False)]
+    elif name == 'pithecanthropus':
         windows = [(0,timed[2][1] + round(.14*RATE),True),(0,stop,False)]
     elif name == 'isabela':
         windows = [(max(0,start-round(.04*RATE)),stop,False),(start,stop+round(.05*RATE),False)]
