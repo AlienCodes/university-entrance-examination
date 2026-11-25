@@ -2,101 +2,25 @@
  "lesson": "C13T2P1",
  "policy": "ordered-spoken-words-v1",
  "rules_sha256": "5dd72c1212582fa86f06c9fead60331bdc5e82e9feb4dd35ed12abe81da4c741",
- "source_mp3_sha256": "9b3fe1b95d20072078ea070309fd239ddfd457b4057aea20026e8d4a4ca896c9",
- "core_sha256": "58abf25b9f0f309157cc395dc4518679456b9aa3793705c681575d885eacd323",
- "video_sha256": "1cd8ea2ad74596cddee1db10719a7d06321517609d1c8ecd9529ee492429d1db",
- "original_aac_packets": 15722,
+ "source_mp3_sha256": "6ca34652638610b32268856cee32bd00f6351ed8121bcf900b4308031063d274",
+ "core_sha256": "cfc1719f07f39b229767af4076e2341638491a79be49c36d0a32d34066cfb78d",
+ "video_sha256": "92ce57df3456acbc4d5605d2ffdff0b10523fea2e536d74d61e33215b447e728",
+ "original_aac_packets": 15728,
  "illustrated_intro_frames": 30,
  "phrases": 91,
  "spoken_words": 832,
  "clips": [
   {
-   "sentence": 21,
-   "phrase": 1,
-   "text": "The Salagama then gave the finished product to the king as a form of tribute.",
-   "source_take_sha256": "f5d2a46b8cd9f03069450e818e57a0ef6220ecc766fc43f7362e47df70f92de6",
-   "start": 172.335,
-   "end": 176.7,
-   "source_lag_ms": 20,
-   "final_start_sample": 2773360,
-   "final_end_sample": 2843200,
-   "decoded_sha256": "36f380b27a4ca306da5954811bec1e5eed9894f55a28897789a1694fec8bac13",
-   "heard": "The Selagama then gave the finished product to the king as a form of tribute,",
-   "second_heard": "The Selagama then gave the finished product to the king as a form of tribute.",
-   "focused_listening": [
-    {
-     "printed_words": [
-      1,
-      2
-     ],
-     "checked_words": [
-      0,
-      5
-     ],
-     "expected_window": "the salagama then gave the",
-     "start_sample": 0,
-     "end_sample": 27040,
-     "heard": "The Saligama then gave the fastest",
-     "second_heard": "The Selagama then gave the f-"
-    }
-   ],
-   "passed": false,
-   "window_review": {
-    "version": "two-reader-context-v1",
-    "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "salagama"
-      ],
-      "heard": [
-       "selagama"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         0,
-         24480
-        ],
-        "expected": [
-         "the",
-         "salagama",
-         "then",
-         "gave"
-        ],
-        "first": "The Saligama then gave the",
-        "second": "The Selagama then gave the"
-       },
-       {
-        "samples": [
-         0,
-         19360
-        ],
-        "expected": [
-         "the",
-         "salagama",
-         "then"
-        ],
-        "first": "The Saligama then",
-        "second": "The Selagama then..."
-       }
-      ]
-     }
-    ]
-   }
-  },
-  {
    "sentence": 26,
    "phrase": 1,
    "text": "The Dutch allied themselves with Kandy,",
-   "source_take_sha256": "f0b959021788801290af6e0b84bcfff1ba5666dabcbb57fb6a052148c342f6c3",
-   "start": 225.21,
-   "end": 227.405,
+   "source_take_sha256": "d0e08f106220612207c0a7adc91f5cf780c6453a924828964ad6b925db9eef17",
+   "start": 225.105,
+   "end": 227.535,
    "source_lag_ms": 20,
-   "final_start_sample": 3619360,
-   "final_end_sample": 3654480,
-   "decoded_sha256": "b90d90ecfa3d706ac26e4ee6bd015d6ceeea8ba3452c92466162c241e07f0d3d",
+   "final_start_sample": 3617680,
+   "final_end_sample": 3656560,
+   "decoded_sha256": "0191d8bb0c2c944dfac18b5df3e16c19693bf75b6d739170e5f1fbc928e9e6dd",
    "heard": "The Dutch allied themselves with candy,",
    "second_heard": "The Dutch allied themselves with candy.",
    "focused_listening": [
@@ -111,55 +35,42 @@
      ],
      "expected_window": "allied themselves with kandy",
      "start_sample": 8400,
-     "end_sample": 35120,
-     "heard": "allied themselves with candy,",
-     "second_heard": "allied themselves with candy."
+     "end_sample": 38880,
+     "heard": "allied themselves with candy.",
+     "second_heard": "Allied themselves with candy."
     }
    ],
-   "passed": false,
+   "passed": true,
    "window_review": {
-    "version": "two-reader-context-v1",
+    "version": "kandy-nannie-v1",
     "source_lag_ms": 20,
-    "differences": [
-     {
-      "printed": [
-       "kandy"
-      ],
-      "heard": [
-       "candy"
-      ],
-      "confirmed": false,
-      "windows": [
-       {
-        "samples": [
-         16240,
-         35120
-        ],
-        "expected": [
-         "themselves",
-         "with",
-         "kandy"
-        ],
-        "first": "themselves with candy.",
-        "second": "themselves with candy."
-       },
-       {
-        "samples": [
-         22640,
-         35120
-        ],
-        "expected": [
-         "with",
-         "kandy"
-        ],
-        "first": "with candy.",
-        "second": "with candy."
-       }
-      ]
-     }
-    ]
+    "pronunciation": {
+     "term": "kandy",
+     "readings": [
+      "The Dutch allied themselves with candy,",
+      "The Dutch allied themselves with candy."
+     ],
+     "measurements": [
+      {
+       "phones": "K AE N D IY",
+       "confidence": 0.483,
+       "samples": [
+        30640,
+        38160
+       ]
+      },
+      {
+       "phones": "K AE N D IY",
+       "confidence": 0.504,
+       "samples": [
+        30800,
+        38160
+       ]
+      }
+     ]
+    }
    }
   }
  ],
- "passed": false
+ "passed": true
 }
