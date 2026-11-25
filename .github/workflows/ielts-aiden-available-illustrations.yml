@@ -64,7 +64,8 @@ jobs:
               text=True)
           jobs = [json.loads(line) for line in listing.splitlines()]
           busy = [job for job in jobs if job['status'] != 'completed']
-          active = {m[1] for job in busy if (m := re.search(r'production \((C\d+T\d+P\d+)\)', job['name']))}
+          lesson_job = re.compile(r'(?:production|repair) \((C\d+T\d+P\d+)\)')
+          active = {m[1] for job in busy if (m := lesson_job.search(job['name']))}
           slots = max(0, min(12, 19 - len(busy)))
           available = [p for p in edition if slots and p in requested - active and p != edition[0]]
           if read_repair:
@@ -75,10 +76,11 @@ jobs:
               # This workflow holds the next full edition at its pilot. The queued individual
               # repairs can start without that pilot, so reserve their slots as well.
               slots = max(0, min(12, 19 - len(busy) - len(inflight)))
-              failed_steps = {'恢复同篇已核验的完整录音', '核对本篇的原稿版本和现成视频'}
+              failed_steps = {'恢复同篇已核验的完整录音', '核对本篇的原稿版本和现成视频',
+                              'Run ./.github/actions/ielts-verified-master'}
               failed_reads = {m[1] for job in jobs if job['conclusion'] == 'failure'
                               and failed_steps.intersection(job['failed'])
-                              and (m := re.search(r'production \((C\d+T\d+P\d+)\)', job['name']))}
+                              and (m := lesson_job.search(job['name']))}
               lessons = [p for p in available if slots and p in failed_reads and p not in inflight
                          and not cached(p, '13-6', include_illustration=True)]
           elif revised:
