@@ -2,10 +2,10 @@
  "lesson": "C11T1P2",
  "policy": "ordered-spoken-words-v1",
  "rules_sha256": "5dd72c1212582fa86f06c9fead60331bdc5e82e9feb4dd35ed12abe81da4c741",
- "source_mp3_sha256": "494b84d8d76a2a75bc90dfc87a80305bf11a65bbc9761a92340db871e27cc4d4",
- "core_sha256": "c68fcaf7655a3869c472ffda421b0609ecb3b1777e33dd17e8af03fed0473ed2",
- "video_sha256": "326a0c493415e899ebbb5f8b71af23b3feab6fe3aaccbf6907101914971cfafa",
- "original_aac_packets": 15908,
+ "source_mp3_sha256": "6d4c8c304f6ec6c78bf34057fdaf9aa032c80faac10de34394fc95af4b96f652",
+ "core_sha256": "42abe191f009f236b2106fc18c3e47fed96019b482d9785bc060f6a1827a4265",
+ "video_sha256": "2f638c4e267bd1ba2cd53ab9625c5d05ea5144a8b8d25803b0d56aaeccc26bfc",
+ "original_aac_packets": 15926,
  "illustrated_intro_frames": 30,
  "phrases": 75,
  "spoken_words": 857,
@@ -14,19 +14,19 @@
    "sentence": 11,
    "phrase": 3,
    "text": "at Butterley Engineering's Steelworks in Derbyshire,",
-   "source_take_sha256": "8598488750fa4acb64309aa99f9fe5d402cd4e07af7608f5ce087354e95669d0",
-   "start": 118.29,
-   "end": 121.055,
+   "source_take_sha256": "5a96cab7a87967c49455ad6a511a2b104c75bffd180bd452a308e6a8b6250037",
+   "start": 118.61,
+   "end": 121.455,
    "source_lag_ms": 20,
-   "final_start_sample": 1908640,
-   "final_end_sample": 1952880,
-   "decoded_sha256": "aada9d5ed4bb449d95a128389c4efc3235a549478cde4f5e02677387b5321964",
-   "heard": "at Butterleigh Engineering Steel Works in Derbyshire,",
+   "final_start_sample": 1913760,
+   "final_end_sample": 1959280,
+   "decoded_sha256": "c96001a0fc91f3766048283a8cb1dceac9f4d365d4561bba061f20e44e0fb454",
+   "heard": "at Butterley Engineering Steel Works in Derbyshire,",
    "second_heard": "at Butterley Engineering Steelworks in Derbyshire.",
    "focused_listening": [
     {
      "printed_words": [
-      1,
+      2,
       4
      ],
      "checked_words": [
@@ -35,8 +35,8 @@
      ],
      "expected_window": "at butterley engineerings steelworks in derbyshire",
      "start_sample": 0,
-     "end_sample": 44240,
-     "heard": "at Butterleigh Engineering Steel Works in Derbyshire,",
+     "end_sample": 45520,
+     "heard": "at Butterley Engineering Steel Works in Derbyshire,",
      "second_heard": "at Butterley Engineering Steelworks in Derbyshire."
     }
    ],
@@ -47,12 +47,10 @@
     "differences": [
      {
       "printed": [
-       "butterley",
        "engineerings",
        "steelworks"
       ],
       "heard": [
-       "butterleigh",
        "engineering",
        "steel",
        "works"
@@ -62,7 +60,7 @@
        {
         "samples": [
          0,
-         44240
+         45520
         ],
         "expected": [
          "at",
@@ -72,7 +70,7 @@
          "in",
          "derbyshire"
         ],
-        "first": "at Butterleigh Engineering Steel Works in Derbyshire,",
+        "first": "at Butterley Engineering Steel Works in Derbyshire,",
         "second": "at Butterley Engineering Steelworks in Derbyshire."
        },
        {
@@ -87,8 +85,37 @@
          "steelworks",
          "in"
         ],
-        "first": "At Butterley Engineering Steelworks in",
-        "second": "at Butterley Engineering Steelworks and"
+        "first": "At Butterley Engineering Steel Works in",
+        "second": "At Butterly Engineering Steelworks in"
+       },
+       {
+        "samples": [
+         2160,
+         45520
+        ],
+        "expected": [
+         "butterley",
+         "engineerings",
+         "steelworks",
+         "in",
+         "derbyshire"
+        ],
+        "first": "at Butterleigh Engineering Steel Works in Derbyshire.",
+        "second": "butterly engineering steel works in Derbyshire."
+       },
+       {
+        "samples": [
+         2160,
+         33440
+        ],
+        "expected": [
+         "butterley",
+         "engineerings",
+         "steelworks",
+         "in"
+        ],
+        "first": "At Butterly Engineering Steel Works in",
+        "second": "Butterly engineering steel works and"
        }
       ]
      }
