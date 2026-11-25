@@ -160,6 +160,11 @@ jobs:
       - name: 把本篇插图加入已经核验的成片
         if: inputs.aiden_batch == '13-6' && steps.cache.outputs.done == 'true'
         run: bash .github/actions/ielts-verified-master/illustrate.sh
+      - name: 核验本篇新完成的配图版本
+        if: inputs.aiden_batch == '13-6' && (inputs.verified_audio_only || steps.cache.outputs.done == 'true') && env.IELTS_NEW_ILLUSTRATION == inputs.lesson
+        uses: ./.github/actions/ielts-word-listening
+        with:
+          lesson: ${{ inputs.lesson }}
       - name: 存档已完成的逐句工作和待修处
         if: failure() && env.IELTS_WORK != '' && steps.cache.outputs.early == 'true'
         run: |

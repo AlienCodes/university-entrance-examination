@@ -28,3 +28,6 @@ if ! command -v google-chrome >/dev/null && ! command -v chromium >/dev/null && 
   export PATH="$RUNNER_TEMP/illustrated-bin:$PATH"
 fi
 "$python_bin" "$TARGET/tools/illustration_stage.py" "$IELTS_LESSON" "$RUNNER_TEMP/illustrated/$IELTS_LESSON"
+if [[ -n "${GITHUB_ENV:-}" && -f "$RUNNER_TEMP/illustrated/$IELTS_LESSON/$IELTS_LESSON-illustrated.json" ]]; then
+  echo "IELTS_NEW_ILLUSTRATION=$IELTS_LESSON" >> "$GITHUB_ENV"
+fi

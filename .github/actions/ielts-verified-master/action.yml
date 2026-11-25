@@ -84,3 +84,8 @@ runs:
       shell: bash
       run: |
         bash .github/actions/ielts-verified-master/publish.sh
+    - name: 从本篇实际发布的 MP4 逐词核验并保存结果
+      if: env.IELTS_AIDEN_BATCH == '13-6' && env.IELTS_NEW_ILLUSTRATION == env.IELTS_LESSON
+      uses: ./.github/actions/ielts-word-listening
+      with:
+        lesson: ${{ env.IELTS_LESSON }}

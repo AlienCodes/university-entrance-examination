@@ -1,6 +1,9 @@
 name: 逐词复核 Aiden 成片
 description: 复用已有音轨的核听记录，从带图 MP4 复听待核意群
 inputs:
+  lesson:
+    description: 直接核验刚上传的单篇 MP4
+    default: ''
   books:
     description: 本次复核的册号，留空时复核全部
     default: ''
@@ -10,38 +13,65 @@ inputs:
 runs:
   using: composite
   steps:
+    - id: native
+      if: inputs.lesson != ''
+      shell: bash
+      run: |
+        sp="$RUNNER_TEMP/speech/bin/python"
+        parakeet=tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
+        if [[ -x "$sp" && -s "$parakeet/tokens.txt" ]] && command -v ffmpeg >/dev/null && \
+           "$sp" -c 'import numpy, scipy, sherpa_onnx, pocketsphinx, num2words' && \
+           sha256sum --quiet -c .github/actions/ielts-phrase-listening/SHA256SUMS; then
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+        fi
     - uses: actions/setup-python@v5
+      if: steps.native.outputs.ready != 'true'
       with:
         python-version: '3.11.15'
     - uses: actions/cache/restore@v4
+      if: steps.native.outputs.ready != 'true'
       id: asr
       with:
         path: tools/tts/models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
         key: asr-sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8
-    - if: steps.asr.outputs.cache-hit != 'true'
+    - if: steps.native.outputs.ready != 'true' && steps.asr.outputs.cache-hit != 'true'
       shell: bash
       run: |
         mkdir -p tools/tts/models
         curl -fsSL --retry 5 https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v2-int8.tar.bz2 | tar xj -C tools/tts/models
     - uses: ./.github/actions/ielts-phrase-listening
+      if: steps.native.outputs.ready != 'true'
     - shell: bash
       env:
         REQUIRE_ALL: ${{ inputs.require-all }}
         REVIEW_BOOKS: ${{ inputs.books }}
+        REVIEW_LESSON: ${{ inputs.lesson }}
+        NATIVE_READY: ${{ steps.native.outputs.ready }}
       run: |
         set -euo pipefail
-        python .github/actions/cet6-chalk-env/prepare_packages.py 141 --decoder-only
-        python -m venv "$RUNNER_TEMP/word-review"
-        sp="$RUNNER_TEMP/word-review/bin/python"
-        "$sp" -m pip install -q 'numpy<2.3' scipy sherpa-onnx==1.13.8 pocketsphinx==5.0.4 num2words==0.5.14 requests
+        sp="$RUNNER_TEMP/speech/bin/python"
+        if [[ "$NATIVE_READY" != true ]]; then
+          python .github/actions/cet6-chalk-env/prepare_packages.py 141 --decoder-only
+          python -m venv "$RUNNER_TEMP/word-review"
+          sp="$RUNNER_TEMP/word-review/bin/python"
+          "$sp" -m pip install -q 'numpy<2.3' scipy sherpa-onnx==1.13.8 pocketsphinx==5.0.4 num2words==0.5.14 requests
+        fi
         args=()
+        if [[ -n "$REVIEW_LESSON" ]]; then
+          args+=(--lesson "$REVIEW_LESSON" --final-dir "$RUNNER_TEMP/illustrated/$REVIEW_LESSON")
+        fi
         if [[ "$REQUIRE_ALL" == true ]]; then args+=(--require-all); fi
         if [[ -n "$REVIEW_BOOKS" ]]; then
           read -ra selected <<< "$REVIEW_BOOKS"
           args+=(--books "${selected[@]}")
         fi
         "$sp" '雅思/学术阅读/tools/aiden_word_gate.py' "${args[@]}"
-    - if: always()
+    - if: always() && inputs.lesson != ''
+      shell: bash
+      env:
+        REVIEW_LESSON: ${{ inputs.lesson }}
+      run: bash .github/actions/ielts-word-listening/save-lesson.sh "$REVIEW_LESSON"
+    - if: always() && inputs.lesson == ''
       shell: bash
       run: |
         set -euo pipefail
