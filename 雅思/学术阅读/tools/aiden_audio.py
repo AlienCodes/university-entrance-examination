@@ -125,6 +125,8 @@ class Aiden:
             instruction += (' Say the Dutch name Willeke Wendrich in two connected groups: '
                             'VIL-uh-kuh VEN-drick. Keep both unstressed vowels in the first name short, '
                             'and finish the surname with k.')
+        if 'cutty sark' in script.casefold():
+            instruction += ' Read the ship name Cutty Sark as /ˈkʌti sɑrk/, stressing CUT. Articulate the unvoiced t clearly and keep both syllables together.'
         if 'taro seedlings' in script.casefold():
             instruction += ' Read taro in two syllables, /ˈter.oʊ/ in American English. Keep the plural of seedlings.'
         if 're-create those early voyages' in script.casefold():
