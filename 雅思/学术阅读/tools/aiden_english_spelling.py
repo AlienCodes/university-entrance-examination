@@ -12,6 +12,8 @@ SPELLINGS = {
 COMPOUNDS = {
     tuple('the topics discussed included the co ordinated study of the destruction of forests'.split()): ('co', 'ordinated'),
     tuple('and successfully made the switchover'.split()): ('switch', 'over'),
+    ('called', 'eurosilva'): ('euro', 'silva'),
+    tuple('their final text commits them to on going discussion between government representatives with responsibility for forests'.split()): ('on', 'going'),
 }
 
 

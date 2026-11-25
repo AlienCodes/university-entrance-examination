@@ -1,4 +1,4 @@
-"""Check the two printed proper names that the free readers transcribe as common words."""
+"""Measure phrase-final names when the two readers use a different spelling."""
 from aiden_boundaries import RATE, independent, interior_gaps, isolated, words
 from aiden_ceylonese import timed_words
 from aiden_pronunciation import grammar_decoder, locate_sound
@@ -8,12 +8,16 @@ from aiden_surnames import forms
 PHRASES = {
     tuple('the dutch allied themselves with kandy'.split()): ('kandy', 'candy'),
     tuple('is chased by a witch called nannie'.split()): ('nannie', 'nanny'),
+    ('says', 'carl', 'cotman'): ('cotman', 'kotman'),
 }
 CHECKS = {
     'kandy': (forms(('K', 'G', ''), ('AE', 'AH', 'EH', 'AA'), ('N D', 'N', 'D', ''), ('IY', 'IH', 'EY', '')),
-              'K AE N D IY', {'with': 'W IH TH', 'widh': 'W IH DH'}, '[with | widh] {term}'),
+              ('K AE N D IY',), {'with': 'W IH TH', 'widh': 'W IH DH'}, '[with | widh] {term}'),
     'nannie': (forms(('N', 'M', ''), ('AE', 'AH', 'EH', 'EY'), ('N', 'M', ''), ('IY', 'IH', '')),
-               'N AE N IY', {'called': 'K AO L D', 'cald': 'K AA L D'}, '[called | cald] {term}'),
+               ('N AE N IY',), {'called': 'K AO L D', 'cald': 'K AA L D'}, '[called | cald] {term}'),
+    'cotman': (forms(('K', 'G', ''), ('AA', 'AO', 'AH', 'OW'), ('T M', 'T', 'M', ''),
+                     ('AH N', 'IH N', 'AE N', 'AH M', 'AH', '')),
+               ('K AA T M IH N', 'K AA T M AH N'), {'carl': 'K AA R L'}, '[carl] {term}'),
 }
 
 
@@ -37,7 +41,7 @@ def verify(audio, expected, first=None, second=None):
         label, confidence, begin, end = locate_sound(audio[start:], decoder, variants)
         begin += start
         end += start
-        if (variants[label] != target or confidence < .12 or end - begin < .18 * RATE
+        if (variants[label] not in target or confidence < .12 or end - begin < .18 * RATE
                 or any(begin < (a + b) / 2 < end for a, b in gaps)):
             raise ValueError(f'Incomplete or different pronunciation of {name}: {variants[label]}')
         checks.append(dict(phones=variants[label], confidence=round(confidence, 3), samples=[begin, end]))
@@ -50,4 +54,4 @@ def confirmed_ending(item, expected):
     if not target or evidence.get('term') != target[0]:
         return False
     checks = evidence.get('measurements', [])
-    return len(checks) == 2 and all(m['phones'] == CHECKS[target[0]][1] for m in checks)
+    return len(checks) == 2 and all(m['phones'] in CHECKS[target[0]][1] for m in checks)

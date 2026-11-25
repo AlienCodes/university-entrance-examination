@@ -18,6 +18,8 @@ def review_version(text):
     expected = tuple(words(text))
     if expected == ('reed', 'adds'):
         return 'reed-adds-pronunciation-v1'
+    if expected == ('says', 'carl', 'cotman'):
+        return 'cotman-pronunciation-v1'
     if expected in COMPOUNDS:
         return 'printed-compound-spelling-v1'
     if expected == CINEMA_PHRASE:
@@ -110,7 +112,7 @@ def recheck(clip, audio, raw):
                 detail = assess(audio, clip['text'], recheck=True)
                 measured = detail.get('english_spellings') or aiden_english_spelling.verify(
                     audio, expected, detail['heard'], detail.get('second_heard') or independent(audio))
-            elif version == 'kandy-nannie-v1':
+            elif version in ('kandy-nannie-v1', 'cotman-pronunciation-v1'):
                 measured = aiden_kandy_nannie.verify(audio, expected)
             else:
                 measured = verify(audio, expected)
