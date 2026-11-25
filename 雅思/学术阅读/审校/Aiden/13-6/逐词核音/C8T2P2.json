@@ -40,7 +40,81 @@
      "second_heard": "the Arctic ice packs spread southward."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "pack"
+      ],
+      "heard": [
+       "packs"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         3440,
+         40240
+        ],
+        "expected": [
+         "arctic",
+         "ice",
+         "pack",
+         "spread",
+         "southward"
+        ],
+        "first": "the Arctic ice packs spread southward.",
+        "second": "The Arctic ice packs spread southward."
+       },
+       {
+        "samples": [
+         3440,
+         29600
+        ],
+        "expected": [
+         "arctic",
+         "ice",
+         "pack",
+         "spread"
+        ],
+        "first": "The Arctic Ice Pact spreads",
+        "second": "The Arctic ice pack spreads."
+       },
+       {
+        "samples": [
+         11120,
+         40240
+        ],
+        "expected": [
+         "ice",
+         "pack",
+         "spread",
+         "southward"
+        ],
+        "first": "Gice packs spread southward,",
+        "second": "Icepack's spread southward."
+       },
+       {
+        "samples": [
+         11120,
+         29600
+        ],
+        "expected": [
+         "ice",
+         "pack",
+         "spread"
+        ],
+        "first": "Geys packs spreads.",
+        "second": "Icepack sprints."
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   }
  ],
  "passed": false

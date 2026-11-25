@@ -40,7 +40,80 @@
      "second_heard": "conducted by Anthony Sinnet at Montreal's Concordia"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "synott"
+      ],
+      "heard": [
+       "sinnott"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         20080,
+         60320
+        ],
+        "expected": [
+         "by",
+         "anthony",
+         "synott",
+         "at",
+         "montreals"
+        ],
+        "first": "by Anthony Sinnott at Montreal's",
+        "second": "by Anthony Sinnet at Montreal's"
+       },
+       {
+        "samples": [
+         20080,
+         47520
+        ],
+        "expected": [
+         "by",
+         "anthony",
+         "synott",
+         "at"
+        ],
+        "first": "by Anthony Sinnot at",
+        "second": "by Anthony Sinnet at"
+       },
+       {
+        "samples": [
+         25200,
+         60320
+        ],
+        "expected": [
+         "anthony",
+         "synott",
+         "at",
+         "montreals"
+        ],
+        "first": "By Anthony Sinnett at Montreal's",
+        "second": "Anthony Sinat at Montreal's"
+       },
+       {
+        "samples": [
+         25200,
+         47520
+        ],
+        "expected": [
+         "anthony",
+         "synott",
+         "at"
+        ],
+        "first": "By Anthony Sennett at",
+        "second": "Anthony Sinnet at"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

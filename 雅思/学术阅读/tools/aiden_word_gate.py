@@ -115,8 +115,12 @@ def range_reader():
 
 
 def reread_reason(clip):
+    from aiden_review_windows import retake_reason
+
     if clip.get('word_detail_issue'):
         return clip['word_detail_issue']
+    if reason := retake_reason(clip):
+        return reason
     # Only request an automatic retake for a specific grammatical difference
     # heard by both decoders between the same two printed neighbours.
     for item in clip.get('focused_listening', []):
@@ -145,14 +149,22 @@ def save_retake_requests(report):
     path = REPORTS.parent/'复验原声'/(report['lesson']+'.退回.json')
     batch = read(path) if path.is_file() else dict(lesson=report['lesson'], narrator=IDENTITY, takes=[])
     known = {take['flac_sha256'] for take in batch['takes']}
+    retried = {(take['sentence'], take['phrase'], take.get('text')) for take in batch['takes']
+               if take.get('kind') == 'unclear-after-listening'}
     for clip in report['clips']:
         digest = clip['source_take_sha256']
         if clip['passed'] or digest in known:
             continue
         issue = reread_reason(clip)
+        address = (clip['sentence'], clip['phrase'], clip['text'])
+        uncertain = not issue and bool(clip.get('window_review'))
+        if uncertain and address not in retried:
+            issue = 'The final-film recording could not be confirmed by two blind readers in context. Try one clearer whole take.'
+            retried.add(address)
         if issue:
             batch['takes'].append(dict(sentence=clip['sentence'], phrase=clip['phrase'], flac_sha256=digest,
-                                       master_mp3_sha256=report['source_mp3_sha256'], issue=issue))
+                                       master_mp3_sha256=report['source_mp3_sha256'], text=clip['text'],
+                                       kind='unclear-after-listening' if uncertain else 'specific-difference', issue=issue))
             known.add(digest)
     if len(known) and (not path.is_file() or read(path) != batch):
         save(path,batch)
@@ -160,6 +172,7 @@ def save_retake_requests(report):
 
 def audit_lesson(pid, session, remote_zip):
     from aiden_batch import cached
+    from aiden_review_windows import needs_review, recheck
     assets = inventory(CACHE)
     if not all(pid+suffix in assets for suffix in ('-receipt.json','-illustrated.json')):
         return False
@@ -171,7 +184,10 @@ def audit_lesson(pid, session, remote_zip):
             return False
         path = REPORTS/(pid+'.json')
         prior = read(path) if path.is_file() else {}
-        if all(prior.get(k) == v for k,v in identity(pid,core,film).items()):
+        reusable = all(prior.get(k) == v for k,v in identity(pid,core,film).items())
+        if reusable and (prior['passed'] or not any(needs_review(c) for c in prior['clips'])):
+            if not prior['passed']:
+                save_retake_requests(prior)
             return prior['passed']
         if not cached(pid,'13-6'):
             return False
@@ -182,7 +198,16 @@ def audit_lesson(pid, session, remote_zip):
             if not signed['ok'] or signed['receipt'] != core:
                 raise ValueError(f'{pid} master changed while auditing the reading')
             voice = json.loads(z.read('source/narration.json'))
-        report = scan(pid,core,film,voice,lambda: pcm(fetch(video,folder)))
+        @lru_cache(maxsize=1)
+        def final_audio():
+            return pcm(fetch(video,folder))
+        report = prior if reusable else scan(pid,core,film,voice,final_audio)
+        for clip in report['clips']:
+            if needs_review(clip):
+                sample = final_audio()[clip['final_start_sample']:clip['final_end_sample']]
+                raw = voice['sentences'][f"{pid}:{clip['sentence']}"]['phrases'][clip['phrase']-1]
+                recheck(clip,sample,raw)
+        report['passed'] = all(clip['passed'] for clip in report['clips'])
         save(path,report)
         save_retake_requests(report)
         unresolved = sum(not r['passed'] for r in report['clips'])
@@ -190,15 +215,16 @@ def audit_lesson(pid, session, remote_zip):
         return report['passed']
 
 
-def audit_existing(require_all):
+def audit_existing(require_all, selected_books=None):
     import requests
     from aiden_batch import BATCHES
     from editions import lesson_ids
 
     reader = range_reader()
+    ids = lesson_ids(selected_books or BATCHES['13-6'])
     outstanding = []
     with requests.Session() as session:
-        for pid in lesson_ids(BATCHES['13-6']):
+        for pid in ids:
             try:
                 if audit_lesson(pid,session,reader):
                     continue
@@ -206,7 +232,7 @@ def audit_existing(require_all):
                 inventory.cache_clear()
                 print(f'{pid}: could not verify ({type(exc).__name__})',flush=True)
             outstanding.append(pid)
-    print(f'{len(outstanding)} of 96 still require verified readings',flush=True)
+    print(f'{len(outstanding)} of {len(ids)} still require verified readings',flush=True)
     if require_all and outstanding:
         raise SystemExit('Outstanding word checks: '+', '.join(outstanding))
 
@@ -214,4 +240,8 @@ def audit_existing(require_all):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--require-all',action='store_true')
-    audit_existing(parser.parse_args().require_all)
+    parser.add_argument('--books', nargs='+', type=int, choices=range(6,14))
+    args = parser.parse_args()
+    if args.require_all and args.books:
+        parser.error('A release check must cover all 96 films')
+    audit_existing(args.require_all, args.books)

@@ -40,7 +40,80 @@
      "second_heard": "Neuroscientist John O'Leary considers the emotional"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "lehrer"
+      ],
+      "heard": [
+       "learer"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         47520
+        ],
+        "expected": [
+         "neuroscientist",
+         "jonah",
+         "lehrer",
+         "considers",
+         "the"
+        ],
+        "first": "Neuroscientist Jonah Learer considers the",
+        "second": "Neuroscientist John O'Leary considers the"
+       },
+       {
+        "samples": [
+         0,
+         44960
+        ],
+        "expected": [
+         "neuroscientist",
+         "jonah",
+         "lehrer",
+         "considers"
+        ],
+        "first": "Neuroscientist Jonah Learer considers the",
+        "second": "Neuroscientist John O'Leary considers the"
+       },
+       {
+        "samples": [
+         17520,
+         47520
+        ],
+        "expected": [
+         "jonah",
+         "lehrer",
+         "considers",
+         "the"
+        ],
+        "first": "Jonah Learer considers the",
+        "second": "John O'Leary considers the [buzzer]"
+       },
+       {
+        "samples": [
+         17520,
+         44960
+        ],
+        "expected": [
+         "jonah",
+         "lehrer",
+         "considers"
+        ],
+        "first": "Jonah Learer considers the",
+        "second": "John O'Leary considers the"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 11,

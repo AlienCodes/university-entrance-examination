@@ -194,6 +194,7 @@ def salmon_phrase(tokens):
 
 def assess(audio, text, transcript=None, *, recheck=False):
     import aiden_printed_names
+    import aiden_voyages
     from aiden_macfarlane import cited_phrase, verify as verify_macfarlane
     from aiden_perkin import cited as has_perkin, verify as verify_perkin, gap_after_attention
     from aiden_diels import cited as has_diels, verify as verify_diels, NAMES as diels_spellings
@@ -244,7 +245,11 @@ def assess(audio, text, transcript=None, *, recheck=False):
     cork_taint = None
     kite_names = None
     word_windows = None
-    if expected in (INTRO, CONCLUSION, WENDRICH):
+    voyage_term = None
+    if expected in (aiden_voyages.TARO, aiden_voyages.VOYAGES):
+        alternate = independent(audio)
+        voyage_term = aiden_voyages.verify(audio, expected, transcript, alternate)
+    elif expected in (INTRO, CONCLUSION, WENDRICH):
         alternate = independent(audio)
         kite_names = verify_kite_names(audio, expected, transcript, alternate)
     elif name := aiden_printed_names.target(expected):
@@ -488,6 +493,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if (voyage_term and voyage_term['term'] == 'taro' and left_words in (['their','livestock'], ['theyre','livestock'])
+                    and right_words[:1] in (['taro'], ['tarot']) and right_words[1:] == expected[3:]
+                    and end <= min(m['samples'][0] for m in voyage_term['measurements']) + round(.02*RATE)):
+                return True
             if printed_name:
                 return aiden_printed_names.pause_outside_name(expected,left_words,right_words,start,end,printed_name,audio)
             if ganzfeld:
@@ -551,6 +560,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
                                      f'{left!r} | {right!r}; {other_left!r} | {other_right!r}')
         gaps.append([round(start/RATE,3),round(end/RATE,3)])
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
+    if voyage_term is not None:
+        result['voyage_term'] = voyage_term
     if span := known_span(expected):
         result['word_detail'] = check_known_span(audio, span)
     if sectors:

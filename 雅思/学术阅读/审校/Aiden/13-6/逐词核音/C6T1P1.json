@@ -40,7 +40,38 @@
      "second_heard": "You design the model to"
     }
    ],
-   "passed": false
+   "passed": true,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "design"
+      ],
+      "heard": [
+       "designed"
+      ],
+      "confirmed": true,
+      "windows": [
+       {
+        "samples": [
+         0,
+         16800
+        ],
+        "expected": [
+         "you",
+         "design",
+         "the",
+         "model"
+        ],
+        "first": "You design the model",
+        "second": "You design the model..."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 47,
@@ -72,7 +103,81 @@
      "second_heard": "The AI's unveiled coolant line jackets for endurance."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "lined"
+      ],
+      "heard": [
+       "line"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         12400,
+         44960
+        ],
+        "expected": [
+         "unveiled",
+         "coolant",
+         "lined",
+         "jackets",
+         "for"
+        ],
+        "first": "Unveiled coolant line jackets for it.",
+        "second": "unveiled coolant line jackets for a"
+       },
+       {
+        "samples": [
+         12400,
+         42400
+        ],
+        "expected": [
+         "unveiled",
+         "coolant",
+         "lined",
+         "jackets"
+        ],
+        "first": "unveiled coolant line jackets",
+        "second": "unveiled coolant line jackets."
+       },
+       {
+        "samples": [
+         20080,
+         44960
+        ],
+        "expected": [
+         "coolant",
+         "lined",
+         "jackets",
+         "for"
+        ],
+        "first": "Coolant line jackets for it.",
+        "second": "coolant line jackets for a"
+       },
+       {
+        "samples": [
+         20080,
+         42400
+        ],
+        "expected": [
+         "coolant",
+         "lined",
+         "jackets"
+        ],
+        "first": "Coolant line jackets",
+        "second": "Coolant line jackets"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   }
  ],
  "passed": false

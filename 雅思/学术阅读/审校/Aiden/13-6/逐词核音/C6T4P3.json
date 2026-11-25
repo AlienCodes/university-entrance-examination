@@ -40,7 +40,81 @@
      "second_heard": "Council for Research and Education produced a"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "in"
+      ],
+      "heard": [
+       "and"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         14960,
+         51360
+        ],
+        "expected": [
+         "for",
+         "research",
+         "in",
+         "education",
+         "produced"
+        ],
+        "first": "for Research and Education produced",
+        "second": "for research and education, produced"
+       },
+       {
+        "samples": [
+         14960,
+         42400
+        ],
+        "expected": [
+         "for",
+         "research",
+         "in",
+         "education"
+        ],
+        "first": "For research and education,",
+        "second": "for research and education."
+       },
+       {
+        "samples": [
+         17520,
+         51360
+        ],
+        "expected": [
+         "research",
+         "in",
+         "education",
+         "produced"
+        ],
+        "first": "Research and Education produced",
+        "second": "research and education produced"
+       },
+       {
+        "samples": [
+         17520,
+         42400
+        ],
+        "expected": [
+         "research",
+         "in",
+         "education"
+        ],
+        "first": "Research and education.",
+        "second": "research and education."
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   },
   {
    "sentence": 29,
@@ -72,7 +146,85 @@
      "second_heard": "best be tied in to early phases of"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "in",
+       "to"
+      ],
+      "heard": [
+       "into"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         13680,
+         41120
+        ],
+        "expected": [
+         "be",
+         "tied",
+         "in",
+         "to",
+         "early",
+         "phases"
+        ],
+        "first": "Be tied into early phases.",
+        "second": "be tied in to early phases."
+       },
+       {
+        "samples": [
+         13680,
+         34720
+        ],
+        "expected": [
+         "be",
+         "tied",
+         "in",
+         "to",
+         "early"
+        ],
+        "first": "Be tied into early",
+        "second": "be tied into early"
+       },
+       {
+        "samples": [
+         16240,
+         41120
+        ],
+        "expected": [
+         "tied",
+         "in",
+         "to",
+         "early",
+         "phases"
+        ],
+        "first": "Tied into early phases.",
+        "second": "tied into early phases."
+       },
+       {
+        "samples": [
+         16240,
+         34720
+        ],
+        "expected": [
+         "tied",
+         "in",
+         "to",
+         "early"
+        ],
+        "first": "Tied into early",
+        "second": "tied into early"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

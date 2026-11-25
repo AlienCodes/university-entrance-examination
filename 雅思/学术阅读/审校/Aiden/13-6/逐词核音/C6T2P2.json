@@ -70,7 +70,49 @@
      "second_heard": "Says Carl Kotman"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "cotman"
+      ],
+      "heard": [
+       "kotman"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         25040
+        ],
+        "expected": [
+         "says",
+         "carl",
+         "cotman"
+        ],
+        "first": "says Carl Kotman.",
+        "second": "Says Carl Kotman"
+       },
+       {
+        "samples": [
+         6000,
+         25040
+        ],
+        "expected": [
+         "carl",
+         "cotman"
+        ],
+        "first": "is Carl Kotman.",
+        "second": "Carl Kotman"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 31,

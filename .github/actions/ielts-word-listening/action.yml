@@ -1,6 +1,9 @@
 name: 逐词复核 Aiden 成片
 description: 复用已有音轨的核听记录，从带图 MP4 复听待核意群
 inputs:
+  books:
+    description: 本次复核的册号，留空时复核全部
+    default: ''
   require-all:
     description: 发布时要求 96 篇均已通过
     default: 'false'
@@ -24,6 +27,7 @@ runs:
     - shell: bash
       env:
         REQUIRE_ALL: ${{ inputs.require-all }}
+        REVIEW_BOOKS: ${{ inputs.books }}
       run: |
         set -euo pipefail
         python .github/actions/cet6-chalk-env/prepare_packages.py 141 --decoder-only
@@ -32,6 +36,10 @@ runs:
         "$sp" -m pip install -q 'numpy<2.3' scipy sherpa-onnx==1.13.8 pocketsphinx==5.0.4 num2words==0.5.14 requests
         args=()
         if [[ "$REQUIRE_ALL" == true ]]; then args+=(--require-all); fi
+        if [[ -n "$REVIEW_BOOKS" ]]; then
+          read -ra selected <<< "$REVIEW_BOOKS"
+          args+=(--books "${selected[@]}")
+        fi
         "$sp" '雅思/学术阅读/tools/aiden_word_gate.py' "${args[@]}"
     - if: always()
       shell: bash
@@ -44,5 +52,9 @@ runs:
         git config user.name 'github-actions[bot]'
         git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
         git commit -m 'Save illustrated audio word checks and specific retakes'
-        git pull --rebase origin codex/ielts-academic-reading
-        git push origin HEAD:codex/ielts-academic-reading
+        for delay in 0 2 5 10 20; do
+          sleep "$delay"
+          git pull --rebase origin codex/ielts-academic-reading
+          if git push origin HEAD:codex/ielts-academic-reading; then exit 0; fi
+        done
+        exit 1

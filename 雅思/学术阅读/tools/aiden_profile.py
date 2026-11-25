@@ -66,6 +66,7 @@ def audio_asset(lesson_dir, *, source_revision=None):
            root/'六级/tools/make_audio.py',root/'tools/tts/textnorm.py',root/'tools/tts/voices.json',
            root/'tools/tts/pronunciations.json',root/'tools/tts/gaokao_tts.py']
     term_checkers = {
+        'taro seedlings': ('aiden_voyages.py', 'aiden_pronunciation.py', 'aiden_ceylonese.py'),
         'clemmons': ('aiden_kite_names.py', 'aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py',
                      '读音对照/Clemmons.flac', 'aiden_printed_names.py'),
         'vandam': ('aiden_surnames.py', 'aiden_ceylonese.py', 'aiden_pronunciation.py'),

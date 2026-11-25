@@ -40,7 +40,81 @@
      "second_heard": "local goals will die voraciously for such"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "dive"
+      ],
+      "heard": [
+       "die"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         11120,
+         41120
+        ],
+        "expected": [
+         "gulls",
+         "will",
+         "dive",
+         "voraciously",
+         "for"
+        ],
+        "first": "Goals will die voraciously for",
+        "second": "goals will die voraciously for"
+       },
+       {
+        "samples": [
+         11120,
+         38560
+        ],
+        "expected": [
+         "gulls",
+         "will",
+         "dive",
+         "voraciously"
+        ],
+        "first": "Gulls will die voraciously for",
+        "second": "goals will die voraciously."
+       },
+       {
+        "samples": [
+         18800,
+         41120
+        ],
+        "expected": [
+         "will",
+         "dive",
+         "voraciously",
+         "for"
+        ],
+        "first": "will die voraciously for",
+        "second": "will die voraciously for s-"
+       },
+       {
+        "samples": [
+         18800,
+         38560
+        ],
+        "expected": [
+         "will",
+         "dive",
+         "voraciously"
+        ],
+        "first": "will die voraciously for",
+        "second": "will die voraciously."
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   },
   {
    "sentence": 24,

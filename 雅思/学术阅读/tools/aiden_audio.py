@@ -124,6 +124,18 @@ class Aiden:
             instruction += (' Say the Dutch name Willeke Wendrich in two connected groups: '
                             'VIL-uh-kuh VEN-drick. Keep both unstressed vowels in the first name short, '
                             'and finish the surname with k.')
+        if 'taro seedlings' in script.casefold():
+            instruction += ' Read taro in two syllables, /ˈter.oʊ/ in American English. Keep the plural of seedlings.'
+        if 're-create those early voyages' in script.casefold():
+            instruction += ' Re-create means create again here. Say ree-create with a long ee and a complete final t.'
+        if 'dive voraciously' in script.casefold():
+            instruction += ' Keep the v at the end of dive audible as you move into voraciously.'
+        if 'ice pack spread' in script.casefold():
+            instruction += ' Pack is singular. Finish pack with k, then read the initial sp of spread.'
+        if 'coolant-lined jackets' in script.casefold():
+            instruction += ' The jackets are lined. Finish lined with nd before continuing into jackets.'
+        if 'carl cotman' in script.casefold():
+            instruction += ' Read the surname Cotman as KOT-muhn, with an unstressed second syllable.'
         if script.strip(' ,.;:!?').casefold() in {s.casefold() for s in aiden_cork_oak.RENDERINGS}:
             instruction += ' ' + aiden_cork_oak.HINT
         if any(form.casefold() in script.casefold() for form in aiden_cork_taint.RENDERINGS):
@@ -313,6 +325,7 @@ class Aiden:
                         previous_seed = max(previous_seed, tried_seed)
                 elif (data.get('policy') == POLICY and data.get('word_policy') == WORD_POLICY
                       and aiden_printed_names.target(words(script)) is None
+                      and not any(s in script.casefold() for s in ('taro seedlings', 're-create those early voyages'))
                       and not script.casefold().startswith(CHECKED_INFLECTIONS)
                       and 'vosges' not in words(script)
                       and not any(span in script.casefold() for span in RECHECKED_SPANS)
