@@ -13,9 +13,13 @@ VERSION = 'two-reader-context-v1'
 
 
 def review_version(text):
-    from aiden_english_spelling import SPELLINGS
+    from aiden_english_spelling import COMPOUNDS, SPELLINGS
     from aiden_printed_names import CINEMA_PHRASE
     expected = tuple(words(text))
+    if expected == ('reed', 'adds'):
+        return 'reed-adds-pronunciation-v1'
+    if expected in COMPOUNDS:
+        return 'printed-compound-spelling-v1'
     if expected == CINEMA_PHRASE:
         return 'cinematographe-phonemes-v1'
     if any(word in SPELLINGS for word in expected):
@@ -90,7 +94,13 @@ def recheck(clip, audio, raw):
     version = review_version(clip['text'])
     if version != VERSION or expected in (TARO, VOYAGES):
         try:
-            if version in ('butterley-possessive-v1','cinematographe-phonemes-v1'):
+            if version == 'reed-adds-pronunciation-v1':
+                from aiden_boundaries import assess
+                measured = assess(audio, clip['text'], recheck=True)['reed_attribution']
+            elif version == 'printed-compound-spelling-v1':
+                from aiden_boundaries import assess
+                measured = assess(audio, clip['text'], recheck=True)['compound_spelling']
+            elif version in ('butterley-possessive-v1','cinematographe-phonemes-v1'):
                 from aiden_boundaries import assess
                 key = 'engineering_possessive' if version == 'butterley-possessive-v1' else 'cinematographe_reading'
                 measured = assess(audio, clip['text'], recheck=True)[key]

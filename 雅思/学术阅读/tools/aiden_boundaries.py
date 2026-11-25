@@ -248,9 +248,15 @@ def assess(audio, text, transcript=None, *, recheck=False):
     kite_names = None
     word_windows = None
     spelling_checks = None
+    compound_spelling = None
     voyage_term = None
     contextual_name = None
-    if tuple(expected) in aiden_kandy_nannie.PHRASES:
+    reed_attribution = None
+    if expected == ['reed', 'adds']:
+        from aiden_reed import verify
+        alternate = independent(audio)
+        reed_attribution = verify(audio, transcript, alternate)
+    elif tuple(expected) in aiden_kandy_nannie.PHRASES:
         alternate = independent(audio)
         contextual_name = aiden_kandy_nannie.verify(audio, expected, transcript, alternate)
     elif expected in (aiden_voyages.TARO, aiden_voyages.VOYAGES):
@@ -470,6 +476,9 @@ def assess(audio, text, transcript=None, *, recheck=False):
         alternate = independent(audio)
         if any(words(heard) != expected for heard in (transcript,alternate)):
             raise ValueError(f'Ant bait names or their context differ: {transcript!r} / {alternate!r}')
+    elif tuple(expected) in aiden_english_spelling.COMPOUNDS:
+        alternate = independent(audio)
+        compound_spelling = aiden_english_spelling.verify_compound(audio, expected, transcript, alternate)
     elif any(word in aiden_english_spelling.SPELLINGS for word in expected):
         alternate = independent(audio)
         spelling_checks = aiden_english_spelling.verify(audio, expected, transcript, alternate)
@@ -503,6 +512,10 @@ def assess(audio, text, transcript=None, *, recheck=False):
         def split_matches(before,after):
             left_words = words(before)
             right_words = words(after)
+            if compound_spelling and left_words and right_words:
+                pair = aiden_english_spelling.COMPOUNDS[tuple(expected)]
+                join = aiden_english_spelling.compound_words
+                return join(left_words, pair) + join(right_words, pair) == join(expected, pair)
             if (spelling_checks and left_words and right_words
                     and aiden_english_spelling.normalized(left_words + right_words) == aiden_english_spelling.normalized(expected)):
                 return True
@@ -575,6 +588,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
     result = {'text':text,'heard':transcript,'checked_internal_gaps':gaps}
     if contextual_name is not None:
         result['contextual_name'] = contextual_name
+    if reed_attribution is not None:
+        result['reed_attribution'] = reed_attribution
     if voyage_term is not None:
         result['voyage_term'] = voyage_term
     if span := known_span(expected):
@@ -638,6 +653,8 @@ def assess(audio, text, transcript=None, *, recheck=False):
         result['word_listening'] = word_windows
     if spelling_checks:
         result['english_spellings'] = spelling_checks
+    if compound_spelling:
+        result['compound_spelling'] = compound_spelling
     if craftsmen is not None:
         result['craftsmen_pronunciation']=craftsmen
     if welsh is not None:
@@ -720,8 +737,11 @@ def verify_join(left,right):
     left_ref, right_ref = words(left['text']), words(right['text'])
     from aiden_kandy_nannie import confirmed_ending
     from aiden_printed_names import confirmed_cinema_ending
-    ends = edge(left, -1) or confirmed_ending(left, left_ref) or confirmed_cinema_ending(left, left_ref)
-    starts = edge(right, 0)
+    from aiden_reed import confirmed as confirmed_reed
+    from aiden_english_spelling import confirmed_compound_edge
+    ends = (edge(left, -1) or confirmed_ending(left, left_ref) or confirmed_cinema_ending(left, left_ref)
+            or confirmed_reed(left) or confirmed_compound_edge(left, left_ref, -1))
+    starts = edge(right, 0) or confirmed_reed(right) or confirmed_compound_edge(right, right_ref, 0)
     if left_ref[-1:] == ['groundfish'] and right_ref == ['cod','sole','perch','and','pollock']:
         if ends and right.get('groundfish_list',{}).get('phones') == 'K AA D':
             return
