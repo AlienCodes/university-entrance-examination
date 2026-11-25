@@ -40,7 +40,80 @@
      "second_heard": "equipped with an armory of lasers that"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "armoury"
+      ],
+      "heard": [
+       "armory"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         7280,
+         32160
+        ],
+        "expected": [
+         "with",
+         "an",
+         "armoury",
+         "of",
+         "lasers"
+        ],
+        "first": "with an armory of lasers that",
+        "second": "with an armory of lasers that"
+       },
+       {
+        "samples": [
+         7280,
+         21920
+        ],
+        "expected": [
+         "with",
+         "an",
+         "armoury",
+         "of"
+        ],
+        "first": "with an armory of",
+        "second": "with an armory of"
+       },
+       {
+        "samples": [
+         9840,
+         32160
+        ],
+        "expected": [
+         "an",
+         "armoury",
+         "of",
+         "lasers"
+        ],
+        "first": "An armory of lasers that",
+        "second": "an armory of lasers that"
+       },
+       {
+        "samples": [
+         9840,
+         21920
+        ],
+        "expected": [
+         "an",
+         "armoury",
+         "of"
+        ],
+        "first": "An armory of",
+        "second": "an armory of"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 10,
@@ -72,7 +145,49 @@
      "second_heard": "Eppry, based in California."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "epri"
+      ],
+      "heard": [
+       "epry"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         19360
+        ],
+        "expected": [
+         "epri",
+         "based",
+         "in"
+        ],
+        "first": "Epry, based in California.",
+        "second": "Eppry, based in"
+       },
+       {
+        "samples": [
+         0,
+         16800
+        ],
+        "expected": [
+         "epri",
+         "based"
+        ],
+        "first": "Epry, based",
+        "second": "every"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 21,
@@ -104,7 +219,80 @@
      "second_heard": "out Jean Claude deals of the University of"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "diels"
+      ],
+      "heard": [
+       "deals"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         7280,
+         33440
+        ],
+        "expected": [
+         "jean",
+         "claude",
+         "diels",
+         "of",
+         "the"
+        ],
+        "first": "Jean Claude deals of the",
+        "second": "Jean-Claude deals of the"
+       },
+       {
+        "samples": [
+         7280,
+         32160
+        ],
+        "expected": [
+         "jean",
+         "claude",
+         "diels",
+         "of"
+        ],
+        "first": "Jean-Claude deals of the",
+        "second": "Jean-Claude deals of the"
+       },
+       {
+        "samples": [
+         12400,
+         33440
+        ],
+        "expected": [
+         "claude",
+         "diels",
+         "of",
+         "the"
+        ],
+        "first": "Unclaude deals of the",
+        "second": "cloth deals of the"
+       },
+       {
+        "samples": [
+         12400,
+         32160
+        ],
+        "expected": [
+         "claude",
+         "diels",
+         "of"
+        ],
+        "first": "Unclaude deals of the",
+        "second": "cloth deals of the"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 22,
@@ -136,7 +324,49 @@
      "second_heard": "Deals is leading a pre-"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "diels"
+      ],
+      "heard": [
+       "deals"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         16800
+        ],
+        "expected": [
+         "diels",
+         "is",
+         "leading"
+        ],
+        "first": "Deals is leading a",
+        "second": "Deals is leading up"
+       },
+       {
+        "samples": [
+         0,
+         11680
+        ],
+        "expected": [
+         "diels",
+         "is"
+        ],
+        "first": "Deals is l",
+        "second": "deals is"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 33,
@@ -168,7 +398,49 @@
      "second_heard": "Deals is trying to"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "diels"
+      ],
+      "heard": [
+       "deals"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         16800
+        ],
+        "expected": [
+         "diels",
+         "is",
+         "trying"
+        ],
+        "first": "Deals is trying to",
+        "second": "Deals is trying to"
+       },
+       {
+        "samples": [
+         0,
+         14240
+        ],
+        "expected": [
+         "diels",
+         "is"
+        ],
+        "first": "Deals is true.",
+        "second": "deals is"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 45,
@@ -200,7 +472,36 @@
      "second_heard": "Says deals."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "diels"
+      ],
+      "heard": [
+       "deals"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         16080
+        ],
+        "expected": [
+         "says",
+         "diels"
+        ],
+        "first": "says Deals.",
+        "second": "Says deals."
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

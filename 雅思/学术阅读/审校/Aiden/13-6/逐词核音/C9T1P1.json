@@ -40,7 +40,49 @@
      "second_heard": "time of Perkins enrollment."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "enrolment"
+      ],
+      "heard": [
+       "enrollment"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         6000,
+         26880
+        ],
+        "expected": [
+         "of",
+         "perkins",
+         "enrolment"
+        ],
+        "first": "M. of Perkins Enrollment",
+        "second": "of Perkins enrollment."
+       },
+       {
+        "samples": [
+         8560,
+         26880
+        ],
+        "expected": [
+         "perkins",
+         "enrolment"
+        ],
+        "first": "of Perkins' enrollment.",
+        "second": "Perkins enrollment"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 9,
@@ -72,7 +114,116 @@
      "second_heard": "Perkins' scientific gifts. Soon..."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "perkins"
+      ],
+      "heard": [
+       "perkinss"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         32160
+        ],
+        "expected": [
+         "perkins",
+         "scientific",
+         "gifts"
+        ],
+        "first": "Perkins's scientific gifts.",
+        "second": "Perkins scientific gifts"
+       },
+       {
+        "samples": [
+         0,
+         18080
+        ],
+        "expected": [
+         "perkins",
+         "scientific"
+        ],
+        "first": "Perkins Scientific G",
+        "second": "Perkins Scientific"
+       }
+      ]
+     },
+     {
+      "printed": [
+       "hofmanns"
+      ],
+      "heard": [
+       "hoffmans"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         31600,
+         68000
+        ],
+        "expected": [
+         "soon",
+         "caught",
+         "hofmanns",
+         "attention",
+         "and"
+        ],
+        "first": "soon caught Hoffman's attention, and",
+        "second": "Soon caught Hoffman's attention and"
+       },
+       {
+        "samples": [
+         31600,
+         64160
+        ],
+        "expected": [
+         "soon",
+         "caught",
+         "hofmanns",
+         "attention"
+        ],
+        "first": "soon caught Hoffmann's attention,",
+        "second": "Soon caught Hoffman's attention."
+       },
+       {
+        "samples": [
+         35440,
+         68000
+        ],
+        "expected": [
+         "caught",
+         "hofmanns",
+         "attention",
+         "and"
+        ],
+        "first": "caught Hoffman's attention and",
+        "second": "caught Hoffman's attention and"
+       },
+       {
+        "samples": [
+         35440,
+         64160
+        ],
+        "expected": [
+         "caught",
+         "hofmanns",
+         "attention"
+        ],
+        "first": "caught Hoffman's attention,",
+        "second": "caught Hoffman's attention."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 9,
@@ -104,7 +255,80 @@
      "second_heard": "He became Hoffman's youngest assistant."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hofmanns"
+      ],
+      "heard": [
+       "hoffmanns"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         36160
+        ],
+        "expected": [
+         "he",
+         "became",
+         "hofmanns",
+         "youngest",
+         "assistant"
+        ],
+        "first": "He became Hoffmann's youngest assistant.",
+        "second": "He became Hoffman's youngest assistant."
+       },
+       {
+        "samples": [
+         0,
+         27040
+        ],
+        "expected": [
+         "he",
+         "became",
+         "hofmanns",
+         "youngest"
+        ],
+        "first": "He became Hoffman's youngest.",
+        "second": "He became Hoffman's youngest"
+       },
+       {
+        "samples": [
+         2160,
+         36160
+        ],
+        "expected": [
+         "became",
+         "hofmanns",
+         "youngest",
+         "assistant"
+        ],
+        "first": "he became Hoffmann's youngest assistant.",
+        "second": "He became Hoffman's youngest assistant."
+       },
+       {
+        "samples": [
+         2160,
+         27040
+        ],
+        "expected": [
+         "became",
+         "hofmanns",
+         "youngest"
+        ],
+        "first": "He became Hoffman's youngest.",
+        "second": "became Hoffman's youngest"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 12,
@@ -136,7 +360,51 @@
      "second_heard": "the bark of the synconatry."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "cinchona"
+      ],
+      "heard": [
+       "cincona"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         30320,
+         51680
+        ],
+        "expected": [
+         "of",
+         "the",
+         "cinchona",
+         "tree"
+        ],
+        "first": "Of the Sincona Tree.",
+        "second": "of the Sinconatry."
+       },
+       {
+        "samples": [
+         31600,
+         51680
+        ],
+        "expected": [
+         "the",
+         "cinchona",
+         "tree"
+        ],
+        "first": "of the Sincona Tree.",
+        "second": "of the Sinconatry."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 13,
@@ -168,7 +436,80 @@
      "second_heard": "Thus when Huffman made some passing"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hofmann"
+      ],
+      "heard": [
+       "hoffman"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         27040
+        ],
+        "expected": [
+         "thus",
+         "when",
+         "hofmann",
+         "made",
+         "some"
+        ],
+        "first": "Thus when Hoffmann made some",
+        "second": "thus when Huffman made some"
+       },
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "thus",
+         "when",
+         "hofmann",
+         "made"
+        ],
+        "first": "Thus when Hoffman made",
+        "second": "Thus when Huffman made"
+       },
+       {
+        "samples": [
+         6000,
+         27040
+        ],
+        "expected": [
+         "when",
+         "hofmann",
+         "made",
+         "some"
+        ],
+        "first": "Swen Hoffman made some",
+        "second": "when Huffman made some"
+       },
+       {
+        "samples": [
+         6000,
+         24480
+        ],
+        "expected": [
+         "when",
+         "hofmann",
+         "made"
+        ],
+        "first": "when Hoffman maids",
+        "second": "when Huffman made"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 14,
@@ -200,7 +541,49 @@
      "second_heard": "Perkins spent his time"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "perkin"
+      ],
+      "heard": [
+       "perkins"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         14240
+        ],
+        "expected": [
+         "perkin",
+         "spent",
+         "his"
+        ],
+        "first": "Perkins spin is time",
+        "second": "Perkins spent his time."
+       },
+       {
+        "samples": [
+         0,
+         11680
+        ],
+        "expected": [
+         "perkin",
+         "spent"
+        ],
+        "first": "Perkinspin is",
+        "second": "Perkins spent his"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 21,
@@ -232,7 +615,49 @@
      "second_heard": "Perkins saw the potential."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "perkin"
+      ],
+      "heard": [
+       "perkins"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         14240
+        ],
+        "expected": [
+         "perkin",
+         "saw",
+         "the"
+        ],
+        "first": "Perkins saw the pot.",
+        "second": "Perkins saw the police."
+       },
+       {
+        "samples": [
+         0,
+         11680
+        ],
+        "expected": [
+         "perkin",
+         "saw"
+        ],
+        "first": "Perkins saw the",
+        "second": "Perkins saw the"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 26,
@@ -279,7 +704,49 @@
      "second_heard": "works owner Robert Puller."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "pullar"
+      ],
+      "heard": [
+       "puller"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         35440,
+         54480
+        ],
+        "expected": [
+         "owner",
+         "robert",
+         "pullar"
+        ],
+        "first": "The owner Robert Puller",
+        "second": "owner Robert Puller"
+       },
+       {
+        "samples": [
+         40560,
+         54480
+        ],
+        "expected": [
+         "robert",
+         "pullar"
+        ],
+        "first": "Sir Robert Puller.",
+        "second": "Robert Puller"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 32,
@@ -311,7 +778,49 @@
      "second_heard": "of his mentor Hoffman."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "hofmann"
+      ],
+      "heard": [
+       "hoffmann"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         35440,
+         58240
+        ],
+        "expected": [
+         "his",
+         "mentor",
+         "hofmann"
+        ],
+        "first": "of his mentor Hoffmann,",
+        "second": "of his mentor Hoffman."
+       },
+       {
+        "samples": [
+         38000,
+         58240
+        ],
+        "expected": [
+         "mentor",
+         "hofmann"
+        ],
+        "first": "His mentor Hoffmann,",
+        "second": "mentor Hoffman."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 33,
@@ -343,7 +852,49 @@
      "second_heard": "Perkins set up a f"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "perkin"
+      ],
+      "heard": [
+       "perkins"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         12960
+        ],
+        "expected": [
+         "perkin",
+         "set",
+         "up"
+        ],
+        "first": "Perkins set up a fine.",
+        "second": "Perkins set up a"
+       },
+       {
+        "samples": [
+         0,
+         10400
+        ],
+        "expected": [
+         "perkin",
+         "set"
+        ],
+        "first": "Perkins sit up.",
+        "second": "Perkins set up"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 38,
@@ -375,7 +926,80 @@
      "second_heard": "and the public clamored for more."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "clamoured"
+      ],
+      "heard": [
+       "clamored"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         3440,
+         31280
+        ],
+        "expected": [
+         "the",
+         "public",
+         "clamoured",
+         "for",
+         "more"
+        ],
+        "first": "and the public clamored for more.",
+        "second": "the public clamored for more."
+       },
+       {
+        "samples": [
+         3440,
+         24480
+        ],
+        "expected": [
+         "the",
+         "public",
+         "clamoured",
+         "for"
+        ],
+        "first": "And the public clamored for more.",
+        "second": "the public clamored from"
+       },
+       {
+        "samples": [
+         6000,
+         31280
+        ],
+        "expected": [
+         "public",
+         "clamoured",
+         "for",
+         "more"
+        ],
+        "first": "public clamored for more.",
+        "second": "public clamored for more."
+       },
+       {
+        "samples": [
+         6000,
+         24480
+        ],
+        "expected": [
+         "public",
+         "clamoured",
+         "for"
+        ],
+        "first": "Public clamored for",
+        "second": "public clamored from"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 41,
@@ -407,7 +1031,80 @@
      "second_heard": "and introduced were Anilin Red, 1850"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "aniline"
+      ],
+      "heard": [
+       "annalyn"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         32880,
+         75680
+        ],
+        "expected": [
+         "introduced",
+         "were",
+         "aniline",
+         "red",
+         "eighteen"
+        ],
+        "first": "introduced were Anna Lynn Red.",
+        "second": "introduced were Aniline Red, 18- (buzzer)"
+       },
+       {
+        "samples": [
+         32880,
+         69280
+        ],
+        "expected": [
+         "introduced",
+         "were",
+         "aniline",
+         "red"
+        ],
+        "first": "introduced were Anna Lynn read",
+        "second": "introduced were Anilin Red."
+       },
+       {
+        "samples": [
+         43120,
+         75680
+        ],
+        "expected": [
+         "were",
+         "aniline",
+         "red",
+         "eighteen"
+        ],
+        "first": "were Anna Lynn Red.",
+        "second": "where Anilin read, 18-8-8-"
+       },
+       {
+        "samples": [
+         43120,
+         69280
+        ],
+        "expected": [
+         "were",
+         "aniline",
+         "red"
+        ],
+        "first": "where Anna Lynn read.",
+        "second": "were Aniline Red."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 41,
@@ -439,7 +1136,51 @@
      "second_heard": "and Annelene Black, 1860"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "aniline"
+      ],
+      "heard": [
+       "annaline"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         34720
+        ],
+        "expected": [
+         "and",
+         "aniline",
+         "black",
+         "eighteen"
+        ],
+        "first": "and Annaline Black, eighteen sixty",
+        "second": "and Annalene Black, 18's"
+       },
+       {
+        "samples": [
+         0,
+         27040
+        ],
+        "expected": [
+         "and",
+         "aniline",
+         "black"
+        ],
+        "first": "And Annaline Black",
+        "second": "and Anilene Black,"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 42,

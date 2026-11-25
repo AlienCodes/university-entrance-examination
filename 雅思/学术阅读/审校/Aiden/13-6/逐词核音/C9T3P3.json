@@ -40,7 +40,50 @@
      "second_heard": "successfully made the switch over."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "switchover"
+      ],
+      "heard": [
+       "switch",
+       "over"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         14960,
+         31280
+        ],
+        "expected": [
+         "made",
+         "the",
+         "switchover"
+        ],
+        "first": "He made the switch over.",
+        "second": "made the switch over."
+       },
+       {
+        "samples": [
+         18800,
+         31280
+        ],
+        "expected": [
+         "the",
+         "switchover"
+        ],
+        "first": "Did the switch over?",
+        "second": "the switch over."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 14,
@@ -72,7 +115,51 @@
      "second_heard": "1916 in Potoskey, Michigan."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "petoskey"
+      ],
+      "heard": [
+       "pitosky"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         13680,
+         41680
+        ],
+        "expected": [
+         "sixteen",
+         "in",
+         "petoskey",
+         "michigan"
+        ],
+        "first": "sixteen in Petoskey, Michigan.",
+        "second": "16 in Patoski, Michigan."
+       },
+       {
+        "samples": [
+         21360,
+         41680
+        ],
+        "expected": [
+         "in",
+         "petoskey",
+         "michigan"
+        ],
+        "first": "In Patoski, Michigan.",
+        "second": "in Patoski, Michigan."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 16,
@@ -104,7 +191,80 @@
      "second_heard": "which has since invagled its way into"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "inveigled"
+      ],
+      "heard": [
+       "enveigled"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         72560,
+         101280
+        ],
+        "expected": [
+         "has",
+         "since",
+         "inveigled",
+         "its",
+         "way"
+        ],
+        "first": "T has since invigled its way",
+        "second": "has since invagled its way."
+       },
+       {
+        "samples": [
+         72560,
+         97440
+        ],
+        "expected": [
+         "has",
+         "since",
+         "inveigled",
+         "its"
+        ],
+        "first": "T has since enveigled its web.",
+        "second": "has since invagled its way"
+       },
+       {
+        "samples": [
+         76400,
+         101280
+        ],
+        "expected": [
+         "since",
+         "inveigled",
+         "its",
+         "way"
+        ],
+        "first": "since inveigled its way,",
+        "second": "since and vagled its way."
+       },
+       {
+        "samples": [
+         76400,
+         97440
+        ],
+        "expected": [
+         "since",
+         "inveigled",
+         "its"
+        ],
+        "first": "Since enveigled its web",
+        "second": "since and vagaled its way"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 33,
@@ -136,7 +296,57 @@
      "second_heard": "messages like I, CNCU show."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "cn",
+       "c",
+       "u"
+      ],
+      "heard": [
+       "cncu"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         26480,
+         72240
+        ],
+        "expected": [
+         "like",
+         "i",
+         "cn",
+         "c",
+         "u",
+         "show"
+        ],
+        "first": "like I C N C U show.",
+        "second": "like I, CNCU show."
+       },
+       {
+        "samples": [
+         31600,
+         72240
+        ],
+        "expected": [
+         "i",
+         "cn",
+         "c",
+         "u",
+         "show"
+        ],
+        "first": "I C N C U show.",
+        "second": "I C N C U Show"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

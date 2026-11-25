@@ -40,7 +40,37 @@
      "second_heard": "Size well be"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "sizewell"
+      ],
+      "heard": [
+       "size",
+       "well"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         19680
+        ],
+        "expected": [
+         "sizewell",
+         "b"
+        ],
+        "first": "Size well B",
+        "second": "Size well be"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 9,
@@ -72,7 +102,80 @@
      "second_heard": "the channel between Campyltown and Northern Ireland."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "campbeltown"
+      ],
+      "heard": [
+       "campbelltown"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         17520,
+         50080
+        ],
+        "expected": [
+         "channel",
+         "between",
+         "campbeltown",
+         "and",
+         "northern"
+        ],
+        "first": "A channel between Campbelltown and Northern Ind",
+        "second": "channel between Campyltown and Northern"
+       },
+       {
+        "samples": [
+         17520,
+         44960
+        ],
+        "expected": [
+         "channel",
+         "between",
+         "campbeltown",
+         "and"
+        ],
+        "first": "A channel between Campbelltown and",
+        "second": "channel between Campyltown and"
+       },
+       {
+        "samples": [
+         25200,
+         50080
+        ],
+        "expected": [
+         "between",
+         "campbeltown",
+         "and",
+         "northern"
+        ],
+        "first": "Between Campbelltown and Northern India.",
+        "second": "between campyltown and northern"
+       },
+       {
+        "samples": [
+         25200,
+         44960
+        ],
+        "expected": [
+         "between",
+         "campbeltown",
+         "and"
+        ],
+        "first": "Between Campbelltown and",
+        "second": "between campyltown and"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 12,
@@ -104,7 +207,37 @@
      "second_heard": "Abu Bakr Baha'j"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "abubakr"
+      ],
+      "heard": [
+       "abu",
+       "bakr"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         19920
+        ],
+        "expected": [
+         "abubakr",
+         "bahaj"
+        ],
+        "first": "Abu Bakr Bahaj",
+        "second": "Abu Bakr Baha'j"
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 15,
@@ -136,7 +269,51 @@
      "second_heard": "on the Linmouth Project."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 30,
+    "differences": [
+     {
+      "printed": [
+       "lynmouth"
+      ],
+      "heard": [
+       "linmouth"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         21040
+        ],
+        "expected": [
+         "on",
+         "the",
+         "lynmouth",
+         "project"
+        ],
+        "first": "On the Linmouth project.",
+        "second": "on the Linmouth Project."
+       },
+       {
+        "samples": [
+         2160,
+         21040
+        ],
+        "expected": [
+         "the",
+         "lynmouth",
+         "project"
+        ],
+        "first": "on the Linmouth project.",
+        "second": "on the Linmouth Project."
+       }
+      ]
+     }
+    ]
+   }
   },
   {
    "sentence": 16,
@@ -168,7 +345,74 @@
      "second_heard": "identified 106 potential sites."
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [],
+      "heard": [
+       "and"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         29040,
+         52640
+        ],
+        "expected": [
+         "one",
+         "hundred",
+         "six",
+         "potential"
+        ],
+        "first": "At one hundred and six potentials.",
+        "second": "106 potentials"
+       },
+       {
+        "samples": [
+         29040,
+         44960
+        ],
+        "expected": [
+         "one",
+         "hundred",
+         "six"
+        ],
+        "first": "At one hundred and six points",
+        "second": "at 106"
+       },
+       {
+        "samples": [
+         34160,
+         52640
+        ],
+        "expected": [
+         "hundred",
+         "six",
+         "potential"
+        ],
+        "first": "Hundred six potentials.",
+        "second": "106 potentials."
+       },
+       {
+        "samples": [
+         34160,
+         44960
+        ],
+        "expected": [
+         "hundred",
+         "six"
+        ],
+        "first": "Hundred and six pounds.",
+        "second": "106"
+       }
+      ]
+     }
+    ]
+   }
   }
  ],
  "passed": false

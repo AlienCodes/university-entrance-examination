@@ -40,7 +40,81 @@
      "second_heard": "of this are an infant's attempts to"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "an"
+      ],
+      "heard": [
+       "in"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         41840,
+         70560
+        ],
+        "expected": [
+         "this",
+         "are",
+         "an",
+         "infants",
+         "attempts"
+        ],
+        "first": "This are an infant's attempt to",
+        "second": "This are an infant's attempts."
+       },
+       {
+        "samples": [
+         41840,
+         64160
+        ],
+        "expected": [
+         "this",
+         "are",
+         "an",
+         "infants"
+        ],
+        "first": "This are an infant's",
+        "second": "This are an infant"
+       },
+       {
+        "samples": [
+         45680,
+         70560
+        ],
+        "expected": [
+         "are",
+         "an",
+         "infants",
+         "attempts"
+        ],
+        "first": "are in infant's attempts to",
+        "second": "are in infants attempts."
+       },
+       {
+        "samples": [
+         45680,
+         64160
+        ],
+        "expected": [
+         "are",
+         "an",
+         "infants"
+        ],
+        "first": "are in infants at",
+        "second": "are an infant"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   },
   {
    "sentence": 32,
@@ -72,7 +146,52 @@
      "second_heard": "The psychologist reasoned that if the"
     }
    ],
-   "passed": false
+   "passed": false,
+   "window_review": {
+    "version": "two-reader-context-v1",
+    "source_lag_ms": 20,
+    "differences": [
+     {
+      "printed": [
+       "psychologists"
+      ],
+      "heard": [
+       "psychologist"
+      ],
+      "confirmed": false,
+      "windows": [
+       {
+        "samples": [
+         0,
+         24480
+        ],
+        "expected": [
+         "the",
+         "psychologists",
+         "reasoned",
+         "that"
+        ],
+        "first": "The psychologist reasoned that",
+        "second": "The psychologist reasoned that [static]"
+       },
+       {
+        "samples": [
+         0,
+         21920
+        ],
+        "expected": [
+         "the",
+         "psychologists",
+         "reasoned"
+        ],
+        "first": "The psychologist reasoned",
+        "second": "The psychologist reason"
+       }
+      ],
+      "reread": true
+     }
+    ]
+   }
   }
  ],
  "passed": false
